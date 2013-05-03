@@ -1,0 +1,40 @@
+
+
+    \filetitle{sstate}{Create new model object based on sstate file}{sstate/sstate}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ S = sstate(FNAME,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{FNAME} {[} char {]} - Name of the steady-state file that will
+   loaded and converted to a new sstate object.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} sstate {]} - New sstate object based on the input
+   steady-state file.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'assign='} {[} struct \textbar{} \emph{empty} {]} - Database
+   that will used by the preparser to evaluate conditions and expressions
+   in the \texttt{!if} and \texttt{!switch} structures.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+
