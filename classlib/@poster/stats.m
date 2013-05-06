@@ -141,7 +141,7 @@ for i = 1 : nPar
     name = This.paramList{i};
     
     if isFile
-        theta = nan(1,master.Draw);
+        theta = nan(1,master.NDraw);
         doGetTheta(i);
     else
         theta = Theta(i,:);
@@ -316,12 +316,12 @@ end
         valid = isstruct(master) ...
             && isfield(master,'SaveCount') ...
             && isnumericscalar(master.SaveCount) ...
-            && isfield(master,'Draw') ...
-            && isnumericscalar(master.Draw) ...
+            && isfield(master,'NDraw') ...
+            && isnumericscalar(master.NDraw) ...
             && isfield(master,'PList') ...
             && iscellstr(master.PList);
         valid = valid && isequal(This.paramList,master.PList);
-        N = master.Draw;
+        N = master.NDraw;
         nPar = length(This.paramList);
         if valid
             nDraw = 0;
@@ -340,7 +340,7 @@ end
                     && nPar == length(master.PList);
                 nDraw = nDraw + nTheta;
             end
-            valid = valid && nDraw == master.Draw;
+            valid = valid && nDraw == master.NDraw;
         end
         if ~valid
             utils.error('poster', ...

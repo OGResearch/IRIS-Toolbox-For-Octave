@@ -271,6 +271,7 @@ classdef poster
     methods (Access=protected, Hidden)
         varargout = mysimulate(varargin)
         varargout = mylogpost(varargin)
+        varargout = mylogpoststruct(varargin)
     end
     
     methods (Static,Hidden)

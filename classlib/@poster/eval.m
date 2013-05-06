@@ -1,4 +1,4 @@
-function varargout = eval(This,varargin)
+function [Obj,L,PP,SP] = eval(This,varargin)
 % eval  Evaluate posterior density at specified points.
 %
 % Syntax
@@ -60,20 +60,41 @@ end
 
 if nargin == 1 && nargout <= 1
     % Return log posterior at optimum.
-    varargout{1} = This.initLogPost;
-else
-    % Evaluate log poeterior at specified parameter sets. If
-    % it's multiple parameter sets, pass them in as a cell, not
-    % as multiple input arguments.
-    if isstruct(p)
-        s = p;
-        nPar = length(This.paramList);
-        p = nan(1,nPar);
-        for i = 1 : nPar
-            p(i) = s.(This.paramList{i});
-        end
+    Obj = This.initLogPost;
+    return
+end
+
+s = mylogpoststruct(This);
+
+% Evaluate log poeterior at specified parameter sets. If
+% it's multiple parameter sets, pass them in as a cell, not
+% as multiple input arguments.
+if isstruct(p)
+    p0 = p;
+    nPar = length(This.paramList);
+    p = nan(1,nPar);
+    for i = 1 : nPar
+        p(i) = p0.(This.paramList{i});
     end
-    [varargout{1:nargout}] = mysimulate(This,'eval',p);
+end
+
+if ~iscell(p)
+    p = {p};
+end
+np = numel(p);
+
+% Minus log posterior.
+Obj = nan(size(p));
+% Minus log likelihood.
+L = nan(size(p));
+% Minus log parameter priors.
+PP = nan(size(p));
+% Minus log system priors.
+SP = nan(size(p));
+
+parfor i = 1 : np
+    theta = p{i}(:);
+    [Obj(i),L(i),PP(i),SP(i)] = mylogpost(This,theta,s);
 end
 
 end
