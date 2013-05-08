@@ -186,7 +186,6 @@ end
             nData = max(1,size(X,3));
             Xi = nan(nPer,nData);
             freqMismatch(i) = true;
-            key
         else
             k = 0;
             if ~isempty(LagOrLead)
