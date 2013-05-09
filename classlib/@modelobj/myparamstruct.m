@@ -23,9 +23,9 @@ else
 end
 
 list = fieldnames(E).';
-nlist = length(list);
-remove = false(1,nlist);
-for i = 1 : nlist
+nList = length(list);
+remove = false(1,nList);
+for i = 1 : nList
     if isempty(E.(list{i}))
         remove(i) = true;
     end
@@ -129,10 +129,10 @@ E = rmfield(E,Pri.plist);
             
             % Prior distribution function, function_handle, or penalty
             % function, [weight] or [weight,pbar].
-            isprior = false;
+            isPrior = false;
             prior = [];
             if length(spec) > 3 && ~isempty(spec{4})
-                isprior = true;
+                isPrior = true;
                 if isa(spec{4},'function_handle')
                     % The 4th entry is a prior distribution function handle.
                     prior = spec{4};
@@ -145,7 +145,7 @@ E = rmfield(E,Pri.plist);
             Pri.pl(ii) = pl;
             Pri.pu(ii) = pu;
             Pri.prior{ii} = prior;
-            Pri.priorindex(ii) = isprior;
+            Pri.priorindex(ii) = isPrior;
             
         end
         
