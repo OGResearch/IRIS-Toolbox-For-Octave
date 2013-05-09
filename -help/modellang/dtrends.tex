@@ -1,0 +1,43 @@
+
+
+    \filetitle{!dtrends}{Block of deterministic trend equations}{modellang/dtrends}
+
+	\paragraph{Syntax for linearised measurement variables}
+ 
+ \begin{verbatim}
+ !dtrends
+     VARIABLE_NAME += EXPRESSION;
+     VARIABLE_NAME += EXPRESSION;
+     VARIABLE_NAME += EXPRESSION;
+     ...
+ \end{verbatim}
+ 
+ \paragraph{Syntax for log-linearised measurement variables}
+ 
+ \begin{verbatim}
+ !dtrends
+     log(VARIABLE_NAME) += EXPRESSION;
+     log(VARIABLE_NAME) += EXPRESSION;
+     log(VARIABLE_NAME) += EXPRESSION;
+     ...
+ \end{verbatim}
+ 
+ \paragraph{Syntax with equation labels}
+ 
+ \begin{verbatim}
+ !dtrends
+     'Equation label' VARIABLE_NAME += EXPRESSION;
+     'Equation label' LOG(VARIABLE_NAME) += EXPRESSION;
+ \end{verbatim}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ \begin{verbatim}
+ !dtrends
+     Infl += pi_;
+     Rate += rho_ + pi_;
+ \end{verbatim}
+
+

@@ -1,0 +1,68 @@
+
+
+    \filetitle{fevd}{Forecast error variance decomposition for model variables}{model/fevd}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [X,Y,List,A,B] = fevd(M,Range,...)
+ [X,Y,List,A,B] = fevd(M,NPer,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object for which the decomposition
+   will be computed.
+ \item
+   \texttt{Range} {[} numeric {]} - Decomposition date range with the
+   first date beign the first forecast period.
+ \item
+   \texttt{NPer} {[} numeric {]} - Number of periods for which the
+   decomposition will be computed.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} namedmat \textbar{} numeric {]} - Array with the
+   absolute contributions of individual shocks to total variance of each
+   variables.
+ \item
+   \texttt{Y} {[} namedmat \textbar{} numeric {]} - Array with the
+   relative contributions of individual shocks to total variance of each
+   variables.
+ \item
+   \texttt{List} {[} cellstr {]} - List of variables in rows of the
+   \texttt{X} an \texttt{Y} arrays, and shocks in columns of the
+   \texttt{X} and \texttt{Y} arrays.
+ \item
+   \texttt{A} {[} struct {]} - Database with the absolute contributions
+   converted to time series.
+ \item
+   \texttt{B} {[} struct {]} - Database with the relative contributions
+   converted to time series.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'output='} {[} \emph{`namedmat'} \textbar{} numeric {]} -
+   Output matrices \texttt{X} and \texttt{Y} will be either namedmat
+   objects or plain numeric arrays; if the option \texttt{'select='} is
+   used, \texttt{'output='} is always \texttt{'namedmat'}.
+ \item
+   \texttt{'select='} {[} char \textbar{} cellstr {]} - Return FEVD for
+   selected variables and/or shocks only; \texttt{Inf} means all
+   variables. This option does not apply to the output databases,
+   \texttt{A} and \texttt{B}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

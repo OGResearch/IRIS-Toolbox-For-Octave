@@ -1,0 +1,59 @@
+
+
+    \filetitle{dbrange}{Find a range that encompasses the ranges of the listed tseries objects}{dbase/dbrange}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Range,FreqList] = dbrange(D)
+ [Range,FreqList] = dbrange(D,List,...)
+ [Range,FreqList] = dbrange(D,Inf,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Input database.
+ \item
+   \texttt{List} {[} char \textbar{} cellstr \textbar{} \texttt{Inf} {]}
+   - List of tseries objects that will be included in the range search;
+   \texttt{Inf} means all tseries objects existing in the input databases
+   will be included.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Range} {[} numeric \textbar{} cell {]} - Range that
+   encompasses the observations of the tseries objects in the input
+   database; if tseries objects with different frequencies exist, the
+   ranges are returned in a cell array.
+ \item
+   \texttt{FreqList} {[} numeric {]} - Vector of date frequencies
+   coresponding to the returned ranges.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'startDate='} {[} \emph{\texttt{'maxRange'}} \textbar{}
+   \texttt{'minRange'} {]} - \texttt{'maxRange'} means the \texttt{range}
+   will start at the earliest start date of all tseries included in the
+   search; \texttt{'minRange'} means the \texttt{range} will start at the
+   latest start date found.
+ \item
+   \texttt{'endDate='} {[} \emph{\texttt{'maxRange'}} \textbar{}
+   \texttt{'minRange'} {]} - \texttt{'maxRange'} means the \texttt{range}
+   will end at the latest end date of all tseries included in the search;
+   \texttt{'minRange'} means the \texttt{range} will end at the earliest
+   end date.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

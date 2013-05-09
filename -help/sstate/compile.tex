@@ -1,0 +1,59 @@
+
+
+    \filetitle{compile}{Compile an m-file function based on a steady-state file}{sstate/compile}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ compile(S)
+ compile(S,Fname,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} sstate {]} - Sstate object built on a steady-state
+   file.
+ \item
+   \texttt{Fname} {[} char \textbar{} empty {]} - Filename of the
+   compiled m-file function; if not specified or empty the original
+   steady-state filename will be used with an '.m' extension.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'excludeZero='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Automatically detect and exclude zero
+   solutions in blocks that result in multiple solutions.
+ \item
+   \texttt{'deleteSymbolicMfiles='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Delete auxiliary m-files created to call the
+   Symbolic Math toolbox.
+ \item
+   \texttt{'end='} {[} numeric \textbar{} char \textbar{}
+   \emph{\texttt{Inf}} {]} - Compile the steady-state m-file function
+   only up to this block.
+ \item
+   \texttt{'simplify='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   The minimum length for a symbolic expression to be simplified using
+   the \texttt{simplify} function; Inf means no expressions will undergo
+   simplification.
+ \item
+   \texttt{'start='} {[} numeric \textbar{} char \textbar{} \emph{1} {]}
+   - Compile the steady-state m-file function starting from this block.
+ \item
+   \texttt{'symbolic='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Call the Symbolic Math toolbox to solve blocks
+   marked with a \href{sstatelang/symbolic}{\texttt{!symbolic}} keyword;
+   otherwise, all blocks will be solved numerically regardless of their
+   specification.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

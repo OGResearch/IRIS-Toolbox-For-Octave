@@ -1,0 +1,40 @@
+
+
+    \filetitle{instrument}{Define conditioning instruments in VAR models}{VAR/instrument}
+
+	\paragraph{Syntax to add forecast instruments}
+ 
+ \begin{verbatim}
+ V = instrument(V,Def)
+ V = instrument(V,Name,Exprn)
+ V = instrument(V,Name,Vec)
+ \end{verbatim}
+ 
+ \paragraph{Syntax to remove all forecast instruments}
+ 
+ \begin{verbatim}
+ V = instrument(V)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object to which forecast instruments will
+   be added.
+ \item
+   \texttt{Def} {[} char \textbar{} cellstr {]} - Definition string for
+   the new conditioning instruments.
+ \item
+   \texttt{Name} {[} char {]} - Name of the new conditiong instrument.
+ \item
+   \texttt{Exprn} {[} char {]} - Expression defining the new conditiong
+   instrument.
+ \item
+   \texttt{Vec} {[} numeric {]} - Vector of coeffients to combine the VAR
+   variables to create the new conditioning instrument.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+
+
