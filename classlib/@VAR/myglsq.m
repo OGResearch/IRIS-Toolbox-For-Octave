@@ -256,7 +256,7 @@ S.count = count;
             % calculate `Sgm`. If not, then `Mx` and `OmgInv` are guaranteed
             % to exist.
             if ~isempty(Xw)
-                Sgm = R*((R.'*kron(M,inv(Omg0))*R) \ R.');
+                Sgm = R*((R.'*kron(Mw,inv(Omg0))*R) \ R.');
             else
                 Sgm = nan(size(Xw,1)*ny);
             end

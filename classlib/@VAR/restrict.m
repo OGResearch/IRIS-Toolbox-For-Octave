@@ -56,7 +56,7 @@ if ~isempty(restrict)
         '=(.*)','-\($1\)');
     % Vectorise and vertically concatenate restrictions.
     for i = 1 : numel(eachRestrict)
-        rString = [rString,'xxvec(',eachRestrict{i},');']; %#ok<AGROW>
+        rString = [rString,'xxVec(',eachRestrict{i},');']; %#ok<AGROW>
     end
     if ~isempty(rString)
         rString = ['[',rString,']'];

@@ -1,5 +1,5 @@
 function m = mymeta(m,options)
-% MYMETA  [Not a public function] Create model-specific meta data.
+% mymeta  [Not a public function] Create model-specific meta data.
 %
 % Backed IRIS function.
 % No help provided.
@@ -7,7 +7,7 @@ function m = mymeta(m,options)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 occur = m.occur;
 if issparse(occur)
@@ -24,43 +24,43 @@ t = m.tzero;
 
 % Find max lag (minshift) and max lead (maxshift) for each transition
 % variable.
-minshift = zeros(1,nt);
-maxshift = zeros(1,nt);
-isnonlin = any(m.nonlin);
+minShift = zeros(1,nt);
+maxShift = zeros(1,nt);
+isNonlin = any(m.nonlin);
 for i = 1 : nt
-    findoccur = find(any(occur(m.eqtntype == 2,nm+i,:),1)) - t;
-    findoccur = findoccur(:).';
-    if ~isempty(findoccur)
-        minshift(i) = min([minshift(i),findoccur]);
-        maxshift(i) = max([maxshift(i),findoccur]);
+    findOccur = find(any(occur(m.eqtntype == 2,nm+i,:),1)) - t;
+    findOccur = findOccur(:).';
+    if ~isempty(findOccur)
+        minShift(i) = min([minShift(i),findOccur]);
+        maxShift(i) = max([maxShift(i),findOccur]);
         % User requests adding one lead to all fwl variables.
-        if options.addlead && maxshift(i) > 0
-            maxshift(i) = maxshift(i) + 1;
+        if options.addlead && maxShift(i) > 0
+            maxShift(i) = maxShift(i) + 1;
         end
         % Add one lead to fwl variables in equations earmarked for non-linear
         % simulations if the max lead of that variabl occurs in one of those
         % equations.
-        if isnonlin && maxshift(i) > 0
-            maxoccur = max(find( ...
+        if isNonlin && maxShift(i) > 0
+            maxOccur = max(find( ...
                 any(occur(m.eqtntype == 2 & m.nonlin,nm+i,:),1) ...
                 ) - t);
-            if maxoccur == maxshift(i)
-                maxshift(i) = maxshift(i) + 1;
+            if maxOccur == maxShift(i)
+                maxShift(i) = maxShift(i) + 1;
             end
         end
     end
     % If x(t-k) occurs in measurement equations
     % then add k-1 lag.
-    findoccur = find(any(occur(m.eqtntype == 1,nm+i,:),1)) -  t;
-    findoccur = findoccur(:).';
-    if ~isempty(findoccur)
-        minshift(i) = min([minshift(i),min(findoccur)-1]);
+    findOccur = find(any(occur(m.eqtntype == 1,nm+i,:),1)) -  t;
+    findOccur = findOccur(:).';
+    if ~isempty(findOccur)
+        minShift(i) = min([minShift(i),min(findOccur)-1]);
     end
     % If minshift(i) == maxshift(i) == 0 the variables is static, consider
     % it forward-looking to reduce state space. This also guarantees that
     % all variables will have maxshift > minshift.
-    if minshift(i) == maxshift(i)
-        maxshift(i) = 1;
+    if minShift(i) == maxShift(i)
+        maxShift(i) = 1;
     end
 end
 
@@ -68,10 +68,10 @@ end
 m.systemid{1} = find(m.nametype == 1);
 m.systemid{3} = find(m.nametype == 3);
 m.systemid{2} = zeros(1,0);
-for k = max(maxshift) : -1 : min(minshift)
+for k = max(maxShift) : -1 : min(minShift)
     % Add transition variables with this shift.
     m.systemid{2} = [m.systemid{2}, ...
-        nm+find(k >= minshift & k < maxshift) + 1i*k];
+        nm+find(k >= minShift & k < maxShift) + 1i*k];
 end
 
 nx = length(m.systemid{2});
@@ -110,7 +110,7 @@ end
 
 for i = 1 : nu
     id = m.systemid{2}(i);
-    if imag(id) == minshift(real(id)-nm)
+    if imag(id) == minShift(real(id)-nm)
         m.metaderiv.u(end+1) = (imag(id)+t-1)*n + real(id);
         m.metasystem.u(end+1) = i;
     end
@@ -120,7 +120,7 @@ end
 
 for i = 1 : np
     id = m.systemid{2}(nu+i);
-    if imag(id) == minshift(real(id)-nm)
+    if imag(id) == minShift(real(id)-nm)
         m.metaderiv.p(end+1) = (imag(id)+t-1)*n + real(id);
         m.metasystem.p(end+1) = i;
     end
@@ -133,7 +133,7 @@ m.metasystem.e = 1 : ns;
 
 for i = 1 : nu+np
     id = m.systemid{2}(i);
-    if imag(id) ~= minshift(real(id)-nm)
+    if imag(id) ~= minShift(real(id)-nm)
         aux = zeros(1,nu+np);
         aux(m.systemid{2} == id-1i) = 1;
         m.systemident.xplus(end+1,1:end) = aux;
