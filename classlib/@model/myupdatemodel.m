@@ -78,6 +78,7 @@ if This.linear
     end
     sstateOk = true;
     chkSstateOk = true;
+	SstateErrorList = {};
 else
     % Non-linear models
     %-------------------
