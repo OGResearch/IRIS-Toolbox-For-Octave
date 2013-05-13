@@ -1,0 +1,140 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="config/Contents">Starting, quitting, and configuring IRIS</h1>
+
+
+<p>This section describes how to start and quit an IRIS session, and how to customise some of the IRIS configuration options.</p>
+<p>The most common way of starting an IRIS session (after you have installed the IRIS files on your disk) is to run the following line in the Matlab command window:</p>
+<pre><code>addpath C:\IRIS_Tbx; irisstartup();</code></pre>
+<p>The first command, <code>addpath</code>, adds the IRIS root folder to the Matlab search path. The second command, <code>irisstartup</code>, initialises IRIS and puts the other necessary IRIS subfolders, classes, and internal packages on the search path. <em>Never</em> add these other subfolders, classes and packages to the search path by yourself.</p>
+<h4 id="starting-and-quitting-iris">Starting and quitting IRIS</h4>
+<ul>
+<li><a href="../config/irisstartup.html"><code>irisstartup</code></a> - Start an IRIS session.</li>
+<li><a href="../config/irisfinish.html"><code>irisfinish</code></a> - Close the current IRIS session.</li>
+<li><a href="../config/iriscleanup.html"><code>iriscleanup</code></a> - Remove IRIS from Matlab and clean up.</li>
+</ul>
+<h4 id="getting-information-about-iris">Getting information about IRIS</h4>
+<ul>
+<li><a href="../config/irisget.html"><code>irisget</code></a> - Query current IRIS config options.</li>
+<li><a href="../config/irisroot.html"><code>irisroot</code></a> - Current IRIS root folder.</li>
+<li><a href="../config/irisrequired.html"><code>irisrequired</code></a> - Throw error if the installed version of IRIS fails to comply with the required minimum.</li>
+<li><a href="../config/irisversion.html"><code>irisversion</code></a> - Current IRIS version.</li>
+</ul>
+<h4 id="changes-in-configuration">Changes in configuration</h4>
+<ul>
+<li><a href="../config/irisset.html"><code>irisset</code></a> - Change configurable IRIS options.</li>
+<li><a href="../config/irisreset.html"><code>irisreset</code></a> - Reset IRIS configuration options to start-up values.</li>
+<li><a href="../config/irisuserconfighelp.html"><code>irisuserconfig</code></a> - User configuration file called at the IRIS start-up.</li>
+</ul>
+<h4 id="getting-on-line-help-on-configuration-functions">Getting on-line help on configuration functions</h4>
+<pre><code>help config
+help function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

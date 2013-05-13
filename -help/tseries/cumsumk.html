@@ -1,0 +1,150 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/cumsumk">cumsumk</h2>
+<div class="headline">Cumulative sum with a k-period leap</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Y = cumsumk(X,K,RHO,RANGE)
+Y = cumsumk(X,K,RHO)
+Y = cumsumk(X,K)
+Y = cumsumk(X)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input data.</p></li>
+<li><p><code>K</code> [ numeric ] - Number of periods that will be leapt the cumulative sum will be taken; if not specified, <code>K</code> is chosen to match the frequency of the input data (e.g. <code>K = -4</code> for quarterly data), or <code>K = -1</code> for indeterminate frequency.</p></li>
+<li><p><code>RHO</code> [ numeric ] - Autoregressive coefficient; if not specified, <code>RHO = 1</code>.</p></li>
+<li><p><code>RANGE</code> [ numeric ] - Range on which the cumulative sum will be computed and the output series returned.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Y</code> [ tseries ] - Output data constructed as described below.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the input data before, and de-logarithmise the output data back after, running <code>x12</code>.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>If <code>K &lt; 0</code>, the first <code>K</code> observations in the output series <code>Y</code> are copied from <code>X</code>, and the new observations are given recursively by</p>
+<pre><code>Y{t} = RHO*Y{t-K} + X{t}.</code></pre>
+<p>If <code>K &gt; 0</code>, the last <code>K</code> observations in the output series <code>Y</code> are copied from <code>X</code>, and the new observations are given recursively by</p>
+<pre><code>Y{t} = RHO*Y{t+K} + X{t},</code></pre>
+<p>going backwards in time.</p>
+<p>If <code>K == 0</code>, the input data are returned.</p>
+<h4 id="example">Example</h4>
+<p>Construct random data with seasonal pattern, and run X12 to seasonally adjust these series.</p>
+<pre><code>x = tseries(qq(1990,1):qq(2020,4),@randn);
+x1 = cumsumk(x,-4,1);
+x2 = cumsumk(x,-4,0.7);
+x1sa = x12(x1);
+x2sa = x12(x2);</code></pre>
+<p>The new series <code>x1</code> will be a unit-root process while <code>x2</code> will be stationary. Note that the command on the second line could be replaced with <code>x1 = cumsumk(x)</code>.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

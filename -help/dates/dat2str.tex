@@ -1,0 +1,91 @@
+
+
+    \filetitle{dat2str}{Convert IRIS dates to cell array of strings}{dates/dat2str}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ S = dat2str(DAT,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{DAT} {[} numeric {]} - IRIS serial date number(s).
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} cellstr {]} - Cellstr with strings representing the
+   input dates.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateFormat='} {[} char \textbar{} \emph{`YYYYFP'} {]} - Date
+   format string.
+ \item
+   \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} -
+   Letters representing the five possible frequencies
+   (annual,semi-annual,quarterly,bimontly,monthly).
+ \item
+   \texttt{'months='} {[} cellstr \textbar{} \emph{English names of
+   months} {]} - Cell array of twelve strings representing the names of
+   months.
+ \item
+   \texttt{'standinMonth='} {[} numeric \textbar{} `last' \textbar{}
+   \emph{1} {]} - Which month will represent a
+   lower-than-monthly-frequency date if month is part of the date format
+   string.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The date format string can include any combination of the following
+ fields:
+ 
+ \begin{itemize}
+ \item
+   \texttt{'Y='} - Year.
+ \item
+   \texttt{'YYYY='} - Four-digit year.
+ \item
+   \texttt{'YY='} - Two-digit year.
+ \item
+   \texttt{'P='} - Period within the year (half-year, quarter, bi-month,
+   month).
+ \item
+   \texttt{'PP='} - Two-digit period within the year.
+ \item
+   \texttt{'R='} - Upper-case roman numeral for the period within the
+   year.
+ \item
+   \texttt{'r='} - Lower-case roman numeral for the period within the
+   year.
+ \item
+   \texttt{'M='} - Month numeral.
+ \item
+   \texttt{'MM='} - Two-digit month numeral.
+ \item
+   \texttt{'MMMM='}, \texttt{'Mmmm'}, \texttt{'mmmm'} - Case-sensitive
+   name of month.
+ \item
+   \texttt{'MMM='}, \texttt{'Mmm'}, \texttt{'mmm'} - Case-sensitive
+   three-letter abbreviation of month.
+ \item
+   \texttt{'F='} - Upper-case letter representing the date frequency.
+ \item
+   \texttt{'f='} - Lower-case letter representing the date frequency.
+ \end{itemize}
+ 
+ To get some of the above letters printed literally in the date string,
+ use a percent sign as an escape character, i.e. `\%Y', etc.
+ 
+ \paragraph{Example}
+
+

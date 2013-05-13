@@ -1,0 +1,800 @@
+function f = jforecast2(m,data,range,varargin)
+% jforecast  [Old version] Forecast with judgmental adjustments (conditional forecasts).
+%
+% Syntax
+% =======
+%
+%     F = jforecast(M,D,RANGE,...)
+%
+% Input arguments
+% ================
+%
+% * `M` [ model ] - Solved model object.
+%
+% * `D` [ struct ] - Input data from which the initial condition is taken.
+%
+% * `RANGE` [ numeric ] - Forecast range.
+%
+% Output arguments
+% =================
+%
+% * `F` [ struct ] - Output struct with the judgmentally adjusted forecast.
+%
+% Options
+% ========
+%
+% * `'anticipate='` [ *`true`* | `false` ] - If true, real future shocks are
+% anticipated, imaginary are unanticipated; vice versa if false.
+%
+% * `'currentOnly='` [ *`true`* | `false` ] - If true, MSE matrices will be
+% computed only for current-dated variables, not for their lags or leads.
+%
+% * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
+% deviations from balanced-growth path.
+%
+% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement data contain
+% deterministic trends.
+%
+% * `'initCond='` [ *`'data'`* | `'fixed'` ] - Use the MSE for the initial
+% conditions if found in the input data or treat the initical conditions as
+% fixed.
+%
+% * `'meanOnly='` [ `true` | *`false`* ] - Return only mean data, i.e. point
+% estimates.
+%
+% * `'plan='` [ plan ] - Simulation plan specifying the exogenised variables
+% and endogenised shocks.
+%
+% * `'vary='` [ struct | *empty* ] - Database with time-varying std
+% deviations or cross-correlations of shocks.
+%
+% Description
+% ============
+%
+% When adjusting the mean and/or std devs of shocks, you can use real and
+% imaginary numbers ot distinguish between anticipated and unanticipated
+% shocks:
+%
+% * any shock entered as an imaginary number is treated as an
+% anticipated change in the mean of the shock distribution;
+%
+% * any std dev of a shock entered as an imaginary number indicates that
+% the shock will be treated as anticipated when conditioning the forecast
+% on the reduced-form tunes.
+%
+% * the same shock or its std dev can have both the real and the imaginary
+% part.
+%
+% Description
+% ============
+%
+% Example
+% ========
+%
+%
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2012 Jaromir Benes.
+
+p = inputParser();
+p.addRequired('m',@ismodel);
+p.addRequired('data',@(x) isstruct(x) || iscell(x));
+p.addRequired('range',@isnumeric);
+p.parse(m,data,range);
+range = range(1) : range(end);
+
+if ~isempty(varargin) && ~ischar(varargin{1})
+    cond = varargin{1};
+    varargin(1) = [];
+    iscond = true;
+else
+    cond = [];
+    iscond = false;
+end
+
+opt = passvalopt('model.jforecast',varargin{:});
+
+isplancond = isa(opt.plan,'plan') && ~isempty(opt.plan,'cond');
+iscond = iscond || isplancond;
+
+if isequal(opt.dtrends,'auto')
+    opt.dtrends = ~opt.deviation;
+end
+
+% Determine output data format.
+outputformat = 'dbase';
+
+% Tunes.
+isswap = isplan(opt.plan) ...
+    && ~isempty(opt.plan,'tunes');
+
+% Create real and imag `stdcorr` vectors from user-supplied databases.
+[opt.stdcorrreal,opt.stdcorrimag] = mytune2stdcorr(m,range,cond,opt);
+
+% TODO: Remove 'missing', 'contributions' options from jforecast,
+% 'anticipate' scalar.
+
+%**************************************************************************
+
+ny = size(m.solution{4},1);
+nx = size(m.solution{1},1);
+nb = size(m.solution{7},1);
+nf = nx - nb;
+ne = size(m.solution{2},2);
+nalt = size(m.Assign,3);
+nper = length(range);
+
+% Current-dated variables in the original state vector.
+if opt.currentonly
+    xcurri = imag(m.solutionid{2}) == 0;
+else
+    xcurri = true(size(m.solutionid{2}));
+end
+nxcurr = sum(xcurri);
+fcurri = xcurri(1:nf);
+bcurri = xcurri(nf+1:end);
+nfcurr = sum(fcurri);
+
+% Get initial condition for the alpha vector. The `datarequest` function
+% always expands the `alpha` vector to match `nalt`. The `ainitmse` and
+% `xinitmse` matrices can be empty.
+[ainit,xinit,naninit,ainitmse,xinitmse] = datarequest('init',m,data,range);
+% Check for availability of all initial conditions.
+dochkinitcond();
+ninit = size(ainit,3);
+ninitmse = size(ainitmse,4);
+
+% Get input data for y, current dates of [xf;xb], and e. The size of all
+% data is equalised in 3rd dimensin in the `datarequest` function.
+f = struct();
+f.mean_ = cell(1,4);
+f.mse_ = cell(1,4);
+[yinp,xinp,einp] = datarequest('y,x,e',m,data,range);
+f.mean_ = {yinp,xinp,einp};
+ndata = size(f.mean_{2},3);
+
+% Determine the total number of cycles.
+nloop = max([nalt,ninit,ninitmse,ndata]);
+
+if ~opt.meanonly
+    f.mse_(1:4) = {nan(ny,ny,nper,nloop),nan(nx,nx,nper,nloop), ...
+        nan(ne,ne,nper,nloop),[]};
+end
+
+% Expand initial conditions and data in 3rd dim to match nloop.
+if ninit < nloop
+    ainit(:,1,end+1:nloop) = ainit(:,1,end*ones(1,nloop-end));
+    xinit(:,1,end+1:nloop) = xinit(:,1,end*ones(1,nloop-end));
+end
+if ~opt.meanonly && ~isempty(ainitmse) && ninitmse < nloop
+    ainitmse(:,:,1,end+1:nloop) = ainitmse(:,:,1,end*ones(1,nloop-end));
+    xinitmse(:,:,1,end+1:nloop) = xinitmse(:,:,1,end*ones(1,nloop-end));
+end
+if ndata < nloop
+    for i = 1 : 3
+        f.mean_{i} = f.mean_{i}(:,:,[1:end,end*ones([1,nloop-end])]);
+    end
+end
+
+lastorzerofunc = @(x) max([0,find(any(x,1),1,'last')]);
+vecfunc = @(x) x(:);
+
+if isswap || isplancond
+    [ya,xa,ea,ua,Ya,Xa] = myanchors(m,opt.plan,range);
+end
+
+if isswap
+    % Load positions (anchors) of exogenised and endogenised data points.    
+    if ~opt.anticipate
+        [ea,ua] = deal(ua,ea);
+    end
+    xa = xa(xcurri,:);
+    % Check for NaNs in exogenised variables, and check the number of
+    % exogenised and endogenised data points.
+    dochkexogenised();
+    lastea = lastorzerofunc(ea);
+    lastua = lastorzerofunc(ua);
+    lastya = lastorzerofunc(ya);
+    lastxa = lastorzerofunc(xa);
+else
+    lastea = 0;
+    lastua = 0;
+    lastya = 0;
+    lastxa = 0;
+end
+
+if iscond
+    % Load conditioning data.
+    if isplancond
+        Y = yinp;
+        Y(~Ya) = NaN;
+        X = xinp;
+        X(~Xa) = NaN;
+        E = zeros(ne,nper);
+        Xa = Xa(xcurri,:);
+        X = X(xcurri,:);
+    else
+        Y = datarequest('y',m,cond,range);
+        X = datarequest('x',m,cond,range);
+        E = datarequest('e',m,cond,range);
+        X = X(xcurri,:);
+        Ya = ~isnan(Y);
+        Xa = ~isnan(X);
+    end
+    lastYa = lastorzerofunc(Ya);
+    lastXa = lastorzerofunc(Xa);
+    iscond = lastYa > 0 || lastXa > 0;
+    % Check for overlaps between shocks from input data and shocks from
+    % conditioning data, and add up the overlapping shocks.
+    dochkoverlap();
+else
+    lastYa = 0;
+    lastXa = 0;
+end
+
+if opt.anticipate
+    laste = lastorzerofunc(any(real(f.mean_{3}) ~= 0,3));
+    lastu = lastorzerofunc(any(imag(f.mean_{3}) ~= 0,3));
+else
+    lastu = lastorzerofunc(any(real(f.mean_{3}) ~= 0,3));
+    laste = lastorzerofunc(any(imag(f.mean_{3}) ~= 0,3));
+end
+
+last = max([lastxa,lastya,laste,lastea,lastu,lastua,lastYa,lastXa]);
+
+if isswap
+    ya = ya(:,1:last);
+    xa = xa(:,1:last);
+    ea = ea(:,1:last);
+    ua = ua(:,1:last);
+    % Indices of exogenised data points and endogenised shocks.
+    exi = [ya(:).',xa(:).'];
+    endi = [false,false(1,nb),ua(:).',ea(:).'];
+else
+    exi = false(1,(ny+nxcurr)*last);
+    endi = false(1,1+nb+2*ne*last);
+end
+
+if iscond
+    Ya = Ya(:,1:last);
+    Xa = Xa(:,1:last);
+    Y = Y(:,1:last);
+    X = X(:,1:last);
+    % Index of conditions on measurement and transition variables.
+    condi = [Ya(:).',Xa(:).'];
+    % Index of conditions on measurement and transition variables excluding
+    % exogenised position.
+    condinotexi = condi(~exi);
+end
+
+% Index of parameterisation with solutions not available.
+[ans,nansolution] = isnan(m,'solution');
+
+%**************************************************************************
+% Main loop.
+
+if opt.progress
+    % Create progress bar.
+    progress = progressbar('IRIS model.solve progress');
+end
+
+for iloop = 1 : nloop
+    
+    if iloop <= nalt
+        % Expansion needed to t+k.
+        k = max([1,last]) - 1;
+        m = expand(m,k);
+        Tf = m.solution{1}(1:nf,:,iloop);
+        Ta = m.solution{1}(nf+1:end,:,iloop);
+        R = m.solution{2}(:,:,iloop);
+        Rf = R(1:nf,1:ne);
+        Ra = R(nf+1:end,1:ne);
+        Kf = m.solution{3}(1:nf,:,iloop);
+        Ka = m.solution{3}(nf+1:end,:,iloop);
+        Z = m.solution{4}(:,:,iloop);
+        H = m.solution{5}(:,:,iloop);
+        D = m.solution{6}(:,:,iloop);
+        U = m.solution{7}(:,:,iloop);
+        Ut = U.';
+        % Compute deterministic trends if requested.
+        if opt.dtrends
+            W = mydtrendsrequest(m,'range',range,iloop);
+        end
+        % Expand solution forward.
+        if opt.meanonly
+            [M,Ma] = swapsystem(m,iloop,exi,endi,last);
+        else
+            [M,Ma,N,Na] = swapsystem(m,iloop,exi,endi,last);
+            Nt = N.';
+            Nat = Na.';
+        end
+        stdcorre = [];
+        stdcorru = [];
+        dostdcorr();
+    end
+    
+    % Solution not available.
+    if nansolution(min([iloop,end]));
+        f.mean_{1}(:,:,iloop) = NaN;
+        f.mean_{2}(:,:,iloop) = NaN;
+        if ~opt.meanonly
+            f.mse_{1}(:,:,:,iloop) = NaN;
+            f.mse_{2}(:,:,:,iloop) = NaN;
+        end
+        continue
+    end
+    
+    % Initial condition.
+    if iloop <= ninit
+        a0 = ainit(:,1,iloop);
+        if isempty(ainitmse) || isequal(opt.initcond,'fixed')
+            Pa0 = zeros(nb);
+        else
+            Pa0 = ainitmse(:,:,1,iloop);
+        end
+    end
+    
+    % Expected and unexpected shocks.
+    if opt.anticipate
+        e = real(f.mean_{3}(:,:,iloop));
+        u = imag(f.mean_{3}(:,:,iloop));
+    else
+        e = imag(f.mean_{3}(:,:,iloop));
+        u = real(f.mean_{3}(:,:,iloop));
+    end
+    
+    if isswap
+        % Tunes on measurement variables.
+        y = f.mean_{1}(:,1:last,iloop);
+        if opt.dtrends
+            y = y - W(:,1:last);
+        end
+        % Tunes on transition variables.
+        x = f.mean_{2}(:,1:last,iloop);
+        x = x(xcurri,:);
+    else
+        y = nan(ny,last);
+        x = nan(nxcurr,last);
+    end
+    
+    % Solve the swap system.
+    if last > 0
+        % input := [const;a0;u;e].
+        input = [+(~opt.deviation);a0(:); ...
+            vecfunc(u(:,1:last));vecfunc(e(:,1:last))];
+        % output := [y;x].
+        output = [y(:);x(:)];
+        
+        % Swap exogenised outputs and endogenised inputs.
+        % rhs := [input(~endi);output(exi)].
+        % lhs := [output(~exi);input(endi)].
+        rhs = [input(~endi);output(exi)];
+        lhs = M*rhs;
+        a = Ma*rhs;
+        
+        if ~opt.meanonly || iscond
+            % Prhs is the MSE/Cov matrix of the RHS.
+            Prhs = zeros(1+nb+2*ne*last);
+            Prhs(1+(1:nb),1+(1:nb)) = Pa0;
+            Pu = covfun.stdcorr2cov(stdcorru(:,1:last),ne);
+            Pe = covfun.stdcorr2cov(stdcorre(:,1:last),ne);
+            index = 1+nb+(1:ne);
+            for i = 1 : last
+                Prhs(index,index) = Pu(:,:,i);
+                index = index + ne;
+            end
+            for i = 1 : last
+                Prhs(index,index) = Pe(:,:,i);
+                index = index + ne;
+            end
+            Prhs = Prhs(~endi,~endi);
+            % Add zeros for the std errors of exogenised data points.
+            if any(exi)
+                Prhs = blkdiag(Prhs,zeros(sum(exi)));
+            end
+        end
+        
+        if ~opt.meanonly
+            % Plhs is the cov matrix of the LHS.
+            Plhs = N*Prhs*Nt;
+            Pa = Na*Prhs*Nat;
+            Plhs = (Plhs+Plhs.')/2;
+            Pa = (Pa+Pa.')/2;
+        end
+        
+        if iscond
+            Yd = Y;
+            if opt.dtrends
+                Yd = Yd - W(:,1:last);
+            end
+            output = [Yd(:);X(:)];
+            z = M(condinotexi,:);
+            Pzt = Prhs*z.';
+            F = z*Pzt;
+            G = Pzt / F;
+            % Update the RHS with conditioning information.
+            rhs = rhs + G*(output(condi) - lhs(condi));
+            % Re-run the forecast with conditioning information.
+            lhs = M*rhs;
+            a = Ma*rhs;
+            if ~opt.meanonly
+                % Update the MSE/cov mat of the RHS.
+                z = N(condinotexi,:);
+                Pzt = Prhs*z.';
+                F = z*Pzt;
+                G = Pzt / F;
+                Prhs = (eye(size(Prhs)) - G*z)*Prhs;
+                Prhs = (Prhs+Prhs.')/2;
+                Plhs = N*Prhs*Nt;
+                Pa = Na*Prhs*Nat;
+                Plhs = (Plhs+Plhs.')/2;
+                % Covariance of lhs and rhs.
+                % Plhsrhs = N*Prhs;
+            end
+        end
+        
+        if ~opt.meanonly
+            [x0,y,xcurr,u,e,Px0,Py,Pxcurr,Pu,Pe] = ...
+                dolhsrhs2yxuea(lhs,rhs,Plhs,Prhs);
+            xinitmse(:,:,iloop) = Px0;
+        else
+            [x0,y,xcurr,u,e] = dolhsrhs2yxuea(lhs,rhs);
+        end
+        xinit(:,1,iloop) = x0;
+        
+    else
+        y = zeros(ny,0);
+        xcurr = zeros(nxcurr,0);
+        u = zeros(ne,0);
+        e = zeros(ne,0);
+        a = a0;
+        if ~opt.meanonly
+            Py = zeros(ny,ny,0);
+            Pxcurr = zeros(nxcurr,nxcurr,0);
+            Pu = zeros(ne,ne,0);
+            Pe = zeros(ne,ne,0);
+            Pa = Pa0;
+        end
+    end
+    
+    % Forecast between last and nper.
+    if ~opt.meanonly
+        [y,xcurr,e,u,Py,Pxcurr,Pu,Pe] = ...
+            dobeyond(y,xcurr,e,u,a,Py,Pxcurr,Pu,Pe,Pa);
+    else
+        [y,xcurr,e,u] = dobeyond(y,xcurr,e,u,a);
+    end
+    
+    % Add measurement detereministic trends.
+    if opt.dtrends
+        y = y + W;
+    end
+    
+    % Store results.
+    f.mean_{1}(:,:,iloop) = y;
+    f.mean_{2}(xcurri,:,iloop) = xcurr;
+    if opt.anticipate
+        f.mean_{3}(:,:,iloop) = complex(e,u);
+    else
+        f.mean_{3}(:,:,iloop) = complex(u,e);
+    end
+    
+    if ~opt.meanonly
+        f.mse_{1}(:,:,:,iloop) = Py;
+        f.mse_{2}(xcurri,xcurri,:,iloop) = Pxcurr;
+        if opt.anticipate
+            f.mse_{3}(:,:,:,iloop) = complex(Pe,Pu);
+        else
+            f.mse_{3}(:,:,:,iloop) = complex(Pu,Pe);
+        end
+    end
+    
+    if opt.progress
+        % Update progress bar.
+        update(progress,iloop/nloop);
+    end
+end
+% End of main loop.
+
+%**************************************************************************
+% Post-mortem.
+
+% Add pre-forecast initial conditions.
+f = doaddinitcond(f);
+
+% Convert datapack to database.
+f = doconvertoutput(f);
+
+% Report parameterisation with solutions not available.
+dochknansolution();
+
+% Nested functions.
+
+%**************************************************************************
+    function dochkinitcond()
+        if ~isempty(naninit)
+            naninit = unique(naninit);
+            utils.error('model', ...
+                'This initial condition is not available: ''%s''.', ...
+                naninit{:});
+        end
+    end
+% dochkinitcond().
+
+%**************************************************************************
+    function dochkexogenised()
+        % Check for NaNs in exogenised variables, and check the number of
+        % exogenised and endogenised data points.
+        index1 = [ya;xa];
+        index2 = [any(isnan(f.mean_{1}),3); ...
+            any(isnan(f.mean_{2}(xcurri,:,:)),3)];
+        index = any(index1 & index2,2);
+        if any(index)
+            yvector = m.solutionvector{1};
+            xvector = m.solutionvector{2};
+            xvector = xvector(xcurri);
+            vector = [yvector,xvector];
+            % Some of the variables are exogenised to NaNs.
+            utils.error('model', ...
+                'This variable is exogenised to NaN: ''%s''.', ...
+                vector{index});
+        end
+        % Check number of exogenised and endogenised data points.
+        if nnzexog(opt.plan) ~= nnzendog(opt.plan)
+            utils.warning('model', ...
+                ['The number of exogenised data points (%g) does not match ', ...
+                'the number of endogenised data points (%g).'], ...
+                nnzexog(opt.plan),nnzendog(opt.plan));
+        end
+    end
+% dochkexogenised().
+
+%**************************************************************************
+    function dochkoverlap()
+        if any(E(:) ~= 0)
+            if any(f.mean_{3}(:) ~= 0)
+                utils.warning('model', ...
+                    ['Both input data and conditioning data include ', ...
+                    'structural shock adjustments, and will be added up.']);
+            end
+            f.mean_{3} = f.mean_{3} + E(:,:,ones([1,ndata]));
+        end
+    end
+% dochkoverlap().
+
+%**************************************************************************
+    function [x0,y,xcurr,u,e,Px0,Py,Pxcurr,Pu,Pe] = ...
+            dolhsrhs2yxuea(lhs,rhs,Plhs,Prhs)
+        output = zeros((ny+nxcurr)*last,1);
+        input = zeros((ne+ne)*last,1);
+        output(~exi) = lhs(1:sum(~exi));
+        output(exi) = rhs(sum(~endi)+1:end);
+        input(~endi) = rhs(1:sum(~endi));
+        input(endi) = lhs(sum(~exi)+1:end);
+        y = reshape(output(1:ny*last),[ny,last]);
+        output(1:ny*last) = [];
+        xcurr = reshape(output,[nxcurr,last]);
+        output(1:nxcurr*last) = [];
+        
+        input(1) = [];
+        x0 = U*input(1:nb);
+        input(1:nb) = [];
+        u = reshape(input(1:ne*last),[ne,last]);
+        input(1:ne*last) = [];
+        e = reshape(input(1:ne*last),[ne,last]);
+        input(1:ne*last) = [];
+        
+        if nargout <= 5
+            return
+        end
+        
+        Poutput = zeros((ny+nxcurr)*last);
+        Pinput = zeros((ne+ne)*last);
+        Poutput(~exi,~exi) = Plhs(1:sum(~exi),1:sum(~exi));
+        Poutput(exi,exi) = Prhs(sum(~endi)+1:end,sum(~endi)+1:end);
+        Pinput(~endi,~endi) = Prhs(1:sum(~endi),1:sum(~endi));
+        Pinput(endi,endi) = Plhs(sum(~exi)+1:end,sum(~exi)+1:end);
+        
+        Py = zeros([ny,ny,last]);
+        Pxcurr = zeros([nxcurr,nxcurr,last]);
+        Pu = zeros([ne,ne,last]);
+        Pe = zeros([ne,ne,last]);
+        index = 1 : ny;
+        for t = 1 : last
+            Py(:,:,t) = Poutput(index,index);
+            index = index + ny;
+        end
+        Poutput(1:ny*last,:) = [];
+        Poutput(:,1:ny*last) = [];
+        index = 1 : nxcurr;
+        for t = 1 : last
+            Pxcurr(:,:,t) = Poutput(index,index);
+            index = index + nxcurr;
+        end
+        Poutput(1:nxcurr*last,:) = [];
+        Poutput(:,1:nxcurr*last) = [];
+        
+        Pinput(1,:) = [];
+        Pinput(:,1) = [];
+        Px0 = U*Pinput(1:nb,1:nb)*Ut;
+        Pinput(1:nb,:) = [];
+        Pinput(:,1:nb) = [];
+        index = 1 : ne;
+        for t = 1 : last
+            Pu(:,:,t) = Pinput(index,index);
+            index = index + ne;
+        end
+        Pinput(1:ne*last,:) = [];
+        Pinput(:,1:ne*last) = [];
+        index = 1 : ne;
+        for t = 1 : last
+            Pe(:,:,t) = Pinput(index,index);
+            index = index + ne;
+        end
+        Pinput(1:ne*last,:) = [];
+        Pinput(:,1:ne*last) = [];
+    end
+% dolhsrhs2yxue().
+
+%**************************************************************************
+    function [y,xcurr,e,u,Py,Pxcurr,Pu,Pe] = ...
+            dobeyond(y,xcurr,e,u,a,Py,Pxcurr,Pu,Pe,Pa)
+        % Simulate from last to nper.
+        xcurr(:,last+1:nper) = 0;
+        if ny > 0
+            y(:,last+1:nper) = 0;
+        else
+            y = zeros(0,nper);
+        end
+        e(:,last+1:nper) = 0;
+        u(:,last+1:nper) = 0;
+        Ucurr = U(bcurri,:);
+        Tfcurr = Tf(fcurri,:);
+        Kfcurr = Kf(fcurri,:);
+        for t = last+1 : nper
+            xfcurr = Tfcurr*a;
+            a = Ta*a;
+            if ~opt.deviation
+                xfcurr = xfcurr + Kfcurr;
+                a = a + Ka;
+            end
+            xcurr(:,t) = [xfcurr;Ucurr*a];
+            if ny > 0
+                y(:,t) = Z*a;
+                if ~opt.deviation
+                    y(:,t) = y(:,t) + D;
+                end
+            end
+        end
+        if nargout <= 4
+            return
+        end
+        if ny > 0
+            Py(:,:,last+1:nper) = 0;
+        else
+            Py = zeros(0,0,nper);
+        end
+        Pxcurr(:,:,last+1:nper) = 0;
+        Pu(:,:,last+1:nper) = ...
+            covfun.stdcorr2cov(stdcorru(:,last+1:nper),ne);
+        Pe(:,:,last+1:nper) = ...
+            covfun.stdcorr2cov(stdcorre(:,last+1:nper),ne);
+        Tfcurrt = Tfcurr.';
+        Tat = Ta.';
+        Rfcurr = Rf(fcurri,:);
+        Rfcurrt = Rfcurr.';
+        Rat = Ra.';
+        Ht = H.';
+        Ucurrt = Ucurr.';
+        Zt = Z.';
+        for t = last+1 : nper
+            Pue = Pu(:,:,t) + Pe(:,:,t);
+            Pxfcurr = Tfcurr*Pa*Tfcurrt + Rfcurr*Pue*Rfcurrt;
+            Pa = Ta*Pa*Tat + Ra*Pue*Rat;
+            temp = nan(nxcurr);
+            temp(1:nfcurr,1:nfcurr) = Pxfcurr;
+            temp(nfcurr+1:end,nfcurr+1:end) = Ucurr*Pa*Ucurrt;
+            Pxcurr(:,:,t) = temp;
+            if ny > 0
+                Py(:,:,t) = Z*Pa*Zt + H*Pue*Ht;
+            end
+        end
+    end
+% dobeyond().
+
+%**************************************************************************
+    function f = doaddinitcond(f)
+        f.mean_{1} = [nan([ny,1,nloop]),f.mean_{1}];
+        f.mean_{2} = [[nan([nf,1,nloop]);xinit],f.mean_{2}];
+        f.mean_{3} = [nan([ne,1,nloop]),f.mean_{3}];
+        f.mean_{4} = [range(1)-1,range];
+        if ~opt.meanonly
+            f.mse_{1} = cat(3,nan([ny,ny,1,nloop]),f.mse_{1});
+            f.mse_{2} = cat(3,nan([nx,nx,1,nloop]),f.mse_{2});
+            if isempty(xinitmse) || isequal(opt,'fixed')
+                f.mse_{2}(nf+1:end,nf+1:end,1,:) = 0;
+            else
+                f.mse_{2}(nf+1:end,nf+1:end,1,:) = xinitmse;
+            end
+            f.mse_{3} = cat(3,nan([ne,ne,1,nloop]),f.mse_{3});
+            f.mse_{4} = [range(1)-1,range];
+        end
+    end
+% doaddinitcond().
+
+%***********************************************************************
+    function f = doconvertoutput(f)
+        % Fix negative diagonal entries.
+        if ~opt.meanonly
+            for i = 1 : 3
+                f.mse_{i} = timedom.fixcov(f.mse_{i});
+            end
+        end
+        % Create `var_` datapacks from `mse_` datapacks.
+        if ~opt.meanonly
+            f.var_ = model.mymse2var(f.mse_);
+        end
+        % Convert datapack to database.
+        if opt.meanonly
+            f = dp2db(m,f.mean_);
+        else
+            f = dp2db(m,f);
+            f = rmfield(f,{'mean_','mse_','var_'});
+        end        
+    end
+% doconvertoutput().
+
+%**************************************************************************
+    function dochknansolution()
+        % Report parameterisations with solutions not available.
+        if any(nansolution)
+            utils.warning('model', ...
+                ['No solution available, no forecast computed ', ...
+                'for this parameterisation: #%g.'], ...
+                num2cell(find(nansolution)));
+        end
+    end
+% dochknansolution().
+
+%**************************************************************************
+    function dostdcorr()
+        % TODO: use `mycombinestdcorr` here.
+        % Combine `stdcorr` from the current parameterisation and the
+        % `stdcorr` supplied through the tune database.
+        stdcorre = m.stdcorr(1,:,iloop).';
+        stdcorre = stdcorre(:,ones(1,nper));
+        stdcorrixreal = ~isnan(opt.stdcorrreal);
+        if any(stdcorrixreal(:))
+            stdcorre(stdcorrixreal) = ...
+                opt.stdcorrreal(stdcorrixreal);
+        end
+        
+        stdcorru = m.stdcorr(1,:,iloop).';
+        stdcorru = stdcorru(:,ones(1,nper));
+        stdcorriximag = ~isnan(opt.stdcorrimag);
+        if any(stdcorriximag(:))
+            stdcorru(stdcorriximag) = ...
+                opt.stdcorrimag(stdcorriximag);
+        end
+        
+        % Set the std devs of the endogenised shocks to zero. Otherwise an
+        % anticipated endogenised shock would have a non-zero unanticipated
+        % std dev, and vice versa.
+        if isswap
+            tempstd = stdcorre(1:ne,1:last);
+            tempstd(ea) = 0;
+            tempstd(ua) = 0;
+            stdcorre(1:ne,1:last) = tempstd;
+            tempstd = stdcorru(1:ne,1:last);
+            tempstd(ea) = 0;
+            tempstd(ua) = 0;
+            stdcorru(1:ne,1:last) = tempstd;
+        end
+        
+        if ~opt.anticipate
+            [stdcorru,stdcorre] = deal(stdcorre,stdcorru);
+        end
+    end
+% dostdcorr().
+
+end

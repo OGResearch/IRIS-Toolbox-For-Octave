@@ -1,0 +1,42 @@
+<productinfo
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="optional">
+<?xml-stylesheet type="text/xsl" href="optional"?>
+
+<matlabrelease>R2010b</matlabrelease>
+<name>IRIS</name>
+<type>toolbox</type>
+<icon>$toolbox/matlab/icons/matlabicon.gif</icon>
+<!-- <icon>irisicon.png</icon> -->
+<help_location>-Help</help_location>
+<!-- <help_contents_icon>irisicon.png</help_contents_icon> -->
+
+<list>
+
+<listitem>
+<label>Start IRIS session</label>
+<callback>irisstartup();</callback>
+<icon>$toolbox/matlab/icons/help_gs.png</icon>
+</listitem>
+
+<listitem>
+<label>End IRIS session</label>
+<callback>irisfinish();</callback>
+<icon>$toolbox/matlab/icons/tool_hand.png</icon>
+</listitem>
+
+<listitem>
+<label>Clean up</label>
+<callback>iriscleanup();</callback>
+<icon>$toolbox/matlab/icons/tool_rotate_3d.png</icon>
+</listitem>
+
+<listitem>
+<label>Visit http://www.iris-toolbox.com</label>
+<callback>web http://www.iris-toolbox.com -browser;</callback>
+<icon>$toolbox/matlab/icons/webicon.gif</icon>
+</listitem>
+
+</list>
+
+</productinfo>
