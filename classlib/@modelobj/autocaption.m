@@ -40,7 +40,7 @@ function C = autocaption(This,X,Template,varargin)
 %
 % The function `autocaption` can be used to supply user-created captions to
 % title graphs in `grfun/plotpp`, `grfun/plotneigh`, `model/shockplot`,
-% `dbase/dbplot`, and `qreport/qplot`.
+% `dbase/dbplot`, and `qreport/qplot`, through their option `'caption='`.
 %
 % The `Template` can contain the following substitution strings:
 %
