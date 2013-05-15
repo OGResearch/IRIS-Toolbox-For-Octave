@@ -485,7 +485,7 @@ doPopulateDatabase();
             % repeated patterns and because `strrep` is not able to detects word
             % boundaries. Handle quoted NaNs first.
             file = strrep(file,['"',opt.nan,'"'],'NaN');
-            file = strrep(file,opt.nan,'NaN');
+			file = regexprep(file,['(?<=,)(',opt.nan,')(?=(,|\n|\r))'],'NaN');
         end
         % Replace empty character cells with numeric NaNs.
         file = strrep(file,'""','NaN');
