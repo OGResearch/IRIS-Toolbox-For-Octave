@@ -25,7 +25,11 @@ C = zeros(nx,nx,1+options.order,nloop);
 for iloop = 1 : nloop
     xi = x(:,:,iloop);
     xit = xi.';
-    T = nper;
+	if options.smallsample
+		T = nper-1;
+	else
+		T = nper;
+	end
     C(:,:,1,iloop) = xit*xi / T;
     for i = 1 : options.order
         if options.smallsample
