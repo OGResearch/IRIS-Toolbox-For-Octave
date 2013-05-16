@@ -485,15 +485,12 @@ doPopulateDatabase();
             % repeated patterns and because `strrep` is not able to detects word
             % boundaries. Handle quoted NaNs first.
             file = strrep(file,['"',opt.nan,'"'],'NaN');
-			% escape NaN character if it is a regex meta character
 			metachar={'^','[','.','$','{','*','(','\','+',')','|','?','<','>'};
 			if any(strcmp(metachar,opt.nan))
-				eschar='\';
+				file = regexprep(file,['(?<=,)(\',opt.nan,')(?=(,|\n|\r))'],'NaN');
 			else
-				eschar='';
+				file = strrep(file,opt.nan,'NaN');
 			end
-			% replace opt.nan with NaN
-			file = regexprep(file,['(?<=,)(',eschar,opt.nan,')(?=(,|\n|\r))'],'NaN');
         end
         % Replace empty character cells with numeric NaNs.
         file = strrep(file,'""','NaN');
