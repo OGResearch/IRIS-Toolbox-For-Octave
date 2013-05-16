@@ -1,5 +1,5 @@
 function [COF,COP] = cutoff(F,Freq,COG)
-% cutoff  Calculate cut-off frequency and periodicity from a sample frequency response function.
+% cutoff  Approximate cut-off frequency and periodicity from sample frequency response function.
 %
 % Syntax
 % =======
@@ -44,8 +44,6 @@ function [COF,COP] = cutoff(F,Freq,COG)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-%--------------------------------------------------------------------------
-
 try
     COG; 
 catch 
@@ -60,7 +58,7 @@ if size(F,3) ~= nFreq
         size(F,3),nFreq);
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 nx = size(F,1);
 ny = size(F,2);
@@ -95,12 +93,12 @@ F1 = F(1:end-1);
 F2 = F(2:end);
 C = NaN;
 
-index = (F1 >= COG & F2 <= COG) | (F1 <= COG & F2 >= COG);
-if ~any(index)
+inx = (F1 >= COG & F2 <= COG) | (F1 <= COG & F2 >= COG);
+if ~any(inx)
     return
 end
 
-pos = find(index,1);
+pos = find(inx,1);
 d = abs(F1(pos) - F2(pos));
 w1 = abs(F1(pos) - COG) / d;
 w2 = abs(F2(pos) - COG) / d;

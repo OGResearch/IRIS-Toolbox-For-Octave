@@ -35,18 +35,19 @@ function varargout = comment(This,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
-
 if ~isempty(varargin)
-    P = inputParser();
-    P.addRequired('Cmt',@ischar);
-    P.parse(varargin{1});
+    Cmt = varargin{1};
+    pp = inputParser();
+    pp.addRequired('Cmt',@ischar);
+    pp.parse(Cmt);
 end
+
+%--------------------------------------------------------------------------
 
 if isempty(varargin)
     varargout{1} = This.Comment;
 else
-    This.Comment = varargin{1};
+    This.Comment = Cmt;
     varargout{1} = This;
 end
 

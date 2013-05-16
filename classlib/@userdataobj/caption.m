@@ -35,18 +35,19 @@ function varargout = caption(This,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
-
 if ~isempty(varargin)
-    P = inputParser();
-    P.addRequired('Cpt',@ischar);
-    P.parse(varargin{1});
+    Cpt = varargin{1};
+    pp = inputParser();
+    pp.addRequired('Cpt',@ischar);
+    pp.parse(Cpt);
 end
+
+%--------------------------------------------------------------------------
 
 if isempty(varargin)
     varargout{1} = This.Caption;
 else
-    This.Caption = varargin{1};
+    This.Caption = Cpt;
     varargout{1} = This;
 end
 

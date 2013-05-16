@@ -1,4 +1,4 @@
-function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,Freq,Exclude,Tol,MaxIter)
+function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,Freq,Incl,Tol,MaxIter)
 % ffrf3  [Not a public function] Frequence response function for general state space.
 %
 % Backend IRIS function.
@@ -19,15 +19,15 @@ if isempty(MaxIter)
     MaxIter = 500;
 end
 
-if isempty(Exclude)
-    Exclude = false(ny,1);
+if isequal(Incl,Inf)
+    Incl = true(ny,1);
 end
 
 %--------------------------------------------------------------------------
 
-Z1 = Z(~Exclude,:);
-H1 = H(~Exclude,:);
-ny1 = sum(~Exclude);
+Z1 = Z(Incl,:);
+H1 = H(Incl,:);
+ny1 = sum(Incl);
 
 Freq = Freq(:).';
 nFreq = length(Freq);
@@ -60,7 +60,7 @@ end
             S12 = S(1:ny1,ny1+1:end,i);
             Yn(:,:,i) = S12' / S11;
         end
-        Y(:,~Exclude,~zeroFreqInx) = Yn;
+        Y(:,Incl,~zeroFreqInx) = Yn;
     end % doNonzeroFreq().
 
 %**************************************************************************
@@ -105,9 +105,9 @@ end
         T_KZ1 = T - K*Z1;
         RfROmgt = Rf*ROmg';
         Ib = eye(nb);
-        Iy = eye(ny);
+        Iy = eye(ny1);
         Lt = L';
-        Ff = zeros(nf,ny);
+        Ff = zeros(nf,ny1);
         
         J = pinv(Ib - T_KZ1) * K;
         A = pinv(Ib - Lt) * (Z1tFi * (Iy - Z1*J));
@@ -124,8 +124,8 @@ end
         else
             Y0 = [Ff;Fa];
         end
-        nzero = sum(zeroFreqInx);
-        Y(:,~Exclude,zeroFreqInx) = Y0(:,:,ones(1,nzero));
+        nZero = sum(zeroFreqInx);
+        Y(:,Incl,zeroFreqInx) = Y0(:,:,ones(1,nZero));
     end % doZeroFreq().
 
 end

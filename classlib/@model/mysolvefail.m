@@ -54,6 +54,7 @@ if any(inx)
         Body = [sna, ...
             'Singularity or NaN in this measurement equation in%s: ''%s''.'];
     else
+        Args = {};
         Body = [sna, ...
             'Singularity in state-space matrices:%s.'];
     end

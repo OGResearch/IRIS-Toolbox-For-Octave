@@ -73,8 +73,8 @@ for iAlt = 1 : nAlt
     FFRF = [];
     if ~isempty(S,'ffrf')
         freq = S.systemFunc.ffrf.page;
-        exclude = [];
-        FFRF = freqdom.ffrf3(T,R,[],Z,H,[],U,Omg,freq,exclude,[],[]);
+        incl = Inf;
+        FFRF = freqdom.ffrf3(T,R,[],Z,H,[],U,Omg,freq,incl,[],[]);
     end
     
     % Covariance function.

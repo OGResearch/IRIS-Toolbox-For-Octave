@@ -1,5 +1,5 @@
-function C = acovfsmp(x,options)
-% ACOVFSMP  [Not a public function] Sample autocovariance function.
+function C = acovfsmp(X,Opt)
+% acovfsmp  [Not a public function] Sample autocovariance function.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,40 +7,40 @@ function C = acovfsmp(x,options)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-xsize = size(x);
-x = x(:,:,:);
-[nper,nx,nloop] = size(x);
+xSize = size(X);
+X = X(:,:,:);
+[nPer,nx,nLoop] = size(X);
 
-if isinf(options.order)
-    options.order = nper - 1;
+if isinf(Opt.order)
+    Opt.order = nPer - 1;
 end
 
-if options.demean
-    x = bsxfun(@minus,x,mean(x,1));
+if Opt.demean
+    X = bsxfun(@minus,X,mean(X,1));
 end
 
-C = zeros(nx,nx,1+options.order,nloop);
-for iloop = 1 : nloop
-    xi = x(:,:,iloop);
+C = zeros(nx,nx,1+Opt.order,nLoop);
+for iLoop = 1 : nLoop
+    xi = X(:,:,iLoop);
     xit = xi.';
-	if options.smallsample
-		T = nper-1;
+	if Opt.smallsample
+		T = nPer - 1;
 	else
-		T = nper;
+		T = nPer;
 	end
-    C(:,:,1,iloop) = xit*xi / T;
-    for i = 1 : options.order
-        if options.smallsample
+    C(:,:,1,iLoop) = xit*xi / T;
+    for i = 1 : Opt.order
+        if Opt.smallsample
             T = T - 1;
         end
-        C(:,:,i+1,iloop) = xit(:,1:end-i)*xi(1+i:end,:) / T;
+        C(:,:,i+1,iLoop) = xit(:,1:end-i)*xi(1+i:end,:) / T;
     end
 end
 
-if length(xsize) > 3
-    C = reshape(C,[nx,nx,1+options.order,xsize(3:end)]);
+if length(xSize) > 3
+    C = reshape(C,[nx,nx,1+Opt.order,xSize(3:end)]);
 end
 
 end
