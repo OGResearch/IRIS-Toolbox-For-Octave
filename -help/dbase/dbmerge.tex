@@ -1,0 +1,42 @@
+
+
+    \filetitle{dbmerge}{Merge two or more databases}{dbase/dbmerge}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ D = dbmerge(D1,D2,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D1}, \texttt{D2}, \ldots{} {[} struct {]} - Input databases
+   whose entries will be combined in the output datase.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Output database that combines entries from
+   all input database; if some entries are found in more than one input
+   databases, the last occurence is used.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ \begin{verbatim}
+ d1 = struct('a',1,'b',2);
+ d2 = struct('a',10,'c',20);
+ d = dbmerge(d1,d2)
+ d =
+    a: 10
+    b: 2
+    c: 20
+ \end{verbatim}
+
+

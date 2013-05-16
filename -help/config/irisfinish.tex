@@ -1,0 +1,22 @@
+
+
+    \filetitle{irisfinish}{Close the current IRIS session}{config/irisfinish}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ irisfinish
+ irisfinish -shutup
+ \end{verbatim}
+ 
+ \paragraph{Description}
+ 
+ This function removes all IRIS subfolders from the temporary Matlab
+ search path, and clears persistent variables in some of the backend
+ functions. A short message is displayed with the list of subfolders
+ removed from the path unless you call use the option \texttt{-shutup}.
+ Note that the IRIS root folder stays on the permanent Matlab path.
+ 
+ \paragraph{Example}
+
+

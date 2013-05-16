@@ -1,0 +1,50 @@
+<folder>
+
+<foldername>plan</foldername><filename>Contents</filename>
+
+<h1 id="plan/Contents">Simulation plans</h1>
+
+<p>Simulation plans complement the use of the <link id="model/simulate"><tt>simulate</tt></link> or
+<link id="model/jforecast"><tt>jforecast</tt></link> functions.</p>
+
+<p>You need to use a simulation plan object to set up the following types of
+more complex simulations or forecasts (or a combination of these):</p>
+
+<ol><li>simulations or forecasts with some of the model variables temporarily
+exogenised;</li>
+<li>simulations with some of the non-linear equations solved in an exact
+non-linear mode;</li>
+<li>forecasts conditioned upon some variables;</li></ol>
+The plan object is passed to the <link id="model/simulate"><tt>simulate</tt></link> or
+<link id="model/jforecast"><tt>jforecast</tt></link> functions through the <tt>'plan'</tt> option.
+
+<h3>Constructor</h3>
+
+<ul><li><link id="plan/plan"><tt>plan</tt></link>&nbsp;&ndash;&nbsp;Create new simulation plan.</li></ul>
+
+<h3>Getting information about simulation plans</h3>
+
+<ul><li><link id="plan/detail"><tt>detail</tt></link>&nbsp;&ndash;&nbsp;Display details of a simulation plan.</li>
+<li><link id="plan/get"><tt>get</tt></link>&nbsp;&ndash;&nbsp;Query plan object properties.</li>
+<li><link id="plan/nnzcond"><tt>nnzcond</tt></link>&nbsp;&ndash;&nbsp;Number of conditioning data points.</li>
+<li><link id="plan/nnzendog"><tt>nnzendog</tt></link>&nbsp;&ndash;&nbsp;Number of endogenised data points.</li>
+<li><link id="plan/nnzexog"><tt>nnzexog</tt></link>&nbsp;&ndash;&nbsp;Number of exogenised data points.</li>
+<li><link id="plan/nnznonlin"><tt>nnznonlin</tt></link>&nbsp;&ndash;&nbsp;Number of non-linearised data points.</li></ul>
+
+<h3>Setting up simulation plans</h3>
+
+<ul><li><link id="plan/condition"><tt>condition</tt></link>&nbsp;&ndash;&nbsp;Condition forecast upon the specified variables at the specified dates.</li>
+<li><link id="plan/endogenise"><tt>endogenise</tt></link>&nbsp;&ndash;&nbsp;Endogenise shocks or re-endogenise variables at the specified dates.</li>
+<li><link id="plan/exogenise"><tt>exogenise</tt></link>&nbsp;&ndash;&nbsp;Exogenise variables or re-exogenise shocks at the specified dates.</li>
+<li><link id="plan/nonlinearise"><tt>nonlinearise</tt></link>&nbsp;&ndash;&nbsp;Select equations for simulation in an exact non-linear mode.</li></ul>
+
+<h3>Referencing plan objects</h3>
+
+<ul><li><link id="plan/subsref"><tt>subsref</tt></link>&nbsp;&ndash;&nbsp;Subscripted reference for plan objects.</li></ul>
+
+<h3>Getting on-line help on simulation plans</h3>
+<pre>   help plan
+   help plan/function_name
+</pre>
+
+</folder>

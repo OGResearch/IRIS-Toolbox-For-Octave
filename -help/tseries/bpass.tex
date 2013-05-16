@@ -1,0 +1,69 @@
+
+
+    \filetitle{bpass}{Band-pass filter}{tseries/bpass}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [X,T] = bpass(X,Band,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Band-pass filtered tseries object.
+ \item
+   \texttt{T} {[} tseries {]} - Estimated trend tseries object.
+ \end{itemize}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input tseries object that will be
+   filtered.
+ \item
+   \texttt{Range} {[} numeric \textbar{} Inf {]} Date range on which the
+   data will be filtered.
+ \item
+   \texttt{Band} {[} numeric {]} - Band of periodicities to be retained
+   in the output data, \texttt{Band = {[}LOW,HIGH{]}}.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'addTrend='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Add the estimated linear time trend back to
+   filtered output series if \texttt{band} includes Inf.
+ \item
+   \texttt{'detrend='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Remove an estimated time trend from the data before filtering.
+ \item
+   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+   - Logarithmise the data before filtering, de-logarithmise afterwards.
+ \item
+   \texttt{'method='} {[} \emph{\texttt{'cf'}} \textbar{}
+   \texttt{'hwfsf'} {]} - Type of band-pass filter:
+   Christiano-Fitzgerald, or h-windowed frequency-selective filter.
+ \item
+   \texttt{'unitRoot='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Assume unit root in the input data.
+ \end{itemize}
+ 
+ See help on \url{tseries/trend} for other options available when
+ \texttt{'detrend='} is set to true.
+ 
+ \paragraph{Description}
+ 
+ Christiano, L.J. and T.J.Fitzgerald (2003). The Band Pass Filter.
+ International Economic Review, 44(2), 435--465.
+ 
+ Iacobucci, A. \& A. Noullez (2005). A Frequency Selective Filter for
+ Short-Length Time Series. Computational Economics, 25, 75--102.
+ 
+ \paragraph{Example}
+
+
