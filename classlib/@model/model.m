@@ -201,7 +201,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         % Model eigenvalues.
         eigval = zeros(1,0);
         % Differentiation step when calculating numerical derivatives.
-        epsilon = NaN;
+        epsilon = eps^(1/3);
         % Matrices necessary to generate forward expansion of model solution.
         Expand = {};
         % Model state-space matrices T, R, K, Z, H, D, U, Y.

@@ -16,11 +16,13 @@ if ~isempty(Opt.comment)
 end
 
 % Differentiation step size.
-This.epsilon = Opt.epsilon;
+if ~isempty(Opt.epsilon)
+    This.epsilon = Opt.epsilon;
+end
 
 % Time origin (base year) for deterministic trends.
-if ~isempty(Opt.torigin)
-    This.torigin = floor(Opt.torigin);
+if ~isempty(Opt.torigin) && isintscalar(Opt.torigin)
+    This.torigin = Opt.torigin;
 end
 
 % Create model-specific meta data.

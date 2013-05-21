@@ -1,5 +1,5 @@
-function [x,t] = mybpass(x,start,band,opt,trendopt)
-% MYBPASS  [Not a public function] General band-pass filter.
+function [X,T] = mybpass(X,Start,Band,Opt,TrendOpt)
+% mybpass  [Not a public function] General band-pass filter.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,17 +7,17 @@ function [x,t] = mybpass(x,start,band,opt,trendopt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 % Low and high periodicities and frequencies.
-lowPer = max(2,min(band));
-highPer = max(band);
+lowPer = max(2,min(Band));
+highPer = max(Band);
 lowFreq = 2*pi/highPer;
 highFreq = 2*pi/lowPer;
 
 % Set the window constant for HWFSF.
-if strcmpi(opt.method,'hwfsf')
-    switch opt.window
+if strcmpi(Opt.method,'hwfsf')
+    switch Opt.window
         case 'hanning'
             a = 0.50;
         case 'hamming'
@@ -27,41 +27,41 @@ if strcmpi(opt.method,'hwfsf')
     end
 end
 
-if opt.log
-    x = log(x);
+if Opt.log
+    X = log(X);
 end
 
-if opt.detrend
-    [t,tt,ts,s] = tseries.mytrend(x,start,trendopt);
+if Opt.detrend
+    [T,tt,ts,s] = tseries.mytrend(X,Start,TrendOpt);
 else
-    t = zeros(size(x));
-    tt = zeros(size(x));
-    ts = zeros(size(x));
+    T = zeros(size(X));
+    tt = zeros(size(X));
+    ts = zeros(size(X));
     s = [];
 end
 
 % Include time line in the output trend.
-addtime = opt.detrend ...
-    && opt.addtrend && isinf(highPer);
+addtime = Opt.detrend ...
+    && Opt.addtrend && isinf(highPer);
 
 % Include seasonals in the output trend.
-addseason = opt.detrend ...
-    && opt.addtrend && ~isempty(s) ...
+addseason = Opt.detrend ...
+    && Opt.addtrend && ~isempty(s) ...
     && s >= lowPer && s <= highPer;
 
 A = [];
 nobs0 = 0;
-for i = 1 : size(x,2)
-    sample = getsample(x(:,i));
+for i = 1 : size(X,2)
+    sample = getsample(X(:,i));
     nobs = sum(sample);
     if nobs == 0
         continue
     end
     
     % Remove time trend and seasonals, or mean.
-    xi = x(sample,i);
-    if opt.detrend
-        ti = t(sample,i);
+    xi = X(sample,i);
+    if Opt.detrend
+        ti = T(sample,i);
     else
         ti = mean(xi);
         tt(sample,i) = ti;
@@ -69,11 +69,11 @@ for i = 1 : size(x,2)
     xi = xi - ti;
     
     if any(isnan(xi))
-        x(:,i) = NaN;
+        X(:,i) = NaN;
         continue
     end
     
-    if strcmpi(opt.method,'cf')
+    if strcmpi(Opt.method,'cf')
         % Christiano-Fitzgerald.
         cf();
     else
@@ -86,18 +86,18 @@ end
 
 % Include time line in the output trend.
 if addtime
-    x = x + tt;
+    X = X + tt;
 end
 
 % Include seasonals in the output trend.
 if addseason
-    x = x + ts;
+    X = X + ts;
 end
 
 % De-logarithmise back.
-if opt.log
-    x = exp(x);
-    t = exp(t);
+if Opt.log
+    X = exp(X);
+    T = exp(T);
 end
 
 % Nested functions.
@@ -108,12 +108,11 @@ end
         if any(nobs ~= nobs0)
             % Re-calculate C-F projection matrix only if needed.
             A = tseries.mychristianofitzgerald( ...
-                nobs,lowPer,highPer,double(opt.unitroot),0);
+                nobs,lowPer,highPer,double(Opt.unitroot),0);
         end
-        x(sample,i) = A*xi;
-        x(~sample,i) = NaN;
-    end
-% cf().
+        X(sample,i) = A*xi;
+        X(~sample,i) = NaN;
+    end % cf().
 
 %***********************************************************************
     function hwfsf()
@@ -127,9 +126,8 @@ end
             W(end,1) = (1-a)/2;
             A = W*H;
         end
-        x(sample,i) = ifft(A.*fft(xi));
-        x(~sample,i) = NaN;
-    end
-% hwfsf().
+        X(sample,i) = ifft(A.*fft(xi));
+        X(~sample,i) = NaN;
+    end % hwfsf().
 
 end

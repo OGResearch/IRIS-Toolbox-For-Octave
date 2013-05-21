@@ -11,8 +11,6 @@ function This = loadobj(This)
 
 This = modelobj.loadobj(This);
 
-opt = passvalopt('model.model');
-
 if isfield(This,'eqtnnonlin')
     This.nonlin = This.eqtnnonlin;
 end
@@ -72,16 +70,6 @@ if isempty(This.nonlin)
     This.nonlin = false(size(This.eqtn));
 end
 
-% Derivative step size.
-if isempty(This.epsilon)
-    This.epsilon = opt.epsilon;
-end
-
-% Base year for dtrends.
-if isempty(This.torigin)
-    This.torigin = opt.torigin;
-end
-
 % Effect of add-factor on transition equations.
 if ~isfield(This.system0,'N') || isempty(This.system0.N)
     This.system0.N = {[],zeros(nx,0)};
@@ -95,7 +83,8 @@ if length(This.solution) < 8 || isempty(This.solution{8})
     This.solution{8} = nan(nx,0,nAlt);
 end
 
-if length(This.Expand) < 6 || isempty(This.Expand{6})
+if ~isempty(This.Expand) ...
+        && (length(This.Expand) < 6 || isempty(This.Expand{6}))
     % The size of Expand{6} in 1st dimension is the number of fwl variables
     % *before* we remove the double occurences from state space. `Expand{6}`
     % can be empty also in nonlinear bkw models; in that case, we need to set
@@ -103,7 +92,7 @@ if length(This.Expand) < 6 || isempty(This.Expand{6})
     This.Expand{6} = nan(size(This.Expand{3},1),size(This.Expand{6},2),nAlt);
 end
 
-if isempty(This.stdcorr)
+if ~isempty(This.Assign) && isempty(This.stdcorr)
     ne = sum(This.nametype == 3);
     nname = length(This.name);
     stdvec = This.Assign(1,end-ne+1:end,:);

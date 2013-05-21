@@ -120,17 +120,17 @@ YXE = permute(YXE,[3,1,2]);
 L = permute(L,[3,1,2]);
 
 % `Q` is created as nAlt-nEqtn-nPer.
-eqtnXY = This.eqtnF(This.eqtntype <= 2);
+eqtnYX = This.eqtnF(This.eqtntype <= 2);
 Q = [];
 for iAlt = 1 : nAlt
     % `q` is returned as 1-nEqtn-nPer.
     q = cellfun(@(f) f(YXE(iAlt,:,:),t,L(iAlt,:,:)), ...
-        eqtnXY,'uniformOutput',false);
+        eqtnYX,'uniformOutput',false);
     q = [q{:}];
     Q = [Q;q]; %#ok<AGROW>
 end
 
-% Permute `D` back to nEqtn-nPer-nAlt.
+% Permute `Q` back to nEqtn-nPer-nAlt.
 Q = ipermute(Q,[3,1,2]);
 
 end

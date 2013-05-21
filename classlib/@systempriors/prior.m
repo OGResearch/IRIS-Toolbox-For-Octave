@@ -17,7 +17,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 % be referred to in the expression.
 %
 % * `PriorFunc` [ function_handle | empty ] - Function handle returning the
-% log of prior density, or empty for a uniform prior.
+% log of prior density; empty, `[]`, means a uniform prior.
 %
 % Output arguments
 % =================
