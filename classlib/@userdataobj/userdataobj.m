@@ -12,6 +12,8 @@ classdef userdataobj
         UserData = [];
         % User comments attached to IRIS objects.
         Comment = '';
+        % User captions used to title graphs.
+        Caption = '';
     end
     
     methods
@@ -27,9 +29,10 @@ classdef userdataobj
             end
         end
         
+        varargout = caption(varargin)
+        varargout = comment(varargin)
         varargout = userdata(varargin)
         varargout = userdatafield(varargin)
-        varargout = comment(varargin)
         
     end
     

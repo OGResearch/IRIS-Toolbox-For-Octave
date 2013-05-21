@@ -54,47 +54,37 @@ function [Ln,Cp] = vline(varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-Ln = [];
-Cp = [];
+Ln = zeros(1,0);
+Cp = zeros(1,0);
 
-if ~isempty(varargin) ...
-        && all(ishghandle(varargin{1})) ...
-        && all( strcmp(get(varargin{1}(:),'type'),'axes') ...
-        | strcmp(get(varargin{1}(:),'type'),'figure') )
-    Ax = varargin{1};
-    varargin(1) = [];
-    nAx = numel(Ax);
-    if nAx > 1
-        for i = 1 : nAx
-            iAx = Ax(i);
-            [iLn,iCp] = grfun.vline(iAx,varargin{:});
-            Ln = [Ln,iLn];
-            Cp = [Cp,iCp];
-        end
-        return
-    end
-else
-    Ax = gca();
+if isempty(varargin)
+    return
 end
 
-% By now, `Ax` is a scalar handle to either an axes object or a figure
-% window.
+[Ax,Loc,varargin] = grfun.myaxinp(varargin{:});
 
-if strcmp(get(Ax,'type'),'figure')
-    fig = Ax;
-    Ax = findobj(fig,'type','axes','parent',fig);
-    if numel(Ax) > 1
-        [Ln,Cp] = grfun.vline(Ax,varargin{:});
+if isempty(Ax) || isempty(Loc)
+    return
+end
+
+nAx = length(Ax);
+if nAx > 1
+    for i = 1 : nAx
+        [ln,cp] = grfun.vline(Ax(i),Loc,varargin{:});
+        Ln = [Ln,ln]; %#ok<AGROW>
+        Cp = [Cp,cp]; %#ok<AGROW>
     end
     return
 end
 
-% Horizontal location.
-loc = varargin{1};
-varargin(1) = [];
+pp = inputParser();
+pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+    && all(strcmp(get(x,'type'),'axes')));
+pp.addRequired('XPos',@isnumeric);
+pp.parse(Ax,Loc);
 
-[opt,varargin] = passvalopt('grfun.vline',varargin{:});
-varargin(1:2:end) = strrep(varargin(1:2:end),'=','');
+[opt,lineOpt] = passvalopt('grfun.vline',varargin{:});
+lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 %--------------------------------------------------------------------------
 
@@ -103,7 +93,7 @@ Ax = grfun.mychkforpeers(Ax);
 
 % If this is a time series graph, convert the vline position to a date grid
 % point.
-x = loc;
+x = Loc;
 if isequal(getappdata(Ax,'tseries'),true)
     x = dat2grid(x);
     freq = getappdata(Ax,'freq');
@@ -127,7 +117,7 @@ yLim = get(Ax,'yLim');
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
-nLoc = numel(loc);
+nLoc = numel(Loc);
 for i = 1 : nLoc
 
     ln = plot(Ax,x([i,i]),yLim);
@@ -139,17 +129,17 @@ for i = 1 : nLoc
         grfun.listener(Ax,j,'vline');
         % Move the highlight patch object to the background.
         ch(ch == j) = [];
-        ch(end+1) = j;
+        ch(end+1) = j; %#ok<AGROW>
     end
     set(Ax,'children',ch);
     
-    Ln = [Ln,ln]; %#ok<*AGROW>
+    Ln = [Ln,ln]; %#ok<AGROW>
     
     % Add annotation.
     if ~isempty(opt.caption)
         cp = grfun.mycaption(Ax,x(i), ...
             opt.caption,opt.vposition,opt.hposition);
-        Cp = [Cp,cp(:).'];
+        Cp = [Cp,cp(:).']; %#ok<AGROW>
     end
 end
 
@@ -157,9 +147,9 @@ end
 set(Ax,'nextPlot',nextPlot);
 
 if ~isempty(Ln)
-    if ~isempty(varargin)
+    if ~isempty(lineOpt)
         set(Ln,'color',[0,0,0]);
-        set(Ln,varargin{:});
+        set(Ln,lineOpt{:});
     end
     
     % Tag the vlines and captions for `qstyle`.

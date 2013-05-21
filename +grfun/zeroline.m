@@ -34,10 +34,7 @@ function [Ln,Cp] = zeroline(varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-if ~isempty(varargin) ...
-        && all(ishghandle(varargin{1})) ...
-        && all( strcmp(get(varargin{1}(:),'type'),'axes') ...
-        | strcmp(get(varargin{1}(:),'type'),'figure') )
+if ~isempty(varargin) && ~ischar(varargin{1})
     Ax = varargin{1};
     varargin(1) = [];
 else
@@ -46,7 +43,7 @@ end
 
 %--------------------------------------------------------------------------
 
-[Ln,Cp] = grfun.hline(Ax,0,'excludefromlegend=',true,varargin{:});
+[Ln,Cp] = grfun.hline(Ax,0,'excludeFromLegend=',true,varargin{:});
 
 % Tag the hline for `qstyle`.
 set(Ln,'tag','zeroline');

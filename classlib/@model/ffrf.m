@@ -27,8 +27,11 @@ function [F,List] = ffrf(This,Freq,varargin)
 % Options
 % ========
 %
-% * `'exclude='` [ char | cellstr | *empty* ] - Remove the effect of these
-% measurement variables from the FFRF.
+% * `'include='` [ char | cellstr | *`Inf`* ] - Include the effect of the
+% listed measurement variables only; `Inf` means all measurement variables.
+%
+% * `'exclude='` [ char | cellstr | *empty* ] - Remove the effect of the
+% listed measurement variables.
 %
 % * `'maxIter='` [ numeric | *500* ] - Maximum number of iteration when
 % computing the steady-state Kalman filter.
@@ -66,8 +69,19 @@ if ischar(opt.select)
     opt.select = regexp(opt.select,'\w+','match');
 end
 
+if isequal(opt.include,Inf) && ~isempty(opt.exclude)
+    opt.include = This.name(This.nametype == 1);
+elseif ischar(opt.include)
+    opt.include = regexp(opt.include,'\w+','match');
+end
+
 if ischar(opt.exclude)
     opt.exclude = regexp(opt.exclude,'\w+','match');
+end
+
+if ~isempty(opt.exclude) && ~isequal(opt.include,Inf)
+    utils.error('model', ...
+        'Options ''include='' and ''exclude='' cannot be combined.');
 end
 
 isSelect = iscellstr(opt.select);
@@ -81,27 +95,23 @@ ny = length(This.solutionid{1});
 nx = length(This.solutionid{2});
 nAlt = size(This.Assign,3);
 
-exclude = myselect(This,'y',opt.exclude);
+% Index of the measurement variables included.
+if isequal(opt.include,Inf)
+    incl = true(1,ny);
+else
+    incl = setdiff(opt.include,opt.exclude);
+    incl = myselect(This,'y',incl);
+end
 
 Freq = Freq(:)';
 nFreq = length(Freq);
 F = nan(nx,ny,nFreq,nAlt);
 
-if ny > 0
-    [flag,nanAlt] = isnan(This,'solution');
-    for iAlt = find(~nanAlt)
-        [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
-        % Compute FFRF.
-        F(:,~exclude,:,iAlt) = ...
-            freqdom.ffrf3( ...
-            T,R,[],Z,H,[],U,Omega, ...
-            Freq,exclude,opt.tolerance,opt.maxiter);
-    end
-    % Solution not available.
-    if flag
-        utils.warning('model', ...
-            '#Solution_not_available',preparser.alt2str(nanAlt));
-    end
+if ny > 0 && any(incl)
+    doFfrf();
+else
+    utils.warning('model', ...
+        'No measurement variables included in calculation of FFRF.');
 end
 
 % List of variables in rows and columns of `F`.
@@ -116,5 +126,25 @@ end
 if isSelect
     F = select(F,opt.select);
 end
+
+% Nested function.
+
+%**************************************************************************
+    function doFfrf()
+        [flag,nanAlt] = isnan(This,'solution');
+        for iAlt = find(~nanAlt)
+            [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
+            % Compute FFRF.
+            F(:,:,:,iAlt) = ...
+                freqdom.ffrf3(T,R,[],Z,H,[],U,Omega, ...
+                Freq,incl,opt.tolerance,opt.maxiter);
+        end
+        % Solution not available.
+        if flag
+            utils.warning('model', ...
+                'Solution not available:%s.', ...
+                preparser.alt2str(nanAlt));
+        end
+    end % doFfrf().
 
 end

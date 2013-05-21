@@ -1,15 +1,15 @@
-function varargout = comment(This,varargin)
-% comment  Get or set user comments in an IRIS object.
+function varargout = caption(This,varargin)
+% caption  Get or set user captions in an IRIS object.
 %
-% Syntax for getting user comments
+% Syntax for getting user captions
 % =================================
 %
-%     Cmt = comment(Obj)
+%     Cpt = caption(Obj)
 %
-% Syntax for assigning user comments
+% Syntax for assigning user captions
 % ===================================
 %
-%     Obj = comment(Obj,Cmt)
+%     Obj = comment(Obj,Cpt)
 %
 % Input arguments
 % ================
@@ -17,12 +17,12 @@ function varargout = comment(This,varargin)
 % * `Obj` [ model | tseries | VAR | SVAR | FAVAR | sstate ] -
 % One of the IRIS objects.
 %
-% * `Cmt` [ char ] - User comment that will be attached to the object.
+% * `Cpt` [ char ] - User caption that will be attached to the object.
 %
 % Output arguments
 % =================
 %
-% * `Cmt` [ char ] - User comment that are currently attached to the
+% * `Cpt` [ char ] - User caption that are currently attached to the
 % object.
 %
 % Description
@@ -36,18 +36,18 @@ function varargout = comment(This,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 if ~isempty(varargin)
-    Cmt = varargin{1};
+    Cpt = varargin{1};
     pp = inputParser();
-    pp.addRequired('Cmt',@ischar);
-    pp.parse(Cmt);
+    pp.addRequired('Cpt',@ischar);
+    pp.parse(Cpt);
 end
 
 %--------------------------------------------------------------------------
 
 if isempty(varargin)
-    varargout{1} = This.Comment;
+    varargout{1} = This.Caption;
 else
-    This.Comment = Cmt;
+    This.Caption = Cpt;
     varargout{1} = This;
 end
 

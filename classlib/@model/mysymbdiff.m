@@ -21,14 +21,13 @@ tZero = This.tzero;
 for ieq = find(This.eqtntype <= 3)
     
     if This.eqtntype(ieq) <= 2
-        % Measurement or transition equations.
-        % Differentiate equations w.r.t. variables and shocks.
+        % Measurement or transition equations; differentiate equations w.r.t.
+        % variables and shocks.
         [tmOcc,nmOcc] = myfindoccur(This,ieq,'variables_shocks');
         tmOcc = tmOcc - tZero;
         mode = 1;
     elseif This.eqtntype(ieq) == 3
-        % Deterministic trends.
-        % Differentiate dtrends w.r.t. parameters.
+        % Deterministic trends; differentiate dtrends w.r.t. parameters.
         [tmOcc,nmOcc] = myfindoccur(This,ieq,'parameters');
         tmOcc(:) = 0;
         mode = Inf;

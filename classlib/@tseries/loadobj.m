@@ -1,5 +1,5 @@
-function this = loadobj(this)
-% LOADOBJ  [Not a public function] Prepare tseries object for loading from disk.
+function This = loadobj(This)
+% loadobj  [Not a public function] Prepare tseries object for loading from disk.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,10 +7,10 @@ function this = loadobj(this)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if isstruct(this)
-   this = tseries(this);
+if isstruct(This)
+   This = tseries(This);
 end
 
 end

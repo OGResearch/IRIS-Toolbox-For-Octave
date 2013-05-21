@@ -1,4 +1,4 @@
-function Inx = myselect(This,TypeChar,Select)
+function Inx = myselect(This,Type,Select)
 % myselect  [Not a public function] Convert user selection to a logical index.
 %
 % Backend IRIS function.
@@ -9,7 +9,7 @@ function Inx = myselect(This,TypeChar,Select)
 
 %--------------------------------------------------------------------------
 
-switch lower(TypeChar)
+switch lower(Type)
     case 'y'
         type = 1;
         typeString = 'measurement variable';

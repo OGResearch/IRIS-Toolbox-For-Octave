@@ -29,7 +29,9 @@ function Le = bottomlegend(varargin)
 %--------------------------------------------------------------------------
 
 Le = legend(varargin{:});
-set(Le,'orientation','horizontal');
-Le = grfun.movetosubplot(Le,'bottom');
+if ~isempty(Le)
+    set(Le,'orientation','horizontal');
+    Le = grfun.movetosubplot(Le,'bottom');
+end
 
 end
