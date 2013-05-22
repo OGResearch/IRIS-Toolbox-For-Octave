@@ -95,12 +95,6 @@ pp.parse(This,NDraw);
 % Parse options.
 opt = passvalopt('poster.arwm',varargin{:});
 
-if opt.firstPrefetch < NDraw && opt.firstPrefetch <= opt.lastAdapt
-    utils.error('poster', ...
-        ['Adaptation must stop before pre-fetching starts; ', ...
-        'set ''lastAdapt='' smaller than ''firstPrefetch=''.']);
-end
-
 %--------------------------------------------------------------------------
 
 s = mylogpoststruct(This);
@@ -204,7 +198,7 @@ while j <= nDrawTotal
         
         % Propose new thetas, evaluate log posteriors for all of them in parallel,
         % and pre-generate random acceptance.
-        [thetaPf,logPostPf,randAccPf] = doPrefetch();
+        [thetaPf,logPostPf,randAccPf,uPf] = doPrefetch();
         
         % Find path through lattice prefetch; `pos0` is a zero-based position
         % beween `0` and `2^nsteps`.
@@ -216,7 +210,8 @@ while j <= nDrawTotal
             newTheta = thetaPf(:,1+newPos0);
             newLogPost = logPostPf(1+newPos0);
             randAcc = randAccPf(iStep);
-            
+            u = uPf(:,iStep);
+			
             isAccepted = doAcceptStore();
             
             if isAccepted
@@ -341,7 +336,7 @@ end
     end % doChkSaveOptions().
 
 %**************************************************************************
-    function [ThetaPf,LogPostPf,RandAccPf] = doPrefetch()
+    function [ThetaPf,LogPostPf,RandAccPf,uPf] = doPrefetch()
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %  The wisdom behing the indexing in the prefetching array
         %
@@ -387,8 +382,10 @@ end
         % of steps as in serial implementation.
         X = nan(nPar,nStep);
         RandAccPf = nan(1,nStep);
+		uPf = nan(nPar,nStep);
         for iiStep = 1 : nStep
-            X(:,iiStep) = sgm*P*randn(nPar,1);
+			uPf(:,iiStep) = randn(nPar,1);
+            X(:,iiStep) = sgm*P*uPf(:,iiStep);
             RandAccPf(iiStep) = rand();
         end
         
