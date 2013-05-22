@@ -1,4 +1,4 @@
-function [C,Export] = controls(C,D,ErrorParsing,Labels,Export)
+function [C,Labels,Export] = controls(C,D,ErrParsing,Labels,Export)
 % controls  [Not a public function] Preparse control commands !if, !switch, !for, !export.
 %
 % Backend IRIS function.
@@ -52,8 +52,8 @@ while ~isempty(pos)
         break
     end
     
-    [replace,Error.exprsn,thisWarn] = ...
-        feval(['xxReplace',commandCap],s,D,Labels,ErrorParsing);
+    [replace,Labels,Error.exprsn,thisWarn] = ...
+        feval(['xxReplace',commandCap],s,D,Labels,ErrParsing);
     
     if ~isempty(Error.exprsn)
         break
@@ -93,19 +93,19 @@ doError();
 %**************************************************************************
     function doError()
         if ~isempty(Error.code)
-            utils.error('preparser', [ErrorParsing, ...
+            utils.error('preparser', [ErrParsing, ...
                 'Something wrong with this control command(s) or commands nested inside: ''%s...''.'], ...
                 xxFormatError(Error.code,Labels));
         end
         
         if ~isempty(Error.exprsn)
-            utils.error('preparser', [ErrorParsing, ...
+            utils.error('preparser', [ErrParsing, ...
                 'Cannot evaluate this control expression: ''%s...''.'], ...
                 xxFormatError(Error.exprsn,Labels));
         end
         
         if ~isempty(Error.leftover)
-            utils.error('preparser', [ErrorParsing, ...
+            utils.error('preparser', [ErrParsing, ...
                 'This control command is miplaced or unfinished: ''%s...''.'], ...
                 xxFormatError(Error.leftover,Labels));
         end
@@ -119,7 +119,7 @@ function C = xxStartControls()
 end % xxStartControls().
 
 %**************************************************************************
-function [S,Tail,Error] = xxParseFor(C,Pos) %#ok<DEFNU>
+function [S,Tail,Err] = xxParseFor(C,Pos) %#ok<DEFNU>
 
 S = struct();
 S.ForBody = '';
@@ -127,14 +127,14 @@ S.DoBody = '';
 Tail = '';
 
 [S.ForBody,Pos,match] = xxFindSubControl(C,Pos,'!do');
-Error = ~strcmp(match,'!do');
-if Error
+Err = ~strcmp(match,'!do');
+if Err
     return
 end
 
 [S.DoBody,Pos,match] = xxFindEnd(C,Pos);
-Error = ~strcmp(match,'!end');
-if Error
+Err = ~strcmp(match,'!end');
+if Err
     return
 end
 
@@ -143,7 +143,7 @@ Tail = C(Pos:end);
 end % xxParserFor().
 
 %**************************************************************************
-function [S,Tail,Error] = xxParseIf(C,Pos) %#ok<DEFNU>
+function [S,Tail,Err] = xxParseIf(C,Pos) %#ok<DEFNU>
 
 S = struct();
 S.IfCond = '';
@@ -155,8 +155,8 @@ Tail = '';
 getcond = @(x) regexp(x,'^[^;\n]+','match','end','once');
 
 [If,Pos,match] = xxFindSubControl(C,Pos,{'!elseif','!else'});
-Error = ~any(strcmp(match,{'!elseif','!else','!end'}));
-if Error
+Err = ~any(strcmp(match,{'!elseif','!else','!end'}));
+if Err
     return
 end
 [S.IfCond,finish] = getcond(If);
@@ -164,8 +164,8 @@ S.IfBody = If(finish+1:end);
 
 while strcmp(match,'!elseif')
     [Elseif,Pos,match] = xxFindSubControl(C,Pos,{'!elseif','!else'});
-    Error = ~any(strcmp(match,{'!elseif','!else','!end'}));
-    if Error
+    Err = ~any(strcmp(match,{'!elseif','!else','!end'}));
+    if Err
         return
     end
     [S.ElseifCond{end+1},finish] = getcond(Elseif);
@@ -174,8 +174,8 @@ end
 
 if strcmp(match,'!else')
     [S.ElseBody,Pos,match] = xxFindEnd(C,Pos);
-    Error = ~strcmp(match,'!end');
-    if Error
+    Err = ~strcmp(match,'!end');
+    if Err
         return
     end
 end
@@ -185,7 +185,7 @@ Tail = C(Pos:end);
 end % xxParseIf().
 
 %**************************************************************************
-function [S,Tail,Error] = xxParseSwitch(C,Pos) %#ok<DEFNU>
+function [S,Tail,Err] = xxParseSwitch(C,Pos) %#ok<DEFNU>
 
 S = struct();
 S.SwitchExp = '';
@@ -196,15 +196,15 @@ Tail = '';
 getcond = @(x) regexp(x,'^[^;\n]+','match','end','once');
 
 [S.SwitchExp,Pos,match] = xxFindSubControl(C,Pos,{'!case','!otherwise'});
-Error = ~any(strcmp(match,{'!case','!otherwise','!end'}));
-if Error
+Err = ~any(strcmp(match,{'!case','!otherwise','!end'}));
+if Err
     return
 end
 
 while strcmp(match,'!case')
     [Case,Pos,match] = xxFindSubControl(C,Pos,{'!case','!otherwise'});
-    Error = ~any(strcmp(match,{'!case','!otherwise','!end'}));
-    if Error
+    Err = ~any(strcmp(match,{'!case','!otherwise','!end'}));
+    if Err
         return
     end
     [S.CaseExp{end+1},finish] = getcond(Case);
@@ -213,8 +213,8 @@ end
 
 if strcmp(match,'!otherwise')
     [S.OtherwiseBody,Pos,match] = xxFindEnd(C,Pos);
-    Error = ~strcmp(match,'!end');
-    if Error
+    Err = ~strcmp(match,'!end');
+    if Err
         return
     end
 end
@@ -224,7 +224,7 @@ Tail = C(Pos:end);
 end % xxParseSwitch().
 
 %**************************************************************************
-function [S,Tail,Error] = xxParseExport(C,Pos) %#ok<DEFNU>
+function [S,Tail,Err] = xxParseExport(C,Pos) %#ok<DEFNU>
 
 S = struct();
 S.ExportName = '';
@@ -232,14 +232,14 @@ S.ExportBody = '';
 Tail = '';
 
 [export,Pos,match] = xxFindEnd(C,Pos);
-Error = ~strcmp(match,'!end');
-if Error
+Err = ~strcmp(match,'!end');
+if Err
     return
 end
 
 name = regexp(export,'^\s*\([^\n\)]*\)','once','match');
 if isempty(name)
-    Error = ['!export ',export];
+    Err = ['!export ',export];
     return
 end
 S.ExportName = strtrim(name(2:end-1));
@@ -251,10 +251,11 @@ Tail = C(Pos:end);
 end % xxParseExport().
 
 %**************************************************************************
-function [Replace,Error,Warn] = xxReplaceFor(S,D,Labels,ErrorParsing) %#ok<DEFNU>
+function [Replace,Labels,Err,Warn] ...
+    = xxReplaceFor(S,D,Labels,ErrorParsing) %#ok<DEFNU>
 
 Replace = '';
-Error = '';
+Err = '';
 Warn = {};
 
 forBody = S.ForBody;
@@ -267,7 +268,7 @@ if isempty(control)
 end
 
 % Put labels back in the !for body.
-forBody = xxLabelsBack(forBody,Labels);
+forBody = preparser.labelsback(forBody,Labels);
 
 % List of parameters supplied through `'assign='` as `'\<a|b|c\>'`
 plist = fieldnames(D);
@@ -278,10 +279,10 @@ if ~isempty(plist)
 end
 
 % Expand [ ... ].
-replaceFunc = @doexpandsqb; %#ok<NASGU>
+replaceFunc = @doExpandSqb; %#ok<NASGU>
 forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
 
-if ~isempty(Error)
+if ~isempty(Err)
     return
 end
 
@@ -296,7 +297,7 @@ if ~isempty(strfind(forBody,'!'))
 end
 list = regexp(forBody,'[^\s,;]+','match');
 
-    function C1 = doexpandsqb(C)
+    function C1 = doExpandSqb(C)
         % doexpandsqb  Expand Matlab expressions in square brackets.
         C1 = '';
         try
@@ -321,7 +322,7 @@ list = regexp(forBody,'[^\s,;]+','match');
                 end
             end
         catch %#ok<CTCH>
-            Error = ['!for ',forBody];
+            Err = ['!for ',forBody];
         end        
     end
 
@@ -331,41 +332,70 @@ Replace = '';
 br = sprintf('\n');
 nList = length(list);
 
+isObsolete = false;
 for i = 1 : nList
-    template = doBody;
-    % These are the preferred options.
-    if length(control) > 1
-        template = strrep(template, ...
-            [control(1),'.',control(2:end)], ...
-            lowerList{i});
-        template = strrep(template, ...
-            [control(1),':',control(2:end)], ...
-            upperList{i});
+    C = doBody;
+    
+    % The following ones are for bkw compatibility only; throw a warning, and
+    % remove from IRIS in the future.
+    C0 = C;
+    C = strrep(C,['!lower',control],lowerList{i});
+    C = strrep(C,['!upper',control],upperList{i});
+    C = strrep(C,['<lower(',control,')>'],lowerList{i});
+    C = strrep(C,['<upper(',control,')>'],upperList{i});
+    C = strrep(C,['lower(',control,')'],lowerList{i});
+    C = strrep(C,['upper(',control,')'],upperList{i});
+    C = strrep(C,['<-',control,'>'],lowerList{i});
+    C = strrep(C,['<+',control,'>'],upperList{i});
+    C = strrep(C,['<',control,'>'],list{i});
+    isObsolete = isObsolete || length(C) ~= length(C0) || ~all(C == C0);
+    
+    % Handle standard syntax here.
+    C = doSubsForControl(C,control,list{i});
+
+    % Made the substitutions for the control variable in labels.
+    lab = regexp(C,'#\(\d+\)','match');
+    for j = 1 : length(lab)
+        pos = sscanf(lab{j},'#(%g)');
+        newPos = length(Labels) + 1;
+        newLab = sprintf('#(%g)',newPos);
+        Labels{newPos} = doSubsForControl(Labels{pos},control,list{i});
+        C = strrep(C,lab{j},newLab);
     end
-    % The following ones are for bkw compatibility only.
-    template = strrep(template,['!lower',control],lowerList{i});
-    template = strrep(template,['!upper',control],upperList{i});
-    template = strrep(template,['<lower(',control,')>'],lowerList{i});
-    template = strrep(template,['<upper(',control,')>'],upperList{i});
-    template = strrep(template,['lower(',control,')'],lowerList{i});
-    template = strrep(template,['upper(',control,')'],upperList{i});
-    template = strrep(template,['<-',control,'>'],lowerList{i});
-    template = strrep(template,['<+',control,'>'],upperList{i});
-    template = strrep(template,['<',control,'>'],list{i});
-    % Finally, this is the plain control variable substitution.
-    template = strrep(template,control,list{i});
-    % Remove leading and trailing empty lines.
-    template = strfun.removeltel(template);
-    Replace = [Replace,br,template]; %#ok
+    
+    C = strfun.removeltel(C);
+    Replace = [Replace,br,C]; %#ok
 end
+
+if isObsolete
+    doBody = preparser.labelsback(doBody,Labels);
+    utils.warning('obsolete', ...
+        ['The syntax for lower/upper case of a !for control variable ', ...
+        'in the following piece of code is obsolete, and will be removed ', ...
+        'from IRIS in the future: ''%s''.'], ...
+        doBody);
+end
+
+    function C = doSubsForControl(C,Control,Subs)
+        if length(Control) > 1
+            lowerSubs = lower(Subs);
+            upperSubs = upper(Subs);
+            % Substitute lower(...) for for ?.name.
+            C = strrep(C,[Control(1),'.',Control(2:end)],lowerSubs);
+            % Substitute upper(...) for for ?:name.
+            C = strrep(C,[Control(1),':',Control(2:end)],upperSubs);
+        end
+        % Substitute for ?name.
+        C = strrep(C,Control,Subs);
+    end
 
 end % xxReplaceFor().
 
 %**************************************************************************
-function [Replace,Error,Warn] = xxReplaceIf(S,D,Labels,~) %#ok<DEFNU>
+function [Replace,Labels,Err,Warn] = xxReplaceIf(S,D,Labels,~) %#ok<DEFNU>
 
 Replace = ''; %#ok<NASGU>
-Error = '';
+Err = '';
 Warn = {};
 br = sprintf('\n');
 
@@ -400,10 +430,10 @@ Replace = strfun.removeltel(Replace);
 end % xxReplaceIf().
 
 %**************************************************************************
-function [Replace,Error,Warn] = xxReplaceSwitch(S,D,Labels,~) %#ok<DEFNU>
+function [Replace,Labels,Err,Warn] = xxReplaceSwitch(S,D,Labels,~) %#ok<DEFNU>
 
 Replace = ''; %#ok<NASGU>
-Error = '';
+Err = '';
 Warn = {};
 br = sprintf('\n');
 
@@ -435,10 +465,10 @@ Replace = strfun.removeltel(Replace);
 end % xxReplaceSwitch().
 
 %**************************************************************************
-function [Replace,Error,Warn] = xxReplaceExport(S,D,Labels,~) %#ok<INUSD,DEFNU>
+function [Replace,Labels,Err,Warn] = xxReplaceExport(~,~,Labels,~) %#ok<DEFNU>
 
 Replace = '';
-Error = '';
+Err = '';
 Warn = {};
 
 end % xxReplaceExport().
@@ -451,12 +481,12 @@ if ~isfield(S,'ExportName') || isempty(S.ExportName) ...
     return
 end
 
-S.ExportBody = xxLabelsBack(S.ExportBody,Labels);
+S.ExportBody = preparser.labelsback(S.ExportBody,Labels);
 
 Export(end+1).filename = S.ExportName;
 Export(end).content = S.ExportBody;
 
-end % xxReplaceExport().
+end % xxExport().
 
 %**************************************************************************
 function [Body,Pos,Match] = xxFindSubControl(C,Pos,SubControl)
@@ -557,7 +587,7 @@ Exp = strrep(Exp,'?.','D.');
 % Put labels back because some of them can be strings in !if or !switch
 % expressions.
 if ~isempty(Labels)
-    Exp = xxLabelsBack(Exp,Labels);
+    Exp = preparser.labelsback(Exp,Labels);
 end
 
 % Evaluate the expression.
@@ -572,28 +602,6 @@ end
 end % xxEval().
 
 %**************************************************************************
-function C = xxLabelsBack(C,Labels)
-% xxLabelsBack  Substitute labels back for #(NN) in a string.
-
-if isempty(Labels)
-    return
-end
-
-    function s = replace(x)
-        s = '''''';
-        x = sscanf(x,'#(%g)');
-        if ~isempty(x) && ~isnan(x)
-            s = ['''',Labels{x},''''];
-        end
-    end
-
-% End of nested function replace().
-replaceFunc = @replace; %#ok<NASGU>
-C = regexprep(C,'(#\(\d+\))','${replaceFunc($1)}');
-
-end % xxLabelsBack().
-
-%**************************************************************************
 function C = xxFormatError(C,Labels)
 
 if iscell(C)
@@ -602,7 +610,7 @@ if iscell(C)
     end
     return
 end
-C = xxLabelsBack(C,Labels);
+C = preparser.labelsback(C,Labels);
 C = regexprep(C,'\s+',' ');
 C = strtrim(C);
 C = strfun.maxdisp(C,40);

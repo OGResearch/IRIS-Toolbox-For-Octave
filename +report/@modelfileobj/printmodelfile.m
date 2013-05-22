@@ -11,8 +11,6 @@ function C = printmodelfile(This)
 
 offset = irisget('highcharcode');
 
-% TODO: Check for '@' in the model file; if found replace the \verb
-% delimiter with something else or remove all @s from the model file.
 % TODO: Handle comment blocks %{...%} properly.
 C = '';
 if isempty(This.filename)
@@ -25,8 +23,21 @@ if isModel
 end
 br = sprintf('\n');
 
-line = file2char(This.filename,'cellstrl',This.options.lines);
-nLine = length(line);
+file = file2char(This.filename,'cellstrl',This.options.lines);
+
+% Choose escape character.
+escList = '`@?$#~&":|!^[]{}<>';
+esc = xxChooseEscChar(file,escList);
+if isempty(esc)
+    utils.error('report', ...
+        ['Cannot print the model file. ', ...
+        'Make sure at least on of these characters completely disappears ', ...
+        'from the model file: %s.'], ...
+        escList);
+end
+verbEsc = ['\verb',esc];
+
+nLine = length(file);
 if isinf(This.options.lines)
     This.options.lines = 1 : nLine;
 end
@@ -37,56 +48,65 @@ C = [C,'\definecolor{myparam}{rgb}{0.90,0,0}',br];
 C = [C,'\definecolor{mykeyword}{rgb}{0,0,0.75}',br];
 C = [C,'\definecolor{mycomment}{rgb}{0,0.50,0}',br];
 
-line = strrep(line,char(10),'');
-line = strrep(line,char(13),'');
+file = strrep(file,char(10),'');
+file = strrep(file,char(13),'');
 for i = 1 : nLine
-    % Split the line if there is a line comment.
-    tok = regexp(line{i},'([^%]*)(%.*)?','tokens','once');
-    if ~isempty(tok)
-        x = tok{1};
-        y = tok{2};
-    else
-        x = '';
-        y = '';
-    end
-    % Protect labels.
-    x = doSyntax(x);
-    y = doComments(y);
-    C = [C,x,y,' \\',br]; %#ok<AGROW>
+    c = doOneLine(file{i});
+    C = [C,c,' \\',br]; %#ok<AGROW>
 end
+
+C = strrep(C,['\verb',esc,esc],'');
 
 % Nested functions.
 
 %**************************************************************************
-    function C = doSyntax(C)
+    function C = doOneLine(C)
         
         keywordsFunc = @doKeywords; %#ok<NASGU>
-        %labelsFunc = @doLabels; %#ok<NASGU>
-        paramValuesFunc = @doParamValues; %#ok<NASGU>
+        paramValFunc = @doParamVal; %#ok<NASGU>
         
         [C,lab] = xxProtectLabels(C,offset);
         
+        lineComment = '';
+        pos = strfind(C,'%');
+        if ~isempty(pos)
+            lineComment = C(pos(1):end);
+            C = C(1:pos(1)-1);
+        end
+        
         if This.options.syntax
+            % Keywords.
             C = regexprep(C, ...
                 '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
                 '${keywordsFunc($0)}');
+            % Line comments.
+            if ~isempty(lineComment)
+                lineComment = [ ...
+                    esc, ...
+                    '{\color{mycomment}', ...
+                    verbEsc,lineComment,esc, ...
+                    '}', ...
+                    verbEsc];
+            end
         end
+        
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are parameter names
-            % or std errors is verified within paramvalues.
+            % or std errors is verified within doParamVal.
             C = regexprep(C, ...
                 '(?<!!)\<\w+\>', ...
-                '${paramValuesFunc($0)}');
+                '${paramValFunc($0)}');
         end
+        
         if This.options.linenumbers
             C = [ ...
                 sprintf('%*g: ',nDigit,This.options.lines(i)), ...
                 C];
         end
         
-        C = xxLabelsBack(C,lab,offset,This.options);
+        C = xxLabelsBack(C,lab,offset,esc,This.options);
         
-        C = ['\verb@',C,'@'];
+        C = [verbEsc,C,lineComment,esc];
         
         function C = doKeywords(C)
             if strcmp(C,'!!') || strcmp(C,'=#') ...
@@ -95,12 +115,15 @@ end
             else
                 color = 'mykeyword';
             end
-            C = latex.stringsubs(C);
-            C = ['\textcolor{',color,'}{\texttt{',C,'}}'];
-            C = ['@',C,'\verb@'];
+            C = [ ...
+                '{\color{',color,'}', ...
+                verbEsc,C,esc, ...
+                '}', ...
+                ];
+            C = [esc,C,verbEsc];
         end
         
-        function C = doParamValues(C)
+        function C = doParamVal(C)
             if any(strcmp(C,eList))
                 value = This.modelobj.(['std_',C]);
                 prefix = '\sigma\!=\!';
@@ -115,19 +138,10 @@ end
             value = strrep(value,'NaN','\mathrm{NaN}');
             value = ['{\color{myparam}$\left<{', ...
                 prefix,value,'}\right>$}'];
-            C = [C,'@',value,'\verb@'];
+            C = [C,esc,value,verbEsc];
         end
         
     end % doSyntax().
-
-%**************************************************************************
-    function C1 = doComments(C)
-        C1 = '{';
-        if This.options.syntax
-            C1 = [C1,'\color{mycomment}'];
-        end
-        C1 = [C1,'\verb@',C,'@}'];
-    end % doComments().
 
 end
 
@@ -150,46 +164,58 @@ end
 end % xxProtectLabels().
 
 %**************************************************************************
-function C = xxLabelsBack(C,Labels,Offset,Opt)
+function C = xxLabelsBack(C,Labels,Offset,Esc,Opt)
 
-% Typeset alias interpreting it as LaTeX code.
-latexAlias = Opt.latexalias;
-
-% Syntax highlighting.
-isSyntax = Opt.syntax;
+verbEsc = ['\verb',Esc];
 
 for i = 1 : length(Labels)
     pos = strfind(C,char(Offset+i));
     split = strfind(Labels{i},'!!');
+    openQuote = Labels{i}(1);
+    closeQuote = Labels{i}(end);
     if ~isempty(split)
         split = split(1);
-        quotes = Labels{i}(1);
-        label = latex.stringsubs(Labels{i}(2:split+1));
+        label = Labels{i}(2:split+1);
         alias = Labels{i}(split+2:end-1);
-        if ~latexAlias
-            alias = latex.stringsubs(alias);
+        if Opt.latexalias
+            alias = [Esc,alias,verbEsc]; %#ok<AGROW>
         end
     else
-        quotes = Labels{i}(1);
         label = latex.stringsubs(Labels{i}(2:end-1));
         alias = '';
     end
     
-    % Syntax highlighting.
-    if isSyntax
-        preSyntax = '@\textcolor{mylabel}{\texttt{';
-        postSyntax = '}}\verb@';
+    if Opt.syntax
+        pre = [Esc,'{\color{mylabel}',verbEsc];
+        post = [Esc,'}',verbEsc];
     else
-        preSyntax = '';
-        postSyntax = '';
+        pre = '';
+        post = '';
     end
     
-    C = [C(1:pos-1), ...
-        preSyntax, ...
-        quotes,label,alias,quotes, ...
-        postSyntax, ...
-        C(pos+1:end)];
+    C = [ ...
+        C(1:pos-1), ...
+        pre, ...
+        openQuote, ...
+        label,alias, ...
+        closeQuote, ...
+        post, ...
+        C(pos+1:end), ...
+        ];
 end
 
 end % xxLabelsBack().
 
+%**************************************************************************
+function Esc = xxChooseEscChar(File,EscList)
+
+File = [File{:}];
+Esc = '';
+for i = 1 : length(EscList)
+    if isempty(strfind(File,EscList(i)))
+        Esc = EscList(i);
+        break
+    end
+end
+
+end % xxChooseEscChar().

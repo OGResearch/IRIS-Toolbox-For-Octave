@@ -99,7 +99,8 @@ else
             This = refresh(This);
         end
     end
-    if isstruct(Opt.chksstate)
+    % Run chksstate only if steady state has been recomputed.
+    if ~isequal(Opt.sstate,false) && isstruct(Opt.chksstate)
         [~,~,~,SstateErrorList] = mychksstate(This,Opt.chksstate);
         SstateErrorList = SstateErrorList{1};
         chkSstateOk = isempty(SstateErrorList);

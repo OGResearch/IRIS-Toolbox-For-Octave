@@ -1,5 +1,5 @@
 function [Code,Labels,Export,Subs,Comment] ...
-    = readcode(FileList,Params,Labels,Export,ParentFile,RemoveComments)
+    = readcode(FileList,Params,Labels,Export,ParentFile,Opt)
 % readcode  [Not a public function] Preparser master file.
 %
 % Backend IRIS function.
@@ -24,8 +24,8 @@ if isempty(ParentFile)
     ParentFile = '';
 end
 
-if isempty(RemoveComments)
-    RemoveComments = {};
+if isempty(Opt.removecomments)
+    Opt.removecomments = {};
 end
 
 %--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ end
 [Code,Labels] = preparser.protectlabels(Code,Labels);
 
 % Remove standard line and block comments.
-Code = strfun.removecomments(Code,RemoveComments{:});
+Code = strfun.removecomments(Code,Opt.removecomments{:});
 
 % Remove triple exclamation point !!!.
 % This mark is meant to be used to highlight some bits of the code.
@@ -98,20 +98,19 @@ Code = [Code,sprintf('\n')];
 
 % Execute control commands
 %--------------------------
-
 % Evaluate and expand the following control commands:
 % * !if .. !else .. !elseif .. !end
 % * !for .. !do .. !end
 % * !switch .. !case ... !otherwise .. !end
 % * !export .. !end
-
-[Code,Export] = preparser.controls(Code,Params,errorParsing,Labels,Export);
+[Code,Labels,Export] ...
+    = preparser.controls(Code,Params,errorParsing,Labels,Export);
 
 % Import external files
 %-----------------------
 
 [Code,Labels,Export] = xxImport(Code, ...
-    Params,Labels,Export,fileStr,RemoveComments);
+    Params,Labels,Export,fileStr,Opt);
 
 % Expand pseudofunctions
 %------------------------
@@ -129,7 +128,8 @@ end
 
 % Expand substitutions in the top file after all imports have been done.
 if isempty(ParentFile)
-    [Code,Subs,leftover,multiple,undef] = preparser.substitute(Code);
+    [Code,Subs,leftover,multiple,undef] ...
+        = preparser.substitute(Code);
     if ~isempty(leftover)
         leftover = xxFormatError(leftover,Labels);
         utils.error('preparser',[errorParsing, ...
@@ -166,7 +166,7 @@ end % xxPrefix().
 
 %**************************************************************************
 function [Code,Labels,Export] ...
-    = xxImport(Code,Params,Labels,Export,ParentFile,RemoveComments)
+    = xxImport(Code,Params,Labels,Export,ParentFile,Opt)
 
 % doimport  Import external file.
 % Call import/include/input files with replacement.
@@ -180,7 +180,7 @@ while true
     fname = strtrim(tokens{1});
     if ~isempty(fname)
         [impcode,Labels,Export] = preparser.readcode(fname, ...
-            Params,Labels,Export,ParentFile,RemoveComments);
+            Params,Labels,Export,ParentFile,Opt);
         Code = [Code(1:start-1),impcode,Code(finish+1:end)];
     end
 end
