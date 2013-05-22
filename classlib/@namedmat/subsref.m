@@ -3,54 +3,58 @@ function X = subsref(This,varargin)
 s = varargin{1};
 isPreserved = strcmp(s(1).type,'()') && length(s(1).subs) >= 2;
 
-% Convert char or cellstr row references to positions.
-if strcmp(s(1).type,'()') && ~isequal(s(1).subs{1},':') ...
-        && (ischar(s(1).subs{1}) || iscellstr(s(1).subs{1}))
-    if ischar(s(1).subs{1})
-        usrName = regexp(s(1).subs{1},'\w+','match');
-    end
-    nUsrName = length(usrName);
-    validRowName = true(1,nUsrName);
-    rowPos = zeros(1,0);
-    for i = 1 : nUsrName
-        pos = strcmp(usrName{i},This.rownames);
-        if any(pos)
-            rowPos = [rowPos,find(pos)]; %#ok<AGROW>
-        else
-            validRowName(i) = false;
+if strcmp(s(1).type,'()')
+    
+    % Convert char or cellstr row references to positions.
+    if (ischar(s(1).subs{1}) || iscellstr(s(1).subs{1})) ...
+            && ~isequal(s(1).subs{1},':')
+        if ischar(s(1).subs{1})
+            usrName = regexp(s(1).subs{1},'\w+','match');
         end
-    end
-    if any(~validRowName)
-        utils.error('namedmat', ...
-            'This is not a valid row name in the namedmat object: ''%s''.', ...
-            usrName{~validRowName});
-    end
-    s(1).subs{1} = rowPos;
-end
-
-% Convert char or cellstr col references to positions.
-if strcmp(s(1).type,'()') && ~isequal(s(1).subs{2},':') ...
-        && (ischar(s(1).subs{2}) || iscellstr(s(1).subs{2}))
-    if ischar(s(1).subs{2})
-        usrName = regexp(s(1).subs{2},'\w+','match');
-    end
-    nUsrName = length(usrName);
-    validColName = true(1,nUsrName);
-    colPos = zeros(1,0);
-    for i = 1 : nUsrName
-        pos = strcmp(usrName{i},This.colnames);
-        if any(pos)
-            colPos = [colPos,find(pos)]; %#ok<AGROW>
-        else
-            validColName(i) = false;
+        nUsrName = length(usrName);
+        validRowName = true(1,nUsrName);
+        rowPos = zeros(1,0);
+        for i = 1 : nUsrName
+            pos = strcmp(usrName{i},This.rownames);
+            if any(pos)
+                rowPos = [rowPos,find(pos)]; %#ok<AGROW>
+            else
+                validRowName(i) = false;
+            end
         end
+        if any(~validRowName)
+            utils.error('namedmat', ...
+                'This is not a valid row name in the namedmat object: ''%s''.', ...
+                usrName{~validRowName});
+        end
+        s(1).subs{1} = rowPos;
     end
-    if any(~validColName)
-        utils.error('namedmat', ...
-            'This is not a valid column name in the namedmat object: ''%s''.', ...
-            usrName{~validColName});
+    
+    % Convert char or cellstr col references to positions.
+    if length(s(1).subs) > 1 ...
+            && (ischar(s(1).subs{2}) || iscellstr(s(1).subs{2})) ...
+            && ~isequal(s(1).subs{2},':') ...
+        if ischar(s(1).subs{2})
+            usrName = regexp(s(1).subs{2},'\w+','match');
+        end
+        nUsrName = length(usrName);
+        validColName = true(1,nUsrName);
+        colPos = zeros(1,0);
+        for i = 1 : nUsrName
+            pos = strcmp(usrName{i},This.colnames);
+            if any(pos)
+                colPos = [colPos,find(pos)]; %#ok<AGROW>
+            else
+                validColName(i) = false;
+            end
+        end
+        if any(~validColName)
+            utils.error('namedmat', ...
+                'This is not a valid column name in the namedmat object: ''%s''.', ...
+                usrName{~validColName});
+        end
+        s(1).subs{2} = colPos;
     end
-    s(1).subs{2} = colPos;
 end
 
 if isPreserved
