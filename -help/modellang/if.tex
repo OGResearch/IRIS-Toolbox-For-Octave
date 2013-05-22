@@ -1,0 +1,112 @@
+
+
+    \filetitle{!if...!elseif...!else...!end}{Choose block of code depending on a condition}{modellang/if}
+
+	\paragraph{Syntax with else and elseif clauses}
+ 
+ \begin{verbatim}
+ !if condition1
+     block1
+ !elseif condition2
+     block2
+ !elseif condition3
+ ...
+ !else
+     block3
+ !end
+ \end{verbatim}
+ 
+ \paragraph{Syntax with an else clause only}
+ 
+ \begin{verbatim}
+ !if condition1
+     block1
+ !else
+     block2
+ !end
+ \end{verbatim}
+ 
+ \paragraph{Syntax without an else clause}
+ 
+ \begin{verbatim}
+ !if condition
+     block1
+ !end
+ \end{verbatim}
+ 
+ \paragraph{Description}
+ 
+ The \texttt{!if...!elseif...!else...!end} command works the same way as
+ its counterpart in the Matlab programming language.
+ 
+ Use the \texttt{!if...!else...!end} command to create branches or
+ versions of the model code. Whether a block of code in a particular
+ branch is used or discarded, depends on the condition after the opening
+ \texttt{!if} command and the conditions after subsequent
+ \texttt{!elseif} commands if present. The condition must be a Matlab
+ expression that evaluates to true or false. The condition can refer to
+ model parameters, or to other fields included in the database passed in
+ through the option `\texttt{assign=}' in the
+ \href{model/model}{\texttt{model}} function.
+ 
+ \paragraph{Example 1}
+ 
+ \begin{verbatim}
+ !if B < Inf
+     % This is a linearised sticky-price Phillips curve.
+     pi = A*pi{-1} + (1-A)*pi{1} + B*log(mu*rmc);
+ !else
+     % This is a flexible-price mark-up rule.
+     rmc = 1/mu;
+ !end
+ \end{verbatim}
+ 
+ If you set the parameter \texttt{B} to Inf in the parameter database
+ when reading in the model file, then the flexible-price equatio,
+ \texttt{rmc = 0}, is used and the Phillips curve equation discarded. To
+ use the Phillips curve equation instead, you need to re-read the model
+ file with \texttt{B} set to a number other than Inf. In this example,
+ \texttt{B} needs to be, obviously, declared as a model parameter.
+ 
+ \paragraph{Example 2}
+ 
+ \begin{verbatim}
+ !if exogenous == true
+     x = y;
+ !else
+     x = rho*x{-1} + epsilon;
+ !end
+ \end{verbatim}
+ 
+ When reading the model file in, create a parameter database, include at
+ least a field named \texttt{exogenous} in it, and use the
+ \texttt{'assign='} option to pass the database in. Note that you do not
+ need to declare \texttt{exogenous} as a parameter in the model file.
+ 
+ \begin{verbatim}
+ P = struct();
+ P.exogenous = true;
+ ...
+ m = model('my.model','assign=',P);
+ \end{verbatim}
+ 
+ In this case, the model will contain the first equation,
+ \texttt{x = rho*x\{-1\} + epsilon;} will be used, and the other
+ discarded. To use the other equation, \texttt{x = y}, you need to
+ re-read the model file with \texttt{exogenous} set to false:
+ 
+ \begin{verbatim}
+ P = struct();
+ P.exogenous = false;
+ ...
+ m = model('my.model','assign=',P);
+ \end{verbatim}
+ 
+ You can also use an abbreviate syntax to assign control parameters when
+ readin the model file; for instance
+ 
+ \begin{verbatim}
+ m = model('my.model','exogenous=',true);
+ \end{verbatim}
+
+

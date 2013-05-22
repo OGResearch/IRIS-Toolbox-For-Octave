@@ -1,0 +1,141 @@
+
+
+    \filetitle{publish}{Compile PDF from report object}{report/publish}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [OutpFile,Rerun] = P.publish(InpFile,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} struct {]} - Report object created by the
+   \texttt{report.new} function.
+ \item
+   \texttt{InpFile} {[} char {]} - File name under which the compiled PDF
+   will be saved.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{OutpFile} {[} char {]} - Name of the resulting PDF.
+ \item
+   \texttt{Rerun} {[} numeric {]} - Number of times the LaTeX compiler
+   was run to compile the PDF.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'abstract='} {[} char \textbar{} \emph{empty} {]} - Abstract
+   that will displayed on the title page.
+ \item
+   \texttt{'abstractWidth='} {[} numeric \textbar{} \emph{\texttt{1}} {]}
+   - Width of the abstract on the page as a percentage of the full
+   default width (between \texttt{0} and \texttt{1}).
+ \item
+   \texttt{'author='} {[} char \textbar{} \emph{empty} {]} - List of
+   authors on the title page separated with \texttt{\textbackslash{}and}
+   or \texttt{\textbackslash{}\textbackslash{}}.
+ \item
+   \texttt{'cd='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+   - If \texttt{true} do not use the \texttt{pdflatex} option
+   \texttt{-include-directory} and instead change the directory
+   (\texttt{cd}) temporarily to the location of the input file; this is a
+   workaround for systems where \texttt{pdflatex} does not support the
+   option \texttt{-include-directory}.
+ \item
+   \texttt{'cleanup='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Delete all temporary files created when compiling the report.
+ \item
+   \texttt{'compile='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Compile the source files to an actual PDF; if \texttt{false}
+   only the source files are created.
+ \item
+   \texttt{'date='} {[} char \textbar{}
+   \emph{\texttt{'\textbackslash{}today'}} {]} - Date on the title page.
+ \item
+   \texttt{'display='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Display the \LaTeX compiler report on the final iteration.
+ \item
+   \texttt{'echo='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - If \texttt{true}, the optional flag \texttt{'-echo'} will be
+   used in the Matlab function \texttt{system} when compiling the PDF;
+   this causes the screen output and all prompts to be displayed for each
+   run of the compiler.
+ \item
+   \texttt{'epsToPdf='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
+   Command line arguments for EPSTOPDF; \texttt{Inf} means OS-specific
+   arguments are used.
+ \item
+   \texttt{'fontEnc='} {[} char \textbar{} \emph{\texttt{'T1'}} {]} -
+   \LaTeX~font encoding.
+ \item
+   \texttt{'makeTitle='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Produce title page (with title, author,
+   date, and abstract).
+ \item
+   \texttt{'package='} {[} char \textbar{} cellstr \textbar{}
+   \emph{empty} {]} - Package or list of packages that will be imported
+   in the preamble of the LaTeX file.
+ \item
+   \texttt{'paperSize='} {[} \texttt{'a4paper'} \textbar{}
+   \emph{\texttt{'letterpaper'}} {]} - Paper size.
+ \item
+   \texttt{'orientation='} {[} \emph{\texttt{'landscape'}} \textbar{}
+   \texttt{'portrait'} {]} - Paper orientation.
+ \item
+   \texttt{'preamble='} {[} char \textbar{} \emph{empty} {]} -
+   \LaTeX~commands that will be placed in the \LaTeX~file preamble.
+ \item
+   \texttt{'timeStamp='} {[} char \textbar{}
+   \emph{\texttt{'datestr(now())'}} {]} - String printed in the top-left
+   corner of each page.
+ \item
+   \texttt{'tempDir='} {[} char \textbar{} \emph{\texttt{tempname(cd())}}
+   {]} - Directory for storing temporary files; the directory is deleted
+   at the end of the execution if it's empty.
+ \item
+   \texttt{'maxRerun='} {[} numeric \textbar{} \emph{\texttt{5}} {]} -
+   Maximum number of times the \LaTeX\\compiler will be run to resolve
+   cross-references, etc.
+ \item
+   \texttt{'minRerun='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+   Minimum number of times the \LaTeX\\compiler will be run to resolve
+   cross-references, etc.
+ \item
+   \texttt{'textScale='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} -
+   Percentage of the total page area that will be used.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \subparagraph{Difference between \texttt{'display='} and
+ \texttt{'echo='}}
+ 
+ There are two differences between these otherwise similar options:
+ 
+ \begin{itemize}
+ \item
+   When publishing the final PDF, the PDFLaTeX compiler may be called
+   more than once to resolve cross-references, the table of contents, and
+   so on. Setting \texttt{'display=' true} only displays the screen
+   output from the final iteration only, while \texttt{'echo=' true}
+   displays the screen outputs from all iterations.
+ \item
+   In the case of a compiler error unrelated to the \LaTeX~code, the
+   compiler may stop and prompt the user to respond. The prompt only
+   appears on the screen when \texttt{'echo=' true}. Otherwise, Matlab
+   may remain in a busy state with no on-screen information, and
+   \texttt{Ctrl+C} may be needed to regain control.
+ \end{itemize}
+ 
+ \paragraph{Example}
+
+

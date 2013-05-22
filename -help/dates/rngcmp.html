@@ -1,0 +1,134 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dates/rngcmp">rngcmp</h2>
+<div class="headline">Compare two IRIS date ranges</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Flag = rngcmp(R1,R2)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>R1</code>, <code>R2</code> [ numeric ] - Two IRIS date ranges that will be compared.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Flag</code> [ <code>true</code> | <code>false</code> ] - True if the two date ranges are the same.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>An IRIS date range is distinct from a vector of dates in that only the first and the last dates matter. Often, date ranges are context sensitive. In that case, you can use <code>-Inf</code> for the start date (meaning the earliest possible date in the given context) and <code>Inf</code> for the end date (meaning the latest possible date in the given context), or simply <code>Inf</code> for the whole range (meaning from the earliest possible date to the latest possible date in the given context).</p>
+<h4 id="example">Example</h4>
+<pre><code>r1 = qq(2010,1):qq(2020,4);
+r2 = [qq(2010,1),qq(2020,4)];
+
+rngcmp(r1,r2)
+ans =
+    1</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

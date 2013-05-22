@@ -1,0 +1,48 @@
+
+
+    \filetitle{plan}{Create new simulation plan}{plan/plan}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ P = plan(M,Range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object that will be simulated subject
+   to this simulation plan.
+ \item
+   \texttt{Range} {[} numeric {]} - Simulation range; this range must
+   exactly correspond to the range on which the model will be simulated.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} plan {]} - New, empty simulation plan.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ You need to use a simulation plan object to set up the following types
+ of more complex simulations or forecats:
+ 
+ \paragraph{simulations or forecasts with some of the model variables
+ temporarily exogenised;}
+ 
+ \paragraph{simulations with some of the non-linear equations solved
+ exactly.}
+ 
+ \paragraph{forecasts conditioned upon some variables;}
+ 
+ The plan object is passed to the \href{model/simulate}{simulate} or
+ \href{model/jforecast}{\texttt{jforecast}} functions through the option
+ \texttt{'plan='}.
+ 
+ \paragraph{Example}
+
+

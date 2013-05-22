@@ -1,0 +1,89 @@
+
+
+    \filetitle{arwm}{Adaptive random-walk Metropolis posterior simulator}{poster/arwm}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Theta,LogPost,AR,Scale,FinalCov] = arwm(Pos,NDraw,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Pos} {[} poster {]} - Initialised posterior simulator object.
+ \item
+   \texttt{NDraw} {[} numeric {]} - Length of the chain not including
+   burn-in.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Theta} {[} numeric {]} - MCMC chain with individual parameters
+   in rows.
+ \item
+   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
+   to a constant) in each draw.
+ \item
+   \texttt{AR} {[} numeric {]} - Vector of cumulative acceptance ratios
+   in each draw.
+ \item
+   \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+   each draw.
+ \item
+   \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
+   the final covariance matrix of the random walk step is
+   Scale(end)\^{}2*FinalCov.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'adaptProposalCov='} {[} numeric \textbar{}
+   \emph{\texttt{0.5}} {]} - Speed of adaptation of the Cholesky factor
+   of the proposal covariance matrix towards the target acceptanace
+   ratio, \texttt{targetAR}; zero means no adaptation.
+ \item
+   \texttt{'adaptScale='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+   Speed of adaptation of the scale factor to deviations of acceptance
+   ratios from the target ratio, \texttt{targetAR}.
+ \item
+   \texttt{'burnin='} {[} numeric \textbar{} \emph{\texttt{0.10}} {]} -
+   Number of burn-in draws entered either as a percentage of total draws
+   (between 0 and 1) or directly as a number (integer greater that one).
+   Burn-in draws will be added to the requested number of draws
+   \texttt{ndraw} and discarded after the posterior simulation.
+ \item
+   \texttt{'estTime='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Display and update the estimated time to go in the command
+   window.
+ \item
+   \texttt{'gamma='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} - The
+   rate of decay at which the scale and/or the proposal covariance will
+   be adapted with each new draw.
+ \item
+   \texttt{'initScale='} {[} numeric \textbar{} \texttt{1/3} {]} -
+   Initial scale factor by which the initial proposal covariance will be
+   multiplied; the initial value will be adapted to achieve the target
+   acceptance ratio.
+ \item
+   \texttt{'progress='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Display progress bar in the command
+   window.
+ \end{itemize}
+ 
+ *\texttt{'targetAR='} {[} numeric \textbar{} \emph{\texttt{0.234}} {]} -
+ Target acceptance ratio.
+ 
+ \paragraph{Description}
+ 
+ Use the \url{poster/stats} function to process the raw chain produced by
+ \texttt{arwm}.
+ 
+ \paragraph{Example}
+
+

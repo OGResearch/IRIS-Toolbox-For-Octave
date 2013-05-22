@@ -1,0 +1,42 @@
+
+
+    \filetitle{copy}{Create a copy of a report object}{report/copy}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ Q = copy(P)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} report {]} - Report object whose copy will be created.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Q} {[} report {]} - Copy of the input report object.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ Because \texttt{report} is a handle class object, a plain assignment
+ 
+ \begin{verbatim}
+ Q = P;
+ \end{verbatim}
+ 
+ creates a handle to the same copy of a report object. In other words,
+ changes in \texttt{Q} will also change \texttt{P} and vice versa. To
+ make a new, independent copy of an existing report object, you need to
+ run
+ 
+ \begin{verbatim}
+ Q = copy(P);
+ \end{verbatim}
+
+

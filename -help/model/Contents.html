@@ -1,0 +1,213 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="model/Contents">Model objects and functions</h1>
+
+
+<p>Model objects are created by loading a <a href="../modellang/Contents.html">model file</a>. Once a model object exists, you can use model functions and standard Matlab functions to write your own m-files to perform the desired tasks, such calibrate or estimate the model, find its steady state, solve and simulate it, produce forecasts, analyse its properties, and so on.</p>
+<p>Model methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../model/model.html"><code>model</code></a> - Create new model object based on model file.</li>
+</ul>
+<h4 id="getting-information-about-models">Getting information about models</h4>
+<ul>
+<li><a href="../model/addparam.html"><code>addparam</code></a> - Add model parameters to a database (struct).</li>
+<li>[<code>autocaption</code>] (model/autocaption) -</li>
+<li><a href="../model/autoexogenise.html"><code>autoexogenise</code></a> - Get or set variable/shock pairs for use in autoexogenised simulation plans.</li>
+<li><a href="../model/comment.html"><code>comment</code></a> - Get or set user comments in an IRIS object.</li>
+<li><a href="../model/eig.html"><code>eig</code></a> - Eigenvalues of the model transition matrix.</li>
+<li><a href="../model/findeqtn.html"><code>findeqtn</code></a> - Find equations by the labels.</li>
+<li><a href="../model/findname.html"><code>findname</code></a> - Find names of variables, shocks, or parameters by their descriptors.</li>
+<li><a href="../model/get.html"><code>get</code></a> - Query model object properties.</li>
+<li><a href="../model/iscompatible.html"><code>iscompatible</code></a> - True if two models can occur together on the LHS and RHS in an assignment.</li>
+<li><a href="../model/islinear.html"><code>islinear</code></a> - True for models declared as linear.</li>
+<li><a href="../model/islog.html"><code>islog</code></a> - True for log-linearised variables.</li>
+<li><a href="../model/isnan.html"><code>isnan</code></a> - Check for NaNs in model object.</li>
+<li><a href="../model/isname.html"><code>isname</code></a> - True for valid names of variables, parameters, or shocks in model object.</li>
+<li><a href="../model/issolved.html"><code>issolved</code></a> - True if a model solution exists.</li>
+<li><a href="../model/isstationary.html"><code>isstationary</code></a> - True if model or specified combination of variables is stationary.</li>
+<li><a href="../model/length.html"><code>length</code></a> - Number of alternative parameterisations.</li>
+<li><a href="../model/omega.html"><code>omega</code></a> - Get or set the covariance matrix of shocks.</li>
+<li><a href="../model/sspace.html"><code>sspace</code></a> - State-space matrices describing the model solution.</li>
+<li><a href="../model/system.html"><code>system</code></a> - System matrices before model is solved.</li>
+<li><a href="../model/userdata.html"><code>userdata</code></a> - Get or set user data in an IRIS object.</li>
+</ul>
+<h4 id="referencing-model-objects">Referencing model objects</h4>
+<ul>
+<li><a href="../model/subsasgn.html"><code>subsasgn</code></a> - Subscripted assignment for model and systemfit objects.</li>
+<li><a href="../model/subsref.html"><code>subsref</code></a> - Subscripted reference for model and systemfit objects.</li>
+</ul>
+<h4 id="changing-model-objects">Changing model objects</h4>
+<ul>
+<li><a href="../model/alter.html"><code>alter</code></a> - Expand or reduce number of alternative parameterisations.</li>
+<li><a href="../model/assign.html"><code>assign</code></a> - Assign parameters, steady states, std deviations or cross-correlations.</li>
+<li><a href="../model/export.html"><code>export</code></a> - Save carry-around files on the disk.</li>
+<li><a href="../model/horzcat.html"><code>horzcat</code></a> - Combine two compatible model objects in one object with multiple parameterisations.</li>
+<li><a href="../model/refresh.html"><code>refresh</code></a> - Refresh dynamic links.</li>
+<li><a href="../model/stdscale.html"><code>stdscale</code></a> - Re-scale all std deviations by the same factor.</li>
+<li><a href="../model/set.html"><code>set</code></a> - Change modifiable model object property.</li>
+<li><a href="../model/single.html"><code>single</code></a> - Convert solution matrices to single precision.</li>
+</ul>
+<h4 id="steady-state">Steady state</h4>
+<ul>
+<li><a href="../model/chksstate.html"><code>chksstate</code></a> - Check if equations hold for currently assigned steady0state values.</li>
+<li><a href="../model/sstate.html"><code>sstate</code></a> - Compute steady state or balance-growth path of the model.</li>
+<li><a href="../model/sstatefile.html"><code>sstatefile</code></a> - Create a steady-state file based on the model object's steady-state equations.</li>
+</ul>
+<h4 id="solution-simulation-and-forecasting">Solution, simulation and forecasting</h4>
+<ul>
+<li><a href="../model/diffsrf.html"><code>diffsrf</code></a> - Differentiate shock response functions w.r.t. specified parameters.</li>
+<li><a href="../model/expand.html"><code>expand</code></a> - Compute forward expansion of model solution for anticipated shocks.</li>
+<li><a href="../model/jforecast.html"><code>jforecast</code></a> - Forecast with judgmental adjustments (conditional forecasts).</li>
+<li><a href="../model/icrf.html"><code>icrf</code></a> - Initial-condition response functions.</li>
+<li><a href="../model/lhsmrhs.html"><code>lhsmrhs</code></a> - Evaluate the discrepancy between the LHS and RHS for each model equation and given data.</li>
+<li><a href="../model/resample.html"><code>resample</code></a> - Resample from the model implied distribution.</li>
+<li><a href="../model/reporting.html"><code>reporting</code></a> - Run reporting equations.</li>
+<li><a href="../model/shockplot.html"><code>shockplot</code></a> - Short-cut for running and plotting plain shock simulation.</li>
+<li><a href="../model/simulate.html"><code>simulate</code></a> - Simulate model.</li>
+<li><a href="../model/solve.html"><code>solve</code></a> - Calculate first-order accurate solution of the model.</li>
+<li><a href="../model/srf.html"><code>srf</code></a> - Shock response functions.</li>
+</ul>
+<h4 id="model-data">Model data</h4>
+<ul>
+<li><a href="../model/data4lhsmrhs.html"><code>data4lhsmrhs</code></a> - Prepare data array for running <code>lhsmrhs</code>.</li>
+<li><a href="../model/emptydb.html"><code>emptydb</code></a> - Create model-specific database with variables, shocks, and parameters.</li>
+<li><a href="../model/sstatedb.html"><code>sstatedb</code></a> - Create model-specific steady-state or balanced-growth-path database.</li>
+<li><a href="../model/zerodb.html"><code>zerodb</code></a> - Create model-specific zero-deviation database.</li>
+</ul>
+<h4 id="stochastic-properties">Stochastic properties</h4>
+<ul>
+<li><a href="../model/acf.html"><code>acf</code></a> - Autocovariance and autocorrelation functions for model variables.</li>
+<li><a href="../model/ifrf.html"><code>ifrf</code></a> - Frequency response function to shocks.</li>
+<li><a href="../model/fevd.html"><code>fevd</code></a> - Forecast error variance decomposition for model variables.</li>
+<li><a href="../model/ffrf.html"><code>ffrf</code></a> - Filter frequency response function of transition variables to measurement variables.</li>
+<li><a href="../model/fmse.html"><code>fmse</code></a> - Forecast mean square error matrices.</li>
+<li><a href="../model/vma.html"><code>vma</code></a> - Vector moving average representation of the model.</li>
+<li><a href="../model/xsf.html"><code>xsf</code></a> - Power spectrum and spectral density of model variables.</li>
+</ul>
+<h4 id="identification-estimation-and-filtering">Identification, estimation and filtering</h4>
+<ul>
+<li><a href="../model/bn.html"><code>bn</code></a> - Beveridge-Nelson trends.</li>
+<li><a href="../model/diffloglik.html"><code>diffloglik</code></a> - Approximate gradient and hessian of log-likelihood function.</li>
+<li><a href="../model/estimate.html"><code>estimate</code></a> - Estimate model parameters by optimising selected objective function.</li>
+<li><a href="../model/evalsystempriors.html"><code>evalsystempriors</code></a> - Evaluate minus log of system prior density.</li>
+<li><a href="../model/filter.html"><code>filter</code></a> - Kalman smoother and estimator of out-of-likelihood parameters.</li>
+<li><a href="../model/fisher.html"><code>fisher</code></a> - Approximate Fisher information matrix in frequency domain.</li>
+<li><a href="../model/lognormal.html"><code>lognormal</code></a> - Characteristics of log-normal distributions returned by filter of forecast.</li>
+<li><a href="../model/loglik.html"><code>loglik</code></a> - Evaluate minus the log-likelihood function in time or frequency domain.</li>
+<li><a href="../model/neighbourhood.html"><code>neighbourhood</code></a> - Evaluate the local behaviour of the objective function around the estimated parameter values.</li>
+<li><a href="../model/regress.html"><code>regress</code></a> - Centred population regression for selected model variables.</li>
+<li><a href="../model/VAR.html"><code>VAR</code></a> - Population VAR for selected model variables.</li>
+</ul>
+<h4 id="getting-on-line-help-on-model-functions">Getting on-line help on model functions</h4>
+<pre><code>help model
+help model/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

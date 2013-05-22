@@ -1,0 +1,211 @@
+
+
+    \filetitle{filter}{Kalman smoother and estimator of out-of-likelihood parameters}{model/filter}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)
+ [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,J,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Solved model object.
+ \item
+   \texttt{Inp} {[} struct \textbar{} cell {]} - Input database or
+   datapack from which the measurement variables will be taken.
+ \item
+   \texttt{Range} {[} numeric {]} - Filter date range.
+ \item
+   \texttt{J} {[} struct {]} - Database with tunes on the mean of shocks
+   and/or time-varying std devs of shocks.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object with updates of std devs (if
+   \texttt{'relative='} is true) and/or updates of out-of-likelihood
+   parameters (if \texttt{'outoflik='} is non-empty).
+ \item
+   \texttt{Outp} {[} struct \textbar{} cell {]} - Output struct with
+   smoother or prediction data.
+ \item
+   \texttt{V} {[} numeric {]} - Estimated variance scale factor if the
+   \texttt{'relative='} options is true; otherwise \texttt{V} is 1.
+ \item
+   \texttt{Delta} {[} struct {]} - Database with estimates of
+   out-of-likelihood parameters.
+ \item
+   \texttt{PE} {[} struct {]} - Database with prediction errors for
+   measurement variables.
+ \item
+   \texttt{SCov} {[} numeric {]} - Sample covariance matrix of smoothed
+   shocks; the covariance matrix is computed using shock estimates in
+   periods that are included in the option \texttt{'objrange='} and, at
+   the same time, contain at least one observation of measurement
+   variables.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'ahead='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+   Predictions will be computed this number of period ahead.
+ \item
+   \texttt{'condition='} {[} char \textbar{} cellstr \textbar{}
+   \emph{empty} {]} - List of conditioning measurement variables.
+   Condition time t\textbar{}t-1 prediction errors (that enter the
+   likelihood function) on time t observations of these measurement
+   variables.
+ \item
+   \texttt{'deviation='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Treat input and output data as deviations
+   from balanced-growth path.
+ \item
+   \texttt{'dtrends='} {[} \emph{`auto'} \textbar{} \texttt{true}
+   \textbar{} \texttt{false} {]} - Measurement data contain deterministic
+   trends.
+ \item
+   \texttt{'data='} {[} \texttt{'predict'} \textbar{}
+   \emph{\texttt{'smooth'}} \textbar{} \texttt{'predict,smooth'} {]} -
+   Return smoother data or prediction data or both.
+ \item
+   \texttt{'initCond='} {[} \texttt{'fixed'} \textbar{}
+   \texttt{'optimal'} \textbar{} \emph{\texttt{'stochastic'}} \textbar{}
+   struct {]} - Method or data to initialise the Kalman filter;
+   user-supplied initial condition must be a mean database or a mean-MSE
+   struct.
+ \item
+   \texttt{'lastSmooth='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]}
+   - Last date up to which to smooth data backward from the end of the
+   range; if \texttt{Inf} smoother will run on the entire range.
+ \item
+   \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Return a plain database with mean data
+   only; this option overrides the \texttt{'return*='} options, i.e.
+   \texttt{'returnCont='}, \texttt{'returnMse='}, \texttt{'returnStd='}.
+ \item
+   \texttt{'outOfLik='} {[} cellstr \textbar{} empty {]} - List of
+   parameters in deterministic trends that will be estimated by
+   concentrating them out of the likelihood function.
+ \item
+   \texttt{'objFunc='} {[} \emph{\texttt{'-loglik'}} \textbar{}
+   \texttt{'prederr'} {]} - Objective function computed; can be either
+   minus the log likelihood function or weighted sum of prediction
+   errors.
+ \item
+   \texttt{'objRange='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   The objective function will be computed on this subrange only;
+   \texttt{Inf} means the entire filter range.
+ \item
+   \texttt{'precision='} {[} \emph{\texttt{'double'}} \textbar{}
+   \texttt{'single'} {]} - Numeric precision to which output data will be
+   stored; all calculations themselves always run to double precision.
+ \item
+   \texttt{'rollback='} {[} numeric \textbar{} \emph{empty} {]} - Date up
+   to which to roll back individual observations on measurement variables
+   from the end of the sample.
+ \item
+   \texttt{'relative='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Std devs of shocks assigned in the model object
+   will be treated as relative std devs, and a common variance scale
+   factor will be estimated.
+ \item
+   \texttt{'returnCont='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Return contributions of measurement
+   variables to the estimates of all variables and shocks.
+ \item
+   \texttt{'returnMse='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Return MSE matrices for predetermined state
+   variables; these can be used for settin up initial condition in
+   subsequent call to another \texttt{filter} or \texttt{jforecast}.
+ \item
+   \texttt{'returnStd='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Return database with std devs of model variables.
+ \item
+   \texttt{'tolMse='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+   Tolerance under which two MSE matrices in two consecutive periods will
+   be treated as equal, and the Kalman gain system will be re-used, not
+   re-computed.
+ \item
+   \texttt{'weighting='} {[} numeric \textbar{} \emph{empty} {]} -
+   Weighting vector or matrix for prediction errors when
+   \texttt{'objective=' 'prederr'}; empty means prediction errors are
+   weighted equally.
+ \end{itemize}
+ 
+ \paragraph{Options for models with non-linearised equations}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'nonlinearise='} {[} numeric \textbar{} \emph{\texttt{0}} {]}
+   - If non-zero the prediction step in the Kalman filter will be run in
+   an exact non-linear mode using the same technique as
+   \url{model/simulate}.
+ \item
+   \texttt{'simulate='} {[} cell \textbar{} empty {]} - Options passed in
+   to \texttt{simulate} when invoking the non-linear simulation in the
+   prediction step; only used when \texttt{nonlinearise=} is greater than
+   \texttt{0}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The \texttt{'ahead='} and \texttt{'rollback='} options cannot be
+ combined with one another, or with multiple data sets, or with multiple
+ parameterisations.
+ 
+ \subparagraph{Initial conditions in time domain}
+ 
+ By default (with \texttt{'initCond=' 'stochastic'}), the Kalman filter
+ starts from the model-implied asymptotic distribution. You can change
+ this behaviour by setting the option \texttt{'initCond='} to one of the
+ following four different values:
+ 
+ \begin{itemize}
+ \item
+   \texttt{'fixed'} -- the filter starts from the model-implied
+   asymptotic mean (steady state) but with no initial uncertainty. The
+   initial condition is treated as a vector of fixed, non-stochastic,
+   numbers.
+ \item
+   \texttt{'optimal'} -- the filter starts from a vector of fixed numbers
+   that is estimated optimally (likelihood maximising).
+ \item
+   database (i.e.~struct with fields for individual model variables) -- a
+   database through which you supply the mean for all the required
+   initial conditions, see help on \url{model/get} for how to view the
+   list of required initial conditions.
+ \item
+   mean-mse struct (i.e.~struct with fields \texttt{.mean} and
+   \texttt{.mse}) -- a struct through which you supplye the mean and MSE
+   for all the required initial conditions.
+ \end{itemize}
+ 
+ \subparagraph{Contributions of measurement variables to the estimates of
+ all variables}
+ 
+ Use the option \texttt{'returnCont=' true} to request the decomposition
+ of measurement variables, transition variables, and shocks into the
+ contributions of each individual measurement variable. The resulting
+ output database will include one extra subdatabase called
+ \texttt{.cont}. In the \texttt{.cont} subdatabase, each time series will
+ have Ny columns where Ny is the number of measurement variables in the
+ model. The k-th column will be the contribution of the observations on
+ the k-th measurement variable.
+ 
+ The contributions are additive for linearised variables, and
+ multiplicative for log-linearised variables (log-variables). The
+ difference between the actual path for a particular variable and the sum
+ of the contributions (or their product in the case of log-varibles) is
+ due to the effect of constant terms and deterministic trends.
+ 
+ \paragraph{Example}
+
+

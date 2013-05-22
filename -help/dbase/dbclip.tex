@@ -1,0 +1,67 @@
+
+
+    \filetitle{dbclip}{Clip all tseries entries in a database down to the specified date range}{dbase/dbclip}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ D = dbclip(D,Range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Database or nested databases with tseries
+   objects.
+ \item
+   \texttt{Range} {[} numeric \textbar{} cell {]} - Range or a cell array
+   of ranges to which all tseries objects will be clipped; multiple
+   ranges can be specified, each for a different date
+   frequency/periodicity.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Database with tseries objects cut down to
+   \texttt{range}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ This functions looks up all tseries objects within the database
+ \texttt{d}, including tseries objects nested in sub-databases, and cuts
+ off any values preceding the start date of \texttt{Range} or following
+ the end date of \texttt{range}. The tseries object comments, if any, are
+ preserved in the new database.
+ 
+ If a tseries entry does not match the date frequency of the input range,
+ a warning is thrown.
+ 
+ Multiple ranges can be specified in \texttt{Range} (as a cell array),
+ each for a different date frequency/periodicity (i.e.~one or more of the
+ following: monthly, bi-monthly, quarterly, half-yearly, yearly,
+ indeterminate). Each tseries entry will be clipped to the range that
+ matches its date frequency.
+ 
+ \paragraph{Example}
+ 
+ \begin{verbatim}
+ d = struct();
+ d.x = tseries(qq(2005,1):qq(2010,4),@rand);
+ d.y = tseries(qq(2005,1):qq(2010,4),@rand)
+ 
+ d =
+    x: [24x1 tseries]
+    y: [24x1 tseries]
+ 
+ dbclip(d,qq(2007,1):qq(2007,4))
+ 
+ ans =
+     x: [4x1 tseries]
+     y: [4x1 tseries]
+ \end{verbatim}
+
+
