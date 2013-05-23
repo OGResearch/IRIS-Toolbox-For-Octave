@@ -23,7 +23,7 @@ remove = ~ixtseries & ~ixnumeric;
 
 % Remove non-tseries or non-numeric inputs and display warning.
 if any(remove)
-   warning('iris:tseries', ...
+   utils.warning('tseries:catcheck', ...
       'Non-tseries and non-numeric inputs removed from concatenation.');
    varargin(remove) = [];
    ixtseries(remove) = [];
@@ -40,7 +40,7 @@ ixnan = isnan(freq);
 %freq(isnan(freq)) = [];
 if sum(~ixnan & ixtseries) > 1 ...
       && any(diff(freq(~ixnan & ixtseries)) ~= 0)
-   error('Cannot concatenate tseries objects with different frequencies.');
+   utils.error('tseries:catcheck','Cannot concatenate tseries objects with different frequencies.');
 elseif all(ixnan | ~ixtseries)
    freq(:) = 0;
 else
