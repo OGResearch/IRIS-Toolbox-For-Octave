@@ -4,7 +4,7 @@ function x = dd(year,month,day)
 % Syntax
 % =======
 %
-%     d = qq(y,m,d)
+%     d = dd(y,m,d)
 %
 % Output arguments
 % =================
