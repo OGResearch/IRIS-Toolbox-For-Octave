@@ -4,12 +4,12 @@ function S = dat2str(Dat,varargin)
 % Syntax
 % =======
 %
-%     S = dat2str(DAT,...)
+%     S = dat2str(Dat,...)
 %
 % Input arguments
 % ================
 %
-% * `DAT` [ numeric ] - IRIS serial date number(s).
+% * `Dat` [ numeric ] - IRIS serial date number(s).
 %
 % Output arguments
 % =================
@@ -19,7 +19,8 @@ function S = dat2str(Dat,varargin)
 % Options
 % ========
 %
-% * `'dateFormat='` [ char | *'YYYYFP'* ] - Date format string.
+% * `'dateFormat='` [ char | cellstr | *'YYYYFP'* ] - Date format string,
+% or array of format strings (possibly different for each date).
 %
 % * `'freqLetters='` [ char | *'YHQBM'* ] - Letters representing the five
 % possible frequencies (annual,semi-annual,quarterly,bimontly,monthly).

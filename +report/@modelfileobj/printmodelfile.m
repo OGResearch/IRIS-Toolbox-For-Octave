@@ -70,10 +70,11 @@ C = strrep(C,['\verb',esc,esc],'');
         lineComment = '';
         pos = strfind(C,'%');
         if ~isempty(pos)
-            lineComment = C(pos(1):end);
-            C = C(1:pos(1)-1);
+            pos = pos(1);
+            lineComment = C(pos:end);
+            C = C(1:pos-1);
         end
-        
+
         if This.options.syntax
             % Keywords.
             C = regexprep(C, ...
@@ -103,9 +104,13 @@ C = strrep(C,['\verb',esc,esc],'');
                 sprintf('%*g: ',nDigit,This.options.lines(i)), ...
                 C];
         end
+        C = xxLabelsBack(C,lab,offset,esc, ...
+            This.options.syntax,This.options.latexalias);
         
-        C = xxLabelsBack(C,lab,offset,esc,This.options);
-        
+        % Put labels back into comments; no syntax colouring or latexing aliases.
+        lineComment = xxLabelsBack(lineComment,lab,offset,esc, ...
+            false,false);
+
         C = [verbEsc,C,lineComment,esc];
         
         function C = doKeywords(C)
@@ -164,12 +169,15 @@ end
 end % xxProtectLabels().
 
 %**************************************************************************
-function C = xxLabelsBack(C,Labels,Offset,Esc,Opt)
+function C = xxLabelsBack(C,Labels,Offset,Esc,IsSyntax,IsLatexAlias)
 
 verbEsc = ['\verb',Esc];
 
 for i = 1 : length(Labels)
     pos = strfind(C,char(Offset+i));
+    if isempty(pos)
+        continue
+    end
     split = strfind(Labels{i},'!!');
     openQuote = Labels{i}(1);
     closeQuote = Labels{i}(end);
@@ -177,15 +185,15 @@ for i = 1 : length(Labels)
         split = split(1);
         label = Labels{i}(2:split+1);
         alias = Labels{i}(split+2:end-1);
-        if Opt.latexalias
+        if IsLatexAlias
             alias = [Esc,alias,verbEsc]; %#ok<AGROW>
         end
     else
-        label = latex.stringsubs(Labels{i}(2:end-1));
+        label = Labels{i}(2:end-1);
         alias = '';
     end
     
-    if Opt.syntax
+    if IsSyntax
         pre = [Esc,'{\color{mylabel}',verbEsc];
         post = [Esc,'}',verbEsc];
     else

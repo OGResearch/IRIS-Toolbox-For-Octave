@@ -79,12 +79,12 @@ function D = dbload(varargin)
 %
 % * `'userData='` [ char | *`Inf`* ] - Field name under which the database
 % userdata loaded from the CSV file (if they exist) will be stored in the
-% output database; if `'userData'=Inf` the field name will be read from the
-% CSV file (and will be thus identical to the originally saved database).
+% output database; `Inf` means the field name will be read from the CSV
+% file (and will be thus identical to the originally saved database).
 %
 % * `'userDataField='` [ char | *`'.'`* ] - A leading character denoting
-% userdata fields for individual time series. If empty, no userdata fields
-% will be read.
+% userdata fields for individual time series; if empty, no userdata fields
+% will be read in and created.
 %
 % * `'userDataFieldList='` [ cellstr | numeric | empty ] - List of row
 % headers, or vector of row numbers, that will be included as user data in
