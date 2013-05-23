@@ -8,6 +8,21 @@ function x=setup()
 x=tseries(qq(1,1):qq(3,2),sin(1:10));
 end
 
+function test_wrongFreqConcat(~)
+a=tseries(dd(1,1,1),1);
+b=tseries(qq(2,2),2);
+assertExceptionThrown(@()[a,b],'IRIS:tseries:catcheck');
+assertExceptionThrown(@()[a;b],'IRIS:tseries:catcheck');
+end
+
+function test_cat(~)
+a=tseries(qq(1,1),1);
+b=tseries(qq(1,1),2);
+assertElementsAlmostEqual(double([a b]),[double(a) double(b)]);
+b=tseries(qq(1,2),2);
+assertElementsAlmostEqual(double([a;b]),[double(a);double(b)]);
+end
+
 function test_sded(~)
 x=tseries();
 assertEqual(startdate(x),NaN);
