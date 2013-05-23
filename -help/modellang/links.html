@@ -111,14 +111,14 @@ code.LaTeX {
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>!links
-   PARAMETER_NAME := EXPR;
-   VARIABLE_NAME := EXPR;</code></pre>
+   Parameter_Name := Expression;
+   Variable_Name := Expression;</code></pre>
 <h4 id="syntax-with-equation-labels">Syntax with equation labels</h4>
 <pre><code>!links
-   &#39;Equation label&#39; PARAMETER_NAME := EXPR;
-   &#39;Equation label&#39; VARIABLE_NAME := EXPR;</code></pre>
+   &#39;Equation label&#39; Parameter_Name := Expression;
+   &#39;Equation label&#39; Variable_Name := Expression;</code></pre>
 <h4 id="description">Description</h4>
-<p>The dynamic links relate a particular parameter (or steady-state value) on the LHS to a function of other parameters or steady-state values on the RHS. <code>EXPR</code> can be any expression involving parameter names, variables names, Matlab functions and constants, or your own m-file functions on the path; it must not refer to any lags or leads. <code>EXPR</code> must evaluate to a single number. It is the user's responsibility to properly handle the imaginary (i.e. growth) part of the steady-state values.</p>
+<p>The dynamic links relate a particular parameter (or steady-state value) on the LHS to a function of other parameters or steady-state values on the RHS. <code>Expression</code> can be any expression involving parameter names, variables names, Matlab functions and constants, or your own m-file functions on the path; it must not refer to any lags or leads. <code>Expression</code> must evaluate to a single number. It is the user's responsibility to properly handle the imaginary (i.e. growth) part of the steady-state values.</p>
 <p>The links are automatically refreshed in <a href="../model/solve.html"><code>solve</code></a>, <a href="../model/sstate.html"><code>sstate</code></a>, and <a href="../model/chksstate.html"><code>chksstate</code></a> functions, and also in each iteration within the <a href="../model/estimate.html"><code>estimate</code></a> function. They can also be refreshed manually by calling <a href="../model/refresh.html"><code>refresh</code></a>.</p>
 <p>The links must not involve parameters occuring in <a href="../modellang/dtrends.html"><code>!dtrends</code></a> equations that will be estimated using the <code>'outoflik='</code> option of the <a href="../model/estimate.html"><code>estimate</code></a> function.</p>
 <h4 id="example">Example</h4>

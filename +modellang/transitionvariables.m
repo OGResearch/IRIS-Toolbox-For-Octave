@@ -4,29 +4,29 @@
 % =======
 %
 %     !transition_variables
-%         variable_name, variable_name, ...
+%         Variable_Name, Variable_Name, ...
 %         ...
 %
 % Short-cut syntax
 % =================
 %
 %     !variables
-%         variable_name, variable_name, ...
+%         Variable_Name, Variable_Name, ...
 %         ...
 %
 % Syntax with descriptors
 % ========================
 %
 %     !transition_variables
-%         variable_name, variable_name, ...
-%         'Description of the variable...' variable_name
+%         Variable_Name, Variable_Name, ...
+%         'Description of the variable...' Variable_Name
 %
 % Syntax with steady-state values
 % ================================
 %
 %     !transition_variables
-%         variable_name, variable_name, ...
-%         variable_name = value
+%         Variable_Name, Variable_Name, ...
+%         Variable_Name = Value
 %
 % Description
 % ============

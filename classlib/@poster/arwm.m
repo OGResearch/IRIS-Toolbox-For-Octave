@@ -69,13 +69,40 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the
 % command window.
 %
-% *`'targetAR='` [ numeric | *`0.234`* ] - Target acceptance ratio.
+% * `'saveAs='` [ char | *empty* ] - File name where results will be saved
+% when the option `'saveEvery='` is used.
+%
+% * `'saveEvery='` [ numeric | *`Inf`* ] - Every N draws will be saved to
+% an HDF5 file, and removed from workspace immediately; no values will be
+% returned in the output arguments `Theta`, `LogPost`, `AR`, `Scale`; the
+% option `'saveAs='` must be used to specify the file name; `Inf` means
+% a normal run with no saving.
+%
+% * `'targetAR='` [ numeric | *`0.234`* ] - Target acceptance ratio.
 %
 % Description
 % ============
 %
-% Use the [`poster/stats`](poster/stats) function to process the raw chain
-% produced by `arwm`.
+% Use the [`poster/stats`](poster/stats) function to process the simulated
+% chain of parameters, and calculate selected statistics.
+%
+% Parallelised ARWM
+% ------------------
+%
+% Set `'nStep='` greater than `1`, and `'firstPrefetch='` smaller than
+% `NDraw` to start a pre-fetching parallelised algorithm (pre-fetched will
+% be all draws starting from `'firstPrefetch='`); to that end, a pool of
+% parallel workers (using e.g. `matlabpool` from the Parallel Computing
+% Toolbox) must be opened before calling `arwm`.
+%
+% With pre-fetching, all possible paths `'nStep='` steps ahead (i.e. all
+% possible combinations of reject/accept) are pre-evaluated in parallel,
+% and then the resulting path is selected. Adapation then occurs only every
+% `'nStep='` steps, and hence the results will always somewhat differ from
+% a serial run. Identical results can be obtained by turning down
+% adaptation before pre-fetching starts, i.e. by setting `'lastAdapt='`
+% smaller than `'firstPrefetch='` (and, obviously, by re-setting the random
+% number generator).
 %
 % Example
 % ========

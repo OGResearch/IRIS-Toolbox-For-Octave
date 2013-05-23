@@ -35,9 +35,13 @@
  
  \begin{itemize}
  \item
+   \texttt{'include='} {[} char \textbar{} cellstr \textbar{}
+   \emph{\texttt{Inf}} {]} - Include the effect of the listed measurement
+   variables only; \texttt{Inf} means all measurement variables.
+ \item
    \texttt{'exclude='} {[} char \textbar{} cellstr \textbar{}
-   \emph{empty} {]} - Remove the effect of these measurement variables
-   from the FFRF.
+   \emph{empty} {]} - Remove the effect of the listed measurement
+   variables.
  \item
    \texttt{'maxIter='} {[} numeric \textbar{} \emph{500} {]} - Maximum
    number of iteration when computing the steady-state Kalman filter.

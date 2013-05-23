@@ -3,24 +3,24 @@
 % Syntax with an otherwise clause
 % ================================
 %
-%     !switch expression
-%         !case value1
-%             block1
-%         !case value2
-%             block2
+%     !switch Expression
+%         !case Balue1
+%             Block1
+%         !case Balue2
+%             Block2
 %         ...
 %         !otherwise
-%             otherblock
+%             Otherwise_Block
 %     !end
 % 
 % Syntax without an otherwise clause
 % ===================================
 %
-%     !switch expression
-%         !case value1
-%             block1
-%         !case value2
-%             block2
+%     !switch Expression
+%         !case Value1
+%             Block1
+%         !case Value2
+%             Block2
 %         ...
 %     !end
 %

@@ -22,7 +22,8 @@ function Stat = stats(This,Theta,varargin)
 % `'mdd'`, the marginal data density.
 %
 % * `FName` [ char ] - File name under which the simulated chain was saved
-% when `arwm` was run with options `saveEvery=`' and `'saveAs='`.
+% when [`poster/arwm`](poster/arwm) was run with options `saveEvery=`' and
+% `'saveAs='`.
 %
 % Output arguments
 % =================

@@ -4,18 +4,18 @@
 % =================
 % 
 %     !for
-%         list_of_tokens
+%         List_of_Tokens
 %     !do
-%         template
+%         Template
 %     !end
 % 
 % Full syntax
 % ============
 % 
 %     !for
-%         ?control_name = list_of_tokens
+%         ?Control_Name = List_of_Tokens
 %     !do
-%         template
+%         Template
 %     !end
 %
 % Description
@@ -38,11 +38,11 @@
 % * all occurrences of the control variable in the template are replaced
 % with the currently processed string;
 %
-% * all occurrences in the template of `?.control_name`  are
+% * all occurrences in the template of `?.Control_Name`  are
 % replaced with the currently processed string converted to lower case;
 % this option is NOT available with the short-cut syntax;
 %
-% * all occurrences in the template of `?:control_name`  are
+% * all occurrences in the template of `?:Control_Name`  are
 % replaced with the currently processed string converted to upper case;
 % this option is NOT available with the short-cut syntax;
 %

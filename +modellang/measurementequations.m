@@ -4,18 +4,18 @@
 % =======
 %
 %     !measurement_equations
-%         equation;
-%         equation;
-%         equation;
+%         Equation1;
+%         Equation2;
+%         Equation3;
 %         ...
 %
 % Syntax with equation labels
 % ============================
 %
 %     !measurement_equations
-%         equation;
-%         'Equaiton label' equation;
-%         equation;
+%         Equation1;
+%         'Equation label' Equation2;
+%         Equation3;
 %         ...
 %
 % Description

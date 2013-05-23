@@ -62,6 +62,10 @@
    {]} - Display and update the estimated time to go in the command
    window.
  \item
+   \texttt{'firstPrefetch='} {[} numeric \textbar{} \emph{\texttt{Inf}}
+   {]} - First draw where parallelised pre-fetching will be used;
+   \texttt{Inf} means no pre-fetching.
+ \item
    \texttt{'gamma='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} - The
    rate of decay at which the scale and/or the proposal covariance will
    be adapted with each new draw.
@@ -71,18 +75,55 @@
    multiplied; the initial value will be adapted to achieve the target
    acceptance ratio.
  \item
+   \texttt{'lastAdapt='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Last draw in which proposal covariance will be adapted; \texttt{Inf}
+   means adaptation will continue until the last draw.
+ \item
+   \texttt{'nStep='} {[} numeric \textbar{} *\texttt{1} {]} - Number of
+   pre-fetched steps computed in parallel; only works with
+   \texttt{firstPrefetch=} smaller than \texttt{NDraw}.
+ \item
    \texttt{'progress='} {[} \texttt{true} \textbar{}
    \emph{\texttt{false}} {]} - Display progress bar in the command
    window.
+ \item
+   \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - File name
+   where results will be saved when the option \texttt{'saveEvery='} is
+   used.
+ \item
+   \texttt{'saveEvery='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Every N draws will be saved to an HDF5 file, and removed from
+   workspace immediately; no values will be returned in the output
+   arguments \texttt{Theta}, \texttt{LogPost}, \texttt{AR},
+   \texttt{Scale}; the option \texttt{'saveAs='} must be used to specify
+   the file name; \texttt{Inf} means a normal run with no saving.
+ \item
+   \texttt{'targetAR='} {[} numeric \textbar{} \emph{\texttt{0.234}} {]}
+   - Target acceptance ratio.
  \end{itemize}
- 
- *\texttt{'targetAR='} {[} numeric \textbar{} \emph{\texttt{0.234}} {]} -
- Target acceptance ratio.
  
  \paragraph{Description}
  
- Use the \url{poster/stats} function to process the raw chain produced by
- \texttt{arwm}.
+ Use the \url{poster/stats} function to process the simulated chain of
+ parameters, and calculate selected statistics.
+ 
+ \subparagraph{Parallelised ARWM}
+ 
+ Set \texttt{'nStep='} greater than \texttt{1}, and
+ \texttt{'firstPrefetch='} smaller than \texttt{NDraw} to start a
+ pre-fetching parallelised algorithm (pre-fetched will be all draws
+ starting from \texttt{'firstPrefetch='}); to that end, a pool of
+ parallel workers (using e.g. \texttt{matlabpool} from the Parallel
+ Computing Toolbox) must be opened before calling \texttt{arwm}.
+ 
+ With pre-fetching, all possible paths \texttt{'nStep='} steps ahead
+ (i.e.~all possible combinations of reject/accept) are pre-evaluated in
+ parallel, and then the resulting path is selected. Adapation then occurs
+ only every \texttt{'nStep='} steps, and hence the results will always
+ somewhat differ from a serial run. Identical results can be obtained by
+ turning down adaptation before pre-fetching starts, i.e.~by setting
+ \texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
+ obviously, by re-setting the random number generator).
  
  \paragraph{Example}
 

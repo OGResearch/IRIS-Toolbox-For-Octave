@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.12.21)  29 APR 2013 21:35
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.12.21)  23 MAY 2013 10:32
 entering extended mode
 **IRIS_Man
 (C:\IRIS_Tbx\-help\IRIS_Man.tex
@@ -571,17 +571,11 @@ LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
 [7
 
 
-] (C:\IRIS_Tbx\-help\setup/Contents.tex
-Overfull \hbox (25.23056pt too wide) in paragraph at lines 43--47
- []\T1/ccr/m/it/10 Step 1[] \T1/ccr/m/n/10 Down-load the lat-est IRIS zip archi
-ve, \T1/fi4/m/n/10 IRIS_Tbx_#_YYYYMMDD.zip\T1/ccr/m/n/10 , from \T1/fi4/m/n/10 
-www.iris-toolbox.com\T1/ccr/m/n/10 ,
- []
-
-[8
+] (C:\IRIS_Tbx\-help\setup/Contents.tex [8
 
 
-]) [9] (C:\IRIS_Tbx\-help\config/Contents.tex [10
+]) [9]
+(C:\IRIS_Tbx\-help\config/Contents.tex [10
 
 ])
 (C:\IRIS_Tbx\-help\config/iriscleanup.tex
@@ -681,30 +675,36 @@ tion \T1/fi4/m/n/10 'optimset=' \T1/ccr/m/n/10 when \T1/fi4/m/n/10 'optimiser=p
 so'\T1/ccr/m/n/10 . 
  []
 
-[85] [86] [87]) (C:\IRIS_Tbx\-help\model/evalsystempriors.tex [88])
+[85] [86]
+Overfull \hbox (5.85667pt too wide) in paragraph at lines 311--316
+[]\T1/ccr/m/n/10 You can sup-ply a func-tion han-dle to your own min-imi-sa-tio
+n rou-tine through the op-tion \T1/fi4/m/n/10 'optimiser='\T1/ccr/m/n/10 .
+ []
+
+[87]) (C:\IRIS_Tbx\-help\model/evalsystempriors.tex [88])
 (C:\IRIS_Tbx\-help\model/expand.tex [89]) (C:\IRIS_Tbx\-help\model/export.tex)
 (C:\IRIS_Tbx\-help\model/fevd.tex [90]) (C:\IRIS_Tbx\-help\model/ffrf.tex
 [91]) (C:\IRIS_Tbx\-help\model/filter.tex [92] [93] [94] [95])
 (C:\IRIS_Tbx\-help\model/findeqtn.tex) (C:\IRIS_Tbx\-help\model/findname.tex
 [96]) (C:\IRIS_Tbx\-help\model/fisher.tex [97])
 (C:\IRIS_Tbx\-help\model/fmse.tex [98]) (C:\IRIS_Tbx\-help\model/get.tex
-[99] [100] [101] [102] [103] [104]) (C:\IRIS_Tbx\-help\model/horzcat.tex
-[105]) (C:\IRIS_Tbx\-help\model/icrf.tex
+[99] [100] [101] [102] [103] [104]) (C:\IRIS_Tbx\-help\model/horzcat.tex)
+(C:\IRIS_Tbx\-help\model/icrf.tex [105]
 Overfull \hbox (11.38434pt too wide) in paragraph at lines 37--41
 []\T1/fi4/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/fi4/m/n/10 false \T1/ccr/
 m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1/f
 i4/m/n/10 !variables:log\T1/ccr/m/n/10 . 
  []
 
-[106]) (C:\IRIS_Tbx\-help\model/ifrf.tex [107])
-(C:\IRIS_Tbx\-help\model/iscompatible.tex)
+) (C:\IRIS_Tbx\-help\model/ifrf.tex [106])
+(C:\IRIS_Tbx\-help\model/iscompatible.tex [107])
 (C:\IRIS_Tbx\-help\model/islinear.tex [108]) (C:\IRIS_Tbx\-help\model/islog.tex
-[109]) (C:\IRIS_Tbx\-help\model/isname.tex) (C:\IRIS_Tbx\-help\model/isnan.tex
-[110]) (C:\IRIS_Tbx\-help\model/issolved.tex [111])
-(C:\IRIS_Tbx\-help\model/isstationary.tex [112])
-(C:\IRIS_Tbx\-help\model/jforecast.tex [113])
-(C:\IRIS_Tbx\-help\model/length.tex [114]) (C:\IRIS_Tbx\-help\model/lhsmrhs.tex
-
+) (C:\IRIS_Tbx\-help\model/isname.tex [109]) (C:\IRIS_Tbx\-help\model/isnan.tex
+[110]) (C:\IRIS_Tbx\-help\model/issolved.tex)
+(C:\IRIS_Tbx\-help\model/isstationary.tex [111])
+(C:\IRIS_Tbx\-help\model/jforecast.tex [112] [113])
+(C:\IRIS_Tbx\-help\model/length.tex) (C:\IRIS_Tbx\-help\model/lhsmrhs.tex
+[114]
 Overfull \hbox (22.92265pt too wide) in paragraph at lines 22--27
 []\T1/fi4/m/n/10 YXE \T1/ccr/m/n/10 [ nu-meric ] - Nu-meric ar-ray cre-ated fro
 m an in-put database by call-ing the func-tion [][]\T1/fi4/m/n/10 data4lhsmrhs[
@@ -765,7 +765,7 @@ s and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks.
 (C:\IRIS_Tbx\-help\systempriors/prior.tex [166]
 
 LaTeX Font Warning: Font shape `T1/fi4/m/it' undefined
-(Font)              using `T1/fi4/m/n' instead on input line 50.
+(Font)              using `T1/fi4/m/n' instead on input line 48.
 
 
 Overfull \hbox (4.55093pt too wide) in paragraph at lines 61--65
@@ -778,88 +778,93 @@ m/n/10 VarName2
 (C:\IRIS_Tbx\-help\poster/Contents.tex) (C:\IRIS_Tbx\-help\poster/arwm.tex
 [169
 
-] [170]) (C:\IRIS_Tbx\-help\poster/eval.tex [171])
+] [170]
+Overfull \hbox (4.21759pt too wide) in paragraph at lines 90--94
+[]\T1/fi4/m/n/10 'saveAs=' \T1/ccr/m/n/10 [ char | $[]$ ] - File name where re-
+sults will be saved when the op-tion \T1/fi4/m/n/10 'saveEvery='
+ []
+
+) (C:\IRIS_Tbx\-help\poster/eval.tex [171])
 (C:\IRIS_Tbx\-help\poster/poster.tex [172]) (C:\IRIS_Tbx\-help\poster/stats.tex
-[173]) [174] (C:\IRIS_Tbx\-help\logdist/Contents.tex [175
+[173] [174]) [175] (C:\IRIS_Tbx\-help\logdist/Contents.tex [176
 
 ])
 (C:\IRIS_Tbx\-help\logdist/beta.tex) (C:\IRIS_Tbx\-help\logdist/gamma.tex
-[176]) (C:\IRIS_Tbx\-help\logdist/invgamma.tex [177])
-(C:\IRIS_Tbx\-help\logdist/lognormal.tex [178])
+[177]) (C:\IRIS_Tbx\-help\logdist/invgamma.tex [178])
+(C:\IRIS_Tbx\-help\logdist/lognormal.tex [179])
 (C:\IRIS_Tbx\-help\logdist/normal.tex) (C:\IRIS_Tbx\-help\logdist/uniform.tex
-[179]) [180] (C:\IRIS_Tbx\-help\sstatelang/Contents.tex)
-(C:\IRIS_Tbx\-help\sstatelang/allbut.tex [181
+[180]) [181] (C:\IRIS_Tbx\-help\sstatelang/Contents.tex)
+(C:\IRIS_Tbx\-help\sstatelang/allbut.tex [182
 
 ])
-(C:\IRIS_Tbx\-help\sstatelang/equations.tex [182])
+(C:\IRIS_Tbx\-help\sstatelang/equations.tex [183])
 (C:\IRIS_Tbx\-help\sstatelang/growthnames.tex)
-(C:\IRIS_Tbx\-help\sstatelang/input.tex [183])
+(C:\IRIS_Tbx\-help\sstatelang/input.tex [184])
 (C:\IRIS_Tbx\-help\sstatelang/logvariables.tex)
-(C:\IRIS_Tbx\-help\sstatelang/solvefor.tex [184])
-(C:\IRIS_Tbx\-help\sstatelang/symbolic.tex) [185]
+(C:\IRIS_Tbx\-help\sstatelang/solvefor.tex [185])
+(C:\IRIS_Tbx\-help\sstatelang/symbolic.tex) [186]
 (C:\IRIS_Tbx\-help\sstate/Contents.tex) (C:\IRIS_Tbx\-help\sstate/compile.tex
-[186
+[187
 
-]) (C:\IRIS_Tbx\-help\sstate/sstate.tex [187])
-(C:\IRIS_Tbx\-help\sstate/standalonemfile.tex) [188]
+]) (C:\IRIS_Tbx\-help\sstate/sstate.tex [188])
+(C:\IRIS_Tbx\-help\sstate/standalonemfile.tex) [189]
 (C:\IRIS_Tbx\-help\namedmat/Contents.tex
 Overfull \hbox (10.22829pt too wide) in paragraph at lines 4--9
 \T1/ccr/m/n/10 Matrices with named rows and columns are re-turned by sev-eral I
 RIS func-tions, such as [][]model/acf[][][],
  []
 
-) (C:\IRIS_Tbx\-help\namedmat/colnames.tex [189
+) (C:\IRIS_Tbx\-help\namedmat/colnames.tex [190
 
 ])
-(C:\IRIS_Tbx\-help\namedmat/namedmat.tex [190])
+(C:\IRIS_Tbx\-help\namedmat/namedmat.tex [191])
 (C:\IRIS_Tbx\-help\namedmat/rownames.tex)
-(C:\IRIS_Tbx\-help\namedmat/select.tex [191])
-(C:\IRIS_Tbx\-help\namedmat/transpose.tex [192]) [193]
-(C:\IRIS_Tbx\-help\Contents/VARs.tex) [194
+(C:\IRIS_Tbx\-help\namedmat/select.tex [192])
+(C:\IRIS_Tbx\-help\namedmat/transpose.tex [193]) [194]
+(C:\IRIS_Tbx\-help\Contents/VARs.tex) [195
 
 
-] (C:\IRIS_Tbx\-help\VAR/Contents.tex [195
+] (C:\IRIS_Tbx\-help\VAR/Contents.tex [196
 
 
-] [196]) (C:\IRIS_Tbx\-help\VAR/acf.tex [197])
-(C:\IRIS_Tbx\-help\VAR/addparam.tex [198]) (C:\IRIS_Tbx\-help\VAR/alter.tex)
-(C:\IRIS_Tbx\-help\VAR/backward.tex [199]) (C:\IRIS_Tbx\-help\VAR/comment.tex
-[200]) (C:\IRIS_Tbx\-help\VAR/companion.tex) (C:\IRIS_Tbx\-help\VAR/demean.tex
-[201]) (C:\IRIS_Tbx\-help\VAR/eig.tex [202])
-(C:\IRIS_Tbx\-help\VAR/estimate.tex [203] [204])
-(C:\IRIS_Tbx\-help\VAR/ferf.tex [205]) (C:\IRIS_Tbx\-help\VAR/filter.tex
-[206]) (C:\IRIS_Tbx\-help\VAR/fmse.tex [207])
-(C:\IRIS_Tbx\-help\VAR/forecast.tex [208]) (C:\IRIS_Tbx\-help\VAR/get.tex
-[209]) (C:\IRIS_Tbx\-help\VAR/group.tex [210])
+] [197]) (C:\IRIS_Tbx\-help\VAR/acf.tex [198])
+(C:\IRIS_Tbx\-help\VAR/addparam.tex [199]) (C:\IRIS_Tbx\-help\VAR/alter.tex)
+(C:\IRIS_Tbx\-help\VAR/backward.tex [200]) (C:\IRIS_Tbx\-help\VAR/comment.tex
+[201]) (C:\IRIS_Tbx\-help\VAR/companion.tex) (C:\IRIS_Tbx\-help\VAR/demean.tex
+[202]) (C:\IRIS_Tbx\-help\VAR/eig.tex [203])
+(C:\IRIS_Tbx\-help\VAR/estimate.tex [204] [205])
+(C:\IRIS_Tbx\-help\VAR/ferf.tex [206]) (C:\IRIS_Tbx\-help\VAR/filter.tex
+[207]) (C:\IRIS_Tbx\-help\VAR/fmse.tex [208])
+(C:\IRIS_Tbx\-help\VAR/forecast.tex [209]) (C:\IRIS_Tbx\-help\VAR/get.tex
+[210]) (C:\IRIS_Tbx\-help\VAR/group.tex [211])
 (C:\IRIS_Tbx\-help\VAR/horzcat.tex) (C:\IRIS_Tbx\-help\VAR/infocrit.tex
-[211]) (C:\IRIS_Tbx\-help\VAR/instrument.tex [212])
-(C:\IRIS_Tbx\-help\VAR/integrate.tex [213])
+[212]) (C:\IRIS_Tbx\-help\VAR/instrument.tex [213])
+(C:\IRIS_Tbx\-help\VAR/integrate.tex [214])
 (C:\IRIS_Tbx\-help\VAR/iscompatible.tex) (C:\IRIS_Tbx\-help\VAR/isexplosive.tex
-[214]) (C:\IRIS_Tbx\-help\VAR/ispanel.tex [215])
+[215]) (C:\IRIS_Tbx\-help\VAR/ispanel.tex [216])
 (C:\IRIS_Tbx\-help\VAR/isstationary.tex) (C:\IRIS_Tbx\-help\VAR/length.tex
-[216]) (C:\IRIS_Tbx\-help\VAR/lrtest.tex) (C:\IRIS_Tbx\-help\VAR/mean.tex
-[217]) (C:\IRIS_Tbx\-help\VAR/nfitted.tex [218])
-(C:\IRIS_Tbx\-help\VAR/portest.tex) (C:\IRIS_Tbx\-help\VAR/resample.tex
-[219] [220]) (C:\IRIS_Tbx\-help\VAR/rngcmp.tex)
-(C:\IRIS_Tbx\-help\VAR/schur.tex [221]) (C:\IRIS_Tbx\-help\VAR/simulate.tex
-[222]) (C:\IRIS_Tbx\-help\VAR/sspace.tex [223])
-(C:\IRIS_Tbx\-help\VAR/subsasgn.tex [224]) (C:\IRIS_Tbx\-help\VAR/subsref.tex)
-(C:\IRIS_Tbx\-help\VAR/userdata.tex [225]) (C:\IRIS_Tbx\-help\VAR/VAR.tex
-[226]) (C:\IRIS_Tbx\-help\VAR/vma.tex [227]) (C:\IRIS_Tbx\-help\VAR/xsf.tex
-[228]) [229] (C:\IRIS_Tbx\-help\SVAR/Contents.tex [230
+[217]) (C:\IRIS_Tbx\-help\VAR/lrtest.tex [218]) (C:\IRIS_Tbx\-help\VAR/mean.tex
+) (C:\IRIS_Tbx\-help\VAR/nfitted.tex [219]) (C:\IRIS_Tbx\-help\VAR/portest.tex
+[220]) (C:\IRIS_Tbx\-help\VAR/resample.tex [221])
+(C:\IRIS_Tbx\-help\VAR/rngcmp.tex) (C:\IRIS_Tbx\-help\VAR/schur.tex [222])
+(C:\IRIS_Tbx\-help\VAR/simulate.tex [223]) (C:\IRIS_Tbx\-help\VAR/sspace.tex
+[224]) (C:\IRIS_Tbx\-help\VAR/subsasgn.tex [225])
+(C:\IRIS_Tbx\-help\VAR/subsref.tex [226]) (C:\IRIS_Tbx\-help\VAR/userdata.tex
+[227]) (C:\IRIS_Tbx\-help\VAR/VAR.tex [228]) (C:\IRIS_Tbx\-help\VAR/vma.tex)
+(C:\IRIS_Tbx\-help\VAR/xsf.tex [229]) [230]
+(C:\IRIS_Tbx\-help\SVAR/Contents.tex [231
 
-])
-(C:\IRIS_Tbx\-help\SVAR/fevd.tex) (C:\IRIS_Tbx\-help\SVAR/fprintf.tex [231])
-(C:\IRIS_Tbx\-help\SVAR/get.tex [232]) (C:\IRIS_Tbx\-help\SVAR/sort.tex
-[233] [234]) (C:\IRIS_Tbx\-help\SVAR/sprintf.tex [235])
-(C:\IRIS_Tbx\-help\SVAR/srf.tex [236]) (C:\IRIS_Tbx\-help\SVAR/SVAR.tex
-[237]
+]) (C:\IRIS_Tbx\-help\SVAR/fevd.tex)
+(C:\IRIS_Tbx\-help\SVAR/fprintf.tex [232]) (C:\IRIS_Tbx\-help\SVAR/get.tex
+[233]) (C:\IRIS_Tbx\-help\SVAR/sort.tex [234] [235])
+(C:\IRIS_Tbx\-help\SVAR/sprintf.tex [236]) (C:\IRIS_Tbx\-help\SVAR/srf.tex
+[237]) (C:\IRIS_Tbx\-help\SVAR/SVAR.tex [238]
 Overfull \hbox (24.59734pt too wide) in paragraph at lines 51--57
 \T1/ccr/m/n/10 als, and bring the vari-ables back in orig-i-nal or-der af-ter-w
 ards. Use the op-tion '\T1/fi4/m/n/10 backorderResiduals='
  []
 
-) [238] (C:\IRIS_Tbx\-help\BVAR/Contents.tex
+) [239] [240] (C:\IRIS_Tbx\-help\BVAR/Contents.tex
 Overfull \hbox (3.31285pt too wide) in paragraph at lines 22--25
 [][][]\T1/fi4/m/n/10 uncmean[][][] \T1/ccr/m/n/10 - Unconditional-mean dummy (o
 r Sims' ini-tial dummy) ob-ser-va-tions for BVARs. 
@@ -872,157 +877,157 @@ Overfull \hbox (1.8917pt too wide) in paragraph at lines 31--40
 /m/n/10 sumofcoeff[][][] \T1/ccr/m/n/10 can be weighted
  []
 
-) (C:\IRIS_Tbx\-help\BVAR/covmat.tex [239
+) (C:\IRIS_Tbx\-help\BVAR/covmat.tex [241
 
 ])
-(C:\IRIS_Tbx\-help\BVAR/litterman.tex [240])
+(C:\IRIS_Tbx\-help\BVAR/litterman.tex [242])
 (C:\IRIS_Tbx\-help\BVAR/sumofcoeff.tex) (C:\IRIS_Tbx\-help\BVAR/uncmean.tex
-[241]) (C:\IRIS_Tbx\-help\BVAR/user.tex [242]) [243]
+[243]) (C:\IRIS_Tbx\-help\BVAR/user.tex [244]) [245]
 (C:\IRIS_Tbx\-help\FAVAR/Contents.tex) (C:\IRIS_Tbx\-help\FAVAR/comment.tex
-[244
+[246
 
-]) (C:\IRIS_Tbx\-help\FAVAR/estimate.tex [245])
-(C:\IRIS_Tbx\-help\FAVAR/FAVAR.tex [246]) (C:\IRIS_Tbx\-help\FAVAR/filter.tex
-[247] [248]) (C:\IRIS_Tbx\-help\FAVAR/forecast.tex)
-(C:\IRIS_Tbx\-help\FAVAR/get.tex [249] [250])
-(C:\IRIS_Tbx\-help\FAVAR/isempty.tex [251])
-(C:\IRIS_Tbx\-help\FAVAR/userdata.tex [252]) (C:\IRIS_Tbx\-help\FAVAR/VAR.tex)
-[253] (C:\IRIS_Tbx\-help\Contents/data.tex) [254
+]) (C:\IRIS_Tbx\-help\FAVAR/estimate.tex [247])
+(C:\IRIS_Tbx\-help\FAVAR/FAVAR.tex [248]) (C:\IRIS_Tbx\-help\FAVAR/filter.tex
+[249] [250]) (C:\IRIS_Tbx\-help\FAVAR/forecast.tex)
+(C:\IRIS_Tbx\-help\FAVAR/get.tex [251] [252])
+(C:\IRIS_Tbx\-help\FAVAR/isempty.tex [253])
+(C:\IRIS_Tbx\-help\FAVAR/userdata.tex) (C:\IRIS_Tbx\-help\FAVAR/VAR.tex
+[254]) [255] (C:\IRIS_Tbx\-help\Contents/data.tex) [256
 
 
 ]
-(C:\IRIS_Tbx\-help\dates/Contents.tex [255
+(C:\IRIS_Tbx\-help\dates/Contents.tex [257
 
 
 ]) (C:\IRIS_Tbx\-help\dates/bb.tex
-[256]) (C:\IRIS_Tbx\-help\dates/bbtoday.tex)
-(C:\IRIS_Tbx\-help\dates/clp2dat.tex [257])
-(C:\IRIS_Tbx\-help\dates/dat2char.tex [258])
-(C:\IRIS_Tbx\-help\dates/dat2charlist.tex [259])
+[258]) (C:\IRIS_Tbx\-help\dates/bbtoday.tex)
+(C:\IRIS_Tbx\-help\dates/clp2dat.tex [259])
+(C:\IRIS_Tbx\-help\dates/dat2char.tex [260])
+(C:\IRIS_Tbx\-help\dates/dat2charlist.tex [261])
 (C:\IRIS_Tbx\-help\dates/dat2clp.tex) (C:\IRIS_Tbx\-help\dates/dat2dec.tex
-[260]
+[262]
 Overfull \hbox (17.74438pt too wide) in paragraph at lines 22--24
 []\T1/fi4/m/n/10 DEC \T1/ccr/m/n/10 [ nu-meric ] - Dec-i-mal num-ber rep-re-sen
 t-ing the in-put dates, com-puted as \T1/fi4/m/n/10 year + (per-1)/freq\T1/ccr/
 m/n/10 . 
  []
 
-) (C:\IRIS_Tbx\-help\dates/dat2str.tex [261])
-(C:\IRIS_Tbx\-help\dates/dat2ypf.tex [262]) (C:\IRIS_Tbx\-help\dates/datbom.tex
-[263]) (C:\IRIS_Tbx\-help\dates/datboq.tex) (C:\IRIS_Tbx\-help\dates/datboy.tex
-[264]) (C:\IRIS_Tbx\-help\dates/datcmp.tex [265])
-(C:\IRIS_Tbx\-help\dates/datdiff.tex [266]) (C:\IRIS_Tbx\-help\dates/dateom.tex
-) (C:\IRIS_Tbx\-help\dates/dateoq.tex [267])
+) (C:\IRIS_Tbx\-help\dates/dat2str.tex [263])
+(C:\IRIS_Tbx\-help\dates/dat2ypf.tex [264]) (C:\IRIS_Tbx\-help\dates/datbom.tex
+[265]) (C:\IRIS_Tbx\-help\dates/datboq.tex) (C:\IRIS_Tbx\-help\dates/datboy.tex
+[266]) (C:\IRIS_Tbx\-help\dates/datcmp.tex [267])
+(C:\IRIS_Tbx\-help\dates/datdiff.tex [268]) (C:\IRIS_Tbx\-help\dates/dateom.tex
+) (C:\IRIS_Tbx\-help\dates/dateoq.tex [269])
 (C:\IRIS_Tbx\-help\dates/dateoy.tex) (C:\IRIS_Tbx\-help\dates/daterange.tex
-[268]) (C:\IRIS_Tbx\-help\dates/datxtick.tex [269])
-(C:\IRIS_Tbx\-help\dates/dec2dat.tex [270]) (C:\IRIS_Tbx\-help\dates/hh.tex)
-(C:\IRIS_Tbx\-help\dates/hhtoday.tex [271]) (C:\IRIS_Tbx\-help\dates/mm.tex
-[272]) (C:\IRIS_Tbx\-help\dates/mmtoday.tex) (C:\IRIS_Tbx\-help\dates/qq.tex
-[273]) (C:\IRIS_Tbx\-help\dates/qqtoday.tex)
-(C:\IRIS_Tbx\-help\dates/rngcmp.tex [274]) (C:\IRIS_Tbx\-help\dates/str2dat.tex
-[275]) (C:\IRIS_Tbx\-help\dates/yy.tex [276])
-(C:\IRIS_Tbx\-help\dates/yytoday.tex) [277]
-(C:\IRIS_Tbx\-help\tseries/Contents.tex [278
+[270]) (C:\IRIS_Tbx\-help\dates/datxtick.tex [271])
+(C:\IRIS_Tbx\-help\dates/dec2dat.tex [272]) (C:\IRIS_Tbx\-help\dates/hh.tex)
+(C:\IRIS_Tbx\-help\dates/hhtoday.tex [273]) (C:\IRIS_Tbx\-help\dates/mm.tex
+[274]) (C:\IRIS_Tbx\-help\dates/mmtoday.tex) (C:\IRIS_Tbx\-help\dates/qq.tex
+[275]) (C:\IRIS_Tbx\-help\dates/qqtoday.tex)
+(C:\IRIS_Tbx\-help\dates/rngcmp.tex [276]) (C:\IRIS_Tbx\-help\dates/str2dat.tex
+[277]) (C:\IRIS_Tbx\-help\dates/yy.tex [278])
+(C:\IRIS_Tbx\-help\dates/yytoday.tex) [279]
+(C:\IRIS_Tbx\-help\tseries/Contents.tex [280
 
-] [279] [280])
-(C:\IRIS_Tbx\-help\tseries/acf.tex [281]) (C:\IRIS_Tbx\-help\tseries/apct.tex)
-(C:\IRIS_Tbx\-help\tseries/area.tex [282] [283])
-(C:\IRIS_Tbx\-help\tseries/arf.tex [284]) (C:\IRIS_Tbx\-help\tseries/bar.tex
-[285]) (C:\IRIS_Tbx\-help\tseries/barcon.tex [286])
-(C:\IRIS_Tbx\-help\tseries/bpass.tex [287])
-(C:\IRIS_Tbx\-help\tseries/bsxfun.tex [288])
-(C:\IRIS_Tbx\-help\tseries/bwf2.tex [289]) (C:\IRIS_Tbx\-help\tseries/bwf.tex
-[290]) (C:\IRIS_Tbx\-help\tseries/chowlin.tex [291])
-(C:\IRIS_Tbx\-help\tseries/convert.tex [292] [293])
-(C:\IRIS_Tbx\-help\tseries/cumsumk.tex [294] [295])
+] [281] [282])
+(C:\IRIS_Tbx\-help\tseries/acf.tex [283]) (C:\IRIS_Tbx\-help\tseries/apct.tex)
+(C:\IRIS_Tbx\-help\tseries/area.tex [284] [285])
+(C:\IRIS_Tbx\-help\tseries/arf.tex [286]) (C:\IRIS_Tbx\-help\tseries/bar.tex
+[287]) (C:\IRIS_Tbx\-help\tseries/barcon.tex [288])
+(C:\IRIS_Tbx\-help\tseries/bpass.tex [289])
+(C:\IRIS_Tbx\-help\tseries/bsxfun.tex [290])
+(C:\IRIS_Tbx\-help\tseries/bwf2.tex [291]) (C:\IRIS_Tbx\-help\tseries/bwf.tex
+[292]) (C:\IRIS_Tbx\-help\tseries/chowlin.tex [293])
+(C:\IRIS_Tbx\-help\tseries/convert.tex [294] [295])
+(C:\IRIS_Tbx\-help\tseries/cumsumk.tex [296] [297])
 (C:\IRIS_Tbx\-help\tseries/daily.tex) (C:\IRIS_Tbx\-help\tseries/destdise.tex
-[296]) (C:\IRIS_Tbx\-help\tseries/detrend.tex [297])
+[298]) (C:\IRIS_Tbx\-help\tseries/detrend.tex [299])
 (C:\IRIS_Tbx\-help\tseries/diff.tex) (C:\IRIS_Tbx\-help\tseries/double.tex
-[298]) (C:\IRIS_Tbx\-help\tseries/doubledata.tex)
-(C:\IRIS_Tbx\-help\tseries/empty.tex [299])
-(C:\IRIS_Tbx\-help\tseries/enddate.tex [300])
-(C:\IRIS_Tbx\-help\tseries/errorbar.tex [301])
-(C:\IRIS_Tbx\-help\tseries/expsmooth.tex [302])
-(C:\IRIS_Tbx\-help\tseries/fft.tex [303]) (C:\IRIS_Tbx\-help\tseries/freq.tex
-[304]) (C:\IRIS_Tbx\-help\tseries/get.tex [305])
+[300]) (C:\IRIS_Tbx\-help\tseries/doubledata.tex)
+(C:\IRIS_Tbx\-help\tseries/empty.tex [301])
+(C:\IRIS_Tbx\-help\tseries/enddate.tex [302])
+(C:\IRIS_Tbx\-help\tseries/errorbar.tex [303])
+(C:\IRIS_Tbx\-help\tseries/expsmooth.tex [304])
+(C:\IRIS_Tbx\-help\tseries/fft.tex [305]) (C:\IRIS_Tbx\-help\tseries/freq.tex
+[306]) (C:\IRIS_Tbx\-help\tseries/get.tex [307])
 (C:\IRIS_Tbx\-help\tseries/hpdi.tex) (C:\IRIS_Tbx\-help\tseries/hpf.tex
-[306] [307] [308] [309]) (C:\IRIS_Tbx\-help\tseries/hpf2.tex)
-(C:\IRIS_Tbx\-help\tseries/interp.tex [310])
+[308] [309] [310] [311]) (C:\IRIS_Tbx\-help\tseries/hpf2.tex)
+(C:\IRIS_Tbx\-help\tseries/interp.tex [312])
 (C:\IRIS_Tbx\-help\tseries/length.tex) (C:\IRIS_Tbx\-help\tseries/llf.tex
-[311] [312] [313] [314]) (C:\IRIS_Tbx\-help\tseries/llf2.tex)
-(C:\IRIS_Tbx\-help\tseries/moving.tex [315])
-(C:\IRIS_Tbx\-help\tseries/ndims.tex [316])
+[313] [314] [315] [316]) (C:\IRIS_Tbx\-help\tseries/llf2.tex)
+(C:\IRIS_Tbx\-help\tseries/moving.tex [317])
+(C:\IRIS_Tbx\-help\tseries/ndims.tex [318])
 (C:\IRIS_Tbx\-help\tseries/normalise.tex
 Overfull \hbox (30.12543pt too wide) in paragraph at lines 36--38
 []\T1/fi4/m/n/10 'mode=' \T1/ccr/m/n/10 [ `add' | $[]$ ] - Ad-di-tive or mul-ti
 -plica-tive nor-mal-i-sa-tion. De-scrip-tion ============ 
  []
 
-) (C:\IRIS_Tbx\-help\tseries/pct.tex [317] [318])
+[319]) (C:\IRIS_Tbx\-help\tseries/pct.tex [320])
 (C:\IRIS_Tbx\-help\tseries/permute.tex) (C:\IRIS_Tbx\-help\tseries/plot.tex
-[319]) (C:\IRIS_Tbx\-help\tseries/plotcmp.tex [320])
-(C:\IRIS_Tbx\-help\tseries/plotpred.tex [321] [322])
-(C:\IRIS_Tbx\-help\tseries/plotyy.tex [323])
-(C:\IRIS_Tbx\-help\tseries/redate.tex [324])
-(C:\IRIS_Tbx\-help\tseries/regress.tex [325])
+[321]) (C:\IRIS_Tbx\-help\tseries/plotcmp.tex [322])
+(C:\IRIS_Tbx\-help\tseries/plotpred.tex [323] [324])
+(C:\IRIS_Tbx\-help\tseries/plotyy.tex [325])
+(C:\IRIS_Tbx\-help\tseries/redate.tex [326])
+(C:\IRIS_Tbx\-help\tseries/regress.tex [327])
 (C:\IRIS_Tbx\-help\tseries/reshape.tex) (C:\IRIS_Tbx\-help\tseries/resize.tex
-[326]) (C:\IRIS_Tbx\-help\tseries/rmse.tex [327])
-(C:\IRIS_Tbx\-help\tseries/round.tex [328])
-(C:\IRIS_Tbx\-help\tseries/scatter.tex [329])
+[328]) (C:\IRIS_Tbx\-help\tseries/rmse.tex [329])
+(C:\IRIS_Tbx\-help\tseries/round.tex [330])
+(C:\IRIS_Tbx\-help\tseries/scatter.tex [331])
 (C:\IRIS_Tbx\-help\tseries/single.tex)
-(C:\IRIS_Tbx\-help\tseries/singledata.tex [330])
-(C:\IRIS_Tbx\-help\tseries/size.tex [331]) (C:\IRIS_Tbx\-help\tseries/sort.tex)
-(C:\IRIS_Tbx\-help\tseries/spy.tex [332])
-(C:\IRIS_Tbx\-help\tseries/startdate.tex [333])
-(C:\IRIS_Tbx\-help\tseries/stdise.tex [334])
-(C:\IRIS_Tbx\-help\tseries/stem.tex [335])
-(C:\IRIS_Tbx\-help\tseries/subsasgn.tex [336])
+(C:\IRIS_Tbx\-help\tseries/singledata.tex [332])
+(C:\IRIS_Tbx\-help\tseries/size.tex [333]) (C:\IRIS_Tbx\-help\tseries/sort.tex)
+(C:\IRIS_Tbx\-help\tseries/spy.tex [334])
+(C:\IRIS_Tbx\-help\tseries/startdate.tex [335])
+(C:\IRIS_Tbx\-help\tseries/stdise.tex [336])
+(C:\IRIS_Tbx\-help\tseries/stem.tex [337])
+(C:\IRIS_Tbx\-help\tseries/subsasgn.tex [338])
 (C:\IRIS_Tbx\-help\tseries/subsref.tex) (C:\IRIS_Tbx\-help\tseries/trend.tex
-[337]) (C:\IRIS_Tbx\-help\tseries/tseries.tex [338])
-(C:\IRIS_Tbx\-help\tseries/windex.tex [339])
-(C:\IRIS_Tbx\-help\tseries/wmean.tex [340]) (C:\IRIS_Tbx\-help\tseries/x12.tex
-[341] [342] [343] [344]) (C:\IRIS_Tbx\-help\tseries/yearly.tex) [345] [346]
-(C:\IRIS_Tbx\-help\dbase/Contents.tex [347
+[339]) (C:\IRIS_Tbx\-help\tseries/tseries.tex [340])
+(C:\IRIS_Tbx\-help\tseries/windex.tex [341])
+(C:\IRIS_Tbx\-help\tseries/wmean.tex [342]) (C:\IRIS_Tbx\-help\tseries/x12.tex
+[343] [344] [345] [346]) (C:\IRIS_Tbx\-help\tseries/yearly.tex [347]) [348]
+(C:\IRIS_Tbx\-help\dbase/Contents.tex [349
 
 ])
 (C:\IRIS_Tbx\-help\dbase/array2db.tex) (C:\IRIS_Tbx\-help\dbase/db2array.tex
-[348]) (C:\IRIS_Tbx\-help\dbase/db2tseries.tex [349])
-(C:\IRIS_Tbx\-help\dbase/dbbatch.tex [350] [351])
-(C:\IRIS_Tbx\-help\dbase/dbclip.tex [352]
+[350]) (C:\IRIS_Tbx\-help\dbase/db2tseries.tex [351])
+(C:\IRIS_Tbx\-help\dbase/dbbatch.tex [352] [353])
+(C:\IRIS_Tbx\-help\dbase/dbclip.tex [354]
 Overfull \hbox (13.43991pt too wide) in paragraph at lines 43--48
 []\T1/ccr/m/n/10 Multiple ranges can be spec-i-fied in \T1/fi4/m/n/10 Range \T1
 /ccr/m/n/10 (as a cell ar-ray), each for a dif-fer-ent date fre-quency/periodic
 ity
  []
 
-) (C:\IRIS_Tbx\-help\dbase/dbcol.tex [353])
-(C:\IRIS_Tbx\-help\dbase/dbextend.tex [354]) (C:\IRIS_Tbx\-help\dbase/dbfun.tex
-[355]) (C:\IRIS_Tbx\-help\dbase/dbload.tex [356] [357] [358])
-(C:\IRIS_Tbx\-help\dbase/dbmerge.tex [359])
-(C:\IRIS_Tbx\-help\dbase/dbminuscontrol.tex [360])
-(C:\IRIS_Tbx\-help\dbase/dbnames.tex [361] [362])
-(C:\IRIS_Tbx\-help\dbase/dbplot.tex [363])
-(C:\IRIS_Tbx\-help\dbase/dbprintuserdata.tex [364])
-(C:\IRIS_Tbx\-help\dbase/dbrange.tex [365])
+) (C:\IRIS_Tbx\-help\dbase/dbcol.tex [355])
+(C:\IRIS_Tbx\-help\dbase/dbextend.tex [356]) (C:\IRIS_Tbx\-help\dbase/dbfun.tex
+[357]) (C:\IRIS_Tbx\-help\dbase/dbload.tex [358] [359] [360])
+(C:\IRIS_Tbx\-help\dbase/dbmerge.tex [361])
+(C:\IRIS_Tbx\-help\dbase/dbminuscontrol.tex [362])
+(C:\IRIS_Tbx\-help\dbase/dbnames.tex [363] [364])
+(C:\IRIS_Tbx\-help\dbase/dbplot.tex [365])
+(C:\IRIS_Tbx\-help\dbase/dbprintuserdata.tex [366])
+(C:\IRIS_Tbx\-help\dbase/dbrange.tex [367])
 (C:\IRIS_Tbx\-help\dbase/dbredate.tex) (C:\IRIS_Tbx\-help\dbase/dbsave.tex
-[366] [367] [368]) (C:\IRIS_Tbx\-help\dbase/dbsearchuserdata.tex [369])
-(C:\IRIS_Tbx\-help\dbase/dbuserdatalov.tex [370])
-(C:\IRIS_Tbx\-help\dbase/xls2csv.tex [371]) [372]
-(C:\IRIS_Tbx\-help\Contents/reporting.tex) [373
+[368] [369] [370]) (C:\IRIS_Tbx\-help\dbase/dbsearchuserdata.tex [371])
+(C:\IRIS_Tbx\-help\dbase/dbuserdatalov.tex [372])
+(C:\IRIS_Tbx\-help\dbase/xls2csv.tex [373]) [374]
+(C:\IRIS_Tbx\-help\Contents/reporting.tex) [375
 
 
 ]
-(C:\IRIS_Tbx\-help\report/Contents.tex [374
+(C:\IRIS_Tbx\-help\report/Contents.tex [376
 
 
 ])
-(C:\IRIS_Tbx\-help\report/align.tex [375] [376])
-(C:\IRIS_Tbx\-help\report/array.tex [377] [378])
-(C:\IRIS_Tbx\-help\report/band.tex [379] [380])
+(C:\IRIS_Tbx\-help\report/align.tex [377] [378])
+(C:\IRIS_Tbx\-help\report/array.tex [379] [380])
+(C:\IRIS_Tbx\-help\report/band.tex [381] [382])
 (C:\IRIS_Tbx\-help\report/copy.tex) (C:\IRIS_Tbx\-help\report/display.tex
-[381]) (C:\IRIS_Tbx\-help\report/disp.tex) (C:\IRIS_Tbx\-help\report/empty.tex
-[382]) (C:\IRIS_Tbx\-help\report/fanchart.tex [383])
-(C:\IRIS_Tbx\-help\report/figure.tex [384]
+[383]) (C:\IRIS_Tbx\-help\report/disp.tex) (C:\IRIS_Tbx\-help\report/empty.tex
+[384]) (C:\IRIS_Tbx\-help\report/fanchart.tex [385])
+(C:\IRIS_Tbx\-help\report/figure.tex [386]
 Overfull \hbox (29.49681pt too wide) in paragraph at lines 13--15
 \T1/ccr/m/n/10 This is an ob-so-lete syn-tax, and will be re-moved from IRIS in
  a fu-ture re-lease. Use [][]\T1/fi4/m/n/10 report/userfigure[][][]
@@ -1035,7 +1040,7 @@ d-ing style struc-ture to the fig-ure; see [][]\T1/fi4/m/n/10 qstyle[][][]\T1/c
 cr/m/n/10 . 
  []
 
-[385]) (C:\IRIS_Tbx\-help\report/findall.tex [386])
+[387]) (C:\IRIS_Tbx\-help\report/findall.tex [388])
 (C:\IRIS_Tbx\-help\report/graph.tex
 Overfull \hbox (1.53499pt too wide) in paragraph at lines 30--34
 []\T1/fi4/m/n/10 'dateFormat=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-bl
@@ -1043,9 +1048,9 @@ e) Date for-mat string, see help on [][]\T1/fi4/m/n/10 dat2str[][][]\T1/ccr/m/n
 /10 . 
  []
 
-[387]) (C:\IRIS_Tbx\-help\report/highlight.tex [388])
-(C:\IRIS_Tbx\-help\report/include.tex [389])
-(C:\IRIS_Tbx\-help\report/matrix.tex [390]
+[389]) (C:\IRIS_Tbx\-help\report/highlight.tex [390])
+(C:\IRIS_Tbx\-help\report/include.tex [391])
+(C:\IRIS_Tbx\-help\report/matrix.tex [392]
 LaTeX Font Info:    Font shape `TS1/ccr/bx/n' in size <12> not available
 (Font)              Font shape `TS1/cmr/bx/n' tried instead on input line 38.
 
@@ -1053,7 +1058,7 @@ LaTeX Font Info:    Font shape `TS1/ccr/bx/n' in size <12> not available
 LaTeX Font Warning: Font shape `T1/fi4/bx/n' undefined
 (Font)              using `T1/fi4/m/n' instead on input line 38.
 
-[391]
+[393]
 Overfull \hbox (17.8495pt too wide) in paragraph at lines 62--66
 []\T1/fi4/bx/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
 m par-ent ob-jects) L[]T[]X string
@@ -1071,67 +1076,67 @@ Overfull \hbox (24.7502pt too wide) in paragraph at lines 85--90
 e from par-ent ob-jects) L[]T[]X string
  []
 
-[392] [393]) (C:\IRIS_Tbx\-help\report/merge.tex [394])
-(C:\IRIS_Tbx\-help\report/modelfile.tex [395])
-(C:\IRIS_Tbx\-help\report/new.tex [396])
+[394] [395]) (C:\IRIS_Tbx\-help\report/merge.tex [396])
+(C:\IRIS_Tbx\-help\report/modelfile.tex [397])
+(C:\IRIS_Tbx\-help\report/new.tex [398])
 (C:\IRIS_Tbx\-help\report/pagebreak.tex) (C:\IRIS_Tbx\-help\report/publish.tex
-[397] [398]) (C:\IRIS_Tbx\-help\report/section.tex [399])
-(C:\IRIS_Tbx\-help\report/series.tex [400] [401] [402] [403])
-(C:\IRIS_Tbx\-help\report/subheading.tex [404])
-(C:\IRIS_Tbx\-help\report/table.tex [405]
+[399] [400]) (C:\IRIS_Tbx\-help\report/section.tex [401])
+(C:\IRIS_Tbx\-help\report/series.tex [402] [403] [404] [405])
+(C:\IRIS_Tbx\-help\report/subheading.tex [406])
+(C:\IRIS_Tbx\-help\report/table.tex [407]
 Overfull \hbox (2.88443pt too wide) in paragraph at lines 61--67
 []\T1/fi4/m/it/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
  from par-ent ob-jects) Works only with \T1/fi4/m/it/10 'long='\T1/ccr/m/n/10 =
 true:
  []
 
-[406]
+[408]
 Overfull \hbox (15.68993pt too wide) in paragraph at lines 117--126
 []\T1/ccr/m/n/10 By de-fault, the date row is printed as a lead-ing row with da
 tes for-mated us-ing the op-tion \T1/fi4/m/it/10 'dateFormat='\T1/ccr/m/n/10 .
  []
 
-[407]) (C:\IRIS_Tbx\-help\report/tex.tex [408])
-(C:\IRIS_Tbx\-help\report/userfigure.tex [409]
+[409]) (C:\IRIS_Tbx\-help\report/tex.tex [410])
+(C:\IRIS_Tbx\-help\report/userfigure.tex [411]
 Overfull \hbox (2.51648pt too wide) in paragraph at lines 46--49
 []\T1/ccr/m/n/10 The re-port fig-ure can-not have any chil-dren; in other words
 , you can-not call [][]\T1/fi4/m/it/10 report/graph[][][]
  []
 
-) (C:\IRIS_Tbx\-help\report/vline.tex [410]) [411]
+[412]) (C:\IRIS_Tbx\-help\report/vline.tex [413]) [414]
 (C:\IRIS_Tbx\-help\qreportlang/Contents.tex)
 (C:\IRIS_Tbx\-help\qreportlang/figure.tex)
-(C:\IRIS_Tbx\-help\qreportlang/linegraph.tex [412
+(C:\IRIS_Tbx\-help\qreportlang/linegraph.tex [415
 
 ])
 (C:\IRIS_Tbx\-help\qreportlang/blank.tex)
-(C:\IRIS_Tbx\-help\qreportlang/bargraph.tex [413])
+(C:\IRIS_Tbx\-help\qreportlang/bargraph.tex [416])
 (C:\IRIS_Tbx\-help\qreportlang/histgraph.tex)
 (C:\IRIS_Tbx\-help\qreportlang/errorbargraph.tex)
-(C:\IRIS_Tbx\-help\qreportlang/stemgraph.tex [414])
-(C:\IRIS_Tbx\-help\qreportlang/subplot.tex [415])
+(C:\IRIS_Tbx\-help\qreportlang/stemgraph.tex [417])
+(C:\IRIS_Tbx\-help\qreportlang/subplot.tex [418])
 (C:\IRIS_Tbx\-help\qreportlang/linebreak.tex)
-(C:\IRIS_Tbx\-help\qreportlang/subtitle.tex) [416] [417]
+(C:\IRIS_Tbx\-help\qreportlang/subtitle.tex) [419] [420]
 (C:\IRIS_Tbx\-help\qreport/Contents.tex) (C:\IRIS_Tbx\-help\qreport/qplot.tex
-[418
+[421
 
-] [419]) (C:\IRIS_Tbx\-help\qreport/qstyle.tex [420] [421]) [422]
+] [422]) (C:\IRIS_Tbx\-help\qreport/qstyle.tex [423] [424]) [425]
 (C:\IRIS_Tbx\-help\grfun/Contents.tex)
-(C:\IRIS_Tbx\-help\grfun/bottomlegend.tex [423
+(C:\IRIS_Tbx\-help\grfun/bottomlegend.tex [426
 
 ])
 (C:\IRIS_Tbx\-help\grfun/ftitle.tex) (C:\IRIS_Tbx\-help\grfun/highlight.tex
-[424]) (C:\IRIS_Tbx\-help\grfun/maxfigure.tex [425])
-(C:\IRIS_Tbx\-help\grfun/movetobkg.tex [426])
+[427]) (C:\IRIS_Tbx\-help\grfun/maxfigure.tex [428])
+(C:\IRIS_Tbx\-help\grfun/movetobkg.tex [429])
 (C:\IRIS_Tbx\-help\grfun/movetosubplot.tex)
-(C:\IRIS_Tbx\-help\grfun/plotcircle.tex [427])
-(C:\IRIS_Tbx\-help\grfun/plotmat.tex [428])
-(C:\IRIS_Tbx\-help\grfun/plotneigh.tex [429] [430])
-(C:\IRIS_Tbx\-help\grfun/plotpp.tex [431] [432])
-(C:\IRIS_Tbx\-help\grfun/vline.tex [433]) (C:\IRIS_Tbx\-help\grfun/zeroline.tex
-[434]) (C:\IRIS_Tbx\-help\grfun/hline.tex))
+(C:\IRIS_Tbx\-help\grfun/plotcircle.tex [430])
+(C:\IRIS_Tbx\-help\grfun/plotmat.tex [431])
+(C:\IRIS_Tbx\-help\grfun/plotneigh.tex [432] [433])
+(C:\IRIS_Tbx\-help\grfun/plotpp.tex [434] [435])
+(C:\IRIS_Tbx\-help\grfun/vline.tex [436]) (C:\IRIS_Tbx\-help\grfun/zeroline.tex
+[437]) (C:\IRIS_Tbx\-help\grfun/hline.tex))
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 129.
- [435] [436]
+ [438] [439]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 129.
 
 (C:\IRIS_Tbx\-help\IRIS_Man.aux (C:\IRIS_Tbx\-help\Contents/sessions.aux)
@@ -1154,9 +1159,9 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 129.
  ) 
 Here is how much of TeX's memory you used:
- 12754 strings out of 494045
- 190257 string characters out of 3155643
- 218596 words of memory out of 3000000
+ 12758 strings out of 494045
+ 190294 string characters out of 3155643
+ 218601 words of memory out of 3000000
  10992 multiletter control sequences out of 15000+200000
  26693 words of font info for 59 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
@@ -1194,9 +1199,9 @@ i4-ec.enc} <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\d
 pi720\eorm10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknapp
 en\ec\dpi1244\eclb8.pk><C:/MiKTeX/fonts/type1/public/inconsolata/Inconsolata.pf
 b>
-Output written on C:/IRIS_Tbx/-help/IRIS_Man.pdf (436 pages, 1729419 bytes).
+Output written on C:/IRIS_Tbx/-help/IRIS_Man.pdf (439 pages, 1733853 bytes).
 PDF statistics:
- 8531 PDF objects out of 8907 (max. 8388607)
- 3758 named destinations out of 4296 (max. 500000)
+ 8546 PDF objects out of 8907 (max. 8388607)
+ 3762 named destinations out of 4296 (max. 500000)
  3281 words of extra memory for PDF output out of 10000 (max. 10000000)
 

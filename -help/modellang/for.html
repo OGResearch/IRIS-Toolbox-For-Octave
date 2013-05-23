@@ -111,23 +111,23 @@ code.LaTeX {
 
 <h4 id="short-cut-syntax">Short-cut syntax</h4>
 <pre><code>!for
-    list_of_tokens
+    List_of_Tokens
 !do
-    template
+    Template
 !end</code></pre>
 <h4 id="full-syntax">Full syntax</h4>
 <pre><code>!for
-    ?control_name = list_of_tokens
+    ?Control_Name = List_of_Tokens
 !do
-    template
+    Template
 !end</code></pre>
 <h4 id="description">Description</h4>
 <p>Use the '!for...!do...!end' command to specify a template and let the IRIS preparser automatically create multiple instances of the template by iterating over a list of tokens. The preparser cycles over the individual strings from the list; in each iteration, the current string is used to replace all occurences of the control variable in the template. The name of the control name is either a question mark, '?', in the abbreviated syntax, or any string (not to blank spaces) specified by the user starting with a question mark in the full syntax, such as '?x', '?#', '?NAME', etc.</p>
 <p>The tokens (text strings) in the list must be separated by commas, blank spaces, or line breaks and they themselves must not contain any of those. In each iteration,</p>
 <ul>
 <li><p>all occurrences of the control variable in the template are replaced with the currently processed string;</p></li>
-<li><p>all occurrences in the template of <code>?.control_name</code> are replaced with the currently processed string converted to lower case; this option is NOT available with the short-cut syntax;</p></li>
-<li><p>all occurrences in the template of <code>?:control_name</code> are replaced with the currently processed string converted to upper case; this option is NOT available with the short-cut syntax;</p></li>
+<li><p>all occurrences in the template of <code>?.Control_Name</code> are replaced with the currently processed string converted to lower case; this option is NOT available with the short-cut syntax;</p></li>
+<li><p>all occurrences in the template of <code>?:Control_Name</code> are replaced with the currently processed string converted to upper case; this option is NOT available with the short-cut syntax;</p></li>
 </ul>
 <p>The list of tokens can be based on Matlab expressions. The expressions must be enclosed in square brackets, and must evaluate into either a numeric vector, a char vector, or a cell array of numerics and/or strings.</p>
 <h4 id="example-1">Example 1</h4>

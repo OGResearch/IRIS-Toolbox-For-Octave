@@ -4,26 +4,26 @@
 % ============================================
 %
 %     !dtrends
-%         VARIABLE_NAME += EXPRESSION;
-%         VARIABLE_NAME += EXPRESSION;
-%         VARIABLE_NAME += EXPRESSION;
+%         Variable_Name += Expression;
+%         Variable_Name += Expression;
+%         Variable_Name += Expression;
 %         ...
 %
 % Syntax for log-linearised measurement variables
 % ================================================
 %
 %     !dtrends
-%         log(VARIABLE_NAME) += EXPRESSION;
-%         log(VARIABLE_NAME) += EXPRESSION;
-%         log(VARIABLE_NAME) += EXPRESSION;
+%         log(Variable_Name) += Expression;
+%         log(Variable_Name) += Expression;
+%         log(Variable_Name) += Expression;
 %         ...
 %
 % Syntax with equation labels
 % ============================
 %
 %     !dtrends
-%         'Equation label' VARIABLE_NAME += EXPRESSION;
-%         'Equation label' LOG(VARIABLE_NAME) += EXPRESSION;
+%         'Equation label' Variable_Name += Expression;
+%         'Equation label' LOG(Variable_Name) += Expression;
 %
 % Description
 % ============

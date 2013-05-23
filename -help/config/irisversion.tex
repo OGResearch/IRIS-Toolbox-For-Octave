@@ -11,8 +11,11 @@
  
  \paragraph{Output arguments}
  
- *\texttt{X} {[} char {]} - String describing the currently installed
- IRIS version.
+ \begin{itemize}
+ \item
+   \texttt{X} {[} char {]} - String describing the currently installed
+   IRIS version.
+ \end{itemize}
  
  \paragraph{Description}
  
@@ -20,10 +23,6 @@
  and the distribution date (yyyymmdd).
  
  The \texttt{irisversion} function is equivalent to the following call to
- \href{config/irisget}{\texttt{irisget}}
- 
- \begin{verbatim}
- irisget('version')
- \end{verbatim}
+ calling \texttt{irisget('version')}.
 
 

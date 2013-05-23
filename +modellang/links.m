@@ -4,25 +4,25 @@
 % =======
 %
 %     !links
-%        PARAMETER_NAME := EXPR;
-%        VARIABLE_NAME := EXPR;
+%        Parameter_Name := Expression;
+%        Variable_Name := Expression;
 %
 % Syntax with equation labels
 % ============================
 %
 %     !links
-%        'Equation label' PARAMETER_NAME := EXPR;
-%        'Equation label' VARIABLE_NAME := EXPR;
+%        'Equation label' Parameter_Name := Expression;
+%        'Equation label' Variable_Name := Expression;
 %
 % Description
 % ============
 %
 % The dynamic links relate a particular parameter (or steady-state value)
 % on the LHS to a function of other parameters or steady-state values on
-% the RHS. `EXPR` can be any expression involving parameter names,
+% the RHS. `Expression` can be any expression involving parameter names,
 % variables names, Matlab functions and constants, or your own m-file
 % functions on the path; it must not refer to any lags or leads.
-% `EXPR` must evaluate to a single number. It is the user's
+% `Expression` must evaluate to a single number. It is the user's
 % responsibility to properly handle the imaginary (i.e. growth) part of the
 % steady-state values.
 %

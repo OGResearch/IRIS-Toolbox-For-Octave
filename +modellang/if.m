@@ -3,30 +3,30 @@
 % Syntax with else and elseif clauses
 % ====================================
 %
-%     !if condition1
-%         block1
-%     !elseif condition2
-%         block2
-%     !elseif condition3
+%     !if Condition1
+%         Block1
+%     !elseif Condition2
+%         Block2
+%     !elseif Condition3
 %     ...
 %     !else
-%         block3
+%         Block3
 %     !end
 % 
 % Syntax with an else clause only
 % ================================
 %
-%     !if condition1
-%         block1
+%     !if Condition1
+%         Block1
 %     !else
-%         block2
+%         Block2
 %     !end
 %
 % Syntax without an else clause
 % ==============================
 %
-%     !if condition
-%         block1
+%     !if Condition
+%         Block1
 %     !end
 %
 % Description

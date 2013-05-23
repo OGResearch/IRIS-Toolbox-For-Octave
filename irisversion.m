@@ -10,7 +10,7 @@ function [C,N] = irisversion()
 % Output arguments
 % =================
 %
-% *`X` [ char ] - String describing the currently installed IRIS version.
+% * `X` [ char ] - String describing the currently installed IRIS version.
 %
 % Description
 % ============
@@ -19,9 +19,7 @@ function [C,N] = irisversion()
 % and the distribution date (yyyymmdd).
 %
 % The `irisversion` function is equivalent to the following call to
-% [`irisget`](config/irisget)
-%
-%     irisget('version')
+% calling `irisget('version')`.
 %
 
 % -IRIS Toolbox.
