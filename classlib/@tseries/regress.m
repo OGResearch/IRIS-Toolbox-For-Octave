@@ -79,26 +79,26 @@ else
    Range = Range(1) : Range(end);
 end
 
-xdata = rangedata(X,Range);
+xData = rangedata(X,Range);
 ydata = rangedata(Y,Range);
 if opt.constant
-   xdata(:,end+1) = 1;
+   xData(:,end+1) = 1;
 end
 
 if isempty(opt.weighting)
-   [B,BStd,eVar,BCov] = lscov(xdata,ydata);
+   [B,BStd,eVar,BCov] = lscov(xData,ydata);
 else
    w = rangedata(opt.weighting,Range);
-   [B,BStd,eVar,BCov] = lscov(xdata,ydata,w);
+   [B,BStd,eVar,BCov] = lscov(xData,ydata,w);
 end
 EStd = sqrt(eVar);
 
 if nargout > 2
-   E = replace(Y,ydata - xdata*B,Range(1));
+   E = replace(Y,ydata - xData*B,Range(1));
 end
 
 if nargout > 4
-   YFit = replace(Y,xdata*B,Range(1));
+   YFit = replace(Y,xData*B,Range(1));
 end
 
 end

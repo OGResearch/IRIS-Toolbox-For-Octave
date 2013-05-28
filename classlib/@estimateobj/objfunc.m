@@ -1,4 +1,4 @@
-function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,LikOpt,Opt)
+function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,LikOpt,EstOpt)
 % objfunc  [Not a public function] Evaluate objective function, usually minus log posterior.
 %
 % Backend IRIS function.
@@ -21,9 +21,9 @@ PP = 0;
 % Minus log system prior.
 SP = 0;
 
-isLik = Opt.evallik;
-isPPrior = Opt.evalpprior && any(Pri.priorindex);
-isSPrior = Opt.evalsprior && ~isempty(Pri.sprior);
+isLik = EstOpt.evallik;
+isPPrior = EstOpt.evalpprior && any(Pri.priorindex);
+isSPrior = EstOpt.evalsprior && ~isempty(Pri.sprior);
 
 % Evaluate parameter priors.
 if isPPrior
@@ -42,8 +42,8 @@ end
 % Update model with new parameter values; do this before evaluating the
 % system priors.
 if isLik || isSPrior
-    throwErr = strcmpi(Opt.nosolution,'error');
-    [This,UpdateOk] = myupdatemodel(This,X,Pri,Opt,throwErr);
+    throwErr = strcmpi(EstOpt.nosolution,'error');
+    [This,UpdateOk] = myupdatemodel(This,X,Pri,EstOpt,throwErr);
     if ~UpdateOk
         Obj = Inf;
     end

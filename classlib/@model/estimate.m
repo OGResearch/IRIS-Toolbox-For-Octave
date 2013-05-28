@@ -425,7 +425,12 @@ end
     function doPopulatePosterObj()
         % Make sure that draws that fail to solve do not cause an error
         % and hence do not interupt the posterior simulator.
-        pri.nosolution = 'penalty';
+        if ~strcmpi(estOpt.nosolution,'penalty')
+            estOpt.nosolution = 'penalty';
+            utils.warning('model', ...
+                ['Changing the option ''noSolution='' to ''penalty'' in the ', ...
+                'posterior simulation object.']);
+        end
         
         Pos.paramList = pri.plist;
         Pos.minusLogPostFunc = @objfunc;

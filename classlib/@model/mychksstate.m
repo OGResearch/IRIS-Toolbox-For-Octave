@@ -7,6 +7,12 @@ function [Discr,MaxAbsDiscr,Flag,List] = mychksstate(This,Opt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+% The input struct Opt is expected to include
+%
+% * `.sstateeqtn` -- switch between evaluating full dynamic versus
+% steady-state equations;
+% * `.tolerance` -- tolerance level.
+
 %--------------------------------------------------------------------------
 
 nEqtnXY = sum(This.eqtntype <= 2);

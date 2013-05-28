@@ -1,4 +1,4 @@
-function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,LikOpt,Opt)
+function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,LikOpt,EstOpt)
 % myestimate  [Not a public function] Estimate parameters.
 %
 % Backend IRIS function.
@@ -32,32 +32,32 @@ if ~isempty(Pri.p0)
     % handle returned as an output of `estimate` will be not be affected by
     % re-scaling the std devs in the output model object. Make sure the
     % model is solved in the very first run.
-    if ischar(Opt.solver)
+    if ischar(EstOpt.solver)
         % Optimization toolbox
         %----------------------
-        if strncmpi(Opt.solver,'fmin',4)
+        if strncmpi(EstOpt.solver,'fmin',4)
             if all(isinf(Pri.pl)) && all(isinf(Pri.pu))
                 [PStar,ObjStar,~,~,grad,Hess{1}] = ...
-                    fminunc(@objfunc,Pri.p0,Opt.optimset, ...
-                    This,Data,Pri,LikOpt,Opt); %#ok<ASGLU>
+                    fminunc(@objfunc,Pri.p0,EstOpt.optimset, ...
+                    This,Data,Pri,LikOpt,EstOpt); %#ok<ASGLU>
                 LAMBDA = struct('lower',zeros(np,1),'upper',zeros(np,1));
             else
                 [PStar,ObjStar,~,~,LAMBDA,grad,Hess{1}] = ...
                     fmincon(@objfunc,Pri.p0, ...
-                    [],[],[],[],Pri.pl,Pri.pu,[],Opt.optimset,...
-                    This,Data,Pri,LikOpt,Opt); %#ok<ASGLU>
+                    [],[],[],[],Pri.pl,Pri.pu,[],EstOpt.optimset,...
+                    This,Data,Pri,LikOpt,EstOpt); %#ok<ASGLU>
             end
-        elseif strcmpi(Opt.solver,'lsqnonlin')
+        elseif strcmpi(EstOpt.solver,'lsqnonlin')
             [PStar,ObjStar,~,~,~,LAMBDA] = ...
-                lsqnonlin(@objfunc,Pri.p0,Pri.pl,Pri.pu,Opt.optimset, ...
-                This,Data,Pri,LikOpt,Opt);
-        elseif strcmpi(Opt.solver,'pso')
+                lsqnonlin(@objfunc,Pri.p0,Pri.pl,Pri.pu,EstOpt.optimset, ...
+                This,Data,Pri,LikOpt,EstOpt);
+        elseif strcmpi(EstOpt.solver,'pso')
             % IRIS Optimization Toolbox
             %--------------------------
             [PStar,ObjStar,~,~,~,~,LAMBDA] = ...
                 optim.pso(@objfunc,Pri.p0,[],[],[],[],...
-                Pri.pl,Pri.pu,[],Opt.optimset,...
-                This,Data,Pri,LikOpt,Opt);
+                Pri.pl,Pri.pu,[],EstOpt.optimset,...
+                This,Data,Pri,LikOpt,EstOpt);
         end
         % Find lower or upper bound hits.
         bhit(double(LAMBDA.lower) ~= 0) = -1;
@@ -65,18 +65,18 @@ if ~isempty(Pri.p0)
     else
         % User-supplied optimisation routine
         %------------------------------------
-        if isa(Opt.solver,'function_handle')
+        if isa(EstOpt.solver,'function_handle')
             % User supplied function handle.
-            f = Opt.solver;
+            f = EstOpt.solver;
             args = {};
         else
             % User supplied cell `{func,arg1,arg2,...}`.
-            f = Opt.solver{1};
-            args = Opt.solver(2:end);
+            f = EstOpt.solver{1};
+            args = EstOpt.solver(2:end);
         end
         [PStar,ObjStar,Hess{1}] = ...
-            f(@(x) objfunc(x,This,Data,Pri,LikOpt,Opt), ...
-            Pri.p0,Pri.pl,Pri.pu,Opt.optimset,args{:});
+            f(@(x) objfunc(x,This,Data,Pri,LikOpt,EstOpt), ...
+            Pri.p0,Pri.pl,Pri.pu,EstOpt.optimset,args{:});
         bhit(PStar == Pri.pl) = -1;
         bhit(PStar == Pri.pu) = 1;
     end
@@ -87,13 +87,13 @@ if ~isempty(Pri.p0)
     
     % Initial proposal covariance matrix and contributions of priors to
     % Hessian.
-    [PCov,Hess] = mydiffprior(This,Data,PStar,Hess,bhit,Pri,LikOpt,Opt);
+    [PCov,Hess] = mydiffprior(This,Data,PStar,Hess,bhit,Pri,LikOpt,EstOpt);
     
     % Assign estimated parameters, refresh dynamic links, and re-compute steady
     % state, solution, and expansion matrices.
     throwError = true;
     expMatrices = true;
-    This = myupdatemodel(This,PStar,Pri,Opt,throwError,expMatrices);
+    This = myupdatemodel(This,PStar,Pri,EstOpt,throwError,expMatrices);
     
 else
     
@@ -142,21 +142,21 @@ end
 %**************************************************************************
     function doOptimOptions()
         solverName = '';
-        if ischar(Opt.solver)
-            solverName = Opt.solver;
-        elseif isa(Opt.solver,'function_handle')
-            solverName = char(Opt.solver);
-        elseif iscell(Opt.solver)
-            solverName = char(Opt.solver{1});
+        if ischar(EstOpt.solver)
+            solverName = EstOpt.solver;
+        elseif isa(EstOpt.solver,'function_handle')
+            solverName = char(EstOpt.solver);
+        elseif iscell(EstOpt.solver)
+            solverName = char(EstOpt.solver{1});
         end
         switch lower(solverName)
             case 'pso'
-                if strcmpi(Opt.nosolution,'error')
+                if strcmpi(EstOpt.nosolution,'error')
                     utils.warning('estimateobj', ...
                         ['Global optimization algorithm, ', ...
                         'switching from ''noSolution=error'' to ', ...
                         '''noSolution=penalty''.']);
-                    Opt.nosolution = 'penalty';
+                    EstOpt.nosolution = 'penalty';
                 end
             case {'fmin','fmincon','fminunc','lsqnonln'}
                 switch lower(solverName)
@@ -167,20 +167,20 @@ end
                 end
                 oo = {...
                     'algorithm',algorithm, ...
-                    'display',Opt.display, ...
-                    'maxIter',Opt.maxiter, ...
-                    'maxFunEvals',Opt.maxfunevals, ...
+                    'display',EstOpt.display, ...
+                    'maxIter',EstOpt.maxiter, ...
+                    'maxFunEvals',EstOpt.maxfunevals, ...
                     'GradObj','off', ...
                     'Hessian','off', ...
                     'LargeScale','off', ...
-                    'tolFun',Opt.tolfun, ...
-                    'tolX',Opt.tolx, ...
+                    'tolFun',EstOpt.tolfun, ...
+                    'tolX',EstOpt.tolx, ...
                     };
-                if ~isempty(Opt.optimset) && iscell(Opt.optimset)
-                    oo = [oo,Opt.optimset];
+                if ~isempty(EstOpt.optimset) && iscell(EstOpt.optimset)
+                    oo = [oo,EstOpt.optimset];
                 end
                 oo(1:2:end) = strrep(oo(1:2:end),'=','');
-                Opt.optimset = optimset(oo{:});
+                EstOpt.optimset = optimset(oo{:});
             otherwise
                 % Do nothing.
         end
