@@ -1,0 +1,144 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="SVAR/sort">sort</h2>
+<div class="headline">Sort SVAR parameterisations by squared distance of shock reponses to median</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[B,~,Inx,Crit] = sort(A,[],SortBy,...)
+[B,Data,Inx,Crit] = sort(A,Data,SortBy,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>A</code> [ SVAR ] - SVAR object with multiple parameterisations that will be sorted.</p></li>
+<li><p><code>Data</code> [ tseries | struct | empty ] - SVAR data (endogenous variables and structural shocks); the structural shocks will be re-ordered according to the SVAR parameterisations. You can leave the input argument <code>Data</code> empty.</p></li>
+<li><p><code>SortBy</code> [ char ] - Text string that will be evaluated to compute the criterion by which the parameterisations will be sorted; see Description for how to write <code>SortBy</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>B</code> [ SVAR ] - SVAR object with parameterisations sorted by the specified criterion.</p></li>
+<li><p><code>Data</code> [ tseries | struct | empty ] - SVAR data with the structural shocks re-ordered to correspond to the order of parameterisations.</p></li>
+<li><p><code>Inx</code> [ numeric ] - Vector of indices so that <code>B = A(Inx)</code>.</p></li>
+<li><p><code>Crit</code> [ numeric ] - The value of the criterion based on the string <code>SortBy</code> for each parameterisation.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The individual parameterisations within the SVAR object <code>A</code> are sorted by the sum squared distances of selected shock responses to the respective median reponses. Formally, the following criterion is evaluated for each parameterisation</p>
+<p><span class="LaTeX">$$ \sum_{i\in I,j\in J,k\in K} \left[ S_{i,j}(k) - M_{i,j}(k) \right]^2 $$</span></p>
+<p>where <span class="LaTeX">$S_{i,j}(k)$</span> denotes the response of the i-th variable to the j-th shock in period k, and <span class="LaTeX">$M_{i,j}(k)$</span> is the median responses. The sets of variables, shocks and periods, i.e. <code>I</code>, <code>J</code>, <code>K</code>, respectively, over which the summation runs are determined by the user in the <code>SortBy</code> string.</p>
+<p>How do you select the shock responses that enter the criterion in <code>SortBy</code>? The input argument <code>SortBy</code> is a text string that refers to array <code>S</code>, whose element <code>S(i,j,k)</code> is the response of the i-th variable to the j-th shock in period k.</p>
+<p>Note that when you pass in SVAR data and request them to be sorted the same way as the SVAR parameterisations (the second line in Syntax), the number of parameterisations in <code>A</code> must match the number of data sets in <code>Data</code>.</p>
+<h4 id="example">Example</h4>
+<p>Sort the parameterisations by squared distance to median of shock responses of all variables to the first shock in the first four periods. The parameterisation that is closest to the median responses</p>
+<pre><code>S2 = sort(S1,[],&#39;S(:,1,1:4)&#39;)</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

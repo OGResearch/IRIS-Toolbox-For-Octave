@@ -1,0 +1,43 @@
+
+
+    \filetitle{rmse}{Compute RMSE for given observations and predictions}{tseries/rmse}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Rmse,Pe] = rmse(Obs,Pred)
+ [Rmse,Pe] = rmse(Obs,Pred,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Obs} {[} tseries {]} - Input data with observations.
+ \item
+   \texttt{Pred} {[} tseries {]} - Input data with predictions (a
+   different prediction horizon in each column); \texttt{Pred} is
+   typically the outcome of the Kalman filter, \url{model/filter} or
+   \url{VAR/filter}, called with the option \texttt{'ahead='}.
+ \item
+   \texttt{Range} {[} numeric \textbar{} \texttt{Inf} {]} - Date range on
+   which the RMSEs will be evaluated; \texttt{Inf} means the entire
+   possible range available.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Rmse} {[} numeric {]} - Numeric array with RMSEs for each
+   column of \texttt{Pred}.
+ \item
+   \texttt{Pe} {[} tseries {]} - Prediction errors, i.e.~the difference
+   \texttt{Obs - Pred} evaluated within \texttt{Range}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

@@ -1,0 +1,60 @@
+
+
+    \filetitle{db2array}{Convert tseries database entries to numeric array}{dbase/db2array}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [X,Incl,Range] = db2array(D)
+ [X,Incl,Range] = db2array(D,List)
+ [X,Incl,Range] = db2array(D,List,Range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Input database with tseries objects that
+   will be converted to a numeric array.
+ \item
+   \texttt{List} {[} char \textbar{} cellstr {]} - List of tseries names
+   that will be converted to a numeric array; if not specified, all
+   tseries entries found in the input database, \texttt{D}, will be
+   included in the output arrays, \texttt{X}.
+ \item
+   \texttt{Range} {[} numeric \textbar{} \texttt{Inf} {]} - Date range;
+   \texttt{Inf} means a range from the very first non-NaN observation to
+   the very last non-NaN observation.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} numeric {]} - Numeric array with observations from
+   individual tseries objects in columns.
+ \item
+   \texttt{Incl} {[} cellstr {]} - List of tseries names that have been
+   actually found in the database.
+ \item
+   \texttt{Range} {[} numeric {]} - Date range actually used; this output
+   argument is useful when the input argument \texttt{Range} is missing
+   or \texttt{Inf}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The output array, \texttt{X}, is always NPer-by-NList-by-NAlt, where
+ NPer is the length of the \texttt{Range} (the number of periods), NList
+ is the number of tseries included in the \texttt{List}, and NAlt is the
+ maximum number of columns that any of the tseries included in the
+ \texttt{List} have.
+ 
+ All tseries with more than one dimension (i.e.~with more than one
+ column) are always expanded along 3rd dimension only. For instance, a
+ 10-by-2-by-3 tseries will occupy a 10-by-1-by-6 space in \texttt{X} at
+ its respective location.
+ 
+ \paragraph{Example}
+
+

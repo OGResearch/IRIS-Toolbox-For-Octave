@@ -1,0 +1,42 @@
+
+
+    \filetitle{normalise}{Normalise (or rebase) data to particular date}{tseries/normalise}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ x = normalise(x)
+ x = normalise(x,normdate,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Input tseries object that will be
+   normalised.
+ \item
+   \texttt{normdate} {[} numeric \textbar{} `start' \textbar{} `end'
+   \textbar{} `nanstart' \textbar{} `nanend' {]} - Date relative to which
+   the input data will be normalised; if not specified, `nanstart' (the
+   first date for which all columns have an observation) will be used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Normalised tseries object.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'mode='} {[} `add' \textbar{} \emph{`mult'} {]} - Additive or
+   multiplicative normalisation. Description ============
+ \end{itemize}
+ 
+ \paragraph{Example}
+
+

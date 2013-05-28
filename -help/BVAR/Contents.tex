@@ -1,0 +1,49 @@
+
+    \foldertitle{BVAR}{Bayesian VAR prior dummies: BVAR package}{BVAR/Contents}
+
+	The BVAR package can be used to create the basic types of prior dummy
+ observations when estimating Bayesian VAR models. The dummy observations
+ are passed in the \url{VAR/estimate} function through the
+ \texttt{'BVAR='} option.
+ 
+ \paragraph{Constructing dummy observations}
+ 
+ \begin{itemize}
+ \item
+   \href{BVAR/covmat}{\texttt{covmat}} - Covariance matrix prior dummy
+   observations for BVARs.
+ \item
+   \href{BVAR/litterman}{\texttt{litterman}} - Litterman's prior dummy
+   observations for BVARs.
+ \item
+   \href{BVAR/sumofcoeff}{\texttt{sumofcoeff}} - Doan et al
+   sum-of-coefficient prior dummy observations for BVARs.
+ \item
+   \href{BVAR/uncmean}{\texttt{uncmean}} - Unconditional-mean dummy (or
+   Sims' initial dummy) observations for BVARs.
+ \item
+   \href{BVAR/user}{\texttt{user}} - User-supplied prior dummy
+   observations for BVARs.
+ \end{itemize}
+ 
+ \paragraph{Weights on prior dummy observations}
+ 
+ The prior dummies produced by \href{BVAR/litterman}{\texttt{litterman}},
+ \href{BVAR/uncmean}{\texttt{uncmean}},
+ \href{BVAR/sumofcoeff}{\texttt{sumofcoeff}} can be weighted up or down
+ using the input argument \texttt{Mu}. To give the weight a clear
+ interpretation, use the option \texttt{'stdize=' true} when estimating
+ the VAR. In that case, setting \texttt{Mu} to \texttt{sqrt(N)} means the
+ prior dummies are worth a total of extra \texttt{N} artifical
+ observations; the weight can be related to the actual number of
+ observations used in estimation.
+ 
+ \paragraph{Getting help on BVAR functions}
+ 
+ \begin{verbatim}
+ help BVAR
+ help BVAR/function_name
+ \end{verbatim}
+
+
+

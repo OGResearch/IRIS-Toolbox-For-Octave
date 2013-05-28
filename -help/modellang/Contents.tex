@@ -1,0 +1,274 @@
+
+    \foldertitle{modellang}{Model file language}{modellang/Contents}
+
+	Model file language is used to write model files. The model files are
+ plain text files (saved under any filename with any extension) that
+ describes the model: its equations, variables, parameters, etc. The
+ model file, on the other hand, does not describe what to do with the
+ model. To run the tasks you want to perform with the model, you need
+ first to load the model file into Matlab using the
+ \href{model/model}{\texttt{model}} function. This function creates a
+ model object. Then you write your own m-files using Matlab and IRIS
+ functions to perform the desired tasks with the model object.
+ 
+ Why do all the keywords (except pseudofunctions) start with an
+ exclamation point? Why do the comments have the same style as in Matlab?
+ Why do substitutions and steady-state references use the dollar sign?
+ Because this way, you can get the model files syntax-highlighted in the
+ Matlab editor. Syntax highlighting improves enormously the readability
+ of the files, and helps understand the model more quickly. See
+ \href{setup/Contents}{the setup instructions} for more details.
+ 
+ \paragraph{Variables, parameters, substitutions and functions}
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/transitionvariables}{\texttt{!transition\_variables}}
+   - List of transition variables.
+ \item
+   \href{modellang/transitionshocks}{\texttt{!transition\_shocks}} - List
+   of transition shocks.
+ \item
+   \href{modellang/measurementvariables}{\texttt{!measurement\_variables}}
+   - List of measurement variables.
+ \item
+   \href{modellang/measurementshocks}{\texttt{!measurement\_shocks}} -
+   List of measurement shocks.
+ \item
+   \href{modellang/exogenousvariables}{\texttt{!exogenous\_variables}} -
+   List of exogenous variables.
+ \item
+   \href{modellang/parameters}{\texttt{!parameters}} - List of
+   parameters.
+ \item
+   \href{modellang/autoexogenise}{\texttt{!autoexogenise}} - Definition
+   of variable/shock pairs for use in autoexogenised simulation plans.
+ \end{itemize}
+ 
+ \paragraph{Equations}
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/transitionequations}{\texttt{!transition\_equations}}
+   - Block of transition equations.
+ \item
+   \href{modellang/measurementequations}{\texttt{!measurement\_equations}}
+   - Block of measurement equations.
+ \item
+   \href{modellang/dtrends}{\texttt{!dtrends}} - Block of deterministic
+   trend equations.
+ \item
+   \href{modellang/links}{\texttt{!links}} - Define dynamic links.
+ \end{itemize}
+ 
+ \paragraph{Linearised and log-linearised variables}
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/logvariables}{\texttt{!log\_variables}} - List of
+   log-linearised variables.
+ \item
+   \href{modellang/allbut}{\texttt{!allbut}} - Inverse list of
+   log-linearised variables.
+ \item
+   \href{modellang/regexpression}{\texttt{\textless{}...\textgreater{}}}
+   - Regular expression in log-varible list.
+ \end{itemize}
+ 
+ \paragraph{Model pseudofunctions}
+ 
+ Pseudofunctions do not start with an exclamation point.
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/min}{\texttt{min}} - Define the loss function in a
+   time-consistent optimal policy model.
+ \end{itemize}
+ 
+ \paragraph{Special operators}
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/sstateversion}{\texttt{!!}} - Steady-state version of
+   an equation.
+ \item
+   \href{modellang/alias}{\texttt{!!}} - Beginning of aliasing in
+   descriptions and labels.
+ \item
+   \href{modellang/ttrend}{\texttt{!ttrend}} - Linear time trend in
+   deterministic trend equations.
+ \item
+   \href{modellang/laglead}{\texttt{\{...\}}} - Lag or lead.
+ \item
+   \href{modellang/sstateref}{\texttt{\&}} - Reference to the
+   steady-state level of a variable.
+ \item
+   \href{modellang/exactnonlin}{\texttt{=\#}} - Mark an equation for
+   exact non-linear simulation.
+ \end{itemize}
+ 
+ \paragraph{Preparser pseudofunctions}
+ 
+ Pseudofunctions do not start with an exclamation point.
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/diff}{\texttt{diff}} - First difference
+   pseudofunction.
+ \item
+   \href{modellang/dot}{\texttt{dot}} - Gross rate of growth
+   pseudofunction.
+ \item
+   \href{modellang/difflog}{\texttt{difflog}} - First log-difference
+   pseudofunction.
+ \item
+   \href{modellang/movavg}{\texttt{movavg}} - Moving average
+   pseudofunction.
+ \item
+   \href{modellang/movprod}{\texttt{movprod}} - Moving product
+   pseudofunction.
+ \item
+   \href{modellang/movsum}{\texttt{movsum}} - Moving sum pseudofunction.
+ \end{itemize}
+ 
+ \paragraph{Preparser control commands}
+ 
+ \begin{itemize}
+ \item
+   \href{modellang/substitutions}{\texttt{!substitutions}} - Define text
+   substitutions.
+ \item
+   \href{modellang/import}{\texttt{!import}} - Include the content of
+   another model file.
+ \item
+   \href{modellang/export}{\texttt{!export}} - Create a carry-around file
+   to be saved on the disk.
+ \item
+   \href{modellang/if}{\texttt{!if...!elseif...!else...!end}} - Choose
+   block of code depending on a condition.
+ \item
+   \href{modellang/switch}{\texttt{!switch...!case...!end}} - Switch
+   among several branches of the model code depending on the value of an
+   expression.
+ \item
+   \href{modellang/for}{\texttt{!for...!do...!end}} - For loop for
+   automated creation of model code.
+ \item
+   \href{modellang/linecomments}{\texttt{\%}} - Line comments.
+ \item
+   \href{modellang/blockcomments}{\texttt{\%\{...\%\}}} - Block comments.
+ \end{itemize}
+ 
+ \paragraph{Getting on-line help on model file language}
+ 
+ When getting help on model file language, type the names of the keywords
+ and commands without the exclamation point:
+ 
+ \begin{verbatim}
+ help modellang
+ help modellang/!keyword
+ help modellang/!command 
+ help modellang/pseudofunction
+ \end{verbatim}
+ 
+ \paragraph{Matlab functions and user functions in model files}
+ 
+ You can use any of the built-in functions (Matlab functions, functions
+ within the Toolboxes you have on your computer, and so on). In addition,
+ you can also use your own functions (written as an m-file) as long as
+ the m-file is on the Matlab search path or in the current directory.
+ 
+ In your own m-file functions, you can also (optionally) supply the first
+ derivatives that will be used to compute Taylor expansions when the
+ model is being solved, and also the second derivatives that will be used
+ when the function occurs in a loss function. Functions in which you wish
+ to use your own derivative must be listed in a
+ \href{modellang/userdiff}{\texttt{!userdiff}} section in the model file.
+ 
+ Furthermore, the function itself must comply with the following
+ requirements. When asked for the derivatives, the function is called
+ with two extra input arguments on top of that function's regular input
+ arguments. The first extra input argument is a text string
+ \texttt{'diff'} (indicating the call to the function is supposed to
+ return a derivative). The second extra input argument is a number or a
+ vector of two numbers; it determines with respect to which input
+ argument or arguments the first derivative or the second derivative is
+ requested.
+ 
+ For instance, your function takes three input arguments,
+ \texttt{myfunc(x,y,z)}. To be able to supply derivates avoiding thus
+ numerical differentiation, the function must be written so that the
+ following three calls
+ 
+ \begin{verbatim}
+ myfunc(x,y,z,'diff',1)
+ myfunc(x,y,z,'diff',2)
+ myfunc(x,y,z,'diff',3)
+ \end{verbatim}
+ 
+ return the first derivative wrt to the first, second, and third input
+ argument, respectively, while
+ 
+ \begin{verbatim}
+ myfunc(x,y,z,'diff',[1,2])
+ \end{verbatim}
+ 
+ returns the second derivative wrt to the first and second input
+ arguments. Note that second derivatives are only needed for functions
+ that occur in an equation defining optimal policy objective,
+ \href{modellang/min}{min}.
+ 
+ If any of these calls fail, the respective derivative will be simply
+ evaluated numerically.
+ 
+ \paragraph{Basic rules IRIS model files}
+ 
+ \begin{itemize}
+ \item
+   There can be four types of equations in IRIS models: transition
+   equations which are simply the endogenous dynamic equations,
+   measurement equations which link the model to observables,
+   deterministic trend equations which can be added at the top of
+   measurement equations, and dynamic links which can be used to link
+   some parameters or steady-state values to each other.
+ \item
+   There can be two types of variables and two types of shocks in IRIS
+   models: transition variables and shocks, and measurement variables and
+   shocks.
+ \item
+   Each model must have at least one transition (aka endogenous) variable
+   and one transition equation.
+ \item
+   Each variable, shock, or parameter must be declared in the appropriate
+   declaration section.
+ \item
+   The declaration sections and equations sections can be written in any
+   order.
+ \item
+   You can have as many declaration sections or equations sections of the
+   same kind as you wish in one model file; they all get combined
+   together at the time the model is being loaded.
+ \item
+   Transition variables can occur with lags and leads in transition
+   equations. Transition variables cannot, though, have leads in
+   measurement equations.
+ \item
+   Measurement variables and the shocks cannot have any lags or leads.
+ \item
+   Transition shocks cannot occur in measurement equations, and the
+   measurement shocks cannot occur in transition equations.
+ \item
+   Exogenous variables can only occur in dtrends (deterministic trend
+   equations), and must be always supplied in the input database to
+   commands like \texttt{model/simulate}, \texttt{model/jforecast},
+   \texttt{model/filter}, \texttt{model/estimate}, etc. They are not
+   returned in the output databases.
+ \item
+   You can choose between linearisation and log-linearisation for each
+   individual transition and measurement variable. Shocks are always
+   linearised. Exogenous variables must be always introduced so that
+   their effect on the respective measurement variable is linear.
+ \end{itemize}
+
+
+
