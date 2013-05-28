@@ -104,6 +104,8 @@ else
         [~,~,~,SstateErrorList] = mychksstate(This,Opt.chksstate);
         SstateErrorList = SstateErrorList{1};
         chkSstateOk = isempty(SstateErrorList);
+    else
+        SstateErrorList = {};
     end
     if sstateOk && chkSstateOk && Opt.solve
         % Trigger fast solve by passing in only one input argument. This
