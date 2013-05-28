@@ -4,6 +4,14 @@ sna = 'Solution not available. ';
 
 printAltFunc = @(x) sprintf(' #%g',find(x));
 
+inx = NPath == -4;
+if any(inx)
+	Body = [sna, ...
+		'Either model is non-linear and a steady state solution is not available, or the model is linear but is not declared linear.'];
+	Args = { printAltFunc(inx) };
+	return
+end
+
 inx = NPath == -2;
 if any(inx)
     Body = [sna, ...
@@ -40,7 +48,7 @@ if any(inx)
     return
 end
 
-% Singularity in state space.
+% Singularity in state space or steady state problem
 inx = NPath == -1;
 if any(inx)
     if any(Sing2(:))
@@ -53,6 +61,10 @@ if any(inx)
         end
         Body = [sna, ...
             'Singularity or NaN in this measurement equation in%s: ''%s''.'];
+	elseif issolved(solve(This,'linear=',true)) && isnan(This)
+		Args = {};
+		Body = [sna, ...
+			'Model is linear but is not declared linear and does not have a steady state solution:%s'];
     else
         Args = {};
         Body = [sna, ...

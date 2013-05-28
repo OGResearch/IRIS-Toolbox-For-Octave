@@ -111,7 +111,11 @@ for ialt = IAlt
     [SS,TT,QQ,ZZ,This.eigval(1,:,ialt),eqorder] = doSchur();
     if NPath(ialt) == 1
         if ~doSspace()
-            NPath(ialt) = -1;
+			if chksstate(This,'warning=',false,'error=',false)==0 && isnan(This)
+				NPath(ialt) = -4;
+			else
+				NPath(ialt) = -1;
+			end
         end
     end
     if Opt.progress
