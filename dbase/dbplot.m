@@ -59,6 +59,13 @@ if isnumeric(List) && iscellstr(Range)
     [List,Range] = deal(Range,List);
 end
 
+pp = inputParser();
+pp.addRequired('D',@(x) isstruct(x));
+pp.addRequired('List',@(x) iscellstr(x));
+pp.addRequired('Range',@(x) isnumeric(x));
+pp.parse(D,List,Range);
+
+
 %--------------------------------------------------------------------------
 
 [FF,AA,PDb] = qreport.qreport(List,D,Range,'overflow=',true,varargin{:});
