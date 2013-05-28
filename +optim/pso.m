@@ -3,16 +3,6 @@ function [xOpt,fval,exitflag,output,population,scores,LAMBDA] = ...
 % Find the minimum of a function using Particle Swarm Optimization. Can be
 % called from model.estimate() or optim.pso() using the syntax below. 
 %
-% Original version:
-% S. Chen. Version 20100818.
-% Available from http://www.mathworks.com/matlabcentral/fileexchange/25986
-% Distributed under BSD license.
-%
-% Current version:
-% Michael K Johnston 20130423
-% for inclusion in the IRIS Toolbox
-% http://www.iris-toolbox.com
-%
 % Syntax:
 % [xOpt,fval,flag,out,pop,scores,LAMBDA] ...
 %     = pso(fitnessfcn,x0,Aineq,bineq,Aeq,beq,LB,UB,nonlcon,options)
@@ -141,6 +131,14 @@ function [xOpt,fval,exitflag,output,population,scores,LAMBDA] = ...
 %
 % RE Perez and K Behdinan. "Particle swarm approach for structural
 % design optimization." Computers and Structures, Vol. 85:1579-88, 2007.
+%
+% Original version:
+% S. Chen. Version 20100818.
+% Available from http://www.mathworks.com/matlabcentral/fileexchange/25986
+% Distributed under BSD license.
+%
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 try
     options; %#ok<VUNUS>
@@ -164,8 +162,6 @@ switch options.Display
         % default
         options.Verbosity=3;
 end
-
-if options.PopulationSize>=nvars && options.Verbosity>0, fprintf(1,'Warning: population size is lower than the dimension of the problem. Consider increasing.\n'); end
 
 constr=false;
 if ~exist('Aineq','var'), Aineq = [] ; else constr=true; end
