@@ -65,7 +65,12 @@ ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
 
-select = utils.nameselection(ny,This.Enames,opt.select);
+[select,invalid] = myselect(This,'e',opt.select);
+if ~isempty(invalid)
+    utils.error('SVAR', ...
+        'This residual name does not exist in the SVAR object: ''%s''.', ...
+        invalid{:});
+end
 ne = sum(select);
 
 % Compute VMA matrices.

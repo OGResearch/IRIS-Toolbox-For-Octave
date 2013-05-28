@@ -1,5 +1,5 @@
 function varargout = myynames(This,YNames)
-% myynames [Not a public function] Set names of varobj variables.
+% myynames [Not a public function] Get or set names of varobj variables.
 %
 % Backend IRIS function.
 % No help provided.

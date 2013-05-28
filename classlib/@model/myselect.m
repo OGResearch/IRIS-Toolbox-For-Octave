@@ -1,5 +1,5 @@
 function Inx = myselect(This,Type,Select)
-% myselect  [Not a public function] Convert user selection to a logical index.
+% myselect  [Not a public function] Convert user name selection to a logical index.
 %
 % Backend IRIS function.
 % No help provided.

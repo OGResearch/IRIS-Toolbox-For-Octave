@@ -37,6 +37,7 @@ classdef varobj < userdataobj & getsetobj
         varargout = mynalt(varargin)
         varargout = myny(varargin)       
         varargout = myoutpdata(varargin)
+        varargout = myselect(varargin)
         varargout = mysubsalt(varargin)
         varargout = myynames(varargin)
         specdisp(varargin)
