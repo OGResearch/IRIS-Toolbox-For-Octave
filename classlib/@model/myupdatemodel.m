@@ -1,4 +1,4 @@
-function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,ThrowErr,ExpMat)
+function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError,IsExpansion)
 % myupdatemodel  [Not a public function] Update parameters, sstate, solve, and refresh.
 %
 % Backend IRIS function.
@@ -7,22 +7,21 @@ function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,ThrowErr,ExpMat)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+% `IsError`: Throw error if update fails.
 try
-    ThrowErr; %#ok<VUNUS>
+    IsError; %#ok<VUNUS>
 catch %#ok<CTCH>
-    ThrowErr = true;
+    IsError = true;
 end
 
+% `IsExpansion`: Compute matrices for forward expansion of the solution.
 try
-    ExpMat; %#ok<VUNUS>
+    IsExpansion; %#ok<VUNUS>
 catch %#ok<CTCH>
-    ExpMat = false;
+    IsExpansion = false;
 end
 
 %--------------------------------------------------------------------------
-
-% TODO: Add a `'chksstate='` option. Create and supply a ready-to-use
-% function or code that checks the sstate quickly.
 
 assignPos = Pri.assignpos;
 stdcorrPos = Pri.stdcorrpos;
@@ -66,7 +65,7 @@ if This.linear
     % Linear models
     %---------------
     if Opt.solve
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],ExpMat);
+        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpansion);
     else
         nPath = 1;
     end
@@ -78,11 +77,12 @@ if This.linear
     end
     sstateOk = true;
     chkSstateOk = true;
-	SstateErrorList = {};
+	sstateErrList = {};
 else
     % Non-linear models
     %-------------------
     sstateOk = true;
+    sstateErrList = {};
     chkSstateOk = true;
     nanDeriv = [];
     sing2 = false;
@@ -101,16 +101,14 @@ else
     end
     % Run chksstate only if steady state has been recomputed.
     if ~isequal(Opt.sstate,false) && isstruct(Opt.chksstate)
-        [~,~,~,SstateErrorList] = mychksstate(This,Opt.chksstate);
-        SstateErrorList = SstateErrorList{1};
-        chkSstateOk = isempty(SstateErrorList);
-    else
-        SstateErrorList = {};
+        [~,~,~,sstateErrList] = mychksstate(This,Opt.chksstate);
+        sstateErrList = sstateErrList{1};
+        chkSstateOk = isempty(sstateErrList);
     end
     if sstateOk && chkSstateOk && Opt.solve
         % Trigger fast solve by passing in only one input argument. This
         % does not compute expansion matrices.
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],ExpMat);
+        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpansion);
     else
         nPath = 1;
     end
@@ -118,12 +116,12 @@ end
 
 UpdateOk = nPath == 1 && sstateOk && chkSstateOk;
 
-if ~ThrowErr
+if ~IsError
     return
 elseif ~UpdateOk
     % Throw error and give access to the failed model object
     %--------------------------------------------------------
-    model.failed(This,sstateOk,chkSstateOk,SstateErrorList, ...
+    model.failed(This,sstateOk,chkSstateOk,sstateErrList, ...
         nPath,nanDeriv,sing2);
 end
 

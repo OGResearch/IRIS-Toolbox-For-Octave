@@ -16,13 +16,20 @@ L = 0;
 PP = 0;
 SP = 0;
 
-if ~S.chkBounds || ...
-        (all(P(S.lowerBoundsPos) >= S.lowerBounds) ...
-        && all(P(S.upperBoundsPos) <= S.upperBounds))
+% Discard this draw if it violates lower or upper bounds.
+isDiscarded = S.chkBounds && ...
+    (any(P(S.lowerBoundsPos) < S.lowerBounds) ...
+    || any(P(S.upperBoundsPos) > S.upperBounds));
+
+if ~isDiscarded
     if S.isMinusLogPostFunc
         % Evaluate log posterior.
         [Obj,L,PP,SP] = ...
             This.minusLogPostFunc(P,This.minusLogPostFuncArgs{:});
+        % Discard draws that amount to an ill-defined value of the objective
+        % function. Run the test *before* letting `Obj = -Obj` because the
+        % assignment does not preserve complex numbers with zero imaginary part.
+        isDiscarded = ~isreal(Obj) || ~isfinite(Obj);
         Obj = -Obj;
         L = -L;
         PP = -PP;
@@ -41,9 +48,11 @@ if ~S.chkBounds || ...
         L = This.minusLogLikFunc(P,This.minusLogLikFuncArgs{:});
         L = -L;
         Obj = Obj + L;
+        isDiscarded = ~isreal(Obj) || ~isfinite(Obj);
     end
-else
-    % Out of bounds.
+end
+
+if isDiscarded
     Obj = -Inf;
 end
 

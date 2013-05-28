@@ -258,12 +258,14 @@ FinalCov = P*P.';
         % doAcceptStore  Accept or reject the current proposal, and store this
         % step.
         
-        % Prob of new proposal being accepted.
-        alpha = min(1,exp(newLogPost-logPost));
+        % Prob of new proposal being accepted; `newLogPost` can be `-Inf`, in which
+        % case `alpha` is zero. If both `logPost` and `newLogPost` are `-Inf` the
+        % inner max function returns `0` and the new proposal is never accepted.
+        alpha = min(1,max(0,exp(newLogPost-logPost)));
         
         % Decide if we accept the new theta.
-        IsAccepted = randAcc <= alpha;
-        
+        IsAccepted = randAcc < alpha;
+
         if IsAccepted
             logPost = newLogPost;
             theta = newTheta;
