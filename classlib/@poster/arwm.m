@@ -133,6 +133,12 @@ FinalCov = []; %#ok<NASGU>
 % Number of estimated parameters.
 nPar = length(This.paramList);
 
+% Set 'noSolution=','penalty' if it isn't already
+if strcmpi(This.minusLogPostFuncArgs{3}.nosolution,'error')
+    utils.warning('poster', ...
+        'Setting log posterior function to return a penalty instead of an error for parameter values where the model will not solve.');
+end
+
 % Adaptive random walk Metropolis simulator.
 nAlloc = min(NDraw,opt.saveevery);
 isSave = opt.saveevery <= NDraw;
@@ -197,9 +203,9 @@ while j <= nDrawTotal
         nStep = 1;
         nPath = 1;
     end
-
+    
     if nStep == 1
-
+        
         % Serial implementation
         %-----------------------
         
@@ -217,7 +223,7 @@ while j <= nDrawTotal
     else
         
         % Parallel implementation
-        %-------------------------        
+        %-------------------------
         
         % Number of steps, number of parallel paths.
         
@@ -236,7 +242,7 @@ while j <= nDrawTotal
             newLogPost = logPostPf(1+newPos0);
             randAcc = randAccPf(iStep);
             u = uPf(:,iStep);
-			
+            
             isAccepted = doAcceptStore();
             
             if isAccepted
@@ -405,9 +411,9 @@ FinalCov = P*P.';
         % of steps as in serial implementation.
         X = nan(nPar,nStep);
         RandAccPf = nan(1,nStep);
-		uPf = nan(nPar,nStep);
+        uPf = nan(nPar,nStep);
         for iiStep = 1 : nStep
-			uPf(:,iiStep) = randn(nPar,1);
+            uPf(:,iiStep) = randn(nPar,1);
             X(:,iiStep) = sgm*P*uPf(:,iiStep);
             RandAccPf(iiStep) = rand();
         end
@@ -422,7 +428,7 @@ FinalCov = P*P.';
         LogPostPf = nan(nPath,1);
         LogPostPf(1) = logPost;
         parfor iPath = 2 : nPath
-        %for iPath = 2 : nPath
+            %for iPath = 2 : nPath
             LogPostPf(iPath) = mylogpost(This,ThetaPf(:,iPath),s);
         end
         
@@ -450,7 +456,19 @@ FinalCov = P*P.';
     function doChkParallel()
         if opt.firstPrefetch < nDrawTotal && opt.nstep > 1
             isPCT = license('test','distrib_computing_toolbox');
-            if ~isPCT || (isPCT && matlabpool('size') <= 1)
+            if isPCT
+                NWorkers = matlabpool('size');
+                if NWorkers <= 1
+                    utils.warning('poster', ...
+                        'Prefetching without parallelism is pointless.');
+                elseif NWorkers > 2^nStep-n
+                    utils.warning('poster', ...
+                        'Some workers will be idle, consider increasing the number of prefetch steps.');
+                elseif nStep < log2(nStep*(NWorkers+1))
+                    utils.warning('poster', ...
+                        'Sequential version will be faster. Consider increasing the number of workers or decreasing the number of prefetch steps.');
+                end
+            else
                 utils.warning('poster', ...
                     'Prefetching without parallelism is pointless.');
             end
