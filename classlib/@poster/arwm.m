@@ -466,7 +466,7 @@ FinalCov = P*P.';
                         'Some workers will be idle, consider increasing the number of prefetch steps.');
                 elseif nStep < log2(nStep*(NWorkers+1))
                     utils.warning('poster', ...
-                        'Sequential version will be faster. Consider increasing the number of workers or decreasing the number of prefetch steps.');
+                        'Sequential version will be faster. Consider decreasing the number of prefetch steps.');
                 end
             else
                 utils.warning('poster', ...
