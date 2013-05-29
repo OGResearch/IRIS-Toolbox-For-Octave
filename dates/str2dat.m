@@ -30,12 +30,12 @@ function Dat = str2dat(String,varargin)
 % Example
 % ========
 %
-%     d = str2dat('04-2010','dateformat','MM-YYYY');
+%     d = str2dat('04-2010','dateFormat=','MM-YYYY');
 %     dat2str(d)
 %     ans =
 %        '2010M04'
 %
-%     d = str2dat('04-2010','dateformat','MM-YYYY','freq',4);
+%     d = str2dat('04-2010','dateFormat=','MM-YYYY','freq=',4);
 %     dat2str(d)
 %     ans =
 %        '2010Q2'
@@ -146,7 +146,6 @@ for i = 1 : length(Tokens)
     if isfield(Tokens{i},'indeterminate') ...
             && ~isempty(Tokens{i}.indeterminate)
         Freq(i) = 0;
-        %Per(i) = str2num(Tokens{i}.indeterminate);
         Per(i) = sscanf(Tokens{i}.indeterminate,'%g');
         continue
     end
@@ -163,7 +162,6 @@ for i = 1 : length(Tokens)
         end
     end
     try %#ok<*TRYNC>
-        %yeari = str2double(Tokens{i}.shortyear);
         yeari = sscanf(Tokens{i}.shortyear,'%g');
         yeari = yeari + thisCentury;
         if yeari - thisYear > 20
@@ -174,18 +172,15 @@ for i = 1 : length(Tokens)
         Year(i) = yeari;
     end
     try
-        %yeari = str2double(Tokens{i}.longyear);
         yeari = sscanf(Tokens{i}.longyear,'%g');
         if ~isempty(yeari)
             Year(i) = yeari;
         end
     end
     try
-        %per(i) = str2double(tokens{i}.shortperiod);
         Per(i) = sscanf(Tokens{i}.shortperiod,'%g');
     end
     try
-        %per(i) = str2double(tokens{i}.longperiod);
         Per(i) = sscanf(Tokens{i}.longperiod,'%g');
     end
     try
@@ -196,7 +191,6 @@ for i = 1 : length(Tokens)
         month = xxRoman2Num(Tokens{i}.romanmonth);
     end
     try
-        %month = str2double(tokens{i}.numericmonth);
         month = sscanf(Tokens{i}.numericmonth,'%g');
     end
     try

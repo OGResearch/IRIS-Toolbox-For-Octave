@@ -17,8 +17,8 @@ function This = mtimes(This,List)
 % Output arguments
 % =================
 %
-% * `D` [ struct ] - Output database with only the input entries kept that
-% are on included in `list`.
+% * `D` [ struct ] - Output database where only the input entries that
+% are in the `List` are included.
 %
 % Description
 % ============
@@ -31,8 +31,8 @@ function This = mtimes(This,List)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('d',@isstruct);
-pp.addRequired('list',@(x) iscellstr(x) || ischar(x));
+pp.addRequired('D',@isstruct);
+pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
 pp.parse(This,List);
 
 %--------------------------------------------------------------------------

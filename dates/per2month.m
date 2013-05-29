@@ -1,4 +1,4 @@
-function m = per2month(p,f,standinmonth)
+function M = per2month(Per,Freq,StandinMonth)
 % per2month  [Not a public function] Return month to represent a given period.
 %
 % Backend IRIS function.
@@ -7,19 +7,19 @@ function m = per2month(p,f,standinmonth)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if ischar(standinmonth)
-    switch standinmonth
+if ischar(StandinMonth)
+    switch StandinMonth
         case {'first','start'}
-            standinmonth = 1;
+            StandinMonth = 1;
         case {'last','end'}
-            standinmonth = 12/f;
+            StandinMonth = 12/Freq;
         otherwise
-            standinmonth = 1;
+            StandinMonth = 1;
     end
 end
 
-m = (p-1).*12./f + standinmonth;
+M = (Per-1).*12./Freq + StandinMonth;
 
 end

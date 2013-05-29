@@ -1,4 +1,4 @@
-function list = fieldnames(m)
+function List = fieldnames(This)
 % fieldnames  [Not a public function] Alphabetical list of names that can be used in dot-references.
 %
 % Backend IRIS function.
@@ -8,20 +8,20 @@ function list = fieldnames(m)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-elist = m.name(m.nametype == 3);
-list = {};
+elist = This.name(This.nametype == 3);
+List = {};
 for i = 1 : length(elist)
-   list{end+1} = ['std_',elist{i}];
+   List{end+1} = ['std_',elist{i}]; %#ok<AGROW>
    for j = 1 : length(elist)
       if i == j
          continue
       end
-      list{end+1} = ['corr_',elist{j},'__',elist{i}];
+      List{end+1} = ['corr_',elist{j},'__',elist{i}]; %#ok<AGROW>
    end
 end
-list = [list,m.name];
-list = sort(list);
+List = [List,This.name];
+List = sort(List);
 
 end

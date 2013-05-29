@@ -11,6 +11,7 @@ classdef dbcollect
     methods
         varargout = container(varargin)
         varargout = error(varargin)
+        varargout = fieldnames(varargin)
         varargout = legend(varargin)
         varargout = subsref(varargin)
     end

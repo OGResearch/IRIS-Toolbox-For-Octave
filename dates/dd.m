@@ -1,24 +1,24 @@
-function x = dd(year,month,day)
+function Dat = dd(Year,Month,Day)
 % dd  Matlab serial date numbers that can be used to construct daily tseries objects.
 %
 % Syntax
 % =======
 %
-%     d = dd(y,m,d)
+%     Dat = dd(Year,Month,Day)
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers.
+% * `Dat` [ numeric ] - IRIS serial date numbers.
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Year` [ numeric ] - Years.
 %
-% * `m` [ numeric ] - Months.
+% * `Month` [ numeric ] - Months.
 %
-% * `d` [ numeric ] - Days.
+% * `Day` [ numeric ] - Days.
 %
 % Description
 % ============
@@ -30,39 +30,39 @@ function x = dd(year,month,day)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 if nargin < 2
-   month = 1;
+   Month = 1;
 end
 
 if nargin < 3
-   day = 1;
-elseif strcmpi(day,'end')
-   day = eomday(year,month);
+   Day = 1;
+elseif strcmpi(Day,'end')
+   Day = eomday(Year,Month);
 end
 
-year = year(:);
-month = month(:);
-day = day(:);
+Year = Year(:);
+Month = Month(:);
+Day = Day(:);
 
-nyear = length(year);
-nmonth = length(month);
-nday = length(day);
+nYear = length(Year);
+nMonth = length(Month);
+nDay = length(Day);
 
-n = max([nyear,nmonth,nday]);
+n = max([nYear,nMonth,nDay]);
 if n > 1
-   if nyear == 1
-      year = year(ones([n,1]));
+   if nYear == 1
+      Year = Year(ones([n,1]));
    end
-   if nmonth == 1
-      month = month(ones([n,1]));
+   if nMonth == 1
+      Month = Month(ones([n,1]));
    end
-   if nday == 1
-      day = day(ones([n,1]));
+   if nDay == 1
+      Day = Day(ones([n,1]));
    end
 end
 
-x = datenum([year,month,day]);
+Dat = datenum([Year,Month,Day]);
 
 end

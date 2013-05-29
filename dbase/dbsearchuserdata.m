@@ -62,6 +62,7 @@ function varargout = dbsearchuserdata(d,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+%--------------------------------------------------------------------------
 
 func = @(x) all(x);
 if ~isempty(varargin)

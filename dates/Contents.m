@@ -50,6 +50,12 @@
 % * [`datdiff`](dates/datdiff) - Number of periods between two dates with check for date frequency.
 % * [`rngcmp`](dates/rngcmp) - Compare two IRIS date ranges.
 %
+% Daily dates
+% ============
+%
+% * [`dd`](dates/dd) - 
+% * [`ddtoday`](dates/ddtoday) - 
+%
 % Getting on-line help on date functions
 % =======================================
 %

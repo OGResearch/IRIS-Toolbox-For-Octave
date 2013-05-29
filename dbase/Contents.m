@@ -33,12 +33,20 @@
 % * [`dbplot`](dbase/dbplot) - Plot from database.
 % * [`dbredate`](dbase/dbredate) - Redate all tseries objects in a database.
 %
-% Combining databases
-% ====================
+% Combining and splitting databases
+% ==================================
 %
 % * [`dbextend`](dbase/dbextend) - Combine tseries observations from two or more databases.
 % * [`dbmerge`](dbase/dbmerge) - Merge two or more databases.
 % * [`dbminuscontrol`](dbase/dbminuscontrol) - Create simulation-minus-control database.
+% * [`dbsplit`](dbase/dbsplit) - 
+%
+% Overloaded operators for databases
+% ===================================
+%
+% * [`-`](dbase/minus) - 
+% * [`*`](dbase/mtimes) - 
+% * [`+`](dbase/plus) - 
 %
 % Getting on-line help on database functions
 % ===========================================

@@ -1,3 +1,3 @@
-function flag = isvar(x)
-flag = isa(x,'VAR');
+function Flag = isvar(X)
+Flag = isa(X,'VAR');
 end

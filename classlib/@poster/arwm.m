@@ -459,14 +459,14 @@ FinalCov = P*P.';
         if opt.firstPrefetch < nDrawTotal && opt.nstep > 1
             isPCT = license('test','distrib_computing_toolbox');
             if isPCT
-                NWorkers = matlabpool('size');
-                if NWorkers <= 1
+                nWorkers = matlabpool('size');
+                if nWorkers <= 1
                     utils.warning('poster', ...
                         'Prefetching without parallelism is pointless.');
-                elseif NWorkers > 2^nStep-n
+                elseif nWorkers > 2^nStep-n
                     utils.warning('poster', ...
                         'Some workers will be idle, consider increasing the number of prefetch steps.');
-                elseif nStep < log2(nStep*(NWorkers+1))
+                elseif nStep < log2(nStep*(nWorkers+1))
                     utils.warning('poster', ...
                         'Sequential version will be faster. Consider decreasing the number of prefetch steps.');
                 end

@@ -41,7 +41,11 @@ function varargout = userdatafield(This,Field,varargin)
 
 %--------------------------------------------------------------------------
 
+% Remove dots, equal signs, etc.
+Field = regexp(Field,'\w+','match','once');
+
 if isempty(varargin)
+    % Get user data field.
     u = This.UserData;
     if isa(u,'struct') && isfield(u,Field)
         varargout{1} = u.(Field);
@@ -52,6 +56,7 @@ if isempty(varargin)
             Field);
     end
 else
+    % Set user data field.
     u = This.UserData;
     if isempty(u) || isstruct(u)
         This.UserData.(Field) = varargin{1};

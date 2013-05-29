@@ -38,32 +38,46 @@ function S = dat2str(Dat,varargin)
 % The date format string can include any combination of the following
 % fields:
 %
-% * `'Y='` - Year.
+% * `'Y'` - Year.
 %
-% * `'YYYY='` - Four-digit year.
+% * `'YYYY'` - Four-digit year.
 %
-% * `'YY='` - Two-digit year.
+% * `'YY'` - Two-digit year.
 %
-% * `'P='` - Period within the year (half-year, quarter, bi-month, month).
+% * `'P'` - Period within the year (half-year, quarter, bi-month, month).
 %
-% * `'PP='` - Two-digit period within the year.
+% * `'PP'` - Two-digit period within the year.
 %
-% * `'R='` - Upper-case roman numeral for the period within the year.
+% * `'R'` - Upper-case roman numeral for the period within the year.
 %
-% * `'r='` - Lower-case roman numeral for the period within the year.
+% * `'r'` - Lower-case roman numeral for the period within the year.
 %
-% * `'M='` - Month numeral.
+% * `'M'` - Month numeral.
 %
-% * `'MM='` - Two-digit month numeral.
+% * `'MM'` - Two-digit month numeral.
 %
-% * `'MMMM='`, `'Mmmm'`, `'mmmm'` - Case-sensitive name of month.
+% * `'MMMM'`, `'Mmmm'`, `'mmmm'` - Case-sensitive name of month.
 %
-% * `'MMM='`, `'Mmm'`, `'mmm'` - Case-sensitive three-letter abbreviation of
+% * `'MMM'`, `'Mmm'`, `'mmm'` - Case-sensitive three-letter abbreviation of
 % month.
 %
-% * `'F='` - Upper-case letter representing the date frequency.
+% * `'F'` - Upper-case letter representing the date frequency.
 %
-% * `'f='` - Lower-case letter representing the date frequency.
+% * `'f'` - Lower-case letter representing the date frequency.
+%
+% * `'EE'` - Two-digit end-of-month day; stand-in month used for
+% non-monthly dates.
+%
+% * `'E'` - End-of-month day; stand-in month used for non-monthly dates.
+%
+% * `'WW'` - Two-digit end-of-month workday; stand-in month used for
+% non-monthly dates.
+%
+% * `'W'` - End-of-month workday; stand-in month used for non-monthly dates.
+%
+% * `'DD'` - Two-digit day numeral; daily dates only.
+%
+% * `'D'` - Day numeral; daily dates only.
 %
 % To get some of the above letters printed literally in the date string,
 % use a percent sign as an escape character, i.e. '%Y', etc.
@@ -91,28 +105,37 @@ end
 if ischar(opt.dateformat)
     opt.dateformat = {opt.dateformat};
 end
-nDateFormat = numel(opt.dateformat);
 
 [year,per,freq] = dat2ypf(Dat);
+
+yeard = nan(size(year));
+perd = nan(size(year));
+day = nan(size(year));
+inx = freq == 0;
+if any(inx)
+    [yeard(inx),perd(inx),day(inx)] = datevec(Dat(inx));
+end
+
 S = cell(size(year));
 n = numel(year);
 
 for k = 1 : n
-    if k <= nDateFormat
-        dateformat = opt.dateformat{k};
-    end
-    if strncmp(dateformat,'$',1)
+    dateFmt = opt.dateformat{min(k,end)};
+    isDaily = false;
+    if strncmp(dateFmt,'$',1)
         if freq(k) == 0
-            S{k} = datestr(per(k),dateformat(2:end));
+            dateFmt(1) = '';
+            isDaily = true;
+            year(k) = yeard(k);
+            per(k) = perd(k);
         else
             utils.error('dates', ...
                 'Cannot convert other than daily dates to Matlab date string.');
         end
-    else
-        S{k} = xxBuildString(year(k),per(k),freq(k),dateformat, ...
-            opt.freqletters,opt.months,opt.standinmonth, ...
-            config.highcharcode);
     end
+    S{k} = xxBuildString(year(k),per(k),day(k),freq(k),dateFmt,isDaily, ...
+        opt.freqletters,opt.months,opt.standinmonth, ...
+        config.highcharcode);
 end
 
 end
@@ -120,10 +143,10 @@ end
 % Subfunctions.
 
 %**************************************************************************
-function s = xxBuildString(Year,Per,Freq,DateFmt, ...
+function s = xxBuildString(Year,Per,Day,Freq,DateFmt,IsDaily, ...
     FreqLetters,Months,StandInMonth,Offset)
 
-if Freq == 0
+if Freq == 0 && ~IsDaily
     varYear = '';
     longYear = '';
     shortYear = '';
@@ -137,61 +160,97 @@ else
     end
 end
 
+if IsDaily
+    varDay = sprintf('%g',Day);
+    longDay = sprintf('%02g',Day);
+else
+    varDay = '';
+    longDay = '';
+end
+
 switch Freq
     case 0
-        freqLetter = '';
-        shortArabPer = sprintf('%g',Per);
-        longArabPer = sprintf('%02g',Per);
-        numericMonth = NaN;
-        romanPer = '';
+        if IsDaily
+            freqLetter = 'D';
+            shortArabPer = sprintf('%g',Per);
+            longArabPer = sprintf('%02g',Per);
+            numMonth = Per;
+            romanPer = '';
+        else
+            freqLetter = '';
+            shortArabPer = sprintf('%g',Per);
+            longArabPer = sprintf('%02g',Per);
+            numMonth = NaN;
+            romanPer = '';
+        end
     case 1
         freqLetter = FreqLetters(1);
         shortArabPer = '';
         longArabPer = '';
-        numericMonth = per2month(Per,1,StandInMonth);
+        numMonth = per2month(Per,1,StandInMonth);
         romanPer = '';
     case 2
         freqLetter = FreqLetters(2);
         shortArabPer = sprintf('%g',Per);
         longArabPer = sprintf('%02g',Per);
-        numericMonth = per2month(Per,2,StandInMonth);
+        numMonth = per2month(Per,2,StandInMonth);
         romanPer = xxRoman(Per);
     case 4
         freqLetter = FreqLetters(3);
         shortArabPer = sprintf('%g',Per);
         longArabPer = sprintf('%02g',Per);
-        numericMonth = per2month(Per,4,StandInMonth);
+        numMonth = per2month(Per,4,StandInMonth);
         romanPer = xxRoman(Per);
     case 6
         freqLetter = FreqLetters(4);
         shortArabPer = sprintf('%g',Per);
         longArabPer = sprintf('%02g',Per);
-        numericMonth = per2month(Per,6,StandInMonth);
+        numMonth = per2month(Per,6,StandInMonth);
         romanPer = xxRoman(Per);
     case 12
         freqLetter = FreqLetters(5);
         shortArabPer = sprintf('%02g',Per);
         longArabPer = sprintf('%02g',Per);
-        numericMonth = Per;
+        numMonth = Per;
         romanPer = xxRoman(Per);
     otherwise
         freqLetter = '?';
         shortArabPer = sprintf('%g',Per);
         longArabPer = sprintf('%02g',Per);
-        numericMonth = NaN;
+        numMonth = NaN;
         romanPer = '';
 end
 
-if isempty(numericMonth) || isnan(numericMonth) || ~isnumeric(numericMonth)
+if isempty(numMonth) || isnan(numMonth) || ~isnumeric(numMonth)
     longMonth = '';
     shortMonth = '';
 else
-    longMonth = Months{numericMonth};
+    longMonth = Months{numMonth};
     shortMonth = longMonth(1:min([3,end]));
 end
-romanMonth = xxRoman(numericMonth);
-varNumericMonth = sprintf('%g',numericMonth);
-numericMonth = sprintf('%02g',numericMonth);
+
+try
+    x = eomday(Year,numMonth);
+    varEndOfMonth = sprintf('%g',x);
+    longEndOfMonth = sprintf('%02g',x);
+    w = weekday(datenum(Year,numMonth,x));
+    if w == 1
+        x = x - 2;
+    elseif w == 7
+        x = x - 1;
+    end
+    varEndOfMonthW = sprintf('%g',x);
+    longEndOfMonthW = sprintf('%02g',x);    
+catch
+    varEndOfMonth = '';
+    longEndOfMonth = '';
+    varEndOfMonthW = '';
+    longEndOfMonthW = '';
+end    
+
+romanMonth = xxRoman(numMonth);
+varNumericMonth = sprintf('%g',numMonth);
+numMonth = sprintf('%02g',numMonth);
 
 subs = { ...
     '%Y','Y'; ...
@@ -204,6 +263,9 @@ subs = { ...
     '%q','q'; ...
     '%M','M'; ...
     '%m','m'; ...
+    '%E','E'; ...
+    '%W','W'; ...
+    '%D','D'; ...
     'YYYY',longYear; ...
     'YY',shortYear; ...
     'Y',varYear; ...
@@ -221,16 +283,24 @@ subs = { ...
     'mmm',lower(shortMonth); ...
     'MMMM',upper(longMonth); ...
     'MMM',upper(shortMonth); ...
-    'MM',numericMonth; ...
-    'mm',numericMonth; ...
+    'MM',numMonth; ...
+    'mm',numMonth; ...
     'M',varNumericMonth; ...
     'm',varNumericMonth; ...
+    'EE',longEndOfMonth; ...
+    'E',varEndOfMonth; ...
+    'WW',longEndOfMonthW; ...
+    'W',varEndOfMonthW; ...
+    'DD',longDay; ...
+    'D',varDay; ...
     };
 
 s = DateFmt;
+
 for i = 1 : size(subs,1)
     s = strrep(s,subs{i,1},char(Offset+i));
 end
+
 for i = 1 : size(subs,1)
     s = strrep(s,char(Offset+i),subs{i,2});
 end
