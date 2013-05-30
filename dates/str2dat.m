@@ -78,19 +78,29 @@ if isempty(String)
     return
 end
 
+isDaily = false;
+if strncmp(opt.dateformat,'$',1)
+    opt.dateformat(1) = '';
+    isDaily = true;
+end
+
 pattern = doPattern();
 tokens = regexpi(String,pattern,'names','once');
-[year,per,freq] = xxParseDates(tokens,opt);
-Dat = datcode(freq,year,per);
+[year,per,day,freq] = xxParseDates(tokens,isDaily,opt);
 
-% Try indeterminate frequency.
-inx = find(isnan(Dat(:).'));
-for i = inx
-    %aux = round(str2double(String{i}));
-    aux = sscanf(String{i},'%g');
-    aux = round(aux);
-    if ~isempty(aux)
-        Dat(i) = aux;
+if isDaily
+    Dat = dd(year,per,day);
+else
+    Dat = datcode(freq,year,per);
+    % Try indeterminate frequency for NaN dates.
+    inx = find(isnan(Dat(:).'));
+    for i = inx
+        %aux = round(str2double(String{i}));
+        aux = sscanf(String{i},'%g');
+        aux = round(aux);
+        if ~isempty(aux)
+            Dat(i) = aux;
+        end
     end
 end
 
@@ -114,7 +124,8 @@ end
             '(?<!%)Q',['(?<romanmonth>',romanList,')']; ... Roman numerals for month
             '(?<!%)R',['(?<romanperiod>',romanList,')']; ... Roman numerals for period
             '(?<!%)I','(?<indeterminate>\\d+)'; ... Any number of digits for indeterminate frequency
-            '(?<!%)D','\\d'; ... One digit discarded
+            '(?<!%)DD','(?<longday>\\d{2})'; ... Two-digit day
+            '(?<!%)D','(?<varday>\\d{1,2})'; ... Var day
             };
         for ii = 1 : size(subs,1)
             x = regexprep(x,subs{ii,1},char(offset+ii));
@@ -122,7 +133,7 @@ end
         for ii = 1 : size(subs,1)
             x = regexprep(x,char(offset+ii),subs{ii,2});
         end
-        x = regexprep(x,'%([YFPMQRI])','$1');
+        x = regexprep(x,'%([YFPMQRID])','$1');
     end % doPattern().
 
 end
@@ -130,37 +141,46 @@ end
 % Subfunctions.
 
 %**************************************************************************
-function [Year,Per,Freq] = xxParseDates(Tokens,Opt)
+function [Year,Per,Day,Freq] = xxParseDates(Tokens,IsDaily,Opt)
 [thisYear,~] = datevec(now());
 thisCentury = 100*floor(thisYear/100);
 freqVec = [1,2,4,6,12];
 Freq = nan(size(Tokens));
+if IsDaily
+    Freq(:) = 0;
+end
+Day = nan(size(Tokens));
 % Set period to 1 by default so that e.g. YPF is correctly matched with
 % 2000Y.
 Per = ones(size(Tokens));
 Year = nan(size(Tokens));
 for i = 1 : length(Tokens)
+    
     if length(Tokens{i}) ~= 1
         continue
     end
-    if isfield(Tokens{i},'indeterminate') ...
-            && ~isempty(Tokens{i}.indeterminate)
-        Freq(i) = 0;
-        Per(i) = sscanf(Tokens{i}.indeterminate,'%g');
-        continue
-    end
-    if ~isempty(Opt.freq) && ( ...
-            (isfield(Tokens{i},'longmonth') && ~isempty(Tokens{i}.longmonth)) ...
-            || (isfield(Tokens{i},'shortmonth') && ~isempty(Tokens{i}.shortmonth)) ...
-            || (isfield(Tokens{i},'numericmonth') && ~isempty(Tokens{i}.numericmonth)) )
-        Freq(i) = 12;
-    end
-    if isfield(Tokens{i},'freqletter') && ~isempty(Tokens{i}.freqletter)
-        freqi = freqVec(upper(Opt.freqletters) == upper(Tokens{i}.freqletter));
-        if ~isempty(freqi)
-            Freq(i) = freqi;
+    
+    if ~IsDaily
+        if isfield(Tokens{i},'indeterminate') ...
+                && ~isempty(Tokens{i}.indeterminate)
+            Freq(i) = 0;
+            Per(i) = sscanf(Tokens{i}.indeterminate,'%g');
+            continue
+        end
+        if isempty(Opt.freq) && ( ...
+                (isfield(Tokens{i},'longmonth') && ~isempty(Tokens{i}.longmonth)) ...
+                || (isfield(Tokens{i},'shortmonth') && ~isempty(Tokens{i}.shortmonth)) ...
+                || (isfield(Tokens{i},'numericmonth') && ~isempty(Tokens{i}.numericmonth)) )
+            Freq(i) = 12;
+        end
+        if isfield(Tokens{i},'freqletter') && ~isempty(Tokens{i}.freqletter)
+            inx = upper(Opt.freqletters) == upper(Tokens{i}.freqletter);
+            if any(inx)
+                Freq(i) = freqVec(inx);
+            end
         end
     end
+    
     try %#ok<*TRYNC>
         yeari = sscanf(Tokens{i}.shortyear,'%g');
         yeari = yeari + thisCentury;
@@ -177,6 +197,7 @@ for i = 1 : length(Tokens)
             Year(i) = yeari;
         end
     end
+    
     try
         Per(i) = sscanf(Tokens{i}.shortperiod,'%g');
     end
@@ -186,6 +207,7 @@ for i = 1 : length(Tokens)
     try
         Per(i) = xxRoman2Num(Tokens{i}.romanperiod);
     end
+    
     month = NaN;
     try
         month = xxRoman2Num(Tokens{i}.romanmonth);
@@ -194,51 +216,71 @@ for i = 1 : length(Tokens)
         month = sscanf(Tokens{i}.numericmonth,'%g');
     end
     try
-        index = strncmpi(Tokens{i}.month,Opt.months,length(Tokens{i}.month));
-        if any(index)
-            month = find(index,1);
+        inx = strncmpi(Tokens{i}.month,Opt.months,length(Tokens{i}.month));
+        if any(inx)
+            month = find(inx,1);
         end
     end
     if ~isnumeric(month) || length(month) ~= 1 || isinf(month)
         month = NaN;
     end
+    
+    if IsDaily
+        try
+            Day(i) = sscanf(Tokens{i}.varday,'%g');
+        end
+        try
+            Day(i) = sscanf(Tokens{i}.longday,'%g');
+        end
+    end
+    
     if ~isempty(Opt.freq)
         Freq(i) = Opt.freq;
     end
+    
     if ~isnan(month)
-        if ~isnan(Freq(i)) && Freq(i) ~= 12
-            Per(i) = month2per(month,Freq(i));
-        else
+        if IsDaily
             Per(i) = month;
-            Freq(i) = 12;
+        else
+            if ~isnan(Freq(i)) && Freq(i) ~= 12
+                Per(i) = month2per(month,Freq(i));
+            else
+                Per(i) = month;
+                Freq(i) = 12;
+            end
         end
     end
-    % Disregard periods for annul dates. This is now also consistent with
+    
+    % Disregard periods for annual dates. This is now also consistent with
     % the YY function.
     if Freq(i) == 1
         Per(i) = 1;
     end
+    
 end
 
-% Try to guess freq by the highest period found in all the dates passed
+% Try to guess frequency by the highest period found in all the dates passed
 % in.
 if all(isnan(Freq))
-    maxper = max(Per(~isnan(Per)));
-    if ~isempty(maxper)
-        index = find(maxper <= freqVec,1,'first');
-        if ~isempty(index)
-            Freq(:) = freqVec(index);
+    maxPer = max(Per(~isnan(Per)));
+    if ~isempty(maxPer)
+        inx = find(maxPer <= freqVec,1,'first');
+        if ~isempty(inx)
+            Freq(:) = freqVec(inx);
         end
     end
 end
+
 end % xParseDates().
 
 %**************************************************************************
 function Per = xxRoman2Num(RomanPer)
+
 Per = 1;
 list = {'i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii'};
 inx = strcmpi(RomanPer,list);
 if any(inx)
     Per = find(inx,1);
 end
+
 end % xxRoman2Num().
