@@ -61,23 +61,40 @@ td=load('test_nlmodel_data.mat');
 [est,pos,C,H,mest,v,~,~,delta,Pdelta] = ...
     estimate(obj,td.d,td.starthist:td.endhist,E, ...
     'filter=',filteropt,'optimset=',{'display=','off'},...
-	'tolx=',1e-8,'tolfun=',1e-8,...
-	'sstate=',false,'solve=',true,'nosolution=','error','chksstate=',false); %also test some default options
+    'tolx=',1e-8,'tolfun=',1e-8,...
+    'sstate=',false,'solve=',true,'nosolution=','penalty','chksstate=',false); %also test some default options
 
 cmp=load('test_nlmodel_estimation');
 pnames=fields(est);
 for iName = 1 : numel(pnames)
-	assertElementsAlmostEqual(cmp.est.(pnames{iName}),est.(pnames{iName}),'relative',1e-3);
+    assertElementsAlmostEqual(cmp.est.(pnames{iName}),est.(pnames{iName}),'relative',1e-3);
 end
-assertElementsAlmostEqual(cmp.C,C,'relative',1e-2);
-for ii=1 : numel(H)
-	assertElementsAlmostEqual(cmp.H{ii},H{ii},'relative',1e-3);
-end
+assertElementsAlmostEqual(cmp.C,C,'relative',0.1);
 fnames=fields(cmp.delta);
 for ii=1 : numel(fnames)
-	assertElementsAlmostEqual(cmp.delta.(fnames{ii}),delta.(fnames{ii}),'relative',1e-3);
+    assertElementsAlmostEqual(cmp.delta.(fnames{ii}),delta.(fnames{ii}),'relative',1e-2);
 end
 assertElementsAlmostEqual(double(cmp.Pdelta),double(Pdelta),'relative',1e-3);
+
+if license('test','distrib_computing_toolbox') 
+    % test prefetching
+    if matlabpool('size')<2
+        matlabpool open local 2
+    end
+    N=60;
+    rng(0);
+    [thetaP,logpostP,arP] = arwm(pos,N, ...
+        'progress=',false,'burnin=',0,'nStep=',2,'firstPrefetch=',1,'lastAdapt=',1);
+    matlabpool close force
+    
+    rng(0);
+    [thetaS,logpostS,arS] = arwm(pos,N, ...
+        'progress=',false,'burnin=',0,'nStep=',1,'lastAdapt=',1);
+    
+    assertElementsAlmostEqual(thetaP,thetaS);
+    assertElementsAlmostEqual(logpostP,logpostS);
+    assertElementsAlmostEqual(arP,arS);
+end
 end
 
 function obj=doSsSolve(obj)
@@ -104,5 +121,5 @@ obj.std_Mp = 0;
 obj.std_Mw = 0;
 obj.std_Ea = 0.001;
 
-obj = sstate(obj,'growth=',true,'blocks=',true,'display=','off'); 
+obj = sstate(obj,'growth=',true,'blocks=',true,'display=','off');
 end

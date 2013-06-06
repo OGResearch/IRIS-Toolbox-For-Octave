@@ -59,9 +59,10 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % initial proposal covariance will be multiplied; the initial value will be
 % adapted to achieve the target acceptance ratio.
 %
-% * `'lastAdapt='` [ numeric | *`Inf`* ] - Last draw in which proposal
+% * `'lastAdapt='` [ numeric | *`Inf`* ] - Last point at which the proposal
 % covariance will be adapted; `Inf` means adaptation will continue until
-% the last draw.
+% the last draw. Can also be entered as a percentage of total draws
+% (a number strictly between 0 and 1). 
 %
 % * `'nStep='` [ numeric | *`1` ] - Number of pre-fetched steps computed in
 % parallel; only works with `firstPrefetch=` smaller than `NDraw`.
@@ -133,12 +134,6 @@ FinalCov = []; %#ok<NASGU>
 % Number of estimated parameters.
 nPar = length(This.paramList);
 
-% Set 'noSolution=','penalty' if it isn't already
-if strcmpi(This.minusLogPostFuncArgs{3}.nosolution,'error')
-    utils.warning('poster', ...
-        'Setting log posterior function to return a penalty instead of an error for parameter values where the model will not solve.');
-end
-
 % Adaptive random walk Metropolis simulator.
 nAlloc = min(NDraw,opt.saveevery);
 isSave = opt.saveevery <= NDraw;
@@ -153,6 +148,11 @@ if opt.burnin < 1
 else
     % Burn-in is the number of draws.
     burnin = opt.burnin;
+end
+
+if opt.lastAdapt<1
+    % lastAdapt is a percentage.
+    opt.lastAdapt = round(opt.lastAdapt*NDraw) ;
 end
 
 nDrawTotal = NDraw + burnin;
