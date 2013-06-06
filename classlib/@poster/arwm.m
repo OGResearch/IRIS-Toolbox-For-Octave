@@ -227,6 +227,10 @@ while j <= nDrawTotal
         
         % Number of steps, number of parallel paths.
         
+        % Minimize communication overhead:
+        ThisPf = WorkerObjWrapper( This ) ;
+        sPf = WorkerObjWrapper( s ) ;
+        
         % Propose new thetas, evaluate log posteriors for all of them in parallel,
         % and pre-generate random acceptance.
         [thetaPf,logPostPf,randAccPf,uPf] = doPrefetch();
@@ -430,9 +434,11 @@ FinalCov = P*P.';
         LogPostPf = nan(nPath,1);
         LogPostPf(1) = logPost;
         parfor iPath = 2 : nPath
-            %for iPath = 2 : nPath
-            LogPostPf(iPath) = mylogpost(This,ThetaPf(:,iPath),s);
+            LogPostPf(iPath) = mylogpost(ThisPf.Value,ThetaPf(:,iPath),sPf.Value); %#ok<PFBNS>
         end
+%         for iPath = 2 : nPath
+%             LogPostPf(iPath) = mylogpost(This,ThetaPf(:,iPath),s);
+%         end
         
         function doPaths(Theta0,Step,PathSoFar)
             % Proposal rejected.
@@ -463,10 +469,10 @@ FinalCov = P*P.';
                 if nWorkers <= 1
                     utils.warning('poster', ...
                         'Prefetching without parallelism is pointless.');
-                elseif nWorkers > 2^nStep-n
+                elseif nWorkers > 2^opt.nstep-1
                     utils.warning('poster', ...
                         'Some workers will be idle, consider increasing the number of prefetch steps.');
-                elseif nStep < log2(nStep*(nWorkers+1))
+                elseif opt.nstep < log2(opt.nstep*(nWorkers+1))
                     utils.warning('poster', ...
                         'Sequential version will be faster. Consider decreasing the number of prefetch steps.');
                 end
