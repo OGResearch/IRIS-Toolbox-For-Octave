@@ -193,6 +193,12 @@ nAccepted = 0;
 count = 0;
 SaveCount = 0;
 
+if opt.nstep>1
+    % Minimize communication overhead:
+    ThisPf = WorkerObjWrapper( This ) ;
+    sPf = WorkerObjWrapper( s ) ;
+end
+
 j = 1;
 while j <= nDrawTotal
     
@@ -226,11 +232,7 @@ while j <= nDrawTotal
         %-------------------------
         
         % Number of steps, number of parallel paths.
-        
-        % Minimize communication overhead:
-        ThisPf = WorkerObjWrapper( This ) ;
-        sPf = WorkerObjWrapper( s ) ;
-        
+                
         % Propose new thetas, evaluate log posteriors for all of them in parallel,
         % and pre-generate random acceptance.
         [thetaPf,logPostPf,randAccPf,uPf] = doPrefetch();
