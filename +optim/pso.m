@@ -322,6 +322,9 @@ if options.Verbosity > 2
     fprintf(1,'Iteration     Best F(x)     Stall\n');
     t2=uint64(0);
 end
+if options.UseParallel
+    objfuncPf = WorkerObjWrapper( @(x) fitnessfcn(x,varargin{:}) ) ;
+end
 if options.UseParallel && not(constr)
     % use more efficient parallell implementation, don't check bounds, no
     % extra temporary variables, no plotting availability
@@ -333,7 +336,7 @@ if options.UseParallel && not(constr)
         
         % Evaluate fitness
         parfor i = 1:n
-            stateScore(i) = feval(fitnessfcn,statePopulation(i,:),varargin{:});
+            stateScore(i) = feval(objfuncPf.Value,statePopulation(i,:));
         end
         
         % Update the local bests
@@ -421,14 +424,13 @@ else
             nvalid=numel(validi);
             currStatePop=state.Population(validi,:);
             parfor i = 1:nvalid %parfor
-                stateScoreTmp(i) = feval(fitnessfcn,currStatePop(i,:),varargin{:}) ;
+                stateScoreTmp(i) = feval(objfuncPf.Value,currStatePop(i,:)) ;
             end %parfor
             for i = 1:nvalid
                 state.Score(validi(i))=stateScoreTmp(i);
             end
         else
             for i = setdiff(1:n,find(state.OutOfBounds))
-                % 				state.Score(i) = fitnessfcn(state.Population(i,:)) ;
                 state.Score(i) = feval(fitnessfcn,state.Population(i,:),varargin{:});
             end % for i
         end % if strcmpi(options.Parallel,'always')
