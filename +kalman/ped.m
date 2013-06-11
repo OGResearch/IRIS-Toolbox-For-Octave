@@ -197,6 +197,10 @@ for t = 2 : nPer
     % `pe` changes over time.
     pe = y1(jy,t) - y0;
     
+    if rcond(F)<eps
+        Obj = 1e+11 ;
+        return ;
+    end
     % Kalman gain matrices.
     K1 = PZt/F; % Gain in the updating step.
     K0 = Ta*K1; % Gain in the next prediction step.
