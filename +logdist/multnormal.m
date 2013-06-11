@@ -1,23 +1,25 @@
 function F = multnormal(Mean,Std)
-% normal  Create function proportional to log of normal distribution.
+% normal  Create function proportional to log of multivariate 
+% normal distribution.
 %
 % Syntax
 % =======
 %
-%     F = logdist.normal(Mean,Std)
+%     F = logdist.multnormal(Mean,Std)
 %
 % Input arguments
 % ================
 %
-% * `Mean` [ numeric ] - Mean of the normal distribution.
+% * `Mean` [ numeric ] - Mean of the multivariate normal distribution.
 %
-% * `Std` [ numeric ] - Std dev of the normal distribution.
+% * `Std` [ numeric ] - Either the covariance matrix (dense) or 
+% Cholesky square root of the covariance matrix (upper triangular). 
 %
 % Output arguments
 % =================
 %
 % * `F` [ function_handle ] - Function handle returning a value
-% proportional to the log of the normal density.
+% proportional to the log of the multivariate normal density.
 %
 % Description
 % ============
