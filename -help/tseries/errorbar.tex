@@ -1,0 +1,71 @@
+
+
+    \filetitle{errorbar}{Line plot with error bars}{tseries/errorbar}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [LL,EE,Range] = errorbar(X,B,...)
+ [LL,EE,Range] = errorbar(Range,X,B,...)
+ [LL,EE,Range] = errorbar(AA,Range,X,B,...)
+ [LL,EE,Range] = errorbar(X,Lo,Hi,...)
+ [LL,EE,Range] = errorbar(Range,X,Lo,Hi,...)
+ [LL,EE,Range] = errorbar(AA,Range,X,Lo,Hi,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{AA} {[} numeric {]} - Handle to axes in which the graph will
+   be plotted; if not specified, the current axes will used.
+ \item
+   \texttt{Range} {[} numeric {]} - Date range; if not specified the
+   entire range of the input tseries object will be plotted.
+ \item
+   \texttt{X} {[} tseries {]} - Tseries object whose data will be plotted
+   as a line graph.
+ \item
+   \texttt{B} {[} tseries {]} - Width of the bands that will be plotted
+   around the lines.
+ \item
+   \texttt{Lo} {[} tseries {]} - Width of the band below the line.
+ \item
+   \texttt{Hi} {[} tseries {]} - Width of the band above the line.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{LL} {[} numeric {]} - Handles to lines plotted.
+ \item
+   \texttt{EE} {[} numeric {]} - Handles to error bars plotted.
+ \item
+   \texttt{Range} {[} numeric {]} - Actually plotted date range.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateformat='} {[} char \textbar{}
+   \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+   on the x-axis.
+ \item
+   \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Vector of dates locating tick marks on the x-axis; Inf means they will
+   be created automatically.
+ \item
+   \texttt{'relative='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - If \texttt{true}, the data for the lower and
+   upper bounds are relative to the centre, i.e.~the bounds will be added
+   to the centre (in this case, \texttt{Lo} must be negative numbers and
+   \texttt{Hi} must be positive numbers). If \texttt{false}, the bounds
+   are absolute data (in this case \texttt{Lo} must be lower than
+   \texttt{X}, and \texttt{Hi} must be higher than \texttt{X}).
+ \end{itemize}
+ 
+ See help on built-in \texttt{plot} function for other options available.
+
+

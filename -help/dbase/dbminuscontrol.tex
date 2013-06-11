@@ -1,0 +1,62 @@
+
+
+    \filetitle{dbminuscontrol}{Create simulation-minus-control database}{dbase/dbminuscontrol}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [D,C] = dbminuscontrol(M,D)
+ [D,C] = dbminuscontrol(M,D,C)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object on which the databases
+   \texttt{D} and \texttt{C} are based.
+ \item
+   \texttt{D} {[} struct {]} - Simulation database.
+ \item
+   \texttt{C} {[} struct {]} - Control database; if the input argument
+   \texttt{C} is not specified, the steady-state database of the model
+   \texttt{M} is used for the control database.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Simulation-minus-control database, in
+   which all log-variables are \texttt{d.x/c.x}, and all other variables
+   are \texttt{d.x-c.x}.
+ \item
+   \texttt{C} {[} struct {]} - Control database.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ We run a shock simulation in full levels using a steady-state (or
+ balanced-growth-path) database as input, and then compute the deviations
+ from the steady state.
+ 
+ \begin{verbatim}
+ d = sstatedb(m,1:40);
+ ... % Set up a shock or shocks here.
+ s = simulate(m,d,1:40);
+ s = dbextend(d,s);
+ s = dbminuscontrol(m,s,d);
+ \end{verbatim}
+ 
+ Note that this is equivalent to running
+ 
+ \begin{verbatim}
+ d = zerodb(m,1:40);
+ ... % Set up a shock or shocks here.
+ s = simulate(m,d,1:40,'deviation',true);
+ s = dbextend(d,s);
+ \end{verbatim}
+
+

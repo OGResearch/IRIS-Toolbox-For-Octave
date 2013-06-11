@@ -1,0 +1,41 @@
+
+
+    \filetitle{subsasgn}{Subscripted assignment for tseries objects}{tseries/subsasgn}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ x(dates) = values;
+ x(dates,i,j,k,...) = values;
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Tseries object that will be assigned new
+   observations.
+ \item
+   \texttt{dates} {[} numeric {]} - Dates for which the new observations
+   will be assigned.
+ \item
+   \texttt{i}, \texttt{j}, \texttt{k}, \ldots{} {[} numeric {]} -
+   References to 2nd and higher dimensions of the tseries object.
+ \item
+   \texttt{values} {[} numeric {]} - New observations that will assigned
+   at specified dates.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Tseries object with newly assigned
+   observations.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

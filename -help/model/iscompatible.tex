@@ -1,0 +1,36 @@
+
+
+    \filetitle{iscompatible}{True if two models can occur together on the LHS and RHS in an assignment}{model/iscompatible}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ Flag = iscompatible(M1,M2)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M1}, \texttt{M2} {[} model {]} - Two model objects that will
+   be tested for compatibility.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+   if \texttt{M1} and \texttt{M1} can occur in an assignment,
+   \texttt{M1(...) = M2(...)} or horziontal concatenation,
+   \texttt{{[}M1,M2{]}}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The function compares the names of all variables, shocks, and
+ parameters, and the composition of the state-space vectors.
+ 
+ \paragraph{Example}
+
+
