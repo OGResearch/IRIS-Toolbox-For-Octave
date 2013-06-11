@@ -44,8 +44,12 @@ if norm(Std-c) < eps
 else
     b = c ;
 end
-F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:});
 
+if isinf(gammaln(Df))
+    F = logdist.multnormal(Mean,Std) ;
+else
+    F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:});
+end
 end
 
 % Subfunctions.
@@ -63,7 +67,7 @@ switch lower(varargin{1})
     case {'proper','pdf'}
         Y = exp(xxLogMultT()) ;
     case 'info'
-        % add this later... 
+        % add this later...
         Y = NaN(size(Std)) ;
     case {'a','location'}
         Y = A ;
