@@ -1,4 +1,4 @@
-function F = normal(Mean,Std)
+function F = normal(Mean,Std,Df)
 % normal  Create function proportional to log of normal distribution.
 %
 % Syntax
@@ -13,6 +13,10 @@ function F = normal(Mean,Std)
 %
 % * `Std` [ numeric ] - Std dev of the normal distribution.
 %
+% * `Df` [ integer ] - Number of degrees of freedom. If finite, the
+% distribution is Student T; if infinite (default) the distribution is
+% Normal. 
+% 
 % Output arguments
 % =================
 %
@@ -34,20 +38,36 @@ function F = normal(Mean,Std)
 
 %--------------------------------------------------------------------------
 
-mode = Mean;
-a = Mean;
+if nargin<3
+    % Normal distribution by default
+    Df = Inf ;
+end
+
+mode = Mean(:) ;
+a = Mean(:) ;
 
 if numel(Mean) > 1
-    c = chol(Std) ;
-    if norm(Std-c) < eps
+    % Distribution is multivariate
+    if norm(triu(Std)-Std) < eps
+        % Matrix is already square root
         b = Std ;
     else
-        b = c ;
+        % Compute square root matrix using Cholesky
+        b = chol(Std) ;
     end
-    F = @(x,varargin) xxMultNormal(x,a,b,Mean,Std,mode,varargin{:});
+    if isinf(gammaln(Df))
+        F = @(x,varargin) xxMultNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
+    else
+        F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+    end
 else
-    b = Std;
-    F = @(x,varargin) xxNormal(x,a,b,Mean,Std,mode,varargin{:});
+    % Distribution is scalar
+    b = Std ;
+    if isinf(gammaln(Df))
+        F = @(x,varargin) xxNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
+    else
+        F = @(x,varargin) xxT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+    end
 end
 
 end
@@ -125,10 +145,110 @@ switch lower(varargin{1})
 end
 
     function Y = xxLogMultNormal()
-        X = reshape(X,size(Mu)) ;
+        X = reshape(X,size(Mu,1),[]) ;
         sX = bsxfun(@minus, X, Mu)' / Std ;
         logSqrtDetSig = sum(log(diag(Std))) ;
-        Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2) ;
+        Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
     end
 
 end % xxMultNormal()
+
+%**************************************************************************
+function Y = xxMultT(X,A,B,Mu,Std,Df,Mode,varargin)
+
+K = numel(Mu) ;
+if isempty(varargin)
+    Y = xxLogMultT() ;
+    return
+end
+
+switch lower(varargin{1})
+    case {'proper','pdf'}
+        Y = exp(xxLogMultT()) ;
+    case 'info'
+        % add this later...
+        Y = NaN(size(Std)) ;
+    case {'a','location'}
+        Y = A ;
+    case {'b','scale'}
+        Y = B ;
+    case 'mean'
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
+    case 'mode'
+        Y = Mode ;
+    case 'name'
+        Y = 'multnormal';
+    case 'draw'
+        if numel(varargin)<2
+            dim = size(Mu) ;
+        else
+            if numel(varargin{2})==1
+                dim = [K,varargin{2}] ;
+            else
+                dim = varargin{2} ;
+            end
+        end
+        Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
+end
+
+    function Y = xxLogMultT()
+        X = reshape(X,size(Mu,1),[]) ;
+        sX = bsxfun(@minus, X, Mu)' / Std ;
+        logSqrtDetSig = sum(log(diag(Std))) ;
+        Y = ( gammaln(0.5*(Df+K)) - gammaln(0.5*Df) ...
+            - logSqrtDetSig - 0.5*K*log(Df*pi) ) ...
+            - 0.5*(Df+K)*log1p( ...
+            sum(sX.^2,2)'/Df...
+            ) ;
+    end
+
+end % xxMultT()
+
+%**************************************************************************
+function Y = xxT(X,A,B,Mu,Std,Df,Mode,varargin)
+
+if isempty(varargin)
+    Y = xxLogT() ;
+    return
+end
+
+switch lower(varargin{1})
+    case {'proper','pdf'}
+        Y = exp(xxLogT()) ;
+    case 'info'
+        % add this later...
+        Y = NaN(size(Std)) ;
+    case {'a','location'}
+        Y = A ;
+    case {'b','scale'}
+        Y = B ;
+    case 'mean'
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
+    case 'mode'
+        Y = Mode ;
+    case 'name'
+        Y = 'multnormal';
+    case 'draw'
+        if numel(varargin)<2
+            dim = size(Mu) ;
+        else
+            if numel(varargin{2})==1
+                dim = [K,varargin{2}] ;
+            else
+                dim = varargin{2} ;
+            end
+        end
+        Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
+end
+
+    function Y = xxLogT()
+        sX = bsxfun(@minus, X, Mu)' / Std ;
+        Y = ( gammaln(0.5*(Df+1)) - gammaln(0.5*Df) - log(sqrt(Df*pi)*Std) ) ...
+            - 0.5*(Df+1)*log1p( sX.^2/Df ) ;
+    end
+
+end % xxT()
