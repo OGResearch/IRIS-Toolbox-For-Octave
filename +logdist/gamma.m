@@ -41,6 +41,6 @@ if a >= 1
 else
     mode = NaN;
 end
-F = @(x,varargin) xxGamma(x,a,b,Mean,Std,mode,varargin{:});
+F = @(x,varargin) logdist.mygamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end
