@@ -173,6 +173,7 @@ if isempty(varargin)
     Y = xxLogMultT() ;
     return
 end
+chi2fh = logdist.chisquare(Df) ;
 
 switch lower(varargin{1})
     case {'proper','pdf'}
@@ -202,7 +203,9 @@ switch lower(varargin{1})
                 dim = varargin{2} ;
             end
         end
-        Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;
 end
 
     function Y = xxLogMultT()
@@ -232,6 +235,7 @@ if isempty(varargin)
     Y = xxLogT() ;
     return
 end
+chi2fh = logdist.chisquare(Df) ;
 
 switch lower(varargin{1})
     case {'proper','pdf'}
@@ -255,13 +259,11 @@ switch lower(varargin{1})
         if numel(varargin)<2
             dim = size(Mu) ;
         else
-            if numel(varargin{2})==1
-                dim = [K,varargin{2}] ;
-            else
-                dim = varargin{2} ;
-            end
+            dim = varargin{2:end} ;
         end
-        Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;
 end
 
     function Y = xxLogT()
