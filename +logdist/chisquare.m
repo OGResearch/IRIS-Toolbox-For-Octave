@@ -1,17 +1,15 @@
-function F = gamma(Mean,Std)
-% gamma  Create function proportional to log of gamma distribution.
+function F = chisquare(Df)
+% gamma  Create function proportional to log of Chi-Squared distribution.
 %
 % Syntax
 % =======
 %
-%     F = logdist.gamma(Mean,Std)
+%     F = logdist.chisquare(Mean,Std)
 %
 % Input arguments
 % ================
 %
-% * `Mean` [ numeric ] - Mean of the gamma distribution.
-%
-% * `Std` [ numeric ] - Std dev of the gamma distribution.
+% * `Df` [ integer ] - Degrees of freedom of Chi-squared distribution.
 %
 % Output arguments
 % =================
@@ -33,14 +31,8 @@ function F = gamma(Mean,Std)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-b = Std^2/Mean;
-a = Mean/b;
-if a >= 1
-    mode = (a - 1)*b;
-else
-    mode = NaN;
-end
+a = Df / 2 ;
+b = 2 ;
 F = @(x,varargin) xxGamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end
