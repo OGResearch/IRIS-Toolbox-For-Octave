@@ -17,6 +17,11 @@ function F = normal(Mean,Std,Df)
 % distribution is Student T; if infinite (default) the distribution is
 % Normal. 
 % 
+% Multivariate cases are supported. Evaluating multiple vectors as an array
+% of column vectors is supported, although IRIS will figure out the input
+% is an array of row vectors provided the dimensions do not make this
+% ambiguous. 
+% 
 % Output arguments
 % =================
 %
@@ -145,10 +150,17 @@ switch lower(varargin{1})
 end
 
     function Y = xxLogMultNormal()
-        X = reshape(X,size(Mu,1),[]) ;
+        tpY = false ;
+        if size(X,1)~=numel(Mu)
+            X = X' ;
+            tpY = true ;
+        end
         sX = bsxfun(@minus, X, Mu)' / Std ;
         logSqrtDetSig = sum(log(diag(Std))) ;
         Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
+        if tpY
+            Y = Y' ;
+        end
     end
 
 end % xxMultNormal()
@@ -194,7 +206,11 @@ switch lower(varargin{1})
 end
 
     function Y = xxLogMultT()
-        X = reshape(X,size(Mu,1),[]) ;
+        tpY = false ;
+        if size(X,1)~=numel(Mu)
+            X=X';
+            tpY = true ;
+        end
         sX = bsxfun(@minus, X, Mu)' / Std ;
         logSqrtDetSig = sum(log(diag(Std))) ;
         Y = ( gammaln(0.5*(Df+K)) - gammaln(0.5*Df) ...
@@ -202,6 +218,9 @@ end
             - 0.5*(Df+K)*log1p( ...
             sum(sX.^2,2)'/Df...
             ) ;
+        if tpY
+            Y = Y' ;
+        end
     end
 
 end % xxMultT()
