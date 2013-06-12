@@ -33,6 +33,13 @@ function F = chisquare(Df)
 %--------------------------------------------------------------------------
 a = Df / 2 ;
 b = 2 ;
+Mean = a*b ;
+Std = sqrt(a)*b ;
+if a >= 1
+    mode = (a - 1)*b;
+else
+    mode = NaN;
+end
 F = @(x,varargin) xxGamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end

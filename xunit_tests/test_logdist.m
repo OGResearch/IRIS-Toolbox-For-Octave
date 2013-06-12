@@ -22,3 +22,12 @@ if license('test','statistics_toolbox')
     assertElementsAlmostEqual( tpdf(2,df), fh_st(2,'pdf') ) ;
 end
 end
+
+function test_chisquare
+if license('test','statistics_toolbox')
+    df = 3 ;
+    val = 2 ;
+    fh = logdist.chisquare( df ) ;
+    assertElementsAlmostEqual( pdf('chi2' ,val, df), fh(val, 'pdf') ) ;
+end
+end
