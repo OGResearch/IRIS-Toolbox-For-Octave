@@ -20,7 +20,6 @@
 %
 % * [`normal`](logdist/normal) - Create function proportional to log of normal distribution.
 % * [`lognormal`](logdist/lognormal) - Create function proportional to log of log-normal distribution.
-% * [`multt`](logdist/multt) - 
 % * [`beta`](logdist/beta) - Create function proportional to log of beta distribution.
 % * [`gamma`](logdist/gamma) - Create function proportional to log of gamma distribution.
 % * [`invgamma`](logdist/invgamma) - Create function proportional to log of inv-gamma distribution.
