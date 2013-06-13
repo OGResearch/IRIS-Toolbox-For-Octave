@@ -35,28 +35,32 @@ list(remove) = [];
 
 [assignPos,stdcorrPos] = mynameposition(This,list);
 
+%{
 type = nan(size(list));
 assignVal = nan(size(list));
 stdcorrVal = nan(size(list));
 for i = 1 : numel(list)
     if ~isnan(assignPos(i))
-        type(i) = This.nametype(assignPos(i));
         assignVal(i) = This.Assign(assignPos(i));
     elseif ~isnan(stdcorrPos(i))
-        type(i) = 4;
         stdcorrVal(i) = This.stdcorr(stdcorrPos(i));
     end
 end
+%}
 
 % Reset values of parameters and stdcorrs.
 Pri.Assign = This.Assign;
 Pri.stdcorr = This.stdcorr;
 
-% Parameters to estimate and their positions.
-Pri.plist = list(type == 4);
-Pri.assignpos  = assignPos(type == 4);
-Pri.stdcorrpos = stdcorrPos(type == 4);
-np = length(Pri.plist);
+% Parameters to estimate and their positions; remove names that are not
+% valid parameter names.
+isValidParamName = ~isnan(assignPos) | ~isnan(stdcorrPos);
+Pri.plist = list(isValidParamName);
+Pri.assignpos  = assignPos(isValidParamName);
+Pri.stdcorrpos = stdcorrPos(isValidParamName);
+
+% Total number of parameter names to estimate.
+np = sum(isValidParamName);
 
 Pri.p0 = nan(1,np);
 Pri.pl = nan(1,np);
@@ -64,10 +68,19 @@ Pri.pu = nan(1,np);
 Pri.prior = cell(1,np);
 Pri.priorindex = false(1,np);
 
-validBounds = true(1,np);
-withinBounds = true(1,np);
+isValidBounds = true(1,np);
+isWithinBounds = true(1,np);
+isPenaltyFunction = false(1,np);
+
 doParameters();
 doChkBounds();
+
+% Penalty specification is obsolete.
+doReportPenaltyFunc();
+
+% Estimation struct can include names that are not valid parameter names;
+% throw a warning for them.
+doReportInvalidNames();
 
 % Remove parameter fields and return a struct with non-parameter fields.
 E = rmfield(E,Pri.plist);
@@ -85,6 +98,15 @@ E = rmfield(E,Pri.plist);
             
             % Starting value
             %----------------
+            % Prepare the value currently assigned in the model object; this is used
+            % when the starting value in the estimation struct is `NaN`.
+            assignIfNan = NaN;
+            if ~isnan(Pri.assignpos(ii))
+                assignIfNan = This.Assign(Pri.assignpos(ii));
+            elseif ~isnan(Pri.stdcorrpos(ii))
+                assignIfNan = This.stdcorr(Pri.stdcorrpos(ii));
+            end
+            
             if isstruct(InitVal) ...
                     && isfield(InitVal,name) ...
                     && isnumericscalar(InitVal.(name))
@@ -95,15 +117,14 @@ E = rmfield(E,Pri.plist);
             else
                 p0 = NaN;
             end
-            % If `NaN`, use the currently assigned value.
+            % If the starting value is `NaN` at this point, use the currently assigned
+            % value from the model object, `assignIfNan`.
             if isnan(p0)
-                if ~isnan(assignPos(ii))
-                    p0 = assignVal(1,ii,:);
-                else
-                    p0 = stdcorrVal(1,ii,:);
-                end
+                p0 = assignIfNan;
             end
             
+            % Lower and upper bounds
+            %------------------------
             % Lower bound.
             if length(spec) > 1 && isnumericscalar(spec{2})
                 pl = spec{2};
@@ -116,31 +137,40 @@ E = rmfield(E,Pri.plist);
             else
                 pu = Inf;
             end
-            % Check that the lower bound is really lower than the upper bound.
+            % Check that the lower bound is lower than the upper bound.
             if pl >= pu
-                validBounds(ii) = false;
+                isValidBounds(ii) = false;
                 continue
             end
             % Check that the starting values in within the bounds.
             if p0 < pl || p0 > pu
-                withinBounds(ii) = false;
+                isWithinBounds(ii) = false;
                 continue
             end
             
-            % Prior distribution function, function_handle, or penalty
-            % function, [weight] or [weight,pbar].
+            % Prior distribution function
+            %-----------------------------
+            
+            % The 4th element in the estimation struct can be either a prior
+            % distribution function (a function_handle) or penalty function, i.e. a
+            % numeric vector [weight] or [weight,pbar]. The latter option is only for
+            % bkw compatibility, and will be deprecated.
             isPrior = false;
             prior = [];
             if length(spec) > 3 && ~isempty(spec{4})
                 isPrior = true;
                 if isa(spec{4},'function_handle')
-                    % The 4th entry is a prior distribution function handle.
+                    % The 4th element is a prior distribution function handle.
                     prior = spec{4};
                 elseif isnumeric(spec{4}) && Penalty > 0
+                    % The 4th element is a penalty function.
+                    isPenaltyFunction(ii) = true;
                     doPenalty2Prior();
                 end
             end
             
+            % Populate the `Pri` struct
+            %---------------------------
             Pri.p0(ii) = p0;
             Pri.pl(ii) = pl;
             Pri.pu(ii) = pu;
@@ -163,11 +193,7 @@ E = rmfield(E,Pri.plist);
                 pBar = spec{4}(2);
             end
             if isnan(pBar)
-                if ~isnan(assignPos(ii))
-                    pBar = assignVal(1,ii,:);
-                else
-                    pBar = stdcorrVal(1,ii,:);
-                end
+                pBar = assignIfNan;
             end
             % Convert penalty function to a normal prior:
             %
@@ -182,19 +208,45 @@ E = rmfield(E,Pri.plist);
 
 %**************************************************************************
     function doChkBounds()
-        if any(~validBounds)
+        % Report bounds where lower >= upper.
+        if any(~isValidBounds)
             utils.error(class(This), ...
                 ['Lower and upper bounds for this parameter ', ...
                 'are inconsistent: ''%s''.'], ....
-                Pri.plist{~validBounds});
+                Pri.plist{~isValidBounds});
         end
-        
-        if any(~withinBounds)
+        % Report bounds where start < lower or start > upper.
+        if any(~isWithinBounds)
             utils.error(class(This), ...
                 ['Starting value for this parameter is ', ...
                 'outside the specified bounds: ''%s''.'], ....
-                Pri.plist{~withinBounds});
+                Pri.plist{~isWithinBounds});
         end
     end % doChkBounds().
+
+%**************************************************************************
+    function doReportPenaltyFunc()
+        if any(isPenaltyFunction)
+            paramPenaltyList = Pri.plist(isPenaltyFunction);
+            utils.warning('obsolete', ...
+                ['This parameter prior is specified ', ...
+                'as a penalty function: ''%s''. \n', ...
+                'Penalty functions are obsolete and will be removed from ', ...
+                'a future version of IRIS. ', ...
+                'Replace them with normal prior distributions.'], ...
+                paramPenaltyList{:});
+        end
+    end % doReportPenaltyFunc().
+
+%**************************************************************************
+    function doReportInvalidNames()
+        if any(isValidParamName)
+            invalidNameList = list(~isValidParamName);
+            utils.warning('modelobj', ...
+                ['This name in the estimation struct is not ', ...
+                'a valid parameter name: ''%s''.'], ...
+                invalidNameList{:});
+        end
+    end % doReportInvalidNames().
 
 end
