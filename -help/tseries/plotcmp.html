@@ -1,0 +1,138 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/plotcmp">plotcmp</h2>
+<div class="headline">Comparison graph for two time series</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[Ax,Lhs,Rhs] = plotcmp(X,...)
+[Ax,Lhs,Rhs] = plotcmp(Range,X,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Range</code> [ numeric ] - Date range; if not specified the entire range of the input tseries object will be plotted.</p></li>
+<li><p><code>X</code> [ tseries ] - Tseries object with two or more columns; the difference (between the second and the first column (or any other linear combination of its columns specified through the option <code>'compare='</code>) will be displayed as an RHS area or bar graph.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>Ax</code> [ numeric ] - Handles to the LHS and RHS axes.</p></li>
+<li><p><code>Lhs</code> [ numeric ] - Handles to the two original lines.</p></li>
+<li><p><code>Rhs</code> [ numeric ] - Handles to the area or bar difference graph.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'compare='</code> [ numeric | <em><code>[-1;1]</code></em> ] - Linear combination of the observations that will be plotted in the RHS graph; <code>[-1;1] means a difference between the second series and the first series,</code>X{:,2}-X{:,1}`.</p></li>
+<li><p><code>'cmpColor='</code> [ numeric | <em><code>[1,0.75,0.75]</code></em> ] - Color that will be used to plot the area or bar difference (comparison) graph.</p></li>
+<li><p><code>'cmpPlotFunc='</code> [ <code>@area</code> | <em><code>@bar</code></em> ] - Function that will be used to plot the difference (comparision) data on the RHS.</p></li>
+</ul>
+<p>See help on <a href="../tseries/plotyy.html"><code>tseries/plotyy</code></a> for other options available.</p>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,52 @@
+
+
+    \filetitle{ifrf}{Frequency response function to shocks}{model/ifrf}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [W,List] = ifrf(M,Freq,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object for which the frequency
+   response function will be computed.
+ \item
+   \texttt{Freq} {[} numeric {]} - Vector of frequencies for which the
+   response function will be computed.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{W} {[} numeric {]} - Array with frequency responses of
+   transition variables (in rows) to shocks (in columns).
+ \item
+   \texttt{List} {[} cell {]} - List of transition variables in rows of
+   the \texttt{W} matrix, and list of shocks in columns of the \texttt{W}
+   matrix.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'output='} {[} \emph{`namedmat'} \textbar{} numeric {]} -
+   Output matrix \texttt{W} will be either a namedmat object or a plain
+   numeric array; if the option \texttt{'select='} is used,
+   \texttt{'output='} is always \texttt{'namedmat'}.
+ \item
+   \texttt{'select='} {[} char \textbar{} cellstr \textbar{}
+   \emph{\texttt{Inf}} {]} - Return the frequency response function only
+   for selected variables and/or selected shocks.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+
