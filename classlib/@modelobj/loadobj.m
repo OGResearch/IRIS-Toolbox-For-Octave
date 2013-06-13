@@ -9,12 +9,24 @@ function This = loadobj(This)
 
 %--------------------------------------------------------------------------
 
-% Create empty aliases if missing.
-if isempty(This.namealias)
+% Create empty aliases for names if missing.
+try
+    if isempty(This.namealias)
+        This.namealias = cell(size(This.name));
+        This.namealias(:) = {''};
+    end
+catch
     This.namealias = cell(size(This.name));
     This.namealias(:) = {''};
 end
-if isempty(This.eqtnalias)
+
+% Create empty aliases for equatios if missing.
+try
+    if isempty(This.eqtnalias)
+        This.eqtnalias = cell(size(This.eqtn));
+        This.eqtnalias(:) = {''};
+    end
+catch
     This.eqtnalias = cell(size(This.eqtn));
     This.eqtnalias(:) = {''};
 end
