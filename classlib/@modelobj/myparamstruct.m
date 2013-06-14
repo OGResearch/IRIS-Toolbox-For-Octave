@@ -240,7 +240,7 @@ E = rmfield(E,Pri.plist);
 
 %**************************************************************************
     function doReportInvalidNames()
-        if any(isValidParamName)
+        if any(~isValidParamName)
             invalidNameList = list(~isValidParamName);
             utils.warning('modelobj', ...
                 ['This name in the estimation struct is not ', ...
