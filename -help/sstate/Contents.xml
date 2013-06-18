@@ -1,0 +1,28 @@
+<folder>
+
+<foldername>sstate</foldername><filename>Contents</filename>
+
+<h1 id="sstate/Contents">Steady-state objects and functions</h1>
+
+<p>You can create a steady-state (sstate) object by loading a steady-state
+(sstate) file. The sstate object can be then saved as a stand-alone
+m-file function and repeatedly solved for different parameterisations.</p>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="sstate/sstate"><tt>sstate</tt></link>&nbsp;&ndash;&nbsp;Create new model object based on sstate file.</li></ul>
+
+<h3>Compiling stand-alone m-file functions</h3>
+
+<ul><li><link id="sstate/compile"><tt>compile</tt></link>&nbsp;&ndash;&nbsp;Compile an m-file function based on a steady-state file.</li></ul>
+
+<h3>Running stand-alone sstate m-file functions</h3>
+
+<ul><li><link id="sstate/standalonemfile"><tt>standalonemfile</tt></link>&nbsp;&ndash;&nbsp;Run a compiled stand-alone sstate m-file function.</li></ul>
+
+<h3>Getting on-line help on sstate functions</h3>
+<pre>   help sstate
+   help sstate/function_name
+</pre>
+
+</folder>

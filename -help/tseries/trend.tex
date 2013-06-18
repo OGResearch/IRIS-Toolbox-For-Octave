@@ -1,0 +1,55 @@
+
+
+    \filetitle{trend}{Estimate a time trend}{tseries/trend}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ X = trend(X,range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input time series.
+ \item
+   \texttt{Range} {[} tseries {]} - Range for which the trend will be
+   computed.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Output trend time series.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'break='} {[} numeric \textbar{} \emph{empty} {]} - Vector of
+   breaking points at which the trend may change its slope.
+ \item
+   \texttt{'connect='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Calculate the trend by connecting the first and the last
+   observations.
+ \item
+   \texttt{'diff='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Estimate the trend on differenced data.
+ \item
+   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+   - Logarithmise the input data, de-logarithmise the output data.
+ \item
+   \texttt{'season='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   \textbar{} \texttt{2} \textbar{} \texttt{4} \textbar{} \texttt{6}
+   \textbar{} \texttt{12} {]} - Include deterministic seasonal factors in
+   the trend.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

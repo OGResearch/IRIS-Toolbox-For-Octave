@@ -1,0 +1,157 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="gettinghelp/Contents">Getting on-line help</h1>
+
+
+<p>Use either <code>help</code> or <code>idoc</code> to get help on IRIS functions:</p>
+<ul>
+<li><code>help</code> displays the help topic in the command window,</li>
+<li><code>idoc</code> displays the help topic in an HTML browser window.</li>
+</ul>
+<p>The following help topics are available:</p>
+<pre><code>help dates
+help dates/function_name
+help dbase
+help dbase/function_name
+help modellang
+help modellang/keyword
+help model
+help model/function_name
+help plan
+help plan/function_name
+help poster
+help poster/function_name
+help logdist
+help logdist/function-name
+help sstatelang
+help sstatelang/keyword
+help sstate
+help sstate/function_name
+help tseries
+help tseries/function_name
+help VAR
+help VAR/function_name
+help SVAR
+help SVAR/function_name
+help BVAR
+help BVAR/function_name
+help FAVAR
+help FAVAR/function_name
+help report
+help report/function_name
+help qreportlang
+help qreportlang/keyword
+help qreport
+help qreport/keyword
+help grfun
+help grfun/function_name</code></pre>
+<p>You can use <code>idoc</code> instead of <code>help</code> in the above list.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>
