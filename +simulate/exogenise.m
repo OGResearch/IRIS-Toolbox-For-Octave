@@ -52,7 +52,7 @@ else
     K = PMt / F;
     adde = K * pe;
     %}
-    upd = simulate.update(S.M,P,pe);
+    upd = simulate.updatemean(S.M,P,pe);
     
 end
 

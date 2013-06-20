@@ -2,7 +2,6 @@ function [S,ExitFlag,Discrep,AddFact] = nonlinear(S,Opt)
 % nonlinear  [Not a public function] Split non-linear simulation into segments of unanticipated
 % shocks, and simulate one segment at a time.
 %
-%
 % Backed IRIS function.
 % No help provided.
 

@@ -1123,6 +1123,26 @@ if any(aux)
     return
 end
 
+% At least one transition variable in each transition equation.
+valid = any(any(occurF(This.eqtntype == 2,This.nametype == 2,:),3),2);
+if any(~valid)
+    ErrList = This.eqtn(This.eqtntype == 2);
+    ErrList = ErrList(~valid);
+    ErrMsg = ...
+        'No transition variable in this transition equation: ''%s''.';
+    return
+end
+
+% At least one measurement variable in each measurement equation.
+valid = any(any(occurF(This.eqtntype == 1,This.nametype == 1,:),3),2);
+if any(~valid)
+    ErrList = This.eqtn(This.eqtntype == 1);
+    ErrList = ErrList(~valid);
+    ErrMsg = ...
+        'No measurement variable in this measurement equation: ''%s''.';
+    return
+end
+
 % # measurement equations == # measurement variables.
 nme = sum(This.eqtntype == 1);
 nmv = sum(This.nametype == 1);

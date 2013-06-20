@@ -1,5 +1,5 @@
 function X = cat(N,varargin)
-% cat  Tseries object concatenation along n-th dimension.
+% cat  [Not a publich function] Tseries object concatenation along n-th dimension.
 %
 % Backend IRIS function.
 % No help provided.
@@ -16,30 +16,30 @@ if length(varargin) == 1
 end
 
 % Check classes and frequencies.
-[inputs,ixTseries] = catcheck(varargin{:});
+[inputs,isTseries] = catcheck(varargin{:});
 
 % Remove inputs with zero size in all higher dimensions.
 % Remove empty numeric arrays.
 remove = false(size(inputs));
 for i = 1 : length(inputs)
-    si = size(inputs{i});
-    if all(si(2:end) == 0), remove(i) = true;
+    iDataSize = size(inputs{i});
+    if all(iDataSize(2:end) == 0), remove(i) = true;
     elseif isnumeric(inputs{i}) && isempty(inputs{i}), remove(i) = true;
     end
 end
 inputs(remove) = [];
-ixTseries(remove) = [];
+isTseries(remove) = [];
 
 if isempty(inputs)
     X = tseries([],[]);
     return
 end
 
-nInput = length(inputs);
+nInp = length(inputs);
 % Find earliest startdate and latest enddate.
-start = nan(1,nInput);
-finish = nan(1,nInput);
-for i = find(ixTseries)
+start = nan(1,nInp);
+finish = nan(1,nInp);
+for i = find(isTseries)
     start(i) = inputs{i}.start;
     finish(i) = start(i) + size(inputs{i}.data,1) - 1;
 end
@@ -47,17 +47,25 @@ end
 % Find startdates and enddates.
 minStart = min(start(~isnan(start)));
 maxFinish = max(finish(~isnan(finish)));
-start(~ixTseries) = -Inf;
-finish(~ixTseries) = Inf;
+start(~isTseries) = -Inf;
+finish(~isTseries) = Inf;
 
 % Expand data with pre- or post-sample NaNs.
 if ~isempty(minStart)
     for i = find(start > minStart | finish < maxFinish)
         dim = size(inputs{i}.data);
         if isnan(inputs{i}.start)
+            % Empty tseries object.
             inputs{i}.data = nan([round(maxFinish-minStart+1),dim(2:end)]);
         else
-            inputs{i}.data = [nan([round(start(i)-minStart),dim(2:end)]);inputs{i}.data;nan([round(maxFinish-finish(i)),dim(2:end)])];
+            % Non-empty tseries object.
+            nPre = round(start(i)-minStart);
+            nPost = round(maxFinish-finish(i));
+            inputs{i}.data = [ ...
+                nan([nPre,dim(2:end)]); ...
+                inputs{i}.data; ...
+                nan([nPost,dim(2:end)]); ...
+                ];
         end
     end
     for i = find(isnan(start))
@@ -79,8 +87,8 @@ end
 
 % Concatenate individual inputs.
 empty = true;
-for i = 1 : nInput
-    if ixTseries(i)
+for i = 1 : nInp
+    if isTseries(i)
         if empty
             X.data = inputs{i}.data;
             X.Comment = inputs{i}.Comment;
@@ -90,27 +98,27 @@ for i = 1 : nInput
             X.Comment = cat(N,X.Comment,inputs{i}.Comment);
         end
     else
-        data = inputs{i};
-        si = size(data);
-        data = data(:,:);
-        if si(1) > 1 && si(1) < nPer
-            data(end+1:nPer,:) = NaN;
-        elseif si(1) > 1 && si(1) > nPer
-            data = data(:,:);
-            data(nPer+1:end,:) = [];
-        elseif si(1) == 1 && nPer > 1
-            data = data(:,:);
-            data = data(ones(1,nPer),:);
+        iData = inputs{i};
+        iDataSize = size(iData);
+        iData = iData(:,:);
+        if iDataSize(1) > 1 && iDataSize(1) < nPer
+            iData(end+1:nPer,:) = NaN;
+        elseif iDataSize(1) > 1 && iDataSize(1) > nPer
+            iData = iData(:,:);
+            iData(nPer+1:end,:) = [];
+        elseif iDataSize(1) == 1 && nPer > 1
+            iData = iData(:,:);
+            iData = iData(ones(1,nPer),:);
         end
-        data = reshape(data,[nPer,si(2:end)]);
-        comment = cell([1,si(2:end)]);
+        iData = reshape(iData,[nPer,iDataSize(2:end)]);
+        comment = cell([1,iDataSize(2:end)]);
         comment(:) = {''};
         if empty
-            X.data = data;
+            X.data = iData;
             X.Comment = comment;
             empty = false;
         else
-            X.data = cat(N,X.data,data);
+            X.data = cat(N,X.data,iData);
             X.Comment = cat(N,X.Comment,comment);
         end
     end

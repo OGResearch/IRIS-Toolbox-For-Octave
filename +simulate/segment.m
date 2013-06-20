@@ -14,11 +14,10 @@ nb = size(S.T,2);
 nf = nx - nb;
 ne = size(S.e,1);
 nEqtn = length(S.eqtn);
-upperBound = Opt.upperbound;
 
 S.histMinDiscrep = Inf;
 S.histMinAddFactor = Inf;
-S.histminu = [];
+S.histMinU = [];
 S.histMinCount = NaN;
 
 while true
@@ -28,7 +27,7 @@ while true
     if S.maxDiscrep < S.histMinDiscrep
         S.histMinDiscrep = S.maxDiscrep;
         S.histMinAddFactor = S.maxAddFactor;
-        S.histminu = S.u;
+        S.histMinU = S.u;
         S.histMinCount = S.count;
     end
     
@@ -48,7 +47,7 @@ while true
     
     if S.stop ~= 0
         if S.maxDiscrep > S.histMinDiscrep
-            S.u = S.histminu;
+            S.u = S.histMinU;
             S = simulate.linear(S,S.npernonlin,Opt);
             if Opt.display > 0
                 doReportReverse();
@@ -64,7 +63,7 @@ while true
     
     % Update and lambda control
     %---------------------------
-    if S.maxDiscrep < upperBound*S.histMinDiscrep %...
+    if S.maxDiscrep < Opt.upperbound*S.histMinDiscrep %...
             %|| S.maxAddFactor < upperBound*S.histMinAddFactor
         addU = S.discrep;
         if ~Opt.fillout
@@ -73,9 +72,10 @@ while true
         addU = S.lambda .* addU;
         S.u = S.u - addU;
     else
-        % If the current discrepancy is twice the historical minimum (or more),
-        % reverse the process to the historical minimum, and reduce `lambda`.
-        S.u = S.histminu;
+        % If the current discrepancy is `upperBound` times the historical minimum
+        % (or more), reverse the process to the historical minimum, and reduce
+        % `lambda`.
+        S.u = S.histMinU;
         S.lambda = S.lambda * Opt.reducelambda;
         if Opt.display > 0
             doReportReverse();

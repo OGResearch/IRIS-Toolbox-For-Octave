@@ -1,10 +1,10 @@
 function F = normal(Mean,Std,Df)
-% normal  Create function proportional to log of normal distribution.
+% normal  Create function proportional to log of Normal or Student distribution.
 %
 % Syntax
 % =======
 %
-%     F = logdist.normal(Mean,Std)
+%     F = logdist.normal(Mean,Std,Df)
 %
 % Input arguments
 % ================
@@ -14,8 +14,8 @@ function F = normal(Mean,Std,Df)
 % * `Std` [ numeric ] - Std dev of the normal distribution.
 %
 % * `Df` [ integer ] - Number of degrees of freedom. If finite, the
-% distribution is Student T; if infinite (default) the distribution is
-% Normal. 
+% distribution is Student T; if omitted or `Inf` (default) the distribution
+% is Normal.
 % 
 % Multivariate cases are supported. Evaluating multiple vectors as an array
 % of column vectors is supported, although IRIS will figure out the input
@@ -26,7 +26,7 @@ function F = normal(Mean,Std,Df)
 % =================
 %
 % * `F` [ function_handle ] - Function handle returning a value
-% proportional to the log of the normal density.
+% proportional to the log of Normal or Student density.
 %
 % Description
 % ============
