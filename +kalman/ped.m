@@ -197,8 +197,10 @@ for t = 2 : nPer
     % `pe` changes over time.
     pe = y1(jy,t) - y0;
     
-    if Opt.chkfmse && rcond(F) < Opt.fmsecondtol
-        Obj = 1e+11;
+    conditionNumber = rcond(F) ;
+    if Opt.chkfmse && ...
+            ( conditionNumber < Opt.fmsecondtol || isnan(conditionNumber) ) 
+        Obj = 1e+10;
         return
     end
     
