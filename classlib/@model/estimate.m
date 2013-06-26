@@ -352,7 +352,7 @@ likOpt = mypreploglik(This,Range,estOpt.domain,[],estOpt.filter{:});
 
 % Get the first column of measurement and exogenous variables.
 if estOpt.evallik
-    doChkMissingMeasurementVars()
+    doChkMissingMeasurementVars() ;
     
     % `Data` includes pre-sample.
     Data = datarequest('yg',This,Data,Range,1,likOpt);
@@ -473,7 +473,7 @@ end
             end
         end
         if any( missing )
-            utils.error('model', ...
+            utils.warning('model', ...
                 'Measurement variable not present in input database: ''%s''.', ...
                 yNames{missing}) ;
         end
