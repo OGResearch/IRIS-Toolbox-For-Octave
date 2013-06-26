@@ -197,11 +197,13 @@ for t = 2 : nPer
     % `pe` changes over time.
     pe = y1(jy,t) - y0;
     
-    conditionNumber = rcond(F) ;
-    if Opt.chkfmse && ...
-            ( conditionNumber < Opt.fmsecondtol || isnan(conditionNumber) ) 
-        Obj = 1e+10;
-        return
+    if Opt.chkfmse
+        % Only evaluate the cond number if the test is requested by the user.
+        condNumber = rcond(F);
+        if condNumber < Opt.fmsecondtol || isnan(condNumber)
+            Obj = 1e+10;
+            return
+        end
     end
     
     % Kalman gain matrices.

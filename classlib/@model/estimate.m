@@ -352,8 +352,6 @@ likOpt = mypreploglik(This,Range,estOpt.domain,[],estOpt.filter{:});
 
 % Get the first column of measurement and exogenous variables.
 if estOpt.evallik
-    doChkMissingMeasurementVars() ;
-    
     % `Data` includes pre-sample.
     Data = datarequest('yg',This,Data,Range,1,likOpt);
 else
@@ -461,22 +459,5 @@ end
                 E1List{:});
         end
     end % doChkInvalidParamNames().
-
-    function doChkMissingMeasurementVars()
-        yNames = get(This,'yVector') ;
-        dNames = dbnames(Data) ;
-        nY = numel( yNames ) ;
-        missing = true(nY, 1) ;
-        for iVar = 1 : nY
-            if any(strcmpi(yNames{iVar},dNames))
-                missing(iVar) = false ;
-            end
-        end
-        if any( missing )
-            utils.warning('model', ...
-                'Measurement variable not present in input database: ''%s''.', ...
-                yNames{missing}) ;
-        end
-    end
 
 end
