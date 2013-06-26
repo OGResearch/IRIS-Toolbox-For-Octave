@@ -77,7 +77,7 @@ pp.parse(This,Data,Range,PList);
 lik = mypreploglik(This,Range,'t',[],varargin{:});
 
 % Get measurement and exogenous variables including pre-sample.
-Data = datarequest('yg',This,Data,Range);
+Data = datarequest('yg*',This,Data,Range);
 
 % Create an `stdcorr` vector from user-supplied database.
 lik.stdcorr = mytune2stdcorr(This,Range,[],lik,'clip');

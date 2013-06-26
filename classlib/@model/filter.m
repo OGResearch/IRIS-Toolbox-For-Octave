@@ -211,7 +211,7 @@ Range = Range(1) : Range(end);
 likOpt = mypreploglik(This,Range,'t',j,varargin{:});
 
 % Get measurement and exogenous variables.
-Inp = datarequest('yg',This,Inp,Range);
+Inp = datarequest('yg*',This,Inp,Range);
 nData = size(Inp,3);
 nAlt = size(This.Assign,3);
 

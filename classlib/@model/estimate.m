@@ -353,7 +353,7 @@ likOpt = mypreploglik(This,Range,estOpt.domain,[],estOpt.filter{:});
 % Get the first column of measurement and exogenous variables.
 if estOpt.evallik
     % `Data` includes pre-sample.
-    Data = datarequest('yg',This,Data,Range,1,likOpt);
+    Data = datarequest('yg*',This,Data,Range,1,likOpt);
 else
     Data = [];
 end

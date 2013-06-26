@@ -144,7 +144,7 @@ else
     % handles.
     LIKOPT = mypreploglik(This,RANGE,OPT.domain,tune,varargin{:});
     % Get array of measurement and exogenous variables.
-    DATA = datarequest('yg',This,Data,RANGE,':',LIKOPT);
+    DATA = datarequest('yg*',This,Data,RANGE,':',LIKOPT);
 end
 
 %--------------------------------------------------------------------------

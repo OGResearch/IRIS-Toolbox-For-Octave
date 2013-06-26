@@ -1,6 +1,5 @@
 function [X,Incl,Range,NotFound,NonTseries] = ...
-    db2array(D,List,Range,LagOrLead,Log, ...
-    ThrowNotFound,ThrowInvalid,ThrowFreq,ThrowNonTseries)
+    db2array(D,List,Range,LagOrLead,Log,Warn)
 % db2array  Convert tseries database entries to numeric array.
 %
 % Syntax
@@ -84,27 +83,33 @@ catch
 end
 
 try
-    ThrowNotFound;
+    Warn;
 catch
-    ThrowNotFound = true;
+    Warn = struct();
 end
 
 try
-    ThrowInvalid;
+    Warn.notFound;
 catch
-    ThrowInvalid = true;
+    Warn.notFound = true;
 end
 
 try
-    ThrowFreq;
+    Warn.sizeMismatch;
 catch
-    ThrowFreq = true;
+    Warn.sizeMismatch = true;
 end
 
 try
-    ThrowNonTseries;
+    Warn.freqMismatch;
 catch
-    ThrowNonTseries = true;
+    Warn.freqMismatch = true;
+end
+
+try
+    Warn.nonTseries;
+catch
+    Warn.nonTseries = true;
 end
 
 % Swap `List` and `Range` if needed.
@@ -226,28 +231,28 @@ end
 
 %**************************************************************************
     function doWarning()
-        if ThrowNotFound && any(NotFound)
+        if Warn.notFound && any(NotFound)
             utils.warning('dbase', ...
-                ['This database entry does not exist or is not ', ...
-                'a tseries object: ''%s''.'], ...
+                ['This database entry does not exist ', ...
+                'in the database: ''%s''.'], ...
                 List{NotFound});
         end
         
-        if ThrowInvalid && any(Invalid)
+        if Warn.sizeMismatch && any(Invalid)
             utils.warning('dbase', ...
                 ['This database entry does not match ', ...
                 'the size of others: ''%s''.'], ...
                 List{Invalid});
         end
         
-        if ThrowFreq && any(freqMismatch)
+        if Warn.freqMismatch && any(freqMismatch)
             utils.warning('dbase', ...
                 ['This database entry does not match ', ...
                 'the frequency of the dates requested: ''%s''.'], ...
                 List{freqMismatch});
         end
         
-        if ThrowNonTseries && any(NonTseries)
+        if Warn.nonTseries && any(NonTseries)
             utils.warning('dbase', ...
                 ['This name exists in the database, ', ...
                 'but is not a tseries object: ''%s''.'], ...

@@ -53,6 +53,21 @@ else
     utils.error('model','Unknown type of input data.');
 end
 
+% Warning structure for `db2array`.
+warn = struct();
+warn.notFound = false;
+warn.sizeMismatch = true;
+warn.freqMismatch = true;
+warn.nonTseries = true;
+% Starred requests throw a warning if one or more series is not found in
+% the input database.
+try %#ok<TRYNC>
+    if isequal(Req(end),'*')
+        warn.notFound = true;
+        Req(end) = '';
+    end
+end
+
 switch Req
     case 'init'
         % Initial condition for the mean and MSE of Alpha.
@@ -77,10 +92,12 @@ switch Req
         % Initial condition for the mean and MSE of X.
         [varargout{1:nargout}] = doData2XInit();
     case 'y'
+        % Measurement variables; a star
         y = doData2Y();
         y = y(:,:,IData);
         varargout{1} = y;
     case 'yg'
+        % Measurement variables, and exogenous variables for deterministic trends.
         y = doData2Y();
         y = y(:,:,IData);
         if ~isempty(LoglikOpt) && isstruct(LoglikOpt) ...
@@ -116,6 +133,7 @@ switch Req
         end
         varargout = Data;
     case 'g'
+        % Exogenous variables for deterministic trends.
         varargout{1} = doData2G();
     case 'alpha'
         varargout{1} = doData2Alpha();
@@ -132,7 +150,7 @@ end
             realId = real(This.solutionid{2}(nf+1:end));
             imagId = imag(This.solutionid{2}(nf+1:end));
             XInitMean = db2array(dMean,This.name(realId),Range(1)-1, ...
-                imagId,This.log(realId),false,true,true,true);
+                imagId,This.log(realId),warn);
             XInitMean = permute(XInitMean,[2,1,3]);
         end
         % MSE.
@@ -216,7 +234,7 @@ end
             imagId = imag(This.solutionid{1});
             tmpLog = This.log(realId);
             Y = db2array(dMean,This.name(realId),Range, ...
-                imagId,tmpLog,false,true,true,true);
+                imagId,tmpLog,warn);
             Y = permute(Y,[2,1,3]);
         end
     end % doData2Y().
@@ -227,7 +245,7 @@ end
             realid = real(This.solutionid{3});
             imagid = imag(This.solutionid{3});
             E = db2array(dMean,This.name(realid),Range, ...
-                imagid,This.log(realid),false,true,true,true);
+                imagid,This.log(realid),warn);
             E = permute(E,[2,1,3]);
         end
         eReal = real(E);
@@ -243,8 +261,7 @@ end
         if ng > 0 && ~isempty(dMean)
             name = This.name(This.nametype == 5);
             G = db2array(dMean,name,Range, ...
-                zeros(size(name)),false(size(name)), ...
-                false,true,true,true);
+                zeros(size(name)),false(size(name)),warn);
             G = permute(G,[2,1,3]);
         else
             G = nan(ng,nPer);
@@ -263,7 +280,7 @@ end
             imagId = imagId(currentInx);
             tmpLog = This.log(realId);
             x = db2array(dMean,This.name(realId),Range, ...
-                imagId,tmpLog,false,true,true,true);
+                imagId,tmpLog,warn);
             x = permute(x,[2,1,3]);
             %X = nan(length(inx),size(x,2),size(x,3));
             X = nan(nxx,size(x,2),size(x,3));
@@ -279,7 +296,7 @@ end
             realId = realId(nf+1:end);
             imagId = imagId(nf+1:end);
             A = db2array(dMean,This.name(realId),Range, ...
-                imagId,This.log(realId),false,true,true,true);
+                imagId,This.log(realId),warn);
             A = permute(A,[2,1,3]);
         end
         nData = size(A,3);
