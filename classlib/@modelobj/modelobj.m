@@ -8,6 +8,8 @@ classdef modelobj
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
     properties (Hidden)
+        % Linear or non-linear model.
+        linear = false;
         % Model function name from which the modelobj was created.
         fname = '';
         % IRIS version.
@@ -52,9 +54,11 @@ classdef modelobj
         varargout = emptydb(varargin)
         varargout = export(varargin)
         varargout = iscompatible(varargin)
+        varargout = islinear(varargin)
         varargout = isname(varargin)
         varargout = length(varargin)
         varargout = omega(varargin)
+        varargout = reset(varargin)
         varargout = stdscale(varargin)        
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)

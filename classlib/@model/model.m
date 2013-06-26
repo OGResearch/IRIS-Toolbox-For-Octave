@@ -52,6 +52,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
     % * [`export`](model/export) - Save carry-around files on the disk.
     % * [`horzcat`](model/horzcat) - Combine two compatible model objects in one object with multiple parameterisations.
     % * [`refresh`](model/refresh) - Refresh dynamic links.
+    % * [`reset`][model/reset) - 
     % * [`stdscale`](model/stdscale) - Re-scale all std deviations by the same factor.
     % * [`set`](model/set) - Change modifiable model object property.
     % * [`single`](model/single) - Convert solution matrices to single precision.
@@ -128,7 +129,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         % Carry-on packages.
         %Export = '';
         % Linear or non-linear model.
-        linear = false;
+        % linear = false;
         % List of functions with user derivatives.
         userdifflist = cell(1,0);
         % Vector [1-by-nname] of positions of shocks assigned to variables for
@@ -256,7 +257,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = ifrf(varargin)
         varargout = irf(varargin)
         varargout = iscompatible(varargin)
-        varargout = islinear(varargin)
         varargout = islog(varargin)
         varargout = isnan(varargin)
         varargout = issolved(varargin)
@@ -316,7 +316,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = mychksstate(varargin)
         varargout = mychksstateopt(varargin)
         varargout = myconsteqtn(varargin)
-        varargout = mycopyobj(varargin)
         varargout = myderiv(varargin)
         varargout = mydiffloglik(varargin)
         varargout = mydtrendsrequest(varargin)

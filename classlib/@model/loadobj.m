@@ -9,6 +9,11 @@ function This = loadobj(This)
 
 %--------------------------------------------------------------------------
 
+% If the input object is not a model, rebuild the model to make sure the
+% equations derived from the user equations (derivatives, etc) comply with
+% the latest version of IRIS.
+isRebuild = ~isa(This,'model');
+
 This = modelobj.loadobj(This);
 
 if isfield(This,'eqtnnonlin')
@@ -161,6 +166,10 @@ catch %#ok<CTCH>
     % derivatives or missing equations for constant terms in linear models.
     This = mysymbdiff(This);
     This = myeqtn2afcn(This);
+end
+
+if isRebuild
+    This = model(This);
 end
 
 end

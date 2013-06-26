@@ -44,6 +44,8 @@ elseif isempty(This.Export)
 end
 
 % Create and save carry-around files.
-export(This);
+try %#ok<TRYNC>
+    export(This);
+end
 
 end

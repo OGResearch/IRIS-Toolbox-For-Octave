@@ -46,12 +46,6 @@ else
         ].^2;
     nd = length(d);
     P = spdiags(d,0,nd,nd);
-    %{
-    PMt = P * S.M.';
-    F = S.M * PMt;
-    K = PMt / F;
-    adde = K * pe;
-    %}
     upd = simulate.updatemean(S.M,P,pe);
     
 end

@@ -1,4 +1,4 @@
-function list = ndprop(obj)
+function List = ndprop(This)
 % ndprop  [Not a public function] List of non-dependent properties of a non-char object.
 %
 % Backend IRIS function.
@@ -7,23 +7,23 @@ function list = ndprop(obj)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if ischar(obj)
-    mc = meta.class.fromName(obj);
+if ischar(This)
+    mc = meta.class.fromName(This);
 else
-    mc = metaclass(obj);
+    mc = metaclass(This);
 end
 
 try
-    index = ~[mc.PropertyList.Dependent];
-    list = {mc.PropertyList(index).Name};
+    inx = ~[mc.PropertyList.Dependent];
+    List = {mc.PropertyList(inx).Name};
 catch %#ok<CTCH>
     % Compatibility with 2010b.
     p = [mc.Properties{:}];
-    index = ~[p.Dependent];
-    list = {p.Name};
-    list = list(index);
+    inx = ~[p.Dependent];
+    List = {p.Name};
+    List = List(inx);
 end
 
 end
