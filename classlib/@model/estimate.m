@@ -134,7 +134,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % * `'cognitiveAttraction='` [ numeric | *`0.5`* ] -  Scalar between `0`
 % and `1` to control the relative attraction to the best location a
 % particle can remember.
-% 
+%
 % * `'constrBoundary='` [ `absorb` | *`reflect`* | `soft` ] - Controls the
 % way imposed constraints are handled when violated.
 %
@@ -362,7 +362,7 @@ end
 
 %--------------------------------------------------------------------------
 
-if ~any(This.nametype == 1) 
+if ~any(This.nametype == 1)
     utils.warning('model', ...
         'Model does not have any measurement variables.');
 end
@@ -472,9 +472,11 @@ end
                 missing(iVar) = false ;
             end
         end
-        utils.error('model', ...
-            'Measurement variable not present in input database: ''%s''.', ...
-            yNames{missing}) ;
+        if any( missing )
+            utils.error('model', ...
+                'Measurement variable not present in input database: ''%s''.', ...
+                yNames{missing}) ;
+        end
     end
 
 end
