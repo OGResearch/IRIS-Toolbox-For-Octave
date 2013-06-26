@@ -134,7 +134,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % * `'cognitiveAttraction='` [ numeric | *`0.5`* ] -  Scalar between `0`
 % and `1` to control the relative attraction to the best location a
 % particle can remember.
-% 
+%
 % * `'constrBoundary='` [ `absorb` | *`reflect`* | `soft` ] - Controls the
 % way imposed constraints are handled when violated.
 %
@@ -352,6 +352,8 @@ likOpt = mypreploglik(This,Range,estOpt.domain,[],estOpt.filter{:});
 
 % Get the first column of measurement and exogenous variables.
 if estOpt.evallik
+    doChkMissingMeasurementVars() ;
+    
     % `Data` includes pre-sample.
     Data = datarequest('yg',This,Data,Range,1,likOpt);
 else
@@ -360,7 +362,7 @@ end
 
 %--------------------------------------------------------------------------
 
-if ~any(This.nametype == 1) 
+if ~any(This.nametype == 1)
     utils.warning('model', ...
         'Model does not have any measurement variables.');
 end
@@ -459,5 +461,22 @@ end
                 E1List{:});
         end
     end % doChkInvalidParamNames().
+
+    function doChkMissingMeasurementVars()
+        yNames = get(This,'yVector') ;
+        dNames = dbnames(Data) ;
+        nY = numel( yNames ) ;
+        missing = true(nY, 1) ;
+        for iVar = 1 : nY
+            if any(strcmpi(yNames{iVar},dNames))
+                missing(iVar) = false ;
+            end
+        end
+        if any( missing )
+            utils.warning('model', ...
+                'Measurement variable not present in input database: ''%s''.', ...
+                yNames{missing}) ;
+        end
+    end
 
 end

@@ -117,10 +117,6 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % * `'returnStd='` [ *`true`* | `false` ] - Return database with std devs
 % of model variables.
 %
-% * `'tolMse='` [ numeric | *`0`* ] - Tolerance under which two MSE
-% matrices in two consecutive periods will be treated as equal, and the
-% Kalman gain system will be re-used, not re-computed.
-%
 % * `'weighting='` [ numeric | *empty* ] - Weighting vector or matrix for
 % prediction errors when `'objective=' 'prederr'`; empty means prediction
 % errors are weighted equally.
