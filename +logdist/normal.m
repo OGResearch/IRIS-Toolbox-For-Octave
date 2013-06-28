@@ -176,7 +176,19 @@ end
 chi2fh = logdist.chisquare(Df) ;
 
 switch lower(varargin{1})
-    case {'proper','pdf'}
+    case 'draw'
+        if numel(varargin)<2
+            dim = size(Mu) ;
+        else
+            if numel(varargin{2})==1
+                dim = [K,varargin{2}] ;
+            else
+                dim = varargin{2} ;
+            end
+        end
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;    case {'proper','pdf'}
         Y = exp(xxLogMultT()) ;
     case 'info'
         % add this later...
@@ -193,19 +205,6 @@ switch lower(varargin{1})
         Y = Mode ;
     case 'name'
         Y = 'multnormal';
-    case 'draw'
-        if numel(varargin)<2
-            dim = size(Mu) ;
-        else
-            if numel(varargin{2})==1
-                dim = [K,varargin{2}] ;
-            else
-                dim = varargin{2} ;
-            end
-        end
-        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
-        R = bsxfun(@times, Std*randn(dim), C) ;
-        Y = bsxfun(@plus, Mu, R) ;
 end
 
     function Y = xxLogMultT()
@@ -238,6 +237,31 @@ end
 chi2fh = logdist.chisquare(Df) ;
 
 switch lower(varargin{1})
+    case 'draw'
+        if numel(varargin)<2
+            dim = size(Mu) ;
+        else
+            dim = varargin{2:end} ;
+        end
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;
+	case {'icdf','quantile'}
+		Y = NaN(size(X)) ;
+		Y( X<eps ) = -Inf ;
+		Y( 1-X<eps ) = Inf ;
+		ind = ( X>=eps ) & ( (1-X)>=eps ) ;
+		pos = ind & ( X>0.5 ) ;
+		X( ind ) = min( X(ind), 1-X(ind) ) ;
+		% this part for accuracy
+		low = ind & ( X<=0.25 ) ;
+		high = ind & ( X>0.25 ) ;
+		qs = betaincinv( 2*X(low), 0.5*Df, 0.5 ) ;
+		Y( low ) = -sqrt( Df*(1./qs-1) ) ;
+		qs = betaincinv( 2*X(high), 0.5, 0.5*Df, 'upper' ) ;
+		Y( high ) = -sqrt( Df./(1./qs-1) ) ;
+		Y( pos ) = -Y( pos ) ;
+        Y = Mu + Y*Std ;
     case {'proper','pdf'}
         Y = exp(xxLogT()) ;
     case 'info'
@@ -255,15 +279,6 @@ switch lower(varargin{1})
         Y = Mode ;
     case 'name'
         Y = 'multnormal';
-    case 'draw'
-        if numel(varargin)<2
-            dim = size(Mu) ;
-        else
-            dim = varargin{2:end} ;
-        end
-        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
-        R = bsxfun(@times, Std*randn(dim), C) ;
-        Y = bsxfun(@plus, Mu, R) ;
 end
 
     function Y = xxLogT()
