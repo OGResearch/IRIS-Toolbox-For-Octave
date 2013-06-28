@@ -53,7 +53,6 @@ end
 if iscell( Mean )
     % Distribution is a mixture
     Weight = Df / sum(Df) ;    
-    a = Mean ;
     K = numel( Mean{1} ) ;
     Nmix = numel( Mean ) ;
     if K > 1
