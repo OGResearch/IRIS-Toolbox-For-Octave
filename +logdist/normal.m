@@ -16,12 +16,14 @@ function F = normal(Mean,Std,Df)
 % * `Df` [ integer ] - Number of degrees of freedom. If finite, the
 % distribution is Student T; if omitted or `Inf` (default) the distribution
 % is Normal.
-% 
+%
 % Multivariate cases are supported. Evaluating multiple vectors as an array
-% of column vectors is supported, although IRIS will figure out the input
-% is an array of row vectors provided the dimensions do not make this
-% ambiguous. 
-% 
+% of column vectors is supported.
+%
+% If the mean and standard deviation are cell arrays then the distribution
+% will be a mixture of normals. In this case the third argument is the
+% vector of mixture weights.
+%
 % Output arguments
 % =================
 %
@@ -39,7 +41,7 @@ function F = normal(Mean,Std,Df)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2013 IRIS Solutions Team and Boyan Bejanov.
 
 %--------------------------------------------------------------------------
 
@@ -48,38 +50,129 @@ if nargin<3
     Df = Inf ;
 end
 
-mode = Mean(:) ;
-a = Mean(:) ;
-
-if numel(Mean) > 1
-    % Distribution is multivariate
-    if norm(triu(Std)-Std) < eps
-        % Matrix is already square root
-        b = Std ;
-    else
-        % Compute square root matrix using Cholesky
-        b = chol(Std) ;
+if iscell( Mean )
+    % Distribution is a mixture
+    Weight = Df / sum(Df) ;    
+    a = Mean ;
+    K = numel( Mean{1} ) ;
+    Nmix = numel( Mean ) ;
+    if K > 1
+        for d = 1:Nmix
+            assert( all( size(Std{d}) == numel(Mean{d}) ), ...
+                'Mean and covariance matrix dimensions must be consistent.' ) ;
+            assert( all( size(Mean{d}) == size(Mean{1}) ), ...
+                'Mixture dimensions must be consistent.' ) ;
+            Std{d} = xxChkStd( Std{d} ) ;
+        end
     end
-    if isinf(gammaln(Df))
-        F = @(x,varargin) xxMultNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
-    else
-        F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+    a = zeros(K,1) ;
+    for d = 1:Nmix
+        a = a + Weight(d)*Mean{d} ;
     end
+    F = @(x,varargin) xxMultNormalMixture(x,a,Mean,Std,Weight,varargin{:}) ;
 else
-    % Distribution is scalar
-    b = Std ;
-    if isinf(gammaln(Df))
-        F = @(x,varargin) xxNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
+    % Distribution is either univariate t/normal or multivariate t/normal
+    mode = Mean(:) ;
+    a = Mean(:) ;
+    
+    if numel(Mean) > 1
+        % Distribution is multivariate
+        Std = xxChkStd( Std ) ;
+        
+        if isinf(gammaln(Df))
+            F = @(x,varargin) xxMultNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
+        else
+            F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+        end
     else
-        F = @(x,varargin) xxT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+        % Distribution is scalar
+        b = Std ;
+        if isinf(gammaln(Df))
+            F = @(x,varargin) xxNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
+        else
+            F = @(x,varargin) xxT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
+        end
     end
 end
+
+    function C = xxChkStd(C)
+        if norm(triu(C)-C) < eps
+            % Matrix is already square root
+            b = C ;
+        else
+            % Compute square root matrix using Cholesky
+            b = chol(C) ;
+        end
+    end
 
 end
 
 % Subfunctions.
 
 %**************************************************************************
+function Y = xxMultNormalMixture(X,A,Mu,Std,Weight,varargin)
+Nmix = numel(Mu) ;
+K = numel(Mu{1}) ;
+
+if isempty(varargin)
+    Y = log(xxMixturePdf()) ;
+    return
+end
+
+switch lower(varargin{1})
+    case {'proper','pdf'}
+        Y = xxMixturePdf() ;
+    case 'draw'
+        if numel(varargin)<2
+            NDraw = 1 ;
+        else
+            NDraw = varargin{2} ;
+        end
+        Y = NaN(K,NDraw) ;
+        bin = multinomialRand( NDraw, Weight ) ;
+        for c = 1:Nmix
+            ind = ( bin == c ) ;
+            NC = sum( ind ) ;
+            if NC>0
+                Y(:,ind) = bsxfun( @plus, Mu{c}, Std{c}*randn(K,NC) ) ;
+            end
+        end
+    case 'name'
+        Y = 'normal' ;
+    case 'mean'
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
+end
+
+    function bin = multinomialRand(NDraw, Prob)
+        CS = cumsum(Prob(:).');
+        bin = 1+sum( bsxfun(@gt, rand(NDraw,1), CS), 2);
+    end
+
+    function Y = xxMixturePdf()
+        [N1,N2] = size(X) ;
+        Y = zeros(1,N2) ;
+        assert( N1 == K, 'Input must be a column vector.' ) ;
+        for m = 1:Nmix
+            Y = bsxfun(@plus, Y, ...
+                Weight(m)*exp(xxLogMultNormalPdf(X,Mu{m},Std{m}))...
+                ) ;
+        end
+    end
+end
+
+function Y = xxLogMultNormalPdf(X,Mu,Std)
+K = numel(Mu) ;
+sX = bsxfun(@minus, X, Mu)' / Std ;
+logSqrtDetSig = sum(log(diag(Std))) ;
+Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
+end
+
 function Y = xxNormal(X,A,B,Mu,Std,Mode,varargin)
 
 if isempty(varargin)
@@ -115,13 +208,13 @@ function Y = xxMultNormal(X,A,B,Mu,Std,Mode,varargin)
 
 K = numel(Mu) ;
 if isempty(varargin)
-    Y = xxLogMultNormal() ;
+    Y = xxLogMultNormalPdf(X,Mu,Std) ;
     return
 end
 
 switch lower(varargin{1})
     case {'proper','pdf'}
-        Y = exp(xxLogMultNormal()) ;
+        Y = exp(xxLogMultNormalPdf(X,Mu,Std)) ;
     case 'info'
         Y = eye(size(Std)) / ( Std'*Std ) ;
     case {'a','location'}
@@ -135,7 +228,7 @@ switch lower(varargin{1})
     case 'mode'
         Y = Mode ;
     case 'name'
-        Y = 'multnormal';
+        Y = 'normal';
     case 'draw'
         if numel(varargin)<2
             dim = size(Mu) ;
@@ -148,20 +241,6 @@ switch lower(varargin{1})
         end
         Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
 end
-
-    function Y = xxLogMultNormal()
-        tpY = false ;
-        if size(X,1)~=numel(Mu)
-            X = X' ;
-            tpY = true ;
-        end
-        sX = bsxfun(@minus, X, Mu)' / Std ;
-        logSqrtDetSig = sum(log(diag(Std))) ;
-        Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
-        if tpY
-            Y = Y' ;
-        end
-    end
 
 end % xxMultNormal()
 
@@ -204,7 +283,7 @@ switch lower(varargin{1})
     case 'mode'
         Y = Mode ;
     case 'name'
-        Y = 'multnormal';
+        Y = 'normal';
 end
 
     function Y = xxLogMultT()
@@ -246,21 +325,21 @@ switch lower(varargin{1})
         C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
         R = bsxfun(@times, Std*randn(dim), C) ;
         Y = bsxfun(@plus, Mu, R) ;
-	case {'icdf','quantile'}
-		Y = NaN(size(X)) ;
-		Y( X<eps ) = -Inf ;
-		Y( 1-X<eps ) = Inf ;
-		ind = ( X>=eps ) & ( (1-X)>=eps ) ;
-		pos = ind & ( X>0.5 ) ;
-		X( ind ) = min( X(ind), 1-X(ind) ) ;
-		% this part for accuracy
-		low = ind & ( X<=0.25 ) ;
-		high = ind & ( X>0.25 ) ;
-		qs = betaincinv( 2*X(low), 0.5*Df, 0.5 ) ;
-		Y( low ) = -sqrt( Df*(1./qs-1) ) ;
-		qs = betaincinv( 2*X(high), 0.5, 0.5*Df, 'upper' ) ;
-		Y( high ) = -sqrt( Df./(1./qs-1) ) ;
-		Y( pos ) = -Y( pos ) ;
+    case {'icdf','quantile'}
+        Y = NaN(size(X)) ;
+        Y( X<eps ) = -Inf ;
+        Y( 1-X<eps ) = Inf ;
+        ind = ( X>=eps ) & ( (1-X)>=eps ) ;
+        pos = ind & ( X>0.5 ) ;
+        X( ind ) = min( X(ind), 1-X(ind) ) ;
+        % this part for accuracy
+        low = ind & ( X<=0.25 ) ;
+        high = ind & ( X>0.25 ) ;
+        qs = betaincinv( 2*X(low), 0.5*Df, 0.5 ) ;
+        Y( low ) = -sqrt( Df*(1./qs-1) ) ;
+        qs = betaincinv( 2*X(high), 0.5, 0.5*Df, 'upper' ) ;
+        Y( high ) = -sqrt( Df./(1./qs-1) ) ;
+        Y( pos ) = -Y( pos ) ;
         Y = Mu + Y*Std ;
     case {'proper','pdf'}
         Y = exp(xxLogT()) ;
@@ -278,7 +357,7 @@ switch lower(varargin{1})
     case 'mode'
         Y = Mode ;
     case 'name'
-        Y = 'multnormal';
+        Y = 'normal';
 end
 
     function Y = xxLogT()
