@@ -1,0 +1,89 @@
+
+
+    \filetitle{solve}{Calculate first-order accurate solution of the model}{model/solve}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ M = solve(M,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Paramterised model object. Non-linear
+   models must also have a steady state values assigned.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model with newly computed solution.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'expand='} {[} numeric \textbar{} \emph{\texttt{0}} \textbar{}
+   \texttt{NaN} {]} - Number of periods ahead up to which the model
+   solution will be expanded; if \texttt{NaN} the matrices needed to
+   support solution expansion are not calculated and stored at all and
+   the model cannot be used later in simulations or forecasts with
+   anticipated shocks or plans.
+ \item
+   \texttt{'error='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Throw an error if no unique stable solution exists; if
+   \texttt{false}, a warning message only will be displayed.
+ \item
+   \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
+   \textbar{} \texttt{false} {]} - Solve the model using a linear
+   approach, i.e.~differentiating around zero and not the currently
+   assigned steady state.
+ \item
+   \texttt{'progress='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Display progress bar in the command
+   window.
+ \item
+   \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Refresh dynamic links before computing the solution.
+ \item
+   \texttt{'select='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Automatically detect which equations need to be
+   re-differentiated based on parameter changes from the last time the
+   system matrices were calculated.
+ \item
+   \texttt{'warning='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Display warnings produced by this function.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The IRIS solver uses an ordered QZ (or generalised Schur) decomposition
+ to integrate out future expectations. The QZ may (very rarely) fail for
+ numerical reasons. IRIS includes two patches to handle the some of the
+ QZ failures: a SEVN2 patch (Sum-of-EigenValues-Near-Two), and an E2C2S
+ patch (Eigenvalues-Too-Close-To-Swap).
+ 
+ \begin{itemize}
+ \item
+   The SEVN2 patch: The model contains two or more unit roots, and the QZ
+   algorithm interprets some of them incorrectly as pairs of eigenvalues
+   that sum up accurately to 2, but with one of them significantly below
+   1 and the other significantly above 1. IRIS replaces the entries on
+   the diagonal of one of the QZ factor matrices with numbers that
+   evaluate to two unit roots.
+ \item
+   The E2C2S patch: The re-ordering of thq QZ matrices fails with a
+   warning
+   \texttt{'Reordering failed because some eigenvalues are too close to swap.'}
+   IRIS attempts to re-order the equations until QZ works. The number of
+   attempts is limited to \texttt{N-1} at most where \texttt{N} is the
+   total number of equations.
+ \end{itemize}
+ 
+ \paragraph{Example}
+
+

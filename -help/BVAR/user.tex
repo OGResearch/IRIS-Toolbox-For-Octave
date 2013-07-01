@@ -1,0 +1,40 @@
+
+
+    \filetitle{user}{User-supplied prior dummy observations for BVARs}{BVAR/user}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ O = BVAR.user(Y0,K0,Y1,G1)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Y0} {[} numeric {]} - Column-wise prior dummy observations on
+   the LHS.
+ \item
+   \texttt{K0} {[} numeric {]} - Column-wise prior dummy observations on
+   the RHS constant.
+ \item
+   \texttt{Y1} {[} numeric {]} - Column-wise prior dummy observations on
+   the RHS lagged variables.
+ \item
+   \texttt{G1} {[} numeric {]} - Column-wise prior dummy observations on
+   the RHS coefficients on the co-integrating vector.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
+   \url{VAR/estimate} function.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

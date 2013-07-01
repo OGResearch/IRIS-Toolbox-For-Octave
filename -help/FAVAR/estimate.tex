@@ -1,0 +1,83 @@
+
+
+    \filetitle{estimate}{Estimate FAVAR using static principal components}{FAVAR/estimate}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [A,D,CC,F,U,E,CTF] = estimate(A,D,List,Range,[R,Q],...)
+ [A,X,CC,F,U,E,CTF] = estimate(A,X,Range,[R,Q],...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{A} {[} FAVAR {]} - Empty FAVAR object.
+ \item
+   \texttt{D} {[} struct {]} - Input database.
+ \item
+   \texttt{List} {[} cellstr {]} - List of series from the database on
+   which the VAR will be estimated.
+ \item
+   \texttt{X} {[} tseries {]} - Tseries objects with input data.
+ \item
+   \texttt{Range} {[} numeric {]} - Estimation range.
+ \item
+   \texttt{R} {[} numeric {]} - Selection criterion for the number of
+   factors: Minimum requested proportion of input data volatility
+   explained by the factors.
+ \item
+   \texttt{Q} {[} numeric {]} - Selection criterion for the number of
+   factors: Maximum number of factors.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{A} {[} FAVAR {]} - Estimated FAVAR object.
+ \item
+   \texttt{D} {[} struct {]} - Output database.
+ \item
+   \texttt{X} {[} tseries {]} - Output tseries object.
+ \item
+   \texttt{CC} {[} tseries {]} - Estimates of common components in the
+   FAVAR observables.
+ \item
+   \texttt{F} {[} tseries {]} - Estimates of factors.
+ \item
+   \texttt{U} {[} struct \textbar{} tseries {]} - Idiosyncratic
+   residuals.
+ \item
+   \texttt{E} {[} tseries {]} - Factor VAR residuals.
+ \item
+   \texttt{CTF} {[} tseries {]} - Contributions of individual input
+   series to the estimated factors.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'cross='} {[} \emph{true} \textbar{} false \textbar{} numeric
+   {]} - Keep off-diagonal elements in the covariance matrix of
+   idiosyncratic residuals; if false all cross-covariances are reset to
+   zero; if a number between zero and one, all cross-covariances are
+   multiplied by that number.
+ \item
+   \texttt{'order='} {[} numeric \textbar{} \emph{1} {]} - Order of the
+   VAR for factors.
+ \item
+   \texttt{'output='} {[} \emph{`auto'} \textbar{} `dbase' \textbar{}
+   `tseries' {]} - Format of output data.
+ \item
+   \texttt{'rank='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Restriction on the rank of the factor VAR residuals.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

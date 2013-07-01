@@ -1,0 +1,137 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/userfigure">userfigure</h2>
+<div class="headline">Insert existing figure window</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.userfigure(Caption,H,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Caption</code> [ char | cellstr ] - Title or a cell array with title and subtitle displayed at the top of the figure; see Description for splitting the title or subtitle into multiple lines.</p></li>
+<li><p><code>H</code> [ numeric ] - Handle to a graphics figure created by the user that will be captured and inserted in the report.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<p>See help on <a href="../report/figure.html"><code>report/figure</code></a> for options available.</p>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<p>The function <code>report/userfigure</code> inserts an existing figure window (created by the user by standard Matlab commands, and referenced by its handle, <code>H</code>) into a report:</p>
+<ul>
+<li><p>The figure and the graphs in it must be created <em>before</em> you call <code>report/figure</code>: any changes or additions to the figure or its graphs made after you call the function will not show in the report.</p></li>
+<li><p>The report figure cannot have any children; in other words, you cannot call <a href="../report/graph.html"><code>report/graph</code></a> after a call to <code>report/figure</code> with a graphics handle, <code>H</code>.</p></li>
+</ul>
+<h5 id="titles-and-subtitles">Titles and subtitles</h5>
+<p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
+<p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

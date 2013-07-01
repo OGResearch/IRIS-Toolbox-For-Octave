@@ -1,0 +1,56 @@
+<folder>
+
+<foldername>dates</foldername><filename>Contents</filename>
+
+<h1 id="dates/Contents">Dates and date ranges</h1>
+
+<h3>Creating IRIS serial date numbers</h3>
+
+<ul><li><link id="dates/bb"><tt>bb</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date numbers for dates with bi-monthly frequency.</li>
+<li><link id="dates/bbtoday"><tt>bbtoday</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date number for current bi-month.</li>
+<li><link id="dates/hh"><tt>hh</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date numbers for dates with half-yearly frequency.</li>
+<li><link id="dates/hhtoday"><tt>hhtoday</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date number for current half-year.</li>
+<li><link id="dates/mm"><tt>mm</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date numbers for dates with monthly frequency.</li>
+<li><link id="dates/mmtoday"><tt>mmtoday</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date number for current month.</li>
+<li><link id="dates/qq"><tt>qq</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date numbers for dates with quarterly frequency.</li>
+<li><link id="dates/qqtoday"><tt>qqtoday</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date number for current quarter.</li>
+<li><link id="dates/yy"><tt>yy</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date numbers for dates with yearly frequency.</li>
+<li><link id="dates/yytoday"><tt>yytoday</tt></link>&nbsp;&ndash;&nbsp;IRIS serial date number for current year.</li></ul>
+
+<h3>Computing special dates (daily dates only)</h3>
+
+<ul><li><link id="dates/datbom"><tt>datbom</tt></link>&nbsp;&ndash;&nbsp;Beginning of month for the specified daily date.</li>
+<li><link id="dates/datboq"><tt>datboq</tt></link>&nbsp;&ndash;&nbsp;Beginning of quarter for the specified daily date.</li>
+<li><link id="dates/datboy"><tt>datboy</tt></link>&nbsp;&ndash;&nbsp;Beginning of year for the specified daily date.</li>
+<li><link id="dates/dateom"><tt>dateom</tt></link>&nbsp;&ndash;&nbsp;End of month for the specified daily date.</li>
+<li><link id="dates/dateoq"><tt>dateoq</tt></link>&nbsp;&ndash;&nbsp;End of quarter for the specified daily date.</li>
+<li><link id="dates/dateoy"><tt>dateoy</tt></link>&nbsp;&ndash;&nbsp;End of year for the specified daily date.</li></ul>
+
+<h3>Creating date ranges</h3>
+
+<ul><li><link id="dates/daterange"><tt>daterange</tt></link>&nbsp;&ndash;&nbsp;Use the colon operator to create date ranges.</li></ul>
+
+<h3>Converting dates</h3>
+
+<ul><li><link id="dates/clp2dat"><tt>clp2dat</tt></link>&nbsp;&ndash;&nbsp;Convert text in system clipboard to dates.</li>
+<li><link id="dates/dat2char"><tt>dat2char</tt></link>&nbsp;&ndash;&nbsp;Convert dates to character array.</li>
+<li><link id="dates/dat2charlist"><tt>dat2charlist</tt></link>&nbsp;&ndash;&nbsp;Convert dates to a comma-separated list.</li>
+<li><link id="dates/dat2clp"><tt>dat2clp</tt></link>&nbsp;&ndash;&nbsp;Convert dates to text and paste to system clipboard.</li>
+<li><link id="dates/dat2dec"><tt>dat2dec</tt></link>&nbsp;&ndash;&nbsp;Convert dates to their decimal representations.</li>
+<li><link id="dates/dat2str"><tt>dat2str</tt></link>&nbsp;&ndash;&nbsp;Convert IRIS dates to cell array of strings.</li>
+<li><link id="dates/dat2ypf"><tt>dat2ypf</tt></link>&nbsp;&ndash;&nbsp;Convert IRIS serial date number to year, period and frequency.</li>
+<li><link id="dates/dec2dat"><tt>dec2dat</tt></link>&nbsp;&ndash;&nbsp;Convert decimal numbers to IRIS serial date numbers.</li>
+<li><link id="dates/str2dat"><tt>str2dat</tt></link>&nbsp;&ndash;&nbsp;Convert strings to IRIS serial date numbers.</li></ul>
+
+<h3>Date comparison</h3>
+
+<ul><li><link id="dates/datcmp"><tt>datcmp</tt></link>&nbsp;&ndash;&nbsp;Compare two IRIS serial date numbers.</li>
+<li><link id="dates/datdiff"><tt>datdiff</tt></link>&nbsp;&ndash;&nbsp;Number of periods between two dates with check for date frequency.</li>
+<li><link id="dates/rngcmp"><tt>rngcmp</tt></link>&nbsp;&ndash;&nbsp;Compare two IRIS date ranges.</li></ul>
+
+<h3>Getting on-line help on date functions</h3>
+<pre>   help dates
+   help dates/function_name
+</pre>
+
+</folder>
