@@ -24,6 +24,7 @@
 % * [`beta`](logdist/beta) - Create function proportional to log of beta distribution.
 % * [`gamma`](logdist/gamma) - Create function proportional to log of gamma distribution.
 % * [`invgamma`](logdist/invgamma) - Create function proportional to log of inv-gamma distribution.
+% * [`t`] (logdist/t) - Create function proportional to log of Student T distribution. 
 % * [`uniform`](logdist/uniform) - Create function proportional to log of uniform distribution.
 %
 % Calling the logdist function handles
