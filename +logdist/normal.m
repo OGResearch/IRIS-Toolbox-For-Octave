@@ -1,4 +1,4 @@
-function F = normal(Mean,Std,Df)
+function F = normal(Mean,Std,W)
 % normal  Create function proportional to log of Normal or Student distribution.
 %
 % Syntax
@@ -44,8 +44,8 @@ function F = normal(Mean,Std,Df)
 %--------------------------------------------------------------------------
 
 if iscell( Mean )
-    % Distribution is a mixture
-    Weight = Df / sum(Df) ;
+    % Distribution is a normal mixture
+    Weight = W / sum(W) ;
     K = numel( Mean{1} ) ;
     Nmix = numel( Mean ) ;
     if K > 1
@@ -63,7 +63,7 @@ if iscell( Mean )
     end
     F = @(x,varargin) xxMultNormalMixture(x,a,Mean,Std,Weight,varargin{:}) ;
 else
-    % Distribution is either univariate t/normal or multivariate t/normal
+    % Distribution is normal
     mode = Mean(:) ;
     a = Mean(:) ;
     
