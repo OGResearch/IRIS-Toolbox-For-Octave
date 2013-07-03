@@ -187,6 +187,9 @@ if ~isempty(opt.userdata) && isfield(D,opt.userdata)
     D = rmfield(D,opt.userdata);
 end
 
+% Handle custom delimiter
+o.delimiter = opt.delimiter;
+
 List = fieldnames(D).';
 
 % Initialise the data matrix as a N-by-1 vector of NaNs to mimic the Dates.

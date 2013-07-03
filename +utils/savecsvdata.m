@@ -11,6 +11,12 @@ nameRow = O.namerow;
 dates = O.dates;
 data = O.data;
 
+if isfield(O,'delimiter')
+    delimiter = O.delimiter;
+else
+    delimiter = ',';
+end
+
 if isfield(O,'commentrow')
     commentRow = O.commentrow;
 else
@@ -64,7 +70,7 @@ br = sprintf('\n');
 if isUserData
     userData = utils.any2str(O.userdata);
     userData = strrep(userData,'"','''');
-    c = [c,'"Userdata[',O.userdatafieldname,'] ->","',userData,'"',br];
+    c = [c,'"Userdata[',O.userdatafieldname,'] ->"',delimiter,'"',userData,'"',br];
 end
 
 % Write name row.
@@ -134,9 +140,9 @@ xData(:,removeCol) = [];
 % Create a sequence of formats for one line.
 formatLine = cell(1,nCol);
 % Format string for columns that have imaginary numbers.
-formatLine(iCol) = {[',',format,iFormat]};
+formatLine(iCol) = {[delimiter,format,iFormat]};
 % Format string for columns that only have real numbers.
-formatLine(~iCol) = {[',',format]};
+formatLine(~iCol) = {[delimiter,format]};
 formatLine = [formatLine{:}];
 
 % We must create a format line for each date because the date strings
@@ -151,9 +157,9 @@ for i = 1 : size(data,1)
     end
     if isHighlight
         if i <= nDates && highlight(i)
-            thisDate = [thisDate,',"***"']; %#ok<AGROW>
+            thisDate = [thisDate,delimiter,'"***"']; %#ok<AGROW>
         else
-            thisDate = [thisDate,',""']; %#ok<AGROW>
+            thisDate = [thisDate,delimiter,'""']; %#ok<AGROW>
         end
     end
     formatData = [formatData,br,thisDate,formatLine]; %#ok<AGROW>
@@ -178,18 +184,16 @@ end
 % with a line break.
 char2file([c,cc],FName);
 
-end
-
-% Subfunctions.
-
-%**************************************************************************
-function s = xxprintcharcells(c)
-
-s = '';
-if isempty(c) || ~iscellstr(c)
-    return
-end
-s = sprintf(',"%s"',c{:});
+    function s = xxprintcharcells(c)
+        
+        s = '';
+        if isempty(c) || ~iscellstr(c)
+            return
+        end
+        fstr = [delimiter,'"%s"'];
+        s = sprintf(fstr,delimiter,c{:});
+        
+    end% xxprintcharcells().
 
 end
-% xxprintcharcells().
+
