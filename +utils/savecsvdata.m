@@ -16,6 +16,7 @@ if isfield(O,'delimiter')
 else
     delimiter = ',';
 end
+fstr = [delimiter,'"%s"'];
 
 if isfield(O,'commentrow')
     commentRow = O.commentrow;
@@ -190,8 +191,7 @@ char2file([c,cc],FName);
         if isempty(c) || ~iscellstr(c)
             return
         end
-        fstr = [delimiter,'"%s"'];
-        s = sprintf(fstr,delimiter,c{:});
+        s = sprintf(fstr,c{:});
         
     end% xxprintcharcells().
 
