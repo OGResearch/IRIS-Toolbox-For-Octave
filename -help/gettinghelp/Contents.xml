@@ -1,0 +1,46 @@
+<folder>
+
+<foldername>gettinghelp</foldername><filename>Contents</filename>
+
+<h1 id="gettinghelp/Contents">Getting on-line help</h1>
+
+<p>Use either <tt>help</tt> or <tt>idoc</tt> to get help on IRIS functions:</p>
+
+<ul><li><tt>help</tt> displays the help topic in the command window,</li>
+<li><tt>idoc</tt> displays the help topic in an HTML browser window.</li></ul>
+The following help topics are available:
+<pre>   help model_lang
+   help model_lang/keyword
+   help model
+   help model/function_name
+   help plan
+   help plan/function_name
+   help poster
+   help poster/function_name
+   help logprior
+   help logprior/function-name
+   help sstate_lang
+   help sstate_lang/keyword
+   help sstate
+   help sstate/function_name
+   help VAR
+   help VAR/function_name
+   help SVAR
+   help SVAR/function_name
+   help BVAR
+   help BVAR/function_name
+   help FAVAR
+   help FAVAR/function_name
+   help report
+   help report/function_name
+   help qreport_lang
+   help qreport_lang/keyword
+   help qreport
+   help qreport/keyword
+   help grfun
+   help grfun/function_name
+</pre>
+
+<p>You can use <tt>idoc</tt> instead of <tt>help</tt> in the above list.</p>
+
+</folder>

@@ -1,0 +1,41 @@
+
+
+    \filetitle{ferf}{Forecast error response function}{VAR/ferf}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Phi,Psi,s,c] = ferf(V,NPer)
+ [Phi,Psi,s,c] = ferf(V,Range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object for which the forecast error
+   response function will be computed.
+ \item
+   \texttt{NPer} {[} numeric {]} - Number of periods.
+ \item
+   \texttt{Range} {[} numeric {]} - Date range.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Phi} {[} numeric {]} - Response function matrices.
+ \item
+   \texttt{Psi} {[} numeric {]} - Cumulative response function matrices.
+ \item
+   \texttt{S} {[} tseries {]} - Response function time series.
+ \item
+   \texttt{C} {[} tseries {]} - Cumulative response function time series.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+
