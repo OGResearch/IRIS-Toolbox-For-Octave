@@ -1,10 +1,10 @@
-function [M, Sig, W] = kem(Sample, varargin)
+function [M, Sig, W] = kcluster(Sample, varargin)
 % kcluster  Multivariate distribution estimation using k-means
 %
 % Syntax
 % =======
 %
-%     F = dest.kem(Data, K)
+%     F = dest.kcluster(Data, K)
 %
 % Output arguments
 % =================
@@ -19,6 +19,11 @@ function [M, Sig, W] = kem(Sample, varargin)
 % * `Mu` [ numeric ] - Cell array of mixture means.
 %
 % * `Sig` [ numeric ] - Cell array of mixture covariance matrices.
+%
+% Description
+% ============
+% Uses k-harmonic means clustering to estimate a multivariate distribution 
+% as a mixture of normals.
 %
 % References
 % ===========
@@ -46,15 +51,21 @@ if D>N
     [N,D] = deal(D,N) ;
 end
 
+% display
+if opt.display
+    fprintf(1,'Clusters     BIC      log(L)      Penalty \n') ;
+end
+
 if strcmpi(opt.selectk,'fixed')
-    [M, Sig, W] = xxKcluster( Sample, opt.k );
+    [M, Sig, W, kLik, kBic] = xxKcluster( Sample, opt.k );
+    fprintf(1,'%2.0g          %+4.2f      %+4.2f      %+4.2f \n',...
+        k, kBic, kLik, pen) ;
 else
-    logN = log(length(Sample)) ;
     bic = Inf ;
     tol = sqrt(eps) ;
     for k=1:opt.k
         % try k-means cluster
-        [kM, kSig, kW, kLik] = xxKcluster( Sample, k );
+        [kM, kSig, kW, kLik, kBic, pen] = xxKcluster( Sample, k );
         
         % check for repeated clusters
         repeated = false;
@@ -66,9 +77,12 @@ else
             end;
         end;
         if repeated, continue; end
-        
-        % compute BIC
-        kBic = -2*kLik + k*logN;
+                
+        % display
+        if opt.display
+            fprintf(1,'%2.0g          %+4.2f      %+4.2f      %+4.2f \n',...
+                k, kBic, kLik, pen) ;
+        end
         
         if kBic > bic,
             % increasing number of parameters fails to decrease likelihood
@@ -83,18 +97,18 @@ else
     end %for
 end %if
 
-    function [M, Sig, W, lLik, ik] = xxKcluster(thisSample, K)
+    function [M, Sig, W, lLik, BIC, penalty, ik] = xxKcluster(thisSample, thisK)
         
         % pick k points from the bunch at random (Forgy)
-        M = thisSample(:,randperm(N,K));
+        M = thisSample(:,randperm(N,thisK));
         
         % refine to find means
-        [M, W, p] = refineCenters(K, M);
+        [M, W, p] = refineCenters(thisK, M);
         
         % Estimate covariance matrices via EM
-        Sig = cell(1,K);
-        lLik = 0 ;
-        for ik = 1:K
+        Sig = cell(1,thisK);
+        Lik = 0 ;
+        for ik = 1:thisK
             thisCov = zeros(D,D) ;
             mkSample = bsxfun(@minus, thisSample, M{ik}) ;
             kSumP = sum(p(ik,:)) ;
@@ -102,8 +116,16 @@ end %if
                 thisCov = thisCov + p(ik,iobs)*( mkSample(:,iobs)*mkSample(:,iobs)' ) / kSumP ;
             end
             Sig{ik} = chol( thisCov ) ;
-            lLik = lLik + W(ik)*exp( -0.5*sum( ( mkSample / Sig{ik} ).^2, 1 ) / ( sqrt(2*pi).^D * prod(diag(Sig{ik})) ) ) ;
+            Lik = Lik + W(ik)*exp( -0.5*sum( ( Sig{ik}' \ mkSample ).^2, 1 ) / ( sqrt(2*pi).^D * prod(diag(Sig{ik})) ) ) ;
+            lLik = log(sum(Lik,2)) ;
         end
+        
+        % compute BIC
+        penalty = thisK*log(N) ;
+        BIC = -2*lLik + penalty ;
+
+        
+        %************* nested functions ******************%
         
         function [M,W,p,ik,iobs] = refineCenters(thisK, M)
             % Iterative refinement of k harmonic means using the algorithm
@@ -149,7 +171,7 @@ end %if
             end
             
             function [p,ik] = pCalcVec( X, M, thisK )
-                d = NaN(K,N) ;
+                d = NaN(thisK,N) ;
                 for ik = 1:thisK
                     dt = bsxfun(@minus, X, M(:,ik)) ;
                     dt = bsxfun(@power, dt, 2) ;
