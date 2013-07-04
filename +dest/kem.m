@@ -23,7 +23,10 @@ function [M, Sig, W] = kcluster(Sample, varargin)
 % References
 % ===========
 %
-% 1. Hamerly and Elkhan (2002) "Alternatives to the k-means algorithm that
+% 1. Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
+%    Algorithm." 
+%
+% 2. Hamerly and Elkhan (2002) "Alternatives to the k-means algorithm that
 %    find better clusterings."
 
 % -IRIS Toolbox.
@@ -80,10 +83,8 @@ else
     end %for
 end %if
 
-    function [M, Sig, W, lLik, ik] = xxKcluster(Sample, K)
-        
-        thisSample = Sample ;
-        
+    function [M, Sig, W, lLik, ik] = xxKcluster(thisSample, K)
+                
         % pick k points from the bunch at random (Forgy)
         M = thisSample(:,randperm(N,K));
         
