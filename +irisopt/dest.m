@@ -1,0 +1,23 @@
+function Def = dest()
+% dest  [Not a public function] Default options for dest package functions.
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2013 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+Def = struct();
+
+Def.kem = { ...
+    'k,maxk', 5, @(x) isintscalar(x) && x>0, ...
+    'selectk,select', 'bic', @(x) any(strcmpi(x,{'bic','fixed'})), ...
+    'zscore', true, @islogical, ...
+    'maxit', 500, @(x) isintscalar(x) && x>0, ...
+    'tol', 1e-6, @(x) isnumericscalar(x), ...
+    'method', 'harmonic', @(x) any(strcmpi(x,{'harmonic','em'})), ...
+    };
+
+end

@@ -19,6 +19,7 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF = struct();
     DEF.dates = irisopt.dates();
     DEF.dbase = irisopt.dbase();
+    DEF.dest = irisopt.dest();
     DEF.estimateobj = irisopt.estimateobj();
     DEF.FAVAR = irisopt.FAVAR();
     DEF.freqdom = irisopt.freqdom();
