@@ -1,10 +1,10 @@
-function [M, Sig, W] = kcluster(Sample, varargin)
+function [M, Sig, W] = kem(Sample, varargin)
 % kcluster  Multivariate distribution estimation using k-means
 %
 % Syntax
 % =======
 %
-%     F = dest.kcluster(Data, K)
+%     F = dest.kem(Data, K)
 %
 % Output arguments
 % =================
@@ -24,20 +24,20 @@ function [M, Sig, W] = kcluster(Sample, varargin)
 % ===========
 %
 % 1. Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
-%    Algorithm." 
+%    Algorithm."
 %
 % 2. Hamerly and Elkhan (2002) "Alternatives to the k-means algorithm that
 %    find better clusterings."
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team and Boyan Bejanov.
+% -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('Sample', @isnumeric );
 pp.parse( Sample );
 
 % Parse options.
-opt = passvalopt('dest.kcluster',varargin{:});
+opt = passvalopt('dest.kem',varargin{:});
 
 % Constants
 [D,N] = size(Sample) ;
@@ -84,7 +84,7 @@ else
 end %if
 
     function [M, Sig, W, lLik, ik] = xxKcluster(thisSample, K)
-                
+        
         % pick k points from the bunch at random (Forgy)
         M = thisSample(:,randperm(N,K));
         
@@ -109,13 +109,20 @@ end %if
             % Iterative refinement of k harmonic means using the algorithm
             % described in Zhang, Hsu and Dayal (1999).
             p = NaN(thisK,N) ;
+            pp = p ;
             it = 0 ;
             crit = Inf ;
             M0 = M ;
             while it<opt.maxit && crit>opt.tol
-                for iobs = 1:N
-                    qVec = qCalc( thisSample(:,iobs), M, thisK ) ;
-                    p(:,iobs) = qVec ./ sum(qVec) ;
+                if ~opt.vectorized
+                    % keep this just because it is significantly easier to
+                    % debug
+                    for iobs = 1:N
+                        [qVec] = qCalc( thisSample(:,iobs), M, thisK ) ;
+                        p(:,iobs) = qVec ./ sum(qVec) ;
+                    end
+                else
+                    p = pCalcVec( thisSample, M, thisK ) ;
                 end
                 for ik = 1:thisK
                     M(:,ik) = sum( bsxfun(@times, thisSample, p(ik,:) ), 2 ) / sum( p(ik,:) ) ;
@@ -132,16 +139,42 @@ end %if
             W = W ./ sum(W) ;
             M = num2cell( M, 1 ) ;
             
-            function [q,ik] = qCalc( X, M, thisK )
-                d = NaN(K,1) ;
-                for ik=1:thisK
-                    d(ik) = max( norm( X-M(:,ik) ), 1e-14 ) ;
-                end
+            function [q,r,d,ik] = qCalc( X, M, thisK )
+                d = max( colDist( X, M' ), 1e-14 ) ;
                 [dMin,minInd] = min(d) ;
                 r = ( dMin ./ d ).^2 ;
                 lInd = true(thisK,1) ;
                 lInd(minInd) = false ;
                 q = r.^3*dMin / (1 + sum(r(lInd)))^2 ;
+            end
+            
+            function [p,ik] = pCalcVec( X, M, thisK )
+                d = NaN(K,N) ;
+                for ik = 1:thisK
+                    dt = bsxfun(@minus, X, M(:,ik)) ;
+                    dt = bsxfun(@power, dt, 2) ;
+                    dt = sqrt(sum(dt,1)) ;
+                    d(ik,:) = dt ;
+                end
+                d = bsxfun(@max, d, 1e-14) ;
+                ds = sort(d) ;
+                % r = ( dMin ./ d ).^2 ;
+                r = bsxfun(@rdivide, ds(1,:), d) ;
+                r = bsxfun(@power, r, 2) ;
+                % q = r.^3*dMin / (1 + sum(r(lInd)))^2 ;
+                r = bsxfun(@power, r, 3) ;
+                r = bsxfun(@times, r, ds(1,:)) ;
+                de = 1+sum(ds(2:end,:),1) ;
+                de = bsxfun(@power, de, 2) ;
+                q = bsxfun(@rdivide, r, de) ;
+                % p = q ./ sum(q) ;
+                qs = sum(q,1) ;
+                p = bsxfun(@rdivide, q, qs) ;
+            end
+            
+            function d = colDist( A, b )
+                C = bsxfun(@minus, A, b) ;
+                d = sqrt( sum( C.*C, 2 ) ) ;
             end
             
         end %refineCenters
