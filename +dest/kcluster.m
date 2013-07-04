@@ -1,4 +1,4 @@
-function [M, Sig, W] = kcluster(Sample, varargin)
+function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % kcluster  Multivariate distribution estimation using k-means
 %
 % Syntax
@@ -42,7 +42,7 @@ pp.addRequired('Sample', @isnumeric );
 pp.parse( Sample );
 
 % Parse options.
-opt = passvalopt('dest.kem',varargin{:});
+opt = passvalopt('dest.kcluster',varargin{:});
 
 % Constants
 [D,N] = size(Sample) ;
@@ -116,14 +116,16 @@ end %if
                 thisCov = thisCov + p(ik,iobs)*( mkSample(:,iobs)*mkSample(:,iobs)' ) / kSumP ;
             end
             Sig{ik} = chol( thisCov ) ;
-            Lik = Lik + W(ik)*exp( -0.5*sum( ( Sig{ik}' \ mkSample ).^2, 1 ) / ( sqrt(2*pi).^D * prod(diag(Sig{ik})) ) ) ;
-            lLik = log(sum(Lik,2)) ;
+            Lik = Lik + W(ik)*exp( -0.5*sum( ( Sig{ik}' \ mkSample ).^2, 1 ) ) / ( sqrt(2*pi).^D * prod(diag(Sig{ik})) ) ;
+            lLik = sum(log(Lik),2) ;
         end
         
         % compute BIC
         penalty = thisK*log(N) ;
         BIC = -2*lLik + penalty ;
 
+        % function handle to estimated distribution
+        fh = logdist.normal(M,Sig,W) ;
         
         %************* nested functions ******************%
         
