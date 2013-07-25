@@ -349,6 +349,7 @@ doPopulateDatabase();
                 line = file(start:eol-1);
             end
             if isnumericscalar(opt.namerow) && rowCount < opt.namerow
+                doMoveToNextEol();
                 continue
             end
             tokens = regexp(line, ...
