@@ -66,13 +66,19 @@ function varargout = x12(x,range,varargin)
 % * `'display='` [ `true` | *`false`* ] - Display X12 output messages in command
 % window; if false the messages will be saved in a TXT file.
 %
-% * `'dummy='` [ tseries | *empty* ] - Dummy variable or variables (in case
-% of a multivariate tseries object) used in X12-ARIMA regression; the dummy
-% variables can also include values for forecasts and backcasts if you
-% request them.
+% * `'dummy='` [ tseries | *empty* ] - User dummy variable or variables (in
+% case of a multivariate tseries object) used in X12-ARIMA regression; the
+% dummy variables can also include values for forecasts and backcasts if
+% you request them; the type of the dummy can be specified in the option
+% `'dummyType='`.
 %
-% * `'dummyType='` [ `'ao'` | *`'holiday'`* | `'td'` ] - Type of dummy; see
-% the X12-ARIMA documentation.
+% * `'dummyType='` [ `'ao'` | *`'holiday'`* | `'td'` ] - Type of the user
+% dummy (which is specified through the option `'dummy='`); the three basic
+% types of dummies are additive outlier (`'ao'`), holiday flows
+% (`'holiday'`), and trading days (`'td'`); see the X12-ARIMA or X13-ARIMA
+% documentation for more details (available from the U.S. Census Bureau
+% website), look for the section on the REGRESSION spec, options 'user' and
+% 'usertype'.
 %
 % * `'mode='` [ *`'auto'`* | `'add'` | `'logadd'` | `'mult'` | 
 % `'pseudoadd'` | `'sign'` ] - Seasonal adjustment mode (see help on the
