@@ -68,12 +68,13 @@ else
     icSize = ones(1,nb)*opt.size;
 end
 
-Select = get(This,'initcond');
+Select = get(This,'initCond');
 Select = regexprep(Select,'log\((.*?)\)','$1','once');
+icIx = any(This.icondix,3);
 
-func = @(T,R,K,Z,H,D,U,Omg,ialt,nper) ...
+func = @(T,R,K,Z,H,D,U,Omg,~,NPer) ...
     timedom.icrf(T,[],[],Z,[],[],U,[], ...
-    nper,icSize,This.icondix);
+    NPer,icSize,icIx);
 
 [S,Range] = myrf(This,Time,func,Select,opt);
 
