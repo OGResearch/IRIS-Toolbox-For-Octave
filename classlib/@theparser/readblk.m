@@ -39,7 +39,7 @@ for iBlk = 1 : nBlk
     tokens = regexpi(This.code,pattern,'tokens');
     tokens = [tokens{:}];
     if ~isempty(tokens)
-        % !allbut must be in all or none of log declaration blocks.
+        % !all_but must be in all or none of log declaration blocks.
         if This.flagblk(iBlk)
             InvalidAllBut = InvalidAllBut || xxChkAllBut(tokens);
         end
@@ -57,7 +57,7 @@ end
 function InvalidKey = xxChkKey(This)
 
 inx = ~cellfun(@isempty,This.blkname);
-allowed = [This.blkname(inx),This.otherkey,{'!allbut'}];
+allowed = [This.blkname(inx),This.otherkey,{'!all_but'}];
 
 key = regexp(This.code,'!\w+','match');
 nKey = length(key);
@@ -72,8 +72,8 @@ end % xxChkKey().
 %**************************************************************************
 function Invalid = xxChkAllBut(Tokens)
 
-% The keyword `!allbut` must be in all or none of flag blocks.
-inx = cellfun(@isempty,regexp(Tokens,'!allbut','match','once'));
+% The keyword `!all_but` must be in all or none of flag blocks.
+inx = cellfun(@isempty,regexp(Tokens,'!all_but','match','once'));
 Invalid = any(inx) && ~all(inx);
 
 end % xxChkAllBut().

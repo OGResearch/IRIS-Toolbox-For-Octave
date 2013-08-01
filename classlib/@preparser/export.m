@@ -1,4 +1,4 @@
-function export(OBJ,C)
+function export(This,C)
 % export  Export carry-around files.
 %
 % Backend IRIS function.
@@ -14,18 +14,18 @@ if isempty(C) || ~isstruct(C)
 end
 
 n = length(C);
-thisdir = cd();
+thisDir = cd();
 deleted = false(1,n);
 file = cell(1,n);
-fname = get(OBJ,'filename');
+fileName = get(This,'filename');
 br = sprintf('\n');
 stamp = [ ...
-    '% Carry-around file exported from ',fname,'.',br, ...
+    '% Carry-around file exported from ',fileName,'.',br, ...
     '% Saved on ',datestr(now()),'.'];
 for i = 1 : n
     name = C(i).filename;
     body = C(i).content;
-    file{i} = fullfile(thisdir,name);
+    file{i} = fullfile(thisDir,name);
     if exist(file{i},'file')
         deleted(i) = true;
     end
@@ -34,8 +34,8 @@ for i = 1 : n
 end
 
 if any(deleted)
-    if ~ischar(OBJ)
-        objclass = class(OBJ);
+    if ~ischar(This)
+        objclass = class(This);
     end
     utils.warning(objclass, ...
         ['This file has been deleted when creating a carry-around file ', ...

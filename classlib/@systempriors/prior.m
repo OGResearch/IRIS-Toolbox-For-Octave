@@ -17,7 +17,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 % be referred to in the expression.
 %
 % * `PriorFunc` [ function_handle | empty ] - Function handle returning the
-% log of prior density; empty, `[]`, means a uniform prior.
+% log of prior density; empty prior function, `[]`, means a uniform prior.
 %
 % Output arguments
 % =================
@@ -155,7 +155,7 @@ Def = regexprep(Def,'\s+','');
 while true
     % The system function names `srf`, `ffrf`, `cov`, `corr`, `pws`,
     % `spd` are case insensitive.
-    [start,open] = regexpi(Def,['\<([a-zA-Z]+)\>\['],'start','end','once');
+    [start,open] = regexpi(Def,'\<([a-zA-Z]+)\>\[','start','end','once');
     if isempty(open)
         break
     end

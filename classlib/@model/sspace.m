@@ -73,9 +73,9 @@ function [T,R,K,Z,H,D,U,Omg,list] = sspace(m,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-options = passvalopt('model.sspace',varargin{:});
+opt = passvalopt('model.sspace',varargin{:});
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [T,R,K,Z,H,D,U,Omg] = mysspace(m,':',true);
 nx = size(T,1);
@@ -84,7 +84,7 @@ nf = nx - nb;
 ne = sum(m.nametype == 3);
 nalt = size(m.Assign,3);
 
-if ~options.triangular
+if ~opt.triangular
     % T <- U*T/U;
     % R <- U*R;
     % K <- U*K;
@@ -102,7 +102,7 @@ end
 
 list = m.solutionvector;
 
-if options.removeinactive
+if opt.removeinactive
     active = ~diag(all(Omg == 0,3));
     R = reshape(R,[nx,ne,size(R,2)/ne]);
     R = R(:,active,:);

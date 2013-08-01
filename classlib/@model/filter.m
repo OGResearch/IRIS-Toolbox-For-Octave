@@ -5,7 +5,6 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % =======
 %
 %     [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)
-%     [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,J,...)
 %
 % Input arguments
 % ================
@@ -16,9 +15,6 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % measurement variables will be taken.
 %
 % * `Range` [ numeric ] - Filter date range.
-%
-% * `J` [ struct ] - Database with tunes on the mean of shocks and/or
-% time-varying std devs of shocks.
 %
 % Output arguments
 % =================

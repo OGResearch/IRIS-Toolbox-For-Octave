@@ -1,5 +1,5 @@
 function [MShocks,TShocks] = myshocktypes(This)
-% xxshocktypes  [Not a public function] Indices of measurement and transition shocks.
+% myshocktypes  [Not a public function] Indices of measurement and transition shocks.
 %
 % Backed IRIS function.
 % No help provided.

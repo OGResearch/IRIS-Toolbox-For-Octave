@@ -1,11 +1,12 @@
-% !allbut  Inverse list of variables with positive steady states.
+% !all_but  Inverse list of variables with positive steady states.
 %
 % Syntax
 % =======
 %
 %     !log_variables
-%         !allbut
-%         LIST_OF_VARIABLES
+%         !all_but
+%         Variable_Name, Variable_Name, 
+%         Variable_Name
 %
 % Description
 % ============

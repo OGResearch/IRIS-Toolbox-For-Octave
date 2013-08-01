@@ -41,7 +41,7 @@
 % ========================================
 % 
 % * [`!log_variables`](modellang/logvariables) - List of log-linearised variables.
-% * [`!allbut`](modellang/allbut) - Inverse list of log-linearised variables.
+% * [`!all_but`](modellang/allbut) - Inverse list of log-linearised variables.
 % * [`<...>`](modellang/regexpression) - Regular expression in log-varible list.
 %
 % Model pseudofunctions

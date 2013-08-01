@@ -21,8 +21,9 @@ classdef preparser < userdataobj
         function This = preparser(varargin)
             % preparser  [Not a public function] General IRIS code preparser.
             %
-            % p = preparser(inputfile,opt)
-            % p = preparser(inputfile,...)
+            
+            % p = preparser(inputFile,Opt)
+            % p = preparser(inputFile,...)
             
             if nargin == 0
                 return
@@ -71,10 +72,10 @@ classdef preparser < userdataobj
             end
         end
         
-        function disp(this)
+        function disp(This)
             fprintf('\tpreparser object <a href="matlab:edit %s">%s</a>\n', ...
-                this.fname,this.fname);
-            disp@userdataobj(this);
+                This.fname,This.fname);
+            disp@userdataobj(This);
             disp(' ');
         end
         

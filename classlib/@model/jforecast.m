@@ -26,8 +26,9 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % * `'anticipate='` [ *`true`* | `false` ] - If true, real future shocks are
 % anticipated, imaginary are unanticipated; vice versa if false.
 %
-% * `'currentOnly='` [ *`true`* | `false` ] - If true, MSE matrices will be
-% computed only for current-dated variables, not for their lags or leads.
+% * `'currentOnly='` [ *`true`* | `false` ] - If `true`, MSE matrices will
+% be computed only for the current-dated variables, not for their lags or
+% leads.
 %
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
@@ -124,13 +125,13 @@ nXPer = length(xRange);
 
 % Current-dated variables in the original state vector.
 if opt.currentonly
-    xCurrInx = imag(This.solutionid{2}) == 0;
+    ixXCurr = imag(This.solutionid{2}) == 0;
 else
-    xCurrInx = true(size(This.solutionid{2}));
+    ixXCurr = true(size(This.solutionid{2}));
 end
-nXCurr = sum(xCurrInx);
-fCurri = xCurrInx(1:nf);
-bCurri = xCurrInx(nf+1:end);
+nXCurr = sum(ixXCurr);
+ixXfCurr = ixXCurr(1:nf);
+ixXbCurr = ixXCurr(nf+1:end);
 
 % Get initial condition for the alpha vector. The `datarequest` function
 % always expands the `alpha` vector to match `nalt`. The `ainitmse` and
@@ -168,7 +169,7 @@ if isSwap
     if ~opt.anticipate
         [ea,ua] = deal(ua,ea);
     end
-    xa = xa(xCurrInx,:);
+    xa = xa(ixXCurr,:);
     % Check for NaNs in exogenised variables, and check the number of
     % exogenised and endogenised data points.
     doChkExogenised();
@@ -189,8 +190,8 @@ if isCond
         Y = yInp;
         X = xInp;
         E = zeros(ne,nPer);
-        Xa = Xa(xCurrInx,:);
-        X = X(xCurrInx,:,:);
+        Xa = Xa(ixXCurr,:);
+        X = X(ixXCurr,:,:);
     else
         Y = datarequest('y',This,cond,Range);
         X = datarequest('x',This,cond,Range);
@@ -198,7 +199,7 @@ if isCond
         Y = Y(:,:,1);
         X = X(:,:,1);
         E = E(:,:,1);
-        X = X(xCurrInx,:);
+        X = X(ixXCurr,:);
         Ya = ~isnan(Y);
         Xa = ~isnan(X);
     end
@@ -229,11 +230,11 @@ if isSwap
     ea = ea(:,1:last);
     ua = ua(:,1:last);
     % Indices of exogenised data points and endogenised shocks.
-    exi = [ya(:).',xa(:).'];
-    endi = [false,false(1,nb),ua(:).',ea(:).'];
+    ixExog = [ya(:).',xa(:).'];
+    ixEndog = [false,false(1,nb),ua(:).',ea(:).'];
 else
-    exi = false(1,(ny+nXCurr)*last);
-    endi = false(1,1+nb+2*ne*last);
+    ixExog = false(1,(ny+nXCurr)*last);
+    ixEndog = false(1,1+nb+2*ne*last);
 end
 
 if isCond
@@ -242,10 +243,10 @@ if isCond
     Y = Y(:,1:last,:);
     X = X(:,1:last,:);
     % Index of conditions on measurement and transition variables.
-    condi = [Ya(:).',Xa(:).'];
+    ixCond = [Ya(:).',Xa(:).'];
     % Index of conditions on measurement and transition variables excluding
-    % exogenised position.
-    condiNotExi = condi(~exi);
+    % exogenised positions.
+    ixCondNotExog = ixCond(~ixExog);
 end
 
 % Index of parameterisation with solutions not available.
@@ -272,33 +273,33 @@ end
 s = struct();
 s = simulate.antunantfunc(s,opt.anticipate);
 
-for iloop = 1 : nLoop
+for iLoop = 1 : nLoop
     
-    if iloop <= nAlt
+    if iLoop <= nAlt
         % Expansion needed to t+k.
         k = max(1,last) - 1;
         This = expand(This,k);
-        Tf = This.solution{1}(1:nf,:,iloop);
-        Ta = This.solution{1}(nf+1:end,:,iloop);
-        R = This.solution{2}(:,:,iloop);
+        Tf = This.solution{1}(1:nf,:,iLoop);
+        Ta = This.solution{1}(nf+1:end,:,iLoop);
+        R = This.solution{2}(:,:,iLoop);
         Rf = R(1:nf,1:ne);
         Ra = R(nf+1:end,1:ne);
-        Kf = This.solution{3}(1:nf,:,iloop);
-        Ka = This.solution{3}(nf+1:end,:,iloop);
-        Z = This.solution{4}(:,:,iloop);
-        H = This.solution{5}(:,:,iloop);
-        D = This.solution{6}(:,:,iloop);
-        U = This.solution{7}(:,:,iloop);
+        Kf = This.solution{3}(1:nf,:,iLoop);
+        Ka = This.solution{3}(nf+1:end,:,iLoop);
+        Z = This.solution{4}(:,:,iLoop);
+        H = This.solution{5}(:,:,iLoop);
+        D = This.solution{6}(:,:,iLoop);
+        U = This.solution{7}(:,:,iLoop);
         Ut = U.';
         % Compute deterministic trends if requested.
         if opt.dtrends
-            W = mydtrendsrequest(This,'range',Range,G,iloop);
+            W = mydtrendsrequest(This,'range',Range,G,iLoop);
         end
         % Swapped system.
         if opt.meanonly
-            [M,Ma] = myforecastswap(This,iloop,exi,endi,last);
+            [M,Ma] = myforecastswap(This,iLoop,ixExog,ixEndog,last);
         else
-            [M,Ma,N,Na] = myforecastswap(This,iloop,exi,endi,last);
+            [M,Ma,N,Na] = myforecastswap(This,iLoop,ixExog,ixEndog,last);
         end
         stdcorre = [];
         stdcorru = [];
@@ -306,34 +307,34 @@ for iloop = 1 : nLoop
     end
     
     % Solution not available.
-    if nanSol(min(iloop,end));
+    if nanSol(min(iLoop,end));
         continue
     end
     
     % Initial condition.
-    a0 = aInit(:,1,min(iloop,end));
-    x0 = xInit(:,1,min(end,iloop));
+    a0 = aInit(:,1,min(iLoop,end));
+    x0 = xInit(:,1,min(end,iLoop));
     if isempty(aInitMse) || isequal(opt.initcond,'fixed')
         Pa0 = zeros(nb);
         Dxinit = zeros(nb,1);
     else
-        Pa0 = aInitMse(:,:,1,min(iloop,end));
-        Dxinit = diag(xInitMse(:,:,min(iloop,end)));
+        Pa0 = aInitMse(:,:,1,min(iLoop,end));
+        Dxinit = diag(xInitMse(:,:,min(iLoop,end)));
     end
     
     % Expected and unexpected shocks.
-    e = s.antFunc(eInp(:,:,min(end,iloop)));
-    u = s.unantFunc(eInp(:,:,min(end,iloop)));
+    e = s.antFunc(eInp(:,:,min(end,iLoop)));
+    u = s.unantFunc(eInp(:,:,min(end,iLoop)));
     
     if isSwap
         % Tunes on measurement variables.
-        y = yInp(:,1:last,min(end,iloop));
+        y = yInp(:,1:last,min(end,iLoop));
         if opt.dtrends
             y = y - W(:,1:last);
         end
         % Tunes on transition variables.
-        x = xInp(:,1:last,min(end,iloop));
-        x = x(xCurrInx,:);
+        x = xInp(:,1:last,min(end,iLoop));
+        x = x(ixXCurr,:);
     else
         y = nan(ny,last);
         x = nan(nXCurr,last);
@@ -361,7 +362,7 @@ for iloop = 1 : nLoop
         % Swap exogenised outputs and endogenised inputs.
         % rhs := [inp(~endi);outp(exi)].
         % lhs := [outp(~exi);inp(endi)].
-        rhs = [inp(~endi);outp(exi)];
+        rhs = [inp(~ixEndog);outp(ixExog)];
         lhs = M*rhs;
         a = Ma*rhs;
         
@@ -380,10 +381,10 @@ for iloop = 1 : nLoop
                 Prhs(inx,inx) = Pe(:,:,i);
                 inx = inx + ne;
             end
-            Prhs = Prhs(~endi,~endi);
+            Prhs = Prhs(~ixEndog,~ixEndog);
             % Add zeros for the std errors of exogenised data points.
-            if any(exi)
-                Prhs = blkdiag(Prhs,zeros(sum(exi)));
+            if any(ixExog)
+                Prhs = blkdiag(Prhs,zeros(sum(ixExog)));
             end
         end
 
@@ -396,17 +397,17 @@ for iloop = 1 : nLoop
         end
         
         if isCond
-            Yd = Y(:,:,min(end,iloop));
+            Yd = Y(:,:,min(end,iLoop));
             Yd(~Ya) = NaN;
             if opt.dtrends
                 Yd = Yd - W(:,1:last);
             end
-            Xd = X(:,:,min(end,iloop));
+            Xd = X(:,:,min(end,iLoop));
             Xd(~Xa) = NaN;
             outp = [Yd(:);Xd(:)];
-            z = M(condiNotExi,:);
+            z = M(ixCondNotExog,:);
             % Prediction error.
-            pe = outp(condi) - lhs(condiNotExi);
+            pe = outp(ixCond) - lhs(ixCondNotExog);
             % Update mean forecast.
             upd = simulate.updatemean(z,Prhs,pe);
             rhs = rhs + upd;
@@ -414,7 +415,7 @@ for iloop = 1 : nLoop
             a = a + Ma*upd;
             if ~opt.meanonly
                 % Update forecast MSE.
-                z = N(condiNotExi,:);
+                z = N(ixCondNotExog,:);
                 upd = simulate.updatemse(z,Prhs);
                 Prhs = Prhs - upd;
                 Plhs = Plhs - N*upd*N.';
@@ -425,7 +426,7 @@ for iloop = 1 : nLoop
             end
         end
         
-        doLhsrhs2Yxuea();
+        doLhsRhs2Yxuea();
         
     else
         u = zeros(ne,last);
@@ -453,7 +454,7 @@ for iloop = 1 : nLoop
     
     if opt.progress
         % Update progress bar.
-        update(progress,iloop/nLoop);
+        update(progress,iLoop/nLoop);
     end
 end
 % End of main loop.
@@ -479,14 +480,14 @@ doRetOutp();
     function doChkExogenised()
         % Check for NaNs in exogenised variables, and check the number of
         % exogenised and endogenised data points.
-        inx1 = [ya;xa];
-        inx2 = [any(isnan(yInp),3); ...
-            any(isnan(xInp(xCurrInx,:,:)),3)];
-        inx = any(inx1 & inx2,2);
+        ix1 = [ya;xa];
+        ix2 = [any(isnan(yInp),3); ...
+            any(isnan(xInp(ixXCurr,:,:)),3)];
+        inx = any(ix1 & ix2,2);
         if any(inx)
             yVec = This.solutionvector{1};
             xVec = This.solutionvector{2};
-            xVec = xVec(xCurrInx);
+            xVec = xVec(ixXCurr);
             yxVec = [yVec,xVec];
             % Some of the variables are exogenised to NaNs.
             utils.error('model', ...
@@ -515,13 +516,13 @@ doRetOutp();
     end % doChkOverlap().
 
 %**************************************************************************
-    function doLhsrhs2Yxuea()
+    function doLhsRhs2Yxuea()
         outp = zeros((ny+nXCurr)*last,1);
         inp = zeros((ne+ne)*last,1);
-        outp(~exi) = lhs(1:sum(~exi));
-        outp(exi) = rhs(sum(~endi)+1:end);
-        inp(~endi) = rhs(1:sum(~endi));
-        inp(endi) = lhs(sum(~exi)+1:end);
+        outp(~ixExog) = lhs(1:sum(~ixExog));
+        outp(ixExog) = rhs(sum(~ixEndog)+1:end);
+        inp(~ixEndog) = rhs(1:sum(~ixEndog));
+        inp(ixEndog) = lhs(sum(~ixExog)+1:end);
         y = reshape(outp(1:ny*last),[ny,last]);
         outp(1:ny*last) = [];
         xCurr(:,1:last) = reshape(outp,[nXCurr,last]);
@@ -541,10 +542,10 @@ doRetOutp();
         
         Poutp = zeros((ny+nXCurr)*last);
         Pinp = zeros((ne+ne)*last);
-        Poutp(~exi,~exi) = Plhs(1:sum(~exi),1:sum(~exi));
-        Poutp(exi,exi) = Prhs(sum(~endi)+1:end,sum(~endi)+1:end);
-        Pinp(~endi,~endi) = Prhs(1:sum(~endi),1:sum(~endi));
-        Pinp(endi,endi) = Plhs(sum(~exi)+1:end,sum(~exi)+1:end);
+        Poutp(~ixExog,~ixExog) = Plhs(1:sum(~ixExog),1:sum(~ixExog));
+        Poutp(ixExog,ixExog) = Prhs(sum(~ixEndog)+1:end,sum(~ixEndog)+1:end);
+        Pinp(~ixEndog,~ixEndog) = Prhs(1:sum(~ixEndog),1:sum(~ixEndog));
+        Pinp(ixEndog,ixEndog) = Plhs(sum(~ixExog)+1:end,sum(~ixExog)+1:end);
         
         if ny > 0
             inx = 1 : ny;
@@ -600,9 +601,9 @@ doRetOutp();
         y(1:end,last+1:nPer) = 0;
         e(1:end,last+1:nPer) = 0;
         u(1:end,last+1:nPer) = 0;        
-        Ucurr = U(bCurri,:);
-        Tfcurr = Tf(fCurri,:);
-        Kfcurr = Kf(fCurri,:);
+        Ucurr = U(ixXbCurr,:);
+        Tfcurr = Tf(ixXfCurr,:);
+        Kfcurr = Kf(ixXfCurr,:);
         for t = last+1 : nPer
             xfcurr = Tfcurr*a;
             a = Ta*a;
@@ -625,23 +626,16 @@ doRetOutp();
         
         Du(1:end,last+1:nPer) = stdcorru(1:ne,last+1:nPer).^2;
         De(1:end,last+1:nPer) = stdcorre(1:ne,last+1:nPer).^2;
-        Tfcurrt = Tfcurr.';
-        Tat = Ta.';
-        Rfcurr = Rf(fCurri,:);
-        Rfcurrt = Rfcurr.';
-        Rat = Ra.';
-        Ht = H.';
-        Ucurrt = Ucurr.';
-        Zt = Z.';
+        Rfcurr = Rf(ixXfCurr,:);
         for t = last+1 : nPer
             Pue = covfun.stdcorr2cov(stdcorru(:,t),ne) ...
                 + covfun.stdcorr2cov(stdcorre(:,t),ne);
-            Pxfcurr = Tfcurr*Pa*Tfcurrt + Rfcurr*Pue*Rfcurrt;
-            Pa = Ta*Pa*Tat + Ra*Pue*Rat;
-            Pxbcurr = Ucurr*Pa*Ucurrt;
+            Pxfcurr = Tfcurr*Pa*Tfcurr.' + Rfcurr*Pue*Rfcurr.';
+            Pa = Ta*Pa*Ta.' + Ra*Pue*Ra.';
+            Pxbcurr = Ucurr*Pa*Ucurr.';
             DxCurr(:,t) = [diag(Pxfcurr);diag(Pxbcurr)];
             if ny > 0
-                Py = Z*Pa*Zt + H*Pue*Ht;
+                Py = Z*Pa*Z.' + H*Pue*H.';
                 Dy(:,t) = diag(Py);
             end
         end
@@ -663,7 +657,7 @@ doRetOutp();
         % TODO: use `mycombinestdcorr` here.
         % Combine `stdcorr` from the current parameterisation and the
         % `stdcorr` supplied through the tune database.
-        stdcorre = This.stdcorr(1,:,iloop).';
+        stdcorre = This.stdcorr(1,:,iLoop).';
         stdcorre = stdcorre(:,ones(1,nPer));
         stdcorrixreal = ~isnan(opt.stdcorrreal);
         if any(stdcorrixreal(:))
@@ -671,12 +665,12 @@ doRetOutp();
                 opt.stdcorrreal(stdcorrixreal);
         end
         
-        stdcorru = This.stdcorr(1,:,iloop).';
+        stdcorru = This.stdcorr(1,:,iLoop).';
         stdcorru = stdcorru(:,ones(1,nPer));
-        stdcorriximag = ~isnan(opt.stdcorrimag);
-        if any(stdcorriximag(:))
-            stdcorru(stdcorriximag) = ...
-                opt.stdcorrimag(stdcorriximag);
+        ixStdcorrImag = ~isnan(opt.stdcorrimag);
+        if any(ixStdcorrImag(:))
+            stdcorru(ixStdcorrImag) = ...
+                opt.stdcorrimag(ixStdcorrImag);
         end
         
         % Set the std devs of the endogenised shocks to zero. Otherwise an
@@ -702,27 +696,27 @@ doRetOutp();
     function doAssignSmooth()
         % Final point forecast.
         tempX = nan(nx,nXPer);
-        tempX(xCurrInx,2:end) = xCurr;
+        tempX(ixXCurr,2:end) = xCurr;
         tempX(nf+1:end,1) = x0;
         if opt.anticipate
             eu = complex(e,u);
         else
             eu = complex(u,e);
         end
-        hdataassign(hData.mean,This,iloop, ...
+        hdataassign(hData.mean,This,iLoop, ...
             [nan(ny,1),y], ...
             tempX, ...
             [nan(ne,1),eu]);
         % Final std forecast.
         if ~opt.meanonly
             Dx = nan(nx,nPer);
-            Dx(xCurrInx,:) = DxCurr;            
+            Dx(ixXCurr,:) = DxCurr;            
             if opt.anticipate
                 Deu = complex(De,Du);
             else
                 Deu = complex(Du,De);
             end
-            hdataassign(hData.std,This,iloop, ...
+            hdataassign(hData.std,This,iLoop, ...
                 [nan(ny,1),Dy], ...
                 [[nan(nf,1);Dxinit],Dx], ...
                 [nan(ne,1),Deu]);

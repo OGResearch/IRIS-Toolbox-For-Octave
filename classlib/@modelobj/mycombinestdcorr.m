@@ -9,12 +9,12 @@ function Stdcorr = mycombinestdcorr(ThisStdcorr,UsrStdcorr,NPer)
 
 %--------------------------------------------------------------------------
 
-usrStdcorrInx = ~isnan(UsrStdcorr);
+ixUsrStdcorr = ~isnan(UsrStdcorr);
 ThisStdcorr = ThisStdcorr(:);
-if any(usrStdcorrInx(:))
+if any(ixUsrStdcorr(:))
     lastUser = max(1,size(UsrStdcorr,2));
     Stdcorr = ThisStdcorr(:,ones(1,lastUser));
-    Stdcorr(usrStdcorrInx) = UsrStdcorr(usrStdcorrInx);
+    Stdcorr(ixUsrStdcorr) = UsrStdcorr(ixUsrStdcorr);
     % Add the model stdcorrs if the last user-supplied data point is before
     % the end of the sample.
     if size(Stdcorr,2) < NPer

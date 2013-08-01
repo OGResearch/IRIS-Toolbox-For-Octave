@@ -38,7 +38,7 @@ switch lower(Req)
         clear functions;
         rehash();
     case 'addroot'
-        % Add the specified root to both the temporary search paths.
+        % Add the specified root to the temporary search paths.
         addpath(varargin{1},'-begin');
     case 'addcurrentsubs'
         % Add subfolders within the current root to the temporary
@@ -108,16 +108,16 @@ if nargin > 1 && ~isempty(Exclude) && ~isempty(P)
     keep = true(size(P));
     % Length of the root string including the pathsep() at the end of it.
     % Later we remove `lenroot-1` characters from the individual paths.
-    lenRoot = length(Root);
+    nRoot = length(Root);
     for i = 1 : length(P)
         % Remove the root from the i-th path, and only check for the
         % excluded patterns in the rest of the path. This is to handle
         % cases in which the root includes some of the excluded patterns
         % (we don't want to remove the root then).
         dirName = P{i};
-        if length(dirName) >= lenRoot ...
-                && strncmpi(dirName,Root,lenRoot-1)
-            dirName(1:lenRoot-1) = '';
+        if length(dirName) >= nRoot ...
+                && strncmpi(dirName,Root,nRoot-1)
+            dirName(1:nRoot-1) = '';
         end
         for j = 1 : length(Exclude)
             keep(i) = keep(i) ...

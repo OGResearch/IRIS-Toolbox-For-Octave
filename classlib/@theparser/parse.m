@@ -121,10 +121,10 @@ doChkInvalid();
             end
         end
         
-        % Some of the `!log_variables` section have `!allbut`, some do not have.
+        % Some of the `!log_variables` sections have `!all_but`, some do not have.
         if Invalid.allbut
             utils.error('model',[errorparsing(This), ...
-                'The keyword !allbut may appear in either all or none of ', ...
+                'The keyword !all_but may appear in either all or none of ', ...
                 'the !log_variables sections.']);
         end
         

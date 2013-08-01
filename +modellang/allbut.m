@@ -1,12 +1,12 @@
-% !allbut  Inverse list of log-linearised variables.
+% !all_but  Inverse list of log-linearised variables.
 %
 % Syntax
 % =======
 %
 %     !log_variables
-%         !allbut
-%         VARIABLE_NAME, VARIABLE_NAME, 
-%         VARIABLE_NAME, ...
+%         !all_but
+%         Variable_Name, Variable_Name, 
+%         Variable_Name, ...
 %
 % Description
 % ============

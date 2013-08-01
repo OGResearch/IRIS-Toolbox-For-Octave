@@ -1,10 +1,10 @@
-function [S,INVALIDFLAG] = parseflags(BLK,S)
+function [S,InvalidFlag] = parseflags(Blk,S)
 
-if isempty(strfind(BLK,'!allbut'))
+if isempty(strfind(Blk,'!all_but'))
     default = false;
 else
     default = true;
-    BLK = strrep(BLK,'!allbut','');
+    Blk = strrep(Blk,'!all_but','');
 end
 
 for i = 1 : length(S)
@@ -12,12 +12,12 @@ for i = 1 : length(S)
 end
 
 allnames = [S(:).name];
-allflags = default(ones(size(allnames)));
+allFlags = default(ones(size(allnames)));
 
 % Replace regular expressions \<...\> or {...} with the list of matched
 % names.
 replacefunc = @doexpand; %#ok<NASGU>
-BLK = regexprep(BLK,'\\?<(.*?)\\?>','${replacefunc($1)}');
+Blk = regexprep(Blk,'\\?<(.*?)\\?>','${replacefunc($1)}');
 
     function c = doexpand(c0)
         start = regexp(allnames,['^',c0,'$']);
@@ -25,28 +25,28 @@ BLK = regexprep(BLK,'\\?<(.*?)\\?>','${replacefunc($1)}');
         c = sprintf('%s ',allnames{index});
     end
 
-flagged = regexp(BLK,'\<[a-zA-Z]\w*\>','match');
-nflagged = length(flagged);
+flagged = regexp(Blk,'\<[a-zA-Z]\w*\>','match');
+nFlagged = length(flagged);
 invalid = false(size(flagged));
-for iflagged = 1 : nflagged
-    name = flagged{iflagged};
+for iFlagged = 1 : nFlagged
+    name = flagged{iFlagged};
     index = strcmp(name,allnames);
     if any(index)
-        allflags(index) = ~default;
+        allFlags(index) = ~default;
     else
-        invalid(iflagged) = true;
+        invalid(iFlagged) = true;
     end 
 end
 
-INVALIDFLAG = flagged(invalid);
+InvalidFlag = flagged(invalid);
 if any(invalid)
-    INVALIDFLAG = unique(INVALIDFLAG);
+    InvalidFlag = unique(InvalidFlag);
 end
 
 for is = 1 : length(S)
     nname = length(S(is).name);
-    S(is).nameflag(:) = allflags(1:nname);
-    allflags(1:nname) = [];
+    S(is).nameflag(:) = allFlags(1:nname);
+    allFlags(1:nname) = [];
 end
 
 end

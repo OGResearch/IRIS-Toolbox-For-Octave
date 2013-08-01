@@ -63,8 +63,6 @@ end
 
 % Expand solution forward up to t+k if needed.
 if S.tplusk > 0
-    % TODO: Can we only expand non-lin add-factors if there is no need to
-    % expand shocks?
     if S.isNonlin && (ne > 0 || nn > 0)
         % Expand solution forward to t+k for both shocks and non-linear
         % add-factors.

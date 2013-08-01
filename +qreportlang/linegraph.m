@@ -3,8 +3,8 @@
 % Syntax
 % =======
 %
-%     !-- graph_caption
-%         expression1, expression2, ...
+%     !-- Graph_Caption
+%         Expression1, Expression2, ...
 %
 % Description
 % ============

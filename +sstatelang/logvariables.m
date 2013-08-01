@@ -1,17 +1,19 @@
-% !log_variables  Restrict the steady stae of some of the variables to be positive.
+% !log_variables  Restrict the steady state of some of the variables to be positive.
 %
 % Syntax
 % =======
 %
 %     !log_variables
-%         list_of_variables
+%         Variable_Name, Variable_Name
+%         Variable_Name
 %
 % Inverted syntax
 % ================
 %
 %     !log_variables
-%         !allbut
-%         list_of_variables
+%         !all_but
+%         Variable_Name, Variable_Name
+%         Variable_Name
 %
 % Description
 % ============

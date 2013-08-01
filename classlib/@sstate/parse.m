@@ -7,7 +7,7 @@ function s = parse(s,p)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 errorParsing = sprintf( ...
     'Error parsing file(s) <a href="matlab: edit %s">%s</a>. ', ...
@@ -19,8 +19,8 @@ errorParsing = sprintf( ...
 % * !growthname:= d?; or !growthname := ['d',lower(?)];
 % * !growthname2imag
 % * !solvefor
-% * !variables:positive or !variables:log
-% * !allbut
+% * !log_variables
+% * !all_but
 % * !symbolic
 
 code = p.code;
@@ -48,13 +48,13 @@ if s.growthnames(1) == '[' && s.growthnames(end) == ']'
 end
 
 % Read-in log declarations and remove them from `code`. They are considered
-% global throughout the model so |!allbut| must be used consistently in all
+% global throughout the model so `!all_but` must be used consistently in all
 % declarations.
 [code,s.allbut,s.logs,invalid] = findlogs_(code);
 
 if invalid
     utils.error('sstate',[errorParsing, ...
-        'The keyword !allbut may appear in either all or none of ', ...
+        'The keyword !all_but may appear in either all or none of ', ...
         'the !log_variables sections.']);
 end
 
@@ -290,7 +290,7 @@ end
 nlogs = length(logs);
 allbut = false([1,nlogs]);
 for i = 1 : nlogs
-    allbut(i) = strfun.findremove(logs{i},'!allbut');
+    allbut(i) = strfun.findremove(logs{i},'!all_but');
 end
 invalid = any(allbut ~= allbut(1));
 allbut = allbut(1);

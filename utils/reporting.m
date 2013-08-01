@@ -87,8 +87,8 @@ end
 if opt.dynamic
     % Evaluate equations recursively period by period.
     fn = cell(size(This.rhs));
-    for i = 1 : length(This.rhs)
-        fn{i} = str2func(['@(d,t)',This.rhs{i}]);
+    for iRhs = 1 : length(This.rhs)
+        fn{iRhs} = str2func(['@(d,t)',This.rhs{iRhs}]);
     end
     Range = Range(:).';
     for t = Range

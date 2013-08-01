@@ -1,7 +1,7 @@
 # X12-ARIMA spec file default template.
 
 # -The IRIS Toolbox.
-# -Copyright (c) 2007-2011 Jaromir Benes.
+# -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 series {
     data = (

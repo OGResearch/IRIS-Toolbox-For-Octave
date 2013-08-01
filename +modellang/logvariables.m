@@ -4,23 +4,23 @@
 % =======
 %
 %     !log_variables
-%         VARIABLE_NAME, VARIABLE_NAME, 
-%         VARIABLE_NAME, ...
+%         Variable_Name, Variable_Name, 
+%         Variable_Name, ...
 %
 % Inverted syntax
 % ================
 %
 %     !log_variables
-%         !allbut
-%         VARIABLE_NAME, VARIABLE_NAME, 
-%         VARIABLE_NAME, ...
+%         !all_but
+%         Variable_Name, Variable_Name, 
+%         Variable_Name, ...
 %
 % Syntax with regular expression(s)
 % ==================================
 %
 %     !log_variables
-%         VARIABLE_NAME, VARIABLE_NAME, 
-%         VARIABLE_NAME, ...
+%         Variable_Name, Variable_Name, 
+%         Variable_Name, ...
 %         <REGEXP>, <REGEXP>, ...
 %
 % Description
@@ -32,7 +32,7 @@
 % In non-linear models, all variables are linearised around the steady
 % state or a balanced-growth path. If you wish to log-linearise some of
 % them instead, put them on a `!log_variables` list. You can also use the
-% `!allbut` keyword to indicate an inverse list: all variables will be
+% `!all_but` keyword to indicate an inverse list: all variables will be
 % log-linearised except those listed.
 %
 % To create the list of log-variables, you can also use regular
@@ -60,7 +60,7 @@
 %         Y, C, I, K, r, pie
 %
 %     !log_variables
-%         !allbut
+%         !all_but
 %         r, pie
 %
 % Example 2

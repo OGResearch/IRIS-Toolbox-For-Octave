@@ -72,7 +72,6 @@ end
 
 %**************************************************************************
     function doTimeVarying()
-        % Choose the 'vary=' option or the `J` database.
         if isfield(Opt,'vary') && ~isempty(Opt.vary)
             d = Opt.vary;
         end

@@ -27,7 +27,7 @@
 % ======================================================
 % 
 % * [`!log_variables`](sstatelang/logvariables) - Restrict the steady stae of some of the variables to be positive.
-% * [`!allbut`](sstatelang/allbut) - Inverse list of variables with positive steady states.
+% * [`!all_but`](sstatelang/allbut) - Inverse list of variables with positive steady states.
 %
 % Getting on-line help on sstate file language
 % =============================================

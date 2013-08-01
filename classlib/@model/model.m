@@ -155,7 +155,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         eqtnF = cell(1,0);
         % Anonymous function handles to streamlined steady-state equations.
         eqtnS = cell(1,0);
-        % Logical index of equations earmarked for non-linear simulations.
+        % A 1-by-nEqtn logical index of equations marked as non-linear.
         nonlin = false(1,0);
         % Block-recursive structure for variable names.
         nameblk = cell(1,0);
