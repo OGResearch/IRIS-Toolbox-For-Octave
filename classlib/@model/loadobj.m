@@ -16,8 +16,14 @@ isRebuild = ~isa(This,'model');
 
 This = modelobj.loadobj(This);
 
-if isfield(This,'eqtnnonlin')
-    This.nonlin = This.eqtnnonlin;
+if ~isa(This,'model')
+    if isfield(This,'eqtnnonlin')
+        This.nonlin = This.eqtnnonlin;
+    elseif ~isfield(This,'nonlin')
+        This.nonlin = false(size(This.eqtn));
+    end
+elseif isempty(This.nonlin)
+    This.nonline = false(size(This.eqtn));
 end
 
 if isstruct(This)
@@ -47,9 +53,9 @@ link = This.eqtn(This.eqtntype == 4);
 emptylink = cellfun(@isempty,link);
 if any(emptylink)
     occur = This.occur(This.eqtntype == 4,:);
-    linklabel = This.eqtnlabel(This.eqtntype == 4);
+    linkLabel = This.eqtnlabel(This.eqtntype == 4);
     linkF = This.eqtnF(This.eqtntype == 4);
-    linknonlin = This.nonlin(This.eqtntype == 4);
+    linkNonlin = This.nonlin(This.eqtntype == 4);
     This.eqtn(This.eqtntype == 4) = [];
     This.eqtnlabel(This.eqtntype == 4) = [];
     This.eqtnF(This.eqtntype == 4) = [];
@@ -57,9 +63,9 @@ if any(emptylink)
     This.occur(This.eqtntype == 4,:) = [];
     This.eqtntype(This.eqtntype == 4) = [];
     This.eqtn = [This.eqtn,link(This.Refresh)];
-    This.eqtnlabel = [This.eqtnlabel,linklabel(This.Refresh)];
+    This.eqtnlabel = [This.eqtnlabel,linkLabel(This.Refresh)];
     This.eqtnF = [This.eqtnF,linkF(This.Refresh)];
-    This.nonlin = [This.nonlin,linknonlin(This.Refresh)];
+    This.nonlin = [This.nonlin,linkNonlin(This.Refresh)];
     This.occur = [This.occur;occur(This.Refresh,:)];
     This.eqtntype = [This.eqtntype,4*ones(size(This.Refresh))];
 end
@@ -94,7 +100,8 @@ if ~isempty(This.Expand) ...
     % *before* we remove the double occurences from state space. `Expand{6}`
     % can be empty also in nonlinear bkw models; in that case, we need to set
     % the size in second dimension appropriately.
-    This.Expand{6} = nan(size(This.Expand{3},1),size(This.Expand{6},2),nAlt);
+    nNonlin = sum(This.nonlin);
+    This.Expand{6} = nan(size(This.Expand{3},1),nNonlin,nAlt);
 end
 
 if ~isempty(This.Assign) && isempty(This.stdcorr)
