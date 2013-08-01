@@ -38,7 +38,7 @@ if isempty(X)
     return
 end
 
-if ~islogica(X)
+if ~islogical(X)
     X(isnan(X)) = 0;
     X = X ~= 0;
 end
