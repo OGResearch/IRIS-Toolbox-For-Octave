@@ -54,7 +54,7 @@ if iscell( Mean )
                 'Mean and covariance matrix dimensions must be consistent.' ) ;
             assert( all( size(Mean{d}) == size(Mean{1}) ), ...
                 'Mixture dimensions must be consistent.' ) ;
-            Std{d} = mychkstd( Std{d} ) ;
+            Std{d} = logdist.mychkstd( Std{d} ) ;
         end
     end
     a = zeros(K,1) ;
