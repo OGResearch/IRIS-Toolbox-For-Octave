@@ -44,13 +44,13 @@ else
     index = offset + ...
         strfun.findnames(This.name(This.nametype == 4), ...
         LikOpt.outoflik);
-    isnanindex = isnan(index);
-    if any(isnanindex)
+    isNanInx = isnan(index);
+    if any(isNanInx)
         % Unknown parameter names.
         utils.error('model', ...
             ['This parameter name does not exist ', ...
             'in the model object: ''%s''.'], ...
-            LikOpt.outoflik{isnanindex});
+            LikOpt.outoflik{isNanInx});
     end
     LikOpt.outoflik = index;
 end
@@ -71,14 +71,14 @@ if LikOpt.domain == 't'
     LikOpt.stdcorr = mytune2stdcorr(This,Range,Tune,LikOpt,'clip');
     
     % User-supplied tunes on the mean of shocks.
-    if ~isempty(Tune)
-        % Tunes on shocks.
-        if ~isempty(Tune)
-            % Request shock data.
-            Tune = datarequest('e',This,Tune,Range);
-            if all(Tune(:) == 0)
-                Tune = [];
-            end
+    if isfield(LikOpt,'vary')
+        Tune = LikOpt.vary;
+    end
+    if ~isempty(Tune) && isstruct(Tune)
+        % Request shock data.
+        Tune = datarequest('e',This,Tune,Range);
+        if all(Tune(:) == 0)
+            Tune = [];
         end
     end
     LikOpt.tune = Tune;
