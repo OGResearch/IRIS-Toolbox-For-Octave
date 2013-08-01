@@ -1,4 +1,4 @@
-function [sample,lp_Sample] ...
+function [sample,lp_Sample,len] ...
     = regen(This,NDraw,varargin)
 % arwm  Regeneration time MCMC Metropolis posterior simulator.
 %
@@ -110,7 +110,8 @@ Yt = alphaState ; %start in Alpha state
 lp_Yt = NaN ;
 t = 0 ;
 s = 1 ;
-len = NaN(1,NRegen) ;
+len = zeros(1,NRegen) ;
+fprintf(1,'Tour     Draw     Avg Tour Length\n') ;
 while t < NRegen
     t = t + 1 ;
     lp_V = NaN ;
@@ -168,6 +169,7 @@ while t < NRegen
         regenSample(:,t) = Yt ;
         lp_regenSample(t) = lp_Yt ;
     end
+    fprintf(1,'%4.f     %4.f     %6.f\n',s,t,mean(len(1:s))) ;
 end
 len = len(1:s) ;
 
