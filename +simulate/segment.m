@@ -23,7 +23,7 @@ S.histMinCount = NaN;
 while true
     S = simulate.linear(S,S.npernonlin,Opt);
     doDiscrepancy();
-    
+
     if S.maxDiscrep < S.histMinDiscrep
         S.histMinDiscrep = S.maxDiscrep;
         S.histMinAddFactor = S.maxAddFactor;
@@ -85,14 +85,15 @@ while true
     S.count = S.count + 1;
 end
 
-% Failed to converge.
+% Failed to converge
+%--------------------
 if S.stop < 0
     if Opt.error
         messageFunc = @utils.error;
     else
         messageFunc = @utils.warning;
     end
-    
+
     switch S.stop
         case -1
             messageFunc('model', ...
@@ -139,7 +140,7 @@ end
             end
             try
                 dj = S.eqtnN{j}(yy,xx,ee,pp,find(evalInx),LL); %#ok<FNDSB>
-                nanInx(j) = any(~isfinite(d(j,evalInx)));
+                nanInx(j) = any(~isfinite(dj));
                 d(j,evalInx) = dj;
             catch Error
                 errorMsg{end+1} = S.eqtn{j}; %#ok<AGROW>
