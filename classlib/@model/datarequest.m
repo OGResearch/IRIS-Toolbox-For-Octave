@@ -200,12 +200,16 @@ end
             nData = nAlt;
         end
         AInitMean = xInitMean;
-        for ii = 1 : nData
-            U = This.solution{7}(:,:,min(ii,end));
-            notrequired = ~This.icondix(1,:,min(ii,end));
-            index = isnan(xInitMean(:,1,ii)) & notrequired(:);
-            AInitMean(index,1,ii) = 0;
-            AInitMean(:,1,ii) = U\AInitMean(:,1,ii);
+        for iiData = 1 : nData
+            U = This.solution{7}(:,:,min(iiData,end));
+            if all(~isnan(U(:)))
+                notRequired = ~This.icondix(1,:,min(iiData,end));
+                inx = isnan(xInitMean(:,1,iiData)) & notRequired(:);
+                AInitMean(inx,1,iiData) = 0;
+                AInitMean(:,1,iiData) = U\AInitMean(:,1,iiData);
+            else
+                AInitMean(:,1,iiData) = NaN;
+            end
         end
         % Transform MSE x to alpha.
         if nargout < 2 || isempty(xInitMse)
@@ -219,11 +223,14 @@ end
             nData = nAlt;
         end
         AInitMse = xInitMse;
-        for ii = 1 : nData
-            U = This.solution{7}(:,:,min(ii,end));
-            Ut = U.';
-            AInitMse(:,:,1,ii) = U\AInitMse(:,:,1,ii);
-            AInitMse(:,:,1,ii) = AInitMse(:,:,1,ii)/Ut;
+        for iiData = 1 : nData
+            U = This.solution{7}(:,:,min(iiData,end));
+            if all(~isnan(U(:)))
+                AInitMse(:,:,1,iiData) = U\AInitMse(:,:,1,iiData);
+                AInitMse(:,:,1,iiData) = AInitMse(:,:,1,iiData)/U.';
+            else
+                AInitMse(:,:,1,iiData) = NaN;
+            end
         end
     end % doXInit2AInit().
 
@@ -306,7 +313,11 @@ end
         end
         for ii = 1 : nData
             U = This.solution{7}(:,:,min(ii,end));
-            A(:,:,ii) = U\A(:,:,ii);
+            if all(~isnan(U(:)))
+                A(:,:,ii) = U\A(:,:,ii);
+            else
+                A(:,:,ii) = NaN;
+            end
         end
     end % doData2Alpha().
 
