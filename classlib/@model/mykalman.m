@@ -111,6 +111,8 @@ if ~s.isObjOnly && Opt.progress
     progress = progressbar('IRIS model.kalman progress');
 end
 
+isSolution = true(1,nAlt);
+
 for iLoop = 1 : nLoop
     
     % Next data
@@ -181,6 +183,13 @@ for iLoop = 1 : nLoop
         
         % Free memory.
         s.stdcorr = [];
+    end
+    
+    % Continue immediately if solution is not available; report NaN solutions
+    % post mortem.
+    isSolution(iLoop) = all(~isnan(T(:)));
+    if ~isSolution(iLoop)
+        continue
     end
     
     % Deterministic trends
@@ -263,7 +272,7 @@ for iLoop = 1 : nLoop
         continue
     end
     
-    % Prediction errors uncorrected to estiated init cond and dtrends; these
+    % Prediction errors uncorrected to estimated init cond and dtrends; these
     % are needed for contributions.
     if s.retCont
         s.peUnc = s.pe;
@@ -343,7 +352,7 @@ for iLoop = 1 : nLoop
         doRetSmooth();
     end
     
-    % Populate regular output arguments.
+    % Populate regular (non-hdata) output arguments.
     RegOutp.F(:,:,:,iLoop) = s.F*s.V;
     RegOutp.Pe(:,:,predCols) = permute(s.pe,[1,3,4,2]);
     RegOutp.V(iLoop) = s.V;
@@ -357,6 +366,12 @@ for iLoop = 1 : nLoop
         update(progress,iLoop/nLoop);
     end
     
+end
+
+if ~all(isSolution)
+    utils.warning('model', ...
+        'Solution(s) not available:%s.', ...
+        sprintf(' #%g',find(~isSolution)));
 end
 
 % Nested functions.
@@ -743,7 +758,7 @@ end
 for t = lastObs : -1 : 2
     j = yInx(:,t);
     [y1,f1,b1,e1] = kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
-        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),0);
+        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),0);    
     S.y1(~j,t) = y1(~j,1);
     if nf > 0
         S.f1(:,t) = f1;
@@ -896,15 +911,16 @@ eu = real(S.tune);
 ea = imag(S.tune);
 eu(isnan(eu)) = 0;
 ea(isnan(ea)) = 0;
-lastA = max(0,find(any(ea ~= 0,1),1,'last'));
-lastU = max(0,find(any(eu ~= 0,1),1,'last'));
-last = max(lastA,lastU);
-if isempty(last)
+
+lastAnt = utils.findlast(ea);
+lastUnant = utils.findlast(eu);
+last = max(lastAnt,lastUnant);
+if isempty(last) || last < 2
     return
 end
 
-if lastA > 0
-    R = model.myexpand(S.R,[],lastA,S.Expand{:});
+if lastAnt > 0
+    R = model.myexpand(S.R,[],lastAnt,S.Expand{:});
     Rf = R(1:nf,:);
     Ra = R(nf+1:end,:);
 else
@@ -914,11 +930,11 @@ end
 H = S.H;
 
 for t = 2 : last
-    e = [eu(:,t) + ea(:,t),ea(:,t+1:lastA)];
-    k = size(e,2);
-    D(:,t) = D(:,t) + H*e(:,1);
-    Kf(:,t) = Kf(:,t) + Rf(:,1:ne*k)*e(:);
-    Ka(:,t) = Ka(:,t) + Ra(:,1:ne*k)*e(:);
+    ee = [eu(:,t) + ea(:,t),ea(:,t+1:lastAnt)];
+    k = size(ee,2);
+    D(:,t) = D(:,t) + H*ee(:,1);
+    Kf(:,t) = Kf(:,t) + Rf(:,1:ne*k)*ee(:);
+    Ka(:,t) = Ka(:,t) + Ra(:,1:ne*k)*ee(:);
 end
 
 end % xxShockTunes().
