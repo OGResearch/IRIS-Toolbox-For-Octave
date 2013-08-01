@@ -196,14 +196,10 @@ switch Query
         X = max(imag(This.systemid{2})) + 1;
         
     case {'icond','initcond','required'}
+        % List of intial conditions required at least for one parameterisation.
         id = This.solutionid{2}(nf+1:end);
-        X = cell(1,nAlt);
-        for iAlt = 1 : nAlt
-            X{iAlt} = myvector(This,id(This.icondix(1,:,iAlt))-1i);
-        end
-        if nAlt == 1
-            X = X{1};
-        end
+        icIx = any(This.icondix,3);
+        X = myvector(This,id(icIx)-1i);
         
     case {'forward'}
         ne = sum(This.nametype == 3);
@@ -274,11 +270,11 @@ end
 
 if chkSolution
     % Report solution(s) not available.
-    [solutionflag,inx] = isnan(This,'solution');
-    if solutionflag
+    [solutionFlag,inx] = isnan(This,'solution');
+    if solutionFlag
         utils.warning('model', ...
-            '#Solution_not_available', ...
-            sprintf(' #%g',find(inx)));
+            'Solution(s) not available:%s', ...
+            preparser.alt2str(inx));
     end
 end
 
