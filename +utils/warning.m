@@ -16,10 +16,6 @@ try %#ok<TRYNC>
     end
 end
 
-if ~isempty(Body) && Body(1) == '#'
-    Body = xxFrequents(Body);
-end
-
 stack = utils.getstack();
 
 msg = sprintf('<a href="">IRIS Toolbox Warning</a> :: %s.', ...
@@ -36,19 +32,5 @@ warning(['IRIS:',Memo],'%s',msg);
 warning(state);
 
 strfun.loosespace();
-
-end
-
-% Subfunctions.
-
-%**************************************************************************
-function Body = xxFrequents(Body)
-
-switch Body
-    case '#Solution_not_available'
-        Body = 'Solution not available:%s.';
-    otherwise
-        Body = '';
-end
 
 end % xxFrequents().
