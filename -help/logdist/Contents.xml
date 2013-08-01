@@ -1,0 +1,74 @@
+<folder>
+
+<foldername>logdist</foldername><filename>Contents</filename>
+
+<h1 id="logdist/Contents">Probability distribution package</h1>
+
+<p>This is a package (implemented as a class of static methods) that allows
+you to set up and use some basic univariate distributions. These can be
+used as priors in the <link id="model/estimate"><tt>estimate</tt></link> and <link id="poster/arwm"><tt>arwm</tt></link> functions.</p>
+
+<p>The logdist package is called to create function handles that have
+several different modes of use. The primary use is to compute values that
+are proportional to the log of the respective density. In addition, the
+function handles also give you access to extra information (such as the
+the proper p.d.f., the name, mean, std dev, mode, and stuctural
+parameters of the distribution), and to a random number generator from
+the respective distribution.</p>
+
+<h3>Getting function handles for univariate distributions</h3>
+
+<ul><li><link id="logdist/normal"><tt>normal</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of normal distribution.</li>
+<li><link id="logdist/lognormal"><tt>lognormal</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of log-normal distribution.</li>
+<li><link id="logdist/beta"><tt>beta</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of beta distribution.</li>
+<li><link id="logdist/gamma"><tt>gamma</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of gamma distribution.</li>
+<li><link id="logdist/invgamma"><tt>invgamma</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of inv-gamma distribution.</li>
+<li><link id="logdist/uniform"><tt>uniform</tt></link>&nbsp;&ndash;&nbsp;Create function proportional to log of uniform distribution.</li></ul>
+
+<h3>Calling the logdist function handles</h3>
+
+<p>The function handles <tt>F</tt> created by the logdist package functions can be
+called the following ways:</p>
+
+<ul><li>Get a value proportional to the log-density of the respective
+distribution at a particular point (this call is used within the
+<link id="poster/Contents">posterior simulator</link>):
+<pre>   y = F(x)
+</pre></li>
+<li>Get the density of the respective distribution at a particular point:
+<pre>   y = F(x,'pdf')
+</pre></li>
+<li>Get the characteristics of the distribution -- mean, std deviation,
+mode, and information (the inverse of the second derivative of the log
+density):
+<pre>   m = F([],'mean')
+   s = F([],'std')
+   o = F([],'mode')
+   i = F([],'info')
+</pre></li>
+<li>Get the underlying <tt>'structural'</tt> parameters of the respective
+distribution:
+<pre>   a = F([],'a')
+   b = F([],'b')
+</pre></li>
+<li>Get the name of the distribution (the names correspond to the function
+names, i.e. can be either of <tt>'normal'</tt>, <tt>'lognormal'</tt>, <tt>'beta'</tt>,
+<tt>'gamma'</tt>, <tt>'invgamma'</tt>, <tt>'uniform'</tt>):
+<pre>   name = F([],'name')
+</pre></li>
+<li>Draw a vector or matrix of random numbers from the distribution;
+drawing from beta, gamma, and inverse gamma requires the Statistics
+Toolbox:
+<pre>   a = F([],'draw',1,1000);
+</pre>
+<pre>   size(a)
+   ans =     
+          1        10000
+</pre></li></ul>
+
+<h3>Getting on-line help on logdist functions</h3>
+<pre>   help logdist
+   help logdist/function_name
+</pre>
+
+</folder>

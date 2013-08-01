@@ -1,0 +1,71 @@
+
+
+    \filetitle{regress}{Ordinary or weighted least-square regression}{tseries/regress}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X)
+ [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Y} {[} tseries {]} - Tseries object with independent (LHS)
+   variables.
+ \item
+   \texttt{X} {[} tseries{]} - Tseries object with regressors (RHS)
+   variables.
+ \item
+   \texttt{Range} {[} numeric {]} - Date range on which the regression
+   will be run; if not specified, the entire range available will be
+   used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{B} {[} numeric {]} - Vector of estimated regression
+   coefficients.
+ \item
+   \texttt{BStd} {[} numeric {]} - Vector of std errors of the estimates.
+ \item
+   \texttt{E} {[} tseries {]} - Tseries object with the regression
+   residuals.
+ \item
+   \texttt{EStd} {[} numeric {]} - Estimate of the std deviation of the
+   regression residuals.
+ \item
+   \texttt{YFit} {[} tseries {]} - Tseries object with fitted LHS
+   variables.
+ \item
+   \texttt{Range} {[} numeric {]} - The actually used date range.
+ \item
+   \texttt{bBCov} {[} numeric {]} - Covariance matrix of the coefficient
+   estimates.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'constant='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Include a constant vector in the
+   regression; if true the constant will be placed last in the matrix of
+   regressors.
+ \item
+   \texttt{'weighting='} {[} tseries \textbar{} \emph{empty} {]} -
+   Tseries object with weights on the observations in the individual
+   periods.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ This function calls the built-in \texttt{lscov} function.
+ 
+ \paragraph{Example}
+
+
