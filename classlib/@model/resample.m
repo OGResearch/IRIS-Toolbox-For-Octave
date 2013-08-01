@@ -145,19 +145,32 @@ if nAlt > 1
         'with multiple parameterisations.']);
 end
 
-% Check if solution is available.
-if isnan(This,'solution')
-    utils.warning('model', ...
-        '#Solution_not_available',' #1');
-    Outp = struct();
-    return
-end
-
 ny = sum(This.nametype == 1);
 nx = size(This.solution{1},1);
 nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
+
+[T,R,K,Z,H,D,U,Omg] = mysspace(This,1,false);
+
+% Pre-allocate output data.
+hData = hdataobj(This,[],nXPer,NDraw);
+
+% Return immediately if solution is not available.
+if any(isnan(T(:)))
+    utils.warning('model', ...
+        'Solution(s) not available: #1.');
+    % Convert emptpy hdataobj to tseries database.
+    Outp = hdata2tseries(hData,This,XRange);
+    return
+end
+
+nUnit = sum(abs(abs(This.eigval)-1) <= realSmall);
+nStable = nb - nUnit;
+Ta = T(nf+1:end,:);
+Ra = R(nf+1:end,:);
+Ta2 = Ta(nUnit+1:end,nUnit+1:end);
+Ra2 = Ra(nUnit+1:end,:);
 
 % Combine user-supplied stdcorr with model stdcorr.
 usrStdcorr = mytune2stdcorr(This,Range,J,opt);
@@ -174,14 +187,6 @@ end
 if opt.dtrends
     G = datarequest('g',This,Inp,Range);
 end
-
-[T,R,K,Z,H,D,U,Omg] = mysspace(This,1,false);
-nUnit = sum(abs(abs(This.eigval)-1) <= realSmall);
-nStable = nb - nUnit;
-Ta = T(nf+1:end,:);
-Ra = R(nf+1:end,:);
-Ta2 = Ta(nUnit+1:end,nUnit+1:end);
-Ra2 = Ra(nUnit+1:end,:);
 
 % Describe the distribution of initial conditions
 %-------------------------------------------------
@@ -279,9 +284,6 @@ else
         end
     end
 end
-
-% Pre-allocate output data.
-hData = hdataobj(This,[],nXPer,NDraw);
 
 % Distinguish between transition and measurement residuals.
 RInx = any(abs(R(:,1:ne)) > 0,1);

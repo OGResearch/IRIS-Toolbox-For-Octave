@@ -96,20 +96,28 @@ if opt.progress
 end
 
 S = nan(ny+nx,ny+nx,nFreq,nAlt);
-[flag,inx] = isnan(This,'solution');
-for ialt = find(~inx)
-    [T,R,~,Z,H,~,U,Omega] = mysspace(This,ialt,false);
-    S(:,:,:,ialt) = freqdom.xsf(T,R,[],Z,H,[],U,Omega,Freq,filter,applyTo);
+isSolution = true(1,nAlt);
+for iAlt = 1 : nAlt
+    [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
+    
+    % Continue immediately if solution is not available.
+    isSolution(iAlt) = all(~isnan(T(:)));
+    if ~isSolution(iAlt)
+        continue
+    end
+    
+    S(:,:,:,iAlt) = freqdom.xsf(T,R,[],Z,H,[],U,Omega,Freq,filter,applyTo);
     if opt.progress
-        update(progress,ialt/sum(~inx));
+        update(progress,iAlt/nAlt);
     end
 end
 S = S / (2*pi);
 
-% Solution not available.
-if flag
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available',sprintf(' #%g',find(inx)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 % List of variables in rows and columns of `S` and `D`.

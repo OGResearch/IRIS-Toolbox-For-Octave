@@ -85,30 +85,42 @@ nAlt = size(This.Assign,3);
 X = nan([ny+nx,ne,nPer,nAlt]);
 Y = nan([ny+nx,ne,nPer,nAlt]);
 
-% Calculate FEVD for all solved parameterisations that with no
-% cross-correlated shocks.
-[~,noSolution] = isnan(This,'solution');
-nonZeroCorr = permute(any(This.stdcorr(1,ne+1:end,:),2),[1,3,2]);
-for iAlt = find(~noSolution & ~nonZeroCorr)
+isZeroCorr = true(1,nAlt);
+isSolution = true(1,nAlt);
+for iAlt = 1 : nAlt
+    
+    % Continue immediately if some cross-corrs are non-zero.
+    isZeroCorr(iAlt) = all(This.stdcorr(1,ne+1:end,iAlt) == 0);
+    if ~isZeroCorr(iAlt)
+        continue
+    end
+    
     [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
+    
+    % Continue immediately if solution is not available.
+    isSolution(iAlt) = all(~isnan(T(:)));
+    if ~isSolution(iAlt)
+        continue
+    end
+    
     [Xi,Yi] = timedom.fevd(T,R,K,Z,H,D,Za,Omg,nPer);
     X(:,:,:,iAlt) = Xi;
     Y(:,:,:,iAlt) = Yi;
 end
 
-% Report solution(s) not available.
-if any(noSolution)
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(noSolution)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
-% Report parameterisations with non-zero cross-correlations.
-if any(nonZeroCorr)
-    temp = sprintf(' #%g',find(nonZeroCorr));
+% Report non-zero cross-correlations.
+if ~all(isZeroCorr)
     utils.warning('model', ...
         ['Cannot compute FEVD for parameterisations with ', ...
-        'non-zero cross-correlations:',temp,'.']);
+        'non-zero cross-correlations:%s.'], ...
+        preparser.alt2str(~isZeroCorr));
 end
 
 List = {[This.solutionvector{1:2}],This.solutionvector{3}};

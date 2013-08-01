@@ -34,17 +34,24 @@ nRun = length(Select);
 % period.
 Phi = nan(ny+nx,nRun,nPer+1,nAlt);
 
-[flag,inx] = isnan(This,'solution');
-for iAlt = find(~inx)
+isSolution = true(1,nAlt);
+for iAlt = 1 : nAlt
     [T,R,K,Z,H,D,U] = mysspace(This,iAlt,false); %#ok<ASGLU>
+    
+    % Continue immediately if solution is not available.
+    isSolution(iAlt) = all(~isnan(T(:)));
+    if ~isSolution(iAlt)
+        continue
+    end    
+    
     Phi(:,:,:,iAlt) = Func(T,R,[],Z,H,[],U,[],iAlt,nPer);
 end
 
-% Report solutions not available.
-if flag
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(inx)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 % Create output data

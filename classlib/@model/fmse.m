@@ -73,18 +73,24 @@ nx = length(This.solutionid{2});
 nAlt = size(This.Assign,3);
 X = zeros(ny+nx,ny+nx,nPer,nAlt);
 
-% Compute FMSE for all available parameterisations.
-[flag,inx] = isnan(This,'solution');
-for iAlt = find(~inx)
+isSolution = true(1,nAlt);
+for iAlt = 1 : nAlt
     [T,R,K,Z,H,D,U,Omg] = mysspace(This,iAlt,false);
+    
+    % Continue immediately if solution is not available.
+    isSolution(iAlt) = all(~isnan(T(:)));
+    if ~isSolution(iAlt)
+        continue
+    end
+    
     X(:,:,:,iAlt) = timedom.fmse(T,R,K,Z,H,D,U,Omg,nPer);
 end
 
-% Some solution(s) not available.
-if flag
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(inx)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 List = [This.solutionvector{1:2}];

@@ -326,7 +326,7 @@ use = simulate.antunantfunc(use,opt.anticipate);
 % Main loop
 %-----------
 
-nanSolInx = false(1,nLoop);
+isSolution = true(1,nLoop);
 use.progress = opt.progress && opt.display == 0;
 
 if use.progress
@@ -346,7 +346,7 @@ for iLoop = 1 : nLoop
     
     % Simulation is not available, return immediately.
     if any(~isfinite(use.T(:)))
-        nanSolInx(iLoop) = true;
+        isSolution(iLoop) = false;
         continue
     end
         
@@ -423,9 +423,9 @@ for iLoop = 1 : nLoop
     % Add equation labels to add-factor and discrepancy series.
     if isNonlin && nargout > 2
         label = use.label;
-        nsegment = length(use.segment);
+        nSegment = length(use.segment);
         AddFact{iLoop} = tseries(Range(1), ...
-            permute(AddFact{iLoop},[2,1,3]),label(1,:,ones(1,nsegment)));
+            permute(AddFact{iLoop},[2,1,3]),label(1,:,ones(1,nSegment)));
         Discr{iLoop} = tseries(Range(1), ...
             permute(Discr{iLoop},[2,1,3]),label);
     end
@@ -442,10 +442,10 @@ if isTune
 end
 
 % Report solutions not available.
-if any(nanSolInx)
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(nanSolInx)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 % Convert hdataobj to struct. The comments assigned to the output series

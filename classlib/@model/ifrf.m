@@ -67,19 +67,26 @@ nAlt = size(This.Assign,3);
 W = zeros(ny+nx,ne,nFreq,nAlt);
 
 if ne > 0
-    [flag,inx] = isnan(This,'solution');
-    for iAlt = find(~inx)
+    isSolution = true(1,nAlt);
+    for iAlt = 1 : nAlt
         [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
+        
+        % Continue immediately if solution is not available.
+        isSolution(iAlt) = all(~isnan(T(:)));
+        if ~isSolution(iAlt)
+            continue
+        end
+        
         % Call Freq Domain package.
-        W(:,:,:,iAlt) = timedom.ifrf(T,R,K,Z,H,D,Za,Omg,Freq);
+        W(:,:,:,iAlt) = freqdom.ifrf(T,R,K,Z,H,D,Za,Omg,Freq);
     end
 end
 
-% Report solutions not available.
-if flag
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(inx)));
+        'Solution(s) not available:%s.', ...
+        sprintf(' #%g',find(~isSolution)));
 end
 
 List = { ...
@@ -88,7 +95,7 @@ List = { ...
     };
     
 if isNamedmat
-    W = namedmat(W{1},List{1},List{2});
+    W = namedmat(W,List{1},List{2});
 end
 
 % Select variables.

@@ -66,6 +66,10 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+utils.warning('obsolete', ...
+    ['The function forecast(...) is obsolete, and will be removed from ', ...
+    'a future version of IRIS. Use jforecast(...) instead.']);
+
 % Old syntax for conditioning database.
 tune = [];
 if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
@@ -579,8 +583,8 @@ end
 % Expansion not avaiable.
 if any(nansolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        sprintf(' #%g',find(nansolution)));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(nansolution));
 end
 
 end

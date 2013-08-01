@@ -138,22 +138,21 @@ CC = nan(ny+nx,ny+nx,opt.order+1,nCont,nAlt);
 sspaceVec = [This.solutionvector{1:2}];
 [isFilter,filter,freq,applyTo] = freqdom.applyfilteropt(opt,[],sspaceVec);
 
-% Solution not available for some parameterisations.
-[flag,nanSol] = isnan(This,'solution');
-if flag
-    utils.warning('model', ...
-        '#Solution_not_available',preparser.alt2str(nanSol));
-end
 
 % Call timedom package to compute autocovariance function.
 isContributions = opt.contributions;
 acfOrder = opt.order;
+isSolution = true(1,nAlt);
 for iAlt = 1 : nAlt
-    if nanSol(iAlt)
-        continue
-    end
     isExpand = false;
     [T,R,~,Z,H,~,U,Omg] = mysspace(This,iAlt,isExpand);
+
+    % Continue immediately if solution is not available.
+    isSolution(iAlt) = all(~isnan(T(:)));
+    if ~isSolution(iAlt)
+        continue
+    end
+
     for iCont = 1 : nCont
         if isContributions
             inx = false(1,ne);
@@ -176,6 +175,13 @@ for iAlt = 1 : nAlt
                 This.eigval(1,:,iAlt),acfOrder);
         end
     end
+end
+
+% Report NaN solutions.
+if ~all(isSolution)
+    utils.warning('model', ...
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 % Squeeze the covariance matrices if ~contributions.

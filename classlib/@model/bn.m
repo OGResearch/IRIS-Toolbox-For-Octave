@@ -80,7 +80,7 @@ nLoop = max([nData,nAlt]);
 hd = hdataobj(This,struct('IsPreSample',false),nPer,nLoop);
 
 repeat = ones(1,nPer);
-solAvailable = true(1,nAlt);
+isSolution = true(1,nAlt);
 diffStationary = true(1,nAlt);
 
 for iLoop = 1 : nLoop
@@ -89,10 +89,13 @@ for iLoop = 1 : nLoop
         T = This.solution{1}(:,:,iLoop);
         Tf = T(1:nf,:);
         Ta = T(nf+1:end,:);
-        if any(isnan(Ta(:)))
-            solAvailable(iLoop) = false;
+        
+        % Continue immediate if solution is not available.
+        isSolution(iLoop) = all(~isnan(T(:)));
+        if ~isSolution(iLoop)
             continue
         end
+        
         nUnit = mynunit(This,iLoop);
         if ~iseye(Ta(1:nUnit,1:nUnit))
             diffStationary(iLoop) = false;
@@ -155,11 +158,11 @@ for iLoop = 1 : nLoop
     
 end
 
-% Solutions not available.
-if any(~solAvailable)
+% Report NaN solutions.
+if ~all(isSolution)
     utils.warning('model', ...
-        '#Solution_not_available', ...
-        preparser.alt2str(~solAvailable));
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
 end
 
 % Parameterisations that are not difference-stationary.
