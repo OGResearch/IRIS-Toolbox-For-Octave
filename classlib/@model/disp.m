@@ -20,20 +20,32 @@ end
 
 if isempty(This.Assign)
     fprintf('\tempty %s object\n',thisClass);
+    doPrintNEqtn();
 else
     [~,inx] = isnan(This,'solution');
-    fprintf('\t%s %s object: %g parameterisation(s)\n', ...
+    fprintf('\t%s %s object: [%g] parameterisation(s)\n', ...
         thisLinear,thisClass,nAlt);
-    nSolution = sum(~inx);
-    if nSolution == 0
-        howmany = 'no parameterisation';
-    else
-        howmany = sprintf('a total of %g parameterisation(s)',nSolution);
-    end
-    fprintf('\tsolution(s) available for %s\n',howmany);
+    doPrintNEqtn();
+    doPrintSolution();
 end
 
 disp@userdataobj(This);
 disp(' ');
+
+% Nested functions.
+
+%**************************************************************************
+    function doPrintNEqtn()
+        nm = sum(This.eqtntype == 1);
+        nt = sum(This.eqtntype == 2);
+        fprintf('\tnumber of equations: [%g %g]\n',nm,nt);
+    end % doPrintNEqtn().
+
+%**************************************************************************
+    function doPrintSolution()
+        nSolution = sum(~inx);
+        fprintf('\tsolution(s) available: [%g] parameterisation(s)\n', ...
+            nSolution);
+    end % doPrintSolution().
 
 end
