@@ -32,15 +32,15 @@ catch
 end
 
 % Handle carry-around functions.
-if iscell(This.Export)
-    Export = struct('filename',{},'content',{});
-    for i = 1 : 2 : length(This.Export)
-        Export(end+1).filename = This.Export{i}; %#ok<AGROW>
-        Export(end).content = This.Export{i+1};
+try %#ok<TRYNC>
+    if iscell(This.Export)
+        Export = struct('filename',{},'content',{});
+        for i = 1 : 2 : length(This.Export)
+            Export(end+1).filename = This.Export{i}; %#ok<AGROW>
+            Export(end).content = This.Export{i+1};
+        end
+        This.Export = Export;
     end
-    This.Export = Export;
-elseif isempty(This.Export)
-    This.Export = struct('filename',{},'content',{});
 end
 
 % Create and save carry-around files.
