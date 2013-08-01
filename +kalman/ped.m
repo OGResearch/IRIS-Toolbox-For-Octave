@@ -67,6 +67,7 @@ if ~S.isObjOnly
     S.pe = nan(ny,1,nPer);
     
     S.F = nan(ny,ny,nPer);
+    S.FF = nan(ny,ny,nPer);
     S.Fd = nan(1,nPer);
     S.M = nan(ny,nPOut+nInit,nPer);
     
@@ -320,6 +321,7 @@ S.Sy = [];
             S.y0(:,1,t) = S.y0(:,1,t) + d(:,td);
         end
         S.F(:,:,t) = S.Z*P*S.Z.' + Sy;
+        S.FF(jy,jy,t) = F;
         S.K0(:,jy,t) = K0;
         S.K1(:,jy,t) = K1;
         S.Q(:,:,t) = [Q1,Q2];

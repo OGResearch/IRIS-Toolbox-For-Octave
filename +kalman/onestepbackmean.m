@@ -1,4 +1,4 @@
-function [Y2,F2,B2,E2,r] = onestepbackmean(S,Time,Pe,A0,F0,YDelta,D,r)
+function [Y2,F2,B2,E2,r,A2] = onestepbackmean(S,Time,Pe,A0,F0,YDelta,D,r)
 % onestepbackmse  [Not a public function] One-step backward smoothing for point estimates.
 %
 % Backed IRIS function.
@@ -19,7 +19,7 @@ Ra = S.Ra(:,1:ne);
 Omg = S.Omg(:,:,min(Time,end));
 
 jy = S.yindex(:,Time);
-Fipe = S.F(jy,jy,Time) \ Pe(jy,:);
+Fipe = S.FF(jy,jy,Time) \ Pe(jy,:);
 
 nCol = size(Pe,2);
 Y2 = nan(ny,nCol);
