@@ -1,4 +1,4 @@
-function vec = myvector(this,varargin)
+function Vec = myvector(This,varargin)
 % myvector  [Not a public function] Vectors of variables in the state space.
 %
 % Backed IRIS function.
@@ -7,38 +7,38 @@ function vec = myvector(this,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**********************************************************************
+%--------------------------------------------------------------------------
 
 if ischar(varargin{1})
     type = lower(varargin{1});
     switch type
         case 'y'
             % Vector of measurement variables.
-            realkey = this.solutionid{1};
-            vec = this.name(realkey);
-            vec = sub_wrapinlog(vec,this.log(realkey));
+            inx = This.nametype == 1;
+            Vec = This.name(inx);
+            Vec = xxWrapInLog(Vec,This.log(inx));
         case 'x'
             % Vector of transition variables.
-            realkey = real(this.solutionid{2});
-            imagkey = imag(this.solutionid{2});
-            vec = this.name(realkey);
-            for i = find(imagkey ~= 0)
-                vec{i} = sprintf('%s{%g}',vec{i},imagkey(i));
+            pos = real(This.solutionid{2});
+            shift = imag(This.solutionid{2});
+            Vec = This.name(pos);
+            for i = find(shift ~= 0)
+                Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
             end
-            vec = sub_wrapinlog(vec,this.log(realkey));
+            Vec = xxWrapInLog(Vec,This.log(pos));
         case 'e'
             % Vector of shocks.
-            realkey = this.solutionid{3};
-            vec = this.name(realkey);
+            inx = This.nametype == 3;
+            Vec = This.name(inx);
     end
 else
-    realkey = real(varargin{1});
-    imagkey = imag(varargin{1});
-    vec = this.name(realkey);
-    for i = find(imagkey ~= 0)
-        vec{i} = sprintf('%s{%g}',vec{i},imagkey(i));
+    pos = real(varargin{1});
+    shift = imag(varargin{1});
+    Vec = This.name(pos);
+    for i = find(shift ~= 0)
+        Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
     end
-    vec = sub_wrapinlog(vec,this.log(realkey));
+    Vec = xxWrapInLog(Vec,This.log(pos));
 end
 
 end
@@ -46,9 +46,11 @@ end
 % Subfunctions.
 
 %**************************************************************************
-function vec = sub_wrapinlog(vec,islog)
-for i = find(islog)
-    vec{i} = sprintf('log(%s)',vec{i});
+function Vec = xxWrapInLog(Vec,Log)
+
+for i = find(Log)
+    Vec{i} = sprintf('log(%s)',Vec{i});
 end
+
 end
-% sub_wrapinlog().
+% xxWrapInLog().

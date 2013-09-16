@@ -91,7 +91,8 @@ for iLoop = 1 : nLoop
         % Fourier transform of steady state.
         isSstate = false;
         if ~LikOpt.deviation
-            S = mytrendarray(This,This.solutionid{1},1:nPer,false,iLoop);
+            id = find(This.nametype == 1);
+            S = mytrendarray(This,id,1:nPer,false,iLoop);
             isSstate = any(S(:) ~= 0);
             if isSstate
                 S = fft(S.').';

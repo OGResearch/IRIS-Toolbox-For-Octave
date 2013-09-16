@@ -167,7 +167,7 @@ R(:,inx) = [];
 r(~inx) = 0;
 end % xxplainrestrict2().
 
-%********************************************************************
+%**************************************************************************
 function [A,C,G] = xxAssignPlainRestrict(Opt,NY,NK,NG,NLag)
 A = nan(NY,NY,NLag);
 C = nan(NY,NK);

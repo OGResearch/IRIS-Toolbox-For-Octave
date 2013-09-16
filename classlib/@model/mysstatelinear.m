@@ -96,19 +96,18 @@ doRefresh();
         dx(abs(dx) <= realSmall) = 0;
         realId = real(This.solutionid{2});
         imagId = imag(This.solutionid{2});
-        inx = imagId == 0;
-        realId(~inx) = [];
-        x(~inx) = [];
-        dx(~inx) = [];
+        iinx = imagId == 0;
+        realId(~iinx) = [];
+        x(~iinx) = [];
+        dx(~iinx) = [];
         This.Assign(1,realId,iAlt) = x(:).' + 1i*dx(:).';
         
         % Measurement variables
         %-----------------------
         if ny > 0
-            realId = real(This.solutionid{1});
             y = Z(:,nUnit+1:end)*a2 + D;
             dy = Z(:,1:nUnit)*da1;
-            This.Assign(1,realId,iAlt) = y(:).' + 1i*dy(:).';
+            This.Assign(1,This.nametype == 1,iAlt) = y(:).' + 1i*dy(:).';
         end
     end % doOneSstate().
 

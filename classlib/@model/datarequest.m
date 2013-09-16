@@ -237,11 +237,9 @@ end
 %**************************************************************************
     function Y = doData2Y()
         if ~isempty(dMean)
-            realId = real(This.solutionid{1});
-            imagId = imag(This.solutionid{1});
-            tmpLog = This.log(realId);
-            Y = db2array(dMean,This.name(realId),Range, ...
-                imagId,tmpLog,warn);
+            inx = This.nametype == 1;
+            Y = db2array(dMean,This.name(inx),Range, ...
+                [],This.log(inx),warn);
             Y = permute(Y,[2,1,3]);
         end
     end % doData2Y().
@@ -249,10 +247,8 @@ end
 %**************************************************************************
     function E = doData2E()
         if ~isempty(dMean)
-            realid = real(This.solutionid{3});
-            imagid = imag(This.solutionid{3});
-            E = db2array(dMean,This.name(realid),Range, ...
-                imagid,This.log(realid),warn);
+            inx = This.nametype == 3;
+            E = db2array(dMean,This.name(inx),Range,[],[],warn);
             E = permute(E,[2,1,3]);
         end
         eReal = real(E);
