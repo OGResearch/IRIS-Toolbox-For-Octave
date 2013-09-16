@@ -16,6 +16,11 @@ isRebuild = ~isa(This,'model');
 
 This = modelobj.loadobj(This);
 
+if ~isa(This,'model') && ~isfield(This,'d2s')
+    % Convert meta to D2S.
+    doD2s();
+end
+
 if ~isa(This,'model')
     if isfield(This,'eqtnnonlin')
         This.nonlin = This.eqtnnonlin;
@@ -105,22 +110,8 @@ if ~isempty(This.Expand) ...
 end
 
 if ~isempty(This.Assign) && isempty(This.stdcorr)
-    ne = sum(This.nametype == 3);
-    nname = length(This.name);
-    stdvec = This.Assign(1,end-ne+1:end,:);
-    This.stdcorr = stdvec;
-    This.stdcorr(end+(1:ne*(ne-1)/2)) = 0;
-    This.Assign(:,end-ne+1:end,:) = [];
-    This.Assign0(:,end-ne+1:end,:) = [];
-    occur = reshape(full(This.occur), ...
-        [size(This.occur,1),nname,size(This.occur,2)/nname]);
-    occur(:,end-ne+1:end,:) = [];
-    This.occur = sparse(occur(:,:));
-    This.occurS = occur(:,end-ne+1:end);
-    This.name(:,end-ne+1:end) = [];
-    This.nametype(:,end-ne+1:end) = [];
-    This.namelabel(:,end-ne+1:end) = [];
-    This.log(:,end-ne+1:end) = [];
+    % Separate std devs from Assign, and create zero cross corrs.
+    doStdcorr();
 end
 
 if isempty(This.solutionvector) ...
@@ -178,5 +169,51 @@ end
 if isRebuild
     This = model(This);
 end
+
+% Nested functions.
+
+%**************************************************************************
+    function doStdcorr()
+        ne = sum(This.nametype == 3);
+        nName = length(This.name);
+        stdvec = This.Assign(1,end-ne+1:end,:);
+        This.stdcorr = stdvec;
+        This.stdcorr(end+(1:ne*(ne-1)/2)) = 0;
+        This.Assign(:,end-ne+1:end,:) = [];
+        This.Assign0(:,end-ne+1:end,:) = [];
+        occur = reshape(full(This.occur), ...
+            [size(This.occur,1),nName,size(This.occur,2)/nName]);
+        occur(:,end-ne+1:end,:) = [];
+        This.occur = sparse(occur(:,:));
+        This.occurS = occur(:,end-ne+1:end);
+        This.name(:,end-ne+1:end) = [];
+        This.nametype(:,end-ne+1:end) = [];
+        This.namelabel(:,end-ne+1:end) = [];
+        This.log(:,end-ne+1:end) = [];
+    end % doStdcorr().
+
+%**************************************************************************
+    function doD2s()
+        This.d2s = struct();
+        % Positions in derivative matrices.
+        This.d2s.y_ = This.metaderiv.y;
+        This.d2s.xu1_ = This.metaderiv.uplus;
+        This.d2s.xu_ = This.metaderiv.u;
+        This.d2s.xp1_ = This.metaderiv.pplus;
+        This.d2s.xp_ = This.metaderiv.p;
+        This.d2s.e_ = This.metaderiv.e;
+        % Positions in unsolved system matrices.
+        This.d2s.y = This.metasystem.y;
+        This.d2s.xu1 = This.metasystem.uplus;
+        This.d2s.xu = This.metasystem.u;
+        This.d2s.xp1 = This.metasystem.pplus;
+        This.d2s.xp = This.metasystem.p;
+        This.d2s.e = This.metasystem.e;
+        % Dynamic identities.
+        This.d2s.ident1 = This.systemident.xplus;
+        This.d2s.ident = This.systemident.x;
+        % Non-predetermined variables removed from solution.
+        This.d2s.remove = This.metadelete;
+    end % doD2s().
 
 end
