@@ -5,7 +5,7 @@ function [OutputFile,Count] = publish(This,OutputFile,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 % The following options passed down to latex.compilepdf:
-% * `'cd='`
+% * `'cd='` (obsolete)
 % * `'display='`
 % * `'rerun='`
 % and we need to capture them in output varargin.

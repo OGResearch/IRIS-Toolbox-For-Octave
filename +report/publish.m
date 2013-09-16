@@ -33,12 +33,6 @@
 % * `'author='` [ char | *empty* ] - List of authors on the title page
 % separated with `\and` or `\\`.
 %
-% * `'cd='` [ `true` | *`false`* ] - If `true` do not use the `pdflatex`
-% option `-include-directory` and instead change the directory (`cd`)
-% temporarily to the location of the input file; this is a workaround for
-% systems where `pdflatex` does not support the option
-% `-include-directory`.
-%
 % * `'cleanup='` [ *`true`* | `false` ] - Delete all temporary files
 % created when compiling the report.
 %
