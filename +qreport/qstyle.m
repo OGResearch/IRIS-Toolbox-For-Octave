@@ -178,7 +178,7 @@ for i = 1 : length(list)
         try
             if ischar(value) && strncmp(strtrim(value),'!!',2)
                 % Execture style processor.
-                value = qreport.styleprocessor(H(j),value);
+                value = grfun.mystyleprocessor(H(j),value);
             end
             set(H(j),name,value);
         catch Error

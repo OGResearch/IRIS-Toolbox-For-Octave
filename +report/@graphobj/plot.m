@@ -18,7 +18,7 @@ cla(Ax);
 
 % Run user-supplied style pre-processor on the axes object.
 if ~isempty(This.options.preprocess)
-    qreport.styleprocessor(Ax,This.options.preprocess);
+    grfun.mystyleprocessor(Ax,This.options.preprocess);
 end
 
 % Array of legend entries.
@@ -137,7 +137,7 @@ end
 
 % Run user-supplied style post-processor.
 if ~isempty(This.options.postprocess)
-    qreport.styleprocessor(Ax,This.options.postprocess);
+    grfun.mystyleprocessor(Ax,This.options.postprocess);
 end
 
 % Nested functions.
