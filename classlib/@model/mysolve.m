@@ -40,13 +40,13 @@ end
 eigValTol = This.Tolerance(1);
 realSmall = getrealsmall();
 
-ny = length(This.systemid{1});
+ny = sum(This.nametype == 1);
 nx = length(This.systemid{2});
 nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;
-ne = length(This.systemid{3});
+ne = sum(This.nametype == 3);
 nn = sum(This.nonlin);
-fKeep = ~This.metadelete;
+fKeep = ~This.d2s.remove;
 nFKeep = sum(fKeep);
 nAlt = size(This.Assign,3);
 
@@ -308,12 +308,12 @@ end
         % Steady state for non-linear models. They are needed in non-linear
         % models to back out the constant vectors.
         if ~Opt.linear
-            ysstate = ...
-                mytrendarray(This,This.solutionid{1},0,false,ialt);
-            xfsstate = ...
-                mytrendarray(This,This.solutionid{2}(1:nFKeep),[-1,0],false,ialt);
-            xbsstate = ...
-                mytrendarray(This,This.solutionid{2}(nFKeep+1:end),[-1,0],false,ialt);
+            ysstate = mytrendarray(This, ...
+                find(This.nametype == 1),0,false,ialt);
+            xfsstate = mytrendarray(This, ...
+                This.solutionid{2}(1:nFKeep),[-1,0],false,ialt);
+            xbsstate = mytrendarray(This, ...
+                This.solutionid{2}(nFKeep+1:end),[-1,0],false,ialt);
             asstate = U \ xbsstate;
             if any(isnan(asstate(:)))
                 flag = false;
