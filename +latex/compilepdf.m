@@ -19,18 +19,9 @@ end
 
 [inpPath,inpTitle] = fileparts(InpFile);
 
-% Some PDFLATEX executables don't support the option `-include-directory`,
-% and only accept a filename (no path). Using the option `'cd=' true` is a
-% workaround.
-if ~opt.cd
-    inclDir = sprintf('-include-directory="%s" ',inpPath);
-    outpDir = sprintf('-output-directory="%s" ',inpPath);
-    haltOnError = '-halt-on-error ';
-else
-    inclDir = ' ';
-    outpDir = ' ';
-    haltOnError = ' ';
-end
+% TODO: We need to verify that all pdflatex distributions support the
+% option `-halt-on-error`.
+haltOnError = '-halt-on-error ';
 
 systemOpt = {};
 if opt.echo
@@ -41,13 +32,12 @@ end
 command = [ ...
     '"',config.pdflatexpath,'" ', ...
     haltOnError, ...
-    inclDir, ...
-    outpDir, ...
     inpTitle, ...
     ];
 
-if opt.cd
-    thisDir = pwd();
+% Capture the current directory, and switch to the input file directory.
+thisDir = pwd();
+if ~isempty(inpPath)
     cd(inpPath);
 end
 
@@ -66,9 +56,8 @@ while true
     end
 end
 
-if opt.cd
-    cd(thisDir);
-end
+% Return back to the original directory.
+cd(thisDir);
 
 if opt.display || status ~= 0
     disp(result);
