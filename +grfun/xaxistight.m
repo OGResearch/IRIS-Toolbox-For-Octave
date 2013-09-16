@@ -1,21 +1,21 @@
-function yaxistight(varargin)
-% yaxistight  Make y-axis tight.
+function xaxistight(varargin)
+% xaxistight  Make x-axis tight.
 %
 % Syntax
 % =======
 %
-%     grfun.yaxistight(Ax)
+%     grfun.xaxistight(Ax)
 %
 % Input arguments
 % ================
 %
-% * `Ax` [ numeric ] - Handles to axes objects whose vertical axes will be
-% made tight.
+% * `Ax` [ numeric ] - Handles to axes objects whose horizontal axes will
+% be made tight.
 %
 % Description
 % ============
 %
-% Behaviour of `grfun.yaxistight` differs from the standard function `axis`
+% Behaviour of `grfun.xaxistight` differs from the standard function `axis`
 % in that it disregards `grfun.vline`, `grfun.zeroline` and
 % `grfun.highlight` objects when determining the minimum and maximum on the
 % vertical axis.
@@ -44,13 +44,13 @@ for iAx = Ax
         '-and','-not','tag','zeroline');
     lim = objbounds(ch);
     if isempty(lim)
-        yLim = get(iAx,'yLim');
+        xLim = get(iAx,'xLim');
     else
-        yLim = lim(3:4);
+        xLim = lim(1:2);
     end
     
-    if any(~isinf(yLim)) && yLim(1) < yLim(2)
-        set(iAx,'yLim',yLim,'yLimMode','manual');
+    if any(~isinf(xLim)) && xLim(1) < xLim(2)
+        set(iAx,'xLim',xLim,'xLimMode','manual');
     end
     
 end

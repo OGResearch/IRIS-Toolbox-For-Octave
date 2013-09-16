@@ -17,7 +17,7 @@ function SET = mystyleprocessor(H,Command) %#ok<STOUT>
 
 Command = strtrim(Command);
 if strncmp(Command,'!!',2)
-    Command = Command{1}(3:end);
+    Command = Command(3:end);
 end
 
 % Test for L (legend handle) in the command; if present, try to find the

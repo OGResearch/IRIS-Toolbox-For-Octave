@@ -367,11 +367,10 @@ switch get(H,'type')
                     'yTickLabelMode','manual');
             case 'tight'
                 if isequal(Value,true) || isequal(lower(Value),'on')
-                    isTseries = getappdata(H);
-                    if isequal(isTseries,true)
-                        grfun.yaxistight(H);
-                    else
-                        axis(H,'tight');
+                    grfun.yaxistight(H);
+                    isTseries = getappdata(H,'tseries');
+                    if ~isequal(isTseries,true)
+                        grfun.xaxistight(H);
                     end
                 end
             case 'clicktocopy'

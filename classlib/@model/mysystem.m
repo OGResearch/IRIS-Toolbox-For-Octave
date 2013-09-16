@@ -13,7 +13,7 @@ nm = sum(This.eqtntype == 1);
 nt = sum(This.eqtntype == 2);
 mix = find(EqSelect(1:nm));
 tix = find(EqSelect(nm+1:end));
-nf = sum(imag(m.systemid{2}) >= 0);
+nf = sum(imag(This.systemid{2}) >= 0);
 
 System = This.system0;
 
