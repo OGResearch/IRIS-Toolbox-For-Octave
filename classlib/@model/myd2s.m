@@ -101,7 +101,6 @@ m.d2s.y = 1 : ny;
 
 % Delete double occurences. These emerge whenever a variable has maxshift >
 % 0 and minshift < 0.
-%m.metadelete = false(1,nu);
 m.d2s.remove = false(1,nu);
 for i = 1 : nu
     m.d2s.remove(i) = ...
