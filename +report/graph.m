@@ -81,6 +81,32 @@
 % Example
 % ========
 %
+% Create a one-page report with a chart in on the LHS and the legend moved
+% to the RHS. Use the function `grfun.movetosubplot` in the option
+% `'postProcess='`, referring to `L` (handle to the legend object
+% associated with the respective axes object) to move the legend around.
+%
+%     % Create random data series.
+%     A = tseries(1:10,@rand);
+%     B = tseries(1:10,@rand);
+% 
+%     % Open a new report.
+%     x = report.new();
+% 
+%     % Open a new figure in the report with a 1-by-2 layout.
+%     x.figure('My Figure','subplot=',[1,2]);
+%
+%         % The graph will be placed in the LHS space.
+%         % Use `grfun.movetosubplot` to move the legend to the RHS space.
+%         x.graph('My Graph','legend=',true, ...
+%             'postProcess=','grfun.movetosubplot(L,1,2,2)');
+%
+%             x.series('Series A',A);
+%             x.series('Series B',B);
+% 
+%     x.publish('test.pdf');
+%     open test.pdf;
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
