@@ -342,15 +342,21 @@ for i = 1 : length(Q)
                 % name. Substitute '_' for any [^\w]. If not a valid Matlab
                 % name, replace with "Panel#".
                 if Opt.outputdata && addToOutput
-                    tmpName = [sprintf(Opt.prefix,count), ...
-                        regexprep(tit,'[^\w]+','_')];
-                    if ~isvarname(tmpName)
-                        tmpName = sprintf('Panel%g',count);
+                    plotDbName = tit;
+                    plotDbName = regexprep(plotDbName,'[ ]*//[ ]*','___');
+                    plotDbName = regexprep(plotDbName,'[^\w]+','_');
+                    plotDbName = [ ...
+                        sprintf(Opt.prefix,count), ...
+                        plotDbName ...
+                        ]; %#ok<AGROW>
+                    if ~isvarname(plotDbName)
+                        plotDbName = sprintf('Panel%g',count);
                     end
                     try
-                        PlotDb.(tmpName) = tseries(range,data,finalLegend);
+                        PlotDb.(plotDbName) = ...
+                            tseries(range,data,finalLegend);
                     catch %#ok<CTCH>
-                        PlotDb.(tmpName) = NaN;
+                        PlotDb.(plotDbName) = NaN;
                     end
                 end
                 if ~isempty(Opt.xlabel)
