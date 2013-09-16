@@ -9,22 +9,18 @@ function disp(This)
 
 %--------------------------------------------------------------------------
 
-thisClass = class(This);
-nAlt = size(This.Assign,3);
-
-if This.linear
-    thisLinear = 'linear';
-else
-    thisLinear = 'non-linear';
-end
-
 if isempty(This.Assign)
-    fprintf('\tempty %s object\n',thisClass);
+    fprintf('\tempty model object\n');
     doPrintNEqtn();
 else
-    [~,inx] = isnan(This,'solution');
-    fprintf('\t%s %s object: [%g] parameterisation(s)\n', ...
-        thisLinear,thisClass,nAlt);
+    nAlt = size(This.Assign,3);
+    fprintf('\t');
+    if This.linear
+        fprintf('linear ');
+    else
+        fprintf('non-linear ');
+    end
+    fprintf('model object: [%g] parameterisation(s)\n',nAlt);
     doPrintNEqtn();
     doPrintSolution();
 end
@@ -43,6 +39,7 @@ disp(' ');
 
 %**************************************************************************
     function doPrintSolution()
+        [~,inx] = isnan(This,'solution');
         nSolution = sum(~inx);
         fprintf('\tsolution(s) available: [%g] parameterisation(s)\n', ...
             nSolution);
