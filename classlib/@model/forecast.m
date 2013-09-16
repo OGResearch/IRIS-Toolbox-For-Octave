@@ -33,8 +33,8 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % Options
 % ========
 %
-% * `'anticipate='` [ *`true`* | `false` ] - If true, real future shocks are
-% anticipated, imaginary are unanticipated; vice versa if false.
+% * `'anticipate='` [ *`true`* | `false` ] - If true, real future shocks
+% are anticipated, imaginary are unanticipated; vice versa if false.
 %
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
@@ -46,10 +46,11 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % conditions if found in the input data or treat the initical conditions as
 % fixed.
 %
-% * `'meanOnly='` [ `true` | *`false`* ] - Return only mean data, i.e. point
-% estimates.
+% * `'meanOnly='` [ `true` | *`false`* ] - Return only mean data, i.e.
+% point estimates.
 %
-% * `'output='` [ *'auto'* | 'dbase' | 'dpack' ] - Format of output data.
+% * `'output='` [ *`'auto'`* | `'dbase'` | `'dpack'` ] - Format of output
+% data.
 %
 % Description
 % ============

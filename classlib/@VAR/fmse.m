@@ -29,7 +29,7 @@ function [X,YNames,D] = fmse(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ 'dbase' | *'tseries'* ] - Format of output data.
+% * `'output='` [ `'dbase'` | *`'tseries'`* ] - Format of output data.
 %
 % Description
 % ============
@@ -37,7 +37,6 @@ function [X,YNames,D] = fmse(This,Time,varargin)
 % Example
 % ========
 %
-%}
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.

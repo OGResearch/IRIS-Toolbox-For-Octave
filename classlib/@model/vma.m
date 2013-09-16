@@ -26,8 +26,8 @@ function [Phi,List] = vma(This,NPer,varargin)
 % Option
 % =======
 %
-% * `'output='` [ *'namedmat'* | numeric ] - Output matrix `Phi` will be
-% either a namedmat object or a plain numeric array; if the option
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `Phi` will
+% be either a namedmat object or a plain numeric array; if the option
 % `'select='` is used, `'output='` is always `'namedmat'`.
 %
 % * `'select='` [ cellstr | *`Inf`* ] - Return the VMA matrices for

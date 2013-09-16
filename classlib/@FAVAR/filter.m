@@ -36,14 +36,14 @@ function [This,D,CC,F,U,E] = filter(This,Inp,Range,varargin)
 % Options
 % ========
 %
-% * `'cross='` [ *true* | false | numeric ] - Run the filter with the
+% * `'cross='` [ *`true`* | `false` | numeric ] - Run the filter with the
 % off-diagonal elements in the covariance matrix of idiosyncratic
 % residuals; if false all cross-covariances are reset to zero; if a number
 % between zero and one, all cross-covariances are multiplied by that
 % number.
 %
-% * `'invFunc='` [ *'auto'* | function_handle ] - Inversion method for the
-% FMSE matrices.
+% * `'invFunc='` [ *`'auto'`* | function_handle ] - Inversion method for
+% the FMSE matrices.
 %
 % * `'meanOnly='` [ `true` | *`false`* ] - Return only mean data, i.e. point
 % estimates.
@@ -54,10 +54,11 @@ function [This,D,CC,F,U,E] = filter(This,Inp,Range,varargin)
 % `forecast` functions will re-use these matrices until `filter` or
 % `forecast` is called.
 %
-% * `'output='` [ *'auto'* | 'dbase' | 'tseries' ] - Format of output data.
+% * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
+% data.
 %
-% * `'tolerance='` [ numeric | *0* ] - Numerical tolerance under which two
-% FMSE matrices computed in two consecutive periods will be treated as
+% * `'tolerance='` [ numeric | *`0`* ] - Numerical tolerance under which
+% two FMSE matrices computed in two consecutive periods will be treated as
 % equal and their inversions will be re-used, not re-computed.
 %
 % Description

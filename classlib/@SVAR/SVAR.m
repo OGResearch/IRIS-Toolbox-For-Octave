@@ -108,8 +108,8 @@ classdef SVAR < VAR
             % * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
             % data.
             %
-            % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
-            % window.
+            % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the
+            % command window.
             %
             % * `'rank='` [ numeric | *`Inf`* ] - Reduced rank of the covariance matrix of
             % structural residuals when `'method=' 'svd'`; `Inf` means full rank is

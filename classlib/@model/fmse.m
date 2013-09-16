@@ -31,8 +31,8 @@ function [X,List,D] = fmse(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *'namedmat'* | numeric ] - Output matrix `M` will be
-% either a namedmat object or a plain numeric array; if the option
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `M` will
+% be either a namedmat object or a plain numeric array; if the option
 % `'select='` is used, `'output='` is always `'namedmat'`.
 %
 % * `'select='` [ cellstr | *`Inf`* ] - Return FMSE for selected variables

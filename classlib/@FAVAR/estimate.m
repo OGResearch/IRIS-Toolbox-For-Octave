@@ -52,14 +52,15 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % Options
 % ========
 %
-% * `'cross='` [ *true* | false | numeric ] - Keep off-diagonal elements in
-% the covariance matrix of idiosyncratic residuals; if false all
-% cross-covariances are reset to zero; if a number between zero and one,
-% all cross-covariances are multiplied by that number.
+% * `'cross='` [ *`true`* | `false` | numeric ] - Keep off-diagonal
+% elements in the covariance matrix of idiosyncratic residuals; if false
+% all cross-covariances are reset to zero; if a number between zero and
+% one, all cross-covariances are multiplied by that number.
 %
 % * `'order='` [ numeric | *1* ] - Order of the VAR for factors.
 %
-% * `'output='` [ *'auto'* | 'dbase' | 'tseries' ] - Format of output data.
+% * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
+% data.
 %
 % * `'rank='` [ numeric | *`Inf`* ] - Restriction on the rank of the factor
 % VAR residuals.

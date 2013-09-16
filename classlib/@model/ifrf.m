@@ -27,12 +27,12 @@ function [W,List] = ifrf(This,Freq,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *'namedmat'* | numeric ] - Output matrix `W` will be
-% either a namedmat object or a plain numeric array; if the option
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `W` will
+% be either a namedmat object or a plain numeric array; if the option
 % `'select='` is used, `'output='` is always `'namedmat'`.
 %
-% * `'select='` [ char | cellstr | *`Inf`* ] - Return the frequency response
-% function only for selected variables and/or selected shocks.
+% * `'select='` [ char | cellstr | *`Inf`* ] - Return the frequency
+% response function only for selected variables and/or selected shocks.
 %
 % Description
 % ============

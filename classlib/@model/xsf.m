@@ -43,9 +43,9 @@ function [S,D,List,Freq] = xsf(This,Freq,varargin)
 % * `'nFreq='` [ numeric | *`256`* ] - Number of equally spaced frequencies
 % over which the 'filter' is numerically integrated.
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `S` and `F`
-% will be either namedmat objects or plain numeric arrays; if the option
-% `'select='` is used, `'output='` is always a namedmat object.
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `S` and
+% `F` will be either namedmat objects or plain numeric arrays; if the
+% option `'select='` is used, `'output='` is always a namedmat object.
 %
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar on in the
 % command window.

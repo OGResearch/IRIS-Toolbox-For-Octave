@@ -40,9 +40,9 @@ function [X,Y,List,XX,YY] = fevd(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *'namedmat'* | numeric ] - Output matrices `X` and `Y`
-% will be either namedmat objects or plain numeric arrays; if the option
-% `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `X` and
+% `Y` will be either namedmat objects or plain numeric arrays; if the
+% option `'select='` is used, `'output='` is always `'namedmat'`.
 %
 % * `'select='` [ char | cellstr ] - Return FEVD for selected variables
 % and/or shocks only; `Inf` means all variables. This option does not apply

@@ -36,8 +36,8 @@ function [F,List] = ffrf(This,Freq,varargin)
 % * `'maxIter='` [ numeric | *500* ] - Maximum number of iteration when
 % computing the steady-state Kalman filter.
 %
-% * `'output='` [ *'namedmat'* | numeric ] - Output matrix `F` will be
-% either a namedmat object or a plain numeric array; if the option
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `F` will
+% be either a namedmat object or a plain numeric array; if the option
 % `'select='` is used, `'output='` is always `'namedmat'`.
 %
 % * `'select='` [ char | cellstr | *`Inf`* ] - Return the frequency response
