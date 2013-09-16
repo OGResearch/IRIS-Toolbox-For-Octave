@@ -1,6 +1,7 @@
 function [Ax,X,varargin] = myaxinp(varargin)
-% myaxinp  [Not a public function] Handle input arguments that may or may
-% not include optional handle to axes objects.
+% myaxinp  [Not a public function] Handle input arguments to grfun
+% functions that may or may not include handles to axes objects as the
+% first input argument.
 %
 % Backend IRIS function.
 % No help provided.
