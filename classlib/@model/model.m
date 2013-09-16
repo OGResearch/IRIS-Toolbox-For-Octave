@@ -188,13 +188,15 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
             cell(1,0), ...
             };
         % Indices of derivatives used when lining up system matrices.
-        metaderiv = struct();
+        %metaderiv = struct();
         % Positions in system matrices corresponding to `metaderiv`.
-        metasystem = struct();
+        %metasystem = struct();
         % Identities added to system matrices.
-        systemident = struct();
+        %systemident = struct();
         % Indices of non-predetermined variables that duplicate identical predetermined variables.
-        metadelete = false(1,0);
+        %metadelete = false(1,0);
+        % Derivatives to system matrices.
+        d2s = struct();
         % Last Taylor expansion.
         deriv0 = zeros(0);
         % Last system matrices.
@@ -265,7 +267,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = lhsmrhs(varargin)
         varargout = loglik(varargin)
         varargout = lognormal(varargin) %#
-        varargout = loss(varargin)
         varargout = refresh(varargin)
         varargout = reporting(varargin)
         varargout = resample(varargin)
@@ -297,7 +298,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = chksolution(varargin)
         varargout = datarequest(varargin)
         varargout = disp(varargin)
-        varargout = dp2db(varargin)
         varargout = end(varargin)
         varargout = fieldnames(varargin)
         varargout = getnonlinobj(varargin)
@@ -316,6 +316,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = mychksstate(varargin)
         varargout = mychksstateopt(varargin)
         varargout = myconsteqtn(varargin)
+        varargout = myd2s(varargin)
         varargout = myderiv(varargin)
         varargout = mydiffloglik(varargin)
         varargout = mydtrendsrequest(varargin)
@@ -326,7 +327,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = myfindoccur(varargin)
         varargout = myforecastswap(varargin)
         varargout = mykalmanregoutp(varargin)
-        varargout = mymeta(varargin)
         varargout = mymodel2model(varargin)
         varargout = mynonlineqtn(varargin)
         varargout = mynunit(varargin)

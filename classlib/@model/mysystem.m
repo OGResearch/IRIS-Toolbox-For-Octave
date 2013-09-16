@@ -14,43 +14,34 @@ nt = sum(This.eqtntype == 2);
 mInx = find(EqSelect(1:nm));
 tInx = find(EqSelect(nm+1:end));
 
-ny = length(This.systemid{1});
-nx = length(This.systemid{2});
-ne = length(This.systemid{3});
-nf = sum(double(imag(This.systemid{2}) >= 0));
-nb = nx - nf;
-
 System = This.system0;
 
+% Measurement equations
+%------------------------
 % A1 y + B1 xb+ + E1 e + K1 = 0
-
 System.K{1}(mInx) = Deriv.c(mInx);
-System.K{2}(tInx) = Deriv.c(nm+tInx);
+System.A{1}(mInx,This.d2s.y) = Deriv.f(mInx,This.d2s.y_);
+System.B{1}(mInx,This.d2s.xp1) = Deriv.f(mInx,This.d2s.xp1_);
+System.E{1}(mInx,This.d2s.e) = Deriv.f(mInx,This.d2s.e_);
 
-System.A{1}(mInx,This.metasystem.y) = ...
-    Deriv.f(mInx,This.metaderiv.y);
-System.B{1}(mInx,This.metasystem.pplus) = ...
-    Deriv.f(mInx,This.metaderiv.pplus);
-System.E{1}(mInx,This.metasystem.e) = ....
-    Deriv.f(mInx,This.metaderiv.e);
-System.N{1} = [];
-
+% Transition equations
+%----------------------
 % A2 [xf+;xb+] + B2 [xf;xb] + E2 e + K2 = 0
+System.K{2}(tInx) = Deriv.c(nm+tInx);
+System.A{2}(tInx,This.d2s.xu1) = Deriv.f(nm+tInx,This.d2s.xu1_);
+System.A{2}(tInx,This.d2s.xp1) = Deriv.f(nm+tInx,This.d2s.xp1_);
+System.B{2}(tInx,This.d2s.xu) = Deriv.f(nm+tInx,This.d2s.xu_);
+System.B{2}(tInx,This.d2s.xp) = Deriv.f(nm+tInx,This.d2s.xp_);
+System.E{2}(tInx,This.d2s.e) = Deriv.f(nm+tInx,This.d2s.e_);
 
-System.A{2}(tInx,This.metasystem.uplus) = ...
-    Deriv.f(nm+tInx,This.metaderiv.uplus);
-System.A{2}(tInx,nf+This.metasystem.pplus) = ...
-    Deriv.f(nm+tInx,This.metaderiv.pplus);
-System.B{2}(tInx,This.metasystem.u) = ...
-    Deriv.f(nm+tInx,This.metaderiv.u);
-System.B{2}(tInx,nf+This.metasystem.p) = ...
-    Deriv.f(nm+tInx,This.metaderiv.p);
-System.E{2}(tInx,This.metasystem.e) = ...
-    Deriv.f(nm+tInx,This.metaderiv.e);
+% Add dynamic identity matrices
+%-------------------------------
+System.A{2}(nt+1:end,:) = This.d2s.ident1;
+System.B{2}(nt+1:end,:) = This.d2s.ident;
 
-System.A{2}(nt+1:nx,:) = This.systemident.xplus;
-System.B{2}(nt+1:nx,:) = This.systemident.x;
-
+% Effect of non-linear equations
+%--------------------------------
+System.N{1} = [];
 System.N{2}(tInx,:) = Deriv.n(nm+tInx,:);
 
 if IAlt == 1

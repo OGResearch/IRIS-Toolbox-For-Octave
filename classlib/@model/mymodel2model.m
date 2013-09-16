@@ -33,7 +33,7 @@ if any(This.nonlin)
     % non-linerised equations.
     Opt.removeleads = false;
 end
-This = mymeta(This,Opt);
+This = myd2s(This,Opt);
 
 % Create equations for evaluating the LHS minus RHS; these can be created
 % only after we know the solution ids.
@@ -126,13 +126,12 @@ end
         This.stdcorr = zeros(1,ne+ne*(ne-1)/2);
         This.stdcorr(1,1:ne) = defaultStd;
         
-        ny = length(This.systemid{1});
+        ny = sum(This.nametype == 1);
         nx = length(This.systemid{2});
         nb = sum(imag(This.systemid{2}) < 0);
         nf = nx - nb;
-        ne = length(This.systemid{3});
-        fKeep = ~This.metadelete;
-        nFKeep = sum(fKeep);
+        ne = sum(This.nametype == 3);
+        nFKeep = sum(~This.d2s.remove);
         nn = sum(This.nonlin);
         
         This.solution{1} = nan(nFKeep+nb,nb); % T
