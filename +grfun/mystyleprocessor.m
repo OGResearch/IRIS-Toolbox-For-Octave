@@ -1,5 +1,5 @@
 function SET = mystyleprocessor(H,Command) %#ok<STOUT>
-% styleprocessor  Process graphics options.
+% mystyleprocessor  Process graphics options.
 %
 % Backend IRIS function.
 % No help provided.
