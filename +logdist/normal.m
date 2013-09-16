@@ -90,13 +90,13 @@ Nmix = numel(Mu) ;
 K = numel(Mu{1}) ;
 
 if isempty(varargin)
-    Y = log(xxMixturePdf()) ;
+    Y = log(doMixturePdf()) ;
     return
 end
 
 switch lower(varargin{1})
     case {'proper','pdf'}
-        Y = xxMixturePdf() ;
+        Y = doMixturePdf() ;
     case 'draw'
         if numel(varargin)<2
             NDraw = 1 ;
@@ -104,7 +104,7 @@ switch lower(varargin{1})
             NDraw = varargin{2} ;
         end
         Y = NaN(K,NDraw) ;
-        bin = multinomialRand( NDraw, Weight ) ;
+        bin = doMultinomialRand( NDraw, Weight ) ;
         for c = 1:Nmix
             ind = ( bin == c ) ;
             NC = sum( ind ) ;
@@ -124,12 +124,12 @@ switch lower(varargin{1})
         Y = B;
 end
 
-    function bin = multinomialRand(NDraw, Prob)
+    function bin = doMultinomialRand(NDraw, Prob)
         CS = cumsum(Prob(:).');
         bin = 1+sum( bsxfun(@gt, rand(NDraw,1), CS), 2);
-    end
+    end % doMultinomialRand().
 
-    function Y = xxMixturePdf()
+    function Y = doMixturePdf()
         [N1,N2] = size(X) ;
         Y = zeros(1,N2) ;
         assert( N1 == K, 'Input must be a column vector.' ) ;
@@ -138,16 +138,18 @@ end
                 Weight(m)*exp(xxLogMultNormalPdf(X,Mu{m},Std{m}))...
                 ) ;
         end
-    end
+    end % doMixturePdf().
 end
 
+%**************************************************************************
 function Y = xxLogMultNormalPdf(X,Mu,Std)
 K = numel(Mu) ;
 sX = bsxfun(@minus, X, Mu)' / Std ;
 logSqrtDetSig = sum(log(diag(Std))) ;
 Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
-end
+end % xxLogMultNormalPdf().
 
+%**************************************************************************
 function Y = xxNormal(X,A,B,Mu,Std,Mode,varargin)
 
 if isempty(varargin)
@@ -217,5 +219,5 @@ switch lower(varargin{1})
         Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
 end
 
-end % xxMultNormal()
+end % xxMultNormal().
 
