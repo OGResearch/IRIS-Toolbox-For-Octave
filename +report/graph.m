@@ -34,13 +34,11 @@
 %
 % * `'postProcess='` [ char | *empty* ] - (Inheritable) String with
 % Matlab commands executed after the graph has been drawn and styled;
-% the commands have access to variable `H`, a handle to the current
-% axes object.
+% see Description.
 %
 % * `'preProcess='` [ char | *empty* ] - (Inheritable) String with
 % Matlab commands executed before the graph has been drawn and styled;
-% the commands have access to variable `H`, a handle to the current
-% axes object.
+% see Description.
 %
 % * `'range='` [ numeric | *`Inf`* ] - (Inheritable) Graph range.
 %
@@ -68,6 +66,17 @@
 %
 % Description
 % ============
+%
+% The options `'preProcess='` and `'postProcess='` give you additional
+% flexibility in customising the graphics style of the axes object. The
+% values assigned to these options are expected to be strings with an
+% executable Matlab command, or commands separated with semi-colons (as if
+% typed on one line in the command window). The command can refer to the
+% following variables:
+%
+% * `H` - a handle to the currently processed axes object.
+% * `L` - a handle to the corresponding legend object; if no legend object
+% exists for the axes `H`, `L` will be `NaN`.
 %
 % Example
 % ========
