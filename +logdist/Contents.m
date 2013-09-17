@@ -18,8 +18,8 @@
 % Getting function handles for univariate distributions
 % ======================================================
 %
-% * [`chisquare`](logdist/chisquare) - 
-% * [`normal`](logdist/normal) - Create function proportional to log of normal distribution.
+% * [`chisquare`](logdist/chisquare) - Create function proportional to log of Chi-Squared distribution.
+% * [`normal`](logdist/normal) - Create function proportional to log of Normal or Student distribution.
 % * [`lognormal`](logdist/lognormal) - Create function proportional to log of log-normal distribution.
 % * [`beta`](logdist/beta) - Create function proportional to log of beta distribution.
 % * [`gamma`](logdist/gamma) - Create function proportional to log of gamma distribution.

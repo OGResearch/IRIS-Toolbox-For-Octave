@@ -60,17 +60,18 @@
  
  \begin{itemize}
  \item
-   \texttt{'cross='} {[} \emph{true} \textbar{} false \textbar{} numeric
-   {]} - Keep off-diagonal elements in the covariance matrix of
-   idiosyncratic residuals; if false all cross-covariances are reset to
-   zero; if a number between zero and one, all cross-covariances are
-   multiplied by that number.
+   \texttt{'cross='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   \textbar{} numeric {]} - Keep off-diagonal elements in the covariance
+   matrix of idiosyncratic residuals; if false all cross-covariances are
+   reset to zero; if a number between zero and one, all cross-covariances
+   are multiplied by that number.
  \item
    \texttt{'order='} {[} numeric \textbar{} \emph{1} {]} - Order of the
    VAR for factors.
  \item
-   \texttt{'output='} {[} \emph{`auto'} \textbar{} `dbase' \textbar{}
-   `tseries' {]} - Format of output data.
+   \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
+   \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
+   data.
  \item
    \texttt{'rank='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
    Restriction on the rank of the factor VAR residuals.

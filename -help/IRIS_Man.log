@@ -1,18 +1,18 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.12.21)  23 MAY 2013 10:32
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.28)  17 SEP 2013 09:53
 entering extended mode
-**IRIS_Man
+**IRIS_Man.tex
 (C:\IRIS_Tbx\-help\IRIS_Man.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
 croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
-lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
-ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
-vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
-an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
-romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
-sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
-senglishmax, welsh, loaded.
+lician, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
 (C:\MiKTeX\tex\latex\base\article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (C:\MiKTeX\tex\latex\base\fleqn.clo
@@ -82,41 +82,41 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
 les
 )
-(C:\MiKTeX\tex\latex\ams\math\amsmath.sty
-Package: amsmath 2000/07/18 v2.13 AMS math features
+(C:\MiKTeX\tex\latex\amsmath\amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
 \@mathmargin=\skip43
 
 For additional information on amsmath, use the `?' option.
-(C:\MiKTeX\tex\latex\ams\math\amstext.sty
+(C:\MiKTeX\tex\latex\amsmath\amstext.sty
 Package: amstext 2000/06/29 v2.01
 
-(C:\MiKTeX\tex\latex\ams\math\amsgen.sty
+(C:\MiKTeX\tex\latex\amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks14
 \ex@=\dimen104
 ))
-(C:\MiKTeX\tex\latex\ams\math\amsbsy.sty
+(C:\MiKTeX\tex\latex\amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen105
 )
-(C:\MiKTeX\tex\latex\ams\math\amsopn.sty
+(C:\MiKTeX\tex\latex\amsmath\amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count87
-LaTeX Info: Redefining \frac on input line 211.
+LaTeX Info: Redefining \frac on input line 210.
 \uproot@=\count88
 \leftroot@=\count89
-LaTeX Info: Redefining \overline on input line 307.
+LaTeX Info: Redefining \overline on input line 306.
 \classnum@=\count90
 \DOTSCASE@=\count91
-LaTeX Info: Redefining \ldots on input line 379.
-LaTeX Info: Redefining \dots on input line 382.
-LaTeX Info: Redefining \cdots on input line 467.
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
 \Mathstrutbox@=\box26
 \strutbox@=\box27
 \big@size=\dimen106
-LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \macc@depth=\count92
 \c@MaxMatrixCols=\count93
 \dotsspace@=\muskip10
@@ -137,8 +137,8 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \multlinegap=\skip44
 \multlinetaggap=\skip45
 \mathdisplay@stack=\toks18
-LaTeX Info: Redefining \[ on input line 2666.
-LaTeX Info: Redefining \] on input line 2667.
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
 )
 (C:\MiKTeX\tex\latex\graphics\color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
@@ -189,91 +189,8 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@dimlist=\toks20
 
 (C:\MiKTeX\tex\latex\geometry\geometry.cfg))
-(C:\MiKTeX\tex\latex\inconsolata\inconsolata.sty
-Package: inconsolata 2009/11/28 Inconsolata
-
-(C:\MiKTeX\tex\latex\base\textcomp.sty
-Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
-Package textcomp Info: Sub-encoding information:
-(textcomp)               5 = only ISO-Adobe without \textcurrency
-(textcomp)               4 = 5 + \texteuro
-(textcomp)               3 = 4 + \textohm
-(textcomp)               2 = 3 + \textestimated + \textcurrency
-(textcomp)               1 = TS1 - \textcircled - \t
-(textcomp)               0 = TS1 (full)
-(textcomp)             Font families with sub-encoding setting implement
-(textcomp)             only a restricted character set as indicated.
-(textcomp)             Family '?' is the default used for unknown fonts.
-(textcomp)             See the documentation for details.
-Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
- (C:\MiKTeX\tex\latex\base\ts1enc.def
-File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
-)
-LaTeX Info: Redefining \oldstylenums on input line 266.
-Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
-Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
-Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
-Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
-Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
-Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
-Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
-Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
-Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
-Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
-Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
-Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
-Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
-Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
-Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
-Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
-Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
-Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
-Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
-Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
-Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
-Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
-Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
-Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
-
-Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
-Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
-Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
-Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
-Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
-Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
-Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 311.
-Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 312.
-Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 313.
-Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 314.
-Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 315.
-Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 316.
-Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 317.
-Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 318.
-Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 319.
-Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 320.
-Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 321.
-Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 322.
-Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 323.
-Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 324.
-Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 325.
-Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 326.
-Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 327.
-Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 328.
-Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 329.
-Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 330.
-Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 331.
-Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 332.
-Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 333.
-Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 334.
-Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 335.
-Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 336.
-Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 337.
-Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 338.
-Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 339.
-Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
-))
 (C:\MiKTeX\tex\latex\hyperref\hyperref.sty
-Package: hyperref 2012/05/13 v6.82q Hypertext links for LaTeX
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
 (C:\MiKTeX\tex\generic\oberdiek\hobsub-hyperref.sty
 Package: hobsub-hyperref 2012/04/25 v1.12 Bundle oberdiek, subset hyperref (HO)
@@ -318,6 +235,9 @@ Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 )
+(C:\MiKTeX\tex\latex\oberdiek\auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
 (C:\MiKTeX\tex\latex\oberdiek\kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
@@ -326,40 +246,41 @@ Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 \Hy@pagecounter=\count104
 
 (C:\MiKTeX\tex\latex\hyperref\pd1enc.def
-File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 )
 \Hy@SavedSpaceFactor=\count105
 
 (C:\MiKTeX\tex\latex\00miktex\hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 3941.
-Package hyperref Info: Hyper figures OFF on input line 4062.
-Package hyperref Info: Link nesting OFF on input line 4067.
-Package hyperref Info: Hyper index ON on input line 4070.
-Package hyperref Info: Plain pages OFF on input line 4077.
-Package hyperref Info: Backreferencing OFF on input line 4082.
+Package hyperref Info: Option `colorlinks' set `true' on input line 4319.
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4300.
+Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count106
 
 (C:\MiKTeX\tex\latex\ltxmisc\url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4653.
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen122
 \Fld@menulength=\count107
-\Field@Width=\dimen122
-\Fld@charsize=\dimen123
-Package hyperref Info: Hyper figures OFF on input line 5773.
-Package hyperref Info: Link nesting OFF on input line 5778.
-Package hyperref Info: Hyper index ON on input line 5781.
-Package hyperref Info: backreferencing OFF on input line 5788.
-Package hyperref Info: Link coloring ON on input line 5791.
-Package hyperref Info: Link coloring with OCG OFF on input line 5798.
-Package hyperref Info: PDF/A mode OFF on input line 5803.
-LaTeX Info: Redefining \ref on input line 5843.
-LaTeX Info: Redefining \pageref on input line 5847.
+\Field@Width=\dimen123
+\Fld@charsize=\dimen124
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring ON on input line 6313.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
 \Hy@abspage=\count108
 \c@Item=\count109
 \c@Hfootnote=\count110
@@ -368,7 +289,7 @@ LaTeX Info: Redefining \pageref on input line 5847.
 Package hyperref Message: Driver: hpdftex.
 
 (C:\MiKTeX\tex\latex\hyperref\hpdftex.def
-File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
 \Fld@listcount=\count111
 \c@bookmark@seq@number=\count112
 
@@ -382,9 +303,6 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (C:\MiKTeX\tex\latex\oberdiek\bookmark.sty
 Package: bookmark 2011/12/02 v1.24 PDF bookmarks (HO)
 
-(C:\MiKTeX\tex\latex\oberdiek\auxhook.sty
-Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
-)
 (C:\MiKTeX\tex\latex\oberdiek\bkm-pdftex.def
 File: bkm-pdftex.def 2011/12/02 v1.24 bookmark driver for pdfTeX (HO)
 \BKM@id=\count113
@@ -405,13 +323,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 101.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 101.
-
- (C:\MiKTeX\tex\latex\base\ts1cmr.fd
-File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    ... okay on input line 101.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
 LaTeX Font Info:    Try loading font information for T1+ccr on input line 101.
@@ -421,13 +332,13 @@ File: t1ccr.fd 1999/11/22 v1.0a (WaS)
 (C:\MiKTeX\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count114
-\scratchdimen=\dimen124
+\scratchdimen=\dimen125
 \scratchbox=\box28
 \nofMPsegments=\count115
 \nofMParguments=\count116
 \everyMPshowfont=\toks21
 \MPscratchCnt=\count117
-\MPscratchDim=\dimen125
+\MPscratchDim=\dimen126
 \MPnumerator=\count118
 \makeMPintoPDFobject=\count119
 \everyMPtoPDFconversion=\toks22
@@ -469,7 +380,7 @@ File: t1ccr.fd 1999/11/22 v1.0a (WaS)
 \AtBeginShipoutBox=\box29
 Package hyperref Info: Link coloring ON on input line 101.
 (C:\MiKTeX\tex\latex\hyperref\nameref.sty
-Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (C:\MiKTeX\tex\generic\oberdiek\gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
@@ -479,32 +390,15 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 101.
 LaTeX Info: Redefining \pageref on input line 101.
 LaTeX Info: Redefining \nameref on input line 101.
-LaTeX Font Info:    Try loading font information for T1+lcmss on input line 109
-.
-
-(C:\MiKTeX\tex\latex\base\t1lcmss.fd
-File: t1lcmss.fd 1998/06/12 v2.2e Standard LaTeX slide font definitions
-)
-
-LaTeX Font Warning: Font shape `T1/lcmss/m/n' in size <17.28> not available
-(Font)              size <16.59> substituted on input line 109.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 109.
 
 
-LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <17.28> not available
-(Font)              size <16.59> substituted on input line 109.
-
-LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 109.
-LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 109.
-LaTeX Font Info:    Try loading font information for T1+fi4 on input line 109.
-(C:\MiKTeX\tex\latex\inconsolata\t1fi4.fd
-File: t1fi4.fd 2009/05/28 T1/Inconsolata
+(C:\MiKTeX\tex\latex\base\t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Try loading font information for OT1+ccr on input line 109.
 
-
-(C:\MiKTeX\tex\latex\concmath\ot1ccr.fd
+ (C:\MiKTeX\tex\latex\concmath\ot1ccr.fd
 File: ot1ccr.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
 )
 LaTeX Font Info:    Try loading font information for OML+ccm on input line 109.
@@ -527,12 +421,14 @@ File: omxccex.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
 )
 LaTeX Font Info:    External font `xccex10' loaded for size
 (Font)              <5> on input line 109.
-LaTeX Font Info:    Try loading font information for TS1+ccr on input line 109.
+LaTeX Font Info:    Try loading font information for OMS+ccr on input line 109.
 
 
-(C:\MiKTeX\tex\latex\ccfonts\ts1ccr.fd
-File: ts1ccr.fd 1999/11/22 v1.0a (WaS)
+(C:\MiKTeX\tex\latex\concmath\omsccr.fd
+File: omsccr.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
 )
+LaTeX Font Info:    Font shape `OMS/ccr/m/n' in size <5> not available
+(Font)              Font shape `OMS/ccsy/m/n' tried instead on input line 109.
 LaTeX Font Info:    External font `xccex10' loaded for size
 (Font)              <12> on input line 109.
 LaTeX Font Info:    External font `xccex10' loaded for size
@@ -546,32 +442,40 @@ LaTeX Font Info:    External font `xccex10' loaded for size
 (Font)              <10> on input line 115.
 LaTeX Font Info:    External font `xccex10' loaded for size
 (Font)              <7> on input line 115.
- [2
-
-] (C:\IRIS_Tbx\-help\Preface.tex
-LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
-) [3
+LaTeX Font Info:    Font shape `OMS/ccr/m/n' in size <10> not available
+(Font)              Font shape `OMS/ccsy/m/n' tried instead on input line 115.
+ (C:\IRIS_Tbx\-help\Licence.tex
+LaTeX Font Info:    Font shape `OMS/ccr/m/n' in size <8> not available
+(Font)              Font shape `OMS/ccsy/m/n' tried instead on input line 8.
+) [2
 
 ]
-(C:\IRIS_Tbx\-help\IRIS_Man.toc
+(C:\IRIS_Tbx\-help\Preface.tex
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 3.
+) [3
+
+] (C:\IRIS_Tbx\-help\IRIS_Man.toc
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <10> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 2.
  [4
 
 ])
 \tf@toc=\write3
- [5] (C:\IRIS_Tbx\-help\Preface.tex)
-(C:\IRIS_Tbx\-help\Contents.tex [6
 
-] (C:\IRIS_Tbx\-help\Contents/sessions.tex
+[5] (C:\IRIS_Tbx\-help\Preface.tex) (C:\IRIS_Tbx\-help\Contents.tex [6
+
+]
+(C:\IRIS_Tbx\-help\Contents/sessions.tex
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
-)
-[7
+) [7
 
 
-] (C:\IRIS_Tbx\-help\setup/Contents.tex [8
+]
+(C:\IRIS_Tbx\-help\setup/Contents.tex [8
 
 
 ]) [9]
@@ -579,6 +483,10 @@ LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
 
 ])
 (C:\IRIS_Tbx\-help\config/iriscleanup.tex
+LaTeX Font Info:    Try loading font information for T1+lcmss on input line 3.
+ (C:\MiKTeX\tex\latex\base\t1lcmss.fd
+File: t1lcmss.fd 1998/06/12 v2.2e Standard LaTeX slide font definitions
+)
 
 LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <12> not available
 (Font)              size <13.82> substituted on input line 3.
@@ -618,16 +526,22 @@ e 186.
 (C:\IRIS_Tbx\-help\modellang/allbut.tex)
 (C:\IRIS_Tbx\-help\modellang/autoexogenise.tex)
 (C:\IRIS_Tbx\-help\modellang/dtrends.tex [29] [30])
-(C:\IRIS_Tbx\-help\modellang/exogenousvariables.tex [31])
-(C:\IRIS_Tbx\-help\modellang/export.tex) (C:\IRIS_Tbx\-help\modellang/for.tex
-[32] [33] [34] [35]) (C:\IRIS_Tbx\-help\modellang/if.tex [36] [37] [38])
+(C:\IRIS_Tbx\-help\modellang/exogenousvariables.tex
+Overfull \hbox (3.6365pt too wide) in paragraph at lines 31--38
+\T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !exogenous_variables \T1/ccr/m/n/10 key-word
+ starts a new dec-la-ra-tion block for ex-oge-nous vari-ables, i.e. vari-
+ []
+
+[31]) (C:\IRIS_Tbx\-help\modellang/export.tex)
+(C:\IRIS_Tbx\-help\modellang/for.tex [32] [33] [34] [35])
+(C:\IRIS_Tbx\-help\modellang/if.tex [36] [37] [38])
 (C:\IRIS_Tbx\-help\modellang/import.tex) (C:\IRIS_Tbx\-help\modellang/links.tex
 [39]) (C:\IRIS_Tbx\-help\modellang/logvariables.tex [40] [41])
 (C:\IRIS_Tbx\-help\modellang/measurementequations.tex [42])
 (C:\IRIS_Tbx\-help\modellang/measurementshocks.tex [43]
-Overfull \hbox (6.52327pt too wide) in paragraph at lines 23--29
-\T1/ccr/m/n/10 The \T1/fi4/m/n/10 !measurement_shocks \T1/ccr/m/n/10 key-word s
-tarts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
+Overfull \hbox (11.24892pt too wide) in paragraph at lines 23--29
+\T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !measurement_shocks \T1/ccr/m/n/10 key-word 
+starts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
  []
 
 ) (C:\IRIS_Tbx\-help\modellang/measurementvariables.tex [44])
@@ -636,8 +550,13 @@ tarts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
 (C:\IRIS_Tbx\-help\modellang/switch.tex [48] [49])
 (C:\IRIS_Tbx\-help\modellang/transitionequations.tex [50])
 (C:\IRIS_Tbx\-help\modellang/transitionshocks.tex [51])
-(C:\IRIS_Tbx\-help\modellang/transitionvariables.tex [52])
-(C:\IRIS_Tbx\-help\modellang/ttrend.tex [53])
+(C:\IRIS_Tbx\-help\modellang/transitionvariables.tex [52]
+Overfull \hbox (1.44075pt too wide) in paragraph at lines 39--45
+\T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !transition_variables \T1/ccr/m/n/10 key-wor
+d starts a new dec-la-ra-tion block for tran-si-tion vari-ables (i.e. en-
+ []
+
+) (C:\IRIS_Tbx\-help\modellang/ttrend.tex [53])
 (C:\IRIS_Tbx\-help\modellang/linecomments.tex)
 (C:\IRIS_Tbx\-help\modellang/blockcomments.tex [54])
 (C:\IRIS_Tbx\-help\modellang/sstateref.tex [55])
@@ -655,30 +574,42 @@ tarts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
 ] [67] [68])
 (C:\IRIS_Tbx\-help\model/acf.tex [69] [70])
 (C:\IRIS_Tbx\-help\model/addparam.tex [71]) (C:\IRIS_Tbx\-help\model/alter.tex
-[72]) (C:\IRIS_Tbx\-help\model/assign.tex [73])
-(C:\IRIS_Tbx\-help\model/autoexogenise.tex [74]
-Overfull \hbox (16.49437pt too wide) in paragraph at lines 23--27
-[]\T1/fi4/m/n/10 A \T1/ccr/m/n/10 [ struct | empty ] - Database with each field
- rep-re-sent-ing a vari-able/shock pair, A.Variable_Name
+[72]) (C:\IRIS_Tbx\-help\model/assign.tex [73]
+Overfull \hbox (0.43375pt too wide) in paragraph at lines 55--58
+[]\T1/cmtt/m/n/10 List \T1/ccr/m/n/10 [ cell-str ] - A list of pa-ram-e-ter nam
+es, vari-able names, std de-vi-a-tions, or cross-correlations. 
+ []
+
+) (C:\IRIS_Tbx\-help\model/autoexogenise.tex [74]
+Overfull \hbox (16.74309pt too wide) in paragraph at lines 23--27
+[]\T1/cmtt/m/n/10 A \T1/ccr/m/n/10 [ struct | empty ] - Database with each fiel
+d rep-re-sent-ing a vari-able/shock pair, A.Variable_Name
  []
 
 ) (C:\IRIS_Tbx\-help\model/bn.tex [75]) (C:\IRIS_Tbx\-help\model/chksstate.tex
-[76]) (C:\IRIS_Tbx\-help\model/comment.tex [77])
+[76]
+Overfull \hbox (1.96114pt too wide) in paragraph at lines 23--27
+[]\T1/cmtt/m/n/10 Flag \T1/ccr/m/n/10 [ \T1/cmtt/m/n/10 true \T1/ccr/m/n/10 | \
+T1/cmtt/m/n/10 false \T1/ccr/m/n/10 ] - True if dis-crep-ancy be-tween LHS and 
+RHS is smaller than \T1/cmtt/m/n/10 'tolerance='
+ []
+
+) (C:\IRIS_Tbx\-help\model/comment.tex [77])
 (C:\IRIS_Tbx\-help\model/data4lhsmrhs.tex [78])
 (C:\IRIS_Tbx\-help\model/diffloglik.tex [79])
 (C:\IRIS_Tbx\-help\model/diffsrf.tex [80]) (C:\IRIS_Tbx\-help\model/eig.tex
 [81]) (C:\IRIS_Tbx\-help\model/emptydb.tex)
 (C:\IRIS_Tbx\-help\model/estimate.tex [82] [83] [84]
-Overfull \hbox (1.43996pt too wide) in paragraph at lines 156--158
+Overfull \hbox (7.90663pt too wide) in paragraph at lines 156--158
 \T1/ccr/m/n/10 The fol-low-ing op-tions can be spec-i-fied through the main op-
-tion \T1/fi4/m/n/10 'optimset=' \T1/ccr/m/n/10 when \T1/fi4/m/n/10 'optimiser=p
-so'\T1/ccr/m/n/10 . 
+tion \T1/cmtt/m/n/10 'optimset=' \T1/ccr/m/n/10 when \T1/cmtt/m/n/10 'optimiser
+=pso'\T1/ccr/m/n/10 . 
  []
 
 [85] [86]
-Overfull \hbox (5.85667pt too wide) in paragraph at lines 311--316
+Overfull \hbox (8.8413pt too wide) in paragraph at lines 311--316
 []\T1/ccr/m/n/10 You can sup-ply a func-tion han-dle to your own min-imi-sa-tio
-n rou-tine through the op-tion \T1/fi4/m/n/10 'optimiser='\T1/ccr/m/n/10 .
+n rou-tine through the op-tion \T1/cmtt/m/n/10 'optimiser='\T1/ccr/m/n/10 .
  []
 
 [87]) (C:\IRIS_Tbx\-help\model/evalsystempriors.tex [88])
@@ -688,12 +619,19 @@ n rou-tine through the op-tion \T1/fi4/m/n/10 'optimiser='\T1/ccr/m/n/10 .
 (C:\IRIS_Tbx\-help\model/findeqtn.tex) (C:\IRIS_Tbx\-help\model/findname.tex
 [96]) (C:\IRIS_Tbx\-help\model/fisher.tex [97])
 (C:\IRIS_Tbx\-help\model/fmse.tex [98]) (C:\IRIS_Tbx\-help\model/get.tex
-[99] [100] [101] [102] [103] [104]) (C:\IRIS_Tbx\-help\model/horzcat.tex)
-(C:\IRIS_Tbx\-help\model/icrf.tex [105]
-Overfull \hbox (11.38434pt too wide) in paragraph at lines 37--41
-[]\T1/fi4/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/fi4/m/n/10 false \T1/ccr/
-m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1/f
-i4/m/n/10 !variables:log\T1/ccr/m/n/10 . 
+[99] [100] [101] [102] [103]
+Overfull \hbox (22.2329pt too wide) in paragraph at lines 288--292
+\T1/ccr/m/n/10 and columns of state-space ma-tri-ces (ef-fec-tively iden-ti-cal
+ to \T1/cmtt/m/n/10 'eList'\T1/ccr/m/n/10 ) from the [][]\T1/cmtt/m/n/10 model/
+sspace[][][]
+ []
+
+[104]) (C:\IRIS_Tbx\-help\model/horzcat.tex) (C:\IRIS_Tbx\-help\model/icrf.tex
+[105]
+Overfull \hbox (19.0946pt too wide) in paragraph at lines 37--41
+[]\T1/cmtt/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/cc
+r/m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1
+/cmtt/m/n/10 !variables:log\T1/ccr/m/n/10 . 
  []
 
 ) (C:\IRIS_Tbx\-help\model/ifrf.tex [106])
@@ -705,28 +643,35 @@ i4/m/n/10 !variables:log\T1/ccr/m/n/10 .
 (C:\IRIS_Tbx\-help\model/jforecast.tex [112] [113])
 (C:\IRIS_Tbx\-help\model/length.tex) (C:\IRIS_Tbx\-help\model/lhsmrhs.tex
 [114]
-Overfull \hbox (22.92265pt too wide) in paragraph at lines 22--27
-[]\T1/fi4/m/n/10 YXE \T1/ccr/m/n/10 [ nu-meric ] - Nu-meric ar-ray cre-ated fro
-m an in-put database by call-ing the func-tion [][]\T1/fi4/m/n/10 data4lhsmrhs[
-][][]\T1/ccr/m/n/10 ;
+Overfull \hbox (26.65343pt too wide) in paragraph at lines 22--27
+[]\T1/cmtt/m/n/10 YXE \T1/ccr/m/n/10 [ nu-meric ] - Nu-meric ar-ray cre-ated fr
+om an in-put database by call-ing the func-tion [][]\T1/cmtt/m/n/10 data4lhsmrh
+s[][][]\T1/ccr/m/n/10 ;
  []
 
 [115]) (C:\IRIS_Tbx\-help\model/loglik.tex [116] [117])
 (C:\IRIS_Tbx\-help\model/lognormal.tex [118])
 (C:\IRIS_Tbx\-help\model/model.tex [119] [120])
-(C:\IRIS_Tbx\-help\model/neighbourhood.tex [121] [122])
-(C:\IRIS_Tbx\-help\model/omega.tex [123]) (C:\IRIS_Tbx\-help\model/refresh.tex
-[124]) (C:\IRIS_Tbx\-help\model/regress.tex [125])
+(C:\IRIS_Tbx\-help\model/neighbourhood.tex [121]
+Overfull \hbox (9.64519pt too wide) in paragraph at lines 60--64
+[]\T1/cmtt/m/n/10 'plot=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/ccr
+/m/n/10 ] - Call the [][]\T1/cmtt/m/n/10 grfun.plotneigh[][][] \T1/ccr/m/n/10 f
+unc-tion from within \T1/cmtt/m/n/10 neighbourhood
+ []
+
+[122]) (C:\IRIS_Tbx\-help\model/omega.tex [123])
+(C:\IRIS_Tbx\-help\model/refresh.tex [124])
+(C:\IRIS_Tbx\-help\model/regress.tex [125])
 (C:\IRIS_Tbx\-help\model/reporting.tex [126])
 (C:\IRIS_Tbx\-help\model/resample.tex [127]) (C:\IRIS_Tbx\-help\model/set.tex
 [128] [129]) (C:\IRIS_Tbx\-help\model/shockplot.tex [130])
 (C:\IRIS_Tbx\-help\model/simulate.tex [131] [132])
 (C:\IRIS_Tbx\-help\model/single.tex [133]) (C:\IRIS_Tbx\-help\model/solve.tex
 [134]) (C:\IRIS_Tbx\-help\model/srf.tex [135]
-Overfull \hbox (11.38434pt too wide) in paragraph at lines 36--40
-[]\T1/fi4/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/fi4/m/n/10 false \T1/ccr/
-m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1/f
-i4/m/n/10 !variables:log\T1/ccr/m/n/10 . 
+Overfull \hbox (19.0946pt too wide) in paragraph at lines 36--40
+[]\T1/cmtt/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/cc
+r/m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1
+/cmtt/m/n/10 !variables:log\T1/ccr/m/n/10 . 
  []
 
 ) (C:\IRIS_Tbx\-help\model/sspace.tex [136] [137])
@@ -740,9 +685,9 @@ i4/m/n/10 !variables:log\T1/ccr/m/n/10 .
 [147]) (C:\IRIS_Tbx\-help\model/vma.tex [148]) (C:\IRIS_Tbx\-help\model/xsf.tex
 [149]) (C:\IRIS_Tbx\-help\model/zerodb.tex [150]) [151]
 (C:\IRIS_Tbx\-help\plan/Contents.tex
-Overfull \hbox (4.61836pt too wide) in paragraph at lines 60--63
-[][][]\T1/fi4/m/n/10 autoexogenise[][][] \T1/ccr/m/n/10 - Ex-o-genise vari-able
-s and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks. 
+Overfull \hbox (7.8517pt too wide) in paragraph at lines 60--63
+[][][]\T1/cmtt/m/n/10 autoexogenise[][][] \T1/ccr/m/n/10 - Ex-o-genise vari-abl
+es and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks. 
  []
 
 [152
@@ -763,15 +708,10 @@ s and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks.
 ])
 (C:\IRIS_Tbx\-help\systempriors/length.tex [165])
 (C:\IRIS_Tbx\-help\systempriors/prior.tex [166]
-
-LaTeX Font Warning: Font shape `T1/fi4/m/it' undefined
-(Font)              using `T1/fi4/m/n' instead on input line 48.
-
-
-Overfull \hbox (4.55093pt too wide) in paragraph at lines 61--65
-[]\T1/fi4/m/n/10 corr[VarName1,VarName2,Lag] \T1/ccr/m/n/10 - Cor-re-la-tion be
--tween vari-able \T1/fi4/m/n/10 VarName1 \T1/ccr/m/n/10 and vari-ables \T1/fi4/
-m/n/10 VarName2
+Overfull \hbox (15.24582pt too wide) in paragraph at lines 61--65
+[]\T1/cmtt/m/n/10 corr[VarName1,VarName2,Lag] \T1/ccr/m/n/10 - Cor-re-la-tion b
+e-tween vari-able \T1/cmtt/m/n/10 VarName1 \T1/ccr/m/n/10 and vari-ables \T1/cm
+tt/m/n/10 VarName2
  []
 
 [167]) (C:\IRIS_Tbx\-help\systempriors/systempriors.tex) [168]
@@ -779,429 +719,456 @@ m/n/10 VarName2
 [169
 
 ] [170]
-Overfull \hbox (4.21759pt too wide) in paragraph at lines 90--94
-[]\T1/fi4/m/n/10 'saveAs=' \T1/ccr/m/n/10 [ char | $[]$ ] - File name where re-
-sults will be saved when the op-tion \T1/fi4/m/n/10 'saveEvery='
+Overfull \hbox (9.44067pt too wide) in paragraph at lines 92--96
+[]\T1/cmtt/m/n/10 'saveAs=' \T1/ccr/m/n/10 [ char | $[]$ ] - File name where re
+-sults will be saved when the op-tion \T1/cmtt/m/n/10 'saveEvery='
  []
 
-) (C:\IRIS_Tbx\-help\poster/eval.tex [171])
-(C:\IRIS_Tbx\-help\poster/poster.tex [172]) (C:\IRIS_Tbx\-help\poster/stats.tex
-[173] [174]) [175] (C:\IRIS_Tbx\-help\logdist/Contents.tex [176
+[171]) (C:\IRIS_Tbx\-help\poster/eval.tex [172])
+(C:\IRIS_Tbx\-help\poster/poster.tex [173]) (C:\IRIS_Tbx\-help\poster/stats.tex
+[174]) [175] (C:\IRIS_Tbx\-help\logdist/Contents.tex [176
 
 ])
-(C:\IRIS_Tbx\-help\logdist/beta.tex) (C:\IRIS_Tbx\-help\logdist/gamma.tex
-[177]) (C:\IRIS_Tbx\-help\logdist/invgamma.tex [178])
-(C:\IRIS_Tbx\-help\logdist/lognormal.tex [179])
-(C:\IRIS_Tbx\-help\logdist/normal.tex) (C:\IRIS_Tbx\-help\logdist/uniform.tex
-[180]) [181] (C:\IRIS_Tbx\-help\sstatelang/Contents.tex)
-(C:\IRIS_Tbx\-help\sstatelang/allbut.tex [182
+(C:\IRIS_Tbx\-help\logdist/beta.tex [177]) (C:\IRIS_Tbx\-help\logdist/gamma.tex
+) (C:\IRIS_Tbx\-help\logdist/chisquare.tex [178])
+(C:\IRIS_Tbx\-help\logdist/invgamma.tex [179])
+(C:\IRIS_Tbx\-help\logdist/lognormal.tex) (C:\IRIS_Tbx\-help\logdist/normal.tex
+[180]) (C:\IRIS_Tbx\-help\logdist/uniform.tex [181]) [182]
+(C:\IRIS_Tbx\-help\sstatelang/Contents.tex)
+(C:\IRIS_Tbx\-help\sstatelang/allbut.tex [183
 
 ])
-(C:\IRIS_Tbx\-help\sstatelang/equations.tex [183])
+(C:\IRIS_Tbx\-help\sstatelang/equations.tex [184])
 (C:\IRIS_Tbx\-help\sstatelang/growthnames.tex)
-(C:\IRIS_Tbx\-help\sstatelang/input.tex [184])
+(C:\IRIS_Tbx\-help\sstatelang/input.tex [185])
 (C:\IRIS_Tbx\-help\sstatelang/logvariables.tex)
-(C:\IRIS_Tbx\-help\sstatelang/solvefor.tex [185])
-(C:\IRIS_Tbx\-help\sstatelang/symbolic.tex) [186]
+(C:\IRIS_Tbx\-help\sstatelang/solvefor.tex [186])
+(C:\IRIS_Tbx\-help\sstatelang/symbolic.tex) [187]
 (C:\IRIS_Tbx\-help\sstate/Contents.tex) (C:\IRIS_Tbx\-help\sstate/compile.tex
-[187
+[188
 
-]) (C:\IRIS_Tbx\-help\sstate/sstate.tex [188])
-(C:\IRIS_Tbx\-help\sstate/standalonemfile.tex) [189]
+]) (C:\IRIS_Tbx\-help\sstate/sstate.tex [189])
+(C:\IRIS_Tbx\-help\sstate/standalonemfile.tex) [190]
 (C:\IRIS_Tbx\-help\namedmat/Contents.tex
 Overfull \hbox (10.22829pt too wide) in paragraph at lines 4--9
 \T1/ccr/m/n/10 Matrices with named rows and columns are re-turned by sev-eral I
 RIS func-tions, such as [][]model/acf[][][],
  []
 
-) (C:\IRIS_Tbx\-help\namedmat/colnames.tex [190
+) (C:\IRIS_Tbx\-help\namedmat/colnames.tex [191
 
 ])
-(C:\IRIS_Tbx\-help\namedmat/namedmat.tex [191])
+(C:\IRIS_Tbx\-help\namedmat/namedmat.tex [192])
 (C:\IRIS_Tbx\-help\namedmat/rownames.tex)
-(C:\IRIS_Tbx\-help\namedmat/select.tex [192])
-(C:\IRIS_Tbx\-help\namedmat/transpose.tex [193]) [194]
-(C:\IRIS_Tbx\-help\Contents/VARs.tex) [195
+(C:\IRIS_Tbx\-help\namedmat/select.tex [193])
+(C:\IRIS_Tbx\-help\namedmat/transpose.tex [194]) [195]
+(C:\IRIS_Tbx\-help\Contents/VARs.tex) [196
 
 
-] (C:\IRIS_Tbx\-help\VAR/Contents.tex [196
+] (C:\IRIS_Tbx\-help\VAR/Contents.tex [197
 
 
-] [197]) (C:\IRIS_Tbx\-help\VAR/acf.tex [198])
-(C:\IRIS_Tbx\-help\VAR/addparam.tex [199]) (C:\IRIS_Tbx\-help\VAR/alter.tex)
-(C:\IRIS_Tbx\-help\VAR/backward.tex [200]) (C:\IRIS_Tbx\-help\VAR/comment.tex
-[201]) (C:\IRIS_Tbx\-help\VAR/companion.tex) (C:\IRIS_Tbx\-help\VAR/demean.tex
-[202]) (C:\IRIS_Tbx\-help\VAR/eig.tex [203])
-(C:\IRIS_Tbx\-help\VAR/estimate.tex [204] [205])
-(C:\IRIS_Tbx\-help\VAR/ferf.tex [206]) (C:\IRIS_Tbx\-help\VAR/filter.tex
-[207]) (C:\IRIS_Tbx\-help\VAR/fmse.tex [208])
-(C:\IRIS_Tbx\-help\VAR/forecast.tex [209]) (C:\IRIS_Tbx\-help\VAR/get.tex
-[210]) (C:\IRIS_Tbx\-help\VAR/group.tex [211])
+] [198]) (C:\IRIS_Tbx\-help\VAR/acf.tex [199])
+(C:\IRIS_Tbx\-help\VAR/addparam.tex [200]) (C:\IRIS_Tbx\-help\VAR/alter.tex)
+(C:\IRIS_Tbx\-help\VAR/backward.tex [201]) (C:\IRIS_Tbx\-help\VAR/comment.tex
+[202]) (C:\IRIS_Tbx\-help\VAR/companion.tex) (C:\IRIS_Tbx\-help\VAR/demean.tex
+[203]) (C:\IRIS_Tbx\-help\VAR/eig.tex [204])
+(C:\IRIS_Tbx\-help\VAR/estimate.tex [205] [206])
+(C:\IRIS_Tbx\-help\VAR/ferf.tex [207]) (C:\IRIS_Tbx\-help\VAR/filter.tex
+[208]) (C:\IRIS_Tbx\-help\VAR/fmse.tex [209])
+(C:\IRIS_Tbx\-help\VAR/forecast.tex [210]) (C:\IRIS_Tbx\-help\VAR/get.tex
+[211]) (C:\IRIS_Tbx\-help\VAR/group.tex [212])
 (C:\IRIS_Tbx\-help\VAR/horzcat.tex) (C:\IRIS_Tbx\-help\VAR/infocrit.tex
-[212]) (C:\IRIS_Tbx\-help\VAR/instrument.tex [213])
-(C:\IRIS_Tbx\-help\VAR/integrate.tex [214])
+[213]) (C:\IRIS_Tbx\-help\VAR/instrument.tex [214])
+(C:\IRIS_Tbx\-help\VAR/integrate.tex [215])
 (C:\IRIS_Tbx\-help\VAR/iscompatible.tex) (C:\IRIS_Tbx\-help\VAR/isexplosive.tex
-[215]) (C:\IRIS_Tbx\-help\VAR/ispanel.tex [216])
+[216]) (C:\IRIS_Tbx\-help\VAR/ispanel.tex [217])
 (C:\IRIS_Tbx\-help\VAR/isstationary.tex) (C:\IRIS_Tbx\-help\VAR/length.tex
-[217]) (C:\IRIS_Tbx\-help\VAR/lrtest.tex [218]) (C:\IRIS_Tbx\-help\VAR/mean.tex
-) (C:\IRIS_Tbx\-help\VAR/nfitted.tex [219]) (C:\IRIS_Tbx\-help\VAR/portest.tex
-[220]) (C:\IRIS_Tbx\-help\VAR/resample.tex [221])
-(C:\IRIS_Tbx\-help\VAR/rngcmp.tex) (C:\IRIS_Tbx\-help\VAR/schur.tex [222])
-(C:\IRIS_Tbx\-help\VAR/simulate.tex [223]) (C:\IRIS_Tbx\-help\VAR/sspace.tex
-[224]) (C:\IRIS_Tbx\-help\VAR/subsasgn.tex [225])
-(C:\IRIS_Tbx\-help\VAR/subsref.tex [226]) (C:\IRIS_Tbx\-help\VAR/userdata.tex
-[227]) (C:\IRIS_Tbx\-help\VAR/VAR.tex [228]) (C:\IRIS_Tbx\-help\VAR/vma.tex)
-(C:\IRIS_Tbx\-help\VAR/xsf.tex [229]) [230]
-(C:\IRIS_Tbx\-help\SVAR/Contents.tex [231
+[218]) (C:\IRIS_Tbx\-help\VAR/lrtest.tex [219]) (C:\IRIS_Tbx\-help\VAR/mean.tex
+) (C:\IRIS_Tbx\-help\VAR/nfitted.tex [220]) (C:\IRIS_Tbx\-help\VAR/portest.tex
+[221]) (C:\IRIS_Tbx\-help\VAR/resample.tex [222])
+(C:\IRIS_Tbx\-help\VAR/rngcmp.tex) (C:\IRIS_Tbx\-help\VAR/schur.tex [223])
+(C:\IRIS_Tbx\-help\VAR/simulate.tex [224]) (C:\IRIS_Tbx\-help\VAR/sspace.tex
+[225]) (C:\IRIS_Tbx\-help\VAR/subsasgn.tex [226])
+(C:\IRIS_Tbx\-help\VAR/subsref.tex [227]) (C:\IRIS_Tbx\-help\VAR/userdata.tex
+[228]) (C:\IRIS_Tbx\-help\VAR/VAR.tex [229]) (C:\IRIS_Tbx\-help\VAR/vma.tex)
+(C:\IRIS_Tbx\-help\VAR/xsf.tex [230]) [231]
+(C:\IRIS_Tbx\-help\SVAR/Contents.tex [232
 
 ]) (C:\IRIS_Tbx\-help\SVAR/fevd.tex)
-(C:\IRIS_Tbx\-help\SVAR/fprintf.tex [232]) (C:\IRIS_Tbx\-help\SVAR/get.tex
-[233]) (C:\IRIS_Tbx\-help\SVAR/sort.tex [234] [235])
-(C:\IRIS_Tbx\-help\SVAR/sprintf.tex [236]) (C:\IRIS_Tbx\-help\SVAR/srf.tex
-[237]) (C:\IRIS_Tbx\-help\SVAR/SVAR.tex [238]
-Overfull \hbox (24.59734pt too wide) in paragraph at lines 51--57
+(C:\IRIS_Tbx\-help\SVAR/fprintf.tex [233]) (C:\IRIS_Tbx\-help\SVAR/get.tex
+[234]) (C:\IRIS_Tbx\-help\SVAR/sort.tex [235] [236])
+(C:\IRIS_Tbx\-help\SVAR/sprintf.tex [237]) (C:\IRIS_Tbx\-help\SVAR/srf.tex
+[238]) (C:\IRIS_Tbx\-help\SVAR/SVAR.tex [239]
+Overfull \hbox (29.5717pt too wide) in paragraph at lines 51--57
 \T1/ccr/m/n/10 als, and bring the vari-ables back in orig-i-nal or-der af-ter-w
-ards. Use the op-tion '\T1/fi4/m/n/10 backorderResiduals='
+ards. Use the op-tion '\T1/cmtt/m/n/10 backorderResiduals='
  []
 
-) [239] [240] (C:\IRIS_Tbx\-help\BVAR/Contents.tex
-Overfull \hbox (3.31285pt too wide) in paragraph at lines 22--25
-[][][]\T1/fi4/m/n/10 uncmean[][][] \T1/ccr/m/n/10 - Unconditional-mean dummy (o
-r Sims' ini-tial dummy) ob-ser-va-tions for BVARs. 
+) [240] [241] (C:\IRIS_Tbx\-help\BVAR/Contents.tex
+Overfull \hbox (5.05388pt too wide) in paragraph at lines 22--25
+[][][]\T1/cmtt/m/n/10 uncmean[][][] \T1/ccr/m/n/10 - Unconditional-mean dummy (
+or Sims' ini-tial dummy) ob-ser-va-tions for BVARs. 
  []
 
 
-Overfull \hbox (1.8917pt too wide) in paragraph at lines 31--40
-\T1/ccr/m/n/10 The prior dum-mies pro-duced by [][]\T1/fi4/m/n/10 litterman[][]
-[]\T1/ccr/m/n/10 , [][]\T1/fi4/m/n/10 uncmean[][][]\T1/ccr/m/n/10 , [][]\T1/fi4
-/m/n/10 sumofcoeff[][][] \T1/ccr/m/n/10 can be weighted
+Overfull \hbox (8.35837pt too wide) in paragraph at lines 31--40
+\T1/ccr/m/n/10 The prior dum-mies pro-duced by [][]\T1/cmtt/m/n/10 litterman[][
+][]\T1/ccr/m/n/10 , [][]\T1/cmtt/m/n/10 uncmean[][][]\T1/ccr/m/n/10 , [][]\T1/c
+mtt/m/n/10 sumofcoeff[][][] \T1/ccr/m/n/10 can be weighted
  []
 
-) (C:\IRIS_Tbx\-help\BVAR/covmat.tex [241
+) (C:\IRIS_Tbx\-help\BVAR/covmat.tex [242
 
 ])
-(C:\IRIS_Tbx\-help\BVAR/litterman.tex [242])
+(C:\IRIS_Tbx\-help\BVAR/litterman.tex [243])
 (C:\IRIS_Tbx\-help\BVAR/sumofcoeff.tex) (C:\IRIS_Tbx\-help\BVAR/uncmean.tex
-[243]) (C:\IRIS_Tbx\-help\BVAR/user.tex [244]) [245]
+[244]) (C:\IRIS_Tbx\-help\BVAR/user.tex [245]) [246]
 (C:\IRIS_Tbx\-help\FAVAR/Contents.tex) (C:\IRIS_Tbx\-help\FAVAR/comment.tex
-[246
+[247
 
-]) (C:\IRIS_Tbx\-help\FAVAR/estimate.tex [247])
-(C:\IRIS_Tbx\-help\FAVAR/FAVAR.tex [248]) (C:\IRIS_Tbx\-help\FAVAR/filter.tex
-[249] [250]) (C:\IRIS_Tbx\-help\FAVAR/forecast.tex)
-(C:\IRIS_Tbx\-help\FAVAR/get.tex [251] [252])
-(C:\IRIS_Tbx\-help\FAVAR/isempty.tex [253])
+]) (C:\IRIS_Tbx\-help\FAVAR/estimate.tex [248])
+(C:\IRIS_Tbx\-help\FAVAR/FAVAR.tex [249]) (C:\IRIS_Tbx\-help\FAVAR/filter.tex
+[250] [251]) (C:\IRIS_Tbx\-help\FAVAR/forecast.tex)
+(C:\IRIS_Tbx\-help\FAVAR/get.tex [252] [253])
+(C:\IRIS_Tbx\-help\FAVAR/isempty.tex [254])
 (C:\IRIS_Tbx\-help\FAVAR/userdata.tex) (C:\IRIS_Tbx\-help\FAVAR/VAR.tex
-[254]) [255] (C:\IRIS_Tbx\-help\Contents/data.tex) [256
+[255]) [256] (C:\IRIS_Tbx\-help\Contents/data.tex) [257
 
 
 ]
-(C:\IRIS_Tbx\-help\dates/Contents.tex [257
+(C:\IRIS_Tbx\-help\dates/Contents.tex [258
 
 
 ]) (C:\IRIS_Tbx\-help\dates/bb.tex
-[258]) (C:\IRIS_Tbx\-help\dates/bbtoday.tex)
-(C:\IRIS_Tbx\-help\dates/clp2dat.tex [259])
-(C:\IRIS_Tbx\-help\dates/dat2char.tex [260])
-(C:\IRIS_Tbx\-help\dates/dat2charlist.tex [261])
+[259]) (C:\IRIS_Tbx\-help\dates/bbtoday.tex)
+(C:\IRIS_Tbx\-help\dates/clp2dat.tex [260])
+(C:\IRIS_Tbx\-help\dates/dat2char.tex [261])
+(C:\IRIS_Tbx\-help\dates/dat2charlist.tex [262])
 (C:\IRIS_Tbx\-help\dates/dat2clp.tex) (C:\IRIS_Tbx\-help\dates/dat2dec.tex
-[262]
-Overfull \hbox (17.74438pt too wide) in paragraph at lines 22--24
-[]\T1/fi4/m/n/10 DEC \T1/ccr/m/n/10 [ nu-meric ] - Dec-i-mal num-ber rep-re-sen
-t-ing the in-put dates, com-puted as \T1/fi4/m/n/10 year + (per-1)/freq\T1/ccr/
+[263]
+Overfull \hbox (23.21619pt too wide) in paragraph at lines 22--24
+[]\T1/cmtt/m/n/10 DEC \T1/ccr/m/n/10 [ nu-meric ] - Dec-i-mal num-ber rep-re-se
+nt-ing the in-put dates, com-puted as \T1/cmtt/m/n/10 year + (per-1)/freq\T1/cc
+r/m/n/10 . 
+ []
+
+) (C:\IRIS_Tbx\-help\dates/dat2str.tex [264] [265])
+(C:\IRIS_Tbx\-help\dates/dat2ypf.tex) (C:\IRIS_Tbx\-help\dates/datbom.tex
+[266]) (C:\IRIS_Tbx\-help\dates/datboq.tex [267])
+(C:\IRIS_Tbx\-help\dates/datboy.tex) (C:\IRIS_Tbx\-help\dates/datcmp.tex
+[268]) (C:\IRIS_Tbx\-help\dates/datdiff.tex [269])
+(C:\IRIS_Tbx\-help\dates/dateom.tex [270]) (C:\IRIS_Tbx\-help\dates/dateoq.tex)
+(C:\IRIS_Tbx\-help\dates/dateoy.tex [271])
+(C:\IRIS_Tbx\-help\dates/daterange.tex [272])
+(C:\IRIS_Tbx\-help\dates/datxtick.tex [273]) (C:\IRIS_Tbx\-help\dates/dd.tex)
+(C:\IRIS_Tbx\-help\dates/ddtoday.tex [274])
+(C:\IRIS_Tbx\-help\dates/dec2dat.tex) (C:\IRIS_Tbx\-help\dates/hh.tex [275])
+(C:\IRIS_Tbx\-help\dates/hhtoday.tex) (C:\IRIS_Tbx\-help\dates/mm.tex [276])
+(C:\IRIS_Tbx\-help\dates/mmtoday.tex [277]) (C:\IRIS_Tbx\-help\dates/qq.tex)
+(C:\IRIS_Tbx\-help\dates/qqtoday.tex [278]) (C:\IRIS_Tbx\-help\dates/rngcmp.tex
+[279]) (C:\IRIS_Tbx\-help\dates/str2dat.tex [280])
+(C:\IRIS_Tbx\-help\dates/yy.tex) (C:\IRIS_Tbx\-help\dates/yytoday.tex [281])
+[282] (C:\IRIS_Tbx\-help\tseries/Contents.tex [283
+
+] [284] [285])
+(C:\IRIS_Tbx\-help\tseries/acf.tex [286]) (C:\IRIS_Tbx\-help\tseries/apct.tex)
+(C:\IRIS_Tbx\-help\tseries/area.tex [287] [288])
+(C:\IRIS_Tbx\-help\tseries/arf.tex [289]) (C:\IRIS_Tbx\-help\tseries/bar.tex
+[290]) (C:\IRIS_Tbx\-help\tseries/barcon.tex [291])
+(C:\IRIS_Tbx\-help\tseries/bpass.tex [292])
+(C:\IRIS_Tbx\-help\tseries/bsxfun.tex [293])
+(C:\IRIS_Tbx\-help\tseries/bwf2.tex [294]) (C:\IRIS_Tbx\-help\tseries/bwf.tex
+[295]) (C:\IRIS_Tbx\-help\tseries/chowlin.tex [296])
+(C:\IRIS_Tbx\-help\tseries/convert.tex [297] [298])
+(C:\IRIS_Tbx\-help\tseries/cumsumk.tex [299] [300])
+(C:\IRIS_Tbx\-help\tseries/daily.tex) (C:\IRIS_Tbx\-help\tseries/destdise.tex
+[301]) (C:\IRIS_Tbx\-help\tseries/detrend.tex [302])
+(C:\IRIS_Tbx\-help\tseries/diff.tex) (C:\IRIS_Tbx\-help\tseries/double.tex
+[303]) (C:\IRIS_Tbx\-help\tseries/doubledata.tex)
+(C:\IRIS_Tbx\-help\tseries/empty.tex [304])
+(C:\IRIS_Tbx\-help\tseries/enddate.tex [305])
+(C:\IRIS_Tbx\-help\tseries/errorbar.tex [306])
+(C:\IRIS_Tbx\-help\tseries/expsmooth.tex [307])
+(C:\IRIS_Tbx\-help\tseries/fft.tex [308]) (C:\IRIS_Tbx\-help\tseries/freq.tex
+[309]) (C:\IRIS_Tbx\-help\tseries/get.tex [310])
+(C:\IRIS_Tbx\-help\tseries/hpdi.tex) (C:\IRIS_Tbx\-help\tseries/hpf.tex
+[311] [312] [313] [314]) (C:\IRIS_Tbx\-help\tseries/hpf2.tex)
+(C:\IRIS_Tbx\-help\tseries/interp.tex [315])
+(C:\IRIS_Tbx\-help\tseries/length.tex) (C:\IRIS_Tbx\-help\tseries/llf.tex
+[316] [317] [318] [319]) (C:\IRIS_Tbx\-help\tseries/llf2.tex)
+(C:\IRIS_Tbx\-help\tseries/moving.tex [320])
+(C:\IRIS_Tbx\-help\tseries/ndims.tex [321])
+(C:\IRIS_Tbx\-help\tseries/normalise.tex [322])
+(C:\IRIS_Tbx\-help\tseries/pct.tex [323])
+(C:\IRIS_Tbx\-help\tseries/permute.tex) (C:\IRIS_Tbx\-help\tseries/plot.tex
+[324] [325]) (C:\IRIS_Tbx\-help\tseries/plotcmp.tex [326])
+(C:\IRIS_Tbx\-help\tseries/plotpred.tex [327])
+(C:\IRIS_Tbx\-help\tseries/plotyy.tex [328])
+(C:\IRIS_Tbx\-help\tseries/redate.tex [329])
+(C:\IRIS_Tbx\-help\tseries/regress.tex [330])
+(C:\IRIS_Tbx\-help\tseries/reshape.tex [331])
+(C:\IRIS_Tbx\-help\tseries/resize.tex [332])
+(C:\IRIS_Tbx\-help\tseries/rmse.tex) (C:\IRIS_Tbx\-help\tseries/round.tex
+[333]) (C:\IRIS_Tbx\-help\tseries/scatter.tex [334])
+(C:\IRIS_Tbx\-help\tseries/single.tex [335])
+(C:\IRIS_Tbx\-help\tseries/singledata.tex) (C:\IRIS_Tbx\-help\tseries/size.tex
+[336]
+Overfull \hbox (3.42831pt too wide) in paragraph at lines 24--27
+[]\T1/cmtt/m/n/10 S \T1/ccr/m/n/10 [ nu-meric ] - Vec-tor of sizes of the tseri
+es ob-ject data in each di-men-sion, \T1/cmtt/m/n/10 S = [S1,S2,...,Sn]\T1/ccr/
 m/n/10 . 
  []
 
-) (C:\IRIS_Tbx\-help\dates/dat2str.tex [263])
-(C:\IRIS_Tbx\-help\dates/dat2ypf.tex [264]) (C:\IRIS_Tbx\-help\dates/datbom.tex
-[265]) (C:\IRIS_Tbx\-help\dates/datboq.tex) (C:\IRIS_Tbx\-help\dates/datboy.tex
-[266]) (C:\IRIS_Tbx\-help\dates/datcmp.tex [267])
-(C:\IRIS_Tbx\-help\dates/datdiff.tex [268]) (C:\IRIS_Tbx\-help\dates/dateom.tex
-) (C:\IRIS_Tbx\-help\dates/dateoq.tex [269])
-(C:\IRIS_Tbx\-help\dates/dateoy.tex) (C:\IRIS_Tbx\-help\dates/daterange.tex
-[270]) (C:\IRIS_Tbx\-help\dates/datxtick.tex [271])
-(C:\IRIS_Tbx\-help\dates/dec2dat.tex [272]) (C:\IRIS_Tbx\-help\dates/hh.tex)
-(C:\IRIS_Tbx\-help\dates/hhtoday.tex [273]) (C:\IRIS_Tbx\-help\dates/mm.tex
-[274]) (C:\IRIS_Tbx\-help\dates/mmtoday.tex) (C:\IRIS_Tbx\-help\dates/qq.tex
-[275]) (C:\IRIS_Tbx\-help\dates/qqtoday.tex)
-(C:\IRIS_Tbx\-help\dates/rngcmp.tex [276]) (C:\IRIS_Tbx\-help\dates/str2dat.tex
-[277]) (C:\IRIS_Tbx\-help\dates/yy.tex [278])
-(C:\IRIS_Tbx\-help\dates/yytoday.tex) [279]
-(C:\IRIS_Tbx\-help\tseries/Contents.tex [280
+) (C:\IRIS_Tbx\-help\tseries/sort.tex [337]) (C:\IRIS_Tbx\-help\tseries/spy.tex
+[338]) (C:\IRIS_Tbx\-help\tseries/startdate.tex [339])
+(C:\IRIS_Tbx\-help\tseries/stdise.tex) (C:\IRIS_Tbx\-help\tseries/stem.tex
+[340]) (C:\IRIS_Tbx\-help\tseries/subsasgn.tex [341])
+(C:\IRIS_Tbx\-help\tseries/subsref.tex [342])
+(C:\IRIS_Tbx\-help\tseries/trend.tex [343])
+(C:\IRIS_Tbx\-help\tseries/tseries.tex [344])
+(C:\IRIS_Tbx\-help\tseries/windex.tex [345])
+(C:\IRIS_Tbx\-help\tseries/wmean.tex) (C:\IRIS_Tbx\-help\tseries/x12.tex
+[346] [347] [348] [349] [350]) (C:\IRIS_Tbx\-help\tseries/yearly.tex) [351]
+(C:\IRIS_Tbx\-help\dbase/Contents.tex [352
 
-] [281] [282])
-(C:\IRIS_Tbx\-help\tseries/acf.tex [283]) (C:\IRIS_Tbx\-help\tseries/apct.tex)
-(C:\IRIS_Tbx\-help\tseries/area.tex [284] [285])
-(C:\IRIS_Tbx\-help\tseries/arf.tex [286]) (C:\IRIS_Tbx\-help\tseries/bar.tex
-[287]) (C:\IRIS_Tbx\-help\tseries/barcon.tex [288])
-(C:\IRIS_Tbx\-help\tseries/bpass.tex [289])
-(C:\IRIS_Tbx\-help\tseries/bsxfun.tex [290])
-(C:\IRIS_Tbx\-help\tseries/bwf2.tex [291]) (C:\IRIS_Tbx\-help\tseries/bwf.tex
-[292]) (C:\IRIS_Tbx\-help\tseries/chowlin.tex [293])
-(C:\IRIS_Tbx\-help\tseries/convert.tex [294] [295])
-(C:\IRIS_Tbx\-help\tseries/cumsumk.tex [296] [297])
-(C:\IRIS_Tbx\-help\tseries/daily.tex) (C:\IRIS_Tbx\-help\tseries/destdise.tex
-[298]) (C:\IRIS_Tbx\-help\tseries/detrend.tex [299])
-(C:\IRIS_Tbx\-help\tseries/diff.tex) (C:\IRIS_Tbx\-help\tseries/double.tex
-[300]) (C:\IRIS_Tbx\-help\tseries/doubledata.tex)
-(C:\IRIS_Tbx\-help\tseries/empty.tex [301])
-(C:\IRIS_Tbx\-help\tseries/enddate.tex [302])
-(C:\IRIS_Tbx\-help\tseries/errorbar.tex [303])
-(C:\IRIS_Tbx\-help\tseries/expsmooth.tex [304])
-(C:\IRIS_Tbx\-help\tseries/fft.tex [305]) (C:\IRIS_Tbx\-help\tseries/freq.tex
-[306]) (C:\IRIS_Tbx\-help\tseries/get.tex [307])
-(C:\IRIS_Tbx\-help\tseries/hpdi.tex) (C:\IRIS_Tbx\-help\tseries/hpf.tex
-[308] [309] [310] [311]) (C:\IRIS_Tbx\-help\tseries/hpf2.tex)
-(C:\IRIS_Tbx\-help\tseries/interp.tex [312])
-(C:\IRIS_Tbx\-help\tseries/length.tex) (C:\IRIS_Tbx\-help\tseries/llf.tex
-[313] [314] [315] [316]) (C:\IRIS_Tbx\-help\tseries/llf2.tex)
-(C:\IRIS_Tbx\-help\tseries/moving.tex [317])
-(C:\IRIS_Tbx\-help\tseries/ndims.tex [318])
-(C:\IRIS_Tbx\-help\tseries/normalise.tex
-Overfull \hbox (30.12543pt too wide) in paragraph at lines 36--38
-[]\T1/fi4/m/n/10 'mode=' \T1/ccr/m/n/10 [ `add' | $[]$ ] - Ad-di-tive or mul-ti
--plica-tive nor-mal-i-sa-tion. De-scrip-tion ============ 
+]
+
+LaTeX Warning: Reference `struct/minus' on page 353 undefined on input line 93.
+
+
+
+LaTeX Warning: Reference `struct/mtimes' on page 353 undefined on input line 95
+.
+
+
+LaTeX Warning: Reference `struct/plus' on page 353 undefined on input line 98.
+
+) (C:\IRIS_Tbx\-help\dbase/array2db.tex [353])
+(C:\IRIS_Tbx\-help\dbase/db2array.tex [354])
+(C:\IRIS_Tbx\-help\dbase/db2tseries.tex) (C:\IRIS_Tbx\-help\dbase/dbbatch.tex
+[355] [356]) (C:\IRIS_Tbx\-help\dbase/dbclip.tex [357]
+Overfull \hbox (14.6835pt too wide) in paragraph at lines 43--48
+[]\T1/ccr/m/n/10 Multiple ranges can be spec-i-fied in \T1/cmtt/m/n/10 Range \T
+1/ccr/m/n/10 (as a cell ar-ray), each for a dif-fer-ent date fre-quency/periodi
+city
  []
 
-[319]) (C:\IRIS_Tbx\-help\tseries/pct.tex [320])
-(C:\IRIS_Tbx\-help\tseries/permute.tex) (C:\IRIS_Tbx\-help\tseries/plot.tex
-[321]) (C:\IRIS_Tbx\-help\tseries/plotcmp.tex [322])
-(C:\IRIS_Tbx\-help\tseries/plotpred.tex [323] [324])
-(C:\IRIS_Tbx\-help\tseries/plotyy.tex [325])
-(C:\IRIS_Tbx\-help\tseries/redate.tex [326])
-(C:\IRIS_Tbx\-help\tseries/regress.tex [327])
-(C:\IRIS_Tbx\-help\tseries/reshape.tex) (C:\IRIS_Tbx\-help\tseries/resize.tex
-[328]) (C:\IRIS_Tbx\-help\tseries/rmse.tex [329])
-(C:\IRIS_Tbx\-help\tseries/round.tex [330])
-(C:\IRIS_Tbx\-help\tseries/scatter.tex [331])
-(C:\IRIS_Tbx\-help\tseries/single.tex)
-(C:\IRIS_Tbx\-help\tseries/singledata.tex [332])
-(C:\IRIS_Tbx\-help\tseries/size.tex [333]) (C:\IRIS_Tbx\-help\tseries/sort.tex)
-(C:\IRIS_Tbx\-help\tseries/spy.tex [334])
-(C:\IRIS_Tbx\-help\tseries/startdate.tex [335])
-(C:\IRIS_Tbx\-help\tseries/stdise.tex [336])
-(C:\IRIS_Tbx\-help\tseries/stem.tex [337])
-(C:\IRIS_Tbx\-help\tseries/subsasgn.tex [338])
-(C:\IRIS_Tbx\-help\tseries/subsref.tex) (C:\IRIS_Tbx\-help\tseries/trend.tex
-[339]) (C:\IRIS_Tbx\-help\tseries/tseries.tex [340])
-(C:\IRIS_Tbx\-help\tseries/windex.tex [341])
-(C:\IRIS_Tbx\-help\tseries/wmean.tex [342]) (C:\IRIS_Tbx\-help\tseries/x12.tex
-[343] [344] [345] [346]) (C:\IRIS_Tbx\-help\tseries/yearly.tex [347]) [348]
-(C:\IRIS_Tbx\-help\dbase/Contents.tex [349
-
-])
-(C:\IRIS_Tbx\-help\dbase/array2db.tex) (C:\IRIS_Tbx\-help\dbase/db2array.tex
-[350]) (C:\IRIS_Tbx\-help\dbase/db2tseries.tex [351])
-(C:\IRIS_Tbx\-help\dbase/dbbatch.tex [352] [353])
-(C:\IRIS_Tbx\-help\dbase/dbclip.tex [354]
-Overfull \hbox (13.43991pt too wide) in paragraph at lines 43--48
-[]\T1/ccr/m/n/10 Multiple ranges can be spec-i-fied in \T1/fi4/m/n/10 Range \T1
-/ccr/m/n/10 (as a cell ar-ray), each for a dif-fer-ent date fre-quency/periodic
-ity
- []
-
-) (C:\IRIS_Tbx\-help\dbase/dbcol.tex [355])
-(C:\IRIS_Tbx\-help\dbase/dbextend.tex [356]) (C:\IRIS_Tbx\-help\dbase/dbfun.tex
-[357]) (C:\IRIS_Tbx\-help\dbase/dbload.tex [358] [359] [360])
-(C:\IRIS_Tbx\-help\dbase/dbmerge.tex [361])
-(C:\IRIS_Tbx\-help\dbase/dbminuscontrol.tex [362])
-(C:\IRIS_Tbx\-help\dbase/dbnames.tex [363] [364])
-(C:\IRIS_Tbx\-help\dbase/dbplot.tex [365])
-(C:\IRIS_Tbx\-help\dbase/dbprintuserdata.tex [366])
-(C:\IRIS_Tbx\-help\dbase/dbrange.tex [367])
+[358]) (C:\IRIS_Tbx\-help\dbase/dbcol.tex)
+(C:\IRIS_Tbx\-help\dbase/dbextend.tex [359]) (C:\IRIS_Tbx\-help\dbase/dbfun.tex
+[360]) (C:\IRIS_Tbx\-help\dbase/dbload.tex [361] [362] [363] [364])
+(C:\IRIS_Tbx\-help\dbase/dbmerge.tex [365])
+(C:\IRIS_Tbx\-help\dbase/dbminuscontrol.tex [366])
+(C:\IRIS_Tbx\-help\dbase/dbnames.tex [367]) (C:\IRIS_Tbx\-help\dbase/dbplot.tex
+[368]) (C:\IRIS_Tbx\-help\dbase/dbprintuserdata.tex [369])
+(C:\IRIS_Tbx\-help\dbase/dbrange.tex [370])
 (C:\IRIS_Tbx\-help\dbase/dbredate.tex) (C:\IRIS_Tbx\-help\dbase/dbsave.tex
-[368] [369] [370]) (C:\IRIS_Tbx\-help\dbase/dbsearchuserdata.tex [371])
-(C:\IRIS_Tbx\-help\dbase/dbuserdatalov.tex [372])
-(C:\IRIS_Tbx\-help\dbase/xls2csv.tex [373]) [374]
-(C:\IRIS_Tbx\-help\Contents/reporting.tex) [375
+[371] [372] [373]) (C:\IRIS_Tbx\-help\dbase/dbsearchuserdata.tex [374] [375])
+(C:\IRIS_Tbx\-help\dbase/dbsplit.tex [376])
+(C:\IRIS_Tbx\-help\dbase/dbuserdatalov.tex [377])
+(C:\IRIS_Tbx\-help\dbase/minus.tex) (C:\IRIS_Tbx\-help\dbase/mtimes.tex
+[378]) (C:\IRIS_Tbx\-help\dbase/plus.tex [379])
+(C:\IRIS_Tbx\-help\dbase/xls2csv.tex [380]
+Overfull \hbox (3.53761pt too wide) in paragraph at lines 56--58
+\T1/ccr/m/n/10 Save the work-sheet named `Sheet3' to a CSV file; the name of th
+e CSV file will be \T1/cmtt/m/n/10 'myDataFile.csv'\T1/ccr/m/n/10 . 
+ []
+
+) [381] (C:\IRIS_Tbx\-help\Contents/reporting.tex) [382
 
 
 ]
-(C:\IRIS_Tbx\-help\report/Contents.tex [376
+(C:\IRIS_Tbx\-help\report/Contents.tex [383
 
 
 ])
-(C:\IRIS_Tbx\-help\report/align.tex [377] [378])
-(C:\IRIS_Tbx\-help\report/array.tex [379] [380])
-(C:\IRIS_Tbx\-help\report/band.tex [381] [382])
-(C:\IRIS_Tbx\-help\report/copy.tex) (C:\IRIS_Tbx\-help\report/display.tex
-[383]) (C:\IRIS_Tbx\-help\report/disp.tex) (C:\IRIS_Tbx\-help\report/empty.tex
-[384]) (C:\IRIS_Tbx\-help\report/fanchart.tex [385])
-(C:\IRIS_Tbx\-help\report/figure.tex [386]
-Overfull \hbox (29.49681pt too wide) in paragraph at lines 13--15
+(C:\IRIS_Tbx\-help\report/align.tex [384] [385])
+(C:\IRIS_Tbx\-help\report/array.tex [386] [387])
+(C:\IRIS_Tbx\-help\report/band.tex [388] [389])
+(C:\IRIS_Tbx\-help\report/copy.tex [390]) (C:\IRIS_Tbx\-help\report/display.tex
+) (C:\IRIS_Tbx\-help\report/disp.tex [391]) (C:\IRIS_Tbx\-help\report/empty.tex
+) (C:\IRIS_Tbx\-help\report/fanchart.tex [392])
+(C:\IRIS_Tbx\-help\report/figure.tex [393]
+Overfull \hbox (33.72502pt too wide) in paragraph at lines 13--15
 \T1/ccr/m/n/10 This is an ob-so-lete syn-tax, and will be re-moved from IRIS in
- a fu-ture re-lease. Use [][]\T1/fi4/m/n/10 report/userfigure[][][]
+ a fu-ture re-lease. Use [][]\T1/cmtt/m/n/10 report/userfigure[][][]
  []
 
-
-Overfull \hbox (2.96092pt too wide) in paragraph at lines 67--71
-[]\T1/fi4/m/n/10 'style=' \T1/ccr/m/n/10 [ struct | $[]$ ] - Ap-ply this cas-ca
-d-ing style struc-ture to the fig-ure; see [][]\T1/fi4/m/n/10 qstyle[][][]\T1/c
-cr/m/n/10 . 
+[394]
+Overfull \hbox (6.44298pt too wide) in paragraph at lines 67--71
+[]\T1/cmtt/m/n/10 'style=' \T1/ccr/m/n/10 [ struct | $[]$ ] - Ap-ply this cas-c
+ad-ing style struc-ture to the fig-ure; see [][]\T1/cmtt/m/n/10 qstyle[][][]\T1
+/ccr/m/n/10 . 
  []
 
-[387]) (C:\IRIS_Tbx\-help\report/findall.tex [388])
-(C:\IRIS_Tbx\-help\report/graph.tex
-Overfull \hbox (1.53499pt too wide) in paragraph at lines 30--34
-[]\T1/fi4/m/n/10 'dateFormat=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-bl
-e) Date for-mat string, see help on [][]\T1/fi4/m/n/10 dat2str[][][]\T1/ccr/m/n
-/10 . 
+) (C:\IRIS_Tbx\-help\report/findall.tex [395])
+(C:\IRIS_Tbx\-help\report/graph.tex [396]
+Overfull \hbox (8.4991pt too wide) in paragraph at lines 30--34
+[]\T1/cmtt/m/n/10 'dateFormat=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-b
+le) Date for-mat string, see help on [][]\T1/cmtt/m/n/10 dat2str[][][]\T1/ccr/m
+/n/10 . 
  []
 
-[389]) (C:\IRIS_Tbx\-help\report/highlight.tex [390])
-(C:\IRIS_Tbx\-help\report/include.tex [391])
-(C:\IRIS_Tbx\-help\report/matrix.tex [392]
-LaTeX Font Info:    Font shape `TS1/ccr/bx/n' in size <12> not available
-(Font)              Font shape `TS1/cmr/bx/n' tried instead on input line 38.
+[397]) (C:\IRIS_Tbx\-help\report/highlight.tex [398])
+(C:\IRIS_Tbx\-help\report/include.tex [399])
+(C:\IRIS_Tbx\-help\report/matrix.tex [400]
+LaTeX Font Info:    Font shape `OMS/ccr/bx/n' in size <12> not available
+(Font)              Font shape `OMS/ccsy/b/n' tried instead on input line 38.
+LaTeX Font Info:    Font shape `OMS/ccsy/b/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 38.
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 38.
 
+Overfull \hbox (20.62538pt too wide) in paragraph at lines 62--66
+[]\T1/cmtt/m/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
+m par-ent ob-jects) L[]T[]X string
+ []
 
-LaTeX Font Warning: Font shape `T1/fi4/bx/n' undefined
-(Font)              using `T1/fi4/m/n' instead on input line 38.
-
-[393]
-Overfull \hbox (17.8495pt too wide) in paragraph at lines 62--66
-[]\T1/fi4/bx/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
+[401]
+Overfull \hbox (20.62538pt too wide) in paragraph at lines 80--85
+[]\T1/cmtt/m/n/12 'nan=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
 m par-ent ob-jects) L[]T[]X string
  []
 
 
-Overfull \hbox (17.8495pt too wide) in paragraph at lines 80--85
-[]\T1/fi4/bx/n/12 'nan=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
-m par-ent ob-jects) L[]T[]X string
- []
-
-
-Overfull \hbox (24.7502pt too wide) in paragraph at lines 85--90
-[]\T1/fi4/bx/n/12 'pureZero=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-bl
+Overfull \hbox (26.65862pt too wide) in paragraph at lines 85--90
+[]\T1/cmtt/m/n/12 'pureZero=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-bl
 e from par-ent ob-jects) L[]T[]X string
  []
 
-[394] [395]) (C:\IRIS_Tbx\-help\report/merge.tex [396])
-(C:\IRIS_Tbx\-help\report/modelfile.tex [397])
-(C:\IRIS_Tbx\-help\report/new.tex [398])
-(C:\IRIS_Tbx\-help\report/pagebreak.tex) (C:\IRIS_Tbx\-help\report/publish.tex
-[399] [400]) (C:\IRIS_Tbx\-help\report/section.tex [401])
-(C:\IRIS_Tbx\-help\report/series.tex [402] [403] [404] [405])
-(C:\IRIS_Tbx\-help\report/subheading.tex [406])
-(C:\IRIS_Tbx\-help\report/table.tex [407]
-Overfull \hbox (2.88443pt too wide) in paragraph at lines 61--67
-[]\T1/fi4/m/it/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
- from par-ent ob-jects) Works only with \T1/fi4/m/it/10 'long='\T1/ccr/m/n/10 =
+[402] [403]) (C:\IRIS_Tbx\-help\report/merge.tex)
+(C:\IRIS_Tbx\-help\report/modelfile.tex [404] [405])
+(C:\IRIS_Tbx\-help\report/new.tex) (C:\IRIS_Tbx\-help\report/pagebreak.tex
+[406]) (C:\IRIS_Tbx\-help\report/publish.tex [407] [408])
+(C:\IRIS_Tbx\-help\report/section.tex [409])
+(C:\IRIS_Tbx\-help\report/series.tex [410] [411] [412] [413])
+(C:\IRIS_Tbx\-help\report/subheading.tex [414])
+(C:\IRIS_Tbx\-help\report/table.tex [415]
+Overfull \hbox (7.36136pt too wide) in paragraph at lines 61--67
+[]\T1/cmtt/m/n/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
+ from par-ent ob-jects) Works only with \T1/cmtt/m/n/10 'long='\T1/ccr/m/n/10 =
 true:
  []
 
-[408]
-Overfull \hbox (15.68993pt too wide) in paragraph at lines 117--126
+[416]
+Overfull \hbox (18.92326pt too wide) in paragraph at lines 117--126
 []\T1/ccr/m/n/10 By de-fault, the date row is printed as a lead-ing row with da
-tes for-mated us-ing the op-tion \T1/fi4/m/it/10 'dateFormat='\T1/ccr/m/n/10 .
+tes for-mated us-ing the op-tion \T1/cmtt/m/n/10 'dateFormat='\T1/ccr/m/n/10 .
  []
 
-[409]) (C:\IRIS_Tbx\-help\report/tex.tex [410])
-(C:\IRIS_Tbx\-help\report/userfigure.tex [411]
-Overfull \hbox (2.51648pt too wide) in paragraph at lines 46--49
+[417]) (C:\IRIS_Tbx\-help\report/tex.tex [418])
+(C:\IRIS_Tbx\-help\report/userfigure.tex [419]
+Overfull \hbox (5.5011pt too wide) in paragraph at lines 46--49
 []\T1/ccr/m/n/10 The re-port fig-ure can-not have any chil-dren; in other words
-, you can-not call [][]\T1/fi4/m/it/10 report/graph[][][]
+, you can-not call [][]\T1/cmtt/m/n/10 report/graph[][][]
  []
 
-[412]) (C:\IRIS_Tbx\-help\report/vline.tex [413]) [414]
+) (C:\IRIS_Tbx\-help\report/vline.tex [420]) [421]
 (C:\IRIS_Tbx\-help\qreportlang/Contents.tex)
 (C:\IRIS_Tbx\-help\qreportlang/figure.tex)
-(C:\IRIS_Tbx\-help\qreportlang/linegraph.tex [415
+(C:\IRIS_Tbx\-help\qreportlang/linegraph.tex [422
 
 ])
 (C:\IRIS_Tbx\-help\qreportlang/blank.tex)
-(C:\IRIS_Tbx\-help\qreportlang/bargraph.tex [416])
+(C:\IRIS_Tbx\-help\qreportlang/bargraph.tex [423])
 (C:\IRIS_Tbx\-help\qreportlang/histgraph.tex)
 (C:\IRIS_Tbx\-help\qreportlang/errorbargraph.tex)
-(C:\IRIS_Tbx\-help\qreportlang/stemgraph.tex [417])
-(C:\IRIS_Tbx\-help\qreportlang/subplot.tex [418])
+(C:\IRIS_Tbx\-help\qreportlang/stemgraph.tex [424])
+(C:\IRIS_Tbx\-help\qreportlang/subplot.tex [425])
 (C:\IRIS_Tbx\-help\qreportlang/linebreak.tex)
-(C:\IRIS_Tbx\-help\qreportlang/subtitle.tex) [419] [420]
+(C:\IRIS_Tbx\-help\qreportlang/subtitle.tex) [426] [427]
 (C:\IRIS_Tbx\-help\qreport/Contents.tex) (C:\IRIS_Tbx\-help\qreport/qplot.tex
-[421
+[428
 
-] [422]) (C:\IRIS_Tbx\-help\qreport/qstyle.tex [423] [424]) [425]
+] [429]) (C:\IRIS_Tbx\-help\qreport/qstyle.tex [430] [431]) [432]
 (C:\IRIS_Tbx\-help\grfun/Contents.tex)
-(C:\IRIS_Tbx\-help\grfun/bottomlegend.tex [426
+(C:\IRIS_Tbx\-help\grfun/bottomlegend.tex [433
 
 ])
 (C:\IRIS_Tbx\-help\grfun/ftitle.tex) (C:\IRIS_Tbx\-help\grfun/highlight.tex
-[427]) (C:\IRIS_Tbx\-help\grfun/maxfigure.tex [428])
-(C:\IRIS_Tbx\-help\grfun/movetobkg.tex [429])
+[434]) (C:\IRIS_Tbx\-help\grfun/maxfigure.tex [435])
+(C:\IRIS_Tbx\-help\grfun/movetobkg.tex [436])
 (C:\IRIS_Tbx\-help\grfun/movetosubplot.tex)
-(C:\IRIS_Tbx\-help\grfun/plotcircle.tex [430])
-(C:\IRIS_Tbx\-help\grfun/plotmat.tex [431])
-(C:\IRIS_Tbx\-help\grfun/plotneigh.tex [432] [433])
-(C:\IRIS_Tbx\-help\grfun/plotpp.tex [434] [435])
-(C:\IRIS_Tbx\-help\grfun/vline.tex [436]) (C:\IRIS_Tbx\-help\grfun/zeroline.tex
-[437]) (C:\IRIS_Tbx\-help\grfun/hline.tex))
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 129.
- [438] [439]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 129.
+(C:\IRIS_Tbx\-help\grfun/plotcircle.tex [437])
+(C:\IRIS_Tbx\-help\grfun/plotmat.tex [438])
+(C:\IRIS_Tbx\-help\grfun/plotneigh.tex [439] [440])
+(C:\IRIS_Tbx\-help\grfun/plotpp.tex [441] [442])
+(C:\IRIS_Tbx\-help\grfun/vline.tex [443]) (C:\IRIS_Tbx\-help\grfun/zeroline.tex
+[444]) (C:\IRIS_Tbx\-help\grfun/hline.tex))
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 133.
+ [445] [446]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 133.
 
 (C:\IRIS_Tbx\-help\IRIS_Man.aux (C:\IRIS_Tbx\-help\Contents/sessions.aux)
 (C:\IRIS_Tbx\-help\Contents/models.aux) (C:\IRIS_Tbx\-help\Contents/VARs.aux)
 (C:\IRIS_Tbx\-help\Contents/data.aux) (C:\IRIS_Tbx\-help\Contents/reporting.aux
 ))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 129.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 129.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 133.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 133.
 
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 3.82pt have occurred.
 
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 129.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 133.
  ) 
 Here is how much of TeX's memory you used:
- 12758 strings out of 494045
- 190294 string characters out of 3155643
- 218601 words of memory out of 3000000
- 10992 multiletter control sequences out of 15000+200000
- 26693 words of font info for 59 fonts, out of 3000000 for 9000
- 715 hyphenation exceptions out of 8191
- 29i,12n,33p,375b,449s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{modellang/userdiff} has been referenced but does 
-not exist, replaced by a fixed one
+ 12517 strings out of 493921
+ 186572 string characters out of 3154503
+ 213282 words of memory out of 3000000
+ 10673 multiletter control sequences out of 15000+200000
+ 22911 words of font info for 53 fonts, out of 3000000 for 9000
+ 841 hyphenation exceptions out of 8191
+ 29i,12n,33p,787b,453s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{struct/plus} has been referenced but does not exi
+st, replaced by a fixed one
 
- <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\tcb
-x1200.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dp
-i600\eorm7.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\c
-oncmath\dpi600\xccmi5.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfo
-ur\public\concmath\dpi600\xccsy10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\f
-onts\pk\ljfour\public\concmath\dpi600\xccex10.pk> <C:\Users\Home\AppData\Local\
-MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi600\ccr5.pk> <C:\Users\Home\AppDa
-ta\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccmi7.pk> <C:\Users
-\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccsy7.pk
-> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi60
-0\ccr7.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concr
-ete\dpi600\ccr10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\pu
-blic\concmath\dpi600\xccmi10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\
-pk\ljfour\jknappen\ec\dpi600\ecbx0800.pk> <C:\Users\Home\AppData\Local\MiKTeX\2
-.9\fonts\pk\ljfour\jknappen\ec\dpi1037\eclb8.pk> <C:\Users\Home\AppData\Local\M
-iKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eorm8.pk> <C:\Users\Home\AppData\Lo
-cal\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eoti10.pk> <C:\Users\Home\AppD
-ata\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk> <C:\Users\
-Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk> <
-C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1
-200.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi
-600\ecbx1440.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public
-\ecc\dpi600\torm10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
-public\ecc\dpi600\eorm10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\l
-jfour\public\ecc\dpi720\eoti10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\font
-s\pk\ljfour\public\ecc\dpi600\torm5.pk>{C:/MiKTeX/fonts/enc/dvips/inconsolata/f
-i4-ec.enc} <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\d
-pi720\eorm10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknapp
-en\ec\dpi1244\eclb8.pk><C:/MiKTeX/fonts/type1/public/inconsolata/Inconsolata.pf
-b>
-Output written on C:/IRIS_Tbx/-help/IRIS_Man.pdf (439 pages, 1733853 bytes).
+pdfTeX warning (dest): name{struct/mtimes} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{struct/minus} has been referenced but does not exis
+t, replaced by a fixed one
+
+pdfTeX warning (dest): name{modellang/userdiff} has been referenced but does no
+t exist, replaced by a fixed one
+
+ <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eorm
+7.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\d
+pi600\xccmi5.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public
+\concmath\dpi600\xccex10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\l
+jfour\jknappen\ec\dpi600\ecit1000.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\f
+onts\pk\ljfour\public\concrete\dpi600\ccr5.pk> <C:\Users\Home\AppData\Local\MiK
+TeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccmi7.pk> <C:\Users\Home\AppDat
+a\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccsy7.pk> <C:\Users\
+Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi600\ccr7.pk> <
+C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi600\c
+cr10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmat
+h\dpi600\xccmi10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jk
+nappen\ec\dpi600\ecbx0800.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\
+ljfour\jknappen\ec\dpi1037\eclb8.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fo
+nts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk> <C:\Users\Home\AppData\Local\MiKT
+eX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk> <C:\Users\Home\AppData\L
+ocal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Home\
+AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eoti10.pk> <C:\Users
+\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk> 
+<C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx
+1440.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmat
+h\dpi600\xccsy8.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\pub
+lic\ecc\dpi600\eorm8.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfou
+r\public\concmath\dpi600\xccsy10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fo
+nts\pk\ljfour\public\ecc\dpi600\eorm10.pk> <C:\Users\Home\AppData\Local\MiKTeX\
+2.9\fonts\pk\ljfour\public\concmath\dpi600\xccsy5.pk> <C:\Users\Home\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eorm5.pk> <C:\Users\Home\AppDa
+ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk> <C:\Users\H
+ome\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi720\eorm10.pk> <C:\U
+sers\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi1244\eorm10.pk
+><C:/MiKTeX/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
+Output written on IRIS_Man.pdf (446 pages, 1826052 bytes).
 PDF statistics:
- 8546 PDF objects out of 8907 (max. 8388607)
- 3762 named destinations out of 4296 (max. 500000)
- 3281 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 8903 PDF objects out of 8907 (max. 8388607)
+ 3836 named destinations out of 4296 (max. 500000)
+ 3337 words of extra memory for PDF output out of 10000 (max. 10000000)
 

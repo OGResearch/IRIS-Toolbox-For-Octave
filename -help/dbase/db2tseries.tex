@@ -5,7 +5,7 @@
 	\paragraph{Syntax}
  
  \begin{verbatim}
- [X,INCL,RANGE] = db2tseries(D,LIST,RANGE)
+ [X,Incl,Range] = db2tseries(D,List,Range)
  \end{verbatim}
  
  \paragraph{Input arguments}
@@ -15,10 +15,10 @@
    \texttt{D} {[} struct {]} - Input database with tseries objects that
    will be combined in one multivariate tseries object.
  \item
-   \texttt{LIST} {[} char \textbar{} cellstr {]} - List of tseries names
+   \texttt{List} {[} char \textbar{} cellstr {]} - List of tseries names
    that will be combined.
  \item
-   \texttt{RANGE} {[} numeric \textbar{} Inf {]} - Date range.
+   \texttt{Range} {[} numeric \textbar{} Inf {]} - Date range.
  \end{itemize}
  
  \paragraph{Output arguments}
@@ -27,10 +27,10 @@
  \item
    \texttt{X} {[} numeric {]} - Combined multivariate tseries object.
  \item
-   \texttt{INCL} {[} cellstr {]} - List of tseries names that have been
+   \texttt{Incl} {[} cellstr {]} - List of tseries names that have been
    actually found in the database.
  \item
-   \texttt{RANGE} {[} numeric {]} - The date range actually used.
+   \texttt{Range} {[} numeric {]} - The date range actually used.
  \end{itemize}
 
 

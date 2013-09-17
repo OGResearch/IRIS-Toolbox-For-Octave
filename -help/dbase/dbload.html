@@ -137,8 +137,8 @@ D = dbload(D,FName, ...)</code></pre>
 <li><p><code>'nan='</code> [ char | <em><code>NaN</code></em> ] - String representing missing observations (case insensitive).</p></li>
 <li><p><code>'preProcess='</code> [ function_handle | cell | empty ] - Apply this function, or cell array of fucnctions, to the raw text file before parsing the data.</p></li>
 <li><p><code>'skipRows='</code> [ char | cellstr | numeric | <em>empty</em> ] - Skip rows whose first cell matches the string or strings (regular expressions); or, skip a vector of row numbers.</p></li>
-<li><p><code>'userData='</code> [ char | <em><code>Inf</code></em> ] - Field name under which the database userdata loaded from the CSV file (if they exist) will be stored in the output database; if <code>'userData'=Inf</code> the field name will be read from the CSV file (and will be thus identical to the originally saved database).</p></li>
-<li><p><code>'userDataField='</code> [ char | <em><code>'.'</code></em> ] - A leading character denoting userdata fields for individual time series. If empty, no userdata fields will be read.</p></li>
+<li><p><code>'userData='</code> [ char | <em><code>Inf</code></em> ] - Field name under which the database userdata loaded from the CSV file (if they exist) will be stored in the output database; <code>Inf</code> means the field name will be read from the CSV file (and will be thus identical to the originally saved database).</p></li>
+<li><p><code>'userDataField='</code> [ char | <em><code>'.'</code></em> ] - A leading character denoting userdata fields for individual time series; if empty, no userdata fields will be read in and created.</p></li>
 <li><p><code>'userDataFieldList='</code> [ cellstr | numeric | empty ] - List of row headers, or vector of row numbers, that will be included as user data in each time series.</p></li>
 </ul>
 <h4 id="description">Description</h4>

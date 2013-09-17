@@ -43,13 +43,11 @@
  \item
    \texttt{'postProcess='} {[} char \textbar{} \emph{empty} {]} -
    (Inheritable) String with Matlab commands executed after the graph has
-   been drawn and styled; the commands have access to variable
-   \texttt{H}, a handle to the current axes object.
+   been drawn and styled; see Description.
  \item
    \texttt{'preProcess='} {[} char \textbar{} \emph{empty} {]} -
    (Inheritable) String with Matlab commands executed before the graph
-   has been drawn and styled; the commands have access to variable
-   \texttt{H}, a handle to the current axes object.
+   has been drawn and styled; see Description.
  \item
    \texttt{'range='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
    (Inheritable) Graph range.
@@ -83,6 +81,51 @@
  
  \paragraph{Description}
  
+ The options \texttt{'preProcess='} and \texttt{'postProcess='} give you
+ additional flexibility in customising the graphics style of the axes
+ object. The values assigned to these options are expected to be strings
+ with an executable Matlab command, or commands separated with
+ semi-colons (as if typed on one line in the command window). The command
+ can refer to the following variables:
+ 
+ \begin{itemize}
+ \item
+   \texttt{H} - a handle to the currently processed axes object.
+ \item
+   \texttt{L} - a handle to the corresponding legend object; if no legend
+   object exists for the axes \texttt{H}, \texttt{L} will be
+   \texttt{NaN}.
+ \end{itemize}
+ 
  \paragraph{Example}
+ 
+ Create a one-page report with a chart in on the LHS and the legend moved
+ to the RHS. Use the function \texttt{grfun.movetosubplot} in the option
+ \texttt{'postProcess='}, referring to \texttt{L} (handle to the legend
+ object associated with the respective axes object) to move the legend
+ around.
+ 
+ \begin{verbatim}
+ % Create random data series.
+ A = tseries(1:10,@rand);
+ B = tseries(1:10,@rand);
+ 
+ % Open a new report.
+ x = report.new();
+ 
+ % Open a new figure in the report with a 1-by-2 layout.
+ x.figure('My Figure','subplot=',[1,2]);
+ 
+     % The graph will be placed in the LHS space.
+     % Use `grfun.movetosubplot` to move the legend to the RHS space.
+     x.graph('My Graph','legend=',true, ...
+         'postProcess=','grfun.movetosubplot(L,1,2,2)');
+ 
+         x.series('Series A',A);
+         x.series('Series B',B);
+ 
+ x.publish('test.pdf');
+ open test.pdf;
+ \end{verbatim}
 
 

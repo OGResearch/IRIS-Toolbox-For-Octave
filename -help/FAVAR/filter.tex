@@ -43,14 +43,14 @@
  
  \begin{itemize}
  \item
-   \texttt{'cross='} {[} \emph{true} \textbar{} false \textbar{} numeric
-   {]} - Run the filter with the off-diagonal elements in the covariance
-   matrix of idiosyncratic residuals; if false all cross-covariances are
-   reset to zero; if a number between zero and one, all cross-covariances
-   are multiplied by that number.
+   \texttt{'cross='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   \textbar{} numeric {]} - Run the filter with the off-diagonal elements
+   in the covariance matrix of idiosyncratic residuals; if false all
+   cross-covariances are reset to zero; if a number between zero and one,
+   all cross-covariances are multiplied by that number.
  \item
-   \texttt{'invFunc='} {[} \emph{`auto'} \textbar{} function\_handle {]}
-   - Inversion method for the FMSE matrices.
+   \texttt{'invFunc='} {[} \emph{\texttt{'auto'}} \textbar{}
+   function\_handle {]} - Inversion method for the FMSE matrices.
  \item
    \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
    \emph{\texttt{false}} {]} - Return only mean data, i.e.~point
@@ -63,13 +63,14 @@
    \texttt{filter} or \texttt{forecast} functions will re-use these
    matrices until \texttt{filter} or \texttt{forecast} is called.
  \item
-   \texttt{'output='} {[} \emph{`auto'} \textbar{} `dbase' \textbar{}
-   `tseries' {]} - Format of output data.
+   \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
+   \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
+   data.
  \item
-   \texttt{'tolerance='} {[} numeric \textbar{} \emph{0} {]} - Numerical
-   tolerance under which two FMSE matrices computed in two consecutive
-   periods will be treated as equal and their inversions will be re-used,
-   not re-computed.
+   \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+   Numerical tolerance under which two FMSE matrices computed in two
+   consecutive periods will be treated as equal and their inversions will
+   be re-used, not re-computed.
  \end{itemize}
  
  \paragraph{Description}

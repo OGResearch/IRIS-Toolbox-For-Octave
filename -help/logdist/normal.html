@@ -107,18 +107,21 @@ code.LaTeX {
 
 
 <h2 id="logdist/normal">normal</h2>
-<div class="headline">Create function proportional to log of normal distribution</div>
+<div class="headline">Create function proportional to log of Normal or Student distribution</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>F = logdist.normal(Mean,Std)</code></pre>
+<pre><code>F = logdist.normal(Mean,Std,Df)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>Mean</code> [ numeric ] - Mean of the normal distribution.</p></li>
 <li><p><code>Std</code> [ numeric ] - Std dev of the normal distribution.</p></li>
+<li><p><code>W</code> [ numeric ] - Optional input containing mixture weights.</p></li>
 </ul>
+<p>Multivariate cases are supported. Evaluating multiple vectors as an array of column vectors is supported.</p>
+<p>If the mean and standard deviation are cell arrays then the distribution will be a mixture of normals. In this case the third argument is the vector of mixture weights.</p>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>F</code> [ function_handle ] - Function handle returning a value proportional to the log of the normal density.</li>
+<li><code>F</code> [ function_handle ] - Function handle returning a value proportional to the log of Normal density.</li>
 </ul>
 <h4 id="description">Description</h4>
 <p>See <a href="../logdist/Contents.html">help on the logdisk package</a> for details on using the function handle <code>F</code>.</p>

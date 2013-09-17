@@ -6,25 +6,25 @@
  
  \begin{verbatim}
  !log_variables
-     VARIABLE_NAME, VARIABLE_NAME, 
-     VARIABLE_NAME, ...
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
  \end{verbatim}
  
  \paragraph{Inverted syntax}
  
  \begin{verbatim}
  !log_variables
-     !allbut
-     VARIABLE_NAME, VARIABLE_NAME, 
-     VARIABLE_NAME, ...
+     !all_but
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
  \end{verbatim}
  
  \paragraph{Syntax with regular expression(s)}
  
  \begin{verbatim}
  !log_variables
-     VARIABLE_NAME, VARIABLE_NAME, 
-     VARIABLE_NAME, ...
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
      <REGEXP>, <REGEXP>, ...
  \end{verbatim}
  
@@ -36,7 +36,7 @@
  In non-linear models, all variables are linearised around the steady
  state or a balanced-growth path. If you wish to log-linearise some of
  them instead, put them on a \texttt{!log\_variables} list. You can also
- use the \texttt{!allbut} keyword to indicate an inverse list: all
+ use the \texttt{!all\_but} keyword to indicate an inverse list: all
  variables will be log-linearised except those listed.
  
  To create the list of log-variables, you can also use regular
@@ -68,7 +68,7 @@
      Y, C, I, K, r, pie
  
  !log_variables
-     !allbut
+     !all_but
      r, pie
  \end{verbatim}
  

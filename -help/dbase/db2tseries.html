@@ -110,18 +110,18 @@ code.LaTeX {
 <div class="headline">Combine tseries database entries in one multivariate tseries object</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[X,INCL,RANGE] = db2tseries(D,LIST,RANGE)</code></pre>
+<pre><code>[X,Incl,Range] = db2tseries(D,List,Range)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>D</code> [ struct ] - Input database with tseries objects that will be combined in one multivariate tseries object.</p></li>
-<li><p><code>LIST</code> [ char | cellstr ] - List of tseries names that will be combined.</p></li>
-<li><p><code>RANGE</code> [ numeric | Inf ] - Date range.</p></li>
+<li><p><code>List</code> [ char | cellstr ] - List of tseries names that will be combined.</p></li>
+<li><p><code>Range</code> [ numeric | Inf ] - Date range.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><p><code>X</code> [ numeric ] - Combined multivariate tseries object.</p></li>
-<li><p><code>INCL</code> [ cellstr ] - List of tseries names that have been actually found in the database.</p></li>
-<li><p><code>RANGE</code> [ numeric ] - The date range actually used.</p></li>
+<li><p><code>Incl</code> [ cellstr ] - List of tseries names that have been actually found in the database.</p></li>
+<li><p><code>Range</code> [ numeric ] - The date range actually used.</p></li>
 </ul>
 
 </body>

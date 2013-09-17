@@ -6,7 +6,6 @@
  
  \begin{verbatim}
  [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)
- [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,J,...)
  \end{verbatim}
  
  \paragraph{Input arguments}
@@ -19,9 +18,6 @@
    datapack from which the measurement variables will be taken.
  \item
    \texttt{Range} {[} numeric {]} - Filter date range.
- \item
-   \texttt{J} {[} struct {]} - Database with tunes on the mean of shocks
-   and/or time-varying std devs of shocks.
  \end{itemize}
  
  \paragraph{Output arguments}
@@ -58,6 +54,11 @@
    \texttt{'ahead='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
    Predictions will be computed this number of period ahead.
  \item
+   \texttt{'chkFmse='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Check the condition number of the forecast MSE matrix in each
+   step of the Kalman filter, and return immediately if the matrix is
+   ill-conditioned; see also the option \texttt{'fmseCondTol='}.
+ \item
    \texttt{'condition='} {[} char \textbar{} cellstr \textbar{}
    \emph{empty} {]} - List of conditioning measurement variables.
    Condition time t\textbar{}t-1 prediction errors (that enter the
@@ -75,6 +76,10 @@
    \texttt{'data='} {[} \texttt{'predict'} \textbar{}
    \emph{\texttt{'smooth'}} \textbar{} \texttt{'predict,smooth'} {]} -
    Return smoother data or prediction data or both.
+ \item
+   \texttt{'fmseCondTol='} {[} \emph{\texttt{eps()}} \textbar{} numeric
+   {]} - Tolerance for the FMSE condition number test; not used unless
+   \texttt{'chkFmse=' true}.
  \item
    \texttt{'initCond='} {[} \texttt{'fixed'} \textbar{}
    \texttt{'optimal'} \textbar{} \emph{\texttt{'stochastic'}} \textbar{}
@@ -128,11 +133,6 @@
  \item
    \texttt{'returnStd='} {[} \emph{\texttt{true}} \textbar{}
    \texttt{false} {]} - Return database with std devs of model variables.
- \item
-   \texttt{'tolMse='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
-   Tolerance under which two MSE matrices in two consecutive periods will
-   be treated as equal, and the Kalman gain system will be re-used, not
-   re-computed.
  \item
    \texttt{'weighting='} {[} numeric \textbar{} \emph{empty} {]} -
    Weighting vector or matrix for prediction errors when

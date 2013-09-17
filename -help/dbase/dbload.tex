@@ -95,13 +95,13 @@
  \item
    \texttt{'userData='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
    Field name under which the database userdata loaded from the CSV file
-   (if they exist) will be stored in the output database; if
-   \texttt{'userData'=Inf} the field name will be read from the CSV file
-   (and will be thus identical to the originally saved database).
+   (if they exist) will be stored in the output database; \texttt{Inf}
+   means the field name will be read from the CSV file (and will be thus
+   identical to the originally saved database).
  \item
    \texttt{'userDataField='} {[} char \textbar{} \emph{\texttt{'.'}} {]}
    - A leading character denoting userdata fields for individual time
-   series. If empty, no userdata fields will be read.
+   series; if empty, no userdata fields will be read in and created.
  \item
    \texttt{'userDataFieldList='} {[} cellstr \textbar{} numeric
    \textbar{} empty {]} - List of row headers, or vector of row numbers,

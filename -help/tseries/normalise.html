@@ -110,21 +110,22 @@ code.LaTeX {
 <div class="headline">Normalise (or rebase) data to particular date</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>x = normalise(x)
-x = normalise(x,normdate,...)</code></pre>
+<pre><code>X = normalise(X)
+X = normalise(X,NormDate,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>x</code> [ tseries ] - Input tseries object that will be normalised.</p></li>
-<li><p><code>normdate</code> [ numeric | 'start' | 'end' | 'nanstart' | 'nanend' ] - Date relative to which the input data will be normalised; if not specified, 'nanstart' (the first date for which all columns have an observation) will be used.</p></li>
+<li><p><code>x</code> [ tseries ] - Input time series that will be normalised.</p></li>
+<li><p><code>NormDate</code> [ numeric | <code>'start'</code> | <code>'end'</code> | <code>'nanStart'</code> | <code>'nanEnd'</code> ] - Date relative to which the input data will be normalised; if not specified, <code>'nanStart'</code> (the first date for which all columns have an observation) will be used.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>x</code> [ tseries ] - Normalised tseries object.</li>
+<li><code>X</code> [ tseries ] - Normalised time series.</li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'mode='</code> [ 'add' | <em>'mult'</em> ] - Additive or multiplicative normalisation. Description ============</li>
+<li><code>'mode='</code> [ <code>'add'</code> | <em><code>'mult'</code></em> ] - Additive or multiplicative normalisation.</li>
 </ul>
+<h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>

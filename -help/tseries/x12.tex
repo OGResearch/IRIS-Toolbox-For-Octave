@@ -83,14 +83,20 @@
    {]} - Display X12 output messages in command window; if false the
    messages will be saved in a TXT file.
  \item
-   \texttt{'dummy='} {[} tseries \textbar{} \emph{empty} {]} - Dummy
+   \texttt{'dummy='} {[} tseries \textbar{} \emph{empty} {]} - User dummy
    variable or variables (in case of a multivariate tseries object) used
    in X12-ARIMA regression; the dummy variables can also include values
-   for forecasts and backcasts if you request them.
+   for forecasts and backcasts if you request them; the type of the dummy
+   can be specified in the option \texttt{'dummyType='}.
  \item
    \texttt{'dummyType='} {[} \texttt{'ao'} \textbar{}
-   \emph{\texttt{'holiday'}} \textbar{} \texttt{'td'} {]} - Type of
-   dummy; see the X12-ARIMA documentation.
+   \emph{\texttt{'holiday'}} \textbar{} \texttt{'td'} {]} - Type of the
+   user dummy (which is specified through the option \texttt{'dummy='});
+   the three basic types of dummies are additive outlier (\texttt{'ao'}),
+   holiday flows (\texttt{'holiday'}), and trading days (\texttt{'td'});
+   see the X12-ARIMA or X13-ARIMA documentation for more details
+   (available from the U.S. Census Bureau website), look for the section
+   on the REGRESSION spec, options `user' and `usertype'.
  \item
    \texttt{'mode='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{'add'}
    \textbar{} \texttt{'logadd'} \textbar{} \texttt{'mult'} \textbar{}

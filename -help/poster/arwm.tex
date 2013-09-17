@@ -76,8 +76,10 @@
    acceptance ratio.
  \item
    \texttt{'lastAdapt='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Last draw in which proposal covariance will be adapted; \texttt{Inf}
-   means adaptation will continue until the last draw.
+   Last point at which the proposal covariance will be adapted;
+   \texttt{Inf} means adaptation will continue until the last draw. Can
+   also be entered as a percentage of total draws (a number strictly
+   between 0 and 1).
  \item
    \texttt{'nStep='} {[} numeric \textbar{} *\texttt{1} {]} - Number of
    pre-fetched steps computed in parallel; only works with
@@ -124,6 +126,17 @@
  turning down adaptation before pre-fetching starts, i.e.~by setting
  \texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
  obviously, by re-setting the random number generator).
+ 
+ \paragraph{References}
+ 
+ \paragraph{Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo
+ Simulation by Pre-Fetching,'' CMU Statistics Dept. Tech. Report 802.}
+ 
+ \paragraph{Strid, I., 2009. ``Efficient parallelisation of
+ Metropolis-Hastings algorithms using a prefetching approach,'' SSE/EFI
+ Working Paper Series in}
+ 
+ Economics and Finance No. 706.
  
  \paragraph{Example}
 

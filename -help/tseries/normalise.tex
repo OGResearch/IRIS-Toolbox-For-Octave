@@ -5,37 +5,40 @@
 	\paragraph{Syntax}
  
  \begin{verbatim}
- x = normalise(x)
- x = normalise(x,normdate,...)
+ X = normalise(X)
+ X = normalise(X,NormDate,...)
  \end{verbatim}
  
  \paragraph{Input arguments}
  
  \begin{itemize}
  \item
-   \texttt{x} {[} tseries {]} - Input tseries object that will be
+   \texttt{x} {[} tseries {]} - Input time series that will be
    normalised.
  \item
-   \texttt{normdate} {[} numeric \textbar{} `start' \textbar{} `end'
-   \textbar{} `nanstart' \textbar{} `nanend' {]} - Date relative to which
-   the input data will be normalised; if not specified, `nanstart' (the
-   first date for which all columns have an observation) will be used.
+   \texttt{NormDate} {[} numeric \textbar{} \texttt{'start'} \textbar{}
+   \texttt{'end'} \textbar{} \texttt{'nanStart'} \textbar{}
+   \texttt{'nanEnd'} {]} - Date relative to which the input data will be
+   normalised; if not specified, \texttt{'nanStart'} (the first date for
+   which all columns have an observation) will be used.
  \end{itemize}
  
  \paragraph{Output arguments}
  
  \begin{itemize}
  \item
-   \texttt{x} {[} tseries {]} - Normalised tseries object.
+   \texttt{X} {[} tseries {]} - Normalised time series.
  \end{itemize}
  
  \paragraph{Options}
  
  \begin{itemize}
  \item
-   \texttt{'mode='} {[} `add' \textbar{} \emph{`mult'} {]} - Additive or
-   multiplicative normalisation. Description ============
+   \texttt{'mode='} {[} \texttt{'add'} \textbar{} \emph{\texttt{'mult'}}
+   {]} - Additive or multiplicative normalisation.
  \end{itemize}
+ 
+ \paragraph{Description}
  
  \paragraph{Example}
 

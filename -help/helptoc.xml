@@ -25,7 +25,7 @@
     <tocitem target="modellang/Contents.html" image="HelpIcon.USER_GUIDE">Model file language
         <tocitem target="modellang/alias.html" image="HelpIcon.BLOCK">!! &#8212; Beginning of aliasing in descriptions and labels</tocitem>
         <tocitem target="modellang/sstateversion.html" image="HelpIcon.BLOCK">!! &#8212; Steady-state version of an equation</tocitem>
-        <tocitem target="modellang/allbut.html" image="HelpIcon.BLOCK">!allbut &#8212; Inverse list of log-linearised variables</tocitem>
+        <tocitem target="modellang/allbut.html" image="HelpIcon.BLOCK">!all_but &#8212; Inverse list of log-linearised variables</tocitem>
         <tocitem target="modellang/autoexogenise.html" image="HelpIcon.BLOCK">!autoexogenise &#8212; Definition of variable/shock pairs for use in autoexogenised simulation plans</tocitem>
         <tocitem target="modellang/dtrends.html" image="HelpIcon.BLOCK">!dtrends &#8212; Block of deterministic trend equations</tocitem>
         <tocitem target="modellang/exogenousvariables.html" image="HelpIcon.BLOCK">!exogenous_variables &#8212; List of exogenous variables</tocitem>
@@ -158,17 +158,18 @@
     <tocitem target="logdist/Contents.html" image="HelpIcon.USER_GUIDE">Probability distribution package
         <tocitem target="logdist/beta.html" image="HelpIcon.FUNCTION">beta &#8212; Create function proportional to log of beta distribution</tocitem>
         <tocitem target="logdist/gamma.html" image="HelpIcon.FUNCTION">gamma &#8212; Create function proportional to log of gamma distribution</tocitem>
+        <tocitem target="logdist/chisquare.html" image="HelpIcon.FUNCTION">gamma &#8212; Create function proportional to log of Chi-Squared distribution</tocitem>
         <tocitem target="logdist/invgamma.html" image="HelpIcon.FUNCTION">invgamma &#8212; Create function proportional to log of inv-gamma distribution</tocitem>
         <tocitem target="logdist/lognormal.html" image="HelpIcon.FUNCTION">lognormal &#8212; Create function proportional to log of log-normal distribution</tocitem>
-        <tocitem target="logdist/normal.html" image="HelpIcon.FUNCTION">normal &#8212; Create function proportional to log of normal distribution</tocitem>
+        <tocitem target="logdist/normal.html" image="HelpIcon.FUNCTION">normal &#8212; Create function proportional to log of Normal or Student distribution</tocitem>
         <tocitem target="logdist/uniform.html" image="HelpIcon.FUNCTION">uniform &#8212; Create function proportional to log of uniform distribution</tocitem>
     </tocitem>
     <tocitem target="sstatelang/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state file language
-        <tocitem target="sstatelang/allbut.html" image="HelpIcon.BLOCK">!allbut &#8212; Inverse list of variables with positive steady states</tocitem>
+        <tocitem target="sstatelang/allbut.html" image="HelpIcon.BLOCK">!all_but &#8212; Inverse list of variables with positive steady states</tocitem>
         <tocitem target="sstatelang/equations.html" image="HelpIcon.BLOCK">!equations &#8212; Block of equations or assignments</tocitem>
         <tocitem target="sstatelang/growthnames.html" image="HelpIcon.BLOCK">!growthnames &#8212; Pattern for creating growth names</tocitem>
         <tocitem target="sstatelang/input.html" image="HelpIcon.BLOCK">!input &#8212; List of input parameters or variables</tocitem>
-        <tocitem target="sstatelang/logvariables.html" image="HelpIcon.BLOCK">!log_variables &#8212; Restrict the steady stae of some of the variables to be positive</tocitem>
+        <tocitem target="sstatelang/logvariables.html" image="HelpIcon.BLOCK">!log_variables &#8212; Restrict the steady state of some of the variables to be positive</tocitem>
         <tocitem target="sstatelang/solvefor.html" image="HelpIcon.BLOCK">!solvefor &#8212; List of variables for which the current equations block will be solved</tocitem>
         <tocitem target="sstatelang/symbolic.html" image="HelpIcon.BLOCK">!symbolic &#8212; Attempt to solve the current equations block symbolically using the Symbolic Maths Toolbox</tocitem>
     </tocitem>
@@ -276,6 +277,8 @@
         <tocitem target="dates/dateoy.html" image="HelpIcon.FUNCTION">dateoy &#8212; End of year for the specified daily date</tocitem>
         <tocitem target="dates/daterange.html" image="HelpIcon.FUNCTION">daterange &#8212; Use the colon operator to create date ranges</tocitem>
         <tocitem target="dates/datxtick.html" image="HelpIcon.FUNCTION">datxtick &#8212; Change ticks, labels and/or date frequency on x-axis in existing tseries graphs</tocitem>
+        <tocitem target="dates/dd.html" image="HelpIcon.FUNCTION">dd &#8212; Matlab serial date numbers that can be used to construct daily tseries objects</tocitem>
+        <tocitem target="dates/ddtoday.html" image="HelpIcon.FUNCTION">ddtoday &#8212; Matlab serial date number for today's date</tocitem>
         <tocitem target="dates/dec2dat.html" image="HelpIcon.FUNCTION">dec2dat &#8212; Convert decimal numbers to IRIS serial date numbers</tocitem>
         <tocitem target="dates/hh.html" image="HelpIcon.FUNCTION">hh &#8212; IRIS serial date numbers for dates with half-yearly frequency</tocitem>
         <tocitem target="dates/hhtoday.html" image="HelpIcon.FUNCTION">hhtoday &#8212; IRIS serial date number for current half-year</tocitem>
@@ -374,7 +377,11 @@
         <tocitem target="dbase/dbredate.html" image="HelpIcon.FUNCTION">dbredate &#8212; Redate all tseries objects in a database</tocitem>
         <tocitem target="dbase/dbsave.html" image="HelpIcon.FUNCTION">dbsave &#8212; Save database as CSV file</tocitem>
         <tocitem target="dbase/dbsearchuserdata.html" image="HelpIcon.FUNCTION">dbsearchuserdata &#8212; Search database to find tseries by matching the content of their userdata fields</tocitem>
+        <tocitem target="dbase/dbsplit.html" image="HelpIcon.FUNCTION">dbsplit &#8212; Split database into mutliple databases</tocitem>
         <tocitem target="dbase/dbuserdatalov.html" image="HelpIcon.FUNCTION">dbuserdatalov &#8212; List of values found in a specified user data field in tseries objects</tocitem>
+        <tocitem target="dbase/minus.html" image="HelpIcon.FUNCTION">minus &#8212; Remove entries from a database</tocitem>
+        <tocitem target="dbase/mtimes.html" image="HelpIcon.FUNCTION">mtimes &#8212; Keep only the database entries that are on the list</tocitem>
+        <tocitem target="dbase/plus.html" image="HelpIcon.FUNCTION">plus &#8212; Merge two databases entry by entry</tocitem>
         <tocitem target="dbase/xls2csv.html" image="HelpIcon.FUNCTION">xls2csv &#8212; Convert XLS file to CSV file</tocitem>
     </tocitem>
 </tocitem>

@@ -11,10 +11,11 @@ function varargout = dbsplit(D,varargin)
 %
 % * `D` [ struct ] - Input database that will be split.
 %
-% * `Rule1`, `Rule2`, ..., `RuleN` [ cellstr ] - Cell array of two strings:
-% (1) a test regexp pattern to select entries from the input database, `D`,
-% for inclusion in the K-th output database, and (2) a new name pattern
-% that will be used to name the entry in the output database.
+% * `Rule1`, `Rule2`, ..., `RuleN` [ cellstr ] - Each rule is a 1-by-2 cell
+% array, `{testRex,newName}`, where `testRex` is a test `regexp` pattern to
+% select entries from the input database, `D`, for inclusion in the K-th
+% output database, and `newName` is a new name pattern that will be used to
+% name the entry in the output database.
 %
 % Output arguments
 % =================

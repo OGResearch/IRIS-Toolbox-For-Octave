@@ -5,14 +5,14 @@
 	\paragraph{Syntax}
  
  \begin{verbatim}
- S = dat2str(DAT,...)
+ S = dat2str(Dat,...)
  \end{verbatim}
  
  \paragraph{Input arguments}
  
  \begin{itemize}
  \item
-   \texttt{DAT} {[} numeric {]} - IRIS serial date number(s).
+   \texttt{Dat} {[} numeric {]} - IRIS serial date number(s).
  \end{itemize}
  
  \paragraph{Output arguments}
@@ -27,8 +27,9 @@
  
  \begin{itemize}
  \item
-   \texttt{'dateFormat='} {[} char \textbar{} \emph{`YYYYFP'} {]} - Date
-   format string.
+   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+   \emph{`YYYYFP'} {]} - Date format string, or array of format strings
+   (possibly different for each date).
  \item
    \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} -
    Letters representing the five possible frequencies
@@ -51,36 +52,52 @@
  
  \begin{itemize}
  \item
-   \texttt{'Y='} - Year.
+   \texttt{'Y'} - Year.
  \item
-   \texttt{'YYYY='} - Four-digit year.
+   \texttt{'YYYY'} - Four-digit year.
  \item
-   \texttt{'YY='} - Two-digit year.
+   \texttt{'YY'} - Two-digit year.
  \item
-   \texttt{'P='} - Period within the year (half-year, quarter, bi-month,
+   \texttt{'P'} - Period within the year (half-year, quarter, bi-month,
    month).
  \item
-   \texttt{'PP='} - Two-digit period within the year.
+   \texttt{'PP'} - Two-digit period within the year.
  \item
-   \texttt{'R='} - Upper-case roman numeral for the period within the
+   \texttt{'R'} - Upper-case roman numeral for the period within the
    year.
  \item
-   \texttt{'r='} - Lower-case roman numeral for the period within the
+   \texttt{'r'} - Lower-case roman numeral for the period within the
    year.
  \item
-   \texttt{'M='} - Month numeral.
+   \texttt{'M'} - Month numeral.
  \item
-   \texttt{'MM='} - Two-digit month numeral.
+   \texttt{'MM'} - Two-digit month numeral.
  \item
-   \texttt{'MMMM='}, \texttt{'Mmmm'}, \texttt{'mmmm'} - Case-sensitive
+   \texttt{'MMMM'}, \texttt{'Mmmm'}, \texttt{'mmmm'} - Case-sensitive
    name of month.
  \item
-   \texttt{'MMM='}, \texttt{'Mmm'}, \texttt{'mmm'} - Case-sensitive
+   \texttt{'MMM'}, \texttt{'Mmm'}, \texttt{'mmm'} - Case-sensitive
    three-letter abbreviation of month.
  \item
-   \texttt{'F='} - Upper-case letter representing the date frequency.
+   \texttt{'F'} - Upper-case letter representing the date frequency.
  \item
-   \texttt{'f='} - Lower-case letter representing the date frequency.
+   \texttt{'f'} - Lower-case letter representing the date frequency.
+ \item
+   \texttt{'EE'} - Two-digit end-of-month day; stand-in month used for
+   non-monthly dates.
+ \item
+   \texttt{'E'} - End-of-month day; stand-in month used for non-monthly
+   dates.
+ \item
+   \texttt{'WW'} - Two-digit end-of-month workday; stand-in month used
+   for non-monthly dates.
+ \item
+   \texttt{'W'} - End-of-month workday; stand-in month used for
+   non-monthly dates.
+ \item
+   \texttt{'DD'} - Two-digit day numeral; daily dates only.
+ \item
+   \texttt{'D'} - Day numeral; daily dates only.
  \end{itemize}
  
  To get some of the above letters printed literally in the date string,

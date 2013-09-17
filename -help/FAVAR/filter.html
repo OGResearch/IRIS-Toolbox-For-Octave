@@ -128,12 +128,12 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'cross='</code> [ <em>true</em> | false | numeric ] - Run the filter with the off-diagonal elements in the covariance matrix of idiosyncratic residuals; if false all cross-covariances are reset to zero; if a number between zero and one, all cross-covariances are multiplied by that number.</p></li>
-<li><p><code>'invFunc='</code> [ <em>'auto'</em> | function_handle ] - Inversion method for the FMSE matrices.</p></li>
+<li><p><code>'cross='</code> [ <em><code>true</code></em> | <code>false</code> | numeric ] - Run the filter with the off-diagonal elements in the covariance matrix of idiosyncratic residuals; if false all cross-covariances are reset to zero; if a number between zero and one, all cross-covariances are multiplied by that number.</p></li>
+<li><p><code>'invFunc='</code> [ <em><code>'auto'</code></em> | function_handle ] - Inversion method for the FMSE matrices.</p></li>
 <li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return only mean data, i.e. point estimates.</p></li>
 <li><p><code>'persist='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>filter</code> or <code>forecast</code> is used with <code>'persist='</code> set to true for the first time, the forecast MSE matrices and their inverses will be stored; subsequent calls of the <code>filter</code> or <code>forecast</code> functions will re-use these matrices until <code>filter</code> or <code>forecast</code> is called.</p></li>
-<li><p><code>'output='</code> [ <em>'auto'</em> | 'dbase' | 'tseries' ] - Format of output data.</p></li>
-<li><p><code>'tolerance='</code> [ numeric | <em>0</em> ] - Numerical tolerance under which two FMSE matrices computed in two consecutive periods will be treated as equal and their inversions will be re-used, not re-computed.</p></li>
+<li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>0</code></em> ] - Numerical tolerance under which two FMSE matrices computed in two consecutive periods will be treated as equal and their inversions will be re-used, not re-computed.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <p>It is the user's responsibility to make sure that <code>filter</code> and <code>forecast</code> called with <code>'persist='</code> set to true are valid, i.e. that the previously computed FMSE matrices can be really re-used in the current run.</p>

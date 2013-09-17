@@ -39,14 +39,14 @@
 % * [`dbextend`](dbase/dbextend) - Combine tseries observations from two or more databases.
 % * [`dbmerge`](dbase/dbmerge) - Merge two or more databases.
 % * [`dbminuscontrol`](dbase/dbminuscontrol) - Create simulation-minus-control database.
-% * [`dbsplit`](dbase/dbsplit) - 
+% * [`dbsplit`](dbase/dbsplit) - Split database into mutliple databases.
 %
 % Overloaded operators for databases
 % ===================================
 %
-% * [`-`](dbase/minus) - 
-% * [`*`](dbase/mtimes) - 
-% * [`+`](dbase/plus) - 
+% * [`-`](struct/minus) - Remove entries from a database.
+% * [`*`](struct/mtimes) - Keep only the database entries that are on the list.
+% * [`+`](struct/plus) - Merge two databases entry by entry.
 %
 % Getting on-line help on database functions
 % ===========================================

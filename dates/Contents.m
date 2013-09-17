@@ -53,8 +53,8 @@
 % Daily dates
 % ============
 %
-% * [`dd`](dates/dd) - 
-% * [`ddtoday`](dates/ddtoday) - 
+% * [`dd`](dates/dd) - Matlab serial date numbers that can be used to construct daily tseries objects.
+% * [`ddtoday`](dates/ddtoday) - Matlab serial date number for today's date.
 %
 % Getting on-line help on date functions
 % =======================================

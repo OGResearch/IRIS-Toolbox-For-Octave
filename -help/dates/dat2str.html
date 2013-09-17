@@ -110,10 +110,10 @@ code.LaTeX {
 <div class="headline">Convert IRIS dates to cell array of strings</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>S = dat2str(DAT,...)</code></pre>
+<pre><code>S = dat2str(Dat,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><code>DAT</code> [ numeric ] - IRIS serial date number(s).</li>
+<li><code>Dat</code> [ numeric ] - IRIS serial date number(s).</li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
@@ -121,7 +121,7 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'dateFormat='</code> [ char | <em>'YYYYFP'</em> ] - Date format string.</p></li>
+<li><p><code>'dateFormat='</code> [ char | cellstr | <em>'YYYYFP'</em> ] - Date format string, or array of format strings (possibly different for each date).</p></li>
 <li><p><code>'freqLetters='</code> [ char | <em>'YHQBM'</em> ] - Letters representing the five possible frequencies (annual,semi-annual,quarterly,bimontly,monthly).</p></li>
 <li><p><code>'months='</code> [ cellstr | <em>English names of months</em> ] - Cell array of twelve strings representing the names of months.</p></li>
 <li><p><code>'standinMonth='</code> [ numeric | 'last' | <em>1</em> ] - Which month will represent a lower-than-monthly-frequency date if month is part of the date format string.</p></li>
@@ -129,19 +129,25 @@ code.LaTeX {
 <h4 id="description">Description</h4>
 <p>The date format string can include any combination of the following fields:</p>
 <ul>
-<li><p><code>'Y='</code> - Year.</p></li>
-<li><p><code>'YYYY='</code> - Four-digit year.</p></li>
-<li><p><code>'YY='</code> - Two-digit year.</p></li>
-<li><p><code>'P='</code> - Period within the year (half-year, quarter, bi-month, month).</p></li>
-<li><p><code>'PP='</code> - Two-digit period within the year.</p></li>
-<li><p><code>'R='</code> - Upper-case roman numeral for the period within the year.</p></li>
-<li><p><code>'r='</code> - Lower-case roman numeral for the period within the year.</p></li>
-<li><p><code>'M='</code> - Month numeral.</p></li>
-<li><p><code>'MM='</code> - Two-digit month numeral.</p></li>
-<li><p><code>'MMMM='</code>, <code>'Mmmm'</code>, <code>'mmmm'</code> - Case-sensitive name of month.</p></li>
-<li><p><code>'MMM='</code>, <code>'Mmm'</code>, <code>'mmm'</code> - Case-sensitive three-letter abbreviation of month.</p></li>
-<li><p><code>'F='</code> - Upper-case letter representing the date frequency.</p></li>
-<li><p><code>'f='</code> - Lower-case letter representing the date frequency.</p></li>
+<li><p><code>'Y'</code> - Year.</p></li>
+<li><p><code>'YYYY'</code> - Four-digit year.</p></li>
+<li><p><code>'YY'</code> - Two-digit year.</p></li>
+<li><p><code>'P'</code> - Period within the year (half-year, quarter, bi-month, month).</p></li>
+<li><p><code>'PP'</code> - Two-digit period within the year.</p></li>
+<li><p><code>'R'</code> - Upper-case roman numeral for the period within the year.</p></li>
+<li><p><code>'r'</code> - Lower-case roman numeral for the period within the year.</p></li>
+<li><p><code>'M'</code> - Month numeral.</p></li>
+<li><p><code>'MM'</code> - Two-digit month numeral.</p></li>
+<li><p><code>'MMMM'</code>, <code>'Mmmm'</code>, <code>'mmmm'</code> - Case-sensitive name of month.</p></li>
+<li><p><code>'MMM'</code>, <code>'Mmm'</code>, <code>'mmm'</code> - Case-sensitive three-letter abbreviation of month.</p></li>
+<li><p><code>'F'</code> - Upper-case letter representing the date frequency.</p></li>
+<li><p><code>'f'</code> - Lower-case letter representing the date frequency.</p></li>
+<li><p><code>'EE'</code> - Two-digit end-of-month day; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'E'</code> - End-of-month day; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'WW'</code> - Two-digit end-of-month workday; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'W'</code> - End-of-month workday; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'DD'</code> - Two-digit day numeral; daily dates only.</p></li>
+<li><p><code>'D'</code> - Day numeral; daily dates only.</p></li>
 </ul>
 <p>To get some of the above letters printed literally in the date string, use a percent sign as an escape character, i.e. '%Y', etc.</p>
 <h4 id="example">Example</h4>

@@ -1,20 +1,22 @@
 
 
-    \filetitle{!log\_variables}{Restrict the steady stae of some of the variables to be positive}{sstatelang/logvariables}
+    \filetitle{!log\_variables}{Restrict the steady state of some of the variables to be positive}{sstatelang/logvariables}
 
 	\paragraph{Syntax}
  
  \begin{verbatim}
  !log_variables
-     list_of_variables
+     Variable_Name, Variable_Name
+     Variable_Name
  \end{verbatim}
  
  \paragraph{Inverted syntax}
  
  \begin{verbatim}
  !log_variables
-     !allbut
-     list_of_variables
+     !all_but
+     Variable_Name, Variable_Name
+     Variable_Name
  \end{verbatim}
  
  \paragraph{Description}
