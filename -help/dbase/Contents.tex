@@ -1,0 +1,109 @@
+
+    \foldertitle{dbase}{Basic database management}{dbase/Contents}
+
+	\paragraph{Loading and saving databases}
+ 
+ \begin{itemize}
+ \item
+   \href{dbase/dbload}{\texttt{dbload}} - Create database by loading CSV
+   file.
+ \item
+   \href{dbase/dbsave}{\texttt{dbsave}} - Save database as CSV file.
+ \item
+   \href{dbase/xls2csv}{\texttt{xls2csv}} - Convert XLS file to CSV file.
+ \end{itemize}
+ 
+ \paragraph{Getting information about databases}
+ 
+ \begin{itemize}
+ \item
+   \href{dbase/dbnames}{\texttt{dbnames}} - List of database entries
+   filtered by name and/or class.
+ \item
+   \href{dbase/dbprintuserdata}{\texttt{dbprintuserdata}} - Print names
+   of database tseries along with specified fields of their userdata.
+ \item
+   \href{dbase/dbrange}{\texttt{dbrange}} - Find a range that encompasses
+   the ranges of the listed tseries objects.
+ \item
+   \href{dbase/dbsearchuserdata}{\texttt{dbsearchuserdata}} - Search
+   database to find tseries by matching the content of their userdata
+   fields.
+ \item
+   \href{dbase/dbuserdatalov}{\texttt{dbuserdatalov}} - List of values
+   found in a specified user data field in tseries objects.
+ \end{itemize}
+ 
+ \paragraph{Converting databases}
+ 
+ \begin{itemize}
+ \item
+   \href{dbase/array2db}{\texttt{array2db}} - Convert numeric array to
+   database.
+ \item
+   \href{dbase/db2array}{\texttt{db2array}} - Convert tseries database
+   entries to numeric array.
+ \item
+   \href{dbase/db2tseries}{\texttt{db2tseries}} - Combine tseries
+   database entries in one multivariate tseries object.
+ \end{itemize}
+ 
+ \paragraph{Batch processing}
+ 
+ \begin{itemize}
+ \item
+   \href{dbase/dbbatch}{\texttt{dbbatch}} - Run a batch job to create new
+   database fields.
+ \item
+   \href{dbase/dbclip}{\texttt{dbclip}} - Clip all tseries entries in a
+   database down to the specified date range.
+ \item
+   \href{dbase/dbcol}{\texttt{dbcol}} - Retrieve the specified column or
+   columns from database entries.
+ \item
+   \href{dbase/dbfun}{\texttt{dbfun}} - Apply a function to database
+   fields.
+ \item
+   \href{dbase/dbplot}{\texttt{dbplot}} - Plot from database.
+ \item
+   \href{dbase/dbredate}{\texttt{dbredate}} - Redate all tseries objects
+   in a database.
+ \end{itemize}
+ 
+ \paragraph{Combining and splitting databases}
+ 
+ \begin{itemize}
+ \item
+   \href{dbase/dbextend}{\texttt{dbextend}} - Combine tseries
+   observations from two or more databases.
+ \item
+   \href{dbase/dbmerge}{\texttt{dbmerge}} - Merge two or more databases.
+ \item
+   \href{dbase/dbminuscontrol}{\texttt{dbminuscontrol}} - Create
+   simulation-minus-control database.
+ \item
+   \href{dbase/dbsplit}{\texttt{dbsplit}} - Split database into mutliple
+   databases.
+ \end{itemize}
+ 
+ \paragraph{Overloaded operators for databases}
+ 
+ \begin{itemize}
+ \item
+   \href{struct/minus}{\texttt{-}} - Remove entries from a database.
+ \item
+   \href{struct/mtimes}{\texttt{*}} - Keep only the database entries that
+   are on the list.
+ \item
+   \href{struct/plus}{\texttt{+}} - Merge two databases entry by entry.
+ \end{itemize}
+ 
+ \paragraph{Getting on-line help on database functions}
+ 
+ \begin{verbatim}
+ help dbase
+ help dbase/function_name
+ \end{verbatim}
+
+
+

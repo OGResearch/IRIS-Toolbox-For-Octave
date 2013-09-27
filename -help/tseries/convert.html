@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/convert">convert</h2>
+<div class="headline">Convert tseries object to a different frequency</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Y = convert(X,NewFreq)
+Y = convert(X,NewFreq,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input tseries object that will be converted to a new frequency, <code>freq</code>, aggregating or intrapolating the data.</p></li>
+<li><p><code>NewFreq</code> [ numeric | char ] - New frequency to which the input data will be converted: <code>1</code> or <code>'A'</code> for annual, <code>2</code> or <code>'H'</code> for half-yearly, <code>4</code> or <code>'Q'</code> for quarterly, <code>6</code> or <code>'B'</code> for bi-monthly, and <code>12</code> or <code>'M'</code> for monthly.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which the input data will be converted.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Y</code> [ tseries ] - Output tseries created by converting <code>X</code> to the new frequency.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'ignoreNaN='</code> [ <code>true</code> | <em><code>false</code></em> ] - Exclude NaNs from agreggation.</p></li>
+<li><p><code>'missing='</code> [ numeric | <em><code>NaN</code></em> | <code>'last'</code> ] - Replace missing observations with this value.</p></li>
+</ul>
+<h4 id="options-for-high--to-low-frequency-conversion-aggregation">Options for high- to low-frequency conversion (aggregation)</h4>
+<ul>
+<li><p><code>'method='</code> [ function_handle | <code>'first'</code> | <code>'last'</code> | <em><code>@mean</code></em> ] - Method that will be used to aggregate the high frequency data.</p></li>
+<li><p><code>'select='</code> [ numeric | <em><code>Inf</code></em> ] - Select only these high-frequency observations within each low-frequency period; Inf means all observations will be used.</p></li>
+</ul>
+<h4 id="options-for-low--to-high-frequency-conversion-interpolation">Options for low- to high-frequency conversion (interpolation)</h4>
+<ul>
+<li><p><code>'method='</code> [ char | <em><code>'cubic'</code></em> | <code>'quadsum'</code> | <code>'quadavg'</code> ] - Interpolation method; any option available in the built-in <code>interp1</code> function can be used.</p></li>
+<li><p><code>'position='</code> [ <em><code>'centre'</code></em> | <code>'start'</code> | <code>'end'</code> ] - Position of the low-frequency date grid.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The function handle that you pass in through the 'method' option when you aggregate the data (convert higher frequency to lower frequency) should behave like the built-in functions <code>mean</code>, <code>sum</code> etc. In other words, it is expected to accept two input arguments:</p>
+<ul>
+<li>the data to be aggregated,</li>
+<li>the dimension along which the aggregation is calculated.</li>
+</ul>
+<p>The function will be called with the second input argument set to 1, as the data are processed en block columnwise. If this call fails, <code>convert</code> will attempt to call the function with just one input argument, the data, but this is not a safe option under some circumstances since dimension mismatch may occur.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

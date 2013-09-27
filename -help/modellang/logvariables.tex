@@ -1,0 +1,93 @@
+
+
+    \filetitle{!log\_variables}{List of log-linearised variables}{modellang/logvariables}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ !log_variables
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
+ \end{verbatim}
+ 
+ \paragraph{Inverted syntax}
+ 
+ \begin{verbatim}
+ !log_variables
+     !all_but
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
+ \end{verbatim}
+ 
+ \paragraph{Syntax with regular expression(s)}
+ 
+ \begin{verbatim}
+ !log_variables
+     Variable_Name, Variable_Name, 
+     Variable_Name, ...
+     <REGEXP>, <REGEXP>, ...
+ \end{verbatim}
+ 
+ \paragraph{Description}
+ 
+ List all log-variables under this headings. Only measurement or
+ transition variables can be declared as log-variables.
+ 
+ In non-linear models, all variables are linearised around the steady
+ state or a balanced-growth path. If you wish to log-linearise some of
+ them instead, put them on a \texttt{!log\_variables} list. You can also
+ use the \texttt{!all\_but} keyword to indicate an inverse list: all
+ variables will be log-linearised except those listed.
+ 
+ To create the list of log-variables, you can also use regular
+ expressions, each enlosed in a pair of angle brackets,
+ \texttt{\textless{}} and \texttt{\textgreater{}}. All measurement and
+ transition variables whose names match one of the regular expressions
+ will be declared as log-variables. See also help on regular expressions
+ in the Matlab documentation.
+ 
+ \paragraph{Example 1}
+ 
+ The following block of code will cause the variables \texttt{Y},
+ \texttt{C}, \texttt{I}, and \texttt{K} to be declared as log-variables,
+ and hence log-linearised in the model solution, while \texttt{r} and
+ \texttt{pie} will be linearised:
+ 
+ \begin{verbatim}
+ !transition_variables
+     Y, C, I, K, r, pie
+ 
+ !log_variables
+     Y, C, I, K
+ \end{verbatim}
+ 
+ You can do the same job by writing
+ 
+ \begin{verbatim}
+ !transition_variables
+     Y, C, I, K, r, pie
+ 
+ !log_variables
+     !all_but
+     r, pie
+ \end{verbatim}
+ 
+ \paragraph{Example 2}
+ 
+ We again achieve the same result as above, but now using a regular
+ expression.
+ 
+ \begin{verbatim}
+ !transition_variables
+     Y, C, I, K, r, pie
+ 
+ !log_variables
+     <[A-Z]\w*>
+ \end{verbatim}
+ 
+ The regular expression \texttt{{[}A-Z{]}\textbackslash{}w*} selects all
+ variables whose names start with an upper-case letter. Hence, again the
+ variables \texttt{Y}, \texttt{C}, \texttt{I}, and \texttt{K} will be
+ declared as log-variables.
+
+

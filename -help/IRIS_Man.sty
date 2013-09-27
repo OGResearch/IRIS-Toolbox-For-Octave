@@ -1,0 +1,17 @@
+\newcommand{\ps@helpHeadings}%
+{%
+\renewcommand{\@oddhead}{\hfill\theheading\hfill}%
+\renewcommand{\@evenhead}{\@oddhead}%
+\renewcommand{\@oddfoot}{\hfill\thepage\hfill}%
+\renewcommand{\@evenfoot}{\@oddfoot}%
+}
+
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\z@}%
+                                    {1.25ex \@plus 1ex \@minus .2ex}%
+                                    {0.3em}%
+                                    {\normalfont\normalsize\itshape---}}

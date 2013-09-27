@@ -1,0 +1,133 @@
+\documentclass[letterpaper,fleqn,10pt]{article}
+
+\usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+\usepackage{concmath}
+\usepackage{sectsty,amsmath,color}
+\usepackage[scale=0.7]{geometry}
+%\usepackage{inconsolata}
+\usepackage[pdftex,colorlinks,linkcolor=blue]{hyperref}
+\usepackage{bookmark}
+\usepackage{IRIS_Man}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5\baselineskip}
+
+\definecolor{codecolor}{rgb}{0.80,0.27,0}
+\definecolor{sectioncolor}{rgb}{0.80,0,0}
+\definecolor{warningcolor}{rgb}{0.90,0,0}
+
+\newcommand{\bb}[1]{\underline{#1}}
+\newcommand{\ii}[1]{\textit{#1}}
+
+% Title of a chapter (part).
+% #1 Syntax
+% #2 Description
+% #3 Reference
+\newcommand{\chapter}[3]
+{\vspace*{0.35\textheight}
+\part{#2}
+\renewcommand{\thefolderheading}{}
+\renewcommand{\thefileheading}{}}
+
+% Title of a section (class, package, directory).
+% #1 Syntax
+% #2 Description
+% #3 Reference
+\newcommand{\foldertitle}[3]
+{\hypertarget{#3}{}%
+\section{#2}%
+\label{#3}%
+\renewcommand{\thefolderheading}{#2}%
+\renewcommand{\thefileheading}{}}
+
+% Title of an individual m-file.
+% #1 Syntax
+% #2 Description
+% #3 Reference
+\newcommand{\filetitle}[3]
+{\hypertarget{#3}{}%
+\rule{\textwidth}{0.1em}
+\subsection*{\rule[0em]{0.5em}{0.5em}\ #1}
+\vspace*{-0.5em}
+{\large #2}\par%
+\pdfbookmark[2]{#1 -- #2}{#3}%
+\label{#3}%
+\renewcommand{\thefileheading}{:~\texttt{#1}}}
+
+% Hypertext reference.
+% #1 Reference
+% #2 Text
+\renewcommand{\href}[2]
+{\hyperlink{#1}{#2}\,\fbox{{\footnotesize{P\pageref*{#1}}}}}
+
+% We need to redefine \url because Pandoc produces
+% \url{aaa/bbb} for [`aaa/bbb`](aaa/bbb).
+\renewcommand{\url}[1]
+{\href{#1}{\texttt{#1}}}
+
+\newcommand{\mycmss}{\fontfamily{lcmss}\selectfont}
+\partfont{\centering}
+\sectionfont{\centering}
+\subsectionfont{\mycmss\normalsize}
+\paragraphfont{\mdseries\itshape}
+
+\newcommand{\thefolderheading}{}
+\newcommand{\thefileheading}{}
+\newcommand{\theheading}{\thefolderheading\thefileheading}
+% \newcommand{\mysubsubsubsection}[1]{{\textit{#1}}\par}
+
+\pagestyle{helpHeadings}
+
+\renewcommand{\partname}{}
+\renewcommand{\thepart}{Part~\Roman{part}\ ---\ }
+
+\newcommand\Today{\number\day\space \ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space\number\year}
+
+\linespread{1.1}
+
+\renewcommand{\emph}[1]{\underline{#1}}
+
+\newcommand{\irisversion}{20130917}
+\newcommand{\matlabversion}{R2010a}
+
+\newcommand{\tsum}{{\textstyle{\sum}\,}}
+
+\setcounter{secnumdepth}{1}	
+	
+\begin{document}
+%\mycmss
+\thispagestyle{empty}
+\title{\vspace*{0.2\textheight}\huge\mdseries IRIS Toolbox\\Reference Manual \\[24pt] \rmfamily \large \mdseries Version \texttt{\#\irisversion}\ \\[6pt]
+Runs in Matlab\raisebox{5pt}{\tiny $\copyright$}\ \matlabversion\ or later}
+\author{by \\[2pt] IRIS Solutions Team}
+\date{\bigskip\bigskip \Today\\[5pt]}
+\maketitle
+\thispagestyle{empty}
+\clearpage
+
+~
+\vfill
+IRIS Toolbox Reference Manual \\
+Copyright $\copyright$ 2007--2013 IRIS Solutions Team.
+\thispagestyle{empty}
+
+\input{Licence}
+
+\clearpage
+
+\pdfbookmark[1]{Preface}{Preface}
+\input{Preface}
+\clearpage
+\pdfbookmark[1]{Contents}{Contents}
+\tableofcontents
+\clearpage
+
+\input{Preface}
+
+\input{Contents}
+
+\end{document}

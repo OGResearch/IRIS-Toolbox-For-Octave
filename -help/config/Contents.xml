@@ -1,0 +1,46 @@
+<folder>
+
+<foldername>config</foldername><filename>Contents</filename>
+
+<h1 id="config/Contents">Starting, quitting, and configuring IRIS</h1>
+
+<p>This section describes how to start and quit an IRIS session, and how to
+customise some of the IRIS configuration options.</p>
+
+<p>The most common way of starting an IRIS session (after you have installed
+the IRIS files on your disk) is to run the following line in the
+Matlab command window:
+<pre>   addpath C:\IRIS_Tbx; irisstartup();
+</pre></p>
+
+<p>The first command, <tt>addpath</tt>, adds the IRIS root folder to the Matlab
+search path. The second command, <tt>irisstartup</tt>, initialises IRIS and puts
+the other necessary IRIS subfolders, classes, and internal packages on
+the search path. <b>Never</b> add these other subfolders, classes and packages
+to the search path by yourself.</p>
+
+<h3>Starting and quitting IRIS</h3>
+
+<ul><li><link id="config/irisstartup"><tt>irisstartup</tt></link>&nbsp;&ndash;&nbsp;Start an IRIS session.</li>
+<li><link id="config/irisfinish"><tt>irisfinish</tt></link>&nbsp;&ndash;&nbsp;Close the current IRIS session.</li>
+<li><link id="config/iriscleanup"><tt>iriscleanup</tt></link>&nbsp;&ndash;&nbsp;Remove IRIS from Matlab and clean up.</li></ul>
+
+<h3>Getting information about IRIS</h3>
+
+<ul><li><link id="config/irisget"><tt>irisget</tt></link>&nbsp;&ndash;&nbsp;Query current IRIS configuration.</li>
+<li><link id="config/irisroot"><tt>irisroot</tt></link>&nbsp;&ndash;&nbsp;Current IRIS root folder.</li>
+<li><link id="config/irisrequired"><tt>irisrequired</tt></link>&nbsp;&ndash;&nbsp;Throw error if the installed version of IRIS fails to comply with the required minimum.</li>
+<li><link id="config/irisversion"><tt>irisversion</tt></link>&nbsp;&ndash;&nbsp;Current IRIS version.</li></ul>
+
+<h3>Changes in configuration</h3>
+
+<ul><li><link id="config/irisset"><tt>irisset</tt></link>&nbsp;&ndash;&nbsp;Change IRIS configuration options.</li>
+<li><link id="config/irisreset"><tt>irisreset</tt></link>&nbsp;&ndash;&nbsp;Reset IRIS configuration options to start-up values.</li>
+<li><link id="config/irisuserconfighelp"><tt>irisuserconfig</tt></link>&nbsp;&ndash;&nbsp;User configuration file called at the IRIS start-up.</li></ul>
+
+<h3>Getting on-line help on configuration functions</h3>
+<pre>   help config
+   help function_name
+</pre>
+
+</folder>
