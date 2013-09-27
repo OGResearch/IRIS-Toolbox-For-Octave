@@ -1,18 +1,18 @@
-function DATES = find(X,FLAG)
+function Dates = find(X,Flag)
 % find  Find dates at which tseries observations are non-zero or true.
 %
 % Syntax
 % =======
 %
-%     DATES = find(X)
-%     DATES = find(X,FLAG)
+%     Dates = find(X)
+%     Dates = find(X,Flag)
 %
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Input tseries object.
 %
-% * `FLAG` [ @all | @any ] - Controls whether the output `DATES` will
+% * `Flag` [ @all | @any ] - Controls whether the output `Dates` will
 % contain periods where all observations are non-zero, or where at least
 % one observation is non-zero. If not specified, |@all| is
 % assumed.
@@ -20,8 +20,8 @@ function DATES = find(X,FLAG)
 % Output arguments
 % =================
 %
-% * `DATES` [ numeric | cell ] - Vector of dates at which all or any
-% (depending on `FLAG`) of the observations are non-zero.
+% * `Dates` [ numeric | cell ] - Vector of dates at which all or any
+% (depending on `Flag`) of the observations are non-zero.
 %
 % Description
 % ============
@@ -33,17 +33,20 @@ function DATES = find(X,FLAG)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-if ~exist('FLAG','var')
-    FLAG = @all;
+try
+    Flag;
+catch
+    Flag = @all;
 end
 
-if ~isequal(FLAG,@all) && ~isequal(FLAG,@any)
-    error('iris:tseries','FLAG must be either @all or @any.');
-end
+pp = inputParser();
+pp.addRequired('X',@(x) isa(x,'tseries'));
+pp.addRequired('Flag',@(x) isequal(x,@all) || isequal(x,@any));
+pp.parse(X,Flag);
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-index = FLAG(X.data(:,:),2);
-DATES = X.start + find(index) - 1;
+ix = Flag(X.data(:,:),2);
+Dates = X.start + find(ix) - 1;
 
 end

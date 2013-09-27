@@ -1,11 +1,11 @@
-function X = cumsumk(X,K,RHO,RANGE,varargin)
+function X = cumsumk(X,K,Rho,Range,varargin)
 % cumsumk  Cumulative sum with a k-period leap.
 %
 % Syntax
 % =======
 %
-%     Y = cumsumk(X,K,RHO,RANGE)
-%     Y = cumsumk(X,K,RHO)
+%     Y = cumsumk(X,K,Rho,Range)
+%     Y = cumsumk(X,K,Rho)
 %     Y = cumsumk(X,K)
 %     Y = cumsumk(X)
 %
@@ -19,10 +19,10 @@ function X = cumsumk(X,K,RHO,RANGE,varargin)
 % of the input data (e.g. `K = -4` for quarterly data), or `K = -1` for
 % indeterminate frequency.
 %
-% * `RHO` [ numeric ] - Autoregressive coefficient; if not specified, `RHO
+% * `Rho` [ numeric ] - Autoregressive coefficient; if not specified, `Rho
 % = 1`.
 %
-% * `RANGE` [ numeric ] - Range on which the cumulative sum will be
+% * `Range` [ numeric ] - Range on which the cumulative sum will be
 % computed and the output series returned.
 %
 % Output arguments
@@ -42,12 +42,12 @@ function X = cumsumk(X,K,RHO,RANGE,varargin)
 % If `K < 0`, the first `K` observations in the output series `Y` are
 % copied from `X`, and the new observations are given recursively by
 %
-%     Y{t} = RHO*Y{t-K} + X{t}.
+%     Y{t} = Rho*Y{t-K} + X{t}.
 %
 % If `K > 0`, the last `K` observations in the output series `Y` are
 % copied from `X`, and the new observations are given recursively by
 %
-%     Y{t} = RHO*Y{t+K} + X{t},
+%     Y{t} = Rho*Y{t+K} + X{t},
 %
 % going backwards in time.
 %
@@ -80,15 +80,15 @@ catch
 end         
 
 try
-    RHO;
+    Rho;
 catch
-    RHO = 1;
+    Rho = 1;
 end
 
 try
-    RANGE; %#ok<*VUNUS>
+    Range; %#ok<*VUNUS>
 catch %#ok<*CTCH>
-    RANGE = Inf;
+    Range = Inf;
 end
 
 opt = passvalopt('tseries.cumsumk',varargin{:});
@@ -101,13 +101,13 @@ end
 
 datasize = size(X.data);
 X.data = X.data(:,:);
-[data,range] = rangedata(X,RANGE);
+[data,range] = rangedata(X,Range);
 
 if opt.log
     data = log(data);
 end
 
-data = tseries.mycumsumk(data,K,RHO);
+data = tseries.mycumsumk(data,K,Rho);
 
 if opt.log
     data = exp(data);
