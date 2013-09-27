@@ -1,5 +1,5 @@
-function [path,folder] = findtexmf(file)
-% findtexmf  Run KPSEWHICH to locate TeX executables.
+function [Path,Folder] = findtexmf(File)
+% findtexmf  Try to locate TeX executables.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,23 +7,30 @@ function [path,folder] = findtexmf(file)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
-    
-    path = '';
-    folder = '';
-    
-    % Try FINDTEXMF first.
-    [flag,output] = system(['findtexmf --file-type=exe ',file]);
-    
-    % If FINDTEXMF fails, try to run WHICH on Unix platforms.
-    if flag ~= 0 && isunix()
-        [flag,output] = system(['which ',file]);
+%--------------------------------------------------------------------------
+
+Path = '';
+Folder = '';
+
+% Try FINDTEXMF first.
+[flag,outp] = system(['findtexmf --file-type=exe ',File]);
+
+% If FINDTEXMF fails, try to run WHICH on Unix platforms.
+if flag ~= 0 && isunix()
+    % Try /usr/texbin first.
+    list = dir(fullfile('/usr/texbin',File));
+    if length(list) == 1
+        Folder = '/usr/texbin';
+        Path = fullfile(Folder,File);
     end
-    
-    if flag == 0
-        % Use the correctly spelled path and the right file separators.
-        [folder,fname,fext] = fileparts(strtrim(output));
-        path = fullfile(folder,[fname,fext]);
-    end
-    
+    % Try WHICH next.
+    [flag,outp] = system(['which ',File]);
+end
+
+if flag == 0
+    % Use the correctly spelled path and the right file separators.
+    [Folder,fname,fext] = fileparts(strtrim(outp));
+    Path = fullfile(Folder,[fname,fext]);
+end
+
 end

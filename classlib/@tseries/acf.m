@@ -1,4 +1,4 @@
-function [C,R] = acf(X,DATES,varargin)
+function [C,R] = acf(X,Dates,varargin)
 % acf  Sample autocovariance and autocorrelation functions.
 %
 % Syntax
@@ -48,19 +48,19 @@ function [C,R] = acf(X,DATES,varargin)
 %#ok<*CTCH>
 
 try
-    DATES; 
+    Dates; 
 catch 
-    DATES = Inf;
+    Dates = Inf;
 end
 
 opt = passvalopt('tseries.acf',varargin{:});
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if isequal(DATES,Inf)
+if isequal(Dates,Inf)
     data = mygetdata(X,'min');
 else
-    data = mygetdata(X,DATES);
+    data = mygetdata(X,Dates);
 end
 
 if ndims(data) > 3

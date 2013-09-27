@@ -37,8 +37,9 @@ function [T,R,K,Z,H,D,U,Omg,list] = sspace(m,varargin)
 %
 % * `'triangular='` [ *`true`* | `false` ] - If true, the state-space form
 % returned has the transition matrix `T` quasi triangular and the vector of
-% predetermined variables transformed accordingly. This is the form used
-% in IRIS calculations.
+% predetermined variables transformed accordingly; this is the form used
+% in IRIS calculations. If false, the state-space system refers to the
+% original vector of transition variables.
 %
 % Description
 % ============
@@ -82,7 +83,7 @@ nx = size(T,1);
 nb = size(T,2);
 nf = nx - nb;
 ne = sum(m.nametype == 3);
-nalt = size(m.Assign,3);
+nAlt = size(m.Assign,3);
 
 if ~opt.triangular
     % T <- U*T/U;
@@ -90,13 +91,13 @@ if ~opt.triangular
     % K <- U*K;
     % Z <- Z/U;
     % U <- eye
-    for i = 1 : nalt
-        T(:,:,i) = T(:,:,i) / U(:,:,i);
-        T(nf+1:end,:,i) = U(:,:,i)*T(nf+1:end,:,i);
-        R(nf+1:end,:,i) = U(:,:,i)*R(nf+1:end,:,i);
-        K(nf+1:end,:,i) = U(:,:,i)*K(nf+1:end,:,i);
-        Z(:,:,i) = Z(:,:,i) / U(:,:,i);
-        U(:,:,i) = eye(size(U));
+    for iAlt = 1 : nAlt
+        T(:,:,iAlt) = T(:,:,iAlt) / U(:,:,iAlt);
+        T(nf+1:end,:,iAlt) = U(:,:,iAlt)*T(nf+1:end,:,iAlt);
+        R(nf+1:end,:,iAlt) = U(:,:,iAlt)*R(nf+1:end,:,iAlt);
+        K(nf+1:end,:,iAlt) = U(:,:,iAlt)*K(nf+1:end,:,iAlt);
+        Z(:,:,iAlt) = Z(:,:,iAlt) / U(:,:,iAlt);
+        U(:,:,iAlt) = eye(size(U));
     end
 end
 
