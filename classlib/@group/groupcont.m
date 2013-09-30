@@ -74,14 +74,15 @@ for iVar = 1:numel(varNames)
     
     % Handle 'Other' group
     if ~isempty(G.otherGroup)
+        iGroup = iGroup + 1 ;
         for iCont = 1:numel(G.otherGroup)
             ind = strcmp(thisList,G.otherGroup{iCont}) ;
-            S0.(varNames{iVar})(:,iGroup+1) = meth([S0.(varNames{iVar}){:,iGroup},S.(varNames{iVar}){:,ind}]) ;
+            S0.(varNames{iVar})(:,iGroup) = meth([S0.(varNames{iVar}){:,iGroup},S.(varNames{iVar}){:,ind}]) ;
         end
     end
     
     % Handle 'Init + Const' group (cannot be grouped or removed)
-    S0.(varNames{iVar})(:,iGroup+2) = S.(varNames{iVar}){:,end} ;
+    S0.(varNames{iVar})(:,iGroup+1) = S.(varNames{iVar}){:,end} ;
     
     % Comment tseries() object
     txt = cell(1,nGroup+2) ;
