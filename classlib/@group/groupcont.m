@@ -48,6 +48,7 @@ switch G.type
     case 'measurement'
         thisList = G.yList ;
 end
+nGroup = numel(G.groupNames) ;
 
 S0 = struct() ;
 varNames = fields(G.logVars) ;
@@ -63,8 +64,8 @@ for iVar = 1:numel(varNames)
     
     % Do grouping
     vrange = range(S.(varNames{iVar})) ;
-    S0.(varNames{iVar}) = tseries(vrange,repmat(val,numel(vrange),numel(G.groupContents)+1)) ;
-    for iGroup = 1:numel(G.groupContents)
+    S0.(varNames{iVar}) = tseries(vrange,repmat(val,numel(vrange),numel(G.groupContents)+2)) ;
+    for iGroup = 1:nGroup
         for iCont = 1:numel(G.groupContents{iGroup})
             ind = strcmp(thisList,G.groupContents{iGroup}{iCont}) ;
             S0.(varNames{iVar})(:,iGroup) = meth([S0.(varNames{iVar}){:,iGroup},S.(varNames{iVar}){:,ind}]) ;
@@ -72,10 +73,34 @@ for iVar = 1:numel(varNames)
     end
     
     % Handle 'Other' group
-    for iCont = 1:numel(G.otherGroup)
-        ind = strcmp(thisList,G.otherGroup{iCont}) ;
-        S0.(varNames{iVar})(:,iGroup+1) = meth([S0.(varNames{iVar}){:,iGroup},S.(varNames{iVar}){:,ind}]) ;
+    if ~isempty(G.otherGroup)
+        for iCont = 1:numel(G.otherGroup)
+            ind = strcmp(thisList,G.otherGroup{iCont}) ;
+            S0.(varNames{iVar})(:,iGroup+1) = meth([S0.(varNames{iVar}){:,iGroup},S.(varNames{iVar}){:,ind}]) ;
+        end
     end
+    
+    % Handle 'Init + Const' group (cannot be grouped or removed)
+    S0.(varNames{iVar})(:,iGroup+2) = S.(varNames{iVar}){:,end} ;
+    
+    % Comment tseries() object
+    txt = cell(1,nGroup+2) ;
+    for iGroup = 1:nGroup
+        txt{iGroup} = sprintf('%s <--[+] %s',varNames{iVar},G.groupNames{iGroup}) ;
+    end
+    if ~isempty(G.otherGroup)
+        iGroup = iGroup + 1 ;
+        txt{iGroup} = sprintf('%s <--[+] %s',varNames{iVar},'Other') ;
+    end
+    iGroup = iGroup + 1 ;
+    txt{iGroup} = sprintf('%s <--[+] %s',varNames{iVar},'Init + Const') ;
+    
+    % Delete unnecessary columns
+    txt = txt(1:iGroup) ;
+    S0.(varNames{iVar}) = S0.(varNames{iVar}){:,1:iGroup} ;
+    
+    % Finish comments
+    S0.( varNames{iVar} ) = comment( S0.( varNames{iVar} ), txt) ;
 end
 
 end

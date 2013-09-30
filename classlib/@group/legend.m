@@ -29,9 +29,9 @@ function [H] = legend(varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 if ishandle(varargin{1})
-    H = legend(varargin{1},[varargin{2}.groupNames,'Other'],varargin{3:end}) ;
+    H = legend(varargin{1},[varargin{2}.groupNames,'Other','Init + Const'],varargin{3:end}) ;
 elseif isa(varargin{1},'group')
-    H = legend([varargin{1}.groupNames,'Other'],varargin{2:end}) ;
+    H = legend([varargin{1}.groupNames,'Other','Init + Const'],varargin{2:end}) ;
 else
     utils.error('group:legend','Error plotting legend.') ;
 end
