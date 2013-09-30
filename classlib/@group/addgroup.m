@@ -34,8 +34,12 @@ function G = addgroup(G,GroupName,GroupContents)
 pp = inputParser();
 pp.addRequired('G',@(x) isa(x,'group'));
 pp.addRequired('GroupName',@ischar);
-pp.addRequired('GroupContents',@iscell);
+pp.addRequired('GroupContents',@(x) iscell(x) || ischar(x) );
 pp.parse(G,GroupName,GroupContents);
+
+if ischar(GroupContents)
+    GroupContents = {GroupContents} ;
+end
 
 % % Name filter.
 % for iGroup = 1:numel(GroupContents)

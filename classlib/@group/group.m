@@ -100,6 +100,7 @@ classdef group < userdataobj & getsetobj
         varargout = detail(varargin)
         varargout = addgroup(varargin)
         varargout = rmgroup(varargin)
+        varargout = splitgroup(varargin)
         varargout = groupcont(varargin)
         varargout = legend(varargin)
         

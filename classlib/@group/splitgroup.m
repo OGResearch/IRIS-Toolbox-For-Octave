@@ -1,5 +1,6 @@
-function G = rmgroup(G,GroupName)
-% rmgroup  Remove group from group object.
+function G = splitgroup(G,GroupName)
+% rmgroup  Split group with name GroupName into its components in group
+% object G.
 %
 % Syntax
 % =======
@@ -33,6 +34,16 @@ pp.addRequired('G',@(x) isa(x,'group'));
 pp.addRequired('GroupName',@(x) ischar(x) || iscell(x) );
 pp.parse(G,GroupName);
 
+% Contributions of shocks or measurement variables?
+switch G.type
+    case 'shock'
+        thisList = G.eList ;
+        thisDescript = G.eDescript ;
+    case 'measurement'
+        thisList = G.yList ;
+        thisDescript = G.yDescript ;
+end
+
 if ~iscell(GroupName)
     GroupName = {GroupName} ;
 end
@@ -40,11 +51,22 @@ end
 for iGroup = 1:numel(GroupName)
     ind = strcmpi(G.groupNames,GroupName{iGroup}) ;
     if any(ind)
-        % Group exists, remove
+        % Group exists, split
+        splitNames = G.groupContents{ind} ;
         G.groupNames(ind) = '' ;
         G.groupContents(ind) = '' ;
+        
+        for iCont = 1:numel(splitNames)
+            ind = strcmp(thisList,splitNames{iCont}) ;
+            G = addgroup(G,thisDescript{ind},splitNames{iCont}) ;
+        end
     elseif strcmpi('Other',GroupName{iGroup})
-        utils.error('group:rmgroup','Cannot remove ''Other'' group.') ;
+        % Split apart 'Other' group
+        splitNames = G.otherGroup ;
+        for iCont = 1:numel(splitNames)
+            ind = strcmp(thisList,splitNames{iCont}) ;
+            G = addgroup(G,thisDescript{ind},splitNames{iCont}) ;
+        end
     else
         % Group does not exist, cannot remove
         utils.error('group:rmgroup','A group with that name does not exist and cannot be removed: %s',GroupName{iGroup}) ;
