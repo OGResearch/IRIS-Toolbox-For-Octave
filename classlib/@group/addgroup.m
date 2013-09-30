@@ -41,13 +41,23 @@ if ischar(GroupContents)
     GroupContents = {GroupContents} ;
 end
 
-% % Name filter.
-% for iGroup = 1:numel(GroupContents)
-%     [index,~,Tokens] = strfun.matchindex(List0,namef);
-%     List0 = List0(index);
-% end
-
 xxChkType() ;
+switch G.type
+    case 'shock'
+        thisList = G.eList ;
+    case 'measurement'
+        thisList = G.yList ;
+    otherwise
+        utils.error('group:addgroup','Unable to determine group type.') ;
+end
+
+% Name filter.
+fGroupContents = cell(0,1) ;
+for iCont = 1:numel(GroupContents)
+    ind = strfun.matchindex(thisList,GroupContents{iCont}) ;
+    fGroupContents(end+1:end+sum(ind)) = thisList(ind) ;
+end
+GroupContents = fGroupContents ;
 
 ind = strcmpi(G.groupNames,GroupName) ;
 if any(ind)
@@ -62,15 +72,9 @@ end
 xxChkUnique() ;
 
 
-    function xxChkUnique()
-        switch G.type
-            case 'shock'
-                thisList = G.eList ;
-            case 'measurement'
-                thisList = G.yList ;
-        end
+    function [iGroup,iCont]=xxChkUnique()
         count = zeros(1,numel(thisList)) ;
-        for iGroup = 1:numel(G.groupNames) 
+        for iGroup = 1:numel(G.groupNames)
             for iCont = 1:numel(G.groupContents{iGroup})
                 ind = strcmp(thisList,G.groupContents{iGroup}{iCont}) ;
                 count = count + ind ;
@@ -85,16 +89,16 @@ xxChkUnique() ;
         end
     end
 
-    function xxChkType()
+    function [iCont]=xxChkType()
         if isempty(G.type)
             % assign a type
             for iCont = 1:numel(GroupContents)
-                if any(strcmp(G.eList,GroupContents{iCont}))
+                if any(strfun.matchindex(G.eList,GroupContents{iCont}))
                     G.type = 'shock' ;
                     xxChkType() ;
                     return ;
                 end
-                if any(strcmp(G.yList,GroupContents{iCont}))
+                if any(strfun.matchindex(G.yList,GroupContents{iCont}))
                     G.type = 'measurement' ;
                     xxChkType() ;
                     return ;
