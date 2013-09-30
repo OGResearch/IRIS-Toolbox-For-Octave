@@ -37,6 +37,12 @@ pp.addRequired('GroupName',@ischar);
 pp.addRequired('GroupContents',@iscell);
 pp.parse(G,GroupName,GroupContents);
 
+% % Name filter.
+% for iGroup = 1:numel(GroupContents)
+%     [index,~,Tokens] = strfun.matchindex(List0,namef);
+%     List0 = List0(index);
+% end
+
 xxChkType() ;
 
 ind = strcmpi(G.groupNames,GroupName) ;
