@@ -4,25 +4,46 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % Syntax
 % =======
 %
-%     F = dest.kcluster(Data, K)
-%
-% Output arguments
-% =================
-%
-% * `Data` [ numeric ]
-%
-% * `K` [ integer ]
+%     F = dest.kcluster(Sample,...)
 %
 % Input arguments
+% =================
+%
+% * `Sample` [ numeric ]
+%
+% Output arguments
 % ================
 %
-% * `Mu` [ numeric ] - Cell array of mixture means.
+% * `Mu` [ cell ] - Cell array of mixture means.
 %
-% * `Sig` [ numeric ] - Cell array of mixture covariance matrices.
+% * `Sig` [ cell ] - Cell array of mixture covariance matrices.
+%
+% * `W` [ numeric ] - Vector of mixture weights.
+%
+% * `fh` [ function_handle ] - Function handle to the estimated
+% distribution function in the `logdist` package.
+%
+% Options
+% ========
+%
+% * `'display='` [ true | *`false`* ] - Display command window output.
+%
+% * `'k='` [ integer | *`4`* ] - By default `k` determines the maximum
+% number of clusters, but the option `'select='` can be set to `'fixed'` so
+% that this option determines `k` exactly.
+%
+% * `'select='` [ *`bic`* | `fixed` ] - Fix the number of clusters or
+% select using the Bayesian Information Criterion.
+%
+% * `'tol='` [ numeric | *`1e-6`* ] - Critical value which determines
+% termination of the iterative refinement algorithm.
+%
+% * `'maxIt='` [ integer | *`500`* ] - Maximum number of refinement
+% iterations.
 %
 % Description
 % ============
-% Uses k-harmonic means clustering to estimate a multivariate distribution 
+% Uses k-harmonic means clustering to estimate a multivariate distribution
 % as a mixture of normals.
 %
 % References
@@ -31,7 +52,7 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % 1. Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
 %    Algorithm."
 %
-% 2. Hamerly and Elkhan (2002) "Alternatives to the k-means algorithm that
+% 2. Hamerly and Elkan (2002) "Alternatives to the k-means algorithm that
 %    find better clusterings."
 
 % -IRIS Toolbox.
@@ -57,45 +78,55 @@ if opt.display
 end
 
 if strcmpi(opt.selectk,'fixed')
-    [M, Sig, W, kLik, kBic] = xxKcluster( Sample, opt.k );
-    fprintf(1,'%2.0g          %+4.2f      %+4.2f      %+4.2f \n',...
-        k, kBic, kLik, pen) ;
+    [M, Sig, W, kLik, kBic, pen] = xxKcluster( Sample, opt.k ) ;
+    if opt.display
+        fprintf(1,'%2.0g          %+4.2f      %+4.2f      %+4.2f \n',...
+            opt.k, kBic, kLik, pen) ;
+    end
 else
-    bic = Inf ;
     tol = sqrt(eps) ;
+    stor = struct() ;
+    storBic = NaN(opt.k,1) ;
     for k=1:opt.k
         % try k-means cluster
-        [kM, kSig, kW, kLik, kBic, pen] = xxKcluster( Sample, k );
+        [kM, kSig, kW, kLik, kBic, pen] = xxKcluster( Sample, k ) ;
+        nm = sprintf('k%g',k) ;
+        stor.(nm).M = kM ;
+        stor.(nm).Sig = kSig ;
+        stor.(nm).W = kW ;
+        stor.(nm).Lik = kLik ;
+        storBic(k) = kBic ;
+        stor.(nm).pen = pen ;
         
         % check for repeated clusters
         repeated = false;
-        for ik=1:k,
+        for ik=1:k
             if repeated, break; end
             for jj=ik+1:k
                 repeated = sum( (kM{ik}-kM{jj}).^2 ) < tol ;
-                if repeated, break; end;
-            end;
-        end;
+                if repeated, break; end
+            end
+        end
         if repeated, continue; end
-                
+        
         % display
         if opt.display
             fprintf(1,'%2.0g          %+4.2f      %+4.2f      %+4.2f \n',...
                 k, kBic, kLik, pen) ;
         end
-        
-        if kBic > bic,
-            % increasing number of parameters fails to decrease likelihood
-            return;
-        end
-        
-        % output assignment
-        M = kM;
-        Sig = kSig;
-        W = kW;
-        bic = kBic;
     end %for
+    
+    [~,bestK] = min(storBic) ;
+    nm = sprintf('k%g',bestK) ;
+    M = stor.(nm).M ;
+    Sig = stor.(nm).Sig ;
+    W = stor.(nm).W ;
+    
 end %if
+if nargout>3
+    % function handle to estimated distribution
+    fh = logdist.normal(M,Sig,W) ;
+end
 
     function [M, Sig, W, lLik, BIC, penalty, ik] = xxKcluster(thisSample, thisK)
         
@@ -123,9 +154,6 @@ end %if
         % compute BIC
         penalty = thisK*log(N) ;
         BIC = -2*lLik + penalty ;
-
-        % function handle to estimated distribution
-        fh = logdist.normal(M,Sig,W) ;
         
         %************* nested functions ******************%
         
@@ -163,7 +191,7 @@ end %if
             W = W ./ sum(W) ;
             M = num2cell( M, 1 ) ;
             
-            function [q,r,d,ik] = qCalc( X, M, thisK )
+            function [q,r,d,ik] = qCalc( X, M, thisK ) %#ok<*STOUT>
                 d = max( colDist( X, M' ), 1e-14 ) ;
                 [dMin,minInd] = min(d) ;
                 r = ( dMin ./ d ).^2 ;
