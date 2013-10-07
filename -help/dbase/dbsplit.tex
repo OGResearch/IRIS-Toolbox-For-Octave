@@ -1,0 +1,86 @@
+
+
+    \filetitle{dbsplit}{Split database into mutliple databases}{dbase/dbsplit}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [D1,D2,...,DN,D] = dbsplit(D,Rule1,Rule2,...,RuleN,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} struct {]} - Input database that will be split.
+ \item
+   \texttt{Rule1}, \texttt{Rule2}, \ldots{}, \texttt{RuleN} {[} cellstr
+   {]} - Each rule is a 1-by-2 cell array, \texttt{\{testRex,newName\}},
+   where \texttt{testRex} is a test \texttt{regexp} pattern to select
+   entries from the input database, \texttt{D}, for inclusion in the K-th
+   output database, and \texttt{newName} is a new name pattern that will
+   be used to name the entry in the output database.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D1}, \texttt{D2}, \ldots{}, \texttt{DN} {[} struct {]} -
+   Output databases.
+ \item
+   \texttt{D} {[} struct {]} - Input database with remaining fields (if
+   \texttt{'discard=' true}) or the original input database (if
+   \texttt{'discard=' false}).
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'discard='} {[} \emph{\texttt{true}} \textbar{}
+   \emph{\texttt{false}} {]} - Discard input database entries when they
+   are included in an output database, and do not re-use them in other
+   output databases; if \texttt{false}, an input database entry can occur
+   in more than one output databases.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The test regexp pattern and the new name pattern in each rule work as an
+ expression-replace pair in \texttt{regexprep} -- see
+ \texttt{doc regexprep}. The test patterns is a regexp string where you
+ can capture tokens \texttt{(...)} for use in the new name pattern,
+ \texttt{\$1}, \texttt{\$2}, etc.
+ 
+ \paragraph{Example}
+ 
+ The database \texttt{D} contains time series for two regions,
+ \texttt{US} and \texttt{EU}:
+ 
+ \begin{verbatim}
+ D = 
+     US_GDP: [40x1 tseries]
+     US_CPI: [40x1 tseries]
+     EU_GDP: [40x1 tseries]
+     EU_CPI: [40x1 tseries]
+ \end{verbatim}
+ 
+ We split the database into two separate databases, one with \texttt{US}
+ data only, the other with \texttt{EU} data only. We also strip the time
+ series names of the country prefixes in the new databases.
+ 
+ \begin{verbatim}
+ [US,EU,DD[] = dbsplit(D,{'^US_(.*)','$1'},{'^EU_(.*)','$1'})
+ 
+ US = 
+     GDP: [40x1 tseries]
+     CPI: [40x1 tseries]
+ EU = 
+     CPI: [40x1 tseries]
+     GDP: [40x1 tseries]
+ DD = 
+ struct with no fields.
+ \end{verbatim}
+
+

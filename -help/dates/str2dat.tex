@@ -1,0 +1,54 @@
+
+
+    \filetitle{str2dat}{Convert strings to IRIS serial date numbers}{dates/str2dat}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ Dat = str2dat(S,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} char \textbar{} cellstr {]} - Strings representing
+   dates.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Dat} {[} numeric {]} - IRIS serial date numbers.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'freq='} {[} \texttt{1} \textbar{} \texttt{2} \textbar{}
+   \texttt{4} \textbar{} \texttt{6} \textbar{} \texttt{12} \textbar{}
+   \emph{empty} {]} - Enforce frequency.
+ \end{itemize}
+ 
+ See help on \href{dates/dat2str}{\texttt{dat2str}} for other options
+ available.
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ \begin{verbatim}
+ d = str2dat('04-2010','dateFormat=','MM-YYYY');
+ dat2str(d)
+ ans =
+    '2010M04'
+ 
+ d = str2dat('04-2010','dateFormat=','MM-YYYY','freq=',4);
+ dat2str(d)
+ ans =
+    '2010Q2'
+ \end{verbatim}
+
+

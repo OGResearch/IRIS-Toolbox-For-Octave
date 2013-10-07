@@ -1,0 +1,56 @@
+
+
+    \filetitle{subheading}{Enter subheading in table}{report/subheading}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ P.subheading(CAP,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} struct {]} - Report object created by the
+   \href{report/new}{\texttt{report.new}} function.
+ \item
+   \texttt{CAP} {[} char {]} - Text displayed as a subheading on a
+   separate line in the table.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'justify='} {[} \texttt{'c'} \textbar{} \emph{\texttt{'l'}}
+   \textbar{} \texttt{'r'} {]} - (Inheritable from parent objects)
+   Horizontal alignment of the subheading (centre, left, right).
+ \item
+   \texttt{'separator='} {[} char \textbar{} \emph{empty} {]} - (Not
+   inheritable from parent objects) LaTeX commands that will be inserted
+   immediately after the end of the table row, i.e.~appended to
+   \textbackslash{}, within a tabular mode.
+ \item
+   \texttt{'stretch='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - (Inheritable from parent objects) Stretch the subheading text
+   also across the data part of the table; if not the text will be
+   contained within the initial descriptive columns.
+ \item
+   \texttt{'typeface='} {[} char \textbar{}
+   \emph{\texttt{'\textbackslash{}itshape\textbackslash{}bfseries'}} {]}
+   - (Not inheritable from parent objects) LaTeX code specifying the
+   typeface for the subheading; it must use the declarative forms (such
+   as \texttt{\textbackslash{}itshape}) and not the command forms (such
+   as \texttt{\textbackslash{}textit\{...\}}).
+ \end{itemize}
+ 
+ \paragraph{Generic options}
+ 
+ See help on \href{report/Contents}{generic options} in report objects.
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

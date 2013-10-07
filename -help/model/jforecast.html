@@ -1,0 +1,147 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/jforecast">jforecast</h2>
+<div class="headline">Forecast with judgmental adjustments (conditional forecasts)</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>F = jforecast(M,D,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Solved model object.</p></li>
+<li><p><code>D</code> [ struct ] - Input data from which the initial condition is taken.</p></li>
+<li><p><code>Range</code> [ numeric ] - Forecast range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>F</code> [ struct ] - Output struct with the judgmentally adjusted forecast.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'anticipate='</code> [ <em><code>true</code></em> | <code>false</code> ] - If true, real future shocks are anticipated, imaginary are unanticipated; vice versa if false.</p></li>
+<li><p><code>'currentOnly='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>true</code>, MSE matrices will be computed only for the current-dated variables, not for their lags or leads.</p></li>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
+<li><p><code>'dtrends='</code> [ <em><code>'auto'</code></em> | <code>true</code> | <code>false</code> ] - Measurement data contain deterministic trends.</p></li>
+<li><p><code>'initCond='</code> [ <em><code>'data'</code></em> | <code>'fixed'</code> ] - Use the MSE for the initial conditions if found in the input data or treat the initical conditions as fixed.</p></li>
+<li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return only mean data, i.e. point estimates.</p></li>
+<li><p><code>'plan='</code> [ plan ] - Simulation plan specifying the exogenised variables and endogenised shocks.</p></li>
+<li><p><code>'vary='</code> [ struct | <em>empty</em> ] - Database with time-varying std deviations or cross-correlations of shocks.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>When adjusting the mean and/or std devs of shocks, you can use real and imaginary numbers ot distinguish between anticipated and unanticipated shocks:</p>
+<ul>
+<li><p>any shock entered as an imaginary number is treated as an anticipated change in the mean of the shock distribution;</p></li>
+<li><p>any std dev of a shock entered as an imaginary number indicates that the shock will be treated as anticipated when conditioning the forecast on the reduced-form tunes.</p></li>
+<li><p>the same shock or its std dev can have both the real and the imaginary part.</p></li>
+</ul>
+<h4 id="description-1">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

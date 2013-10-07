@@ -1,0 +1,163 @@
+function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
+% estimate  Estimate FAVAR using static principal components.
+%
+% Syntax
+% =======
+%
+%     [A,D,CC,F,U,E,CTF] = estimate(A,D,List,Range,[R,Q],...)
+%     [A,X,CC,F,U,E,CTF] = estimate(A,X,Range,[R,Q],...)
+%
+% Input arguments
+% ================
+%
+% * `A` [ FAVAR ] - Empty FAVAR object.
+%
+% * `D` [ struct ] - Input database.
+%
+% * `List` [ cellstr ] - List of series from the database on which the VAR
+% will be estimated.
+%
+% * `X` [ tseries ] - Tseries objects with input data.
+%
+% * `Range` [ numeric ] - Estimation range.
+%
+% * `R` [ numeric ] - Selection criterion for the number of factors:
+% Minimum requested proportion of input data volatility explained by the
+% factors.
+%
+% * `Q` [ numeric ] - Selection criterion for the number of factors:
+% Maximum number of factors.
+%
+% Output arguments
+% =================
+%
+% * `A` [ FAVAR ] - Estimated FAVAR object.
+%
+% * `D` [ struct ] - Output database.
+%
+% * `X` [ tseries ] - Output tseries object.
+%
+% * `CC` [ tseries ] - Estimates of common components in the FAVAR
+% observables.
+%
+% * `F` [ tseries ] - Estimates of factors.
+%
+% * `U` [ struct | tseries ] - Idiosyncratic residuals.
+%
+% * `E` [ tseries ] - Factor VAR residuals.
+%
+% * `CTF` [ tseries ] - Contributions of individual input series to the
+% estimated factors.
+%
+% Options
+% ========
+%
+% * `'cross='` [ *`true`* | `false` | numeric ] - Keep off-diagonal
+% elements in the covariance matrix of idiosyncratic residuals; if false
+% all cross-covariances are reset to zero; if a number between zero and
+% one, all cross-covariances are multiplied by that number.
+%
+% * `'order='` [ numeric | *1* ] - Order of the VAR for factors.
+%
+% * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
+% data.
+%
+% * `'rank='` [ numeric | *`Inf`* ] - Restriction on the rank of the factor
+% VAR residuals.
+%
+% Description
+% ============
+%
+% Example
+% ========
+%
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2013 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+% Get input data.
+[y,Rng,yNames,inpFmt,varargin] = myinpdata(This,varargin{:});
+
+if isequal(inpFmt,'dbase')
+    This.Ynames = yNames;
+end
+This.range = Rng;
+
+% Parse required input arguments.
+crit = varargin{1};
+varargin(1) = [];
+
+% Parse and validate options.
+opt = passvalopt('FAVAR.estimate',varargin{:});
+
+% Determine format of output data.
+if strcmpi(opt.output,'auto')
+    outpFmt = inpFmt;
+else
+    outpFmt = opt.output;
+end
+
+%--------------------------------------------------------------------------
+
+% Standardise input data.
+y0 = y;
+[This,y] = standardise(This,y);
+
+% Estimate static factors using principal components.
+[FF,This.C,U,This.Sigma,This.singval,sample,CTF] = ...
+    FAVAR.pc(y,crit,opt.method);
+
+% Estimate VAR(p,q) on factors.
+[This.A,This.B,This.Omega,This.T,This.U,E,This.fitted] = ...
+    FAVAR.estimatevar(FF,opt.order,opt.rank);
+This.eigval = ordeig(This.T);
+
+% Reduce or zero off-diagonal elements in the cov matrix of idiosyncratic
+% residuals if requested.
+This.cross = double(opt.cross);
+if This.cross < 1
+    index = logical(eye(size(This.Sigma)));
+    This.Sigma(~index) = This.cross*This.Sigma(~index);
+end
+
+if nargout > 1
+    yNames = get(This,'ynames');
+    D = myoutpdata(This,outpFmt,Rng,y0,[],yNames);
+end
+
+if nargout > 2
+    % Common components.
+    CC = FAVAR.cc(This.C,FF);
+    CC = FAVAR.destandardise(This.Mean,This.Std,CC);
+    CC = myoutpdata(This,outpFmt,Rng,CC,[],yNames);
+end
+
+if nargout > 3
+    % Factors.
+    template = tseries();
+    FF = replace(template,permute(FF,[2,1,3]),Rng(1));
+end
+
+if nargout > 4
+    % Idiosyncratic residuals.
+    U = FAVAR.destandardise(0,This.Std,U);
+    U = myoutpdata(This,outpFmt,Rng,U,[],yNames);
+end
+
+if nargout > 5
+    % Residuals from the factor VAR.
+    E = replace(template,permute(E,[2,1,3]),Rng(1));
+end
+
+if nargout > 6
+    % Contributions to the factors.
+    CTF = replace(template,permute(CTF,[2,1,3]),Rng(1));
+end
+
+if nargout > 7
+    Rng = Rng(sample);
+end
+
+end

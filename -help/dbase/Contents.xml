@@ -1,0 +1,46 @@
+<folder>
+
+<foldername>data</foldername><filename>Contents</filename>
+
+<h1 id="data/Contents">Basic database management</h1>
+
+<h3>Loading and saving databases</h3>
+
+<ul><li><link id="data/dbload"><tt>dbload</tt></link>&nbsp;&ndash;&nbsp;Create database by loading CSV file.</li>
+<li><link id="data/dbsave"><tt>dbsave</tt></link>&nbsp;&ndash;&nbsp;Save database as CSV file.</li></ul>
+
+<h3>Getting information about databases</h3>
+
+<ul><li><link id="data/dbnames"><tt>dbnames</tt></link>&nbsp;&ndash;&nbsp;List of database entries filtered by name or class.</li>
+<li><link id="data/dbprintuserdata"><tt>dbprintuserdata</tt></link>&nbsp;&ndash;&nbsp;Print names of database tseries along with specified fields of their userdata.</li>
+<li><link id="data/dbrange"><tt>dbrange</tt></link>&nbsp;&ndash;&nbsp;Find a range that encompasses the ranges of the listed tseries objects.</li>
+<li><link id="data/dbsearchuserdata"><tt>dbsearchuserdata</tt></link>&nbsp;&ndash;&nbsp;Search database to find tseries by matching the content of their userdata fields.</li>
+<li><link id="data/dbuserdatalov"><tt>dbuserdatalov</tt></link>&nbsp;&ndash;&nbsp;List of values found in a specified user data field in tseries objects.</li></ul>
+
+<h3>Converting databases</h3>
+
+<ul><li><link id="data/array2db"><tt>array2db</tt></link>&nbsp;&ndash;&nbsp;Convert numeric array to database.</li>
+<li><link id="data/db2array"><tt>db2array</tt></link>&nbsp;&ndash;&nbsp;Convert tseries database entries to numeric array.</li>
+<li><link id="data/db2tseries"><tt>db2tseries</tt></link>&nbsp;&ndash;&nbsp;Combine tseries database entries in one multivariate tseries object.</li></ul>
+
+<h3>Batch processing</h3>
+
+<ul><li><link id="data/dbbatch"><tt>dbbatch</tt></link>&nbsp;&ndash;&nbsp;Run a batch job within a database.</li>
+<li><link id="data/dbclip"><tt>dbclip</tt></link>&nbsp;&ndash;&nbsp;Clip all database tseries objects down to specified date range.</li>
+<li><link id="data/dbcol"><tt>dbcol</tt></link>&nbsp;&ndash;&nbsp;Retrieve the specified column or columns from database entries.</li>
+<li><link id="data/dbfun"><tt>dbfun</tt></link>&nbsp;&ndash;&nbsp;Apply function to each database field.</li>
+<li><link id="data/dbplot"><tt>dbplot</tt></link>&nbsp;&ndash;&nbsp;Plot from database.</li>
+<li><link id="data/dbredate"><tt>dbredate</tt></link>&nbsp;&ndash;&nbsp;Redate all tseries objects in a database.</li></ul>
+
+<h3>Combining databases</h3>
+
+<ul><li><link id="data/dbextend"><tt>dbextend</tt></link>&nbsp;&ndash;&nbsp;Combine tseries observations from two or more databases.</li>
+<li><link id="data/dbmerge"><tt>dbmerge</tt></link>&nbsp;&ndash;&nbsp;Merge two or more databases.</li>
+<li><link id="data/dbminuscontrol"><tt>dbminuscontrol</tt></link>&nbsp;&ndash;&nbsp;Create simulation-minus-control database.</li></ul>
+
+<h3>Getting on-line help on database functions</h3>
+<pre>   help data
+   help data/function_name
+</pre>
+
+</folder>
