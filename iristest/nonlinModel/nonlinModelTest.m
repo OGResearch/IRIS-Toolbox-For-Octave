@@ -98,7 +98,11 @@ end % testIsnan()
 function testIssolved(This)
 
 m = This.TestData.model ;
-assertEqual(This, issolved(obj), false) ;
+mm = This.TestData.solvedModel ;
+
+assertEqual(This, issolved(model()), false) ;
+assertEqual(This, issolved(m), false) ;
+assertEqual(This, issolved(mm), true) ;
 
 end % isSolved()
 
@@ -107,7 +111,8 @@ end % isSolved()
 function testAlter(This)
 
 m = This.TestData.model ;
-assertEqual(This, length(alter(obj, 3)), 3) ;
+assertEqual(This, length(alter(m, 3)), 3) ;
+assertEqual(This, length(m([1,1,1])), 3) ;
 
 end % testAlter()
 
@@ -115,15 +120,22 @@ end % testAlter()
 %**************************************************************************
 function testChkstate(This)
 
-m = This.TestData.solvedModel ;
-assertEqual(chksstate(m), true);
+m = This.TestData.model ;
+mm = This.TestData.solvedModel ;
+
+assertEqual(This, issolved(model()), false) ;
+assertEqual(This, issolved(m), false) ;
+assertEqual(This, chksstate(m,'error=', false, 'warning=', false), false) ;
+assertEqual(This, issolved(mm), true) ;
+assertEqual(This, chksstate(mm,'error=', false, 'warning=', false), true) ;
 
 end % testChksstate()
 
-%{
-function test_estimate(obj)
 
-obj=doSsSolve(obj);
+%**************************************************************************
+function testEstimate(This)
+
+m = This.TestData.solvedModel;
 
 E = struct();
 E.chi = {NaN,  0.5,  0.95,  logdist.normal(0.85,0.025)};
@@ -143,25 +155,32 @@ filteropt = { ...
     'relative=',true, ...
     };
 
-td=load('test_nlmodel_data.mat');
-[est,pos,C,H,mest,v,~,~,delta,Pdelta] = ...
-    estimate(obj,td.d,td.starthist:td.endhist,E, ...
+td = load('nonlinModelData.mat');
+[est,pos,C,~,~,~,~,~,delta,Pdelta] = ...
+    estimate(m,td.d,td.starthist:td.endhist,E, ...
     'filter=',filteropt,'optimset=',{'display=','off'},...
     'tolx=',1e-8,'tolfun=',1e-8,...
-    'sstate=',false,'solve=',true,'nosolution=','penalty','chksstate=',false); %also test some default options
+    'sstate=',false,'solve=',true,'nosolution=','penalty', ...
+    'chksstate=',false); %also test some default options
 
-cmp=load('test_nlmodel_estimation');
-pnames=fields(est);
-for iName = 1 : numel(pnames)
-    assertElementsAlmostEqual(cmp.est.(pnames{iName}),est.(pnames{iName}),'relative',1e-3);
+cmp = load('nonlinModelEstimation.mat') ;
+pNames = fields(est) ;
+for iName = 1 : numel(pNames)
+    actual = est.(pNames{iName}) ;
+    expected = cmp.est.(pNames{iName}) ;
+    assertEqual(This, actual, expected, 'relTol', 1e-3) ;
 end
-assertElementsAlmostEqual(cmp.C,C,'relative',0.1);
-fnames=fields(cmp.delta);
-for ii=1 : numel(fnames)
-    assertElementsAlmostEqual(cmp.delta.(fnames{ii}),delta.(fnames{ii}),'relative',1e-2);
-end
-assertElementsAlmostEqual(double(cmp.Pdelta),double(Pdelta),'relative',1e-3);
+%assertEqual(This, cmp.C, C, 'relTol', 0.1) ;
 
+fNames = fields(cmp.delta) ;
+for ii = 1 : numel(fNames)
+    actual = delta.(fNames{ii}) ;
+    expected = cmp.delta.(fNames{ii}) ;
+    assertEqual(This, actual, expected, 'relTol', 1e-2) ;
+end
+assertEqual(This, double(cmp.Pdelta), double(Pdelta), 'relTol', 1e-3) ;
+
+%{
 if license('test','distrib_computing_toolbox') 
     % test prefetching
     if matlabpool('size')<2
@@ -181,32 +200,6 @@ if license('test','distrib_computing_toolbox')
     assertElementsAlmostEqual(logpostP,logpostS);
     assertElementsAlmostEqual(arP,arS);
 end
-end
-
-function obj=doSsSolve(obj)
-obj.alpha = 1.03^(1/4);
-obj.beta = 0.985^(1/4);
-obj.gamma = 0.60;
-obj.delta = 0.03;
-obj.pi = 1.025^(1/4);
-obj.eta = 6;
-obj.k = 10;
-obj.psi = 0.25;
-obj.chi = 0.85;
-obj.xiw = 60;
-obj.xip = 300;
-obj.rhoa = 0.90;
-obj.rhor = 0.85;
-obj.kappap = 3.5;
-obj.kappan = 0;
-obj.Short_ = 0;
-obj.Infl_ = 0;
-obj.Growth_ = 0;
-obj.Wage_ = 0;
-obj.std_Mp = 0;
-obj.std_Mw = 0;
-obj.std_Ea = 0.001;
-
-obj = sstate(obj,'growth=',true,'blocks=',true,'display=','off');
-end
 %}
+
+end % testEstimate
