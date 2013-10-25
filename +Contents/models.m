@@ -6,6 +6,8 @@
 %
 % * [plan](plan/Contents) - Simulation plans.
 %
+% * [grouping](grouping/Contents) - Grouping objects for aggregation of contributions.
+%
 % * [systempriors](systempriors/Contents) - System priors.
 %
 % * [poster](poster/Contents) - Posterior objects and functions.
