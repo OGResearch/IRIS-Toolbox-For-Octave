@@ -1,19 +1,50 @@
-function test_nlmodel
-initTestSuite;
+function Tests = nonlinModelTest()
+
+Tests = functiontests(localfunctions) ;
+
 end
 
-function m=setup
-m=model('simple_SPBC.model');
-end
 
-function test_get(obj)
-assertEqual({'Ey'    'Ep'    'Ea'    'Er'    'Ew'},get(obj,'exList'));
-assertEqual({'Short'    'Infl'    'Growth'    'Wage'},get(obj,'yVector'));
-assertEqual({'Mp'    'Mw'},get(obj,'eyList'));
-plist={'alpha' 'beta' 'gamma' 'delta' 'k' 'pi' 'eta' 'psi' 'chi' 'xiw' 'xip' 'rhoa' 'rhor' 'kappap' 'kappan' 'Short_' 'Infl_' 'Growth_' 'Wage_' 'std_Mp' 'std_Mw' 'std_Ey' 'std_Ep' 'std_Ea' 'std_Er' 'std_Ew'}';
-assertEqual(plist,fields(get(obj,'params')));
-end
+%**************************************************************************
+function setupOnce(This) %#ok<*DEFNU>
 
+m = model('simple_SPBC.model') ;
+This.TestData.model = m ;
+
+end % setupOnce()
+
+
+%**************************************************************************
+function testGet(This)
+
+m = This.TestData.model ;
+
+actual = get(m, 'exList') ;
+expected = {'Ey', 'Ep', 'Ea', 'Er', 'Ew'} ;
+assertEqual(This, actual, expected) ;
+
+actual = get(m, 'yList');
+expected = {'Short', 'Infl', 'Growth', 'Wage'} ;
+assertEqual(This, actual, expected) ;
+
+actual = get(m, 'eyList');
+expected = {'Mp', 'Mw'};
+assertEqual(This, actual, expected) ;
+
+actual = get(m, 'pList') ;
+expected = {'alpha', 'beta', 'gamma', 'delta', 'k', 'pi', 'eta', 'psi', ...
+    'chi', 'xiw', 'xip', 'rhoa', 'rhor', 'kappap', 'kappan', 'Short_', ...
+    'Infl_', 'Growth_', 'Wage_'} ;
+assertEqual(This, actual, expected) ;
+
+actual = get(m,'stdList') ;
+expected = {'std_Mp', 'std_Mw', 'std_Ey', 'std_Ep', 'std_Ea', 'std_Er', ...
+    'std_Ew'} ;
+assertEqual(This, actual, expected) ;
+
+end % testGet()
+
+%{
 function test_isname(obj)
 assertEqual(isname(obj,'alpha'),true);
 assertEqual(isname(obj,'alph'),false);
@@ -123,3 +154,4 @@ obj.std_Ea = 0.001;
 
 obj = sstate(obj,'growth=',true,'blocks=',true,'display=','off');
 end
+%}
