@@ -88,13 +88,10 @@ end
                 case 'Y'
                     c = contYList;
             end
-            if Log(pos)
-                sign = '*';
-            else
-                sign = '+';
-            end
-            replace = [name{pos},' <--[',sign','] $0'];
-            c = regexprep(c,'.*',replace,'once');
+            
+            % Create comment string.
+            rpl = utils.concomment(name{pos},'$0',Log(pos));
+            c = regexprep(c,'.*',rpl,'once');
         end
         D.(jName).Comment = c;
     end % doComments().

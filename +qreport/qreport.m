@@ -48,7 +48,9 @@ end
 
 end
 
+
 % Subfunctions.
+
 
 %**************************************************************************
 function Q = xxInp2Struct(Inp,Opt)
@@ -64,8 +66,8 @@ if ischar(Inp)
         'removeComments=',{{'%{','%}'},'(?<!\\)%'}, ...
         'clone=',Opt.clone);
 
-    % Put labels back into the code.
-    c = preparser.labelsback(p.code,p.labels);
+    % Put labels back in the code, including the quotes.
+    c = restore(p.code,p.labels);
     
     % Replace escaped % signs.
     c = strrep(c,'\%','%');
@@ -75,9 +77,10 @@ if ischar(Inp)
 else
     c = Inp;
     if ~isempty(Opt.clone)
-        [c,labels] = preparser.protectlabels(c);
+        labels = fragileobj(c);
+        [c,labels] = protectquotes(c,labels);
         c = preparser.myclone(c,Opt.clone);
-        c = preparser.labelsback(c,labels);
+        c = restore(c,labels);
     end
 end
 
@@ -117,7 +120,8 @@ end
         end
     end
 
-end % xxInp2Struct().
+end % xxInp2Struct()
+
 
 %**************************************************************************
 function [Inp,S] = xxGetNext(Inp,Opt)
@@ -189,26 +193,34 @@ if doTransform && ~strcmp(S.tag,'!++')
     S.transform = Opt.transform;
 end
 
-end % xxGetNext().
+end % xxGetNext()
+
 
 %**************************************************************************
 function [Eval,Leg] = xxReadBody(C)
+
 C = strtrim(C);
 C = strfun.strrepoutside(C,',',sprintf('\n'),'()','[]','{}');
 C = strfun.strrepoutside(C,' & ',sprintf('\n'),'()','[]','{}');
 lines = regexp(C,'[^\n]*','match');
 [Eval,Leg] = preparser.labeledexpr(lines);
-end % xxReadBody().
+
+end % xxReadBody()
+
+
 
 %**************************************************************************
 function Q = xxResolveAutoSubplot(Q)
+
 nFig = length(Q);
 for i = 1 : nFig
     if strcmp(Q{i}.subplot,'auto')
         Q{i}.subplot = utils.autosubplot(length(Q{i}.children));
     end
 end
-end % xxResolveAutoSubplot().
+
+end % xxResolveAutoSubplot()
+
 
 %**************************************************************************
 function Q = xxEvalExpr(Q,D,Opt)
@@ -246,7 +258,8 @@ end
         end
     end
 
-end % xxEvalExpr().
+end % xxEvalExpr()
+
 
 %**************************************************************************
 function Q = xxEmptyTitles(Q,Opt)
@@ -277,8 +290,8 @@ for i = 1 : length(Q)
     end
 end
 
-end
-% xxEmptyTitles().
+end % xxEmptyTitles()
+
 
 %**************************************************************************
 function [FF,AA,PlotDb,FTit] = xxRender(Q,Range,Opt,varargin)
@@ -405,8 +418,8 @@ end
         set(aa,'activePositionProperty','position');
     end % doNewPanel().
 
-end
-% xxRender().
+end % xxRender()
+
 
 %**************************************************************************
 function [Range,Data] = xxPlot(Tag,AA,Range,X,Leg,Opt,varargin)
@@ -491,7 +504,8 @@ if ~isempty(Opt.vline)
     grfun.vline(AA,Opt.vline);
 end
 
-end % xxPlot().
+end % xxPlot()
+
 
 %**************************************************************************
 function xxPostMortem(FF,AA,PlotDb,FTit,Opt) %#ok<INUSL>
@@ -529,7 +543,8 @@ if Opt.drawnow
     drawnow();
 end
 
-end % xxPostMortem().
+end % xxPostMortem()
+
 
 %**************************************************************************
 function xxPageNumber(FF)
@@ -542,7 +557,8 @@ for f = FF(:).'
     grfun.ftitle({'','',sprintf('%g/%g',count,nPage)});
 end
 
-end % xxPageNumber().
+end % xxPageNumber()
+
 
 %**************************************************************************
 function xxSaveAs(FF,PLOTDB,Opt)
@@ -567,7 +583,8 @@ if any(strcmpi(Opt.saveasformat,{'.pdf'}))
     delete(psfile);
 end
 
-end % xxSaveAs().
+end % xxSaveAs()
+
 
 %**************************************************************************
 function Opt = xxPlotFunc(Opt)
@@ -593,7 +610,8 @@ switch char(Opt.plotfunc)
         Opt.plotfunc = '!--';
 end
 
-end % xxPlotFunc().
+end % xxPlotFunc()
+
 
 %**************************************************************************
 function Tit = xxGetTitle(TitleOpt,X)
@@ -620,4 +638,4 @@ else
     Tit = invalid;
 end
 
-end % xxGetTitle().
+end % xxGetTitle()

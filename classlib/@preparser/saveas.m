@@ -28,7 +28,7 @@ function C = saveas(P,FName)
 
 % Substitute quoted strings back for the #(...) marks before
 % saving the pre-parsed file.
-C = preparser.labelsback(P.code,P.labels);
+C = restore(P.code,P.labels);
 
 if exist('FName','var') && ~isempty(FName)
     char2file(C,FName);

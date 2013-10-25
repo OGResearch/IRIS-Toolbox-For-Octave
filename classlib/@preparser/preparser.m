@@ -11,7 +11,7 @@ classdef preparser < userdataobj
         assign = struct();
         fname = '';
         code = '';
-        labels = {};
+        labels = fragileobj();
         Export = {};
         subs = struct();
     end
@@ -58,10 +58,9 @@ classdef preparser < userdataobj
             end
             This.assign = opt.assign;
             % Read the code files and resolve preparser commands.
-            [This.code,This.labels,This.Export, ...
-                This.subs,This.Comment] = ...
+            [This.code,This.labels,This.Export,This.subs,This.Comment] = ...
                 preparser.readcode(inputFiles, ...
-                opt.assign,{},{},'',opt);
+                opt.assign,This.labels,{},'',opt);
             % Create a clone of the preparsed code.
             if ~isempty(opt.clone)
                 This.code = preparser.myclone(This.code,opt.clone);

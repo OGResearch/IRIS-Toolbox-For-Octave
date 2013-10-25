@@ -12,10 +12,6 @@ if isempty(Params)
     Params = struct([]);
 end
 
-if isempty(Labels)
-    Labels = {};
-end
-
 if isempty(Export)
     Export = struct('filename',{},'content',{});
 end
@@ -64,17 +60,6 @@ if ~isempty(tokens)
     Comment = strtrim(tokens{1});
 end
 
-% Read quoted strings 'xxx' and "xxx" and replace them with #(00).
-% The quoted strings must be contained at one line.
-[Code,Labels] = preparser.protectlabels(Code,Labels);
-
-% Remove standard line and block comments.
-Code = strfun.removecomments(Code,Opt.removecomments{:});
-
-% Remove triple exclamation point !!!.
-% This mark is meant to be used to highlight some bits of the code.
-Code = strrep(Code,'!!!','');
-
 % Characters beyond char(highcharcode) not allowed except comments.
 % Default is 1999.
 charCap = irisget('highcharcode');
@@ -82,6 +67,21 @@ if any(Code > char(charCap))
     utils.error('preparser',[errorParsing, ...
         'The file contains characters beyond char(%g).'],charCap);
 end
+
+% Read quoted strings 'xxx' and "xxx" and replace them with charcodes.
+% The quoted strings must not stretch across mutliple lines.
+if isnan(Labels)
+    % Initialise the fragileobj object.
+    Labels = fragileobj(Code);
+end
+[Code,Labels] = protectquotes(Code,Labels);
+
+% Remove standard line and block comments.
+Code = strfun.removecomments(Code,Opt.removecomments{:});
+
+% Remove triple exclamation point !!!.
+% This mark is meant to be used to highlight some bits of the code.
+Code = strrep(Code,'!!!','');
 
 % Replace @keywords with !keywords. This is for backward compatibility
 % only.
@@ -109,8 +109,7 @@ Code = [Code,sprintf('\n')];
 % Import external files
 %-----------------------
 
-[Code,Labels,Export] = xxImport(Code, ...
-    Params,Labels,Export,fileStr,Opt);
+[Code,Labels,Export] = xxImport(Code,Params,Labels,Export,fileStr,Opt);
 
 % Expand pseudofunctions
 %------------------------
@@ -198,7 +197,7 @@ if iscell(C)
 end
 
 %C = xxLabelsBack(C,Labels);
-C = preparser.labelsback(C,Labels);
+C = restore(C,Labels,'''%s''');
 C = regexprep(C,'\s+',' ');
 C = strtrim(C);
 C = strfun.maxdisp(C,40);

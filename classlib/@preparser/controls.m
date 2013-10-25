@@ -73,7 +73,7 @@ end
 
 if ~isempty(warn)
     warn = strtrim(warn);
-    warn = preparser.labelsback(warn,Labels);
+    warn = restore(warn,Labels);
     utils.warning('preparser', ...
         ['Cannot properly evaluate this ', ...
         'control command condition: ''%s''.'], ...
@@ -269,7 +269,7 @@ if isempty(control)
 end
 
 % Put labels back in the !for body.
-forBody = preparser.labelsback(forBody,Labels);
+forBody = restore(forBody,Labels);
 
 % List of parameters supplied through `'assign='` as `'\<a|b|c\>'`
 plist = fieldnames(D);
@@ -353,15 +353,22 @@ for i = 1 : nList
     
     % Handle standard syntax here.
     C = doSubsForControl(C,control,list{i});
-
+    
     % Made the substitutions for the control variable in labels.
-    lab = regexp(C,'#\(\d+\)','match');
-    for j = 1 : length(lab)
-        pos = sscanf(lab{j},'#(%g)');
-        newPos = length(Labels) + 1;
-        newLab = sprintf('#(%g)',newPos);
-        Labels{newPos} = doSubsForControl(Labels{pos},control,list{i});
-        C = strrep(C,lab{j},newLab);
+    ptn = ['[',regexppattern(Labels),']']; 
+    % List of charcodes that actually occur in the `for` body.
+    occur = regexp(C,ptn,'match');
+    % The list of occurences is a cellstr of single characters; convert to
+    % char vector.
+    for k = [occur{:}]
+        % Position of the charcode `k` in the storage.
+        pos = position(Labels,k);
+        % Copy the `pos`-th entry at the end.
+        [Labels,newPos,newK] = copytoend(Labels,pos);
+        % Create new entry in the storage.
+        Labels.storage{newPos} ...
+            = doSubsForControl(Labels.storage{newPos},control,list{i});
+        C = strrep(C,k,char(newK));
     end
     
     C = strfun.removeltel(C);
@@ -369,7 +376,7 @@ for i = 1 : nList
 end
 
 if isObsolete
-    doBody = preparser.labelsback(doBody,Labels);
+    doBody = restore(doBody,Labels);
     utils.warning('obsolete', ...
         ['The syntax for lower/upper case of a !for control variable ', ...
         'in the following piece of code is obsolete, and will be removed ', ...
@@ -482,7 +489,7 @@ if ~isfield(S,'ExportName') || isempty(S.ExportName) ...
     return
 end
 
-S.ExportBody = preparser.labelsback(S.ExportBody,Labels);
+S.ExportBody = restore(S.ExportBody,Labels);
 
 Export(end+1).filename = S.ExportName;
 Export(end).content = S.ExportBody;
@@ -587,9 +594,7 @@ Exp = strrep(Exp,'?.','D.');
 
 % Put labels back because some of them can be strings in !if or !switch
 % expressions.
-if ~isempty(Labels)
-    Exp = preparser.labelsback(Exp,Labels);
-end
+Exp = restore(Exp,Labels);
 
 % Evaluate the expression.
 try
@@ -611,7 +616,7 @@ if iscell(C)
     end
     return
 end
-C = preparser.labelsback(C,Labels);
+C = restore(C,Labels);
 C = regexprep(C,'\s+',' ');
 C = strtrim(C);
 C = strfun.maxdisp(C,40);

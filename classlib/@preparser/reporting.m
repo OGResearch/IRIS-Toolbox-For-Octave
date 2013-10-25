@@ -22,12 +22,14 @@ if isempty(P.code)
     return
 end
 
-% Match #(xx) x = ...|...;
-tok = regexp(P.code,...
-    '(?<label>#\(\d+\))?\s*(?<lhs>\w+)\s*=\s*(?<rhs>.*?)\s*(?<nan>\|.*?)?;',...
-    'names');
+% Match charcode x = ...|...;
+ptn = ['[',regexppattern(P.labels),']'];
+ptn = ['(?<label>[',ptn,'])?', ...
+    '\s*(?<lhs>\w+)\s*=\s*(?<rhs>.*?)\s*(?<nan>\|.*?)?;',];
+tok = regexp(P.code,ptn,'names');
 
-This.label = preparser.labelsback({tok(:).label},P.labels,'%s');
+This.label = {tok(:).label};
+This.label = restore(This.label,P.labels,'delimiter=',false);
 This.lhs = {tok(:).lhs};
 This.rhs = {tok(:).rhs};
 This.nan = {tok(:).nan};

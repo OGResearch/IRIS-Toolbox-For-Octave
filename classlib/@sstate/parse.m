@@ -32,19 +32,18 @@ code = multipleSyntax_(code);
 % The template can be either a simpel string using a ? to refer to the
 % corresponding variable, e.g. d?, or a Matlab expression in square
 % brackets, e.g. ['d',lower(?)].
-tokens = regexp(code,'!growthname\s*:=\s*([^;]+);','tokens','once');
-if ~isempty(tokens) && ~isempty(tokens{1})
-    s.growthnames = strtrim(tokens{1});
+tmpCode = restore(p.code,p.labels);
+tkn = regexp(tmpCode,'!growthname\s*:=\s*([^;]+);','tokens','once');
+if ~isempty(tkn) && ~isempty(tkn{1})
+    s.growthnames = strtrim(tkn{1});
 else
     s.growthnames = 'd?';
 end
 
 % Create a function handle for Matlab expressions.
 if s.growthnames(1) == '[' && s.growthnames(end) == ']'
-    tempString = s.growthnames;
-    tempString = preparser.labelsback(p.code,p.labels,tempString);
-    s.growthnames = str2func( ...
-        ['@(x) ',strrep(tempString,'?','x')]);
+    s.growthnames = strrep(s.growthnames,'?','x');
+    s.growthnames = str2func(['@(x) ',s.growthnames]);
 end
 
 % Read-in log declarations and remove them from `code`. They are considered
@@ -60,10 +59,11 @@ end
 
 % Combine and process input blocks.
 inputblock = '';
-replace = @replaceInput_;
+replace = @replaceInput_; %#ok<NASGU>
 code = regexprep(code,'!input.*?(?=!equations|$)','${replace($0)}');
+
 % Throw away variable annotations.
-inputblock = regexprep(inputblock,'#\(\d+\)','');
+inputblock = cleanup(inputblock,p.labels);
 input = uniquelist_(inputblock);
 
 % @ *******************************************************************
@@ -76,20 +76,22 @@ input = uniquelist_(inputblock);
 % @ replaceInput_().
 
 % Read equation blocks.
-tokens = regexp(code, ...
-    '(!equations)\s*(#\(\d+\))?\s*(.*?)\s*(?=!equations|$)','tokens');
-nblock = numel(tokens);
-block = cell([1,nblock]);
-for i = 1 : nblock
-    s.label{i} = preparser.labelsback(p.code,tokens{i}{2},'%s');
+ptn = regexppattern(p.labels);
+ptn = ['!equations\s*(',ptn,')?\s*(.*?)\s*(?=!equations|$)'];
+tkn = regexp(code,ptn,'tokens');
+
+nBlock = numel(tkn);
+block = cell(1,nBlock);
+for i = 1 : nBlock
+    s.label{i} = restore(tkn{i}{1},p.labels,'delimiter=',false);
     s.label{i} = strtrim(s.label{i});
-    block{i} = tokens{i}{3};
+    block{i} = tkn{i}{2};
 end
 
 % Process equation blocks.
 % Read equations, variables, log variables, and methods.
-s.solvefor = cell([1,nblock]);
-for i = 1 : nblock
+s.solvefor = cell([1,nBlock]);
+for i = 1 : nBlock
     % Check for !symbolic.
     [tmpsymbolic,block{i}] = strfun.findremove(block{i},'!symbolic');
     % Check for !growthname2imag.
@@ -147,8 +149,8 @@ end
 % Remove empty blocks.
 invalid = {};
 multiple = {};
-emptyblock = false([1,nblock]);
-for i = 1 : nblock
+emptyblock = false([1,nBlock]);
+for i = 1 : nBlock
     if strcmp(s.type{i},'growthnames2imag')
         % Growthnames-to-imag blocks are always empty.
         continue
@@ -162,7 +164,7 @@ for i = 1 : nblock
         continue
     end
     tmpsolvefor = s.solvefor{i};
-    [ans,index] = unique(tmpsolvefor);
+    [~,index] = unique(tmpsolvefor);
     if length(tmpsolvefor) ~= length(index)
         tmpsolvefor(index) = [];
         for j = 1 : numel(tmpsolvefor)
@@ -198,12 +200,12 @@ if any(emptyblock)
     s.input(emptyblock) = [];
     s.eqtn(emptyblock) = [];
     s.solvefor(emptyblock) = [];
-    nblock = numel(s.type);
+    nBlock = numel(s.type);
 end
 
 % Check for presence of Symbolic Math Tbx reserved words.
 reserved = {};
-for i = 1 : nblock
+for i = 1 : nBlock
     if strcmp(s.type{i},'symbolic')
         list = sstate.chkreserved(s.eqtn{i},s.solvefor{i});
         if ~isempty(list)
@@ -258,7 +260,7 @@ end
 
 replacetimefunc = @replacetime; %#ok<NASGU>
 invalidtime = {};
-for i = 1 : nblock
+for i = 1 : nBlock
     % s.growth{i} = {};
     s.eqtn{i} = regexprep(s.eqtn{i}, ...
         '(\<[a-zA-Z]\w*\>)\{(.*?)\}','${replacetimefunc($1,$2)}');

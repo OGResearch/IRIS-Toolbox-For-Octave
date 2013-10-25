@@ -71,18 +71,27 @@ end
 % Evaluate values assigned in the model code and/or in the `assign`
 % database. Evaluate parameters first so that they are available for
 % steady-state expressions.
+
+    function C = doReplaceNameValue(C)
+        if any(strcmpi(C,{'Inf','Nan'}))
+            return
+        end
+        C = ['Assign.',C];
+    end
+
 nameValue = strtrim(nameValue);
-nameValue = regexprep(nameValue,'(\<[A-Za-z]\w*\>)(?![\(\.])', ...
-    '${utils.iff(any(strcmpi($1,{''Inf'',''NaN''})),$1,[''Assign.'',$1])}');
+ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
+rplFunc = @doReplaceNameValue; %#ok<NASGU>
+nameValue = regexprep(nameValue,ptn,'${rplFunc(C1)}');
 if isstruct(Assign) && ~isempty(Assign)
-    donoteval = fieldnames(Assign);
+    doNotEvalList = fieldnames(Assign);
 else
-    donoteval = {};
+    doNotEvalList = {};
 end
 for iType = 5 : -1 : 1
     % Assign a value from declaration only if not in the input database.
     for j = find(nameType == iType)
-        if isempty(nameValue{j}) || any(strcmp(name{j},donoteval))
+        if isempty(nameValue{j}) || any(strcmp(name{j},doNotEvalList))
             continue
         end
         try
@@ -282,8 +291,8 @@ end
 % Process equations
 %-------------------
 
-% Remove label marks #(xx) from equations.
-This.eqtn = regexprep(This.eqtn,'^\s*#\(\d+\)\s*','');
+% Delete charcode from equations.
+This.eqtn = cleanup(This.eqtn,P.labels);
 
 % Remove ! from math functions.
 % This is for bkw compatibility only.
