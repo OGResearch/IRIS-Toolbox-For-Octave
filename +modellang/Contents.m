@@ -106,19 +106,16 @@
 %
 % In your own m-file functions, you can also (optionally) supply the first
 % derivatives that will be used to compute Taylor expansions when the model
-% is being solved, and also the second derivatives that will be used when
-% the function occurs in a loss function. Functions in which you wish to
-% use your own derivative must be listed in a
-% [`!userdiff`](modellang/userdiff) section in the model file.
+% is being solved, and the second derivatives that will be used when
+% the function occurs in a loss function.
 %
-% Furthermore, the function itself must comply with the following
-% requirements. When asked for the derivatives, the function is called with
-% two extra input arguments on top of that function's regular input
-% arguments. The first extra input argument is a text string `'diff'`
-% (indicating the call to the function is supposed to return a derivative).
-% The second extra input argument is a number or a vector of two numbers;
-% it determines with respect to which input argument or arguments the first
-% derivative or the second derivative is requested.
+% When asked for the derivatives, the function is called with two extra
+% input arguments on top of that function's regular input arguments. The
+% first extra input argument is a text string `'diff'` (indicating the call
+% to the function is supposed to return a derivative). The second extra
+% input argument is a number or a vector of two numbers; it determines with
+% respect to which input argument or arguments the first derivative or the
+% second derivative is requested.
 %
 % For instance, your function takes three input arguments, `myfunc(x,y,z)`.
 % To be able to supply derivates avoiding thus numerical differentiation,
