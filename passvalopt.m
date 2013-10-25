@@ -22,6 +22,7 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.dest = irisopt.dest();
     DEF.estimateobj = irisopt.estimateobj();
     DEF.FAVAR = irisopt.FAVAR();
+    DEF.fragileobj = irisopt.fragileobj();
     DEF.freqdom = irisopt.freqdom();
     DEF.grfun = irisopt.grfun();
     DEF.iris = irisopt.IRIS();
