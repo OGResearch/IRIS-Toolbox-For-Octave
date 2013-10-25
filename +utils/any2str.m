@@ -1,5 +1,5 @@
-function c = any2str(x,prec)
-% ANY2STR  [Not a public function] Convert various types of complex data into a Matlab syntax string.
+function C = any2str(X,Prec)
+% any2str  [Not a public function] Convert various types of complex data into a Matlab syntax string.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,22 +7,24 @@ function c = any2str(x,prec)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-if ~exist('prec','var')
-    prec = 15;
+try
+    Prec; %#ok<VUNUS>
+catch
+    Prec = 15;
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if isnumeric(x) || ischar(x) || islogical(x)
-    c = xxnumeric(x,prec);
-elseif iscell(x)
-    c = xxcell(x,prec);
-elseif isstruct(x)
-    c = xxstruct(x,prec);
+if isnumeric(X) || ischar(X) || islogical(X)
+    C = xxNumeric(X,Prec);
+elseif iscell(X)
+    C = xxCell(X,Prec);
+elseif isstruct(X)
+    C = xxStruct(X,Prec);
 else
     utils.error('utils', ...
         'ANY2STR cannot currently handle this type of data: %s.', ...
-        class(x));
+        class(X));
 end    
 
 end
@@ -30,97 +32,94 @@ end
 % Subfuntions.
 
 %**************************************************************************
-function c = xxnumeric(x,prec)
+function C = xxNumeric(X,Prec)
 
-nd = ndims(x);
+nd = ndims(X);
 
 if nd == 2
-    c = mat2str(x,prec);
+    C = mat2str(X,Prec);
 else
     ref = cell(1,nd);
     ref(1:nd-1) = {':'};
-    c = sprintf('cat(%g',nd);
-    for i = 1 : size(x,nd)
+    C = sprintf('cat(%g',nd);
+    for i = 1 : size(X,nd)
         ref{nd} = i;
-        c = [c,',',xxnumeric(x(ref{:}),prec)];
+        C = [C,',',xxNumeric(X(ref{:}),Prec)];
     end
-    c = [c,')'];
+    C = [C,')'];
 end
 
 end
 % xxnumeric().
 
 %**************************************************************************
-function c = xxcell(x,prec)
+function C = xxCell(X,Prec)
 
-if isempty(x)
-  s = size(x);
-  c = ['cell(',sprintf('%g',s(1)),sprintf(',%g',s(2:end)),')'];
+if isempty(X)
+  s = size(X);
+  C = ['cell(',sprintf('%g',s(1)),sprintf(',%g',s(2:end)),')'];
   return
 end
 
-nd = ndims(x);
+nd = ndims(X);
 
 if nd == 2
-    c = xxcell2d(x,prec);
+    C = xxCell2D(X,Prec);
 else
     ref = cell(1,nd);
     ref(1:nd-1) = {':'};
-    c = sprintf('cat(%g',nd);
-    for i = 1 : size(x,nd)
+    C = sprintf('cat(%g',nd);
+    for i = 1 : size(X,nd)
         ref{nd} = i;
-        c = [c,',{',xxnumeric(x{ref{:}},prec),'}'];
+        C = [C,',{',xxNumeric(X{ref{:}},Prec),'}'];
     end
-    c = [c,')'];
+    C = [C,')'];
 end
 
-end
-% xxcell().
+end % xxCell()
 
 %**************************************************************************
-function c = xxcell2d(x,prec)
+function C = xxCell2D(X,Prec)
 
-[nrow,ncol] = size(x);
+[nRow,nCol] = size(X);
 
-c = '{';
-for i = 1 : nrow
-    for j = 1 : ncol
+C = '{';
+for i = 1 : nRow
+    for j = 1 : nCol
         if j > 1
-            c = [c,','];
+            C = [C,','];
         end
-        c = [c,utils.any2str(x{i,j},prec)]; %#ok<*AGROW>
+        C = [C,utils.any2str(X{i,j},Prec)]; %#ok<*AGROW>
     end
-    if i < nrow
-        c = [c,';'];
+    if i < nRow
+        C = [C,';'];
     end
 end
-c = [c,'}'];
+C = [C,'}'];
 
-end
-% xxcel2d().
+end % xxCell2D()
 
 %**************************************************************************
-function c = xxstruct(x,prec)
+function C = xxStruct(X,Prec)
 
-len = length(x);
+len = length(X);
 if len ~= 1
     utils.error('utils', ...
         'ANY2STR cannot currently handle struct arrays.');
 end
     
-list = fieldnames(x);
-c = 'struct(';
+list = fieldnames(X);
+C = 'struct(';
 for i = 1 : length(list)
-    c1 = utils.any2str(x.(list{i}),prec);
-    if iscell(x.(list{i}))
+    c1 = utils.any2str(X.(list{i}),Prec);
+    if iscell(X.(list{i}))
         c1 = ['{',c1,'}'];
     end
     if i > 1
-        c = [c,','];
+        C = [C,','];
     end
-    c = [c,'''',list{i},''',',c1];
+    C = [C,'''',list{i},''',',c1];
 end
-c = [c,')'];
+C = [C,')'];
 
-end
-% xxstruct().
+end % xxStruct()

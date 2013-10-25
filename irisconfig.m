@@ -11,6 +11,8 @@ function Config = irisconfig()
 
 Config = struct();
 
+% Factory defaults.
+%------------------
 % Extensions associated with Matlab Editor.
 Config.extensions = {'model','s','q'};
 
@@ -43,7 +45,11 @@ Config.pdflatexpath = xxLocateFile('pdflatex',folder);
 % Highest character allowed in model codes.
 Config.highcharcode = 1999;
 
+% Empty user data.
+Config.userdata = [];
+
 % Execute the user's configuration file.
+%---------------------------------------
 if exist('irisuserconfig.m','file')
     Config = irisuserconfig(Config);
     Config.userconfigpath = which('irisuserconfig.m');
@@ -51,6 +57,8 @@ else
     Config.userconfigpath = '';
 end
 
+% Validate.
+%----------
 % Validate the required options in case the user have modified their
 % values.
 doValidateConfig();
@@ -145,7 +153,8 @@ Config.protected = { ...
             'ps2pdfpath',@ischar, ...
             'pdflatexpath',@ischar, ...
             'highcharcode',@(x) isempty(x) ...
-            || (isnumeric(x) && numel(x) == 1 && x > 255));
+            || (isnumeric(x) && numel(x) == 1 && x > 255) ...
+            );
     end % doValidateConfig().
 
 end

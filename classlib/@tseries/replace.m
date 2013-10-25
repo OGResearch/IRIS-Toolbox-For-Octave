@@ -11,7 +11,7 @@ function This = replace(This,Data,Start,Comment)
 
 This.data = Data;
 if nargin > 2
-    This.start = Start;
+    This.start = Start(1);
 end
 if nargin > 3 && (iscell(Comment) || ischar(Comment))
     if iscell(Comment)

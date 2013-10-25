@@ -44,9 +44,9 @@
 % Overloaded operators for databases
 % ===================================
 %
-% * [`-`](struct/minus) - Remove entries from a database.
-% * [`*`](struct/mtimes) - Keep only the database entries that are on the list.
-% * [`+`](struct/plus) - Merge two databases entry by entry.
+% * [`-`](dbase/dbminus) - Remove entries from a database.
+% * [`*`](dbase/dbmtimes) - Keep only the database entries that are on the list.
+% * [`+`](dbase/dbplus) - Merge entries from two databases together.
 %
 % Getting on-line help on database functions
 % ===========================================

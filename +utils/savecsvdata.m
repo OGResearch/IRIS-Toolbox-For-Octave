@@ -78,14 +78,14 @@ end
 if isHighlight
     nameRow = [{''},nameRow];
 end
-c = [c,'"Variables ->"',xxprintcharcells(nameRow)];
+c = [c,'"Variables ->"',xxPrintCharCells(nameRow)];
 
 % Write comments.
 if isCommentRow
     if isHighlight
         commentRow = [{''},commentRow];
     end
-    c = [c,br,'"Comments ->"',xxprintcharcells(commentRow)];
+    c = [c,br,'"Comments ->"',xxPrintCharCells(commentRow)];
 end
 
 % Write units.
@@ -93,7 +93,7 @@ if isUnitRow
     if isHighlight
         unitRow = [{''},unitRow];
     end
-    c = [c,br,'"Units ->"',xxprintcharcells(unitRow)];
+    c = [c,br,'"Units ->"',xxPrintCharCells(unitRow)];
 end
 
 % Write classes.
@@ -101,7 +101,7 @@ if isClassRow
     if isHighlight
         classRow = [{''},classRow];
     end
-    c = [c,br,'"Class[Size] ->"',xxprintcharcells(classRow)];
+    c = [c,br,'"Class[Size] ->"',xxPrintCharCells(classRow)];
 end
 
 % Create cellstr with date strings.
@@ -126,16 +126,16 @@ nCol = size(data,2);
 % Combine real and imag columns in an extended data matrix.
 xData = zeros(nRow,2*nCol);
 xData(:,1:2:end) = real(data);
-idata = imag(data);
-xData(:,2:2:end) = idata;
+iData = imag(data);
+xData(:,2:2:end) = iData;
 
 % Find imag columns and create positions of zero-only imag columns that
 % will be removed.
-iCol = any(idata ~= 0,1);
+iCol = any(iData ~= 0,1);
 removeCol = 2*(1 : nCol);
 removeCol(iCol) = [];
 % Check for the occurence of imaginary NaNs.
-isImagNan = any(isnan(idata(:)));
+isImagNan = any(isnan(iData(:)));
 % Remove zero-only imag columns from the extended data matrix.
 xData(:,removeCol) = [];
 % Create a sequence of formats for one line.
@@ -185,15 +185,12 @@ end
 % with a line break.
 char2file([c,cc],FName);
 
-    function s = xxprintcharcells(c)
-        
+    function s = xxPrintCharCells(c)
         s = '';
         if isempty(c) || ~iscellstr(c)
             return
         end
         s = sprintf(fstr,c{:});
-        
-    end% xxprintcharcells().
+    end% xxPrintCharCells()
 
 end
-

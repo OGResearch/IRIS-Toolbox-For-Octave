@@ -1,35 +1,44 @@
-function [index,match,tokens] = matchindex(list,pattern)
+function [Ind,Match,Tkn] = matchindex(List,Ptn)
 
-if isstruct(list)
-   list = fieldnames(list);
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2013 IRIS Solutions Team.
+
+if isstruct(List)
+   List = fieldnames(List);
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if ~iscell(list)
-   list = {list};
+if ~iscell(List)
+   List = {List};
 end
-if isempty(pattern)
-   index = false(size(list));
-   match = {};
-   tokens = {};
+
+if isempty(Ptn)
+   Ind = false(size(List));
+   Match = {};
+   Tkn = {};
    return
 end
-if pattern(1) ~= '^'
-   pattern = ['^',pattern];
-end
-if pattern(end) ~= '$'
-   pattern = [pattern,'$'];
-end
-if nargout > 2
-   [match,tokens] = regexp(list,pattern,'once','match','tokens');
-else
-   match = regexp(list,pattern,'once','match');
-end
-index = ~cellfun(@isempty,match);
-match = match(index);
-if nargout > 2
-   tokens = tokens(index);
+
+if Ptn(1) ~= '^'
+   Ptn = ['^',Ptn];
 end
 
-end
+if Ptn(end) ~= '$'
+   Ptn = [Ptn,'$'];
+end
+
+if nargout > 2
+   [Match,Tkn] = regexp(List,Ptn,'once','match','tokens');
+else
+   Match = regexp(List,Ptn,'once','match');
+end
+
+Ind = ~cellfun(@isempty,Match);
+Match = Match(Ind);
+
+if nargout > 2
+   Tkn = Tkn(Ind);
+end
+
+end

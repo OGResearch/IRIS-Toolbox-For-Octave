@@ -1,36 +1,5 @@
 function This = minus(This,List)
-% minus  Remove entries from a database.
-%
-% Syntax
-% =======
-%
-%     D = D - Remove
-%
-% Input arguments
-% ================
-%
-% * `D` [ struct ] - Input database from which some entries will be
-% removed.
-%
-% * `Remove` [ char | cellstr ] - List of entries that will be removed from
-% `D`.
-%
-% Output arguments
-% =================
-%
-% * `D` [ struct ] - Output database with entries listed in `Remove`
-% removed from it.
-%
-% Description
-% ============
-%
-% This functio works the same way as the built-in function `rmfield` except
-% it does not throw an error when some of the entries listed in `Remove`
-% are not found in `D`.
-%
-% Example
-% ========
-%
+% See help on dbase/dbminus.
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.

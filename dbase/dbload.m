@@ -70,7 +70,7 @@ function D = dbload(varargin)
 % (case insensitive).
 %
 % * `'preProcess='` [ function_handle | cell | empty ] - Apply this
-% function, or cell array of fucnctions, to the raw text file before
+% function, or cell array of functions, to the raw text file before
 % parsing the data.
 %
 % * `'skipRows='` [ char | cellstr | numeric | *empty* ] - Skip rows whose
@@ -156,8 +156,8 @@ function D = dbload(varargin)
 % Example 1
 % ==========
 %
-% Typical example of using the `'freq='` option is a quarterly database with
-% dates represented by the corresponding months, such as a sequence
+% Typical example of using the `'freq='` option is a quarterly database
+% with dates represented by the corresponding months, such as a sequence
 % 2000-01-01, 2000-04-01, 2000-07-01, 2000-10-01, etc. In this case, you
 % can use the following options:
 %
@@ -199,7 +199,7 @@ doOptions();
 
 %--------------------------------------------------------------------------
 
-% Read the CSV file;
+% Read the CSV file.
 file = xxReadFile(fName);
 
 % Apply user-supplied function(s) to pre-process the raw text file.
@@ -240,8 +240,8 @@ end
 %-----------------------------------
 dates = [];
 data = [];
+miss = [];
 nanDate = [];
-missing = [];
 dateCol = {};
 if ~isempty(file)
     doReadNumericData();
@@ -330,14 +330,14 @@ doPopulateDatabase();
         if ~isempty(opt.convert) && isnumericscalar(opt.convert)
             opt.convert = {opt.convert};
         end
-    end % dooptions().
+    end % doOptions().
 
 %**************************************************************************
     function doReadHeaders()
         strFindFunc = @(x,y) ~isempty(strfind(lower(x),y));
         isDate = false;
         isNameDone = false;
-        isLegacyWarning = false;
+        isLegacyWarn = false;
         ident = '';
         rowCount = 0;
         while ~isempty(file) && ~isDate
@@ -412,12 +412,12 @@ doPopulateDatabase();
                 class = tokens(2:end);
                 action = 'class';
             elseif strFindFunc(ident,'class')
-                if ~isLegacyWarning
+                if ~isLegacyWarn
                     utils.warning('data', ...
                         ['This seems to be a legacy CSV file ', ...
                         'created in an older version of IRIS. ', ...
                         'The database may not load correctly.']);
-                    isLegacyWarning = true;
+                    isLegacyWarn = true;
                 end
                 action = 'class';
             elseif any(strcmpi(ident,opt.commentrow))
@@ -466,15 +466,18 @@ doPopulateDatabase();
         % Read date column (first column).
         dateCol = regexp(file,'^[^,\n]*','match','lineanchors');
         dateCol = strtrim(dateCol);
+        
         % Remove leading or trailing single or double quotes.
         % Some programs save any text cells with single or double quotes.
         dateCol = regexprep(dateCol,'^["'']','');
         dateCol = regexprep(dateCol,'["'']$','');
+        
         % Replace user-supplied NaN strings with 'NaN'. The user-supplied NaN
         % strings must not contain commas.
         file = lower(file);
         file = strrep(file,' ','');
         opt.nan = strtrim(lower(opt.nan));
+        
         % When replacing user-defined NaNs, there can be in theory conflict with
         % date strings. We do not resolve this conflict because it is not very
         % likely.
@@ -483,7 +486,7 @@ doPopulateDatabase();
             file = strrep(file,'"nan"','nan');
         else
             % We cannot have multiple NaN strings because of the way `strrep` handles
-            % repeated patterns and because `strrep` is not able to detects word
+            % repeated patterns and because `strrep` is not able to detect word
             % boundaries. Handle quoted NaNs first.
             file = strrep(file,['"',opt.nan,'"'],'NaN');
 			if strcmp('.',opt.nan)
@@ -492,25 +495,39 @@ doPopulateDatabase();
 				file = strrep(file,opt.nan,'NaN');
 			end
         end
+        
         % Replace empty character cells with numeric NaNs.
         file = strrep(file,'""','NaN');
         % Replace date highlights with numeric NaNs.
         file = strrep(file,'"***"','NaN');
-        % Read numeric data.
+        % Define white spaces.
         whiteSpace = sprintf(' \b\r\t');
-        % Empty cells with be treated either as NaN or NaN+NaNi depending on the
+        
+        % Read numeric data.
+        % We need to distinguish 
+        % Empty cells will be treated either as NaN or NaN+NaNi depending on the
         % presence or absence of complex numbers in the rest of the table.
-        missing = pi()*eps();
         data = textscan(file,'',-1, ...
             'delimiter',',','whiteSpace',whiteSpace, ...
-            'headerLines',0,'headerColumns',1,'emptyValue',missing, ...
+            'headerLines',0,'headerColumns',1,'emptyValue',-Inf, ...
             'commentStyle','matlab','collectOutput',true);
         if isempty(data)
             utils.error('dbase', ...
                 ['Incorrect data format or no ', ...
                 'delimiter-separated data found.']);
         end
-        data = data{1};        
+        data = data{1};
+        miss = false(size(data));
+        isMaybeMissing = real(data) == -Inf;
+        if any(isMaybeMissing(:))
+            data1 = textscan(file,'',-1, ...
+                'delimiter',',','whiteSpace',whiteSpace, ...
+                'headerLines',0,'headerColumns',1,'emptyValue',NaN, ...
+                'commentStyle','matlab','collectOutput',true);
+            data1 = data1{1};
+            isMaybeMissing1 = isnan(real(data1));
+            miss(isMaybeMissing & isMaybeMissing1) = true;
+        end
     end % doReadNumericData().
 
 %**************************************************************************
@@ -561,11 +578,11 @@ doPopulateDatabase();
         seriesUserdataList = fieldnames(seriesUserdata);
         nSeriesUserdata = length(seriesUserdataList);
         while count < nName
-            thisName = name{count+1};
+            iName = name{count+1};
             if nSeriesUserdata > 0
                 doSeriesUserdata();
             end
-            if isempty(thisName)
+            if isempty(iName)
                 % Skip columns with empty names.
                 count = count + 1;
                 continue
@@ -573,16 +590,16 @@ doPopulateDatabase();
             tokens = regexp(class{count+1}, ...
                 '^(\w+)(\[.*\])?','tokens','once');
             if isempty(tokens)
-                thisClass = '';
+                iClass = '';
                 tmpSize = [];
             else
-                thisClass = lower(tokens{1});
+                iClass = lower(tokens{1});
                 tmpSize = xxGetSize(tokens{2});
             end
-            if isempty(thisClass)
-                thisClass = 'tseries';
+            if isempty(iClass)
+                iClass = 'tseries';
             end
-            if strcmp(thisClass,'tseries')
+            if strcmp(iClass,'tseries')
                 % Tseries data.
                 if isempty(tmpSize)
                     tmpSize = [Inf,1];
@@ -594,43 +611,46 @@ doPopulateDatabase();
                     else
                         unit = 1 + 1i;
                     end
-                    thisData = nan(nPer,nCol)*unit;
-                    thisData(dateInx,:) = data(~nanDate,count+(1:nCol));
-                    thisData(thisData == missing) = NaN*unit;
-                    thisData = reshape(thisData,nPer,tmpSize(2:end));
+                    iData = nan(nPer,nCol)*unit;
+                    iMiss = false(nPer,nCol);
+                    iData(dateInx,:) = data(~nanDate,count+(1:nCol));
+                    iMiss(dateInx,:) = miss(~nanDate,count+(1:nCol));
+                    iData(iMiss) = NaN*unit;
+                    iData = reshape(iData,nPer,tmpSize(2:end));
                     thisComment = reshape(comment(count+(1:nCol)),1,tmpSize(2:end));
                     % d.(thisName) = tseries(dates,thisData,thisComment);
-                    D.(thisName) = template;
-                    D.(thisName).start = minDate;
-                    D.(thisName).data = thisData;
-                    D.(thisName).Comment = thisComment;
-                    D.(thisName) = mytrim(D.(thisName));
+                    D.(iName) = template;
+                    D.(iName).start = minDate;
+                    D.(iName).data = iData;
+                    D.(iName).Comment = thisComment;
+                    D.(iName) = mytrim(D.(iName));
                 else
                     % Create an empty tseries object with proper 2nd and higher
                     % dimensions.
-                    D.(thisName) = template;
-                    D.(thisName).start = NaN;
-                    D.(thisName).data = zeros(0,tmpSize(2:end));
-                    D.(thisName).Comment = cell(1,tmpSize(2:end));
-                    D.(thisName).Comment(:) = {''};
+                    D.(iName) = template;
+                    D.(iName).start = NaN;
+                    D.(iName).data = zeros(0,tmpSize(2:end));
+                    D.(iName).Comment = cell(1,tmpSize(2:end));
+                    D.(iName).Comment(:) = {''};
                 end
                 if nSeriesUserdata > 0
-                    D.(thisName) = userdata(D.(thisName),thisUserData);
+                    D.(iName) = userdata(D.(iName),thisUserData);
                 end
                 % Convert the series to requested frequency if it isn't it yet.
                 if ~isempty(opt.convert) ...
-                        && ~isnan(D.(thisName).start) ...
-                        && datfreq(D.(thisName).start) ~= opt.convert{1}
-                    D.(thisName) = convert(D.(thisName),opt.convert{:});
+                        && ~isnan(D.(iName).start) ...
+                        && datfreq(D.(iName).start) ~= opt.convert{1}
+                    D.(iName) = convert(D.(iName),opt.convert{:});
                 end
             elseif ~isempty(tmpSize)
                 % Numeric data.
                 nCol = prod(tmpSize(2:end));
-                thisData = reshape(data(1:tmpSize(1),count+(1:nCol)),tmpSize);
-                thisData(thisData == missing) = NaN;
+                iData = reshape(data(1:tmpSize(1),count+(1:nCol)),tmpSize);
+                iMiss = reshape(miss(1:tmpSize(1),count+(1:nCol)),tmpSize);
+                iData(iMiss) = NaN;
                 % Convert to the right numeric class.
-                f = str2func(thisClass);
-                D.(thisName) = f(thisData);
+                f = str2func(iClass);
+                D.(iName) = f(iData);
             end
             count = count + nCol;
         end

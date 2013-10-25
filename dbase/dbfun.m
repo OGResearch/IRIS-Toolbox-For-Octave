@@ -10,13 +10,13 @@ function [X,Flag,ErrList,WarnList] = dbfun(Func,D,varargin)
 % Input arguments
 % ================
 %
-% * `Func` [ function_handle | char ] - Function that will be applied to each
-% field.
+% * `Func` [ function_handle | char ] - Function that will be applied to
+% each field.
 %
-% * `D1` [ struct ] - First input database.
+% * `D1` [ struct ] - Input database.
 %
-% * `D2`, `D3`, ... [ struct ] - Second and further input databases (when
-% `Func` accepts two input arguments).
+% * `D2`, `D3`, ... [ struct ] - Further input databases when `Func`
+% accepts two input arguments.
 %
 % Output arguments
 % =================
@@ -128,15 +128,19 @@ for i = 1 : length(list)
         lastwarn('');
         X.(list{i}) = Func(argList{:});
         if ~isempty(lastwarn())
-            doOnWarning();
+            doWhenWarning();
         end
     catch %#ok<CTCH>
-        doOnError();
+        doWhenError();
     end
 end
 
+
+% Nested functions.
+
+
 %**************************************************************************
-    function doOnError()
+    function doWhenError()
         ErrList{end+1} = list{i};
         switch lower(opt.onerror)
             case 'nan'
@@ -148,10 +152,11 @@ end
                     X = rmfield(X,list{i});
                 end
         end
-    end % doOnError().
+    end % doWhenError().
+
 
 %**************************************************************************
-    function doOnWarning()      
+    function doWhenWarning()      
         WarnList{end+1} = list{i};
         utils.warning('dbase', ...
             'The above warning occured when processing database field ''%s''.', ...
@@ -168,7 +173,8 @@ end
                     X = rmfield(X,list{i});
                 end
         end
-    end % doOnWarning().
+    end % doWhenWarning().
+
 
 %**************************************************************************
     function Arglist = doGetArgList()
@@ -178,6 +184,7 @@ end
             Arglist{k+1} = varargin{k}.(list{i});
         end
     end % doGetArgList().
+
 
 %**************************************************************************
     function doOptions()        
@@ -192,5 +199,6 @@ end
             opt.fresh = ~opt.merge;
         end
     end % doOptions().
+
 
 end

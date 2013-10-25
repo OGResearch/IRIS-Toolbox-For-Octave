@@ -74,38 +74,38 @@ checkList = [ ...
     nImagDetail(1:2:end), ...
     cDetail(1:2:end)];
 maxLen = max(cellfun(@length,checkList));
-format = ['\t%-',sprintf('%g',maxLen+1),'s%s\n'];
+format = ['\t\t%-',sprintf('%g',maxLen+1),'s%s\n'];
 empty = @() fprintf('\t-\n');
 
-fprintf('Exogenised %g\n',nx);
+fprintf('\tExogenised %g\n',nx);
 if ~isempty(xDetail)
     fprintf(format,xDetail{:});
 else
     empty();
 end
 
-fprintf('Endogenised real %g\n',nnreal);
+fprintf('\tEndogenised real %g\n',nnreal);
 if ~isempty(nRealDetail)
     fprintf(format,nRealDetail{:});
 else
     empty();
 end
 
-fprintf('Endogenised imag %g\n',nnimag);
+fprintf('\tEndogenised imag %g\n',nnimag);
 if ~isempty(nImagDetail)
     fprintf(format,nImagDetail{:});
 else
     empty();
 end
 
-fprintf('Conditioned upon %g\n',nc);
+fprintf('\tConditioned upon %g\n',nc);
 if ~isempty(cDetail)
     fprintf(format,cDetail{:});
 else
     empty();
 end
 
-fprintf('Non-linearised %g\n',nq);
+fprintf('\tNon-linearised %g\n',nq);
 if ~isempty(qList)
     fprintf(format,qList{:});
 else

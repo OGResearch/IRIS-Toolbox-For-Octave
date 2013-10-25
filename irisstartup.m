@@ -128,8 +128,8 @@ end
         end
         
         % Report the X12 version integrated with IRIS.
-        fprintf('\t<a href="http://www.census.gov/srd/www/x12a/">X12 ARIMA</a>: ');
-        fprintf('Build 192 of Version 0.3.\n');
+        fprintf('\t<a href="http://www.census.gov/srd/www/x13as/">X13 ARIMA-SEATS</a>: ');
+        fprintf('Version 1.1 Build 9.\n');
         
         % Report IRIS folders removed.
         if ~isempty(removed)

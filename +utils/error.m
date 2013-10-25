@@ -59,11 +59,12 @@ end
 
 end
 
+
 % Subfunctions.
+
 
 %**************************************************************************
 function Body = xxFrequents(Body)
-
 switch Body
     case '#Name_not_exists'
         Body = 'This name does not exist in the model object: %s.';
@@ -74,5 +75,4 @@ switch Body
     otherwise
         Body = '';
 end
-
 end % xxFrequents().

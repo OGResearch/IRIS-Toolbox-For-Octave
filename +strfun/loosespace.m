@@ -13,7 +13,7 @@ function loosespace()
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 if ~strcmp(get(0,'FormatSpacing'),'compact')
    fprintf('\n');

@@ -1,4 +1,4 @@
-function text = grabtext(startTag,endTag)
+function Text = grabtext(StartTag,EndTag)
 % grabtext  Retrieve the specified block comment from m-file caller.
 %
 % Syntax
@@ -29,9 +29,9 @@ function text = grabtext(startTag,endTag)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-text = '';
+Text = '';
 
 % Determine the name of the calling m-file.
 stack = dbstack('-completenames');
@@ -40,12 +40,16 @@ if length(stack) < 2
 end
 filename = stack(2).file;
 
-% Read the m-file and find the text between %{\nSTARTTAG and ENDTAG\n%}.
+% Read the m-file and convert all end-of-lines to \n.
 file = file2char(filename);
 file = strfun.converteols(file);
-tokens = regexp(file,['%\{\n+',startTag,'\n(.*?)\n',endTag,'\n+%\}'],'once','tokens');
-if ~isempty(tokens)
-   text = tokens{1};
+
+% Find the text between %{\nStartTag ... EndTag\n%}.
+ptn = ['%\{\n+',StartTag,'\n(.*?)\n',EndTag,'\n+%\}'];
+tkn = regexp(file,ptn,'once','tokens');
+if isempty(tkn)
+    return
 end
+Text = tkn{1};
 
 end

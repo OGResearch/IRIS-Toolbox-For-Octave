@@ -165,9 +165,9 @@ for ih = H(:).'
     setappdata(ih,'dateLine',Range);
 end
 
-% Use IRIS datatip cursor function in this figure; in
-% `utils.datacursor', we also handle cases where the current figure
-% includes both tseries and non-tseries graphs.
+% Use IRIS datatip cursor function in this figure; in `utils.datacursor',
+% we also handle cases where the current figure includes both tseries and
+% non-tseries graphs.
 obj = datacursormode(gcf());
 set(obj,'UpdateFcn',@utils.datacursor);
 

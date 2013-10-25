@@ -63,8 +63,8 @@ function varargout = x12(x,range,varargin)
 % adjustment; see help on the `x11` specs in the X12-ARIMA manual. The
 % forecast is included in the output argument `X`.
 %
-% * `'display='` [ `true` | *`false`* ] - Display X12 output messages in command
-% window; if false the messages will be saved in a TXT file.
+% * `'display='` [ `true` | *`false`* ] - Display X12 output messages in
+% command window; if false the messages will be saved in a TXT file.
 %
 % * `'dummy='` [ tseries | *empty* ] - User dummy variable or variables (in
 % case of a multivariate tseries object) used in X12-ARIMA regression; the
@@ -76,7 +76,7 @@ function varargout = x12(x,range,varargin)
 % dummy (which is specified through the option `'dummy='`); the three basic
 % types of dummies are additive outlier (`'ao'`), holiday flows
 % (`'holiday'`), and trading days (`'td'`); see the X12-ARIMA or X13-ARIMA
-% documentation for more details (available from the U.S. Census Bureau
+% documentation for more details (available from the U.S.Census Bureau
 % website), look for the section on the REGRESSION spec, options 'user' and
 % 'usertype'.
 %
@@ -232,7 +232,7 @@ if nargin < 2
 end
 range = specrange(x,range);
 
-dooutput();
+doOutput();
 
 % Forecasts and backcasts.
 if islogical(opt.arima)
@@ -255,10 +255,14 @@ co = comment(x);
 tmpsize = size(x.data);
 x.data = x.data(:,:);
 [data,range] = rangedata(x,range);
-xrange = range(1)-opt.backcast : range(end)+opt.forecast;
+
+% Extended range with backcasts and forecasts.
+xRange = range(1)-opt.backcast : range(end)+opt.forecast;
+
+% Fill in zeros for NaNs in dummy variables on the extended range.
 dummy = [];
 if ~isempty(opt.dummy) && isa(opt.dummy,'tseries')
-    dummy = rangedata(opt.dummy,xrange);
+    dummy = rangedata(opt.dummy,xRange);
     dummy = dummy(:,:);
     dummy(isnan(dummy)) = 0;
 end
@@ -267,13 +271,13 @@ if opt.log
     data = log(data);
 end
 
-output = regexp(opt.output,'[a-zA-Z]\d\d','match');
-noutput = length(output);
+outp = regexp(opt.output,'[a-zA-Z]\d\d','match');
+nOutp = length(outp);
 
-[data,varargout{1:noutput},varargout{noutput+(1:3)}] = ...
+[data,varargout{1:nOutp},varargout{nOutp+(1:3)}] = ...
     thirdparty.x12.x12(data,range(1),dummy,opt);
 
-for i = 1 : noutput
+for i = 1 : nOutp
     if opt.log
         varargout{i} = exp(varargout{i});
     end
@@ -285,25 +289,27 @@ end
 % Reshape the model spec struct to match the dimensions and size of input
 % and output tseries.
 if length(tmpsize) > 2
-    varargout{noutput+3} = ...
-        reshape(varargout{noutput+3},[1,tmpsize(2:end)]);
+    varargout{nOutp+3} = ...
+        reshape(varargout{nOutp+3},[1,tmpsize(2:end)]);
 end
 
 % Return original series with forecasts and backcasts.
-if nargout >= noutput+3
+if nargout >= nOutp+3
     x.start = x.start - opt.backcast;
     x.data = data;
     if length(tmpsize) > 2
         x.data = reshape(x.data,[size(x.data,1),tmpsize(2:end)]);
     end
     x = mytrim(x);
-    varargout{noutput+4} = x;
+    varargout{nOutp+4} = x;
 end
+
 
 % Nested functions.
 
+
 %**************************************************************************
-    function dooutput()
+    function doOutput()
         % Map aliases for output arguments to X12 codes.
         opt.output = regexp(opt.output,'\w+','match');
         map = {...
@@ -331,7 +337,7 @@ end
         for ii = 1 : 2 : length(map)
             opt.output = strrep(opt.output,map{ii},map{ii+1});
         end
-    end
-% dooutput().
+    end % doOutput()
+
 
 end

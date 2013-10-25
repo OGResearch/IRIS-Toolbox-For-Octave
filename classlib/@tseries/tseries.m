@@ -15,6 +15,7 @@ classdef tseries < userdataobj
     % * [`enddate`](tseries/enddate) - Date of the last available observation in a tseries object.
     % * [`freq`](tseries/freq) - Frequency of a tseries object.
     % * [`get`](tseries/get) - Query tseries object property.
+    % * [`isequal`](tseries/isequal) - [Not a public function] Compare two tseries objects.
     % * [`length`](tseries/length) - Length of tseries object.
     % * [`ndims`](tseries/ndims) - Number of dimensions in tseries object data.
     % * [`size`](tseries/size) - Size of tseries object data.
@@ -343,6 +344,7 @@ classdef tseries < userdataobj
         varargout = hpf2(varargin)
         varargout = interp(varargin)
         varargout = isempty(varargin)
+        varargout = isequal(varargin)
         varargout = isscalar(varargin)
         varargout = length(varargin)
         varargout = llf(varargin)
