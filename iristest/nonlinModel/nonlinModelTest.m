@@ -9,7 +9,37 @@ end
 function setupOnce(This) %#ok<*DEFNU>
 
 m = model('simple_SPBC.model') ;
+
+% Unsolved model.
 This.TestData.model = m ;
+
+m.alpha = 1.03^(1/4);
+m.beta = 0.985^(1/4);
+m.gamma = 0.60;
+m.delta = 0.03;
+m.pi = 1.025^(1/4);
+m.eta = 6;
+m.k = 10;
+m.psi = 0.25;
+m.chi = 0.85;
+m.xiw = 60;
+m.xip = 300;
+m.rhoa = 0.90;
+m.rhor = 0.85;
+m.kappap = 3.5;
+m.kappan = 0;
+m.Short_ = 0;
+m.Infl_ = 0;
+m.Growth_ = 0;
+m.Wage_ = 0;
+m.std_Mp = 0;
+m.std_Mw = 0;
+m.std_Ea = 0.001;
+m = sstate(m,'growth=',true,'blocks=',true,'display=','off');
+m = solve(m);
+
+% Solved model.
+This.TestData.solvedModel = m;
 
 end % setupOnce()
 
@@ -44,28 +74,53 @@ assertEqual(This, actual, expected) ;
 
 end % testGet()
 
+
+%**************************************************************************
+function testIsname(This)
+
+m = This.TestData.model ;
+assertEqual(This, isname(m, 'alpha'), true) ;
+assertEqual(This, isname(m, 'alph'), false) ;
+
+end % testIsname()
+
+
+%**************************************************************************
+function testIsnan(This)
+    
+m = This.TestData.model ;
+assertEqual(This, isnan(m), true) ;
+
+end % testIsnan()
+
+
+%**************************************************************************
+function testIssolved(This)
+
+m = This.TestData.model ;
+assertEqual(This, issolved(obj), false) ;
+
+end % isSolved()
+
+
+%**************************************************************************
+function testAlter(This)
+
+m = This.TestData.model ;
+assertEqual(This, length(alter(obj, 3)), 3) ;
+
+end % testAlter()
+
+
+%**************************************************************************
+function testChkstate(This)
+
+m = This.TestData.solvedModel ;
+assertEqual(chksstate(m), true);
+
+end % testChksstate()
+
 %{
-function test_isname(obj)
-assertEqual(isname(obj,'alpha'),true);
-assertEqual(isname(obj,'alph'),false);
-end
-
-function test_isnan(obj)
-assertEqual(isnan(obj),true);
-end
-
-function test_issolved(obj)
-assertEqual(issolved(obj),false);
-end
-
-function test_alter(obj)
-assertEqual(length(alter(obj,3)),3);
-end
-
-function test_sstate(obj) %#ok<*DEFNU>
-assertEqual(chksstate(doSsSolve(obj)),true);
-end
-
 function test_estimate(obj)
 
 obj=doSsSolve(obj);

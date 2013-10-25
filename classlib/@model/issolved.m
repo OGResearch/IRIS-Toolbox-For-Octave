@@ -1,4 +1,4 @@
-function flag = issolved(m)
+function Flag = issolved(m)
 % issolved  True if a model solution exists.
 %
 % Syntax
@@ -28,9 +28,9 @@ function flag = issolved(m)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-[ans,flag] = isnan(m,'solution');
-flag = ~flag;
+[~,Flag] = isnan(m,'solution');
+Flag = ~Flag;
 
 end
