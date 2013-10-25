@@ -1,5 +1,5 @@
 function [Eqtn,EqtnLabel,EqtnLhs,EqtnRhs,EqtnSign, ...
-    SstateLhs,SstateRhs,SstateSign] = parseeqtns(Blk)
+    SstateLhs,SstateRhs,SstateSign] = parseeqtns(This,Blk)
 % parseeqtns [Not a public function] Parse equations within an equation block.
 %
 % Backend IRIS function.
@@ -13,18 +13,19 @@ function [Eqtn,EqtnLabel,EqtnLhs,EqtnRhs,EqtnSign, ...
 Blk = regexprep(Blk,'\s+','');
 Blk = strrep(Blk,'!ttrend','ttrend');
 
-pattern = [ ...
-    '(?<label>#\(\d+\))?', ...
-    '(?<eqtn>[^!;]*)', ...
+charCodes = regexppattern(This.labels);
+ptn = [ ...
+    '(?<label>[',charCodes,'])?', ...
+    '(?<eqtnOnly>[^!;',charCodes,']*)', ...
     '(?<sstate>!![^!;]+)?;'];
-[Eqtn,tok] = regexp(Blk,pattern,'match','names');
+[Eqtn,tkn] = regexp(Blk,ptn,'match','names');
 
-EqtnLabel = {tok(:).label};
-eqtn = {tok(:).eqtn};
-sstate = {tok(:).sstate};
+EqtnLabel = {tkn(:).label};
+eqtnOnly = {tkn(:).eqtnOnly};
+sstate = {tkn(:).sstate};
 sstate = strrep(sstate,'!!','');
 
-[EqtnLhs,EqtnRhs,EqtnSign] = xxEqualSign(eqtn);
+[EqtnLhs,EqtnRhs,EqtnSign] = xxEqualSign(eqtnOnly);
 [SstateLhs,SstateRhs,SstateSign] = xxEqualSign(sstate);
 
 end
