@@ -37,7 +37,7 @@ estimate {
 #regression regression {
 #regression #tdays     variables = ($tdays$)
 #regression #dummy     start = $dummy_startyear$.$dummy_startper$
-#regression #dummy     user = (dummy)
+#regression #dummy     user = ($dummy_name$)
 #regression #dummy     usertype = $dummy_type$
 #regression #dummy     data = (
 #regression #dummy     $dummy_data$
