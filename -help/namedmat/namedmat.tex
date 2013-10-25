@@ -2,56 +2,58 @@
 
     \filetitle{namedmat}{Create a new matrix with named rows and columns}{namedmat/namedmat}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = namedmat(X,ROWNAMES,COLNAMES)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} numeric {]} - Matrix or multidimensional array.
- \item
-   \texttt{ROWNAMES} {[} cellstr {]} - Names for individual rows of
-   \texttt{X}.
- \item
-   \texttt{COLNAMES} {[} cellstr {]} - Names for individual columns of
-   \texttt{X}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} namedmat {]} - Matrix with named rows and columns.
- \end{itemize}
- 
- \paragraph{Description}
- 
- Namedmat objects are used by some of the IRIS functions to preserve the
- names of variables that relate to individual rows and columns, such as
- in
- 
- \begin{itemize}
- \item
-   \texttt{acf}, the autocovariance and autocorrelation functions,
- \item
-   \texttt{xsf}, the power spectrum and spectral density functions,
- \item
-   \texttt{fmse}, the forecast mean square error fuctions,
- \item
-   etc.
- \end{itemize}
- 
- You can use the function \href{namedmat/select}{\texttt{select}} to
- extract submatrices by referring to a selection of names.
- 
- Namedmat matrices derives from the built-in double class of objects, and
- hence you can use any operators and functions on them that are available
- for double objects.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = namedmat(X,ROWNAMES,COLNAMES)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} numeric {]} - Matrix or multidimensional array.
+\item
+  \texttt{ROWNAMES} {[} cellstr {]} - Names for individual rows of
+  \texttt{X}.
+\item
+  \texttt{COLNAMES} {[} cellstr {]} - Names for individual columns of
+  \texttt{X}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} namedmat {]} - Matrix with named rows and columns.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Namedmat objects are used by some of the IRIS functions to preserve the
+names of variables that relate to individual rows and columns, such as
+in
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{acf}, the autocovariance and autocorrelation functions,
+\item
+  \texttt{xsf}, the power spectrum and spectral density functions,
+\item
+  \texttt{fmse}, the forecast mean square error fuctions,
+\item
+  etc.
+\end{itemize}
+
+You can use the function \href{namedmat/select}{\texttt{select}} to
+extract submatrices by referring to a selection of names.
+
+Namedmat matrices derives from the built-in double class of objects, and
+hence you can use any operators and functions on them that are available
+for double objects.
+
+\paragraph{Example}\label{example}
 
 

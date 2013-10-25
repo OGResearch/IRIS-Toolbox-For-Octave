@@ -2,44 +2,45 @@
 
     \filetitle{group}{Retrieve VAR object from panel VAR for specified group of data}{VAR/group}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- V = group(V,Grp)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - Panel VAR object estimated on multiple groups
-   of data.
- \item
-   \texttt{Grp} {[} char {]} - Requested group name; must be one of the
-   names specified when the panel VAR object was constructed using the
-   function \href{VAR/VAR}{\texttt{VAR}}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object for the \texttt{K}-th group of
-   data.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
- 
- Create and estimate a panel VAR for three variables, \texttt{x},
- \texttt{y}, \texttt{z}, and three countries, \texttt{US}, \texttt{EU},
- \texttt{JA}. Then, retrieve a plain VAR for an individual country.
- 
- \begin{verbatim}
- v = VAR({'x','y','z'},{'US','EU','JA'});
- v = estimate(v,d,range,'fixedEffect=',true);
- vi_us = group(v,'US');
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+V = group(V,Grp)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Panel VAR object estimated on multiple groups
+  of data.
+\item
+  \texttt{Grp} {[} char {]} - Requested group name; must be one of the
+  names specified when the panel VAR object was constructed using the
+  function \href{VAR/VAR}{\texttt{VAR}}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object for the \texttt{K}-th group of
+  data.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+Create and estimate a panel VAR for three variables, \texttt{x},
+\texttt{y}, \texttt{z}, and three countries, \texttt{US}, \texttt{EU},
+\texttt{JA}. Then, retrieve a plain VAR for an individual country.
+
+\begin{verbatim}
+v = VAR({'x','y','z'},{'US','EU','JA'});
+v = estimate(v,d,range,'fixedEffect=',true);
+vi_us = group(v,'US');
+\end{verbatim}
 
 

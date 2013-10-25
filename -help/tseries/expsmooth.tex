@@ -2,41 +2,42 @@
 
     \filetitle{ews}{Exponential smoothing}{tseries/expsmooth}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = expsmooth(X,BETA,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input time series.
- \item
-   \texttt{Beta} {[} numeric {]} - Exponential factor.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Exponentially smoothed series.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'init='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} - Add
-   this value before the first observation to initialise the smoothing.
- \item
-   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
-   - Logarithmise the data before filtering, de-logarithmise afterwards.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Examples}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = expsmooth(X,BETA,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input time series.
+\item
+  \texttt{Beta} {[} numeric {]} - Exponential factor.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Exponentially smoothed series.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'init='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} - Add
+  this value before the first observation to initialise the smoothing.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the data before filtering, de-logarithmise afterwards.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Examples}\label{examples}
 
 

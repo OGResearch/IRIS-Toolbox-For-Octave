@@ -2,59 +2,61 @@
 
     \filetitle{pct}{Percent rate of change}{tseries/pct}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = pct(X)
- X = pct(X,K,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object.
- \item
-   \texttt{K} {[} numeric {]} - Time shift over which the rate of change
-   will be computed, i.e.~between time t and t+k; if not specified
-   \texttt{K} will be set to \texttt{-1}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Percentage rate of change in the input
-   data.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'outputFreq='} {[} \texttt{1} \textbar{} \texttt{2} \textbar{}
-   \texttt{4} \textbar{} \texttt{6} \textbar{} \texttt{12} \textbar{}
-   \emph{\texttt{Inf}} {]} - Convert the rate of change to the requested
-   date frequency; \texttt{Inf} means plain rate of change with no
-   conversion.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
- 
- In this example, \texttt{x} is a monthly time series. The following
- command computes the annualised rate of change between month t and t-1:
- 
- \begin{verbatim}
- pct(x,-1,'outputfreq=',1)
- \end{verbatim}
- 
- while the following line computes the annualised rate of change between
- month t and t-3:
- 
- \begin{verbatim}
- pct(x,-3,'outputFreq=',1)
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = pct(X)
+X = pct(X,K,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object.
+\item
+  \texttt{K} {[} numeric {]} - Time shift over which the rate of change
+  will be computed, i.e.~between time t and t+k; if not specified
+  \texttt{K} will be set to \texttt{-1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Percentage rate of change in the input
+  data.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'outputFreq='} {[} \texttt{1} \textbar{} \texttt{2} \textbar{}
+  \texttt{4} \textbar{} \texttt{6} \textbar{} \texttt{12} \textbar{}
+  \emph{\texttt{Inf}} {]} - Convert the rate of change to the requested
+  date frequency; \texttt{Inf} means plain rate of change with no
+  conversion.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+In this example, \texttt{x} is a monthly time series. The following
+command computes the annualised rate of change between month t and t-1:
+
+\begin{verbatim}
+pct(x,-1,'outputfreq=',1)
+\end{verbatim}
+
+while the following line computes the annualised rate of change between
+month t and t-3:
+
+\begin{verbatim}
+pct(x,-3,'outputFreq=',1)
+\end{verbatim}
 
 

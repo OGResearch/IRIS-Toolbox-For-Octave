@@ -2,27 +2,28 @@
 
     \filetitle{irisversion}{Current IRIS version}{config/irisversion}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- irisversion
- X = irisversion()
- \end{verbatim}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} char {]} - String describing the currently installed
-   IRIS version.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The version string consists of the generation number, followed by a dot
- and the distribution date (yyyymmdd).
- 
- The \texttt{irisversion} function is equivalent to the following call to
- calling \texttt{irisget('version')}.
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+irisversion
+X = irisversion()
+\end{verbatim}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} char {]} - String describing the currently installed
+  IRIS version.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The version string consists of the generation number, followed by a dot
+and the distribution date (yyyymmdd).
+
+The \texttt{irisversion} function is equivalent to the following call to
+calling \texttt{irisget('version')}.
 
 

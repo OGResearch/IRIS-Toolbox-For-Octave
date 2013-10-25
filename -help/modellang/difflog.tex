@@ -2,46 +2,46 @@
 
     \filetitle{difflog}{First log-difference pseudofunction}{modellang/difflog}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- difflog(EXPR)
- difflog(EXPR,K)
- \end{verbatim}
- 
- \paragraph{Description}
- 
- If the input argument \texttt{K} is not specified, this pseudofunction
- expands to
- 
- \begin{verbatim}
- (log(EXPR)-log(EXPR{-1}))
- \end{verbatim}
- 
- If the input argument \texttt{K} is specified, it expands to
- 
- \begin{verbatim}
- (log(EXPR)-log(EXPR{K}))
- \end{verbatim}
- 
- The two derived expressions, \texttt{EXPR\{-1\}} and \texttt{EXPR\{K\}},
- are based on \texttt{EXPR}, and have all its time subscripts shifted by
- --1 or by \texttt{K} periods, respectively.
- 
- \paragraph{Example}
- 
- The following two lines of code
- 
- \begin{verbatim}
- difflog(Z)
- difflog(X{1}/Y{-1},-2)
- \end{verbatim}
- 
- will expand to
- 
- \begin{verbatim}
- (log(Z)-log(Z{-1}))
- (log(X{1}/Y{-1})-log(X{-1}/Y{-3}))
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+difflog(EXPR)
+difflog(EXPR,K)
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+If the input argument \texttt{K} is not specified, this pseudofunction
+expands to
+
+\begin{verbatim}
+(log(EXPR)-log(EXPR{-1}))
+\end{verbatim}
+
+If the input argument \texttt{K} is specified, it expands to
+
+\begin{verbatim}
+(log(EXPR)-log(EXPR{K}))
+\end{verbatim}
+
+The two derived expressions, \texttt{EXPR\{-1\}} and \texttt{EXPR\{K\}},
+are based on \texttt{EXPR}, and have all its time subscripts shifted by
+--1 or by \texttt{K} periods, respectively.
+
+\paragraph{Example}\label{example}
+
+The following two lines of code
+
+\begin{verbatim}
+difflog(Z)
+difflog(X{1}/Y{-1},-2)
+\end{verbatim}
+
+will expand to
+
+\begin{verbatim}
+(log(Z)-log(Z{-1}))
+(log(X{1}/Y{-1})-log(X{-1}/Y{-3}))
+\end{verbatim}
 
 

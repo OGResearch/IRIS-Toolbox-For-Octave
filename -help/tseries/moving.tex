@@ -2,47 +2,48 @@
 
     \filetitle{moving}{Apply function to moving window of observations}{tseries/moving}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = moving(X)
- X = moving(X,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Tseries object on whose observations the
-   function will be applied.
- \item
-   \texttt{Range} {[} numeric \textbar{} Inf {]} - Range on which the
-   moving function will be applied; \texttt{Inf} means the entire range
-   on which the time series is defined.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Output time series.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'function='} {[} function\_handle \textbar{} \texttt{@mean}
-   {]} - Function to be applied to a moving window of observations.
- \item
-   \texttt{'window='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   The window of observations where 0 means the current date, -1 means
-   one period lag, etc. Inf means that the last n observations (including
-   the current one) are used, where n is the frequency of the input data.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = moving(X)
+X = moving(X,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Tseries object on whose observations the
+  function will be applied.
+\item
+  \texttt{Range} {[} numeric \textbar{} Inf {]} - Range on which the
+  moving function will be applied; \texttt{Inf} means the entire range
+  on which the time series is defined.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Output time series.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'function='} {[} function\_handle \textbar{} \texttt{@mean}
+  {]} - Function to be applied to a moving window of observations.
+\item
+  \texttt{'window='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  The window of observations where 0 means the current date, -1 means
+  one period lag, etc. Inf means that the last n observations (including
+  the current one) are used, where n is the frequency of the input data.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

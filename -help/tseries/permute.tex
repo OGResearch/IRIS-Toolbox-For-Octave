@@ -2,35 +2,36 @@
 
     \filetitle{permute}{Permute dimensions of a tseries object}{tseries/permute}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = permute(X,Order)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Tseries object whose dimensions, except
-   the first (time) dimension, will be rearranged in the order specified
-   by the vector \texttt{order}.
- \item
-   \texttt{Order} {[} numeric {]} - New order of dimensions; because the
-   time dimension cannot be permuted, \texttt{order(1)} must be always
-   \texttt{1}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Output tseries object with its dimensions
-   permuted.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = permute(X,Order)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Tseries object whose dimensions, except
+  the first (time) dimension, will be rearranged in the order specified
+  by the vector \texttt{order}.
+\item
+  \texttt{Order} {[} numeric {]} - New order of dimensions; because the
+  time dimension cannot be permuted, \texttt{order(1)} must be always
+  \texttt{1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Output tseries object with its dimensions
+  permuted.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

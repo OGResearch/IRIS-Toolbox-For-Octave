@@ -2,67 +2,69 @@
 
     \filetitle{dbnames}{List of database entries filtered by name and/or class}{dbase/dbnames}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- List = dbnames(D,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Input database.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{List} {[} cellstr {]} - List of input database entries that
-   pass the name or class test.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'nameFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
-   Regular expression against which the database entry names will be
-   matched; \texttt{Inf} means all names will be matched.
- \item
-   \texttt{'classFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
-   Regular expression against which the database entry class names will
-   be matched; \texttt{Inf} means all classes will be matched.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
- 
- Notice the differences in the following calls to \texttt{dbnames}:
- 
- \begin{verbatim}
- dbnames(d,'nameFilter=','L_')
- \end{verbatim}
- 
- matches all names that contain \texttt{'L\_'} (at the beginning, in the
- middle, or at the end of the string), such as \texttt{'L\_A'},
- \texttt{'DL\_A'}, \texttt{'XL\_'}, or just \texttt{'L\_'}.
- 
- \begin{verbatim}
- dbnames(d,'nameFilter=','^L_')
- \end{verbatim}
- 
- matches all names that start with \texttt{'L\_'}, suc as \texttt{'L\_A'}
- or \texttt{'L\_'}.
- 
- \begin{verbatim}
- dbnames(d,'nameFilter=','^L_.')
- \end{verbatim}
- 
- matches all names that start with \texttt{'L\_'} and have at least one
- more character after that, such as \texttt{'L\_A'} (but not
- \texttt{'L\_'}).
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+List = dbnames(D,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Input database.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{List} {[} cellstr {]} - List of input database entries that
+  pass the name or class test.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'nameFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
+  Regular expression against which the database entry names will be
+  matched; \texttt{Inf} means all names will be matched.
+\item
+  \texttt{'classFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
+  Regular expression against which the database entry class names will
+  be matched; \texttt{Inf} means all classes will be matched.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+Notice the differences in the following calls to \texttt{dbnames}:
+
+\begin{verbatim}
+dbnames(d,'nameFilter=','L_')
+\end{verbatim}
+
+matches all names that contain \texttt{'L\_'} (at the beginning, in the
+middle, or at the end of the string), such as \texttt{'L\_A'},
+\texttt{'DL\_A'}, \texttt{'XL\_'}, or just \texttt{'L\_'}.
+
+\begin{verbatim}
+dbnames(d,'nameFilter=','^L_')
+\end{verbatim}
+
+matches all names that start with \texttt{'L\_'}, suc as \texttt{'L\_A'}
+or \texttt{'L\_'}.
+
+\begin{verbatim}
+dbnames(d,'nameFilter=','^L_.')
+\end{verbatim}
+
+matches all names that start with \texttt{'L\_'} and have at least one
+more character after that, such as \texttt{'L\_A'} (but not
+\texttt{'L\_'}).
 
 

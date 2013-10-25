@@ -142,6 +142,13 @@
         <tocitem target="plan/plan.html" image="HelpIcon.FUNCTION">plan &#8212; Create new simulation plan</tocitem>
         <tocitem target="plan/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for plan objects</tocitem>
     </tocitem>
+    <tocitem target="grouping/Contents.html" image="HelpIcon.USER_GUIDE">Grouping objects for aggregation of contributions
+        <tocitem target="grouping/addgroup.html" image="HelpIcon.FUNCTION">addgroup &#8212; Add measurement variable or shock grouping to grouping object</tocitem>
+        <tocitem target="grouping/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Details of a grouping object</tocitem>
+        <tocitem target="grouping/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate contributions in input database S using grouping object G</tocitem>
+        <tocitem target="grouping/grouping.html" image="HelpIcon.FUNCTION">grouping &#8212; Create new grouping object</tocitem>
+        <tocitem target="grouping/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True for empty grouping object</tocitem>
+    </tocitem>
     <tocitem target="systempriors/Contents.html" image="HelpIcon.USER_GUIDE">System priors
         <tocitem target="systempriors/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Display details of system priors</tocitem>
         <tocitem target="systempriors/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True if the system priors object is empty</tocitem>
@@ -322,6 +329,7 @@
         <tocitem target="tseries/hpf.html" image="HelpIcon.FUNCTION">hpf &#8212; Hodrick-Prescott filter with tunes (aka LRX filter)</tocitem>
         <tocitem target="tseries/hpf2.html" image="HelpIcon.FUNCTION">hpf2 &#8212; Swap output arguments of the Hodrick-Prescott filter with tunes</tocitem>
         <tocitem target="tseries/interp.html" image="HelpIcon.FUNCTION">interp &#8212; Interpolate missing observations</tocitem>
+        <tocitem target="tseries/isequal.html" image="HelpIcon.FUNCTION">isequal &#8212; [Not a public function] Compare two tseries objects</tocitem>
         <tocitem target="tseries/length.html" image="HelpIcon.FUNCTION">length &#8212; Length of tseries object</tocitem>
         <tocitem target="tseries/llf.html" image="HelpIcon.FUNCTION">llf &#8212; Local level filter (aka random walk plus white noise) with tunes</tocitem>
         <tocitem target="tseries/llf2.html" image="HelpIcon.FUNCTION">llf2 &#8212; Swap output arguments of the local linear trend filter with tunes</tocitem>
@@ -379,9 +387,9 @@
         <tocitem target="dbase/dbsearchuserdata.html" image="HelpIcon.FUNCTION">dbsearchuserdata &#8212; Search database to find tseries by matching the content of their userdata fields</tocitem>
         <tocitem target="dbase/dbsplit.html" image="HelpIcon.FUNCTION">dbsplit &#8212; Split database into mutliple databases</tocitem>
         <tocitem target="dbase/dbuserdatalov.html" image="HelpIcon.FUNCTION">dbuserdatalov &#8212; List of values found in a specified user data field in tseries objects</tocitem>
-        <tocitem target="dbase/minus.html" image="HelpIcon.FUNCTION">minus &#8212; Remove entries from a database</tocitem>
-        <tocitem target="dbase/mtimes.html" image="HelpIcon.FUNCTION">mtimes &#8212; Keep only the database entries that are on the list</tocitem>
-        <tocitem target="dbase/plus.html" image="HelpIcon.FUNCTION">plus &#8212; Merge two databases entry by entry</tocitem>
+        <tocitem target="dbase/dbminus.html" image="HelpIcon.FUNCTION">minus &#8212; Remove entries from a database</tocitem>
+        <tocitem target="dbase/dbmtimes.html" image="HelpIcon.FUNCTION">mtimes &#8212; Keep only the database entries that are on the list</tocitem>
+        <tocitem target="dbase/dbplus.html" image="HelpIcon.FUNCTION">plus &#8212; Merge entries from two databases together</tocitem>
         <tocitem target="dbase/xls2csv.html" image="HelpIcon.FUNCTION">xls2csv &#8212; Convert XLS file to CSV file</tocitem>
     </tocitem>
 </tocitem>

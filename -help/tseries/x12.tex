@@ -2,263 +2,267 @@
 
     \filetitle{x12}{Access to X12 seasonal adjustment program}{tseries/x12}
 
-	\paragraph{Syntax with a single type of output requested}
- 
- \begin{verbatim}
- [Y,OutpFile,ErrFile,Model,X] = x12(X)
- [Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
- \end{verbatim}
- 
- \paragraph{Syntax with mutliple types of output requested}
- 
- \begin{verbatim}
- [Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
- \end{verbatim}
- 
- See the option \texttt{'output='} for the types of output data available
- from X12.
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input data that will seasonally adjusted
-   or filtered by the Census X12 Arima.
- \item
-   \texttt{Range} {[} numeric {]} - Date range on which the X12 will be
-   run; if not specified or Inf the entire available range will be used.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Y}, \texttt{Y1}, \texttt{Y2}, \ldots{} {[} tseries {]} -
-   Requested output data, by default only one type of output is returned,
-   the seasonlly adjusted data; see the option \texttt{'output='}.
- \item
-   \texttt{OutpFile} {[} cellstr {]} - Contents of the output log files
-   produced by X12; each cell contains the log file for one type of
-   output requested.
- \item
-   \texttt{ErrFile} {[} cellstr {]} - Contents of the error files
-   produced by X12; each cell contains the error file for one type of
-   output requested.
- \item
-   \texttt{Model} {[} struct {]} - Struct array with model specifications
-   and parameter estimates for each of the ARIMA models fitted;
-   \texttt{Model} matches the size of \texttt{X} is 2nd and higher
-   dimensions.
- \item
-   \texttt{X} {[} tseries {]} - Original input data with forecasts and/or
-   backcasts appended if the options \texttt{'forecast='} and/or
-   \texttt{'backcast='} are used.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'backcast='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
-   Run a backcast based on the fitted ARIMA model for this number of
-   periods back to improve on the seasonal adjustment; see help on the
-   \texttt{x11} specs in the X12-ARIMA manual. The backcast is included
-   in the output argument \texttt{X}.
- \item
-   \texttt{'cleanup='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Delete temporary X12 files when done; the temporary files are
-   named \texttt{iris\_x12a.*}.
- \item
-   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
-   - Logarithmise the input data before, and de-logarithmise the output
-   data back after, running \texttt{x12}.
- \item
-   \texttt{'forecast='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
-   Run a forecast based on the fitted ARIMA model for this number of
-   periods ahead to improve on the seasonal adjustment; see help on the
-   \texttt{x11} specs in the X12-ARIMA manual. The forecast is included
-   in the output argument \texttt{X}.
- \item
-   \texttt{'display='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Display X12 output messages in command window; if false the
-   messages will be saved in a TXT file.
- \item
-   \texttt{'dummy='} {[} tseries \textbar{} \emph{empty} {]} - User dummy
-   variable or variables (in case of a multivariate tseries object) used
-   in X12-ARIMA regression; the dummy variables can also include values
-   for forecasts and backcasts if you request them; the type of the dummy
-   can be specified in the option \texttt{'dummyType='}.
- \item
-   \texttt{'dummyType='} {[} \texttt{'ao'} \textbar{}
-   \emph{\texttt{'holiday'}} \textbar{} \texttt{'td'} {]} - Type of the
-   user dummy (which is specified through the option \texttt{'dummy='});
-   the three basic types of dummies are additive outlier (\texttt{'ao'}),
-   holiday flows (\texttt{'holiday'}), and trading days (\texttt{'td'});
-   see the X12-ARIMA or X13-ARIMA documentation for more details
-   (available from the U.S. Census Bureau website), look for the section
-   on the REGRESSION spec, options `user' and `usertype'.
- \item
-   \texttt{'mode='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{'add'}
-   \textbar{} \texttt{'logadd'} \textbar{} \texttt{'mult'} \textbar{}
-   \texttt{'pseudoadd'} \textbar{} \texttt{'sign'} {]} - Seasonal
-   adjustment mode (see help on the \texttt{x11} specs in the X12-ARIMA
-   manual); \texttt{'auto'} means that series with only positive or only
-   negative numbers will be adjusted in the \texttt{'mult'}
-   (multiplicative) mode, while series with combined positive and
-   negative numbers in the \texttt{'add'} (additive) mode.
- \item
-   \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{1500}} {]} -
-   Maximum number of iterations for the X12 estimation procedure. See
-   help on the \texttt{estimation} specs in the X12-ARIMA manual.
- \item
-   \texttt{'maxOrder='} {[} numeric \textbar{} \emph{\texttt{{[}2,1{]}}}
-   {]} - A 1-by-2 vector with maximum order for the regular ARMA model
-   (can be \texttt{1}, \texttt{2}, \texttt{3}, or \texttt{4}) and maximum
-   order for the seasonal ARMA model (can be \texttt{1} or \texttt{2}).
-   See help on the \texttt{automdl} specs in the X12-ARIMA manual.
- \item
-   `missing=' {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]} -
-   Allow for in-sample missing observations, and fill in values predicted
-   by an estimated ARIMA process; if \texttt{false}, the seasonal
-   adjustment will not run and a warning will be thrown.
- \item
-   \texttt{'output='} {[} char \textbar{} cellstr \textbar{}
-   \emph{\texttt{'SA'}} {]} - List of requested output data; the cellstr
-   or comma-separated list can combine \texttt{'IR'} for the irregular
-   component, \texttt{'SA'} for the final seasonally adjusted series,
-   \texttt{'SF'} for seasonal factors, \texttt{'TC'} for the trend-cycle,
-   and \texttt{'MV'} for the original series with missing observations
-   replaced with ARIMA estimates. See also help on the \texttt{x11} specs
-   in the X12-ARIMA manual.
- \item
-   \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - Name (or a
-   whole path) under which X12-ARIMA output files will be saved.
- \item
-   \texttt{'specFile='} {[} char \textbar{} \emph{\texttt{'default'}} {]}
-   - Name of the X12-ARIMA spec file; if \texttt{'default'} the IRIS
-   default spec file will be used, see description.
- \item
-   \texttt{'tdays='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Correct for the number of trading days. See help on the
-   \texttt{x11regression} specs in the X12-ARIMA manual.
- \item
-   \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
-   - Convergence tolerance for the X12 estimation procedure. See help on
-   the \texttt{estimation} specs in the X12-ARIMA manual.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \subparagraph{Missing observations}
- 
- If you keep \texttt{'missing=' false} (this is the default for backward
- compatibility), \texttt{x12} will not run on series with in-sample
- missing observations, and a warning will be thrown.
- 
- If you set \texttt{'missing=' true}, you allow for in-sample missing
- observations. The X12-ARIMA program handles missing observations by
- filling in values predicted by the estimated ARIMA process. You can
- request the series with missing values filled in by including
- \texttt{MV} in the option \texttt{'output='}.
- 
- \subparagraph{Spec file}
- 
- The default X12-ARIMA spec file is \texttt{+thirdparty/x12/default.spc}.
- You can create your own spec file to include options that are not
- available through the IRIS interface. You can use the following
- pre-defined placeholders letting IRIS fill in some of the information
- needed (check out the default file):
- 
- \begin{itemize}
- \item
-   \texttt{\$series\_data\$} is replaced with a column vector of input
-   observations;
- \item
-   \texttt{\$series\_freq\$} is replaced with a number representing the
-   date frequency: either 4 for quarterly, or 12 for monthly (other
-   frequencies are currenlty not supported by X12-ARIMA);
- \item
-   \texttt{\$series\_startyear\$} is replaced with the start year of the
-   input series;
- \item
-   \texttt{\$series\_startper\$} is replaced with the start quarter or
-   month of the input series;
- \item
-   \texttt{\$transform\_function\$} is replaced with \texttt{log} or
-   \texttt{none} depending on the mode selected by the user;
- \item
-   \texttt{\$forecast\_maxlead\$} is replaced with the requested number
-   of ARIMA forecast periods used to extend the series before seasonal
-   adjustment.
- \item
-   \texttt{\$forecast\_maxlead\$} is replaced with the requested number
-   of ARIMA forecast periods used to extend the series before seasonal
-   adjustment.
- \item
-   \texttt{\$tolerance\$} is replaced with the requested convergence
-   tolerance in the \texttt{estimation} spec.
- \item
-   \texttt{\$maxiter\$} is replaced with the requested maximum number of
-   iterations in the \texttt{estimation} spec.
- \item
-   \texttt{\$maxorder\$} is replaced with two numbers separated by a
-   blank space: maximum order of regular ARIMA, and maximum order of
-   seasonal ARIMA.
- \item
-   \texttt{\$x11\_mode\$} is replaced with the requested mode:
-   \texttt{'add'} for additive, \texttt{'mult'} for multiplicative,
-   \texttt{'pseudoadd'} for pseudo-additive, or \texttt{'logadd'} for
-   log-additive;
- \item
-   \texttt{\$x12\_save\$} is replaced with the list of the requested
-   output series: \texttt{'d10'} for seasonals, \texttt{'d11'} for final
-   seasonally adjusted series, \texttt{'d12'} for trend-cycle,
-   \texttt{'d13'} for irregular component.
- \end{itemize}
- 
- Two of the placeholders, \texttt{'\$series\_data\$} and
- \texttt{\$x12\_output\$}, are required; if they are not found in the
- spec file, IRIS throws an error.
- 
- \subparagraph{Estimates of ARIMA model parameters}
- 
- The ARIMA model specification, \texttt{Model}, is a struct with three
- fields:
- 
- \begin{itemize}
- \item
-   \texttt{.spec} - a cell array with the first cell giving the structure
-   of the non-seasonal ARIMA, and the second cell giving the structure of
-   the seasonal ARIMA; both specifications follow the usual Box-Jenkins
-   notation, e.g. \texttt{{[}0 1 1{]}}.
- \item
-   \texttt{.ar} - a numeric array with the point estimates of the AR
-   coefficients (non-seasonal and seasonal).
- \item
-   \texttt{.ma} - a numeric array with the point estimates of the MA
-   coefficients (non-seasonal and seasonal).
- \end{itemize}
- 
- \paragraph{Example 1}
- 
- If you wish to run \texttt{x12} on the entire range on which the input
- time series is defined, and do not use any options, you can omit the
- second input argument (the date range). These following three calls to
- \texttt{x12} do exactly the same:
- 
- \begin{verbatim}
- xsa = x12(x);
- xsa = x12(x,Inf);
- xsa = x12(x,get(x,'range'));
- \end{verbatim}
- 
- \paragraph{Example 2}
- 
- If you wish to specify some of the options, you have to enter a date
- range or use \texttt{Inf}:
- 
- \begin{verbatim}
- xsa = x12(x,Inf,'mode=','add');
- \end{verbatim}
+	\paragraph{Syntax with a single type of output
+requested}\label{syntax-with-a-single-type-of-output-requested}
+
+\begin{verbatim}
+[Y,OutpFile,ErrFile,Model,X] = x12(X)
+[Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
+\end{verbatim}
+
+\paragraph{Syntax with mutliple types of output
+requested}\label{syntax-with-mutliple-types-of-output-requested}
+
+\begin{verbatim}
+[Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
+\end{verbatim}
+
+See the option \texttt{'output='} for the types of output data available
+from X12.
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input data that will seasonally adjusted
+  or filtered by the Census X12 Arima.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the X12 will be
+  run; if not specified or Inf the entire available range will be used.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Y}, \texttt{Y1}, \texttt{Y2}, \ldots{} {[} tseries {]} -
+  Requested output data, by default only one type of output is returned,
+  the seasonlly adjusted data; see the option \texttt{'output='}.
+\item
+  \texttt{OutpFile} {[} cellstr {]} - Contents of the output log files
+  produced by X12; each cell contains the log file for one type of
+  output requested.
+\item
+  \texttt{ErrFile} {[} cellstr {]} - Contents of the error files
+  produced by X12; each cell contains the error file for one type of
+  output requested.
+\item
+  \texttt{Model} {[} struct {]} - Struct array with model specifications
+  and parameter estimates for each of the ARIMA models fitted;
+  \texttt{Model} matches the size of \texttt{X} is 2nd and higher
+  dimensions.
+\item
+  \texttt{X} {[} tseries {]} - Original input data with forecasts and/or
+  backcasts appended if the options \texttt{'forecast='} and/or
+  \texttt{'backcast='} are used.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'backcast='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+  Run a backcast based on the fitted ARIMA model for this number of
+  periods back to improve on the seasonal adjustment; see help on the
+  \texttt{x11} specs in the X12-ARIMA manual. The backcast is included
+  in the output argument \texttt{X}.
+\item
+  \texttt{'cleanup='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Delete temporary X12 files when done; the temporary files are
+  named \texttt{iris\_x12a.*}.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the input data before, and de-logarithmise the output
+  data back after, running \texttt{x12}.
+\item
+  \texttt{'forecast='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+  Run a forecast based on the fitted ARIMA model for this number of
+  periods ahead to improve on the seasonal adjustment; see help on the
+  \texttt{x11} specs in the X12-ARIMA manual. The forecast is included
+  in the output argument \texttt{X}.
+\item
+  \texttt{'display='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Display X12 output messages in command window; if false the
+  messages will be saved in a TXT file.
+\item
+  \texttt{'dummy='} {[} tseries \textbar{} \emph{empty} {]} - User dummy
+  variable or variables (in case of a multivariate tseries object) used
+  in X12-ARIMA regression; the dummy variables can also include values
+  for forecasts and backcasts if you request them; the type of the dummy
+  can be specified in the option \texttt{'dummyType='}.
+\item
+  \texttt{'dummyType='} {[} \texttt{'ao'} \textbar{}
+  \emph{\texttt{'holiday'}} \textbar{} \texttt{'td'} {]} - Type of the
+  user dummy (which is specified through the option \texttt{'dummy='});
+  the three basic types of dummies are additive outlier (\texttt{'ao'}),
+  holiday flows (\texttt{'holiday'}), and trading days (\texttt{'td'});
+  see the X12-ARIMA or X13-ARIMA documentation for more details
+  (available from the U.S.Census Bureau website), look for the section
+  on the REGRESSION spec, options `user' and `usertype'.
+\item
+  \texttt{'mode='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{'add'}
+  \textbar{} \texttt{'logadd'} \textbar{} \texttt{'mult'} \textbar{}
+  \texttt{'pseudoadd'} \textbar{} \texttt{'sign'} {]} - Seasonal
+  adjustment mode (see help on the \texttt{x11} specs in the X12-ARIMA
+  manual); \texttt{'auto'} means that series with only positive or only
+  negative numbers will be adjusted in the \texttt{'mult'}
+  (multiplicative) mode, while series with combined positive and
+  negative numbers in the \texttt{'add'} (additive) mode.
+\item
+  \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{1500}} {]} -
+  Maximum number of iterations for the X12 estimation procedure. See
+  help on the \texttt{estimation} specs in the X12-ARIMA manual.
+\item
+  \texttt{'maxOrder='} {[} numeric \textbar{} \emph{\texttt{{[}2,1{]}}}
+  {]} - A 1-by-2 vector with maximum order for the regular ARMA model
+  (can be \texttt{1}, \texttt{2}, \texttt{3}, or \texttt{4}) and maximum
+  order for the seasonal ARMA model (can be \texttt{1} or \texttt{2}).
+  See help on the \texttt{automdl} specs in the X12-ARIMA manual.
+\item
+  `missing=' {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]} -
+  Allow for in-sample missing observations, and fill in values predicted
+  by an estimated ARIMA process; if \texttt{false}, the seasonal
+  adjustment will not run and a warning will be thrown.
+\item
+  \texttt{'output='} {[} char \textbar{} cellstr \textbar{}
+  \emph{\texttt{'SA'}} {]} - List of requested output data; the cellstr
+  or comma-separated list can combine \texttt{'IR'} for the irregular
+  component, \texttt{'SA'} for the final seasonally adjusted series,
+  \texttt{'SF'} for seasonal factors, \texttt{'TC'} for the trend-cycle,
+  and \texttt{'MV'} for the original series with missing observations
+  replaced with ARIMA estimates. See also help on the \texttt{x11} specs
+  in the X12-ARIMA manual.
+\item
+  \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - Name (or a
+  whole path) under which X12-ARIMA output files will be saved.
+\item
+  \texttt{'specFile='} {[} char \textbar{} \emph{\texttt{'default'}} {]}
+  - Name of the X12-ARIMA spec file; if \texttt{'default'} the IRIS
+  default spec file will be used, see description.
+\item
+  \texttt{'tdays='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Correct for the number of trading days. See help on the
+  \texttt{x11regression} specs in the X12-ARIMA manual.
+\item
+  \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
+  - Convergence tolerance for the X12 estimation procedure. See help on
+  the \texttt{estimation} specs in the X12-ARIMA manual.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Missing observations}\label{missing-observations}
+
+If you keep \texttt{'missing=' false} (this is the default for backward
+compatibility), \texttt{x12} will not run on series with in-sample
+missing observations, and a warning will be thrown.
+
+If you set \texttt{'missing=' true}, you allow for in-sample missing
+observations. The X12-ARIMA program handles missing observations by
+filling in values predicted by the estimated ARIMA process. You can
+request the series with missing values filled in by including
+\texttt{MV} in the option \texttt{'output='}.
+
+\subparagraph{Spec file}\label{spec-file}
+
+The default X12-ARIMA spec file is \texttt{+thirdparty/x12/default.spc}.
+You can create your own spec file to include options that are not
+available through the IRIS interface. You can use the following
+pre-defined placeholders letting IRIS fill in some of the information
+needed (check out the default file):
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{\$series\_data\$} is replaced with a column vector of input
+  observations;
+\item
+  \texttt{\$series\_freq\$} is replaced with a number representing the
+  date frequency: either 4 for quarterly, or 12 for monthly (other
+  frequencies are currenlty not supported by X12-ARIMA);
+\item
+  \texttt{\$series\_startyear\$} is replaced with the start year of the
+  input series;
+\item
+  \texttt{\$series\_startper\$} is replaced with the start quarter or
+  month of the input series;
+\item
+  \texttt{\$transform\_function\$} is replaced with \texttt{log} or
+  \texttt{none} depending on the mode selected by the user;
+\item
+  \texttt{\$forecast\_maxlead\$} is replaced with the requested number
+  of ARIMA forecast periods used to extend the series before seasonal
+  adjustment.
+\item
+  \texttt{\$forecast\_maxlead\$} is replaced with the requested number
+  of ARIMA forecast periods used to extend the series before seasonal
+  adjustment.
+\item
+  \texttt{\$tolerance\$} is replaced with the requested convergence
+  tolerance in the \texttt{estimation} spec.
+\item
+  \texttt{\$maxiter\$} is replaced with the requested maximum number of
+  iterations in the \texttt{estimation} spec.
+\item
+  \texttt{\$maxorder\$} is replaced with two numbers separated by a
+  blank space: maximum order of regular ARIMA, and maximum order of
+  seasonal ARIMA.
+\item
+  \texttt{\$x11\_mode\$} is replaced with the requested mode:
+  \texttt{'add'} for additive, \texttt{'mult'} for multiplicative,
+  \texttt{'pseudoadd'} for pseudo-additive, or \texttt{'logadd'} for
+  log-additive;
+\item
+  \texttt{\$x12\_save\$} is replaced with the list of the requested
+  output series: \texttt{'d10'} for seasonals, \texttt{'d11'} for final
+  seasonally adjusted series, \texttt{'d12'} for trend-cycle,
+  \texttt{'d13'} for irregular component.
+\end{itemize}
+
+Two of the placeholders, \texttt{'\$series\_data\$} and
+\texttt{\$x12\_output\$}, are required; if they are not found in the
+spec file, IRIS throws an error.
+
+\subparagraph{Estimates of ARIMA model
+parameters}\label{estimates-of-arima-model-parameters}
+
+The ARIMA model specification, \texttt{Model}, is a struct with three
+fields:
+
+\begin{itemize}
+\item
+  \texttt{.spec} - a cell array with the first cell giving the structure
+  of the non-seasonal ARIMA, and the second cell giving the structure of
+  the seasonal ARIMA; both specifications follow the usual Box-Jenkins
+  notation, e.g. \texttt{{[}0 1 1{]}}.
+\item
+  \texttt{.ar} - a numeric array with the point estimates of the AR
+  coefficients (non-seasonal and seasonal).
+\item
+  \texttt{.ma} - a numeric array with the point estimates of the MA
+  coefficients (non-seasonal and seasonal).
+\end{itemize}
+
+\paragraph{Example 1}\label{example-1}
+
+If you wish to run \texttt{x12} on the entire range on which the input
+time series is defined, and do not use any options, you can omit the
+second input argument (the date range). These following three calls to
+\texttt{x12} do exactly the same:
+
+\begin{verbatim}
+xsa = x12(x);
+xsa = x12(x,Inf);
+xsa = x12(x,get(x,'range'));
+\end{verbatim}
+
+\paragraph{Example 2}\label{example-2}
+
+If you wish to specify some of the options, you have to enter a date
+range or use \texttt{Inf}:
+
+\begin{verbatim}
+xsa = x12(x,Inf,'mode=','add');
+\end{verbatim}
 
 

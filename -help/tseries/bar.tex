@@ -2,57 +2,57 @@
 
     \filetitle{bar}{Bar graph for tseries objects}{tseries/bar}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [h,range] = bar(x,...)
- [h,range] = bar(range,x,...)
- [h,range] = bar(a,range,x,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{a} {[} numeric {]} - Handle to axes in which the graph will be
-   plotted; if not specified, the current axes will used.
- \item
-   \texttt{range} {[} numeric {]} - Date range; if not specified the
-   entire range of the input tseries object will be plotted.
- \item
-   \texttt{x} {[} tseries {]} - Input tseries object whose columns will
-   be ploted as a bar graph.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{h} {[} numeric {]} - Handles to the bars plotted.
- \item
-   \texttt{range} {[} numeric {]} - Actually plotted date range.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'dateformat='} {[} char \textbar{}
-   \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-   on the x-axis.
- \item
-   \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Vector of dates locating tick marks on the x-axis; Inf means they will
-   be created automatically.
- \item
-   \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Make the y-axis tight.
- \end{itemize}
- 
- See help on built-in \texttt{bar} function for other options available.
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[h,range] = bar(x,...)
+[h,range] = bar(range,x,...)
+[h,range] = bar(a,range,x,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{a} {[} numeric {]} - Handle to axes in which the graph will be
+  plotted; if not specified, the current axes will used.
+\item
+  \texttt{range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{x} {[} tseries {]} - Input tseries object whose columns will
+  be ploted as a bar graph.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{h} {[} numeric {]} - Handles to the bars plotted.
+\item
+  \texttt{range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'dateformat='} {[} char \textbar{}
+  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+  on the x-axis.
+\item
+  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the x-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Make the y-axis tight.
+\end{itemize}
+
+See help on built-in \texttt{bar} function for other options available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

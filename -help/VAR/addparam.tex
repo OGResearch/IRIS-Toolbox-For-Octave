@@ -2,42 +2,43 @@
 
     \filetitle{addparam}{Add VAR parameters to a database (struct)}{VAR/addparam}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- D = addparam(V,D)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} SVAR {]} - SVAR object whose parameter matrices will be
-   added to database (struct) \texttt{D}.
- \item
-   \texttt{D} {[} struct {]} - Database to which the model parameters
-   will be added.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   `D {[} struct {]} - Database with the VAR parameter matrices added.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The newly created database entries are named \texttt{A} (transition
- matrix), \texttt{K} (constant terms),and \texttt{Omg} (covariance matrix
- of shocks). Be aware that if there are database entries in \texttt{D}
- whose names conincide with these names, they will be overwritten.
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- D = struct();
- D = addparam(V,D);
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = addparam(V,D)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} SVAR {]} - SVAR object whose parameter matrices will be
+  added to database (struct) \texttt{D}.
+\item
+  \texttt{D} {[} struct {]} - Database to which the model parameters
+  will be added.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  `D {[} struct {]} - Database with the VAR parameter matrices added.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The newly created database entries are named \texttt{A} (transition
+matrix), \texttt{K} (constant terms),and \texttt{Omg} (covariance matrix
+of shocks). Be aware that if there are database entries in \texttt{D}
+whose names conincide with these names, they will be overwritten.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+D = struct();
+D = addparam(V,D);
+\end{verbatim}
 
 

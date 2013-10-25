@@ -2,54 +2,54 @@
 
     \filetitle{movsum}{Moving sum pseudofunction}{modellang/movsum}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- movsum(EXPR)
- movsum(EXPR,K)
- \end{verbatim}
- 
- \paragraph{Description}
- 
- If the second input argument, \texttt{K}, is negative, this function
- expands to the moving sum of the last K periods (including the current
- period), i.e.
- 
- \begin{verbatim}
- ((EXPR)+(EXPR{-1})+ ... +(EXPR{-(K-1)})
- \end{verbatim}
- 
- where \texttt{EXPR\{-N\}} derives from \texttt{EXPR} and has all its
- time subscripts shifted by \texttt{-N} (if specified).
- 
- If the second input argument, \texttt{K}, is positive, this function
- expands to the moving sum of the next K periods ahead (including the
- current period), i.e.
- 
- \begin{verbatim}
- ((EXPR)+(EXPR{1})+ ... +(EXPR{K-1})
- \end{verbatim}
- 
- If the second input argument, \texttt{K}, is not specified, the default
- value -4 is used (based on the fact that most of the macroeconomic
- models are quarterly).
- 
- \paragraph{Example}
- 
- The following three lines
- 
- \begin{verbatim}
- movsum(Z)
- movsum(Z,-3)
- movsum(X+Y{-1},2)
- \end{verbatim}
- 
- will expand to
- 
- \begin{verbatim}
- ((Z)+(Z{-1})+(Z{-2})+(Z{-3}))
- ((Z)+(Z{-1})+(Z{-2}))
- ((X+Y{-1})+(X{1}+Y))
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+movsum(EXPR)
+movsum(EXPR,K)
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+If the second input argument, \texttt{K}, is negative, this function
+expands to the moving sum of the last K periods (including the current
+period), i.e.
+
+\begin{verbatim}
+((EXPR)+(EXPR{-1})+ ... +(EXPR{-(K-1)})
+\end{verbatim}
+
+where \texttt{EXPR\{-N\}} derives from \texttt{EXPR} and has all its
+time subscripts shifted by \texttt{-N} (if specified).
+
+If the second input argument, \texttt{K}, is positive, this function
+expands to the moving sum of the next K periods ahead (including the
+current period), i.e.
+
+\begin{verbatim}
+((EXPR)+(EXPR{1})+ ... +(EXPR{K-1})
+\end{verbatim}
+
+If the second input argument, \texttt{K}, is not specified, the default
+value -4 is used (based on the fact that most of the macroeconomic
+models are quarterly).
+
+\paragraph{Example}\label{example}
+
+The following three lines
+
+\begin{verbatim}
+movsum(Z)
+movsum(Z,-3)
+movsum(X+Y{-1},2)
+\end{verbatim}
+
+will expand to
+
+\begin{verbatim}
+((Z)+(Z{-1})+(Z{-2})+(Z{-3}))
+((Z)+(Z{-1})+(Z{-2}))
+((X+Y{-1})+(X{1}+Y))
+\end{verbatim}
 
 

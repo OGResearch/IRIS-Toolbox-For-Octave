@@ -2,59 +2,59 @@
 
     \filetitle{srf}{Shock (impulse) response function}{SVAR/srf}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [R,Cum] = srf(V,NPer)
- [R,Cum] = srf(V,Range)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} SVAR {]} - SVAR object for which the impulse response
-   function will be computed.
- \item
-   \texttt{NPer} {[} numeric {]} - Number of periods.
- \item
-   \texttt{Range} {[} numeric {]} - Date range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{R} {[} tseries \textbar{} struct {]} - Shock response
-   functions.
- \item
-   \texttt{Cum} {[} tseries \textbar{} struct {]} - Cumulative shock
-   response functions.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'presample='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Include zeros for pre-sample initial
-   conditions in the output data.
- \item
-   \texttt{'select='} {[} cellstr \textbar{} char \textbar{} logical
-   \textbar{} numeric \textbar{} \emph{\texttt{Inf}} {]} - Selection of
-   shocks to which the responses will be simulated.
- \end{itemize}
- 
- \paragraph{Description}
- 
- For backward compatibility, the following calls into the \texttt{srf}
- function is also possible:
- 
- \begin{verbatim}
- [~,~,s,c] = srf(this,nper)
- [~,~,s,c] = srf(this,range)
- \end{verbatim}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[R,Cum] = srf(V,NPer)
+[R,Cum] = srf(V,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} SVAR {]} - SVAR object for which the impulse response
+  function will be computed.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{R} {[} tseries \textbar{} struct {]} - Shock response
+  functions.
+\item
+  \texttt{Cum} {[} tseries \textbar{} struct {]} - Cumulative shock
+  response functions.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'presample='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Include zeros for pre-sample initial
+  conditions in the output data.
+\item
+  \texttt{'select='} {[} cellstr \textbar{} char \textbar{} logical
+  \textbar{} numeric \textbar{} \emph{\texttt{Inf}} {]} - Selection of
+  shocks to which the responses will be simulated.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+For backward compatibility, the following calls into the \texttt{srf}
+function is also possible:
+
+\begin{verbatim}
+[~,~,s,c] = srf(this,nper)
+[~,~,s,c] = srf(this,range)
+\end{verbatim}
+
+\paragraph{Example}\label{example}
 
 

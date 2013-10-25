@@ -2,48 +2,48 @@
 
     \filetitle{sstatefile}{Create a steady-state file based on the model object's steady-state equations}{model/sstatefile}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- sstatefile(m,filename,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{m} {[} model {]} - Model object.
- \item
-   \texttt{file} {[} char {]} - Filename under which the steady-state
-   file will be saved.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'endogenise='} {[} cellstr \textbar{} char \textbar{}
-   \emph{empty} {]} - List of parameters that will be endogenised when
-   computing the steady state; the number of endogenised parameters must
-   match the number of transtion variables exogenised in the
-   \texttt{'exogenised='} option.
- \item
-   \texttt{'endogenise='} {[} cellstr \textbar{} char \textbar{}
-   \emph{empty} {]} - List of transition variables that will be
-   exogenised when computing the steady state; the number of exogenised
-   variables must match the number of parameters exogenised in the
-   \texttt{'exogenise='} option.
- \item
-   \texttt{'growthNames='} {[} char \textbar{} \emph{\texttt{'d?'}} {]} -
-   Template for growth names used in evaluating lags and leads.
- \item
-   \texttt{'time='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Keep or remove time subscripts (curly braces) in the
-   steady-state file.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+sstatefile(m,filename,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{m} {[} model {]} - Model object.
+\item
+  \texttt{file} {[} char {]} - Filename under which the steady-state
+  file will be saved.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'endogenise='} {[} cellstr \textbar{} char \textbar{}
+  \emph{empty} {]} - List of parameters that will be endogenised when
+  computing the steady state; the number of endogenised parameters must
+  match the number of transtion variables exogenised in the
+  \texttt{'exogenised='} option.
+\item
+  \texttt{'endogenise='} {[} cellstr \textbar{} char \textbar{}
+  \emph{empty} {]} - List of transition variables that will be
+  exogenised when computing the steady state; the number of exogenised
+  variables must match the number of parameters exogenised in the
+  \texttt{'exogenise='} option.
+\item
+  \texttt{'growthNames='} {[} char \textbar{} \emph{\texttt{'d?'}} {]} -
+  Template for growth names used in evaluating lags and leads.
+\item
+  \texttt{'time='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Keep or remove time subscripts (curly braces) in the
+  steady-state file.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

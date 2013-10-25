@@ -2,33 +2,35 @@
 
     \filetitle{infocrit}{Populate information criteria for a parameterised VAR}{VAR/infocrit}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- V = infocrit(V)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object with the AIC and SBC information
-   criteria re-calculated.
- \end{itemize}
- 
- \paragraph{Description}
- 
- In most cases, you don't have to run the function \texttt{infocrit} as
- it is called from within \texttt{estimate} immediately after a new
- parameterisation is created.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+V = infocrit(V)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object with the AIC and SBC information
+  criteria re-calculated.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+In most cases, you don't have to run the function \texttt{infocrit} as
+it is called from within \texttt{estimate} immediately after a new
+parameterisation is created.
+
+\paragraph{Example}\label{example}
 
 

@@ -2,77 +2,79 @@
 
     \filetitle{plotneigh}{Plot local behaviour of objective function after estimation}{grfun/plotneigh}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- H = grfun.plotneigh(D,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Structure describing the local behaviour
-   of the objective function returned by the
-   \href{model/neighbourhood}{\texttt{neighbourhood}} function.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{H} {[} struct {]} - Struct with handles to the graphics
-   objects plotted by \texttt{plotpp}; the struct has the following
-   fields with vectors of handles: \texttt{figure}, \texttt{axes},
-   \texttt{obj}, \texttt{est}, \texttt{lik}, \texttt{bounds}.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'caption='} {[} \emph{empty} \textbar{} cellstr {]} -
-   User-supplied graph titles; if empty, default captions will be
-   automatically created.
- \item
-   \texttt{'model='} {[} model \textbar{} \emph{empty} {]} - Model object
-   used to create graph captions if the option \texttt{'caption='} is
-   \texttt{'descript'} or \texttt{'alias'}.
- \item
-   \texttt{'plotObj='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Plot the local behaviour of the overall objective function; a
-   cell array can be specified to control graphics options.
- \item
-   \texttt{'plotLik='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   \textbar{} cell {]} - Plot the local behaviour of the data likelihood
-   component; a cell array can be specified to control graphics options.
- \item
-   \texttt{'plotEst='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   \textbar{} cell {]} - Mark the actual parameter estimate; a cell array
-   can be specified to control graphics options.
- \item
-   \texttt{'plotBounds='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} \textbar{} cell {]} - Draw the lower and/or upper
-   bounds if they fall within the graph range; a cell array can be
-   specified to control graphics options.
- \item
-   \texttt{'subplot='} {[} \emph{\texttt{'auto'}} \textbar{} numeric {]}
-   - Subplot division of the figure when plotting the results.
- \item
-   \texttt{'title='} {[} \texttt{\{'interpreter=','none'\}} \textbar{}
-   cell {]} - Display graph titles, and specify graphics options for the
-   titles.
- \item
-   \texttt{'linkAxes='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Make the vertical axes identical for all
-   graphs.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The data log-likelihood curves are shifted up or down by an arbitrary
- constant to make them fit in the graph; their curvature is preserved.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+H = grfun.plotneigh(D,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Structure describing the local behaviour
+  of the objective function returned by the
+  \href{model/neighbourhood}{\texttt{neighbourhood}} function.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{H} {[} struct {]} - Struct with handles to the graphics
+  objects plotted by \texttt{plotpp}; the struct has the following
+  fields with vectors of handles: \texttt{figure}, \texttt{axes},
+  \texttt{obj}, \texttt{est}, \texttt{lik}, \texttt{bounds}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'caption='} {[} \emph{empty} \textbar{} cellstr {]} -
+  User-supplied graph titles; if empty, default captions will be
+  automatically created.
+\item
+  \texttt{'model='} {[} model \textbar{} \emph{empty} {]} - Model object
+  used to create graph captions if the option \texttt{'caption='} is
+  \texttt{'descript'} or \texttt{'alias'}.
+\item
+  \texttt{'plotObj='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Plot the local behaviour of the overall objective function; a
+  cell array can be specified to control graphics options.
+\item
+  \texttt{'plotLik='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  \textbar{} cell {]} - Plot the local behaviour of the data likelihood
+  component; a cell array can be specified to control graphics options.
+\item
+  \texttt{'plotEst='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  \textbar{} cell {]} - Mark the actual parameter estimate; a cell array
+  can be specified to control graphics options.
+\item
+  \texttt{'plotBounds='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} \textbar{} cell {]} - Draw the lower and/or upper
+  bounds if they fall within the graph range; a cell array can be
+  specified to control graphics options.
+\item
+  \texttt{'subplot='} {[} \emph{\texttt{'auto'}} \textbar{} numeric {]}
+  - Subplot division of the figure when plotting the results.
+\item
+  \texttt{'title='} {[} \texttt{\{'interpreter=','none'\}} \textbar{}
+  cell {]} - Display graph titles, and specify graphics options for the
+  titles.
+\item
+  \texttt{'linkAxes='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Make the vertical axes identical for all
+  graphs.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The data log-likelihood curves are shifted up or down by an arbitrary
+constant to make them fit in the graph; their curvature is preserved.
+
+\paragraph{Example}\label{example}
 
 

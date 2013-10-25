@@ -2,87 +2,88 @@
 
     \filetitle{resample}{Resample from the model implied distribution}{model/resample}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Outp = resample(M,Inp,Range,NDraw,...)
- Oupt = resample(M,Inp,Range,NDraw,J,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Solved model object.
- \item
-   \texttt{Inp} {[} struct \textbar{} empty {]} - Input data (if needed)
-   for the distributions of initial condition and/or empirical shocks; if
-   not bootstrap is invovled
- \item
-   \texttt{Range} {[} numeric {]} - Resampling date range.
- \item
-   \texttt{NDraw} {[} numeric {]} - Number of draws.
- \item
-   \texttt{J} {[} struct \textbar{} empty {]} - Database with
-   user-supplied (time-varying) tunes on std devs, corr coeffs, and/or
-   means of shocks.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Outp} {[} struct {]} - Output database with resampled data.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'deviation='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Treat input and output data as deviations
-   from balanced-growth path.
- \item
-   \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
-   \texttt{true} \textbar{} \texttt{false} {]} - Add deterministic trends
-   to measurement variables.
- \item
-   \texttt{'method='} {[} \texttt{'bootstrap'} \textbar{}
-   \emph{\texttt{'montecarlo'}} {]} - Method of randomising shocks and
-   initial condition.
- \item
-   \texttt{'progress='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Display progress bar in the command
-   window.
- \item
-   \texttt{'randomInitCond='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} \textbar{} numeric {]} - Randomise initial condition; a
-   number means the initial condition will be simulated using the
-   specified number of extra pre-sample periods.
- \item
-   \texttt{'stateVector='} {[} \emph{\texttt{'alpha'}} \textbar{}
-   \texttt{'x'} {]} - When resampling initial condition, use the
-   transformed state vector, \texttt{alpha}, or the vector of original
-   variables, \texttt{x}; this option is meant to guarantee replicability
-   of results.
- \item
-   \texttt{'svdOnly='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Do not attempt Cholesky and only use SVD to factorize the
-   covariance matrix when resampling initial condition; only applies when
-   \texttt{'randomInitCond=' true}.
- \item
-   \texttt{'wild='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Use wild bootstrap instead of Efron bootstrap; only applies when
-   \texttt{'method=' 'bootstrap'}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- When you use wild bootstrap for resampling the initial condition, the
- results are based on an assumption that the mean of the initial
- condition is the asymptotic mean implied by the model (i.e.~the steady
- state).
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Outp = resample(M,Inp,Range,NDraw,...)
+Oupt = resample(M,Inp,Range,NDraw,J,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Solved model object.
+\item
+  \texttt{Inp} {[} struct \textbar{} empty {]} - Input data (if needed)
+  for the distributions of initial condition and/or empirical shocks; if
+  not bootstrap is invovled
+\item
+  \texttt{Range} {[} numeric {]} - Resampling date range.
+\item
+  \texttt{NDraw} {[} numeric {]} - Number of draws.
+\item
+  \texttt{J} {[} struct \textbar{} empty {]} - Database with
+  user-supplied (time-varying) tunes on std devs, corr coeffs, and/or
+  means of shocks.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Outp} {[} struct {]} - Output database with resampled data.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Treat input and output data as deviations
+  from balanced-growth path.
+\item
+  \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
+  \texttt{true} \textbar{} \texttt{false} {]} - Add deterministic trends
+  to measurement variables.
+\item
+  \texttt{'method='} {[} \texttt{'bootstrap'} \textbar{}
+  \emph{\texttt{'montecarlo'}} {]} - Method of randomising shocks and
+  initial condition.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\item
+  \texttt{'randomInitCond='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} \textbar{} numeric {]} - Randomise initial condition; a
+  number means the initial condition will be simulated using the
+  specified number of extra pre-sample periods.
+\item
+  \texttt{'stateVector='} {[} \emph{\texttt{'alpha'}} \textbar{}
+  \texttt{'x'} {]} - When resampling initial condition, use the
+  transformed state vector, \texttt{alpha}, or the vector of original
+  variables, \texttt{x}; this option is meant to guarantee replicability
+  of results.
+\item
+  \texttt{'svdOnly='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Do not attempt Cholesky and only use SVD to factorize the
+  covariance matrix when resampling initial condition; only applies when
+  \texttt{'randomInitCond=' true}.
+\item
+  \texttt{'wild='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Use wild bootstrap instead of Efron bootstrap; only applies when
+  \texttt{'method=' 'bootstrap'}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+When you use wild bootstrap for resampling the initial condition, the
+results are based on an assumption that the mean of the initial
+condition is the asymptotic mean implied by the model (i.e.~the steady
+state).
+
+\paragraph{Example}\label{example}
 
 

@@ -2,87 +2,89 @@
 
     \filetitle{cumsumk}{Cumulative sum with a k-period leap}{tseries/cumsumk}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Y = cumsumk(X,K,RHO,RANGE)
- Y = cumsumk(X,K,RHO)
- Y = cumsumk(X,K)
- Y = cumsumk(X)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input data.
- \item
-   \texttt{K} {[} numeric {]} - Number of periods that will be leapt the
-   cumulative sum will be taken; if not specified, \texttt{K} is chosen
-   to match the frequency of the input data (e.g. \texttt{K = -4} for
-   quarterly data), or \texttt{K = -1} for indeterminate frequency.
- \item
-   \texttt{RHO} {[} numeric {]} - Autoregressive coefficient; if not
-   specified, \texttt{RHO = 1}.
- \item
-   \texttt{RANGE} {[} numeric {]} - Range on which the cumulative sum
-   will be computed and the output series returned.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Y} {[} tseries {]} - Output data constructed as described
-   below.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
-   - Logarithmise the input data before, and de-logarithmise the output
-   data back after, running \texttt{x12}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- If \texttt{K \textless{} 0}, the first \texttt{K} observations in the
- output series \texttt{Y} are copied from \texttt{X}, and the new
- observations are given recursively by
- 
- \begin{verbatim}
- Y{t} = RHO*Y{t-K} + X{t}.
- \end{verbatim}
- 
- If \texttt{K \textgreater{} 0}, the last \texttt{K} observations in the
- output series \texttt{Y} are copied from \texttt{X}, and the new
- observations are given recursively by
- 
- \begin{verbatim}
- Y{t} = RHO*Y{t+K} + X{t},
- \end{verbatim}
- 
- going backwards in time.
- 
- If \texttt{K == 0}, the input data are returned.
- 
- \paragraph{Example}
- 
- Construct random data with seasonal pattern, and run X12 to seasonally
- adjust these series.
- 
- \begin{verbatim}
- x = tseries(qq(1990,1):qq(2020,4),@randn);
- x1 = cumsumk(x,-4,1);
- x2 = cumsumk(x,-4,0.7);
- x1sa = x12(x1);
- x2sa = x12(x2);
- \end{verbatim}
- 
- The new series \texttt{x1} will be a unit-root process while \texttt{x2}
- will be stationary. Note that the command on the second line could be
- replaced with \texttt{x1 = cumsumk(x)}.
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Y = cumsumk(X,K,Rho,Range)
+Y = cumsumk(X,K,Rho)
+Y = cumsumk(X,K)
+Y = cumsumk(X)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input data.
+\item
+  \texttt{K} {[} numeric {]} - Number of periods that will be leapt the
+  cumulative sum will be taken; if not specified, \texttt{K} is chosen
+  to match the frequency of the input data (e.g. \texttt{K = -4} for
+  quarterly data), or \texttt{K = -1} for indeterminate frequency.
+\item
+  \texttt{Rho} {[} numeric {]} - Autoregressive coefficient; if not
+  specified, \texttt{Rho = 1}.
+\item
+  \texttt{Range} {[} numeric {]} - Range on which the cumulative sum
+  will be computed and the output series returned.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Y} {[} tseries {]} - Output data constructed as described
+  below.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the input data before, and de-logarithmise the output
+  data back after, running \texttt{x12}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+If \texttt{K \textless{} 0}, the first \texttt{K} observations in the
+output series \texttt{Y} are copied from \texttt{X}, and the new
+observations are given recursively by
+
+\begin{verbatim}
+Y{t} = Rho*Y{t-K} + X{t}.
+\end{verbatim}
+
+If \texttt{K \textgreater{} 0}, the last \texttt{K} observations in the
+output series \texttt{Y} are copied from \texttt{X}, and the new
+observations are given recursively by
+
+\begin{verbatim}
+Y{t} = Rho*Y{t+K} + X{t},
+\end{verbatim}
+
+going backwards in time.
+
+If \texttt{K == 0}, the input data are returned.
+
+\paragraph{Example}\label{example}
+
+Construct random data with seasonal pattern, and run X12 to seasonally
+adjust these series.
+
+\begin{verbatim}
+x = tseries(qq(1990,1):qq(2020,4),@randn);
+x1 = cumsumk(x,-4,1);
+x2 = cumsumk(x,-4,0.7);
+x1sa = x12(x1);
+x2sa = x12(x2);
+\end{verbatim}
+
+The new series \texttt{x1} will be a unit-root process while \texttt{x2}
+will be stationary. Note that the command on the second line could be
+replaced with \texttt{x1 = cumsumk(x)}.
 
 

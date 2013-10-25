@@ -2,68 +2,68 @@
 
     \filetitle{barcon}{Contribution bar graph for tseries objects}{tseries/barcon}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [H,Range] = barcon(X,...)
- [H,Range] = barcon(Range,X,...)
- [H,Range] = barcon(Ax,Range,X,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
-   be plotted; if not specified, the current axes will used.
- \item
-   \texttt{Range} {[} numeric {]} - Date range; if not specified the
-   entire range of the input tseries object will be plotted.
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object whose columns will
-   be ploted as a contribution bar graph.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{H} {[} numeric {]} - Handle(s) to the bars plotted.
- \item
-   \texttt{Range} {[} numeric {]} - Actually plotted date range.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'barWidth='} {[} numeric \textbar{} \emph{0.8} {]} - Width of
-   bars as a percentage of the space each period occupies on the x-axis.
- \item
-   \texttt{'colorMap='} {[} numeric \textbar{}
-   \emph{get(gcf(),`colorMap')} {]} - Color map used to fill the
-   contribution bars.
- \item
-   \texttt{'dateFormat='} {[} char \textbar{}
-   \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-   on the x-axis.
- \item
-   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Vector of dates locating tick marks on the x-axis; Inf means they will
-   be created automatically.
- \item
-   \texttt{'evenlySpread='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Colors picked for the contribution bars are
-   evenly spread across the color map.
- \item
-   \texttt{'ordering='} {[} `ascend' \textbar{} `descend' \textbar{}
-   \emph{`preserve'} \textbar{} numeric {]} - Ordering of contributions
-   with the same sign withinin each period; \texttt{'preserve'} means the
-   original order will be preserved.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[H,Range] = barcon(X,...)
+[H,Range] = barcon(Range,X,...)
+[H,Range] = barcon(Ax,Range,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+  be ploted as a contribution bar graph.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handle(s) to the bars plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'barWidth='} {[} numeric \textbar{} \emph{0.8} {]} - Width of
+  bars as a percentage of the space each period occupies on the x-axis.
+\item
+  \texttt{'colorMap='} {[} numeric \textbar{}
+  \emph{get(gcf(),`colorMap')} {]} - Color map used to fill the
+  contribution bars.
+\item
+  \texttt{'dateFormat='} {[} char \textbar{}
+  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+  on the x-axis.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the x-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'evenlySpread='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Colors picked for the contribution bars are
+  evenly spread across the color map.
+\item
+  \texttt{'ordering='} {[} `ascend' \textbar{} `descend' \textbar{}
+  \emph{`preserve'} \textbar{} numeric {]} - Ordering of contributions
+  with the same sign withinin each period; \texttt{'preserve'} means the
+  original order will be preserved.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

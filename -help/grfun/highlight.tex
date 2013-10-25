@@ -2,57 +2,57 @@
 
     \filetitle{highlight}{Highlight specified range or date range in a graph}{grfun/highlight}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [Pt,Cp] = highlight(Range,...)
- [Pt,Cp] = highlight(Ax,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Range} {[} numeric {]} - X-axis range or date range that will
-   be highlighted.
- \item
-   \texttt{Ax} {[} numeric {]} - Handle(s) to axes object(s) in which the
-   highlight will be made.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Pt} {[} numeric {]} - Handle to the highlighted area (patch
-   object).
- \item
-   \texttt{Cp} {[} numeric {]} - Handle to the caption (text object).
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'caption='} {[} char {]} - Annotate the highlighted area with
-   this text string.
- \item
-   \texttt{'color='} {[} numeric \textbar{} \emph{{[}0.9,0.9,0.9{]}} {]}
-   - An RGB color code or a Matlab color name.
- \item
-   \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Exclude the highlighted area from legend.
- \item
-   \texttt{'hPosition='} {[} `center' \textbar{} `left' \textbar{}
-   \emph{`right'} {]} - Horizontal position of the caption.
- \item
-   \texttt{'vPosition='} {[} `bottom' \textbar{} `middle' \textbar{}
-   \emph{`top'} \textbar{} numeric {]} - Vertical position of the
-   caption.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Pt,Cp] = highlight(Range,...)
+[Pt,Cp] = highlight(Ax,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Range} {[} numeric {]} - X-axis range or date range that will
+  be highlighted.
+\item
+  \texttt{Ax} {[} numeric {]} - Handle(s) to axes object(s) in which the
+  highlight will be made.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Pt} {[} numeric {]} - Handle to the highlighted area (patch
+  object).
+\item
+  \texttt{Cp} {[} numeric {]} - Handle to the caption (text object).
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'caption='} {[} char {]} - Annotate the highlighted area with
+  this text string.
+\item
+  \texttt{'color='} {[} numeric \textbar{} \emph{{[}0.9,0.9,0.9{]}} {]}
+  - An RGB color code or a Matlab color name.
+\item
+  \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Exclude the highlighted area from legend.
+\item
+  \texttt{'hPosition='} {[} `center' \textbar{} `left' \textbar{}
+  \emph{`right'} {]} - Horizontal position of the caption.
+\item
+  \texttt{'vPosition='} {[} `bottom' \textbar{} `middle' \textbar{}
+  \emph{`top'} \textbar{} numeric {]} - Vertical position of the
+  caption.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

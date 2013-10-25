@@ -110,16 +110,16 @@ code.LaTeX {
 <div class="headline">Cumulative sum with a k-period leap</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Y = cumsumk(X,K,RHO,RANGE)
-Y = cumsumk(X,K,RHO)
+<pre><code>Y = cumsumk(X,K,Rho,Range)
+Y = cumsumk(X,K,Rho)
 Y = cumsumk(X,K)
 Y = cumsumk(X)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ tseries ] - Input data.</p></li>
 <li><p><code>K</code> [ numeric ] - Number of periods that will be leapt the cumulative sum will be taken; if not specified, <code>K</code> is chosen to match the frequency of the input data (e.g. <code>K = -4</code> for quarterly data), or <code>K = -1</code> for indeterminate frequency.</p></li>
-<li><p><code>RHO</code> [ numeric ] - Autoregressive coefficient; if not specified, <code>RHO = 1</code>.</p></li>
-<li><p><code>RANGE</code> [ numeric ] - Range on which the cumulative sum will be computed and the output series returned.</p></li>
+<li><p><code>Rho</code> [ numeric ] - Autoregressive coefficient; if not specified, <code>Rho = 1</code>.</p></li>
+<li><p><code>Range</code> [ numeric ] - Range on which the cumulative sum will be computed and the output series returned.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
@@ -131,9 +131,9 @@ Y = cumsumk(X)</code></pre>
 </ul>
 <h4 id="description">Description</h4>
 <p>If <code>K &lt; 0</code>, the first <code>K</code> observations in the output series <code>Y</code> are copied from <code>X</code>, and the new observations are given recursively by</p>
-<pre><code>Y{t} = RHO*Y{t-K} + X{t}.</code></pre>
+<pre><code>Y{t} = Rho*Y{t-K} + X{t}.</code></pre>
 <p>If <code>K &gt; 0</code>, the last <code>K</code> observations in the output series <code>Y</code> are copied from <code>X</code>, and the new observations are given recursively by</p>
-<pre><code>Y{t} = RHO*Y{t+K} + X{t},</code></pre>
+<pre><code>Y{t} = Rho*Y{t+K} + X{t},</code></pre>
 <p>going backwards in time.</p>
 <p>If <code>K == 0</code>, the input data are returned.</p>
 <h4 id="example">Example</h4>

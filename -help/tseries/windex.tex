@@ -2,46 +2,47 @@
 
     \filetitle{windex}{Simple weighted or Divisia index}{tseries/windex}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Y = windex(X,W,Range)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input times series.
- \item
-   \texttt{W} {[} tseries \textbar{} numeric {]} - Fixed or time-varying
-   weights on the input time series.
- \item
-   \texttt{Range} {[} numeric {]} - Range on which the Divisia index is
-   computed.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Y} {[} tseries {]} - Weighted index based on \texttt{X}.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'method='} {[} `divisia' \textbar{} \emph{`simple'} {]} -
-   Weighting method.
- \item
-   \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
-   - Logarithmise the input data before computing the index,
-   delogarithmise the output data.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Y = windex(X,W,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input times series.
+\item
+  \texttt{W} {[} tseries \textbar{} numeric {]} - Fixed or time-varying
+  weights on the input time series.
+\item
+  \texttt{Range} {[} numeric {]} - Range on which the Divisia index is
+  computed.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Y} {[} tseries {]} - Weighted index based on \texttt{X}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'method='} {[} `divisia' \textbar{} \emph{`simple'} {]} -
+  Weighting method.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the input data before computing the index,
+  delogarithmise the output data.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

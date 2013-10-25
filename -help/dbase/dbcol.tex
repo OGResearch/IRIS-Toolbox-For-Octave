@@ -2,35 +2,36 @@
 
     \filetitle{dbcol}{Retrieve the specified column or columns from database entries}{dbase/dbcol}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- D = dbcol(D,K)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Input database with (possibly)
-   multivariate tseries objects and numeric arrays.
- \item
-   \texttt{K} {[} numeric \textbar{} logical \textbar{} `end' {]} -
-   Column or columns that will be retrieved from each tseries object or
-   numeric array in in the intput database, \texttt{D}, and returned in
-   the output database.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Output database with tseries objects and
-   numeric arrays reduced to the specified column.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = dbcol(D,K)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database with (possibly)
+  multivariate tseries objects and numeric arrays.
+\item
+  \texttt{K} {[} numeric \textbar{} logical \textbar{} `end' {]} -
+  Column or columns that will be retrieved from each tseries object or
+  numeric array in in the intput database, \texttt{D}, and returned in
+  the output database.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Output database with tseries objects and
+  numeric arrays reduced to the specified column.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

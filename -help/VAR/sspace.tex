@@ -2,46 +2,47 @@
 
     \filetitle{sspace}{Quasi-triangular state-space representation of VAR}{VAR/sspace}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [T,R,K,Z,H,D,Omg] = sspace(V,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{T} {[} numeric {]} - Transition matrix.
- \item
-   \texttt{R} {[} numeric {]} - Matrix at the shock vector in transition
-   equations.
- \item
-   \texttt{K} {[} numeric {]} - Constant vector in transition equations.
- \item
-   \texttt{Z} {[} numeric {]} - Matrix mapping transition variables to
-   measurement variables.
- \item
-   \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
-   equations.
- \item
-   \texttt{D} {[} numeric {]} - Constant vector in measurement equations.
- \item
-   \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
-   variables.
- \item
-   \texttt{Omega} {[} numeric {]} - Covariance matrix of shocks.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[T,R,K,Z,H,D,Omg] = sspace(V,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{T} {[} numeric {]} - Transition matrix.
+\item
+  \texttt{R} {[} numeric {]} - Matrix at the shock vector in transition
+  equations.
+\item
+  \texttt{K} {[} numeric {]} - Constant vector in transition equations.
+\item
+  \texttt{Z} {[} numeric {]} - Matrix mapping transition variables to
+  measurement variables.
+\item
+  \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
+  equations.
+\item
+  \texttt{D} {[} numeric {]} - Constant vector in measurement equations.
+\item
+  \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
+  variables.
+\item
+  \texttt{Omega} {[} numeric {]} - Covariance matrix of shocks.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,88 +2,89 @@
 
     \filetitle{jforecast}{Forecast with judgmental adjustments (conditional forecasts)}{model/jforecast}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- F = jforecast(M,D,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Solved model object.
- \item
-   \texttt{D} {[} struct {]} - Input data from which the initial
-   condition is taken.
- \item
-   \texttt{Range} {[} numeric {]} - Forecast range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{F} {[} struct {]} - Output struct with the judgmentally
-   adjusted forecast.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'anticipate='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - If true, real future shocks are anticipated,
-   imaginary are unanticipated; vice versa if false.
- \item
-   \texttt{'currentOnly='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - If \texttt{true}, MSE matrices will be computed
-   only for the current-dated variables, not for their lags or leads.
- \item
-   \texttt{'deviation='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Treat input and output data as deviations
-   from balanced-growth path.
- \item
-   \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
-   \texttt{true} \textbar{} \texttt{false} {]} - Measurement data contain
-   deterministic trends.
- \item
-   \texttt{'initCond='} {[} \emph{\texttt{'data'}} \textbar{}
-   \texttt{'fixed'} {]} - Use the MSE for the initial conditions if found
-   in the input data or treat the initical conditions as fixed.
- \item
-   \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Return only mean data, i.e.~point
-   estimates.
- \item
-   \texttt{'plan='} {[} plan {]} - Simulation plan specifying the
-   exogenised variables and endogenised shocks.
- \item
-   \texttt{'vary='} {[} struct \textbar{} \emph{empty} {]} - Database
-   with time-varying std deviations or cross-correlations of shocks.
- \end{itemize}
- 
- \paragraph{Description}
- 
- When adjusting the mean and/or std devs of shocks, you can use real and
- imaginary numbers ot distinguish between anticipated and unanticipated
- shocks:
- 
- \begin{itemize}
- \item
-   any shock entered as an imaginary number is treated as an anticipated
-   change in the mean of the shock distribution;
- \item
-   any std dev of a shock entered as an imaginary number indicates that
-   the shock will be treated as anticipated when conditioning the
-   forecast on the reduced-form tunes.
- \item
-   the same shock or its std dev can have both the real and the imaginary
-   part.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+F = jforecast(M,D,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Solved model object.
+\item
+  \texttt{D} {[} struct {]} - Input data from which the initial
+  condition is taken.
+\item
+  \texttt{Range} {[} numeric {]} - Forecast range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{F} {[} struct {]} - Output struct with the judgmentally
+  adjusted forecast.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'anticipate='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - If true, real future shocks are anticipated,
+  imaginary are unanticipated; vice versa if false.
+\item
+  \texttt{'currentOnly='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - If \texttt{true}, MSE matrices will be computed
+  only for the current-dated variables, not for their lags or leads.
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Treat input and output data as deviations
+  from balanced-growth path.
+\item
+  \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
+  \texttt{true} \textbar{} \texttt{false} {]} - Measurement data contain
+  deterministic trends.
+\item
+  \texttt{'initCond='} {[} \emph{\texttt{'data'}} \textbar{}
+  \texttt{'fixed'} {]} - Use the MSE for the initial conditions if found
+  in the input data or treat the initical conditions as fixed.
+\item
+  \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Return only mean data, i.e.~point
+  estimates.
+\item
+  \texttt{'plan='} {[} plan {]} - Simulation plan specifying the
+  exogenised variables and endogenised shocks.
+\item
+  \texttt{'vary='} {[} struct \textbar{} \emph{empty} {]} - Database
+  with time-varying std deviations or cross-correlations of shocks.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+When adjusting the mean and/or std devs of shocks, you can use real and
+imaginary numbers ot distinguish between anticipated and unanticipated
+shocks:
+
+\begin{itemize}
+\item
+  any shock entered as an imaginary number is treated as an anticipated
+  change in the mean of the shock distribution;
+\item
+  any std dev of a shock entered as an imaginary number indicates that
+  the shock will be treated as anticipated when conditioning the
+  forecast on the reduced-form tunes.
+\item
+  the same shock or its std dev can have both the real and the imaginary
+  part.
+\end{itemize}
+
+\paragraph{Description}\label{description-1}
+
+\paragraph{Example}\label{example}
 
 

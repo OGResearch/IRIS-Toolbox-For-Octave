@@ -2,54 +2,55 @@
 
     \filetitle{!exogenous\_variables}{List of exogenous variables}{modellang/exogenousvariables}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- !exogenous_variables
-     Variable_Name, Variable_Name, ...
-     ...
- \end{verbatim}
- 
- \paragraph{Syntax with descriptors}
- 
- \begin{verbatim}
- !exogenous_variables
-     Variable_Name, Variable_Name, ...
-     'Description of the variable...' Variable_Name
- \end{verbatim}
- 
- \paragraph{Syntax with steady-state values}
- 
- \begin{verbatim}
- !exogenous_variables
-     Variable_Name, Variable_Name, ...
-     Variable_Name = Value
- \end{verbatim}
- 
- \paragraph{Description}
- 
- The \texttt{!exogenous\_variables} keyword starts a new declaration
- block for exogenous variables, i.e.~variables that can appear only in
- \href{modellang/dtrends}{\texttt{!dtrends}} equations. The names of the
- variables must be separated by commas, semi-colons, or line breaks. You
- can have as many declaration blocks as you wish in any order in your
- model file: They all get combined together when you read the model file
- in. Each variable must be declared (exactly once).
- 
- You can add descriptors to the variables (enclosed in single or double
- quotes, preceding the name of the variable); these will be stored in,
- and accessible from, the model object. You can also assign steady-state
- values to the variables straight in the model file (following an equal
- sign after the name of the variable); this is, though, rather rare and
- unnecessary practice because you can assign and change steady-state
- values more conveniently in the model object.
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- !exogenous_variables
-     X, 'Tax effects' Y
-     'Population growth effects' Z = 0 + 0.5i;
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+!exogenous_variables
+    Variable_Name, Variable_Name, ...
+    ...
+\end{verbatim}
+
+\paragraph{Syntax with descriptors}\label{syntax-with-descriptors}
+
+\begin{verbatim}
+!exogenous_variables
+    Variable_Name, Variable_Name, ...
+    'Description of the variable...' Variable_Name
+\end{verbatim}
+
+\paragraph{Syntax with steady-state
+values}\label{syntax-with-steady-state-values}
+
+\begin{verbatim}
+!exogenous_variables
+    Variable_Name, Variable_Name, ...
+    Variable_Name = Value
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+The \texttt{!exogenous\_variables} keyword starts a new declaration
+block for exogenous variables, i.e.~variables that can appear only in
+\href{modellang/dtrends}{\texttt{!dtrends}} equations. The names of the
+variables must be separated by commas, semi-colons, or line breaks. You
+can have as many declaration blocks as you wish in any order in your
+model file: They all get combined together when you read the model file
+in. Each variable must be declared (exactly once).
+
+You can add descriptors to the variables (enclosed in single or double
+quotes, preceding the name of the variable); these will be stored in,
+and accessible from, the model object. You can also assign steady-state
+values to the variables straight in the model file (following an equal
+sign after the name of the variable); this is, though, rather rare and
+unnecessary practice because you can assign and change steady-state
+values more conveniently in the model object.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!exogenous_variables
+    X, 'Tax effects' Y
+    'Population growth effects' Z = 0 + 0.5i;
+\end{verbatim}
 
 

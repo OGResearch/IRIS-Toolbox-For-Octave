@@ -2,48 +2,48 @@
 
     \filetitle{acf}{Sample autocovariance and autocorrelation functions}{tseries/acf}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [C,R] = acf(X)
- [C,R] = acf(X,DATES,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Tseries object.
- \item
-   \texttt{DATES} {[} numeric \textbar{} Inf {]} - Dates or date range on
-   which tseries data will be used.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{C} {[} numeric {]} - Auto-/cross-covariance matrices.
- \item
-   \texttt{R} {[} numeric {]} - Auto-/cross-correlation matrices.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'demean='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Remove mean from the data before computing the ACF.
- \item
-   \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
-   up to which the ACF will be computed.
- \item
-   \texttt{'smallSample='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Adjust degrees of freedom for small samples.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[C,R] = acf(X)
+[C,R] = acf(X,DATES,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Tseries object.
+\item
+  \texttt{DATES} {[} numeric \textbar{} Inf {]} - Dates or date range on
+  which tseries data will be used.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{C} {[} numeric {]} - Auto-/cross-covariance matrices.
+\item
+  \texttt{R} {[} numeric {]} - Auto-/cross-correlation matrices.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'demean='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Remove mean from the data before computing the ACF.
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
+  up to which the ACF will be computed.
+\item
+  \texttt{'smallSample='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Adjust degrees of freedom for small samples.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,44 +2,45 @@
 
     \filetitle{normal}{Create function proportional to log of Normal or Student distribution}{logdist/normal}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- F = logdist.normal(Mean,Std,Df)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Mean} {[} numeric {]} - Mean of the normal distribution.
- \item
-   \texttt{Std} {[} numeric {]} - Std dev of the normal distribution.
- \item
-   \texttt{W} {[} numeric {]} - Optional input containing mixture
-   weights.
- \end{itemize}
- 
- Multivariate cases are supported. Evaluating multiple vectors as an
- array of column vectors is supported.
- 
- If the mean and standard deviation are cell arrays then the distribution
- will be a mixture of normals. In this case the third argument is the
- vector of mixture weights.
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{F} {[} function\_handle {]} - Function handle returning a
-   value proportional to the log of Normal density.
- \end{itemize}
- 
- \paragraph{Description}
- 
- See \href{logdist/Contents}{help on the logdisk package} for details on
- using the function handle \texttt{F}.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+F = logdist.normal(Mean,Std,Df)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Mean} {[} numeric {]} - Mean of the normal distribution.
+\item
+  \texttt{Std} {[} numeric {]} - Std dev of the normal distribution.
+\item
+  \texttt{W} {[} numeric {]} - Optional input containing mixture
+  weights.
+\end{itemize}
+
+Multivariate cases are supported. Evaluating multiple vectors as an
+array of column vectors is supported.
+
+If the mean and standard deviation are cell arrays then the distribution
+will be a mixture of normals. In this case the third argument is the
+vector of mixture weights.
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{F} {[} function\_handle {]} - Function handle returning a
+  value proportional to the log of Normal density.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+See \href{logdist/Contents}{help on the logdisk package} for details on
+using the function handle \texttt{F}.
+
+\paragraph{Example}\label{example}
 
 

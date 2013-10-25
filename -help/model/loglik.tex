@@ -2,131 +2,136 @@
 
     \filetitle{loglik}{Evaluate minus the log-likelihood function in time or frequency domain}{model/loglik}
 
-	\paragraph{Full syntax}
- 
- \begin{verbatim}
- [Obj,V,F,PE,Delta,PDelta] = loglik(M,D,Range,...)
- \end{verbatim}
- 
- \paragraph{Syntax for fast one-off likelihood evaluation}
- 
- \begin{verbatim}
- Obj = loglik(M,D,Range,...)
- \end{verbatim}
- 
- \paragraph{Syntax for repeated fast likelihood evaluations}
- 
- \begin{verbatim}
- % Step #1: Initialise.
- loglik(M,D,Range,...,'persist=',true);
- 
- % Step #2: Assign/change parameters.
- M... = ...; % Change parameters.
- 
- % Step #3: Re-compute steady state and solution if necessary.
- M = ...;
- M = ...;
- 
- % Step #4: Evaluate likelihood.
- L = loglik(M);
- 
- % Repeat steps #2, #3, #4 for different values of parameters.
- % ...
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object on which the likelihood of the
-   input data will be evaluated.
- \item
-   \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
-   from which the measurement variables will be taken.
- \item
-   \texttt{Range} {[} numeric {]} - Date range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \subparagraph{Test title}
- 
- \begin{itemize}
- \item
-   \texttt{Obj} {[} numeric {]} - Value of minus the log-likelihood
-   function (or other objective function if specified in options).
- \item
-   \texttt{V} {[} numeric {]} - Estimated variance scale factor if the
-   \texttt{'relative='} options is true; otherwise \texttt{V} is 1.
- \item
-   \texttt{F} {[} numeric {]} - Sequence of forecast MSE matrices for
-   measurement variables.
- \item
-   \texttt{PE} {[} struct {]} - Database with prediction errors for
-   measurement variables; exp of prediction errors for measurement
-   variables declared as log-variables.
- \item
-   \texttt{Delta} {[} struct {]} - Databse with point estimates of the
-   deterministic trend parameters specified in the \texttt{'outoflik='}
-   option.
- \item
-   \texttt{PDelta} {[} numeric {]} - MSE matrix of the estimates of the
-   \texttt{'outoflik='} parameters.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'persist='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} -- Pre-process and store the overhead (data and options) for
-   subsequent fast calls.
- \end{itemize}
- 
- See help on \url{model/filter} for other options available.
- 
- \paragraph{Description}
- 
- The number of output arguments you request when calling \texttt{loglik}
- affects computational efficiency. Running the function with only the
- first output argument, i.e.~the value of the likelihood function (minus
- the log of it, in fact), results in the fastest performance.
- 
- The \texttt{loglik} function runs an identical Kalman filter as
- \url{model/filter}, the only difference is the types and order of output
- arguments returned.
- 
- \subparagraph{Fast evaluation of likelihood}
- 
- Every time you change the parameters, you need to update the steady
- state and solution of the model if necessary by yourself, before calling
- \texttt{loglik}. Follow these rules:
- 
- \begin{itemize}
- \item
-   If you only change std deviations and no other parameters, you don't
-   have to re-calculate steady state or solution.
- \item
-   If the model is linear, you only need to call
-   \href{model/solve}{\texttt{solve}}.
- \item
-   The only exception to rules \#2 and \#3 is when the model has
-   \href{modellang/links}{\texttt{dynamic links}} with references to some
-   steady state values. In that case, you must also run
-   \href{model/sstate}{\texttt{sstate}} after
-   \href{model/solve}{\texttt{solve}} in linear models to update the
-   steady state.
- \item
-   If the model is non-linear, and you only change parameters that affect
-   transitory dynamics and not the steady state, you only need to call
-   \href{model/solve}{\texttt{solve}}.
- \item
-   If the model is non-linear, and you change parameters that affect both
-   transitory dynamics and steady state, you must run first
-   \href{model/sstate}{\texttt{sstate}} and then
-   \href{model/solve}{\texttt{solve}}.
- \end{itemize}
- 
- \paragraph{Example}
+	\paragraph{Full syntax}\label{full-syntax}
+
+\begin{verbatim}
+[Obj,V,F,PE,Delta,PDelta] = loglik(M,D,Range,...)
+\end{verbatim}
+
+\paragraph{Syntax for fast one-off likelihood
+evaluation}\label{syntax-for-fast-one-off-likelihood-evaluation}
+
+\begin{verbatim}
+Obj = loglik(M,D,Range,...)
+\end{verbatim}
+
+\paragraph{Syntax for repeated fast likelihood
+evaluations}\label{syntax-for-repeated-fast-likelihood-evaluations}
+
+\begin{verbatim}
+% Step #1: Initialise.
+loglik(M,D,Range,...,'persist=',true);
+
+% Step #2: Assign/change parameters.
+M... = ...; % Change parameters.
+
+% Step #3: Re-compute steady state and solution if necessary.
+M = ...;
+M = ...;
+
+% Step #4: Evaluate likelihood.
+L = loglik(M);
+
+% Repeat steps #2, #3, #4 for different values of parameters.
+% ...
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object on which the likelihood of the
+  input data will be evaluated.
+\item
+  \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
+  from which the measurement variables will be taken.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\subparagraph{Test title}\label{test-title}
+
+\begin{itemize}
+\item
+  \texttt{Obj} {[} numeric {]} - Value of minus the log-likelihood
+  function (or other objective function if specified in options).
+\item
+  \texttt{V} {[} numeric {]} - Estimated variance scale factor if the
+  \texttt{'relative='} options is true; otherwise \texttt{V} is 1.
+\item
+  \texttt{F} {[} numeric {]} - Sequence of forecast MSE matrices for
+  measurement variables.
+\item
+  \texttt{PE} {[} struct {]} - Database with prediction errors for
+  measurement variables; exp of prediction errors for measurement
+  variables declared as log-variables.
+\item
+  \texttt{Delta} {[} struct {]} - Databse with point estimates of the
+  deterministic trend parameters specified in the \texttt{'outoflik='}
+  option.
+\item
+  \texttt{PDelta} {[} numeric {]} - MSE matrix of the estimates of the
+  \texttt{'outoflik='} parameters.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'persist='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} -- Pre-process and store the overhead (data and options) for
+  subsequent fast calls.
+\end{itemize}
+
+See help on \href{model/filter}{\texttt{model/filter}} for other options
+available.
+
+\paragraph{Description}\label{description}
+
+The number of output arguments you request when calling \texttt{loglik}
+affects computational efficiency. Running the function with only the
+first output argument, i.e.~the value of the likelihood function (minus
+the log of it, in fact), results in the fastest performance.
+
+The \texttt{loglik} function runs an identical Kalman filter as
+\href{model/filter}{\texttt{model/filter}}, the only difference is the
+types and order of output arguments returned.
+
+\subparagraph{Fast evaluation of
+likelihood}\label{fast-evaluation-of-likelihood}
+
+Every time you change the parameters, you need to update the steady
+state and solution of the model if necessary by yourself, before calling
+\texttt{loglik}. Follow these rules:
+
+\begin{itemize}
+\item
+  If you only change std deviations and no other parameters, you don't
+  have to re-calculate steady state or solution.
+\item
+  If the model is linear, you only need to call
+  \href{model/solve}{\texttt{solve}}.
+\item
+  The only exception to rules \#2 and \#3 is when the model has
+  \href{modellang/links}{\texttt{dynamic links}} with references to some
+  steady state values. In that case, you must also run
+  \href{model/sstate}{\texttt{sstate}} after
+  \href{model/solve}{\texttt{solve}} in linear models to update the
+  steady state.
+\item
+  If the model is non-linear, and you only change parameters that affect
+  transitory dynamics and not the steady state, you only need to call
+  \href{model/solve}{\texttt{solve}}.
+\item
+  If the model is non-linear, and you change parameters that affect both
+  transitory dynamics and steady state, you must run first
+  \href{model/sstate}{\texttt{sstate}} and then
+  \href{model/solve}{\texttt{solve}}.
+\end{itemize}
+
+\paragraph{Example}\label{example}
 
 

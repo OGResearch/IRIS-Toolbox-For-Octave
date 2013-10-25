@@ -2,149 +2,151 @@
 
     \filetitle{dbsave}{Save database as CSV file}{dbase/dbsave}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- List = dbsave(D,FName)
- List = dbsave(D,FName,Dates,...)
- \end{verbatim}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{List} {[} cellstr {]} - - List of actually saved database
-   entries.
- \end{itemize}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Database whose tseries and numeric entries
-   will be saved.
- \item
-   \texttt{FName} {[} char {]} - Filename under which the CSV will be
-   saved, including its extension.
- \item
-   \texttt{Dates} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} Dates or
-   date range on which the tseries objects will be saved.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'class='} {[} \emph{\texttt{true}} \textbar{} false {]} -
-   Include a row with class and size specifications.
- \item
-   \texttt{'comment='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Include a row with comments for tseries objects.
- \item
-   \texttt{'decimal='} {[} numeric \textbar{} \emph{empty} {]} - Number
-   of decimals up to which the data will be saved; if empty the
-   \texttt{'format'} option is used.
- \item
-   \texttt{'format='} {[} char \textbar{} \emph{\texttt{'\%.8e'}} {]}
-   Numeric format that will be used to represent the data, see
-   \texttt{sprintf} for details on formatting, The format must start with
-   a \texttt{'\%'}, and must not include identifiers specifying order of
-   processing, i.e.~the \texttt{'\$'} signs, or left-justify flags, the
-   \texttt{'-'} signs.
- \item
-   \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBM'}}
-   {]} - Five letters to represent the five possible date frequencies
-   (annual, semi-annual, quarterly, bimonthly, monthly).
- \item
-   \texttt{'nan='} {[} char \textbar{} \emph{\texttt{'NaN'}} {]} - String
-   that will be used to represent NaNs.
- \item
-   \texttt{'saveSubdb='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Save sub-databases (structs found within
-   the struct \texttt{D}); the sub-databases will be saved to separate
-   CSF files.
- \item
-   \texttt{'userData='} {[} char \textbar{} \emph{`userdata'} {]} - Field
-   name from which any kind of userdata will be read and saved in the CSV
-   file.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The data saved include also imaginary parts of complex numbers.
- 
- \subparagraph{Saving user data with the database}
- 
- If your database contains field named \texttt{'userdata='}, this will be
- saved in the CSV file on a separate row. The \texttt{'userdata='} field
- can be any combination of numeric, char, and cell arrays and 1-by-1
- structs.
- 
- You can use the \texttt{'userdata='} field to describe the database or
- preserve any sort of metadata. To change the name of the field that is
- treated as user data, use the \texttt{'userData='} option.
- 
- \paragraph{Example 1}
- 
- Create a simple database with two time series.
- 
- \begin{verbatim}
- d = struct();
- d.x = tseries(qq(2010,1):qq(2010,4),@rand);
- d.y = tseries(qq(2010,1):qq(2010,4),@rand);
- \end{verbatim}
- 
- Add your own description of the database, e.g.
- 
- \begin{verbatim}
- d.userdata = {'My database',datestr(now())};
- \end{verbatim}
- 
- Save the database as CSV using \texttt{dbsave},
- 
- \begin{verbatim}
- dbsave(d,'mydatabase.csv');
- \end{verbatim}
- 
- When you later load the database,
- 
- \begin{verbatim}
- d = dbload('mydatabase.csv')
- 
- d = 
- 
-    userdata: {'My database'  '23-Sep-2011 14:10:17'}
-           x: [4x1 tseries]
-           y: [4x1 tseries]
- \end{verbatim}
- 
- the database will preserve the \texttt{'userdata='} field.
- 
- \subparagraph{Example 2}
- 
- To change the field name under which you store your own user data, use
- the \texttt{'userdata='} option when running \texttt{dbsave},
- 
- \begin{verbatim}
- d = struct();
- d.x = tseries(qq(2010,1):qq(2010,4),@rand);
- d.y = tseries(qq(2010,1):qq(2010,4),@rand);
- d.MYUSERDATA = {'My database',datestr(now())};
- dbsave(d,'mydatabase.csv',Inf,'userData=','MYUSERDATA');
- \end{verbatim}
- 
- The name of the user data field is also kept in the CSV file so that
- \texttt{dbload} works fine in this case, too, and returns a database
- identical to the saved one,
- 
- \begin{verbatim}
- d = dbload('mydatabase.csv')
- 
- d = 
- 
-    MYUSERDATA: {'My database'  '23-Sep-2011 14:10:17'}
-             x: [4x1 tseries]
-             y: [4x1 tseries]
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+List = dbsave(D,FName)
+List = dbsave(D,FName,Dates,...)
+\end{verbatim}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{List} {[} cellstr {]} - - List of actually saved database
+  entries.
+\end{itemize}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Database whose tseries and numeric entries
+  will be saved.
+\item
+  \texttt{FName} {[} char {]} - Filename under which the CSV will be
+  saved, including its extension.
+\item
+  \texttt{Dates} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} Dates or
+  date range on which the tseries objects will be saved.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'class='} {[} \emph{\texttt{true}} \textbar{} false {]} -
+  Include a row with class and size specifications.
+\item
+  \texttt{'comment='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Include a row with comments for tseries objects.
+\item
+  \texttt{'decimal='} {[} numeric \textbar{} \emph{empty} {]} - Number
+  of decimals up to which the data will be saved; if empty the
+  \texttt{'format'} option is used.
+\item
+  \texttt{'format='} {[} char \textbar{} \emph{\texttt{'\%.8e'}} {]}
+  Numeric format that will be used to represent the data, see
+  \texttt{sprintf} for details on formatting, The format must start with
+  a \texttt{'\%'}, and must not include identifiers specifying order of
+  processing, i.e.~the \texttt{'\$'} signs, or left-justify flags, the
+  \texttt{'-'} signs.
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBM'}}
+  {]} - Five letters to represent the five possible date frequencies
+  (annual, semi-annual, quarterly, bimonthly, monthly).
+\item
+  \texttt{'nan='} {[} char \textbar{} \emph{\texttt{'NaN'}} {]} - String
+  that will be used to represent NaNs.
+\item
+  \texttt{'saveSubdb='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Save sub-databases (structs found within
+  the struct \texttt{D}); the sub-databases will be saved to separate
+  CSF files.
+\item
+  \texttt{'userData='} {[} char \textbar{} \emph{`userdata'} {]} - Field
+  name from which any kind of userdata will be read and saved in the CSV
+  file.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The data saved include also imaginary parts of complex numbers.
+
+\subparagraph{Saving user data with the
+database}\label{saving-user-data-with-the-database}
+
+If your database contains field named \texttt{'userdata='}, this will be
+saved in the CSV file on a separate row. The \texttt{'userdata='} field
+can be any combination of numeric, char, and cell arrays and 1-by-1
+structs.
+
+You can use the \texttt{'userdata='} field to describe the database or
+preserve any sort of metadata. To change the name of the field that is
+treated as user data, use the \texttt{'userData='} option.
+
+\paragraph{Example 1}\label{example-1}
+
+Create a simple database with two time series.
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(qq(2010,1):qq(2010,4),@rand);
+d.y = tseries(qq(2010,1):qq(2010,4),@rand);
+\end{verbatim}
+
+Add your own description of the database, e.g.
+
+\begin{verbatim}
+d.userdata = {'My database',datestr(now())};
+\end{verbatim}
+
+Save the database as CSV using \texttt{dbsave},
+
+\begin{verbatim}
+dbsave(d,'mydatabase.csv');
+\end{verbatim}
+
+When you later load the database,
+
+\begin{verbatim}
+d = dbload('mydatabase.csv')
+
+d = 
+
+   userdata: {'My database'  '23-Sep-2011 14:10:17'}
+          x: [4x1 tseries]
+          y: [4x1 tseries]
+\end{verbatim}
+
+the database will preserve the \texttt{'userdata='} field.
+
+\subparagraph{Example 2}\label{example-2}
+
+To change the field name under which you store your own user data, use
+the \texttt{'userdata='} option when running \texttt{dbsave},
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(qq(2010,1):qq(2010,4),@rand);
+d.y = tseries(qq(2010,1):qq(2010,4),@rand);
+d.MYUSERDATA = {'My database',datestr(now())};
+dbsave(d,'mydatabase.csv',Inf,'userData=','MYUSERDATA');
+\end{verbatim}
+
+The name of the user data field is also kept in the CSV file so that
+\texttt{dbload} works fine in this case, too, and returns a database
+identical to the saved one,
+
+\begin{verbatim}
+d = dbload('mydatabase.csv')
+
+d = 
+
+   MYUSERDATA: {'My database'  '23-Sep-2011 14:10:17'}
+            x: [4x1 tseries]
+            y: [4x1 tseries]
+\end{verbatim}
 
 
