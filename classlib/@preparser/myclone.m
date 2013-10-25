@@ -1,5 +1,6 @@
 function C = myclone(C,Clone)
-% myclone  [Not a public function] Clone a preparsed code.
+% myclone  [Not a public function] Clone a preparsed code by appending a
+% given prefix to all words except keywords.
 %
 % Backend IRIS function.
 % No help provided.

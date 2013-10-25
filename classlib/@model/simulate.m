@@ -66,8 +66,8 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
 % window.
 %
-% Options for models with non-linearised equations
-% =================================================
+% Options in non-linear simualations
+% ===================================
 %
 % * `'addSstate='` [ *`true`* | `false` ] - Add steady state levels to
 % simulated paths before evaluating non-linear equations; this option is

@@ -9,7 +9,7 @@ function [Blk,InvalidKey,InvalidAllBut] = readblk(This)
 
 %--------------------------------------------------------------------------
 
-nBlk = length(This.blkname);
+nBlk = length(This.blkName);
 
 % Check all words starting with an !.
 InvalidKey = xxChkKey(This);
@@ -21,8 +21,8 @@ if isempty(This.code) || This.code(end) ~= char(10)
 end
 
 % End of block (eob) is start of another block or end of file.
-inx = ~cellfun(@isempty,This.blkname);
-eob = sprintf('|%s',This.blkname{inx});
+inx = ~cellfun(@isempty,This.blkName);
+eob = sprintf('|%s',This.blkName{inx});
 eob = ['(?=$',eob,')'];
 
 % Remove redundant semicolons.
@@ -31,16 +31,16 @@ This.code = regexprep(This.code,'(\s*;){2,}',';');
 % Read blocks.
 Blk = cell(1,nBlk);
 for iBlk = 1 : nBlk
-    if isempty(This.blkname{iBlk})
+    if isempty(This.blkName{iBlk})
         continue
     end
     % Read a whole block.
-    pattern = [This.blkname{iBlk},'\s+(.*?)',eob];
+    pattern = [This.blkName{iBlk},'\s+(.*?)',eob];
     tokens = regexpi(This.code,pattern,'tokens');
     tokens = [tokens{:}];
     if ~isempty(tokens)
         % !all_but must be in all or none of log declaration blocks.
-        if This.flagblk(iBlk)
+        if This.flagBlk(iBlk)
             InvalidAllBut = InvalidAllBut || xxChkAllBut(tokens);
         end
         Blk{iBlk} = [tokens{:}];
@@ -56,8 +56,8 @@ end
 %**************************************************************************
 function InvalidKey = xxChkKey(This)
 
-inx = ~cellfun(@isempty,This.blkname);
-allowed = [This.blkname(inx),This.otherkey,{'!all_but'}];
+inx = ~cellfun(@isempty,This.blkName);
+allowed = [This.blkName(inx),This.otherKey,{'!all_but'}];
 
 key = regexp(This.code,'!\w+','match');
 nKey = length(key);

@@ -93,14 +93,12 @@ classdef preparser < userdataobj
         varargout = alt2str(varargin)
         varargout = export(varargin)
         varargout = grabcommentblk(varargin)
-        varargout = labelsback(varargin)
         varargout = labeledexpr(varargin)
         varargout = lincomb2vec(varargin)
         varargout = controls(varargin)
         varargout = pseudofunc(varargin)
         varargout = readcode(varargin)
         varargout = substitute(varargin)
-        varargout = protectlabels(varargin)
     end
     
 end

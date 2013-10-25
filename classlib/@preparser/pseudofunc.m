@@ -1,5 +1,5 @@
 function [C,Invalid] = pseudofunc(C)
-% pseudofunc  [Not a public function] Expand pseudofunctions in IRIS codes.
+% pseudofunc  [Not a public function] Expand pseudofunctions in preparser.
 %
 % Backend IRIS function.
 % No help provided.
@@ -22,8 +22,8 @@ while true
         open = finish + 1;
         % Find the matching closing bracket.
         [close,inside] = strfun.matchbrk(C,open);
+        inside = strrep(inside,' ','');
         if ~isempty(inside)
-            inside = strrep(inside,' ','');
             switch match
                 case 'diff'
                     replace = xxDiffOrDot(inside,'-');
@@ -55,11 +55,15 @@ while true
     end
 end
 
-end
+end % pseudofunc()
+
 
 % Subfunctions.
 
+
 %**************************************************************************
+
+
 function [Exprn,Shift] = xxParseFunc(C,DefaultShift)
 % xxparsefunc  Parse pseudofunctions.
 %     pseudofunc(expression)
@@ -82,19 +86,25 @@ if ~isempty(tokens{2})
     end
 end
 
-end % xxParseFunc().
+end % xxParseFunc()
+
 
 %**************************************************************************
-function [C,K] = xxDiffOrDot(C,Operator)
+
+
+function [C,K] = xxDiffOrDot(C,Op)
 
 [C,K] = xxParseFunc(C,-1);
 if ~isempty(C)
-    C = ['(',C,')',Operator,'(',xxShift(C,K),')'];
+    C = ['(',C,')',Op,'(',xxShift(C,K),')'];
 end
 
-end % xxDiffOrDot().
+end % xxDiffOrDot()
+
 
 %**************************************************************************
+
+
 function [C,K] = xxDiffLog(C)
 
 [C,K] = xxParseFunc(C,-1);
@@ -102,10 +112,13 @@ if ~isempty(C)
     C = ['log(',C,')-log(',xxShift(C,K),')'];
 end
 
-end % xxDiffLog().
+end % xxDiffLog()
+
 
 %**************************************************************************
-function [C,K] = xxMovSumOrMovProd(C,Operator)
+
+
+function [C,K] = xxMovSumOrMovProd(C,Op)
 
 [exprn,K] = xxParseFunc(C,-4);
 if ~isempty(C)
@@ -117,21 +130,27 @@ if ~isempty(C)
     end
     C = ['(',exprn,')'];
     for i = shiftVec
-        C = [C,Operator,'(',xxShift(exprn,i),')']; %#ok<AGROW>
+        C = [C,Op,'(',xxShift(exprn,i),')']; %#ok<AGROW>
     end
 end
 
-end % xxMovSumOrMovProd().
+end % xxMovSumOrMovProd()
+
 
 %**************************************************************************
+
+
 function C = xxMovAvg(C)
 
 [C,shift] = xxMovSumOrMovProd(C,'+');
 C = sprintf('(%s)/%g',C,abs(shift));
 
-end % xxMovAvg().
+end % xxMovAvg()
+
 
 %**************************************************************************
+
+
 function C = xxShift(C,K)
 
 replaceFunc = @doOneShift; %#ok<NASGU>
@@ -153,4 +172,4 @@ C = regexprep(C, ...
         X = [Name,Shift];
     end
 
-end % xxShift().
+end % xxShift()

@@ -1,4 +1,4 @@
-function [S,InvalidFlag] = parseflags(Blk,S)
+function [S,InvalidFlag] = parseflags(This,Blk,S) %#ok<INUSL>
 
 if isempty(strfind(Blk,'!all_but'))
     default = false;

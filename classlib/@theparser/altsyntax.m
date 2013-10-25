@@ -15,31 +15,32 @@ function This = altsyntax(This)
 This.code = regexprep(This.code,'\$\<([a-zA-Z]\w*)\>(?!\$)','&$1');
 
 % Obsolete alternative syntax, throw a warning.
-nBlkWarn = size(This.altblknamewarn,1);
+nBlkWarn = size(This.altBlkNameWarn,1);
 reportInx = false(nBlkWarn,1);
+
 % Nested functions are not visible from within `regexprep`, use a handle.
 replaceFunc = @doReplace; %#ok<NASGU>
 for iBlk = 1 : nBlkWarn
     This.code = regexprep(This.code, ...
-        ['\<',This.altblknamewarn{iBlk,1},'\>'], ...
+        ['\<',This.altBlkNameWarn{iBlk,1},'\>'], ...
         '${replaceFunc()}');
 end
 
     function C = doReplace()
-        C = This.altblknamewarn{iBlk,2};
+        C = This.altBlkNameWarn{iBlk,2};
         reportInx(iBlk) = true;
     end
 
 % Create a cellstr {obsolete,new,obsolete,new,...}.
-reportList = This.altblknamewarn(reportInx,:).';
+reportList = This.altBlkNameWarn(reportInx,:).';
 reportList = reportList(:).';
 
 % Alternative or short-cut syntax, do not report.
-nAltBlk = size(This.altblkname,1);
+nAltBlk = size(This.altBlkName,1);
 for iBlk = 1 : nAltBlk
     This.code = regexprep(This.code, ...
-        [This.altblkname{iBlk,1},'(?=\s)'], ...
-        This.altblkname{iBlk,2});
+        [This.altBlkName{iBlk,1},'(?=\s)'], ...
+        This.altBlkName{iBlk,2});
 end
 
 if ~isempty(reportList)

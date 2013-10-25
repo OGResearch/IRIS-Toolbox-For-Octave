@@ -1,28 +1,27 @@
 classdef theparser
-% theparser  [Not a public class] IRIS parser. 
-%
-% Backend IRIS class.
-% No help provided.
-
-% -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
-
+    % theparser  [Not a public class] IRIS parser.
+    %
+    % Backend IRIS class.
+    % No help provided.
+    
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    
     properties
         fname = '';
         code = '';
         caller = '';
         labels = cell(1,0);
-        blkname = cell(1,0);
-        altblkname = cell(0,2);
-        altblknamewarn = cell(0,2);
-        chkallbut = false(1,0);
-        nameblk = false(1,0);
+        blkName = cell(1,0);
+        altBlkName = cell(0,2);
+        altBlkNameWarn = cell(0,2);
+        nameBlk = false(1,0);
         nameType = nan(1,0);
-        eqtnblk = false(1,0);
-        flagblk = false(1,0);
+        eqtnBlk = false(1,0);
+        flagBlk = false(1,0);
         flaggable = false(1,0);
         essential = false(1,0);
-        otherkey = cell(1,0);
+        otherKey = cell(1,0);
     end
     
     methods
@@ -42,7 +41,7 @@ classdef theparser
                 return
             end
             if length(varargin) == 2 ...
-                && ischar(varargin{1}) && isa(varargin{2},'preparser')
+                    && ischar(varargin{1}) && isa(varargin{2},'preparser')
                 This.fname = varargin{2}.fname;
                 This.code = varargin{2}.code;
                 This.labels = varargin{2}.labels;
@@ -60,23 +59,15 @@ classdef theparser
         varargout = altsyntax(varargin)
         varargout = errorparsing(varargin)
         varargout = parse(varargin)
+        varargout = parseeqtns(varargin)
+        varargout = parseflags(varargin);
+        varargout = parsenames(varargin)
         varargout = readblk(varargin)
     end
     
     methods (Access=protected)
         
         varargout = model(varargin)
-
-    end
-
-    methods (Static)
-       
-        varargout = evaltimesubs(varargin)
-        varargout = getalias(varargin)
-        varargout = parsenames(varargin)
-        varargout = parseeqtns(varargin)
-        varargout = parseflags(varargin)
-        varargout = sstateonly(varargin)
         
     end
     
