@@ -33,11 +33,10 @@ end
 stack(1:omit-1) = [];
 %}
 
-stack = utils.getstack();
-
 % Throw an error with stack of non-IRIS function calls.
+stack = utils.getstack();
 if isempty(stack)
-    stack = struct('file','','name','','line',NaN);
+    stack = struct('file','','name','command prompt.','line',NaN);
 end
 
 msg = sprintf('IRIS Toolbox Error :: %s.',(Mnemonic));

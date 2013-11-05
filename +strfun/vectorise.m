@@ -7,12 +7,13 @@ function s = vectorise(s)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
-
-cellinput = iscell(s);
-if ~cellinput
+isCellInp = iscell(s);
+if ~isCellInp
     s = {s};
 end
+
+%--------------------------------------------------------------------------
+
 
 func = @(v) regexprep(v,'(?<!\.)(\*|/|\\|\^)','.$1');
 
@@ -33,11 +34,12 @@ for i = 1 : n
 end
 
 if any(~valid)
-    utils.error('utils', ...
-        'Cannot vectorise expressions other than char or function_handle.');
+    utils.error('strfun:vectorise', ...
+        ['Cannot vectorise expressions other than ', ...
+        'char strings or function handles.']);
 end
 
-if ~cellinput
+if ~isCellInp
     s = s{1};
 end
 
