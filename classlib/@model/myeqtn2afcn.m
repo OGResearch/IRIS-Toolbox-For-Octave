@@ -69,9 +69,13 @@ This.eqtnF = eqtnF;
 deqtnF = This.deqtnF;
 ceqtnF = This.ceqtnF;
 
+% Non-empty derivatives.
+isDeqtnF = ~cellfun(@isempty,This.deqtnF);
+
 % Derivatives of transition and measurement equations wrt variables and
 % shocks.
-for i = find(This.eqtntype <= 2)
+inx = This.eqtntype <= 2 & isDeqtnF;
+for i = find(inx)
     deqtnF{i} = removeFunc(deqtnF{i});
     deqtnF{i} = str2func(['@(x,t,L) ',deqtnF{i}]);
     if ischar(ceqtnF{i})
@@ -81,7 +85,8 @@ for i = find(This.eqtntype <= 2)
 end
 
 % Derivatives of dtrend equations wrt parameters.
-for i = find(This.eqtntype == 3)
+inx = This.eqtntype == 3 & isDeqtnF;
+for i = find(inx)
     if isempty(deqtnF{i})
         continue
     end

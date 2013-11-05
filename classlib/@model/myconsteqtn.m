@@ -12,23 +12,22 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % Replace
 % * all non-log variables with 0;
 % * all log variables with 1.
-replacefunc = @doReplace; %#ok<NASGU>
+replaceFunc = @doReplace; %#ok<NASGU>
 Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)', ...
-    '${replacefunc($0,$1)}');
+   '${replaceFunc($0,$1)}');
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
-Eqtn = sydney(Eqtn);
+Eqtn = sydney(Eqtn,{});
 Eqtn = reduce(Eqtn);
 Eqtn = char(Eqtn);
 Eqtn = sydney.mysymb2eqtn(Eqtn);
+
 x = sscanf(Eqtn,'%g');
 if isnumericscalar(x) && isfinite(x)
     Eqtn = x;
 end
 
-% Nested functions.
 
-%**************************************************************************
     function c = doReplace(c0,c1)
         c = sscanf(c1,'%g');
         if This.nametype(c) <= 3
@@ -40,6 +39,7 @@ end
         else
             c = c0;
         end
-    end % doReplace().
+    end % doReplace()
+
 
 end

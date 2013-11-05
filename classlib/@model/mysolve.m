@@ -127,9 +127,13 @@ if Opt.expand > 0
     This = expand(This,Opt.expand);
 end
 
+
 % Nested functions.
 
+
 %**************************************************************************
+
+    
     function [SS,TT,QQ,ZZ,EigVal,EqOrder] = doSchur()
         % Ordered real QZ decomposition.
         fA = full(system.A{2});
@@ -242,9 +246,12 @@ end
             end
         end % doSevn2Patch().
         
-    end % doSchur().
+    end % doSchur()
+
 
 %**************************************************************************
+
+    
     function flag = doSspace()
         
         flag = true;
@@ -497,9 +504,12 @@ end
             This.solution{8}(:,:,ialt) = Y;
         end
         
-    end % doSspace().
+    end % doSspace()
+
 
 %**************************************************************************
+
+    
     function doAllocSolution()
         if isempty(This.eigval)
             This.eigval = nan([1,nx,nAlt]);
@@ -560,6 +570,7 @@ end
                 This.solution{8}(:,:,IAlt) = nan(nFKeep+nb,nn,length(IAlt));
             end
         end
-    end % doAllocSolution().
+    end % doAllocSolution()
+
 
 end

@@ -18,29 +18,32 @@ D.f = This.deriv0.f;
 D.n = This.deriv0.n;
 
 assign = This.Assign(1,:,IAlt);
-nname = length(This.name);
-neqtn = length(This.eqtn);
+nName = length(This.name);
+nEqtn = length(This.eqtn);
 EqSelect(This.eqtntype >= 3) = false;
 
-NanDeriv = false(1,neqtn);
+NanDeriv = false(1,nEqtn);
 
 % Prepare 3D occur array limited to occurences of variables and shocks in
 % measurement and transition equations.
 occur = full(This.occur);
-occur = reshape(occur,[neqtn,nname,size(This.occur,2)/nname]);
+occur = reshape(occur,[nEqtn,nName,size(This.occur,2)/nName]);
 occur = occur(This.eqtntype <= 2,This.nametype <= 3,:);
 occur = permute(occur,[3,2,1]);
 
 if any(EqSelect)
-    nt = size(This.occur,2) / nname;
+    
+    nt = size(This.occur,2) / nName;
     nVar = sum(This.nametype <= 3);
     t = This.tzero;
-    isSymb = ~cellfun(@isempty,This.deqtnF);
-    if ~Symbolic
-        isSymb(:) = false;
+    if Symbolic
+        symbSelect = ~cellfun(@isempty,This.deqtnF);
+    else
+        symbSelect = false(1,nEqtn);
     end
-    symbSelect = isSymb & EqSelect;
-    numSelect = ~isSymb & EqSelect;
+    symbSelect = symbSelect & EqSelect;
+    numSelect = ~symbSelect & EqSelect;
+    
     if any(symbSelect)
         % Symbolic derivatives.
         doSymbDeriv();
@@ -49,9 +52,11 @@ if any(EqSelect)
         % Numerical derivatives.
         doNumDeriv();
     end
+    
     % Reset the add-factors in non-linear equations to 1.
     tempEye = -eye(sum(This.eqtntype <= 2));
     D.n(EqSelect,:) = tempEye(EqSelect,This.nonlin);
+    
     % Normalise derivatives by largest number in non-linear models.
     if ~Linear
         for iEq = find(EqSelect)
@@ -63,6 +68,7 @@ if any(EqSelect)
             end
         end
     end
+    
 end
 
 if IAlt == 1
@@ -72,9 +78,13 @@ if IAlt == 1
     This.deriv0.n(:) = D.n;
 end
 
+
 % Nested functions.
 
+
 %**************************************************************************
+
+
     function doNumDeriv()
         
         minT = 1 - t;
@@ -82,14 +92,14 @@ end
         tVec = minT : maxT;
         
         if Linear
-            init = zeros(1,nname);
+            init = zeros(1,nName);
             init(1,This.nametype == 4) = real(assign(This.nametype == 4));
             init = init(1,:,ones(1,nt));
-            h = ones(1,nname,nt);
+            h = ones(1,nName,nt);
         else
-            init = mytrendarray(This,1:nname,tVec,false,IAlt);
+            init = mytrendarray(This,1:nName,tVec,false,IAlt);
             init = shiftdim(init,-1);
-            h = abs(This.epsilon(1))*max([init;ones(1,nname,nt)],[],1);
+            h = abs(This.epsilon(1))*max([init;ones(1,nName,nt)],[],1);
         end
         
         xPlus = init + h;
@@ -140,13 +150,9 @@ end
             
             value = zeros(1,n);
             for ii = 1 : n
-                value(ii) = (fPlus(ii)-fMinus{1}(ii)) ...
+                value(ii) = (fPlus(ii)-fMinus(ii)) ...
                     / step(1,nmOcc(ii),tmOcc(ii));
             end
-            
-            % Round numbers close to integers.
-            % roundIndex = abs(value - round(value)) <= realsmall;
-            % value(roundIndex) = round(value(roundIndex));
             
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
@@ -159,13 +165,16 @@ end
 
         end
         
-    end % doNumDeriv().
+    end % doNumDeriv()
+
 
 %**************************************************************************
+
+    
     function doSymbDeriv()
 
         if Linear
-            x = zeros(1,nname);
+            x = zeros(1,nName);
             if any(This.log)
                 x(1,This.log) = 1;
             end
@@ -177,7 +186,7 @@ end
             minT = 1 - t;
             maxT = nt - t;
             tVec = minT : maxT;
-            x = mytrendarray(This,1:nname,tVec,true,IAlt);
+            x = mytrendarray(This,1:nName,tVec,true,IAlt);
             x = shiftdim(x,-1);
             % References to steady-state levels and growth rates.
             L = x;
@@ -212,6 +221,7 @@ end
 
         end
         
-    end % doSymbDeriv().
+    end % doSymbDeriv()
+
 
 end

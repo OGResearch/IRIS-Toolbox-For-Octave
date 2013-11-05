@@ -22,7 +22,7 @@ Flag = false(1,nAlt);
 List = cell(1,nAlt);
 
 if ~Opt.sstateeqtn
-    doDynamicEqtn();
+    doFullEqtn();
 else
     doSstateEqtn();
 end
@@ -38,8 +38,11 @@ for iAlt = 1 : nAlt
     end
 end
 
+
 %**************************************************************************
-    function doDynamicEqtn()
+
+
+    function doFullEqtn()
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
         Discr = nan(nEqtnXY,2,nAlt);
@@ -59,16 +62,15 @@ end
             L = X(:,preSample+1,:);
             Discr(:,t,:) = lhsmrhs(This,X,L);
         end
-    end % doDynamicEqtn().
+    end % doFullEqtn()
+
 
 %**************************************************************************
+
+    
     function doSstateEqtn()
         Discr = nan(nEqtnXY,1,nAlt);
         eqtn = This.eqtnS(This.eqtntype <= 2);
-        % Remove the `exp` transformation applied to log variables. Otherwise,
-        % we would have to log the sstate vector, and it would get de-logged
-        % again in the equations.
-        eqtn = strrep(eqtn,'exp?','');
         % Create anonymous funtions for sstate equations.
         for ii = 1 : length(eqtn)
             eqtn{ii} = str2func(['@(x,dx) ',eqtn{ii}]);
@@ -77,8 +79,14 @@ end
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
             dx(This.log & dx == 0) = 1;
+            % Steady-state equations are expressed in logs of log-variables; take log
+            % of log-variables before evaluating the equations.
+            x(This.log) = log(x(This.log));
+            dx(This.log) = log(dx(This.log));
+            % Evaluate discrepancies btw LHS and RHS of steady-state equations.
             Discr(:,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtn)).';
         end
-    end % doSstateEqtn().
+    end % doSstateEqtn()
+
 
 end

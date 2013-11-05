@@ -24,22 +24,30 @@ Opt = passvalopt(['model.mysstate',Mode],varargin{:});
 %--------------------------------------------------------------------------
 
 if This.linear
+    
     % Linear sstate solver
     %----------------------
     % No need to pre-process any options for the linear sstate solver.
+
 else
+    
     % Non-linear sstate solver
     %--------------------------
     Opt = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
     Opt = xxOptimOpt(This,Opt);
+    
 end
 
 end
+
 
 % Subfunctions.
 
+
 %**************************************************************************
+
+
 function Opt = xxDisplayOpt(This,Opt) %#ok<INUSL>
 if islogical(Opt.display)
     if Opt.display
@@ -48,9 +56,12 @@ if islogical(Opt.display)
         Opt.display = 'off';
     end
 end
-end % xxDisplayOpt().
+end % xxDisplayOpt()
+
 
 %**************************************************************************
+
+
 function Opt = xxOptimOpt(This,Opt) %#ok<INUSL>
 % Use Levenberg-Marquardt because it can handle underdetermined systems.
 oo = Opt.optimset;
@@ -65,9 +76,12 @@ Opt.optimset = optimset( ...
     'tolfun',Opt.tolfun, ...
     'algorithm','levenberg-marquardt', ...
     oo{:});
-end % xxOptimOpt().
+end % xxOptimOpt()
+
 
 %**************************************************************************
+
+
 function Opt = xxBlocks(This,Opt)
 
 % Process fix options first.
@@ -125,12 +139,11 @@ for ii = 1 : nBlk
     end
     % Create an anonymous function handle for each block.
     eqtn = This.eqtnS(eqtnBlk{ii});
-    eqtn = strrep(eqtn,'exp?','exp');
     % Replace log(exp(x(...))) with x(...). This helps a lot.
     eqtn = regexprep(eqtn,'log\(exp\(x\((\d+)\)\)\)','x($1)');
     % Create a function handle used to evaluate each block of
     % equations.
-    blkFunc{ii} = eval(['@(x,dx) [',eqtn{:},']']);
+    blkFunc{ii} = str2func(['@(x,dx) [',eqtn{:},']']);
 end
 
 % Index of level and growth variables endogenous in sstate calculation.
@@ -155,6 +168,7 @@ Opt.endogLInx = endogLInx;
 Opt.endogGInx = endogGInx;
 Opt.zeroLInx = zeroLInx;
 Opt.zeroGInx = zeroGInx;
+
 
     function doFixOpt()
         % Process the fix, fixallbut, fixlevel, fixlevelallbut, fixgrowth,
@@ -214,6 +228,7 @@ Opt.zeroGInx = zeroGInx;
         else
             fixG = find(canBeFixed);
         end
-    end % doOpt2Fix().
+    end % doOpt2Fix()
 
-end % xxBlocks().
+
+end % xxBlocks()

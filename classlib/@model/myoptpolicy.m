@@ -1,4 +1,5 @@
-function [NewEqtn,NewEqtnF,NewNonlin] = myoptpolicy(This,LossPos,LossDisc)
+function [NewEqtn,NewEqtnF,NewEqtnS,NewNonlin] ...
+    = myoptpolicy(This,LossPos,LossDisc)
 % myoptpolicy  [Not a public function] Calculate equations for discretionary optimal policy.
 %
 % Backend IRIS function.
@@ -8,6 +9,8 @@ function [NewEqtn,NewEqtnF,NewNonlin] = myoptpolicy(This,LossPos,LossDisc)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
+
+template = sydney();
 
 % Make the model names visible inside dynamic regexps.
 name = This.name; %#ok<NASGU>
@@ -29,8 +32,10 @@ first = find(This.eqtntype == 2,1);
 NewEqtn = cell(size(eqtn));
 NewEqtn(:) = {''};
 NewEqtnF = NewEqtn;
+NewEqtnS = NewEqtn;
 NewNonlin = false(size(eqtn));
-zDisc = sydney(LossDisc);
+logList = find(This.log);
+zd = sydney(LossDisc,{});
 
 % The lagrangian is
 %
@@ -76,38 +81,49 @@ for eq = first : LossPos
         end
     end
     
-    z = sydney(eqtn{eq});
+    z = sydney(eqtn{eq},unknown);
     
-    % Differentiate this equation wrt to all variables at once in an Inf
-    % mode, that means, return a cell array of individual sydney objects.
-    dz = diff(z,unknown,Inf);
-
+    % Differentiate this equation wrt to all variables and return a cell array
+    % of separate sydney objects for each derivative.
+    diffz = diff(z,'separate',unknown);
+  
     for j = 1 : nOcc
-        
+
         shift = -(tmOcc(j) - This.tzero);
         newEq = nmOcc(j);
         
         % Multiply derivatives wrt lagged variables by the discount factor.
         if shift == 1
-            dz{j} = zDisc * dz{j};
+            diffz{j} = zd * diffz{j};
         elseif shift > 1
-            dz{j} = power(zDisc,shift) * dz{j};
+            diffz{j} = power(zd,shift) * diffz{j};
         end
         
         % If this is not the loss function, multiply the derivative by
         % the multiplier.
         if eq < LossPos
             if shift == 0
-                dz{j} = sydney(sprintf('x%g',eq)) * dz{j};
+                x = template;
+                x.args = sprintf('x%g',eq);
+                diffz{j} = diffz{j}*x;
             elseif shift == 1
-                dz{j} = sydney(sprintf('x%gp1',eq)) * dz{j};
+                x = template;
+                x.args = sprintf('x%gp1',eq);
+                diffz{j} = diffz{j}*x;
             else
-                dz{j} = sydney(sprintf('x%gp%g',eq,shift)) * dz{j};
+                x = template;
+                x.args = sprintf('x%gp%g',eq,shift);
+                diffz{j} = diffz{j}*x;
             end
         end
+
+        dEqtn = char(reduce(diffz{j}),'human');
         
-        dEqtn = char(dz{j},'human');
-        
+        dEqtnF = sydney.mysymb2eqtn(dEqtn);
+        if ~This.linear
+            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',logList); %#ok<FNDSB>
+        end
+ 
         dEqtn = regexprep(dEqtn,'x(\d+)p(\d+)', ...
             '${[name{sscanf($1,''%g'')},''{+'',$2,''}'']}');
         dEqtn = regexprep(dEqtn,'x(\d+)m(\d+)', ...
@@ -120,24 +136,37 @@ for eq = first : LossPos
         % Put together the derivative of the Lagrangian wrt to variable
         % #neweq.
         if isempty(NewEqtn{newEq})
-            NewEqtn{newEq} = [dEqtn,'=0;'];
-            NewEqtnF{newEq} = [dEqtn,';'];
-        else
-            NewEqtn{newEq} = [dEqtn,'+',NewEqtn{newEq}];
-            NewEqtnF{newEq} = [dEqtn,'+',NewEqtnF{newEq}];
+            NewEqtn{newEq} = '=0;';
+            NewEqtnF{newEq} = ';';
+            if ~This.linear
+                NewEqtnS{newEq} = ';';
+            end
         end
         
-        % Earmark the derivative for non-linear simulation if at least one equation
-        % in it is non-linear and the derivative is non-zero. The derivative of the
-        % loss function is supposed to be treated as non-linear if the loss
-        % function itself has been introduced by min#() and not min().
-        thisnonlin = This.nonlin(eq) && ~isequal(dEqtn,'0');
-        NewNonlin(newEq) = NewNonlin(newEq) || thisnonlin;
-
+        sign = '+';
+        if strncmp(NewEqtn{newEq},'-',1) ...
+                || strncmp(NewEqtn{newEq},'+',1) ...
+                || strncmp(NewEqtn{newEq},'=',1)
+            sign = '';
+        end
+        NewEqtn{newEq} = [dEqtn,sign,NewEqtn{newEq}];
+        NewEqtnF{newEq} = [dEqtnF,sign,NewEqtnF{newEq}];
+        if ~This.linear
+            NewEqtnS{newEq} = [dEqtnS,sign,NewEqtnS{newEq}];
+            % Earmark the derivative for non-linear simulation if at least one equation
+            % in it is non-linear and the derivative is non-zero. The derivative of the
+            % loss function is supposed to be treated as non-linear if the loss
+            % function itself has been introduced by min#() and not min().
+            isNonlin = This.nonlin(eq) && ~isequal(dEqtn,'0');
+            NewNonlin(newEq) = NewNonlin(newEq) || isNonlin;
+        end
+        
     end
 end
 
-% Replace = with #= in non-linear human equations.
-NewEqtn(NewNonlin) = strrep(NewEqtn(NewNonlin),'=0;','=#0;');
+if ~This.linear
+    % Replace = with #= in non-linear human equations.
+    NewEqtn(NewNonlin) = strrep(NewEqtn(NewNonlin),'=0;','=#0;');
+end
 
 end

@@ -193,17 +193,12 @@ This.nonlin(end+(1:n)) = false;
 
 % Read transition equations; loss function is always moved to the end.
 
-[eqtn,eqtnF,eqtnS,eqtnLabel,eqtnAlias,nonlin,lossDisc,multiple] ...
+[eqtn,eqtnF,eqtnS,eqtnLabel,eqtnAlias,nonlin,isLoss,multipleLoss] ...
     = xxReadEqtns(S(6));
 
-if ischar(lossDisc) && isempty(lossDisc)
+if multipleLoss
     utils.error('model',[utils.errorparsing(This), ...
-        'Loss function discount factor is empty.']);
-end
-
-if multiple
-    utils.error('model',[utils.errorparsing(This), ...
-        'Multiple loss functions found in the transition equations.']);
+        'Multiple loss functions found in transition equations.']);
 end
 
 n = length(eqtn);
@@ -224,23 +219,17 @@ This.nonlin(end+(1:n)) = nonlin;
 doChkEmptyEqtn();
 
 This.multiplier = false(size(This.name));
-isloss = ischar(lossDisc) && ~isempty(lossDisc);
-if isloss
+if isLoss
     % Create placeholders for new transition names (mutlipliers) and new
     % transition equations (derivatives of the loss function wrt existing
     % variables).
     lossPos = NaN;
-    doLossFuncPlaceHolders();
+    doLossPlaceHolders();
 end
-
-% Introduce `nname` and `neqtn` only after we are done with placeholders
-% for optimal policy variables and equations.
-nName = length(This.name);
-nEqtn = length(This.eqtn);
 
 % Read deterministic trend equaitons.
 
-[This,logMissing,invalid,multiple] = xxReadDtrends(This,S(7));
+[This,logMissing,invalid,multipleLoss] = xxReadDtrends(This,S(7));
 
 if ~isempty(logMissing)
     utils.error('model',[utils.errorparsing(This), ...
@@ -254,11 +243,11 @@ if ~isempty(invalid)
         invalid{:});
 end
 
-if ~isempty(multiple)
+if ~isempty(multipleLoss)
     utils.error('model',[utils.errorparsing(This), ...
         'Mutliple dtrend equations ', ...
         'for this measurement variable: ''%s''.'], ...
-        multiple{:});
+        multipleLoss{:});
 end
 
 % Read dynamic links.
@@ -291,6 +280,9 @@ end
 % Process equations
 %-------------------
 
+nName = length(This.name);
+nEqtn = length(This.eqtn);
+
 % Delete charcode from equations.
 This.eqtn = cleanup(This.eqtn,P.labels);
 
@@ -308,112 +300,6 @@ if ~This.linear
     This.eqtnS = regexprep(This.eqtnS,'\s+','');
 end
 
-% Replace names with code characters.
-nameOffset = 1999;
-nameCode = char(nameOffset + (1:nName));
-
-% Prepare patterns and their code substitutions for all variables,
-% shocks, and parameter names.
-codePatt = cell(1,nName);
-codeRepl = cell(1,nName);
-len = cellfun(@length,This.name);
-[~,inx] = sort(len,2,'descend');
-for i = inx
-    codePatt{i} = ['\<',This.name{i},'\>'];
-    codeRepl{i} = nameCode(i);
-end
-This.eqtnF = regexprep(This.eqtnF,codePatt,codeRepl);
-if ~This.linear
-    This.eqtnS = regexprep(This.eqtnS,codePatt,codeRepl);
-end
-
-% Try to catch undeclared names in all equations except dynamic links at
-% this point; all valid names have been substituted for by the name codes.
-% Do not do it in dynamic links because the links can contain std and corr
-% names which have not been substituted for.
-doChkUndeclared();
-
-% Check for sstate references occuring in wrong places. Also replace
-% the old syntax & with $.
-doChkSstateRef();
-
-% Max lag and lead
-%------------------
-
-maxT = max([S.maxt]);
-minT = min([S.mint]);
-if isloss
-    % Anticipate that multipliers will have leads as far as the greatest lag.
-    maxT = max([maxT,-minT]);
-end
-maxT = maxT + 1;
-minT = minT - 1;
-tZero = 1 - minT;
-This.tzero = tZero;
-nt = maxT - minT + 1;
-
-% Replace name codes with with x(...)
-%-------------------------------------
-
-% Allocate ise the `occur` and `occurS` properties. These need to be
-% allocated before we run `xxTransformEqtn` for the first time.
-This.occur = sparse(false(length(This.eqtnF),length(This.name)*nt));
-This.occurS = sparse(false(length(This.eqtnF),length(This.name)));
-
-This = xxTransformEqtn(This,[],nameCode,Inf);
-
-% Check equation syntax before we compute optimal policy.
-doChkSyntax(Inf);
-
-if isloss
-    % Parse the discount factor first, as it can be a general expression.
-    lossDisc = regexprep(lossDisc,codePatt,codeRepl);
-    [This,lossDisc] = xxTransformEqtn(This,lossDisc,nameCode);
-    
-    % Create optimal policy equations by adding the derivatives
-    % of the lagrangian wrt to the original transition variables. These
-    % `naddeqtn` new equation will be put in place of the loss function
-    % and the `naddeqtn-1` empty placeholders.
-    [newEqtn,newEqtnF,NewNonlin] = myoptpolicy(This,lossPos,lossDisc);
-    
-    % Add the new equations to the model object, and parse them.
-    last = find(This.eqtntype == 2,1,'last');
-    This.eqtn(lossPos:last) = newEqtn(lossPos:last);
-    This.eqtnF(lossPos:last) = newEqtnF(lossPos:last);
-    This.eqtnF(lossPos:last) = ...
-        regexprep(This.eqtnF(lossPos:last),codePatt,codeRepl);
-    
-    % Add sstate equations. Note that we must at least replace the old equation
-    % in `losspos` position (which was the objective function) with the new
-    % equation (which is a derivative wrt to the first variables).
-    This.eqtnS(lossPos:last) = This.eqtnF(lossPos:last);
-    
-    This.nonlin(lossPos:last) = NewNonlin(lossPos:last);
-    
-    % Replace name codes with x(...) in the new F and S equations.
-    This = xxTransformEqtn(This,[],nameCode,lossPos:last);
-    
-    % Check syntax of newly created optimal policy equations.
-    doChkSyntax(lossPos:last);
-end
-
-% Finishing touches
-%-------------------
-
-% Vectorise *, /, \, ^ operators.
-This.eqtnF = strfun.vectorise(This.eqtnF);
-
-% Check the model structure.
-[errMsg,errList] = xxChkStructure(This,shockType);
-if ~isempty(errMsg)
-    utils.error('model', ...
-        [utils.errorparsing(This),errMsg],errList{:});
-end
-
-% Create placeholders for non-linearised equations.
-This.eqtnN = cell(size(This.eqtn));
-This.eqtnN(:) = {''};
-
 % Make sure all equations end with semicolons.
 for iEq = 1 : length(This.eqtn)
     if ~isempty(This.eqtn{iEq}) && This.eqtn{iEq}(end) ~= ';'
@@ -427,39 +313,227 @@ for iEq = 1 : length(This.eqtn)
     end
 end
 
+% Max lag and lead
+%------------------
+
+maxT = max([S.maxt]);
+minT = min([S.mint]);
+if isLoss
+    % Anticipate that multipliers will have leads as far as the greatest lag.
+    maxT = max([maxT,-minT]);
+end
+maxT = maxT + 1;
+minT = minT - 1;
+tZero = 1 - minT;
+This.tzero = tZero;
+nt = maxT - minT + 1;
+
+% Replace variables names with code names
+%-----------------------------------------
+
+% Check for sstate references occuring in wrong places. Also replace
+% the old syntax & with $.
+doChkSstateRef();
+
+This.occur = false(nEqtn,nName*nt);
+This.occurS = false(nEqtn,nName);
+
+[namePatt,nameReplF,nameReplS] = mynamepattrepl(This);
+
+if ~This.linear
+    % If no steady-state version exists, copy the full equation.
+    isEmptySstate = cellfun(@isempty,This.eqtnS) & This.eqtntype <= 2;
+    This.eqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
+    This.eqtnS(This.eqtntype > 2) = {''};
+    
+    This.eqtnS = regexprep(This.eqtnS,namePatt,nameReplS);
+    
+    % Remove steady-state references from steady-state equations; they are
+    % treated as the respective variables.
+    This.eqtnS = strrep(This.eqtnS,'&(%','(%');
+    This.eqtnS = strrep(This.eqtnS,'&exp(%','exp(%');
+    
+    This.eqtnS = regexprep(This.eqtnS, ...
+        '\(%\(@(\d+)\)\)\{([+\-]\d+)\}', ...
+        '(%(@$1)$2*dx(@$1))');
+else
+    This.eqtnS(:) = {''};
+end
+
+% Full equations
+%----------------
+
+This.eqtnF = regexprep(This.eqtnF,namePatt,nameReplF);
+
+% Steady-state references.
+% Replace &%(:,@10,!) with &(:,@10).
+This.eqtnF = regexprep(This.eqtnF,'&%\(:,@(\d+),!\)','&(:,@$1)');
+
+% Replace %(:,@10,!){+2} with %(:,@10,!)(+2).
+This.eqtnF = strrep(This.eqtnF,'!){','!)(');
+This.eqtnF = strrep(This.eqtnF,'}',')');
+
+% Replace %(:,@10,!)(+2) with %(:,@10,!+2).
+This.eqtnF = strrep(This.eqtnF,'!)(-','!-');
+This.eqtnF = strrep(This.eqtnF,'!)(+','!+');
+
+% Try to catch undeclared names in all equations except dynamic links at
+% this point; all valid names have been substituted for by %(...) and
+% ?(...). Do not do it in dynamic links because the links can contain std
+% and corr names which have not been substituted for.
+doChkUndeclared();
+
+% Replace control characters.
+This.eqtnS = strrep(This.eqtnS,'%','x');
+This.eqtnS = strrep(This.eqtnS,'@','');
+This.eqtnF = strrep(This.eqtnF,'&(:,@','L(:,');
+This.eqtnF = strrep(This.eqtnF,'?(@','g(');
+This.eqtnF = strrep(This.eqtnF,'%','x');
+This.eqtnF = strrep(This.eqtnF,'!','t');
+This.eqtnF = strrep(This.eqtnF,'@','');
+
+% Check for orphan { and & after we have substituted for the valid
+% references.
+doChkTimeSsref();
+
+% Find the occurences of variable, shocks, and parameters in individual
+% equations.
+This = myoccurence(This,Inf);
+
+if isLoss
+    % Find the closing bracket in min(...), retrieve the discount factor, and
+    % remove the whole term from the loss function equation.
+    [close,lossDisc] = strfun.matchbrk(This.eqtnF{lossPos},4);
+    if isempty(close)
+        utils.error('model:myparse',[utils.errorparsing(This), ...
+            'Syntax error in the loss function.']);
+    end
+    if isempty(lossDisc)
+        utils.error('model',[utils.errorparsing(This), ...
+            'Loss function discount factor is empty.']);
+    end
+    This.eqtnF{lossPos}(1:close) = '';
+end
+
+% Check equation syntax before we compute optimal policy but after we
+% remove the header min(...) from the loss function equation.
+if Opt.chksyntax
+    mychksyntax(This);
+end
+
+if isLoss
+    % Create optimal policy equations by adding the derivatives of the
+    % lagrangian wrt to the original transition variables. These `naddeqtn` new
+    % equation will be put in place of the loss function and the `naddeqtn-1`
+    % empty placeholders.
+    [newEqtn,newEqtnF,newEqtnS,NewNonlin] ...
+        = myoptpolicy(This,lossPos,lossDisc);
+    
+    % Add the new equations to the model object, and parse them.
+    last = find(This.eqtntype == 2,1,'last');
+    This.eqtn(lossPos:last) = newEqtn(lossPos:last);
+    This.eqtnF(lossPos:last) = newEqtnF(lossPos:last);
+    
+    if ~This.linear
+        % Add sstate equations. Note that we must at least replace the old equation
+        % in `lossPos` position (which was the objective function) with the new
+        % equation (which is a derivative wrt to the first variables).
+        This.eqtnS(lossPos:last) = newEqtnS(lossPos:last);
+        % Update the nonlinear equation flags.
+        This.nonlin(lossPos:last) = NewNonlin(lossPos:last);
+    end
+    
+    % Update occurence arrays with new equations.
+    This = myoccurence(This,lossPos:last);
+end
+
+% Finishing touches
+%-------------------
+
+% Sparse occurence arrays.
+This.occur = sparse(This.occur(:,:));
+This.occurS = sparse(This.occurS);
+
+% Check the model structure.
+[errMsg,errList] = xxChkStructure(This,shockType);
+if ~isempty(errMsg)
+    utils.error('model', ...
+        [utils.errorparsing(This),errMsg],errList{:});
+end
+
+% Create placeholders for non-linearised equations.
+This.eqtnN = cell(size(This.eqtn));
+This.eqtnN(:) = {''};
+
+% Vectorise operators in full equations; this is needed in numeric
+% differentiation.
+This.eqtnF = strfun.vectorise(This.eqtnF);
+
+
 % Nested functions.
 
-%**************************************************************************
-    function doDeclareParameters()
-        
-    % All declared names except parameters.
-    inx = true(1,length(S));
-    inx(3) = false;
-    declaredNames = [S(inx).name];
-    
-    % All names occuring in equations.
-    c = [S.eqtn];
-    c = [c{:}];
-    allNames = regexp(c,'\<[A-Za-z]\w*\>(?![\(\.])','match');
-    allNames = unique(allNames);
-    
-    % Determine residual names.
-    addNames = setdiff(allNames,declaredNames);
-    
-    % Re-create the parameter declaration section.
-    nAdd = length(addNames);
-    S(3).name = addNames;
-    S(3).nametype = 4*ones(1,nAdd);
-    tempCell = cell(1,nAdd);
-    tempCell(:) = {''};
-    S(3).namelabel = tempCell;
-    S(3).namealias = tempCell;
-    S(3).namevalue = tempCell;
-    S(3).nameflag = false(1,nAdd);
-    
-end % doDeclareParameters().
 
 %**************************************************************************
+
+
+    function doChkTimeSsref()
+        % Check for { in full and steady-state equations.
+        inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
+            | ~cellfun(@isempty,strfind(This.eqtnS,'{'));
+        if any(inx)
+            utils.error('model',[utils.errorparsing(This), ...
+                'Misplaced or invalid time subscript ', ...
+                'in this equation: ''%s'''], ...
+                This.eqtn{inx});
+        end
+        % Check for & and $ in full and steady-state equations.
+        inx = ~cellfun(@isempty,strfind(This.eqtnF,'&')) ...
+            | ~cellfun(@isempty,strfind(This.eqtnS,'&'));
+        if any(inx)
+            utils.error('model',[utils.errorparsing(This), ...
+                'Misplaced or invalid steady-state reference ', ...
+                'in this equation: ''%s'''], ...
+                This.eqtn{inx});
+        end
+    end
+
+
+%**************************************************************************
+
+
+    function doDeclareParameters()
+        
+        % All declared names except parameters.
+        inx = true(1,length(S));
+        inx(3) = false;
+        declaredNames = [S(inx).name];
+        
+        % All names occuring in equations.
+        c = [S.eqtn];
+        c = [c{:}];
+        allNames = regexp(c,'\<[A-Za-z]\w*\>(?![\(\.])','match');
+        allNames = unique(allNames);
+        
+        % Determine residual names.
+        addNames = setdiff(allNames,declaredNames);
+        
+        % Re-create the parameter declaration section.
+        nAdd = length(addNames);
+        S(3).name = addNames;
+        S(3).nametype = 4*ones(1,nAdd);
+        tempCell = cell(1,nAdd);
+        tempCell(:) = {''};
+        S(3).namelabel = tempCell;
+        S(3).namealias = tempCell;
+        S(3).namevalue = tempCell;
+        S(3).nameflag = false(1,nAdd);
+        
+    end % doDeclareParameters()
+
+
+%**************************************************************************
+
+
     function doChkStdcorrNames()
         
         if ~any(stdInx) && ~any(corrInx)
@@ -491,34 +565,52 @@ end % doDeclareParameters().
             end
         end
         
-    end % doChkStdcorrNames().
+    end % doChkStdcorrNames()
+
 
 %**************************************************************************
+
+    
     function doChkUndeclared()
         % Undeclared names have not been substituted for by the name codes, except
         % std and corr names in dynamic links (std and corr names cannot be used in
         % other types of equations). Undeclared names in dynamic links will be
-        % caught in `dochksyntax`. Distinguish variable names from function names
+        % caught in `mychksyntax`. Distinguish variable names from function names
         % (func names are immediately followed by an opening bracket).
         % Unfortunately, `regexp` interprets high char codes as \w, so we need to
         % explicitly type the ranges.
         
+        list = regexp(This.eqtnF(This.eqtntype < 4), ...
+            '\<[a-zA-Z]\w*\>(?![\(\.])','match');
+        
+        if isempty([list{:}])
+            return
+        end
+        
+        if isempty(setdiff(unique([list{:}]),'ttrend'))
+            return
+        end
+        
         undeclared = {};
         stdcorr = {};
-        for iiEq = find(This.eqtntype ~= 4)
-            list = regexp(This.eqtnF{iiEq}, ...
-                '\<[a-zA-Z][a-zA-Z0-9_]*\>(?![\(\.])','match');
-            list = setdiff(unique(list),{'ttrend'});
-            if ~isempty(list)
-                for ii = 1 : length(list)
-                    if strncmp(list{ii},'std_',4) ...
-                            || strncmp(list{ii},'corr_',5)
-                        stdcorr{end+1} = list{ii}; %#ok<AGROW>
-                        stdcorr{end+1} = This.eqtn{iiEq}; %#ok<AGROW>
-                    else
-                        undeclared{end+1} = list{ii}; %#ok<AGROW>
-                        undeclared{end+1} = This.eqtn{iiEq}; %#ok<AGROW>
-                    end
+        
+        isEmptyList = cellfun(@isempty,list);
+        for iiEqtn = find(~isEmptyList)
+            
+            iiList = unique(list{iiEqtn});
+            iiList(strcmp(iiList,'ttrend')) = [];
+            if isempty(iiList)
+                continue
+            end
+            
+            for jj = 1 : length(iiList)
+                if strncmp(iiList{jj},'std_',4) ...
+                        || strncmp(iiList{jj},'corr_',5)
+                    stdcorr{end+1} = iiList{jj}; %#ok<AGROW>
+                    stdcorr{end+1} = This.eqtn{iiEqtn}; %#ok<AGROW>
+                else
+                    undeclared{end+1} = iiList{jj}; %#ok<AGROW>
+                    undeclared{end+1} = This.eqtn{iiEqtn}; %#ok<AGROW>
                 end
             end
         end
@@ -529,16 +621,19 @@ end % doDeclareParameters().
                 'Std or corr name ''%s'' cannot be used in ''%s''.'], ...
                 stdcorr{:});
         end
-
+        
         % Report non-function names that have not been declared.
         if ~isempty(undeclared)
             utils.error('model',[utils.errorparsing(This), ...
                 'Undeclared or mistyped name ''%s'' in ''%s''.'], ...
                 undeclared{:});
         end
-    end % doChkUndeclared().
+    end % doChkUndeclared()
+
 
 %**************************************************************************
+    
+    
     function doChkSstateRef()
         % Check for sstate references in wrong places.
         func = @(c) ~cellfun(@(x) isempty(strfind(x,'&')),c);
@@ -570,10 +665,13 @@ end % doDeclareParameters().
                 'in dynamic links: ''%s''.'], ...
                 This.eqtn{temp});
         end
-    end % doChkSstateRef().
+    end % doChkSstateRef()
+
 
 %**************************************************************************
-    function doLossFuncPlaceHolders()
+    
+    
+    function doLossPlaceHolders()
         % Add new variables, i.e. the Lagrange multipliers associated with
         % all of the existing transition equations except the loss
         % function. These new names will be ordered first -- the logic is
@@ -619,86 +717,12 @@ end % doDeclareParameters().
                 New,This.(Field)(postInx)];
         end
         
-    end % doLossFuncPlaceHolders().
+    end % doLossPlaceHolders()
+
 
 %**************************************************************************
-    function doChkSyntax(eqtnList)
-        if isequal(eqtnList,Inf)
-            eqtnList = 1 : nEqtn;
-        end
-        t = This.tzero;
-        nName = length(This.name);
-        nEqtn = length(This.eqtn);
-        ne = sum(This.nametype == 3);
-        std = double(This.linear)*1 + double(~This.linear)*0.1;
-        x = rand(1,nName,nt);
-        % This is the test vector for dynamic links. In dynamic links, we allow std
-        % and corr names to occurs, and append them to the assign vector.
-        if any(This.eqtntype == 4)
-            x1 = [rand(1,nName,1),std*ones(1,ne),zeros(1,ne*(ne-1)/2)];
-        end
-        L = x(1,:,t);
-        dx = zeros(1,nName,nt);
-        tTrend = 0;
-        g = zeros(sum(This.nametype == 5),1);
-        undeclared = {};
-        syntax = {};
-        for eq = eqtnList
-            eqtnF = This.eqtnF{eq};
-            if isempty(eqtnF)
-                continue
-            end
-            if eq <= length(This.eqtnS) && This.eqtntype(eq) <= 2
-                eqtnS = This.eqtnS{eq};
-                eqtnS = strrep(eqtnS,'exp?','exp');
-            end
-            try
-                eqtnF = strfun.vectorise(eqtnF);
-                eqtnF = str2func(['@(x,dx,L,t,ttrend,g)',eqtnF]);
-                if This.eqtntype(eq) < 4
-                    eqtnF(x,dx,L,t,tTrend,g);
-                else
-                    % Evaluate RHS of dynamic links. They can refer to std or corr names, so we
-                    % have to use the `x1` vector.
-                    eqtnF(x1,[],[],1,[],g);
-                end
-                if eq <= length(This.eqtnS) && This.eqtntype(eq) <= 2 ...
-                        && ~isempty(eqtnS)
-                    eqtnS = str2func(['@(x,dx,L,t,ttrend,g)',eqtnS]);
-                    eqtnS(x,dx,L,t,tTrend,g);
-                end
-            catch E
-                % Undeclared names should have been already caught. But a few exceptions
-                % may still exist.
-                [match,tokens] = ...
-                    regexp(E.message,'Undefined function or variable ''(\w*)''','match','tokens','once');
-                if ~isempty(match)
-                    undeclared{end+1} = tokens{1}; %#ok<AGROW>
-                    undeclared{end+1} = This.eqtn{eq}; %#ok<AGROW>
-                else
-                    message = E.message;
-                    syntax{end+1} = This.eqtn{eq}; %#ok<AGROW>
-                    if ~isempty(message) && message(end) ~= '.'
-                        message(end+1) = '.'; %#ok<AGROW>
-                    end
-                    syntax{end+1} = message; %#ok<AGROW>
-                end
-            end
-        end
-        if ~isempty(undeclared)
-            utils.error('model',[utils.errorparsing(This), ...
-                'Undeclared or mistyped name ''%s'' in ''%s''.'], ...
-                undeclared{:});
-        end
-        if ~isempty(syntax)
-            utils.error('model',[utils.errorparsing(This), ...
-                'Syntax error in ''%s''.\n', ...
-                '\tMatlab says: %s'], ...
-                syntax{:});
-        end
-    end % doChkSyntax().
-
-%**************************************************************************
+    
+    
     function doChkEmptyEqtn()
         % dochkemptyeqtn  Check for empty full equations.
         emptyInx = cellfun(@isempty,This.eqtnF);
@@ -707,17 +731,21 @@ end % doDeclareParameters().
                 'This equation is empty: ''%s''.'], ...
                 This.eqtn{emptyInx});
         end
-    end % doChkEmptyeEtn().
+    end % doChkEmptyeEtn()
+
 
 end
 
+
 % Subfunctions.
 
+
 %**************************************************************************
+
+
 function [Eqtn,EqtnF,EqtnS,EqtnLabel,EqtnAlias, ...
-    EqtnNonlin,LossDisc,Multiple] ...
-    = xxReadEqtns(S)
-% xxreadeqtns  Read measurement or transition equations.
+    EqtnNonlin,IsLoss,MultipleLoss] = xxReadEqtns(S)
+% xxReadEqtns  Read measurement or transition equations.
 
 Eqtn = cell(1,0);
 EqtnLabel = cell(1,0);
@@ -725,8 +753,8 @@ EqtnAlias = cell(1,0);
 EqtnF = cell(1,0);
 EqtnS = cell(1,0);
 EqtnNonlin = false(1,0);
-LossDisc = NaN;
-Multiple = false;
+IsLoss = false;
+MultipleLoss = false;
 
 if isempty(S.eqtn)
     return
@@ -748,13 +776,21 @@ EqtnF = strfun.emptycellstr(1,neqtn);
 EqtnS = strfun.emptycellstr(1,neqtn);
 for iEq = 1 : neqtn
     if ~isempty(S.eqtnlhs{iEq})
-        EqtnF{iEq} = [S.eqtnlhs{iEq},'-(',S.eqtnrhs{iEq},')'];
+        sign = '+';
+        if any(S.eqtnrhs{iEq}(1) == '+-')
+            sign = '';
+        end
+        EqtnF{iEq} = ['-(',S.eqtnlhs{iEq},')',sign,S.eqtnrhs{iEq}];
     else
         EqtnF{iEq} = S.eqtnrhs{iEq};
     end
     if ~isempty(S.sstaterhs{iEq})
         if ~isempty(S.sstatelhs{iEq})
-            EqtnS{iEq} = [S.sstatelhs{iEq},'-(',S.sstaterhs{iEq},')'];
+            sign = '+';
+            if any(S.sstaterhs{iEq}(1) == '+-')
+                sign = '';
+            end
+            EqtnS{iEq} = ['-(',S.sstatelhs{iEq},')',sign,S.sstaterhs{iEq}];
         else
             EqtnS{iEq} = S.sstaterhs{iEq};
         end
@@ -766,6 +802,7 @@ end
         start = regexp(S.eqtnrhs,'^min#?\(','once');
         lossInx = ~cellfun(@isempty,start);
         if sum(lossInx) == 1
+            IsLoss = true;
             % Order the loss function last.
             list = {'eqtn','eqtnlabel','eqtnalias', ...
                 'eqtnlhs','eqtnrhs','eqtnsign', ...
@@ -776,18 +813,23 @@ end
             end
             S.eqtnlhs{end} = '';
             S.eqtnrhs{end} = strrep(S.eqtnrhs{end},'#','');
+            %{
             % Get the discount factor from inside of the min(...) brackets.
-            [close,LossDisc] = strfun.matchbrk(S.eqtnrhs{end},4);
+            [close,LossFuncDisc] = strfun.matchbrk(S.eqtnrhs{end},4);
             % Remove the min operator.
             S.eqtnrhs{end} = S.eqtnrhs{end}(close+1:end);
+            %}
         elseif sum(lossInx) > 1
-            Multiple = true;
+            MultipleLoss = true;
         end
-    end % doLossFunc().
+    end % doLossFunc()
 
-end % xxReadEqtns().
+end % xxReadEqtns()
+
 
 %**************************************************************************
+
+
 function [This,LogMissing,Invalid,Multiple] = xxReadDtrends(This,S)
 
 n = sum(This.nametype == 1);
@@ -842,9 +884,12 @@ This.eqtnalias(end+(1:n)) = eqtnalias;
 This.eqtntype(end+(1:n)) = 3;
 This.nonlin(end+(1:n)) = false;
 
-end % xxReadDtrends().
+end % xxReadDtrends()
+
 
 %**************************************************************************
+
+
 function [This,Invalid] = xxReadLinks(This,S)
 
 nname = length(This.name);
@@ -880,209 +925,24 @@ This.eqtntype(end+(1:neqtn)) = 4;
 This.nonlin(end+(1:neqtn)) = false;
 This.Refresh = refresh;
 
-end % xxReadLinks().
+end % xxReadLinks()
+
 
 %**************************************************************************
+
+
 function [This,Invalid,Nonunique] = xxReadAutoexogenise(This,S)
 
 % `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
 [This,invalid,Nonunique] = myautoexogenise(This,S.eqtnlhs,S.eqtnrhs);
 Invalid = S.eqtn(invalid);
 
-end % xxReadautoExogenise().
+end % xxReadautoExogenise()
+
 
 %**************************************************************************
-function [This,Eqtn] = xxTransformEqtn(This,Eqtn,NameCode,Eqs)
-% xxTransformEqtn  Replace numerical codes with x() and the names of stds
-% and corrs with s().
 
-ftransform = @doFTransform; %#ok<NASGU>
-stransform = @doSTransform; %#ok<NASGU>
-stdcorr = @doStdcorr; %#ok<NASGU>
-pattern = ['([&])?([',NameCode(1),'-',NameCode(end),'])(\{[\+\-]\d+\})?'];
-stdcorrPattern = '\<(std|corr)_[a-zA-Z]\w*\>';
 
-nameOffset = double(NameCode(1)) - 1;
-tZero = This.tzero;
-
-if ischar(Eqtn) && ~isempty(Eqtn)
-    % Transform a single equation passed in as a text string.
-    Eqtn = regexprep(Eqtn,pattern,'${ftransform($1,$2,$3,NaN)}');
-    return
-end
-
-nEqtn = length(This.eqtnF);
-nName = length(This.name);
-nt = size(This.occur,2) / nName;
-occurF = reshape(full(This.occur),[nEqtn,nName,nt]);
-occurS = full(This.occurS);
-
-if isequal(Eqs,Inf)
-    Eqs = 1 : nEqtn;
-end
-
-% We need to pass the equation number, `iEq`, into the nested functions. We
-% therefore use a `for` loop, and not a single `regexprep` command.
-for iEq = Eqs
-    
-    if isempty(This.eqtnF{iEq})
-        continue
-    end
-    
-    % If no steady-state version exists, copy the dynamic equation.
-    if ~This.linear && This.eqtntype(iEq) <= 2 && isempty(This.eqtnS{iEq})
-        This.eqtnS{iEq} = This.eqtnF{iEq};
-    end
-    
-    % Steady-state equations.
-    if ~isempty(This.eqtnS{iEq})
-        This.eqtnS{iEq} = regexprep(This.eqtnS{iEq},pattern, ...
-            '${stransform($1,$2,$3,iEq)}');
-    end
-    
-    % Full dynamic equations.
-    This.eqtnF{iEq} = regexprep(This.eqtnF{iEq},pattern, ...
-        '${ftransform($1,$2,$3,iEq)}');
-    
-    % Allow std_ and corr_ names only in dynamic links.
-    if This.eqtntype(iEq) == 4
-        This.eqtnF{iEq} = regexprep(This.eqtnF{iEq}, ...
-            stdcorrPattern,'${stdcorr($0)}');
-    end
-    
-end
-
-This.occur = sparse(occurF(:,:));
-This.occurS = sparse(occurS);
-
-    function C = doFTransform(C0,C1,C2,iEq)
-        % Replace name codes with x vector in dynamic equations.
-        % c0 can be empty or '&'.
-        % c1 is the name code, e.g. char(highChar+number).
-        % c2 is empty or the time subscript, e.g. {-1}.
-        % Variable or parameter number.
-        realid = double(C1) - nameOffset;
-        if realid < 1 || realid > length(This.nametype)
-            % Undeclared name. Will be captured later.
-            C = [C1,C2];
-            return
-        end
-        if isempty(C2)
-            t = 0;
-        else
-            C2 = C2(2:end-1);
-            t = sscanf(C2,'%g');
-        end
-        switch This.nametype(realid)
-            case {1,2}
-                % Measurement and transition variables.
-                if t == 0
-                    time = 't';
-                else
-                    time = sprintf('t%+g',t);
-                end
-                if isempty(C0)
-                    C = sprintf('x(:,%g,%s)',realid,time);
-                    if isfinite(iEq)
-                        occurF(iEq,realid,tZero+t) = true;
-                    end
-                else
-                    % Steady-state level reference.
-                    C = sprintf('L(:,%g)',realid);
-                end
-            case 3
-                % Shocks.
-                if isempty(C0)
-                    C = sprintf('x(:,%g,t)',realid);
-                    if isfinite(iEq)
-                        occurF(iEq,realid,tZero+t) = true;
-                    end
-                else
-                    C = '0';
-                end
-            case 4
-                % Parameters.
-                C = sprintf('x(:,%g,t)',realid);
-                if isfinite(iEq)
-                    % Allow for parameter lags/leads in model equations, but automatically
-                    % reset them to t+0.
-                    %occurF(iEq,realid,tZero+t) = true;
-                    occurF(iEq,realid,tZero) = true;
-                end
-            case 5
-                % Exogenous variables in dtrend equations.
-                C = sprintf('g(%g,:)',realid-sum(This.nametype < 5));
-                if isfinite(iEq)
-                    occurF(iEq,realid,tZero+t) = true;
-                end
-        end
-    end % doFTransform().
-
-    function C = doSTransform(C0,C1,C2,iEq) %#ok<INUSL>
-        % Replace name codes with x vector in sstate equations.
-        % c0 is not used.
-        % Variable or parameter number.
-        realid = double(C1) - nameOffset;
-        if realid < 1 || realid > length(This.nametype)
-            % Undeclared name. Will be captured later.
-            C = [C1,C2];
-            return
-        end
-        if isempty(C2)
-            t = 0;
-        else
-            C2 = C2(2:end-1);
-            t = sscanf(C2,'%g');
-        end
-        switch This.nametype(realid)
-            case 1
-                % Measurement variables.
-                C = sprintf('x(%g)',realid);
-                if This.log(realid)
-                    C = ['exp?(',C,')'];
-                end
-            case 2
-                % Transition variables.
-                if t == 0
-                    if ~This.log(realid)
-                        C = sprintf('x(%g)',realid);
-                    else
-                        C = sprintf('exp?(x(%g))',realid);
-                    end
-                else
-                    if ~This.log(realid)
-                        C = sprintf('(x(%g)+(%g)*dx(%g))',realid,t,realid);
-                    else
-                        C = sprintf('(exp?(x(%g))*exp?(dx(%g))^(%g))', ...
-                            realid,realid,t);
-                    end
-                end
-            case 3
-                % Shocks.
-                C = '0';
-            case 4
-                % Parameters.
-                C = sprintf('x(%g)',realid);
-            case 5
-                % Exogenous variables in dtrend equations.
-                C = 'NaN';
-        end
-        if ~isinf(iEq)
-            occurS(iEq,realid) = true;
-        end
-    end % doSTransform().
-
-    function c = doStdcorr(c)
-        inx = modelobj.mystdcorrindex(This,c);
-        if any(inx)
-            n = find(inx);
-            c = sprintf('x(:,%g,t)',nName+n);
-        end
-    end % doStdcorr().
-
-end % xxTransformEqtn().
-
-%**************************************************************************
 function [ErrMsg,ErrList] = xxChkStructure(This,shockType)
 
 nEqtn = length(This.eqtn);
@@ -1292,4 +1152,4 @@ if any(check)
     return
 end
 
-end % xxChkStructure().
+end % xxChkStructure()
