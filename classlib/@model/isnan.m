@@ -76,7 +76,7 @@ switch request
         Flag = any(inx);
     case {'solution'}
         sol = This.solution{1}(:,:,alt);
-        inx = isempty(sol) || any(any(isnan(sol),1),2);
+        inx = isempty(sol) | any(any(isnan(sol),1),2);
         inx = inx(:)';
         if nargout > 1
             List = inx;
@@ -84,7 +84,7 @@ switch request
         Flag = any(inx);
     case {'expansion'}
         expand = This.Expand{1}(:,:,alt);
-        inx = isempty(expand) || any(any(isnan(expand),1),2);
+        inx = isempty(expand) | any(any(isnan(expand),1),2);
         inx = inx(:)';
         if nargout > 1
             List = inx;
