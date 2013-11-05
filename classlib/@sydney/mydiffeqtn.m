@@ -25,9 +25,6 @@ Eqtn = regexprep(char(Eqtn),'^@\(.*?\)','','once');
 % Replace x(:,n,t+k) with xN, xNpK, or xNmK.
 Eqtn = sydney.myeqtn2symb(Eqtn);
 
-% Create sydney object for the current equation.
-z = sydney(Eqtn);
-
 nocc = length(NmOcc);
 unknown = cell(1,nocc);
 for i = 1 : nocc
@@ -43,38 +40,44 @@ for i = 1 : nocc
     end
 end
 
-if Mode == 1
-    % Differentiate and reduce the result. The function returned by sydney.diff
-    % computes derivatives wrt all variables at once, and returns a vector of
-    % numbers.
-    z = diff(z,unknown,1);
-    %### deqtn = char(z,'human');
-    DEqtn = char(z,varargin{:});
-    % Multiply derivatives wrt log(X) by X.
-    if any(Log(NmOcc))
-        c = unknown;
-        if ~isBsx
-            c(~Log(NmOcc)) = {'1'};
-        else
-            c(~Log(NmOcc)) = {'ones(1,1,length(t))'};
+% Create sydney object for the current equation.
+Z = sydney(Eqtn,unknown);
+
+switch Mode
+    case 'enbloc'
+        % Differentiate and reduce the result. The function returned by sydney.diff
+        % computes derivatives wrt all variables at once, and returns a vector of
+        % numbers.
+        Z = diff(Z,'enbloc',unknown);
+        DEqtn = char(Z,varargin{:});
+        % Multiply derivatives wrt log(X) by X.
+        if any(Log(NmOcc))
+            c = unknown;
+            if ~isBsx
+                c(~Log(NmOcc)) = {'1'};
+            else
+                c(~Log(NmOcc)) = {'ones(1,1,length(t))'};
+            end
+            c = sprintf('%s;',c{:});
+            c(end) = '';
+            if ~isBsx
+                DEqtn = ['(',DEqtn,').*[',c,']'];
+            else
+                DEqtn = ['bsxfun(@times,',DEqtn,',[',c,'])'];
+            end
         end
-        c = sprintf('%s;',c{:});
-        c(end) = '';
-        if ~isBsx
-            DEqtn = ['(',DEqtn,').*[',c,']'];
-        else
-            DEqtn = ['bsxfun(@times,',DEqtn,',[',c,'])'];
+    case 'separate'
+        % Derivatives wrt individual names are computed and stored separately.
+        DEqtn = cell(1,nocc);
+        if nocc > 0
+            Z = diff(Z,'separate',unknown);
+            for i = 1 : nocc
+                DEqtn{i} = char(Z{i},varargin{:});
+            end
         end
-    end
-else
-    % Derivatives wrt individual names are computed and stored separately.
-    DEqtn = cell(1,nocc);
-    if nocc > 0
-        z = diff(z,unknown,Inf);
-        for i = 1 : nocc
-            DEqtn{i} = char(z{i},varargin{:});
-        end
-    end
+    otherwise
+        utils.error('sydney:mydiffeqtn', ...
+            'Invalid output mode');
 end
 
 % Replace xN, xNpK, or xNmK back with x(:,N,t+/-K).

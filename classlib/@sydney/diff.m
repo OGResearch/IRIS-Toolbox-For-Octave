@@ -1,38 +1,38 @@
-function this = diff(this,wrt,mode)
+function This = diff(This,Mode,Wrt)
 
-if ischar(wrt)
-    wrt = regexp(wrt,'\w+','match');
+nWrt = length(Wrt);
+if nWrt == 0
+    utils.error('sydney:diff', ...
+        'Empty list of Wrt variables');
 end
 
-nwrt = length(wrt);
+%--------------------------------------------------------------------------
 
-if nwrt == 0
-    this = [];
-    return
-end 
-
-if nwrt == 1 && ~exist('mode','var')
-    mode = 1;
-end
-
-if mode == 1
-    % Create one function that returns an array of derivatives.
-    this = mydiff(this,wrt);
+if isequal(Mode,'enbloc')
+    % Create one sydney that returns an array of derivatives.
+    This = mydiff(This,Wrt);
     % Handle special case when there is no occurence of any of the `wrt`
     % variables in the expression, and a scalar zero is returned.
-    if nwrt > 1 && isempty(this.func) && isequal(this.args,0)
-        this.args = false(nwrt,1);
+    if nWrt > 1 && isempty(This.func) && isequal(This.args,0)
+        This.args = false(nWrt,1);
+        This.lookahead = false;
     else
-        this = reduce(this);
+        if nWrt == 1
+            This = reduce(This,1);
+        else
+            This = reduce(This);
+        end
+    end
+elseif isequal(Mode,'separate')
+    % Create cell array of sydneys.
+    z = mydiff(This,Wrt);
+    This = cell(1,nWrt);
+    for i = 1 : nWrt
+        This{i} = reduce(z,i);
     end
 else
-    % Create cell array of functions.
-    n = length(wrt);
-    z = mydiff(this,wrt);
-    this = cell(1,n);
-    for i = 1 : n
-        this{i} = reduce(z,i);
-    end
+    utils.error('sydney:diff', ...
+        'Invalid output mode.');
 end
 
 end

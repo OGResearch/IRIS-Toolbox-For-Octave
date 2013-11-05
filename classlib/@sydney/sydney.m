@@ -9,27 +9,48 @@ classdef sydney
     
     properties
         func = '';
-        args = {};
-        lookahead = {};
+        args = cell(1,0);
+        lookahead = [];
+        numd = [];
     end
     
     methods
         function This = sydney(varargin)
             if isempty(varargin)
                 return
-            elseif length(varargin) == 1
-                if isa(varargin{1},'sydney')
-                    This = varargin{1};
-                elseif isnumeric(varargin{1})
+                
+            elseif length(varargin) == 1 && isa(varargin{1},'sydney')
+                
+                % Sydney object.
+                This = varargin{1};
+                return
+                
+            else
+                
+                expn = varargin{1};
+                wrt = varargin{2};
+                
+                if isnumeric(expn)
+                    
+                    % Plain number.
                     This.func = '';
-                    This.args = varargin{1};
-                elseif ischar(varargin{1})
-                    if isvarname(varargin{1})
+                    This.args = expn;
+                    This.lookahead = false;
+                    
+                elseif ischar(expn)
+                    
+                    if isvarname(expn)
+                        
+                       % Single variable name.
                         This.func = '';
-                        This.args = varargin{1};
+                        This.args = expn;
+                        This.lookahead = any(strcmp(expn,wrt));
+                        
                     else
+                        
+                        % General expression.
                         template = sydney();
-                        expr = strtrim(varargin{1});
+                        expr = strtrim(expn);
                         if isempty(expr)
                             This.func = '';
                             This.args = 0;
@@ -56,10 +77,12 @@ classdef sydney
                         % Create a sydney object for each variables name.
                         nVar = length(varList);
                         z = cell(1,nVar);
+                        %z(:) = {template};
                         for i = 1 : nVar
+                            name = varList{i};
                             z{i} = template;
-                            z{i}.func = '';
-                            z{i}.args = varList{i};
+                            z{i}.args = name;
+                            z{i}.lookahead = any(strcmp(name,wrt));
                         end
                         
                         % Create an anonymous function for the expression.
@@ -72,94 +95,87 @@ classdef sydney
                         % Evaluate the equation's function handle on the
                         % sydney objects.
                         x = tempFunc(z{:});
+                                                
                         if isa(x,'sydney')
                             This = x;
                         elseif isnumeric(x)
                             This.func = '';
                             This.args = x;
+                            This.lookahead = false;
                         else
                             utils.error('sydney', ...
                                 'Cannot create a sydney object.');
                         end
+                        
                     end
                 end
-            else
-                This.func = varargin{1};
-                This.args = varargin{2};
+                
             end
         end
         
-        % Functional forms of unary and binary operators that can take
-        % non-functional forms.
-
-        function this = uplus(varargin)
-            this = sydney.parse('uplus',varargin{:});
-        end
-        function this = uminus(varargin)
-            this = sydney.parse('uminus',varargin{:});
-        end
-        function this = plus(varargin)
-            this = sydney.parse('plus',varargin{:});
-        end
-        function this = minus(varargin)
-            this = sydney.parse('minus',varargin{:});
-        end
-        function this = times(varargin)
-            this = sydney.parse('times',varargin{:});
-        end
-        function this = mtimes(varargin)
-            this = sydney.parse('times',varargin{:});
-        end
-        function this = rdivide(varargin)
-            this = sydney.parse('rdivide',varargin{:});
-        end
-        function this = mrdivide(varargin)
-            this = sydney.parse('rdivide',varargin{:});
-        end
-        function this = ldivide(varargin)
-            this = sydney.parse('rdivide',varargin{[2,1]});
-        end
-        function this = mldivide(varargin)
-            this = sydney.parse('rdivide',varargin{[2,1]});
-        end
-        function this = power(varargin)
-            this = sydney.parse('power',varargin{:});
-        end
-        function this = mpower(varargin)
-            this = sydney.parse('power',varargin{:});
-        end
-        function this = gt(varargin)
-            this = sydney.parse('gt',varargin{:});
-        end
-        function this = ge(varargin)
-            this = sydney.parse('ge',varargin{:});
-        end
-        function this = lt(varargin)
-            this = sydney.parse('lt',varargin{:});
-        end
-        function this = le(varargin)
-            this = sydney.parse('le',varargin{:});
-        end
-        function this = eq(varargin)
-            this = sydney.parse('eq',varargin{:});
-        end
-
-        function flag = isatom(z)
-            flag = isempty(z.func) || isequal(z.func,'sydney.d');
-        end
-        
-        function flag = isnumber(z)
-            flag = isempty(z.func) && isnumericscalar(z.args);
-        end
+        varargout = uminus(varargin)
+        varargout = plus(varargin)
+        varargout = times(varargin)
+        varargout = rdivide(varargin)
+        varargout = power(varargin)
         
         varargout = diff(varargin)
+        varargout = mydiff(varargin)
         varargout = reduce(varargin)
         varargout = char(varargin)
         
-    end
-    
-    methods (Access=protected)
-        varargout = mydiff(varargin)
+        function This = uplus(A)
+            This = A;
+        end
+
+        function This = minus(A,B)
+            % Replace x - y with x + (-y) to include minus as a special case in plus
+            % with multiple arguments.
+            This = plus(A,uminus(B));
+        end
+        
+        function This = mtimes(A,B)
+            This = times(A,B);
+        end
+        
+        function This = mrdivide(A,B)
+            This = rdivide(A,B);
+        end
+        function This = ldivide(A,B)
+            This = rdivide(B,A);
+        end
+        function This = mldivide(A,B)
+            This = rdivide(B,A);
+        end
+        
+        function This = mpower(A,B)
+            This = power(A,B);
+        end
+        
+        function This = gt(varargin)
+            This = sydney.parse('gt',varargin{:});
+        end
+        
+        function This = ge(varargin)
+            This = sydney.parse('ge',varargin{:});
+        end
+        
+        function This = lt(varargin)
+            This = sydney.parse('lt',varargin{:});
+        end
+        
+        function This = le(varargin)
+            This = sydney.parse('le',varargin{:});
+        end
+        
+        function This = eq(varargin)
+            This = sydney.parse('eq',varargin{:});
+        end
+
+        function Flag = isnumber(Z)
+            Flag = isempty(Z.func) && isnumericscalar(Z.args);
+        end
+        
     end
     
     methods (Static)
@@ -170,8 +186,6 @@ classdef sydney
         varargout = myeqtn2symb(varargin)
         varargout = parse(varargin)
 
-        varargout = testme(varargin)        
-        
         function Expr = callfunc(Expr)
             % Find all function names. Function names may also include dots to allow
             % for methods and packages. Functions with no input arguments are not

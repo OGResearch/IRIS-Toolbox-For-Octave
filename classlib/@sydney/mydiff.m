@@ -1,202 +1,200 @@
-function this = mydiff(this,wrt)
+function This = mydiff(This,Wrt)
 
-nwrt = length(wrt);
+persistent SYDNEY;
 
-if isequalwithequalnans(this.lookahead,NaN)
-    utils.error('sydney', ...
-        ['Cannot evaluate multiple consecutive derivatives ', ...
-        'without re-creating the sydney object.']);
+if isnumeric(SYDNEY)
+    SYDNEY = sydney();
 end
 
-if isempty(this.func)
-    if ischar(this.args)
-        % This is a variable name.
-        if nwrt == 1
-            if strcmp(this.args,wrt)
-                this.func = '';
-                this.args = 1;
+%--------------------------------------------------------------------------
+
+nWrt = length(Wrt);
+
+% This.lookahead = [];
+zeroDiff = ~This.lookahead;
+
+% `This` is a sydney object representing a variable name or a number; do
+% what's needed and return immediately.
+if isempty(This.func)
+    
+    if ischar(This.args)
+        % `This` is a variable name.
+        if nWrt == 1
+            % If we differentiate wrt to a single variable, convert the derivative
+            % directly to a number `0` or `1` instead of a logical index. This helps
+            % reduce some expressions immediately.
+            if strcmp(This.args,Wrt)
+                This = SYDNEY;
+                This.args = 1;
             else
-                this.func = '';
-                this.args = 0;
+                This = SYDNEY;
+                This.args = 0;
             end
         else
-            index = strcmp(this.args,wrt);
-            if any(index)
-                this.func = '';
-                this.args = false(nwrt,1);
-                this.args(index) = 1;
+            inx = strcmp(This.args,Wrt);
+            if any(inx)
+                This = SYDNEY;
+                vec = false(nWrt,1);
+                vec(inx) = true;
+                This.args = vec;
             else
-                this.func = '';
-                this.args = 0;
+                This = SYDNEY;
+                This.args = 0;
             end
         end
-    elseif isnumeric(this.args)
-        % This is a number.
-        this.func = '';
-        this.args = 0;
+        
+    elseif isnumeric(This.args)
+        % `This` is a number.
+        This = SYDNEY;
+        This.args = 0;
     else
-        utils.error('sydney', ...
-            'Unknown type of sydney atom.');
+        utils.error('sydney:mydiff', ...
+            'Internal sydney error.');
     end
+    
+    return
+
+end
+
+% None of the wrt variables occurs in the argument legs of this function.
+if all(zeroDiff)
+    This = SYDNEY;
+    This.args = 0;
     return
 end
 
-%{
-if isequal(this.func,'sydney.d')
-    utils.error('sydney', ...
-        'Cannot compute second or higher derivatives.');
-end
-%}
-
-% Look ahead to see whether the wrt variables are present in the current
-% function's argument legs.
-nargs = length(this.args);
-zerodiff = true(1,nargs);
-for i = 1 : nargs
-    for j = 1 : nwrt
-        zerodiff(i) = zerodiff(i) ...
-            && ~any(strcmp(this.lookahead{i},wrt{j}));
-    end
-end
-
-% Nullify lookahaed information after differentiation.
-this.lookahead = {};
-
-% None of the wrt variables occurs in the function's argument legs.
-if all(zerodiff)
-    this.func = '';
-    this.args = 0;
-    return
-end
-
-template = sydney();
-
-switch this.func
-    case {'uplus','uminus'}
-        this.args{1} = mydiff(this.args{1},wrt);
+switch This.func
+    case 'uplus'
+        This = mydiff(This.args{1},Wrt);
+    case 'uminus'
+        This.args{1} = mydiff(This.args{1},Wrt);
     case 'plus'
-        if zerodiff(1)
-            this = mydiff(this.args{2},wrt);
-        elseif zerodiff(2)
-            this = mydiff(this.args{1},wrt);
+        pos = find(~zeroDiff);
+        nPos = length(pos);
+        if nPos == 0
+            This = SYDNEY;
+            This.args = 0;
+        elseif nPos == 1
+            This = mydiff(This.args{pos},Wrt);
         else
-            this.args{1} = mydiff(this.args{1},wrt);
-            this.args{2} = mydiff(this.args{2},wrt);
+            args = cell(1,nPos);
+            for i = 1 : nPos
+                args{i} = mydiff(This.args{pos(i)},Wrt);
+            end
+            This.args = args;
         end
     case 'minus'
-        if zerodiff(1)
-            this.func = 'uminus';
-            this.args = {mydiff(this.args{2},wrt)};
-        elseif zerodiff(2)
-            this = mydiff(this.args{1},wrt);
+        if zeroDiff(1)
+            This.func = 'uminus';
+            This.args = {mydiff(This.args{2},Wrt)};
+        elseif zeroDiff(2)
+            This = mydiff(This.args{1},Wrt);
         else
-            this.args{1} = mydiff(this.args{1},wrt);
-            this.args{2} = mydiff(this.args{2},wrt);
+            This.args{1} = mydiff(This.args{1},Wrt);
+            This.args{2} = mydiff(This.args{2},Wrt);
         end
     case 'times'
-        if zerodiff(1)
-            this.args{2} = mydiff(this.args{2},wrt);
-        elseif zerodiff(2)
-            this.args{1} = mydiff(this.args{1},wrt);
+        if zeroDiff(1)
+            This.args{2} = mydiff(This.args{2},Wrt);
+        elseif zeroDiff(2)
+            This.args{1} = mydiff(This.args{1},Wrt);
         else
             % mydiff(x1*x2) = mydiff(x1)*x2 + x1*mydiff(x2)
             % Z1 := mydiff(x1)*x2
             % Z2 := x1*mydiff(x2)
             % this := Z1 + Z2
-            Z1 = template;
+            Z1 = SYDNEY;
             Z1.func = 'times';
-            Z1.args = {mydiff(this.args{1},wrt), ...
-                this.args{2}};
-            Z2 = template;
+            Z1.args = {mydiff(This.args{1},Wrt), This.args{2}};
+            Z2 = SYDNEY;
             Z2.func = 'times';
-            Z2.args = {this.args{1}, ...
-                mydiff(this.args{2},wrt)};
-            this.func = 'plus';
-            this.args = {Z1,Z2};
+            Z2.args = {This.args{1}, mydiff(This.args{2},Wrt)};
+            This.func = 'plus';
+            This.args = {Z1,Z2};
         end
     case 'rdivide'
         % mydiff(x1/x2)
-        if zerodiff(1)
-            this = dordivide1();
-        elseif zerodiff(2)
-            this = dordivide2();
+        if zeroDiff(1)
+            This = doRdivide1();
+        elseif zeroDiff(2)
+            This = doRdivide2();
         else
-            Z1 = dordivide1();
-            Z2 = dordivide2();
-            this.func = 'plus';
-            this.args = {Z1,Z2};
+            Z1 = doRdivide1();
+            Z2 = doRdivide2();
+            This.func = 'plus';
+            This.args = {Z1,Z2};
         end
     case 'log'
         % mydiff(log(x1)) = mydiff(x1)/x1
-        this.func = 'rdivide';
-        this.args = {mydiff(this.args{1},wrt),this.args{1}};
+        This.func = 'rdivide';
+        This.args = {mydiff(This.args{1},Wrt),This.args{1}};
     case 'exp'
         % mydiff(exp(x1)) = exp(x1)*mydiff(x1)
-        this.args = {mydiff(this.args{1},wrt),this};
-        this.func = 'times';
+        This.args = {mydiff(This.args{1},Wrt),This};
+        This.func = 'times';
     case 'power'
-        if zerodiff(1)
+        if zeroDiff(1)
             % mydiff(x1^x2) with mydiff(x1) = 0
             % mydiff(x1^x2) = x1^x2 * log(x1) * mydiff(x2)
-            this = dopower1();
-        elseif zerodiff(2)
+            This = doPower1();
+        elseif zeroDiff(2)
             % mydiff(x1^x2) with mydiff(x2) = 0
             % mydiff(x1^x2) = x2*x1^(x2-1)*mydiff(x1)
-            this = dopower2();
+            This = doPower2();
         else
-            Z1 = dopower1();
-            Z2 = dopower2();
-            this.func = 'plus';
-            this.args = {Z1,Z2};
+            Z1 = doPower1();
+            Z2 = doPower2();
+            This.func = 'plus';
+            This.args = {Z1,Z2};
         end
     case 'sqrt'
         % mydiff(sqrt(x1)) = (1/2) / sqrt(x1) * mydiff(x1)
         % Z1 : = 1/2
         % Z2 = Z1 / sqrt(x1) = Z1 / this
         % this = Z2 * mydiff(x1)
-        Z1 = template;
+        Z1 = SYDNEY;
         Z1.func = '';
         Z1.args = 1/2;
-        Z2 = template;
+        Z2 = SYDNEY;
         Z2.func = 'rdivide';
-        Z2.args = {Z1,this};
-        this.func = 'times';
-        this.args = {Z2,mydiff(this.args{1},wrt)};
+        Z2.args = {Z1,This};
+        This.func = 'times';
+        This.args = {Z2,mydiff(This.args{1},Wrt)};
     case 'sin'
-        Z1 = this;
+        Z1 = This;
         Z1.func = 'cos';
-        this.func = 'times';
-        this.args = {Z1,mydiff(this.args{1},wrt)};
+        This.func = 'times';
+        This.args = {Z1,mydiff(This.args{1},Wrt)};
     case 'cos'
         % mydiff(cos(x1)) = uminus(sin(x)) * mydiff(x1);
-        Z1 = this;
+        Z1 = This;
         Z1.func = 'sin';
-        Z2 = template;
+        Z2 = SYDNEY;
         Z2.func = 'uminus';
         Z2.args = {Z1};
-        this.func = 'times';
-        this.args = {Z2,mydiff(this.args{1},wrt)};
+        This.func = 'times';
+        This.args = {Z2,mydiff(This.args{1},Wrt)};
     otherwise
         % External function.
         % diff(f(x1,x2,...)) = diff(f,1)*diff(x1) + diff(f,2)*diff(x2) + ...
-        if strcmp(this.func,'sydney.d')
-            zerodiff(1:2) = true;
-        end
-        pos = find(~zerodiff);
+        pos = find(~zeroDiff);
         % diff(f,i)*diff(xi)
-        Z = dodiffxf(pos(1));
+        Z = doExternalWrtK(pos(1));
         for i = pos(2:end)
             Z1 = Z;
             Z.func = 'plus';
-            Z.args = {Z1,dodiffxf(i)};
+            Z.args = {Z1,doExternalWrtK(i)};
         end
-        this = Z;
+        This = Z;
         
 end
 
+
 % Nested functions.
 
-    function z = dordivide1()
+
+%**************************************************************************
+    function z = doRdivide1()
         % Compute mydiff(x1/x2) with mydiff(x1) = 0
         % mydiff(x1/x2) = -x1/x2^2 * mydiff(x2)
         % z1 := -x1
@@ -204,49 +202,55 @@ end
         % z3 := x2^z2
         % z4 :=  z1/z3
         % z := z4*mydiff(x2)
-        z1 = template;
+        z1 = SYDNEY;
         z1.func = 'uminus';
-        z1.args = this.args(1);
-        z2 = template;
+        z1.args = This.args(1);
+        z2 = SYDNEY;
         z2.func = '';
         z2.args = 2;
-        z3 = template;
+        z3 = SYDNEY;
         z3.func = 'power';
-        z3.args = {this.args{2},z2};
-        z4 = template;
+        z3.args = {This.args{2},z2};
+        z4 = SYDNEY;
         z4.func = 'rdivide';
         z4.args = {z1,z3};
-        z = template;
+        z = SYDNEY;
         z.func = 'times';
-        z.args = {z4,mydiff(this.args{2},wrt)};
-    end
+        z.args = {z4,mydiff(This.args{2},Wrt)};
+    end % doRdivide1()
 
-    function z = dordivide2()
+
+%**************************************************************************
+    function z = doRdivide2()
         % Compute mydiff(x1/x2) with mydiff(x2) = 0
         % diff(x1/x2) = diff(x1)/x2
-        z = template;
+        z = SYDNEY;
         z.func = 'rdivide';
-        z.args = {mydiff(this.args{1},wrt),this.args{2}};
-    end
+        z.args = {mydiff(This.args{1},Wrt),This.args{2}};
+    end % doRdivide2()
 
-    function z = dopower1()
+
+%**************************************************************************
+    function z = doPower1()
         % Compute diff(x1^x2) with diff(x1) = 0
         % diff(x1^x2) = x1^x2 * log(x1) * diff(x2)
         % z1 := log(x1)
         % z2 := this*z1
         % z := z2*diff(x2)
-        z1 = template;
+        z1 = SYDNEY;
         z1.func = 'log';
-        z1.args = this.args(1);
-        z2 = template;
+        z1.args = This.args(1);
+        z2 = SYDNEY;
         z2.func = 'times';
-        z2.args = {this,z1};
-        z = template;
+        z2.args = {This,z1};
+        z = SYDNEY;
         z.func = 'times';
-        z.args = {z2,mydiff(this.args{2},wrt)};
-    end
+        z.args = {z2,mydiff(This.args{2},Wrt)};
+    end % doPower1()
 
-    function z = dopower2()
+
+%**************************************************************************
+    function z = doPower2()
         % Compute diff(x1^x2) with diff(x2) = 0
         % diff(x1^x2) = x2*x1^(x2-1)*diff(x1)
         % z1 := 1
@@ -254,40 +258,40 @@ end
         % z3 := f(x1)^z2
         % z4 := x2*z3
         % z := z4*diff(f(x1))
-        z1 = template;
+        z1 = SYDNEY;
         z1.func = '';
-        z1.args = 1;
-        z2 = template;
-        z2.func = 'minus';
-        z2.args = {this.args{2},z1};
-        z3 = template;
+        z1.args = -1;
+        z2 = SYDNEY;
+        z2.func = 'plus';
+        z2.args = {This.args{2},z1};
+        z3 = SYDNEY;
         z3.func = 'power';
-        z3.args = {this.args{1},z2};
-        z4 = template;
+        z3.args = {This.args{1},z2};
+        z4 = SYDNEY;
         z4.func = 'times';
-        z4.args = {this.args{2},z3};
-        z = template;
+        z4.args = {This.args{2},z3};
+        z = SYDNEY;
         z.func = 'times';
-        z.args = {z4,mydiff(this.args{1},wrt)};
-    end
+        z.args = {z4,mydiff(This.args{1},Wrt)};
+    end % doPower2()
 
-    function z = dodiffxf(k)
-        if strcmp(this.func,'sydney.d')
-            z1 = this;
-            wrtk = z1.args{2};
-            wrtk.args(end+1) = k - 2;
-            z1.args{2} = wrtk;
+
+%**************************************************************************
+    function Z = doExternalWrtK(K)
+        if strcmp(This.func,'sydney.d')
+            z1 = This;
+            z1.numd.wrt = [z1.numd.wrt,K];
         else
-            z1 = template;
+            z1 = SYDNEY;
             z1.func = 'sydney.d';
-            wrtk = template;
-            wrtk.func = '';
-            wrtk.args = k;
-            z1.args = {str2func(this.func),wrtk,this.args{:}}; %#ok<CCAT>
+            z1.numd.func = This.func;
+            z1.numd.wrt = K;
+            z1.args = This.args;
         end
-        z = template;
-        z.func = 'times';
-        z.args = {z1,mydiff(this.args{k},wrt)};
-    end
+        Z = SYDNEY;
+        Z.func = 'times';
+        Z.args = {z1,mydiff(This.args{K},Wrt)};
+    end % doExternal()
+
 
 end

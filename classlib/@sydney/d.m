@@ -73,9 +73,13 @@ end
 
 end
 
+
 % Subfunctions.
 
+
 %**************************************************************************
+
+
 function DF = xxDiffNum(Func,K,varargin)
 
 epsilon = eps()^(1/3.5);
@@ -89,4 +93,4 @@ varargin{K} = xm;
 fm = feval(Func,varargin{:});
 DF = (fp - fm) ./ (xp - xm);
 
-end % xxdiff().
+end % xxDiffNum()
