@@ -172,7 +172,7 @@ doRefresh();
         
         % Refresh all dynamic links.
         if ~isempty(This.Refresh)
-            dorefresh();
+            doRefresh();
         end
         
         if any(dxi)
@@ -186,7 +186,7 @@ doRefresh();
             y = f(x,dx);
         end
         
-        function dorefresh()
+        function doRefresh()
             % dorefresh  Refresh dynamic links in each iteration.
             x(This.log) = exp(x(This.log));
             dx(This.log) = exp(dx(This.log));
