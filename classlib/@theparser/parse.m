@@ -104,9 +104,7 @@ doChkInvalid();
 % Nested functions.
 
 
-%**************************************************************************
-
-    
+%**************************************************************************    
     function doChkInvalid()
         
         % Blocks marked as essential cannot be empty.
@@ -156,15 +154,13 @@ doChkInvalid();
         
     end % doChkInvalid()
 
-end % parse()
+end
 
 
 % Subfunctions.
 
 
 %**************************************************************************
-
-
 function [Label,Alias] = xxGetAlias(Label)
 % xxGetAlias  Extract alias from raw label.
 
@@ -190,8 +186,6 @@ end % xxGetAlias()
 
 
 %**************************************************************************
-
-
 function S = xxSstateOnly(S)
 % sstateonly  Replace full equations with steady-state equatoins when
 % present.
@@ -222,7 +216,6 @@ end %% xxSstateOnly()
 
 
 %**************************************************************************
-%**************************************************************************
 function [MaxT,MinT,Invalid,varargout] = xxEvalTimeSubs(varargin)
 % xxEvalTimeSubs  Validate and evaluate time subscripts.
 
@@ -231,11 +224,38 @@ MaxT = 0;
 MinT = 0;
 Invalid = {};
 
-replaceFunc = @doReplace; %#ok<NASGU>
 for i = 1 : length(varargout)
-    varargout{i} = ...
-        regexprep(varargout{i},'\{([^\}\{;]*)\}','${replaceFunc($1)}');
+    if isempty(varargout{i})
+        continue
+    end
+    varargout{i} = strrep(varargout{i},'{0}','');
+    varargout{i} = strrep(varargout{i},'{1','{+1');
+    varargout{i} = strrep(varargout{i},'{2','{+2');
+    varargout{i} = strrep(varargout{i},'{3','{+3');
+    varargout{i} = strrep(varargout{i},'{4','{+4');
+    varargout{i} = strrep(varargout{i},'{5','{+5');
+    varargout{i} = strrep(varargout{i},'{6','{+6');
+    varargout{i} = strrep(varargout{i},'{7','{+7');
+    varargout{i} = strrep(varargout{i},'{8','{+8');
+    varargout{i} = strrep(varargout{i},'{9','{+9');
+    x = regexp(varargout{i},'\{[+\-]\d+\}','match');
+    x = [x{:}];
+    x = [x{:}];
+    if ~isempty(x)
+        x = sscanf(x,'{%g}');
+        x = x(:).';
+        MaxT = max([MaxT,x]);
+        MinT = min([MinT,x]);
+    end
 end
+    
+%{
+replaceFunc = @doReplace; %#ok<NASGU>
+    
+%    varargout{i} = ...
+%        regexprep(varargout{i},'\{([^\}\{;]*)\}','${replaceFunc($1)}');
+%    varargout{i} = regexprep(varargout{i},'\{
+%end
 
     function C = doReplace(C)
         if strcmp(C,'0')
@@ -271,13 +291,12 @@ end
         Invalid{end+1} = ['{',C,'}'];
         C = '';
     end % doReplace()
+%}
 
 end %% xxEvalTimeSubs()
 
 
 %**************************************************************************
-
-
 function ProtectedArg = xxProtectedEval(ProtectedArg)
 % xxProtectedEval  Protected eval.
 
