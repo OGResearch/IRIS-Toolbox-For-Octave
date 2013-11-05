@@ -10,7 +10,11 @@ function [Eqtn,EqtnLabel,EqtnLhs,EqtnRhs,EqtnSign, ...
 
 %--------------------------------------------------------------------------
 
-Blk = regexprep(Blk,'\s+','');
+Blk = strrep(Blk,sprintf('\n'),'');
+Blk = strrep(Blk,sprintf('\t'),'');
+Blk = strrep(Blk,' ','');
+%Blk = regexprep(Blk,'\s+','');
+
 Blk = strrep(Blk,'!ttrend','ttrend');
 
 charCodes = regexppattern(This.labels);
