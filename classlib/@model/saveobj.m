@@ -24,9 +24,11 @@ ceqtnF = This.ceqtnF;
 
 nEqtn = length(This.eqtn);
 for iEqtn = 1 : nEqtn
+
     if isa(eqtnF{iEqtn},'function_handle')
         eqtnF{iEqtn} = func2str(eqtnF{iEqtn});
     end
+    
     if isa(deqtnF{iEqtn},'function_handle')
         deqtnF{iEqtn} = func2str(deqtnF{iEqtn});
     elseif iscell(deqtnF{iEqtn})
@@ -36,9 +38,11 @@ for iEqtn = 1 : nEqtn
             end
         end
     end
+    
     if isa(ceqtnF{iEqtn},'function_handle')
         ceqtnF{iEqtn} = func2str(ceqtnF{iEqtn});
     end
+    
 end
 
 This.eqtnF = eqtnF;

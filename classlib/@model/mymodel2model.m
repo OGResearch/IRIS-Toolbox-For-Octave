@@ -73,7 +73,7 @@ end
 % Pre-compute symbolic derivatives of
 % * transition and measurement equations wrt variables,
 % * dtrends equations wrt parameters (always).
-This = mysymbdiff(This);
+This = mysymbdiff(This,Opt.symbdiff);
 
 % Convert model equations to anonymous functions.
 This = myeqtn2afcn(This);
@@ -85,7 +85,7 @@ end
 
 % Nested functions.
 
-%**************************************************************************
+
     function doPrealloc()
         if issparse(This.occur)
             nt = size(This.occur,2)/length(This.name);
@@ -152,6 +152,7 @@ end
         
         This.eigval = nan(1,nx);
         This.icondix = false(1,nb);
-    end % doPrealloc().
+    end % doPrealloc()
+
 
 end
