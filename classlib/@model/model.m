@@ -315,6 +315,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = myblazer(varargin)
         varargout = mychksstate(varargin)
         varargout = mychksstateopt(varargin)
+        varargout = mychksyntax(varargin)
         varargout = myconsteqtn(varargin)
         varargout = myd2s(varargin)
         varargout = myderiv(varargin)
@@ -323,13 +324,16 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = mydtrends4lik(varargin)
         varargout = myeqtn2afcn(varargin)
         varargout = myfile2model(varargin)
+        varargout = myfinaleqtn(varargin)
         varargout = myfind(varargin)
         varargout = myfindoccur(varargin)
         varargout = myforecastswap(varargin)
         varargout = mykalmanregoutp(varargin)
         varargout = mymodel2model(varargin)
+        varargout = mynamepattrepl(varargin)
         varargout = mynonlineqtn(varargin)
         varargout = mynunit(varargin)
+        varargout = myoccurence(varargin)
         varargout = myoptpolicy(varargin)
         varargout = myparse(varargin)
         varargout = mypreploglik(varargin)
@@ -438,11 +442,10 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
             % ---------------------
             %
             % The `model` function can be used to read in a [model
-            % file](modellang/Contents) named `fname`, and create a model
-            % object `m` based on the model file. You can then work with
-            % the model object in your own m-files, using using the IRIS
-            % [model functions](model/Contents) and standard Matlab
-            % functions.
+            % file](modellang/Contents) named `fname`, and create a model object `m`
+            % based on the model file. You can then work with the model object in your
+            % own m-files, using using the IRIS [model functions](model/Contents) and
+            % standard Matlab functions.
             %
             % If `fname` is a cell array of more than one filenames then all files are
             % combined together (in order of appearance).
@@ -475,9 +478,9 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
             %     m = model('my.model','linear=',true);
             %     m = assign(m,P);
             %
-            % unless some of the parameters passed in to the `model`
-            % fuction are needed to evaluate [`if`](modellang/if) or
-            % [`!switch`](modellang/switch) expressions.
+            % unless some of the parameters passed in to the `model` fuction are needed
+            % to evaluate [`if`](modellang/if) or [`!switch`](modellang/switch)
+            % expressions.
             
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
