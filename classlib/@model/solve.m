@@ -113,9 +113,13 @@ if nargout > 2
     EigVal = This.eigval;
 end
 
+
 % Nested functions.
 
+
 %**************************************************************************
+
+    
     function doErrorWarning()
         if opt.error
             func = @utils.error;
@@ -124,6 +128,7 @@ end
         end
         [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
         func('model',body,args{:});
-    end % doErrorWarning().
+    end % doErrorWarning()
+
 
 end
