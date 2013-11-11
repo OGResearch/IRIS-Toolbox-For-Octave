@@ -112,6 +112,9 @@ for i = 1 : nx
             stat = warning();
             warning('off'); %#ok<WNOFF>
             delete([tmptitle,'.*']);
+            if ismac()
+                delete('fort.6');
+            end
             warning(stat);
         end
         if ~ok

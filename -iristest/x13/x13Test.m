@@ -1,26 +1,17 @@
-% x13Test  Test the X13-Arima-Seats tseries interface.
-
-
 function Tests = x13Test()
 Tests = functiontests(localfunctions);
 end
 
 
-% Subfunctions.
-
-
 %**************************************************************************
-
-
 function This = setupOnce(This) %#ok<*DEFNU>
 This.TestData.absTol = 1e-14;
 end % setupOnce()
 
 
 %**************************************************************************
-
-
 function testSeasonalDummy(This)
+
 range = qq(2000,1):qq(2004,4);
 x = tseries(range,[ ...
     6.0985
@@ -126,4 +117,5 @@ expS12 = tseries(range,[ ...
 assertEqual(This,actS,expS,'absTol',This.TestData.absTol);
 assertEqual(This,actS1,expS1,'absTol',This.TestData.absTol);
 assertEqual(This,actS12,expS12,'absTol',This.TestData.absTol);
+
 end % testSeasonalDummy()
