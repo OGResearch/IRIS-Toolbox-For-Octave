@@ -1,5 +1,5 @@
 function [Y,varargout] = x12(X,StartDate,Dummy,Opt)
-% x12  [Not a public function] Matlab interface for X12-ARIMA.
+% x12  [Not a public function] Matlab interface for X13-ARIMA-Seats.
 %
 % Backend IRIS function.
 % No help provided.
