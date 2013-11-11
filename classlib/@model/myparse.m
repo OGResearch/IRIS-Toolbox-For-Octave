@@ -345,6 +345,10 @@ if ~This.linear
     isEmptySstate = cellfun(@isempty,This.eqtnS) & This.eqtntype <= 2;
     This.eqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
     This.eqtnS(This.eqtntype > 2) = {''};
+    if isLoss
+        % Do not copy the loss function to steady state equations.
+        This.eqtnS{lossPos} = '';
+    end
     
     This.eqtnS = regexprep(This.eqtnS,namePatt,nameReplS);
     
@@ -411,7 +415,7 @@ if isLoss
     if isempty(lossDisc)
         utils.error('model',[utils.errorparsing(This), ...
             'Loss function discount factor is empty.']);
-    end
+    end    
     This.eqtnF{lossPos}(1:close) = '';
 end
 
@@ -474,8 +478,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-
-
     function doChkTimeSsref()
         % Check for { in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
@@ -499,8 +501,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-
-
     function doDeclareParameters()
         
         % All declared names except parameters.
@@ -532,8 +532,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-
-
     function doChkStdcorrNames()
         
         if ~any(stdInx) && ~any(corrInx)
@@ -569,8 +567,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-
-    
     function doChkUndeclared()
         % Undeclared names have not been substituted for by the name codes, except
         % std and corr names in dynamic links (std and corr names cannot be used in
@@ -632,8 +628,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-    
-    
     function doChkSstateRef()
         % Check for sstate references in wrong places.
         func = @(c) ~cellfun(@(x) isempty(strfind(x,'&')),c);
@@ -669,8 +663,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-    
-    
     function doLossPlaceHolders()
         % Add new variables, i.e. the Lagrange multipliers associated with
         % all of the existing transition equations except the loss
@@ -721,8 +713,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
 %**************************************************************************
-    
-    
     function doChkEmptyEqtn()
         % dochkemptyeqtn  Check for empty full equations.
         emptyInx = cellfun(@isempty,This.eqtnF);
@@ -741,8 +731,6 @@ end
 
 
 %**************************************************************************
-
-
 function [Eqtn,EqtnF,EqtnS,EqtnLabel,EqtnAlias, ...
     EqtnNonlin,IsLoss,MultipleLoss] = xxReadEqtns(S)
 % xxReadEqtns  Read measurement or transition equations.
@@ -828,8 +816,6 @@ end % xxReadEqtns()
 
 
 %**************************************************************************
-
-
 function [This,LogMissing,Invalid,Multiple] = xxReadDtrends(This,S)
 
 n = sum(This.nametype == 1);
@@ -888,8 +874,6 @@ end % xxReadDtrends()
 
 
 %**************************************************************************
-
-
 function [This,Invalid] = xxReadLinks(This,S)
 
 nname = length(This.name);
@@ -929,8 +913,6 @@ end % xxReadLinks()
 
 
 %**************************************************************************
-
-
 function [This,Invalid,Nonunique] = xxReadAutoexogenise(This,S)
 
 % `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
@@ -941,8 +923,6 @@ end % xxReadautoExogenise()
 
 
 %**************************************************************************
-
-
 function [ErrMsg,ErrList] = xxChkStructure(This,shockType)
 
 nEqtn = length(This.eqtn);

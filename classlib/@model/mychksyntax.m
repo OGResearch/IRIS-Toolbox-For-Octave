@@ -101,10 +101,8 @@ end
                 
                 e = This.eqtnS{iiEq};
                 e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
-                e(x,dx,L,t,ttrend,g);
-                
+                e(x,dx,L,t,ttrend,g);               
             catch E
-                
                 % Undeclared names should have been already caught. But a few exceptions
                 % may still exist.
                 [match,tokens] = ...
@@ -122,7 +120,6 @@ end
                     end
                     errSyntax{end+1} = message; %#ok<AGROW>
                 end
-                
             end
             
         end
