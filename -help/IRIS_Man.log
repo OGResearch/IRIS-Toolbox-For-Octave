@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  21 OCT 2013 20:56
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 NOV 2013 14:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6206,40 +6206,35 @@ LaTeX Font Info:    Font shape `OMS/ccr/m/n' in size <8> not available
 ] (./Preface.tex
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 3.
- [3
-
-]) [4
+) (./IRIS_Solutions_Team.tex) [3
 
 ] (./IRIS_Man.toc
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <12> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <10> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 2.
- [5
+ [4
 
 ])
 \tf@toc=\write3
 \openout3 = `IRIS_Man.toc'.
 
- [6] (./Preface.tex [7
 
-])
-(./Contents.tex [8
-
-]
+[5] (./Contents.tex
 \openout2 = `Contents/sessions.aux'.
 
  (./Contents/sessions.tex
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
-) [9
+) [6
+
 
 
 ] (./setup/Contents.tex
-[10
+[7
 
 
-]) [11] (./config/Contents.tex) (./config/iriscleanup.tex [12
+]) [8] (./config/Contents.tex) (./config/iriscleanup.tex [9
 
 ]
 LaTeX Font Info:    Try loading font information for T1+lcmss on input line 3.
@@ -6255,245 +6250,245 @@ LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <12> not available
 LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <10> not available
 (Font)              size <13.82> substituted on input line 3.
 
-) (./config/irisfinish.tex) (./config/irisget.tex [13] [14])
-(./config/irisrequired.tex) (./config/irisreset.tex [15])
-(./config/irisroot.tex) (./config/irisset.tex [16] [17])
-(./config/irisstartup.tex [18]) (./config/irisuserconfighelp.tex [19])
-(./config/irisversion.tex) [20] (./gettinghelp/Contents.tex [21
+) (./config/irisfinish.tex) (./config/irisget.tex [10] [11])
+(./config/irisrequired.tex) (./config/irisreset.tex [12])
+(./config/irisroot.tex) (./config/irisset.tex [13] [14])
+(./config/irisstartup.tex [15]) (./config/irisuserconfighelp.tex [16])
+(./config/irisversion.tex) [17] (./gettinghelp/Contents.tex [18
 
-]) [22]
+]) [19]
 \openout2 = `Contents/models.aux'.
 
 
-(./Contents/models.tex) [23
+(./Contents/models.tex) [20
 
 
-] (./modellang/Contents.tex [24
+] (./modellang/Contents.tex [21
 
 
-] [25] [26])
-(./modellang/alias.tex [27]) (./modellang/sstateversion.tex [28])
-(./modellang/allbut.tex) (./modellang/autoexogenise.tex [29])
-(./modellang/dtrends.tex [30]) (./modellang/exogenousvariables.tex
+] [22] [23])
+(./modellang/alias.tex [24]) (./modellang/sstateversion.tex [25])
+(./modellang/allbut.tex) (./modellang/autoexogenise.tex [26])
+(./modellang/dtrends.tex [27]) (./modellang/exogenousvariables.tex
 Overfull \hbox (3.6365pt too wide) in paragraph at lines 32--39
 \T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !exogenous_variables \T1/ccr/m/n/10 key-word
  starts a new dec-la-ra-tion block for ex-oge-nous vari-ables, i.e. vari-
  []
 
-[31]) (./modellang/export.tex) (./modellang/for.tex [32] [33] [34] [35])
-(./modellang/if.tex [36] [37] [38]) (./modellang/import.tex)
-(./modellang/links.tex [39]) (./modellang/logvariables.tex [40] [41])
-(./modellang/measurementequations.tex [42]) (./modellang/measurementshocks.tex
+[28]) (./modellang/export.tex) (./modellang/for.tex [29] [30] [31] [32])
+(./modellang/if.tex [33] [34] [35]) (./modellang/import.tex)
+(./modellang/links.tex [36]) (./modellang/logvariables.tex [37] [38])
+(./modellang/measurementequations.tex [39]) (./modellang/measurementshocks.tex
 Overfull \hbox (11.24892pt too wide) in paragraph at lines 23--29
 \T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !measurement_shocks \T1/ccr/m/n/10 key-word 
 starts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
  []
 
-[43]) (./modellang/measurementvariables.tex [44]) (./modellang/parameters.tex
-[45]) (./modellang/substitutions.tex [46]) (./modellang/switch.tex [47]
-[48]) (./modellang/transitionequations.tex [49])
-(./modellang/transitionshocks.tex [50]) (./modellang/transitionvariables.tex
-[51]
+[40]) (./modellang/measurementvariables.tex [41]) (./modellang/parameters.tex
+[42]) (./modellang/substitutions.tex [43]) (./modellang/switch.tex [44]
+[45]) (./modellang/transitionequations.tex [46])
+(./modellang/transitionshocks.tex [47]) (./modellang/transitionvariables.tex
+[48]
 Overfull \hbox (1.44075pt too wide) in paragraph at lines 40--46
 \T1/ccr/m/n/10 The \T1/cmtt/m/n/10 !transition_variables \T1/ccr/m/n/10 key-wor
 d starts a new dec-la-ra-tion block for tran-si-tion vari-ables (i.e. en-
  []
 
-) (./modellang/ttrend.tex [52]) (./modellang/linecomments.tex)
-(./modellang/blockcomments.tex [53]) (./modellang/sstateref.tex)
-(./modellang/regexpression.tex [54]) (./modellang/exactnonlin.tex)
-(./modellang/diff.tex [55]) (./modellang/difflog.tex [56]) (./modellang/dot.tex
-[57]) (./modellang/min.tex [58]) (./modellang/movavg.tex [59])
-(./modellang/movsum.tex [60]) (./modellang/movprod.tex [61])
-(./modellang/laglead.tex) [62] (./model/Contents.tex [63
+) (./modellang/ttrend.tex [49]) (./modellang/linecomments.tex)
+(./modellang/blockcomments.tex [50]) (./modellang/sstateref.tex)
+(./modellang/regexpression.tex [51]) (./modellang/exactnonlin.tex)
+(./modellang/diff.tex [52]) (./modellang/difflog.tex [53]) (./modellang/dot.tex
+[54]) (./modellang/min.tex [55]) (./modellang/movavg.tex [56])
+(./modellang/movsum.tex [57]) (./modellang/movprod.tex [58])
+(./modellang/laglead.tex) [59] (./model/Contents.tex [60
 
-] [64])
-(./model/acf.tex [65] [66] [67]) (./model/addparam.tex) (./model/alter.tex
-[68]) (./model/assign.tex [69]
+] [61])
+(./model/acf.tex [62] [63] [64]) (./model/addparam.tex) (./model/alter.tex
+[65]) (./model/assign.tex [66]
 Overfull \hbox (0.43375pt too wide) in paragraph at lines 57--60
 []\T1/cmtt/m/n/10 List \T1/ccr/m/n/10 [ cell-str ] - A list of pa-ram-e-ter nam
 es, vari-able names, std de-vi-a-tions, or cross-correlations. 
  []
 
-) (./model/autoexogenise.tex [70]
+) (./model/autoexogenise.tex [67]
 Overfull \hbox (16.74309pt too wide) in paragraph at lines 25--29
 []\T1/cmtt/m/n/10 A \T1/ccr/m/n/10 [ struct | empty ] - Database with each fiel
 d rep-re-sent-ing a vari-able/shock pair, A.Variable_Name
  []
 
-) (./model/bn.tex [71]) (./model/chksstate.tex
+) (./model/bn.tex [68]) (./model/chksstate.tex
 Overfull \hbox (1.96114pt too wide) in paragraph at lines 24--28
 []\T1/cmtt/m/n/10 Flag \T1/ccr/m/n/10 [ \T1/cmtt/m/n/10 true \T1/ccr/m/n/10 | \
 T1/cmtt/m/n/10 false \T1/ccr/m/n/10 ] - True if dis-crep-ancy be-tween LHS and 
 RHS is smaller than \T1/cmtt/m/n/10 'tolerance='
  []
 
-[72]) (./model/comment.tex [73]) (./model/data4lhsmrhs.tex [74])
-(./model/diffloglik.tex [75]) (./model/diffsrf.tex [76]) (./model/eig.tex)
-(./model/emptydb.tex [77]) (./model/estimate.tex [78] [79]
+[69]) (./model/comment.tex [70]) (./model/data4lhsmrhs.tex [71])
+(./model/diffloglik.tex [72]) (./model/diffsrf.tex [73]) (./model/eig.tex)
+(./model/emptydb.tex [74]) (./model/estimate.tex [75] [76]
 Overfull \hbox (7.90663pt too wide) in paragraph at lines 158--160
 \T1/ccr/m/n/10 The fol-low-ing op-tions can be spec-i-fied through the main op-
 tion \T1/cmtt/m/n/10 'optimset=' \T1/ccr/m/n/10 when \T1/cmtt/m/n/10 'optimiser
 =pso'\T1/ccr/m/n/10 . 
  []
 
-[80] [81] [82]
+[77] [78] [79]
 Overfull \hbox (8.8413pt too wide) in paragraph at lines 314--319
 []\T1/ccr/m/n/10 You can sup-ply a func-tion han-dle to your own min-imi-sa-tio
 n rou-tine through the op-tion \T1/cmtt/m/n/10 'optimiser='\T1/ccr/m/n/10 .
  []
 
-[83]) (./model/evalsystempriors.tex) (./model/expand.tex [84])
-(./model/export.tex [85]) (./model/fevd.tex [86]) (./model/ffrf.tex [87])
-(./model/filter.tex [88] [89] [90]) (./model/findeqtn.tex [91])
-(./model/findname.tex [92]) (./model/fisher.tex [93]) (./model/fmse.tex
-[94]) (./model/get.tex [95] [96] [97] [98]
+[80]) (./model/evalsystempriors.tex) (./model/expand.tex [81])
+(./model/export.tex [82]) (./model/fevd.tex [83]) (./model/ffrf.tex [84])
+(./model/filter.tex [85] [86] [87]) (./model/findeqtn.tex [88])
+(./model/findname.tex [89]) (./model/fisher.tex [90]) (./model/fmse.tex
+[91]) (./model/get.tex [92] [93] [94] [95]
 Overfull \hbox (22.2329pt too wide) in paragraph at lines 295--299
 \T1/ccr/m/n/10 and columns of state-space ma-tri-ces (ef-fec-tively iden-ti-cal
  to \T1/cmtt/m/n/10 'eList'\T1/ccr/m/n/10 ) from the [][]\T1/cmtt/m/n/10 model/
 sspace[][][]
  []
 
-[99]) (./model/horzcat.tex [100]) (./model/icrf.tex
+[96]) (./model/horzcat.tex [97]) (./model/icrf.tex
 Overfull \hbox (19.0946pt too wide) in paragraph at lines 38--42
 []\T1/cmtt/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/cc
 r/m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1
 /cmtt/m/n/10 !variables:log\T1/ccr/m/n/10 . 
  []
 
-[101]) (./model/ifrf.tex [102]) (./model/iscompatible.tex)
-(./model/islinear.tex [103]) (./model/islog.tex [104]) (./model/isname.tex)
-(./model/isnan.tex [105]) (./model/issolved.tex [106])
-(./model/isstationary.tex) (./model/jforecast.tex [107] [108])
-(./model/length.tex) (./model/lhsmrhs.tex [109]
+[98]) (./model/ifrf.tex [99]) (./model/iscompatible.tex) (./model/islinear.tex
+[100]) (./model/islog.tex [101]) (./model/isname.tex) (./model/isnan.tex
+[102]) (./model/issolved.tex [103]) (./model/isstationary.tex)
+(./model/jforecast.tex [104] [105]) (./model/length.tex) (./model/lhsmrhs.tex
+[106]
 Overfull \hbox (26.65343pt too wide) in paragraph at lines 23--28
 []\T1/cmtt/m/n/10 YXE \T1/ccr/m/n/10 [ nu-meric ] - Nu-meric ar-ray cre-ated fr
 om an in-put database by call-ing the func-tion [][]\T1/cmtt/m/n/10 data4lhsmrh
 s[][][]\T1/ccr/m/n/10 ;
  []
 
-[110]) (./model/loglik.tex [111] [112]) (./model/lognormal.tex [113])
-(./model/model.tex [114] [115]) (./model/neighbourhood.tex [116]
+[107]) (./model/loglik.tex [108] [109]) (./model/lognormal.tex [110])
+(./model/model.tex [111] [112]) (./model/neighbourhood.tex [113]
 Overfull \hbox (9.64519pt too wide) in paragraph at lines 62--66
 []\T1/cmtt/m/n/10 'plot=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/ccr
 /m/n/10 ] - Call the [][]\T1/cmtt/m/n/10 grfun.plotneigh[][][] \T1/ccr/m/n/10 f
 unc-tion from within \T1/cmtt/m/n/10 neighbourhood
  []
 
-) (./model/omega.tex [117]) (./model/refresh.tex [118]) (./model/regress.tex
-[119]) (./model/reporting.tex [120]) (./model/resample.tex [121])
-(./model/set.tex [122] [123]) (./model/shockplot.tex [124])
-(./model/simulate.tex [125] [126]) (./model/single.tex [127])
-(./model/solve.tex [128]) (./model/srf.tex [129]
+) (./model/omega.tex [114]) (./model/refresh.tex [115]) (./model/regress.tex
+[116]) (./model/reporting.tex [117]) (./model/resample.tex [118])
+(./model/set.tex [119] [120]) (./model/shockplot.tex [121])
+(./model/simulate.tex [122] [123]) (./model/single.tex [124])
+(./model/solve.tex [125]) (./model/srf.tex [126]
 Overfull \hbox (19.0946pt too wide) in paragraph at lines 37--41
 []\T1/cmtt/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/cmtt/m/n/10 false \T1/cc
 r/m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1
 /cmtt/m/n/10 !variables:log\T1/ccr/m/n/10 . 
  []
 
-) (./model/sspace.tex [130] [131]) (./model/sstate.tex [132] [133])
-(./model/sstatedb.tex [134]) (./model/sstatefile.tex) (./model/stdscale.tex
-[135]) (./model/subsasgn.tex [136] [137]) (./model/subsref.tex)
-(./model/system.tex [138] [139]) (./model/userdata.tex [140]) (./model/VAR.tex
-[141]) (./model/vma.tex) (./model/xsf.tex [142] [143]) (./model/zerodb.tex)
-[144] [145] (./plan/Contents.tex
+) (./model/sspace.tex [127] [128]) (./model/sstate.tex [129] [130])
+(./model/sstatedb.tex [131]) (./model/sstatefile.tex) (./model/stdscale.tex
+[132]) (./model/subsasgn.tex [133] [134]) (./model/subsref.tex)
+(./model/system.tex [135] [136]) (./model/userdata.tex [137]) (./model/VAR.tex
+[138]) (./model/vma.tex) (./model/xsf.tex [139] [140]) (./model/zerodb.tex)
+[141] [142] (./plan/Contents.tex
 Overfull \hbox (7.8517pt too wide) in paragraph at lines 70--73
 [][][]\T1/cmtt/m/n/10 autoexogenise[][][] \T1/ccr/m/n/10 - Ex-o-genise vari-abl
 es and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks. 
  []
 
-[146
+[143
 
-]) (./plan/autoexogenise.tex) (./plan/condition.tex [147])
-(./plan/detail.tex [148]) (./plan/endogenise.tex [149]) (./plan/exogenise.tex)
-(./plan/get.tex [150]) (./plan/nnzcond.tex [151]) (./plan/nnzendog.tex [152])
-(./plan/nnzexog.tex) (./plan/nnznonlin.tex [153]) (./plan/nonlinearise.tex
-[154]) (./plan/plan.tex [155]) (./plan/subsref.tex) [156] [157]
-(./grouping/Contents.tex) (./grouping/addgroup.tex [158
-
-])
-(./grouping/detail.tex) (./grouping/eval.tex [159]) (./grouping/grouping.tex
-[160]) (./grouping/isempty.tex [161]) [162] (./systempriors/Contents.tex)
-(./systempriors/detail.tex) (./systempriors/isempty.tex [163
+]) (./plan/autoexogenise.tex) (./plan/condition.tex [144])
+(./plan/detail.tex [145]) (./plan/endogenise.tex [146]) (./plan/exogenise.tex)
+(./plan/get.tex [147]) (./plan/nnzcond.tex [148]) (./plan/nnzendog.tex [149])
+(./plan/nnzexog.tex) (./plan/nnznonlin.tex [150]) (./plan/nonlinearise.tex
+[151]) (./plan/plan.tex [152]) (./plan/subsref.tex) [153] [154]
+(./grouping/Contents.tex) (./grouping/addgroup.tex [155
 
 ])
-(./systempriors/length.tex [164]) (./systempriors/prior.tex [165]
+(./grouping/detail.tex) (./grouping/eval.tex [156]) (./grouping/grouping.tex
+[157]) (./grouping/isempty.tex [158]) [159] (./systempriors/Contents.tex)
+(./systempriors/detail.tex) (./systempriors/isempty.tex [160
+
+])
+(./systempriors/length.tex [161]) (./systempriors/prior.tex [162]
 Overfull \hbox (15.24582pt too wide) in paragraph at lines 63--67
 []\T1/cmtt/m/n/10 corr[VarName1,VarName2,Lag] \T1/ccr/m/n/10 - Cor-re-la-tion b
 e-tween vari-able \T1/cmtt/m/n/10 VarName1 \T1/ccr/m/n/10 and vari-ables \T1/cm
 tt/m/n/10 VarName2
  []
 
-[166]) (./systempriors/systempriors.tex) [167] (./poster/Contents.tex)
-(./poster/arwm.tex [168
+[163]) (./systempriors/systempriors.tex) [164] (./poster/Contents.tex)
+(./poster/arwm.tex [165
 
-] [169]
+] [166]
 Overfull \hbox (9.44067pt too wide) in paragraph at lines 92--96
 []\T1/cmtt/m/n/10 'saveAs=' \T1/ccr/m/n/10 [ char | $[]$ ] - File name where re
 -sults will be saved when the op-tion \T1/cmtt/m/n/10 'saveEvery='
  []
 
-[170]) (./poster/eval.tex [171]) (./poster/poster.tex) (./poster/stats.tex
-[172] [173]) [174] (./logdist/Contents.tex [175
+[167]) (./poster/eval.tex [168]) (./poster/poster.tex) (./poster/stats.tex
+[169] [170]) [171] (./logdist/Contents.tex [172
 
 ]) (./logdist/beta.tex)
-(./logdist/gamma.tex [176]) (./logdist/chisquare.tex [177])
-(./logdist/invgamma.tex) (./logdist/lognormal.tex [178]) (./logdist/normal.tex
-[179]) (./logdist/uniform.tex [180]) [181] (./sstatelang/Contents.tex)
-(./sstatelang/allbut.tex [182
+(./logdist/gamma.tex [173]) (./logdist/chisquare.tex [174])
+(./logdist/invgamma.tex) (./logdist/lognormal.tex [175]) (./logdist/normal.tex
+[176]) (./logdist/uniform.tex [177]) [178] (./sstatelang/Contents.tex)
+(./sstatelang/allbut.tex [179
 
-]) (./sstatelang/equations.tex [183])
+]) (./sstatelang/equations.tex [180])
 (./sstatelang/growthnames.tex) (./sstatelang/input.tex)
-(./sstatelang/logvariables.tex [184]) (./sstatelang/solvefor.tex [185])
-(./sstatelang/symbolic.tex) [186] (./sstate/Contents.tex) (./sstate/compile.tex
-[187
+(./sstatelang/logvariables.tex [181]) (./sstatelang/solvefor.tex [182])
+(./sstatelang/symbolic.tex) [183] (./sstate/Contents.tex) (./sstate/compile.tex
+[184
 
-]) (./sstate/sstate.tex [188]) (./sstate/standalonemfile.tex) [189]
+]) (./sstate/sstate.tex [185]) (./sstate/standalonemfile.tex) [186]
 (./namedmat/Contents.tex
 Overfull \hbox (13.52225pt too wide) in paragraph at lines 4--8
 \T1/ccr/m/n/10 Matrices with named rows and columns are re-turned by sev-eral I
 RIS func-tions, such as [][]\T1/cmtt/m/n/10 model/acf[][][]\T1/ccr/m/n/10 ,
  []
 
-) (./namedmat/colnames.tex [190
+) (./namedmat/colnames.tex [187
 
-]) (./namedmat/namedmat.tex [191])
-(./namedmat/rownames.tex) (./namedmat/select.tex [192])
-(./namedmat/transpose.tex [193]) [194]
+]) (./namedmat/namedmat.tex [188])
+(./namedmat/rownames.tex) (./namedmat/select.tex [189])
+(./namedmat/transpose.tex [190]) [191]
 \openout2 = `Contents/VARs.aux'.
 
- (./Contents/VARs.tex) [195
+ (./Contents/VARs.tex) [192
 
 
 ]
-(./VAR/Contents.tex [196
+(./VAR/Contents.tex [193
 
 
-]) (./VAR/acf.tex [197]) (./VAR/addparam.tex [198])
-(./VAR/alter.tex [199]) (./VAR/backward.tex) (./VAR/comment.tex [200])
-(./VAR/companion.tex [201]) (./VAR/demean.tex) (./VAR/eig.tex [202])
-(./VAR/estimate.tex [203] [204]) (./VAR/ferf.tex [205]) (./VAR/filter.tex
-[206]) (./VAR/fmse.tex [207]) (./VAR/forecast.tex [208]) (./VAR/get.tex
-[209]) (./VAR/group.tex [210]) (./VAR/horzcat.tex) (./VAR/infocrit.tex [211])
-(./VAR/instrument.tex [212]) (./VAR/integrate.tex) (./VAR/iscompatible.tex
-[213]) (./VAR/isexplosive.tex [214]) (./VAR/ispanel.tex [215])
-(./VAR/isstationary.tex) (./VAR/length.tex [216]) (./VAR/lrtest.tex)
-(./VAR/mean.tex [217]) (./VAR/nfitted.tex) (./VAR/portest.tex [218])
-(./VAR/resample.tex [219]) (./VAR/rngcmp.tex [220]) (./VAR/schur.tex [221])
-(./VAR/simulate.tex [222]) (./VAR/sspace.tex) (./VAR/subsasgn.tex [223])
-(./VAR/subsref.tex [224]) (./VAR/userdata.tex [225]) (./VAR/VAR.tex [226])
-(./VAR/vma.tex) (./VAR/xsf.tex [227]) [228] (./SVAR/Contents.tex [229
+]) (./VAR/acf.tex [194]) (./VAR/addparam.tex [195])
+(./VAR/alter.tex [196]) (./VAR/backward.tex) (./VAR/comment.tex [197])
+(./VAR/companion.tex [198]) (./VAR/demean.tex) (./VAR/eig.tex [199])
+(./VAR/estimate.tex [200] [201]) (./VAR/ferf.tex [202]) (./VAR/filter.tex
+[203]) (./VAR/fmse.tex [204]) (./VAR/forecast.tex [205]) (./VAR/get.tex
+[206]) (./VAR/group.tex [207]) (./VAR/horzcat.tex) (./VAR/infocrit.tex [208])
+(./VAR/instrument.tex [209]) (./VAR/integrate.tex) (./VAR/iscompatible.tex
+[210]) (./VAR/isexplosive.tex [211]) (./VAR/ispanel.tex [212])
+(./VAR/isstationary.tex) (./VAR/length.tex [213]) (./VAR/lrtest.tex)
+(./VAR/mean.tex [214]) (./VAR/nfitted.tex) (./VAR/portest.tex [215])
+(./VAR/resample.tex [216]) (./VAR/rngcmp.tex [217]) (./VAR/schur.tex [218])
+(./VAR/simulate.tex [219]) (./VAR/sspace.tex) (./VAR/subsasgn.tex [220])
+(./VAR/subsref.tex [221]) (./VAR/userdata.tex [222]) (./VAR/VAR.tex [223])
+(./VAR/vma.tex) (./VAR/xsf.tex [224]) [225] (./SVAR/Contents.tex [226
 
 ])
-(./SVAR/fevd.tex) (./SVAR/fprintf.tex [230]) (./SVAR/get.tex [231])
-(./SVAR/sort.tex [232]) (./SVAR/sprintf.tex [233]) (./SVAR/srf.tex [234]
-[235]) (./SVAR/SVAR.tex
+(./SVAR/fevd.tex) (./SVAR/fprintf.tex [227]) (./SVAR/get.tex [228])
+(./SVAR/sort.tex [229]) (./SVAR/sprintf.tex [230]) (./SVAR/srf.tex [231]
+[232]) (./SVAR/SVAR.tex
 Overfull \hbox (29.5717pt too wide) in paragraph at lines 51--57
 \T1/ccr/m/n/10 als, and bring the vari-ables back in orig-i-nal or-der af-ter-w
 ards. Use the op-tion '\T1/cmtt/m/n/10 backorderResiduals='
  []
 
-[236]) [237] (./BVAR/Contents.tex
+[233]) [234] (./BVAR/Contents.tex
 Overfull \hbox (5.05388pt too wide) in paragraph at lines 24--27
 [][][]\T1/cmtt/m/n/10 uncmean[][][] \T1/ccr/m/n/10 - Unconditional-mean dummy (
 or Sims' ini-tial dummy) ob-ser-va-tions for BVARs. 
@@ -6506,28 +6501,28 @@ Overfull \hbox (8.35837pt too wide) in paragraph at lines 34--43
 mtt/m/n/10 sumofcoeff[][][] \T1/ccr/m/n/10 can be weighted
  []
 
-) (./BVAR/covmat.tex [238
+) (./BVAR/covmat.tex [235
 
 ]) (./BVAR/litterman.tex) (./BVAR/sumofcoeff.tex
-[239]) (./BVAR/uncmean.tex [240]) (./BVAR/user.tex [241]) [242]
-(./FAVAR/Contents.tex) (./FAVAR/comment.tex [243
+[236]) (./BVAR/uncmean.tex [237]) (./BVAR/user.tex [238]) [239]
+(./FAVAR/Contents.tex) (./FAVAR/comment.tex [240
 
 ]) (./FAVAR/estimate.tex
-[244]) (./FAVAR/FAVAR.tex [245]) (./FAVAR/filter.tex [246] [247])
-(./FAVAR/forecast.tex) (./FAVAR/get.tex [248] [249]) (./FAVAR/isempty.tex
-[250]) (./FAVAR/userdata.tex) (./FAVAR/VAR.tex [251]) [252]
+[241]) (./FAVAR/FAVAR.tex [242]) (./FAVAR/filter.tex [243] [244])
+(./FAVAR/forecast.tex) (./FAVAR/get.tex [245] [246]) (./FAVAR/isempty.tex
+[247]) (./FAVAR/userdata.tex) (./FAVAR/VAR.tex [248]) [249]
 \openout2 = `Contents/data.aux'.
 
 
-(./Contents/data.tex) [253
+(./Contents/data.tex) [250
 
 
-] (./dates/Contents.tex [254
+] (./dates/Contents.tex [251
 
 
 ]) (./dates/bb.tex)
-(./dates/bbtoday.tex [255]) (./dates/clp2dat.tex [256]) (./dates/dat2char.tex
-[257]) (./dates/dat2charlist.tex) (./dates/dat2clp.tex [258])
+(./dates/bbtoday.tex [252]) (./dates/clp2dat.tex [253]) (./dates/dat2char.tex
+[254]) (./dates/dat2charlist.tex) (./dates/dat2clp.tex [255])
 (./dates/dat2dec.tex
 Overfull \hbox (23.21619pt too wide) in paragraph at lines 24--26
 []\T1/cmtt/m/n/10 DEC \T1/ccr/m/n/10 [ nu-meric ] - Dec-i-mal num-ber rep-re-se
@@ -6535,109 +6530,109 @@ nt-ing the in-put dates, com-puted as \T1/cmtt/m/n/10 year + (per-1)/freq\T1/cc
 r/m/n/10 . 
  []
 
-[259]) (./dates/dat2str.tex [260]) (./dates/dat2ypf.tex [261])
-(./dates/datbom.tex [262]) (./dates/datboq.tex) (./dates/datboy.tex [263])
-(./dates/datcmp.tex [264]) (./dates/datdiff.tex [265]) (./dates/dateom.tex)
-(./dates/dateoq.tex [266]) (./dates/dateoy.tex) (./dates/daterange.tex [267])
-(./dates/datxtick.tex [268]) (./dates/dd.tex [269]) (./dates/ddtoday.tex)
-(./dates/dec2dat.tex [270]) (./dates/hh.tex) (./dates/hhtoday.tex [271])
-(./dates/mm.tex) (./dates/mmtoday.tex [272]) (./dates/qq.tex)
-(./dates/qqtoday.tex [273]) (./dates/rngcmp.tex [274]) (./dates/str2dat.tex
-[275]) (./dates/yy.tex) (./dates/yytoday.tex [276]) [277]
-(./tseries/Contents.tex [278
+[256]) (./dates/dat2str.tex [257]) (./dates/dat2ypf.tex [258])
+(./dates/datbom.tex [259]) (./dates/datboq.tex) (./dates/datboy.tex [260])
+(./dates/datcmp.tex [261]) (./dates/datdiff.tex [262]) (./dates/dateom.tex)
+(./dates/dateoq.tex [263]) (./dates/dateoy.tex) (./dates/daterange.tex [264])
+(./dates/datxtick.tex [265]) (./dates/dd.tex [266]) (./dates/ddtoday.tex)
+(./dates/dec2dat.tex [267]) (./dates/hh.tex) (./dates/hhtoday.tex [268])
+(./dates/mm.tex) (./dates/mmtoday.tex [269]) (./dates/qq.tex)
+(./dates/qqtoday.tex [270]) (./dates/rngcmp.tex [271]) (./dates/str2dat.tex
+[272]) (./dates/yy.tex) (./dates/yytoday.tex [273]) [274]
+(./tseries/Contents.tex [275
 
-] [279] [280]) (./tseries/acf.tex)
-(./tseries/apct.tex [281]) (./tseries/area.tex [282]) (./tseries/arf.tex
-[283]) (./tseries/bar.tex [284]) (./tseries/barcon.tex [285])
-(./tseries/bpass.tex [286] [287]) (./tseries/bsxfun.tex [288])
-(./tseries/bwf2.tex) (./tseries/bwf.tex [289]) (./tseries/chowlin.tex [290])
-(./tseries/convert.tex [291] [292]) (./tseries/cumsumk.tex [293] [294])
-(./tseries/daily.tex) (./tseries/destdise.tex [295]) (./tseries/detrend.tex)
-(./tseries/diff.tex [296]) (./tseries/double.tex [297])
-(./tseries/doubledata.tex) (./tseries/empty.tex [298]) (./tseries/enddate.tex
-[299]) (./tseries/errorbar.tex [300]) (./tseries/expsmooth.tex [301])
-(./tseries/fft.tex) (./tseries/freq.tex [302]) (./tseries/get.tex [303])
-(./tseries/hpdi.tex [304]) (./tseries/hpf.tex [305] [306] [307])
-(./tseries/hpf2.tex) (./tseries/interp.tex [308]) (./tseries/isequal.tex
-[309]) (./tseries/length.tex) (./tseries/llf.tex [310] [311] [312] [313])
-(./tseries/llf2.tex) (./tseries/moving.tex [314]) (./tseries/ndims.tex [315])
-(./tseries/normalise.tex) (./tseries/pct.tex [316] [317])
-(./tseries/permute.tex) (./tseries/plot.tex [318]) (./tseries/plotcmp.tex
-[319]) (./tseries/plotpred.tex [320] [321]) (./tseries/plotyy.tex [322])
-(./tseries/redate.tex [323]) (./tseries/regress.tex [324])
-(./tseries/reshape.tex) (./tseries/resize.tex [325]) (./tseries/rmse.tex
-[326]) (./tseries/round.tex [327]) (./tseries/scatter.tex [328])
-(./tseries/single.tex) (./tseries/singledata.tex [329]) (./tseries/size.tex
+] [276] [277]) (./tseries/acf.tex)
+(./tseries/apct.tex [278]) (./tseries/area.tex [279]) (./tseries/arf.tex
+[280]) (./tseries/bar.tex [281]) (./tseries/barcon.tex [282])
+(./tseries/bpass.tex [283] [284]) (./tseries/bsxfun.tex [285])
+(./tseries/bwf2.tex) (./tseries/bwf.tex [286]) (./tseries/chowlin.tex [287])
+(./tseries/convert.tex [288] [289]) (./tseries/cumsumk.tex [290] [291])
+(./tseries/daily.tex) (./tseries/destdise.tex [292]) (./tseries/detrend.tex)
+(./tseries/diff.tex [293]) (./tseries/double.tex [294])
+(./tseries/doubledata.tex) (./tseries/empty.tex [295]) (./tseries/enddate.tex
+[296]) (./tseries/errorbar.tex [297]) (./tseries/expsmooth.tex [298])
+(./tseries/fft.tex) (./tseries/freq.tex [299]) (./tseries/get.tex [300])
+(./tseries/hpdi.tex [301]) (./tseries/hpf.tex [302] [303] [304])
+(./tseries/hpf2.tex) (./tseries/interp.tex [305]) (./tseries/isequal.tex
+[306]) (./tseries/length.tex) (./tseries/llf.tex [307] [308] [309] [310])
+(./tseries/llf2.tex) (./tseries/moving.tex [311]) (./tseries/ndims.tex [312])
+(./tseries/normalise.tex) (./tseries/pct.tex [313] [314])
+(./tseries/permute.tex) (./tseries/plot.tex [315]) (./tseries/plotcmp.tex
+[316]) (./tseries/plotpred.tex [317] [318]) (./tseries/plotyy.tex [319])
+(./tseries/redate.tex [320]) (./tseries/regress.tex [321])
+(./tseries/reshape.tex) (./tseries/resize.tex [322]) (./tseries/rmse.tex
+[323]) (./tseries/round.tex [324]) (./tseries/scatter.tex [325])
+(./tseries/single.tex) (./tseries/singledata.tex [326]) (./tseries/size.tex
 Overfull \hbox (3.42831pt too wide) in paragraph at lines 25--28
 []\T1/cmtt/m/n/10 S \T1/ccr/m/n/10 [ nu-meric ] - Vec-tor of sizes of the tseri
 es ob-ject data in each di-men-sion, \T1/cmtt/m/n/10 S = [S1,S2,...,Sn]\T1/ccr/
 m/n/10 . 
  []
 
-[330]) (./tseries/sort.tex) (./tseries/spy.tex [331]) (./tseries/startdate.tex
-[332]) (./tseries/stdise.tex [333]) (./tseries/stem.tex [334])
-(./tseries/subsasgn.tex) (./tseries/subsref.tex [335]) (./tseries/trend.tex
-[336]) (./tseries/tseries.tex [337]) (./tseries/windex.tex [338])
-(./tseries/wmean.tex) (./tseries/x12.tex [339] [340] [341] [342] [343])
-(./tseries/yearly.tex) [344] (./dbase/Contents.tex [345
+[327]) (./tseries/sort.tex) (./tseries/spy.tex [328]) (./tseries/startdate.tex
+[329]) (./tseries/stdise.tex [330]) (./tseries/stem.tex [331])
+(./tseries/subsasgn.tex) (./tseries/subsref.tex [332]) (./tseries/trend.tex
+[333]) (./tseries/tseries.tex [334]) (./tseries/windex.tex [335])
+(./tseries/wmean.tex) (./tseries/x12.tex [336] [337] [338] [339] [340])
+(./tseries/yearly.tex) [341] (./dbase/Contents.tex [342
 
-]) (./dbase/array2db.tex) (./dbase/db2array.tex [346]) (./dbase/db2tseries.tex 
-[347])
-(./dbase/dbbatch.tex [348] [349]) (./dbase/dbclip.tex [350]
+]) (./dbase/array2db.tex) (./dbase/db2array.tex [343]) (./dbase/db2tseries.tex 
+[344])
+(./dbase/dbbatch.tex [345] [346]) (./dbase/dbclip.tex [347]
 Overfull \hbox (14.6835pt too wide) in paragraph at lines 44--49
 []\T1/ccr/m/n/10 Multiple ranges can be spec-i-fied in \T1/cmtt/m/n/10 Range \T
 1/ccr/m/n/10 (as a cell ar-ray), each for a dif-fer-ent date fre-quency/periodi
 city
  []
 
-) (./dbase/dbcol.tex [351]) (./dbase/dbextend.tex [352]) (./dbase/dbfun.tex
-[353]) (./dbase/dbload.tex [354] [355] [356]) (./dbase/dbmerge.tex [357])
-(./dbase/dbminuscontrol.tex [358]) (./dbase/dbnames.tex [359])
-(./dbase/dbplot.tex [360]) (./dbase/dbprintuserdata.tex [361])
-(./dbase/dbrange.tex [362]) (./dbase/dbredate.tex [363]) (./dbase/dbsave.tex
-[364] [365]) (./dbase/dbsearchuserdata.tex [366]) (./dbase/dbsplit.tex [367]
-[368]) (./dbase/dbuserdatalov.tex [369]) (./dbase/dbminus.tex)
-(./dbase/dbmtimes.tex [370]) (./dbase/dbplus.tex [371]) (./dbase/xls2csv.tex
-[372]
+) (./dbase/dbcol.tex [348]) (./dbase/dbextend.tex [349]) (./dbase/dbfun.tex
+[350]) (./dbase/dbload.tex [351] [352] [353]) (./dbase/dbmerge.tex [354])
+(./dbase/dbminuscontrol.tex [355]) (./dbase/dbnames.tex [356])
+(./dbase/dbplot.tex [357]) (./dbase/dbprintuserdata.tex [358])
+(./dbase/dbrange.tex [359]) (./dbase/dbredate.tex [360]) (./dbase/dbsave.tex
+[361] [362]) (./dbase/dbsearchuserdata.tex [363]) (./dbase/dbsplit.tex [364]
+[365]) (./dbase/dbuserdatalov.tex [366]) (./dbase/dbminus.tex)
+(./dbase/dbmtimes.tex [367]) (./dbase/dbplus.tex [368]) (./dbase/xls2csv.tex
+[369]
 Overfull \hbox (3.53761pt too wide) in paragraph at lines 57--59
 \T1/ccr/m/n/10 Save the work-sheet named `Sheet3' to a CSV file; the name of th
 e CSV file will be \T1/cmtt/m/n/10 'myDataFile.csv'\T1/ccr/m/n/10 . 
  []
 
-) [373]
+) [370]
 \openout2 = `Contents/reporting.aux'.
 
- (./Contents/reporting.tex) [374
+ (./Contents/reporting.tex) [371
 
 
-] (./report/Contents.tex [375
+] (./report/Contents.tex [372
 
 
 ])
-(./report/align.tex [376]) (./report/array.tex [377] [378] [379])
-(./report/band.tex [380]) (./report/copy.tex [381]) (./report/display.tex)
-(./report/disp.tex [382]) (./report/empty.tex [383]) (./report/fanchart.tex
-[384]) (./report/figure.tex
+(./report/align.tex [373]) (./report/array.tex [374] [375] [376])
+(./report/band.tex [377]) (./report/copy.tex [378]) (./report/display.tex)
+(./report/disp.tex [379]) (./report/empty.tex [380]) (./report/fanchart.tex
+[381]) (./report/figure.tex
 Overfull \hbox (33.72502pt too wide) in paragraph at lines 14--17
 \T1/ccr/m/n/10 This is an ob-so-lete syn-tax, and will be re-moved from IRIS in
  a fu-ture re-lease. Use [][]\T1/cmtt/m/n/10 report/userfigure[][][]
  []
 
-[385]
+[382]
 Overfull \hbox (6.44298pt too wide) in paragraph at lines 70--74
 []\T1/cmtt/m/n/10 'style=' \T1/ccr/m/n/10 [ struct | $[]$ ] - Ap-ply this cas-c
 ad-ing style struc-ture to the fig-ure; see [][]\T1/cmtt/m/n/10 qstyle[][][]\T1
 /ccr/m/n/10 . 
  []
 
-[386]) (./report/findall.tex) (./report/graph.tex [387]
+[383]) (./report/findall.tex) (./report/graph.tex [384]
 Overfull \hbox (8.4991pt too wide) in paragraph at lines 30--34
 []\T1/cmtt/m/n/10 'dateFormat=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-b
 le) Date for-mat string, see help on [][]\T1/cmtt/m/n/10 dat2str[][][]\T1/ccr/m
 /n/10 . 
  []
 
-[388] [389]) (./report/highlight.tex [390]) (./report/include.tex [391])
+[385] [386]) (./report/highlight.tex [387]) (./report/include.tex [388])
 (./report/matrix.tex
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <8> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 34.
@@ -6647,7 +6642,7 @@ LaTeX Font Info:    Font shape `OMS/ccsy/b/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 38.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 38.
- [392]
+ [389]
 Overfull \hbox (20.62538pt too wide) in paragraph at lines 62--66
 []\T1/cmtt/m/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
 m par-ent ob-jects) L[]T[]X string
@@ -6665,55 +6660,55 @@ Overfull \hbox (26.65862pt too wide) in paragraph at lines 85--90
 e from par-ent ob-jects) L[]T[]X string
  []
 
-[393] [394]) (./report/merge.tex [395]) (./report/modelfile.tex [396])
-(./report/new.tex [397]) (./report/pagebreak.tex) (./report/publish.tex
-[398] [399]) (./report/section.tex [400]) (./report/series.tex [401] [402]
-[403] [404]) (./report/subheading.tex [405]) (./report/table.tex [406]
+[390] [391]) (./report/merge.tex [392]) (./report/modelfile.tex [393])
+(./report/new.tex [394]) (./report/pagebreak.tex) (./report/publish.tex
+[395] [396]) (./report/section.tex [397]) (./report/series.tex [398] [399]
+[400] [401]) (./report/subheading.tex [402]) (./report/table.tex [403]
 Overfull \hbox (7.36136pt too wide) in paragraph at lines 61--67
 []\T1/cmtt/m/n/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
  from par-ent ob-jects) Works only with \T1/cmtt/m/n/10 'long='\T1/ccr/m/n/10 =
 true:
  []
 
-[407]
+[404]
 Overfull \hbox (18.92326pt too wide) in paragraph at lines 118--127
 []\T1/ccr/m/n/10 By de-fault, the date row is printed as a lead-ing row with da
 tes for-mated us-ing the op-tion \T1/cmtt/m/n/10 'dateFormat='\T1/ccr/m/n/10 .
  []
 
-[408]) (./report/tex.tex [409]) (./report/userfigure.tex [410]
+[405]) (./report/tex.tex [406]) (./report/userfigure.tex [407]
 Overfull \hbox (5.5011pt too wide) in paragraph at lines 47--50
 []\T1/ccr/m/n/10 The re-port fig-ure can-not have any chil-dren; in other words
 , you can-not call [][]\T1/cmtt/m/n/10 report/graph[][][]
  []
 
-) (./report/vline.tex [411]) [412] (./qreportlang/Contents.tex)
-(./qreportlang/figure.tex) (./qreportlang/linegraph.tex [413
+) (./report/vline.tex [408]) [409] (./qreportlang/Contents.tex)
+(./qreportlang/figure.tex) (./qreportlang/linegraph.tex [410
 
 ])
-(./qreportlang/blank.tex) (./qreportlang/bargraph.tex [414])
+(./qreportlang/blank.tex) (./qreportlang/bargraph.tex [411])
 (./qreportlang/histgraph.tex) (./qreportlang/errorbargraph.tex)
-(./qreportlang/stemgraph.tex [415]) (./qreportlang/subplot.tex [416])
-(./qreportlang/linebreak.tex) (./qreportlang/subtitle.tex) [417]
-(./qreport/Contents.tex) (./qreport/qplot.tex [418
+(./qreportlang/stemgraph.tex [412]) (./qreportlang/subplot.tex [413])
+(./qreportlang/linebreak.tex) (./qreportlang/subtitle.tex) [414]
+(./qreport/Contents.tex) (./qreport/qplot.tex [415
 
-] [419])
-(./qreport/qstyle.tex [420]) [421] (./grfun/Contents.tex)
-(./grfun/bottomlegend.tex [422
+] [416])
+(./qreport/qstyle.tex [417]) [418] (./grfun/Contents.tex)
+(./grfun/bottomlegend.tex [419
 
 ]) (./grfun/ftitle.tex) (./grfun/highlight.tex
-[423]) (./grfun/maxfigure.tex [424]) (./grfun/movetobkg.tex [425])
-(./grfun/movetosubplot.tex) (./grfun/plotcircle.tex [426]) (./grfun/plotmat.tex
-[427]) (./grfun/plotneigh.tex [428] [429]) (./grfun/plotpp.tex [430] [431])
-(./grfun/vline.tex [432]) (./grfun/zeroline.tex) (./grfun/hline.tex [433]))
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 133.
+[420]) (./grfun/maxfigure.tex [421]) (./grfun/movetobkg.tex [422])
+(./grfun/movetosubplot.tex) (./grfun/plotcircle.tex [423]) (./grfun/plotmat.tex
+[424]) (./grfun/plotneigh.tex [425] [426]) (./grfun/plotpp.tex [427] [428])
+(./grfun/vline.tex [429]) (./grfun/zeroline.tex) (./grfun/hline.tex [430]))
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 134.
 
-[434]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 133.
+[431]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 134.
  (./IRIS_Man.aux (./Contents/sessions.aux) (./Contents/models.aux)
 (./Contents/VARs.aux) (./Contents/data.aux) (./Contents/reporting.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 133.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 133.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 134.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 134.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -6722,13 +6717,13 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 133.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 134.
  ) 
 Here is how much of TeX's memory you used:
- 12837 strings out of 493315
- 184158 string characters out of 6137904
- 235515 words of memory out of 5000000
- 11122 multiletter control sequences out of 15000+600000
+ 12835 strings out of 493315
+ 184210 string characters out of 6137904
+ 235513 words of memory out of 5000000
+ 11123 multiletter control sequences out of 15000+600000
  22911 words of font info for 53 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  29i,12n,33p,782b,443s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -6762,10 +6757,10 @@ l/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sform8.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/cm-super/sfoti10.pfb></usr/local/texli
 ve/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive
 /2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on IRIS_Man.pdf (434 pages, 1140148 bytes).
+Output written on IRIS_Man.pdf (431 pages, 1138592 bytes).
 PDF statistics:
- 8247 PDF objects out of 8907 (max. 8388607)
- 7647 compressed objects within 77 object streams
- 3873 named destinations out of 4296 (max. 500000)
- 3393 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 8233 PDF objects out of 8907 (max. 8388607)
+ 7636 compressed objects within 77 object streams
+ 3869 named destinations out of 4296 (max. 500000)
+ 3401 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -3,7 +3,7 @@
 % Requirements
 % =============
 % 
-% * Matlab R2009a or later.
+% * Matlab R2010a or later.
 % 
 % Optional components
 % ====================
@@ -25,18 +25,18 @@
 %
 % Some components were needed in the past but are not any longer.
 %
-% X12-ARIMA
-% -----------
+% X13-ARIMA-SEATS (formerly X12-ARIMA)
+% -------------------------------------
 % 
-% Courtesy of the U.S. Census Bureau, the X12-ARIMA program is now
-% incoporated in, and distributed with IRIS. You don't need to care about
-% anything to be able to use it.
+% Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly
+% X12-ARIMA) program is now incoporated in, and distributed with IRIS. You
+% don't need to care about anything to be able to use it.
 % 
 % Symbolic Math Toolbox
 % -----------------------
 %
-% IRIS is now equipped with its own symbolic/automatic differentiator, so
-% you do not need to have the Symbolic Math Toolbox installed to be able to
+% IRIS is now equipped with its own symbolic/automatic differentiator. You
+% do not need to have the Symbolic Math Toolbox installed to be able to
 % compute exact Taylor expansions.
 %
 % Installing IRIS
