@@ -178,7 +178,7 @@ for iLoop = 1 : nLoop
         iOmg(~inx) = double(opt.cross)*iOmg(~inx);
     end
     
-    % Use the `allobserved` option in `varsmoother` only if the cov matrix is
+    % Use the `allObserved` option in `varsmoother` only if the cov matrix is
     % full rank. Otherwise, there is singularity.
     s.allObs = rank(iOmg) == ny;
 
