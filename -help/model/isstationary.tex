@@ -1,0 +1,37 @@
+
+
+    \filetitle{isstationary}{True if model or specified combination of variables is stationary}{model/isstationary}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Flag = isstationary(M)
+Flag = isstationary(M,Expn)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{Expn} {[} char {]} - Text string with an expression describing
+  a combination of transition variables to be tested.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'flag='} {[} \texttt{true} \textbar{} \texttt{false} {]} -
+  True if the model (if called without a second input argument) or the
+  specified combination of variables (if called with a second input
+  argument) is stationary.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

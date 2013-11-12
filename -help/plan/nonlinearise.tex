@@ -1,0 +1,45 @@
+
+
+    \filetitle{nonlinearise}{Select equations for simulation in an exact non-linear mode}{plan/nonlinearise}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P = nonlinearise(P)
+P = nonlinearise(P,Range)
+P = nonlinearise(P,List,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} plan {]} - Simulation plan object.
+\item
+  \texttt{List} {[} cellstr {]} - List of labels for equations that will
+  be simulated in an exact non-linear mode; all selected equations must
+  be marked by an \href{modellang/exactnonlin}{\texttt{=\#}} mark in the
+  model file. If \texttt{List} is not specified, all equations marked in
+  the model file will be simulated in a non-linear mode.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the equations
+  will be simulated in an exact non-linear mode; currently, the range
+  must start at the start of the plan range. If \texttt{Range} is not
+  specified, the equations are non-linearised over the whole simulation
+  range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{P} {[} plan {]} - Simulation plan with information on exact
+  non-linear simulation included.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,37 @@
+
+
+    \filetitle{array2db}{Convert numeric array to database}{dbase/array2db}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = array2db(X,RANGE,LIST)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} numeric {]} - Numeric array with individual time series
+  organised row-wise.
+\item
+  \texttt{RANGE} {[} numeric {]} - Date range for the columns in
+  \texttt{X}.
+\item
+  \texttt{LIST} {[} cellstr \textbar{} char {]} - List of names for the
+  time series in individual rows of \texttt{X}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Output database.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

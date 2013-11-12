@@ -1,0 +1,6 @@
+function varargout = dbfetch(varargin)
+utils.warning('obsolete', ...
+   ['DBFETCH is an obsolete function name and will be removed from IRIS in the future. ', ...
+   'Use DBCOL instead.']);
+[varargout{1:nargout}] = dbcol(varargin{:});
+end

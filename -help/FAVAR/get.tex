@@ -1,0 +1,95 @@
+
+
+    \filetitle{get}{Query model object properties}{FAVAR/get}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Ans = get(A,Query)
+[Ans,Ans,...] = get(A,Query,Query,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A} {[} FAVAR {]} - FAVAR object.
+\item
+  \texttt{Query} {[} char {]} - Query to the FAVAR object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Ans} {[} \ldots{} {]} - Answer to the query.
+\end{itemize}
+
+\paragraph{Valid queries to FAVAR
+objects}\label{valid-queries-to-favar-objects}
+
+\subparagraph{System matrices}\label{system-matrices}
+
+\begin{itemize}
+\item
+  \texttt{'A*'} Returns {[} numeric {]} the transition matrix of the
+  underlying VAR system on factors.
+\item
+  \texttt{'B'} Returns {[} numeric {]} tne matrix mapping the impact of
+  structural residuals on the factors in the underlying VAR.
+\item
+  \texttt{'C'} Returns {[} numeric {]} the matrix mapping the factors
+  into the observables.
+\item
+  \texttt{'Omega'} Returns {[} numeric {]} the reduced-form covariance
+  matrix of the residuals in the underlying VAR.
+\item
+  \texttt{'Sigma'} Returns {[} numeric {]} the covariance matrix of
+  idiosyncratic shocks.
+\end{itemize}
+
+\subparagraph{Underlying VAR}\label{underlying-var}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'VAR'} Returns {[} VAR {]} a VAR object describing the factor
+  dynamics.
+\end{itemize}
+
+\subparagraph{Eigenvalues and singular
+values}\label{eigenvalues-and-singular-values}
+
+\begin{itemize}
+\item
+  \texttt{'eig'} Returns {[} numeric {]} the vector of eigenvalues of
+  the underlying VAR.
+\item
+  \texttt{'sing'} Returns {[} numeric {]} the vector of singular values
+  from the principal component estimation step.
+\end{itemize}
+
+\subparagraph{Observables and factors}\label{observables-and-factors}
+
+\begin{itemize}
+\item
+  \texttt{'mean'} Returns {[} numeric {]} the estimated mean of the
+  observables used to standardise the input data.
+\item
+  \texttt{'std'} Returns {[} numeric {]} the estimated std deviations of
+  the observables used to standardise the input data.
+\item
+  \texttt{'ny'} Returns {[} numeric {]} the number of observables.
+\item
+  \texttt{'nx'} Returns {[} numeric {]} the number of factors.
+\item
+  \texttt{'yList'} Returns {[} cellstr {]} the list of the names of
+  observables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

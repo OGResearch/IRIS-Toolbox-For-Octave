@@ -1,0 +1,71 @@
+
+
+    \filetitle{dbfun}{Apply a function to database fields}{dbase/dbfun}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[D,Flag,ErrList,WarnList] = dbfun(Func,D1,...)
+[D,Flag,ErrList,WarnList] = dbfun(Func,D1,D2,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Func} {[} function\_handle \textbar{} char {]} - Function that
+  will be applied to each field.
+\item
+  \texttt{D1} {[} struct {]} - Input database.
+\item
+  \texttt{D2}, \texttt{D3}, \ldots{} {[} struct {]} - Further input
+  databases when \texttt{Func} accepts two input arguments.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Output database whose fields will be
+  created by applying \texttt{Func} to each field of the input database
+  or databases.
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if no error occurs when evaluating the function.
+\item
+  \texttt{ErrList} {[} cellstr {]} - List of fields on which the
+  function has thrown an error.
+\item
+  \texttt{WarnList} {[} cellstr {]} - List of fields on which the
+  function has thrown a warning.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'cascade='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Cascade through subdatabases applying the function \texttt{Func}
+  to their fields, too.
+\item
+  \texttt{'classList='} {[} cell \textbar{} cellstr \textbar{}
+  \emph{\texttt{Inf}} {]} - Apply \texttt{Func} only to the fields of
+  specified classes.
+\item
+  \texttt{'fresh='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Keep uprocessed fields in the output database.
+\item
+  \texttt{'nameList='} {[} cell \textbar{} cellstr \textbar{}
+  \emph{\texttt{Inf}} {]} - Apply \texttt{Func} only to the specified
+  field names; can be still combined with the option
+  \texttt{'classList='}.
+\item
+  \texttt{'onError='} {[} \texttt{'keep'} \textbar{} \texttt{'NaN'}
+  \textbar{} \emph{\texttt{'remove'}} {]}
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

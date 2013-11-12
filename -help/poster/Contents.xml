@@ -1,0 +1,36 @@
+<folder>
+
+<foldername>poster</foldername><filename>Contents</filename>
+
+<h1 id="poster/Contents">Posterior objects and functions</h1>
+
+<p>Posterior objects, <tt>poster</tt>, are used to evaluate the behaviour of the
+posterior dsitribution, and to draw model parameters from the posterior
+distibution.</p>
+
+<p>Posterior objects are set up within the <link id="model/estimate"><tt>model/estimate</tt></link>
+function and returned as the second output argument&nbsp;&ndash;&nbsp;the set up and
+initialisation of the posterior object is fully automated in this case.
+Alternatively, you can set up a posterior object manually, by setting all
+its properties appropriately.</p>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="poster/poster"><tt>poster</tt></link>&nbsp;&ndash;&nbsp;Posterior objects and functions.</li></ul>
+
+<h3>Evaluating posterior density</h3>
+
+<ul><li><link id="poster/arwm"><tt>arwm</tt></link>&nbsp;&ndash;&nbsp;Adaptive random-walk Metropolis posterior simulator.</li>
+<li><link id="poster/eval"><tt>eval</tt></link>&nbsp;&ndash;&nbsp;Evaluate posterior density at specified points.</li>
+<li><link id="poster/testpar"><tt>testpar</tt></link>&nbsp;&ndash;&nbsp;Test performance of for versus parfor loops in evaluating posterior simulator.</li></ul>
+
+<h3>Chain statistics</h3>
+
+<ul><li><link id="poster/stats"><tt>stats</tt></link>&nbsp;&ndash;&nbsp;Evaluate selected statistics of an MCMC chain.</li></ul>
+
+<h3>Getting on-line help on model functions</h3>
+<pre>   help poster
+   help poster/function_name
+</pre>
+
+</folder>
