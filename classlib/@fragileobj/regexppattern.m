@@ -9,6 +9,11 @@ function P = regexppattern(This)
 
 %--------------------------------------------------------------------------
 
+if isempty(This)
+    P = '';
+    return
+end
+
 n = length(This.storage);
 first = char(This.offset + 1);
 last = char(This.offset + n);

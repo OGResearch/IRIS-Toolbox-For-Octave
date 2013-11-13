@@ -11,7 +11,7 @@ classdef theparser
         fname = '';
         code = '';
         caller = '';
-        labels = cell(1,0);
+        labels = fragileobj();
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
@@ -42,15 +42,18 @@ classdef theparser
             end
             if length(varargin) == 2 ...
                     && ischar(varargin{1}) && isa(varargin{2},'preparser')
+                This.caller = varargin{1};
                 This.fname = varargin{2}.fname;
                 This.code = varargin{2}.code;
                 This.labels = varargin{2}.labels;
                 % Initialise class-specific theta parser.
-                switch varargin{1}
+                switch This.caller
                     case 'model'
                         This = model(This);
-                    case 'systemfit'
-                        This = systemfit(This);
+                    otherwise
+                        utils.error('theparser:theparser', ...
+                            'Invalid caller class ''%s''.', ...
+                            This.caller);
                 end
                 return
             end

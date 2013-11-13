@@ -35,7 +35,7 @@ for iBlk = 1 : nBlk
         continue
     end
     % Read a whole block.
-    pattern = [This.blkName{iBlk},'\s+(.*?)',eob];
+    pattern = [This.blkName{iBlk},'[;\s]+(.*?)',eob];
     tokens = regexpi(This.code,pattern,'tokens');
     tokens = [tokens{:}];
     if ~isempty(tokens)

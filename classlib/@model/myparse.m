@@ -192,7 +192,6 @@ This.eqtntype(end+(1:n)) = 1;
 This.nonlin(end+(1:n)) = false;
 
 % Read transition equations; loss function is always moved to the end.
-
 [eqtn,eqtnF,eqtnS,eqtnLabel,eqtnAlias,nonlin,isLoss,multipleLoss] ...
     = xxReadEqtns(S(6));
 
@@ -357,9 +356,10 @@ if ~This.linear
     This.eqtnS = strrep(This.eqtnS,'&(%','(%');
     This.eqtnS = strrep(This.eqtnS,'&exp(%','exp(%');
     
+    % Replace (%(!10)){@-2} with (%(!10)-2*%%(!10)).
     This.eqtnS = regexprep(This.eqtnS, ...
-        '\(%\(@(\d+)\)\)\{([+\-]\d+)\}', ...
-        '(%(@$1)$2*dx(@$1))');
+        '\(%\(!(\d+)\)\)\{@([+\-]\d+)\}', ...
+        '(%(!$1)$2*%%(!$1))');
 else
     This.eqtnS(:) = {''};
 end
@@ -370,16 +370,12 @@ end
 This.eqtnF = regexprep(This.eqtnF,namePatt,nameReplF);
 
 % Steady-state references.
-% Replace &%(:,@10,!) with &(:,@10).
-This.eqtnF = regexprep(This.eqtnF,'&%\(:,@(\d+),!\)','&(:,@$1)');
+% Replace &%(:,!10,@) with &(:,@10).
+This.eqtnF = regexprep(This.eqtnF,'&%\(:,!(\d+),@\)','&(:,!$1)');
 
-% Replace %(:,@10,!){+2} with %(:,@10,!)(+2).
-This.eqtnF = strrep(This.eqtnF,'!){','!)(');
+% Replace %(:,!10,@){@+2} with %(:,!10,@+2).
+This.eqtnF = strrep(This.eqtnF,'@){@','@');
 This.eqtnF = strrep(This.eqtnF,'}',')');
-
-% Replace %(:,@10,!)(+2) with %(:,@10,!+2).
-This.eqtnF = strrep(This.eqtnF,'!)(-','!-');
-This.eqtnF = strrep(This.eqtnF,'!)(+','!+');
 
 % Try to catch undeclared names in all equations except dynamic links at
 % this point; all valid names have been substituted for by %(...) and
@@ -387,14 +383,17 @@ This.eqtnF = strrep(This.eqtnF,'!)(+','!+');
 % and corr names which have not been substituted for.
 doChkUndeclared();
 
-% Replace control characters.
+% Replace control characters in steady-state equations.
+This.eqtnS = strrep(This.eqtnS,'%%','dx');
 This.eqtnS = strrep(This.eqtnS,'%','x');
-This.eqtnS = strrep(This.eqtnS,'@','');
-This.eqtnF = strrep(This.eqtnF,'&(:,@','L(:,');
-This.eqtnF = strrep(This.eqtnF,'?(@','g(');
+This.eqtnS = strrep(This.eqtnS,'!','');
+
+% Replace control characters in full equations.
+This.eqtnF = strrep(This.eqtnF,'&(:,!','L(:,');
+This.eqtnF = strrep(This.eqtnF,'?(!','g(');
 This.eqtnF = strrep(This.eqtnF,'%','x');
-This.eqtnF = strrep(This.eqtnF,'!','t');
-This.eqtnF = strrep(This.eqtnF,'@','');
+This.eqtnF = strrep(This.eqtnF,'@','t');
+This.eqtnF = strrep(This.eqtnF,'!','');
 
 % Check for orphan { and & after we have substituted for the valid
 % references.

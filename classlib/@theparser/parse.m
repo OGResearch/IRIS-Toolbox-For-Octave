@@ -42,12 +42,13 @@ S = S(ones(1,nBlk));
 invalid = struct();
 invalid.assign = {};
 invalid.key = {};
-invalid.allbut = false;
+invalid.allBut = false;
 invalid.flag = {};
-invalid.timesubs = {};
+invalid.timeSubs = {};
+invalid.emptyEqtn = {};
 
 % Read individual blocks and check for unknown keywords.
-[blk,invalid.key,invalid.allbut] = readblk(This);
+[blk,invalid.key,invalid.allBut] = readblk(This);
 for iBlk = 1 : nBlk
     S(iBlk).blk = blk{iBlk};
 end
@@ -66,22 +67,22 @@ if any(This.flagBlk)
         = parseflags(This,S(This.flagBlk).blk,S(This.flaggable));
 end
 
-% Read individual equations within each equation block.
+% Read individual equations within each equation block; evaluate and
+% validate time subscripts; check for empty equations consisting of labels
+% only.
 for iBlk = find(This.eqtnBlk)
     [S(iBlk).eqtn,S(iBlk).eqtnlabel, ...
         S(iBlk).eqtnlhs,S(iBlk).eqtnrhs,S(iBlk).eqtnsign, ...
-        S(iBlk).sstatelhs,S(iBlk).sstaterhs,S(iBlk).sstatesign] ...
+        S(iBlk).sstatelhs,S(iBlk).sstaterhs,S(iBlk).sstatesign, ...
+        S(iBlk).maxt,S(iBlk).mint,invalidTimeSubs,emptyEqtn] ...
         = parseeqtns(This,S(iBlk).blk);
     nEqtn = length(S(iBlk).eqtn);
     S(iBlk).eqtntype = iBlk*ones(1,nEqtn);
-    % Evaluate and check time subscripts, find max and min time subscript.
-    [S(iBlk).maxt,S(iBlk).mint,invalidTimeSubs, ...
-        S(iBlk).eqtnlhs,S(iBlk).eqtnrhs, ...
-        S(iBlk).sstatelhs,S(iBlk).sstaterhs] ...
-        = xxEvalTimeSubs(S(iBlk).eqtnlhs,S(iBlk).eqtnrhs, ...
-        S(iBlk).sstatelhs,S(iBlk).sstaterhs);
-    invalid.timesubs = [invalid.timesubs,invalidTimeSubs];
+    invalid.timeSubs = [invalid.timeSubs,invalidTimeSubs];
+    invalid.emptyEqtn = [invalid.emptyEqtn,emptyEqtn];
 end
+
+doChkInvalid();
 
 % Put back labels, and extract alias from each label.
 for iBlk = 1 : nBlk
@@ -93,18 +94,15 @@ for iBlk = 1 : nBlk
     [S(iBlk).eqtnlabel,S(iBlk).eqtnalias] = xxGetAlias(S(iBlk).eqtnlabel);
 end
 
-% Use steady-state equations for full equations whenever possible.
 if Opt.sstateonly
+    % Use steady-state equations for full equations whenever possible.
     S = xxSstateOnly(S);
 end
-
-doChkInvalid();
-
 
 % Nested functions.
 
 
-%**************************************************************************    
+%**************************************************************************
     function doChkInvalid()
         
         % Blocks marked as essential cannot be empty.
@@ -114,7 +112,7 @@ doChkInvalid();
                 caller(end+1) = ' '; %#ok<AGROW>
             end
             if isempty(S(iiBlk).blk) || all(S(iiBlk).blk <= char(32))
-                utils.error('model',[errorparsing(This), ...
+                utils.error('theparser:parse',[errorparsing(This), ...
                     'Cannot find a non-empty ''%s'' block. ', ...
                     'This is not a valid ',caller,'file.'], ...
                     This.blkName{iiBlk});
@@ -122,15 +120,15 @@ doChkInvalid();
         end
         
         % Inconsistent use of `!all_but` inn `!log_variables` sections.
-        if invalid.allbut
-            utils.error('model',[errorparsing(This), ...
+        if invalid.allBut
+            utils.error('theparser:parse',[errorparsing(This), ...
                 'The keyword !all_but may appear in either all or none of ', ...
                 'the !log_variables sections.']);
         end
         
         % Invalid keyword.
         if ~isempty(invalid.key)
-            utils.error('model',[errorparsing(This), ...
+            utils.error('theparser:parse',[errorparsing(This), ...
                 'This is not a valid keyword: ''%s''.'], ...
                 invalid.key{:});
         end
@@ -138,19 +136,27 @@ doChkInvalid();
         % Invalid names on the log-variable list.
         if ~isempty(invalid.flag)
             flagBlkname = This.blkName{This.flagBlk};
-            utils.error('model',[errorparsing(This), ...
+            utils.error('theparser:parse',[errorparsing(This), ...
                 'This name is not allowed ', ...
                 'on the ''',flagBlkname,''' list: ''%s''.'], ...
                 invalid.flag{:});
         end
         
         % Invalid time subscripts.
-        if ~isempty(invalid.timesubs)
-            % Error evaluating time subscripts.
-            utils.error('model',[errorparsing(This), ...
-                'Cannot evaluate this time index: ''%s''.'], ...
-                invalid.timesubs{:});
+        if ~isempty(invalid.timeSubs)
+            invalid.timeSubs = restore(invalid.timeSubs,This.labels);
+            utils.error('theparser:parse',[errorparsing(This), ...
+                'Cannot evaluate time index in this equation: ''%s''.'], ...
+                invalid.timeSubs{:});
         end
+        
+        % Equations that consist of labels only (throw a warning, not error).
+        if ~isempty(invalid.emptyEqtn)
+            invalid.emptyEqtn = restore(invalid.emptyEqtn,This.labels);
+            utils.warning('theparser:parse',[errorparsing(This), ...
+                'This equation is empty, and will be removed: ''%s''.'], ...
+                invalid.emptyEqtn{:});
+        end            
         
     end % doChkInvalid()
 
@@ -213,98 +219,3 @@ for i = 1 : length(S)
 end
 
 end %% xxSstateOnly()
-
-
-%**************************************************************************
-function [MaxT,MinT,Invalid,varargout] = xxEvalTimeSubs(varargin)
-% xxEvalTimeSubs  Validate and evaluate time subscripts.
-
-varargout = varargin;
-MaxT = 0;
-MinT = 0;
-Invalid = {};
-
-for i = 1 : length(varargout)
-    if isempty(varargout{i})
-        continue
-    end
-    varargout{i} = strrep(varargout{i},'{0}','');
-    varargout{i} = strrep(varargout{i},'{1','{+1');
-    varargout{i} = strrep(varargout{i},'{2','{+2');
-    varargout{i} = strrep(varargout{i},'{3','{+3');
-    varargout{i} = strrep(varargout{i},'{4','{+4');
-    varargout{i} = strrep(varargout{i},'{5','{+5');
-    varargout{i} = strrep(varargout{i},'{6','{+6');
-    varargout{i} = strrep(varargout{i},'{7','{+7');
-    varargout{i} = strrep(varargout{i},'{8','{+8');
-    varargout{i} = strrep(varargout{i},'{9','{+9');
-    x = regexp(varargout{i},'\{[+\-]\d+\}','match');
-    x = [x{:}];
-    x = [x{:}];
-    if ~isempty(x)
-        x = sscanf(x,'{%g}');
-        x = x(:).';
-        MaxT = max([MaxT,x]);
-        MinT = min([MinT,x]);
-    end
-end
-    
-%{
-replaceFunc = @doReplace; %#ok<NASGU>
-    
-%    varargout{i} = ...
-%        regexprep(varargout{i},'\{([^\}\{;]*)\}','${replaceFunc($1)}');
-%    varargout{i} = regexprep(varargout{i},'\{
-%end
-
-    function C = doReplace(C)
-        if strcmp(C,'0')
-            C = '';
-            return
-        end
-        % Try `sscanf` first, it's faster than `eval`.
-        tmp = sscanf(C,'%g');
-        if length(tmp) == 1 && isnumeric(tmp) && ~isnan(tmp)
-            tmp = round(tmp);
-            if tmp == 0
-                C = '';
-            else
-                C = sprintf('{%+g}',tmp);
-                MaxT = max([MaxT,tmp]);
-                MinT = min([MinT,tmp]);
-            end
-            return
-        end
-        % If `sscanf` fails, try eval.
-        tmp = xxProtectedEval(C);
-        if length(tmp) == 1 && isnumeric(tmp) && ~isnan(tmp)
-            tmp = round(tmp);
-            if tmp == 0
-                C = '';
-            else
-                C = sprintf('{%+g}',tmp);
-                MaxT = max([MaxT,tmp]);
-                MinT = min([MinT,tmp]);
-            end
-            return
-        end
-        Invalid{end+1} = ['{',C,'}'];
-        C = '';
-    end % doReplace()
-%}
-
-end %% xxEvalTimeSubs()
-
-
-%**************************************************************************
-function ProtectedArg = xxProtectedEval(ProtectedArg)
-% xxProtectedEval  Protected eval.
-
-try
-    t = 0; %#ok<NASGU>
-    ProtectedArg = eval([ProtectedArg,';']);
-catch %#ok<CTCH>
-    ProtectedArg = NaN;
-end
-
-end % xxProtectedEval()

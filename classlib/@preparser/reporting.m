@@ -22,9 +22,7 @@ if isempty(P.code)
     return
 end
 
-% Match charcode x = ...|...;
-ptn = ['[',regexppattern(P.labels),']'];
-ptn = ['(?<label>[',ptn,'])?', ...
+ptn = ['(?<label>[',regexppattern(P.labels),'])?', ...
     '\s*(?<lhs>\w+)\s*=\s*(?<rhs>.*?)\s*(?<nan>\|.*?)?;',];
 tok = regexp(P.code,ptn,'names');
 

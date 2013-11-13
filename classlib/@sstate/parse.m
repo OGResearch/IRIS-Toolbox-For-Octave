@@ -76,8 +76,9 @@ input = uniquelist_(inputblock);
 % @ replaceInput_().
 
 % Read equation blocks.
-ptn = regexppattern(p.labels);
-ptn = ['!equations\s*(',ptn,')?\s*(.*?)\s*(?=!equations|$)'];
+ptn = ['!equations\s*', ...
+    '([',regexppattern(p.labels),'])?', ...
+    '\s*(.*?)\s*(?=!equations|$)'];
 tkn = regexp(code,ptn,'tokens');
 
 nBlock = numel(tkn);

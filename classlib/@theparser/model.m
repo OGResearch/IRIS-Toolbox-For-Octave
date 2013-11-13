@@ -9,8 +9,6 @@ function This = model(This)
 
 %--------------------------------------------------------------------------
 
-This.caller = 'model';
-
 % 1 - Measurement variables.
 This.blkName{end+1} = '!measurement_variables';
 This.nameType(end+1) = 1;

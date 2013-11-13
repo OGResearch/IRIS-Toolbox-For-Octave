@@ -57,7 +57,7 @@ for iEq = EqtnList
     if isempty(This.eqtnF{iEq})
         continue
     end
-    
+
     iNameTime = [nameTime{iEq}{:}];
     if ~isempty(iNameTime)
         sub = sprintf('%s,',iNameTime{:});
@@ -73,8 +73,9 @@ for iEq = EqtnList
     if ~isempty(iNameCurr)
         nameSub = sprintf('%s,',iNameCurr{:});
         nameSub = sscanf(nameSub,'%g,');
+        timeSub = tZero*ones(size(nameSub));
         ind = sub2ind([nEqtn,nName,nt], ...
-            iEq*ones(size(nameSub)),nameSub,tZero*ones(size(nameSub)));
+            iEq*ones(size(nameSub)),nameSub,timeSub);
         This.occur(ind) = true;
     end
 end

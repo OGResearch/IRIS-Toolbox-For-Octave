@@ -10,6 +10,10 @@ function C = cleanup(C,This)
 
 %--------------------------------------------------------------------------
 
+if isnan(This.offset) || isempty(This.storage)
+    return
+end
+
 ptn = ['[',regexppattern(This),']'];
 C = regexprep(C,ptn,'');
 

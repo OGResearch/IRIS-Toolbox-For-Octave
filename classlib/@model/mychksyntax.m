@@ -108,7 +108,7 @@ end
                 [match,tokens] = ...
                     regexp(E.message,'Undefined function or variable ''(\w*)''', ...
                     'match','tokens','once');
-                
+
                 if ~isempty(match)
                     errUndeclared{end+1} = tokens{1}; %#ok<AGROW>
                     errUndeclared{end+1} = This.eqtn{iiEq}; %#ok<AGROW>
