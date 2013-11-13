@@ -354,21 +354,23 @@ for i = 1 : nList
     % Handle standard syntax here.
     C = doSubsForControl(C,control,list{i});
     
-    % Made the substitutions for the control variable in labels.
-    ptn = ['[',regexppattern(Labels),']']; 
-    % List of charcodes that actually occur in the `for` body.
-    occur = regexp(C,ptn,'match');
-    % The list of occurences is a cellstr of single characters; convert to
-    % char vector.
-    for k = [occur{:}]
-        % Position of the charcode `k` in the storage.
-        pos = position(Labels,k);
-        % Copy the `pos`-th entry at the end.
-        [Labels,newPos,newK] = copytoend(Labels,pos);
-        % Create new entry in the storage.
-        Labels.storage{newPos} ...
-            = doSubsForControl(Labels.storage{newPos},control,list{i});
-        C = strrep(C,k,char(newK));
+    % Substitute for the control variable in labels.
+    if ~isempty(Labels)
+        ptn = ['[',regexppattern(Labels),']'];
+        % List of charcodes that actually occur in the `for` body.
+        occur = regexp(C,ptn,'match');
+        % The list of occurences is a cellstr of single characters; convert to
+        % char vector.
+        for k = [occur{:}]
+            % Position of the charcode `k` in the storage.
+            pos = position(Labels,k);
+            % Copy the `pos`-th entry at the end.
+            [Labels,newPos,newK] = copytoend(Labels,pos);
+            % Create new entry in the storage.
+            Labels.storage{newPos} ...
+                = doSubsForControl(Labels.storage{newPos},control,list{i});
+            C = strrep(C,k,char(newK));
+        end
     end
     
     C = strfun.removeltel(C);

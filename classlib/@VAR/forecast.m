@@ -109,14 +109,14 @@ else
 end
 
 % Include pre-sample.
-[outpFmt,xRange,y,e] = varobj.mydatarequest(This,Inp,xRange,opt);
+[outpFmt,xRange,y,e] = mydatarequest(This,Inp,xRange,opt);
 e(isnan(e)) = 0;
 
 nPer = length(Range);
 nXPer = length(xRange);
 
 % Get tunes on VAR variables and instruments; do not include pre-sample.
-[~,~,jy,~,ji] = varobj.mydatarequest(This,JData,Range);
+[~,~,jy,~,ji] = mydatarequest(This,JData,Range);
 if backcast
     y = y(:,end:-1:1,:,:);
     e = e(:,end:-1:1,:,:);

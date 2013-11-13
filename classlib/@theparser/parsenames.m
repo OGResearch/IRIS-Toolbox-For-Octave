@@ -25,10 +25,9 @@ f = fragileobj(Blk);
 [Blk,f] = protectbrackets(Blk,f);
 
 % Parse names with labels and assignments.
-ptn = ['[',regexppattern(This.labels),']'];
-ptn = ['(?<label>',ptn,')?\s*', ... % Label.
-    '(?<name>[a-zA-Z]\w*)\s*', ... % Name.
-    '(?<value>=[^;,\n]+[;,\n])?']; % Value.
+ptn = ['(?<label>[',regexppattern(This.labels),'])?\s*', ...
+    '(?<name>[a-zA-Z]\w*)\s*', ... 
+    '(?<value>=[^;,\n]+[;,\n])?']; 
 
 x = regexp(Blk,ptn,'names');
 Name = {x(:).name};

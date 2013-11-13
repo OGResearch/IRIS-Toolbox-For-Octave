@@ -13,7 +13,7 @@ opt = passvalopt('fragileobj.restore',varargin{:});
 %--------------------------------------------------------------------------
 
 % Return immediately.
-if isempty(C) || isempty(This.storage)
+if isempty(C) || isempty(This)
     return
 end
 

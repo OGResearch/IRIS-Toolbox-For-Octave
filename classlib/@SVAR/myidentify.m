@@ -20,7 +20,7 @@ isData = nargin > 1 && nargout > 1 && ~isempty(Data);
 
 if isData
     % Get data.
-    [outpFmt,range,y,e] = varobj.mydatarequest(This,Data,Inf,Opt);
+    [outpFmt,range,y,e] = mydatarequest(This,Data,Inf,Opt);
     if size(e,3) == 1 && nAlt > 1
         y = y(:,:,ones(1,nAlt));
         e = e(:,:,ones(1,nAlt));

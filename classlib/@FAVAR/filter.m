@@ -93,7 +93,7 @@ p = size(This.A,2)/nx;
 Range = Range(1) : Range(end);
 
 % Retrieve and standardise input data.
-[outpFormat,Range,y] = varobj.mydatarequest(This,Inp,Range,opt);
+[outpFormat,Range,y] = mydatarequest(This,Inp,Range,opt);
 [This,y] = standardise(This,y);
 nPer = size(y,2);
 

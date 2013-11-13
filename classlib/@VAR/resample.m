@@ -115,7 +115,7 @@ nXPer = numel(xRange);
 
 % Input data
 %------------
-[outpFmt,~,y,e] = varobj.mydatarequest(This,Inp,xRange,opt);
+[outpFmt,~,y,e] = mydatarequest(This,Inp,xRange,opt);
 nData = size(y,3);
 if nData > 1
     utils.error('VAR', ...

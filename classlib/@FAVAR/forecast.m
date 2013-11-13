@@ -75,8 +75,9 @@ if isstruct(Inp) ...
 end
 
 if istseries(Inp)
-   % Only mean tseries supplied. No uncertainty in initial condition.
-   [~,~,x0] = varobj.mydatarequest(This,Inp,Range(1)-pp:Range(1)-1);
+   % Only mean tseries supplied; no uncertainty in initial condition.
+   reqRange = Range(1)-pp : Range(1)-1;
+   [~,~,x0] = mydatarequest(This,Inp,reqRange);
    x0 = x0(:,end:-1:1,:,:);
    x0 = x0(:);
    P0 = 0;
@@ -98,7 +99,7 @@ if ~isempty(J)
    if isstruct(J) && isfield(J,'mean')
       J = J.mean;
    end
-   [outpFmt,Range,y] = varobj.mydatarequest(This,J,Range,opt);
+   [outpFmt,Range,y] = mydatarequest(This,J,Range,opt);
    [This,y] = standardise(This,y);
 else
    y = nan(ny,nPer,nData);

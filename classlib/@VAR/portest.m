@@ -67,7 +67,7 @@ if H <= p
 end
 
 % Request residuals.
-[~,~,~,e] = varobj.mydatarequest(This,Inp,This.range);
+[~,~,~,e] = mydatarequest(This,Inp,This.range);
 nData = size(e,3);
 if nData ~= nAlt
     utils.error('VAR', ...
