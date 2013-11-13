@@ -45,7 +45,8 @@ function irisstartup(varargin)
 % IRIS can only run in Matlab Release 2010a and higher.
 if xxMatlabRelease() < 2010
     error('iris:startup',...
-        'Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> can only run in Matlab R2010a or higher.');
+        ['Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> ', ...
+        'can only run in Matlab R2010a or higher.']);
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));
@@ -93,19 +94,26 @@ if ~shutup
     doMessage();
 end
 
+
 % Nested functions.
+
 
 %**************************************************************************
     function doMessage()
         
         % Intro message.
-        fprintf( ...
-            ['\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ', ...
-            'version #%s.\n'],irisget('version'));
-        fprintf('\tCheck out <a href="http://groups.google.com/group/iris-toolbox">IRIS Toolbox forum</a> and <a href="http://iris-toolbox.blogspot.com">IRIS Toolbox blog</a>.');
+        fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
+        fprintf('version #%s.',irisget('version'));
         fprintf('\n');
-        fprintf('\tCopyright (c) 2007-%s <a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">IRIS Solutions Team</a>.\n',datestr(now,'YYYY'));
+        fprintf('\tCheck out <a href="http://groups.google.com/group/iris-toolbox">');
+        fprintf('IRIS Toolbox forum</a>');
+        fprintf(' and ');
+        fprintf('<a href="http://iris-toolbox.blogspot.com">IRIS Toolbox blog</a>.');
         fprintf('\n');
+        fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
+        fprintf('<a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">');
+        fprintf('IRIS Solutions Team</a>.');
+        fprintf('\n\n');
         
         % IRIS root folder.
         fprintf('\tIRIS root: <a href="file:///%s">%s</a>.\n',root,root);
@@ -113,30 +121,40 @@ end
         % Report user config file used.
         fprintf('\tUser config file: ');
         if isempty(config.userconfigpath)
-            fprintf('<a href="matlab: idoc config/irisuserconfighelp">No user config file found</a>.\n');
+            fprintf('<a href="matlab: idoc config/irisuserconfighelp">');
+            fprintf('No user config file found</a>.');
         else
-            fprintf('<a href="matlab: edit %s">%s</a>.\n',config.userconfigpath,config.userconfigpath);
+            fprintf('<a href="matlab: edit %s">%s</a>.', ...
+                config.userconfigpath,config.userconfigpath);
         end
+        fprintf('\n');
         
         % TeX/LaTeX executables.
         fprintf('\tLaTeX binary files: ');
         if isempty(config.pdflatexpath)
-            fprintf('<a href="matlab: edit .m">No TeX/LaTeX installation found</a>.\n');
+            fprintf('<a href="matlab: edit .m">');
+            fprintf('No TeX/LaTeX installation found</a>.');
         else
             tmppath = fileparts(config.pdflatexpath);
-            fprintf('<a href="file:///%s">%s</a>.\n',tmppath,tmppath);
+            fprintf('<a href="file:///%s">%s</a>.',tmppath,tmppath);
         end
+        fprintf('\n');
         
         % Report the X12 version integrated with IRIS.
-        fprintf('\t<a href="http://www.census.gov/srd/www/x13as/">X13 ARIMA-SEATS</a>: ');
-        fprintf('Version 1.1 Build 9.\n');
+        fprintf('\t<a href="http://www.census.gov/srd/www/x13as/">');
+        fprintf('X13-ARIMA-SEATS</a>: ');
+        fprintf('Version 1.1 Build 9.');
+        fprintf('\n');
         
         % Report IRIS folders removed.
         if ~isempty(removed)
-            fprintf('\n\tSuperfluous IRIS folders removed from Matlab path:\n');
+            fprintf('\n');
+            fprintf('\tSuperfluous IRIS folders removed from Matlab path:');
+            fprintf('\n');
             for i = 1 : numel(removed)
-                fprintf('\t* <a href="file:///%s">%s</a>\n', ...
+                fprintf('\t* <a href="file:///%s">%s</a>', ...
                     removed{i},removed{i});
+                fprintf('\n');
             end
         end
         
@@ -146,7 +164,9 @@ end
 
 end
 
+
 % Subfunctions.
+
 
 %**************************************************************************
 function [Year,Ab] = xxMatlabRelease()
