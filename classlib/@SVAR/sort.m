@@ -92,7 +92,7 @@ nAlt = size(This.A,3);
 % Handle residuals.
 if isData
     % Get data.
-    [outpFmt,rng,y,e] = varobj.mydatarequest(This,Data,Inf,opt);
+    [outpFmt,rng,y,e] = mydatarequest(This,Data,Inf,opt);
     nData = size(y,3);
     if nData ~= nAlt
         utils.error('SVAR', ...

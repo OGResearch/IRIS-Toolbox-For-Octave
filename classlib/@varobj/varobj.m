@@ -9,9 +9,10 @@ classdef varobj < userdataobj & getsetobj
 
     properties
         A = []; % Transition matrix.
-        Ynames = {};
-        Enames = {};
-        GroupNames = {};
+        Ynames = {}; % Endogenous variables.
+        Enames = {}; % Residuals.
+        Qnames = {}; % Exogenous variables.
+        GroupNames = {}; % Panel groups.
         range = zeros(1,0);
         fitted = false(1,0);
         Omega = zeros(0);
@@ -31,6 +32,7 @@ classdef varobj < userdataobj & getsetobj
     end
     
     methods (Access=protected,Hidden)
+        varargout = mydatarequest(varargin)
         varargout = myenames(varargin)
         varargout = mygroupnames(varargin)
         varargout = myinpdata(varargin)
@@ -43,28 +45,28 @@ classdef varobj < userdataobj & getsetobj
         specdisp(varargin)
     end
     
-    methods (Static,Hidden)
-        varargout = mydatarequest(varargin)
-    end
     
-    % Constructor
-    %-------------
     methods
+        
         function This = varobj(varargin)
+            % Assign endogenous variable names.
             if ~isempty(varargin) ...
                     && (iscellstr(varargin{1}) || ischar(varargin{1}))
-                % Assign variable names.
                 This = myynames(This,varargin{1});
                 varargin(1) = [];
-                if ~isempty(varargin) ...
-                        && (iscellstr(varargin{1}) || ischar(varargin{1}))
-                    % Assign group names.
-                    This = mygroupnames(This,varargin{1});
-                    varargin(1) = [];
-                end
-                % Create residual names.
-                This = myenames(This,[]);
             end
+            
+            % Assign group names.
+            if ~isempty(varargin) ...
+                    && (iscellstr(varargin{1}) || ischar(varargin{1}))
+                This = mygroupnames(This,varargin{1});
+                varargin(1) = [];
+            end
+            
+            % Create residual names.
+            This = myenames(This,[]);
+
+            % Options and userdata.
             if ~isempty(varargin) && iscellstr(varargin(1:2:end))
                 opt = passvalopt('varobj.varobj',varargin{:});
                 if ~isempty(opt.userdata)
@@ -72,6 +74,7 @@ classdef varobj < userdataobj & getsetobj
                 end
             end
         end
+        
     end
     
 end

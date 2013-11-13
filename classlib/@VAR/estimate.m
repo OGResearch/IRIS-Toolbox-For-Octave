@@ -170,21 +170,6 @@ nObs = size(y0,2);
 p = opt.order;
 nData = size(y0,3);
 
-%{
-% TODO: Remove this.
-% All data sets must have the same structure of missing observations.
-if nData > 1
-    nanInx = isnan(y);
-    allNan = all(nanInx,3);
-    anyNan = any(nanInx,3);
-    if any(anyNan & ~allNan)
-        utils.error('VAR', ...
-            ['All data sets must have the same structure ', ...
-            'of missing observations.']);
-    end
-end
-%}
-
 if ~isempty(opt.mean)
     if length(opt.mean) == 1
         opt.mean = opt.mean(ones(ny,1));

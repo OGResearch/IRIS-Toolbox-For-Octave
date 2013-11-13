@@ -85,7 +85,7 @@ else
     Range = Range(1)-pp : Range(end);
 end
 
-[outpFmt,Range,x,e] = varobj.mydatarequest(This,Inp,Range,opt);
+[outpFmt,Range,x,e] = mydatarequest(This,Inp,Range,opt);
 e(isnan(e)) = 0;
 
 if isBackcast

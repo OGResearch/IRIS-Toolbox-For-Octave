@@ -71,7 +71,9 @@ else
     OutpFmt = Opt.output;
 end
 
+
 % Nested functions.
+
 
 %**************************************************************************
     function [y,e,fi] = doStruct()
@@ -125,6 +127,7 @@ end
         end
     end % doStruct().
 
+
 %**************************************************************************
     function [Y,E] = doTseries()
         [Y,Range] = rangedata(Data,Range);
@@ -135,6 +138,7 @@ end
             E = zeros(size(Y));
         end
     end % doTseries().
+
 
 %**************************************************************************
     function [Y,E] = doArray()
@@ -153,6 +157,7 @@ end
         end
     end % doArray().
 
+
 %**************************************************************************
     function [Y,E] = doElse()
         if infRange
@@ -164,5 +169,6 @@ end
         E = nan(nPer,ny);
         % inputFormat = 'array';
     end % doElse().
+
 
 end

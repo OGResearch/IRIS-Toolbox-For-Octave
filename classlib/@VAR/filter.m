@@ -81,7 +81,7 @@ Range = Range(1) : Range(end);
 xRange = Range(1)-p : Range(end);
 
 % Include pre-sample.
-[~,xRange,y] = varobj.mydatarequest(This,Inp,xRange,opt);
+[~,xRange,y] = mydatarequest(This,Inp,xRange,opt);
 % e(isnan(e)) = 0;
 
 nPer = length(Range);
