@@ -11,7 +11,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % Input arguments
 % ================
 %
-% * `M` [ struct ] - Model object.
+% * `M` [ model ] - Model object.
 %
 % * `D` [ struct | cell ] - Input database or datapack from which the
 % measurement variables will be taken.
