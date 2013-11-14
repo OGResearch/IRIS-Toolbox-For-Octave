@@ -62,6 +62,12 @@ end
 
 nCol = prod(tmpSize(2:end));
 
+[~,~,f]=dat2ypf(Range) ;
+if any( f~=X.freq ) && ~any(isinf(Range))
+    utils.error('tseries:rangedata',...
+        'Data frequency and range frequency mismatch.') ;
+end
+
 if isinf(Range(1))
     % Range is Inf or [-Inf,...].
     startInx = 1;
