@@ -10,7 +10,9 @@ function [Y,Rng,YNames,InpFmt,varargin] = myinpdata(This,varargin)
 %--------------------------------------------------------------------------
 
 if ispanel(This) && isstruct(varargin{1})
-    % Panel data.
+
+    % Database for panel VAR
+    %------------------------
     InpFmt = 'panel';
     d = varargin{1};
     varargin(1) = [];
@@ -32,27 +34,55 @@ if ispanel(This) && isstruct(varargin{1})
         iY = permute(iY,[2,1,3]);
         Y{iGrp} = iY;
     end
+    
 elseif isstruct(varargin{1})
-    % Database.
+    
+    % Database for plain VAR
+    %------------------------
     InpFmt = 'dbase';
     d = varargin{1};
     varargin(1) = [];
-    if iscellstr(varargin{1})
+    
+    isObsolete = false;
+    if iscellstr(varargin{1}) || ischar(varargin{1})
+        % ##### Nov 2013 OBSOLETE and scheduled for removal.
+        isObsolete = true;
         YNames = varargin{1};
-        varargin(1) = [];
-    elseif ischar(varargin{1})
-        YNames = regexp(varargin{1},'\w+','match');
+        if ischar(YNames)
+            YNames = regexp(YNames,'\w+','match');
+        end
         varargin(1) = [];
     else
         YNames = This.Ynames;
     end
+    
+    if isObsolete
+        if ~isempty(This.Ynames)
+            utils.error('varobj:myinpdata', ...
+                'Variable names already specified in the %s object.', ...
+                class(This));
+        else
+            utils.warning('obsolete', ...
+                ['This syntax for specifying variable names is obsolete ', ...
+                'and will be removed from a future version of IRIS. ', ...
+                'Specify variable names at the time of creating ', ...
+                '%s objects instead.'], ...
+                class(This));
+            This.Ynames = YNames;
+            This = myenames(This,[]);
+        end
+    end
+    
     Rng = varargin{1};
     varargin(1) = [];
     usrRng = Rng;
     [Y,~,Rng] = db2array(d,YNames,Rng);
     Y = permute(Y,[2,1,3]);
+    
 elseif istseries(varargin{1})
-    % Time series.
+    
+    % Time series for plain VAR
+    %---------------------------
     InpFmt = 'tseries';
     Y = varargin{1};
     Rng = varargin{2};
@@ -61,9 +91,12 @@ elseif istseries(varargin{1})
     [Y,Rng] = rangedata(Y,Rng);
     Y = permute(Y,[2,1,3]);
     YNames = This.Ynames;
+    
 else
+    
     % Invalid.
     utils.error('varobj','Invalid format of input data.');
+
 end
 
 if isequal(usrRng,Inf)

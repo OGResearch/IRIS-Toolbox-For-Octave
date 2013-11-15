@@ -46,7 +46,7 @@ switch Query
             end
         end
     case 'method'
-        C = This.method;
+        X = This.method;
     otherwise
         [X,Flag] = specget@VAR(This,Query);
 end

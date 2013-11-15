@@ -80,9 +80,11 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % Get input data.
 [y,Rng,yNames,inpFmt,varargin] = myinpdata(This,varargin{:});
 
-if isequal(inpFmt,'dbase')
+if isempty(This.Ynames) && isequal(inpFmt,'dbase')
+    % ##### Nov 2013 OBSOLETE and scheduled for removal.
     This.Ynames = yNames;
 end
+
 This.range = Rng;
 
 % Parse required input arguments.

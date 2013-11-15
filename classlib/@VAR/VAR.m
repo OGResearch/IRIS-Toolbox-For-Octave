@@ -1,10 +1,11 @@
 classdef VAR < varobj
-    % VAR  Vector autoregressions: VAR objects and functions.
+    % VAR  Vector autoregressions (VAR) objects and functions.
     %
     % VAR objects can be constructed as plain VARs or simple panel VARs (with
     % fixed effect), and estimated without or with prior dummy observations
-    % (Bayesian VARs). The VAR objects are also the point of departure for
-    % identifying structural VARs ([`SVAR`](SVAR/Contents) objects).
+    % (quasi-bayesian VARs). VAR objects are reduced-form models; they are also
+    % the point of departure for identifying structural VARs
+    % ([`SVAR`](SVAR/Contents) objects).
     %
     % VAR methods:
     %

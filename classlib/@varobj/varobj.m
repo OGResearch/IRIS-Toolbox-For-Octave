@@ -49,11 +49,21 @@ classdef varobj < userdataobj & getsetobj
     methods
         
         function This = varobj(varargin)
-            % Assign endogenous variable names.
-            if ~isempty(varargin) ...
-                    && (iscellstr(varargin{1}) || ischar(varargin{1}))
+            
+            if isempty(varargin)
+                return
+            end
+            
+            if length(varargin) == 1 && isa(varargin,'varobj')
+                This = varargin{1};
+                return
+            end
+            
+            % Assign endogenous variable names, and create residual names.
+            if iscellstr(varargin{1}) || ischar(varargin{1})
                 This = myynames(This,varargin{1});
                 varargin(1) = [];
+                This = myenames(This,[]);
             end
             
             % Assign group names.
@@ -62,9 +72,6 @@ classdef varobj < userdataobj & getsetobj
                 This = mygroupnames(This,varargin{1});
                 varargin(1) = [];
             end
-            
-            % Create residual names.
-            This = myenames(This,[]);
 
             % Options and userdata.
             if ~isempty(varargin) && iscellstr(varargin(1:2:end))

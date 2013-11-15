@@ -86,12 +86,6 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % * `'tolerance='` [ numeric | *`1e-5`* ] - Convergence tolerance when
 % generalised least squares algorithm is involved.
 %
-% * `'yNames='` [ cellstr | function_handle | *`@(n) sprintf('y%g',n)`* ] -
-% Use these names for the VAR variables.
-%
-% * `'eNames='` [ cellstr | function_handle | *`@(yname,n) ['res_',yname]`*
-% ] - Use these names for the VAR residuals.
-%
 % * `'warning='` [ *`true`* | `false` ] - Display warnings produced by this
 % function.
 %
@@ -303,6 +297,7 @@ end
 
 % Nested functions.
 
+
 %**************************************************************************
     function doChkObsNotFitted()
         allFitted = all(all(This.fitted,1),3);
@@ -317,16 +312,25 @@ end
         end
     end % doChkObsNotFitted().
 
+
 %**************************************************************************
     function doNames()
         if isempty(Ynames)
             if length(opt.ynames) == ny
+                % ##### Nov 2013 OBSOLETE and scheduled for removal.
+                utils.warning('obsolete', ...
+                    ['This syntax for specifying variable names is obsolete ', ...
+                    'and will be removed from a future version of IRIS. ', ...
+                    'Specify variable names at the time of creating ', ...
+                    '%s objects instead.'], ...
+                    class(This));
                 Ynames = opt.ynames;
             else
                 Ynames = This.Ynames;
             end
         end
         if ~isempty(opt.enames)
+            % ##### Nov 2013 OBSOLETE and scheduled for removal.
             Enames = opt.enames;
         else
             Enames = This.Enames;
@@ -334,6 +338,7 @@ end
         This = myynames(This,Ynames);
         This = myenames(This,Enames);
     end % doNames().
+
 
 %**************************************************************************
     function doOutpData()
@@ -358,5 +363,6 @@ end
                 [y0;resid],[],[This.Ynames,This.Enames]);
         end
     end % doOutpData().
+
 
 end

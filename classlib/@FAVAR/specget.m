@@ -44,7 +44,7 @@ switch Query
         X = This.singval;
     case {'ny'}
         X = size(This.C,1);
-    case {'nx'}
+    case {'nx','nfactor','nfactors'}
         X = size(This.A,1);
     case {'ne'}
         X = size(This.Omega,2);
