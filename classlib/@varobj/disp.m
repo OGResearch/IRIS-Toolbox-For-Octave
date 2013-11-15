@@ -22,7 +22,7 @@ else
         fprintf('Panel ');
     end
     fprintf('%s(%g) object: ',class(This),p);
-    fprintf('%g parameterisation(s)',nAlt);
+    fprintf('[%g] parameterisation(s)',nAlt);
     if ispanel(This)
         nGrp = length(This.GroupNames);
         fprintf(' * %g group(s)',nGrp);

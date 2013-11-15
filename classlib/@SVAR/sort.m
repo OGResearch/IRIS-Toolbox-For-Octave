@@ -46,9 +46,9 @@ function [This,Data,Inx,Crit] = sort(This,Data,SortBy,varargin)
 % ============
 %
 % The individual parameterisations within the SVAR object `A` are sorted by
-% the sum squared distances of selected shock responses to the respective
-% median reponses. Formally, the following criterion is evaluated for each
-% parameterisation
+% the sum of squared distances of selected shock responses to the
+% respective median reponses. Formally, the following criterion is
+% evaluated for each parameterisation
 %
 % $$ \sum_{i\in I,j\in J,k\in K} \left[ S_{i,j}(k) - M_{i,j}(k) \right]^2 $$
 %
