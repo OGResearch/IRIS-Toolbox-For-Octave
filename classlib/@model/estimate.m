@@ -334,9 +334,11 @@ pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
 
 % Check prior consistency
-if any(~chkpriors(This,E))
+invalid = chkpriors(This,E);
+if ~isempty(invalid)
     utils.error('model:estimate',...
-        'Initial conditions are inconsistent with prior distributions and/or bounds.') ;
+        'Initial conditions are inconsistent with prior distributions and/or bounds: ''%s''.', ...
+        invalid{:});
 end
 
 % Process the `estimate` and `myestimate` function's own options.

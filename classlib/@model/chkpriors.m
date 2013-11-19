@@ -1,4 +1,4 @@
-function [Pvec] = chkpriors(M,E)
+function P = chkpriors(M,E)
 % chkpriors  Check consistency of priors and bounds with initial
 % conditions.
 %
@@ -17,28 +17,39 @@ function [Pvec] = chkpriors(M,E)
 % Output arguments
 % =================
 %
-% * `Pvec` [ logical ] - Logical array indicating true when prior
-% distributions and bounds are consistent with initial values.
+% * `P` [ cellstr ] - Cell array of strings of parameters which are
+% inconsistent with priors and/or bounds.
 %
 % Options
 % ========
 %
 
 % Validate input arguments
-pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('E',@(x) isstruct(x));
-pp.parse(M,E);
+pp = inputParser() ;
+pp.addRequired('M',@ismodel) ;
+pp.addRequired('E',@(x) isstruct(x)) ;
+pp.parse(M,E) ;
+
+P = {} ;
+
+% Get list of parameters and shocks
+eList = M.name(M.nametype == 3) ;
+pList = M.name(M.nametype == 4) ;
 
 % Check consistency by looping over parameters
 pnames = fields(E) ;
 np = numel(pnames) ;
-Pvec = true(np,1) ;
 for iname = 1:np
     param = E.(pnames{iname}) ;
     if isnan(param{1})
         % use initial condition from model object
-        initVal = M.(pnames{iname}) ;
+        if strncmp('std_',pnames{iname},4)
+            % shock
+            initVal = M.stdcorr( strcmp(eList,pnames{iname}(5:end)) ) ;
+        else
+            % parameter
+            initVal = M.Assign( strcmp(pList,pnames{iname}) ) ;
+        end
     else
         % use initial condition from prior struct
         initVal = param{1} ;
@@ -48,14 +59,16 @@ for iname = 1:np
     if numel(param)<4
         fh = @(x) 1 ;
     else
-        fh = param{4} ;
+        if isempty(param{4})
+            fh = @(x) 1 ;
+        else
+            fh = param{4} ;
+        end
     end
     
     % check prior consistency
     if isinf(fh(initVal))
-        utils.warning('model:chkpriors',...
-            'Initial value of %g for parameter %s is inconsistent with the prior distribution support.',initVal,pnames{iname}) ;
-        Pvec(iname) = false ;
+        P = [P,pnames(iname)] ;
     end
     
     % check bounds consistency
@@ -63,9 +76,7 @@ for iname = 1:np
         if ( param{2}>-realmax )
             % lower bound is non-empty and not -Inf
             if ( initVal<param{2} )
-                Pvec(iname) = false ;
-                utils.warning('model:chkpriors',...
-                    'Initial value of %g for parameter %s is lower than the lower bound %g.',initVal,pnames{iname},param{2}) ;
+                P = [P,pnames(iname)] ;
             end
         end
     end
@@ -73,9 +84,7 @@ for iname = 1:np
         if ( param{3}<realmax )
             % upper bound is non-empty and not Inf
             if ( initVal>param{3} )
-                Pvec(iname) = false ;
-                utils.warning('model:chkpriors',...
-                    'Initial value of %g for parameter %s is higher than the upper bound %g.',initVal,pnames{iname},param{2}) ;
+                P = [P,pnames(iname)] ;
             end
         end
     end

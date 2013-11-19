@@ -238,6 +238,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = autoexogenise(varargin)
         varargout = bn(varargin)
         varargout = chksstate(varargin)
+        varargout = chkpriors(varargin)
         varargout = data4lhsmrhs(varargin)
         varargout = diffloglik(varargin)
         varargout = diffsrf(varargin)
