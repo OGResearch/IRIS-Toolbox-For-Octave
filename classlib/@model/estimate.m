@@ -333,6 +333,12 @@ pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
 
+% Check prior consistency
+if any(chkpriors(This,E))
+    utils.error('model:estimate',...
+        'Initial conditions are inconsistent with prior distributions and/or bounds.') ;
+end
+
 % Process the `estimate` and `myestimate` function's own options.
 [estOpt,varargin] = passvalopt('estimateobj.myestimate',varargin{:});
 estOpt1 = passvalopt('model.estimate',varargin{:});
