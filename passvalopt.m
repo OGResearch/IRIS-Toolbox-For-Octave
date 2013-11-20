@@ -29,6 +29,7 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.latex = irisopt.latex();
     DEF.model = irisopt.model();
     DEF.modelobj = irisopt.modelobj();
+    DEF.nnet = irisopt.nnet();
     DEF.optim = irisopt.optim();
     DEF.poster = irisopt.poster();
     DEF.preparser = irisopt.preparser();

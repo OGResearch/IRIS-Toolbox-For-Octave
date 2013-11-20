@@ -1,4 +1,4 @@
-classdef model < modelobj & userdataobj & estimateobj & getsetobj
+classdef model < userdataobj & getsetobj
     % model  Model objects and functions.
     %
     % Model objects are created by loading a [model file](modellang/Contents).
