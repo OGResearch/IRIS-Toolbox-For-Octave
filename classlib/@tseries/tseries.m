@@ -585,6 +585,9 @@ classdef tseries < userdataobj
         function This = ne(This,Y)
             This = binop(@ne,This,Y);
         end
+        function x = norm(x,varargin)
+            x = norm(x.data,varargin{:}) ;
+        end
         function x = not(x)
             x.data = not(x.data);
         end

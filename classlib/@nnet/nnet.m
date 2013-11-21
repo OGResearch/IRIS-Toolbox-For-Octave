@@ -32,6 +32,9 @@ classdef nnet < userdataobj & getsetobj
     
     properties( Dependent = true )
         nAlt ;
+        nInputs ;
+        nOutputs ;
+        nLayer ;
     end
     
     methods
@@ -48,7 +51,7 @@ classdef nnet < userdataobj & getsetobj
             % Parse options
             options = passvalopt('nnet.nnet',varargin{:});
             
-            % Superclass constructors.
+            % Superclass constructors
             This = This@userdataobj();
             This = This@getsetobj();
             
@@ -65,14 +68,52 @@ classdef nnet < userdataobj & getsetobj
             This.InputTransfer = options.InputTransfer ;
             This.OutputTransfer = options.OutputTransfer ;
             This.Type = options.Type ;
-        end
-
-        function nAlt = get.nAlt(This)
-            nAlt = size(This.Weights,2) ;
+            
+            % *** Construct initial parameters
+            myStruct = struct() ;
+            myStruct.Transfer = 1 ;
+            myStruct.Bias = 0 ;
+            myStruct.Weight = {} ;
+            % No weighting possible at input nodes
+            This.Params = cellfun(@(x) myStruct, cell(This.nLayer+2,1), 'UniformOutput', false) ;
+            This.Params{1}.Weight = NaN ;
+            % First nodes weight inputs
+            initW = ones(This.nInputs,1) ;
+            This.Params{2}.Weight ...
+                = cellfun(@(x) initW, cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
+            % Subsequent nodes weight outputs of previous layer
+            for iLayer = 2:This.nLayer
+                initW = ones(This.HiddenLayout(iLayer-1),1) ; 
+                This.Params{iLayer+1}.Weight ...
+                    = cellfun(@(x) initW, cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
+            end
+            % Output nodes weight outputs of last layer
+            initW = ones(This.HiddenLayout(end),1) ;
+            This.Params{end}.Weight ...
+                = cellfun(@(x) initW, cell(This.nOutputs,1), 'UniformOutput', false) ;
         end
 
         varargout = disp(varargin) ;
         varargout = size(varargin) ;
+        varargout = datarequest(varargin) ;
+
+        % Dependent methods
+        function nAlt = get.nAlt(This)
+            nAlt = size(This.Params,2) ;
+        end
+        
+        function nInputs = get.nInputs(This)
+            nInputs = numel(This.Inputs) ;
+        end
+        
+        function nOutputs = get.nOutputs(This)
+            nOutputs = numel(This.Outputs) ;
+        end
+        
+        function nLayer = get.nLayer(This)
+            nLayer = numel(This.HiddenLayout) ;
+        end
+
     end
     
 end
