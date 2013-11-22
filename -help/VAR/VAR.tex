@@ -1,0 +1,50 @@
+
+
+    \filetitle{VAR}{Create new reduced-form VAR object}{VAR/VAR}
+
+	\paragraph{Syntax for plain VAR}\label{syntax-for-plain-var}
+
+\begin{verbatim}
+V = VAR(YNames)
+\end{verbatim}
+
+\paragraph{Syntax for panel VAR}\label{syntax-for-panel-var}
+
+\begin{verbatim}
+V = VAR(YNames,GroupNames)
+\end{verbatim}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - New empty VAR object.
+\item
+  \texttt{YNames} {[} cellstr \textbar{} char \textbar{}
+  function\_handle {]} - Names of VAR variables.
+\item
+  \texttt{GroupNames} {[} cellstr \textbar{} char \textbar{}
+  function\_handle {]} - Names of groups of data for panel estimation.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+This function creates a new empty VAR object. It is usually followed by
+the \href{VAR/estimate}{\texttt{estimate}} function to estimate the VAR
+parameters on data.
+
+\paragraph{Example}\label{example}
+
+To estimate a VAR, you first need to create an empty VAR object
+specifying the variable names, and then run the \url{VAR/estimate}
+function on it, e.g.
+
+\begin{verbatim}
+v = VAR({'x','y','z'});
+[v,d] = estimate(v,d,range);
+\end{verbatim}
+
+where the input database \texttt{d} ought to contain time series
+\texttt{d.x}, \texttt{d.y}, \texttt{d.z}.
+
+

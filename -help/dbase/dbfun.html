@@ -1,0 +1,141 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbfun">dbfun</h2>
+<div class="headline">Apply a function to database fields</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[D,Flag,ErrList,WarnList] = dbfun(Func,D1,...)
+[D,Flag,ErrList,WarnList] = dbfun(Func,D1,D2,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Func</code> [ function_handle | char ] - Function that will be applied to each field.</p></li>
+<li><p><code>D1</code> [ struct ] - Input database.</p></li>
+<li><p><code>D2</code>, <code>D3</code>, ... [ struct ] - Further input databases when <code>Func</code> accepts two input arguments.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Output database whose fields will be created by applying <code>Func</code> to each field of the input database or databases.</p></li>
+<li><p><code>Flag</code> [ <code>true</code> | <code>false</code> ] - True if no error occurs when evaluating the function.</p></li>
+<li><p><code>ErrList</code> [ cellstr ] - List of fields on which the function has thrown an error.</p></li>
+<li><p><code>WarnList</code> [ cellstr ] - List of fields on which the function has thrown a warning.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'cascade='</code> [ <em><code>true</code></em> | <code>false</code> ] - Cascade through subdatabases applying the function <code>Func</code> to their fields, too.</p></li>
+<li><p><code>'classList='</code> [ cell | cellstr | <em><code>Inf</code></em> ] - Apply <code>Func</code> only to the fields of specified classes.</p></li>
+<li><p><code>'fresh='</code> [ <code>true</code> | <em><code>false</code></em> ] - Keep uprocessed fields in the output database.</p></li>
+<li><p><code>'nameList='</code> [ cell | cellstr | <em><code>Inf</code></em> ] - Apply <code>Func</code> only to the specified field names; can be still combined with the option <code>'classList='</code>.</p></li>
+<li><p><code>'onError='</code> [ <code>'keep'</code> | <code>'NaN'</code> | <em><code>'remove'</code></em> ]</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

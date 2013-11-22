@@ -1,0 +1,47 @@
+
+
+    \filetitle{zerodb}{Create model-specific zero-deviation database}{model/zerodb}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[D,IsDev] = zerodb(M,Range)
+[D,IsDev] = zerodb(M,Range,NCol)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object for which the zero database
+  will be created.
+\item
+  \texttt{Range} {[} numeric {]} - Intended simulation range; the zero
+  database will be created on a range that also automatically includes
+  all the necessary lags.
+\item
+  \texttt{NCol} {[} numeric {]} - Number of columns for each variable;
+  the input argument \texttt{NCol} can be only used on models with one
+  parameterisation.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Database with a tseries object filled with
+  zeros for each linearised variable, a tseries object filled with ones
+  for each log-linearised variables, and a scalar or vector of the
+  currently assigned values for each model parameter.
+\item
+  \texttt{IsDev} {[} \texttt{true} {]} - The second output argument is
+  always \texttt{true}, and can be used to set the option
+  \texttt{'deviation='} in
+  \href{model/simulate}{\texttt{model/simulate}}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

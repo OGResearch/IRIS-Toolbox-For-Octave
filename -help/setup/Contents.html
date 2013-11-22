@@ -1,0 +1,146 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="setup/Contents">Installing IRIS</h1>
+
+
+<h4 id="requirements">Requirements</h4>
+<ul>
+<li>Matlab R2010a or later.</li>
+</ul>
+<h4 id="optional-components">Optional components</h4>
+<h5 id="optimization-toolbox">Optimization Toolbox</h5>
+<p>The Optimization Toolbox is needed to compute the steady state of non-linear models, and to run estimation.</p>
+<h5 id="latex">LaTeX</h5>
+<p>LaTeX is a free typesetting system used to produce PDF reports in IRIS. We recommend MiKTeX, available from <code>www.miktex.org</code>.</p>
+<h4 id="components-not-needed">Components not needed</h4>
+<p>Some components were needed in the past but are not any longer.</p>
+<h5 id="x13-arima-seats-formerly-x12-arima">X13-ARIMA-SEATS (formerly X12-ARIMA)</h5>
+<p>Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly X12-ARIMA) program is now incoporated in, and distributed with IRIS. You don't need to care about anything to be able to use it.</p>
+<h5 id="symbolic-math-toolbox">Symbolic Math Toolbox</h5>
+<p>IRIS is now equipped with its own symbolic/automatic differentiator. You do not need to have the Symbolic Math Toolbox installed to be able to compute exact Taylor expansions.</p>
+<h4 id="installing-iris">Installing IRIS</h4>
+<h5 id="step-1">Step 1</h5>
+<p>Download the latest IRIS zip archive, <code>IRIS_Tbx_#_YYYYMMDD.zip</code>, from <code>www.iris-toolbox.com</code>, and save it in a temporary location on your disk.</p>
+<h5 id="step-2">Step 2</h5>
+<p>Unzip the archive into a folder on your hard drive, e.g. <code>C:\IRIS_Tbx</code>. We will call this directory the IRIS root folder.</p>
+<p>Installing IRIS on a network drive may cause some minor problems, especially on MS Windows systems; check out <code>help changeNotification</code> in Matlab.</p>
+<h5 id="step-3">Step 3</h5>
+<p>After installing a new version of IRIS, we recommend that you remove all older versions of IRIS from the Matlab search path, and restart Matlab.</p>
+<h5 id="getting-started">Getting started</h5>
+<p>Each time you want to start working with IRIS, run the following line</p>
+<pre><code>&gt;&gt; addpath C:\IRIS_Tbx; irisstartup</code></pre>
+<p>where <code>C:\IRIS_Tbx</code> needs to be, obviously, replaced with the proper IRIS root folder chosen in Step 2 above.</p>
+<p>Alternatively, you can put the IRIS root folder permanently on the Matlab seatch path (using the menu File - Set Path), and only run the <code>irisstartup</code> command at the beginning of each IRIS session.</p>
+<p>See also the section on <a href="../config/Contents.html">Starting and quitting IRIS</a>.</p>
+<h4 id="syntax-highlighting">Syntax highlighting</h4>
+<p>You can get the model files (i.e. the files that describe the model equations, variables, parameters) syntax-highlighted. Syntax highlighting improves enormously the readability of the files. It helps you understand the model better, and discover typos and mistakes more quickly.</p>
+<p>Add any number of extensions you want to use for model files (such as <code>'mod'</code>, <code>'model'</code>, etc.) to the Matlab editor. Open the menu File - Preferences, and click on the Editor/Debugger - Language tab (make sure 'Matlab' is selected at the top as the Language). Use the Add button in the File extensions panel to associate any number of new extensions with the editor. Re-start the editor. The IRIS model files will be syntax highligted from that moment on.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>
