@@ -1,0 +1,132 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="VAR/VAR">VAR</h2>
+<div class="headline">Create new reduced-form VAR object</div>
+
+<h4 id="syntax-for-plain-var">Syntax for plain VAR</h4>
+<pre><code>V = VAR(YNames)</code></pre>
+<h4 id="syntax-for-panel-var">Syntax for panel VAR</h4>
+<pre><code>V = VAR(YNames,GroupNames)</code></pre>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - New empty VAR object.</p></li>
+<li><p><code>YNames</code> [ cellstr | char | function_handle ] - Names of VAR variables.</p></li>
+<li><p><code>GroupNames</code> [ cellstr | char | function_handle ] - Names of groups of data for panel estimation.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>This function creates a new empty VAR object. It is usually followed by the <a href="../VAR/estimate.html"><code>estimate</code></a> function to estimate the VAR parameters on data.</p>
+<h4 id="example">Example</h4>
+<p>To estimate a VAR, you first need to create an empty VAR object specifying the variable names, and then run the <a href="../VAR/estimate.html">VAR/estimate</a> function on it, e.g.</p>
+<pre><code>v = VAR({&#39;x&#39;,&#39;y&#39;,&#39;z&#39;});
+[v,d] = estimate(v,d,range);</code></pre>
+<p>where the input database <code>d</code> ought to contain time series <code>d.x</code>, <code>d.y</code>, <code>d.z</code>.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

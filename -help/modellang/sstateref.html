@@ -1,0 +1,127 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/sstateref">&</h2>
+<div class="headline">Reference to the steady-state level of a variable</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>&amp;Variable_Name
+$Variable_Name</code></pre>
+<h4 id="description">Description</h4>
+<p>Use either a <code>&amp;</code> or <code>$</code> sign in front of a variable name to create a reference to that variable's steady-state level in transition or measurement equations. The two signs, <code>&amp;</code> and <code>$</code>, are interchangeable.</p>
+<p>The steady-state reference will be replaced</p>
+<ul>
+<li><p>with the variable itself at the time model's steady state is being calculated, i.e. when calling the function <a href="../model/sstate.html"><code>sstate</code></a>;</p></li>
+<li><p>with the actually assigned steady-state value at the time the model is being solved, i.e. when calling the function <a href="../model/solve.html">'solve'</a>'.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code>x = rho*x{-1} + (1-rho)*&amp;x + epsilon_x !! x = 1;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

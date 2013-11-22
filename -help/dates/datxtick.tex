@@ -1,0 +1,56 @@
+
+
+    \filetitle{datxtick}{Change ticks, labels and/or date frequency on x-axis in existing tseries graphs}{dates/datxtick}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+datxtick(Range,...)
+datxtick(Ax,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to the axes object where the
+  changes will be made; if not specified, the current axes object,
+  \texttt{gca()}, is changed.
+\item
+  \texttt{Range} {[} numeric {]} - New date range to which the x-axis
+  will be changed.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'datePosition='} {[} \texttt{'start'} \textbar{}
+  \texttt{'centre'} \textbar{} \texttt{'end'} {]} - Where within each
+  given period the date tick will be placed (at the beginning of the
+  period, in the middle of the period, or at the end of the period).
+\item
+  \texttt{'dateTicks='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Individual date ticks; if \texttt{Inf}, the ticks will be determined
+  automatically using the standard Matlab algorithm.
+\end{itemize}
+
+See \href{dates/dat2str}{\texttt{dat2str}} for date formatting options
+available.
+
+-IRIS Toolbox. -Copyright (c) 2007-2013 IRIS Solutions Team.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+Create a graph plotting a quarterly series, and then change the ticks
+and labels on the x-axis to monthly:
+
+\begin{verbatim}
+x = tseries(qq(2010,1):qq(2011,4),@rand);
+plot(x);
+datxtick(mm(2010,1):mm(2011,12),'dateFormat=','Mmm YYYY');
+\end{verbatim}
+
+

@@ -1,0 +1,66 @@
+
+    \foldertitle{sstatelang}{Steady-state file language}{sstatelang/Contents}
+
+	Steady-state (sstate) files are a complementary tool to solve and
+analyse the steady states of more complex models. They allow you to
+create steady-state files independent of the original model files, and
+write the steady-state equations in different ways, manipulate their
+structure or order, split the problem into subblocks, and combine
+numerical and symbolic solutions. Using then the
+\href{sstatelang/Contents}{sstate objects}, you can compile and run
+stand-alone steady-state m-file functions based on your steady-state
+files.
+
+\paragraph{Input parameters}\label{input-parameters}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{sstatelang/input}{\texttt{!input}} - List of input parameters or
+  variables.
+\item
+  \href{sstatelang/growthnames}{\texttt{!growthnames}} - Pattern for
+  creating growth names.
+\end{itemize}
+
+\paragraph{Equations and assignments}\label{equations-and-assignments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{sstatelang/equations}{\texttt{!equations}} - Block of equations
+  or assignments.
+\item
+  \href{sstatelang/growthnames}{\texttt{!growthnames2imag}} - Pattern
+  for creating growth names.
+\item
+  \href{sstatelang/solvefor}{\texttt{!solvefor}} - List of variables for
+  which the current equations block will be solved.
+\item
+  \href{sstatelang/symbolic}{\texttt{!symbolic}} - Attempt to solve the
+  current equations block symbolically using the Symbolic Maths Toolbox.
+\end{itemize}
+
+\paragraph{Variables with steady state restricted to be
+positive}\label{variables-with-steady-state-restricted-to-be-positive}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{sstatelang/logvariables}{\texttt{!log\_variables}} - Restrict
+  the steady state of some of the variables to be positive.
+\item
+  \href{sstatelang/allbut}{\texttt{!all\_but}} - Inverse list of
+  variables with positive steady states.
+\end{itemize}
+
+\paragraph{Getting on-line help on sstate file
+language}\label{getting-on-line-help-on-sstate-file-language}
+
+\begin{verbatim}
+help sstatelang
+help sstatelang/keyword
+\end{verbatim}
+
+
+

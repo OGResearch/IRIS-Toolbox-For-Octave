@@ -1,0 +1,133 @@
+
+
+    \filetitle{acf}{Autocovariance and autocorrelation functions for model variables}{model/acf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[C,R,List] = acf(M,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Solved model object for which the ACF will
+  be computed.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{C} {[} namedmat \textbar{} numeric {]} - Auto/cross-covariance
+  matrices.
+\item
+  \texttt{R} {[} namedmat \textbar{} numeric {]} -
+  Auto/cross-correlation matrices.
+\item
+  \texttt{List} {[} cellstr {]} - List of variables in rows and columns
+  of \texttt{C} and \texttt{R}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'applyTo='} {[} cellstr \textbar{} char \textbar{}
+  \emph{\texttt{Inf}} {]} - List of variables to which the
+  \texttt{'filter='} will be applied; \texttt{Inf} means all variables.
+\item
+  \texttt{'contributions='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - If \texttt{true} the contributions of
+  individual shocks to ACFs will be computed and stored in the 5th
+  dimension of the \texttt{C} and \texttt{R} matrices.
+\item
+  \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
+  filter that is applied to variables specified by `applyto'.
+\item
+  \texttt{'nFreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
+  Number of equally spaced frequencies over which the filter in the
+  option \texttt{'filter='} is numerically integrated.
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
+  up to which ACF will be computed.
+\item
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Output matrices \texttt{C} and \texttt{R}
+  will be either namedmat objects or plain numeric arrays; if the option
+  \texttt{'select='} is used, \texttt{'output='} is always a namedmat
+  object.
+\item
+  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
+  Return ACF for selected variables only; \texttt{Inf} means all
+  variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-Alt matrices,
+where N is the number of measurement and transition variables (including
+auxiliary lags and leads in the state space vector), P is the order up
+to which the ACF is computed (controlled by the option
+\texttt{'order='}), and Alt is the number of alternative
+parameterisations in the input model object, \texttt{M}. If
+\texttt{'contributions=' true}, the size of the two matrices is
+N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and
+transition shocks in the model.
+
+\subparagraph{ACF with linear filters}\label{acf-with-linear-filters}
+
+You can use the option \texttt{'filter='} to get the ACF for variables
+as though they were filtered through a linear filter. You can specify
+the filter in both the time domain (such as first-difference filter, or
+Hodrick-Prescott) and the frequncy domain (such as a band of certain
+frequncies or periodicities). The filter is a text string in which you
+can use the following references:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'L'}, the lag operator, which will be replaced with
+  \texttt{exp(-1i*freq)};
+\item
+  \texttt{'per'}, the periodicity;
+\item
+  \texttt{'freq'}, the frequency.
+\end{itemize}
+
+\paragraph{Example 1}\label{example-1}
+
+A first-difference filter (i.e.~computes the ACF for the first
+differences of the respective variables):
+
+\begin{verbatim}
+[C,R] = acf(m,'filter=','1-L')
+\end{verbatim}
+
+\paragraph{Example 2}\label{example-2}
+
+The cyclical component of the Hodrick-Prescott filter with the smoothing
+parameter, $lambda$, 1,600. The formula for the filter follows from the
+classical Wiener-Kolmogorov signal extraction theory,
+
+\[w(L) = \frac{\lambda}{\lambda + \frac{1}{ | (1-L)(1-L) | ^2}}\]
+
+\begin{verbatim}
+[C,R] = acf(m,'filter','1600/(1600 + 1/abs((1-L)^2)^2)')
+\end{verbatim}
+
+\paragraph{Example 3}\label{example-3}
+
+A band-pass filter with user-specified lower and upper bands. The
+band-pass filters can be defined either in frequencies or periodicities;
+the latter is usually more convenient. The following is a filter which
+retains periodicities between 4 and 40 periods (this would be between 1
+and 10 years in a quarterly model),
+
+\begin{verbatim}
+[C,R] = acf(m,'filter','per >= 4 & per <= 40')
+\end{verbatim}
+
+

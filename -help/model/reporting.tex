@@ -1,0 +1,47 @@
+
+
+    \filetitle{reporting}{Run reporting equations}{model/reporting}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = reporting(M,D,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object with reporting equations.
+\item
+  \texttt{D} {[} struct {]} - Input database that will be used to
+  evaluate the reporting equations.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the reporting
+  equations will be evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Output database with reporting variables.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'dynamic='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - If true, equations will be evaluated period by period allowing
+  for own lags; if false, equations will be evaluated en bloc for all
+  periods.
+\item
+  \texttt{'merge='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Merge output database with input datase.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+

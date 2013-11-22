@@ -1,0 +1,39 @@
+
+
+    \filetitle{fprintf}{Format SVAR as a model code and write to text file}{SVAR/fprintf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[C,D] = fprintf(S,FName,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} SVAR {]} - SVAR object that will be printed to a model
+  file.
+\item
+  \texttt{FName} {[} char \textbar{} cellstr {]} - Filename, or filename
+  format string, under which the model code will be saved.
+\item
+  Output arguments
+\item
+  \texttt{C} {[} cellstr {]} - Text string with the model code for each
+  parameterisation.
+\item
+  \texttt{D} {[} cell {]} - Parameter databases for each
+  parameterisation; if \texttt{'hardParameters='} true, the database
+  will be empty.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on \href{SVAR/sprintf}{\texttt{sprintf}} for options available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+
