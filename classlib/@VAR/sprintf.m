@@ -32,7 +32,7 @@ function [Code,D] = sprintf(This,varargin)
 % * `'eNames='` [ cellstr | char | *empty* ] - Names that will be given to
 % the VAR residuals; if empty, the names from the VAR object will be used.
 %
-% * `'format='` [ char | *'%+.16e'* ] - Numeric format for parameter values;
+% * `'format='` [ char | *'%+.16g'* ] - Numeric format for parameter values;
 % it will be used only if `'decimal='` is empty.
 %
 % * `'hardParameters='` [ *`true`* | `false` ] - Print coefficients as hard
@@ -104,7 +104,9 @@ end
 
 % Number of digits for printing parameter indices.
 if ~opt.hardparameters
-    pformat = ['%',sprintf('%g',floor(log10(max(ny,p)))+1),'g'];
+    pDecim = floor(log10(max(ny,p)))+1;
+    pDecim = sprintf('%g',pDecim);
+    pFormat = ['%',pDecim,'g'];
 end
 
 % Preallocatte output arguments.
@@ -113,6 +115,10 @@ D = cell(1,nAlt);
 
 % Cycle over all parameterisations.
 for iAlt = 1 : nAlt
+    
+    % Reset the list of parameters for each parameterisation.
+    pName = {};
+    
     % Retrieve VAR system matrices.
     A = -reshape(This.A(:,:,iAlt),[ny,ny,p]);
     K = This.K(:,iAlt);
@@ -132,7 +138,7 @@ for iAlt = 1 : nAlt
         % LHS with current-dated endogenous variable.
         eqtn{eq} = [yNameLag{eq}{1},' ='];
         rhs = false;
-        if abs(K(eq)) > opt.tolerance
+        if abs(K(eq)) > opt.tolerance || ~opt.hardparameters
             eqtn{eq} = [eqtn{eq},' ', ...
                 doPrintParameter('K',{eq},K(eq))];
             rhs = true;
@@ -141,7 +147,7 @@ for iAlt = 1 : nAlt
         % Lags of endogenous variables.
         for t = 1 : p
             for y = 1 : ny
-                if abs(A(eq,y,t)) > opt.tolerance
+                if abs(A(eq,y,t)) > opt.tolerance || ~opt.hardparameters
                     eqtn{eq} = [eqtn{eq},' ', ...
                         doPrintParameter('A',{eq,y,t},A(eq,y,t)),'*', ...
                         yNameLag{y}{1+t}];
@@ -152,7 +158,7 @@ for iAlt = 1 : nAlt
         
         % Shocks.
         for e = 1 : ny
-            if abs(B(eq,e)) > opt.tolerance
+            if abs(B(eq,e)) > opt.tolerance || ~opt.hardparameters
                 eqtn{eq} = [eqtn{eq},' ', ...
                     doPrintParameter('B',{eq,e},B(eq,e)),'*',eName{e}];
                 rhs = true;
@@ -167,16 +173,23 @@ for iAlt = 1 : nAlt
     
     % Declare variables if requested.
     if opt.declare
-        nl = sprintf('\n');
-        tab = sprintf('\t');
+        br = sprintf('\n');
+        lead = '    ';
         yName = regexprep(yName,'\{.*\}','');
+        yDecl = strfun.cslist(yName,'wrap',75,'lead=',lead);
+        eDecl = strfun.cslist(eName,'wrap',75,'lead=',lead);
+        eqtnDecl = sprintf('\t%s;\n',eqtn{:});
         Code{iAlt} = [ ...
-            '!variables',nl, ...
-            strfun.cslist(yName,'wrap',75,'lead',tab),nl, ...
-            '!shocks',nl, ...
-            strfun.cslist(eName,'wrap',75,'lead',tab),nl, ...
-            '!equations',nl, ...
-            sprintf('\t%s;\n',eqtn{:})];
+            '!variables',br,yDecl,br,br, ...
+            '!shocks',br,eDecl,br,br, ...
+            '!equations',br,eqtnDecl,br, ...
+            ];
+        if ~opt.hardparameters
+            pDecl = strfun.cslist(pName,'wrap',75,'lead',lead);
+            Code{iAlt} = [Code{iAlt}, ...
+                '!parameters',br,pDecl,br, ...
+                ];
+        end
     else
         Code{iAlt} = sprintf('%s;\n',eqtn{:});
     end
@@ -209,8 +222,9 @@ end
             if p <= 1 && numel(Pos) == 3
                 Pos = Pos(1:2);
             end
-            X = [Matrix,sprintf(pformat,Pos{:})];
+            X = [Matrix,sprintf(pFormat,Pos{:})];
             D{iAlt}.(X) = Value;
+            pName{end+1} = X;
             X = ['+',X];
         end
     end % doPrintParameter()
