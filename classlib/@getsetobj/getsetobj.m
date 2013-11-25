@@ -18,5 +18,10 @@ classdef getsetobj
     methods
         varargout = get(varargin)
     end
+    
+    methods (Static,Hidden)
+        function Query = myalias(Query)
+        end
+    end
 
 end
