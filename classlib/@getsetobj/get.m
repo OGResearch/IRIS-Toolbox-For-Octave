@@ -27,7 +27,7 @@ for iArg = 1 : nArg
     end
     
     % Replace alternate names with the standard ones.
-    query = getsetobj.myalias(query);
+    query = This.myalias(query);
     
     % Remove black spaces.
     query = regexprep(query,'\s+','');

@@ -27,7 +27,10 @@ fprintf(1,'%s',This.Outputs{1}) ;
 for ii=2:numel(This.Outputs)
     fprintf(1,'%s, ',This.Outputs{ii}) ;
 end
-fprintf('\n') ;
+fprintf('\n\n') ;
+
+% Comments
+disp@userdataobj(This) ;
 
 end
 

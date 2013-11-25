@@ -64,7 +64,7 @@ classdef modelobj
         varargout = length(varargin)
         varargout = omega(varargin)
         varargout = reset(varargin)
-        varargout = stdscale(varargin)        
+        varargout = stdscale(varargin)
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)
     end
@@ -80,8 +80,7 @@ classdef modelobj
     
     methods (Access=protected,Hidden)
         varargout = mycorrnames(varargin)
-        varargout = mytune2stdcorr(varargin)
-        %varargout = myparamstruct(varargin)                
+        varargout = mytune2stdcorr(varargin)             
         varargout = mysubsalt(varargin)
     end
     
@@ -91,7 +90,7 @@ classdef modelobj
         varargout = mycombinestdcorr(varargin)
         varargout = mynameindex(varargin);
         varargout = mystdcorrindex(varargin)
+        varargout = myalias(varargin)
     end
-    
     
 end
