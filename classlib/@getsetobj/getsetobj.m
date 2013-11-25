@@ -11,11 +11,5 @@ classdef getsetobj
         varargout = get(varargin)
         
     end
-    
-    methods (Static,Access=protected,Hidden)
         
-        varargout = myalias(varargin)
-        
-    end
-    
 end

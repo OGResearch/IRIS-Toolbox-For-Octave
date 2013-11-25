@@ -48,7 +48,7 @@ classdef modelobj
         %-------------
         function This = modelobj(varargin)
         end
-
+        
         varargout = assign(varargin)
         varargout = autocaption(varargin)
         varargout = emptydb(varargin)
@@ -59,7 +59,7 @@ classdef modelobj
         varargout = length(varargin)
         varargout = omega(varargin)
         varargout = reset(varargin)
-        varargout = stdscale(varargin)        
+        varargout = stdscale(varargin)
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)
         
@@ -84,6 +84,7 @@ classdef modelobj
         varargout = mycombinestdcorr(varargin)
         varargout = mynameindex(varargin);
         varargout = mystdcorrindex(varargin)
+        varargout = myalias(varargin)
     end
-    
+        
 end
