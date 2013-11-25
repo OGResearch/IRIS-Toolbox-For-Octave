@@ -1,5 +1,5 @@
-function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,LikOpt,EstOpt)
-% objfunc  [Not a public function] Evaluate objective function, usually minus log posterior.
+function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,EstOpt,LikOpt)
+% objfunc  [Not a public function] Evaluate minus log posterior.
 %
 % Backend IRIS function.
 % No help provided.
@@ -9,17 +9,10 @@ function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,LikOpt,EstOpt)
     
 %--------------------------------------------------------------------------
 
-% Minus log posterior.
-Obj = 0;
-
-% Minus log data likelihood.
-Lik = 0;
-
-% Minus log parameter prior.
-PP = 0;
-
-% Minus log system prior.
-SP = 0;
+Obj = 0; % Minus log posterior.
+Lik = 0; % Minus log data likelihood.
+PP = 0; % Minus log parameter prior.
+SP = 0; % Minus log system prior.
 
 isLik = EstOpt.evallik;
 isPPrior = EstOpt.evalpprior && any(Pri.priorindex);
@@ -27,15 +20,7 @@ isSPrior = EstOpt.evalsprior && ~isempty(Pri.sprior);
 
 % Evaluate parameter priors.
 if isPPrior
-    PP = 0;
-    for i = find(Pri.priorindex)
-        PP = PP + Pri.prior{i}(X(i));
-        if ~isfinite(PP) || length(PP) ~= 1
-            PP = -Inf;
-            break
-        end
-    end
-    PP = -PP;
+    PP = estimateobj.myevalpprior(X,Pri);
     Obj = Obj + PP;
 end
 
@@ -58,12 +43,8 @@ end
 
 % Evaluate data likelihood.
 if isfinite(Obj) && isLik
-    % Evaluate minus log likelihood. No data output is required.
-    if LikOpt.domain == 't'
-        Lik = mykalman(This,Data,[],LikOpt);
-    else
-        Lik = myfdlik(This,Data,[],LikOpt);
-    end
+    % Evaluate minus log likelihood; no data output is required.
+    Lik = LikOpt.minusLogLikFunc(This,Data,[],LikOpt);
     % Sum up minus log priors and minus log likelihood.
     Obj = Obj + Lik;
 end
