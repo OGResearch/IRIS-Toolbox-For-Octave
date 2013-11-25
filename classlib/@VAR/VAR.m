@@ -98,8 +98,8 @@ classdef VAR < varobj
         sbc = []; % Schwartz bayesian criterion.
         Rr = []; % Parameter restrictions.
         nhyper = NaN; % Number of estimated hyperparameters.
-        inames = {}; % Names of conditioning instruments.
-        ieqtn = {}; % Expressions for conditioning instruments.
+        inames = cell(1,0); % Names of conditioning instruments.
+        ieqtn = cell(1,0); % Expressions for conditioning instruments.
         Zi = []; % Measurement matrix for conditioning instruments.
     end
     
