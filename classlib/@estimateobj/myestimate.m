@@ -1,4 +1,4 @@
-function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,LikOpt,EstOpt)
+function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,EstOpt,LikOpt)
 % myestimate  [Not a public function] Estimate parameters.
 %
 % Backend IRIS function.
@@ -39,25 +39,25 @@ if ~isempty(Pri.p0)
             if all(isinf(Pri.pl)) && all(isinf(Pri.pu))
                 [PStar,ObjStar,~,~,grad,Hess{1}] = ...
                     fminunc(@objfunc,Pri.p0,EstOpt.optimset, ...
-                    This,Data,Pri,LikOpt,EstOpt); %#ok<ASGLU>
+                    This,Data,Pri,EstOpt,LikOpt); %#ok<ASGLU>
                 LAMBDA = struct('lower',zeros(np,1),'upper',zeros(np,1));
             else
                 [PStar,ObjStar,~,~,LAMBDA,grad,Hess{1}] = ...
                     fmincon(@objfunc,Pri.p0, ...
                     [],[],[],[],Pri.pl,Pri.pu,[],EstOpt.optimset,...
-                    This,Data,Pri,LikOpt,EstOpt); %#ok<ASGLU>
+                    This,Data,Pri,EstOpt,LikOpt); %#ok<ASGLU>
             end
         elseif strcmpi(EstOpt.solver,'lsqnonlin')
             [PStar,ObjStar,~,~,~,LAMBDA] = ...
                 lsqnonlin(@objfunc,Pri.p0,Pri.pl,Pri.pu,EstOpt.optimset, ...
-                This,Data,Pri,LikOpt,EstOpt);
+                This,Data,Pri,EstOpt,LikOpt);
         elseif strcmpi(EstOpt.solver,'pso')
             % IRIS Optimization Toolbox
             %--------------------------
             [PStar,ObjStar,~,~,~,~,LAMBDA] = ...
                 optim.pso(@objfunc,Pri.p0,[],[],[],[],...
                 Pri.pl,Pri.pu,[],EstOpt.optimset,...
-                This,Data,Pri,LikOpt,EstOpt);
+                This,Data,Pri,EstOpt,LikOpt);
         end
         % Find lower or upper bound hits.
         bhit(double(LAMBDA.lower) ~= 0) = -1;
@@ -75,7 +75,7 @@ if ~isempty(Pri.p0)
             args = EstOpt.solver(2:end);
         end
         [PStar,ObjStar,Hess{1}] = ...
-            f(@(x) objfunc(x,This,Data,Pri,LikOpt,EstOpt), ...
+            f(@(x) objfunc(x,This,Data,Pri,EstOpt,LikOpt), ...
             Pri.p0,Pri.pl,Pri.pu,EstOpt.optimset,args{:});
         bhit(PStar == Pri.pl) = -1;
         bhit(PStar == Pri.pu) = 1;
@@ -87,13 +87,7 @@ if ~isempty(Pri.p0)
     
     % Initial proposal covariance matrix and contributions of priors to
     % Hessian.
-    [PCov,Hess] = mydiffprior(This,Data,PStar,Hess,bhit,Pri,LikOpt,EstOpt);
-    
-    % Assign estimated parameters, refresh dynamic links, and re-compute steady
-    % state, solution, and expansion matrices.
-    throwError = true;
-    expMatrices = true;
-    This = myupdatemodel(This,PStar,Pri,EstOpt,throwError,expMatrices);
+    [PCov,Hess] = mydiffprior(This,Data,PStar,Hess,bhit,Pri,EstOpt,LikOpt);
     
 else
     
@@ -102,7 +96,9 @@ else
     
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doChkBounds()
@@ -137,7 +133,8 @@ end
         % Reset the out-of-bounds values.
         PStar(below) = Pri.pl(below);        
         PStar(above) = Pri.pu(above);
-    end % doChkBounds().
+    end % doChkBounds()
+
 
 %**************************************************************************
     function doOptimOptions()
@@ -184,6 +181,7 @@ end
             otherwise
                 % Do nothing.
         end
-    end % doOptimOptions().
+    end % doOptimOptions()
+
 
 end

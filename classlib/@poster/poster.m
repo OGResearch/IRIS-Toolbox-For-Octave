@@ -23,6 +23,7 @@ classdef poster
 %
 % * [`arwm`](poster/arwm) - Adaptive random-walk Metropolis posterior simulator.
 % * [`eval`](poster/eval) - Evaluate posterior density at specified points.
+% * [`regen`](poster/regen) - 
 %
 % Chain statistics
 % =================
@@ -271,7 +272,6 @@ classdef poster
     methods (Access=protected, Hidden)
         varargout = mysimulate(varargin)
         varargout = mylogpost(varargin)
-        varargout = mylogpoststruct(varargin)
     end
     
     methods (Static,Hidden)

@@ -333,18 +333,7 @@ pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
 
-% Check prior consistency
-invalid = chkpriors(This,E);
-if ~isempty(invalid)
-    utils.error('model:estimate',...
-        'Initial conditions are inconsistent with prior distributions and/or bounds: ''%s''.', ...
-        invalid{:});
-end
-
-% Process the `estimate` and `myestimate` function's own options.
-[estOpt,varargin] = passvalopt('estimateobj.myestimate',varargin{:});
-estOpt1 = passvalopt('model.estimate',varargin{:});
-estOpt = dbmerge(estOpt,estOpt1);
+estOpt = passvalopt('model.estimate',varargin{:});
 
 % Initialise and pre-process sstate and chksstate options.
 estOpt.sstate = mysstateopt(This,'silent',estOpt.sstate);
@@ -368,6 +357,9 @@ end
 
 %--------------------------------------------------------------------------
 
+% Check prior consistency.
+doChkPriors();
+
 if ~any(This.nametype == 1)
     utils.warning('model', ...
         'Model does not have any measurement variables.');
@@ -383,14 +375,17 @@ end
 
 % Retrieve names of parameters to be estimated, initial values, lower
 % and upper bounds, penalties, and prior distributions.
-[pri,E1] = myparamstruct(This,E,SP,estOpt.penalty,estOpt.initval);
-
-% Check for remaining fields in `E1`; these are not valid parameter names.
-doChkInvalidParamNames();
+pri = myparamstruct(This,E,SP,estOpt.penalty,estOpt.initval);
 
 % Backend `myestimate`
 %----------------------
-[This,pStar,objStar,PCov,Hess] = myestimate(This,Data,pri,likOpt,estOpt);
+[This,pStar,objStar,PCov,Hess] = myestimate(This,Data,pri,estOpt,likOpt);
+
+% Assign estimated parameters, refresh dynamic links, and re-compute steady
+% state, solution, and expansion matrices.
+throwError = true;
+expMatrices = true;
+This = myupdatemodel(This,pStar,pri,estOpt,throwError,expMatrices);
 
 % Set up posterior object
 %-------------------------
@@ -408,11 +403,7 @@ V = 1;
 Delta = [];
 PDelta = [];
 if estOpt.evallik && (nargout >= 5 || likOpt.relative)
-    if likOpt.domain == 't'
-        [~,regOutp] = mykalman(This,Data,[],likOpt);
-    else
-        [~,regOutp] = myfdlik(This,Data,[],likOpt);
-    end
+    [~,regOutp] = likOpt.minusLogLikFunc(This,Data,[],likOpt);
     % Post-process the regular output arguments, update the std parameter
     % in the model object, and refresh if needed.
     xRange = Range(1)-1 : Range(end);
@@ -429,6 +420,30 @@ if nargout > 8
     PDelta1 = PDelta;
 end
 
+
+% Nested functions...
+
+
+%**************************************************************************
+    function doChkPriors()
+        [flag,invalidBound,invalidPrior] = chkpriors(This,E);
+        if ~flag
+            if ~isempty(invalidBound)
+                utils.error('model:estimate',...
+                    ['Initial condition is inconsistent with ', ...
+                    'lower/upper bounds: ''%s''.'], ...
+                    invalidBound{:});
+            end
+            if ~isempty(invalidBound)
+                utils.error('model:estimate',...
+                    ['Initial condition is inconsistent with ', ...
+                    'prior distribution: ''%s''.'], ...
+                    invalidPrior{:});
+            end
+        end
+    end % doChkPriors()
+
+
 %**************************************************************************
     function doPopulatePosterObj()
         % Make sure that draws that fail to solve do not cause an error
@@ -442,7 +457,7 @@ end
         
         Pos.paramList = pri.plist;
         Pos.minusLogPostFunc = @objfunc;
-        Pos.minusLogPostFuncArgs = {This,Data,pri,likOpt,estOpt};
+        Pos.minusLogPostFuncArgs = {This,Data,pri,estOpt,likOpt};
         Pos.initLogPost = -objStar;
         Pos.initParam = pStar;
         try
@@ -455,17 +470,7 @@ end
         end
         Pos.lowerBounds = pri.pl;
         Pos.upperBounds = pri.pu;
-    end % doPopulatePosterObj().
+    end % doPopulatePosterObj()
 
-%**************************************************************************
-    function doChkInvalidParamNames()
-        E1List = fieldnames(E1);
-        if ~isempty(E1List)
-            utils.error('model', ...
-                ['This name in the estimation struct ', ...
-                'is not a valid parameter name: ''%s''.'], ...
-                E1List{:});
-        end
-    end % doChkInvalidParamNames().
 
 end

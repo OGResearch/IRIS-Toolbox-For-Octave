@@ -18,7 +18,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
     % =================================
     %
     % * [`addparam`](model/addparam) - Add model parameters to a database (struct).
-    % * [`autocaption`] (model/autocaption) - 
+    % * [`autocaption`](model/autocaption) - 
     % * [`autoexogenise`](model/autoexogenise) - Get or set variable/shock pairs for use in autoexogenised simulation plans.
     % * [`comment`](model/comment) - Get or set user comments in an IRIS object.
     % * [`eig`](model/eig) - Eigenvalues of the model transition matrix.
@@ -52,7 +52,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
     % * [`export`](model/export) - Save carry-around files on the disk.
     % * [`horzcat`](model/horzcat) - Combine two compatible model objects in one object with multiple parameterisations.
     % * [`refresh`](model/refresh) - Refresh dynamic links.
-    % * [`reset`][model/reset) - 
+    % * [`reset`](model/reset) - 
     % * [`stdscale`](model/stdscale) - Re-scale all std deviations by the same factor.
     % * [`set`](model/set) - Change modifiable model object property.
     % * [`single`](model/single) - Convert solution matrices to single precision.
@@ -238,7 +238,6 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = autoexogenise(varargin)
         varargout = bn(varargin)
         varargout = chksstate(varargin)
-        varargout = chkpriors(varargin)
         varargout = data4lhsmrhs(varargin)
         varargout = diffloglik(varargin)
         varargout = diffsrf(varargin)
@@ -302,6 +301,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = end(varargin)
         varargout = fieldnames(varargin)
         varargout = getnonlinobj(varargin)
+        varargout = objfunc(varargin)
         varargout = isempty(varargin)
         varargout = saveobj(varargin)
         varargout = specget(varargin)
@@ -336,6 +336,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
         varargout = mynunit(varargin)
         varargout = myoccurence(varargin)
         varargout = myoptpolicy(varargin)
+        varargout = myparamstruct(varargin)
         varargout = myparse(varargin)
         varargout = mypreploglik(varargin)
         varargout = myprepsimulate(varargin)

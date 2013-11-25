@@ -48,9 +48,14 @@ classdef modelobj
         %-------------
         function This = modelobj(varargin)
         end
-
+        
+    end
+       
+    
+    methods
         varargout = assign(varargin)
         varargout = autocaption(varargin)
+        varargout = chkpriors(varargin)        
         varargout = emptydb(varargin)
         varargout = export(varargin)
         varargout = iscompatible(varargin)
@@ -62,8 +67,8 @@ classdef modelobj
         varargout = stdscale(varargin)        
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)
-        
     end
+    
     
     methods (Hidden)
         varargout = mynameposition(varargin)
@@ -72,12 +77,14 @@ classdef modelobj
         varargout = specget(varargin)
     end
     
+    
     methods (Access=protected,Hidden)
         varargout = mycorrnames(varargin)
-        varargout = myparamstruct(varargin)
         varargout = mytune2stdcorr(varargin)
+        %varargout = myparamstruct(varargin)                
         varargout = mysubsalt(varargin)
     end
+    
     
     methods (Static,Hidden)
         varargout = loadobj(varargin)
@@ -85,5 +92,6 @@ classdef modelobj
         varargout = mynameindex(varargin);
         varargout = mystdcorrindex(varargin)
     end
+    
     
 end

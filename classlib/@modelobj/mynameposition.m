@@ -5,11 +5,11 @@ function [AssignPos,StdcorrPos] = mynameposition(This,Input,varargin)
 % No help provided.
 
 % If `Input` is a single char it can be a regular expression, and
-% `AssignPos` and `StdcorrPos` are logical indices of the same size as the
-% `Assign` and `stdcorr` properties.
+% `AssignPos` and `StdcorrPos` are 1-by-nName logical indices of the same
+% size as the `Assign` and `stdcorr` properties.
 %
-% If `Input` is a cellstr (also size 1-by-1), then `AssignPos` and
-% `StdcorrPos` are the size of `Input` with pointers to the `Assign` and
+% If `Input` is a 1-by-n cellstr (also 1-by-1), then `AssignPos` and
+% `StdcorrPos` are 1-by-n numeric arrays with pointers to the `Assign` and
 % `stdcorr` positions or NaNs.
 
 % -IRIS Toolbox.
@@ -18,7 +18,7 @@ function [AssignPos,StdcorrPos] = mynameposition(This,Input,varargin)
 %--------------------------------------------------------------------------
 
 name = This.name;
-eList = This.name(This.nametype==3);
+eList = This.name(This.nametype == 3);
 
 if iscellstr(Input)
     

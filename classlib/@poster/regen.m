@@ -33,8 +33,9 @@ function [sample,lp_Sample,len] ...
 % ========
 % 
 % References
-% ========
-% 1. Brockwell, A.E., and Kadane, J.B., 2004. "Identification of ]
+% ===========
+%
+% # Brockwell, A.E., and Kadane, J.B., 2004. "Identification of ]
 %    Regeneration Times in MCMC Simulation, with Application to Adaptive 
 %    Schemes," mimeo, Carnegie Mellon University. 
 %
@@ -55,8 +56,6 @@ pp.parse(This,NDraw);
 opt = passvalopt('poster.regen',varargin{:});
 
 %--------------------------------------------------------------------------
-
-s = mylogpoststruct(This);
 
 if opt.initialChainSize < 1
     % initial chain size is a percentage
@@ -82,7 +81,7 @@ reentryDist = logdist.normal(initMean,initStd) ;
 reentrySample = reentryDist([],'draw',opt.initialChainSize) ;
 
 % Target distribution
-targetDist = @(x) mylogpost(This,x,s) ;
+targetDist = @(x) mylogpost(This,x) ;
 
 % Construct proposal distribution
 propNew = @(x) rwrand(x,chol(initFinalCov)) ;

@@ -12,11 +12,19 @@ classdef estimateobj
     
     methods
         varargout = neighbourhood(varargin)
+    end
+
+    methods (Abstract)
         varargout = objfunc(varargin)
     end
     
     methods (Access=protected,Hidden)
         varargout = mydiffprior(varargin)
+        varargout = myparamstruct(varargin)
+    end
+
+    methods (Access=protected,Hidden,Static)
+        varargout = myevalpprior(varargin)
     end
     
 end

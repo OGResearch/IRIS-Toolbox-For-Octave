@@ -22,13 +22,12 @@ function varargout = get(This,varargin)
 % Valid queries to model objects
 % ===============================
 %
-% Below is the categorised list of model properties and attributes that can
-% be queried/accessed by the `get` function. Note that letter `'y'` is used
-% in various contexts to denote measurement variables or equations, `'x'`
-% transition variables or equations, `'e'` shocks, `'p'` parameters, `'g'`
-% exogenous variables, `'d'` deterministic trend equations, `'l'` dynamic
-% links, and `'r'` reporting equations. The property names are case
-% insensitive.
+% This is the categorised list of queries to model objects. Note that
+% letter `'y'` is used in various contexts to denote measurement variables
+% or equations, `'x'` transition variables or equations, `'e'` shocks,
+% `'p'` parameters, `'g'` exogenous variables, `'d'` deterministic trend
+% equations, `'l'` dynamic links, and `'r'` reporting equations. The
+% property names are case insensitive.
 %
 % Steady state
 % -------------

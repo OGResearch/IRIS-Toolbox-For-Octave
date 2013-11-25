@@ -15,7 +15,7 @@ function [Obj,L,PP,SP] = eval(This,varargin)
 %
 % * `P` [ struct ] - Struct with parameter values at which the posterior
 % density will be evaluated; if `P` is not specified, the posterior density
-% at the point of the estimated mode is returned.
+% is evaluated at the point of the estimated mode.
 %
 % Output arguments
 % =================
@@ -64,9 +64,7 @@ if nargin == 1 && nargout <= 1
     return
 end
 
-s = mylogpoststruct(This);
-
-% Evaluate log poeterior at specified parameter sets. If
+% Evaluate log posterior at specified parameter sets. If
 % it's multiple parameter sets, pass them in as a cell, not
 % as multiple input arguments.
 if isstruct(p)
@@ -94,7 +92,7 @@ SP = nan(size(p));
 
 parfor i = 1 : np
     theta = p{i}(:);
-    [Obj(i),L(i),PP(i),SP(i)] = mylogpost(This,theta,s);
+    [Obj(i),L(i),PP(i),SP(i)] = mylogpost(This,theta);
 end
 
 end

@@ -11,10 +11,12 @@ if strncmpi(Dom,'t',1)
     % Time domain opt.
     LikOpt = passvalopt('model.kalman',varargin{:});
     LikOpt.domain = 't';
+    LikOpt.minusLogLikFunc = @mykalman;
 elseif strncmpi(Dom,'f',1)
     % Freq domain opt.
     LikOpt = passvalopt('model.fdlik',varargin{:});
     LikOpt.domain = 'f';
+    LikOpt.minusLogLikFunc = @myfdlik;
 end
 
 %--------------------------------------------------------------------------
