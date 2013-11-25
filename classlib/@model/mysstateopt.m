@@ -7,11 +7,31 @@ function Opt = mysstateopt(This,Mode,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+% Run user-supplied steady-state solver:
+% 'sstate=',@func
+if length(varargin) == 1 && isa(varargin{1},'function_handle')
+    Opt = varargin{1};
+    return
+end
+
+% Run user-supplied steady-state solver with extra arguments:
+% 'sstate=',{@func,arg2,arg3,...}
+if length(varargin) == 1 && iscell(varargin{1}) ...
+        && ~isempty(varargin{1}) ...
+        && isa(varargin{1}{1},'function_handle')
+    Opt = varargin{1};
+    return
+end
+
+% Do not run steady-state solver:
+% 'sstate=',false
 if length(varargin) == 1 && isequal(varargin{1},false)
     Opt = false;
     return
 end
 
+% Do run steady-state solve with default options:
+% 'sstate=',true
 if length(varargin) == 1 && isequal(varargin{1},true)
     varargin(1) = [];
 end

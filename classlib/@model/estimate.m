@@ -292,7 +292,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % User-supplied steady-state solver
 % ----------------------------------
 %
-% You can supply a function handle to your own steady state solver (i.e. a
+% You can supply a function handle to your own steady-state solver (i.e. a
 % function that finds the steady state for given parameters) through the
 % `'sstate='` option.
 %
@@ -302,12 +302,24 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % success flag. The flag is `true` if the steady state has been successfully
 % computed, and `false` if not:
 %
-%     [M,Success] = yoursstatesolver(M)
+%     [M,Success] = mysstatesolver(M)
 %
 % It is your responsibility to add the growth characteristics if some of
 % the model variables drift over time. In other words, you need to take
 % care of the imaginary parts of the steady state values in the model
 % object returned by the solver.
+%
+% Alternatively, you can also run the steady-state solver with extra input
+% arguments (with the model object still being the first input argument).
+% In that case, you need to set the option `'sstate='` to a cell array with
+% the function handle in the first cell, and the other input arguments
+% afterwards, e.g.
+%
+%     'sstate=',{@mysstatesolver,1,'a',X}
+%
+% The actual function call will have the following form:
+%
+%     [M,Success] = mysstatesolver(M,1,'a',X)
 %
 % Example
 % ========
