@@ -30,29 +30,28 @@ if length(varargin) == 1 && isequal(varargin{1},false)
     return
 end
 
-% Do run steady-state solve with default options:
-% 'sstate=',true
-if length(varargin) == 1 && isequal(varargin{1},true)
-    varargin(1) = [];
-end
-
-% `Mode` is either `'verbose'` (direct calls to `model/sstate`) or
-% `'silent'`; the mode determines the default values for `'display='` and
-% `'warning='`.
-Opt = passvalopt(['model.mysstate',Mode],varargin{:});
-
 %--------------------------------------------------------------------------
 
 if This.linear
     
     % Linear sstate solver
     %----------------------
-    % No need to pre-process any options for the linear sstate solver.
+    % No need to process any options for the linear sstate solver.
+    Opt = true;
 
 else
     
     % Non-linear sstate solver
     %--------------------------
+    % Do run steady-state solve with default options:
+    % 'sstate=',true
+    if length(varargin) == 1 && isequal(varargin{1},true)
+        varargin(1) = [];
+    end
+    % `Mode` is either `'verbose'` (direct calls to `model/sstate`) or
+    % `'silent'`; the mode determines the default values for `'display='` and
+    % `'warning='`.
+    Opt = passvalopt(['model.mysstate',Mode],varargin{:});
     Opt = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
     Opt = xxOptimOpt(This,Opt);

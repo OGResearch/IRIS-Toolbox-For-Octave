@@ -259,20 +259,21 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % expected to take at least five input arguments and return three output
 % arguments:
 %
-%     [PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt)
+%     [PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,OptimSet)
 %
 % with the following input arguments:
 %
 % * `F` is a function handle to the function minimised;
 % * `P0` is a 1-by-N vector of initial parameter values;
-% * `PLow` is a 1-by-N vector of lower bounds (with `-Inf` indicating
-% no lower
-% bound);
+% * `PLow` is a 1-by-N vector of lower bounds (with `-Inf` indicating no
+% lower bound);
 % * `PHigh` is a 1-by-N vector of upper bounds (with `Inf` indicating no
 % upper bounds);
-% * `Opt` is an Optim Tbx style struct with the optimisation settings
-% (tolerance, number of iterations, etc); of course you may simply ignore
-% this information and leave the input argument unused.
+% * `OptimSet` is a cell array with name-value pairs entered by the user
+% through the option `'optimSet='`. This option can be used to modify
+% various settings related to the optimisation routine, such as tolerance,
+% number of iterations, etc. Of course, you may simply ignore it and leave
+% this input argument unused;
 %
 % and the following output arguments:
 %
@@ -285,7 +286,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 %
 %     {@yourminfunc,Arg1,Arg2,...}
 %
-% In that case, the optmiser will be called the following way:
+% In that case, the optimiser will be called the following way:
 %
 %     [PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt,Arg1,Arg2,...)
 %
