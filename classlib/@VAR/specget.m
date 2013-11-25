@@ -28,7 +28,7 @@ switch lower(Query)
         else
             X = poly.var2poly(This.A);
         end
-        if isequal(lower(Query),'a*')
+        if isequal(Query(end),'*')
             X = -X(:,:,2:end,:);
         end
     case 'g'
@@ -39,6 +39,10 @@ switch lower(Query)
         X = This.U;
     case {'const','c','k'}
         X = This.K;
+    case {'omega','omg'}
+        X = This.Omega;
+    case {'cov'}
+        X = This.Omega;
     case {'sgm','sigma','covp','covparameters'}
         X = This.Sigma;
     case 'aic'

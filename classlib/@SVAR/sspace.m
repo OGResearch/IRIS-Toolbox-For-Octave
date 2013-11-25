@@ -1,22 +1,22 @@
-function [T,R,k,Z,H,d,U,Omg] = sspace(This,varargin)
-% sspace  Quasi-triangular state-space form for VAR.
+function [T,R,k,Z,H,d,U,Cov] = sspace(This,varargin)
+% sspace  Quasi-triangular state-space representation of SVAR.
 %
 % Syntax
 % =======
 %
-%     [T,R,K,Z,H,D,Omg] = sspace(w,...)
+%     [T,R,K,Z,H,D,Cov] = sspace(V,...)
 %
 % Input arguments
 % ================
 %
-% * `w` [ VAR ] - VAR object.
+% * `V` [ SVAR ] - SVAR object.
 %
 % Output arguments
 % =================
 %
 % * `T` [ numeric ] - Transition matrix.
 %
-% * `R` [ numeric ] - Matrix at the shock vector in transition equations.
+% * `R` [ numeric ] - Matrix of instantaneous effect of structural shocks.
 %
 % * `K` [ numeric ] - Constant vector in transition equations.
 %
@@ -24,42 +24,44 @@ function [T,R,k,Z,H,d,U,Omg] = sspace(This,varargin)
 % variables.
 %
 % * `H` [ numeric ] - Matrix at the shock vector in measurement
-% equations.
+% equations (all zeros in SVAR objects).
 %
-% * `D` [ numeric ] - Constant vector in measurement equations.
+% * `D` [ numeric ] - Constant vector in measurement equations (all zeros
+% in SVAR objects).
 %
 % * `U` [ numeric ] - Transformation matrix for predetermined variables.
 %
-% * `Omega` [ numeric ] - Covariance matrix of shocks.
+% * `Cov` [ numeric ] - Covariance matrix of structural shocks.
 %
 % Description
 % ============
 %
-% Syntax
-% =======
+% Example
+% ========
 %
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+if ~isempty(varargin) && isnumericscalar(varargin{1}) 
+   Alt = varargin{1};
+   varargin(1) = []; %#ok<NASGU>
+else
+   Alt = ':';
+end
+
 %--------------------------------------------------------------------------
 
-[T,R,k,Z,H,d,U,~,alt] = sspace@VAR(This,varargin{:});
-ny = size(This.A,1);
+[T,R,k,Z,H,d,U,~] = sspace@VAR(This,Alt);
 n3 = size(T,3);
 
-% Structural VAR.
-B = This.B(:,:,alt);
-for i = 1 : n3
-   R(:,:,i) = R(:,:,i)*B(:,:,i);
+% Matrix of instantaneous effect of structural shocks.
+B = This.B(:,:,Alt);
+for i3 = 1 : n3
+    R(:,:,i3) = R(:,:,i3)*B(:,:,i3);
 end
 
-% Covariance matrix of structural residuals.
-varVec = This.std(alt) .^ 2;
-Omg = eye(ny);
-Omg = Omg(:,:,ones([1,n3]));
-for i = 1 : n3
-   Omg(:,:,i) = Omg(:,:,i) * varVec(i);
-end
+% Covariance matrix of structural shocks.
+Cov = mycovmatrix(This,Alt);
 
 end

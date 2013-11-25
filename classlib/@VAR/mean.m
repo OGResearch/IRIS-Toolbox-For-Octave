@@ -1,4 +1,4 @@
-function [YMean,YInit] = mean(This,Alt)
+function [YMean,YInit] = mean(This)
 % mean  Mean of VAR process.
 %
 % Syntax
@@ -14,10 +14,20 @@ function [YMean,YInit] = mean(This,Alt)
 % Output arguments
 % =================
 %
-% * `X` [ numeric ] - Mean vector.
+% * `X` [ numeric ] - Asymptotic mean of the VAR variables.
 %
 % Description
 % ============
+%
+% For plain VAR objects, the output argument `X` is a column vector where
+% the k-th number is the asymptotic mean of the k-th variable, or `NaN` if
+% the k-th variable is non-stationary (contains a unit root).
+%
+% In panel VAR objects (with a total of Ng groups) and/or VAR objects with
+% multiple alternative parameterisations (with a total of Na
+% parameterisations), `X` is an Ny-by-Ng-by-Na matrix in which the column
+% `X(:,g,a)` is the asyptotic mean of the VAR variables in the g-th group
+% and the a-th parameterisation.
 %
 % Example
 % ========
@@ -25,12 +35,6 @@ function [YMean,YInit] = mean(This,Alt)
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
-
-try
-    Alt; %#ok<VUNUS>
-catch %#ok<CTCH>
-    Alt = 1 : size(This.A,3);
-end
 
 isYInit = nargout > 1;
 
@@ -41,49 +45,46 @@ p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
 
 if p == 0
-    YMean = This.K(:,:,Alt);
+    YMean = This.K;
     if isYInit
         YInit = zeros(ny,0,nAlt);
     end
     return
 end
 
-nAlt = numel(Alt);
 realSmall = getrealsmall();
 
-if isnumericscalar(Alt) && ~isinf(Alt)
-    [YMean,YInit] = doOneAlt(Alt);
-else
-    YMean = nan(size(This.K));
+YMean = nan(size(This.K));
+if isYInit
+    YInit = nan(ny,p,nAlt);
+end
+for iAlt = 1 : nAlt
+    [iMean,iInit] = doMean(iAlt);
+    YMean(:,:,iAlt) = iMean;
     if isYInit
-        YInit = nan(ny,p,nAlt);
-    end
-    for iAlt = 1 : nAlt
-        [iYMean,iYInit] = doOneAlt(IAlt);
-        YMean(:,:,iAlt) = iYMean;
-        if isYInit
-            YInit(:,:,iAlt) = iYInit;
-        end
+        YInit(:,:,iAlt) = iInit;
     end
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function [IYMean,IYInit] = doOneAlt(IAlt)
+    function [Mean,Init] = doMean(IAlt)
         unit = abs(abs(This.eigval(1,:,IAlt)) - 1) <= realSmall;
         nUnit = sum(unit);
-        IYInit = [];
+        Init = [];
         if nUnit == 0
             % Stationary parameterisation
             %-----------------------------
-            IYMean = sum(poly.var2poly(This.A(:,:,IAlt)),3) ...
+            Mean = sum(poly.var2poly(This.A(:,:,IAlt)),3) ...
                 \ This.K(:,:,IAlt);
             if isYInit
                 % The function `mean` requests YInit only when called on VAR, not PVAR
                 % objects; at this point, the size of `m` is guaranteed to be 1 in 2nd
                 % dimension.
-                IYInit(:,1:p) = IYMean(:,ones(1,p));
+                Init(:,1:p) = Mean(:,ones(1,p));
             end
         else
             % Unit-root parameterisation
@@ -93,14 +94,15 @@ end
                 \ k(nUnit+1:end,:);
             % Return NaNs for unit-root variables.
             dy = any(abs(U(1:ny,unit)) > realSmall,2).';
-            IYMean = nan(size(This.K,1),size(This.K,2));
-            IYMean(~dy,:) = U(~dy,nUnit+1:end)*a2;
+            Mean = nan(size(This.K,1),size(This.K,2));
+            Mean(~dy,:) = U(~dy,nUnit+1:end)*a2;
             if isYInit
                 init = U*[zeros(nUnit,1);a2];
                 init = reshape(init,ny,p);
-                IYInit(:,:) = init(:,end:-1:1);
+                Init(:,:) = init(:,end:-1:1);
             end
         end
-    end % doOneAlt().
+    end % doMean()
+
 
 end

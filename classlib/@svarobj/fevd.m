@@ -40,13 +40,8 @@ function [X,Y,XX,YY] = fevd(This,Time)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-% Tell whether time is nper or range
-if length(Time) == 1 && round(Time) == Time && Time > 0
-    range = 1 : Time;
-else
-    range = Time(1) : Time(end);
-end
-nPer = length(range);
+% Tell whether time is nper or range.
+[range,nPer] = varobj.mytelltime(Time);
 
 %--------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-classdef SVAR < VAR
+classdef SVAR < VAR & svarobj
     % SVAR  Structural vector autoregressions: SVAR objects and functions.
     %
     % SVAR methods:
@@ -14,14 +14,12 @@ classdef SVAR < VAR
     % Getting information about SVAR objects
     % =======================================
     %
-    % * [`fprintf`](SVAR/fprintf) - Format SVAR as a model code and write to text file.
     % * [`get`](SVAR/get) - Query SVAR object properties.
-    % * [`sprintf`](SVAR/sprintf) - Format SVAR as a model code and write to text string.
     %
     % Simulation
     % ===========
     %
-    % * [`srf`](SVAR/srf) - Shock (impulse) response function.
+    % * [`srf`](SVAR/srf) - 
     %
     % Stochastic properties
     % ======================
@@ -52,9 +50,6 @@ classdef SVAR < VAR
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
     properties
-        B = []; % Coefficient matrix in front of structural residuals.
-        std = []; % Std dev of structural residuals.
-        method = '';
     end
     
     methods
@@ -99,11 +94,10 @@ classdef SVAR < VAR
             % * `'nDraw='` [ numeric | *`0`* ] - Target number of successful draws when
             % `'method'='draw'`.
             %
-            % * `'reorder='` [ numeric | *empty* ] - Re-order VAR variables before
-            % identifying structural residuals, and bring the variables back in
-            % original order afterwards. Use the option '`backorderResiduals='` to
-            % control if also the structural residuals are brought back in original
-            % order.
+            % * `'reorder='` [ numeric | *empty* ] - Reorder VAR variables before
+            % identifying structural shocks, and bring the variables back in original
+            % order afterwards. Use the option '`backorderResiduals='` to control if
+            % also the structural shocks are to be brought back in original order.
             %
             % * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
             % data.
@@ -115,8 +109,9 @@ classdef SVAR < VAR
             % structural residuals when `'method=' 'svd'`; `Inf` means full rank is
             % preserved.
             %
-            % * `'backorderResiduals='` [ *`true`* | `false` ] - Bring the identified
-            % structural residuals back in original order.
+            % * `'backOrderResiduals='` [ *`true`* | `false` ] - Bring the identified
+            % structural shocks back in original order after identification; works with
+            % `'reorder='`.
             %
             % * `'std='` [ numeric | *`1`* ] - Std deviation of structural residuals;
             % the resulting structural covariance matrix will be re-scaled (divided) by
@@ -172,27 +167,17 @@ classdef SVAR < VAR
     end
     
     methods
-        varargout = addparam(varargin)
-        varargout = companion(varargin)
-        varargout = fevd(varargin)
-        varargout = fprintf(varargin)
         varargout = get(varargin)
-        varargout = irf(varargin)
-        varargout = sort(varargin)
-        varargout = sprintf(varargin)
-        varargout = srf(varargin)
+        varargout = sspace(varargin)
     end
     
     methods (Hidden)
-        varargout = myidentify(varargin)
-        varargout = mysystem(varargin)
         varargout = specget(varargin)
     end
     
     methods (Access=protected,Hidden)
         varargout = mysubsalt(varargin)
-        varargout = mywoonvav(varargin)
-        specdisp(varargin)
+        specdisp(varaargin)
     end
     
     

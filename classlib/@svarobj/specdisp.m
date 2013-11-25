@@ -9,7 +9,11 @@ function specdisp(This)
 
 %--------------------------------------------------------------------------
 
-specdisp@VAR(This);
-specdisp@svarobj(This);
-
+fprintf('\tidentification: ');
+if ~isempty(This.method)
+    fprintf('''%s''\n',This.method);
+else
+    fprintf('''''\n');
+end
+    
 end

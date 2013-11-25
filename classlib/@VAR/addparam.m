@@ -9,7 +9,7 @@ function D = addparam(This,D)
 % Input arguments
 % ================
 %
-% * `V` [ SVAR ] - SVAR object whose parameter matrices will be added to
+% * `V` [ VAR ] - VAR object whose parameter matrices will be added to
 % database (struct) `D`.
 %
 % * `D` [ struct ] - Database to which the model parameters will be added.
@@ -22,10 +22,10 @@ function D = addparam(This,D)
 % Description
 % ============
 %
-% The newly created database entries are named `A` (transition matrix), `K`
-% (constant terms),and `Omg` (covariance matrix of shocks). Be aware that
-% if there are database entries in `D` whose names conincide with these
-% names, they will be overwritten.
+% The newly created database entries are named `A_` (transition matrix),
+% `K_` (constant terms), `B_` (matrix of instantaneous whock effects), and
+% `Cov_` (covariance matrix of shocks). Be aware that all existing database
+% entries in `D` named `A_`, `K_`, `B_`, or `Omg_` will be overwritten.
 %
 % Example
 % ========
@@ -45,8 +45,9 @@ end
 
 %--------------------------------------------------------------------------
 
-D.A = This.A;
-D.K = This.K;
-D.Omg = This.Omega;
+D.A_ = This.A;
+D.B_ = mybmatrix(This);
+D.K_ = This.K;
+D.Cov_ = mycovmatrix(This);
 
 end

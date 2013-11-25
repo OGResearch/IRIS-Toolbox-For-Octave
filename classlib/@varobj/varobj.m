@@ -7,6 +7,7 @@ classdef varobj < userdataobj & getsetobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
+    
     properties
         A = []; % Transition matrix.
         Ynames = {}; % Endogenous variables.
@@ -19,30 +20,39 @@ classdef varobj < userdataobj & getsetobj
         eigval = zeros(1,0);
     end
     
+    
     methods
         varargout = group(varargin)
         varargout = isempty(varargin)
-        varargout = iscompatible(varargin)
         varargout = ispanel(varargin)
         varargout = nfitted(varargin)
     end
     
+    
     methods (Hidden)
         disp(varargin)
+        varargout = mycompatible(varargin)
+        varargout = mydatarequest(varargin)
+        varargout = myinpdata(varargin)
+        varargout = myoutpdata(varargin)
+        varargout = myselect(varargin)        
+        varargout = specget(varargin)
     end
     
+    
     methods (Access=protected,Hidden)
-        varargout = mydatarequest(varargin)
         varargout = myenames(varargin)
         varargout = mygroupnames(varargin)
-        varargout = myinpdata(varargin)
         varargout = mynalt(varargin)
         varargout = myny(varargin)       
-        varargout = myoutpdata(varargin)
-        varargout = myselect(varargin)
         varargout = mysubsalt(varargin)
         varargout = myynames(varargin)
         specdisp(varargin)
+    end
+    
+    
+    methods (Static,Hidden)
+        varargout = mytelltime(varargin)
     end
     
     
@@ -84,4 +94,5 @@ classdef varobj < userdataobj & getsetobj
         
     end
     
+
 end

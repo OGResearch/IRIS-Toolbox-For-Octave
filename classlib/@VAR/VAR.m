@@ -21,6 +21,7 @@ classdef VAR < varobj
     % * [`comment`](VAR/comment) - Get or set user comments in an IRIS object.
     % * [`companion`](VAR/companion) - Matrices of first-order companion VAR.
     % * [`eig`](VAR/eig) - Eigenvalues of a VAR process.
+    % * [`fprintf`](VAR/fprintf) -     
     % * [`get`](VAR/get) - Query VAR object properties.
     % * [`iscompatible`](VAR/iscompatible) - True if two VAR objects can occur together on the LHS and RHS in an assignment.
     % * [`isexplosive`](VAR/isexplosive) - True if any eigenvalue is outside unit circle.
@@ -30,6 +31,7 @@ classdef VAR < varobj
     % * [`mean`](VAR/mean) - Mean of VAR process.
     % * [`nfitted`](VAR/nfitted) - Number of data points fitted in VAR estimation.
     % * [`rngcmp`](VAR/rngcmp) - True if two VAR objects have been estimated using the same dates.
+    % * [`sprintf`](VAR/sprintf) - 
     % * [`sspace`](VAR/sspace) - Quasi-triangular state-space representation of VAR.
     % * [`userdata`](VAR/userdata) - Get or set user data in an IRIS object.
     %
@@ -112,12 +114,13 @@ classdef VAR < varobj
         varargout = filter(varargin)
         varargout = fmse(varargin)
         varargout = forecast(varargin)
+        varargout = fprintf(varargin)
         varargout = get(varargin)
         varargout = group(varargin)
         varargout = horzcat(varargin)
         varargout = infocrit(varargin)
         varargout = instrument(varargin)
-        varargout = integrate(varargin)
+        varargout = integrate(varargin)  
         varargout = iscompatible(varargin)
         varargout = isexplosive(varargin)
         varargout = isstationary(varargin)
@@ -128,6 +131,7 @@ classdef VAR < varobj
         varargout = resample(varargin)
         varargout = schur(varargin)
         varargout = simulate(varargin)
+        varargout = sprintf(varargin)
         varargout = sspace(varargin)
         varargout = vma(varargin)
         varargout = xsf(varargin)
@@ -140,6 +144,7 @@ classdef VAR < varobj
         varargout = saveobj(varargin)
         varargout = specget(varargin)
         varargout = SVAR(varargin)
+        varargout = myresponse(varargin)
         varargout = mysystem(varargin)
     end
     
@@ -154,13 +159,21 @@ classdef VAR < varobj
         varargout = mystackdata(varargin)
         varargout = mysubsalt(varargin)
         varargout = size(varargin)
+        specdisp(varargin)
     end
-    
+
     methods (Static,Hidden)
         varargout = myglsq(varargin)
         varargout = loadobj(varargin)
         varargout = restrict(varargin)
     end
+
+    methods (Access=protected,Hidden)
+        % Methods sealed in extension classes svarobj or varxobj.
+        varargout = mybmatrix(varargin)
+        varargout = mycovmatrix(varargin)
+    end
+    
     
     % Constructor.
     methods    

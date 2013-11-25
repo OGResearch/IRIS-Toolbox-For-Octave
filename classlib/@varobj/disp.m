@@ -30,8 +30,6 @@ else
 end
 fprintf('\n');
 
-specdisp(This);
-
 if ~isempty(This.Ynames)
     yNames = listFunc(This.Ynames);
 else
@@ -39,6 +37,8 @@ else
 end
 fprintf('\tvariable names: %s',yNames);
 fprintf('\n');
+
+specdisp(This);
 
 % Group names for panel objects.
 if ispanel(This)

@@ -48,8 +48,7 @@ else
 end
 
 if nargout > 1
-    B = eye(ny);
-    B = B(:,:,ones(1,nAlt));
+    B = mybmatrix(This);
     B = [B;zeros(ny*(p-1),ny,nAlt)];
 end
 

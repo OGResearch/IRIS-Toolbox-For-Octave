@@ -104,18 +104,18 @@ end
 
 % Look for the simulation horizon and the presence of asymptotic responses
 % in the `SortBy` string.
-[h,isY] = mywoonvav(This,SortBy);
+[h,isY] = myparsetest(This,SortBy);
 
 if opt.progress
     pBar = progressbar('IRIS SVAR.sort progress');
 end
 
 XX = [];
-for ialt = 1 : nAlt
+for iAlt = 1 : nAlt
     [S,Y] = doSimulate(); %#ok<NASGU,ASGLU>
     doEvalSort();
     if opt.progress
-        update(pBar,ialt/nAlt);
+        update(pBar,iAlt/nAlt);
     end
 end
 
@@ -129,7 +129,9 @@ if isData
         [This.Ynames,This.Enames]);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function [S,Y] = doSimulate()
@@ -138,15 +140,16 @@ end
         Y = nan(ny,ny,1);
         % Impulse responses.
         if h > 0
-            S = timedom.var2vma(This.A(:,:,ialt),This.B(:,:,ialt),h);
+            S = timedom.var2vma(This.A(:,:,iAlt),This.B(:,:,iAlt),h);
         end
         % Asymptotic impulse responses.
         if isY
-            A = poly.var2poly(This.A(:,:,ialt));
+            A = poly.var2poly(This.A(:,:,iAlt));
             C = sum(A,3);
-            Y = C\This.B(:,:,ialt);
+            Y = C\This.B(:,:,iAlt);
         end
-    end % doSimulate().
+    end % doSimulate()
+
 
 %**************************************************************************
     function doEvalSort()
@@ -160,7 +163,8 @@ end
                 '\tMatlab says: %s'], ...
                 SortBy,err.message);
         end
-    end % doEvalSort().
+    end % doEvalSort()
+
 
 %**************************************************************************
     function Inx = doSort()
@@ -174,6 +178,7 @@ end
             end
             [Crit,Inx] = sort(Crit,'ascend');
         end
-    end % doSort().
+    end % doSort()
+
 
 end

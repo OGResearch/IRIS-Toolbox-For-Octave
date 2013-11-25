@@ -86,7 +86,7 @@ switch lower(Opt.method)
     case 'householder'
         This.method = 'Householder';
         % Use Householder transformations to draw random SVARs. Test each SVAR
-        % using `'test='` option to decide whether to keep it or discard.
+        % using teh `'test='` string to decide whether to keep it or discard.
         if nAlt > 1
             utils.error('VAR', ...
                 ['Cannot run SVAR() with ''method=householder'' on ', ...
@@ -130,21 +130,44 @@ if isData
     Data = myoutpdata(This,outpFmt,range,[y;e],[],names);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doReorder()
         if ~isempty(Opt.reorder)
+            if iscellstr(Opt.reorder)
+                list = Opt.reorder;
+                nList = length(list);
+                valid = true(1,nList);
+                Opt.reorder = nan(1,nList);
+                for i = 1 : nList
+                    pos = strcmp(This.Ynames,list{i});
+                    valid(i) = any(pos);
+                    if valid(i);
+                        Opt.reorder(i) = find(pos);
+                    end
+                end
+                if any(~valid)
+                    utils.error('VAR:myidentify', ...
+                        ['This variable name does not exist ', ...
+                        'in the VAR object: ''%s''.'], ...
+                        list{~valid});
+                end
+            end
             Opt.reorder = Opt.reorder(:)';
-            if length(Opt.reorder) ~= ny ...
+            if any(isnan(Opt.reorder)) ...
+                    || length(Opt.reorder) ~= ny ...
                     || length(intersect(1:ny,Opt.reorder)) ~= ny
-                utils.error('VAR', ...
-                    'Invalid reorder vector.');
+                utils.error('VAR:myidentify', ...
+                    'Invalid reordering vector.');
             end
             A = A(Opt.reorder,Opt.reorder,:,:);
             Omg = Omg(Opt.reorder,Opt.reorder,:);
         end
-    end % doReorder().
+    end % doReorder()
+
 
 %**************************************************************************
     function doBackOrder()
@@ -157,7 +180,8 @@ end
                 B = B(backOrder,:,:);
             end
         end
-    end % doBackOrder().
+    end % doBackOrder()
+
 
 %**************************************************************************
     function doConvertResid()
@@ -166,11 +190,13 @@ end
                 e(:,:,iLoop) = B(:,:,iLoop) \ e(:,:,iLoop);
             end
         end
-    end % doConvertResid().
+    end % doConvertResid()
 
-end % doConvertResid().
+end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function [BB,Count] = xxDraw(This,Opt)
@@ -188,7 +214,8 @@ C = sum(A,3);
 Ci = inv(C);
 ny = size(A,1);
 
-[h,isy] = mywoonvav(This,test);
+[h,isy] = myparsetest(This,test);
+
 P = covfun.orthonorm(This.Omega);
 Count = 0;
 maxFound = Opt.ndraw;
@@ -219,22 +246,22 @@ while Count < maxIter && nb < maxFound
     if isy
         Y = Ci*B; %#ok<MINV>
     end
-    % Test impulse response.
-    flag = false;
-    doTest();
+    % Test impulse responses, and include successful candidates.
+    doTestNInclude();
     nb = size(BB,3);
     if Opt.progress
         update(pbar,max(Count/maxIter,nb/maxFound));
-        % disp(max(count/maxcount,nb/maxfound));
     end
 end
 
-% Nested functions.
 
-    function doTest()
+% Nested functions...
+
+
+    function doTestNInclude()
         try
-            flag = isequal(eval(test),true);
-            if flag
+            pass = isequal(eval(test),true);
+            if pass
                 BB(:,:,end+1) = B;
                 SS(:,:,:,end+1) = S; %#ok<SETNU>
                 if isy
@@ -247,8 +274,8 @@ end
                 if isy
                     Y = -Y;
                 end
-                flag = isequal(eval(test),true);
-                if flag
+                pass = isequal(eval(test),true);
+                if pass
                     BB(:,:,end+1) = B;
                     SS(:,:,:,end+1) = S;
                     if isy
@@ -262,6 +289,7 @@ end
                 '\tMatlab says: %s'], ...
                 test,err.message);
         end
-    end % doTest().
+    end % doTest()
 
-end % xxDraw().
+
+end % xxDraw()

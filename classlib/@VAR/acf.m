@@ -70,14 +70,14 @@ if opt.progress
 end
 
 for iAlt = find(~explosive)
-    [T,R,~,~,~,~,U,Omega] = sspace(This,iAlt);
+    [T,R,~,~,~,~,U,Cov] = sspace(This,iAlt);
     if isFilter
-        S = freqdom.xsfvar(This.A(:,:,iAlt),Omega,freq,filter,applyTo);
+        S = freqdom.xsfvar(This.A(:,:,iAlt),Cov,freq,filter,applyTo);
         C(:,:,:,iAlt) = freqdom.xsf2acf(S,freq,opt.order);
     else
         % Compute contemporaneous ACF for its first-order state space form.
         % This gives us autocovariances up to order p-1.
-        c = covfun.acovf(T,R,[],[],[],[],U,Omega,This.eigval(1,:,iAlt),0);
+        c = covfun.acovf(T,R,[],[],[],[],U,Cov,This.eigval(1,:,iAlt),0);
         if p > 1
             c0 = c;
             c = reshape(c0(1:ny,:),ny,ny,p);
@@ -127,7 +127,9 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function C = xxAcovYW(A,C,P)
@@ -148,4 +150,4 @@ for i = p : P
     C(1:ny,:,1+i) = X;
 end
 
-end % xxAcovYW().
+end % xxAcovYW()

@@ -1,5 +1,5 @@
-function [H,IsY] = mywoonvav(this,c)
-% mywoonvav  [Not a public function] Determine the latest shock reponse
+function [H,IsY] = myparsetest(this,c)
+% myparsetest  [Not a public function] Determine the latest shock reponse
 % period referenced to in a test string for Householder SVARs, and check
 % for the presence of asymptotic cumulative reponses.
 %

@@ -1,13 +1,12 @@
-function varargout = irf(varargin)
-% irf  Alias for SRF.
+function specdisp(This) %#ok<INUSD>
+% specdisp  [Not a public function] Subclass specific disp line.
 %
-% See help on [`SVAR/srf`](SVAR/srf).
+% Backend IRIS function.
+% No help provided.
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-[varargout{1:nargout}] = srf(varargin{:});
 
 end

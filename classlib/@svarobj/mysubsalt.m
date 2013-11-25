@@ -1,5 +1,5 @@
 function This = mysubsalt(This,Lhs,Obj,Rhs)
-% mysubsalt  [Not a public function] Implement subsref and subsasgn for SVAR objects with multiple params.
+% mysubsalt  [Not a public function] Implement subsref and subsasgn for svarobj class.
 %
 % Backend IRIS function.
 % No help provided.
@@ -11,18 +11,24 @@ function This = mysubsalt(This,Lhs,Obj,Rhs)
 
 if nargin == 2
     % Subscripted reference This(Lhs).
-    This = mysubsalt@VAR(This,Lhs);
-    This = mysubsalt@svarobj(This,Lhs);
+    This.B = This.B(:,:,Lhs);
+    This.std = This.std(:,Lhs);
 elseif nargin == 3 && isempty(Obj)
     % Empty subscripted assignment This(Lhs) = empty.
-    This = mysubsalt@VAR(This,Lhs,[]);
-    This = mysubsalt@svarobj(This,Lhs,[]);
+    This.B(:,:,Lhs) = [];
+    This.std(:,Lhs) = [];
 elseif nargin == 4 && mycompatible(This,Obj)
     % Proper subscripted assignment This(Lhs) = Obj(Rhs).
-    This = mysubsalt@VAR(This,Lhs,Obj,Rhs);
-    This = mysubsalt@svarobj(This,Lhs,Obj,Rhs);
+    try
+        This.B(:,:,Lhs) = Obj.B(:,:,Rhs);
+        This.std(:,Lhs) = Obj.std(:,Rhs);
+    catch %#ok<CTCH>
+        utils.error('svarobj:mysubsalt', ...
+            ['Subscripted assignment failed, ', ...
+            'LHS and RHS objects are incompatible.']);
+    end
 else
-    utils.error('SVAR:mysubsalt', ...
+    utils.error('svarobj:mysubsalt', ...
         'Invalid assignment to a %s object.', ...
         class(This));
 end

@@ -1,15 +1,15 @@
 function [Code,D] = sprintf(This,varargin)
-% sprintf  Format SVAR as a model code and write to text string.
+% sprintf  Print VAR model as formatted model code.
 %
 % Syntax
 % =======
 %
-%     [C,D] = sprintf(S,...)
+%     [C,D] = sprintf(V,...)
 %
 % Input arguments
 % ================
 %
-% * `S` [ SVAR ] - SVAR object that will be written as a model code.
+% * `V` [ VAR ] - VAR object that will be printed as a formatted model code.
 %
 % - Output arguments
 %
@@ -26,12 +26,11 @@ function [Code,D] = sprintf(This,varargin)
 % which the coefficients will be written if `'hardParameters='` is true; if
 % empty, the `'format='` options is used.
 %
-% * `'declare='` [ `true` | *`false`* ] - Add declaration blocks and keywords
-% for VAR variables, shocks, and equations.
+% * `'declare='` [ `true` | *`false`* ] - Add declaration blocks and
+% keywords for VAR variables, shocks, and equations.
 %
-% * `'eNames='` [ cellstr | char | *empty* ] - Names that will be
-% given to the VAR residuals; if empty, the names from the SVAR object will
-% be used.
+% * `'eNames='` [ cellstr | char | *empty* ] - Names that will be given to
+% the VAR residuals; if empty, the names from the VAR object will be used.
 %
 % * `'format='` [ char | *'%+.16e'* ] - Numeric format for parameter values;
 % it will be used only if `'decimal='` is empty.
@@ -40,9 +39,8 @@ function [Code,D] = sprintf(This,varargin)
 % numbers; otherwise, create parameter names and return a parameter
 % database.
 %
-% * `'yNames='` [ cellstr | char | *empty* ] - Names that will be
-% given to the variables; if empty, the names from the SVAR object will
-% be used.
+% * `'yNames='` [ cellstr | char | *empty* ] - Names that will be given to
+% the variables; if empty, the names from the VAR object will be used.
 %
 % * `'tolerance='` [ numeric | *getrealsmall()* ] - Treat VAR coefficients
 % smaller than `'tolerance='` in absolute value as zeros; zero coefficients
@@ -59,7 +57,7 @@ function [Code,D] = sprintf(This,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 % Parse options.
-opt = passvalopt('SVAR.sprintf',varargin{:});
+opt = passvalopt('VAR.sprintf',varargin{:});
 
 if isempty(strfind(opt.format,'%+'))
     utils.error('VAR', ...
@@ -115,19 +113,23 @@ D = cell(1,nAlt);
 
 % Cycle over all parameterisations.
 for iAlt = 1 : nAlt
-    % Retrieve SVAR system matrices.
+    % Retrieve VAR system matrices.
     A = -reshape(This.A(:,:,iAlt),[ny,ny,p]);
-    B = This.B(:,:,iAlt);
     K = This.K(:,iAlt);
     if ~opt.constant
         K(:) = 0;
     end
+    B = mybmatrix(This,iAlt);
+    C = mycovmatrix(This,iAlt);
+	R = covfun.cov2corr(C);
     
-    % Write equations.
+    % Print individual equations.
     eqtn = cell(1,ny);
     D{iAlt} = struct();
     
     for eq = 1 : ny
+        
+        % LHS with current-dated endogenous variable.
         eqtn{eq} = [yNameLag{eq}{1},' ='];
         rhs = false;
         if abs(K(eq)) > opt.tolerance
@@ -135,6 +137,8 @@ for iAlt = 1 : nAlt
                 doPrintParameter('K',{eq},K(eq))];
             rhs = true;
         end
+        
+        % Lags of endogenous variables.
         for t = 1 : p
             for y = 1 : ny
                 if abs(A(eq,y,t)) > opt.tolerance
@@ -145,6 +149,8 @@ for iAlt = 1 : nAlt
                 end
             end
         end
+        
+        % Shocks.
         for e = 1 : ny
             if abs(B(eq,e)) > opt.tolerance
                 eqtn{eq} = [eqtn{eq},' ', ...
@@ -152,6 +158,7 @@ for iAlt = 1 : nAlt
                 rhs = true;
             end
         end
+        
         if ~rhs
             % If nothing occurs on the RHS, add zero.
             eqtn{eq} = [eqtn{eq},' 0'];
@@ -164,25 +171,35 @@ for iAlt = 1 : nAlt
         tab = sprintf('\t');
         yName = regexprep(yName,'\{.*\}','');
         Code{iAlt} = [ ...
-            '!variables:transition',nl, ...
+            '!variables',nl, ...
             strfun.cslist(yName,'wrap',75,'lead',tab),nl, ...
-            '!shocks:transition',nl, ...
+            '!shocks',nl, ...
             strfun.cslist(eName,'wrap',75,'lead',tab),nl, ...
-            '!equations:transition',nl, ...
+            '!equations',nl, ...
             sprintf('\t%s;\n',eqtn{:})];
     else
         Code{iAlt} = sprintf('%s;\n',eqtn{:});
     end
     
+    % Add std and corr to the parameter database.
     if ~opt.hardparameters
         for i = 1 : ny
-            D{iAlt}.(['std_',eName{i}]) = This.std;
+            name = sprintf('std_%s',eName{i});
+            D{iAlt}.(name) = sqrt(C(i,i));
+            for j = 1 : i-1
+                if abs(R(i,j)) > opt.tolerance
+                    name = sprintf('corr_%s__%s',eName{i},eName{j});
+                    D{iAlt}.(name) = R(i,j);
+                end
+            end
         end
     end
     
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function X = doPrintParameter(Matrix,Pos,Value)
@@ -196,6 +213,7 @@ end
             D{iAlt}.(X) = Value;
             X = ['+',X];
         end
-    end % doPrintParameter().
+    end % doPrintParameter()
+
 
 end
