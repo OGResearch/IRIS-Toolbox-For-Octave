@@ -13,6 +13,7 @@ if nargin == 2
     % Subscripted reference This(Lhs).
     This = mysubsalt@varobj(This,Lhs);
     This.K = This.K(:,:,Lhs);
+    This.G = This.G(:,:,Lhs);    
     This.aic = This.aic(1,Lhs);
     This.sbc = This.sbc(1,Lhs);
     This.T = This.T(:,:,Lhs);
@@ -24,6 +25,7 @@ elseif nargin == 3 && isempty(Obj)
     % Empty subscripted assignment This(Lhs) = empty.
     This = mysubsalt@varobj(This,Lhs,Obj);
     This.K(:,:,Lhs) = [];
+    This.G(:,:,Lhs) = [];
     This.aic(:,Lhs) = [];
     This.sbc(:,Lhs) = [];
     This.T(:,:,Lhs) = [];
@@ -36,6 +38,7 @@ elseif nargin == 4 && mycompatible(This,Obj)
     This = mysubsalt@varobj(This,Lhs,Obj,Rhs);
     try
         This.K(:,:,Lhs) = Obj.K(:,:,Rhs);
+        This.G(:,:,Lhs) = Obj.G(:,:,Rhs);
         This.aic(:,Lhs) = Obj.aic(:,Rhs);
         This.sbc(:,Lhs) = Obj.sbc(:,Rhs);
         This.T(:,:,Lhs) = Obj.T(:,:,Rhs);
