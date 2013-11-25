@@ -151,22 +151,22 @@ classdef tseries < userdataobj
             % =======
             %
             %     X = tseries()
-            %     X = tseries(DATES,VALUES)
-            %     X = tseries(DATES,VALUES,COMMENTS)
+            %     X = tseries(Dates,Values)
+            %     X = tseries(Dates,Values,Comment)
             %
             % Input arguments
             % ================
             %
-            % * `DATES` [ numeric ] - Dates for which observations will be supplied;
+            % * `Dates` [ numeric ] - Dates for which observations will be supplied;
             % `dates` do not have to be sorted in ascending order. If `dates` is scalar
             % and `values` have multiple rows, then the date in `dates` is interpreted
             % as a startdate for the time series.
             %
-            % * `VALUES` [ numeric | function_handle ] - Numerical values
+            % * `Values` [ numeric | function_handle ] - Numerical values
             % (observations) arranged columnwise, or a function that will be used to
             % create an N-by-1 array of values, where N is the number of `dates`.
             %
-            % * `COMMENTS` [ char | cellstr ] - Comment or comments attached to each
+            % * `Comment` [ char | cellstr ] - Comment or comments attached to each
             % column of observations.
             %
             % Output arguments
@@ -232,10 +232,10 @@ classdef tseries < userdataobj
             
             % Parse required input arguments.
             pp = inputParser();
-            pp.addRequired('DATES',@isnumeric);
-            pp.addRequired('DATA',@(x) ...
+            pp.addRequired('Dates',@isnumeric);
+            pp.addRequired('Data',@(x) ...
                 isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-            pp.addRequired('COMMENTS',@(x) ischar(x) || iscellstr(x));
+            pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
             
             %--------------------------------------------------------------
