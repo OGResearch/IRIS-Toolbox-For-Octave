@@ -68,7 +68,7 @@ function varargout = x12(x,range,varargin)
 %
 % * `'dummy='` [ tseries | *empty* ] - User dummy variable or variables (in
 % case of a multivariate tseries object) used in X12-ARIMA regression; the
-% dummy variables can also include values for forecasts and backcasts if
+% dummy variables must also include values for forecasts and backcasts if
 % you request them; the type of the dummy can be specified in the option
 % `'dummyType='`.
 %
@@ -234,21 +234,6 @@ range = specrange(x,range);
 
 doOutput();
 
-% Forecasts and backcasts.
-if islogical(opt.arima)
-    % Obsolete option `'arima='`.
-    if opt.arima
-        opt.backcast = 8;
-        opt.forecast = 8;
-    else
-        opt.backcast = 0;
-        opt.forecast = 0;
-    end
-elseif ~isempty(opt.arima)
-    opt.backcast = opt.arima(1);
-    opt.forecast = opt.arima(end);
-end
-
 %--------------------------------------------------------------------------
 
 co = comment(x);
@@ -264,7 +249,7 @@ dummy = [];
 if ~isempty(opt.dummy) && isa(opt.dummy,'tseries')
     dummy = rangedata(opt.dummy,xRange);
     dummy = dummy(:,:);
-    dummy(isnan(dummy)) = 0;
+    doChkDummy();
 end
 
 if opt.log
@@ -338,6 +323,30 @@ end
             opt.output = strrep(opt.output,map{ii},map{ii+1});
         end
     end % doOutput()
+
+
+%**************************************************************************
+    function doChkDummy()
+        dummyIn = dummy(opt.backcast+1:end-opt.forecast,:);
+        dummyFcast = dummy(end-opt.forecast+1:end,:);
+        dummyBcast = dummy(1:opt.backcast,:);
+        missing = {};
+        if any(isnan(dummyIn(:)))
+            missing{end+1} = 'X12';
+        end
+        if any(isnan(dummyFcast(:)))
+            missing{end+1} = 'forecast';
+        end
+        if any(isnan(dummyBcast(:)))
+            missing{end+1} = 'backcast';
+        end        
+        if ~isempty(missing)
+            utils.error('tseries:x12', ...
+                ['Dummy variable(s) contain(s) missing observations or NaNs ', ...
+                'within the %s range.'], ...
+                missing{:});
+        end
+    end % doChkDummy()
 
 
 end
