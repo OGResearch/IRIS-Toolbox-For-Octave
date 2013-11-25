@@ -74,6 +74,6 @@ H = zeros(ny,ny,n3);
 d = zeros(ny,1,n3);
 
 % Covariance matrix of forecast errors.
-Cov = This.Omega;
+Cov = This.Omega(:,:,Alt);
 
 end
