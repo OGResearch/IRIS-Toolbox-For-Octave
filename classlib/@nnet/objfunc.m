@@ -1,4 +1,4 @@
-function [Obj,Pred] = objfunc(This,InData,OutData,Range,options)
+function [Obj,Pred] = objfunc(X,This,InData,OutData,Range,options)
 % OBJFUNC  [Not a public function] Objective function value.
 %
 % Backed IRIS function.
@@ -59,6 +59,7 @@ switch This.Type
 end
 
 Obj = options.Norm(OutData-Pred) ;
+fprintf(1,'Objective: %g\n',Obj) ;
 
     function Output = xxNodeTransfer(Input, Weight, Bias, Transfer, TransferParam) 
         switch Transfer
