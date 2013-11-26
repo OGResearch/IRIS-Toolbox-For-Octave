@@ -5,8 +5,7 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[A,D,CC,F,U,E,CTF] = estimate(A,D,List,Range,[R,Q],...)
-[A,X,CC,F,U,E,CTF] = estimate(A,X,Range,[R,Q],...)
+[A,D,CC,F,U,E,CTF] = estimate(A,D,Range,[R,Q],...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -16,11 +15,6 @@
   \texttt{A} {[} FAVAR {]} - Empty FAVAR object.
 \item
   \texttt{D} {[} struct {]} - Input database.
-\item
-  \texttt{List} {[} cellstr {]} - List of series from the database on
-  which the VAR will be estimated.
-\item
-  \texttt{X} {[} tseries {]} - Tseries objects with input data.
 \item
   \texttt{Range} {[} numeric {]} - Estimation range.
 \item
@@ -39,8 +33,6 @@
   \texttt{A} {[} FAVAR {]} - Estimated FAVAR object.
 \item
   \texttt{D} {[} struct {]} - Output database.
-\item
-  \texttt{X} {[} tseries {]} - Output tseries object.
 \item
   \texttt{CC} {[} tseries {]} - Estimates of common components in the
   FAVAR observables.

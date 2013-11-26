@@ -4,7 +4,7 @@ classdef FAVAR < varobj
     % Constructor
     % ============
     %
-    % * [`FAVAR`](FAVAR/FAVAR) - Create new FAVAR object.
+    % * [`FAVAR`](FAVAR/FAVAR) - Create new, empty FAVAR object.
     %
     % Getting information about FAVAR objects
     % ========================================
@@ -78,7 +78,7 @@ classdef FAVAR < varobj
     % Constructor.
     methods
         function This = FAVAR(varargin)
-            % FAVAR  Create new FAVAR object.
+            % FAVAR  Create new, empty FAVAR object.
             %
             % Syntax
             % =======

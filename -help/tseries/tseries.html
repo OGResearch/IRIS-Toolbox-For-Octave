@@ -111,13 +111,13 @@ code.LaTeX {
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>X = tseries()
-X = tseries(DATES,VALUES)
-X = tseries(DATES,VALUES,COMMENTS)</code></pre>
+X = tseries(Dates,Values)
+X = tseries(Dates,Values,Comment)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>DATES</code> [ numeric ] - Dates for which observations will be supplied; <code>dates</code> do not have to be sorted in ascending order. If <code>dates</code> is scalar and <code>values</code> have multiple rows, then the date in <code>dates</code> is interpreted as a startdate for the time series.</p></li>
-<li><p><code>VALUES</code> [ numeric | function_handle ] - Numerical values (observations) arranged columnwise, or a function that will be used to create an N-by-1 array of values, where N is the number of <code>dates</code>.</p></li>
-<li><p><code>COMMENTS</code> [ char | cellstr ] - Comment or comments attached to each column of observations.</p></li>
+<li><p><code>Dates</code> [ numeric ] - Dates for which observations will be supplied; <code>dates</code> do not have to be sorted in ascending order. If <code>dates</code> is scalar and <code>values</code> have multiple rows, then the date in <code>dates</code> is interpreted as a startdate for the time series.</p></li>
+<li><p><code>Values</code> [ numeric | function_handle ] - Numerical values (observations) arranged columnwise, or a function that will be used to create an N-by-1 array of values, where N is the number of <code>dates</code>.</p></li>
+<li><p><code>Comment</code> [ char | cellstr ] - Comment or comments attached to each column of observations.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>

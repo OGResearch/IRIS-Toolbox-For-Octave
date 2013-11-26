@@ -21,10 +21,21 @@ X = mean(V)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{X} {[} numeric {]} - Mean vector.
+  \texttt{X} {[} numeric {]} - Asymptotic mean of the VAR variables.
 \end{itemize}
 
 \paragraph{Description}\label{description}
+
+For plain VAR objects, the output argument \texttt{X} is a column vector
+where the k-th number is the asymptotic mean of the k-th variable, or
+\texttt{NaN} if the k-th variable is non-stationary (contains a unit
+root).
+
+In panel VAR objects (with a total of Ng groups) and/or VAR objects with
+multiple alternative parameterisations (with a total of Na
+parameterisations), \texttt{X} is an Ny-by-Ng-by-Na matrix in which the
+column \texttt{X(:,g,a)} is the asyptotic mean of the VAR variables in
+the g-th group and the a-th parameterisation.
 
 \paragraph{Example}\label{example}
 

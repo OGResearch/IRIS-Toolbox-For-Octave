@@ -114,7 +114,7 @@ code.LaTeX {
 [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>M</code> [ struct ] - Model object.</p></li>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
 <li><p><code>D</code> [ struct | cell ] - Input database or datapack from which the measurement variables will be taken.</p></li>
 <li><p><code>Range</code> [ struct ] - Date range.</p></li>
 <li><p><code>Est</code> [ struct ] - Database with the list of paremeters that will be estimated, and the parameter prior specifications (see below).</p></li>
@@ -195,14 +195,14 @@ code.LaTeX {
 <p>You can use <code>NaN</code> for <code>start</code> if you wish to use the value currently assigned in the model object. You can use <code>-Inf</code> and <code>Inf</code> for the bounds, or leave the bounds empty or not specify them at all. You can leave the prior distribution empty or not specify it at all.</p>
 <h5 id="user-supplied-optimisation-minimisation-routine">User-supplied optimisation (minimisation) routine</h5>
 <p>You can supply a function handle to your own minimisation routine through the option <code>'optimiser='</code>. This routine will be used instead of the Optim Tbx's <code>fminunc</code> or <code>fmincon</code> functions. The user-supplied function is expected to take at least five input arguments and return three output arguments:</p>
-<pre><code>[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt)</code></pre>
+<pre><code>[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,OptimSet)</code></pre>
 <p>with the following input arguments:</p>
 <ul>
 <li><code>F</code> is a function handle to the function minimised;</li>
 <li><code>P0</code> is a 1-by-N vector of initial parameter values;</li>
 <li><code>PLow</code> is a 1-by-N vector of lower bounds (with <code>-Inf</code> indicating no lower bound);</li>
 <li><code>PHigh</code> is a 1-by-N vector of upper bounds (with <code>Inf</code> indicating no upper bounds);</li>
-<li><code>Opt</code> is an Optim Tbx style struct with the optimisation settings (tolerance, number of iterations, etc); of course you may simply ignore this information and leave the input argument unused.</li>
+<li><code>OptimSet</code> is a cell array with name-value pairs entered by the user through the option <code>'optimSet='</code>. This option can be used to modify various settings related to the optimisation routine, such as tolerance, number of iterations, etc. Of course, you may simply ignore it and leave this input argument unused;</li>
 </ul>
 <p>and the following output arguments:</p>
 <ul>
@@ -212,13 +212,17 @@ code.LaTeX {
 </ul>
 <p>If you need to use extra input arguments in your minimisation function, enter a cell array instead of a plain function handle:</p>
 <pre><code>{@yourminfunc,Arg1,Arg2,...}</code></pre>
-<p>In that case, the optmiser will be called the following way:</p>
+<p>In that case, the optimiser will be called the following way:</p>
 <pre><code>[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt,Arg1,Arg2,...)</code></pre>
 <h5 id="user-supplied-steady-state-solver">User-supplied steady-state solver</h5>
-<p>You can supply a function handle to your own steady state solver (i.e. a function that finds the steady state for given parameters) through the <code>'sstate='</code> option.</p>
+<p>You can supply a function handle to your own steady-state solver (i.e. a function that finds the steady state for given parameters) through the <code>'sstate='</code> option.</p>
 <p>The function is expected to take one input argument, the model object with newly assigned parameters, and return at least two output arguments, the model object with a new steady state (or balanced-growth path) and a success flag. The flag is <code>true</code> if the steady state has been successfully computed, and <code>false</code> if not:</p>
-<pre><code>[M,Success] = yoursstatesolver(M)</code></pre>
+<pre><code>[M,Success] = mysstatesolver(M)</code></pre>
 <p>It is your responsibility to add the growth characteristics if some of the model variables drift over time. In other words, you need to take care of the imaginary parts of the steady state values in the model object returned by the solver.</p>
+<p>Alternatively, you can also run the steady-state solver with extra input arguments (with the model object still being the first input argument). In that case, you need to set the option <code>'sstate='</code> to a cell array with the function handle in the first cell, and the other input arguments afterwards, e.g.</p>
+<pre><code>&#39;sstate=&#39;,{@mysstatesolver,1,&#39;a&#39;,X}</code></pre>
+<p>The actual function call will have the following form:</p>
+<pre><code>[M,Success] = mysstatesolver(M,1,&#39;a&#39;,X)</code></pre>
 <h4 id="example">Example</h4>
 
 </body>

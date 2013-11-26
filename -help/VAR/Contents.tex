@@ -1,11 +1,11 @@
 
-    \foldertitle{VAR}{Vector autoregressions: VAR objects and functions}{VAR/Contents}
+    \foldertitle{VAR}{Vector autoregressions (VAR) objects and functions}{VAR/Contents}
 
 	VAR objects can be constructed as plain VARs or simple panel VARs (with
 fixed effect), and estimated without or with prior dummy observations
-(Bayesian VARs). The VAR objects are also the point of departure for
-identifying structural VARs (\href{SVAR/Contents}{\texttt{SVAR}}
-objects).
+(quasi-bayesian VARs). VAR objects are reduced-form models; they are
+also the point of departure for identifying structural VARs
+(\href{SVAR/Contents}{\texttt{SVAR}} objects).
 
 VAR methods:
 
@@ -14,7 +14,8 @@ VAR methods:
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \href{VAR/VAR}{\texttt{VAR}} - Create new reduced-form VAR object.
+  \href{VAR/VAR}{\texttt{VAR}} - Create new, empty reduced-form VAR
+  object.
 \end{itemize}
 
 \paragraph{Getting information about VAR
@@ -33,6 +34,9 @@ objects}\label{getting-information-about-var-objects}
   companion VAR.
 \item
   \href{VAR/eig}{\texttt{eig}} - Eigenvalues of a VAR process.
+\item
+  \href{VAR/fprintf}{\texttt{fprintf}} - Write VAR model as formatted
+  model code to text file.
 \item
   \href{VAR/get}{\texttt{get}} - Query VAR object properties.
 \item
@@ -58,6 +62,9 @@ objects}\label{getting-information-about-var-objects}
 \item
   \href{VAR/rngcmp}{\texttt{rngcmp}} - True if two VAR objects have been
   estimated using the same dates.
+\item
+  \href{VAR/sprintf}{\texttt{sprintf}} - Print VAR model as formatted
+  model code.
 \item
   \href{VAR/sspace}{\texttt{sspace}} - Quasi-triangular state-space
   representation of VAR.

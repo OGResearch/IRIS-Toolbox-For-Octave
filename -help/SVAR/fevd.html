@@ -122,8 +122,12 @@ code.LaTeX {
 <ul>
 <li><p><code>X</code> [ numeric ] - Forecast error variance decomposition into absolute contributions of residuals; absolute contributions sum up to the total variance.</p></li>
 <li><p><code>Y</code> [ numeric ] - Forecast error variance decomposition into relative contributions of residuals; relative contributions sum up to <code>1</code>.</p></li>
-<li><p><code>XX</code> [ tseries ] - <code>X</code> converted to a tseries object.</p></li>
-<li><p><code>YY</code> [ tseries ] - <code>Y</code> converted to a tseries object.</p></li>
+<li><p><code>XX</code> [ tseries ] - Database with a tseries with absolute contributions in columns for each VAR variable.</p></li>
+<li><p><code>YY</code> [ tseries ] - Database with a tseries with relative contributions in columns for each VAR variable.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrices <code>X</code> and <code>Y</code> as either namedmat objects (matrices with named rows and columns) or plain numeric arrays.</li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>

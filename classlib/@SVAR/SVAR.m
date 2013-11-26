@@ -19,7 +19,7 @@ classdef SVAR < VAR & svarobj
     % Simulation
     % ===========
     %
-    % * [`srf`](SVAR/srf) - 
+    % * [`srf`](SVAR/srf) - Shock (impulse) response function.
     %
     % Stochastic properties
     % ======================

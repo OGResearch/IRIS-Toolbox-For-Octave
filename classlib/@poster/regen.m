@@ -1,6 +1,6 @@
 function [sample,lp_Sample,len] ...
     = regen(This,NDraw,varargin)
-% arwm  Regeneration time MCMC Metropolis posterior simulator.
+% regen  Regeneration time MCMC Metropolis posterior simulator.
 %
 % Syntax
 % =======
@@ -27,7 +27,7 @@ function [sample,lp_Sample,len] ...
 % * `Scale` [ numeric ] - Vector of proposal scale factors in each draw.
 %
 % * `FinalCov` [ numeric ] - Final proposal covariance matrix; the final
-% covariance matrix of the random walk step is Scale(end)^2*FinalCov.
+% covariance matrix of the random walk step is `Scale(end)^2*FinalCov`.
 %
 % Options
 % ========
@@ -35,7 +35,7 @@ function [sample,lp_Sample,len] ...
 % References
 % ===========
 %
-% # Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
+% 1. Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
 % Regeneration Times in MCMC Simulation, with Application to Adaptive
 % Schemes," mimeo, Carnegie Mellon University.
 %

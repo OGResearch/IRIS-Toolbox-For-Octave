@@ -106,23 +106,29 @@ code.LaTeX {
 
 
 
-<h2 id="VAR/lrtest">lrtest</h2>
-<div class="headline">Likelihood ratio test for VAR models</div>
+<h2 id="poster/regen">regen</h2>
+<div class="headline">Regeneration time MCMC Metropolis posterior simulator</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[Stat,Crit] = lrtest(V1,V2,Level)</code></pre>
+<pre><code>[Theta,LogPost,AR,Scale,FinalCov] = regen(Pos,NDraw,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>V1</code> [ VAR ] - Unrestricted VAR model.</p></li>
-<li><p><code>V2</code> [ VAR ] - Restricted VAR model.</p></li>
-<li><p><code>Level</code> [ numeric ] - Significance level; if not specified, 5 percent significance is used, <code>Level=0.05</code>.</p></li>
+<li><p><code>Pos</code> [ poster ] - Initialised posterior simulator object.</p></li>
+<li><p><code>NDraw</code> [ numeric ] - Length of the chain not including burn-in.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>Stat</code> [ numeric ] - LR test stastic.</p></li>
-<li><p><code>Crit</code> [ numeric ] - LR test critical value based on chi-square distribution.</p></li>
+<li><p><code>Theta</code> [ numeric ] - MCMC chain with individual parameters in rows.</p></li>
+<li><p><code>LogPost</code> [ numeric ] - Vector of log posterior density (up to a constant) in each draw.</p></li>
+<li><p><code>AR</code> [ numeric ] - Vector of cumulative acceptance ratios in each draw.</p></li>
+<li><p><code>Scale</code> [ numeric ] - Vector of proposal scale factors in each draw.</p></li>
+<li><p><code>FinalCov</code> [ numeric ] - Final proposal covariance matrix; the final covariance matrix of the random walk step is <code>Scale(end)^2*FinalCov</code>.</p></li>
 </ul>
-<h4 id="description">Description</h4>
+<h4 id="options">Options</h4>
+<h4 id="references">References</h4>
+<ol style="list-style-type: decimal">
+<li>Brockwell, A.E., and Kadane, J.B., 2004. &quot;Identification of Regeneration Times in MCMC Simulation, with Application to Adaptive Schemes,&quot; mimeo, Carnegie Mellon University.</li>
+</ol>
 <h4 id="example">Example</h4>
 
 </body>

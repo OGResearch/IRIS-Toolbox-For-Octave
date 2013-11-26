@@ -110,8 +110,8 @@ code.LaTeX {
 <div class="headline">Forecast error response function</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[Phi,Psi,s,c] = ferf(V,NPer)
-[Phi,Psi,s,c] = ferf(V,Range)</code></pre>
+<pre><code>[R,C] = ferf(V,NPer)
+[R,C] = ferf(V,Range)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>V</code> [ VAR ] - VAR object for which the forecast error response function will be computed.</p></li>
@@ -120,10 +120,13 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>Phi</code> [ numeric ] - Response function matrices.</p></li>
-<li><p><code>Psi</code> [ numeric ] - Cumulative response function matrices.</p></li>
-<li><p><code>S</code> [ tseries ] - Response function time series.</p></li>
-<li><p><code>C</code> [ tseries ] - Cumulative response function time series.</p></li>
+<li><p><code>Resp</code> [ tseries | struct ] - Forecast error response functions.</p></li>
+<li><p><code>Cum</code> [ tseries | struct ] - Cumulative forecast error response functions.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'presample='</code> [ <code>true</code> | <em><code>false</code></em> ] - Include zeros for pre-sample initial conditions in the output data.</p></li>
+<li><p><code>'select='</code> [ cellstr | char | logical | numeric | <em><code>Inf</code></em> ] - Selection of variable to whose forecast errors the responses will be simulated.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>

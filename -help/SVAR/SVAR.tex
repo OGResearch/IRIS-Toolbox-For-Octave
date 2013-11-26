@@ -48,11 +48,11 @@
   \texttt{'nDraw='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
   Target number of successful draws when \texttt{'method'='draw'}.
 \item
-  \texttt{'reorder='} {[} numeric \textbar{} \emph{empty} {]} - Re-order
-  VAR variables before identifying structural residuals, and bring the
+  \texttt{'reorder='} {[} numeric \textbar{} \emph{empty} {]} - Reorder
+  VAR variables before identifying structural shocks, and bring the
   variables back in original order afterwards. Use the option
   '\texttt{backorderResiduals='} to control if also the structural
-  residuals are brought back in original order.
+  shocks are to be brought back in original order.
 \item
   \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
   \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
@@ -66,9 +66,9 @@
   Reduced rank of the covariance matrix of structural residuals when
   \texttt{'method=' 'svd'}; \texttt{Inf} means full rank is preserved.
 \item
-  \texttt{'backorderResiduals='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} {]} - Bring the identified structural residuals back in
-  original order.
+  \texttt{'backOrderResiduals='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Bring the identified structural shocks back in
+  original order after identification; works with \texttt{'reorder='}.
 \item
   \texttt{'std='} {[} numeric \textbar{} \emph{\texttt{1}} {]} - Std
   deviation of structural residuals; the resulting structural covariance

@@ -12,7 +12,7 @@ classdef VAR < varobj
     % Constructor
     % ============
     %
-    % * [`VAR`](VAR/VAR) - Create new reduced-form VAR object.
+    % * [`VAR`](VAR/VAR) - Create new, empty reduced-form VAR object.
     %
     % Getting information about VAR objects
     % ======================================
@@ -21,7 +21,7 @@ classdef VAR < varobj
     % * [`comment`](VAR/comment) - Get or set user comments in an IRIS object.
     % * [`companion`](VAR/companion) - Matrices of first-order companion VAR.
     % * [`eig`](VAR/eig) - Eigenvalues of a VAR process.
-    % * [`fprintf`](VAR/fprintf) -     
+    % * [`fprintf`](VAR/fprintf) - Write VAR model as formatted model code to text file.
     % * [`get`](VAR/get) - Query VAR object properties.
     % * [`iscompatible`](VAR/iscompatible) - True if two VAR objects can occur together on the LHS and RHS in an assignment.
     % * [`isexplosive`](VAR/isexplosive) - True if any eigenvalue is outside unit circle.
@@ -31,7 +31,7 @@ classdef VAR < varobj
     % * [`mean`](VAR/mean) - Mean of VAR process.
     % * [`nfitted`](VAR/nfitted) - Number of data points fitted in VAR estimation.
     % * [`rngcmp`](VAR/rngcmp) - True if two VAR objects have been estimated using the same dates.
-    % * [`sprintf`](VAR/sprintf) - 
+    % * [`sprintf`](VAR/sprintf) - Print VAR model as formatted model code.
     % * [`sspace`](VAR/sspace) - Quasi-triangular state-space representation of VAR.
     % * [`userdata`](VAR/userdata) - Get or set user data in an IRIS object.
     %
@@ -179,7 +179,7 @@ classdef VAR < varobj
     % Constructor.
     methods    
         function This = VAR(varargin)
-            % VAR  Create new reduced-form VAR object.
+            % VAR  Create new, empty reduced-form VAR object.
             %
             % Syntax for plain VAR
             % =====================

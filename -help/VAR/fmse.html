@@ -121,11 +121,11 @@ code.LaTeX {
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><p><code>M</code> [ numeric ] - Forecast MSE matrices.</p></li>
-<li><p><code>X</code> [ dbase | tseries ] - Database or tseries with the std deviations of individual variables, i.e. the square roots of the diagonal elements of <code>M</code>.</p></li>
+<li><p><code>X</code> [ dbase | tseries ] - Database or tseries with the std deviations of individual variables, i.e. the square roots of the corresponding diagonal elements of <code>M</code>.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'output='</code> [ <code>'dbase'</code> | <em><code>'tseries'</code></em> ] - Format of output data.</li>
+<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrix <code>M</code> as either namedmat object (matrix with named rows and columns) or plain numeric array.</li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>

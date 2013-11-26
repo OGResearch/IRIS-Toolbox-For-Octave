@@ -106,14 +106,14 @@ code.LaTeX {
 
 
 
-<h2 id="SVAR/sprintf">sprintf</h2>
-<div class="headline">Format SVAR as a model code and write to text string</div>
+<h2 id="VAR/sprintf">sprintf</h2>
+<div class="headline">Print VAR model as formatted model code</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[C,D] = sprintf(S,...)</code></pre>
+<pre><code>[C,D] = sprintf(V,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>S</code> [ SVAR ] - SVAR object that will be written as a model code.</p></li>
+<li><p><code>V</code> [ VAR ] - VAR object that will be printed as a formatted model code.</p></li>
 <li><p>Output arguments</p></li>
 <li><p><code>C</code> [ cellstr ] - Text string with the model code for each parameterisation.</p></li>
 <li><p><code>D</code> [ cell ] - Parameter database for each parameterisation; if <code>'hardParameters='</code> is true, the databases will be empty.</p></li>
@@ -122,10 +122,10 @@ code.LaTeX {
 <ul>
 <li><p><code>'decimal='</code> [ numeric | <em>empty</em> ] - Precision (number of decimals) at which the coefficients will be written if <code>'hardParameters='</code> is true; if empty, the <code>'format='</code> options is used.</p></li>
 <li><p><code>'declare='</code> [ <code>true</code> | <em><code>false</code></em> ] - Add declaration blocks and keywords for VAR variables, shocks, and equations.</p></li>
-<li><p><code>'eNames='</code> [ cellstr | char | <em>empty</em> ] - Names that will be given to the VAR residuals; if empty, the names from the SVAR object will be used.</p></li>
-<li><p><code>'format='</code> [ char | <em>'%+.16e'</em> ] - Numeric format for parameter values; it will be used only if <code>'decimal='</code> is empty.</p></li>
+<li><p><code>'eNames='</code> [ cellstr | char | <em>empty</em> ] - Names that will be given to the VAR residuals; if empty, the names from the VAR object will be used.</p></li>
+<li><p><code>'format='</code> [ char | <em>'%+.16g'</em> ] - Numeric format for parameter values; it will be used only if <code>'decimal='</code> is empty.</p></li>
 <li><p><code>'hardParameters='</code> [ <em><code>true</code></em> | <code>false</code> ] - Print coefficients as hard numbers; otherwise, create parameter names and return a parameter database.</p></li>
-<li><p><code>'yNames='</code> [ cellstr | char | <em>empty</em> ] - Names that will be given to the variables; if empty, the names from the SVAR object will be used.</p></li>
+<li><p><code>'yNames='</code> [ cellstr | char | <em>empty</em> ] - Names that will be given to the variables; if empty, the names from the VAR object will be used.</p></li>
 <li><p><code>'tolerance='</code> [ numeric | <em>getrealsmall()</em> ] - Treat VAR coefficients smaller than <code>'tolerance='</code> in absolute value as zeros; zero coefficients will be dropped from the model code.</p></li>
 </ul>
 <h4 id="description">Description</h4>

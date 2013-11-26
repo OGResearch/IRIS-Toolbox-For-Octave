@@ -1,5 +1,5 @@
 function This = prior(This,Def,PriorFunc,varargin)
-% prior  Create prior for a system property.
+% prior  Add new prior to system priors object.
 %
 % Syntax
 % =======

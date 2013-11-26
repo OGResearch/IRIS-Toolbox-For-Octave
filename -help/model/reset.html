@@ -106,23 +106,31 @@ code.LaTeX {
 
 
 
-<h2 id="SVAR/fprintf">fprintf</h2>
-<div class="headline">Format SVAR as a model code and write to text file</div>
+<h2 id="model/reset">reset</h2>
+<div class="headline">Reset specific values within model object</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[C,D] = fprintf(S,FName,...)</code></pre>
+<pre><code>M = reset(M)
+M = reset(M,Req1,Req2,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>S</code> [ SVAR ] - SVAR object that will be printed to a model file.</p></li>
-<li><p><code>FName</code> [ char | cellstr ] - Filename, or filename format string, under which the model code will be saved.</p></li>
-<li><p>Output arguments</p></li>
-<li><p><code>C</code> [ cellstr ] - Text string with the model code for each parameterisation.</p></li>
-<li><p><code>D</code> [ cell ] - Parameter databases for each parameterisation; if <code>'hardParameters='</code> true, the database will be empty.</p></li>
+<li><p><code>M</code> [ model ] - Model object in which the requested type(s) of values will be reset.</p></li>
+<li><p><code>Req1</code>, <code>Req2</code>, ... [ <code>'corr'</code> | <code>'parameters'</code> | <code>'sstate'</code> | <code>'std'</code> | <code>'stdcorr'</code> ] - Requested type(s) of values that will be reset; if omitted, everything will be reset.</p></li>
 </ul>
-<h4 id="options">Options</h4>
-<p>See help on <a href="../SVAR/sprintf.html"><code>sprintf</code></a> for options available.</p>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Model object with the requested values reset.</li>
+</ul>
 <h4 id="description">Description</h4>
+<ul>
+<li><p><code>'corr'</code> - All cross-correlation coefficients will be reset to <code>0</code>.</p></li>
+<li><p><code>'parameters'</code> - All parameters will be reset to <code>NaN</code>.</p></li>
+<li><p><code>'sstate'</code> - All steady state values will be reset to <code>NaN</code>.</p></li>
+<li><p><code>'std'</code> - All std deviations will be reset to <code>1</code> (in linear models) or <code>log(1.01)</code> (in non-linear models).</p></li>
+<li><p><code>'stdcorr'</code> - Equivalent to <code>'std'</code> and <code>'corr'</code>.</p></li>
+</ul>
 <h4 id="example">Example</h4>
+<p>-IRIS Toolbox. -Copyright (c) 2007-2013 IRIS Solutions Team.</p>
 
 </body>
 <div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>

@@ -106,23 +106,23 @@ code.LaTeX {
 
 
 
-<h2 id="VAR/lrtest">lrtest</h2>
-<div class="headline">Likelihood ratio test for VAR models</div>
+<h2 id="VAR/fprintf">fprintf</h2>
+<div class="headline">Write VAR model as formatted model code to text file</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[Stat,Crit] = lrtest(V1,V2,Level)</code></pre>
+<pre><code>[C,D] = fprintf(V,File,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>V1</code> [ VAR ] - Unrestricted VAR model.</p></li>
-<li><p><code>V2</code> [ VAR ] - Restricted VAR model.</p></li>
-<li><p><code>Level</code> [ numeric ] - Significance level; if not specified, 5 percent significance is used, <code>Level=0.05</code>.</p></li>
+<li><p><code>V</code> [ VAR ] - VAR object that will be printed to a model file.</p></li>
+<li><p><code>File</code> [ char | cellstr ] - Filename, or filename format string, under which the model code will be saved.</p></li>
+<li><p>Output arguments</p></li>
+<li><p><code>C</code> [ cellstr ] - Text string with the model code for each parameterisation.</p></li>
+<li><p><code>D</code> [ cell ] - Parameter databases for each parameterisation; if <code>'hardParameters='</code> true, the database will be empty.</p></li>
 </ul>
-<h4 id="output-arguments">Output arguments</h4>
-<ul>
-<li><p><code>Stat</code> [ numeric ] - LR test stastic.</p></li>
-<li><p><code>Crit</code> [ numeric ] - LR test critical value based on chi-square distribution.</p></li>
-</ul>
+<h4 id="options">Options</h4>
+<p>See help on <a href="../VAR/sprintf.html"><code>sprintf</code></a> for options available.</p>
 <h4 id="description">Description</h4>
+<p>For VAR objects with Na multiple alternative parameterisations, the filename <code>File</code> must be either a 1-by-Na cell array of string with a filename for each parameterisation, or a <code>sprintf</code> format string where a single occurence of <code>'%g'</code> will be replaced with the parameterisation number.</p>
 <h4 id="example">Example</h4>
 
 </body>

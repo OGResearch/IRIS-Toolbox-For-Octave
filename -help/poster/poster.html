@@ -107,27 +107,12 @@ code.LaTeX {
 
 
 <h2 id="poster/poster">poster</h2>
-<div class="headline">Posterior objects and functions</div>
+<div class="headline">Create new, empty posterior simulation (poster) object</div>
 
-<p>Posterior objects, <code>poster</code>, are used to evaluate the behaviour of the posterior dsitribution, and to draw model parameters from the posterior distibution.</p>
-<p>Posterior objects are set up within the <a href="../model/estimate.html"><code>model/estimate</code></a> function and returned as the second output argument - the set up and initialisation of the posterior object is fully automated in this case. Alternatively, you can set up a posterior object manually, by setting all its properties appropriately.</p>
-<p>Poster methods:</p>
-<h4 id="constructor">Constructor</h4>
-<ul>
-<li><a href="../poster/poster.html"><code>poster</code></a> - Posterior objects and functions.</li>
-</ul>
-<h4 id="evaluating-posterior-density">Evaluating posterior density</h4>
-<ul>
-<li><a href="../poster/arwm.html"><code>arwm</code></a> - Adaptive random-walk Metropolis posterior simulator.</li>
-<li><a href="../poster/eval.html"><code>eval</code></a> - Evaluate posterior density at specified points.</li>
-</ul>
-<h4 id="chain-statistics">Chain statistics</h4>
-<ul>
-<li><a href="../poster/stats.html"><code>stats</code></a> - Evaluate selected statistics of ARWM chain.</li>
-</ul>
-<h4 id="getting-on-line-help-on-model-functions">Getting on-line help on model functions</h4>
-<pre><code>help poster
-help poster/function_name</code></pre>
+<h4 id="syntax">Syntax</h4>
+<pre><code>P = poster()</code></pre>
+<h4 id="description">Description</h4>
+<p>Creating and initialising posterior simulation objects manually is unnecessary. Posterior simulation objects are created and initialised automatically within estimation methods of various other objects, such as <a href="../model/estimate.html"><code>model/estimate</code></a>.</p>
 
 </body>
 <div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>

@@ -50,10 +50,10 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % References
 % ===========
 %
-% # Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
+% 1. Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
 % Algorithm."
 %
-% # Hamerly and Elkan (2002) "Alternatives to the k-means algorithm that
+% 2. Hamerly and Elkan (2002) "Alternatives to the k-means algorithm that
 % find better clusterings."
 %
 

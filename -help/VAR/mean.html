@@ -117,9 +117,11 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>X</code> [ numeric ] - Mean vector.</li>
+<li><code>X</code> [ numeric ] - Asymptotic mean of the VAR variables.</li>
 </ul>
 <h4 id="description">Description</h4>
+<p>For plain VAR objects, the output argument <code>X</code> is a column vector where the k-th number is the asymptotic mean of the k-th variable, or <code>NaN</code> if the k-th variable is non-stationary (contains a unit root).</p>
+<p>In panel VAR objects (with a total of Ng groups) and/or VAR objects with multiple alternative parameterisations (with a total of Na parameterisations), <code>X</code> is an Ny-by-Ng-by-Na matrix in which the column <code>X(:,g,a)</code> is the asyptotic mean of the VAR variables in the g-th group and the a-th parameterisation.</p>
 <h4 id="example">Example</h4>
 
 </body>

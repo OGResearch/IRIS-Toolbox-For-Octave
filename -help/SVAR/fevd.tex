@@ -32,11 +32,22 @@
   into relative contributions of residuals; relative contributions sum
   up to \texttt{1}.
 \item
-  \texttt{XX} {[} tseries {]} - \texttt{X} converted to a tseries
-  object.
+  \texttt{XX} {[} tseries {]} - Database with a tseries with absolute
+  contributions in columns for each VAR variable.
 \item
-  \texttt{YY} {[} tseries {]} - \texttt{Y} converted to a tseries
-  object.
+  \texttt{YY} {[} tseries {]} - Database with a tseries with relative
+  contributions in columns for each VAR variable.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Return matrices \texttt{X} and \texttt{Y} as
+  either namedmat objects (matrices with named rows and columns) or
+  plain numeric arrays.
 \end{itemize}
 
 \paragraph{Description}\label{description}

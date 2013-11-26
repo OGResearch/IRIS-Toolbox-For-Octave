@@ -13,7 +13,7 @@
 
 \begin{itemize}
 \item
-  \texttt{M} {[} struct {]} - Model object.
+  \texttt{M} {[} model {]} - Model object.
 \item
   \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
   from which the measurement variables will be taken.
@@ -318,7 +318,7 @@ functions. The user-supplied function is expected to take at least five
 input arguments and return three output arguments:
 
 \begin{verbatim}
-[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt)
+[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,OptimSet)
 \end{verbatim}
 
 with the following input arguments:
@@ -336,9 +336,11 @@ with the following input arguments:
   \texttt{PHigh} is a 1-by-N vector of upper bounds (with \texttt{Inf}
   indicating no upper bounds);
 \item
-  \texttt{Opt} is an Optim Tbx style struct with the optimisation
-  settings (tolerance, number of iterations, etc); of course you may
-  simply ignore this information and leave the input argument unused.
+  \texttt{OptimSet} is a cell array with name-value pairs entered by the
+  user through the option \texttt{'optimSet='}. This option can be used
+  to modify various settings related to the optimisation routine, such
+  as tolerance, number of iterations, etc. Of course, you may simply
+  ignore it and leave this input argument unused;
 \end{itemize}
 
 and the following output arguments:
@@ -360,7 +362,7 @@ enter a cell array instead of a plain function handle:
 {@yourminfunc,Arg1,Arg2,...}
 \end{verbatim}
 
-In that case, the optmiser will be called the following way:
+In that case, the optimiser will be called the following way:
 
 \begin{verbatim}
 [PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt,Arg1,Arg2,...)
@@ -369,7 +371,7 @@ In that case, the optmiser will be called the following way:
 \subparagraph{User-supplied steady-state
 solver}\label{user-supplied-steady-state-solver}
 
-You can supply a function handle to your own steady state solver (i.e.~a
+You can supply a function handle to your own steady-state solver (i.e.~a
 function that finds the steady state for given parameters) through the
 \texttt{'sstate='} option.
 
@@ -380,13 +382,29 @@ path) and a success flag. The flag is \texttt{true} if the steady state
 has been successfully computed, and \texttt{false} if not:
 
 \begin{verbatim}
-[M,Success] = yoursstatesolver(M)
+[M,Success] = mysstatesolver(M)
 \end{verbatim}
 
 It is your responsibility to add the growth characteristics if some of
 the model variables drift over time. In other words, you need to take
 care of the imaginary parts of the steady state values in the model
 object returned by the solver.
+
+Alternatively, you can also run the steady-state solver with extra input
+arguments (with the model object still being the first input argument).
+In that case, you need to set the option \texttt{'sstate='} to a cell
+array with the function handle in the first cell, and the other input
+arguments afterwards, e.g.
+
+\begin{verbatim}
+'sstate=',{@mysstatesolver,1,'a',X}
+\end{verbatim}
+
+The actual function call will have the following form:
+
+\begin{verbatim}
+[M,Success] = mysstatesolver(M,1,'a',X)
+\end{verbatim}
 
 \paragraph{Example}\label{example}
 

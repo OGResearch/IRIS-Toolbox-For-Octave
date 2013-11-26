@@ -18,7 +18,7 @@ classdef model < modelobj & estimateobj
     % =================================
     %
     % * [`addparam`](model/addparam) - Add model parameters to a database (struct).
-    % * [`autocaption`](model/autocaption) - 
+    % * [`autocaption`](model/autocaption) - Create captions for graphs of model variables or parameters.
     % * [`autoexogenise`](model/autoexogenise) - Get or set variable/shock pairs for use in autoexogenised simulation plans.
     % * [`comment`](model/comment) - Get or set user comments in an IRIS object.
     % * [`eig`](model/eig) - Eigenvalues of the model transition matrix.
@@ -52,7 +52,7 @@ classdef model < modelobj & estimateobj
     % * [`export`](model/export) - Save carry-around files on the disk.
     % * [`horzcat`](model/horzcat) - Combine two compatible model objects in one object with multiple parameterisations.
     % * [`refresh`](model/refresh) - Refresh dynamic links.
-    % * [`reset`](model/reset) - 
+    % * [`reset`](model/reset) - Reset specific values within model object.
     % * [`stdscale`](model/stdscale) - Re-scale all std deviations by the same factor.
     % * [`set`](model/set) - Change modifiable model object property.
     % * [`single`](model/single) - Convert solution matrices to single precision.
