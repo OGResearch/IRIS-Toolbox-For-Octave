@@ -127,7 +127,6 @@ end
                         end
                     end
                 end
-                Flag = true ;
                 
             case 'bias'
                 Value = any2func(Value) ;
@@ -136,7 +135,6 @@ end
                         This.Params{iLayer}.Bias{iNode} = Value() ;
                     end
                 end
-                Flag = true ;
                 
             case 'transfer'
                 Value = any2func(Value) ;
@@ -145,12 +143,12 @@ end
                         This.Params{iLayer}.Transfer{iNode} = Value() ;
                     end
                 end
-                Flag = true ;
                 
             case 'param'
                 Value = any2func(Value) ;
-                X = [specget(This,'weight'); specget(This,'bias'); specget(This,'transfer')] ;
-                Flag = true ;
+                This = set(This,'weight',Value) ;
+                This = set(This,'bias',Value) ;
+                This = set(This,'transfer',Value) ;
                 
             case 'userdata'
                 This = userdata(This,Value);
