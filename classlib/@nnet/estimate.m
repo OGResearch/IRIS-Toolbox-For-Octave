@@ -1,4 +1,4 @@
-function [This,P,Obj] = estimate(This,Data,Range,varargin)
+function [This,xF,Obj] = estimate(This,Data,Range,varargin)
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
@@ -70,7 +70,7 @@ for iOpt = 1:numel(options.Estimate)
         case 'weight'
             lb = [lb; options.lbWeight*ones(This.nWeight,1)] ;
             ub = [ub; options.ubWeight*ones(This.nWeight,1)] ;
-            x0 = [x0; get(This,'weight')] ;
+            x0 = [x0; get(This,'weight')] ; %#ok<*AGROW>
 
     end
 end
@@ -83,23 +83,23 @@ if ischar(options.solver)
     %----------------------
     if strncmpi(options.solver,'fmin',4)
         if all(isinf(lb)) && all(isinf(ub))
-            [PStar,Obj] = ...
+            [xF,Obj] = ...
                 fminunc(@objfunc,x0,options.optimset, ...
                 This,InData,OutData,Range,options); %#ok<ASGLU>
         else
-            [PStar,Obj] = ...
+            [xF,Obj] = ...
                 fmincon(@objfunc,x0, ...
                 [],[],[],[],lb,ub,[],options.optimset,...
                 This,InData,OutData,Range,options); %#ok<ASGLU>
         end
     elseif strcmpi(options.solver,'lsqnonlin')
-        [PStar,Obj] = ...
+        [xF,Obj] = ...
             lsqnonlin(@objfunc,x0,lb,ub,options.optimset, ...
             This,InData,OutData,Range,options);
     elseif strcmpi(options.solver,'pso')
         % IRIS Optimization Toolbox
         %--------------------------
-        [PStar,Obj] = ...
+        [xF,Obj] = ...
             optim.pso(@objfunc,x0,[],[],[],[],...
             lb,ub,[],options.optimset,...
             This,InData,OutData,Range,options);
@@ -116,9 +116,26 @@ else
         f = options.solver{1};
         args = options.solver(2:end);
     end
-    [PStar,Obj] = ...
+    [xF,Obj] = ...
         f(@(x) objfunc(x,This,InData,OutData,Range,options), ...
         x0,lb,ub,options.optimset,args{:});
+end
+
+Xcount = 0 ;
+for iOpt = 1:numel(options.Estimate) 
+    switch options.Estimate{iOpt}
+        case 'bias'
+            This = set(This,'bias',xF(1:This.nBias)) ;
+            Xcount = This.nBias ;
+                
+        case 'transfer'
+            This = set(This,'transfer',xF(Xcount+1:Xcount+This.nTransfer)) ;
+            Xcount = Xcount + This.nTransfer ;
+            
+        case 'weight'
+            This = set(This,'weight',xF(Xcount+1:Xcount+This.nWeight)) ;
+
+    end
 end
 
 end
