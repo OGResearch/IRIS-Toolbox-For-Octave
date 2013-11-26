@@ -35,9 +35,9 @@ function [sample,lp_Sample,len] ...
 % References
 % ===========
 %
-% # Brockwell, A.E., and Kadane, J.B., 2004. "Identification of ]
-%    Regeneration Times in MCMC Simulation, with Application to Adaptive 
-%    Schemes," mimeo, Carnegie Mellon University. 
+% # Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
+% Regeneration Times in MCMC Simulation, with Application to Adaptive
+% Schemes," mimeo, Carnegie Mellon University.
 %
 % Example
 % ========
