@@ -330,22 +330,23 @@ end
         dummyIn = dummy(opt.backcast+1:end-opt.forecast,:);
         dummyFcast = dummy(end-opt.forecast+1:end,:);
         dummyBcast = dummy(1:opt.backcast,:);
-        missing = {};
         if any(isnan(dummyIn(:)))
-            missing{end+1} = 'X12';
+            utils.warning('tseries:x12', ...
+                ['Dummy variable(s) contain(s) in-sample ', ...
+                'missing observations or NaNs. ', ...
+                'The NaNs will be replaced with zeros.']);
         end
         if any(isnan(dummyFcast(:)))
-            missing{end+1} = 'forecast';
+            utils.warning('tseries:x12', ...
+                ['Dummy variable(s) contain(s) missing observations or NaNs ', ...
+                'on the forecast range. The NaNs will be replaced with zeros.']);
         end
         if any(isnan(dummyBcast(:)))
-            missing{end+1} = 'backcast';
-        end        
-        if ~isempty(missing)
-            utils.error('tseries:x12', ...
+            utils.warning('tseries:x12', ...
                 ['Dummy variable(s) contain(s) missing observations or NaNs ', ...
-                'within the %s range.'], ...
-                missing{:});
+                'on the backcast range. The NaNs will be replaced with zeros.']);
         end
+        dummy(isnan(dummy)) = 0;
     end % doChkDummy()
 
 
