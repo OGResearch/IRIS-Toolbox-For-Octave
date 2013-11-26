@@ -50,7 +50,7 @@ try
             Flag = true ;
             
         case 'param'
-            X = [specget(This,'weight'); specget(This,'bias'); specget(This,'transfer')] ;
+            X = [specget(This,'bias'); specget(This,'transfer'); specget(This,'weight')] ;
             Flag = true ;
             
         otherwise

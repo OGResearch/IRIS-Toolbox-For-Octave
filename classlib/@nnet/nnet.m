@@ -90,50 +90,78 @@ classdef nnet < userdataobj & getsetobj
         end
         
         function nInputs = get.nInputs(This)
-            nInputs = numel(This.Inputs) ;
+            persistent nInputsCache
+            if isempty(nInputsCache)
+                nInputsCache = numel(This.Inputs) ;
+            end
+            nInputs = nInputsCache ;
         end
         
         function nOutputs = get.nOutputs(This)
-            nOutputs = numel(This.Outputs) ;
+            persistent nOutputsCache
+            if isempty(nOutputsCache)
+                nOutputsCache = numel(This.Outputs) ;
+            end
+            nOutputs = nOutputsCache ;
         end
         
         function nLayer = get.nLayer(This)
-            nLayer = numel(This.HiddenLayout) ;
+            persistent nLayerCache
+            if isempty(nLayerCache)
+                nLayerCache = numel(This.HiddenLayout) ;
+            end
+            nLayer = nLayerCache ;
         end
         
         function nWeight = get.nWeight(This)
-            nWeight = 0 ;
-            for iLayer = 1:This.nLayer+2
-                if iLayer>1
-                    for iNode = 1:numel(This.Params{iLayer}.Weight)
-                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                            nWeight = nWeight + 1;
+            persistent nWeightCache
+            if isempty(nWeightCache)
+                nWeightCache = 0 ;
+                for iLayer = 1:This.nLayer+2
+                    if iLayer>1
+                        for iNode = 1:numel(This.Params{iLayer}.Weight)
+                            for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                                nWeightCache = nWeightCache + 1;
+                            end
                         end
                     end
                 end
             end
+            nWeight = nWeightCache ;
         end
         
         function nBias = get.nBias(This)
-            nBias = 0 ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Bias)
-                    nBias = nBias + 1 ;
+            persistent nBiasCache
+            if isempty(nBiasCache)
+                nBiasCache = 0 ;
+                for iLayer = 1:This.nLayer+2
+                    for iNode = 1:numel(This.Params{iLayer}.Bias)
+                        nBiasCache = nBiasCache + 1 ;
+                    end
                 end
             end
+            nBias = nBiasCache ;
         end
         
         function nTransfer = get.nTransfer(This)
-            nTransfer = 0 ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                    nTransfer = nTransfer + 1 ;
+            persistent nTransferCache
+            if isempty(nTransferCache)
+                nTransferCache = 0 ;
+                for iLayer = 1:This.nLayer+2
+                    for iNode = 1:numel(This.Params{iLayer}.Transfer)
+                        nTransferCache = nTransferCache + 1 ;
+                    end
                 end
             end
+            nTransfer = nTransferCache ;
         end
         
         function nParams = get.nParams(This)
-            nParams = This.nWeight + This.nBias + This.nTransfer ;
+            persistent nParamsCache
+            if isempty(nParamsCache)
+                nParamsCache = This.nWeight + This.nBias + This.nTransfer ;
+            end
+            nParams = nParamsCache ;
         end
         
     end

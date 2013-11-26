@@ -114,48 +114,101 @@ end
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
-        switch query
-            
-            case 'weight'
-                Value = any2func(Value) ;
-                for iLayer = 1:This.nLayer+2
-                    if iLayer>1
-                        for iNode = 1:numel(This.Params{iLayer}.Weight)
-                            for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                                This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
+        if isfunc(Value) || isnumericscalar(Value)
+            switch query
+                
+                case 'weight'
+                    Value = any2func(Value) ;
+                    for iLayer = 1:This.nLayer+2
+                        if iLayer>1
+                            for iNode = 1:numel(This.Params{iLayer}.Weight)
+                                for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                                    This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
+                                end
                             end
                         end
                     end
-                end
-                
-            case 'bias'
-                Value = any2func(Value) ;
-                for iLayer = 1:This.nLayer+2
-                    for iNode = 1:numel(This.Params{iLayer}.Bias)
-                        This.Params{iLayer}.Bias{iNode} = Value() ;
+                    
+                case 'bias'
+                    Value = any2func(Value) ;
+                    for iLayer = 1:This.nLayer+2
+                        for iNode = 1:numel(This.Params{iLayer}.Bias)
+                            This.Params{iLayer}.Bias{iNode} = Value() ;
+                        end
                     end
-                end
-                
-            case 'transfer'
-                Value = any2func(Value) ;
-                for iLayer = 1:This.nLayer+2
-                    for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                        This.Params{iLayer}.Transfer{iNode} = Value() ;
+                    
+                case 'transfer'
+                    Value = any2func(Value) ;
+                    for iLayer = 1:This.nLayer+2
+                        for iNode = 1:numel(This.Params{iLayer}.Transfer)
+                            This.Params{iLayer}.Transfer{iNode} = Value() ;
+                        end
                     end
-                end
-                
-            case 'param'
-                Value = any2func(Value) ;
-                This = set(This,'weight',Value) ;
-                This = set(This,'bias',Value) ;
-                This = set(This,'transfer',Value) ;
-                
-            case 'userdata'
-                This = userdata(This,Value);
-                
-            otherwise
-                Found = false;
-                
+                    
+                case 'param'
+                    Value = any2func(Value) ;
+                    This = set(This,'weight',Value) ;
+                    This = set(This,'bias',Value) ;
+                    This = set(This,'transfer',Value) ;
+                    
+                case 'userdata'
+                    This = userdata(This,Value);
+                    
+                otherwise
+                    Found = false;
+                    
+            end
+        else
+            % Value is a vector
+            Xcount = 0 ;
+            switch query
+                case 'bias'
+                    if This.nBias == numel(Value)
+                        for iLayer = 1:This.nLayer+2
+                            for iNode = 1:numel(This.Params{iLayer}.Bias)
+                                Xcount = Xcount + 1 ;
+                                This.Params{iLayer}.Bias{iNode} = Value(Xcount) ;
+                            end
+                        end
+                    else
+                        utils.error('nnet:set',...
+                            'Dimension mismatch.') ;
+                    end
+                    
+                case 'transfer'
+                    if This.nTransfer == numel(Value)
+                        for iLayer = 1:This.nLayer+2
+                            for iNode = 1:numel(This.Params{iLayer}.Transfer)
+                                Xcount = Xcount + 1 ;
+                                This.Params{iLayer}.Transfer{iNode} = Value(Xcount) ;
+                            end
+                        end
+                    else
+                        utils.error('nnet:set',...
+                            'Dimension mismatch.') ;
+                    end
+                    
+                case 'weight'
+                    if This.nWeight == numel(Value)
+                        for iLayer = 1:This.nLayer+2
+                            if iLayer>1
+                                for iNode = 1:numel(This.Params{iLayer}.Weight)
+                                    for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                                        Xcount = Xcount + 1 ;
+                                        This.Params{iLayer}.Weight{iNode}(iInput) = Value(Xcount) ;
+                                    end
+                                end
+                            end
+                        end
+                    else
+                        utils.error('nnet:set',...
+                            'Dimension mismatch.') ;
+                    end
+                    
+                otherwise
+                    Found = false ;
+                    
+            end
         end
         
     end % doSet().
