@@ -41,9 +41,10 @@ function [CC,RR,List] = acf(This,varargin)
 % * `'order='` [ numeric | *`0`* ] - Order up to which ACF will be
 % computed.
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `C` and
-% `R` will be either namedmat objects or plain numeric arrays; if the
-% option `'select='` is used, `'output='` is always a namedmat object.
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `C` and
+% `R` as either namedmat objects (matrices with named rows and columns) or
+% plain numeric arrays; if the option `'select='` is used, `'output='` is
+% always a namedmat object.
 %
 % * `'select='` [ cellstr | *`Inf`* ] - Return ACF for selected variables
 % only; `Inf` means all variables.
