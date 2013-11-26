@@ -4,6 +4,11 @@ classdef basefigureobj < report.tabularobj
         handle = [];
     end
     
+    events
+        openFigureWindow
+        newTempFile
+    end
+    
     methods
         
         function This = basefigureobj(varargin)

@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] Produce LaTeX code for subheading objects.
 %
 % Backend IRIS function.
@@ -9,7 +9,6 @@ function [C,Temps] = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
-Temps = {};
 % TODO: Check if `'justify='` `'centre'` works.
 
 par = This.parent;

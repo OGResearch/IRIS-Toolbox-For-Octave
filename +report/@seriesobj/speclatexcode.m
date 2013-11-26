@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] LaTeX code for report/series data.
 %
 % Backend IRIS function.
@@ -9,7 +9,6 @@ function [C,Temps] = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
-Temps = {};
 par = This.parent;
 [x,time] = getdata(This,This.data, ...
     par.options.range,This.options.colstruct);

@@ -1,4 +1,4 @@
-function [C,HelperFiles] = speclatexcode(This) %#ok<INUSD>
+function C = speclatexcode(This) %#ok<INUSD>
 % speclatexcode  [Not a public function] \LaTeX\ code for generic object.
 %
 % Backend IRIS function.
@@ -10,6 +10,5 @@ function [C,HelperFiles] = speclatexcode(This) %#ok<INUSD>
 %--------------------------------------------------------------------------
 
 C = '';
-HelperFiles = {};
 
 end

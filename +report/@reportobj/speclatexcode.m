@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] \LaTeX\ code for report object.
 %
 % Backend IRIS function.
@@ -18,7 +18,6 @@ if This.options.centering
 end
 
 C = [C,begintypeface(This)];
-Temps = {};
 nChild = length(This.children);
 
 for i = 1 : nChild
@@ -32,9 +31,8 @@ for i = 1 : nChild
     C = [C,begintypeface(ch)]; %#ok<AGROW>
     
     % Generate command-specific latex code.
-    [c,temps] = latexcode(ch);
+    c = latexcode(ch);
     C = [C,c,'%',br]; %#ok<AGROW>
-    Temps = [Temps,temps]; %#ok<AGROW>
     
     C = [C,endtypeface(ch)]; %#ok<AGROW>
     C = [C,br]; %#ok<AGROW>

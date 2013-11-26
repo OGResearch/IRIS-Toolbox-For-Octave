@@ -11,10 +11,14 @@ classdef reportobj < report.genericobj
         longTable = false;
         footnoteCounter = 0;
         tempDirName = '';
+        figureHandle = zeros(1,0);
+        tempFile = cell(1,0);
     end
     
     methods
         
+        % Constructor
+        %-------------
         function This = reportobj(varargin)
             This = This@report.genericobj(varargin{:});
             This.default = [This.default,{ ...
@@ -26,15 +30,38 @@ classdef reportobj < report.genericobj
             This.parent = [];
         end
         
+        % Destructor
+        %------------
+        function delete(This)
+            cleanup(This);
+        end
+        
         varargout = cleanup(varargin)
         varargout = merge(varargin)
         varargout = publish(varargin)
-
+        
     end
     
     methods (Access=protected,Hidden)
         varargout = speclatexcode(varargin)
+        varargout = add(varargin)
     end
+    
+    
+    methods (Hidden)
+        
+        % Event callbacks
+        %-----------------
+        function cbOpenFigureWindow(This,EventObj,~)
+            This.figureHandle(end+1) = EventObj.handle;
+        end
+        
+        function cbNewTempFile(This,~,EventData)
+            This.tempFile = [This.tempFile,EventData.data];
+        end
+
+    end
+    
     
     methods
         
@@ -52,23 +79,32 @@ classdef reportobj < report.genericobj
         end
         
         function This = figure(This,varargin)
-            if length(varargin) < 2 || ischar(varargin{2})
+            if length(varargin) == 1 || ischar(varargin{2})
                 newObj = report.figureobj(varargin{:});
                 This = add(This,newObj,varargin{2:end});
+                addlistener(newObj,'openFigureWindow', ...
+                    @This.cbOpenFigureWindow);
+                addlistener(newObj,'newTempFile', ...
+                    @This.cbNewTempFile);
             else
                 % For bkw compatibility.
+                % ##### Nov 2013 OBSOLETE and scheduled for removal.
                 utils.warning('obsolete', ...
                     ['Using report/figure for inserting existing figure ', ...
                     'windows into the report is obsolete, and this feature ', ...
                     'will be removed from IRIS in a future release. ', ...
                     'Use report/userfigure instead.']);
                 This = userfigure(This,varargin{:});
-            end                
+            end
         end
         
         function This = userfigure(This,varargin)
             newObj = report.userfigureobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
+            addlistener(newObj,'openFigureWindow', ...
+                @This.cbOpenFigureWindow);
+            addlistener(newObj,'newTempFile', ...
+                @This.cbNewTempFile);
         end
         
         function This = matrix(This,varargin)
@@ -85,12 +121,12 @@ classdef reportobj < report.genericobj
             newObj = report.texobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
         end
-
+        
         function This = texcommand(This,varargin)
             newObj = report.texcommandobj(varargin{1});
             This = add(This,newObj,varargin{2:end});
         end
-
+        
         function This = text(This,varargin)
             This = tex(This,varargin{:});
         end

@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This) %#ok<INUSD>
+function C = speclatexcode(This) %#ok<INUSD>
 % speclatexcode  [Not a public function] Produce LaTeX code for empty objects.
 %
 % Backend IRIS function.
@@ -9,7 +9,6 @@ function [C,Temps] = speclatexcode(This) %#ok<INUSD>
 
 %--------------------------------------------------------------------------
 
-Temps = {};
 C = '';
 
 end

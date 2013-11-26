@@ -122,7 +122,6 @@ classdef genericobj < handle
             end
         end
         
-        varargout = add(varargin)
         varargout = copy(varargin)
         varargout = disp(varargin)
         varargout = display(varargin)

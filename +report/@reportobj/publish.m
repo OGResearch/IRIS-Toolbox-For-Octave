@@ -1,4 +1,4 @@
-function [OutputFile,Count] = publish(This,OutputFile,varargin)
+function [OutpFile,Info] = publish(This,OutpFile,varargin)
 % publish  Help provided in +report/publish.
 
 % -IRIS Toolbox.
@@ -29,6 +29,10 @@ This.options = dbmerge(This.options,opt);
 
 %--------------------------------------------------------------------------
 
+Info = struct();
+Info.latexRun = 0;
+Info.figureHandle = [];
+
 % Create the temporary directory.
 doCreateTempDir();
 
@@ -41,27 +45,35 @@ templateFile = fullfile(thisDir,'report.tex');
 
 % Pass the publish options on to the report object and align objects
 % either of which can be a parent of figure.
-[reportCode,tempFiles] = latexcode(This);
+reportCode = latexcode(This);
+Info.figureHandle = This.figureHandle;
+
 c = file2char(templateFile);
 c = strrep(c,'$document$',reportCode);
 c = xxDocument(This,c,pkg);
 
 % Create a temporary tex name and save the LaTeX file.
-latexFileName = '';
+latexFile = '';
 doSaveLatexFile();
 
-[outputPath,outputTitle,outputExt] = fileparts(OutputFile);
+[outputPath,outputTitle,outputExt] = fileparts(OutpFile);
 if isempty(outputExt)
-    OutputFile = fullfile(outputPath,[outputTitle,'.pdf']);
+    OutpFile = fullfile(outputPath,[outputTitle,'.pdf']);
 end
 
 if opt.compile
     doCompile();
 end
 
-cleanup(This,latexFileName,tempFiles);
+[latexPath,latexTitle] = fileparts(latexFile);
+This.tempFile{end+1} = fullfile(latexPath,[latexTitle,'.*']);
 
-% Nested functions.
+if opt.cleanup
+    cleanup(This);
+end
+
+% Nested functions...
+
 
 %**************************************************************************
     function doGetListOfPkg()
@@ -72,7 +84,8 @@ cleanup(This,latexFileName,tempFiles);
         if This.longTable
             pkg{end+1} = 'longtable';
         end
-    end % doGetListOfPkg().
+    end % doGetListOfPkg()
+
 
 %**************************************************************************
     function doCreateTempDir()
@@ -91,42 +104,47 @@ cleanup(This,latexFileName,tempFiles);
                     This.tempDirName);
             end
         end
-    end % doCreateTempDir().
+    end % doCreateTempDir()
+
 
 %**************************************************************************
     function doSaveLatexFile()
-        latexFileName = [tempname(This.tempDirName),'.tex'];
-        char2file(c,latexFileName);
-    end % doSaveLatexFile().
+        latexFile = [tempname(This.tempDirName),'.tex'];
+        char2file(c,latexFile);
+    end % doSaveLatexFile()
+
 
 %**************************************************************************
     function doCompile()
         % Use try-catch to make sure the helper files are deleted at the
         % end of `publish`.
         try
-            [pdfName,Count] = ...
-                latex.compilepdf(latexFileName,compilePdfOpt{:});
-            movefile(pdfName,OutputFile);
+            [pdfName,Info.latexRun] = ...
+                latex.compilepdf(latexFile,compilePdfOpt{:});
+            movefile(pdfName,OutpFile);
         catch Error
             msg = regexprep(Error.message,'\s+',' ');
             if ~isempty(strfind(msg,'The process cannot access'))
-                cleanup(This,latexFileName,tempFiles);
+                cleanup(This);
                 utils.error('report', ...
                     ['Cannot create ''%s'' file because ', ...
                     'the file used by another process ', ...
                     '-- most likely open and locked.'], ...
-                    OutputFile);
+                    OutpFile);
             else
                 utils.warning('report', ...
                     ['Error compiling LaTeX and/or PDF files.\n', ...
                     '\tMatlab says: %s'],msg);
             end
         end
-    end % doCompile().
+    end % doCompile()
+
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function Doc = xxDocument(This,Doc,Pkg)
@@ -296,4 +314,4 @@ catch
 end
 Doc = strrep(Doc,'$clearfirstpage$',repl);
 
-end % xxDocument().
+end % xxDocument()

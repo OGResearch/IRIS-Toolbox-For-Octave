@@ -2,7 +2,6 @@ classdef userfigureobj < report.basefigureobj
     
     properties
         savefig = [];
-        figfile = '';
     end
     
     methods
@@ -23,11 +22,12 @@ classdef userfigureobj < report.basefigureobj
                         ['The input argument H into a report figure must be ' ...
                         'a valid handle to a figure window.']);
                 end
-                This.figfile = [tempname(cd()),'.fig'];
-                saveas(h,This.figfile);
-                fid = fopen(This.figfile);
+                figFile = [tempname(cd()),'.fig'];
+                saveas(h,figFile);
+                fid = fopen(figFile);
                 This.savefig = fread(fid);
                 fclose(fid);
+                delete(figFile);
             end
         end
         

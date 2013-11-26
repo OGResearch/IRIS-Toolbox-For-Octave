@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] ...
 %
 % Backend IRIS function.
@@ -10,7 +10,6 @@ function [C,Temps] = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 C = '';
-Temps = {};
 
 nChild = length(This.children);
 if nChild == 0
@@ -38,8 +37,7 @@ while ~isempty(children)
     end
     
     for i = 1 : n
-        [c1,tmp] = latexcode(objs{i});
-        Temps = [Temps,tmp]; %#ok<AGROW>
+        c1 = latexcode(objs{i});
         C = [C,br,c1]; %#ok<AGROW>
         if i < n
             C = [C,br,'&']; %#ok<AGROW>

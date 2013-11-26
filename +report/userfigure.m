@@ -39,9 +39,9 @@
 % `report/figure`: any changes or additions to the figure or its graphs
 % made after you call the function will not show in the report.
 %
-% * The report figure cannot have any children; in other words, you
+% * The userfigure cannot have any children; in other words, you
 % cannot call [`report/graph` ](report/graph) after a call to
-% `report/figure` with a graphics handle, `H`.
+% `report/userfigure`.
 %
 % Titles and subtitles
 % ---------------------

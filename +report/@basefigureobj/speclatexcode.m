@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] Produce LaTeX code for figure object.
 %
 % Backend IRIS function.
@@ -10,7 +10,6 @@ function [C,Temps] = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 C = '';
-Temps = {};
 
 % Create a figure window, and update the property `This.handle`.
 This = myplot(This);
@@ -24,8 +23,7 @@ includeGraphics = '';
 if ~isempty(This.handle) && ~isempty(get(This.handle,'children'))
     try
         rootOpt = getrootprop(This,'options');
-        [includeGraphics,temps] = mycompilepdf(This,rootOpt);
-        Temps = [Temps,temps];
+        includeGraphics = mycompilepdf(This,rootOpt);
     catch Error
         try %#ok<TRYNC>
             close(This.handle);
@@ -38,17 +36,21 @@ if ~isempty(This.handle) && ~isempty(get(This.handle,'children'))
     end
 end
 
-% Close figure window
-%---------------------
+% Close figure window or broadcast an open figure window event
+%--------------------------------------------------------------
 if ~isempty(This.handle)
     if This.options.close
         try %#ok<TRYNC>
             close(This.handle);
         end
-    elseif ~isempty(This.title)
-        % If the figure stays open, add title.
-        % TODO: Add also subtitle.
-        grfun.ftitle(This.handle,This.title);
+    else
+        % Broadcast an openFigureWindow event.
+        notify(This,'openFigureWindow');
+        if ~isempty(This.title)
+            % If the figure stays open, add title.
+            % TODO: Add also subtitle.
+            grfun.ftitle(This.handle,This.title);
+        end
     end
 end
 

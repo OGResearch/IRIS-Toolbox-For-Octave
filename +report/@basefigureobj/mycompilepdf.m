@@ -1,4 +1,4 @@
-function [InclGraph,Temps,Raise] = mycompilepdf(This,Opt)
+function InclGraph = mycompilepdf(This,Opt)
 % mycompilepdf  [Not a public function] Publish figure to PDF.
 %
 % Backend IRIS function.
@@ -9,8 +9,6 @@ function [InclGraph,Temps,Raise] = mycompilepdf(This,Opt)
 
 %--------------------------------------------------------------------------
 
-Temps = {};
-
 set(This.handle,'paperType',This.options.papertype);
 
 % Set orientation, rotation, and raise box.
@@ -18,11 +16,11 @@ if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
         || (isequal(Opt.orientation,'portrait') && This.options.sideways)
     orient(This.handle,'landscape');
     angle = -90;
-    Raise = 10;
+    raise = 10;
 else
     orient(This.handle,'tall');
     angle = 0;
-    Raise = 0;
+    raise = 0;
 end
 
 % Print figure to EPSC and PDF.
@@ -46,12 +44,14 @@ if strcmpi(This.options.figurescale,'auto')
 end
 
 InclGraph = [ ...
-    '\raisebox{',sprintf('%gpt',Raise),'}{', ...
+    '\raisebox{',sprintf('%gpt',raise),'}{', ...
     '\includegraphics[', ...
     sprintf('scale=%g,angle=%g]{%s}', ...
     This.options.figurescale,angle,graphicsTitle),'}'];
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doPrintFigure()
@@ -68,7 +68,9 @@ InclGraph = [ ...
         % Try to print figure window to EPSC.
         try
             print(This.handle,'-depsc',graphicsName);
-            Temps{end+1} = [graphicsName,'.eps'];
+            % Broadcast the new temporary file.
+            notify(This,'newTempFile', ...
+                report.eventData([graphicsName,'.eps']));
         catch Error
             utils.error('report', ...
                 ['Cannot print figure #%g to EPS file: ''%s''.\n', ...
@@ -82,7 +84,9 @@ InclGraph = [ ...
             else
                 latex.epstopdf([graphicsName,'.eps'],Opt.epstopdf);
             end
-            Temps{end+1} = [graphicsName,'.pdf'];
+            % Broadcast the new temporary file.
+            notify(This,'newTempFile', ...
+                report.eventData([graphicsName,'.pdf']));
         catch Error
             utils.error('report', ...
                 ['Cannot convert graphics EPS to PDF: ''%s''.\n', ...
