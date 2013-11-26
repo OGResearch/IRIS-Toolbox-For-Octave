@@ -149,6 +149,7 @@ classdef VAR < varobj
     end
     
     methods (Access=protected,Hidden)
+        varargout = mycompatible(varargin)
         varargout = myfitted(varargin)
         varargout = myglsqweights(varargin)
         varargout = myisvalidinpdata(varargin)

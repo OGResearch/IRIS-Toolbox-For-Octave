@@ -1,4 +1,4 @@
-function [X,Y,XX,YY] = fevd(This,Time)
+function [X,Y,XX,YY] = fevd(This,Time,varargin)
 % fevd  Forecast error variance decomposition for SVAR variables.
 %
 % Syntax
@@ -26,9 +26,18 @@ function [X,Y,XX,YY] = fevd(This,Time)
 % * `Y` [ numeric ] - Forecast error variance decomposition into relative
 % contributions of residuals; relative contributions sum up to `1`.
 %
-% * `XX` [ tseries ] - `X` converted to a tseries object.
+% * `XX` [ tseries ] - Database with a tseries with absolute contributions
+% in columns for each VAR variable.
 %
-% * `YY` [ tseries ] - `Y` converted to a tseries object.
+% * `YY` [ tseries ] - Database with a tseries with relative contributions
+% in columns for each VAR variable.
+%
+% Options
+% ========
+%
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `X` and
+% `Y` as either namedmat objects (matrices with named rows and columns) or
+% plain numeric arrays.
 %
 % Description
 % ============
@@ -40,17 +49,30 @@ function [X,Y,XX,YY] = fevd(This,Time)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-% Tell whether time is nper or range.
+opt = passvalopt('SVAR.fevd',varargin{:});
+
+% Tell whether time is `NPer` or `Range`.
 [range,nPer] = varobj.mytelltime(Time);
 
 %--------------------------------------------------------------------------
+
+X = [];
+Y = [];
+XX = struct();
+YY = struct();
+
+if isempty(This)
+    return
+end
 
 ny = size(This.A,1);
 nAlt = size(This.A,3);
 
 Phi = timedom.var2vma(This.A,This.B,nPer);
 X = cumsum(Phi.^2,3);
-Y = nan(size(X));
+if nargout > 1
+    Y = nan(size(X));
+end
 varVec = This.std .^ 2;
 for iAlt = 1 : nAlt
     for t = 1 : nPer
@@ -59,16 +81,34 @@ for iAlt = 1 : nAlt
         end
         Xsum = sum(X(:,:,t,iAlt),2);
         Xsum = Xsum(:,ones(1,ny));
-        Y(:,:,t,iAlt) = X(:,:,t,iAlt) ./ Xsum;
+        if nargout > 1
+            Y(:,:,t,iAlt) = X(:,:,t,iAlt) ./ Xsum; %#ok<AGROW>
+        end
     end
 end
 
-if nargout > 2
-    XX = tseries(range,permute(X,[3,1,2,4]));
+% Create databases `XX` and `YY` from `X` and `Y`.
+if nargout > 2 && ~isempty(This.Ynames)
+    for i = 1 : ny
+        name = This.Ynames{i};
+        c = '';
+        if ~isempty(This.Enames)
+            c = utils.concomment(name,This.Enames);
+        end
+        XX.(name) = tseries(range,permute(X(i,:,:,:),[3,2,4,1]),c);
+        if nargout > 3
+            YY.(name) = tseries(range,permute(Y(i,:,:,:),[3,2,4,1]),c);
+        end
+    end
 end
 
-if nargout > 3
-    YY = tseries(range,permute(Y,[3,1,2,4]));
+% Convert `X` and `Y` to namedmat objects if requested by the user.
+if strcmpi(opt.output,'namedmat') ...
+        && ~isempty(This.Ynames) && ~isempty(This.Enames)
+    X = namedmat(X,This.Ynames,This.Enames);
+    if nargout > 1
+        Y = namedmat(Y,This.Ynames,This.Enames);
+    end
 end
 
 end

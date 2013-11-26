@@ -176,6 +176,7 @@ classdef SVAR < VAR & svarobj
     end
     
     methods (Access=protected,Hidden)
+        varargout = mycompatible(varargin)
         varargout = mysubsalt(varargin)
         specdisp(varaargin)
     end

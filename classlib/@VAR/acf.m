@@ -34,6 +34,10 @@ function [C,Q] = acf(This,varargin)
 % * `'order='` [ numeric | *`0`* ] - Order up to which ACF will be
 % computed.
 %
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `C` and
+% `R` as either namedmat objects (matrices with named rows and columns) or
+% plain numeric arrays.
+%
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
 % window.
 %

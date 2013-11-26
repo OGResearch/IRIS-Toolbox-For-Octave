@@ -33,14 +33,15 @@ end
 % Std dev of structural residuals requested by the user.
 This.std(1,:) = Opt.std(1,ones(1,nAlt));
 
+This.method = cell(1,nAlt);
 B = zeros(ny,ny,nAlt);
 Count = 1;
 switch lower(Opt.method)
     case 'chol'
-        This.method = 'Cholesky';
+        This.method(:) = {'Cholesky'};
         doReorder();
-        for ialt = 1 : nAlt
-            B(:,:,ialt) = chol(Omg(:,:,ialt)).';
+        for iAlt = 1 : nAlt
+            B(:,:,iAlt) = chol(Omg(:,:,iAlt)).';
         end
         if Opt.std ~= 1
             B = B / Opt.std;
@@ -48,17 +49,17 @@ switch lower(Opt.method)
         doBackOrder();
         doConvertResid();
     case 'qr'
-        This.method = 'QR';
+        This.method(:) = {'QR'};
         doReorder();
         C = sum(A,3);
-        for ialt = 1 : nAlt
-            B0 = transpose(chol(Omg(:,:,ialt)));
-            if rank(C(:,:,1,ialt)) == ny
-                Q = qr(transpose(C(:,:,1,ialt)\B0));
+        for iAlt = 1 : nAlt
+            B0 = transpose(chol(Omg(:,:,iAlt)));
+            if rank(C(:,:,1,iAlt)) == ny
+                Q = qr(transpose(C(:,:,1,iAlt)\B0));
             else
-                Q = qr(transpose(pinv(C(:,:,1,ialt))*B0));
+                Q = qr(transpose(pinv(C(:,:,1,iAlt))*B0));
             end
-            B(:,:,ialt) = B0*Q;
+            B(:,:,iAlt) = B0*Q;
         end
         if Opt.std ~= 1
             B = B / Opt.std;
@@ -66,16 +67,16 @@ switch lower(Opt.method)
         doBackOrder();
         doConvertResid();
     case 'svd'
-        This.method = 'SVD';
+        This.method(:) = {'SVD'};
         q = Opt.rank;
         [B,e] = covfun.orthonorm(Omg,q,Opt.std,e);
         % Recompute covariance matrix of reduced-form residuals if it is
         % reduced rank.
         if q < ny
             var = Opt.std .^ 2;
-            for ialt = 1 : nAlt
-                This.Omega(:,:,ialt) = ...
-                    B(:,1:q,ialt)*B(:,1:q,ialt)'*var;
+            for iAlt = 1 : nAlt
+                This.Omega(:,:,iAlt) = ...
+                    B(:,1:q,iAlt)*B(:,1:q,iAlt)'*var;
             end
             % Cannot produce structural residuals for reduced-rank cov matrix.
             Data = [];
@@ -84,7 +85,7 @@ switch lower(Opt.method)
             doConvertResid();
         end
     case 'householder'
-        This.method = 'Householder';
+        This.method(:) = {'Householder'};
         % Use Householder transformations to draw random SVARs. Test each SVAR
         % using teh `'test='` string to decide whether to keep it or discard.
         if nAlt > 1

@@ -3,7 +3,7 @@ classdef svarobj
     properties
         B = []; % Coefficient matrix in front of structural residuals.
         std = []; % Std dev of structural residuals.
-        method = ''; % Identification method.
+        method = {}; % Identification method.
     end
     
     methods
@@ -33,6 +33,7 @@ classdef svarobj
     end
     
     methods(Access=protected,Hidden)
+        varargout = mycompatible(varargin)
         varargout = myparsetest(varargin)
         varargout = mysubsalt(varargin)
         specdisp(varargin)

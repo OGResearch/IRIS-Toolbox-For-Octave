@@ -11,9 +11,11 @@ function specdisp(This)
 
 fprintf('\tidentification: ');
 if ~isempty(This.method)
-    fprintf('''%s''\n',This.method);
+    u = unique(This.method);
+    fprintf('%s',strfun.displist(u));
 else
-    fprintf('''''\n');
+    fprintf('empty');
 end
-    
+fprintf('\n');
+
 end

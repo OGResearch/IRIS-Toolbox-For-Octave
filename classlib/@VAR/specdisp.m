@@ -1,4 +1,4 @@
-function specdisp(This) %#ok<INUSD>
+function specdisp(This)
 % specdisp  [Not a public function] Subclass specific disp line.
 %
 % Backend IRIS function.
@@ -8,5 +8,13 @@ function specdisp(This) %#ok<INUSD>
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
+
+fprintf('\tinstruments: ');
+if isempty(This.inames)
+    fprintf('empty');
+else
+    fprintf('%s',strfun.displist(This.inames));
+end
+fprintf('\n');
 
 end

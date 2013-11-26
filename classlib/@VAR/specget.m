@@ -72,7 +72,7 @@ switch lower(Query)
     case {'zi'}
         % The constant term comes first in Zi, but comes last in user
         % inputs/outputs.
-        X = [This.Zi(:,2:end,:),This.Zi(:,1,:)];
+        X = [This.Zi(:,2:end),This.Zi(:,1)];
     case 'ny'
         X = size(This.A,1);
     case 'ne'

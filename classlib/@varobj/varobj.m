@@ -31,7 +31,6 @@ classdef varobj < userdataobj & getsetobj
     
     methods (Hidden)
         disp(varargin)
-        varargout = mycompatible(varargin)
         varargout = mydatarequest(varargin)
         varargout = myinpdata(varargin)
         varargout = myoutpdata(varargin)
@@ -41,6 +40,7 @@ classdef varobj < userdataobj & getsetobj
     
     
     methods (Access=protected,Hidden)
+        varargout = mycompatible(varargin)
         varargout = myenames(varargin)
         varargout = mygroupnames(varargin)
         varargout = mynalt(varargin)

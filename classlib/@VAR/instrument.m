@@ -171,7 +171,9 @@ This.ieqtn = [This.ieqtn,List];
 % The constant term is placed first in Zi, but last in user inputs/outputs.
 This.Zi = [This.Zi;[C,Z]];
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doParseNameExprn()
@@ -197,7 +199,8 @@ This.Zi = [This.Zi;[C,Z]];
                 'for conditioning instruments: ''%s''.'], ...
                 List{~valid});
         end
-    end % doParseNameExprn().
+    end % doParseNameExprn()
+
 
 %**************************************************************************
     function doXVector()
@@ -207,23 +210,32 @@ This.Zi = [This.Zi;[C,Z]];
             temp = regexprep(This.Ynames,'.*',['$0',time]);
             xVector = [xVector,temp]; %#ok<AGROW>
         end
-    end % doXVector().
+    end % doXVector()
+
 
 %**************************************************************************
     function doChkNames()
-        validName = true(1,nName);
-        chkList = [This.Ynames,Name];
+        isUnique = true(1,nName);
+        isValid = true(1,nName);
+        chkList = [This.Ynames,This.inames];
         for ii = 1 : nName
-            validName(ii) = isvarname(Name{ii}) ...
-                && sum(strcmp(Name{ii},chkList)) == 1;
+            isUnique(ii) = ~any(strcmp(Name{ii},chkList));
+            isValid(ii) = isvarname(Name{ii});
         end
-        if any(~validName)
+        if any(~isUnique)
+            utils.error('VAR', ...
+                ['This name already exists ', ...
+                'in the ',class(This),' object: ''%s''. '], ...
+                Name{~isUnique});            
+        end
+        if any(~isValid)
             utils.error('VAR', ...
                 ['This is not a valid name ', ...
                 'for conditioning instruments: ''%s''.'], ...
-                Name{~validName});
+                Name{~isValid});
         end
-    end % dochknames().
+    end % doChkNames()
+
 
 %**************************************************************************
     function doChkExprn()
@@ -234,6 +246,7 @@ This.Zi = [This.Zi;[C,Z]];
                 'is invalid: ''%s''.'], ...
                 Name{~validexprs});
         end
-    end % doChkExprn().
+    end % doChkExprn()
+
 
 end
