@@ -1,4 +1,4 @@
-classdef model < modelobj & userdataobj & estimateobj & getsetobj
+classdef model < modelobj & estimateobj
     % model  Model objects and functions.
     %
     % Model objects are created by loading a [model file](modellang/Contents).
@@ -489,9 +489,7 @@ classdef model < modelobj & userdataobj & estimateobj & getsetobj
             
             % Superclass constructors.
             This = This@modelobj();
-            This = This@userdataobj();
             This = This@estimateobj();
-            This = This@getsetobj();
             
             if nargin == 0
                 % Empty model object.

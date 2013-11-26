@@ -1,4 +1,4 @@
-classdef modelobj
+classdef modelobj < getsetobj & userdataobj
     % modelobj  [Not a public class] Base class for model type of objects.
     %
     % Backend IRIS class.
@@ -47,6 +47,8 @@ classdef modelobj
         % Constructor
         %-------------
         function This = modelobj(varargin)
+            This = This@getsetobj();
+            This = This@userdataobj();
         end
         
     end
