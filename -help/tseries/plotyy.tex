@@ -1,0 +1,80 @@
+
+
+    \filetitle{plotyy}{Line plot function with LHS and RHS axes for time series}{tseries/plotyy}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Ax,Lhs,Rhs,Range] = plotyy(X,Y,...)
+[Ax,Lhs,Rhs,Range] = plotyy(Range,X,Y,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+  be plotted and labelled on the LHS.
+\item
+  \texttt{Y} {[} tseries {]} - Input tseries object whose columns will
+  be plotted and labelled on the RHS.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handles to the LHS and RHS axes.
+\item
+  \texttt{Lhs} {[} numeric {]} - Handles to series plotted on the LHS
+  axis.
+\item
+  \texttt{Rhs} {[} numeric {]} - Handles to series plotted on the RHS
+  axis.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'conincident='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Make the LHS and RHS y-axis grids
+  coincident.
+\item
+  \texttt{'dateFormat='} {[} char \textbar{}
+  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+  on the x-axis.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the x-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} - Five
+  letters to represent the five date frequencies (yearly, half-yearly,
+  quarterly, bi-monthly, and monthly).
+\item
+  \texttt{'lhsPlotFunc='} {[} @area \textbar{} @bar \textbar{} *@plot*
+  \textbar{} @stem {]} - Function that will be used to plot the LHS
+  data.
+\item
+  \texttt{'lhsTight='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Make the LHS y-axis tight.
+\item
+  \texttt{'rhsPlotFunc='} {[} @area \textbar{} @bar \textbar{} *@plot*
+  \textbar{} @stem {]} - Function that will be used to plot the RHS
+  data.
+\item
+  \texttt{'rhsTight='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Make the RHS y-axis tight.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

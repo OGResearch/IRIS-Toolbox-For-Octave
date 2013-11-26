@@ -1,0 +1,49 @@
+
+
+    \filetitle{portest}{Portmanteau test for autocorrelation in VAR residuals}{VAR/portest}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Stat,Crit] = portest(V,Data,H)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR \textbar{} swar {]} - Estimated VAR from which the
+  tested residuals were obtained.
+\item
+  \texttt{Data} {[} tseries {]} - VAR residuals, or VAR output data
+  including residuals, to be tested for autocorrelation.
+\item
+  \texttt{H} {[} numeric {]} - Test horizon; must be greater than the
+  order of the tested VAR.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Stat} {[} numeric {]} - Portmanteau test statistic.
+\item
+  \texttt{Crit} {[} numeric {]} - Portmanteau test critical value based
+  on chi-square distribution.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'level='} {[} numeric \textbar{} \emph{\texttt{0.05}} {]} -
+  Requested significance level for computing the criterion
+  \texttt{Crit}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+
