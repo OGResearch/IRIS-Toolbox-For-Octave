@@ -12,7 +12,7 @@ function This = set(This,varargin)
 %
 % * `M` [ nnet ] - Neural network model object.
 %
-% * `Request` [ char ] - Name of a modifiable neural network model object 
+% * `Request` [ char ] - Name of a modifiable neural network model object
 % property that will be changed.
 %
 % * `Value` [ ... ] - Value to which the property will be set.
@@ -20,7 +20,7 @@ function This = set(This,varargin)
 % Output arguments
 % =================
 %
-% * `M` [ nnet ] - Neural network model object with the requested 
+% * `M` [ nnet ] - Neural network model object with the requested
 % property or properties modified.
 %
 % Valid requests to neural network model objects
@@ -28,9 +28,9 @@ function This = set(This,varargin)
 %
 % Equation labels and aliases
 % ----------------------------
-% 
-% * `'weight='`, `'bias='`, `'transfer='` [ numeric | function_handle ] 
-% - Change values of different classes of parameters. 
+%
+% * `'weight='`, `'bias='`, `'transfer='` [ numeric | function_handle ]
+% - Change values of different classes of parameters.
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
@@ -43,6 +43,45 @@ pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
 
 %--------------------------------------------------------------------------
 
+% If Params doesn't exist, create it (relevant for @nnet constructor)
+if isempty(This.Params)
+    This.Params ...
+        = cellfun(@(x) struct(), cell(This.nLayer+2,1), 'UniformOutput', false) ;
+    
+    % No weighting possible at input nodes
+    This.Params{1}.Bias ...
+        = cellfun(any2func(NaN), cell(This.nInputs,1), 'UniformOutput', false) ;
+    This.Params{1}.Transfer ...
+        = cellfun(any2func(NaN), cell(This.nInputs,1), 'UniformOutput', false) ;
+    
+    % First nodes weight inputs
+    This.Params{2}.Weight ...
+        = cellfun(any2func(NaN(This.nInputs,1)), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
+    This.Params{2}.Bias ...
+        = cellfun(any2func(NaN), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
+    This.Params{2}.Transfer ...
+        = cellfun(any2func(NaN), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
+    
+    % Subsequent nodes weight outputs of previous layer
+    for iLayer = 2:This.nLayer
+        This.Params{iLayer+1}.Weight ...
+            = cellfun(any2func(NaN(This.HiddenLayout(iLayer-1),1)), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
+        This.Params{iLayer+1}.Bias ...
+            = cellfun(any2func(NaN), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
+        This.Params{iLayer+1}.Transfer ...
+            = cellfun(any2func(NaN), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
+    end
+    
+    % Output nodes weight outputs of last layer
+    This.Params{end}.Weight ...
+        = cellfun(any2func(NaN(This.HiddenLayout(end),1)), cell(This.nOutputs,1), 'UniformOutput', false) ;
+    This.Params{end}.Bias ...
+        = cellfun(any2func(NaN), cell(This.nOutputs,1), 'UniformOutput', false) ;
+    This.Params{end}.Transfer ...
+        = cellfun(any2func(NaN), cell(This.nOutputs,1), 'UniformOutput', false) ;
+end
+
+% Body
 varargin(1:2:end-1) = strtrim(varargin(1:2:end-1));
 nArg = length(varargin);
 found = true(1,nArg);
@@ -69,22 +108,66 @@ end
 % Subfunctions.
 
 %**************************************************************************
-    function [Found,Validated] = doSet(UsrQuery,Value)
+    function [Found,Validated,iLayer] = doSet(UsrQuery,Value)
         
         Found = true;
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
         switch query
+            
+            case 'weight'
+                Value = any2func(Value) ;
+                for iLayer = 1:This.nLayer+2
+                    if iLayer>1
+                        for iNode = 1:numel(This.Params{iLayer}.Weight)
+                            for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                                This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
+                            end
+                        end
+                    end
+                end
+                Flag = true ;
+                
+            case 'bias'
+                Value = any2func(Value) ;
+                for iLayer = 1:This.nLayer+2
+                    for iNode = 1:numel(This.Params{iLayer}.Bias)
+                        This.Params{iLayer}.Bias{iNode} = Value() ;
+                    end
+                end
+                Flag = true ;
+                
+            case 'transfer'
+                Value = any2func(Value) ;
+                for iLayer = 1:This.nLayer+2
+                    for iNode = 1:numel(This.Params{iLayer}.Transfer)
+                        This.Params{iLayer}.Transfer{iNode} = Value() ;
+                    end
+                end
+                Flag = true ;
+                
+            case 'param'
+                Value = any2func(Value) ;
+                X = [specget(This,'weight'); specget(This,'bias'); specget(This,'transfer')] ;
+                Flag = true ;
                 
             case 'userdata'
                 This = userdata(This,Value);
-                                
+                
             otherwise
                 Found = false;
                 
         end
         
     end % doSet().
+
+    function fh = any2func(in)
+        if isfunc(in)
+            fh = in ;
+        else
+            fh = @(x) in ;
+        end
+    end
 
 end

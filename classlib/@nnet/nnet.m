@@ -73,52 +73,9 @@ classdef nnet < userdataobj & getsetobj
             This.Type = options.Type ;
             
             % *** Construct initial parameters ***
-            myStruct = struct() ;
-            
-            % No weighting possible at input nodes
-            This.Params ...
-                = cellfun(@(x) myStruct, cell(This.nLayer+2,1), 'UniformOutput', false) ;
-            This.Params{1}.Bias ...
-                = cellfun(any2func(options.initBias), cell(This.nInputs,1), 'UniformOutput', false) ;
-            This.Params{1}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.nInputs,1), 'UniformOutput', false) ;
-            
-            % First nodes weight inputs
-            initW = cell2mat(arrayfun(any2func(options.initWeight), ones(This.nInputs,1), 'UniformOutput', false)) ;
-            This.Params{2}.Weight ...
-                = cellfun(@(x) initW, cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-            This.Params{2}.Bias ...
-                = cellfun(any2func(options.initWeight), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-            This.Params{2}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-            
-            % Subsequent nodes weight outputs of previous layer
-            for iLayer = 2:This.nLayer
-                initW = ones(This.HiddenLayout(iLayer-1),1) ;
-                This.Params{iLayer+1}.Weight ...
-                    = cellfun(@(x) initW, cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-                This.Params{iLayer+1}.Bias ...
-                    = cellfun(any2func(options.initWeight), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-                This.Params{iLayer+1}.Transfer ...
-                    = cellfun(any2func(options.initTransfer), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-            end
-            
-            % Output nodes weight outputs of last layer
-            initW = ones(This.HiddenLayout(end),1) ;
-            This.Params{end}.Weight ...
-                = cellfun(@(x) initW, cell(This.nOutputs,1), 'UniformOutput', false) ;
-            This.Params{end}.Bias ...
-                = cellfun(any2func(options.initBias), cell(This.nOutputs,1), 'UniformOutput', false) ;
-            This.Params{end}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.nOutputs,1), 'UniformOutput', false) ;
-            
-            function fh = any2func(in)
-                if isfunc(in)
-                    fh = in ;
-                else
-                    fh = @(x) in ;
-                end
-            end
+            This = set(This,'weight',options.initWeight) ;
+            This = set(This,'bias',options.initBias) ;
+            This = set(This,'transfer',options.initTransfer) ;
         end
         
         varargout = disp(varargin) ;
