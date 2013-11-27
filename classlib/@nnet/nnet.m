@@ -82,7 +82,9 @@ classdef nnet < userdataobj & getsetobj
         varargout = size(varargin) ;
         varargout = datarequest(varargin) ;
         varargout = set(varargin) ;
-        
+        varargout = aeq(varargin) ;
+        varargout = horzcat(varargin) ;
+        varargout = vertcat(varargin) ;
         
         % Dependent methods
         function nAlt = get.nAlt(This)
