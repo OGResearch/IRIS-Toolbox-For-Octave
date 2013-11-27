@@ -115,7 +115,8 @@
 % * `.figureHandle` -- a vector of figure window handles created during the
 % report production process, and not closed (i.e. still existing in the
 % Matlab workspace); to keep figure windows open, use the figure object
-% option `'close=' false`.
+% option `'close=' false`. If all `figure` and `userfigure` objects inside
+% a report have `'close=' true` then `Info.figureHandle` will be empty.
 %
 % Example
 % ========

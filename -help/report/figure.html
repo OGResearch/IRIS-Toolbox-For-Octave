@@ -123,7 +123,7 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - LaTeX format commands for typesetting the figure caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
-<li><p><code>'close='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) Close Matlab the underlying figure window when finished.</p></li>
+<li><p><code>'close='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) Close the underlying figure window when finished; see Description.</p></li>
 <li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inheritable from parent objects) LaTeX commands that will be inserted after the figure.</p></li>
 <li><p><code>'figureOptions='</code> [ cell | <em>empty</em> ] - Figure options that will be applied to the figure handle after all graphs are drawn.</p></li>
 <li><p><code>'figureScale='</code> [ numeric | <em><code>0.85</code></em> ] - (Inheritable from parent objects) Scale of the figure in the LaTeX document.</p></li>
@@ -145,6 +145,8 @@ code.LaTeX {
 <h5 id="titles-and-subtitles">Titles and subtitles</h5>
 <p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
 <p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
+<h5 id="figure-handle">Figure handle</h5>
+<p>If the option <code>'close='</code> is set to <code>false</code> the figure window will remain open after the report is published. The handle to this figure window will be included in the field <code>.figureHandle</code> of the information struct <code>Info</code> returned by <a href="../report/publish.html"><code>report/publish</code></a>.</p>
 <h4 id="example">Example</h4>
 
 </body>

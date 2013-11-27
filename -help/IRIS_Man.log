@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  26 NOV 2013 13:34
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  27 NOV 2013 09:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6687,7 +6687,7 @@ ad-ing style struc-ture to the fig-ure; see [][]\T1/cmtt/m/n/10 qstyle[][][]\T1
 /ccr/m/n/10 . 
  []
 
-[386]) (./report/findall.tex) (./report/graph.tex [387]
+[386]) (./report/findall.tex [387]) (./report/graph.tex
 Overfull \hbox (8.4991pt too wide) in paragraph at lines 30--34
 []\T1/cmtt/m/n/10 'dateFormat=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-b
 le) Date for-mat string, see help on [][]\T1/cmtt/m/n/10 dat2str[][][]\T1/ccr/m
@@ -6698,13 +6698,14 @@ le) Date for-mat string, see help on [][]\T1/cmtt/m/n/10 dat2str[][][]\T1/ccr/m
 (./report/matrix.tex
 LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <8> not available
 (Font)              Font shape `T1/cmr/bx/n' tried instead on input line 34.
+ [392]
 LaTeX Font Info:    Font shape `OMS/ccr/bx/n' in size <12> not available
 (Font)              Font shape `OMS/ccsy/b/n' tried instead on input line 38.
 LaTeX Font Info:    Font shape `OMS/ccsy/b/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 38.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 38.
- [392]
+
 Overfull \hbox (20.62538pt too wide) in paragraph at lines 62--66
 []\T1/cmtt/m/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble fro
 m par-ent ob-jects) L[]T[]X string
@@ -6724,7 +6725,7 @@ e from par-ent ob-jects) L[]T[]X string
 
 [393] [394]) (./report/merge.tex [395]) (./report/modelfile.tex [396])
 (./report/new.tex [397]) (./report/pagebreak.tex) (./report/publish.tex
-[398] [399]) (./report/section.tex [400]) (./report/series.tex [401] [402]
+[398] [399] [400]) (./report/section.tex) (./report/series.tex [401] [402]
 [403] [404]) (./report/subheading.tex [405]) (./report/table.tex [406]
 Overfull \hbox (7.36136pt too wide) in paragraph at lines 61--67
 []\T1/cmtt/m/n/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
@@ -6738,34 +6739,29 @@ Overfull \hbox (18.92326pt too wide) in paragraph at lines 118--127
 tes for-mated us-ing the op-tion \T1/cmtt/m/n/10 'dateFormat='\T1/ccr/m/n/10 .
  []
 
-[408]) (./report/tex.tex [409]) (./report/userfigure.tex [410]
-Overfull \hbox (5.5011pt too wide) in paragraph at lines 47--50
-[]\T1/ccr/m/n/10 The re-port fig-ure can-not have any chil-dren; in other words
-, you can-not call [][]\T1/cmtt/m/n/10 report/graph[][][]
- []
-
-) (./report/vline.tex [411]) [412] (./qreportlang/Contents.tex)
-(./qreportlang/figure.tex) (./qreportlang/linegraph.tex [413
+[408]) (./report/tex.tex [409]) (./report/userfigure.tex [410] [411])
+(./report/vline.tex [412]) [413] (./qreportlang/Contents.tex)
+(./qreportlang/figure.tex) (./qreportlang/linegraph.tex [414
 
 ])
-(./qreportlang/blank.tex) (./qreportlang/bargraph.tex [414])
+(./qreportlang/blank.tex) (./qreportlang/bargraph.tex [415])
 (./qreportlang/histgraph.tex) (./qreportlang/errorbargraph.tex)
-(./qreportlang/stemgraph.tex [415]) (./qreportlang/subplot.tex [416])
-(./qreportlang/linebreak.tex) (./qreportlang/subtitle.tex) [417]
-(./qreport/Contents.tex) (./qreport/qplot.tex [418
+(./qreportlang/stemgraph.tex [416]) (./qreportlang/subplot.tex [417])
+(./qreportlang/linebreak.tex) (./qreportlang/subtitle.tex) [418]
+(./qreport/Contents.tex) (./qreport/qplot.tex [419
 
-] [419])
-(./qreport/qstyle.tex [420]) [421] (./grfun/Contents.tex)
-(./grfun/bottomlegend.tex [422
+] [420])
+(./qreport/qstyle.tex [421]) [422] (./grfun/Contents.tex)
+(./grfun/bottomlegend.tex [423
 
 ]) (./grfun/ftitle.tex) (./grfun/highlight.tex
-[423]) (./grfun/maxfigure.tex [424]) (./grfun/movetobkg.tex [425])
-(./grfun/movetosubplot.tex) (./grfun/plotcircle.tex [426]) (./grfun/plotmat.tex
-[427]) (./grfun/plotneigh.tex [428] [429]) (./grfun/plotpp.tex [430] [431])
-(./grfun/vline.tex [432]) (./grfun/zeroline.tex) (./grfun/hline.tex [433]))
+[424]) (./grfun/maxfigure.tex [425]) (./grfun/movetobkg.tex [426])
+(./grfun/movetosubplot.tex) (./grfun/plotcircle.tex [427]) (./grfun/plotmat.tex
+[428]) (./grfun/plotneigh.tex [429] [430]) (./grfun/plotpp.tex [431] [432])
+(./grfun/vline.tex [433]) (./grfun/zeroline.tex) (./grfun/hline.tex [434]))
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 134.
 
-[434]
+[435]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 134.
  (./IRIS_Man.aux (./Contents/sessions.aux) (./Contents/models.aux)
 (./Contents/VARs.aux) (./Contents/data.aux) (./Contents/reporting.aux))
@@ -6782,10 +6778,10 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 134.
  ) 
 Here is how much of TeX's memory you used:
- 12878 strings out of 493315
- 184502 string characters out of 6137904
- 235365 words of memory out of 5000000
- 11127 multiletter control sequences out of 15000+600000
+ 12885 strings out of 493315
+ 184617 string characters out of 6137904
+ 235517 words of memory out of 5000000
+ 11130 multiletter control sequences out of 15000+600000
  22911 words of font info for 53 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  29i,12n,33p,782b,453s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -6819,10 +6815,10 @@ l/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sform8.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/cm-super/sfoti10.pfb></usr/local/texli
 ve/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive
 /2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on IRIS_Man.pdf (434 pages, 1145916 bytes).
+Output written on IRIS_Man.pdf (435 pages, 1148462 bytes).
 PDF statistics:
- 8295 PDF objects out of 8907 (max. 8388607)
- 7693 compressed objects within 77 object streams
- 3899 named destinations out of 4296 (max. 500000)
+ 8306 PDF objects out of 8907 (max. 8388607)
+ 7702 compressed objects within 78 object streams
+ 3903 named destinations out of 4296 (max. 500000)
  3425 words of extra memory for PDF output out of 10000 (max. 10000000)
 

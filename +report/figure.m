@@ -31,8 +31,8 @@
 % format commands for typesetting the figure caption; the subcaption format
 % can be entered as the second cell in a cell array.
 %
-% * `'close='` [ *`true`* | `false` ] - (Inheritable from parent objects) Close
-% Matlab the underlying figure window when finished.
+% * `'close='` [ *`true`* | `false` ] - (Inheritable from parent objects)
+% Close the underlying figure window when finished; see Description.
 %
 % * `'separator='` [ char | *`'\medskip\par'`* ] - (Inheritable from parent
 % objects) LaTeX commands that will be inserted after the figure.
@@ -89,6 +89,14 @@
 % LaTeX commands wrapped in curly brackets: `{\\}` or `{\\[Xpt]}`, where
 % `X` is the width of an extra vertical space (in points) added between the
 % respective lines.
+%
+% Figure handle
+% --------------
+%
+% If the option `'close='` is set to `false` the figure window will remain
+% open after the report is published. The handle to this figure window will
+% be included in the field `.figureHandle` of the information struct `Info`
+% returned by [`report/publish`](report/publish).
 %
 % Example
 % ========

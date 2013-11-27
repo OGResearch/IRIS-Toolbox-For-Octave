@@ -125,11 +125,14 @@ code.LaTeX {
 <p>The function <code>report/userfigure</code> inserts an existing figure window (created by the user by standard Matlab commands, and referenced by its handle, <code>H</code>) into a report:</p>
 <ul>
 <li><p>The figure and the graphs in it must be created <em>before</em> you call <code>report/figure</code>: any changes or additions to the figure or its graphs made after you call the function will not show in the report.</p></li>
-<li><p>The report figure cannot have any children; in other words, you cannot call <a href="../report/graph.html"><code>report/graph</code></a> after a call to <code>report/figure</code> with a graphics handle, <code>H</code>.</p></li>
+<li><p>The userfigure cannot have any children; in other words, you cannot call <a href="../report/graph.html"><code>report/graph</code></a> after a call to <code>report/userfigure</code>.</p></li>
 </ul>
 <h5 id="titles-and-subtitles">Titles and subtitles</h5>
 <p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
 <p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
+<h5 id="figure-window-and-figure-handle">Figure window and figure handle</h5>
+<p>The figure <code>H</code> is saved to a <code>fig</code> file and stored within the report object. At the time of publishing the report, the figure is re-created again in a new separate window.</p>
+<p>If the option <code>'close='</code> is set to <code>false</code> this new figure window will remain open after the report is published. The handle to this figure window will be included in the field <code>.figureHandle</code> of the information struct <code>Info</code> returned by <a href="../report/publish.html"><code>report/publish</code></a>.</p>
 <h4 id="example">Example</h4>
 
 </body>

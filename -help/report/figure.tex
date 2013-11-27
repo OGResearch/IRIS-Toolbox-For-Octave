@@ -44,8 +44,8 @@ P.figure(Caption,H,...)
   subcaption format can be entered as the second cell in a cell array.
 \item
   \texttt{'close='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - (Inheritable from parent objects) Close Matlab the underlying
-  figure window when finished.
+  {]} - (Inheritable from parent objects) Close the underlying figure
+  window when finished; see Description.
 \item
   \texttt{'separator='} {[} char \textbar{}
   \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
@@ -115,6 +115,14 @@ LaTeX commands wrapped in curly brackets:
 \texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
 is the width of an extra vertical space (in points) added between the
 respective lines.
+
+\subparagraph{Figure handle}\label{figure-handle}
+
+If the option \texttt{'close='} is set to \texttt{false} the figure
+window will remain open after the report is published. The handle to
+this figure window will be included in the field \texttt{.figureHandle}
+of the information struct \texttt{Info} returned by
+\href{report/publish}{\texttt{report/publish}}.
 
 \paragraph{Example}\label{example}
 

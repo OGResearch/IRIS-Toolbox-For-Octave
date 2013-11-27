@@ -2005,239 +2005,242 @@
 \contentsline {paragraph}{Generic options}{386}{section*.2336}
 \contentsline {paragraph}{Description}{387}{section*.2337}
 \contentsline {subparagraph}{Titles and subtitles}{387}{section*.2338}
-\contentsline {paragraph}{Example}{387}{section*.2339}
-\contentsline {paragraph}{Syntax}{387}{section*.2341}
-\contentsline {paragraph}{Input arguments}{387}{section*.2342}
-\contentsline {paragraph}{Output arguments}{387}{section*.2343}
-\contentsline {paragraph}{Description}{388}{section*.2344}
-\contentsline {paragraph}{Example}{388}{section*.2345}
-\contentsline {paragraph}{Syntax}{388}{section*.2347}
-\contentsline {paragraph}{Input arguments}{388}{section*.2348}
-\contentsline {paragraph}{Options}{388}{section*.2349}
-\contentsline {paragraph}{Generic options}{389}{section*.2350}
-\contentsline {paragraph}{Description}{389}{section*.2351}
-\contentsline {paragraph}{Example}{389}{section*.2352}
-\contentsline {paragraph}{Syntax}{390}{section*.2354}
-\contentsline {paragraph}{Input arguments}{390}{section*.2355}
-\contentsline {paragraph}{Options}{390}{section*.2356}
-\contentsline {paragraph}{Generic options}{391}{section*.2357}
-\contentsline {paragraph}{Description}{391}{section*.2358}
-\contentsline {paragraph}{Example}{391}{section*.2359}
-\contentsline {paragraph}{Syntax}{391}{section*.2361}
-\contentsline {paragraph}{Input arguments}{391}{section*.2362}
-\contentsline {paragraph}{Options}{391}{section*.2363}
-\contentsline {paragraph}{Generic options}{392}{section*.2364}
-\contentsline {paragraph}{Description}{392}{section*.2365}
-\contentsline {paragraph}{Example}{392}{section*.2366}
-\contentsline {paragraph}{Syntax}{392}{section*.2368}
-\contentsline {paragraph}{Input arguments}{392}{section*.2369}
-\contentsline {paragraph}{Options}{392}{section*.2370}
-\contentsline {paragraph}{Generic options}{394}{section*.2371}
-\contentsline {paragraph}{Description}{394}{section*.2372}
-\contentsline {subparagraph}{Conditional formatting}{394}{section*.2373}
-\contentsline {subparagraph}{Titles and subtitles}{395}{section*.2374}
-\contentsline {paragraph}{Example}{395}{section*.2375}
-\contentsline {paragraph}{Syntax}{396}{section*.2377}
-\contentsline {paragraph}{Input arguments}{396}{section*.2378}
-\contentsline {paragraph}{Description}{396}{section*.2379}
-\contentsline {paragraph}{Example}{396}{section*.2380}
-\contentsline {paragraph}{Syntax}{396}{section*.2382}
-\contentsline {paragraph}{Input arguments}{396}{section*.2383}
-\contentsline {paragraph}{Options}{396}{section*.2384}
-\contentsline {paragraph}{Description}{397}{section*.2385}
-\contentsline {paragraph}{Example}{397}{section*.2386}
-\contentsline {paragraph}{Syntax}{397}{section*.2388}
-\contentsline {paragraph}{Output arguments}{397}{section*.2389}
-\contentsline {paragraph}{Options}{398}{section*.2390}
-\contentsline {paragraph}{Syntax}{398}{section*.2392}
-\contentsline {paragraph}{Input arguments}{398}{section*.2393}
-\contentsline {paragraph}{Generic options}{398}{section*.2394}
-\contentsline {paragraph}{Description}{398}{section*.2395}
-\contentsline {paragraph}{Example}{398}{section*.2396}
-\contentsline {paragraph}{Syntax}{399}{section*.2398}
-\contentsline {paragraph}{Input arguments}{399}{section*.2399}
-\contentsline {paragraph}{Output arguments}{399}{section*.2400}
-\contentsline {paragraph}{Options}{399}{section*.2401}
-\contentsline {paragraph}{Description}{400}{section*.2402}
-\contentsline {subparagraph}{Difference between \texttt {'display='} and \texttt {'echo='}}{400}{section*.2403}
-\contentsline {paragraph}{Example}{400}{section*.2404}
-\contentsline {paragraph}{Syntax}{401}{section*.2406}
-\contentsline {paragraph}{Input arguments}{401}{section*.2407}
-\contentsline {paragraph}{Options}{401}{section*.2408}
-\contentsline {paragraph}{Generic options}{401}{section*.2409}
-\contentsline {paragraph}{Description}{401}{section*.2410}
-\contentsline {paragraph}{Example}{401}{section*.2411}
-\contentsline {paragraph}{Syntax}{401}{section*.2413}
-\contentsline {paragraph}{Input arguments}{402}{section*.2414}
-\contentsline {paragraph}{Options for both table series and graph series}{402}{section*.2415}
-\contentsline {paragraph}{Options for table series}{402}{section*.2416}
-\contentsline {paragraph}{Options for graph series}{403}{section*.2417}
-\contentsline {paragraph}{Generic options}{403}{section*.2418}
-\contentsline {paragraph}{Description}{403}{section*.2419}
-\contentsline {subparagraph}{Using the \texttt {'nan='}, \texttt {'inf='}, \texttt {'pureZero='} and \texttt {'printedZero='} options}{403}{section*.2420}
-\contentsline {subparagraph}{Using the \texttt {'plotFunc='} option}{404}{section*.2421}
-\contentsline {subparagraph}{Conditional formatting}{404}{section*.2422}
-\contentsline {subparagraph}{LHS-RHS plots}{405}{section*.2423}
-\contentsline {paragraph}{Example of a conditional format structure}{405}{section*.2424}
-\contentsline {paragraph}{Syntax}{405}{section*.2426}
-\contentsline {paragraph}{Input arguments}{405}{section*.2427}
-\contentsline {paragraph}{Options}{406}{section*.2428}
-\contentsline {paragraph}{Generic options}{406}{section*.2429}
-\contentsline {paragraph}{Description}{406}{section*.2430}
-\contentsline {paragraph}{Example}{406}{section*.2431}
-\contentsline {paragraph}{Syntax}{406}{section*.2433}
-\contentsline {paragraph}{Input arguments}{406}{section*.2434}
-\contentsline {paragraph}{Options}{407}{section*.2435}
-\contentsline {paragraph}{Generic options}{408}{section*.2436}
-\contentsline {paragraph}{Description}{408}{section*.2437}
-\contentsline {subparagraph}{User-defined structure of the table columns}{408}{section*.2438}
-\contentsline {subparagraph}{Titles and subtitles}{408}{section*.2439}
-\contentsline {paragraph}{Example}{409}{section*.2440}
-\contentsline {paragraph}{Syntax with input specified in comment block}{409}{section*.2442}
-\contentsline {paragraph}{Syntax with input specified as char argument}{409}{section*.2443}
-\contentsline {paragraph}{Input arguments}{409}{section*.2444}
-\contentsline {paragraph}{Options}{410}{section*.2445}
-\contentsline {paragraph}{Generic options}{410}{section*.2446}
-\contentsline {paragraph}{Description}{410}{section*.2447}
-\contentsline {paragraph}{Example}{410}{section*.2448}
-\contentsline {paragraph}{Syntax}{410}{section*.2450}
-\contentsline {paragraph}{Input arguments}{410}{section*.2451}
-\contentsline {paragraph}{Options}{411}{section*.2452}
-\contentsline {paragraph}{Generic options}{411}{section*.2453}
-\contentsline {paragraph}{Description}{411}{section*.2454}
-\contentsline {subparagraph}{Titles and subtitles}{411}{section*.2455}
-\contentsline {paragraph}{Example}{411}{section*.2456}
-\contentsline {paragraph}{Syntax}{412}{section*.2458}
-\contentsline {paragraph}{Input arguments}{412}{section*.2459}
-\contentsline {paragraph}{Options}{412}{section*.2460}
-\contentsline {paragraph}{Generic options}{412}{section*.2461}
-\contentsline {paragraph}{Description}{412}{section*.2462}
-\contentsline {paragraph}{Example}{412}{section*.2463}
-\contentsline {section}{\numberline {22}Quick-report file language}{413}{section.22}
-\contentsline {paragraph}{Figures}{413}{section*.2464}
-\contentsline {paragraph}{Graphs}{413}{section*.2465}
-\contentsline {paragraph}{Formatting graph titles}{413}{section*.2466}
-\contentsline {paragraph}{Getting on-line help on qreport file language}{413}{section*.2467}
-\contentsline {paragraph}{Syntax}{413}{section*.2469}
-\contentsline {paragraph}{Description}{414}{section*.2470}
-\contentsline {paragraph}{Example}{414}{section*.2471}
-\contentsline {paragraph}{Syntax}{414}{section*.2473}
-\contentsline {paragraph}{Description}{414}{section*.2474}
-\contentsline {paragraph}{Example}{414}{section*.2475}
-\contentsline {paragraph}{Syntax}{414}{section*.2477}
-\contentsline {paragraph}{Description}{414}{section*.2478}
-\contentsline {paragraph}{Example}{414}{section*.2479}
-\contentsline {paragraph}{Syntax}{415}{section*.2481}
-\contentsline {paragraph}{Description}{415}{section*.2482}
-\contentsline {paragraph}{Example}{415}{section*.2483}
-\contentsline {paragraph}{Syntax}{415}{section*.2485}
-\contentsline {paragraph}{Description}{415}{section*.2486}
-\contentsline {paragraph}{Example}{415}{section*.2487}
-\contentsline {paragraph}{Syntax}{415}{section*.2489}
-\contentsline {paragraph}{Description}{416}{section*.2490}
-\contentsline {paragraph}{Example}{416}{section*.2491}
-\contentsline {paragraph}{Syntax}{416}{section*.2493}
-\contentsline {paragraph}{Description}{416}{section*.2494}
-\contentsline {paragraph}{Example}{416}{section*.2495}
-\contentsline {paragraph}{Syntax with user-suplied subdivision}{416}{section*.2497}
-\contentsline {paragraph}{Syntax for automatic subdivision}{416}{section*.2498}
-\contentsline {paragraph}{Input arguments}{416}{section*.2499}
-\contentsline {paragraph}{Description}{417}{section*.2500}
-\contentsline {paragraph}{Example}{417}{section*.2501}
-\contentsline {paragraph}{Syntax}{417}{section*.2503}
-\contentsline {paragraph}{Description}{417}{section*.2504}
-\contentsline {paragraph}{Example}{417}{section*.2505}
-\contentsline {paragraph}{Syntax}{417}{section*.2507}
-\contentsline {paragraph}{Description}{417}{section*.2508}
-\contentsline {paragraph}{Example}{417}{section*.2509}
-\contentsline {section}{\numberline {23}Quick-report functions}{418}{section.23}
-\contentsline {paragraph}{Quick-report functions}{418}{section*.2510}
-\contentsline {paragraph}{Getting on-line help on qreport functions}{418}{section*.2511}
-\contentsline {paragraph}{Syntax}{418}{section*.2513}
-\contentsline {paragraph}{Input arguments}{418}{section*.2514}
-\contentsline {paragraph}{Output arguments}{418}{section*.2515}
-\contentsline {paragraph}{Options}{419}{section*.2516}
-\contentsline {paragraph}{Description}{420}{section*.2517}
-\contentsline {paragraph}{Example}{420}{section*.2518}
-\contentsline {paragraph}{Syntax}{420}{section*.2520}
-\contentsline {paragraph}{Input arguments}{420}{section*.2521}
-\contentsline {paragraph}{Options}{420}{section*.2522}
-\contentsline {paragraph}{Description}{420}{section*.2523}
-\contentsline {paragraph}{Example}{421}{section*.2524}
-\contentsline {section}{\numberline {24}Graphics functions}{422}{section.24}
-\contentsline {paragraph}{Graphics functions}{422}{section*.2525}
-\contentsline {paragraph}{Getting on-line help on qreport functions}{422}{section*.2526}
-\contentsline {paragraph}{Syntax}{422}{section*.2528}
-\contentsline {paragraph}{Input arguments}{422}{section*.2529}
-\contentsline {paragraph}{Output arguments}{423}{section*.2530}
-\contentsline {paragraph}{Description}{423}{section*.2531}
-\contentsline {paragraph}{Example}{423}{section*.2532}
-\contentsline {paragraph}{Syntax}{423}{section*.2534}
-\contentsline {paragraph}{Input arguments}{423}{section*.2535}
-\contentsline {paragraph}{Output arguments}{423}{section*.2536}
-\contentsline {paragraph}{Options}{423}{section*.2537}
-\contentsline {paragraph}{Description}{424}{section*.2538}
-\contentsline {paragraph}{Example}{424}{section*.2539}
-\contentsline {paragraph}{Syntax}{424}{section*.2541}
-\contentsline {paragraph}{Input arguments}{424}{section*.2542}
-\contentsline {paragraph}{Output arguments}{424}{section*.2543}
-\contentsline {paragraph}{Options}{424}{section*.2544}
-\contentsline {paragraph}{Description}{425}{section*.2545}
-\contentsline {paragraph}{Example}{425}{section*.2546}
-\contentsline {paragraph}{Syntax}{425}{section*.2548}
-\contentsline {paragraph}{Output arguments}{425}{section*.2549}
-\contentsline {paragraph}{Options}{425}{section*.2550}
-\contentsline {paragraph}{Description}{425}{section*.2551}
-\contentsline {paragraph}{Example}{425}{section*.2552}
-\contentsline {paragraph}{Syntax}{425}{section*.2554}
-\contentsline {paragraph}{Input arguments}{426}{section*.2555}
-\contentsline {paragraph}{Description}{426}{section*.2556}
-\contentsline {paragraph}{Example}{426}{section*.2557}
-\contentsline {paragraph}{Syntax}{426}{section*.2559}
-\contentsline {paragraph}{Input arguments}{426}{section*.2560}
-\contentsline {paragraph}{Output arguments}{426}{section*.2561}
-\contentsline {paragraph}{Description}{426}{section*.2562}
-\contentsline {paragraph}{Example}{426}{section*.2563}
-\contentsline {paragraph}{Syntax}{427}{section*.2565}
-\contentsline {paragraph}{Input arguments}{427}{section*.2566}
-\contentsline {paragraph}{Output arguments}{427}{section*.2567}
-\contentsline {paragraph}{Options}{427}{section*.2568}
-\contentsline {paragraph}{Description}{427}{section*.2569}
-\contentsline {paragraph}{Example}{427}{section*.2570}
-\contentsline {paragraph}{Syntax}{427}{section*.2572}
-\contentsline {paragraph}{Short-cut syntax}{427}{section*.2573}
-\contentsline {paragraph}{Input arguments}{428}{section*.2574}
-\contentsline {paragraph}{Output arguments}{428}{section*.2575}
-\contentsline {paragraph}{Options}{428}{section*.2576}
-\contentsline {paragraph}{Description}{428}{section*.2577}
-\contentsline {paragraph}{Example}{428}{section*.2578}
-\contentsline {paragraph}{Syntax}{429}{section*.2580}
-\contentsline {paragraph}{Input arguments}{429}{section*.2581}
-\contentsline {paragraph}{Output arguments}{429}{section*.2582}
-\contentsline {paragraph}{Options}{429}{section*.2583}
-\contentsline {paragraph}{Description}{430}{section*.2584}
-\contentsline {paragraph}{Example}{430}{section*.2585}
-\contentsline {paragraph}{Syntax}{430}{section*.2587}
-\contentsline {paragraph}{Input arguments}{430}{section*.2588}
-\contentsline {paragraph}{Output arguments}{430}{section*.2589}
-\contentsline {paragraph}{Options}{431}{section*.2590}
-\contentsline {paragraph}{Description}{432}{section*.2591}
-\contentsline {paragraph}{Example}{432}{section*.2592}
-\contentsline {paragraph}{Syntax}{432}{section*.2594}
-\contentsline {paragraph}{Input arguments}{432}{section*.2595}
-\contentsline {paragraph}{Output arguments}{432}{section*.2596}
-\contentsline {paragraph}{Options}{433}{section*.2597}
-\contentsline {paragraph}{Description}{433}{section*.2598}
-\contentsline {paragraph}{Example}{433}{section*.2599}
-\contentsline {paragraph}{Syntax}{433}{section*.2601}
-\contentsline {paragraph}{Input arguments}{433}{section*.2602}
-\contentsline {paragraph}{Output arguments}{433}{section*.2603}
-\contentsline {paragraph}{Options}{433}{section*.2604}
-\contentsline {paragraph}{Description}{434}{section*.2605}
-\contentsline {paragraph}{Example}{434}{section*.2606}
-\contentsline {paragraph}{Syntax}{434}{section*.2608}
-\contentsline {paragraph}{Input arguments}{434}{section*.2609}
-\contentsline {paragraph}{Output arguments}{434}{section*.2610}
-\contentsline {paragraph}{Options}{434}{section*.2611}
-\contentsline {paragraph}{Description}{434}{section*.2612}
-\contentsline {paragraph}{Example}{434}{section*.2613}
+\contentsline {subparagraph}{Figure handle}{387}{section*.2339}
+\contentsline {paragraph}{Example}{387}{section*.2340}
+\contentsline {paragraph}{Syntax}{387}{section*.2342}
+\contentsline {paragraph}{Input arguments}{387}{section*.2343}
+\contentsline {paragraph}{Output arguments}{388}{section*.2344}
+\contentsline {paragraph}{Description}{388}{section*.2345}
+\contentsline {paragraph}{Example}{388}{section*.2346}
+\contentsline {paragraph}{Syntax}{388}{section*.2348}
+\contentsline {paragraph}{Input arguments}{388}{section*.2349}
+\contentsline {paragraph}{Options}{388}{section*.2350}
+\contentsline {paragraph}{Generic options}{389}{section*.2351}
+\contentsline {paragraph}{Description}{389}{section*.2352}
+\contentsline {paragraph}{Example}{389}{section*.2353}
+\contentsline {paragraph}{Syntax}{390}{section*.2355}
+\contentsline {paragraph}{Input arguments}{390}{section*.2356}
+\contentsline {paragraph}{Options}{391}{section*.2357}
+\contentsline {paragraph}{Generic options}{391}{section*.2358}
+\contentsline {paragraph}{Description}{391}{section*.2359}
+\contentsline {paragraph}{Example}{391}{section*.2360}
+\contentsline {paragraph}{Syntax}{391}{section*.2362}
+\contentsline {paragraph}{Input arguments}{391}{section*.2363}
+\contentsline {paragraph}{Options}{391}{section*.2364}
+\contentsline {paragraph}{Generic options}{392}{section*.2365}
+\contentsline {paragraph}{Description}{392}{section*.2366}
+\contentsline {paragraph}{Example}{392}{section*.2367}
+\contentsline {paragraph}{Syntax}{392}{section*.2369}
+\contentsline {paragraph}{Input arguments}{392}{section*.2370}
+\contentsline {paragraph}{Options}{392}{section*.2371}
+\contentsline {paragraph}{Generic options}{394}{section*.2372}
+\contentsline {paragraph}{Description}{394}{section*.2373}
+\contentsline {subparagraph}{Conditional formatting}{394}{section*.2374}
+\contentsline {subparagraph}{Titles and subtitles}{395}{section*.2375}
+\contentsline {paragraph}{Example}{396}{section*.2376}
+\contentsline {paragraph}{Syntax}{396}{section*.2378}
+\contentsline {paragraph}{Input arguments}{396}{section*.2379}
+\contentsline {paragraph}{Description}{396}{section*.2380}
+\contentsline {paragraph}{Example}{396}{section*.2381}
+\contentsline {paragraph}{Syntax}{396}{section*.2383}
+\contentsline {paragraph}{Input arguments}{396}{section*.2384}
+\contentsline {paragraph}{Options}{397}{section*.2385}
+\contentsline {paragraph}{Description}{397}{section*.2386}
+\contentsline {paragraph}{Example}{397}{section*.2387}
+\contentsline {paragraph}{Syntax}{398}{section*.2389}
+\contentsline {paragraph}{Output arguments}{398}{section*.2390}
+\contentsline {paragraph}{Options}{398}{section*.2391}
+\contentsline {paragraph}{Syntax}{398}{section*.2393}
+\contentsline {paragraph}{Input arguments}{398}{section*.2394}
+\contentsline {paragraph}{Generic options}{398}{section*.2395}
+\contentsline {paragraph}{Description}{399}{section*.2396}
+\contentsline {paragraph}{Example}{399}{section*.2397}
+\contentsline {paragraph}{Syntax}{399}{section*.2399}
+\contentsline {paragraph}{Input arguments}{399}{section*.2400}
+\contentsline {paragraph}{Output arguments}{399}{section*.2401}
+\contentsline {paragraph}{Options}{399}{section*.2402}
+\contentsline {paragraph}{Description}{400}{section*.2403}
+\contentsline {subparagraph}{Difference between \texttt {'display='} and \texttt {'echo='}}{400}{section*.2404}
+\contentsline {subparagraph}{Information struct}{401}{section*.2405}
+\contentsline {paragraph}{Example}{401}{section*.2406}
+\contentsline {paragraph}{Syntax}{401}{section*.2408}
+\contentsline {paragraph}{Input arguments}{401}{section*.2409}
+\contentsline {paragraph}{Options}{401}{section*.2410}
+\contentsline {paragraph}{Generic options}{401}{section*.2411}
+\contentsline {paragraph}{Description}{402}{section*.2412}
+\contentsline {paragraph}{Example}{402}{section*.2413}
+\contentsline {paragraph}{Syntax}{402}{section*.2415}
+\contentsline {paragraph}{Input arguments}{402}{section*.2416}
+\contentsline {paragraph}{Options for both table series and graph series}{402}{section*.2417}
+\contentsline {paragraph}{Options for table series}{402}{section*.2418}
+\contentsline {paragraph}{Options for graph series}{403}{section*.2419}
+\contentsline {paragraph}{Generic options}{404}{section*.2420}
+\contentsline {paragraph}{Description}{404}{section*.2421}
+\contentsline {subparagraph}{Using the \texttt {'nan='}, \texttt {'inf='}, \texttt {'pureZero='} and \texttt {'printedZero='} options}{404}{section*.2422}
+\contentsline {subparagraph}{Using the \texttt {'plotFunc='} option}{404}{section*.2423}
+\contentsline {subparagraph}{Conditional formatting}{404}{section*.2424}
+\contentsline {subparagraph}{LHS-RHS plots}{405}{section*.2425}
+\contentsline {paragraph}{Example of a conditional format structure}{405}{section*.2426}
+\contentsline {paragraph}{Syntax}{406}{section*.2428}
+\contentsline {paragraph}{Input arguments}{406}{section*.2429}
+\contentsline {paragraph}{Options}{406}{section*.2430}
+\contentsline {paragraph}{Generic options}{406}{section*.2431}
+\contentsline {paragraph}{Description}{406}{section*.2432}
+\contentsline {paragraph}{Example}{406}{section*.2433}
+\contentsline {paragraph}{Syntax}{407}{section*.2435}
+\contentsline {paragraph}{Input arguments}{407}{section*.2436}
+\contentsline {paragraph}{Options}{407}{section*.2437}
+\contentsline {paragraph}{Generic options}{408}{section*.2438}
+\contentsline {paragraph}{Description}{408}{section*.2439}
+\contentsline {subparagraph}{User-defined structure of the table columns}{408}{section*.2440}
+\contentsline {subparagraph}{Titles and subtitles}{409}{section*.2441}
+\contentsline {paragraph}{Example}{409}{section*.2442}
+\contentsline {paragraph}{Syntax with input specified in comment block}{409}{section*.2444}
+\contentsline {paragraph}{Syntax with input specified as char argument}{410}{section*.2445}
+\contentsline {paragraph}{Input arguments}{410}{section*.2446}
+\contentsline {paragraph}{Options}{410}{section*.2447}
+\contentsline {paragraph}{Generic options}{410}{section*.2448}
+\contentsline {paragraph}{Description}{410}{section*.2449}
+\contentsline {paragraph}{Example}{410}{section*.2450}
+\contentsline {paragraph}{Syntax}{411}{section*.2452}
+\contentsline {paragraph}{Input arguments}{411}{section*.2453}
+\contentsline {paragraph}{Options}{411}{section*.2454}
+\contentsline {paragraph}{Generic options}{411}{section*.2455}
+\contentsline {paragraph}{Description}{411}{section*.2456}
+\contentsline {subparagraph}{Titles and subtitles}{412}{section*.2457}
+\contentsline {subparagraph}{Figure window and figure handle}{412}{section*.2458}
+\contentsline {paragraph}{Example}{412}{section*.2459}
+\contentsline {paragraph}{Syntax}{412}{section*.2461}
+\contentsline {paragraph}{Input arguments}{412}{section*.2462}
+\contentsline {paragraph}{Options}{412}{section*.2463}
+\contentsline {paragraph}{Generic options}{413}{section*.2464}
+\contentsline {paragraph}{Description}{413}{section*.2465}
+\contentsline {paragraph}{Example}{413}{section*.2466}
+\contentsline {section}{\numberline {22}Quick-report file language}{414}{section.22}
+\contentsline {paragraph}{Figures}{414}{section*.2467}
+\contentsline {paragraph}{Graphs}{414}{section*.2468}
+\contentsline {paragraph}{Formatting graph titles}{414}{section*.2469}
+\contentsline {paragraph}{Getting on-line help on qreport file language}{414}{section*.2470}
+\contentsline {paragraph}{Syntax}{414}{section*.2472}
+\contentsline {paragraph}{Description}{415}{section*.2473}
+\contentsline {paragraph}{Example}{415}{section*.2474}
+\contentsline {paragraph}{Syntax}{415}{section*.2476}
+\contentsline {paragraph}{Description}{415}{section*.2477}
+\contentsline {paragraph}{Example}{415}{section*.2478}
+\contentsline {paragraph}{Syntax}{415}{section*.2480}
+\contentsline {paragraph}{Description}{415}{section*.2481}
+\contentsline {paragraph}{Example}{415}{section*.2482}
+\contentsline {paragraph}{Syntax}{416}{section*.2484}
+\contentsline {paragraph}{Description}{416}{section*.2485}
+\contentsline {paragraph}{Example}{416}{section*.2486}
+\contentsline {paragraph}{Syntax}{416}{section*.2488}
+\contentsline {paragraph}{Description}{416}{section*.2489}
+\contentsline {paragraph}{Example}{416}{section*.2490}
+\contentsline {paragraph}{Syntax}{416}{section*.2492}
+\contentsline {paragraph}{Description}{417}{section*.2493}
+\contentsline {paragraph}{Example}{417}{section*.2494}
+\contentsline {paragraph}{Syntax}{417}{section*.2496}
+\contentsline {paragraph}{Description}{417}{section*.2497}
+\contentsline {paragraph}{Example}{417}{section*.2498}
+\contentsline {paragraph}{Syntax with user-suplied subdivision}{417}{section*.2500}
+\contentsline {paragraph}{Syntax for automatic subdivision}{417}{section*.2501}
+\contentsline {paragraph}{Input arguments}{417}{section*.2502}
+\contentsline {paragraph}{Description}{418}{section*.2503}
+\contentsline {paragraph}{Example}{418}{section*.2504}
+\contentsline {paragraph}{Syntax}{418}{section*.2506}
+\contentsline {paragraph}{Description}{418}{section*.2507}
+\contentsline {paragraph}{Example}{418}{section*.2508}
+\contentsline {paragraph}{Syntax}{418}{section*.2510}
+\contentsline {paragraph}{Description}{418}{section*.2511}
+\contentsline {paragraph}{Example}{418}{section*.2512}
+\contentsline {section}{\numberline {23}Quick-report functions}{419}{section.23}
+\contentsline {paragraph}{Quick-report functions}{419}{section*.2513}
+\contentsline {paragraph}{Getting on-line help on qreport functions}{419}{section*.2514}
+\contentsline {paragraph}{Syntax}{419}{section*.2516}
+\contentsline {paragraph}{Input arguments}{419}{section*.2517}
+\contentsline {paragraph}{Output arguments}{419}{section*.2518}
+\contentsline {paragraph}{Options}{420}{section*.2519}
+\contentsline {paragraph}{Description}{421}{section*.2520}
+\contentsline {paragraph}{Example}{421}{section*.2521}
+\contentsline {paragraph}{Syntax}{421}{section*.2523}
+\contentsline {paragraph}{Input arguments}{421}{section*.2524}
+\contentsline {paragraph}{Options}{421}{section*.2525}
+\contentsline {paragraph}{Description}{421}{section*.2526}
+\contentsline {paragraph}{Example}{422}{section*.2527}
+\contentsline {section}{\numberline {24}Graphics functions}{423}{section.24}
+\contentsline {paragraph}{Graphics functions}{423}{section*.2528}
+\contentsline {paragraph}{Getting on-line help on qreport functions}{423}{section*.2529}
+\contentsline {paragraph}{Syntax}{423}{section*.2531}
+\contentsline {paragraph}{Input arguments}{423}{section*.2532}
+\contentsline {paragraph}{Output arguments}{424}{section*.2533}
+\contentsline {paragraph}{Description}{424}{section*.2534}
+\contentsline {paragraph}{Example}{424}{section*.2535}
+\contentsline {paragraph}{Syntax}{424}{section*.2537}
+\contentsline {paragraph}{Input arguments}{424}{section*.2538}
+\contentsline {paragraph}{Output arguments}{424}{section*.2539}
+\contentsline {paragraph}{Options}{424}{section*.2540}
+\contentsline {paragraph}{Description}{425}{section*.2541}
+\contentsline {paragraph}{Example}{425}{section*.2542}
+\contentsline {paragraph}{Syntax}{425}{section*.2544}
+\contentsline {paragraph}{Input arguments}{425}{section*.2545}
+\contentsline {paragraph}{Output arguments}{425}{section*.2546}
+\contentsline {paragraph}{Options}{425}{section*.2547}
+\contentsline {paragraph}{Description}{426}{section*.2548}
+\contentsline {paragraph}{Example}{426}{section*.2549}
+\contentsline {paragraph}{Syntax}{426}{section*.2551}
+\contentsline {paragraph}{Output arguments}{426}{section*.2552}
+\contentsline {paragraph}{Options}{426}{section*.2553}
+\contentsline {paragraph}{Description}{426}{section*.2554}
+\contentsline {paragraph}{Example}{426}{section*.2555}
+\contentsline {paragraph}{Syntax}{426}{section*.2557}
+\contentsline {paragraph}{Input arguments}{427}{section*.2558}
+\contentsline {paragraph}{Description}{427}{section*.2559}
+\contentsline {paragraph}{Example}{427}{section*.2560}
+\contentsline {paragraph}{Syntax}{427}{section*.2562}
+\contentsline {paragraph}{Input arguments}{427}{section*.2563}
+\contentsline {paragraph}{Output arguments}{427}{section*.2564}
+\contentsline {paragraph}{Description}{427}{section*.2565}
+\contentsline {paragraph}{Example}{427}{section*.2566}
+\contentsline {paragraph}{Syntax}{428}{section*.2568}
+\contentsline {paragraph}{Input arguments}{428}{section*.2569}
+\contentsline {paragraph}{Output arguments}{428}{section*.2570}
+\contentsline {paragraph}{Options}{428}{section*.2571}
+\contentsline {paragraph}{Description}{428}{section*.2572}
+\contentsline {paragraph}{Example}{428}{section*.2573}
+\contentsline {paragraph}{Syntax}{428}{section*.2575}
+\contentsline {paragraph}{Short-cut syntax}{428}{section*.2576}
+\contentsline {paragraph}{Input arguments}{429}{section*.2577}
+\contentsline {paragraph}{Output arguments}{429}{section*.2578}
+\contentsline {paragraph}{Options}{429}{section*.2579}
+\contentsline {paragraph}{Description}{429}{section*.2580}
+\contentsline {paragraph}{Example}{429}{section*.2581}
+\contentsline {paragraph}{Syntax}{430}{section*.2583}
+\contentsline {paragraph}{Input arguments}{430}{section*.2584}
+\contentsline {paragraph}{Output arguments}{430}{section*.2585}
+\contentsline {paragraph}{Options}{430}{section*.2586}
+\contentsline {paragraph}{Description}{431}{section*.2587}
+\contentsline {paragraph}{Example}{431}{section*.2588}
+\contentsline {paragraph}{Syntax}{431}{section*.2590}
+\contentsline {paragraph}{Input arguments}{431}{section*.2591}
+\contentsline {paragraph}{Output arguments}{431}{section*.2592}
+\contentsline {paragraph}{Options}{432}{section*.2593}
+\contentsline {paragraph}{Description}{433}{section*.2594}
+\contentsline {paragraph}{Example}{433}{section*.2595}
+\contentsline {paragraph}{Syntax}{433}{section*.2597}
+\contentsline {paragraph}{Input arguments}{433}{section*.2598}
+\contentsline {paragraph}{Output arguments}{433}{section*.2599}
+\contentsline {paragraph}{Options}{434}{section*.2600}
+\contentsline {paragraph}{Description}{434}{section*.2601}
+\contentsline {paragraph}{Example}{434}{section*.2602}
+\contentsline {paragraph}{Syntax}{434}{section*.2604}
+\contentsline {paragraph}{Input arguments}{434}{section*.2605}
+\contentsline {paragraph}{Output arguments}{434}{section*.2606}
+\contentsline {paragraph}{Options}{434}{section*.2607}
+\contentsline {paragraph}{Description}{435}{section*.2608}
+\contentsline {paragraph}{Example}{435}{section*.2609}
+\contentsline {paragraph}{Syntax}{435}{section*.2611}
+\contentsline {paragraph}{Input arguments}{435}{section*.2612}
+\contentsline {paragraph}{Output arguments}{435}{section*.2613}
+\contentsline {paragraph}{Options}{435}{section*.2614}
+\contentsline {paragraph}{Description}{435}{section*.2615}
+\contentsline {paragraph}{Example}{435}{section*.2616}
