@@ -8,7 +8,7 @@ function disp(This)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
+keyboard
 if isempty(This.Assign)
     fprintf('\tempty model object\n');
     doPrintNEqtn();
