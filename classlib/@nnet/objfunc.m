@@ -9,6 +9,12 @@ function [Obj,Pred] = objfunc(X,This,InData,OutData,Range,options)
     
 %**************************************************************************
 
+[This,Flag] = myupdatemodel(This,X,options) ;
+if ~Flag
+    utils.error('nnet:objfunc',...
+        'Parameter update failure.') ;
+end
+
 Pred = tseries(Range,NaN(size(OutData))) ;
 switch This.Type
     case 'feedforward'
@@ -58,8 +64,7 @@ switch This.Type
             'Unsupported neural network type.') ;
 end
 
-Obj = options.Norm(OutData-Pred) ;
-fprintf(1,'Objective: %g\n',Obj) ;
+Obj = options.Norm(OutData-Pred)/length(OutData) ;
 
     function Output = xxNodeTransfer(Input, Weight, Bias, Transfer, TransferParam) 
         switch Transfer
