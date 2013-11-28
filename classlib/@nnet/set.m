@@ -1,5 +1,5 @@
 function This = set(This,varargin)
-% set  Change modifiable model object property.
+% set  Change modifiable nnet object property.
 %
 % Syntax
 % =======

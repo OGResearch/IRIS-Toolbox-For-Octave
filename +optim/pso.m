@@ -172,6 +172,9 @@ if ~exist('LB','var'), LB = [] ; else constr=true; end
 if ~exist('UB','var'), UB = [] ; else constr=true; end
 if ~exist('nonlcon','var'), nonlcon = [] ; else constr=true; end
 
+LB = reshape(LB,[],numel(LB)) ;
+UB = reshape(UB,[],numel(UB)) ;
+
 if isempty(options.PopInitRange)
     options.InitialPopulationUsesBounds=true;
     options.PopInitRange=[0;1];

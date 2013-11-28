@@ -15,7 +15,7 @@ if ~Flag
         'Parameter update failure.') ;
 end
 
-Pred = eval(This,InData,Range) ;
+Pred = eval(This,InData,Range) ; %#ok<*GTARG>
 
 Obj = options.Norm(OutData-Pred)/length(OutData) ;
 
