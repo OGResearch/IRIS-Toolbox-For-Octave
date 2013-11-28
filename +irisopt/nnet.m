@@ -30,6 +30,8 @@ Def.estimate = { ...
     'Estimate', {'weight'}, @iscell, ...
     } ;
 
+Def.eval = {} ;
+
 end
 
 
