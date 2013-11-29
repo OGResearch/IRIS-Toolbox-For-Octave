@@ -85,10 +85,13 @@ catch
     Rho = 1;
 end
 
-try
-    Range; %#ok<*VUNUS>
-catch %#ok<*CTCH>
-    Range = Inf;
+if exist('Range','var')
+    if ischar(Range)
+        varargin = [Range, varargin] ;
+        Range = Inf;
+    end
+else
+    Range = Inf ;
 end
 
 opt = passvalopt('tseries.cumsumk',varargin{:});

@@ -47,6 +47,9 @@ switch options.Output
         OutData = tseries() ;
     case 'dbase'
         OutData = struct() ;
+        for iOutput = 1:This.nOutputs
+            OutData.(This.Outputs{iOutput}) = tseries() ;
+        end
 end
 if options.Ahead>1
     kPred = InData ;
