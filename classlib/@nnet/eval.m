@@ -99,20 +99,21 @@ else
             end
             
             % Output Layers
-            for iOutput = 1:This.nOutputs
+            % (iNode is iOutput) 
+            for iNode = 1:This.nOutputs
                 iLayer = iLayer + 1 ;
                 tmpOut = xxNodeTransfer(...
                     OutLayer{Range,:}, ...
-                    This.Params{end}.Weight{iOutput}, ...
-                    This.Params{end}.Bias{iOutput}, ...
+                    This.Params{end}.Weight{iNode}, ...
+                    This.Params{end}.Bias{iNode}, ...
                     This.OutputTransfer, ...
-                    This.Params{end}.Transfer{iOutput} ...
+                    This.Params{end}.Transfer{iNode} ...
                     ) ;
                 switch options.Output
                     case 'dbase'
-                        OutData.(This.Outputs{iOutput}) = tmpOut ;
+                        OutData.(This.Outputs{iNode}) = tmpOut ;
                     case 'tseries'
-                        OutData(Range,iOutput) ...
+                        OutData(Range,iNode) ...
                             = tmpOut ;
                 end
             end
@@ -127,15 +128,21 @@ end
         switch Transfer
             case 'sigmoid'
                 X = ( 1./(1-exp(-Input.*TransferParam)) ) ;
+                Output = Bias + sum(Weight'.*X,2) ;
+            case 'softmax'
+                Output = Input(:,iNode) ./ sum(Weight'.*Input,2) ;
             case 'tanh'
                 X = ( 1-exp(-TransferParam.*Input) )./( 1+exp(-TransferParam.*Input) ) ;
+                Output = Bias + sum(Weight'.*X,2) ;
             case 'step'
                 X = ( Input>0 ) ;
+                Output = Bias + sum(Weight'.*X,2) ;
             case 'linear'
                 X = Input ;
+                Output = Bias + sum(Weight'.*X,2) ;
         end
         
-        Output = Bias + sum(Weight'.*X,2) ;
+        
         
         if isempty(Output)
             % Must be NaN values

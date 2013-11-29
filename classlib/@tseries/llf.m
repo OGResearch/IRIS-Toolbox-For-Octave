@@ -191,13 +191,11 @@ function varargout = llf(X,Range,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-if exist('Range','var')
-    if ischar(Range)
-        varargin = [Range, varargin] ;
-        Range = Inf;
-    end
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
 else
-    Range = Inf ;
+    Range = Inf;
 end
 
 if isempty(Range)

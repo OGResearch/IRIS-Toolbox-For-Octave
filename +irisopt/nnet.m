@@ -11,7 +11,7 @@ function Def = nnet()
 
 Def = struct();
 
-validTransferFn = @(x) any(strcmpi(x,{'sigmoid','linear','step','tanh'})) ;
+validTransferFn = @(x) any(strcmpi(x,{'sigmoid','linear','step','tanh','softmax'})) ;
 
 Def.nnet = { ...
     'HiddenTransfer', 'sigmoid', @(x) iscellstr(x) || validTransferFn(x), ...
