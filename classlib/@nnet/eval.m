@@ -54,8 +54,11 @@ if options.Ahead>1
         kPred = eval(This,kPred,Range) ;
         switch options.Output
             case 'dbase'
-                OutData.(This.Outputs{iOutput})(Range+k-1,k) = kPred(:) ;
+                for iOutput = 1:This.nOutputs
+                    OutData.(This.Outputs{iOutput})(Range+k-1,k) = kPred(:,iOutput) ;
+                end
             case 'tseries'
+                % only one output if output is tseries and ahead>1
                 OutData(Range+k-1,k) = kPred(:) ;
         end
     end
