@@ -187,12 +187,15 @@ function varargout = hpf(X,Range,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-try
-    Range; 
-catch
-    Range = Inf;
+if exist('Range','var')
+    if ischar(Range)
+        varargin = [Range, varargin] ;
+        Range = Inf;
+    end
+else
+    Range = Inf ;
 end
-
+    
 if isempty(Range)
     varargout{1} = empty(X);
     varargout{2} = empty(X);
