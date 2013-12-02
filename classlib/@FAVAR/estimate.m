@@ -4,8 +4,7 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % Syntax
 % =======
 %
-%     [A,D,CC,F,U,E,CTF] = estimate(A,D,List,Range,[R,Q],...)
-%     [A,X,CC,F,U,E,CTF] = estimate(A,X,Range,[R,Q],...)
+%     [A,D,CC,F,U,E,CTF] = estimate(A,D,Range,[R,Q],...)
 %
 % Input arguments
 % ================
@@ -13,11 +12,6 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % * `A` [ FAVAR ] - Empty FAVAR object.
 %
 % * `D` [ struct ] - Input database.
-%
-% * `List` [ cellstr ] - List of series from the database on which the VAR
-% will be estimated.
-%
-% * `X` [ tseries ] - Tseries objects with input data.
 %
 % * `Range` [ numeric ] - Estimation range.
 %
@@ -34,8 +28,6 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % * `A` [ FAVAR ] - Estimated FAVAR object.
 %
 % * `D` [ struct ] - Output database.
-%
-% * `X` [ tseries ] - Output tseries object.
 %
 % * `CC` [ tseries ] - Estimates of common components in the FAVAR
 % observables.

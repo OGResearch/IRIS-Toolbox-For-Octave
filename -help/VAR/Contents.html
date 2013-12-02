@@ -105,14 +105,14 @@ code.LaTeX {
 
 
 
-<h1 id="VAR/Contents">Vector autoregressions: VAR objects and functions</h1>
+<h1 id="VAR/Contents">Vector autoregressions (VAR) objects and functions</h1>
 
 
-<p>VAR objects can be constructed as plain VARs or simple panel VARs (with fixed effect), and estimated without or with prior dummy observations (Bayesian VARs). The VAR objects are also the point of departure for identifying structural VARs (<a href="../SVAR/Contents.html"><code>SVAR</code></a> objects).</p>
+<p>VAR objects can be constructed as plain VARs or simple panel VARs (with fixed effect), and estimated without or with prior dummy observations (quasi-bayesian VARs). VAR objects are reduced-form models; they are also the point of departure for identifying structural VARs (<a href="../SVAR/Contents.html"><code>SVAR</code></a> objects).</p>
 <p>VAR methods:</p>
 <h4 id="constructor">Constructor</h4>
 <ul>
-<li><a href="../VAR/VAR.html"><code>VAR</code></a> - Create new reduced-form VAR object.</li>
+<li><a href="../VAR/VAR.html"><code>VAR</code></a> - Create new, empty reduced-form VAR object.</li>
 </ul>
 <h4 id="getting-information-about-var-objects">Getting information about VAR objects</h4>
 <ul>
@@ -120,6 +120,7 @@ code.LaTeX {
 <li><a href="../VAR/comment.html"><code>comment</code></a> - Get or set user comments in an IRIS object.</li>
 <li><a href="../VAR/companion.html"><code>companion</code></a> - Matrices of first-order companion VAR.</li>
 <li><a href="../VAR/eig.html"><code>eig</code></a> - Eigenvalues of a VAR process.</li>
+<li><a href="../VAR/fprintf.html"><code>fprintf</code></a> - Write VAR model as formatted model code to text file.</li>
 <li><a href="../VAR/get.html"><code>get</code></a> - Query VAR object properties.</li>
 <li><a href="../VAR/iscompatible.html"><code>iscompatible</code></a> - True if two VAR objects can occur together on the LHS and RHS in an assignment.</li>
 <li><a href="../VAR/isexplosive.html"><code>isexplosive</code></a> - True if any eigenvalue is outside unit circle.</li>
@@ -129,6 +130,7 @@ code.LaTeX {
 <li><a href="../VAR/mean.html"><code>mean</code></a> - Mean of VAR process.</li>
 <li><a href="../VAR/nfitted.html"><code>nfitted</code></a> - Number of data points fitted in VAR estimation.</li>
 <li><a href="../VAR/rngcmp.html"><code>rngcmp</code></a> - True if two VAR objects have been estimated using the same dates.</li>
+<li><a href="../VAR/sprintf.html"><code>sprintf</code></a> - Print VAR model as formatted model code.</li>
 <li><a href="../VAR/sspace.html"><code>sspace</code></a> - Quasi-triangular state-space representation of VAR.</li>
 <li><a href="../VAR/userdata.html"><code>userdata</code></a> - Get or set user data in an IRIS object.</li>
 </ul>

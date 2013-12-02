@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] \LaTeX\ code for userinputobj objects.
 %
 % Backend IRIS function.
@@ -9,7 +9,6 @@ function [C,Temps] = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
-Temps = {};
 C = '';
 br = sprintf('\n');
 

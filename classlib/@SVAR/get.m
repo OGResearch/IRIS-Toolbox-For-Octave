@@ -1,43 +1,50 @@
-function varargout = get(varargin)
+function varargout = get(This,varargin)
 % get  Query SVAR object properties.
 %
 % Syntax
 % =======
 %
-%     value = get(v,query)
-%     [value,value,...] = get(v,query,query,...)
+%     Ans = get(V,Query)
+%     [Ans,Ans,...] = get(V,Query,Query,...)
 %
 % Input arguments
 % ================
 %
-% * `v` [ SVAR ] - SVAR object.
+% * `V` [ SVAR ] - SVAR object.
 %
-% * `query` [ char ] - Name of the queried property.
+% * `Query` [ char ] - Query to the SVAR object.
 %
 % Output arguments
 % =================
 %
-% * `value` [ ... ] - Value of the queried property.
+% * `Ans` [ ... ] - Answer to the query.
 %
-% All properties accessible through the `get` function in VAR objects are
-% also accessible in SVAR objects.
-%
-% Valid queries on SVAR objects
+% Valid queries to SVAR objects
 % ==============================
+%
+% All queries to VAR objects, listed and described in [`VAR/get`](VAR/get),
+% can also be used in SVAR objects. In addition, the following queries are
+% specific to SVAR objects:
+%
+% * `'B'` - Returns [ numeric ] matrix of instantaneous effects of shocks.
+%
+% * `'std'` - Returns [ numeric ] std deviation of structural shocks.
+%
+% * `'method'` - Returns [ char ] identification method used to convert
+% reduced-form VAR to structural VAR.
 %
 % Description
 % ============
 %
 % Example
 % ========
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-% We need to create `SVAR.get` to provide help. `VAR.get` calls VAR- or
-% SVAR-specific `specget` methods.
-[varargout{1:nargout}] = get@VAR(varargin{:});
+[varargout{1:nargout}] = get@getsetobj(This,varargin{:});
 
 end

@@ -1,5 +1,5 @@
 function R = cov2corr(C,varargin)
-% COV2CORR  [Not a public function] Autocovariance to autocorrelation function conversion.
+% cov2corr  [Not a public function] Autocovariance to autocorrelation function conversion.
 %
 % Syntax
 % =======
@@ -21,7 +21,7 @@ isAcf = any(strcmpi(varargin,'acf'));
 %--------------------------------------------------------------------------
 
 R = C;
-realsmall = getrealsmall();
+realSmall = getrealsmall();
 nAlt = size(R,4);
 diagInx = eye(size(R,1)) == 1;
 
@@ -29,15 +29,15 @@ for iAlt = 1 : nAlt
     for i = 1 : size(R,3)
         Ri = C(:,:,i,iAlt);
         if i == 1 || ~isAcf
-            stdinv = diag(Ri);
-            nonzero = abs(stdinv) > realsmall;
-            stdinv(nonzero) = 1./sqrt(stdinv(nonzero));
-            D = stdinv * stdinv.';
+            stdInv = diag(Ri);
+            nonZero = abs(stdInv) > realSmall;
+            stdInv(nonZero) = 1./sqrt(stdInv(nonZero));
+            D = stdInv * stdInv.';
         end
-        index = ~isfinite(Ri);
-        Ri(index) = 0;
+        inx = ~isfinite(Ri);
+        Ri(inx) = 0;
         Ri = D .* Ri;
-        Ri(index) = NaN;
+        Ri(inx) = NaN;
         if i == 1 || ~isAcf
             Ri(diagInx) = 1;
         end

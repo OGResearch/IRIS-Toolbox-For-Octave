@@ -83,6 +83,13 @@ elseif istseries(varargin{1})
     
     % Time series for plain VAR
     %---------------------------
+    
+    % ##### Nov 2013 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['This syntax for specifying input data is obsolete ', ...
+        'and will be removed from a future version of IRIS. ', ...
+        'Enter input data as a database (struct) instead.']);
+    
     InpFmt = 'tseries';
     Y = varargin{1};
     Rng = varargin{2};
@@ -94,7 +101,8 @@ elseif istseries(varargin{1})
     
 else
     
-    % Invalid.
+    % Invalid
+    %---------
     utils.error('varobj','Invalid format of input data.');
 
 end

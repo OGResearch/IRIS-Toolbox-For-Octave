@@ -28,7 +28,7 @@ switch lower(Query)
         else
             X = poly.var2poly(This.A);
         end
-        if isequal(lower(Query),'a*')
+        if isequal(Query(end),'*')
             X = -X(:,:,2:end,:);
         end
     case 'g'
@@ -39,24 +39,28 @@ switch lower(Query)
         X = This.U;
     case {'const','c','k'}
         X = This.K;
+    case {'omega','omg'}
+        X = This.Omega;
+    case {'cov'}
+        X = This.Omega;
     case {'sgm','sigma','covp','covparameters'}
         X = This.Sigma;
     case 'aic'
         X = This.aic;
     case 'sbc'
         X = This.sbc;
-    case 'nhyper'
+    case {'nfree','nhyper'}
         X = This.nhyper;
     case {'order','p'}
         X = p;
     case {'cumlong','cumlongrun'}
         C = sum(poly.var2poly(This.A),3);
         X = nan(ny,ny,nAlt);
-        for ialt = 1 : nAlt
-            if rank(C(:,:,1,ialt)) == ny
-                X(:,:,ialt) = inv(C(:,:,1,alt));
+        for iAlt = 1 : nAlt
+            if rank(C(:,:,1,iAlt)) == ny
+                X(:,:,iAlt) = inv(C(:,:,1,iAlt));
             else
-                X(:,:,ialt) = pinv(C(:,:,1,ialt));
+                X(:,:,iAlt) = pinv(C(:,:,1,iAlt));
             end
         end
     case {'constraints','restrictions','constraint','restrict'}
@@ -73,6 +77,8 @@ switch lower(Query)
         X = size(This.A,1);
     case 'ne'
         X = size(This.Omega,2);
+    case 'ni'
+        X = size(This.Zi,1);
     otherwise
         Flag = false;
 end

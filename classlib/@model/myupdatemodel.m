@@ -98,6 +98,12 @@ else
         if Opt.refresh && ~isempty(This.Refresh)
             This = refresh(This);
         end
+    elseif iscell(Opt.sstate) && isa(Opt.sstate{1},'function_handle')
+        % Call to a user-supplied sstate solver with extra arguments.
+        [This,sstateOk] = feval(Opt.sstate{1},This,Opt.sstate{2:end});
+        if Opt.refresh && ~isempty(This.Refresh)
+            This = refresh(This);
+        end        
     end
     % Run chksstate only if steady state has been recomputed.
     if ~isequal(Opt.sstate,false) && isstruct(Opt.chksstate)

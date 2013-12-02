@@ -27,6 +27,7 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.grfun = irisopt.grfun();
     DEF.iris = irisopt.IRIS();
     DEF.latex = irisopt.latex();
+    DEF.likfunc = irisopt.likfunc();
     DEF.model = irisopt.model();
     DEF.modelobj = irisopt.modelobj();
     DEF.nnet = irisopt.nnet();
@@ -37,7 +38,6 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.qreport = irisopt.qreport();
     DEF.report = irisopt.report();
     DEF.sstate = irisopt.sstate();
-    DEF.stlop = irisopt.stlop();
     DEF.strfun = irisopt.strfun();
     DEF.SVAR = irisopt.SVAR();
     DEF.systempriors = irisopt.systempriors();
@@ -165,7 +165,9 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function Y = xxConvert(X)
@@ -199,4 +201,4 @@ Y.options = options; % Struct with primary names and default values.
 Y.changed = changed; % Struct with empty chars, to be filled with the names used actually by the user.
 Y.validate = validate; % Struct with validating functions.
 
-end % xxConvert().
+end % xxConvert()

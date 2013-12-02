@@ -108,10 +108,10 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % References
 % ===========
 %
-% # Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation by
-% Pre-Fetching," CMU Statistics Dept. Tech. Report 802.
+% 1. Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation
+% by Pre-Fetching," CMU Statistics Dept. Tech. Report 802.
 %
-% # Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
+% 2. Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
 % algorithms using a prefetching approach," SSE/EFI Working Paper Series in
 % Economics and Finance No. 706.
 %
@@ -132,8 +132,6 @@ pp.parse(This,NDraw);
 opt = passvalopt('poster.arwm',varargin{:});
 
 %--------------------------------------------------------------------------
-
-s = mylogpoststruct(This);
 
 Theta = [];
 LogPost = [];
@@ -179,7 +177,7 @@ isAdaptive = isAdaptiveScale || isAdaptiveShape;
 
 theta = This.initParam(:);
 P = chol(This.initProposalCov).';
-logPost = mylogpost(This,theta,s);
+logPost = mylogpost(This,theta);
 
 % Pre-allocate output data.
 Theta = zeros(nPar,nAlloc);
@@ -228,7 +226,7 @@ while j <= nDrawTotal
         % Propose a new theta, and evaluate log posterior.
         u = randn(nPar,1);
         newTheta = theta + sgm*P*u;
-        newLogPost = mylogpost(This,newTheta,s);
+        newLogPost = mylogpost(This,newTheta);
         
         % Generate random acceptance.
         randAcc = rand();
@@ -446,11 +444,8 @@ FinalCov = P*P.';
         LogPostPf = nan(nPath,1);
         LogPostPf(1) = logPost;
         parfor iPath = 2 : nPath
-            LogPostPf(iPath) = mylogpost(ThisPf.Value,ThetaPf(:,iPath),sPf.Value); %#ok<PFBNS>
+            LogPostPf(iPath) = mylogpost(ThisPf.Value,ThetaPf(:,iPath)); %#ok<PFBNS>
         end
-%         for iPath = 2 : nPath
-%             LogPostPf(iPath) = mylogpost(This,ThetaPf(:,iPath),s);
-%         end
         
         function doPaths(Theta0,Step,PathSoFar)
             % Proposal rejected.

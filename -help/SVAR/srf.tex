@@ -5,8 +5,8 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[R,Cum] = srf(V,NPer)
-[R,Cum] = srf(V,Range)
+[Resp,Cum] = srf(V,NPer)
+[Resp,Cum] = srf(V,Range)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -25,7 +25,7 @@
 
 \begin{itemize}
 \item
-  \texttt{R} {[} tseries \textbar{} struct {]} - Shock response
+  \texttt{Resp} {[} tseries \textbar{} struct {]} - Shock response
   functions.
 \item
   \texttt{Cum} {[} tseries \textbar{} struct {]} - Cumulative shock
@@ -46,14 +46,6 @@
 \end{itemize}
 
 \paragraph{Description}\label{description}
-
-For backward compatibility, the following calls into the \texttt{srf}
-function is also possible:
-
-\begin{verbatim}
-[~,~,s,c] = srf(this,nper)
-[~,~,s,c] = srf(this,range)
-\end{verbatim}
 
 \paragraph{Example}\label{example}
 

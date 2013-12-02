@@ -110,7 +110,7 @@ code.LaTeX {
 <div class="headline">Compile PDF from report object</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[OutpFile,Rerun] = P.publish(InpFile,...)</code></pre>
+<pre><code>[OutpFile,Info] = P.publish(InpFile,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>P</code> [ struct ] - Report object created by the <code>report.new</code> function.</p></li>
@@ -119,7 +119,7 @@ code.LaTeX {
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><p><code>OutpFile</code> [ char ] - Name of the resulting PDF.</p></li>
-<li><p><code>Rerun</code> [ numeric ] - Number of times the LaTeX compiler was run to compile the PDF.</p></li>
+<li><p><code>Info</code> [ struct ] - Information struct with details of building the PDF report; see Description.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
@@ -150,6 +150,12 @@ code.LaTeX {
 <ul>
 <li><p>When publishing the final PDF, the PDFLaTeX compiler may be called more than once to resolve cross-references, the table of contents, and so on. Setting <code>'display=' true</code> only displays the screen output from the final iteration only, while <code>'echo=' true</code> displays the screen outputs from all iterations.</p></li>
 <li><p>In the case of a compiler error unrelated to the  code, the compiler may stop and prompt the user to respond. The prompt only appears on the screen when <code>'echo=' true</code>. Otherwise, Matlab may remain in a busy state with no on-screen information, and <code>Ctrl+C</code> may be needed to regain control.</p></li>
+</ul>
+<h5 id="information-struct">Information struct</h5>
+<p>The second output argument, <code>Info</code>, is a struct with details of building the PDF report. It contains the following fields:</p>
+<ul>
+<li><p><code>.latexRun</code> -- the total number of LaTeX compiler runs needed to resolve cross-references and other dependencies;</p></li>
+<li><p><code>.figureHandle</code> -- a vector of figure window handles created during the report production process, and not closed (i.e. still existing in the Matlab workspace); to keep figure windows open, use the figure object option <code>'close=' false</code>. If all <code>figure</code> and <code>userfigure</code> objects inside a report have <code>'close=' true</code> then <code>Info.figureHandle</code> will be empty.</p></li>
 </ul>
 <h4 id="example">Example</h4>
 

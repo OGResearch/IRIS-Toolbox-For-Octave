@@ -13,8 +13,8 @@ function [Stat,Crit] = lrtest(V1,V2,Level)
 %
 % * `V2` [ VAR ] - Restricted VAR model.
 %
-% * `Level` [ numeric ] - Significance level; if not specified, 0.05 is
-% used.
+% * `Level` [ numeric ] - Significance level; if not specified,
+% 5 percent significance is used, `Level=0.05`.
 %
 % Output arguments
 % =================
@@ -48,8 +48,8 @@ nAlt = max(nAlt1,nAlt2);
 
 if V1.nhyper == V2.nhyper
     utils.warning('VAR', ...
-        ['LR-tested VAR or VAR models have ', ...
-        'identical numbers of hyperparameters.']);
+        ['LR-tested VAR objects have ', ...
+        'identical numbers of free parameters.']);
 end
 
 % Check the number of hyperparameters, and swap restricted and unrestricted
@@ -61,19 +61,21 @@ end
 % Fitted periods must the same in both VARs.
 if any(~rngcmp(V1,V2))
     utils.error('VAR', ...
-        'LR-tested pairs of VARs must have the same periods fitted.');
+        ['LR-tested pairs of VAR objects must have ', ...
+        'the same periods fitted.']);
 end
 
 nPer = nfitted(V1);
 Stat = nan(1,nAlt);
 for iAlt = 1 : nAlt
     if iAlt <= nAlt2
-        logDetOmg2 = log(det(V2.Omega(:,:,iAlt)));
+        iLogDetOmg2 = log(det(V2.Omega(:,:,iAlt)));
     end
     if iAlt <= nAlt1
-        logDetOmg1 = log(det(V1.Omega(:,:,iAlt)));
+        iLogDetOmg1 = log(det(V1.Omega(:,:,iAlt)));
+        iNPer = nPer(iAlt);
     end
-    Stat(iAlt) = nPer(iAlt)*(logDetOmg2 - logDetOmg1);
+    Stat(iAlt) = iNPer*(iLogDetOmg2 - iLogDetOmg1);
 end
 
 % Critical value.

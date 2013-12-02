@@ -1,5 +1,5 @@
-function cleanup(This,LatexFile,Temps)
-% cleanup  [Not a public function] Clean up temporary files.
+function cleanup(This)
+% cleanup  [Not a public function] Clean up temporary files and folders.
 %
 % Backend IRIS function.
 % No help provided.
@@ -9,26 +9,25 @@ function cleanup(This,LatexFile,Temps)
 
 %--------------------------------------------------------------------------
 
-if ~This.options.cleanup
-    return
-end
-
-% Delete all helper files produced when TeX files was compiled.
-[latexPath,latexTitle] = fileparts(LatexFile);
-latexFiles = fullfile(latexPath,[latexTitle,'.*']);
-if ~isempty(dir(latexFiles))
-    delete(latexFiles);
-end
-
 % Delete all helper files produced when latex codes for children were
 % built.
-for i = 1 : length(Temps)
-    if exist(Temps{i},'file')
-        delete(Temps{i});
+nTempFile = length(This.tempFile);
+isDeleted = false(1,nTempFile);
+for i = 1 : nTempFile
+    file = This.tempFile{i};
+    if ~isempty(dir(file))
+        delete(file);
+        isDeleted(i) = true;
     end
 end
+This.tempFile(isDeleted) = [];
 
 % Delete temporary dir if empty.
-status = rmdir(This.tempDirName); %#ok<NASGU>
+if ~isempty(This.tempDirName)
+    status = rmdir(This.tempDirName);
+    if status == 1
+        This.tempDirName = '';
+    end
+end
 
 end

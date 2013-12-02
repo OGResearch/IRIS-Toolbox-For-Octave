@@ -15,7 +15,7 @@ classdef nnet < userdataobj & getsetobj
         InputTransfer = '' ;
         OutputTransfer = '' ;
         
-        % Cell array of structs: 
+        % Cell array of structs:
         Params = cell(0,1) ;
         % Rows:
         %    Input
@@ -24,7 +24,7 @@ classdef nnet < userdataobj & getsetobj
         %    Layer N
         %    Output
         % Columns:
-        %    Alternative parameterizations 
+        %    Alternative parameterizations
         
         % cell array of variables
         Outputs = cell(0,1) ;
@@ -35,10 +35,10 @@ classdef nnet < userdataobj & getsetobj
         nInputs ;
         nOutputs ;
         nLayer ;
-    end
-    
-    methods( Static )
-        varargout = initConv(varargin) ;
+        nParams ;
+        nBias ;
+        nWeight ;
+        nTransfer ;
     end
     
     methods
@@ -51,13 +51,12 @@ classdef nnet < userdataobj & getsetobj
             pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('HiddenLayout',@(x) isvector(x) && isnumeric(x)) ;
             pp.parse(Inputs,Outputs,HiddenLayout) ;
-
+            
             % Parse options
             options = passvalopt('nnet.nnet',varargin{:});
             
             % Superclass constructors
             This = This@userdataobj();
-            This = This@getsetobj();
             
             % Construct
             This.Inputs = cellstr(Inputs) ;
@@ -74,50 +73,20 @@ classdef nnet < userdataobj & getsetobj
             This.Type = options.Type ;
             
             % *** Construct initial parameters ***
-            myStruct = struct() ;
-            
-            % No weighting possible at input nodes
-            This.Params ...
-                = cellfun(@(x) myStruct, cell(This.nLayer+2,1), 'UniformOutput', false) ;
-            This.Params{1}.Bias ...
-                = cellfun(any2func(options.initBias), cell(This.nInputs,1), 'UniformOutput', false) ;
-            This.Params{1}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.nInputs,1), 'UniformOutput', false) ;
-            
-            % First nodes weight inputs
-            initW = cell2mat(arrayfun(any2func(options.initWeight), ones(This.nInputs,1), 'UniformOutput', false)) ;
-            This.Params{2}.Weight ...
-                = cellfun(@(x) initW, cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-            This.Params{2}.Bias ...
-                = cellfun(any2func(options.initWeight), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-            This.Params{2}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-
-            % Subsequent nodes weight outputs of previous layer
-            for iLayer = 2:This.nLayer
-                initW = ones(This.HiddenLayout(iLayer-1),1) ; 
-                This.Params{iLayer+1}.Weight ...
-                    = cellfun(@(x) initW, cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-                This.Params{iLayer+1}.Bias ...
-                    = cellfun(any2func(options.initWeight), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-                This.Params{iLayer+1}.Transfer ...
-                    = cellfun(any2func(options.initTransfer), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-            end
-            
-            % Output nodes weight outputs of last layer
-            initW = ones(This.HiddenLayout(end),1) ;
-            This.Params{end}.Weight ...
-                = cellfun(@(x) initW, cell(This.nOutputs,1), 'UniformOutput', false) ;
-            This.Params{end}.Bias ...
-                = cellfun(any2func(options.initBias), cell(This.nOutputs,1), 'UniformOutput', false) ;
-            This.Params{end}.Transfer ...
-                = cellfun(any2func(options.initTransfer), cell(This.nOutputs,1), 'UniformOutput', false) ;
+            This = set(This,'weight',options.initWeight) ;
+            This = set(This,'bias',options.initBias) ;
+            This = set(This,'transfer',options.initTransfer) ;
         end
-
+        
         varargout = disp(varargin) ;
         varargout = size(varargin) ;
         varargout = datarequest(varargin) ;
-
+        varargout = set(varargin) ;
+        varargout = aeq(varargin) ;
+        varargout = horzcat(varargin) ;
+        varargout = vertcat(varargin) ;
+        varargout = eval(varargin) ;
+        
         % Dependent methods
         function nAlt = get.nAlt(This)
             nAlt = size(This.Params,2) ;
@@ -134,8 +103,48 @@ classdef nnet < userdataobj & getsetobj
         function nLayer = get.nLayer(This)
             nLayer = numel(This.HiddenLayout) ;
         end
-
+        
+        function nWeight = get.nWeight(This)
+            nWeight = 0 ;
+            for iLayer = 1:This.nLayer+2
+                if iLayer>1
+                    for iNode = 1:numel(This.Params{iLayer}.Weight)
+                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                            nWeight = nWeight + 1;
+                        end
+                    end
+                end
+            end
+        end
+        
+        function nBias = get.nBias(This)
+            nBias = 0 ;
+            for iLayer = 1:This.nLayer+2
+                for iNode = 1:numel(This.Params{iLayer}.Bias)
+                    nBias = nBias + 1 ;
+                end
+            end
+        end
+        
+        function nTransfer = get.nTransfer(This)
+            nTransfer = 0 ;
+            for iLayer = 1:This.nLayer+2
+                for iNode = 1:numel(This.Params{iLayer}.Transfer)
+                    nTransfer = nTransfer + 1 ;
+                end
+            end
+        end
+        
+        function nParams = get.nParams(This)
+            nParams = This.nWeight + This.nBias + This.nTransfer ;
+        end
+        
     end
+    
+    methods (Static,Hidden)
+        varargout = myalias(varargin)
+    end
+    
     
 end
 

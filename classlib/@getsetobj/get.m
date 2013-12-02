@@ -27,7 +27,7 @@ for iArg = 1 : nArg
     end
     
     % Replace alternate names with the standard ones.
-    query = getsetobj.myalias(query);
+    query = This.myalias(query);
     
     % Remove black spaces.
     query = regexprep(query,'\s+','');
@@ -43,7 +43,7 @@ end
 % Report invalid queries.
 if any(~flag)
     utils.error(class(This), ...
-        'This is not a valid %s object query: ''%s''.', ...
+        'This is not valid query to %s object: ''%s''.', ...
         class(This),varargin{~flag});
 end
 

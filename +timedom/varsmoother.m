@@ -92,11 +92,7 @@ end
 
 % First prediction step.
 nonZero = any(A ~= 0,1);
-if any(nonZero)
-    X2(1:nx,1) = A(:,nonZero)*x0(nonZero);
-else
-    X2(1:nx,1) = 0;
-end
+X2(1:nx,1) = A(:,nonZero)*x0(nonZero) + Be(:,1);
 X2(nx+1:end,1) = x0(1:end-nx);
 if ~isKEmpty
     X2(1:nx,1) = X2(1:nx,1) + K;
@@ -247,7 +243,9 @@ for t = lastObs : -1 : 1
     end
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doUpdate()
@@ -256,7 +254,8 @@ end
         if ~isDEmpty
             Y1(:,t) = Y1(:,t) + D;
         end
-    end % doUpdate().
+    end % doUpdate()
+
 
 %**************************************************************************
     function doAhead()
@@ -274,6 +273,7 @@ end
             end
             Y0(:,t+kk-1,kk) = y0;
         end
-    end % doAhead().
+    end % doAhead()
+
 
 end

@@ -63,14 +63,17 @@ if This.IsParam
     D = addparam(Obj,D);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doThrowInternal()
         error('IRIS:hdataobj', ...
             ['Internal IRIS error. ', ...
             'Please report this error with a copy of the screen message.']);
-    end % doThrowInternal().
+    end % doThrowInternal()
+
 
 %**************************************************************************
     function doComments()
@@ -94,6 +97,6 @@ end
             c = regexprep(c,'.*',rpl,'once');
         end
         D.(jName).Comment = c;
-    end % doComments().
+    end % doComments()
 
 end

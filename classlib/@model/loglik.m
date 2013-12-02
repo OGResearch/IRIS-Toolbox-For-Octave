@@ -152,17 +152,9 @@ end
 % Evaluate likelihood
 %---------------------
 if nargout == 1
-    if LIKOPT.domain == 't'
-        Obj = mykalman(This,DATA,[],LIKOPT);
-    else
-        Obj = myfdlik(This,DATA,[],LIKOPT);
-    end
+    Obj = LIKOPT.minusLogLikFunc(This,DATA,[],LIKOPT);
 else
-    if LIKOPT.domain == 't'
-        [Obj,regOutp] = mykalman(This,DATA,[],LIKOPT);
-    else
-        [Obj,regOutp] = myfdlik(This,DATA,[],LIKOPT);
-    end
+    [Obj,regOutp] = LIKOPT.minusLogLikFunc(This,DATA,[],LIKOPT);
     % Populate regular (non-hdata) output arguments.
     xRange = RANGE(1)-1 : RANGE(end);
     [F,Pe,V,Delta,PDelta] = mykalmanregoutp(This,regOutp,xRange,LIKOPT);

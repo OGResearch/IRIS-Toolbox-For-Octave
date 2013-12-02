@@ -1,4 +1,4 @@
-function X = cumsumk(X,K,Rho,Range,varargin)
+function X = cumsumk(X,K,Rho,varargin)
 % cumsumk  Cumulative sum with a k-period leap.
 %
 % Syntax
@@ -85,9 +85,10 @@ catch
     Rho = 1;
 end
 
-try
-    Range; %#ok<*VUNUS>
-catch %#ok<*CTCH>
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
     Range = Inf;
 end
 

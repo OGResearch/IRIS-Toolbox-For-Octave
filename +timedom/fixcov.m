@@ -20,17 +20,17 @@ X = X(:,:,:);
 realX = real(X);
 imagX = imag(X);
 for i = 1 : size(X,3)
-   % Set very small or negative entries to zero.   
-   inx = abs(diag(realX(:,:,i))) < tol;
-   if any(inx)
-      realX(inx,inx,i) = 0;
-   end
-   inx = abs(diag(imagX(:,:,i))) < tol;
-   if any(inx)
-      imagX(inx,inx,i) = 0;
-   end
+    % Set very small or negative entries to zero.
+    inx = abs(diag(realX(:,:,i))) < tol;
+    if any(inx)
+        realX(inx,inx,i) = 0;
+    end
+    inx = abs(diag(imagX(:,:,i))) < tol;
+    if any(inx)
+        imagX(inx,inx,i) = 0;
+    end
 end
-X = complex(realX,imagX);
+X = realX + 1i*imagX;
 
 % Get `X` back in shape.
 if length(xSize) > 3

@@ -39,9 +39,9 @@
 % `report/figure`: any changes or additions to the figure or its graphs
 % made after you call the function will not show in the report.
 %
-% * The report figure cannot have any children; in other words, you
+% * The userfigure cannot have any children; in other words, you
 % cannot call [`report/graph` ](report/graph) after a call to
-% `report/figure` with a graphics handle, `H`.
+% `report/userfigure`.
 %
 % Titles and subtitles
 % ---------------------
@@ -54,6 +54,18 @@
 % LaTeX commands wrapped in curly brackets: `{\\}` or `{\\[Xpt]}`, where
 % `X` is the width of an extra vertical space (in points) added between the
 % respective lines.
+%
+% Figure window and figure handle
+% --------------------------------
+%
+% The figure `H` is saved to a `fig` file and stored within the report
+% object. At the time of publishing the report, the figure is re-created
+% again in a new separate window.
+%
+% If the option `'close='` is set to `false` this new  figure window will
+% remain open after the report is published. The handle to this figure
+% window will be included in the field `.figureHandle` of the information
+% struct `Info` returned by [`report/publish`](report/publish).
 %
 % Example
 % ========

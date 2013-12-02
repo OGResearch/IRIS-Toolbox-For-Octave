@@ -155,9 +155,7 @@ end
 % Back out reduced-form residuals if needed. The B matrix is then
 % discarded, and only the covariance matrix of reduced-form residuals is
 % used.
-if ~isempty(B)
-    e = B*e;
-end
+Be = B*e;
 
 if ~isequal(opt.method,'bootstrap')
     % Safely factorise (chol/svd) the covariance matrix of reduced-form
@@ -178,18 +176,18 @@ end
 nanInit = false(1,NDraw);
 nanResid = false(1,NDraw);
 for iDraw = 1 : NDraw
-    Ei = zeros(ny,nXPer);
-    Ei(:,p+1:end) = doDrawResiduals();
+    iBe = zeros(ny,nXPer);
+    iBe(:,p+1:end) = doDrawResiduals();
     Yi = Y(:,:,iDraw);
     if any(any(isnan(Yi(:,1:p))))
         nanInit(iDraw) = true;
     end
-    if any(isnan(Ei(:)))
+    if any(isnan(iBe(:)))
         nanResid(iDraw) = true;
     end
     for t = p+1 : nXPer
         Yilags = Yi(:,t-(1:p));
-        Yi(:,t) = A*Yilags(:) + Ei(:,t);
+        Yi(:,t) = A*Yilags(:) + iBe(:,t);
         if ~opt.deviation
             Yi(:,t) = Yi(:,t) + K;
         end
@@ -232,19 +230,19 @@ Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.Ynames);
     end % doChkMultipleParams().
 
 %**************************************************************************
-    function E = doDrawResiduals()
+    function X = doDrawResiduals()
         if isequal(opt.method,'bootstrap')
             if opt.wild
                 % Wild bootstrap.
                 % Setting draw = ones(1,nper-p) would reproduce sample.
                 draw = randn(1,nXPer-p);
-                E = e(:,p+1:end).*draw(ones(1,ny),:);
+                X = Be(:,p+1:end).*draw(ones(1,ny),:);
             else
                 % Standard Efron bootstrap.
                 % Setting draw = 1 : nper-p would reproduce sample;
                 % draw is uniform integer [1,nper-p].
                 draw = randi([1,nXPer-p],[1,nXPer-p]);
-                E = e(:,p+draw);
+                X = Be(:,p+draw);
             end
         else
             if isa(opt.method,'function_handle')
@@ -253,7 +251,7 @@ Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.Ynames);
             else
                 thisSampleE = randn(ny,nXPer-p);
             end
-            E = F*thisSampleE;
+            X = F*thisSampleE;
         end
     end % doDrawResiduals().
 

@@ -29,7 +29,7 @@
 \item
   \texttt{X} {[} dbase \textbar{} tseries {]} - Database or tseries with
   the std deviations of individual variables, i.e.~the square roots of
-  the diagonal elements of \texttt{M}.
+  the corresponding diagonal elements of \texttt{M}.
 \end{itemize}
 
 \paragraph{Options}\label{options}
@@ -37,8 +37,9 @@
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{'output='} {[} \texttt{'dbase'} \textbar{}
-  \emph{\texttt{'tseries'}} {]} - Format of output data.
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Return matrix \texttt{M} as either namedmat
+  object (matrix with named rows and columns) or plain numeric array.
 \end{itemize}
 
 \paragraph{Description}\label{description}

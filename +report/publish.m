@@ -3,7 +3,7 @@
 % Syntax
 % =======
 %
-%     [OutpFile,Rerun] = P.publish(InpFile,...)
+%     [OutpFile,Info] = P.publish(InpFile,...)
 %
 % Input arguments
 % ================
@@ -18,8 +18,8 @@
 %
 % * `OutpFile` [ char ] - Name of the resulting PDF.
 %
-% * `Rerun` [ numeric ] -  Number of times the LaTeX compiler was run to
-% compile the PDF.
+% * `Info` [ struct ] -  Information struct with details of building the
+% PDF report; see Description.
 %
 % Options
 % ========
@@ -102,6 +102,21 @@
 % on the screen when `'echo=' true`. Otherwise, Matlab may remain in a busy
 % state with no on-screen information, and `Ctrl+C` may be needed to regain
 % control.
+%
+% Information struct
+% -------------------
+%
+% The second output argument, `Info`, is a struct with details of building
+% the PDF report. It contains the following fields:
+%
+% * `.latexRun` -- the total number of LaTeX compiler runs needed to
+% resolve cross-references and other dependencies;
+%
+% * `.figureHandle` -- a vector of figure window handles created during the
+% report production process, and not closed (i.e. still existing in the
+% Matlab workspace); to keep figure windows open, use the figure object
+% option `'close=' false`. If all `figure` and `userfigure` objects inside
+% a report have `'close=' true` then `Info.figureHandle` will be empty.
 %
 % Example
 % ========

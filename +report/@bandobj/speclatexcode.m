@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] LaTeX code for report/band data.
 %
 % Backend IRIS function.
@@ -8,8 +8,6 @@ function [C,Temps] = speclatexcode(This)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-Temps = {};
 
 par = This.parent;
 time = par.options.range;

@@ -43,6 +43,7 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 %
 % Description
 % ============
+%
 % Uses k-harmonic means clustering to estimate a multivariate distribution
 % as a mixture of normals.
 %
@@ -50,10 +51,11 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % ===========
 %
 % 1. Zhang, Hsu and Dayal (1999) "K-Harmonic Means - A Data Clustering
-%    Algorithm."
+% Algorithm."
 %
 % 2. Hamerly and Elkan (2002) "Alternatives to the k-means algorithm that
-%    find better clusterings."
+% find better clusterings."
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.

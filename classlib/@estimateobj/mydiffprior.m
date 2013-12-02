@@ -1,5 +1,5 @@
 function [PropCov,Hess] ...
-    = mydiffprior(This,Data,PStar,Hess,BHit,Pri,LikOpt,Opt)
+    = mydiffprior(This,Data,PStar,Hess,BHit,Pri,EstOpt,LikOpt)
 % mydiffprior  [Not a public function] Contributions of priors to Hessian and proposal covariance.
 %
 % Backend IRIS function.
@@ -35,9 +35,9 @@ for ip = 1 : np
     xm = x0;
     xp(ip) = x0(ip) + h(ip);
     xm(ip) = x0(ip) - h(ip);
-    [obj0,l0,p0,s0] = objfunc(x0,This,Data,Pri,LikOpt,Opt);
-    [objp,lp,pp,sp] = objfunc(xp,This,Data,Pri,LikOpt,Opt);
-    [objm,lm,pm,sm] = objfunc(xm,This,Data,Pri,LikOpt,Opt);
+    [obj0,l0,p0,s0] = objfunc(x0,This,Data,Pri,EstOpt,LikOpt);
+    [objp,lp,pp,sp] = objfunc(xp,This,Data,Pri,EstOpt,LikOpt);
+    [objm,lm,pm,sm] = objfunc(xm,This,Data,Pri,EstOpt,LikOpt);
     h2 = h(ip)^2;
     
     % Diff total objective function.
@@ -49,12 +49,12 @@ for ip = 1 : np
     diffObj(ip) = iDiffObj;
     
     % Diff data likelihood.
-    if Opt.evallik
+    if EstOpt.evallik
         diffLik(ip) = (lp - 2*l0 + lm) / h2;
     end
     
     % Diff parameter priors.
-    if Opt.evalpprior
+    if EstOpt.evalpprior
         iDiffPPrior = (pp - 2*p0 + pm) / h2;
         if ~isempty(Pri.prior{ip}) && isfunc(Pri.prior{ip})
             try %#ok<TRYNC>
@@ -65,7 +65,7 @@ for ip = 1 : np
     end
     
     % Diff system priors.
-    if Opt.evalsprior
+    if EstOpt.evalsprior
         diffSPrior(ip) = (sp - 2*s0 + sm) / h2;
     end
     
@@ -76,7 +76,7 @@ if isempty(Hess{1})
     Hess{1}(diagInx) = diffObj;
 end
 
-if Opt.evalpprior
+if EstOpt.evalpprior
     % Parameter priors are independent, the off-diagonal elements can be set to
     % zero.
     Hess{2} = diag(diffPPrior);
@@ -84,7 +84,7 @@ else
     Hess{2} = zeros(np);
 end
 
-if Opt.evalsprior
+if EstOpt.evalsprior
     Hess{3} = nan(np);
     Hess{3}(diagInx) = diffSPrior;
 else

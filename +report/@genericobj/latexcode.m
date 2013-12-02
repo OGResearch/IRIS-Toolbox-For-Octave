@@ -1,4 +1,4 @@
-function [C,Temps] = latexcode(This)
+function C = latexcode(This)
 % latexcode  [Not a public function] Generate LaTeX code to represent a report object.
 %
 % Backed IRIS function.
@@ -9,7 +9,7 @@ function [C,Temps] = latexcode(This)
 
 %--------------------------------------------------------------------------
 
-[C,Temps] = speclatexcode(This);
+C = speclatexcode(This);
 
 if ~isempty(This.options.saveas)
     % Save in the current working directory, not the

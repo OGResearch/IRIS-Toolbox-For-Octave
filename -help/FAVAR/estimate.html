@@ -110,14 +110,11 @@ code.LaTeX {
 <div class="headline">Estimate FAVAR using static principal components</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[A,D,CC,F,U,E,CTF] = estimate(A,D,List,Range,[R,Q],...)
-[A,X,CC,F,U,E,CTF] = estimate(A,X,Range,[R,Q],...)</code></pre>
+<pre><code>[A,D,CC,F,U,E,CTF] = estimate(A,D,Range,[R,Q],...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>A</code> [ FAVAR ] - Empty FAVAR object.</p></li>
 <li><p><code>D</code> [ struct ] - Input database.</p></li>
-<li><p><code>List</code> [ cellstr ] - List of series from the database on which the VAR will be estimated.</p></li>
-<li><p><code>X</code> [ tseries ] - Tseries objects with input data.</p></li>
 <li><p><code>Range</code> [ numeric ] - Estimation range.</p></li>
 <li><p><code>R</code> [ numeric ] - Selection criterion for the number of factors: Minimum requested proportion of input data volatility explained by the factors.</p></li>
 <li><p><code>Q</code> [ numeric ] - Selection criterion for the number of factors: Maximum number of factors.</p></li>
@@ -126,7 +123,6 @@ code.LaTeX {
 <ul>
 <li><p><code>A</code> [ FAVAR ] - Estimated FAVAR object.</p></li>
 <li><p><code>D</code> [ struct ] - Output database.</p></li>
-<li><p><code>X</code> [ tseries ] - Output tseries object.</p></li>
 <li><p><code>CC</code> [ tseries ] - Estimates of common components in the FAVAR observables.</p></li>
 <li><p><code>F</code> [ tseries ] - Estimates of factors.</p></li>
 <li><p><code>U</code> [ struct | tseries ] - Idiosyncratic residuals.</p></li>

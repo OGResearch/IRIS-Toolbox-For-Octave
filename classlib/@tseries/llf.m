@@ -1,4 +1,4 @@
-function varargout = llf(X,Range,varargin)
+function varargout = llf(X,varargin)
 % llf  Local level filter (aka random walk plus white noise) with tunes.
 %
 % Syntax
@@ -191,9 +191,10 @@ function varargout = llf(X,Range,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-try
-    Range;
-catch
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
     Range = Inf;
 end
 

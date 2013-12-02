@@ -12,6 +12,24 @@ try
 catch
     IsLog = false;
 end
+
+% Handle cell inputs.
+if iscellstr(To) || iscellstr(From)
+    if ischar(To)
+        To = {To};
+    end
+    if ischar(From)
+        From = {From};
+    end
+    nTo = numel(To);
+    nFrom = numel(From);
+    n = max(nTo,nFrom);
+    C = cell(1,n);
+    for i = 1 : n
+        C{i} = utils.concomment(To{min(i,end)},From{min(i,end)},IsLog);
+    end
+    return
+end
     
 %--------------------------------------------------------------------------
 

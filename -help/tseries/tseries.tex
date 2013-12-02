@@ -6,27 +6,27 @@
 
 \begin{verbatim}
 X = tseries()
-X = tseries(DATES,VALUES)
-X = tseries(DATES,VALUES,COMMENTS)
+X = tseries(Dates,Values)
+X = tseries(Dates,Values,Comment)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
-  \texttt{DATES} {[} numeric {]} - Dates for which observations will be
+  \texttt{Dates} {[} numeric {]} - Dates for which observations will be
   supplied; \texttt{dates} do not have to be sorted in ascending order.
   If \texttt{dates} is scalar and \texttt{values} have multiple rows,
   then the date in \texttt{dates} is interpreted as a startdate for the
   time series.
 \item
-  \texttt{VALUES} {[} numeric \textbar{} function\_handle {]} -
+  \texttt{Values} {[} numeric \textbar{} function\_handle {]} -
   Numerical values (observations) arranged columnwise, or a function
   that will be used to create an N-by-1 array of values, where N is the
   number of \texttt{dates}.
 \item
-  \texttt{COMMENTS} {[} char \textbar{} cellstr {]} - Comment or
-  comments attached to each column of observations.
+  \texttt{Comment} {[} char \textbar{} cellstr {]} - Comment or comments
+  attached to each column of observations.
 \end{itemize}
 
 \paragraph{Output arguments}\label{output-arguments}

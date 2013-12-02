@@ -128,11 +128,11 @@ code.LaTeX {
 <li><p><code>'maxIter='</code> [ numeric | <em><code>0</code></em> ] - Maximum number of attempts when <code>'method'='draw'</code>.</p></li>
 <li><p><code>'method='</code> [ <em><code>'chol'</code></em> | <code>'draw'</code> | <code>'qr'</code> | <code>'svd'</code> ] - Method that will be used to identify structural residuals.</p></li>
 <li><p><code>'nDraw='</code> [ numeric | <em><code>0</code></em> ] - Target number of successful draws when <code>'method'='draw'</code>.</p></li>
-<li><p><code>'reorder='</code> [ numeric | <em>empty</em> ] - Re-order VAR variables before identifying structural residuals, and bring the variables back in original order afterwards. Use the option '<code>backorderResiduals='</code> to control if also the structural residuals are brought back in original order.</p></li>
+<li><p><code>'reorder='</code> [ numeric | <em>empty</em> ] - Reorder VAR variables before identifying structural shocks, and bring the variables back in original order afterwards. Use the option '<code>backorderResiduals='</code> to control if also the structural shocks are to be brought back in original order.</p></li>
 <li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
 <li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
 <li><p><code>'rank='</code> [ numeric | <em><code>Inf</code></em> ] - Reduced rank of the covariance matrix of structural residuals when <code>'method=' 'svd'</code>; <code>Inf</code> means full rank is preserved.</p></li>
-<li><p><code>'backorderResiduals='</code> [ <em><code>true</code></em> | <code>false</code> ] - Bring the identified structural residuals back in original order.</p></li>
+<li><p><code>'backOrderResiduals='</code> [ <em><code>true</code></em> | <code>false</code> ] - Bring the identified structural shocks back in original order after identification; works with <code>'reorder='</code>.</p></li>
 <li><p><code>'std='</code> [ numeric | <em><code>1</code></em> ] - Std deviation of structural residuals; the resulting structural covariance matrix will be re-scaled (divided) by this factor.</p></li>
 <li><p><code>'test='</code> [ char ] - Works with <code>'method=draw'</code> only; a string that will be evaluated for each random draw of the impact matrix <code>B</code>. The evaluation must result in <code>true</code> or <code>false</code>; only the matrices <code>B</code> that evaluate to <code>true</code> will be kept. See Description for more on how to write the option <code>'test='</code>.</p></li>
 </ul>

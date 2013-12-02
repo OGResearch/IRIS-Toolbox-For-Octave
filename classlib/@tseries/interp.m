@@ -1,4 +1,4 @@
-function X = interp(X,Range,varargin)
+function X = interp(X,varargin)
 % interp  Interpolate missing observations.
 %
 % Syntax
@@ -42,9 +42,10 @@ if isempty(X)
     return
 end
 
-try
-    Range; %#ok<VUNUS>
-catch %#ok<CTCH>
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
     Range = Inf;
 end
 

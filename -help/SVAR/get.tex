@@ -5,17 +5,17 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-value = get(v,query)
-[value,value,...] = get(v,query,query,...)
+Ans = get(V,Query)
+[Ans,Ans,...] = get(V,Query,Query,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
-  \texttt{v} {[} SVAR {]} - SVAR object.
+  \texttt{V} {[} SVAR {]} - SVAR object.
 \item
-  \texttt{query} {[} char {]} - Name of the queried property.
+  \texttt{Query} {[} char {]} - Query to the SVAR object.
 \end{itemize}
 
 \paragraph{Output arguments}\label{output-arguments}
@@ -23,14 +23,27 @@ value = get(v,query)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{value} {[} \ldots{} {]} - Value of the queried property.
+  \texttt{Ans} {[} \ldots{} {]} - Answer to the query.
 \end{itemize}
 
-All properties accessible through the \texttt{get} function in VAR
-objects are also accessible in SVAR objects.
+\paragraph{Valid queries to SVAR
+objects}\label{valid-queries-to-svar-objects}
 
-\paragraph{Valid queries on SVAR
-objects}\label{valid-queries-on-svar-objects}
+All queries to VAR objects, listed and described in
+\href{VAR/get}{\texttt{VAR/get}}, can also be used in SVAR objects. In
+addition, the following queries are specific to SVAR objects:
+
+\begin{itemize}
+\item
+  \texttt{'B'} -- Returns {[} numeric {]} matrix of instantaneous
+  effects of shocks.
+\item
+  \texttt{'std'} -- Returns {[} numeric {]} std deviation of structural
+  shocks.
+\item
+  \texttt{'method'} -- Returns {[} char {]} identification method used
+  to convert reduced-form VAR to structural VAR.
+\end{itemize}
 
 \paragraph{Description}\label{description}
 

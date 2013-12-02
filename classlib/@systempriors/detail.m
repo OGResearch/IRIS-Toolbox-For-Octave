@@ -1,5 +1,5 @@
 function detail(This)
-% detail  Display details of system priors.
+% detail  Display details of system priors object.
 %
 % Syntax
 % =======

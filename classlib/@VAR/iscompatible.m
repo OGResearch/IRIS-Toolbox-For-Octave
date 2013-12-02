@@ -22,7 +22,7 @@ function Flag = iscompatible(V1,V2)
 % ============
 %
 % The function compares the names of all variables, shocks, and parameters,
-% and the composition of the state-space vectors.
+% and the composition of the state-space vectors and matrices.
 %
 % Example
 % ========
@@ -33,10 +33,6 @@ function Flag = iscompatible(V1,V2)
 
 %--------------------------------------------------------------------------
 
-try
-    Flag = iscompatible@varobj(V1,V2);
-catch %#ok<CTCH>
-    Flag = false;
-end
+Flag = mycompatible(V1,V2);
 
 end

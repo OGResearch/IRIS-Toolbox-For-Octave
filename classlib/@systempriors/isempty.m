@@ -1,5 +1,5 @@
 function Flag = isempty(This,varargin)
-% isempty  True if the system priors object is empty.
+% isempty  True if system priors object is empty.
 %
 % Syntax
 % =======

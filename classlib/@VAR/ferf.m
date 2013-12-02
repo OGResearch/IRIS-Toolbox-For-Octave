@@ -1,11 +1,11 @@
-function [Phi,Psi,S,C] = ferf(This,Time)
+function varargout = ferf(This,Time,varargin)
 % ferf  Forecast error response function.
 %
 % Syntax
 % =======
 %
-%     [Phi,Psi,s,c] = ferf(V,NPer)
-%     [Phi,Psi,s,c] = ferf(V,Range)
+%     [R,C] = ferf(V,NPer)
+%     [R,C] = ferf(V,Range)
 %
 % Input arguments
 % ================
@@ -20,13 +20,20 @@ function [Phi,Psi,S,C] = ferf(This,Time)
 % Output arguments
 % =================
 %
-% * `Phi` [ numeric ] - Response function matrices.
+% * `Resp` [ tseries | struct ] - Forecast error response functions.
 %
-% * `Psi` [ numeric ] - Cumulative response function matrices.
+% * `Cum` [ tseries | struct ] - Cumulative forecast error response
+% functions.
 %
-% * `S` [ tseries ] - Response function time series.
+% Options
+% ========
 %
-% * `C` [ tseries ] - Cumulative response function time series.
+% * `'presample='` [ `true` | *`false`* ] - Include zeros for pre-sample
+% initial conditions in the output data.
+%
+% * `'select='` [ cellstr | char | logical | numeric | *`Inf`* ] -
+% Selection of variable to whose forecast errors the responses will be
+% simulated.
 %
 % Description
 % ============
@@ -38,31 +45,17 @@ function [Phi,Psi,S,C] = ferf(This,Time)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-% Tell if `time` is `nper` or `range`.
-if length(Time) == 1 && round(Time) == Time && Time > 0
-    range = 1 : Time;
-else
-    range = Time(1) : Time(end);
-end
-nPer = length(range);
+opt = passvalopt('VAR.response',varargin{:});
 
 %--------------------------------------------------------------------------
 
-% Compute VMA matrices.
-Phi = timedom.var2vma(This.A,[],nPer);
-
-if nargout > 1
-    % Cumulative responses.
-    Psi = cumsum(Phi,3);
-    if nargout > 2
-        % Create tseries objects.
-        S = permute(Phi,[3,1,2,4]);
-        S = tseries(range,S);
-        if nargout > 3
-            C = permute(Psi,[3,1,2,4]);
-            C = replace(S,C);
-        end
-    end
+[select,invalid] = myselect(This,'y',opt.select);
+if ~isempty(invalid)
+    utils.error('VAR:ferf', ...
+        'This variable name does not exist in the VAR object: ''%s''.', ...
+        invalid{:});
 end
+
+[varargout{1:nargout}] = myresponse(This,Time,[],select,opt);
 
 end

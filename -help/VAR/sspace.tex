@@ -5,7 +5,7 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[T,R,K,Z,H,D,Omg] = sspace(V,...)
+[T,R,K,Z,H,D,Cov] = sspace(V,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -22,8 +22,8 @@
 \item
   \texttt{T} {[} numeric {]} - Transition matrix.
 \item
-  \texttt{R} {[} numeric {]} - Matrix at the shock vector in transition
-  equations.
+  \texttt{R} {[} numeric {]} - Matrix of instantaneous effect of
+  residuals (forecast errors).
 \item
   \texttt{K} {[} numeric {]} - Constant vector in transition equations.
 \item
@@ -31,14 +31,16 @@
   measurement variables.
 \item
   \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
-  equations.
+  equations (all zeros in VAR objects).
 \item
-  \texttt{D} {[} numeric {]} - Constant vector in measurement equations.
+  \texttt{D} {[} numeric {]} - Constant vector in measurement equations
+  (all zeros in VAR objects).
 \item
   \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
   variables.
 \item
-  \texttt{Omega} {[} numeric {]} - Covariance matrix of shocks.
+  \texttt{Cov} {[} numeric {]} - Covariance matrix of residuals
+  (forecast errors).
 \end{itemize}
 
 \paragraph{Description}\label{description}

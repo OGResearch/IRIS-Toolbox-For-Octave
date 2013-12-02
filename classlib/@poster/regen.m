@@ -1,6 +1,6 @@
 function [sample,lp_Sample,len] ...
     = regen(This,NDraw,varargin)
-% arwm  Regeneration time MCMC Metropolis posterior simulator.
+% regen  Regeneration time MCMC Metropolis posterior simulator.
 %
 % Syntax
 % =======
@@ -27,16 +27,17 @@ function [sample,lp_Sample,len] ...
 % * `Scale` [ numeric ] - Vector of proposal scale factors in each draw.
 %
 % * `FinalCov` [ numeric ] - Final proposal covariance matrix; the final
-% covariance matrix of the random walk step is Scale(end)^2*FinalCov.
+% covariance matrix of the random walk step is `Scale(end)^2*FinalCov`.
 %
 % Options
 % ========
 % 
 % References
-% ========
-% 1. Brockwell, A.E., and Kadane, J.B., 2004. "Identification of ]
-%    Regeneration Times in MCMC Simulation, with Application to Adaptive 
-%    Schemes," mimeo, Carnegie Mellon University. 
+% ===========
+%
+% 1. Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
+% Regeneration Times in MCMC Simulation, with Application to Adaptive
+% Schemes," mimeo, Carnegie Mellon University.
 %
 % Example
 % ========
@@ -55,8 +56,6 @@ pp.parse(This,NDraw);
 opt = passvalopt('poster.regen',varargin{:});
 
 %--------------------------------------------------------------------------
-
-s = mylogpoststruct(This);
 
 if opt.initialChainSize < 1
     % initial chain size is a percentage
@@ -82,7 +81,7 @@ reentryDist = logdist.normal(initMean,initStd) ;
 reentrySample = reentryDist([],'draw',opt.initialChainSize) ;
 
 % Target distribution
-targetDist = @(x) mylogpost(This,x,s) ;
+targetDist = @(x) mylogpost(This,x) ;
 
 % Construct proposal distribution
 propNew = @(x) rwrand(x,chol(initFinalCov)) ;

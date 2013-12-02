@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] \LaTeX\ code for texcommand objects.
 %
 % Backend IRIS function.
@@ -10,6 +10,5 @@ function [C,Temps] = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 C = This.caption;
-Temps = {};
 
 end

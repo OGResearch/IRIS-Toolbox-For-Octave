@@ -1,5 +1,5 @@
 function N = length(This)
-% length  Number or priors imposed in system priors object.
+% length  Number or priors in system priors object.
 %
 % Syntax
 % =======

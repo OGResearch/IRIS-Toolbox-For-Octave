@@ -1,6 +1,6 @@
 % VARs  Multivariate time series analysis.
 %
-% * [VAR](VAR/Contents) - Vector autoregressions: VAR objects and functions.
+% * [VAR](VAR/Contents) - Vector autoregressions (VAR) objects and functions.
 %
 % * [SVAR](SVAR/Contents) - Structural vector autoregressions: SVAR objects and functions.
 %

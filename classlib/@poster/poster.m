@@ -16,13 +16,14 @@ classdef poster
 % Constructor
 % ============
 %
-% * [`poster`](poster/poster) - Posterior objects and functions.
+% * [`poster`](poster/poster) - Create new, empty posterior simulation (poster) object.
 %
 % Evaluating posterior density
 % =============================
 %
 % * [`arwm`](poster/arwm) - Adaptive random-walk Metropolis posterior simulator.
 % * [`eval`](poster/eval) - Evaluate posterior density at specified points.
+% * [`regen`](poster/regen) - Regeneration time MCMC Metropolis posterior simulator.
 %
 % Chain statistics
 % =================
@@ -56,6 +57,25 @@ classdef poster
     methods
         
         function This = poster(varargin)
+            % poster  Create new, empty posterior simulation (poster) object.
+            %
+            % Syntax
+            % =======
+            %
+            %     P = poster()
+            %
+            % Description
+            % ============
+            %
+            % Creating and initialising posterior simulation objects manually is
+            % unnecessary. Posterior simulation objects are created and initialised
+            % automatically within estimation methods of various other objects, such as
+            % [`model/estimate`](model/estimate).
+            %
+            
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+                        
             if isempty(varargin)
                 return
             elseif length(varargin) == 1 && isa(varargin{1},'poster')
@@ -271,7 +291,6 @@ classdef poster
     methods (Access=protected, Hidden)
         varargout = mysimulate(varargin)
         varargout = mylogpost(varargin)
-        varargout = mylogpoststruct(varargin)
     end
     
     methods (Static,Hidden)

@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] Produce LaTeX code for tex objects.
 %
 % Backend IRIS function.
@@ -9,6 +9,6 @@ function [C,Temps] = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
-[C,Temps] = speclatexcode@report.userinputobj(This);
+C = speclatexcode@report.userinputobj(This);
 
 end

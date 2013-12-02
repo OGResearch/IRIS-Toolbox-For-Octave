@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] \LaTeX\ code for modelfile object.
 %
 % Backend IRIS function.
@@ -13,6 +13,6 @@ function [C,Temps] = speclatexcode(This)
 This.options.verbatim = false;
 This.options.centering = false;
 This.userinput = printmodelfile(This);
-[C,Temps] = speclatexcode@report.userinputobj(This);
+C = speclatexcode@report.userinputobj(This);
 
 end

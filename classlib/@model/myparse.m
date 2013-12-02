@@ -82,7 +82,7 @@ end
 nameValue = strtrim(nameValue);
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
 rplFunc = @doReplaceNameValue; %#ok<NASGU>
-nameValue = regexprep(nameValue,ptn,'${rplFunc(C1)}');
+nameValue = regexprep(nameValue,ptn,'${rplFunc($0)}');
 if isstruct(Assign) && ~isempty(Assign)
     doNotEvalList = fieldnames(Assign);
 else

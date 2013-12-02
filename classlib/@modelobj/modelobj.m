@@ -1,4 +1,4 @@
-classdef modelobj
+classdef modelobj < getsetobj & userdataobj
     % modelobj  [Not a public class] Base class for model type of objects.
     %
     % Backend IRIS class.
@@ -47,10 +47,17 @@ classdef modelobj
         % Constructor
         %-------------
         function This = modelobj(varargin)
+            This = This@getsetobj();
+            This = This@userdataobj();
         end
-
+        
+    end
+       
+    
+    methods
         varargout = assign(varargin)
         varargout = autocaption(varargin)
+        varargout = chkpriors(varargin)        
         varargout = emptydb(varargin)
         varargout = export(varargin)
         varargout = iscompatible(varargin)
@@ -59,11 +66,11 @@ classdef modelobj
         varargout = length(varargin)
         varargout = omega(varargin)
         varargout = reset(varargin)
-        varargout = stdscale(varargin)        
+        varargout = stdscale(varargin)
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)
-        
     end
+    
     
     methods (Hidden)
         varargout = mynameposition(varargin)
@@ -72,18 +79,20 @@ classdef modelobj
         varargout = specget(varargin)
     end
     
+    
     methods (Access=protected,Hidden)
         varargout = mycorrnames(varargin)
-        varargout = myparamstruct(varargin)
-        varargout = mytune2stdcorr(varargin)
+        varargout = mytune2stdcorr(varargin)             
         varargout = mysubsalt(varargin)
     end
+    
     
     methods (Static,Hidden)
         varargout = loadobj(varargin)
         varargout = mycombinestdcorr(varargin)
         varargout = mynameindex(varargin);
         varargout = mystdcorrindex(varargin)
+        varargout = myalias(varargin)
     end
     
 end

@@ -113,7 +113,7 @@ code.LaTeX {
 <pre><code>D = addparam(V,D)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>V</code> [ SVAR ] - SVAR object whose parameter matrices will be added to database (struct) <code>D</code>.</p></li>
+<li><p><code>V</code> [ VAR ] - VAR object whose parameter matrices will be added to database (struct) <code>D</code>.</p></li>
 <li><p><code>D</code> [ struct ] - Database to which the model parameters will be added.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
@@ -121,7 +121,7 @@ code.LaTeX {
 <li>`D [ struct ] - Database with the VAR parameter matrices added.</li>
 </ul>
 <h4 id="description">Description</h4>
-<p>The newly created database entries are named <code>A</code> (transition matrix), <code>K</code> (constant terms),and <code>Omg</code> (covariance matrix of shocks). Be aware that if there are database entries in <code>D</code> whose names conincide with these names, they will be overwritten.</p>
+<p>The newly created database entries are named <code>A_</code> (transition matrix), <code>K_</code> (constant terms), <code>B_</code> (matrix of instantaneous whock effects), and <code>Cov_</code> (covariance matrix of shocks). Be aware that all existing database entries in <code>D</code> named <code>A_</code>, <code>K_</code>, <code>B_</code>, or <code>Omg_</code> will be overwritten.</p>
 <h4 id="example">Example</h4>
 <pre><code>D = struct();
 D = addparam(V,D);</code></pre>

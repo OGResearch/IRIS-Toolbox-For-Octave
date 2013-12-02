@@ -263,6 +263,9 @@ for iLoop = 1 : nLoop
     
 end
 
+% Reset the instrument matrix.
+This.Zi = zeros(0,ny*p+1);
+
 % Calculate triangular representation.
 if opt.schur
     This = schur(This);
@@ -294,6 +297,7 @@ end
 if ~isequal(opt.comment,Inf)
     This = comment(This,opt.comment);
 end
+
 
 % Nested functions.
 

@@ -12,7 +12,6 @@ function disp(This)
 ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
-listFunc = @(x) sprintf('''%s'' ',x{:});
 
 if isempty(This.A)
     fprintf('\tempty %s object',class(This));
@@ -30,19 +29,19 @@ else
 end
 fprintf('\n');
 
-specdisp(This);
-
 if ~isempty(This.Ynames)
-    yNames = listFunc(This.Ynames);
+    yNames = strfun.displist(This.Ynames);
 else
     yNames = 'empty';
 end
 fprintf('\tvariable names: %s',yNames);
 fprintf('\n');
 
+specdisp(This);
+
 % Group names for panel objects.
 if ispanel(This)
-    fprintf('\tgroup names: %s',listFunc(This.GroupNames));
+    fprintf('\tgroup names: %s',strfun.displist(This.GroupNames));
     fprintf('\n');
 end
 

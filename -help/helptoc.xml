@@ -64,6 +64,7 @@
         <tocitem target="model/addparam.html" image="HelpIcon.FUNCTION">addparam &#8212; Add model parameters to a database (struct)</tocitem>
         <tocitem target="model/alter.html" image="HelpIcon.FUNCTION">alter &#8212; Expand or reduce number of alternative parameterisations</tocitem>
         <tocitem target="model/assign.html" image="HelpIcon.FUNCTION">assign &#8212; Assign parameters, steady states, std deviations or cross-correlations</tocitem>
+        <tocitem target="model/autocaption.html" image="HelpIcon.FUNCTION">autocaption &#8212; Create captions for graphs of model variables or parameters</tocitem>
         <tocitem target="model/autoexogenise.html" image="HelpIcon.FUNCTION">autoexogenise &#8212; Get or set variable/shock pairs for use in autoexogenised simulation plans</tocitem>
         <tocitem target="model/bn.html" image="HelpIcon.FUNCTION">bn &#8212; Beveridge-Nelson trends</tocitem>
         <tocitem target="model/chksstate.html" image="HelpIcon.FUNCTION">chksstate &#8212; Check if equations hold for currently assigned steady0state values</tocitem>
@@ -107,6 +108,7 @@
         <tocitem target="model/regress.html" image="HelpIcon.FUNCTION">regress &#8212; Centred population regression for selected model variables</tocitem>
         <tocitem target="model/reporting.html" image="HelpIcon.FUNCTION">reporting &#8212; Run reporting equations</tocitem>
         <tocitem target="model/resample.html" image="HelpIcon.FUNCTION">resample &#8212; Resample from the model implied distribution</tocitem>
+        <tocitem target="model/reset.html" image="HelpIcon.FUNCTION">reset &#8212; Reset specific values within model object</tocitem>
         <tocitem target="model/set.html" image="HelpIcon.FUNCTION">set &#8212; Change modifiable model object property</tocitem>
         <tocitem target="model/shockplot.html" image="HelpIcon.FUNCTION">shockplot &#8212; Short-cut for running and plotting plain shock simulation</tocitem>
         <tocitem target="model/simulate.html" image="HelpIcon.FUNCTION">simulate &#8212; Simulate model</tocitem>
@@ -139,27 +141,28 @@
         <tocitem target="plan/nnzexog.html" image="HelpIcon.FUNCTION">nnzexog &#8212; Number of exogenised data points</tocitem>
         <tocitem target="plan/nnznonlin.html" image="HelpIcon.FUNCTION">nnznonlin &#8212; Number of non-linearised data points</tocitem>
         <tocitem target="plan/nonlinearise.html" image="HelpIcon.FUNCTION">nonlinearise &#8212; Select equations for simulation in an exact non-linear mode</tocitem>
-        <tocitem target="plan/plan.html" image="HelpIcon.FUNCTION">plan &#8212; Create new simulation plan</tocitem>
+        <tocitem target="plan/plan.html" image="HelpIcon.FUNCTION">plan &#8212; Create new, empty simulation plan object</tocitem>
         <tocitem target="plan/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for plan objects</tocitem>
     </tocitem>
     <tocitem target="grouping/Contents.html" image="HelpIcon.USER_GUIDE">Grouping objects for aggregation of contributions
         <tocitem target="grouping/addgroup.html" image="HelpIcon.FUNCTION">addgroup &#8212; Add measurement variable or shock grouping to grouping object</tocitem>
         <tocitem target="grouping/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Details of a grouping object</tocitem>
         <tocitem target="grouping/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate contributions in input database S using grouping object G</tocitem>
-        <tocitem target="grouping/grouping.html" image="HelpIcon.FUNCTION">grouping &#8212; Create new grouping object</tocitem>
+        <tocitem target="grouping/grouping.html" image="HelpIcon.FUNCTION">grouping &#8212; Create new, empty grouping object</tocitem>
         <tocitem target="grouping/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True for empty grouping object</tocitem>
     </tocitem>
     <tocitem target="systempriors/Contents.html" image="HelpIcon.USER_GUIDE">System priors
-        <tocitem target="systempriors/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Display details of system priors</tocitem>
-        <tocitem target="systempriors/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True if the system priors object is empty</tocitem>
-        <tocitem target="systempriors/length.html" image="HelpIcon.FUNCTION">length &#8212; Number or priors imposed in system priors object</tocitem>
-        <tocitem target="systempriors/prior.html" image="HelpIcon.FUNCTION">prior &#8212; Create prior for a system property</tocitem>
-        <tocitem target="systempriors/systempriors.html" image="HelpIcon.FUNCTION">systempriors &#8212; Create new system priors</tocitem>
+        <tocitem target="systempriors/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Display details of system priors object</tocitem>
+        <tocitem target="systempriors/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True if system priors object is empty</tocitem>
+        <tocitem target="systempriors/length.html" image="HelpIcon.FUNCTION">length &#8212; Number or priors in system priors object</tocitem>
+        <tocitem target="systempriors/prior.html" image="HelpIcon.FUNCTION">prior &#8212; Add new prior to system priors object</tocitem>
+        <tocitem target="systempriors/systempriors.html" image="HelpIcon.FUNCTION">systempriors &#8212; Create new, empty system priors object</tocitem>
     </tocitem>
     <tocitem target="poster/Contents.html" image="HelpIcon.USER_GUIDE">Posterior objects and functions
         <tocitem target="poster/arwm.html" image="HelpIcon.FUNCTION">arwm &#8212; Adaptive random-walk Metropolis posterior simulator</tocitem>
         <tocitem target="poster/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate posterior density at specified points</tocitem>
-        <tocitem target="poster/poster.html" image="HelpIcon.FUNCTION">poster &#8212; Posterior objects and functions</tocitem>
+        <tocitem target="poster/poster.html" image="HelpIcon.FUNCTION">poster &#8212; Create new, empty posterior simulation (poster) object</tocitem>
+        <tocitem target="poster/regen.html" image="HelpIcon.FUNCTION">regen &#8212; Regeneration time MCMC Metropolis posterior simulator</tocitem>
         <tocitem target="poster/stats.html" image="HelpIcon.FUNCTION">stats &#8212; Evaluate selected statistics of ARWM chain</tocitem>
     </tocitem>
     <tocitem target="logdist/Contents.html" image="HelpIcon.USER_GUIDE">Probability distribution package
@@ -182,7 +185,7 @@
     </tocitem>
     <tocitem target="sstate/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state objects and functions
         <tocitem target="sstate/compile.html" image="HelpIcon.FUNCTION">compile &#8212; Compile an m-file function based on a steady-state file</tocitem>
-        <tocitem target="sstate/sstate.html" image="HelpIcon.FUNCTION">sstate &#8212; Create new model object based on sstate file</tocitem>
+        <tocitem target="sstate/sstate.html" image="HelpIcon.FUNCTION">sstate &#8212; Create new steady-state object based on sstate file</tocitem>
         <tocitem target="sstate/standalonemfile.html" image="HelpIcon.FUNCTION">standalonemfile &#8212; Run a compiled stand-alone sstate m-file function</tocitem>
     </tocitem>
     <tocitem target="namedmat/Contents.html" image="HelpIcon.USER_GUIDE">Matrices with named rows and columns
@@ -194,7 +197,7 @@
     </tocitem>
 </tocitem>
 <tocitem target="Contents/VARs.html" image="HelpIcon.USER_GUIDE">Multivariate time series analysis
-    <tocitem target="VAR/Contents.html" image="HelpIcon.USER_GUIDE">Vector autoregressions: VAR objects and functions
+    <tocitem target="VAR/Contents.html" image="HelpIcon.USER_GUIDE">Vector autoregressions (VAR) objects and functions
         <tocitem target="VAR/acf.html" image="HelpIcon.FUNCTION">acf &#8212; Autocovariance and autocorrelation functions for VAR variables</tocitem>
         <tocitem target="VAR/addparam.html" image="HelpIcon.FUNCTION">addparam &#8212; Add VAR parameters to a database (struct)</tocitem>
         <tocitem target="VAR/alter.html" image="HelpIcon.FUNCTION">alter &#8212; Expand or reduce the number of alternative parameterisations within a VAR object</tocitem>
@@ -208,6 +211,7 @@
         <tocitem target="VAR/filter.html" image="HelpIcon.FUNCTION">filter &#8212; Filter data using a VAR model</tocitem>
         <tocitem target="VAR/fmse.html" image="HelpIcon.FUNCTION">fmse &#8212; Forecast mean square error matrices</tocitem>
         <tocitem target="VAR/forecast.html" image="HelpIcon.FUNCTION">forecast &#8212; Unconditional or conditional VAR forecasts</tocitem>
+        <tocitem target="VAR/fprintf.html" image="HelpIcon.FUNCTION">fprintf &#8212; Write VAR model as formatted model code to text file</tocitem>
         <tocitem target="VAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query VAR object properties</tocitem>
         <tocitem target="VAR/group.html" image="HelpIcon.FUNCTION">group &#8212; Retrieve VAR object from panel VAR for specified group of data</tocitem>
         <tocitem target="VAR/horzcat.html" image="HelpIcon.FUNCTION">horzcat &#8212; Combine two compatible VAR objects in one object with multiple parameterisations</tocitem>
@@ -227,20 +231,19 @@
         <tocitem target="VAR/rngcmp.html" image="HelpIcon.FUNCTION">rngcmp &#8212; True if two VAR objects have been estimated using the same dates</tocitem>
         <tocitem target="VAR/schur.html" image="HelpIcon.FUNCTION">schur &#8212; Compute and store triangular representation of VAR</tocitem>
         <tocitem target="VAR/simulate.html" image="HelpIcon.FUNCTION">simulate &#8212; Simulate VAR model</tocitem>
+        <tocitem target="VAR/sprintf.html" image="HelpIcon.FUNCTION">sprintf &#8212; Print VAR model as formatted model code</tocitem>
         <tocitem target="VAR/sspace.html" image="HelpIcon.FUNCTION">sspace &#8212; Quasi-triangular state-space representation of VAR</tocitem>
         <tocitem target="VAR/subsasgn.html" image="HelpIcon.FUNCTION">subsasgn &#8212; Subscripted assignment for VAR objects</tocitem>
         <tocitem target="VAR/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for VAR objects</tocitem>
         <tocitem target="VAR/userdata.html" image="HelpIcon.FUNCTION">userdata &#8212; Get or set user data in an IRIS object</tocitem>
-        <tocitem target="VAR/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Create new reduced-form VAR object</tocitem>
+        <tocitem target="VAR/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Create new, empty reduced-form VAR object</tocitem>
         <tocitem target="VAR/vma.html" image="HelpIcon.FUNCTION">vma &#8212; Matrices describing the VMA representation of a VAR process</tocitem>
         <tocitem target="VAR/xsf.html" image="HelpIcon.FUNCTION">xsf &#8212; Power spectrum and spectral density functions for VAR variables</tocitem>
     </tocitem>
     <tocitem target="SVAR/Contents.html" image="HelpIcon.USER_GUIDE">Structural vector autoregressions: SVAR objects and functions
         <tocitem target="SVAR/fevd.html" image="HelpIcon.FUNCTION">fevd &#8212; Forecast error variance decomposition for SVAR variables</tocitem>
-        <tocitem target="SVAR/fprintf.html" image="HelpIcon.FUNCTION">fprintf &#8212; Format SVAR as a model code and write to text file</tocitem>
         <tocitem target="SVAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query SVAR object properties</tocitem>
         <tocitem target="SVAR/sort.html" image="HelpIcon.FUNCTION">sort &#8212; Sort SVAR parameterisations by squared distance of shock reponses to median</tocitem>
-        <tocitem target="SVAR/sprintf.html" image="HelpIcon.FUNCTION">sprintf &#8212; Format SVAR as a model code and write to text string</tocitem>
         <tocitem target="SVAR/srf.html" image="HelpIcon.FUNCTION">srf &#8212; Shock (impulse) response function</tocitem>
         <tocitem target="SVAR/SVAR.html" image="HelpIcon.FUNCTION">SVAR &#8212; Convert reduced-form VAR to structural VAR</tocitem>
     </tocitem>
@@ -254,7 +257,7 @@
     <tocitem target="FAVAR/Contents.html" image="HelpIcon.USER_GUIDE">Factor-augmented vector autoregressions: FAVAR objects and functions
         <tocitem target="FAVAR/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
         <tocitem target="FAVAR/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate FAVAR using static principal components</tocitem>
-        <tocitem target="FAVAR/FAVAR.html" image="HelpIcon.FUNCTION">FAVAR &#8212; Create new FAVAR object</tocitem>
+        <tocitem target="FAVAR/FAVAR.html" image="HelpIcon.FUNCTION">FAVAR &#8212; Create new, empty FAVAR object</tocitem>
         <tocitem target="FAVAR/filter.html" image="HelpIcon.FUNCTION">filter &#8212; Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given</tocitem>
         <tocitem target="FAVAR/forecast.html" image="HelpIcon.FUNCTION">forecast &#8212; Forecast FAVAR factors and observables</tocitem>
         <tocitem target="FAVAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query model object properties</tocitem>

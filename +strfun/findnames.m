@@ -1,4 +1,4 @@
-function [Inx,NotFound,Inx1] = findnames(List,Select,Pattern)
+function [Pos,NotFound,Pos1] = findnames(List,Select,Pattern)
 % findnames  Find positions of strings in a list.
 %
 % Syntax
@@ -47,14 +47,14 @@ Select = Select(:);
 
 %--------------------------------------------------------------------------
 
-Inx = nan(size(Select));
+Pos = nan(size(Select));
 for i = 1 : length(Select(:))
    tmp = strcmp(List,Select{i});
    if any(tmp)
-      Inx(i) = find(tmp,1);
+      Pos(i) = find(tmp,1);
    end
 end
-NotFound = Select(isnan(Inx));
+NotFound = Select(isnan(Pos));
 NotFound = NotFound(:).';
 
 if nargout <= 2
@@ -66,7 +66,7 @@ nSelect = length(Select);
 List = List(ones(1,nSelect),:);
 Select = Select(:,ones([1,nList]));
 [i,j] = find(strcmp(List,Select));
-Inx1 = nan(1,nSelect);
-Inx1(i) = j;
+Pos1 = nan(1,nSelect);
+Pos1(i) = j;
 
 end

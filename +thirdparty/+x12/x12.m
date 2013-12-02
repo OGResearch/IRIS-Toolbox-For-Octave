@@ -135,7 +135,8 @@ varargout{nOutp+1} = Outp;
 varargout{nOutp+2} = Err;
 varargout{nOutp+3} = Mdl;
 
-% Nested functions.
+
+% Nested functions...
 
 
 %**************************************************************************
@@ -154,7 +155,7 @@ varargout{nOutp+3} = Mdl;
         end
         if isNanWarn
             utils.warning('x12', ...
-                ['Input data contain within-sample NaNs. ', ...
+                ['Input data contain in-sample NaNs. ', ...
                 'To allow for in-sample NaNs, ', ...
                 'use the option ''missing='' true.']);
         end

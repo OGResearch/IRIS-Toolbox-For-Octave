@@ -20,12 +20,13 @@ This = myplot@report.basefigureobj(This);
 % Re-create the figure whose handle was captured at the
 % time the figure constructor was called.
 if ~isempty(This.savefig)
-    fid = fopen(This.figfile,'w+');
+    figFile = [tempname(cd()),'.fig'];
+    fid = fopen(figFile,'w+');
     fwrite(fid,This.savefig);
     fclose(fid);
-    This.handle = open(This.figfile);
+    This.handle = open(figFile);
     set(This.handle,'visible',visibleFlag);
-    delete(This.figfile);
+    delete(figFile);
 end
 
 end

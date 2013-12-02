@@ -1,4 +1,4 @@
-function [X,YNames,D] = fmse(This,Time,varargin)
+function [X,D,D1] = fmse(This,Time,varargin)
 % fmse  Forecast mean square error matrices.
 %
 % Syntax
@@ -23,13 +23,15 @@ function [X,YNames,D] = fmse(This,Time,varargin)
 % * `M` [ numeric ] - Forecast MSE matrices.
 %
 % * `X` [ dbase | tseries ] - Database or tseries with the std deviations
-% of individual variables, i.e. the square roots of the diagonal elements
-% of `M`.
+% of individual variables, i.e. the square roots of the corresponding
+% diagonal elements of `M`.
 %
 % Options
 % ========
 %
-% * `'output='` [ `'dbase'` | *`'tseries'`* ] - Format of output data.
+% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrix `M` as
+% either namedmat object (matrix with named rows and columns) or plain
+% numeric array.
 %
 % Description
 % ============
@@ -45,9 +47,9 @@ opt = passvalopt('VAR.fmse',varargin{:});
 
 % Tell whether time is nper or range.
 if length(Time) == 1 && round(Time) == Time && Time > 0
-   range = 1 : Time;
+    range = 1 : Time;
 else
-   range = Time(1) : Time(end);
+    range = Time(1) : Time(end);
 end
 nPer = length(range);
 
@@ -64,30 +66,43 @@ B = covfun.factorise(This.Omega);
 X = timedom.var2vma(This.A,B,nPer);
 
 % Compute FMSE matrices.
-for ialt = 1 : nAlt
-   for t = 1 : nPer
-      X(:,:,t,ialt) = X(:,:,t,ialt)*transpose(X(:,:,t,ialt));
-   end
+for iAlt = 1 : nAlt
+    for t = 1 : nPer
+        X(:,:,t,iAlt) = X(:,:,t,iAlt)*transpose(X(:,:,t,iAlt));
+    end
 end
 X = cumsum(X,3);
+
+yNames = get(This,'yNames');
+if ~isempty(yNames) && strcmpi(opt.output,'namedmat')
+    X = namedmat(X,yNames,yNames);
+end
 
 % Return std devs for individual series.
 templ = tseries();
 if nargout > 1
-   x = nan([nPer,ny,nAlt]);
-   for i = 1 : ny
-      x(:,i,:) = sqrt(permute(X(i,i,:,:),[3,1,4,2]));
-   end
-   YNames = get(This,'yNames');
-   if strcmpi(opt.output,'dbase')
-      D = struct();
-      for i = 1 : ny
-         tmp = x(:,i,:);
-         D.(YNames{i}) = replace(templ,tmp(:,:),range(1));
-      end
-   else
-      D = replace(templ,x,range(1),YNames(1,:,ones([1,nAlt])));
-   end
+    x = nan(nPer,ny,nAlt);
+    for i = 1 : ny
+        x(:,i,:) = sqrt(permute(X(i,i,:,:),[3,1,4,2]));
+    end
+    % ##### Nov 2013 OBSOLETE and scheduled for removal.
+    % All VAR output data will be returned as dbase (struct).
+    if ~isempty(yNames)
+        D = struct();
+        for i = 1 : ny
+            tmp = x(:,i,:);
+            D.(yNames{i}) = replace(templ,tmp(:,:),range(1));
+        end
+    else
+        D = replace(templ,x,range(1),yNames(1,:,ones(1,nAlt)));
+    end
+    if nargout > 2
+        % ##### Nov 2013 OBSOLETE and scheduled for removal.
+        D1 = D;
+        utils.warning('obsolete', ...
+            ['Syntax with more than 2 output arguments is obsolete, ', ...
+            'and will be removed from IRIS in the future.']);
+    end
 end
 
 end

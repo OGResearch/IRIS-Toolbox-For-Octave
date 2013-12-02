@@ -126,7 +126,7 @@ if ischar(opt.linear) && strcmpi(opt.linear,'auto')
 else
     changeLinear = This.linear ~= opt.linear;
     if changeLinear
-        linear = This.linear;
+        wasLinear = This.linear;
         This.linear = opt.linear;
     end
 end
@@ -137,12 +137,15 @@ end
 sstateOpt = mysstateopt(This,'verbose',varargin{:});
 
 if ~This.linear
+    
     % Non-linear models
     %-------------------
     % Throw a warning if some parameters are NaN.
     chk(This,Inf,'parameters');
     This = mysstatenonlin(This,sstateOpt);
+
 else
+    
     % Linear models
     %---------------
     if sstateOpt.solve
@@ -150,10 +153,11 @@ else
         [This,NPath,EigVal] = solve(This,'refresh=',sstateOpt.refresh);
     end
     [This,Flag] = mysstatelinear(This,sstateOpt);
+
 end
 
 if changeLinear
-    This.linear = linear;
+    This.linear = wasLinear;
 end
 
 end

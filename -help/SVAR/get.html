@@ -110,19 +110,24 @@ code.LaTeX {
 <div class="headline">Query SVAR object properties</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>value = get(v,query)
-[value,value,...] = get(v,query,query,...)</code></pre>
+<pre><code>Ans = get(V,Query)
+[Ans,Ans,...] = get(V,Query,Query,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>v</code> [ SVAR ] - SVAR object.</p></li>
-<li><p><code>query</code> [ char ] - Name of the queried property.</p></li>
+<li><p><code>V</code> [ SVAR ] - SVAR object.</p></li>
+<li><p><code>Query</code> [ char ] - Query to the SVAR object.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>value</code> [ ... ] - Value of the queried property.</li>
+<li><code>Ans</code> [ ... ] - Answer to the query.</li>
 </ul>
-<p>All properties accessible through the <code>get</code> function in VAR objects are also accessible in SVAR objects.</p>
-<h4 id="valid-queries-on-svar-objects">Valid queries on SVAR objects</h4>
+<h4 id="valid-queries-to-svar-objects">Valid queries to SVAR objects</h4>
+<p>All queries to VAR objects, listed and described in <a href="../VAR/get.html"><code>VAR/get</code></a>, can also be used in SVAR objects. In addition, the following queries are specific to SVAR objects:</p>
+<ul>
+<li><p><code>'B'</code> -- Returns [ numeric ] matrix of instantaneous effects of shocks.</p></li>
+<li><p><code>'std'</code> -- Returns [ numeric ] std deviation of structural shocks.</p></li>
+<li><p><code>'method'</code> -- Returns [ char ] identification method used to convert reduced-form VAR to structural VAR.</p></li>
+</ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 

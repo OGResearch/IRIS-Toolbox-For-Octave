@@ -5,14 +5,14 @@ function [C,R] = acf(X,Dates,varargin)
 % =======
 %
 %     [C,R] = acf(X)
-%     [C,R] = acf(X,DATES,...)
+%     [C,R] = acf(X,Dates,...)
 %
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Tseries object.
 %
-% * `DATES` [ numeric | Inf ] - Dates or date range on which tseries data
+% * `Dates` [ numeric | Inf ] - Dates or date range on which tseries data
 % will be used.
 %
 % Output arguments

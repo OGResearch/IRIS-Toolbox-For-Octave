@@ -1,4 +1,4 @@
-function [C,Temps] = speclatexcode(This)
+function C = speclatexcode(This)
 % speclatexcode  [Not a public function] \LaTeX\ code for matrix objects.
 %
 % Backend IRIS function.
@@ -9,8 +9,7 @@ function [C,Temps] = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
-Temps = {};
-nl = sprintf('\n');
+br = sprintf('\n');
 This.nlead = double(anyrowname(This));
 % Start of tabular and tabular spec.
 if isempty(This.options.colspec)
@@ -18,10 +17,10 @@ if isempty(This.options.colspec)
 end
 C = begin(This);
 
-C = [C,nl,'\hline',nl];
+C = [C,br,'\hline',br];
 % User-supplied heading.
 if ~isempty(This.options.heading)
-    C = [C,nl,This.options.heading];
+    C = [C,br,This.options.heading];
 end
 
 % Print column names.
@@ -43,13 +42,13 @@ if anycolname(This)
     if This.nlead == 1
         c1 = [' & ',c1];
     end
-    C = [C,c1,' \\',nl,'\hline',nl];
+    C = [C,c1,' \\',br,'\hline',br];
 end
 
 % Cycle over the matrix rows.
 for iRow = 1 : This.nrow
     if This.nlead == 1
-        C = [C,nl,'{',...
+        C = [C,br,'{',...
             latex.stringsubs(This.options.rownames{iRow}),...
             '}']; %#ok<AGROW>
     end
@@ -71,7 +70,7 @@ for iRow = 1 : This.nrow
 end
 
 % Finish all environments.
-C = [C,nl,finish(This)];
+C = [C,br,finish(This)];
 
 % Nested functions.
 

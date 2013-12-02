@@ -10,7 +10,7 @@ classdef sstate < userdataobj & getsetobj
     % Constructor
     % ============
     %
-    % * [`sstate`](sstate/sstate) - Create new model object based on sstate file.
+    % * [`sstate`](sstate/sstate) - Create new steady-state object based on sstate file.
     %
     % Compiling stand-alone m-file functions
     % =======================================
@@ -56,17 +56,17 @@ classdef sstate < userdataobj & getsetobj
     methods
         
         function This = sstate(InpFile,varargin)
-            % sstate  Create new model object based on sstate file.
+            % sstate  Create new steady-state object based on sstate file.
             %
             % Syntax
             % =======
             %
-            %     S = sstate(FNAME,...)
+            %     S = sstate(File,...)
             %
             % Input arguments
             % ================
             %
-            % * `FNAME` [ char ] - Name of the steady-state file that will
+            % * `File` [ char ] - Name of the steady-state file that will
             % loaded and converted to a new sstate object.
             %
             % Output arguments

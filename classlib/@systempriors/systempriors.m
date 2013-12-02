@@ -12,19 +12,19 @@ classdef systempriors < userdataobj
     % Constructor
     % ============
     %
-    % * [`systempriors`](systempriors/systempriors) - Create new system priors.
+    % * [`systempriors`](systempriors/systempriors) - Create new, empty system priors object.
     %
     % Setting up priors
     % ==================
     %
-    % * [`prior`](systempriors/prior) - Create prior for a system property.
+    % * [`prior`](systempriors/prior) - Add new prior to system priors object.
     %
     % Getting information about system priors
     % ========================================
     %
-    % * [`detail`](systempriors/detail) - Display details of system priors.
-    % * [`isempty`](systempriors/isempty) - True if the system priors object is empty.
-    % * [`length`](systempriors/length) - Number or priors imposed in system priors object.
+    % * [`detail`](systempriors/detail) - Display details of system priors object.
+    % * [`isempty`](systempriors/isempty) - True if system priors object is empty.
+    % * [`length`](systempriors/length) - Number or priors in system priors object.
     %
     
     % -IRIS Toolbox.
@@ -59,7 +59,7 @@ classdef systempriors < userdataobj
     
     methods
         function This = systempriors(varargin)
-            % systempriors  Create new system priors.
+            % systempriors  Create new, empty system priors object.
             %
             % Syntax
             % =======
