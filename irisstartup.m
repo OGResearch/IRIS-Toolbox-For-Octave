@@ -43,10 +43,18 @@ function irisstartup(varargin)
 %--------------------------------------------------------------------------
 
 % IRIS can only run in Matlab Release 2010a and higher.
-if xxMatlabRelease() < 2010
+if ismatlab && xxMatlabRelease() < 2010
     error('iris:startup',...
         ['Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> ', ...
         'can only run in Matlab R2010a or higher.']);
+elseif ~ismatlab
+    vv = xxOctaveRelease();
+    if isempty(vv)
+        error('iris:startup', 'Sorry, version of your system is unknown');
+    elseif any(vv(:)'<[3 7 7])
+        error('iris:startup', ['Sorry, The IRIS Toolbox ', ...
+        'can only run in Octave 3.7.7+ or higher.']);
+    end
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));
@@ -181,6 +189,23 @@ try
 catch %#ok<CTCH>
     Year = 0;
     Ab = '';
+end
+
+end % xxMatlabRelease().
+
+function [verVec,p] = xxOctaveRelease()
+
+try
+    s = ver('OCTAVE');
+    p = '';
+    verVec = sscanf(s.Version,'%d.%d.%d%c');
+    if length(verVec)>3
+      p = char(verVec(4));
+      verVec = verVec(1:3);
+    end
+catch %#ok<CTCH>
+    verVec = [];
+    p = '';
 end
 
 end % xxMatlabRelease().

@@ -11,6 +11,11 @@ function varargout = irispathmanager(Req,varargin)
 
 % Folders not to be included in the Matlab path.
 exclude = {'-','\+','\.'};
+if ~ismatlab
+  % Additionlly exclude for Octave version
+  exclude4octave = {};
+  exclude = [exclude exclude4octave];
+end
 
 switch lower(Req)
     case 'cleanup'
@@ -18,6 +23,9 @@ switch lower(Req)
         % and permanent search paths.
         varargout{1} = {};
         list = which('irisstartup.m','-all');
+        if ~ismatlab && ~iscell(list) % in Octave option -all is not working yet, so the result is [char] as in case w/o options
+          list = {list};
+        end
         for i = 1 : numel(list)
             root = fileparts(list{i});
             if isempty(root)
@@ -77,7 +85,11 @@ end
 %**************************************************************************
 function xxRmPath(varargin)
 status = warning('query','all');
-warning('off','MATLAB:rmpath:DirNotFound');
+if ismatlab
+  warning('off','MATLAB:rmpath:DirNotFound');
+else
+  warning('off','Octave:rmpath:DirNotFound'); % this ID doesn't exist in Octave yet
+end
 rmpath([varargin{:}]);
 warning(status);
 end % xxRmPath().
