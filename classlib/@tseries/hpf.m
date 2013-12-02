@@ -1,4 +1,4 @@
-function varargout = hpf(X,Range,varargin)
+function varargout = hpf(X,varargin)
 % hpf  Hodrick-Prescott filter with tunes (aka LRX filter).
 %
 % Syntax

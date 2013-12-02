@@ -1,4 +1,4 @@
-function X = cumsumk(X,K,Rho,Range,varargin)
+function X = cumsumk(X,K,Rho,varargin)
 % cumsumk  Cumulative sum with a k-period leap.
 %
 % Syntax

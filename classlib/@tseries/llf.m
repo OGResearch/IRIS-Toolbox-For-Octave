@@ -1,4 +1,4 @@
-function varargout = llf(X,Range,varargin)
+function varargout = llf(X,varargin)
 % llf  Local level filter (aka random walk plus white noise) with tunes.
 %
 % Syntax

@@ -1,4 +1,4 @@
-function varargout = bwf(X,Order,Range,varargin)
+function varargout = bwf(X,Order,varargin)
 % bwf  Butterworth filter with tunes.
 %
 % Syntax

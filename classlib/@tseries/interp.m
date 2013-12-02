@@ -1,4 +1,4 @@
-function X = interp(X,Range,varargin)
+function X = interp(X,varargin)
 % interp  Interpolate missing observations.
 %
 % Syntax
