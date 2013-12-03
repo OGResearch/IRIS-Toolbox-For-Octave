@@ -51,10 +51,11 @@ elseif ~ismatlab
     vv = xxOctaveRelease();
     if isempty(vv)
         error('iris:startup', 'Sorry, version of your system is unknown');
-    elseif any(vv(:)'<[3 7 7])
+    elseif vv < 3771 % 3.7.7+, but it's gonna be 5.x.x most probably, as classdef branch is far from stable
         error('iris:startup', ['Sorry, The IRIS Toolbox ', ...
         'can only run in Octave 3.7.7+ or higher.']);
     end
+    mlock; % temporary, while octave bug #35881 is not fixed
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));
@@ -193,19 +194,14 @@ end
 
 end % xxMatlabRelease().
 
-function [verVec,p] = xxOctaveRelease()
+function verNum = xxOctaveRelease()
 
 try
     s = ver('OCTAVE');
-    p = '';
     verVec = sscanf(s.Version,'%d.%d.%d%c');
-    if length(verVec)>3
-      p = char(verVec(4));
-      verVec = verVec(1:3);
-    end
+    verNum = sum(reshape(verVec(1:3),1,[]).*[1e3 1e2 1e1]) + (length(verVec)>3);
 catch %#ok<CTCH>
-    verVec = [];
-    p = '';
+    verNum = [];
 end
 
 end % xxMatlabRelease().
