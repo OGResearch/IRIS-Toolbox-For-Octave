@@ -30,7 +30,7 @@ classdef nnet < userdataobj & getsetobj
         Outputs@cell = cell(0,1) ;
     end
     
-    properties( Dependent = true )
+    properties( Dependent = true, Hidden = true )
         nAlt ;
         nInputs ;
         nOutputs ;
