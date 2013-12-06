@@ -53,7 +53,7 @@ classdef modelobj < getsetobj & userdataobj
         
     end
        
-    
+    %{
     methods
         varargout = assign(varargin)
         varargout = autocaption(varargin)
@@ -94,5 +94,5 @@ classdef modelobj < getsetobj & userdataobj
         varargout = mystdcorrindex(varargin)
         varargout = myalias(varargin)
     end
-    
+    %}
 end

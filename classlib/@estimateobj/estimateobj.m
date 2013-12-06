@@ -7,13 +7,15 @@ classdef estimateobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
-    properties
-    end
+%    properties % empty properties block is not allowed in Octave
+%    end
     
     methods
-        varargout = neighbourhood(varargin)
+        function varargout = neighbourhood(varargin)
+            varargout = neighbourhood_4oct(varargin)
+        end
     end
-
+%{
     methods (Abstract)
         varargout = objfunc(varargin)
     end
@@ -26,5 +28,6 @@ classdef estimateobj
     methods (Access=protected,Hidden,Static)
         varargout = myevalpprior(varargin)
     end
+    %}
     
 end

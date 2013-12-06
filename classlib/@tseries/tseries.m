@@ -232,11 +232,19 @@ classdef tseries < userdataobj
             
             % Parse required input arguments.
             pp = inputParser();
-            pp.addRequired('Dates',@isnumeric);
-            pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-            pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-            pp.parse(usrDates,usrData,usrComment);
+            if ismatlab
+                pp.addRequired('Dates',@isnumeric);
+                pp.addRequired('Data',@(x) ...
+                    isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
+                pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+                pp.parse(usrDates,usrData,usrComment);
+            else % temporary, while @inputParser is not using classdef
+                pp = pp.addRequired('Dates',@isnumeric);
+                pp = pp.addRequired('Data',@(x) ...
+                    isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
+                pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+                pp = pp.parse(usrDates,usrData,usrComment);
+            end
             
             %--------------------------------------------------------------
             
@@ -307,7 +315,7 @@ classdef tseries < userdataobj
         end
         
     end
-    
+    %{
     methods
         varargout = acf(varargin)
         varargout = apct(varargin)
@@ -381,9 +389,13 @@ classdef tseries < userdataobj
         varargout = x12(varargin)
         varargout = yearly(varargin)
     end
-    
+    %}
     methods (Hidden)
-        disp(varargin)
+        %disp(varargin)
+        function disp(This,varargin)
+          disp_4oct(This,varargin{:})
+        end % disp()
+        %{
         varargout = mytrim(varargin)
         varargout = cat(varargin)
         varargout = cut(varargin)
@@ -398,22 +410,35 @@ classdef tseries < userdataobj
         varargout = replace(varargin)
         varargout = saveobj(varargin)
         varargout = stdize(varargin)
+        %}
     end
     
     methods (Access=protected,Hidden)
+    %{
         mydispheader(varargin)
         varargout = myfilter(varargin)
         varargout = mygetdata(varargin)
         varargout = myinit(varargin)
+        %}
+        function This = myinit(This,Dates,Data)
+          This = myinit_4oct(This,Dates,Data);
+        end
+        %{
         varargout = mylagorlead(varargin)
         varargout = mystruct2obj(varargin)
         varargout = binop(varargin)
+        %}
+        function [x,varargout] = binop(fn,a,b,varargin)
+            [x,varargout] = binop_4oct(fn,a,b,varargin);
+        end
+        %{
         varargout = unop(varargin)
         varargout = catcheck(varargin)
+        %}
         function dispcomment(varargin)
         end
     end
-    
+    %{
     methods (Static,Hidden)
         varargout = mybarcon(varargin)
         varargout = mybpass(varargin)
@@ -439,7 +464,7 @@ classdef tseries < userdataobj
     methods (Static)
         varargout = edit(varargin)
     end
-    
+    %}
     methods (Hidden)
         function x = abs(x)
             x.data = abs(x.data);
@@ -493,10 +518,10 @@ classdef tseries < userdataobj
         function x = gt(a,b)
             x = binop(@gt,a,b);
         end
-        function x = imag(x)
-            x = unop(@imag,x,0);
-            x = mytrim(x);
-        end
+%        function x = imag(x)
+%            x = unop(@imag,x,0);
+%            x = mytrim(x);
+%        end
         function x = isinf(x)
             x.data = isinf(x.data);
         end
@@ -552,6 +577,7 @@ classdef tseries < userdataobj
                 x = binop(@mtimes,x,y);
             end
         end
+        %{
         function x = nanmean(x,dim)
             if nargin < 2
                 dim = 1;
@@ -582,6 +608,7 @@ classdef tseries < userdataobj
             end
             This = unop(@tseries.mynanvar,This,Dim,Flag,Dim);
         end
+        %}
         function This = ne(This,Y)
             This = binop(@ne,This,Y);
         end
@@ -600,12 +627,12 @@ classdef tseries < userdataobj
         function x = power(x,y)
             x = binop(@power,x,y);
         end
-        function x = prod(x,dim)
-            if nargin < 2
-                dim = 1;
-            end
-            x = unop(@prod,x,dim,dim);
-        end
+%        function x = prod(x,dim)
+%            if nargin < 2
+%                dim = 1;
+%            end
+%            x = unop(@prod,x,dim,dim);
+%        end
         function x = rdivide(x,y)
             x = binop(@rdivide,x,y);
         end
@@ -633,7 +660,7 @@ classdef tseries < userdataobj
         end
         function x = uplus(x)
         end
-        
+        %{
         % Distribution functions (Stats Toolbox)
         %----------------------------------------
         function x = normcdf(x,varargin)
@@ -778,6 +805,7 @@ classdef tseries < userdataobj
                 index = size(x.data,k);
             end
         end
+        %}
         function n = numel(~,varargin)
             n = 1;
         end

@@ -74,14 +74,15 @@ classdef preparser < userdataobj
         function disp(This)
             fprintf('\tpreparser object <a href="matlab:edit %s">%s</a>\n', ...
                 This.fname,This.fname);
-            disp@userdataobj(This);
+            %disp@userdataobj(This); % commented out while this syntax is not yet implemented in Octave
+            disp(This);
             disp(' ');
         end
-        
+        %{
         varargout = saveas(varargin)
-        
+        %}
     end
-    
+    %{
     methods (Hidden)
         % TODO: Create reportingobj and make the parser its method.
         varargout = reporting(varargin)
@@ -100,5 +101,5 @@ classdef preparser < userdataobj
         varargout = readcode(varargin)
         varargout = substitute(varargin)
     end
-    
+    %}
 end

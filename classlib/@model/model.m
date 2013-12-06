@@ -230,7 +230,7 @@ classdef model < modelobj & estimateobj
         % Anonymous function handles to equations evaluating the LHS-RHS.
         eqtnN = cell(1,0);
     end
-    
+    %{
     methods
         varargout = acf(varargin)
         varargout = alter(varargin)
@@ -373,7 +373,7 @@ classdef model < modelobj & estimateobj
         varargout = loadobj(varargin)
         varargout = dataformat(varargin)
     end
-    
+    %}
     % Constructor and dependent properties.
     methods
         

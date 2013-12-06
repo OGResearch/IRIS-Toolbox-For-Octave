@@ -7,18 +7,20 @@ classdef getsetobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
-    properties
-    end
+%    properties % empty properties block is not allowed in Octave
+%    end
     
     methods
         function This = getsetobj(varargin)
         end
     end
-    
+    %{
     methods
-        varargout = get(varargin)
+        function varargout = get(This,varargin)
+          varargout = get_4oct(varargin)
+        end
     end
-    
+    %}
     methods (Static,Hidden)
         function Query = myalias(Query)
         end

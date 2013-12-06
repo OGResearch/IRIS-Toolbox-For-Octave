@@ -41,7 +41,7 @@ classdef likfunc < estimateobj & getsetobj & userdataobj
         end  
         
     end
-    
+    %{
     methods
         varargout = data4eval(varargin)
         varargout = eval(varargin)
@@ -57,6 +57,6 @@ classdef likfunc < estimateobj & getsetobj & userdataobj
         varargout = myparamstruct(varargin)
         varargout = myvalidate(varargin)
     end
-    
+    %}
     
 end

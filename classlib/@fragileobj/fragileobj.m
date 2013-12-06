@@ -22,7 +22,10 @@ classdef fragileobj
         function delete(This) %#ok<INUSD>
         end
         
-        varargout = charcode(varargin)
+        function varargout = charcode(varargin)
+            varargout = charcode_4oct(varargin)
+        end
+        %{
         varargout = cleanup(varargin)      
         varargout = isempty(varargin)
         varargout = isnan(varargin)
@@ -32,6 +35,7 @@ classdef fragileobj
         varargout = protectquotes(varargin)
         varargout = restore(varargin)
         varargout = replace(varargin)
+        %}
     end
     
 end

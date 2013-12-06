@@ -29,21 +29,37 @@ classdef userdataobj
             end
         end
         
-        varargout = caption(varargin)
-        varargout = comment(varargin)
-        varargout = userdata(varargin)
-        varargout = userdatafield(varargin)
+        function varargout = caption(this,varargin)
+            varargout{1} = caption_4oct(this,varargin{:});
+        end
+        function varargout = comment(this,varargin)
+            varargout{1} = comment_4oct(this,varargin{:});
+        end
+        function varargout = userdata(this,varargin)
+            varargout{1} = userdata_4oct(this,varargin{:});
+        end
+        function varargout = userdatafield(this,Field,varargin)
+            varargout{1} = userdatafield_4oct(this,Field,varargin{:});
+        end
         
     end
     
     methods (Hidden)
-        varargout = disp(varargin)
-        varargout = display(varargin)
+        function disp(this)
+            disp_4oct(this)
+        end
+        function varargout = display(this)
+            display_4oct(this)
+        end
     end
     
-    methods (Access=protected,Hidden)
-        varargout = dispcomment(varargin)
-        varargout = dispuserdata(varargin)
+    methods %(Access=protected,Hidden)
+        function dispcomment(this)
+            dispcomment_4oct(this);
+        end
+        function dispuserdata(this)
+            dispuserdata_4oct(this);
+        end
     end
     
 end
