@@ -298,11 +298,21 @@ subs = { ...
 s = DateFmt;
 
 for i = 1 : size(subs,1)
-    s = strrep(s,subs{i,1},char(Offset+i));
+    if ismatlab
+        cCode = Offset+i;
+    else
+        cCode = highCharCode2utf8(Offset+i);
+    end
+    s = strrep(s,subs{i,1},char(cCode));
 end
 
 for i = 1 : size(subs,1)
-    s = strrep(s,char(Offset+i),subs{i,2});
+    if ismatlab
+        cCode = Offset+i;
+    else
+        cCode = highCharCode2utf8(Offset+i);
+    end
+    s = strrep(s,char(cCode),subs{i,2});
 end
 
 end % xxBuildString().

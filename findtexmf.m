@@ -12,11 +12,10 @@ function [Path,Folder] = findtexmf(File)
 Path = '';
 Folder = '';
 
-% Try FINDTEXMF first.
-[flag,outp] = system(['findtexmf --file-type=exe ',File]);
-
-% If FINDTEXMF fails, try to run WHICH on Unix platforms.
-if flag ~= 0 && isunix()
+% Try FINDTEXMF only on non-Unix platforms.
+if ~isunix()
+    [flag,outp] = system(['findtexmf --file-type=exe ',File]);
+else
     % Try /usr/texbin first.
     list = dir(fullfile('/usr/texbin',File));
     if length(list) == 1

@@ -212,7 +212,8 @@ end
             
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
-            D.f(iiEq,inx) = value;
+%            D.f(iiEq,inx) = value; % commented out
+            D.f(iiEq,inx) = value(:)'; % instead of the line above -- Octave can't automatically transpose row assigning to column of sparse matrix
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))
