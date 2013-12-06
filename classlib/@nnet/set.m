@@ -116,19 +116,7 @@ end
         
         if isfunc(Value) || isnumericscalar(Value)
             switch query
-                
-                case 'weight'
-                    Value = any2func(Value) ;
-                    for iLayer = 1:This.nLayer+2
-                        if iLayer>1
-                            for iNode = 1:numel(This.Params{iLayer}.Weight)
-                                for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                                    This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
-                                end
-                            end
-                        end
-                    end
-                    
+                                    
                 case 'bias'
                     Value = any2func(Value) ;
                     for iLayer = 1:This.nLayer+2
@@ -142,6 +130,18 @@ end
                     for iLayer = 1:This.nLayer+2
                         for iNode = 1:numel(This.Params{iLayer}.Transfer)
                             This.Params{iLayer}.Transfer{iNode} = Value() ;
+                        end
+                    end
+
+                case 'weight'
+                    Value = any2func(Value) ;
+                    for iLayer = 1:This.nLayer+2
+                        if iLayer>1
+                            for iNode = 1:numel(This.Params{iLayer}.Weight)
+                                for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                                    This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
+                                end
+                            end
                         end
                     end
                     

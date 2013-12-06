@@ -2,21 +2,21 @@ classdef nnet < userdataobj & getsetobj
     
     properties
         % 'feedforward'
-        Type = '' ;
+        Type@char = '' ;
         
         % cell array of variables
-        Inputs = cell(0,1) ;
+        Inputs@cell = cell(0,1) ;
         
         % e.g. [2 8 5]
         HiddenLayout = [] ;
         
         % e.g. 'tanh','sigmoid','step','linear'
-        HiddenTransfer = cell(0,1) ;
-        InputTransfer = '' ;
-        OutputTransfer = '' ;
+        HiddenTransfer@cell = cell(0,1) ;
+        InputTransfer@char = '' ;
+        OutputTransfer@char = '' ;
         
         % Cell array of structs:
-        Params = cell(0,1) ;
+        Params@cell = cell(0,1) ;
         % Rows:
         %    Input
         %    Layer 1
@@ -27,10 +27,10 @@ classdef nnet < userdataobj & getsetobj
         %    Alternative parameterizations
         
         % cell array of variables
-        Outputs = cell(0,1) ;
+        Outputs@cell = cell(0,1) ;
     end
     
-    properties( Dependent = true )
+    properties( Dependent = true, Hidden = true )
         nAlt ;
         nInputs ;
         nOutputs ;

@@ -14,21 +14,7 @@ try
     Xcount = 0 ;
     
     switch Query
-        
-        case 'weight'
-            X = NaN(This.nWeight,1) ;
-            for iLayer = 1:This.nLayer+2
-                if iLayer>1
-                    for iNode = 1:numel(This.Params{iLayer}.Weight)
-                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                            Xcount = Xcount + 1 ;
-                            X(Xcount) = This.Params{iLayer}.Weight{iNode}(iInput) ;
-                        end
-                    end
-                end
-            end
-            Flag = true ;
-            
+                    
         case 'bias'
             X = NaN(This.nBias,1) ;
             for iLayer = 1:This.nLayer+2
@@ -45,6 +31,20 @@ try
                 for iNode = 1:numel(This.Params{iLayer}.Transfer)
                     Xcount = Xcount + 1 ;
                     X(Xcount) = This.Params{iLayer}.Transfer{iNode} ;
+                end
+            end
+            Flag = true ;
+
+        case 'weight'
+            X = NaN(This.nWeight,1) ;
+            for iLayer = 1:This.nLayer+2
+                if iLayer>1
+                    for iNode = 1:numel(This.Params{iLayer}.Weight)
+                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                            Xcount = Xcount + 1 ;
+                            X(Xcount) = This.Params{iLayer}.Weight{iNode}(iInput) ;
+                        end
+                    end
                 end
             end
             Flag = true ;

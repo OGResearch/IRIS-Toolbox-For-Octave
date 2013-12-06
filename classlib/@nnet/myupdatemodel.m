@@ -11,19 +11,6 @@ try
     
     Xcount = 1 ;
     
-    if any(strcmpi(options.Estimate,'weight'))
-        for iLayer = 1:This.nLayer+2
-            if iLayer>1
-                for iNode = 1:numel(This.Params{iLayer}.Weight)
-                    for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                        This.Params{iLayer}.Weight{iNode}(iInput) = X(Xcount) ;
-                        Xcount = Xcount + 1 ;
-                    end
-                end
-            end
-        end
-    end
-    
     if any(strcmpi(options.Estimate,'bias'))
         for iLayer = 1:This.nLayer+2
             for iNode = 1:numel(This.Params{iLayer}.Bias)
@@ -41,6 +28,20 @@ try
             end
         end
     end
+    
+    if any(strcmpi(options.Estimate,'weight'))
+        for iLayer = 1:This.nLayer+2
+            if iLayer>1
+                for iNode = 1:numel(This.Params{iLayer}.Weight)
+                    for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
+                        This.Params{iLayer}.Weight{iNode}(iInput) = X(Xcount) ;
+                        Xcount = Xcount + 1 ;
+                    end
+                end
+            end
+        end
+    end
+    
     UpdateOk = true ;
     
 catch

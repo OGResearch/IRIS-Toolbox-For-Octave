@@ -31,11 +31,7 @@ else
     % user specified bounds
     for iOpt = 1:numel(Ecell)
         aname = nnet.myalias(Ecell{iOpt}{1}) ;
-        switch aname
-            case 'weight'
-                options.lbWeight = Ecell{iOpt}{2} ;
-                options.ubWeight = Ecell{iOpt}{3} ;
-                
+        switch aname                
             case 'bias'
                 options.lbBias = Ecell{iOpt}{2} ;
                 options.ubBias = Ecell{iOpt}{3} ;
@@ -44,6 +40,10 @@ else
                 options.lbTransfer = Ecell{iOpt}{2} ;
                 options.ubTransfer = Ecell{iOpt}{3} ;
                 
+            case 'weight'
+                options.lbWeight = Ecell{iOpt}{2} ;
+                options.ubWeight = Ecell{iOpt}{3} ;
+
             otherwise
                 utils.error('nnet:estimate',...
                     'Unrecognized group of parameters %s.\n',Ecell{iOpt}{1}) ;
