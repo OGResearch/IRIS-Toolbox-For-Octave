@@ -43,6 +43,7 @@ for ii = 1 : numel(varargin)
     
     This.Params(:,ind+1:ind+varargin{ii}.nAlt) ...
         = varargin{ii}.Params ;
+    ind = ind + varargin{ii}.nAlt ;
 end
 
 end

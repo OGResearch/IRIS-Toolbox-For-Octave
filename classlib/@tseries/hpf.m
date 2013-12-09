@@ -1,4 +1,4 @@
-function varargout = hpf(X,Range,varargin)
+function varargout = hpf(X,varargin)
 % hpf  Hodrick-Prescott filter with tunes (aka LRX filter).
 %
 % Syntax
@@ -187,12 +187,14 @@ function varargout = hpf(X,Range,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-try
-    Range; 
-catch
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
     Range = Inf;
 end
 
+    
 if isempty(Range)
     varargout{1} = empty(X);
     varargout{2} = empty(X);

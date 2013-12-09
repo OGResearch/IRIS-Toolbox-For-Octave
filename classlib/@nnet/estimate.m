@@ -15,6 +15,7 @@ end
 
 % Parse options
 options = passvalopt('nnet.estimate',varargin{:}) ;
+options = optim.myoptimopts(options) ;
 if iscellstr(options.Estimate)
     options.Estimate = nnet.myalias(options.Estimate) ;
     % set default bounds
@@ -25,15 +26,12 @@ if iscellstr(options.Estimate)
     options.lbBias = -Inf ;
     options.ubBias = Inf ;
 else
-    Ecell = This.myalias(options.Estimate) ;
+    Ecell = options.Estimate ;
     options.Estimate = cell(size(Ecell)) ;
     % user specified bounds
     for iOpt = 1:numel(Ecell)
-        switch Ecell{iOpt}{1}
-            case 'weight'
-                options.lbWeight = Ecell{iOpt}{2} ;
-                options.ubWeight = Ecell{iOpt}{3} ;
-                
+        aname = nnet.myalias(Ecell{iOpt}{1}) ;
+        switch aname                
             case 'bias'
                 options.lbBias = Ecell{iOpt}{2} ;
                 options.ubBias = Ecell{iOpt}{3} ;
@@ -42,14 +40,53 @@ else
                 options.lbTransfer = Ecell{iOpt}{2} ;
                 options.ubTransfer = Ecell{iOpt}{3} ;
                 
+            case 'weight'
+                options.lbWeight = Ecell{iOpt}{2} ;
+                options.ubWeight = Ecell{iOpt}{3} ;
+
             otherwise
                 utils.error('nnet:estimate',...
                     'Unrecognized group of parameters %s.\n',Ecell{iOpt}{1}) ;
         end
-        options.Estimate{iOpt} = Ecell{iOpt}{1} ;
+        options.Estimate{iOpt} = aname ;
     end
 end
 options.Estimate = sort(options.Estimate) ;
+
+% Display
+if ~strcmpi(options.display,'off') 
+    fprintf(1,'\nEstimating neural network: \n') ;
+    
+    % Weight
+    tf = any(strcmpi(options.Estimate,'weight')) ;
+    fprintf(1,'\t[%g] weight parameters', ...
+        tf*This.nWeight) ;
+    if tf
+        fprintf(1,' with bounds [%g,%g]\n',options.lbWeight,options.ubWeight) ;
+    else
+        fprintf(1,'\n') ;
+    end
+    
+    % Bias
+    tf = any(strcmpi(options.Estimate,'bias')) ;
+    fprintf(1,'\t[%g] bias parameters', ...
+        tf*This.nBias) ;
+    if tf
+        fprintf(1,' with bounds [%g,%g]\n',options.lbBias,options.ubBias) ;
+    else
+        fprintf(1,'\n') ;
+    end
+    
+    % Transfer
+    tf = any(strcmpi(options.Estimate,'transfer')) ;
+    fprintf(1,'\t[%g] transfer parameters', ...
+        tf*This.nTransfer) ;
+    if tf
+        fprintf(1,' with bounds [%g,%g]\n\n',options.lbTransfer,options.ubTransfer) ;
+    else
+        fprintf(1,'\n\n') ;
+    end
+end
 
 % Setup initial parameter vector and bounds
 lb = [] ;

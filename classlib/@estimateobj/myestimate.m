@@ -8,7 +8,7 @@ function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,EstOpt,LikOpt
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 % Set Optimization Toolbox options structure.
-doOptimOptions();
+EstOpt = optim.myoptimopts(EstOpt) ;
 
 %--------------------------------------------------------------------------
 
@@ -134,54 +134,6 @@ end
         PStar(below) = Pri.pl(below);        
         PStar(above) = Pri.pu(above);
     end % doChkBounds()
-
-
-%**************************************************************************
-    function doOptimOptions()
-        solverName = '';
-        if ischar(EstOpt.solver)
-            solverName = EstOpt.solver;
-        elseif isa(EstOpt.solver,'function_handle')
-            solverName = char(EstOpt.solver);
-        elseif iscell(EstOpt.solver)
-            solverName = char(EstOpt.solver{1});
-        end
-        switch lower(solverName)
-            case 'pso'
-                if strcmpi(EstOpt.nosolution,'error')
-                    utils.warning('estimateobj', ...
-                        ['Global optimization algorithm, ', ...
-                        'switching from ''noSolution=error'' to ', ...
-                        '''noSolution=penalty''.']);
-                    EstOpt.nosolution = 'penalty';
-                end
-            case {'fmin','fmincon','fminunc','lsqnonln'}
-                switch lower(solverName)
-                    case 'lsqnonlin'
-                        algorithm = 'levenberg-marquardt';
-                    otherwise
-                        algorithm = 'active-set';
-                end
-                oo = {...
-                    'algorithm',algorithm, ...
-                    'display',EstOpt.display, ...
-                    'maxIter',EstOpt.maxiter, ...
-                    'maxFunEvals',EstOpt.maxfunevals, ...
-                    'GradObj','off', ...
-                    'Hessian','off', ...
-                    'LargeScale','off', ...
-                    'tolFun',EstOpt.tolfun, ...
-                    'tolX',EstOpt.tolx, ...
-                    };
-                if ~isempty(EstOpt.optimset) && iscell(EstOpt.optimset)
-                    oo = [oo,EstOpt.optimset];
-                end
-                oo(1:2:end) = strrep(oo(1:2:end),'=','');
-                EstOpt.optimset = optimset(oo{:});
-            otherwise
-                % Do nothing.
-        end
-    end % doOptimOptions()
 
 
 end
