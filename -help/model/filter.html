@@ -1,0 +1,174 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/filter">filter</h2>
+<div class="headline">Kalman smoother and estimator of out-of-likelihood parameters</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Solved model object.</p></li>
+<li><p><code>Inp</code> [ struct | cell ] - Input database or datapack from which the measurement variables will be taken.</p></li>
+<li><p><code>Range</code> [ numeric ] - Filter date range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object with updates of std devs (if <code>'relative='</code> is true) and/or updates of out-of-likelihood parameters (if <code>'outoflik='</code> is non-empty).</p></li>
+<li><p><code>Outp</code> [ struct | cell ] - Output struct with smoother or prediction data.</p></li>
+<li><p><code>V</code> [ numeric ] - Estimated variance scale factor if the <code>'relative='</code> options is true; otherwise <code>V</code> is 1.</p></li>
+<li><p><code>Delta</code> [ struct ] - Database with estimates of out-of-likelihood parameters.</p></li>
+<li><p><code>PE</code> [ struct ] - Database with prediction errors for measurement variables.</p></li>
+<li><p><code>SCov</code> [ numeric ] - Sample covariance matrix of smoothed shocks; the covariance matrix is computed using shock estimates in periods that are included in the option <code>'objrange='</code> and, at the same time, contain at least one observation of measurement variables.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'ahead='</code> [ numeric | <em><code>1</code></em> ] - Predictions will be computed this number of period ahead.</p></li>
+<li><p><code>'chkFmse='</code> [ <code>true</code> | <em><code>false</code></em> ] - Check the condition number of the forecast MSE matrix in each step of the Kalman filter, and return immediately if the matrix is ill-conditioned; see also the option <code>'fmseCondTol='</code>.</p></li>
+<li><p><code>'condition='</code> [ char | cellstr | <em>empty</em> ] - List of conditioning measurement variables. Condition time t|t-1 prediction errors (that enter the likelihood function) on time t observations of these measurement variables.</p></li>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
+<li><p><code>'dtrends='</code> [ <em>'auto'</em> | <code>true</code> | <code>false</code> ] - Measurement data contain deterministic trends.</p></li>
+<li><p><code>'data='</code> [ <code>'predict'</code> | <em><code>'smooth'</code></em> | <code>'predict,smooth'</code> ] - Return smoother data or prediction data or both.</p></li>
+<li><p><code>'fmseCondTol='</code> [ <em><code>eps()</code></em> | numeric ] - Tolerance for the FMSE condition number test; not used unless <code>'chkFmse=' true</code>.</p></li>
+<li><p><code>'initCond='</code> [ <code>'fixed'</code> | <code>'optimal'</code> | <em><code>'stochastic'</code></em> | struct ] - Method or data to initialise the Kalman filter; user-supplied initial condition must be a mean database or a mean-MSE struct.</p></li>
+<li><p><code>'lastSmooth='</code> [ numeric | <em><code>Inf</code></em> ] - Last date up to which to smooth data backward from the end of the range; if <code>Inf</code> smoother will run on the entire range.</p></li>
+<li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return a plain database with mean data only; this option overrides the <code>'return*='</code> options, i.e. <code>'returnCont='</code>, <code>'returnMse='</code>, <code>'returnStd='</code>.</p></li>
+<li><p><code>'outOfLik='</code> [ cellstr | empty ] - List of parameters in deterministic trends that will be estimated by concentrating them out of the likelihood function.</p></li>
+<li><p><code>'objFunc='</code> [ <em><code>'-loglik'</code></em> | <code>'prederr'</code> ] - Objective function computed; can be either minus the log likelihood function or weighted sum of prediction errors.</p></li>
+<li><p><code>'objRange='</code> [ numeric | <em><code>Inf</code></em> ] - The objective function will be computed on this subrange only; <code>Inf</code> means the entire filter range.</p></li>
+<li><p><code>'precision='</code> [ <em><code>'double'</code></em> | <code>'single'</code> ] - Numeric precision to which output data will be stored; all calculations themselves always run to double precision.</p></li>
+<li><p><code>'rollback='</code> [ numeric | <em>empty</em> ] - Date up to which to roll back individual observations on measurement variables from the end of the sample.</p></li>
+<li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - Std devs of shocks assigned in the model object will be treated as relative std devs, and a common variance scale factor will be estimated.</p></li>
+<li><p><code>'returnCont='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return contributions of measurement variables to the estimates of all variables and shocks.</p></li>
+<li><p><code>'returnMse='</code> [ <em><code>true</code></em> | <code>false</code> ] - Return MSE matrices for predetermined state variables; these can be used for settin up initial condition in subsequent call to another <code>filter</code> or <code>jforecast</code>.</p></li>
+<li><p><code>'returnStd='</code> [ <em><code>true</code></em> | <code>false</code> ] - Return database with std devs of model variables.</p></li>
+<li><p><code>'weighting='</code> [ numeric | <em>empty</em> ] - Weighting vector or matrix for prediction errors when <code>'objective=' 'prederr'</code>; empty means prediction errors are weighted equally.</p></li>
+</ul>
+<h4 id="options-for-models-with-non-linearised-equations">Options for models with non-linearised equations</h4>
+<ul>
+<li><p><code>'nonlinearise='</code> [ numeric | <em><code>0</code></em> ] - If non-zero the prediction step in the Kalman filter will be run in an exact non-linear mode using the same technique as <a href="../model/simulate.html"><code>model/simulate</code></a>.</p></li>
+<li><p><code>'simulate='</code> [ cell | empty ] - Options passed in to <code>simulate</code> when invoking the non-linear simulation in the prediction step; only used when <code>nonlinearise=</code> is greater than <code>0</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The <code>'ahead='</code> and <code>'rollback='</code> options cannot be combined with one another, or with multiple data sets, or with multiple parameterisations.</p>
+<h5 id="initial-conditions-in-time-domain">Initial conditions in time domain</h5>
+<p>By default (with <code>'initCond=' 'stochastic'</code>), the Kalman filter starts from the model-implied asymptotic distribution. You can change this behaviour by setting the option <code>'initCond='</code> to one of the following four different values:</p>
+<ul>
+<li><p><code>'fixed'</code> -- the filter starts from the model-implied asymptotic mean (steady state) but with no initial uncertainty. The initial condition is treated as a vector of fixed, non-stochastic, numbers.</p></li>
+<li><p><code>'optimal'</code> -- the filter starts from a vector of fixed numbers that is estimated optimally (likelihood maximising).</p></li>
+<li><p>database (i.e. struct with fields for individual model variables) -- a database through which you supply the mean for all the required initial conditions, see help on <a href="../model/get.html"><code>model/get</code></a> for how to view the list of required initial conditions.</p></li>
+<li><p>mean-mse struct (i.e. struct with fields <code>.mean</code> and <code>.mse</code>) -- a struct through which you supplye the mean and MSE for all the required initial conditions.</p></li>
+</ul>
+<h5 id="contributions-of-measurement-variables-to-the-estimates-of-all-variables">Contributions of measurement variables to the estimates of all variables</h5>
+<p>Use the option <code>'returnCont=' true</code> to request the decomposition of measurement variables, transition variables, and shocks into the contributions of each individual measurement variable. The resulting output database will include one extra subdatabase called <code>.cont</code>. In the <code>.cont</code> subdatabase, each time series will have Ny columns where Ny is the number of measurement variables in the model. The k-th column will be the contribution of the observations on the k-th measurement variable.</p>
+<p>The contributions are additive for linearised variables, and multiplicative for log-linearised variables (log-variables). The difference between the actual path for a particular variable and the sum of the contributions (or their product in the case of log-varibles) is due to the effect of constant terms and deterministic trends.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,165 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/if">!if...!elseif...!else...!end</h2>
+<div class="headline">Choose block of code depending on a condition</div>
+
+<h4 id="syntax-with-else-and-elseif-clauses">Syntax with else and elseif clauses</h4>
+<pre><code>!if Condition1
+    Block1
+!elseif Condition2
+    Block2
+!elseif Condition3
+...
+!else
+    Block3
+!end</code></pre>
+<h4 id="syntax-with-an-else-clause-only">Syntax with an else clause only</h4>
+<pre><code>!if Condition1
+    Block1
+!else
+    Block2
+!end</code></pre>
+<h4 id="syntax-without-an-else-clause">Syntax without an else clause</h4>
+<pre><code>!if Condition
+    Block1
+!end</code></pre>
+<h4 id="description">Description</h4>
+<p>The <code>!if...!elseif...!else...!end</code> command works the same way as its counterpart in the Matlab programming language.</p>
+<p>Use the <code>!if...!else...!end</code> command to create branches or versions of the model code. Whether a block of code in a particular branch is used or discarded, depends on the condition after the opening <code>!if</code> command and the conditions after subsequent <code>!elseif</code> commands if present. The condition must be a Matlab expression that evaluates to true or false. The condition can refer to model parameters, or to other fields included in the database passed in through the option '<code>assign=</code>' in the <a href="../model/model.html"><code>model</code></a> function.</p>
+<h4 id="example-1">Example 1</h4>
+<pre><code>!if B &lt; Inf
+    % This is a linearised sticky-price Phillips curve.
+    pi = A*pi{-1} + (1-A)*pi{1} + B*log(mu*rmc);
+!else
+    % This is a flexible-price mark-up rule.
+    rmc = 1/mu;
+!end</code></pre>
+<p>If you set the parameter <code>B</code> to Inf in the parameter database when reading in the model file, then the flexible-price equatio, <code>rmc = 0</code>, is used and the Phillips curve equation discarded. To use the Phillips curve equation instead, you need to re-read the model file with <code>B</code> set to a number other than Inf. In this example, <code>B</code> needs to be, obviously, declared as a model parameter.</p>
+<h4 id="example-2">Example 2</h4>
+<pre><code>!if exogenous == true
+    x = y;
+!else
+    x = rho*x{-1} + epsilon;
+!end</code></pre>
+<p>When reading the model file in, create a parameter database, include at least a field named <code>exogenous</code> in it, and use the <code>'assign='</code> option to pass the database in. Note that you do not need to declare <code>exogenous</code> as a parameter in the model file.</p>
+<pre><code>P = struct();
+P.exogenous = true;
+...
+m = model(&#39;my.model&#39;,&#39;assign=&#39;,P);</code></pre>
+<p>In this case, the model will contain the first equation, <code>x = rho*x{-1} + epsilon;</code> will be used, and the other discarded. To use the other equation, <code>x = y</code>, you need to re-read the model file with <code>exogenous</code> set to false:</p>
+<pre><code>P = struct();
+P.exogenous = false;
+...
+m = model(&#39;my.model&#39;,&#39;assign=&#39;,P);</code></pre>
+<p>You can also use an abbreviate syntax to assign control parameters when readin the model file; for instance</p>
+<pre><code>m = model(&#39;my.model&#39;,&#39;exogenous=&#39;,true);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

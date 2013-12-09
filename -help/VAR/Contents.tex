@@ -1,0 +1,179 @@
+
+    \foldertitle{VAR}{Vector autoregressions (VAR) objects and functions}{VAR/Contents}
+
+	VAR objects can be constructed as plain VARs or simple panel VARs (with
+fixed effect), and estimated without or with prior dummy observations
+(quasi-bayesian VARs). VAR objects are reduced-form models; they are
+also the point of departure for identifying structural VARs
+(\href{SVAR/Contents}{\texttt{SVAR}} objects).
+
+VAR methods:
+
+\paragraph{Constructor}\label{constructor}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/VAR}{\texttt{VAR}} - Create new, empty reduced-form VAR
+  object.
+\end{itemize}
+
+\paragraph{Getting information about VAR
+objects}\label{getting-information-about-var-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/addparam}{\texttt{addparam}} - Add VAR parameters to a
+  database (struct).
+\item
+  \href{VAR/comment}{\texttt{comment}} - Get or set user comments in an
+  IRIS object.
+\item
+  \href{VAR/companion}{\texttt{companion}} - Matrices of first-order
+  companion VAR.
+\item
+  \href{VAR/eig}{\texttt{eig}} - Eigenvalues of a VAR process.
+\item
+  \href{VAR/fprintf}{\texttt{fprintf}} - Write VAR model as formatted
+  model code to text file.
+\item
+  \href{VAR/get}{\texttt{get}} - Query VAR object properties.
+\item
+  \href{VAR/iscompatible}{\texttt{iscompatible}} - True if two VAR
+  objects can occur together on the LHS and RHS in an assignment.
+\item
+  \href{VAR/isexplosive}{\texttt{isexplosive}} - True if any eigenvalue
+  is outside unit circle.
+\item
+  \href{VAR/ispanel}{\texttt{ispanel}} - True for panel VAR based
+  objects.
+\item
+  \href{VAR/isstationary}{\texttt{isstationary}} - True if all
+  eigenvalues are within unit circle.
+\item
+  \href{VAR/length}{\texttt{length}} - Number of alternative
+  parameterisations in VAR object.
+\item
+  \href{VAR/mean}{\texttt{mean}} - Mean of VAR process.
+\item
+  \href{VAR/nfitted}{\texttt{nfitted}} - Number of data points fitted in
+  VAR estimation.
+\item
+  \href{VAR/rngcmp}{\texttt{rngcmp}} - True if two VAR objects have been
+  estimated using the same dates.
+\item
+  \href{VAR/sprintf}{\texttt{sprintf}} - Print VAR model as formatted
+  model code.
+\item
+  \href{VAR/sspace}{\texttt{sspace}} - Quasi-triangular state-space
+  representation of VAR.
+\item
+  \href{VAR/userdata}{\texttt{userdata}} - Get or set user data in an
+  IRIS object.
+\end{itemize}
+
+\paragraph{Referencing VAR objects}\label{referencing-var-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/group}{\texttt{group}} - Retrieve VAR object from panel VAR
+  for specified group of data.
+\item
+  \href{VAR/subsasgn}{\texttt{subsasgn}} - Subscripted assignment for
+  VAR objects.
+\item
+  \href{VAR/subsref}{\texttt{subsref}} - Subscripted reference for VAR
+  objects.
+\end{itemize}
+
+\paragraph{Simulation, forecasting and
+filtering}\label{simulation-forecasting-and-filtering}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/ferf}{\texttt{ferf}} - Forecast error response function.
+\item
+  \href{VAR/filter}{\texttt{filter}} - Filter data using a VAR model.
+\item
+  \href{VAR/forecast}{\texttt{forecast}} - Unconditional or conditional
+  VAR forecasts.
+\item
+  \href{VAR/instrument}{\texttt{instrument}} - Define conditioning
+  instruments in VAR models.
+\item
+  \href{VAR/resample}{\texttt{resample}} - Resample from a VAR object.
+\item
+  \href{VAR/simulate}{\texttt{simulate}} - Simulate VAR model.
+\end{itemize}
+
+\paragraph{Manipulating VARs}\label{manipulating-vars}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/alter}{\texttt{alter}} - Expand or reduce the number of
+  alternative parameterisations within a VAR object.
+\item
+  \href{VAR/backward}{\texttt{backward}} - Backward VAR process.
+\item
+  \href{VAR/demean}{\texttt{demean}} - Remove constant from VAR object.
+\item
+  \href{VAR/horzcat}{\texttt{horzcat}} - Combine two compatible VAR
+  objects in one object with multiple parameterisations.
+\item
+  \href{VAR/integrate}{\texttt{integrate}} - Integrate VAR process and
+  data associated with it.
+\end{itemize}
+
+\paragraph{Stochastic properties}\label{stochastic-properties}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/acf}{\texttt{acf}} - Autocovariance and autocorrelation
+  functions for VAR variables.
+\item
+  \href{VAR/fmse}{\texttt{fmse}} - Forecast mean square error matrices.
+\item
+  \href{VAR/vma}{\texttt{vma}} - Matrices describing the VMA
+  representation of a VAR process.
+\item
+  \href{VAR/xsf}{\texttt{xsf}} - Power spectrum and spectral density
+  functions for VAR variables.
+\end{itemize}
+
+\paragraph{Estimation, identification, and statistical
+tests}\label{estimation-identification-and-statistical-tests}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{VAR/estimate}{\texttt{estimate}} - Estimate a reduced-form VAR
+  or BVAR.
+\item
+  \href{VAR/infocrit}{\texttt{infocrit}} - Populate information criteria
+  for a parameterised VAR.
+\item
+  \href{VAR/lrtest}{\texttt{lrtest}} - Likelihood ratio test for VAR
+  models.
+\item
+  \href{VAR/portest}{\texttt{portest}} - Portmanteau test for
+  autocorrelation in VAR residuals.
+\item
+  \href{VAR/schur}{\texttt{schur}} - Compute and store triangular
+  representation of VAR.
+\end{itemize}
+
+\paragraph{Getting on-line help on VAR
+functions}\label{getting-on-line-help-on-var-functions}
+
+\begin{verbatim}
+help VAR
+help VAR/function_name
+\end{verbatim}
+
+
+

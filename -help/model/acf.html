@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/acf">acf</h2>
+<div class="headline">Autocovariance and autocorrelation functions for model variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[C,R,List] = acf(M,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Solved model object for which the ACF will be computed.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>C</code> [ namedmat | numeric ] - Auto/cross-covariance matrices.</p></li>
+<li><p><code>R</code> [ namedmat | numeric ] - Auto/cross-correlation matrices.</p></li>
+<li><p><code>List</code> [ cellstr ] - List of variables in rows and columns of <code>C</code> and <code>R</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'applyTo='</code> [ cellstr | char | <em><code>Inf</code></em> ] - List of variables to which the <code>'filter='</code> will be applied; <code>Inf</code> means all variables.</p></li>
+<li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>true</code> the contributions of individual shocks to ACFs will be computed and stored in the 5th dimension of the <code>C</code> and <code>R</code> matrices.</p></li>
+<li><p><code>'filter='</code> [ char | <em>empty</em> ] - Linear filter that is applied to variables specified by 'applyto'.</p></li>
+<li><p><code>'nFreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the filter in the option <code>'filter='</code> is numerically integrated.</p></li>
+<li><p><code>'order='</code> [ numeric | <em><code>0</code></em> ] - Order up to which ACF will be computed.</p></li>
+<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrices <code>C</code> and <code>R</code> as either namedmat objects (matrices with named rows and columns) or plain numeric arrays; if the option <code>'select='</code> is used, <code>'output='</code> is always a namedmat object.</p></li>
+<li><p><code>'select='</code> [ cellstr | <em><code>Inf</code></em> ] - Return ACF for selected variables only; <code>Inf</code> means all variables.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p><code>C</code> and <code>R</code> are both N-by-N-by-(P+1)-by-Alt matrices, where N is the number of measurement and transition variables (including auxiliary lags and leads in the state space vector), P is the order up to which the ACF is computed (controlled by the option <code>'order='</code>), and Alt is the number of alternative parameterisations in the input model object, <code>M</code>. If <code>'contributions=' true</code>, the size of the two matrices is N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and transition shocks in the model.</p>
+<h5 id="acf-with-linear-filters">ACF with linear filters</h5>
+<p>You can use the option <code>'filter='</code> to get the ACF for variables as though they were filtered through a linear filter. You can specify the filter in both the time domain (such as first-difference filter, or Hodrick-Prescott) and the frequncy domain (such as a band of certain frequncies or periodicities). The filter is a text string in which you can use the following references:</p>
+<ul>
+<li><code>'L'</code>, the lag operator, which will be replaced with <code>exp(-1i*freq)</code>;</li>
+<li><code>'per'</code>, the periodicity;</li>
+<li><code>'freq'</code>, the frequency.</li>
+</ul>
+<h4 id="example-1">Example 1</h4>
+<p>A first-difference filter (i.e. computes the ACF for the first differences of the respective variables):</p>
+<pre><code>[C,R] = acf(m,&#39;filter=&#39;,&#39;1-L&#39;)</code></pre>
+<h4 id="example-2">Example 2</h4>
+<p>The cyclical component of the Hodrick-Prescott filter with the smoothing parameter, <span class="LaTeX">$lambda$</span>, 1,600. The formula for the filter follows from the classical Wiener-Kolmogorov signal extraction theory,</p>
+<p><span class="LaTeX">$$w(L) = \frac{\lambda}{\lambda + \frac{1}{ | (1-L)(1-L) | ^2}}$$</span></p>
+<pre><code>[C,R] = acf(m,&#39;filter&#39;,&#39;1600/(1600 + 1/abs((1-L)^2)^2)&#39;)</code></pre>
+<h4 id="example-3">Example 3</h4>
+<p>A band-pass filter with user-specified lower and upper bands. The band-pass filters can be defined either in frequencies or periodicities; the latter is usually more convenient. The following is a filter which retains periodicities between 4 and 40 periods (this would be between 1 and 10 years in a quarterly model),</p>
+<pre><code>[C,R] = acf(m,&#39;filter&#39;,&#39;per &gt;= 4 &amp; per &lt;= 40&#39;)</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

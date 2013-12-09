@@ -1,0 +1,52 @@
+
+
+    \filetitle{forecast}{Forecast FAVAR factors and observables}{FAVAR/forecast}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[D,CC,F,U,E] = forecast(A,D,RANGE,J,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A} {[} FAVAR {]} - FAVAR object.
+\item
+  \texttt{D} {[} struct \textbar{} tseries {]} - Input data with initial
+  condition for the FAVAR factors.
+\item
+  \texttt{RANGE} {[} numeric {]} - Forecast range.
+\item
+  \texttt{J} {[} struct \textbar{} tseries{]} - Conditioning data with
+  hard tunes on the FAVAR observables.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Output database or tseries object with the
+  FAVAR observables.
+\item
+  \texttt{CC} {[} struct \textbar{} tseries {]} - Projection of common
+  components in the observables.
+\item
+  \texttt{F} {[} tseries {]} - Projection of common factors.
+\item
+  \texttt{U} {[} tseries {]} - Conditional idiosyncratic residuals.
+\item
+  \texttt{E} {[} tseries {]} - Conditional structural residuals.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on \href{FAVAR/filter}{\texttt{FAVAR/filter}} for options
+available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,133 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="grouping/Contents">Grouping objects for aggregation of contributions</h1>
+
+
+<p>Grouping objects can be used for aggregating the contributions of shocks in model simulations, <a href="../model/simulate.html"><code>model/simulate</code></a>, or aggregating the contributions of measurement variables in Kalman filtering, <a href="../model/filter.html"><code>model/filter</code></a>.</p>
+<p>Grouping methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../grouping/grouping.html"><code>grouping</code></a> - Create new, empty grouping object.</li>
+</ul>
+<h4 id="getting-information-about-groups">Getting information about groups</h4>
+<ul>
+<li><a href="../grouping/detail.html"><code>detail</code></a> - Details of a grouping object.</li>
+<li><a href="../grouping/isempty.html"><code>isempty</code></a> - True for empty grouping object.</li>
+</ul>
+<h4 id="setting-up-and-using-groups">Setting up and using groups</h4>
+<ul>
+<li><a href="../grouping/addgroup.html"><code>addgroup</code></a> - Add measurement variable or shock grouping to grouping object.</li>
+<li><a href="../grouping/eval.html"><code>eval</code></a> - Evaluate contributions in input database S using grouping object G.</li>
+</ul>
+<h4 id="getting-on-line-help-on-groups">Getting on-line help on groups</h4>
+<pre><code>help grouping
+help grouping/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

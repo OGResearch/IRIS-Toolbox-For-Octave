@@ -1,0 +1,127 @@
+
+
+    \filetitle{model}{Create new model object based on model file}{model/model}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+m = model(fname,...)
+m = model(m,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{fname} {[} char \textbar{} cellstr {]} - Name(s) of the model
+  file(s) that will loaded and converted to a new model object.
+\item
+  \texttt{m} {[} model {]} - Existing model object that will be rebuilt
+  as if from a model file.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{m} {[} model {]} - New model object based on the input model
+  code file or files.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'multiple='} {[} true \textbar{} \emph{false} {]} - Allow each
+  variable, shock, or parameter name to be declared (and assigned) more
+  than once in the model file.
+\item
+  \texttt{'assign='} {[} struct \textbar{} \emph{empty} {]} - Assign
+  model parameters and/or steady states from this database at the time
+  the model objects is being created.
+\item
+  \texttt{'baseYear='} {[} numeric \textbar{} \emph{2000} {]} - Base
+  year for constructing deterministic time trends.
+\item
+  \texttt{'comment='} {[} char \textbar{} \emph{empty} {]} - Text
+  comment attached to the model object.
+\item
+  \texttt{'declareParameters='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - If \texttt{false}, skip parameter declaration in
+  the model file, and determine the list of parameters automatically as
+  names found in equations but not declared.
+\item
+  \texttt{'epsilon='} {[} numeric \textbar{} \emph{eps\^{}(1/4)} {]} -
+  The minimum relative step size for numerical differentiation.
+\item
+  \texttt{'linear='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Indicate linear models.
+\item
+  \texttt{'removeLeads='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Remove all leads from the state-space
+  vector, keep included only current dates and lags.
+\item
+  \texttt{'sstateOnly='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Read in only the steady-state versions of
+  equations (if available).
+\item
+  \texttt{'std='} {[} numeric \textbar{} \emph{1} for linear models
+  \textbar{} \emph{0.01} for non-linear models {]} - Default standard
+  deviation for model shocks.
+\item
+  \texttt{'userdata='} {[} \ldots{} \textbar{} \emph{empty} {]} - Attach
+  user data to the model object.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Loading a model file}\label{loading-a-model-file}
+
+The \texttt{model} function can be used to read in a
+\href{modellang/Contents}{model file} named \texttt{fname}, and create a
+model object \texttt{m} based on the model file. You can then work with
+the model object in your own m-files, using using the IRIS
+\href{model/Contents}{model functions} and standard Matlab functions.
+
+If \texttt{fname} is a cell array of more than one filenames then all
+files are combined together (in order of appearance).
+
+\subparagraph{Re-building an existing model
+object}\label{re-building-an-existing-model-object}
+
+The only instance where you may need to call a model function on an
+existing model object is to change the \texttt{'removeLeads='} option.
+Of course, you can always achieve the same by loading the original model
+file.
+
+\paragraph{Example 1}\label{example-1}
+
+Read in a model code file named \texttt{my.model}, and declare the model
+as linear:
+
+\begin{verbatim}
+m = model('my.model','linear',true);
+\end{verbatim}
+
+\paragraph{Example 2}\label{example-2}
+
+Read in a model code file named \texttt{my.model}, declare the model as
+linear, and assign some of the model parameters:
+
+\begin{verbatim}
+m = model('my.model','linear=',true,'assign=',P);
+\end{verbatim}
+
+Note that this is equivalent to
+
+\begin{verbatim}
+m = model('my.model','linear=',true);
+m = assign(m,P);
+\end{verbatim}
+
+unless some of the parameters passed in to the \texttt{model} fuction
+are needed to evaluate \href{modellang/if}{\texttt{if}} or
+\href{modellang/switch}{\texttt{!switch}} expressions.
+
+
