@@ -16,11 +16,11 @@ nc = nnzcond(This);
 nq = nnznonlin(This);
 fprintf('\trange: %s to %s\n', ...
     dat2char(This.startDate),dat2char(This.endDate));
-fprintf('\t#exogenised data points: %g\n',nx);
-fprintf('\t#endogenised data points [real imag]: %g %g\n', ...
+fprintf('\texogenised data points: %g\n',nx);
+fprintf('\tendogenised data points [real imag]: [%g %g]\n', ...
     nnReal,nnImag);
-fprintf('\t#conditioning data points: %g\n',nc);
-fprintf('\t#non-linearised data points: %g\n',nq);
+fprintf('\tconditioning data points: %g\n',nc);
+fprintf('\tnon-linearised data points: %g\n',nq);
 
 disp@userdataobj(This);
 disp(' ');
