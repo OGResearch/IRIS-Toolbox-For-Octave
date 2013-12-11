@@ -1,0 +1,38 @@
+
+
+    \filetitle{redate}{Change time dimension of a tseries object}{tseries/redate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = redate(X,oldDate,newDate)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object.
+\item
+  \texttt{OldDate} {[} numeric {]} - Base date that will be converted to
+  a new date.
+\item
+  \texttt{NewDate} {[} numeric {]} - A new date to which the base date
+  \texttt{oldDate} will be changed; \texttt{NewDate} need not be the
+  same frequency as \texttt{OldDate}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Output tseries object with identical data
+  as the input tseries object, but with its time dimension changed.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

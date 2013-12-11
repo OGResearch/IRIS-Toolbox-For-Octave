@@ -1,0 +1,159 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="dbase/Contents">Basic database management</h1>
+
+
+<h4 id="loading-and-saving-databases">Loading and saving databases</h4>
+<ul>
+<li><a href="../dbase/dbload.html"><code>dbload</code></a> - Create database by loading CSV file.</li>
+<li><a href="../dbase/dbsave.html"><code>dbsave</code></a> - Save database as CSV file.</li>
+<li><a href="../dbase/xls2csv.html"><code>xls2csv</code></a> - Convert XLS file to CSV file.</li>
+</ul>
+<h4 id="getting-information-about-databases">Getting information about databases</h4>
+<ul>
+<li><a href="../dbase/dbnames.html"><code>dbnames</code></a> - List of database entries filtered by name and/or class.</li>
+<li><a href="../dbase/dbprintuserdata.html"><code>dbprintuserdata</code></a> - Print names of database tseries along with specified fields of their userdata.</li>
+<li><a href="../dbase/dbrange.html"><code>dbrange</code></a> - Find a range that encompasses the ranges of the listed tseries objects.</li>
+<li><a href="../dbase/dbsearchuserdata.html"><code>dbsearchuserdata</code></a> - Search database to find tseries by matching the content of their userdata fields.</li>
+<li><a href="../dbase/dbuserdatalov.html"><code>dbuserdatalov</code></a> - List of values found in a specified user data field in tseries objects.</li>
+</ul>
+<h4 id="converting-databases">Converting databases</h4>
+<ul>
+<li><a href="../dbase/array2db.html"><code>array2db</code></a> - Convert numeric array to database.</li>
+<li><a href="../dbase/db2array.html"><code>db2array</code></a> - Convert tseries database entries to numeric array.</li>
+<li><a href="../dbase/db2tseries.html"><code>db2tseries</code></a> - Combine tseries database entries in one multivariate tseries object.</li>
+</ul>
+<h4 id="batch-processing">Batch processing</h4>
+<ul>
+<li><a href="../dbase/dbbatch.html"><code>dbbatch</code></a> - Run a batch job to create new database fields.</li>
+<li><a href="../dbase/dbclip.html"><code>dbclip</code></a> - Clip all tseries entries in a database down to the specified date range.</li>
+<li><a href="../dbase/dbcol.html"><code>dbcol</code></a> - Retrieve the specified column or columns from database entries.</li>
+<li><a href="../dbase/dbfun.html"><code>dbfun</code></a> - Apply a function to database fields.</li>
+<li><a href="../dbase/dbplot.html"><code>dbplot</code></a> - Plot from database.</li>
+<li><a href="../dbase/dbredate.html"><code>dbredate</code></a> - Redate all tseries objects in a database.</li>
+</ul>
+<h4 id="combining-and-splitting-databases">Combining and splitting databases</h4>
+<ul>
+<li><a href="../dbase/dbextend.html"><code>dbextend</code></a> - Combine tseries observations from two or more databases.</li>
+<li><a href="../dbase/dbmerge.html"><code>dbmerge</code></a> - Merge two or more databases.</li>
+<li><a href="../dbase/dbminuscontrol.html"><code>dbminuscontrol</code></a> - Create simulation-minus-control database.</li>
+<li><a href="../dbase/dbsplit.html"><code>dbsplit</code></a> - Split database into mutliple databases.</li>
+</ul>
+<h4 id="overloaded-operators-for-databases">Overloaded operators for databases</h4>
+<ul>
+<li><a href="../dbase/dbminus.html"><code>-</code></a> - Remove entries from a database.</li>
+<li><a href="../dbase/dbmtimes.html"><code>*</code></a> - Keep only the database entries that are on the list.</li>
+<li><a href="../dbase/dbplus.html"><code>+</code></a> - Merge entries from two databases together.</li>
+</ul>
+<h4 id="getting-on-line-help-on-database-functions">Getting on-line help on database functions</h4>
+<pre><code>help dbase
+help dbase/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

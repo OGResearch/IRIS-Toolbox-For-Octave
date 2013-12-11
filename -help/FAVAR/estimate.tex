@@ -1,0 +1,76 @@
+
+
+    \filetitle{estimate}{Estimate FAVAR using static principal components}{FAVAR/estimate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[A,D,CC,F,U,E,CTF] = estimate(A,D,Range,[R,Q],...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A} {[} FAVAR {]} - Empty FAVAR object.
+\item
+  \texttt{D} {[} struct {]} - Input database.
+\item
+  \texttt{Range} {[} numeric {]} - Estimation range.
+\item
+  \texttt{R} {[} numeric {]} - Selection criterion for the number of
+  factors: Minimum requested proportion of input data volatility
+  explained by the factors.
+\item
+  \texttt{Q} {[} numeric {]} - Selection criterion for the number of
+  factors: Maximum number of factors.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A} {[} FAVAR {]} - Estimated FAVAR object.
+\item
+  \texttt{D} {[} struct {]} - Output database.
+\item
+  \texttt{CC} {[} tseries {]} - Estimates of common components in the
+  FAVAR observables.
+\item
+  \texttt{F} {[} tseries {]} - Estimates of factors.
+\item
+  \texttt{U} {[} struct \textbar{} tseries {]} - Idiosyncratic
+  residuals.
+\item
+  \texttt{E} {[} tseries {]} - Factor VAR residuals.
+\item
+  \texttt{CTF} {[} tseries {]} - Contributions of individual input
+  series to the estimated factors.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'cross='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  \textbar{} numeric {]} - Keep off-diagonal elements in the covariance
+  matrix of idiosyncratic residuals; if false all cross-covariances are
+  reset to zero; if a number between zero and one, all cross-covariances
+  are multiplied by that number.
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{1} {]} - Order of the
+  VAR for factors.
+\item
+  \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
+  \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
+  data.
+\item
+  \texttt{'rank='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Restriction on the rank of the factor VAR residuals.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

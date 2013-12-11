@@ -1,0 +1,92 @@
+
+
+    \filetitle{sort}{Sort SVAR parameterisations by squared distance of shock reponses to median}{SVAR/sort}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[B,~,Inx,Crit] = sort(A,[],SortBy,...)
+[B,Data,Inx,Crit] = sort(A,Data,SortBy,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A} {[} SVAR {]} - SVAR object with multiple parameterisations
+  that will be sorted.
+\item
+  \texttt{Data} {[} tseries \textbar{} struct \textbar{} empty {]} -
+  SVAR data (endogenous variables and structural shocks); the structural
+  shocks will be re-ordered according to the SVAR parameterisations. You
+  can leave the input argument \texttt{Data} empty.
+\item
+  \texttt{SortBy} {[} char {]} - Text string that will be evaluated to
+  compute the criterion by which the parameterisations will be sorted;
+  see Description for how to write \texttt{SortBy}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{B} {[} SVAR {]} - SVAR object with parameterisations sorted by
+  the specified criterion.
+\item
+  \texttt{Data} {[} tseries \textbar{} struct \textbar{} empty {]} -
+  SVAR data with the structural shocks re-ordered to correspond to the
+  order of parameterisations.
+\item
+  \texttt{Inx} {[} numeric {]} - Vector of indices so that
+  \texttt{B = A(Inx)}.
+\item
+  \texttt{Crit} {[} numeric {]} - The value of the criterion based on
+  the string \texttt{SortBy} for each parameterisation.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The individual parameterisations within the SVAR object \texttt{A} are
+sorted by the sum of squared distances of selected shock responses to
+the respective median reponses. Formally, the following criterion is
+evaluated for each parameterisation
+
+\[ \sum_{i\in I,j\in J,k\in K} \left[ S_{i,j}(k) - M_{i,j}(k) \right]^2 \]
+
+where $S_{i,j}(k)$ denotes the response of the i-th variable to the j-th
+shock in period k, and $M_{i,j}(k)$ is the median responses. The sets of
+variables, shocks and periods, i.e. \texttt{I}, \texttt{J}, \texttt{K},
+respectively, over which the summation runs are determined by the user
+in the \texttt{SortBy} string.
+
+How do you select the shock responses that enter the criterion in
+\texttt{SortBy}? The input argument \texttt{SortBy} is a text string
+that refers to array \texttt{S}, whose element \texttt{S(i,j,k)} is the
+response of the i-th variable to the j-th shock in period k.
+
+Note that when you pass in SVAR data and request them to be sorted the
+same way as the SVAR parameterisations (the second line in Syntax), the
+number of parameterisations in \texttt{A} must match the number of data
+sets in \texttt{Data}.
+
+\paragraph{Example}\label{example}
+
+Sort the parameterisations by squared distance to median of shock
+responses of all variables to the first shock in the first four periods.
+The parameterisation that is closest to the median responses
+
+\begin{verbatim}
+S2 = sort(S1,[],'S(:,1,1:4)')
+\end{verbatim}
+
+

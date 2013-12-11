@@ -1,0 +1,21 @@
+<folder>
+
+<foldername>BVAR</foldername><filename>Contents</filename>
+
+<h1 id="BVAR/Contents">Bayesian VAR prior dummies: BVAR package</h1>
+
+<p>The BVAR package can be used to create the basic types of prior dummy
+observations when estimating Bayesian VAR models.</p>
+
+<h3>Constructing dummy observations</h3>
+
+<ul><li><link id="BVAR/litterman"><tt>litterman</tt></link>&nbsp;&ndash;&nbsp;Litterman's prior dummy observations for BVARs.</li>
+<li><link id="BVAR/sumofcoeff"><tt>sumofcoeff</tt></link>&nbsp;&ndash;&nbsp;Doan et al sum-of-coefficient prior dummy observations for BVARs.</li>
+<li><link id="BVAR/uncmean"><tt>uncmean</tt></link>&nbsp;&ndash;&nbsp;Unconditional-mean dummy (or Sims' initial dummy) observations for BVARs.</li></ul>
+
+<h3>Getting help on BVAR functions</h3>
+<pre>   help BVAR
+   help BVAR/function_name
+</pre>
+
+</folder>

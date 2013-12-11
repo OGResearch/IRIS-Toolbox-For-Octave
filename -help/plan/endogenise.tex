@@ -1,0 +1,44 @@
+
+
+    \filetitle{endogenise}{Endogenise shocks or re-endogenise variables at the specified dates}{plan/endogenise}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P = endogenise(P,List,Dates)
+P = endogenise(P,Dates,List)
+P = endogenise(P,List,Dates,Sigma)
+P = endogenise(P,Dates,List,Sigma)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} plan {]} - Simulation plan.
+\item
+  \texttt{List} {[} cellstr \textbar{} char {]} - List of shocks that
+  will be endogenised, or list of variables that will be re-endogenise.
+\item
+  \texttt{Dates} {[} numeric {]} - Dates at which the shocks or
+  variables will be endogenised.
+\item
+  \texttt{Sigma} {[} numeric {]} - Select the anticipation mode, and
+  assign a weight to the shock in the case of underdetermined simulation
+  plans; if omitted, \texttt{Sigma = 1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{P} {[} plan {]} - Simulation plan with new information on
+  endogenised shocks included.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,67 @@
+
+
+    \filetitle{forecast}{Unconditional or conditional VAR forecasts}{VAR/forecast}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Outp = forecast(V,Inp,Range,...)
+Outp = forecast(V,Inp,Range,Cond,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object.
+\item
+  \texttt{Inp} {[} struct {]} - Input database from which initial
+  condition will be read.
+\item
+  \texttt{Range} {[} numeric {]} - Forecast range; must not refer to
+  \texttt{Inf}.
+\item
+  \texttt{Cond} {[} struct \textbar{} tseries {]} - Conditioning
+  database with the mean values of residuals, reduced-form conditions on
+  endogenous variables, and conditioning instruments.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Outp} {[} struct {]} - Output database with forecasts of
+  endogenous variables, residuals, and conditioning instruments.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'cross='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+  Multiply the off-diagonal elements of the covariance matrix
+  (cross-covariances) by this factor; \texttt{'cross='} must be equal to
+  or smaller than \texttt{1}.
+\item
+  \texttt{'dbOverlay='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Combine the output data with the input
+  data; works only if the input data is a database.
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Both input and output data are deviations
+  from the unconditional mean.
+\item
+  \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Return a plain database with mean
+  forecasts only.
+\item
+  \texttt{'omega='} {[} numeric \textbar{} \emph{empty} {]} - Modify the
+  covariance matrix of residuals for this forecast.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+
