@@ -55,7 +55,7 @@ Code = strfun.converteols(Code);
 
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
-tokens = regexp(Code,'^\s*%%([^\n])+','tokens','once');
+tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
 if ~isempty(tokens)
     Comment = strtrim(tokens{1});
 end
