@@ -54,9 +54,9 @@ if isDates
     currentDates = dat2str(range,'dateformat',currentFmt);
     if ~isnan(yearFmt)
         yearDates = dat2str(range,'dateformat',yearFmt);
-        yearDates = latex.stringsubs(yearDates);
+        yearDates = interpret(This,yearDates);
     end
-    currentDates = latex.stringsubs(currentDates);
+    currentDates = interpret(This,currentDates);
     [year,per,freq] = dat2ypf(range); %#ok<ASGLU>
 end
 

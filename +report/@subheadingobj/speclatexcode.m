@@ -36,7 +36,7 @@ C = strrep(C,'$just$',This.options.justify);
 C = strrep(C,'$ncol$',sprintf('%g',nCol));
 C = strrep(C,'$empty$',repmat('& ',1,totalNCol-nCol));
 C = strrep(C,'$typeface$',This.options.typeface);
-C = strrep(C,'$title$',latex.stringsubs(This.title));
+C = strrep(C,'$title$',interpret(This,This.title));
 C = strrep(C,'$footnotemark$',footnotemark(This));
 
 end

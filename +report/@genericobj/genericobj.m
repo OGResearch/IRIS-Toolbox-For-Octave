@@ -40,6 +40,8 @@ classdef genericobj < handle
                 && (ischar(x{2}) || isequal(x{2},Inf))), ...
                 true, ...
                 'footnote','',@ischar,false, ...
+                'inputformat','plain', ...
+                @(x) any(strcmpi(x,{'plain','latex'})),true,...
                 'saveas','',@ischar,false, ...
                 }];
             if ~isempty(varargin)
@@ -131,6 +133,7 @@ classdef genericobj < handle
     
     methods (Access=protected)
         varargout = getrootprop(varargin)
+        varargout = interpret(varargin)
         varargout = latexcode(varargin)
         varargout = root(varargin)
         varargout = setrootprop(varargin)
@@ -222,11 +225,12 @@ classdef genericobj < handle
                 C = '';
                 return
             end
-            n = sprintf('[%g]',footnotenumber(This));
-            C = ['\footnotemark',n];
+            br = sprintf('\n');
+            number = sprintf('%g',footnotenumber(This));
+            text = interpret(This,This.options.footnote);
+            C = ['\footnotemark[',number,']'];
             This.footnoteContainer{end+1} = [ ...
-                sprintf('\n'),'\footnotetext',n, ...
-                '{',latex.stringsubs(This.options.footnote),'}'];
+                br,'\footnotetext[',number,']{',text,'}'];
         end
         
         function C = footnotetext(This)

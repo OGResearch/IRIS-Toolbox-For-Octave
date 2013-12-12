@@ -20,6 +20,7 @@ else
     numbered = '*';
 end
 
-C = ['\section',numbered,'{',latex.stringsubs(This.caption),'}'];
+C = interpret(This,This.caption);
+C = ['\section',numbered,'{',C,'}'];
 
 end
