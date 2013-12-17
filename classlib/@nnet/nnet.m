@@ -28,6 +28,11 @@ classdef nnet < userdataobj & getsetobj
     
     methods
         function This = nnet(Inputs,Outputs,Layout,varargin)
+            % References:
+            % 
+            % # Duch, Wlodzislaw; Jankowski, Norbert  (1999). "Survey of
+            %   neural transfer functions," Neural Computing Surveys 2
+            % 
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
             
@@ -52,10 +57,10 @@ classdef nnet < userdataobj & getsetobj
                 options.Bias = true(size(Layout)).*options.Bias ;
             end
             if ischar(options.ActivationFn)
-                options.ActivationFn = cellfun(@(x) options.ActivationFn, cell(size(Layout)), 'UniformOutput', false) ;
+                options.ActivationFn = cellfun(@(x) options.ActivationFn, cell(1,This.nLayer+1), 'UniformOutput', false) ;
             end
             if ischar(options.OutputFn)
-                options.OutputFn = cellfun(@(x) options.OutputFn, cell(size(Layout)), 'UniformOutput', false) ;
+                options.OutputFn = cellfun(@(x) options.OutputFn, cell(1,This.nLayer+1), 'UniformOutput', false) ;
             end
             This.ActivationFn = options.ActivationFn ;
             This.OutputFn = options.OutputFn ;
@@ -67,7 +72,7 @@ classdef nnet < userdataobj & getsetobj
             HyperIndex = 0 ;
             Nmax = max(This.Layout) ;
             nLayer = numel(Layout) ;
-            This.Neuron = cell(nLayer,1) ;
+            This.Neuron = cell(nLayer+1,1) ;
             for iLayer = 1:nLayer
                 NN = This.Layout(iLayer) + This.Bias(iLayer) ;
                 pos = linspace(1,Nmax,NN) ;
@@ -80,26 +85,45 @@ classdef nnet < userdataobj & getsetobj
                 for iNode = 1:This.Layout(iLayer)
                     Position = [iLayer,pos(iNode)] ;
                     This.Neuron{iLayer}{iNode} ...
-                        = neuron(options.ActivationFn{iLayer},options.OutputFn{iLayer},nInputs,Position,...
+                        = neuron(options.ActivationFn{iLayer},...
+                        options.OutputFn{iLayer},...
+                        nInputs,...
+                        Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
-                    ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
-                    OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
-                    HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
+                    xxUpdateIndex() ;
                 end
                 if options.Bias(iLayer)
                     Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
                     This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
                         = neuron('bias','bias',nInputs,Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
-                    ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
-                    OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
-                    HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
+                    xxUpdateIndex() ;
                 end
             end
+            iLayer = This.nLayer + 1 ;
+            This.Neuron{iLayer} = cell(This.nOutputs,1) ;
+            for iNode = 1:This.nOutputs
+                This.Neuron{iLayer}{iNode} ...
+                    = neuron(options.ActivationFn{iLayer},...
+                    options.OutputFn{iLayer},...
+                    This.Layout(This.nLayer),...
+                    [NaN,NaN],...
+                    ActivationIndex,OutputIndex,HyperIndex) ;
+                xxUpdateIndex() ;
+            end
+            
             This.nActivationParams = ActivationIndex ;
             This.nOutputParams = OutputIndex ;
             This.nHyperParams = HyperIndex ;
             This.nParams = ActivationIndex + OutputIndex + HyperIndex ;
+            
+            This = set(This,'hyper',1,'activation',0,'output',1) ;
+            
+            function xxUpdateIndex()
+                ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
+                OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
+                HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
+            end
         end
         
         varargout = disp(varargin) ;
@@ -123,7 +147,7 @@ classdef nnet < userdataobj & getsetobj
         
         function nLayer = get.nLayer(This)
             nLayer = numel(This.Layout) ;
-        end        
+        end
     end
     
     methods (Static,Hidden)

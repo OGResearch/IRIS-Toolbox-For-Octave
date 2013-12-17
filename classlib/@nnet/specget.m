@@ -14,7 +14,7 @@ try
                 
         case 'activation'
             X = NaN(This.nActivationParams,This.nAlt) ;
-            for iLayer = 1:This.nLayer
+            for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
                         = This.Neuron{iLayer}{iNode}.ActivationParams ;
@@ -24,7 +24,7 @@ try
         
         case 'output'
             X = NaN(This.nOutputParams,This.nAlt) ;
-            for iLayer = 1:This.nLayer
+            for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
                         = This.Neuron{iLayer}{iNode}.OutputParams ;
@@ -34,7 +34,7 @@ try
         
         case 'hyper'
             X = NaN(This.nHyperParams,This.nAlt) ;
-            for iLayer = 1:This.nLayer
+            for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
                         = This.Neuron{iLayer}{iNode}.HyperParams ;

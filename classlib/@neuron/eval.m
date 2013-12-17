@@ -17,7 +17,7 @@ end
     function out = xxActivation(in)
         switch This.ActivationFn
             case 'linear'
-                out = This.ActivationParams'*in ;
+                out = in*This.ActivationParams ;
             case 'minkovsky'
                 out = norm(in-This.ActivationParams,This.HyperParams) ;
         end
@@ -28,7 +28,7 @@ end
             case 's4'
                 out = (This.OutputParams.*in)./sqrt(1+This.OutputParams.^2*in.^2) ;
             case 'logistic'
-                out = 1./(1-exp(in)) ;
+                out = 1./(1+exp(-This.OutputParams.*in)) ;
             case 'tanh'
                 atmp = exp(-in*This.OutputParams) ;
                 out = (1-atmp)/(1+atmp) ;

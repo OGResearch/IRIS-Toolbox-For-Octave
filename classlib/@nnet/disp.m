@@ -17,9 +17,8 @@ if ~isempty(This)
     fprintf('\n') ;
     
     % Hidden Layer
-    nLayers = numel(This.ActivationFn) ;
-    fprintf(1,'\t[%g] hidden layers: \n',nLayers) ;
-    for ii=1:nLayers
+    fprintf(1,'\t[%g] layout: \n',This.nLayer) ;
+    for ii=1:This.nLayer
         fprintf(1,'\t\tlayer %g: %s activation, %s output, %g nodes',...
             ii, This.ActivationFn{ii},This.OutputFn{ii}, This.Layout(ii)) ;
         if This.Bias(ii)
@@ -28,6 +27,8 @@ if ~isempty(This)
             fprintf(1,'\n') ;
         end
     end
+    fprintf(1,'\t\toutput layer: %s activation, %s output\n',...
+        This.ActivationFn{This.nLayer+1},This.OutputFn{This.nLayer+1}) ;
     
     % Outputs
     fprintf(1,'\t[%g] outputs: ',This.nOutputs) ;
@@ -35,6 +36,7 @@ if ~isempty(This)
     for ii=2:numel(This.Outputs)
         fprintf(1,', %s',This.Outputs{ii}) ;
     end
+    
     fprintf('\n\n') ;
     
     % Comments

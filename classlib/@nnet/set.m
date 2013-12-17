@@ -74,35 +74,36 @@ end
         if isfunc(Value) || isnumericscalar(Value)
             switch query
                 case 'activation'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode} ...
-                                = set(This.Neuron{iLayer}{iNode},'activation',Value) ;
+                                = set( This.Neuron{iLayer}{iNode}, 'activation', Value ) ;
                         end
                     end
                     
                 case 'output'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode} ...
-                                = set(This.Neuron{iLayer}{iNode},'output',Value) ;
+                                = set( This.Neuron{iLayer}{iNode}, 'output', Value ) ;
                         end
                     end
                     
                 case 'hyper'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode} ...
-                                = set(This.Neuron{iLayer}{iNode},'hyper',Value) ;
+                                = set( This.Neuron{iLayer}{iNode}, 'hyper', Value ) ;
                         end
                     end
                     
                 case 'param'
-                    This = set(This,'activation',Value) ;
-                    This = set(This,'output',Value) ;
+                    This = set( This, 'activation', Value ) ;
+                    This = set( This, 'output', Value ) ;
+                    This = set( This, 'hyper', Value ) ;
 
                 case 'userdata'
-                    This = userdata(This,Value);
+                    This = userdata( This, Value );
                     
                 otherwise
                     Found = false;
@@ -112,7 +113,7 @@ end
             % Value is a vector
             switch query
                 case 'activation'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.ActivationParams ...
                                 = Value( This.Neuron{iLayer}{iNode}.ActivationIndex ) ;
@@ -120,7 +121,7 @@ end
                     end
                     
                 case 'output'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.OutputParams ...
                                 = Value( This.Neuron{iLayer}{iNode}.OutputIndex ) ;
@@ -128,7 +129,7 @@ end
                     end
                     
                 case 'hyper'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.HyperParams ...
                                 = Value( This.Neuron{iLayer}{iNode}.HyperIndex ) ;
@@ -136,19 +137,19 @@ end
                     end
                     
                 case 'param'
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.ActivationParams ...
                                 = Value( This.Neuron{iLayer}{iNode}.ActivationIndex ) ;
                         end
                     end
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.OutputParams ...
                                 = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
                         end
                     end
-                    for iLayer = 1:This.nLayer
+                    for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.HyperParams ...
                                 = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;

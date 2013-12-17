@@ -42,15 +42,6 @@ if options.Ahead>1 && This.nOutputs>1
 end
 
 % Body
-% switch options.Output
-% 	case 'tseries'
-% 		OutData = tseries() ;
-% 	case 'dbase'
-% 		OutData = struct() ;
-% 		for iOutput = 1:This.nOutputs
-% 			OutData.(This.Outputs{iOutput}) = tseries() ;
-% 		end
-% end
 if options.Ahead>1
     kPred = InData ;
     for k = 1:options.Ahead
@@ -62,11 +53,20 @@ if options.Ahead>1
 else
     % Hidden Layers
     for iLayer = 1:This.nLayer
-        OutData = tseries() ;
+        OutData = tseries(Range,Inf(numel(Range),This.Layout(iLayer))) ;
         for iNode = 1:This.Layout(iLayer)
             OutData(Range,iNode) ...
-                = eval(This.Neuron{iLayer}{iNode},InData) ;
+                = eval( This.Neuron{iLayer}{iNode}, InData ) ;
         end
+        InData = OutData ;
+    end
+    
+    % Output layer
+    iLayer = This.nLayer + 1 ;
+    OutData = tseries(Range,Inf(numel(Range),This.nOutputs)) ;
+    for iNode = 1:This.nOutputs
+        OutData(Range,iNode) ...
+            = eval( This.Neuron{iLayer}{iNode}, InData ) ;
     end
 end
 

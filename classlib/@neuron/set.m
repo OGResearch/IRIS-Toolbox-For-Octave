@@ -54,24 +54,41 @@ end
                 case 'activation'
                     This.ActivationParams ...
                         = arrayfun( Value, This.ActivationParams ) ;
+                    
                 case 'output'
                     This.OutputParams ...
-                        = arrayfun( Value, This.OutputParams) ;
+                        = arrayfun( Value, This.OutputParams ) ;
+                    
+                case 'hyper'
+                    This.HyperParams ...
+                        = arrayfun( Value, This.HyperParams ) ;
+                    
                 case 'userdata'
                     This = userdata(This,Value) ;
+                    
                 otherwise
                     Found = false ;
+                    
             end
         else
             switch query
                 case 'activation'
                     This.ActivationParams = Value ;
+                    
                 case 'output'
                     This.OutputParams = Value ;
+                    
                 case 'params'
-                    ns = numel(This.ActivationParams) ;
+                    ns = This.nActivationParams ;
                     This.ActivationParams = Value(1:ns) ;
-                    This.OutputParams = Value(ns+1:end) ;
+                    ne = This.nActivationParams+This.nOutputParams ;
+                    This.OutputParams = Value(ns+1:ne) ;
+                    This.HyperParams = Value(ns+1:end) ;
+                    
+                case 'hyper'
+                    ns = This.nActivationParams + This.nOutputParams ;
+                    This.HyperParams = Value(ns+1:end) ;
+                    
                 otherwise
                     Found = false ;
                     
