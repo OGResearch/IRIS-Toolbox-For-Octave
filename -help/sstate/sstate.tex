@@ -1,0 +1,43 @@
+
+
+    \filetitle{sstate}{Create new steady-state object based on sstate file}{sstate/sstate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+S = sstate(File,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{File} {[} char {]} - Name of the steady-state file that will
+  loaded and converted to a new sstate object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{S} {[} sstate {]} - New sstate object based on the input
+  steady-state file.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'assign='} {[} struct \textbar{} \emph{empty} {]} - Database
+  that will used by the preparser to evaluate conditions and expressions
+  in the \texttt{!if} and \texttt{!switch} structures.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

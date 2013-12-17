@@ -1,0 +1,73 @@
+
+
+    \filetitle{xls2csv}{Convert XLS file to CSV file}{dbase/xls2csv}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+xls2csv(InpFile)
+xls2csv(InpFile,OutpFile,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{InpFile} {[} char {]} - Name of an XLS input file that will be
+  converted to CSV.
+\item
+  \texttt{OutpFile} {[} empty \textbar{} char {]} - Name of the CSV
+  output file; if not supplied or empty, the CSV file name will be
+  derived from the XLS input file name.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'sheet='} {[} numeric \textbar{} char \textbar{}
+  \emph{\texttt{1}} {]} - Worksheet in the XLS file that will be saved;
+  can be either the sheet number or the sheet name.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+This function calls a third-party JavaScript (courtesy of Christopher
+West). The script uses an MS Excel application on the background, and
+hence MS Excel must be installed on the computer.
+
+Only one worksheet at a time can be saved to CSV. By default, it is the
+first worksheet found in the input XLS file; use the option
+\texttt{'sheet='} to control which worksheet will be saved.
+
+See also \$irisroot/+thirdparty/xls2csv.js for copyright information.
+
+\paragraph{Example 1}\label{example-1}
+
+Save the first worksheets of the following XLS files to CSV files.
+
+\begin{verbatim}
+xls2csv('myDataFile.xls');
+xls2csv('C:\Data\myDataFile.xls');
+\end{verbatim}
+
+\paragraph{Example 2}\label{example-2}
+
+Save the worksheet named `Sheet3' to a CSV file; the name of the CSV
+file will be \texttt{'myDataFile.csv'}.
+
+\begin{verbatim}
+xls2csv('myDataFile.xls',[],'sheet=','Sheet3');
+\end{verbatim}
+
+\paragraph{Example 3}\label{example-3}
+
+Save the second worksheet to a CSV file under the name
+\texttt{'myDataFile\_2.csv'}.
+
+\begin{verbatim}
+xls2csv('myDataFile.xls','myDataFile_2.csv,'sheet=',2);
+\end{verbatim}
+
+

@@ -1,0 +1,148 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/sspace">sspace</h2>
+<div class="headline">State-space matrices describing the model solution</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[T,R,K,Z,H,D,U,Omg] = sspace(m,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>m</code> [ model ] - Solved model object.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>T</code> [ numeric ] - Transition matrix.</p></li>
+<li><p><code>R</code> [ numeric ] - Matrix at the shock vector in transition equations.</p></li>
+<li><p><code>K</code> [ numeric ] - Constant vector in transition equations.</p></li>
+<li><p><code>Z</code> [ numeric ] - Matrix mapping transition variables to measurement variables.</p></li>
+<li><p><code>H</code> [ numeric ] - Matrix at the shock vector in measurement equations.</p></li>
+<li><p><code>D</code> [ numeric ] - Constant vector in measurement equations.</p></li>
+<li><p><code>U</code> [ numeric ] - Transformation matrix for predetermined variables.</p></li>
+<li><p><code>Omg</code> [ numeric ] - Covariance matrix of shocks.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'triangular='</code> [ <em><code>true</code></em> | <code>false</code> ] - If true, the state-space form returned has the transition matrix <code>T</code> quasi triangular and the vector of predetermined variables transformed accordingly; this is the form used in IRIS calculations. If false, the state-space system refers to the original vector of transition variables.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The state-space representation has the following form:</p>
+<pre><code>[xf;alpha] = T*alpha(-1) + K + R*e
+
+y = Z*alpha + D + H*e
+
+xb = U*alpha
+
+Cov[e] = Omg</code></pre>
+<p>where <code>xb</code> is an nb-by-1 vector of predetermined (backward-looking) transition variables and their auxiliary lags, <code>xf</code> is an nf-by-1 vector of non-predetermined (forward-looking) variables and their auxiliary leads, <code>alpha</code> is a transformation of <code>xb</code>, <code>e</code> is an ne-by-1 vector of shocks, and <code>y</code> is an ny-by-1 vector of measurement variables. Furthermore, we denote the total number of transition variables, and their auxiliary lags and leads, nx = nb + nf.</p>
+<p>The transition matrix, <code>T</code>, is, in general, rectangular nx-by-nb. Furthremore, the transformed state vector alpha is chosen so that the lower nb-by-nb part of <code>T</code> is quasi upper triangular.</p>
+<p>You can use the <code>get(m,'xVector')</code> function to learn about the order of appearance of transition variables and their auxiliary lags and leads in the vectors <code>xb</code> and <code>xf</code>. The first nf names are the vector <code>xf</code>, the remaining nb names are the vector <code>xb</code>.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>

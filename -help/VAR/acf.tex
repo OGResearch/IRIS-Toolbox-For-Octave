@@ -1,0 +1,61 @@
+
+
+    \filetitle{acf}{Autocovariance and autocorrelation functions for VAR variables}{VAR/acf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[C,R] = acf(V,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object for which the ACF will be
+  computed.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{C} {[} numeric {]} - Auto/cross-covariance matrices.
+\item
+  \texttt{R} {[} numeric {]} - Auto/cross-correlation matrices.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'applyTo='} {[} logical \textbar{} \emph{\texttt{Inf}} {]} -
+  Logical index of variables to which the \texttt{'filter='} will be
+  applied; the default Inf means all variables.
+\item
+  \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
+  filter that is applied to variables specified by `applyto'.
+\item
+  \texttt{'nfreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
+  Number of equally spaced frequencies over which the `filter' is
+  numerically integrated.
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
+  up to which ACF will be computed.
+\item
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Return matrices \texttt{C} and \texttt{R} as
+  either namedmat objects (matrices with named rows and columns) or
+  plain numeric arrays.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

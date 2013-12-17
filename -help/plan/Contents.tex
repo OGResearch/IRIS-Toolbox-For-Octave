@@ -1,0 +1,105 @@
+
+    \foldertitle{plan}{Simulation plans}{plan/Contents}
+
+	Simulation plans complement the use of the
+\href{model/simulate}{\texttt{model/simulate}} or
+\href{model/jforecast}{\texttt{model/jforecast}} functions.
+
+You need to use a simulation plan object to set up the following types
+of more complex simulations or forecasts (or a combination of these):
+
+\paragraph{simulations or forecasts with some of the model variables
+temporarily}\label{simulations-or-forecasts-with-some-of-the-model-variables-temporarily}
+
+exogenised;
+
+\paragraph{simulations with some of the non-linear equations solved in
+an
+exact}\label{simulations-with-some-of-the-non-linear-equations-solved-in-an-exact}
+
+non-linear mode;
+
+\paragraph{forecasts conditioned upon some
+variables;}\label{forecasts-conditioned-upon-some-variables}
+
+The plan object is passed to the
+\href{model/simulate}{\texttt{model/simulate}} or
+\href{model/jforecast}{\texttt{model/jforecast}} functions through the
+\texttt{'plan='} option.
+
+Plan methods:
+
+\paragraph{Constructor}\label{constructor}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{plan/plan}{\texttt{plan}} - Create new, empty simulation plan
+  object.
+\end{itemize}
+
+\paragraph{Getting information about simulation
+plans}\label{getting-information-about-simulation-plans}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{plan/detail}{\texttt{detail}} - Display details of a simulation
+  plan.
+\item
+  \href{plan/get}{\texttt{get}} - Query to plan object.
+\item
+  \href{plan/nnzcond}{\texttt{nnzcond}} - Number of conditioning data
+  points.
+\item
+  \href{plan/nnzendog}{\texttt{nnzendog}} - Number of endogenised data
+  points.
+\item
+  \href{plan/nnzexog}{\texttt{nnzexog}} - Number of exogenised data
+  points.
+\item
+  \href{plan/nnznonlin}{\texttt{nnznonlin}} - Number of non-linearised
+  data points.
+\end{itemize}
+
+\paragraph{Setting up simulation
+plans}\label{setting-up-simulation-plans}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{plan/autoexogenise}{\texttt{autoexogenise}} - Exogenise
+  variables and automatically endogenise corresponding shocks.
+\item
+  \href{plan/condition}{\texttt{condition}} - Condition forecast upon
+  the specified variables at the specified dates.
+\item
+  \href{plan/endogenise}{\texttt{endogenise}} - Endogenise shocks or
+  re-endogenise variables at the specified dates.
+\item
+  \href{plan/exogenise}{\texttt{exogenise}} - Exogenise variables or
+  re-exogenise shocks at the specified dates.
+\item
+  \href{plan/nonlinearise}{\texttt{nonlinearise}} - Select equations for
+  simulation in an exact non-linear mode.
+\end{itemize}
+
+\paragraph{Referencing plan objects}\label{referencing-plan-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{plan/subsref}{\texttt{subsref}} - Subscripted reference for plan
+  objects.
+\end{itemize}
+
+\paragraph{Getting on-line help on simulation
+plans}\label{getting-on-line-help-on-simulation-plans}
+
+\begin{verbatim}
+help plan
+help plan/function_name
+\end{verbatim}
+
+
+
