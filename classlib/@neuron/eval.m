@@ -19,7 +19,10 @@ end
             case 'linear'
                 out = in*This.ActivationParams ;
             case 'minkovsky'
-                out = norm(in-This.ActivationParams,This.HyperParams) ;
+                tmp = bsxfun(@minus,in,This.ActivationParams') ;
+                tmp = bsxfun(@power,tmp,This.HyperParams) ;
+                tmp = sum(tmp,2) ;
+                out = bsxfun(@power,tmp,1/This.HyperParams) ;
         end
     end
 

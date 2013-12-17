@@ -43,6 +43,12 @@ classdef neuron
             % Hyper
             This.HyperParams = NaN ;
             This.HyperIndex = HyperIndex+1 ;
+            switch ActivationFn
+                case 'minkovsky'
+                    This.HyperParams = 2 ;
+                otherwise
+                    This.HyperParams = 1 ;
+            end
             
             % Everything else
             This.nAlt = 1 ;
