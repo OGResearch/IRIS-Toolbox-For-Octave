@@ -17,9 +17,9 @@ end
     function out = xxActivation(in)
         switch This.ActivationFn
             case 'linear'
-                out = This.Weight'*in ;
+                out = This.ActivationParams'*in ;
             case 'minkovsky'
-                out = norm(in-This.Weight,This.ActivationParams) ;
+                out = norm(in-This.ActivationParams,This.HyperParams) ;
         end
     end
 

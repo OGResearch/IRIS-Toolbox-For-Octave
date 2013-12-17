@@ -32,8 +32,18 @@ try
             end
             Flag = true ;
         
+        case 'hyper'
+            X = NaN(This.nHyperParams,This.nAlt) ;
+            for iLayer = 1:This.nLayer
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.HyperParams ;
+                end
+            end
+            Flag = true ;
+            
         case 'param'
-            X = [specget(This,'activation'); specget(This,'output')] ;
+            X = [specget(This,'activation'); specget(This,'output'); specget(This,'hyper')] ;
             Flag = true ;
         
         otherwise

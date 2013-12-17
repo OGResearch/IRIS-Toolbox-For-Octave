@@ -14,6 +14,7 @@ classdef nnet < userdataobj & getsetobj
         
         nActivationParams ;
         nOutputParams ;
+        nHyperParams ;
         nParams ;
         
         Neuron@cell = cell(0,1) ;
@@ -63,6 +64,7 @@ classdef nnet < userdataobj & getsetobj
             % Initialize layers of neurons
             ActivationIndex = 0 ;
             OutputIndex = 0 ;
+            HyperIndex = 0 ;
             Nmax = max(This.Layout) ;
             nLayer = numel(Layout) ;
             This.Neuron = cell(nLayer,1) ;
@@ -79,22 +81,25 @@ classdef nnet < userdataobj & getsetobj
                     Position = [iLayer,pos(iNode)] ;
                     This.Neuron{iLayer}{iNode} ...
                         = neuron(options.ActivationFn{iLayer},options.OutputFn{iLayer},nInputs,Position,...
-                        ActivationIndex,OutputIndex) ;
+                        ActivationIndex,OutputIndex,HyperIndex) ;
                     ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
                     OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
+                    HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
                 end
                 if options.Bias(iLayer)
                     Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
                     This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
                         = neuron('bias','bias',nInputs,Position,...
-                        ActivationIndex,OutputIndex) ;
+                        ActivationIndex,OutputIndex,HyperIndex) ;
                     ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
                     OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
+                    HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
                 end
             end
             This.nActivationParams = ActivationIndex ;
             This.nOutputParams = OutputIndex ;
-            This.nParams = ActivationIndex + OutputIndex ;
+            This.nHyperParams = HyperIndex ;
+            This.nParams = ActivationIndex + OutputIndex + HyperIndex ;
         end
         
         varargout = disp(varargin) ;

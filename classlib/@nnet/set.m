@@ -80,11 +80,20 @@ end
                                 = set(This.Neuron{iLayer}{iNode},'activation',Value) ;
                         end
                     end
+                    
                 case 'output'
                     for iLayer = 1:This.nLayer
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode} ...
                                 = set(This.Neuron{iLayer}{iNode},'output',Value) ;
+                        end
+                    end
+                    
+                case 'hyper'
+                    for iLayer = 1:This.nLayer
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode} ...
+                                = set(This.Neuron{iLayer}{iNode},'hyper',Value) ;
                         end
                     end
                     
@@ -101,7 +110,6 @@ end
             end
         else
             % Value is a vector
-            Xcount = 0 ;
             switch query
                 case 'activation'
                     for iLayer = 1:This.nLayer
@@ -110,6 +118,7 @@ end
                                 = Value( This.Neuron{iLayer}{iNode}.ActivationIndex ) ;
                         end
                     end
+                    
                 case 'output'
                     for iLayer = 1:This.nLayer
                         for iNode = 1:numel(This.Neuron{iLayer})
@@ -117,6 +126,15 @@ end
                                 = Value( This.Neuron{iLayer}{iNode}.OutputIndex ) ;
                         end
                     end
+                    
+                case 'hyper'
+                    for iLayer = 1:This.nLayer
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.HyperParams ...
+                                = Value( This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                        end
+                    end
+                    
                 case 'param'
                     for iLayer = 1:This.nLayer
                         for iNode = 1:numel(This.Neuron{iLayer})
@@ -130,6 +148,13 @@ end
                                 = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
                         end
                     end
+                    for iLayer = 1:This.nLayer
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.HyperParams ...
+                                = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                        end
+                    end
+                    
                 otherwise
                     Found = false ;
                     

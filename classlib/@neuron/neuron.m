@@ -6,9 +6,13 @@ classdef neuron
         ActivationFn@char = '' ;
         ActivationParams = [] ;
         ActivationIndex = [] ;
+        
         OutputFn@char = '' ;
         OutputParams = [] ;
         OutputIndex = [] ;
+        
+        HyperParams = [] ;
+        HyperIndex = [] ;
         
         Position@double = [NaN,NaN] ;
         nAlt = NaN ;
@@ -17,7 +21,7 @@ classdef neuron
     
     methods
         
-        function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex)
+        function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex,HyperIndex)
             % neuron  [Not a public function]
             %
             % Backend IRIS function.
@@ -35,6 +39,10 @@ classdef neuron
             This.OutputFn = OutputFn ;
             This.OutputParams = NaN ;
             This.OutputIndex = OutputIndex+1:OutputIndex+numel(This.OutputParams) ;
+            
+            % Hyper
+            This.HyperParams = NaN ;
+            This.HyperIndex = HyperIndex+1 ;
             
             % Everything else
             This.nAlt = 1 ;
