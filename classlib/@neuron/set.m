@@ -107,20 +107,19 @@ end
                 case 'params'
                     ns = This.nActivationParams ;
                     This.ActivationParams = Value(1:ns) ;
-                    ne = This.nActivationParams+This.nOutputParams ;
-                    This.OutputParams = Value(ns+1:ne) ;
-                    This.HyperParams = Value(ns+1:end) ;
+                    ne = This.nActivationParams+This.nHyperParams ;
+                    This.HyperParams = Value(ns+1:ne) ;
+                    This.OutputParams = Value(ne+1:end) ;
                     
                 case 'bounds'
                     ns = This.nActivationParams ;
                     This.ActivationBounds = Value(1:ns) ;
-                    ne = This.nActivationParams+This.nOutputParams ;
-                    This.OutputBounds = Value(ns+1:ne) ;
-                    This.HyperBounds = Value(ns+1:end) ;
+                    ne = This.nActivationParams+This.nHyperParams ;
+                    This.HyperBounds = Value(ns+1:ne) ;
+                    This.OutputBounds = Value(ne+1:end) ;
 
                 case 'hyper'
-                    ns = This.nActivationParams + This.nOutputParams ;
-                    This.HyperParams = Value(ns+1:end) ;
+                    This.HyperParams = Value ;
                     
                 otherwise
                     Found = false ;

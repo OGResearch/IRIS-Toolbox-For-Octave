@@ -23,7 +23,7 @@ end
     function [out,out2] = xxActivation(in)
         switch This.ActivationFn
             case 'linear'
-                out = in*This.ActivationParams ;
+                out = in*This.ActivationParams(:) ;
                 if nargout>1
                     out2 = in ;
                 end

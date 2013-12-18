@@ -9,37 +9,20 @@ function [This,UpdateOk] = myupdatemodel(This,X,options)
 
 try
     
-    Xcount = 1 ;
+    Xcount = 0 ;
     
-    if any(strcmpi(options.Estimate,'bias'))
-        for iLayer = 1:This.nLayer+2
-            for iNode = 1:numel(This.Params{iLayer}.Bias)
-                This.Params{iLayer}.Bias{iNode} = X(Xcount) ;
-                Xcount = Xcount + 1 ;
-            end
-        end
+    if any(strcmpi(options.Select,'activation'))
+        This = set(This,'activation',X(Xcount+1:Xcount+This.nActivationParams)) ;
+        Xcount = This.nActivationParams ;
     end
     
-    if any(strcmpi(options.Estimate,'transfer'))
-        for iLayer = 1:This.nLayer+2
-            for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                This.Params{iLayer}.Transfer{iNode} = X(Xcount) ;
-                Xcount = Xcount + 1 ;
-            end
-        end
+    if any(strcmpi(options.Select,'hyper'))
+        This = set(This,'hyper',X(Xcount+1:Xcount+This.nHyperParams)) ;
+        Xcount = Xcount + This.nHyperParams ;
     end
     
-    if any(strcmpi(options.Estimate,'weight'))
-        for iLayer = 1:This.nLayer+2
-            if iLayer>1
-                for iNode = 1:numel(This.Params{iLayer}.Weight)
-                    for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                        This.Params{iLayer}.Weight{iNode}(iInput) = X(Xcount) ;
-                        Xcount = Xcount + 1 ;
-                    end
-                end
-            end
-        end
+    if any(strcmpi(options.Select,'output'))
+        This = set(This,'output',X(Xcount+1:Xcount+This.nOutputParams)) ;
     end
     
     UpdateOk = true ;

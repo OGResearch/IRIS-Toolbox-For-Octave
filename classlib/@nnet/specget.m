@@ -26,7 +26,6 @@ try
             X = NaN(This.nActivationParams,2) ;
             for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
-                    disp([iLayer,iNode]) 
                     X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
                         = This.Neuron{iLayer}{iNode}.ActivationBounds ;
                 end
@@ -74,11 +73,11 @@ try
             Flag = true ;
             
         case 'param'
-            X = [specget(This,'activation'); specget(This,'output'); specget(This,'hyper')] ;
+            X = [specget(This,'activation'); specget(This,'hyper'); specget(This,'output')] ;
             Flag = true ;
             
         case 'bounds'
-            X = [specget(This,'activationbounds'); specget(This,'outputbounds'); specget(This,'hyperbounds')] ;
+            X = [specget(This,'activationbounds'); specget(This,'hyperbounds'); specget(This,'outputbounds')] ;
             Flag = true ;
         
         otherwise

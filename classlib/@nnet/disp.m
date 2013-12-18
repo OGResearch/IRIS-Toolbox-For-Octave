@@ -6,7 +6,7 @@ function disp(This)
 
 if ~isempty(This)
     
-    fprintf(1,'\tneural network model object: [%g] parameterisation(s)\n', This.nAlt) ;
+    fprintf(1,'\tneural network model object:\n', This.nAlt) ;
     
     % Inputs
     fprintf(1,'\t[%g] inputs: ',This.nInputs) ;

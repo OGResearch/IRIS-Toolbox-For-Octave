@@ -201,14 +201,14 @@ end
                     end
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
-                            This.Neuron{iLayer}{iNode}.OutputParams ...
-                                = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
+                            This.Neuron{iLayer}{iNode}.HyperParams ...
+                                = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
                         end
                     end
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
-                            This.Neuron{iLayer}{iNode}.HyperParams ...
-                                = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                            This.Neuron{iLayer}{iNode}.OutputParams ...
+                                = Value( This.nActivationParams+This.nHyperParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
                         end
                     end
 
@@ -221,14 +221,14 @@ end
                     end
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
-                            This.Neuron{iLayer}{iNode}.OutputBounds ...
-                                = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
+                            This.Neuron{iLayer}{iNode}.HyperBounds ...
+                                = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
                         end
                     end
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
-                            This.Neuron{iLayer}{iNode}.HyperBounds ...
-                                = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                            This.Neuron{iLayer}{iNode}.OutputBounds ...
+                                = Value( This.nActivationParams+This.nHyperParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
                         end
                     end
                     
