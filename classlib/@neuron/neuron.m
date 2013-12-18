@@ -1,4 +1,9 @@
-classdef neuron
+classdef neuron < handle
+    % neuron  [Not a public class definition]
+    % 
+    % Backend IRIS class.
+    % No help provided.
+    
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
@@ -20,11 +25,14 @@ classdef neuron
         HyperBounds = [] ;
         HyperBoundsDefault = [] ;
         
+        ForwardConnection = {} ;
+        BackwardConnection = {} ;
+        
         Position@double = [NaN,NaN] ;
         nAlt = NaN ;
         Bias = false ;
     end
-    
+        
     methods
         
         function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex,HyperIndex)
@@ -73,7 +81,8 @@ classdef neuron
             end
         end
         
-        varargout = eval(varargin)
+        varargout = eval(varargin) ;
+        varargout = saliency(varargin) ;
         
     end
 end

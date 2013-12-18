@@ -119,6 +119,28 @@ classdef nnet < userdataobj & getsetobj
             
             This = set(This,'hyper',1,'activation',0,'output',1) ;
             
+            % Tell nodes about their forward/backward connections
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    if iLayer < This.nLayer+1
+                        This.Neuron{iLayer}{iNode}.ForwardConnection ...
+                            = cell( numel(This.Neuron{iLayer+1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer+1})
+                            This.Neuron{iLayer}{iNode}.ForwardConnection{sLayer} ...
+                                = This.Neuron{iLayer+1}{sLayer} ;
+                        end
+                    end
+                    if iLayer > 1
+                        This.Neuron{iLayer}{iNode}.BackwardConnection ...
+                            = cell( numel(This.Neuron{iLayer-1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer-1})
+                            This.Neuron{iLayer}{iNode}.BackwardConnection{sLayer} ...
+                                = This.Neuron{iLayer-1}{sLayer} ;
+                        end
+                    end
+                end
+            end
+            
             function xxUpdateIndex()
                 ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
                 OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
@@ -135,6 +157,15 @@ classdef nnet < userdataobj & getsetobj
         varargout = vertcat(varargin) ;
         varargout = eval(varargin) ;
         varargout = plot(varargin) ;
+        
+        % Destructor method
+        function delete(This)
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    delete( This.Neuron{iLayer}{iNode} ) ;
+                end
+            end
+        end
         
         % Dependent methods
         function nInputs = get.nInputs(This)
