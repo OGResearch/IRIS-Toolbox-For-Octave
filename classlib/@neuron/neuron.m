@@ -6,13 +6,19 @@ classdef neuron
         ActivationFn@char = '' ;
         ActivationParams = [] ;
         ActivationIndex = [] ;
+        ActivationBounds = [] ;
+        ActivationBoundsDefault = [] ;
         
         OutputFn@char = '' ;
         OutputParams = [] ;
         OutputIndex = [] ;
+        OutputBounds = [] ;
+        OutputBoundsDefault = [] ;
         
         HyperParams = [] ;
         HyperIndex = [] ;
+        HyperBounds = [] ;
+        HyperBoundsDefault = [] ;
         
         Position@double = [NaN,NaN] ;
         nAlt = NaN ;
@@ -34,11 +40,15 @@ classdef neuron
             This.ActivationFn = ActivationFn ;
             This.ActivationParams = NaN(nInputs,1) ;
             This.ActivationIndex = ActivationIndex+1:ActivationIndex+numel(This.ActivationParams) ;
+            This.ActivationBoundsDefault = [-Inf,Inf] ;
+            This.ActivationBounds = repmat(This.ActivationBoundsDefault,numel(This.ActivationParams),1) ;
             
             % Output
             This.OutputFn = OutputFn ;
             This.OutputParams = NaN ;
             This.OutputIndex = OutputIndex+1:OutputIndex+numel(This.OutputParams) ;
+            This.OutputBoundsDefault = [0,Inf] ;
+            This.OutputBounds = repmat(This.OutputBoundsDefault,numel(This.OutputParams),1) ;
             
             % Hyper
             This.HyperParams = NaN ;
@@ -49,6 +59,8 @@ classdef neuron
                 otherwise
                     This.HyperParams = 1 ;
             end
+            This.HyperBoundsDefault = [0,Inf] ;
+            This.HyperBounds = repmat(This.HyperBoundsDefault,numel(This.HyperParams),1) ;
             
             % Everything else
             This.nAlt = 1 ;

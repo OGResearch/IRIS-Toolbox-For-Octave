@@ -70,5 +70,9 @@ else
     end
 end
 
+if strcmpi(options.Output,'dbase')
+    OutData = array2db(OutData,Range,This.Outputs) ;
+end
+
 end
 

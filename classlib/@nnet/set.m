@@ -81,6 +81,14 @@ end
                         end
                     end
                     
+                case 'activationbounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode} ...
+                                = set( This.Neuron{iLayer}{iNode}, 'activationbounds', Value ) ;
+                        end
+                    end
+                    
                 case 'output'
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
@@ -89,11 +97,35 @@ end
                         end
                     end
                     
+                case 'outputbounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode} ...
+                                = set( This.Neuron{iLayer}{iNode}, 'outputbounds', Value ) ;
+                        end
+                    end
+                    
                 case 'hyper'
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode} ...
                                 = set( This.Neuron{iLayer}{iNode}, 'hyper', Value ) ;
+                        end
+                    end
+                    
+                case 'hyperbounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode} ...
+                                = set( This.Neuron{iLayer}{iNode}, 'hyperbounds', Value ) ;
+                        end
+                    end
+                    
+                case 'bounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode} ...
+                                = set( This.Neuron{iLayer}{iNode}, 'bounds', Value ) ;
                         end
                     end
                     
@@ -120,6 +152,14 @@ end
                         end
                     end
                     
+                case 'activationBounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.ActivationBounds ...
+                                = Value( This.Neuron{iLayer}{iNode}.ActivationIndex ) ;
+                        end
+                    end
+                    
                 case 'output'
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
@@ -128,10 +168,26 @@ end
                         end
                     end
                     
+                case 'outputBounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.OutputBounds ...
+                                = Value( This.Neuron{iLayer}{iNode}.OutputIndex ) ;
+                        end
+                    end
+                    
                 case 'hyper'
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.HyperParams ...
+                                = Value( This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                        end
+                    end
+                    
+                case 'hyperBounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.HyperBounds ...
                                 = Value( This.Neuron{iLayer}{iNode}.HyperIndex ) ;
                         end
                     end
@@ -152,6 +208,26 @@ end
                     for iLayer = 1:This.nLayer+1
                         for iNode = 1:numel(This.Neuron{iLayer})
                             This.Neuron{iLayer}{iNode}.HyperParams ...
+                                = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
+                        end
+                    end
+
+                case 'bounds'
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.ActivationBounds ...
+                                = Value( This.Neuron{iLayer}{iNode}.ActivationIndex ) ;
+                        end
+                    end
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.OutputBounds ...
+                                = Value( This.nActivationParams+This.Neuron{iLayer}{iNode}.OutputIndex ) ;
+                        end
+                    end
+                    for iLayer = 1:This.nLayer+1
+                        for iNode = 1:numel(This.Neuron{iLayer})
+                            This.Neuron{iLayer}{iNode}.HyperBounds ...
                                 = Value( This.nActivationParams+This.nOutputParams+This.Neuron{iLayer}{iNode}.HyperIndex ) ;
                         end
                     end

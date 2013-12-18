@@ -15,6 +15,4 @@ Query = regexprep(Query,'param.*','param');
 % Alias nalt, nalter.
 Query = regexprep(Query,'nalt(er)?','nalt');
 
-Query = regexprep(Query,'weight.*','weight') ;
-
 end

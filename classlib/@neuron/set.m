@@ -54,14 +54,34 @@ end
                 case 'activation'
                     This.ActivationParams ...
                         = arrayfun( Value, This.ActivationParams ) ;
-                    
+                
+                case 'activationbounds'
+                    This.ActivationBounds ...
+                        = arrayfun( Value, This.ActivationBounds ) ;
+
                 case 'output'
                     This.OutputParams ...
                         = arrayfun( Value, This.OutputParams ) ;
+
+                case 'outputbounds'
+                    This.OutputBounds ...
+                        = arrayfun( Value, This.OutputBounds ) ;
                     
                 case 'hyper'
                     This.HyperParams ...
                         = arrayfun( Value, This.HyperParams ) ;
+                    
+                case 'hyperbounds'
+                    This.HyperBounds ...
+                        = arrayfun( Value, This.HyperBounds ) ;
+                    
+                case 'bounds'
+                    This.ActivationBounds ...
+                        = arrayfun( Value, This.ActivationBounds ) ;
+                    This.OutputBounds ...
+                        = arrayfun( Value, This.OutputBounds ) ;
+                    This.HyperBounds ...
+                        = arrayfun( Value, This.HyperBounds ) ;
                     
                 case 'userdata'
                     This = userdata(This,Value) ;
@@ -75,9 +95,15 @@ end
                 case 'activation'
                     This.ActivationParams = Value ;
                     
+                case 'activationbounds'
+                    This.ActivationBounds = Value ;
+
                 case 'output'
                     This.OutputParams = Value ;
                     
+                case 'outputbounds'
+                    This.OutputBounds = Value ;
+
                 case 'params'
                     ns = This.nActivationParams ;
                     This.ActivationParams = Value(1:ns) ;
@@ -85,6 +111,13 @@ end
                     This.OutputParams = Value(ns+1:ne) ;
                     This.HyperParams = Value(ns+1:end) ;
                     
+                case 'bounds'
+                    ns = This.nActivationParams ;
+                    This.ActivationBounds = Value(1:ns) ;
+                    ne = This.nActivationParams+This.nOutputParams ;
+                    This.OutputBounds = Value(ns+1:ne) ;
+                    This.HyperBounds = Value(ns+1:end) ;
+
                 case 'hyper'
                     ns = This.nActivationParams + This.nOutputParams ;
                     This.HyperParams = Value(ns+1:end) ;
