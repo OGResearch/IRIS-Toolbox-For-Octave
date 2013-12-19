@@ -54,8 +54,9 @@ if options.Ahead>1
 else
 	% Hidden Layers
 	for iLayer = 1:This.nLayer
-		OutData = tseries(Range,Inf(numel(Range),This.Layout(iLayer))) ;
-		for iNode = 1:This.Layout(iLayer)
+        NN = numel(This.Neuron{iLayer}) ;
+		OutData = tseries(Range,Inf(numel(Range),NN)) ;
+		for iNode = 1:NN
 			OutData(Range,iNode) ...
 				= eval( This.Neuron{iLayer}{iNode}, InData ) ;
 		end

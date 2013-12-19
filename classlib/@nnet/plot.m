@@ -1,7 +1,9 @@
-function plot(This)
+function plot(This,varargin)
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
+
+options = passvalopt('nnet.plot',varargin{:}) ;
 
 % Get plot dimensions
 maxH = max(This.Layout)+max(This.Bias) ;
