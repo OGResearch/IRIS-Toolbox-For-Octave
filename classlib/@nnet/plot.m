@@ -9,6 +9,15 @@ options = passvalopt('nnet.plot',varargin{:}) ;
 maxH = max(This.Layout)+max(This.Bias) ;
 shf = -0.1 ;
 
+% Get colour space
+switch options.Color
+    case 'activation'
+        lc = min(get(This,'activation')) ;
+        mc = max(get(This,'activation')) ;
+    case 'blue'
+        [.1 .1 .7]
+end
+
 % Plot inputs
 pos = linspace(1,maxH,This.nInputs+2) ;
 pos = pos(2:3) ;
@@ -19,8 +28,14 @@ for iInput = 1:This.nInputs
     
     % Plot connections
     for iNode = 1:This.Layout(1)
+        switch options.Color
+            case 'activation'
+                color = xxColor(This.Neuron{1}{iNode}.ActivationParams(iInput)) ;
+            otherwise
+                color = [.1 .1 .8] ;
+        end
         hold on
-        plot([0,This.Neuron{1}{iNode}.Position(1)],[pos(iInput),This.Neuron{1}{iNode}.Position(2)]) ;
+        plot([0,This.Neuron{1}{iNode}.Position(1)],[pos(iInput),This.Neuron{1}{iNode}.Position(2)],'Color',color) ;
     end
 end
 text(shf,-1,'Inputs') ;
@@ -50,8 +65,14 @@ for iLayer = 1:This.nLayer
                 NN2 = numel(This.Neuron{iLayer+1}) ;
             end
             for iNext = 1:NN2
+                switch options.Color
+                    case 'activation'
+                        color = xxColor(This.Neuron{iLayer+1}{iNext}.ActivationParams(iNode)) ;
+                    otherwise
+                        color = [.1 .1 .8] ;
+                end
                 hold on
-                plot([iLayer,iLayer+1],[This.Neuron{iLayer}{iNode}.Position(2),This.Neuron{iLayer+1}{iNext}.Position(2)]) ;
+                plot([iLayer,iLayer+1],[This.Neuron{iLayer}{iNode}.Position(2),This.Neuron{iLayer+1}{iNext}.Position(2)],'Color',color) ;
             end
         end
     end
@@ -79,6 +100,10 @@ hold off
 
     function out = xxFixText(in)
         out = regexprep(in,'\{','_\{') ;
+    end
+
+    function out = xxColor(in)
+        out = [0 0 1-((in-lc)/(mc-lc))^2] ;
     end
 
 end
