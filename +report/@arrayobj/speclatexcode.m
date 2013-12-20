@@ -10,7 +10,7 @@ function C = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 % Test for hline.
-isHLine = @(Row) strncmp(Row{1,1},'-----',5) ...
+isHLineFunc = @(Row) strncmp(Row{1,1},'-----',5) ...
     && all(cellfun(@isempty,Row(1,2:end)));
 
 br = sprintf('\n');
@@ -77,7 +77,7 @@ nRow = size(This.data,1);
 for iRow = 1 : nRow
     cRow = '';
     % Test this row for \hline.
-    if isHLine(This.data(iRow,:))
+    if isHLineFunc(This.data(iRow,:))
         cRow = '\hline';
     else
         % If this is a regular row, cycle over columns and print cell by cell.
@@ -95,27 +95,30 @@ end
 % End the tabular environment; `finish()` is defined in `tabularobj`.
 C = [C,br,finish(This)];
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doOneCell()
-        cCell = '';
+        c = '';
         iColW = This.options.colwidth(min(iCol,end));
         if ~isempty(This.data{iRow,iCol}) ...
                 && isnumeric(This.data{iRow,iCol})
-            cCell = report.arrayobj.sprintf( ...
+            c = report.arrayobj.sprintf( ...
                 This.data{iRow,iCol}, ...
                 This.options.format, ...
                 This.options);
         elseif ischar(This.data{iRow,iCol})
-            cCell = latex.stringsubs(This.data{iRow,iCol});
+            c = interpret(This,This.data{iRow,iCol});
         end
-        cCell = report.matrixobj.makebox(...
-            cCell,'',iColW,colSpec(iCol),'');
-        cRow = [cRow,cCell];
+        c = report.matrixobj.makebox(...
+            c,'',iColW,colSpec(iCol),'');
+        cRow = [cRow,c];
         if iCol < nCol
             cRow = [cRow,' & '];
         end
     end % doOneCell().
+
 
 end

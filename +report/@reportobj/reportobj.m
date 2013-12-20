@@ -59,6 +59,10 @@ classdef reportobj < report.genericobj
         function cbNewTempFile(This,~,EventData)
             This.tempFile = [This.tempFile,EventData.data];
         end
+        
+        function cbLongTable(This,~,~)
+            This.longTable = true;
+        end
 
     end
     
@@ -75,13 +79,37 @@ classdef reportobj < report.genericobj
         
         function This = table(This,varargin)
             newObj = report.tableobj(varargin{:});
+            % Register listeners
+            %--------------------
+            addlistener(newObj,'longTable', ...
+                @This.cbLongTable);
             This = add(This,newObj,varargin{2:end});
+        end
+        
+        function This = matrix(This,varargin)
+            newObj = report.matrixobj(varargin{:});
+            This = add(This,newObj,varargin{2:end});
+            % Register listeners
+            %--------------------
+            addlistener(newObj,'longTable', ...
+                @This.cbLongTable);
+        end
+        
+        function This = array(This,varargin)
+            newObj = report.arrayobj(varargin{:});
+            This = add(This,newObj,varargin{2:end});
+            % Register listeners
+            %--------------------
+            addlistener(newObj,'longTable', ...
+                @This.cbLongTable);
         end
         
         function This = figure(This,varargin)
             if length(varargin) == 1 || ischar(varargin{2})
                 newObj = report.figureobj(varargin{:});
                 This = add(This,newObj,varargin{2:end});
+                % Register listeners
+                %--------------------
                 addlistener(newObj,'openFigureWindow', ...
                     @This.cbOpenFigureWindow);
                 addlistener(newObj,'newTempFile', ...
@@ -101,20 +129,12 @@ classdef reportobj < report.genericobj
         function This = userfigure(This,varargin)
             newObj = report.userfigureobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
+            % Register listeners
+            %--------------------
             addlistener(newObj,'openFigureWindow', ...
                 @This.cbOpenFigureWindow);
             addlistener(newObj,'newTempFile', ...
                 @This.cbNewTempFile);
-        end
-        
-        function This = matrix(This,varargin)
-            newObj = report.matrixobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
-        end
-        
-        function This = array(This,varargin)
-            newObj = report.arrayobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
         end
         
         function This = tex(This,varargin)

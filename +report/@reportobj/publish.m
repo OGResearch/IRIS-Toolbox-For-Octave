@@ -158,8 +158,8 @@ end
 br = sprintf('\n');
 
 try
-    tempTitle = latex.stringsubs(This.title);
-    tempSubtitle = latex.stringsubs(This.subtitle);
+    tempTitle = interpret(This,This.title);
+    tempSubtitle = interpret(This,This.subtitle);
     tempHead = tempTitle;
     if ~isempty(tempSubtitle)
         if ~isempty(tempTitle)
@@ -171,7 +171,7 @@ try
     end
     if ~isempty(This.options.footnote)
         titleFootnote = ['\footnote{', ...
-            latex.stringsubs(This.options.footnote), ...
+            interpret(This,This.options.footnote), ...
             '}'];
     else
         titleFootnote = '';
@@ -185,7 +185,7 @@ end
 
 try
     tempHead = strrep(tempHead,'\\',' / ');
-    tempHead = latex.stringsubs(tempHead);
+    tempHead = interpret(This,tempHead);
     Doc = strrep(Doc,'$headertitle$',tempHead);
 catch
     Doc = strrep(Doc,'$headertitle$','');

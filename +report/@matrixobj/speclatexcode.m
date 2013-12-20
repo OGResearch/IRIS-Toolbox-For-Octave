@@ -30,7 +30,7 @@ if anycolname(This)
         if iRow > 1
             c1 = [c1,' & ']; %#ok<AGROW>
         end
-        c2 = latex.stringsubs(This.options.colnames{iRow});
+        c2 = interpret(This,This.options.colnames{iRow});
         if ~isequal(This.options.rotatecolnames,false)
             c1 = [c1, ...
                 report.tabularobj.turnbox(c2, ...
@@ -49,7 +49,7 @@ end
 for iRow = 1 : This.nrow
     if This.nlead == 1
         C = [C,br,'{',...
-            latex.stringsubs(This.options.rownames{iRow}),...
+            interpret(This,This.options.rownames{iRow}),...
             '}']; %#ok<AGROW>
     end
     % Cycle over the matrix columns.
@@ -72,7 +72,9 @@ end
 % Finish all environments.
 C = [C,br,finish(This)];
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doAttributes()
@@ -85,6 +87,7 @@ C = [C,br,finish(This)];
         a.colname = This.options.colnames{iCol};
         a.row = iRow;
         a.col = iCol;
-    end % doAttributes().
+    end % doAttributes()
+
 
 end

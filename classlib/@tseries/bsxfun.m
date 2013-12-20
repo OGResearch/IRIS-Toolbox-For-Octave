@@ -79,6 +79,10 @@ if size(data,1) ~= nPer
         'the size of the input tseries in 1st dimension.']);
 end
 
-X = replace(X,data,start,co);
+if isa(X,'tseries')
+    X = replace(X,data,start,co);
+else
+    X = replace(Y,data,start,co);
+end
 
 end

@@ -4,7 +4,7 @@ function F = chisquare(Df)
 % Syntax
 % =======
 %
-%     F = logdist.chisquare(Mean,Std)
+%     F = logdist.chisquare(Df)
 %
 % Input arguments
 % ================

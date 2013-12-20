@@ -1,59 +1,46 @@
 classdef nnet < userdataobj & getsetobj
     
     properties
-        % 'feedforward'
-        Type@char = '' ;
-        
         % cell array of variables
         Inputs@cell = cell(0,1) ;
-        
-        % e.g. [2 8 5]
-        HiddenLayout = [] ;
-        
-        % e.g. 'tanh','sigmoid','step','linear'
-        HiddenTransfer@cell = cell(0,1) ;
-        InputTransfer@char = '' ;
-        OutputTransfer@char = '' ;
-        
-        % Cell array of structs:
-        Params@cell = cell(0,1) ;
-        % Rows:
-        %    Input
-        %    Layer 1
-        %    ...
-        %    Layer N
-        %    Output
-        % Columns:
-        %    Alternative parameterizations
-        
-        % cell array of variables
         Outputs@cell = cell(0,1) ;
+        
+        ActivationFn@cell = cell(0,1) ;
+        OutputFn@cell = cell(0,1) ;
+        Bias = false ;
+        nAlt ;
+        
+        Layout = [] ;
+        
+        nActivationParams ;
+        nOutputParams ;
+        nHyperParams ;
+        nParams ;
+        
+        Neuron@cell = cell(0,1) ;
     end
     
     properties( Dependent = true, Hidden = true )
-        nAlt ;
         nInputs ;
         nOutputs ;
         nLayer ;
-        nParams ;
-        nBias ;
-        nWeight ;
-        nTransfer ;
     end
     
     methods
-        function This = nnet(Inputs,Outputs,HiddenLayout,varargin)
+        function This = nnet(Inputs,Outputs,Layout,varargin)
+            % References:
+            % 
+            % # Duch, Wlodzislaw; Jankowski, Norbert  (1999). "Survey of
+            %   neural transfer functions," Neural Computing Surveys 2
+            % 
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
             
             pp = inputParser() ;
             pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
-            pp.addRequired('HiddenLayout',@(x) isvector(x) && isnumeric(x)) ;
-            pp.parse(Inputs,Outputs,HiddenLayout) ;
-            
-            % Parse options
-            options = passvalopt('nnet.nnet',varargin{:});
+            pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
+            pp.parse(Inputs,Outputs,Layout) ;
             
             % Superclass constructors
             This = This@userdataobj();
@@ -61,21 +48,104 @@ classdef nnet < userdataobj & getsetobj
             % Construct
             This.Inputs = cellstr(Inputs) ;
             This.Outputs = cellstr(Outputs) ;
-            This.HiddenLayout = HiddenLayout ;
+            This.Layout = Layout ;
+            This.nAlt = 1 ;
             
-            if iscellstr(options.HiddenTransfer)
-                This.HiddenTransfer = options.HiddenTransfer ;
-            else
-                This.HiddenTransfer = cellfun(@(x) options.HiddenTransfer, cell(numel(This.HiddenLayout),1), 'UniformOutput', false) ;
+            % Parse options
+            options = passvalopt('nnet.nnet',varargin{:});
+            if numel(options.Bias) == 1
+                options.Bias = true(size(Layout)).*options.Bias ;
             end
-            This.InputTransfer = options.InputTransfer ;
-            This.OutputTransfer = options.OutputTransfer ;
-            This.Type = options.Type ;
+            if ischar(options.ActivationFn)
+                options.ActivationFn = cellfun(@(x) options.ActivationFn, cell(1,This.nLayer+1), 'UniformOutput', false) ;
+            end
+            if ischar(options.OutputFn)
+                options.OutputFn = cellfun(@(x) options.OutputFn, cell(1,This.nLayer+1), 'UniformOutput', false) ;
+            end
+            This.ActivationFn = options.ActivationFn ;
+            This.OutputFn = options.OutputFn ;
+            This.Bias = options.Bias ;
             
-            % *** Construct initial parameters ***
-            This = set(This,'weight',options.initWeight) ;
-            This = set(This,'bias',options.initBias) ;
-            This = set(This,'transfer',options.initTransfer) ;
+            % Initialize layers of neurons
+            ActivationIndex = 0 ;
+            OutputIndex = 0 ;
+            HyperIndex = 0 ;
+            Nmax = max(This.Layout) ;
+            nLayer = numel(Layout) ;
+            This.Neuron = cell(nLayer+1,1) ;
+            for iLayer = 1:nLayer
+                NN = This.Layout(iLayer) + This.Bias(iLayer) ;
+                pos = linspace(1,Nmax,NN) ;
+                if iLayer == 1
+                    nInputs = This.nInputs ;
+                else
+                    nInputs = numel(This.Neuron{iLayer-1}) ;
+                end
+                This.Neuron{iLayer} = cell(This.Layout(iLayer),1) ;
+                for iNode = 1:This.Layout(iLayer)
+                    Position = [iLayer,pos(iNode)] ;
+                    This.Neuron{iLayer}{iNode} ...
+                        = neuron(options.ActivationFn{iLayer},...
+                        options.OutputFn{iLayer},...
+                        nInputs,...
+                        Position,...
+                        ActivationIndex,OutputIndex,HyperIndex) ;
+                    xxUpdateIndex() ;
+                end
+                if options.Bias(iLayer)
+                    Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
+                    This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
+                        = neuron('bias','bias',nInputs,Position,...
+                        ActivationIndex,OutputIndex,HyperIndex) ;
+                    xxUpdateIndex() ;
+                end
+            end
+            iLayer = This.nLayer + 1 ;
+            This.Neuron{iLayer} = cell(This.nOutputs,1) ;
+            for iNode = 1:This.nOutputs
+                This.Neuron{iLayer}{iNode} ...
+                    = neuron(options.ActivationFn{iLayer},...
+                    options.OutputFn{iLayer},...
+                    This.Layout(This.nLayer)+This.Bias(This.nLayer),...
+                    [NaN,NaN],...
+                    ActivationIndex,OutputIndex,HyperIndex) ;
+                xxUpdateIndex() ;
+            end
+            
+            This.nActivationParams = ActivationIndex ;
+            This.nOutputParams = OutputIndex ;
+            This.nHyperParams = HyperIndex ;
+            This.nParams = ActivationIndex + OutputIndex + HyperIndex ;
+            
+            This = set(This,'hyper',1,'activation',0,'output',1) ;
+            
+            % Tell nodes about their forward/backward connections
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    if iLayer < This.nLayer+1
+                        This.Neuron{iLayer}{iNode}.ForwardConnection ...
+                            = cell( numel(This.Neuron{iLayer+1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer+1})
+                            This.Neuron{iLayer}{iNode}.ForwardConnection{sLayer} ...
+                                = This.Neuron{iLayer+1}{sLayer} ;
+                        end
+                    end
+                    if iLayer > 1
+                        This.Neuron{iLayer}{iNode}.BackwardConnection ...
+                            = cell( numel(This.Neuron{iLayer-1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer-1})
+                            This.Neuron{iLayer}{iNode}.BackwardConnection{sLayer} ...
+                                = This.Neuron{iLayer-1}{sLayer} ;
+                        end
+                    end
+                end
+            end
+            
+            function xxUpdateIndex()
+                ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
+                OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
+                HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
+            end
         end
         
         varargout = disp(varargin) ;
@@ -86,12 +156,18 @@ classdef nnet < userdataobj & getsetobj
         varargout = horzcat(varargin) ;
         varargout = vertcat(varargin) ;
         varargout = eval(varargin) ;
+        varargout = plot(varargin) ;
         
-        % Dependent methods
-        function nAlt = get.nAlt(This)
-            nAlt = size(This.Params,2) ;
+        % Destructor method
+        function delete(This)
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    delete( This.Neuron{iLayer}{iNode} ) ;
+                end
+            end
         end
         
+        % Dependent methods
         function nInputs = get.nInputs(This)
             nInputs = numel(This.Inputs) ;
         end
@@ -101,44 +177,8 @@ classdef nnet < userdataobj & getsetobj
         end
         
         function nLayer = get.nLayer(This)
-            nLayer = numel(This.HiddenLayout) ;
+            nLayer = numel(This.Layout) ;
         end
-        
-        function nWeight = get.nWeight(This)
-            nWeight = 0 ;
-            for iLayer = 1:This.nLayer+2
-                if iLayer>1
-                    for iNode = 1:numel(This.Params{iLayer}.Weight)
-                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                            nWeight = nWeight + 1;
-                        end
-                    end
-                end
-            end
-        end
-        
-        function nBias = get.nBias(This)
-            nBias = 0 ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Bias)
-                    nBias = nBias + 1 ;
-                end
-            end
-        end
-        
-        function nTransfer = get.nTransfer(This)
-            nTransfer = 0 ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                    nTransfer = nTransfer + 1 ;
-                end
-            end
-        end
-        
-        function nParams = get.nParams(This)
-            nParams = This.nWeight + This.nBias + This.nTransfer ;
-        end
-        
     end
     
     methods (Static,Hidden)

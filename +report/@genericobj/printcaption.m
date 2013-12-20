@@ -40,13 +40,13 @@ NCol = sprintf('%g',NCol);
 if ~isempty(title)
     
 	% Split title.
-    C = [C,xxSplitTitle(title, ...
+    C = [C,xxSplitTitle(This,title, ...
         NCol,Just,mytitletypeface(This),footnotemark(This))];
     
     % Split subtitle if not empty.
     if ~isempty(subTitle)
         C = [C,br, ...
-            xxSplitTitle(subTitle, ...
+            xxSplitTitle(This,subTitle, ...
             NCol,Just,mysubtitletypeface(This),'')];
     end
     
@@ -60,16 +60,18 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function C = xxSplitTitle(Title,NCol,Just,TypeFace,FootnoteMark)
+function C = xxSplitTitle(This,Title,NCol,Just,TypeFace,FootnoteMark)
 
 br = sprintf('\n');
 C = '';
 while true
     [tok,last] = regexp(Title,'(.*?)(\{\\\\.*?\}|$)','tokens','end','once');
-    text = latex.stringsubs(tok{1});
+    text = interpret(This,tok{1});
     div = tok{2};
     if isempty(div)
         div = '\\';
@@ -89,6 +91,7 @@ while true
     end
     C = [C,br]; %#ok<AGROW>
     
-end
+end % xxSplitTitle()
+
 
 end
