@@ -1,7 +1,8 @@
-function [out] = dAdI(This,in)
+function [out] = dAdP(This,in)
 % pderiv  [Not a public function]
 %
-% First derivative of the activation function with respect to the input. 
+% First derivative of the activation function with respect to the 
+% activation parameters. 
 %
 % Backend IRIS function.
 % No help provided.
@@ -10,13 +11,9 @@ function [out] = dAdI(This,in)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 switch This.ActivationFn
-
-    case 'bias'
-		out = 0 ;
-	
     case 'linear'
-		out = repmat( This.ActivationParams(:)', size(in,1), 1 ) ;
-
+        out = in ; 
+        
     otherwise
         utils.error('nnet','Symbolic differentiation not available for activation function of type %s\n',This.OutputFn) ;
         
