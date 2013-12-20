@@ -63,7 +63,7 @@ end
 % Characters beyond char(highcharcode) not allowed except comments.
 % Default is 1999.
 charCap = irisget('highcharcode');
-if any(Code > char(charCap))
+if (ismatlab && any(Code > char(charCap))) || (~ismatlab && any(char2double(Code)>charCap))
     utils.error('preparser',[errorParsing, ...
         'The file contains characters beyond char(%g).'],charCap);
 end
