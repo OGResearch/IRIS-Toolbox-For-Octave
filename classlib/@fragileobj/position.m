@@ -9,7 +9,12 @@ function Pos = position(This,K)
 
 %--------------------------------------------------------------------------
 
-Pos = round(double(K) - This.offset);
+dblK = double(K);
+if ~ismatlab
+    dblK = back2highCharCode(dblK);
+end
+
+Pos = round(dblK - This.offset);
 
 if Pos < 1 || Pos > length(This.storage)
     utils.error('fragileobj', ...

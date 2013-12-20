@@ -18,11 +18,24 @@ if isempty(C) || isempty(This)
 end
 
 ptn = ['[',regexppattern(This),']'];
-rplFunc = @doReplace; %#ok<NASGU>
-C = regexprep(C,ptn,'${rplFunc($0)}');
+if ismatlab
+    rplFunc = @doReplace; %#ok<NASGU>
+    C = regexprep(C,ptn,'${rplFunc($0)}');
+else
+    cCodes = regexprep(ptn,'[\[\]\-]','');
+    cCodes = back2highCharCode(cCodes(1:(length(cCodes/2)-1))):back2highCharCode(cCodes(length(cCodes/2):end));
+    for ix = cCodes
+        C = strrep(C,highCharCode2utf8(ix),doReplace(char(ix)));
+    end
+end
 
     function C = doReplace(K)
-        K = double(K) - This.offset;
+        if ismatlab
+            dblK = double(K);
+        else
+            dblK = char2double(K);
+        end
+        K = dblK - This.offset;
         C = This.storage{K};
         if opt.delimiter
             C = [This.open{K}(1),C,This.close{K}(end)];

@@ -14,7 +14,12 @@ classdef fragileobj
             if length(varargin) >= 1
                 C = varargin{1};
                 varargin(1) = []; %#ok<NASGU>
-                This.offset = max(irisget('highcharcode'),max(double(C)));
+                if ismatlab
+                    dblC = double(C);
+                else
+                    dblC = char2double(C); % octave has multibyte codes, so they should be pre-transformed before max(), since highCharCode is not vector, but one number
+                end
+                This.offset = max(irisget('highcharcode'),max(dblC));
             end
         end
         
@@ -22,11 +27,9 @@ classdef fragileobj
         function delete(This) %#ok<INUSD>
         end
         
-        function varargout = charcode(varargin)
-            varargout = charcode_4oct(varargin)
-        end
         %{
-        varargout = cleanup(varargin)      
+        varargout = charcode(varargin)
+        varargout = cleanup(varargin)
         varargout = isempty(varargin)
         varargout = isnan(varargin)
         varargout = length(varargin)

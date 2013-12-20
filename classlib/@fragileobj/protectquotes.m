@@ -11,8 +11,17 @@ function [C,This] = protectquotes(C,This)
 %--------------------------------------------------------------------------
 
 pattern = '([''"])([^\n]*?)\1';
-replaceFunc = @doReplace; %#ok<NASGU>
-C = regexprep(C,pattern,'${replaceFunc($1,$2)}');
+if ismatlab
+    replaceFunc = @doReplace; %#ok<NASGU>
+    C = regexprep(C,pattern,'${replaceFunc($1,$2)}');
+else
+    [ix1,ix2,tok] = regexp(C,pattern,'start','end','tokens');
+    Ctmp = C(1:(ix1(1)-1));
+    for tix = 1:length(ix1)-1
+        Ctmp= [Ctmp doReplace(tok{tix}{1},tok{tix}{2}) C((ix2(tix)+1):(ix1(tix+1)-1))];
+    end
+    C = [Ctmp doReplace(tok{end}{1},tok{end}{2}) C(ix1(end):end)];
+end
 
 % Nested functions.
 
