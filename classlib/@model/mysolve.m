@@ -145,7 +145,11 @@ end
         while true
             AA = fA(EqOrder,:);
             BB = fB(EqOrder,:);
-            [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
+            if ismatlab
+                [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
+            else
+                [SS,TT,QQ,ZZ] = qz(AA,BB);
+            end
             % Ordered inverse eigvals.
             EigVal = -ordeig(SS,TT);
             EigVal = EigVal(:).';
