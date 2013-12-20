@@ -84,5 +84,11 @@ classdef neuron < handle
         varargout = eval(varargin) ;
         varargout = saliency(varargin) ;
         
+        out = dAdI(Obj,Data) ;
+        out = dAdP(Obj,Data) ;
+        out = dOdA(Obj,Data) ;
+        out = dOdI(obj,Data) ;
+        out = dOdP(obj,Data) ;
+        
     end
 end
