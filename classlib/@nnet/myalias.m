@@ -10,9 +10,9 @@ function Query = myalias(Query)
 %--------------------------------------------------------------------------
 
 % Alias param, params, parameter, parameters.
-Query = regexprep(Query,'param.*','param');
+Query = regexprep(Query,'param.*','param') ;
 
 % Alias nalt, nalter.
-Query = regexprep(Query,'nalt(er)?','nalt');
+Query = regexprep(Query,'nalt(er)?','nalt') ;
 
 end

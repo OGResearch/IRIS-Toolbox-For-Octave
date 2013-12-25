@@ -70,7 +70,7 @@ classdef tseries < userdataobj
     % ======================================
     %
     % Note that most of the sample characteristics are listed above in the
-    % Maths and statistics functions and operatiors section.
+    % Maths and statistics functions and operators section.
     %
     % * [`acf`](tseries/acf) - Sample autocovariance and autocorrelation functions.
     % * [`hpdi`](tseries/hpdi) - Highest probability density interval.
@@ -647,7 +647,7 @@ classdef tseries < userdataobj
         function x = norminv(x,varargin)
             x.data = norminv(x.data,varargin{:});
             x = mytrim(x);
-        end        
+        end
         function x = logncdf(x,varargin)
             x.data = logncdf(x.data,varargin{:});
             x = mytrim(x);
@@ -672,7 +672,7 @@ classdef tseries < userdataobj
             x.data = gevinv(x.data,varargin{:});
             x = mytrim(x);
         end
-
+        
         
         % Functions whose behaviour depends on the dimension.
         function x = any(x,dim)
@@ -744,7 +744,7 @@ classdef tseries < userdataobj
         % Alias for prctile.
         function varargout = pctile(varargin)
             [varargout{1:nargout}] = prctile(varargin{:});
-        end        
+        end
         function x = std(x,flag,dim)
             if nargin < 2
                 flag = 0;
@@ -769,7 +769,7 @@ classdef tseries < userdataobj
             end
             x = unop(@var,x,dim,flag,dim);
         end
-        
+    
         % Indexing.
         function index = end(x,k,n) %#ok<INUSD>
             if k == 1

@@ -12,10 +12,8 @@ shf = -0.1 ;
 % Get colour space
 switch options.Color
     case 'activation'
-        lc = min(get(This,'activation')) ;
-        mc = max(get(This,'activation')) ;
-    case 'blue'
-        [.1 .1 .7]
+        lc = min(abs(get(This,'activation'))) ;
+        mc = max(abs(get(This,'activation'))) ;
 end
 
 % Plot inputs
@@ -103,6 +101,7 @@ hold off
     end
 
     function out = xxColor(in)
+        in = abs(in) ;
         out = [0 0 1-((in-lc)/(mc-lc))^2] ;
     end
 

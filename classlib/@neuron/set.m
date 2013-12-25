@@ -55,33 +55,37 @@ end
                     This.ActivationParams ...
                         = arrayfun( Value, This.ActivationParams ) ;
                 
-                case 'activationbounds'
-                    This.ActivationBounds ...
-                        = arrayfun( Value, This.ActivationBounds ) ;
+                case 'activationlb'
+                    This.ActivationLB ...
+                        = arrayfun( Value, This.ActivationLB ) ;
+                
+                case 'activationub'
+                    This.ActivationUB ...
+                        = arrayfun( Value, This.ActivationUB ) ;
 
                 case 'output'
                     This.OutputParams ...
                         = arrayfun( Value, This.OutputParams ) ;
 
-                case 'outputbounds'
-                    This.OutputBounds ...
-                        = arrayfun( Value, This.OutputBounds ) ;
-                    
+                case 'outputlb'
+                    This.OutputLB ...
+                        = arrayfun( Value, This.OutputLB ) ;
+
+                case 'outputub'
+                    This.OutputUB ...
+                        = arrayfun( Value, This.OutputUB ) ;
+
                 case 'hyper'
                     This.HyperParams ...
                         = arrayfun( Value, This.HyperParams ) ;
                     
-                case 'hyperbounds'
-                    This.HyperBounds ...
-                        = arrayfun( Value, This.HyperBounds ) ;
-                    
-                case 'bounds'
-                    This.ActivationBounds ...
-                        = arrayfun( Value, This.ActivationBounds ) ;
-                    This.OutputBounds ...
-                        = arrayfun( Value, This.OutputBounds ) ;
-                    This.HyperBounds ...
-                        = arrayfun( Value, This.HyperBounds ) ;
+                case 'hyperlb'
+                    This.HyperLB ...
+                        = arrayfun( Value, This.HyperLB ) ;
+                
+                case 'hyperub'
+                    This.HyperUB ...
+                        = arrayfun( Value, This.HyperLB ) ;
                     
                 case 'userdata'
                     This = userdata(This,Value) ;
@@ -95,31 +99,32 @@ end
                 case 'activation'
                     This.ActivationParams = Value ;
                     
-                case 'activationbounds'
-                    This.ActivationBounds = Value ;
+                case 'activationLB'
+                    This.ActivationLB = Value ;
+
+                case 'activationUB'
+                    This.ActivationUB = Value ;
 
                 case 'output'
                     This.OutputParams = Value ;
                     
-                case 'outputbounds'
-                    This.OutputBounds = Value ;
+                case 'outputLB'
+                    This.OutputLB = Value ;
 
-                case 'params'
-                    ns = This.nActivationParams ;
-                    This.ActivationParams = Value(1:ns) ;
-                    ne = This.nActivationParams+This.nHyperParams ;
-                    This.HyperParams = Value(ns+1:ne) ;
-                    This.OutputParams = Value(ne+1:end) ;
+                case 'outputUB'
+                    This.OutputUB = Value ;
                     
-                case 'bounds'
-                    ns = This.nActivationParams ;
-                    This.ActivationBounds = Value(1:ns) ;
-                    ne = This.nActivationParams+This.nHyperParams ;
-                    This.HyperBounds = Value(ns+1:ne) ;
-                    This.OutputBounds = Value(ne+1:end) ;
-
                 case 'hyper'
                     This.HyperParams = Value ;
+                    
+                case 'hyperLB'
+                    This.HyperLB = Value ;
+                    
+                case 'hyperUB'
+                    This.HyperUB = Value ;
+                    
+                case 'userdata'
+                    This = userdata(This,Value) ;
                     
                 otherwise
                     Found = false ;

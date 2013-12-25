@@ -22,14 +22,28 @@ try
             end
             Flag = true ;
             
-        case 'activationbounds'
-            X = NaN(This.nActivationParams,2) ;
+        case 'activationlb'
+            X = NaN(This.nActivationParams,1) ;
             for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
-                        = This.Neuron{iLayer}{iNode}.ActivationBounds ;
+                        = This.Neuron{iLayer}{iNode}.ActivationLB ;
                 end
             end
+            Flag = true ;
+
+        case 'activationub'
+            X = NaN(This.nActivationParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.ActivationUB ;
+                end
+            end
+            Flag = true ;
+
+        case 'activationindex'
+            X = 1:This.nActivationParams ;
             Flag = true ;
         
         case 'output'
@@ -42,16 +56,26 @@ try
             end
             Flag = true ;
         
-        case 'outputbounds'
-            X = NaN(This.nOutputParams,2) ;
+        case 'outputlb'
+            X = NaN(This.nOutputParams,1) ;
             for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
-                        = This.Neuron{iLayer}{iNode}.OutputBounds ;
+                        = This.Neuron{iLayer}{iNode}.OutputLB ;
                 end
             end
             Flag = true ;
-
+        
+        case 'outputub'
+            X = NaN(This.nOutputParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.OutputUB ;
+                end
+            end
+            Flag = true ;
+            
         case 'hyper'
             X = NaN(This.nHyperParams,This.nAlt) ;
             for iLayer = 1:This.nLayer+1
@@ -62,24 +86,26 @@ try
             end
             Flag = true ;
             
-        case 'hyperbounds'
-            X = NaN(This.nHyperParams,2) ;
+        case 'hyperlb'
+            X = NaN(This.nHyperParams,1) ;
             for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
                     X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
-                        = This.Neuron{iLayer}{iNode}.HyperBounds ;
+                        = This.Neuron{iLayer}{iNode}.HyperLB ;
                 end
             end
             Flag = true ;
-            
-        case 'param'
-            X = [specget(This,'activation'); specget(This,'hyper'); specget(This,'output')] ;
+
+        case 'hyperub'
+            X = NaN(This.nHyperParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.HyperUB ;
+                end
+            end
             Flag = true ;
-            
-        case 'bounds'
-            X = [specget(This,'activationbounds'); specget(This,'hyperbounds'); specget(This,'outputbounds')] ;
-            Flag = true ;
-        
+                                    
         otherwise
             Flag = false ;
     end

@@ -28,11 +28,50 @@ classdef nnet < userdataobj & getsetobj
     
     methods
         function This = nnet(Inputs,Outputs,Layout,varargin)
-            % References:
+            % nnet  Neural network model constructor method.
+            %
+            % Syntax
+            % =======
+            %
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)
+            %
+            % Input arguments
+            % ================
+            %
+            % * `Inputs` [ cellstr | char ] - Variable name or cell array
+            % of variable names. 
             % 
+            % * `Outputs` [ cellstr | char ] - Variable name or cell array
+            % of variable names. 
+            % 
+            % Both input and output arguments can include lead/lag
+            % operators. E.g., nnet({'x{-1}','x{-2}'},'x',...)
+            % 
+            % * `Layout` [ numeric ] - Vector of integers with length equal
+            % to the number of layers such that each element specifies the
+            % number of nodes in that hidden layer. 
+            %
+            % Output arguments
+            % =================
+            %
+            % * `M` [ nnet ] - Neural network model object. 
+            %
+            % Options
+            % ========
+            %
+            % * `'ActivationFn='` [ *`linear`* | `minkovsky` ] - Activation function. 
+            % 
+            % * `'OutputFn='` [ *`logistic`* | `s4` | `tanh` ] - Output function. 
+            % 
+            % The composition of the activation and output functions is
+            % used to create flexible transfer functions. 
+            % 
+            % References:
+            %
             % # Duch, Wlodzislaw; Jankowski, Norbert  (1999). "Survey of
             %   neural transfer functions," Neural Computing Surveys 2
-            % 
+            %
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
             
@@ -152,11 +191,16 @@ classdef nnet < userdataobj & getsetobj
         varargout = size(varargin) ;
         varargout = datarequest(varargin) ;
         varargout = set(varargin) ;
-        varargout = aeq(varargin) ;
         varargout = horzcat(varargin) ;
         varargout = vertcat(varargin) ;
         varargout = eval(varargin) ;
         varargout = plot(varargin) ;
+        varargout = sstate(varargin) ;
+        varargout = prune(varargin) ;
+        varargout = myrange(varargin) ;
+        varargout = mysameio(varargin) ;
+        varargout = isnan(varargin) ;
+        varargout = rmnan(varargin) ;
         
         % Destructor method
         function delete(This)

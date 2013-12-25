@@ -19,16 +19,7 @@ if This.nAlt>1
 	utils.error('nnet:eval',...
 		'Eval does not support input neural network objects with multiple parameterizations.') ;
 end
-if isinf(Range)
-	if isstruct(InData)
-		Var = cellfun(@(x) x{1}, ...
-			regexp(This.Inputs,'\{[-\+]?\d*}','split'), ...
-			'UniformOutput', false) ;
-		Range = dbrange(InData,Var) ;
-	else
-		Range = range(InData) ;
-	end
-end
+Range = myrange(This,InData,Range) ;
 
 % Parse options
 options = passvalopt('nnet.eval',varargin{:}) ;
@@ -44,6 +35,9 @@ end
 
 % Body
 if options.Ahead>1
+    if mysameio(This)
+        utils.error('nnet:eval','Input and output variables must be the same.') ;
+    end
 	kPred = InData ;
 	for k = 1:options.Ahead
 		kPred = eval(This,kPred,Range) ;
