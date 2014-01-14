@@ -103,11 +103,11 @@
 % User-defined structure of the table columns
 % --------------------------------------------
 %
-% Use can use the `'columnStruct='` option to define your own table columns.
-% This gives you more flexibility than when using the `'range='` option in
+% Use the option `'colStruct='` to define your own table columns. This
+% gives you more flexibility than when using the `'range='` option in
 % defining the content of the table.
 %
-% The option `'columnStruct='` must be a 1-by-N struct, where N is the
+% The option `'colStruct='` must be a 1-by-N struct, where N is the
 % number of columns you want in the table, with the following fields:
 %
 % * `'name='` - specifies the descriptor of the column that will be

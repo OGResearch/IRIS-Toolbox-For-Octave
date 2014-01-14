@@ -1,4 +1,4 @@
-function [C,R] = acf(X,Dates,varargin)
+function [C,R] = acf(X,varargin)
 % acf  Sample autocovariance and autocorrelation functions.
 %
 % Syntax
@@ -47,9 +47,10 @@ function [C,R] = acf(X,Dates,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-try
-    Dates; 
-catch 
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Dates = varargin{1};
+    varargin(1) = [];
+else
     Dates = Inf;
 end
 

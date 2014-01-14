@@ -7,6 +7,10 @@ classdef tabularobj < report.genericobj
         vline = [];
     end
     
+    events
+        longTable
+    end
+    
     methods
         
         function This = tabularobj(varargin)
@@ -27,7 +31,7 @@ classdef tabularobj < report.genericobj
         function [This,varargin] = setoptions(This,varargin)
             This = setoptions@report.genericobj(This,varargin{:});
             if This.options.long
-                setrootprop(This,'longTable',true);
+                notify(This,'longTable');
             end
         end
         
@@ -74,7 +78,7 @@ classdef tabularobj < report.genericobj
                     '\\[-10pt] \multicolumn', ...
                     '{',sprintf('%g',This.nlead+This.ncol),'}', ...
                     '{',This.options.longfootposition(1),'}', ...
-                    '{',latex.stringsubs(This.options.longfoot),'}', ...
+                    '{',interpret(This,This.options.longfoot),'}', ...
                     br,'\endfoot\endlastfoot'];
             end
         end

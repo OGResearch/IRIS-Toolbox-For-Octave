@@ -62,8 +62,8 @@ end
 
 nCol = prod(tmpSize(2:end));
 
-[~,~,f]=dat2ypf(Range) ;
-if any( f~=X.freq ) && ~any(isinf(Range))
+f = datfreq(Range);
+if ~isequal(Range,Inf) && any( f ~= freq(X) ) 
     utils.error('tseries:rangedata',...
         'Data frequency and range frequency mismatch.') ;
 end

@@ -65,6 +65,11 @@
 %
 % The following generic options can be used on any of the report objects.
 %
+% * `'inputFormat='` [ *`'plain'` | `'latex'` ] - Input format for user
+% supplied text strings (such as captions, headings, footnotes, etc);
+% `'latex'` means they are assumed to be valid \LaTeX strings,
+% and will be inserted straight into the report code with no modification.
+%
 % * `'saveAs='` [ char | *empty* ] - (Not inheritable from parent objects)
 % Save the LaTeX code generated for the respective report element in a text
 % file under the specified name.

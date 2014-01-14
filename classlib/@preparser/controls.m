@@ -87,12 +87,14 @@ if ~isempty(pos)
     Error.leftover = C(pos:end);
 end
 
-doError();
+doErrors();
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function doError()
+    function doErrors()
         if ~isempty(Error.code)
             utils.error('preparser', [ErrParsing, ...
                 'Something wrong with this control command(s) or commands nested inside: ''%s...''.'], ...
@@ -110,14 +112,19 @@ doError();
                 'This control command is miplaced or unfinished: ''%s...''.'], ...
                 xxFormatError(Error.leftover,Labels));
         end
-    end % doError().
+    end % doError()
 
 end
+
+
+% Subfunctions...
+
 
 %**************************************************************************
 function C = xxStartControls()
     C = '!if|!for|!switch|!export';
-end % xxStartControls().
+end % xxStartControls()
+
 
 %**************************************************************************
 function [S,Tail,Err] = xxParseFor(C,Pos) %#ok<DEFNU>
@@ -142,6 +149,7 @@ end
 Tail = C(Pos:end);
 
 end % xxParserFor().
+
 
 %**************************************************************************
 function [S,Tail,Err] = xxParseIf(C,Pos) %#ok<DEFNU>
@@ -183,7 +191,8 @@ end
 
 Tail = C(Pos:end);
 
-end % xxParseIf().
+end % xxParseIf()
+
 
 %**************************************************************************
 function [S,Tail,Err] = xxParseSwitch(C,Pos) %#ok<DEFNU>
@@ -222,7 +231,8 @@ end
 
 Tail = C(Pos:end);
 
-end % xxParseSwitch().
+end % xxParseSwitch()
+
 
 %**************************************************************************
 function [S,Tail,Err] = xxParseExport(C,Pos) %#ok<DEFNU>
@@ -249,7 +259,8 @@ S.ExportBody = strfun.removeltel(S.ExportBody);
 
 Tail = C(Pos:end);
 
-end % xxParseExport().
+end % xxParseExport()
+
 
 %**************************************************************************
 function [Replace,Labels,Err,Warn] ...
@@ -262,13 +273,20 @@ Warn = {};
 forBody = S.ForBody;
 doBody = S.DoBody;
 
+if ~isempty(strfind(forBody,'!'))
+    % We allow for `!if` commands inside the `!for` body, and hence need to
+    % pre-parse the body first.
+    forBody = preparser.controls(forBody,D,ErrorParsing,Labels);
+end
+
+% Read the name of the control variable.
 forBody = strtrim(forBody);
 control = regexp(forBody,'^\?[^\s=!]*','once','match');
 if isempty(control)
     control = '?';
 end
 
-% Put labels back in the !for body.
+% Put labels back in the `!for` body.
 forBody = restore(forBody,Labels);
 
 % List of parameters supplied through `'assign='` as `'\<a|b|c\>'`
@@ -279,7 +297,7 @@ if ~isempty(plist)
     plist = ['\<(',plist,')\>'];
 end
 
-% Expand [ ... ].
+% Expand `[ ... ]` in the `!for` body.
 replaceFunc = @doExpandSqb; %#ok<NASGU>
 forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
 
@@ -290,12 +308,7 @@ end
 % Remove `'name='` from `forbody` to get the RHS.
 forBody = regexprep(forBody,[control,'\s*=\s*'],'');
 
-% Itemize the RHS of the `forbody`.
-if ~isempty(strfind(forBody,'!'))
-    % We allow for !if commands inside !for list, and hence need to pre-parse
-    % the list first.
-    forBody = preparser.controls(forBody,D,ErrorParsing,Labels);
-end
+% Itemize the RHS of the `!for` body.
 list = regexp(forBody,'[^\s,;]+','match');
 
     function C1 = doExpandSqb(C)
@@ -303,7 +316,7 @@ list = regexp(forBody,'[^\s,;]+','match');
         C1 = '';
         try
             if ~isempty(plist)
-                % Replace references to fieldnames of D with D.fieldname.
+                % Replace references to fieldnames of `'D'` with `'D.fieldname'`.
                 C = regexprep(C,plist,'D.$1');
             end
             % Create an anonymous function handle and evaluate it on D.
@@ -399,7 +412,8 @@ end
         C = strrep(C,Control,Subs);
     end
 
-end % xxReplaceFor().
+end % xxReplaceFor()
+
 
 %**************************************************************************
 function [Replace,Labels,Err,Warn] = xxReplaceIf(S,D,Labels,~) %#ok<DEFNU>
@@ -437,7 +451,8 @@ Replace = S.ElseBody;
 Replace = [br,Replace];
 Replace = strfun.removeltel(Replace);
     
-end % xxReplaceIf().
+end % xxReplaceIf()
+
 
 %**************************************************************************
 function [Replace,Labels,Err,Warn] = xxReplaceSwitch(S,D,Labels,~) %#ok<DEFNU>
@@ -472,7 +487,8 @@ Replace = S.OtherwiseBody;
 Replace = [br,Replace];
 Replace = strfun.removeltel(Replace);
 
-end % xxReplaceSwitch().
+end % xxReplaceSwitch()
+
 
 %**************************************************************************
 function [Replace,Labels,Err,Warn] = xxReplaceExport(~,~,Labels,~) %#ok<DEFNU>
@@ -481,7 +497,8 @@ Replace = '';
 Err = '';
 Warn = {};
 
-end % xxReplaceExport().
+end % xxReplaceExport()
+
 
 %**************************************************************************
 function Export = xxExport(S,Export,Labels)
@@ -496,7 +513,8 @@ S.ExportBody = restore(S.ExportBody,Labels);
 Export(end+1).filename = S.ExportName;
 Export(end).content = S.ExportBody;
 
-end % xxExport().
+end % xxExport()
+
 
 %**************************************************************************
 function [Body,Pos,Match] = xxFindSubControl(C,Pos,SubControl)
@@ -539,7 +557,8 @@ while ~stop
     Pos = Pos + length(Match);
 end
 
-end % xxFindSubControl().
+end % xxFindSubControl()
+
 
 %**************************************************************************
 function [Body,Pos,Match] = xxFindEnd(C,Pos)
@@ -574,7 +593,8 @@ while ~stop
     Pos = Pos + length(Match);
 end
 
-end % xxFindEnd().
+end % xxFindEnd()
+
 
 %**************************************************************************
 function [Value,Valid] = xxEval(Exp,D,Labels)
@@ -607,7 +627,8 @@ catch %#ok<CTCH>
     Valid = false;
 end
 
-end % xxEval().
+end % xxEval()
+
 
 %**************************************************************************
 function C = xxFormatError(C,Labels)
@@ -623,4 +644,4 @@ C = regexprep(C,'\s+',' ');
 C = strtrim(C);
 C = strfun.maxdisp(C,40);
 
-end % xxformatforerror().
+end % xxformatforerror()
