@@ -88,7 +88,8 @@ status = warning('query','all');
 if ismatlab
   warning('off','MATLAB:rmpath:DirNotFound');
 else
-  warning('off','Octave:rmpath:DirNotFound'); % this ID doesn't exist in Octave yet
+  %warning('off','Octave:rmpath:DirNotFound'); % this ID doesn't exist in Octave yet
+  warning('off','all');
 end
 rmpath([varargin{:}]);
 warning(status);
