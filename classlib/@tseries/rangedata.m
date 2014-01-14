@@ -50,7 +50,7 @@ if nargin == 1
 end
 
 tmpSize = size(X.data);
-if isempty(Range) || isequalwithequalnans(Range,NaN)
+if isempty(Range) || isequaln(Range,NaN)
     Y = zeros([0,tmpSize(2:end)]);
     return
 end
