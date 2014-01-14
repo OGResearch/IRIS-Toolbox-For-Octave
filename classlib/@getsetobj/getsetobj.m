@@ -7,8 +7,8 @@ classdef getsetobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
-    properties
-    end
+%    properties
+%    end
     
     methods
         function This = getsetobj(varargin)

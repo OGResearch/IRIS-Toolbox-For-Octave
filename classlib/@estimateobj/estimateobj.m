@@ -7,8 +7,8 @@ classdef estimateobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2013 IRIS Solutions Team.
     
-    properties
-    end
+%    properties
+%    end
     
     methods
         varargout = neighbourhood(varargin)
