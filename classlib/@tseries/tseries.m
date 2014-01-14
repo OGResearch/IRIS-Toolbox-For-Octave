@@ -232,11 +232,11 @@ classdef tseries < userdataobj
             
             % Parse required input arguments.
             pp = inputParser();
-            pp.addRequired('Dates',@isnumeric);
-            pp.addRequired('Data',@(x) ...
+            pp = pp.addRequired('Dates',@isnumeric);
+            pp = pp.addRequired('Data',@(x) ...
                 isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-            pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-            pp.parse(usrDates,usrData,usrComment);
+            pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+            pp = pp.parse(usrDates,usrData,usrComment);
             
             %--------------------------------------------------------------
             
