@@ -24,7 +24,18 @@ function This = prune(This,Data,varargin)
 % Options
 % ========
 %
-% * `'ActivationFn='` [ *`linear`* | `minkovsky` ] - Activation function.
+% * `'Depth='` [ numeric ] - Check for anti-symmetry by considering removal
+% of N connections simultaneously. 
+% 
+% * `'EstimationOpts='` [ cell ] - Cell array of options for
+% `nnet/estimate` to be used when `Recursive=` is `true`. 
+% 
+% * `'Parallel='` [ `true` | *`false`* ] - Perform processing in parallel if possible.
+% 
+% * `'Progress='` [ `true` | *`false`* ] - Display progress bar if possible.
+% 
+% * `'Recursive='` [ numeric ] - Recursively prune and re-train network N
+% times. 
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
@@ -55,7 +66,7 @@ end
 [InData,OutData] = datarequest('Inputs,Outputs',This,Data,Range) ;
 
 % Body
-if options.Recursive
+if options.Recursive>1
     % switch options for recurisve calls
     for iArg = 1:2:numel(varargin)
         if strcmpi(varargin{iArg},'Recursive')
@@ -64,12 +75,12 @@ if options.Recursive
     end
     
     % Prune and re-train
-    for iter = 1:options.Extent
+    for iter = 1:options.Recursive
         This = prune(This,Data,Range,varargin{:}) ;
         This = estimate(This,Data,Range,varargin{:}) ;
     end
 else
-    Pred = eval(This,InData,Range) ;
+    Pred = eval(This,InData,Range) ; %#ok<*GTARG>
     
     R2f = xxCorr(Pred,OutData)^2 ;
     switch options.Method
