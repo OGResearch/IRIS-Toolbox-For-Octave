@@ -771,6 +771,7 @@ classdef tseries < userdataobj
         end
         
         % Indexing.
+        %{
         function index = end(x,k,n) %#ok<INUSD>
             if k == 1
                 index = x.start + size(x.data,1) - 1;
@@ -778,6 +779,7 @@ classdef tseries < userdataobj
                 index = size(x.data,k);
             end
         end
+        %}
         function n = numel(~,varargin)
             n = 1;
         end

@@ -140,7 +140,7 @@ classdef VAR < varobj
     end
     
     methods (Hidden)
-        varargout = end(varargin)
+%        varargout = end(varargin)
         varargout = saveobj(varargin)
         varargout = specget(varargin)
         varargout = SVAR(varargin)
