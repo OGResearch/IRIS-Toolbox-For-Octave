@@ -103,6 +103,9 @@ if isempty(P)
     P = {};
     return
 else
+    if ~ismatlab && P(end) ~= ':'
+        P = [P ':'];
+    end
     % Break the path string into individual paths.
     P = regexp(P,['.*?',pathsep()],'match');
     if isempty(P)
