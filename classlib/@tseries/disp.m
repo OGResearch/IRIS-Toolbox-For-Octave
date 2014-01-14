@@ -57,6 +57,7 @@ else
         [dates,Data] = Disp2D(Start,Data);
         try
             dataStr = num2str(Data,Config.tseriesformat);
+            if ~ismatlab && isempty(Config.tseriesformat), error(); end
         catch %#ok<CTCH>
             dataStr = num2str(Data);
         end
