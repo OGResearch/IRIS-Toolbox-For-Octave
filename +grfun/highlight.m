@@ -105,42 +105,46 @@ for iAx = Ax(:).'
         if isempty(timeScale)
             continue
         end
-        if freq > 0
-            around = 1/(2*freq);
+        if isnan(opt.around)
+            if freq > 0
+                around = 1/(2*freq);
+            else
+                around = 0.5;
+            end
         else
-            around = 0.5;
+            around = opt.around ;
         end
         timeScale = [timeScale(1)-around,timeScale(end)+around];
     else
         timeScale = [range(1)-opt.around,range(end)+opt.around];
     end
-
+    
     yLim = get(h,'ylim');
     yData = yLim([1,1,2,2]);
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.colour, ...
         'parent',h,'edgeColor','none');
-
+    
     % Add caption to the highlight.
     if ~isempty(opt.caption)
         cp = grfun.mycaption(h,timeScale([1,end]), ...
             opt.caption,opt.vposition,opt.hposition);
         Cp = [Cp,cp];
     end
-
+    
     % Move the highlight patch object to the background.
     ch = get(h,'children');
     ch(ch == pt) = [];
     ch(end+1) = pt;
     set(h,'children',ch);
-
+    
     % Update y-data whenever the parent y-lims change.
     grfun.listener(h,pt,'highlight');
-
+    
     % Reset the order of figure children.
     set(fg,'children',fgch);
     Pp = [Pp,pt]; %#ok<*AGROW>
-
+    
 end
 
 % Tag the highlights and captions for `qstyle`.

@@ -18,9 +18,7 @@ classdef nnet < userdataobj & getsetobj
         nParams ;
         
         Neuron@cell = cell(0,1) ;
-    end
-    
-    properties( Dependent = true, Hidden = true )
+
         nInputs ;
         nOutputs ;
         nLayer ;
@@ -66,11 +64,39 @@ classdef nnet < userdataobj & getsetobj
             % 
             % The composition of the activation and output functions is
             % used to create flexible transfer functions. 
-            % 
-            % References:
             %
-            % # Duch, Wlodzislaw; Jankowski, Norbert  (1999). "Survey of
+            % Description
+            % ============
+            % 
+            % Implements a wide variety of neural network structures,
+            % such as multi-layer feedforward and radial 
+            % basis networks, including multi-layer perceptrons. 
+            % Recurrent neural networks are unsupported at present.  
+            % Transfer functions are the composition of an
+            % activation and an output function, as in Duch and Jankowski
+            % (1999). Features include: 
+            % 
+            % * Network training using a variety of optimization methods,
+            % including particle swarm optimization.  
+            % * Network pruning as in Kaashoek and Van Dijk (2002) to mitigate 
+            % overfitting problems. 
+            % * Network architecture visualisation. 
+            % * K-step ahead forecasts. 
+            % * Parallel network pruning and training algorithms. 
+            % 
+            % References
+            % ===========
+            %
+            % # Duch, Wlodzislaw; Jankowski, Norbert (1999). "Survey of
             %   neural transfer functions," Neural Computing Surveys 2
+            % 
+            % # Gorodkin, J., Hansen, L.K., Krogh, A., Savarer, C., and
+            % Winther, O. (1993). "A quantitative study of pruning by
+            % optimal brain damage," mimeo. 
+            % 
+            % # Kaashoek, Johan F., and Van Dijk, Herman K. (2002). "Neural
+            % network pruning applied to real exchange rate analysis,"
+            % Journal of Forecasting. 
             %
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
@@ -89,6 +115,10 @@ classdef nnet < userdataobj & getsetobj
             This.Outputs = cellstr(Outputs) ;
             This.Layout = Layout ;
             This.nAlt = 1 ;
+            
+            This.nLayer = numel(This.Layout) ;
+            This.nInputs = numel(This.Inputs) ;
+            This.nOutputs = numel(This.Outputs) ;
             
             % Parse options
             options = passvalopt('nnet.nnet',varargin{:});
@@ -110,15 +140,14 @@ classdef nnet < userdataobj & getsetobj
             OutputIndex = 0 ;
             HyperIndex = 0 ;
             Nmax = max(This.Layout) ;
-            nLayer = numel(Layout) ;
-            This.Neuron = cell(nLayer+1,1) ;
-            for iLayer = 1:nLayer
+            This.Neuron = cell(This.nLayer+1,1) ;
+            for iLayer = 1:This.nLayer
                 NN = This.Layout(iLayer) + This.Bias(iLayer) ;
                 pos = linspace(1,Nmax,NN) ;
                 if iLayer == 1
-                    nInputs = This.nInputs ;
+                    nInput = This.nInputs ;
                 else
-                    nInputs = numel(This.Neuron{iLayer-1}) ;
+                    nInput = numel(This.Neuron{iLayer-1}) ;
                 end
                 This.Neuron{iLayer} = cell(This.Layout(iLayer),1) ;
                 for iNode = 1:This.Layout(iLayer)
@@ -126,7 +155,7 @@ classdef nnet < userdataobj & getsetobj
                     This.Neuron{iLayer}{iNode} ...
                         = neuron(options.ActivationFn{iLayer},...
                         options.OutputFn{iLayer},...
-                        nInputs,...
+                        nInput,...
                         Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
                     xxUpdateIndex() ;
@@ -134,7 +163,7 @@ classdef nnet < userdataobj & getsetobj
                 if options.Bias(iLayer)
                     Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
                     This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
-                        = neuron('bias','bias',nInputs,Position,...
+                        = neuron('bias','bias',nInput,Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
                     xxUpdateIndex() ;
                 end
@@ -209,19 +238,6 @@ classdef nnet < userdataobj & getsetobj
                     delete( This.Neuron{iLayer}{iNode} ) ;
                 end
             end
-        end
-        
-        % Dependent methods
-        function nInputs = get.nInputs(This)
-            nInputs = numel(This.Inputs) ;
-        end
-        
-        function nOutputs = get.nOutputs(This)
-            nOutputs = numel(This.Outputs) ;
-        end
-        
-        function nLayer = get.nLayer(This)
-            nLayer = numel(This.Layout) ;
         end
     end
     

@@ -48,7 +48,7 @@ pp.parse(This,Data) ;
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1} ;
-    varargin{1} = [] ;
+    varargin(1) = [] ;
 else
     Range = Inf ;
 end
