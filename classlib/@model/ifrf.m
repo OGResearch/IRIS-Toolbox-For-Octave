@@ -46,9 +46,9 @@ function [W,List] = ifrf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('freq',@isnumeric);
-pp.parse(This,Freq);
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('freq',@isnumeric);
+pp = pp.parse(This,Freq);
 
 % Parse options.
 opt = passvalopt('model.ifrf',varargin{:});

@@ -73,10 +73,10 @@ function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 
 % Validate required input arguments.
 pp = inputParser();
-pp.addRequired('this',@(x) isa(x,'model'));
-pp.addRequired('nper',@(x) isnumeric(x) && length(x) == 1);
-pp.addRequired('plist',@(x) iscellstr(x) || ischar(x));
-pp.parse(This,NPer,PList);
+pp = pp.addRequired('this',@(x) isa(x,'model'));
+pp = pp.addRequired('nper',@(x) isnumeric(x) && length(x) == 1);
+pp = pp.addRequired('plist',@(x) iscellstr(x) || ischar(x));
+pp = pp.parse(This,NPer,PList);
 
 % Read and validate optional input arguments.
 opt = passvalopt('model.fisher',varargin{:});

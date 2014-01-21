@@ -96,10 +96,10 @@ function This = prior(This,Def,PriorFunc,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('S',@(x) isa(x,'systempriors'));
-pp.addRequired('Def',@ischar);
-pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
-pp.parse(This,Def,PriorFunc);
+pp = pp.addRequired('S',@(x) isa(x,'systempriors'));
+pp = pp.addRequired('Def',@ischar);
+pp = pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
+pp = pp.parse(This,Def,PriorFunc);
 
 opt = passvalopt('systempriors.prior',varargin{:});
 

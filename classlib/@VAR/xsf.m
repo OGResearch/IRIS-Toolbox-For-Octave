@@ -56,9 +56,9 @@ function [S,D] = xsf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('VAR',@(x) isa(x,'VAR'));
-pp.addRequired('freq',@isnumeric);
-pp.parse(This,Freq);
+pp = pp.addRequired('VAR',@(x) isa(x,'VAR'));
+pp = pp.addRequired('freq',@isnumeric);
+pp = pp.parse(This,Freq);
 
 opt = passvalopt('VAR.xsf',varargin{:});
 

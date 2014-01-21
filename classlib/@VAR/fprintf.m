@@ -44,10 +44,10 @@ function [C,D] = fprintf(This,File,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('File',@(x) ischar(x) ...
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('File',@(x) ischar(x) ...
     || (iscellstr(x) && length(This) ==  numel(x)));
-pp.parse(This,File);
+pp = pp.parse(This,File);
 
 %--------------------------------------------------------------------------
 

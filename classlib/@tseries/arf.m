@@ -68,11 +68,11 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('X',@istseries);
-pp.addRequired('A',@isnumeric);
-pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
-pp.addRequired('RANGE',@isnumeric);
-pp.parse(X,A,Z,Range);
+pp = pp.addRequired('X',@istseries);
+pp = pp.addRequired('A',@isnumeric);
+pp = pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
+pp = pp.addRequired('RANGE',@isnumeric);
+pp = pp.parse(X,A,Z,Range);
 
 %--------------------------------------------------------------------------
 

@@ -71,9 +71,9 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('InpFile',@ischar);
-pp.addRequired('OutpFile',@(x) ischar(x) || isempty(x));
-pp.parse(InpFile,OutpFile);
+pp = pp.addRequired('InpFile',@ischar);
+pp = pp.addRequired('OutpFile',@(x) ischar(x) || isempty(x));
+pp = pp.parse(InpFile,OutpFile);
 
 opt = passvalopt('dbase.xls2csv',varargin{:});
 

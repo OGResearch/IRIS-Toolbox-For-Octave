@@ -339,12 +339,12 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
-pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
-pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
-pp.parse(This,Data,Range,E,SP);
+pp = pp.addRequired('M',@ismodel);
+pp = pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
+pp = pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
+pp = pp.parse(This,Data,Range,E,SP);
 
 estOpt = passvalopt('model.estimate',varargin{:});
 

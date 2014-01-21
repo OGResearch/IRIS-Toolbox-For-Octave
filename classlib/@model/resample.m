@@ -91,12 +91,12 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || istseries(x));
-pp.addRequired('Range',@(x) isnumeric(x));
-pp.addRequired('NDraw',@(x) isnumericscalar(x));
-pp.addRequired('J',@(x) isempty(x) || isstruct(x));
-pp.parse(This,Inp,Range,NDraw,J);
+pp = pp.addRequired('M',@ismodel);
+pp = pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || istseries(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x));
+pp = pp.addRequired('NDraw',@(x) isnumericscalar(x));
+pp = pp.addRequired('J',@(x) isempty(x) || isstruct(x));
+pp = pp.parse(This,Inp,Range,NDraw,J);
 
 % Parse options.
 opt = passvalopt('model.resample',varargin{:});

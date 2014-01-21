@@ -72,11 +72,11 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('M',@(x) isa(x,'model'));
-pp.addRequired('SHOCKNAME',@ischar);
-pp.addRequired('RANGE',@isnumeric);
-pp.addRequired('LIST',@(x) ischar(x) || iscellstr(PlotList));
-pp.parse(This,ShockName,SimRange,PlotList);
+pp = pp.addRequired('M',@(x) isa(x,'model'));
+pp = pp.addRequired('SHOCKNAME',@ischar);
+pp = pp.addRequired('RANGE',@isnumeric);
+pp = pp.addRequired('LIST',@(x) ischar(x) || iscellstr(PlotList));
+pp = pp.parse(This,ShockName,SimRange,PlotList);
 
 [opt,varargin] = passvalopt('model.shockplot',varargin{:});
 

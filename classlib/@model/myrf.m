@@ -9,9 +9,9 @@ function [S,Range,Select] = myrf(This,Time,Func,Select,Opt)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@(x) isa(This,'model'));
-pp.addRequired('TIME',@isnumeric);
-pp.parse(This,Time);
+pp = pp.addRequired('M',@(x) isa(This,'model'));
+pp = pp.addRequired('TIME',@isnumeric);
+pp = pp.parse(This,Time);
 
 % Tell whether time is nper or range.
 if length(Time) == 1 && round(Time) == Time && Time > 0

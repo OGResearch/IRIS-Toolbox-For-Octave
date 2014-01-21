@@ -4,10 +4,10 @@ function [This,xF,Obj] = estimate(This,Data,Range,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser() ;
-pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp.addRequired('Data',@isstruct) ;
-pp.addRequired('Range',@(x) isnumeric(x) && isvector(x)) ;
-pp.parse(This,Data,Range) ;
+pp = pp.addRequired('This',@(x) isa(x,'nnet')) ;
+pp = pp.addRequired('Data',@isstruct) ;
+pp = pp.addRequired('Range',@(x) isnumeric(x) && isvector(x)) ;
+pp = pp.parse(This,Data,Range) ;
 if This.nAlt>1
     utils.error('nnet:estimate',...
         'Estimate does not support input neural network objects with multiple parameterizations.') ;

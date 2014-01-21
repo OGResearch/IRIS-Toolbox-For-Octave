@@ -78,10 +78,10 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
-pp.addRequired('Range',@isnumeric);
-pp.parse(This,Inp,Range);
+pp = pp.addRequired('M',@ismodel);
+pp = pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('Range',@isnumeric);
+pp = pp.parse(This,Inp,Range);
 Range = Range(1) : Range(end);
 
 if ~isempty(varargin) && ~ischar(varargin{1})

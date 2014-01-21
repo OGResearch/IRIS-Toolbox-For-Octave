@@ -178,9 +178,9 @@ fName = varargin{1};
 varargin(1) = [];
 
 P = inputParser();
-P.addRequired('d',@isstruct);
-P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
-P.parse(D,fName);
+P = P.addRequired('d',@isstruct);
+P = P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
+P = P.parse(D,fName);
 
 % Loop over all input databases subcontracting `dbload` and merging the
 % resulting databases in one.

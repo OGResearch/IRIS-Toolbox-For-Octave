@@ -42,10 +42,10 @@ function X = bsxfun(FUnc,X,Y)
 
 % Validate input arguments.
 pp = inputParser();
-pp.addRequired('Func',@isfunc);
-pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
-pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
-pp.parse(FUnc,X,Y);
+pp = pp.addRequired('Func',@isfunc);
+pp = pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
+pp = pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
+pp = pp.parse(FUnc,X,Y);
 
 %--------------------------------------------------------------------------
 

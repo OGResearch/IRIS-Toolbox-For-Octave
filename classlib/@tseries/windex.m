@@ -44,10 +44,10 @@ if nargin < 3
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
-pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
-pp.addRequired('Range',@isnumeric);
-pp.parse(X,W,Range);
+pp = pp.addRequired('X',@istseries);
+pp = pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
+pp = pp.addRequired('Range',@isnumeric);
+pp = pp.parse(X,W,Range);
 
 options = passvalopt('tseries.windex',varargin{:});
 

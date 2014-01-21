@@ -28,9 +28,9 @@ function This = horzcat(This,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('v1',@(x) isa(x,'VAR'));
-pp.addRequired('v2',@(x) all(cellfun(@(y) isa(y,'VAR'),x)));
-pp.parse(This,varargin);
+pp = pp.addRequired('v1',@(x) isa(x,'VAR'));
+pp = pp.addRequired('v2',@(x) all(cellfun(@(y) isa(y,'VAR'),x)));
+pp = pp.parse(This,varargin);
 
 %--------------------------------------------------------------------------
 

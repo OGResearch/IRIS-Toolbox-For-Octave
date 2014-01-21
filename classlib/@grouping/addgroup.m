@@ -33,11 +33,11 @@ function This = addgroup(This,GroupName,GroupContentsList)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser() ;
-pp.addRequired('G',@(x) isa(x,'grouping')) ;
-pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
-pp.addRequired('GroupContents',@(x) ~isempty(x) ...
+pp = pp.addRequired('G',@(x) isa(x,'grouping')) ;
+pp = pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
+pp = pp.addRequired('GroupContents',@(x) ~isempty(x) ...
     && (iscell(x) || ischar(x)) ) ;
-pp.parse(This,GroupName,GroupContentsList) ;
+pp = pp.parse(This,GroupName,GroupContentsList) ;
 
 if ischar(GroupContentsList)
     GroupContentsList = regexp(GroupContentsList,'[^ ,;]+','match') ;

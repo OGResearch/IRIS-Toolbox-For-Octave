@@ -33,9 +33,9 @@ function [This,Y0,K0,Y1,G1] = covmat(C,Repeat,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
-pp.addRequired('Rep',@(x) isnumericscalar(x) && x > 0 && x == round(x));
-pp.parse(C,Repeat);
+pp = pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
+pp = pp.addRequired('Rep',@(x) isnumericscalar(x) && x > 0 && x == round(x));
+pp = pp.parse(C,Repeat);
 
 %--------------------------------------------------------------------------
 

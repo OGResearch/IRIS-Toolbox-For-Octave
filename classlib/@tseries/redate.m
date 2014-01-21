@@ -34,10 +34,10 @@ function This = redate(This,OldDate,NewDate)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('x',@(x) isa(x,'tseries'));
-pp.addRequired('oldDate',@isnumericscalar);
-pp.addRequired('newDate',@isnumericscalar);
-pp.parse(This,OldDate,NewDate);
+pp = pp.addRequired('x',@(x) isa(x,'tseries'));
+pp = pp.addRequired('oldDate',@isnumericscalar);
+pp = pp.addRequired('newDate',@isnumericscalar);
+pp = pp.parse(This,OldDate,NewDate);
 
 %--------------------------------------------------------------------------
 

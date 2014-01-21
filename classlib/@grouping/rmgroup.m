@@ -32,9 +32,9 @@ function This = rmgroup(This,varargin)
 GroupName = varargin;
 
 pp = inputParser();
-pp.addRequired('G',@(x) isa(x,'grouping'));
-pp.addRequired('GroupName',@iscellstr);
-pp.parse(This,GroupName);
+pp = pp.addRequired('G',@(x) isa(x,'grouping'));
+pp = pp.addRequired('GroupName',@iscellstr);
+pp = pp.parse(This,GroupName);
 
 %--------------------------------------------------------------------------
 

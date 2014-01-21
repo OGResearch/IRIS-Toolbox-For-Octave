@@ -31,9 +31,9 @@ function Flag = islog(This,Name)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
-pp.parse(This,Name);
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
+pp = pp.parse(This,Name);
 
 if ischar(Name)
     Name = regexp(Name,'\w+','match');

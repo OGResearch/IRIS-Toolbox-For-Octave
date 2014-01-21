@@ -61,8 +61,8 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('Sample', @isnumeric );
-pp.parse( Sample );
+pp = pp.addRequired('Sample', @isnumeric );
+pp = pp.parse( Sample );
 
 % Parse options.
 opt = passvalopt('dest.kcluster',varargin{:});

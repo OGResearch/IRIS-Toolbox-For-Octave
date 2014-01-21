@@ -141,10 +141,10 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('D',@isstruct);
-pp.addRequired('FName',@ischar);
-pp.addRequired('Dates',@isnumeric);
-pp.parse(D,FName,Dates);
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('FName',@ischar);
+pp = pp.addRequired('Dates',@isnumeric);
+pp = pp.parse(D,FName,Dates);
 
 % Parse options.
 opt = passvalopt('dbase.dbsave',varargin{:});

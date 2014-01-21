@@ -135,10 +135,10 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 
 % Parse required inputs.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@isnumeric);
-pp.parse(This,Inp,Range);
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(This,Inp,Range);
 
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});

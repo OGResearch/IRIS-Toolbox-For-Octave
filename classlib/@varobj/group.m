@@ -8,10 +8,10 @@ function This = group(This,Grp)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Group',@(x) ...
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('Group',@(x) ...
     ischar(x) || isnumericscalar(x) || islogical(Grp));
-pp.parse(This,Grp);
+pp = pp.parse(This,Grp);
 
 %--------------------------------------------------------------------------
 

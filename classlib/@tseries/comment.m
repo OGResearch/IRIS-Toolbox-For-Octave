@@ -72,9 +72,9 @@ function This = comment(This,varargin)
 
 if ~isempty(varargin)
     pp = inputParser();
-    pp.addRequired('x',@istseries);
-    pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
-    pp.parse(This,varargin{1});
+    pp = pp.addRequired('x',@istseries);
+    pp = pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
+    pp = pp.parse(This,varargin{1});
 end
 
 %--------------------------------------------------------------------------

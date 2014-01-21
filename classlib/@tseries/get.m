@@ -52,9 +52,9 @@ function varargout = get(This,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 P = inputParser();
-P.addRequired('x',@istseries);
-P.addRequired('name',@iscellstr);
-P.parse(This,varargin);
+P = P.addRequired('x',@istseries);
+P = P.addRequired('name',@iscellstr);
+P = P.parse(This,varargin);
 
 %--------------------------------------------------------------------------
 

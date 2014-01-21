@@ -84,10 +84,10 @@ function This = set(This,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('name',@iscellstr);
-pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
-pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('name',@iscellstr);
+pp = pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
+pp = pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
 
 %--------------------------------------------------------------------------
 

@@ -53,10 +53,10 @@ function Outp = simulate(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.parse(This,Inp,Range);
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp = pp.parse(This,Inp,Range);
 
 % Panel VAR.
 if ispanel(This)

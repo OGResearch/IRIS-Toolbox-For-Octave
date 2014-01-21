@@ -46,11 +46,11 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('Obs', ...
+pp = pp.addRequired('Obs', ...
     @(x) isa(x,'tseries') && ndims(x) == 2 && size(x,2) == 1); %#ok<ISMAT>
-pp.addRequired('Pred',@(x) isa(x,'tseries'));
-pp.addRequired('Range',@isnumeric);
-pp.parse(Obs,Pred,Range);
+pp = pp.addRequired('Pred',@(x) isa(x,'tseries'));
+pp = pp.addRequired('Range',@isnumeric);
+pp = pp.parse(Obs,Pred,Range);
 
 %--------------------------------------------------------------------------
 

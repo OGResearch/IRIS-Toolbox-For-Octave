@@ -59,10 +59,10 @@ function D = dbclip(D,Range)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('D',@isstruct);
-pp.addRequired('Range', ...
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('Range', ...
     @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
-pp.parse(D,Range);
+pp = pp.parse(D,Range);
 
 if isnumeric(Range)
     Range = {Range};

@@ -37,10 +37,10 @@ classdef nnet < userdataobj & getsetobj
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
             
             pp = inputParser() ;
-            pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
-            pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
-            pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
-            pp.parse(Inputs,Outputs,Layout) ;
+            pp = pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
+            pp = pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
+            pp = pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
+            pp = pp.parse(Inputs,Outputs,Layout) ;
             
             % Superclass constructors
             This = This@userdataobj();

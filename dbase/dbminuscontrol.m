@@ -64,10 +64,10 @@ catch
 end
 
 pp = inputParser();
-pp.addRequired('M',@(x) isa(x,'modelobj'));
-pp.addRequired('D',@isstruct);
-pp.addRequired('C',@(x) isstruct(x) || isempty(x));
-pp.parse(This,D,C);
+pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('C',@(x) isstruct(x) || isempty(x));
+pp = pp.parse(This,D,C);
 
 %--------------------------------------------------------------------------
 

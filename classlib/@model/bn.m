@@ -44,10 +44,10 @@ function Outp = bn(This,Inp,Range,varargin)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@(x) isnumeric(x));
-pp.parse(This,Inp,Range);
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('range',@(x) isnumeric(x));
+pp = pp.parse(This,Inp,Range);
 
 opt = passvalopt('model.bn',varargin{:});
 

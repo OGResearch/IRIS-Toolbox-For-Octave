@@ -49,10 +49,10 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('Text',@ischar);
-pp.addRequired('Open',@isnumericscalar);
-pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
-pp.parse(C,Open,Fill);
+pp = pp.addRequired('Text',@ischar);
+pp = pp.addRequired('Open',@isnumericscalar);
+pp = pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
+pp = pp.parse(C,Open,Fill);
 
 Close = [];
 Inside = '';

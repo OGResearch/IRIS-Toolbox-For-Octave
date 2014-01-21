@@ -78,10 +78,10 @@ if nAx > 1
 end
 
 pp = inputParser();
-pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+pp = pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
     && all(strcmp(get(x,'type'),'axes')));
-pp.addRequired('XPos',@isnumeric);
-pp.parse(Ax,Loc);
+pp = pp.addRequired('XPos',@isnumeric);
+pp = pp.parse(Ax,Loc);
 
 [opt,lineOpt] = passvalopt('grfun.vline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');

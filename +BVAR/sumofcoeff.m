@@ -31,8 +31,8 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('Mu',@isnumericscalar);
-pp.parse(Mu);
+pp = pp.addRequired('Mu',@isnumericscalar);
+pp = pp.parse(Mu);
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...

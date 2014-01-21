@@ -22,9 +22,9 @@ end
 
 % Parse inputarguments.
 pp = inputParser();
-pp.addRequired('LIST',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('CMDARGS',@(x) ischar(x) || isempty(x));
-pp.parse(List,CmdArgs);
+pp = pp.addRequired('LIST',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('CMDARGS',@(x) ischar(x) || isempty(x));
+pp = pp.parse(List,CmdArgs);
 
 % Parse options.
 opt = passvalopt('latex.epstopdf',varargin{:});

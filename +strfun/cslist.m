@@ -46,8 +46,8 @@ function S = cslist(C,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('list',@iscellstr);
-pp.parse(C);
+pp = pp.addRequired('list',@iscellstr);
+pp = pp.parse(C);
 
 % Parse options.
 opt = passvalopt('strfun.cslist',varargin{:});

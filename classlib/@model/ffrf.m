@@ -58,9 +58,9 @@ function [F,List] = ffrf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('Freq',@isnumeric);
-pp.parse(This,Freq);
+pp = pp.addRequired('M',@ismodel);
+pp = pp.addRequired('Freq',@isnumeric);
+pp = pp.parse(This,Freq);
 
 % Parse options.
 opt = passvalopt('model.ffrf',varargin{:});

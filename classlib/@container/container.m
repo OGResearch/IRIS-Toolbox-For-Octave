@@ -60,9 +60,9 @@ classdef container
         function This = put(This,varargin)
             if ~isempty(varargin)
                 pp = inputParser();
-                pp.addRequired('c',@(x) isa(x,'container'));
-                pp.addRequired('name',@ischar);
-                pp.parse(This,varargin{1});
+                pp = pp.addRequired('c',@(x) isa(x,'container'));
+                pp = pp.addRequired('name',@ischar);
+                pp = pp.parse(This,varargin{1});
                 if ~isempty(varargin)
                     flag = container.request('set',varargin{1},varargin{2});
                     if ~flag

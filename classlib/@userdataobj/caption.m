@@ -38,8 +38,8 @@ function varargout = caption(This,varargin)
 if ~isempty(varargin)
     Cpt = varargin{1};
     pp = inputParser();
-    pp.addRequired('Cpt',@ischar);
-    pp.parse(Cpt);
+    pp = pp.addRequired('Cpt',@ischar);
+    pp = pp.parse(Cpt);
 end
 
 %--------------------------------------------------------------------------

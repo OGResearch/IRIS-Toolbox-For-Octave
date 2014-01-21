@@ -5,9 +5,9 @@ function D = plus(D1,D2)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('D1',@isstruct);
-pp.addRequired('D2',@isstruct);
-pp.parse(D1,D2);
+pp = pp.addRequired('D1',@isstruct);
+pp = pp.addRequired('D2',@isstruct);
+pp = pp.parse(D1,D2);
 
 %--------------------------------------------------------------------------
 

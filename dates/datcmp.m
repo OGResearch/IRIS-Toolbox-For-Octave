@@ -41,9 +41,9 @@ function Flag = datcmp(Dat1,Dat2)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('D1',@isnumeric);
-pp.addRequired('D2',@isnumeric);
-pp.parse(Dat1,Dat2);
+pp = pp.addRequired('D1',@isnumeric);
+pp = pp.addRequired('D2',@isnumeric);
+pp = pp.parse(Dat1,Dat2);
 
 %--------------------------------------------------------------------------
 

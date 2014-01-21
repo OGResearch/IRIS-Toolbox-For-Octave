@@ -42,12 +42,12 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('X',@isnumeric);
-pp.addRequired('descript',@(x) iscellstr(x) ...
+pp = pp.addRequired('X',@isnumeric);
+pp = pp.addRequired('descript',@(x) iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
-pp.addRequired('selection',@(x) ischar(x) || iscellstr(x) ...
+pp = pp.addRequired('selection',@(x) ischar(x) || iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
-pp.parse(X,Descript,Select);
+pp = pp.parse(X,Descript,Select);
 
 %--------------------------------------------------------------------------
 

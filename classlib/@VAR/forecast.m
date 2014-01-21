@@ -64,11 +64,11 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
-pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.addRequired('Cond',@(x) myisvalidinpdata(This,x));
-pp.parse(This,Inp,Range,JData);
+pp = pp.addRequired('V',@isvar);
+pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp = pp.addRequired('Cond',@(x) myisvalidinpdata(This,x));
+pp = pp.parse(This,Inp,Range,JData);
 
 % Panel VAR.
 if ispanel(This)

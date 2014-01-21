@@ -38,8 +38,8 @@ function varargout = comment(This,varargin)
 if ~isempty(varargin)
     Cmt = varargin{1};
     pp = inputParser();
-    pp.addRequired('Cmt',@ischar);
-    pp.parse(Cmt);
+    pp = pp.addRequired('Cmt',@ischar);
+    pp = pp.parse(Cmt);
 end
 
 %--------------------------------------------------------------------------

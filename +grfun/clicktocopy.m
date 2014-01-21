@@ -24,7 +24,7 @@ function clicktocopy(ax)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('h',@(x) all(ishghandle(x)) ...
+pp = pp.addRequired('h',@(x) all(ishghandle(x)) ...
    && all(strcmp(get(x,'type'),'axes')));
 
 %--------------------------------------------------------------------------

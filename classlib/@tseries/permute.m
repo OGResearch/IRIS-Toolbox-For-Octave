@@ -32,9 +32,9 @@ function This = permute(This,Order)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('x',@(x) isa(x,'tseries'));
-pp.addRequired('order',@(x) isnumeric(x) && ~isempty(x) && x(1) == 1);
-pp.parse(This,Order);
+pp = pp.addRequired('x',@(x) isa(x,'tseries'));
+pp = pp.addRequired('order',@(x) isnumeric(x) && ~isempty(x) && x(1) == 1);
+pp = pp.parse(This,Order);
 
 %--------------------------------------------------------------------------
 

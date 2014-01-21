@@ -100,10 +100,10 @@ classdef grouping < userdataobj & getsetobj
             Type = varargin{2};
             
             pp = inputParser();
-            pp.addRequired('M',@(x) isa(x,'modelobj'));
-            pp.addRequired('Type',@(x) ischar(x) ...
+            pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
+            pp = pp.addRequired('Type',@(x) ischar(x) ...
                 && any(strncmpi(x,{'shock','measu'},5)));
-            pp.parse(M,Type);
+            pp = pp.parse(M,Type);
             
             This.type = Type;
             switch This.type

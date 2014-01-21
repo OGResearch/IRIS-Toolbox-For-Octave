@@ -64,11 +64,11 @@ function [MinusLogLik,Grad,Hess,V] ...
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('model',@ismodel);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
-pp.parse(This,Data,Range,PList);
+pp = pp.addRequired('model',@ismodel);
+pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
+pp = pp.parse(This,Data,Range,PList);
 
 [opt,varargin] = passvalopt('model.diffloglik',varargin{:});
 

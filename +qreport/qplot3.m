@@ -101,10 +101,10 @@ function [hfig,hax,hline,htit,plotdb] = qplot(cdfname,data,range,varargin)
 
 % Parse required input arguments.
 p = inputParser();
-p.addRequired('filename',@(x) ischar(x) || isfunc(x));
-p.addRequired('dbase',@(x) isstruct(x));
-p.addRequired('range',@isnumeric);
-p.parse(cdfname,data,range);
+p = p.addRequired('filename',@(x) ischar(x) || isfunc(x));
+p = p.addRequired('dbase',@(x) isstruct(x));
+p = p.addRequired('range',@isnumeric);
+p = p.parse(cdfname,data,range);
 
 % Parse options.
 [options,varargin] = passvalopt('qreport.qplot',varargin{:});

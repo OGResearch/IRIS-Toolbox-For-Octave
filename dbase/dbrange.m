@@ -59,9 +59,9 @@ end
 
 % Validate input arguments.
 pp = inputParser();
-pp.addRequired('D',@isstruct);
-pp.addRequired('List',@(x) iscellstr(x) || isequal(x,Inf));
-pp.parse(D,List);
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('List',@(x) iscellstr(x) || isequal(x,Inf));
+pp = pp.parse(D,List);
 
 % Validate options.
 opt = passvalopt('dbase.dbrange',varargin{:});

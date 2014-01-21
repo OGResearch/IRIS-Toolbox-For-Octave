@@ -41,9 +41,9 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
-pp.addRequired('K',@isnumericscalar);
-pp.parse(X,K);
+pp = pp.addRequired('X',@istseries);
+pp = pp.addRequired('K',@isnumericscalar);
+pp = pp.parse(X,K);
 
 %--------------------------------------------------------------------------
 

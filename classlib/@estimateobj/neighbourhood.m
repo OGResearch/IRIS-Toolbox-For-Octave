@@ -78,10 +78,10 @@ function [d,FigH,AxH,ObjH,LikH,EstH,BH] ...
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@(x) isa(x,'estimateobj'));
-pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('Pct',@isnumeric);
-pp.parse(This,POS,Pct);
+pp = pp.addRequired('M',@(x) isa(x,'estimateobj'));
+pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
+pp = pp.addRequired('Pct',@isnumeric);
+pp = pp.parse(This,POS,Pct);
 
 % Parse options.
 [opt,varargin] = passvalopt('model.neighbourhood',varargin{:});

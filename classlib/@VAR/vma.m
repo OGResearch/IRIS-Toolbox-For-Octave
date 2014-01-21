@@ -29,9 +29,9 @@ function Phi = vma(This,N)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('N',@isnumericscalar);
-pp.parse(This,N);
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('N',@isnumericscalar);
+pp = pp.parse(This,N);
 
 %--------------------------------------------------------------------------
 

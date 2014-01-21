@@ -34,9 +34,9 @@ function [X,NewRange] = resize(X,Range)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('x',@(x) isa(x,'tseries'));
-pp.addRequired('range',@isnumeric);
-pp.parse(X,Range);
+pp = pp.addRequired('x',@(x) isa(x,'tseries'));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(X,Range);
 
 %--------------------------------------------------------------------------
 

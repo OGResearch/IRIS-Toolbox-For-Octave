@@ -57,11 +57,11 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('P',@(x) isa(x,'plan'));
-pp.addRequired('LIST',@(x) isequal(x,Inf) || ischar(x) || iscellstr(x));
-pp.addRequired('DAT', ...
+pp = pp.addRequired('P',@(x) isa(x,'plan'));
+pp = pp.addRequired('LIST',@(x) isequal(x,Inf) || ischar(x) || iscellstr(x));
+pp = pp.addRequired('DAT', ...
     @(x) isnumeric(x) && all(datfreq(x) == datfreq(This.startDate)));
-pp.parse(This,list,dat);
+pp = pp.parse(This,list,dat);
 
 %--------------------------------------------------------------------------
 

@@ -36,10 +36,10 @@ function D = dbredate(D,OldDate,NewDate)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('d',@isstruct);
-pp.addRequired('oldDate',@isnumericscalar);
-pp.addRequired('newDate',@isnumericscalar);
-pp.parse(D,OldDate,NewDate);
+pp = pp.addRequired('d',@isstruct);
+pp = pp.addRequired('oldDate',@isnumericscalar);
+pp = pp.addRequired('newDate',@isnumericscalar);
+pp = pp.parse(D,OldDate,NewDate);
 
 %--------------------------------------------------------------------------
 

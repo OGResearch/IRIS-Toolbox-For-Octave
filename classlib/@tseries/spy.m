@@ -68,9 +68,9 @@ varargin(1) = [];
 
 % Parse input arguments.
 P = inputParser();
-P.addRequired('range',@isnumeric);
-P.addRequired('x',@(x) isa(x,'tseries'));
-P.parse(range,X);
+P = P.addRequired('range',@isnumeric);
+P = P.addRequired('x',@(x) isa(x,'tseries'));
+P = P.parse(range,X);
 
 % Parse options.
 [opt,varargin] = passvalopt('tseries.spy',varargin{:});

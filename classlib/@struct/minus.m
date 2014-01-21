@@ -5,9 +5,9 @@ function This = minus(This,List)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('D',@isstruct);
-pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
-pp.parse(This,List);
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
+pp = pp.parse(This,List);
 
 %--------------------------------------------------------------------------
 

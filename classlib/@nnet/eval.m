@@ -11,10 +11,10 @@ if ischar(Range)
 	Range = Inf ;
 end
 pp = inputParser() ;
-pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp.addRequired('Data',@(x) isa(x,'tseries') || isa(x,'struct')) ;
-pp.addOptional('Range',@(x) isnumeric(x) && isvector(x)) ;
-pp.parse(This,InData,Range) ;
+pp = pp.addRequired('This',@(x) isa(x,'nnet')) ;
+pp = pp.addRequired('Data',@(x) isa(x,'tseries') || isa(x,'struct')) ;
+pp = pp.addOptional('Range',@(x) isnumeric(x) && isvector(x)) ;
+pp = pp.parse(This,InData,Range) ;
 if This.nAlt>1
 	utils.error('nnet:eval',...
 		'Eval does not support input neural network objects with multiple parameterizations.') ;

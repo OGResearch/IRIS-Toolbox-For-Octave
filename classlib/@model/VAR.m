@@ -41,10 +41,10 @@ function V = VAR(This,Select,Range,varargin)
 
 % Parse required arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
-pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('range',@isnumeric);
-pp.parse(This,Select,Range);
+pp = pp.addRequired('m',@ismodel);
+pp = pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(This,Select,Range);
 
 % Parse options.
 opt = passvalopt('model.VAR',varargin{:});
