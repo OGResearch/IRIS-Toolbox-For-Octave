@@ -1,0 +1,32 @@
+<folder>
+
+<foldername>FAVAR</foldername><filename>Contents</filename>
+
+<h1 id="FAVAR/Contents">Factor-augmented vector autoregressions: FAVAR objects and functions</h1>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="FAVAR/FAVAR"><tt>FAVAR</tt></link>&nbsp;&ndash;&nbsp;Create new FAVAR object.</li></ul>
+
+<h3>Getting information about FAVAR objects</h3>
+
+<ul><li>comment -</li>
+<li><link id="FAVAR/get"><tt>get</tt></link>&nbsp;&ndash;&nbsp;Query model object properties.</li>
+<li><link id="FAVAR/userdata"><tt>userdata</tt></link>&nbsp;&ndash;&nbsp;Get or set user data in an IRIS object.</li>
+<li><link id="FAVAR/VAR"><tt>VAR</tt></link>&nbsp;&ndash;&nbsp;Return a VAR object describing the factor dynamics.</li></ul>
+
+<h3>Estimation</h3>
+
+<ul><li><link id="FAVAR/estimate"><tt>estimate</tt></link>&nbsp;&ndash;&nbsp;Estimate FAVAR using static principal components.</li></ul>
+
+<h3>Filtering and forecasting</h3>
+
+<ul><li><link id="FAVAR/filter"><tt>filter</tt></link>&nbsp;&ndash;&nbsp;Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given.</li>
+<li><link id="FAVAR/forecast"><tt>forecast</tt></link>&nbsp;&ndash;&nbsp;Forecast FAVAR factors and observables.</li></ul>
+
+<h3>Getting on-line help on FAVAR functions</h3>
+<pre>   help FAVAR
+   help FAVAR/function_name
+</pre>
+
+</folder>

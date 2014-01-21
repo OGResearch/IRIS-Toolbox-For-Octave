@@ -1,0 +1,48 @@
+
+
+    \filetitle{!!}{Beginning of aliasing in descriptions and labels}{modellang/alias}
+
+	\paragraph{Syntax in descriptions of variables, shocks, and
+parameters}\label{syntax-in-descriptions-of-variables-shocks-and-parameters}
+
+\begin{verbatim}
+'Description !! Alias' Name
+\end{verbatim}
+
+\paragraph{Syntax in equations labels}\label{syntax-in-equations-labels}
+
+\begin{verbatim}
+'Label !! Alias' Equation;
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+When used in descriptions of variables, shocks, and parameters, or in
+equation labels, the double exclamation mark starts an alias (but the
+exlamation marks are not included in it). The alias can be used to
+specify, for example, a LaTeX code associated with the variable, shock,
+parameter, or equation. The aliases can be retrieved from the model code
+by using the appropriate query in the function
+\href{model/get}{\texttt{model/get}}.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!transition_variables
+    'Output gap !! $\hat y_t$` Y_GAP
+\end{verbatim}
+
+In the resulting model object, the description of the variables
+\texttt{Y\_GAP} will be
+
+\begin{verbatim}
+Output gap
+\end{verbatim}
+
+while its alias will be
+
+\begin{verbatim}
+$\hat y_t$.
+\end{verbatim}
+
+

@@ -1,0 +1,123 @@
+<folder>
+
+<foldername>tseries</foldername><filename>Contents</filename>
+
+<h1 id="tseries/Contents">Time series objects and functions</h1>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="tseries/tseries"><tt>tseries</tt></link>&nbsp;&ndash;&nbsp;Create new time series (tseries) object.</li></ul>
+
+<h3>Getting information about tseries objects</h3>
+
+<ul><li><link id="tseries/daily"><tt>daily</tt></link>&nbsp;&ndash;&nbsp;Calendar view of a daily tseries object.</li>
+<li><link id="tseries/enddate"><tt>enddate</tt></link>&nbsp;&ndash;&nbsp;Date of the last available observation in a tseries object.</li>
+<li><link id="tseries/freq"><tt>freq</tt></link>&nbsp;&ndash;&nbsp;Frequency of a tseries object.</li>
+<li><link id="tseries/get"><tt>get</tt></link>&nbsp;&ndash;&nbsp;Query tseries object property.</li>
+<li><link id="tseries/length"><tt>length</tt></link>&nbsp;&ndash;&nbsp;Length of tseries object.</li>
+<li>ndims -</li>
+<li><link id="tseries/size"><tt>size</tt></link>&nbsp;&ndash;&nbsp;Size of tseries object data.</li>
+<li><link id="tseries/startdate"><tt>startdate</tt></link>&nbsp;&ndash;&nbsp;Date of the first available observation in a tseries object.</li>
+<li><link id="tseries/yearly"><tt>yearly</tt></link>&nbsp;&ndash;&nbsp;Display tseries object one full year per row.</li></ul>
+
+<h3>Referencing tseries objects</h3>
+
+<ul><li><link id="tseries/subsasgn"><tt>subsasgn</tt></link>&nbsp;&ndash;&nbsp;Subscripted assignment for tseries objects.</li>
+<li><link id="tseries/subsref"><tt>subsref</tt></link>&nbsp;&ndash;&nbsp;Subscripted reference function for tseries objects.</li></ul>
+
+<h3>Maths and statistics functions and operators</h3>
+
+<p>Some of the following functions require the Statistics Toolbox.</p>
+
+<p><tt>+</tt>, <tt>-</tt>, <tt>*</tt>, <tt>\</tt>, <tt>/</tt>, <tt>^</tt>, <tt>&</tt>, <tt>, </tt>~|, <tt>==</tt>, <tt>~=</tt>, <tt>>=</tt>, <tt>></tt>, <tt><</tt>,
+<tt><=</tt>, <tt>abs</tt>, <tt>acos</tt>, <tt>asin</tt>, <tt>atan</tt>, <tt>atan2</tt>, <tt>ceil</tt>, <tt>cos</tt>,  <tt>exp</tt>, <tt>floor</tt>,
+<tt>imag</tt>, <tt>isinf</tt>, <tt>isnan</tt>, <tt>log</tt>, <tt>log10</tt>, <tt>real</tt>, <tt>round</tt>, <tt>sin</tt>, <tt>sqrt</tt>,
+<tt>tan</tt>, <tt>normpdf</tt>, <tt>normcdf</tt>, <tt>prctile</tt>, <tt>lognpdf</tt>, <tt>logncdf</tt></p>
+
+<p>The behaviour of the following functions depend on the dimension along
+which they are performed.</p>
+
+<p>Some of the following functions require the Statistics Toolbox.</p>
+
+<p><tt>all</tt>, <tt>any</tt>, <tt>cumprod</tt>, <tt>cumsum</tt>, <tt>find</tt>, <tt>geomean</tt>, <tt>max</tt>, <tt>mean</tt>,
+<tt>median</tt>, <tt>min</tt>, <tt>mode</tt>, <tt>nanmean</tt>, <tt>nanstd</tt>, <tt>nansum</tt>, <tt>nanvar</tt>, <tt>prod</tt>,
+<tt>std</tt>, <tt>sum</tt>, <tt>var</tt></p>
+
+<h3>Filters</h3>
+
+<ul><li><link id="tseries/arf"><tt>arf</tt></link>&nbsp;&ndash;&nbsp;Run autoregressive function on a tseries object.</li>
+<li><link id="tseries/bpass"><tt>bpass</tt></link>&nbsp;&ndash;&nbsp;Band-pass filter.</li>
+<li><link id="tseries/bwf"><tt>bwf</tt></link>&nbsp;&ndash;&nbsp;Butterworth filter with tunes.</li>
+<li><link id="tseries/bwf2"><tt>bwf2</tt></link>&nbsp;&ndash;&nbsp;Swap output arguments of the Butterworth filter with tunes.</li>
+<li><link id="tseries/detrend"><tt>detrend</tt></link>&nbsp;&ndash;&nbsp;Remove a linear time trend.</li>
+<li><link id="tseries/expsmooth"><tt>expsmooth</tt></link>&nbsp;&ndash;&nbsp;Exponential smoothing.</li>
+<li><link id="tseries/hpf"><tt>hpf</tt></link>&nbsp;&ndash;&nbsp;Hodrick-Prescott filter with tunes.</li>
+<li><link id="tseries/hpf2"><tt>hpf2</tt></link>&nbsp;&ndash;&nbsp;Swap output arguments of the Hodrick-Prescott filter with tunes.</li>
+<li><link id="tseries/fft"><tt>fft</tt></link>&nbsp;&ndash;&nbsp;Discrete Fourier transform of tseries object.</li>
+<li><link id="tseries/llf"><tt>llf</tt></link>&nbsp;&ndash;&nbsp;Local linear trend (or random-walk-plus-noise) filter with tunes.</li>
+<li><link id="tseries/llf2"><tt>llf2</tt></link>&nbsp;&ndash;&nbsp;Swap output arguments of the local linear trend filter with tunes.</li>
+<li><link id="tseries/moving"><tt>moving</tt></link>&nbsp;&ndash;&nbsp;Apply function to moving window of observations.</li>
+<li><link id="tseries/trend"><tt>trend</tt></link>&nbsp;&ndash;&nbsp;Estimate a time trend.</li>
+<li><link id="tseries/x12"><tt>x12</tt></link>&nbsp;&ndash;&nbsp;Access to X12 seasonal adjustment program.</li></ul>
+
+<h3>Estimation and sample characteristics</h3>
+
+<p>Note that most of the sample characteristics are listed above in the
+Maths and statistics functions and operatiors section.</p>
+
+<ul><li><link id="tseries/acf"><tt>acf</tt></link>&nbsp;&ndash;&nbsp;Sample autocovariance and autocorrelation functions.</li>
+<li><link id="tseries/hpdi"><tt>hpdi</tt></link>&nbsp;&ndash;&nbsp;Highest probability density interval.</li>
+<li><link id="tseries/chowlin"><tt>chowlin</tt></link>&nbsp;&ndash;&nbsp;Chow-Lin distribution of low-frequency observations over higher-frequency periods.</li>
+<li><link id="tseries/regress"><tt>regress</tt></link>&nbsp;&ndash;&nbsp;Ordinary or weighted least-square regression.</li></ul>
+
+<h3>Visualising tseries objects</h3>
+
+<ul><li><link id="tseries/area"><tt>area</tt></link>&nbsp;&ndash;&nbsp;Area graph for tseries objects.</li>
+<li><link id="tseries/bar"><tt>bar</tt></link>&nbsp;&ndash;&nbsp;Bar graph for tseries objects.</li>
+<li><link id="tseries/barcon"><tt>barcon</tt></link>&nbsp;&ndash;&nbsp;Contribution bar graph for tseries objects.</li>
+<li><link id="tseries/errorbar"><tt>errorbar</tt></link>&nbsp;&ndash;&nbsp;Line plot with error bars.</li>
+<li><link id="tseries/plot"><tt>plot</tt></link>&nbsp;&ndash;&nbsp;Line graph for tseries objects.</li>
+<li><link id="tseries/plotcmp"><tt>plotcmp</tt></link>&nbsp;&ndash;&nbsp;Comparison graph for two time series.</li>
+<li><link id="tseries/plotpred"><tt>plotpred</tt></link>&nbsp;&ndash;&nbsp;Plot Kalman filter predictions.</li>
+<li><link id="tseries/plotyy"><tt>plotyy</tt></link>&nbsp;&ndash;&nbsp;Line plot function with LHS and RHS axes for time series.</li>
+<li><link id="tseries/scatter"><tt>scatter</tt></link>&nbsp;&ndash;&nbsp;Scatter graph for tseries objects.</li>
+<li><link id="tseries/spy"><tt>spy</tt></link>&nbsp;&ndash;&nbsp;Visualise tseries observations that pass a test.</li>
+<li><link id="tseries/stem"><tt>stem</tt></link>&nbsp;&ndash;&nbsp;Plot tseries as discrete sequence data.</li></ul>
+
+<h3>Manipulating tseries objects</h3>
+
+<ul><li><link id="tseries/empty"><tt>empty</tt></link>&nbsp;&ndash;&nbsp;Empty tseries object preserving its size in 2nd and higher dimensions.</li>
+<li><link id="tseries/permute"><tt>permute</tt></link>&nbsp;&ndash;&nbsp;Permute dimensions tseries object.</li>
+<li><link id="tseries/redate"><tt>redate</tt></link>&nbsp;&ndash;&nbsp;Change time dimension of a tseries object.</li>
+<li><link id="tseries/reshape"><tt>reshape</tt></link>&nbsp;&ndash;&nbsp;Reshape size of time series in 2nd and higher dimensions.</li>
+<li><link id="tseries/resize"><tt>resize</tt></link>&nbsp;&ndash;&nbsp;Clip tseries object down to specified date range.</li>
+<li><link id="tseries/sort"><tt>sort</tt></link>&nbsp;&ndash;&nbsp;Sort tseries columns by specified criterion.</li></ul>
+
+<h3>Converting tseries objects</h3>
+
+<ul><li><link id="tseries/convert"><tt>convert</tt></link>&nbsp;&ndash;&nbsp;Convert tseries object to a different frequency.</li>
+<li><link id="tseries/double"><tt>double</tt></link>&nbsp;&ndash;&nbsp;Return tseries observations as double-precision numeric array.</li>
+<li><link id="tseries/doubledata"><tt>doubledata</tt></link>&nbsp;&ndash;&nbsp;Convert tseries observations to double precision.</li>
+<li><link id="tseries/single"><tt>single</tt></link>&nbsp;&ndash;&nbsp;Return tseries observations as single-precision numeric array.</li>
+<li><link id="tseries/singledata"><tt>singledata</tt></link>&nbsp;&ndash;&nbsp;Convert tseries observations to single precision.</li></ul>
+
+<h3>Other tseries functions</h3>
+
+<ul><li><link id="tseries/apct"><tt>apct</tt></link>&nbsp;&ndash;&nbsp;Annualised percent rate of change.</li>
+<li><link id="tseries/bsxfun"><tt>bsxfun</tt></link>&nbsp;&ndash;&nbsp;Standard BSXFUN implemented for tseries objects.</li>
+<li><link id="tseries/destdise"><tt>destdise</tt></link>&nbsp;&ndash;&nbsp;Destandardise tseries object by applying specified standard deviation and mean to it.</li>
+<li><link id="tseries/diff"><tt>diff</tt></link>&nbsp;&ndash;&nbsp;First difference.</li>
+<li><link id="tseries/interp"><tt>interp</tt></link>&nbsp;&ndash;&nbsp;Interpolate missing observations.</li>
+<li><link id="tseries/normalise"><tt>normalise</tt></link>&nbsp;&ndash;&nbsp;Normalise data to particular date.</li>
+<li><link id="tseries/pct"><tt>pct</tt></link>&nbsp;&ndash;&nbsp;Percent rate of change.</li>
+<li><link id="tseries/round"><tt>round</tt></link>&nbsp;&ndash;&nbsp;Round tseries data to specified number of decimals.</li>
+<li><link id="tseries/stdise"><tt>stdise</tt></link>&nbsp;&ndash;&nbsp;Standardise tseries data by subtracting mean and dividing by std deviation.</li>
+<li><link id="tseries/windex"><tt>windex</tt></link>&nbsp;&ndash;&nbsp;Simple weighted or Divisia index.</li>
+<li><link id="tseries/wmean"><tt>wmean</tt></link>&nbsp;&ndash;&nbsp;Weighted average of time series observations.</li></ul>
+
+<h3>Getting on-line help on tseries functions</h3>
+<pre>   help tseries
+   help tseries/function_name
+</pre>
+
+</folder>

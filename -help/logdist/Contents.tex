@@ -1,0 +1,105 @@
+
+    \foldertitle{logdist}{Probability distribution package}{logdist/Contents}
+
+	This package gives quick access to basic univariate distributions. Its
+primary use is setting up priors in the
+\href{model/estimate}{\texttt{model/estimate}} and
+\href{poster/arwm}{\texttt{poster/arwm}} functions.
+
+The logdist package is called to create function handles that have
+several different modes of use. The primary use is to compute values
+that are proportional to the log of the respective density. In addition,
+the function handles also give you access to extra information (such as
+the the proper p.d.f., the name, mean, std dev, mode, and stuctural
+parameters of the distribution), and to a random number generator from
+the respective distribution.
+
+Logdist methods:
+
+\paragraph{Getting function handles for univariate
+distributions}\label{getting-function-handles-for-univariate-distributions}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{logdist/chisquare}{\texttt{chisquare}} - Create function
+  proportional to log of Chi-Squared distribution.
+\item
+  \href{logdist/normal}{\texttt{normal}} - Create function proportional
+  to log of Normal or Student distribution.
+\item
+  \href{logdist/lognormal}{\texttt{lognormal}} - Create function
+  proportional to log of log-normal distribution.
+\item
+  \href{logdist/beta}{\texttt{beta}} - Create function proportional to
+  log of beta distribution.
+\item
+  \href{logdist/gamma}{\texttt{gamma}} - Create function proportional to
+  log of gamma distribution.
+\item
+  \href{logdist/invgamma}{\texttt{invgamma}} - Create function
+  proportional to log of inv-gamma distribution.
+\item
+  {[}\texttt{t}{]} (logdist/t) - Create function proportional to log of
+  Student T distribution.
+\item
+  \href{logdist/uniform}{\texttt{uniform}} - Create function
+  proportional to log of uniform distribution.
+\end{itemize}
+
+\paragraph{Calling the logdist function
+handles}\label{calling-the-logdist-function-handles}
+
+The function handles \texttt{F} created by the logdist package functions
+can be called the following ways:
+
+\begin{itemize}
+\item
+  Get a value proportional to the log-density of the respective
+  distribution at a particular point; this call is used within the
+  \href{poster/Contents}{posterior simulator}:
+
+  y = F(x)
+\item
+  Get the density of the respective distribution at a particular point:
+
+  y = F(x,`pdf')
+\item
+  Get the characteristics of the distribution -- mean, std deviation,
+  mode, and information (the inverse of the second derivative of the log
+  density):
+
+  m = F({[}{]},`mean') s = F({[}{]},`std') o = F({[}{]},`mode') i =
+  F({[}{]},`info')
+\item
+  Get the underlying ``structural'' parameters of the respective
+  distribution:
+
+  a = F({[}{]},`a') b = F({[}{]},`b')
+\item
+  Get the name of the distribution (the names correspond to the function
+  names, i.e.~can be either of \texttt{'normal'}, \texttt{'lognormal'},
+  \texttt{'beta'}, \texttt{'gamma'}, \texttt{'invgamma'},
+  \texttt{'uniform'}):
+
+  name = F({[}{]},`name')
+\item
+  Draw a vector or matrix of random numbers from the distribution;
+  drawing from beta, gamma, and inverse gamma requires the Statistics
+  Toolbox:
+
+  a = F({[}{]},`draw',1,1000);
+
+  size(a) ans = 1 10000
+\end{itemize}
+
+\paragraph{Getting on-line help on logdist
+functions}\label{getting-on-line-help-on-logdist-functions}
+
+\begin{verbatim}
+help logdist
+help logdist/function_name
+\end{verbatim}
+
+
+

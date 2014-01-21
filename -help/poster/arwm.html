@@ -1,0 +1,157 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="poster/arwm">arwm</h2>
+<div class="headline">Adaptive random-walk Metropolis posterior simulator</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[Theta,LogPost,AR,Scale,FinalCov] = arwm(Pos,NDraw,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Pos</code> [ poster ] - Initialised posterior simulator object.</p></li>
+<li><p><code>NDraw</code> [ numeric ] - Length of the chain not including burn-in.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>Theta</code> [ numeric ] - MCMC chain with individual parameters in rows.</p></li>
+<li><p><code>LogPost</code> [ numeric ] - Vector of log posterior density (up to a constant) in each draw.</p></li>
+<li><p><code>AR</code> [ numeric ] - Vector of cumulative acceptance ratios in each draw.</p></li>
+<li><p><code>Scale</code> [ numeric ] - Vector of proposal scale factors in each draw.</p></li>
+<li><p><code>FinalCov</code> [ numeric ] - Final proposal covariance matrix; the final covariance matrix of the random walk step is Scale(end)^2*FinalCov.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'adaptProposalCov='</code> [ numeric | <em><code>0.5</code></em> ] - Speed of adaptation of the Cholesky factor of the proposal covariance matrix towards the target acceptanace ratio, <code>targetAR</code>; zero means no adaptation.</p></li>
+<li><p><code>'adaptScale='</code> [ numeric | <em><code>1</code></em> ] - Speed of adaptation of the scale factor to deviations of acceptance ratios from the target ratio, <code>targetAR</code>.</p></li>
+<li><p><code>'burnin='</code> [ numeric | <em><code>0.10</code></em> ] - Number of burn-in draws entered either as a percentage of total draws (between 0 and 1) or directly as a number (integer greater that one). Burn-in draws will be added to the requested number of draws <code>ndraw</code> and discarded after the posterior simulation.</p></li>
+<li><p><code>'estTime='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display and update the estimated time to go in the command window.</p></li>
+<li><p><code>'firstPrefetch='</code> [ numeric | <em><code>Inf</code></em> ] - First draw where parallelised pre-fetching will be used; <code>Inf</code> means no pre-fetching.</p></li>
+<li><p><code>'gamma='</code> [ numeric | <em><code>0.8</code></em> ] - The rate of decay at which the scale and/or the proposal covariance will be adapted with each new draw.</p></li>
+<li><p><code>'initScale='</code> [ numeric | <code>1/3</code> ] - Initial scale factor by which the initial proposal covariance will be multiplied; the initial value will be adapted to achieve the target acceptance ratio.</p></li>
+<li><p><code>'lastAdapt='</code> [ numeric | <em><code>Inf</code></em> ] - Last point at which the proposal covariance will be adapted; <code>Inf</code> means adaptation will continue until the last draw. Can also be entered as a percentage of total draws (a number strictly between 0 and 1).</p></li>
+<li><p><code>'nStep='</code> [ numeric | *<code>1</code> ] - Number of pre-fetched steps computed in parallel; only works with <code>firstPrefetch=</code> smaller than <code>NDraw</code>.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
+<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - File name where results will be saved when the option <code>'saveEvery='</code> is used.</p></li>
+<li><p><code>'saveEvery='</code> [ numeric | <em><code>Inf</code></em> ] - Every N draws will be saved to an HDF5 file, and removed from workspace immediately; no values will be returned in the output arguments <code>Theta</code>, <code>LogPost</code>, <code>AR</code>, <code>Scale</code>; the option <code>'saveAs='</code> must be used to specify the file name; <code>Inf</code> means a normal run with no saving.</p></li>
+<li><p><code>'targetAR='</code> [ numeric | <em><code>0.234</code></em> ] - Target acceptance ratio.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Use the <a href="../poster/stats.html"><code>poster/stats</code></a> function to process the simulated chain of parameters, and calculate selected statistics.</p>
+<h5 id="parallelised-arwm">Parallelised ARWM</h5>
+<p>Set <code>'nStep='</code> greater than <code>1</code>, and <code>'firstPrefetch='</code> smaller than <code>NDraw</code> to start a pre-fetching parallelised algorithm (pre-fetched will be all draws starting from <code>'firstPrefetch='</code>); to that end, a pool of parallel workers (using e.g. <code>matlabpool</code> from the Parallel Computing Toolbox) must be opened before calling <code>arwm</code>.</p>
+<p>With pre-fetching, all possible paths <code>'nStep='</code> steps ahead (i.e. all possible combinations of reject/accept) are pre-evaluated in parallel, and then the resulting path is selected. Adapation then occurs only every <code>'nStep='</code> steps, and hence the results will always somewhat differ from a serial run. Identical results can be obtained by turning down adaptation before pre-fetching starts, i.e. by setting <code>'lastAdapt='</code> smaller than <code>'firstPrefetch='</code> (and, obviously, by re-setting the random number generator).</p>
+<h4 id="references">References</h4>
+<ol style="list-style-type: decimal">
+<li><p>Brockwell, A.E., 2005. &quot;Parallel Markov Chain Monte Carlo Simulation by Pre-Fetching,&quot; CMU Statistics Dept. Tech. Report 802.</p></li>
+<li><p>Strid, I., 2009. &quot;Efficient parallelisation of Metropolis-Hastings algorithms using a prefetching approach,&quot; SSE/EFI Working Paper Series in Economics and Finance No. 706.</p></li>
+</ol>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+</html>
