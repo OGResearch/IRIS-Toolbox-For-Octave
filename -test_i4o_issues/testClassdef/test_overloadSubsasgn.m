@@ -1,5 +1,5 @@
 ts1 = tseries(qq(1,1):qq(2,4),1:8);
-keyboard
+
 try
   ts1{qq(2,2)} = 5555;
   assert(ts1(qq(2,2))==5555,'tseries::subsasgn works wrong, value was assigned incorrectly');
