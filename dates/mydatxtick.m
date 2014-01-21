@@ -154,6 +154,15 @@ doXLimAdjust();
             'xTickMode','manual');
         % Set xTickLabel.
         Opt = datdefaults(Opt,true);
+        if iscell(Opt.dateformat)
+            inx = Freq == [1,2,4,6,12,52];
+            if ~isempty(inx)
+                Opt.dateformat = Opt.dateformat{inx};
+            else
+                utils.error('dates:mydatxtick', ...
+                    'Cannot recognize date frequency in a plot command.');
+            end
+        end
         xTickLabel = dat2str(xTickDates,Opt);
         set(H, ...
             'xTickLabel',xTickLabel, ...
