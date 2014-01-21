@@ -7,32 +7,34 @@ function [Opt,Config] = datdefaults(Opt,IsPlot)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
-
-if nargin < 2
-   IsPlot = false;
+try
+    IsPlot; %#ok<VUNUS>
+catch
+    IsPlot = false;
 end
+
+%--------------------------------------------------------------------------
 
 Config = irisget();
 
 if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,'config')
-   if ~IsPlot
-      Opt.dateformat = Config.dateformat;
-   else
-      Opt.dateformat = Config.plotdateformat;
-   end
+    if ~IsPlot
+        Opt.dateformat = Config.dateformat;
+    else
+        Opt.dateformat = Config.plotdateformat;
+    end
 end
 
 if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,'config')
-   Opt.freqletters = Config.freqletters;
+    Opt.freqletters = Config.freqletters;
 end
 
 if ~isfield(Opt,'months') || isequal(Opt.months,'config')
-   Opt.months = Config.months;
+    Opt.months = Config.months;
 end
 
 if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,'config')
-   Opt.standinmonth = Config.standinmonth;
+    Opt.standinmonth = Config.standinmonth;
 end
 
 end

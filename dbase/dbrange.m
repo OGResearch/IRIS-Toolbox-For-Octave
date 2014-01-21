@@ -72,7 +72,7 @@ if isequal(List,Inf)
     List = fieldnames(D);
 end
 
-FreqList = [1,2,4,6,12,52,0];
+FreqList = [0,1,2,4,6,12,52];
 nFreq = length(FreqList);
 startDat = cell(1,nFreq);
 endDat = cell(1,nFreq);

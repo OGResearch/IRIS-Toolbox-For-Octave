@@ -38,7 +38,7 @@ function [Ln,Cp] = vline(varargin)
 % * `'vPosition='` [ `'bottom'` | `'middle'` | *`'top'`* | numeric ] -
 % Vertical position of the caption.
 %
-% * `'timePosition='` [ `'after'` | `'before'` | `'middle'` ] - Placement
+% * `'timePosition='` [ `'after'` | `'before'` | *`'middle'`* ] - Placement
 % of the vertical line on the time axis: in the middle of the specified
 % period, immediately before it (between the specified period and the
 % previous one), or immediately after it (between the specified period and
