@@ -4,6 +4,7 @@ classdef svarobj
         B = []; % Coefficient matrix in front of structural residuals.
         std = []; % Std dev of structural residuals.
         method = {}; % Identification method.
+        rank = Inf;
     end
     
     methods
@@ -29,6 +30,7 @@ classdef svarobj
     
     methods (Hidden)
         varargout = myidentify(varargin)
+        varargout = mystructuralshocks(varargin)
         varargout = specget(varargin)
     end
     
