@@ -52,16 +52,13 @@
 % * [`datdiff`](dates/datdiff) - Number of periods between two dates with check for date frequency.
 % * [`rngcmp`](dates/rngcmp) - Compare two IRIS date ranges.
 %
-% Daily dates
-% ============
-%
-% * [`dd`](dates/dd) - Matlab serial date numbers that can be used to construct daily tseries objects.
-% * [`ddtoday`](dates/ddtoday) - Matlab serial date number for today's date.
-%
-% Supporting functions
-% =====================
+% Daily and weekly dates
+% =======================
 %
 % * [`daysinyear`](dates/daysinyear) - 
+% * [`dd`](dates/dd) - Matlab serial date numbers that can be used to construct daily tseries objects.
+% * [`ddtoday`](dates/ddtoday) - Matlab serial date number for today's date.
+% * [`ww2day`](dates/ww2day) - 
 % * [`weeksinyear`](dates/weeksinyear) - 
 %
 % Getting on-line help on date functions

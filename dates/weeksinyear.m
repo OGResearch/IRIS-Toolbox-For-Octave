@@ -1,5 +1,5 @@
 function N = weeksinyear(Year)
-% weeksinyear  Number of weeks in a year.
+% weeksinyear  Number of weeks in year.
 %
 % Syntax
 % =======

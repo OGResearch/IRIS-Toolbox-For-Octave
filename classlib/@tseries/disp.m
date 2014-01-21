@@ -84,7 +84,7 @@ end % xxDispND()
 %**************************************************************************
 function X = xxDisp2d(Start,Data,Tab,Sep,Num2StrFunc)
 dateFormat = 'YFP';
-dateFormatW = '$ (DD-Mmm-YYYY)';
+dateFormatW = '$ (Thu DD-Mmm-YYYY)';
 nPer = size(Data,1);
 range = Start + (0 : nPer-1);
 dates = strjust(dat2char(range,'dateFormat=',dateFormat));

@@ -35,15 +35,15 @@ function [S,field] = dat2str(Dat,varargin)
 % Description
 % ============
 %
-% There are two types of date strings in IRIS: regular and calendar.
-% Regular date strings can be printed for dates with yearly, half-yearly,
-% quarterly, bimonthly, monthly, weekly, and indeterminate frequencies.
-% Calendar date strings can be printed for dates with weekly and daily
-% frequencies. Date formats for calendar date strings must start with a
-% dollar sign, `$`. 
+% There are two types of date strings in IRIS: year-period strings and
+% calendar date strings. The year-period strings can be printed for dates
+% with yearly, half-yearly, quarterly, bimonthly, monthly, weekly, and
+% indeterminate frequencies. The calendar date strings can be printed for
+% dates with weekly and daily frequencies. Date formats for calendar date
+% strings must start with a dollar sign, `$`.
 %
-% Regular date strings
-% ---------------------
+% Year-period date strings
+% -------------------------
 %
 % Regular date formats can include any combination of the following
 % fields:
