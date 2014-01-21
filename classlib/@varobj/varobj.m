@@ -23,6 +23,7 @@ classdef varobj < userdataobj & getsetobj
     
     methods
         varargout = group(varargin)
+        varargout = horzcat(varargin)
         varargout = isempty(varargin)
         varargout = ispanel(varargin)
         varargout = nfitted(varargin)
@@ -36,6 +37,7 @@ classdef varobj < userdataobj & getsetobj
         varargout = myoutpdata(varargin)
         varargout = myselect(varargin)        
         varargout = specget(varargin)
+        varargout = vertcat(varargin)
     end
     
     

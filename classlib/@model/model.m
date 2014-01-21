@@ -254,7 +254,6 @@ classdef model < modelobj & estimateobj
         varargout = forecast(varargin)
         varargout = fprintf(varargin)
         varargout = get(varargin)
-        varargout = horzcat(varargin)
         varargout = icrf(varargin)
         varargout = ifrf(varargin)
         varargout = irf(varargin)
@@ -309,7 +308,7 @@ classdef model < modelobj & estimateobj
     end
     
     methods (Access=protected,Hidden)
-        varargout = myaffectedeqtn(varargin)        
+        varargout = myaffectedeqtn(varargin)
         varargout = myalpha2xb(varargin)
         varargout = myanchors(varargin)
         varargout = myautoexogenise(varargin)
@@ -352,7 +351,7 @@ classdef model < modelobj & estimateobj
         varargout = mysstateopt(varargin)
         varargout = mysstateswap(varargin)
         varargout = mystruct2obj(varargin)
-        varargout = mysubsalt(varargin)                
+        varargout = mysubsalt(varargin)
         varargout = mysymbdiff(varargin)
         varargout = mysystem(varargin)
         varargout = mytrendarray(varargin)

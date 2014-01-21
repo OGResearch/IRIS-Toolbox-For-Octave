@@ -117,7 +117,6 @@ classdef VAR < varobj
         varargout = fprintf(varargin)
         varargout = get(varargin)
         varargout = group(varargin)
-        varargout = horzcat(varargin)
         varargout = infocrit(varargin)
         varargout = instrument(varargin)
         varargout = integrate(varargin)  
