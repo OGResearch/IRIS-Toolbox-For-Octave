@@ -1,5 +1,5 @@
 function [Outp,Time] = getdata(This,Inp,Range,ColStruct)
-% LATEXONEROW  [Not a public function] Evaluate data for report/series.
+% getdata  [Not a public function] Evaluate data for report/series.
 %
 % Backend IRIS function.
 % No help provided.
@@ -16,7 +16,9 @@ else
     doColStruct();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doDates()
@@ -34,7 +36,7 @@ end
         % We cannot pre-allocate `outp` properly because the number of
         % columns is unknown at this point.
         Outp = [];
-        for ii = [0,1,2,4,6,12]
+        for ii = [0,1,2,4,6,12,52]
             rangePos = rangeFreq == ii;
             dataPos = dataFreq == ii;
             if any(rangePos) && any(dataPos)
@@ -47,7 +49,8 @@ end
                 Outp(rangePos,:) = thisData;
             end
         end
-    end % doDates().
+    end % doDates()
+
 
 %**************************************************************************
     function doColStruct()
@@ -82,6 +85,7 @@ end
                 Outp(ii,:) = x;
             end
         end
-    end % doColStruct().
+    end % doColStruct()
+
 
 end

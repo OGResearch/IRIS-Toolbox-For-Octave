@@ -11,6 +11,8 @@
 % * [`mmtoday`](dates/mmtoday) - IRIS serial date number for current month.
 % * [`qq`](dates/qq) - IRIS serial date numbers for dates with quarterly frequency.
 % * [`qqtoday`](dates/qqtoday) - IRIS serial date number for current quarter.
+% * [`ww`](dates/ww) - 
+% * [`wwtoday`](dates/wwtoday) - 
 % * [`yy`](dates/yy) - IRIS serial date numbers for dates with yearly frequency.
 % * [`yytoday`](dates/yytoday) - IRIS serial date number for current year.
 %
@@ -55,6 +57,12 @@
 %
 % * [`dd`](dates/dd) - Matlab serial date numbers that can be used to construct daily tseries objects.
 % * [`ddtoday`](dates/ddtoday) - Matlab serial date number for today's date.
+%
+% Supporting functions
+% =====================
+%
+% * [`daysinyear`](dates/daysinyear) - 
+% * [`weeksinyear`](dates/weeksinyear) - 
 %
 % Getting on-line help on date functions
 % =======================================

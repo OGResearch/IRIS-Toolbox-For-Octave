@@ -1,4 +1,4 @@
-function [opt,config] = datdefaults(opt,isplot)
+function [Opt,Config] = datdefaults(Opt,IsPlot)
 % datdefaults  [Not a public function] Set up defaults for date-related opt if they are 'config'.
 %
 % Backend IRIS function.
@@ -7,32 +7,32 @@ function [opt,config] = datdefaults(opt,isplot)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 if nargin < 2
-   isplot = false;
+   IsPlot = false;
 end
 
-config = irisget();
+Config = irisget();
 
-if ~isfield(opt,'dateformat') || isequal(opt.dateformat,'config')
-   if ~isplot
-      opt.dateformat = config.dateformat;
+if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,'config')
+   if ~IsPlot
+      Opt.dateformat = Config.dateformat;
    else
-      opt.dateformat = config.plotdateformat;
+      Opt.dateformat = Config.plotdateformat;
    end
 end
 
-if ~isfield(opt,'freqletters') || isequal(opt.freqletters,'config')
-   opt.freqletters = config.freqletters;
+if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,'config')
+   Opt.freqletters = Config.freqletters;
 end
 
-if ~isfield(opt,'months') || isequal(opt.months,'config')
-   opt.months = config.months;
+if ~isfield(Opt,'months') || isequal(Opt.months,'config')
+   Opt.months = Config.months;
 end
 
-if ~isfield(opt,'standinmonth') || isequal(opt.standinmonth,'config')
-   opt.standinmonth = config.standinmonth;
+if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,'config')
+   Opt.standinmonth = Config.standinmonth;
 end
 
 end

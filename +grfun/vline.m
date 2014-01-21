@@ -95,15 +95,11 @@ Ax = grfun.mychkforpeers(Ax);
 % point.
 x = Loc;
 if isequal(getappdata(Ax,'tseries'),true)
-    x = dat2grid(x);
+    x = dat2dec(x,'centre');
     freq = getappdata(Ax,'freq');
     if ~isempty(freq) && isnumericscalar(freq) ...
-            && any(freq == [0,1,2,4,6,12])
-        if freq > 0
-            dx = 1/(2*freq);
-        else
-            dx = 0.5;
-        end
+            && any(freq == [0,1,2,4,6,12,52])
+            dx = 0.5 / max(1,freq);
         switch opt.timeposition
             case 'before'
                 x = x - dx;

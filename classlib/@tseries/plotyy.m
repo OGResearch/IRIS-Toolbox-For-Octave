@@ -143,8 +143,13 @@ end
 
 setappdata(Ax(1),'tseries',true);
 setappdata(Ax(1),'freq',freqLhs);
+setappdata(Ax(1),'range',RangeLhs);
+setappdata(Ax(1),'datePosition',opt.dateposition);
+
 setappdata(Ax(2),'tseries',true);
 setappdata(Ax(2),'freq',freqRhs);
+setappdata(Ax(2),'range',RangeRhs);
+setappdata(Ax(2),'datePosition',opt.dateposition);
 
 if isequal(char(opt.lhsplotfunc),'bar') ...
         || isequal(char(opt.rhsplotfunc),'bar')
@@ -162,7 +167,7 @@ set(Ax(2),'color','none', ...
     'xTick',[], ...
     'xAxisLocation','top');
 
-mydatxtick(Ax(1),timeLhs,freqLhs,userRangeLhs,opt);
+mydatxtick(Ax(1),RangeLhs,timeLhs,freqLhs,userRangeLhs,opt);
 
 % For bkw compatibility only, not documented. Use of `highlight` outside
 % `plotyy` is now safe.

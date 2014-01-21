@@ -79,8 +79,10 @@ for iH = H
             'as a valid tseries graph: %g.'], ...
             iH);
     end
-    oldRange = get(iH,'xTick');
-    mydatxtick(iH,oldRange,newFreq,NewRange,opt);
+    oldRange = getappdata(iH,'range');
+    oldDatePosition = getappdata(iH,'datePosition');
+    oldTime = dat2dec(oldRange,oldDatePosition);
+    mydatxtick(iH,oldRange,oldTime,newFreq,NewRange,opt);
 end
 
 end

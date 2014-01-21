@@ -14,7 +14,7 @@ if ischar(StandinMonth)
         case {'first','start'}
             StandinMonth = 1;
         case {'last','end'}
-            StandinMonth = 12/Freq;
+            StandinMonth = 12 ./ Freq;
         otherwise
             StandinMonth = 1;
     end

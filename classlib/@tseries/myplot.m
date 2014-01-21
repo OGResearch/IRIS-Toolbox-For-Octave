@@ -109,7 +109,7 @@ if ~isempty(comprise)
 end
 
 Data = mygetdata(X,Range);
-Time = dat2grid(Range,opt.dateposition);
+Time = dat2dec(Range,opt.dateposition);
 
 if isempty(Func)
     return
@@ -144,7 +144,9 @@ end
 if isTimeAxis && ~isTimeNan
     setappdata(Ax,'tseries',true);
     setappdata(Ax,'freq',Freq);
-    mydatxtick(Ax,Time,Freq,UserRange,opt);
+    setappdata(Ax,'range',Range);
+    setappdata(Ax,'datePosition',opt.dateposition);
+    mydatxtick(Ax,Range,Time,Freq,UserRange,opt);
 end
 
 % Perform user supplied function.
@@ -171,22 +173,25 @@ end
 obj = datacursormode(gcf());
 set(obj,'UpdateFcn',@utils.datacursor);
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function range = doMergeRange(range,comprise)
-        first = grid2dat(comprise(1),Freq,opt.dateposition);
+    function Range = doMergeRange(Range,Comprise)
+        first = dec2dat(Comprise(1),Freq,opt.dateposition);
         % Make sure ranges with different frequencies are merged
         % properly.
-        while dat2grid(first-1,opt.dateposition) > comprise(1)
+        while dat2dec(first-1,opt.dateposition) > Comprise(1)
             first = first - 1;
         end
-        last = grid2dat(comprise(end),Freq,opt.dateposition);
-        while dat2grid(last+1,opt.dateposition) < comprise(end)
+        last = dec2dat(Comprise(end),Freq,opt.dateposition);
+        while dat2dec(last+1,opt.dateposition) < Comprise(end)
             last = last + 1;
         end
-        range = min(range(1),first) : max(range(end),last);
-    end % doMergeRange().
+        Range = min(Range(1),first) : max(Range(end),last);
+    end % doMergeRange()
+
 
 %**************************************************************************
     function doPlot()
@@ -214,6 +219,7 @@ set(obj,'UpdateFcn',@utils.datacursor);
                 end
                 isTimeAxis = true;
         end
-    end % doPlot().
+    end % doPlot()
+
 
 end

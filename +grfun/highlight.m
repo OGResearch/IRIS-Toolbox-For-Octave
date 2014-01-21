@@ -101,7 +101,7 @@ for iAx = Ax(:).'
     range = range([1,end]);
     if isequal(getappdata(h,'tseries'),true)
         freq = datfreq(range(1));
-        timeScale = dat2grid(range);
+        timeScale = dat2dec(range,'centre');
         if isempty(timeScale)
             continue
         end

@@ -1,4 +1,4 @@
-function NewDat = convert(Dat,NewFreq,varargin)
+function NewDat = convert(Dat,ToFreq,varargin)
 % convert   Convert dates to another frequency.
 %
 % Syntax
@@ -10,9 +10,9 @@ function NewDat = convert(Dat,NewFreq,varargin)
 % ================
 %
 % * `Dat` [ numeric ] - IRIS serial date numbers that will be converted to
-% the new frequency, `newfreq`.
+% the new frequency, `NewFreq`.
 %
-% * `NewFreq` [ `0` | `1` | `2` | `4` | `6` | `12` ] - New frequency to
+% * `NewFreq` [ `1` | `2` | `4` | `6` | `12` ] - New frequency to
 % which the dates `d1` will be converted.
 %
 % Output arguments
@@ -24,7 +24,7 @@ function NewDat = convert(Dat,NewFreq,varargin)
 % Options
 % ========
 %
-% * `'standinMonth='` [ numeric | `'last'` | *`1`* ] - Which month will be
+% * `'standinMonth='` [ numeric | `'last'` | *`1`* ] - Month that will be
 % used to represent a certain period of time in low- to high-frequency
 % conversions.
 %
@@ -48,17 +48,30 @@ end
 
 %--------------------------------------------------------------------------
 
-% Get year, period, and frequency of the original dates.
-[y1,p1,f1] = dat2ypf(Dat);
+fromFreq = datfreq(Dat);
+ixZero = fromFreq == 0;
+ixWeekly = fromFreq == 52;
+ixRegular = ~ixZero & ~ixWeekly;
 
-% First, convert the original period to a corresponding month.
-m = per2month(p1,f1,opt.standinmonth);
+NewDat = nan(size(Dat));
 
-% Then, convert the month to the corresponding period of the request
-% frequnecy.
-p2 = ceil(m.*NewFreq./12);
+if any(ixRegular(:))
+    % Get year, period, and frequency of the original dates.
+    [fromYear,fromPer,fromFreq] = dat2ypf(Dat(ixRegular));
+    % First, convert the original period to a corresponding month.
+    toMonth = per2month(fromPer,fromFreq,opt.standinmonth);
+    % Then, convert the month to the corresponding period of the request
+    % frequnecy.
+    toPer = ceil(toMonth.*ToFreq./12);
+    % Create the new serial date number.
+    NewDat(ixRegular) = datcode(ToFreq,fromYear,toPer);
+end
 
-% Create the new serial date number.
-NewDat = datcode(NewFreq,y1,p2);
+if any(ixWeekly(:))
+    x = ww2day(Dat(ixWeekly),'Thursday');
+    [toYear,toMonth] = datevec(x);
+    toPer = ceil(toMonth.*ToFreq./12);
+    NewDat(ixWeekly) = datcode(ToFreq,toYear,toPer);
+end
 
 end
