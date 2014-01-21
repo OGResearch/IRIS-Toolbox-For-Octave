@@ -74,9 +74,6 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 %--------------------------------------------------------------------------
 
-% Check for plotyy peers, and return the background axes object.
-Ax = grfun.mychkforpeers(Ax);
-
 yLim = get(Ax,'yLim');
 
 xLim = get(Ax,'xLim');
