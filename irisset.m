@@ -39,9 +39,12 @@ function irisset(varargin)
 % whenever you want to replace the default English names with your local
 % language. .
 %
-% * `'plotDateFormat='` [ char | *'Y:P'* ] - Date format used to display dates in
-% graphs including graphs in reports. The default is 'Y:P', which is
-% different from the `'dateformat='` option.
+% * `'plotDateFormat='` [ char | *'{'Y','Y:P','Y:P','Y:P','Y:P','Y:P'}'* ]
+% - Default date formats used to display dates in graphs including graphs
+% in reports. The default date formats are 6 strings, one for each of the
+% date frequencies, in this order: indeterminate (0), yearly (1),
+% half-yearly (2), quarterly (4), bimonthly (6), monthly (12), and weekly
+% (52).
 %
 % * `'tseriesFormat='` [ char | *empty* ] - Format string for displaying time
 % series data on the screen. See help on the Matlab `sprintf` function for
