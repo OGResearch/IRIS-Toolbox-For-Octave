@@ -11,7 +11,7 @@ function C = interpret(This,C)
 
 switch This.options.inputformat
     case 'plain'
-        C = latex.stringsubs(C);
+        C = latex.interpretplain(C);
     case 'latex'
         % Do nothing.
 end

@@ -29,9 +29,9 @@ classdef fragileobj
         varargout = length(varargin)
         varargout = regexppattern(varargin)
         varargout = protectbrackets(varargin)
+        varargout = protectbraces(varargin)
         varargout = protectquotes(varargin)
         varargout = restore(varargin)
-        varargout = replace(varargin)
     end
     
 end

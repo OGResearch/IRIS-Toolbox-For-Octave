@@ -1,6 +1,6 @@
 function [C,This] = protectbrackets(C,This)
 % protectbrackets  [Not a public function] Replace top-level round and
-% square brackets with replacement charcodes
+% square brackets with replacement charcodes.
 %
 % Backend IRIS function.
 % No help provided.
