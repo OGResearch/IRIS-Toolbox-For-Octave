@@ -38,6 +38,7 @@ if ~strcmpi(options.display,'off')
     fprintf(1,'\t[%g] output parameters\n', ...
         tf*This.nOutputParams) ;
 end
+fprintf(1,'\n') ;
 
 % Setup initial parameter vector and bounds
 lb = [] ;
@@ -46,21 +47,18 @@ x0 = [] ;
 for iOpt = 1:numel(options.Select) 
     switch options.Select{iOpt}
         case 'activation'
-            bounds = get(This,'activationbounds') ;
-            lb = [lb; bounds(:,1)] ;
-            ub = [ub; bounds(:,2)] ;
+            lb = [lb; get(This,'activationLB')] ;
+            ub = [ub; get(This,'activationUB')] ;
             x0 = [x0; get(This,'activation')] ;
                 
         case 'hyper'
-            bounds = get(This,'hyperbounds') ;
-            lb = [lb; bounds(:,1)] ;
-            ub = [ub; bounds(:,2)] ;
+            lb = [lb; get(This,'hyperLB')] ;
+            ub = [ub; get(This,'hyperUB')] ;
             x0 = [x0; get(This,'hyper')] ;
 
         case 'output'
-            bounds = get(This,'outputbounds') ;
-            lb = [lb; bounds(:,1)] ;
-            ub = [ub; bounds(:,2)] ;
+            lb = [lb; get(This,'outputLB')] ;
+            ub = [ub; get(This,'outputUB')] ;
             x0 = [x0; get(This,'output')] ; %#ok<*AGROW>
 
     end

@@ -19,18 +19,4 @@ Pred = eval(This,InData,Range) ; %#ok<*GTARG>
 
 Obj = options.Norm(OutData-Pred)/length(OutData) ;
 
-    function Output = xxNodeTransfer(Input, Weight, Bias, Transfer, TransferParam) 
-        switch Transfer
-            case 'sigmoid'
-                X = ( 1./(1-exp(-Input.*TransferParam)) ) ;
-            case 'tanh'
-                X = ( 1-exp(-TransferParam.*Input) )./( 1+exp(-TransferParam.*Input) ) ;
-            case 'step'
-                X = ( Input>0 ) ;
-            case 'linear'
-                X = Input ;
-        end
-        Output = Bias + sum(Weight'.*X,2) ;
-    end
-
 end

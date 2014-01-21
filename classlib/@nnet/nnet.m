@@ -18,9 +18,7 @@ classdef nnet < userdataobj & getsetobj
         nParams ;
         
         Neuron@cell = cell(0,1) ;
-    end
-    
-    properties( Dependent = true, Hidden = true )
+
         nInputs ;
         nOutputs ;
         nLayer ;
@@ -28,11 +26,78 @@ classdef nnet < userdataobj & getsetobj
     
     methods
         function This = nnet(Inputs,Outputs,Layout,varargin)
-            % References:
+            % nnet  Neural network model constructor method.
+            %
+            % Syntax
+            % =======
+            %
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)
+            %
+            % Input arguments
+            % ================
+            %
+            % * `Inputs` [ cellstr | char ] - Variable name or cell array
+            % of variable names. 
             % 
-            % # Duch, Wlodzislaw; Jankowski, Norbert  (1999). "Survey of
+            % * `Outputs` [ cellstr | char ] - Variable name or cell array
+            % of variable names. 
+            % 
+            % Both input and output arguments can include lead/lag
+            % operators. E.g., nnet({'x{-1}','x{-2}'},'x',...)
+            % 
+            % * `Layout` [ numeric ] - Vector of integers with length equal
+            % to the number of layers such that each element specifies the
+            % number of nodes in that hidden layer. 
+            %
+            % Output arguments
+            % =================
+            %
+            % * `M` [ nnet ] - Neural network model object. 
+            %
+            % Options
+            % ========
+            %
+            % * `'ActivationFn='` [ *`linear`* | `minkovsky` ] - Activation function. 
+            % 
+            % * `'OutputFn='` [ *`logistic`* | `s4` | `tanh` ] - Output function. 
+            % 
+            % The composition of the activation and output functions is
+            % used to create flexible transfer functions. 
+            %
+            % Description
+            % ============
+            % 
+            % Implements a wide variety of neural network structures,
+            % such as multi-layer feedforward and radial 
+            % basis networks, including multi-layer perceptrons. 
+            % Recurrent neural networks are unsupported at present.  
+            % Transfer functions are the composition of an
+            % activation and an output function, as in Duch and Jankowski
+            % (1999). Features include: 
+            % 
+            % * Network training using a variety of optimization methods,
+            % including particle swarm optimization.  
+            % * Network pruning as in Kaashoek and Van Dijk (2002) to mitigate 
+            % overfitting problems. 
+            % * Network architecture visualisation. 
+            % * K-step ahead forecasts. 
+            % * Parallel network pruning and training algorithms. 
+            % 
+            % References
+            % ===========
+            %
+            % # Duch, Wlodzislaw; Jankowski, Norbert (1999). "Survey of
             %   neural transfer functions," Neural Computing Surveys 2
             % 
+            % # Gorodkin, J., Hansen, L.K., Krogh, A., Savarer, C., and
+            % Winther, O. (1993). "A quantitative study of pruning by
+            % optimal brain damage," mimeo. 
+            % 
+            % # Kaashoek, Johan F., and Van Dijk, Herman K. (2002). "Neural
+            % network pruning applied to real exchange rate analysis,"
+            % Journal of Forecasting. 
+            %
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2013 IRIS Solutions Team.
             
@@ -50,6 +115,10 @@ classdef nnet < userdataobj & getsetobj
             This.Outputs = cellstr(Outputs) ;
             This.Layout = Layout ;
             This.nAlt = 1 ;
+            
+            This.nLayer = numel(This.Layout) ;
+            This.nInputs = numel(This.Inputs) ;
+            This.nOutputs = numel(This.Outputs) ;
             
             % Parse options
             options = passvalopt('nnet.nnet',varargin{:});
@@ -71,15 +140,14 @@ classdef nnet < userdataobj & getsetobj
             OutputIndex = 0 ;
             HyperIndex = 0 ;
             Nmax = max(This.Layout) ;
-            nLayer = numel(Layout) ;
-            This.Neuron = cell(nLayer+1,1) ;
-            for iLayer = 1:nLayer
+            This.Neuron = cell(This.nLayer+1,1) ;
+            for iLayer = 1:This.nLayer
                 NN = This.Layout(iLayer) + This.Bias(iLayer) ;
                 pos = linspace(1,Nmax,NN) ;
                 if iLayer == 1
-                    nInputs = This.nInputs ;
+                    nInput = This.nInputs ;
                 else
-                    nInputs = numel(This.Neuron{iLayer-1}) ;
+                    nInput = numel(This.Neuron{iLayer-1}) ;
                 end
                 This.Neuron{iLayer} = cell(This.Layout(iLayer),1) ;
                 for iNode = 1:This.Layout(iLayer)
@@ -87,7 +155,7 @@ classdef nnet < userdataobj & getsetobj
                     This.Neuron{iLayer}{iNode} ...
                         = neuron(options.ActivationFn{iLayer},...
                         options.OutputFn{iLayer},...
-                        nInputs,...
+                        nInput,...
                         Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
                     xxUpdateIndex() ;
@@ -95,7 +163,7 @@ classdef nnet < userdataobj & getsetobj
                 if options.Bias(iLayer)
                     Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
                     This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
-                        = neuron('bias','bias',nInputs,Position,...
+                        = neuron('bias','bias',nInput,Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
                     xxUpdateIndex() ;
                 end
@@ -152,11 +220,16 @@ classdef nnet < userdataobj & getsetobj
         varargout = size(varargin) ;
         varargout = datarequest(varargin) ;
         varargout = set(varargin) ;
-        varargout = aeq(varargin) ;
         varargout = horzcat(varargin) ;
         varargout = vertcat(varargin) ;
         varargout = eval(varargin) ;
         varargout = plot(varargin) ;
+        varargout = sstate(varargin) ;
+        varargout = prune(varargin) ;
+        varargout = myrange(varargin) ;
+        varargout = mysameio(varargin) ;
+        varargout = isnan(varargin) ;
+        varargout = rmnan(varargin) ;
         
         % Destructor method
         function delete(This)
@@ -165,19 +238,6 @@ classdef nnet < userdataobj & getsetobj
                     delete( This.Neuron{iLayer}{iNode} ) ;
                 end
             end
-        end
-        
-        % Dependent methods
-        function nInputs = get.nInputs(This)
-            nInputs = numel(This.Inputs) ;
-        end
-        
-        function nOutputs = get.nOutputs(This)
-            nOutputs = numel(This.Outputs) ;
-        end
-        
-        function nLayer = get.nLayer(This)
-            nLayer = numel(This.Layout) ;
         end
     end
     
