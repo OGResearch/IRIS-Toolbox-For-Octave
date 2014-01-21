@@ -106,11 +106,7 @@ for iAx = Ax(:).'
             continue
         end
         if isnan(opt.around)
-            if freq > 0
-                around = 1/(2*freq);
-            else
-                around = 0.5;
-            end
+            around = 0.5 / max(1,freq);
         else
             around = opt.around ;
         end
