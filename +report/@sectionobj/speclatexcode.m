@@ -1,4 +1,4 @@
-function C = speclatexcode(This)
+function C = speclatexcode(This,~)
 % speclatexcode  [Not a public function] Produce LaTeX code for section objects.
 %
 % Backend IRIS function.

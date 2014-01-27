@@ -55,22 +55,20 @@ InclGraph = [ ...
 
 %**************************************************************************
     function doPrintFigure()
-        tempDirName = getrootprop(This,'tempDirName');
+        tempDir = This.hInfo.tempDir;
         % Create graphics file path and title.
         if isempty(This.options.saveas)
-            graphicsName = tempname(tempDirName);
+            graphicsName = tempname(tempDir);
             [~,graphicsTitle] = fileparts(graphicsName);
         else
             [saveAsPath,saveAsTitle] = fileparts(This.options.saveas);
-            graphicsName = fullfile(tempDirName,saveAsTitle);
+            graphicsName = fullfile(tempDir,saveAsTitle);
             graphicsTitle = saveAsTitle;
         end
         % Try to print figure window to EPSC.
         try
             print(This.handle,'-depsc',graphicsName);
-            % Broadcast the new temporary file.
-            notify(This,'newTempFile', ...
-                report.eventData([graphicsName,'.eps']));
+            addtempfile(This,[graphicsName,'.eps']);            
         catch Error
             utils.error('report', ...
                 ['Cannot print figure #%g to EPS file: ''%s''.\n', ...
@@ -84,9 +82,7 @@ InclGraph = [ ...
             else
                 latex.epstopdf([graphicsName,'.eps'],Opt.epstopdf);
             end
-            % Broadcast the new temporary file.
-            notify(This,'newTempFile', ...
-                report.eventData([graphicsName,'.pdf']));
+            addtempfile(This,[graphicsName,'.pdf']);
         catch Error
             utils.error('report', ...
                 ['Cannot convert graphics EPS to PDF: ''%s''.\n', ...

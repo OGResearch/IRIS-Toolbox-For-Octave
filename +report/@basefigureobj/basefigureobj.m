@@ -3,12 +3,7 @@ classdef basefigureobj < report.tabularobj
     properties
         handle = [];
     end
-    
-    events
-        openFigureWindow
-        newTempFile
-    end
-    
+        
     methods
         
         function This = basefigureobj(varargin)

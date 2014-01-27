@@ -1,4 +1,4 @@
-% tex  Include \LaTeX\ code or verbatim text input in report.
+% tex  Include \LaTeX\ code or verbatim input in report.
 %
 % Syntax with input specified in comment block
 % =============================================

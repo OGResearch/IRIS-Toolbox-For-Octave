@@ -10,11 +10,10 @@ function C = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 br = sprintf('\n');
-
 C = '';
 
 if This.options.centering
-    C = [C,'\centering',br,br];
+    C = [C,'\centering', br, br ];
 end
 
 C = [C,begintypeface(This)];
@@ -24,24 +23,23 @@ for i = 1 : nChild
     ch = This.children{i};
     
     % Add a comment before each of the first-level objects.
-    C = [C,br, ...
-        '%--------------------------------------------------',br, ...
-        '% Start of ',shortclass(ch),' ',ch.title,br]; %#ok<AGROW>
+    C = [C, br, ...
+        '%--------------------------------------------------', br, ...
+        '% Start of ',shortclass(ch),' ',ch.title]; %#ok<AGROW>
     
-    C = [C,begintypeface(ch)]; %#ok<AGROW>
+    C = [C, br ,begintypeface(ch)]; %#ok<AGROW>
     
     % Generate command-specific latex code.
-    c = latexcode(ch);
-    C = [C,c,'%',br]; %#ok<AGROW>
+    c1 = latexcode(ch);
+    C = [C,c1,'%']; %#ok<AGROW>
     
-    C = [C,endtypeface(ch)]; %#ok<AGROW>
-    C = [C,br]; %#ok<AGROW>
+    C = [C, br, endtypeface(ch)]; %#ok<AGROW>
     
     if i < nChild
-        C = [C,ch.options.separator,br]; %#ok<AGROW>
+        C = [C, br, ch.options.separator]; %#ok<AGROW>
     end
 end
 
-C = [C,endtypeface(This)];
+C = [C, br, endtypeface(This)];
 
 end

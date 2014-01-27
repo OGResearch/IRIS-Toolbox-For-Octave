@@ -1,5 +1,5 @@
-function C = speclatexcode(This)
-% speclatexcode  [Not a public function] \LaTeX\ code for texcommand objects.
+function C = speclatexcode(This,~)
+% speclatexcode  [Not a public function] \LaTeX\ code for texcommandobj objects.
 %
 % Backend IRIS function.
 % No help provided.

@@ -9,7 +9,6 @@ classdef texobj < report.userinputobj
             This = This@report.userinputobj(varargin{:});
             This.default = [This.default,{ ...
                 'separator','\medskip\par',@ischar,true, ...
-                'verbatim',false,@islogicalscalar,true, ...
                 }];
         end
         
@@ -24,6 +23,9 @@ classdef texobj < report.userinputobj
                 caller = dbstack('-completenames');
                 if length(caller) >= 4
                     This.userinput = preparser.grabcommentblk(caller(4));
+                else
+                    utils.warning('report:texobj', ...
+                        'No block comment to grab for text or LaTeX input.');
                 end
             end
         end

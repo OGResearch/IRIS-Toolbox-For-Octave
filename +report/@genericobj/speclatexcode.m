@@ -1,4 +1,4 @@
-function C = speclatexcode(This) %#ok<INUSD>
+function C = speclatexcode(~,~)
 % speclatexcode  [Not a public function] \LaTeX\ code for generic object.
 %
 % Backend IRIS function.

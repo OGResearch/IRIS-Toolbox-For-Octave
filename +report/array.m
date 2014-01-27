@@ -120,17 +120,17 @@
 % Greek letters printed in \LaTeX\ math mode.
 %
 %     x = report.new();
-%
+% 
 %     A = { ...
 %         'First row','{$\alpha$}',10000; ...
 %         '-----','',''; ...
 %         'Second row','{$\beta$}',20000; ...
 %     };
-%
+% 
 %     x.array('My Table',A);
-%
+% 
 %     x.publish('test1.pdf');
-%
+% 
 %     open test1.pdf;
 %
 % Example 2
@@ -146,15 +146,15 @@
 %         '$\alpha$','b','c', ...
 %         };
 % 
-%     x.array('My Table',A, ...
+%     x.array('Table with Plain Input Format (Default)',A, ...
 %         'heading=',{'A','B','$\Gamma$';'-----','',''});
 % 
-%     x.array('My Table',A, ...
+%     x.array('Table with LaTeX Input Format',A, ...
 %         'heading=',{'A','B','$\Gamma$';'-----','',''}, ...
 %         'inputFormat=','latex');
 % 
 %     x.publish('test2.pdf');
-%
+% 
 %     open test2.pdf;
 %
 

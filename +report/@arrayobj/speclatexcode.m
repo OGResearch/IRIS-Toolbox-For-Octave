@@ -9,11 +9,13 @@ function C = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
+br = sprintf('\n');
+C = '';
+
 % Test for hline.
 isHLineFunc = @(Row) strncmp(Row{1,1},'-----',5) ...
     && all(cellfun(@isempty,Row(1,2:end)));
 
-br = sprintf('\n');
 nCol = size(This.data,2);
 
 % Start of tabular and tabular spec.
@@ -40,12 +42,12 @@ This.ncol = nCol;
 This.nlead = 0;
 
 % Begin the tabular environment; `begin()` is defined in `tabularobj`.
-C = begin(This);
+C = [C,begin(This)];
 
 % The variable `colspec=` will be used to determine the position of the
 % content within a makebox.
 colSpec(colSpec == '|') = '';
-C = [C,br,'\hline',br];
+C = [C, br, '\hline' , br ];
 
 % User-supplied heading; it is the user's responsibility to make sure the
 % heading is a valid LaTeX tabular row.
@@ -64,9 +66,9 @@ if ~isempty(This.options.heading)
         end
         nHead = size(This.options.heading,1);
     else
-        C = [C,br,This.options.heading];
+        C = [C, br, This.options.heading];
         if This.options.long
-            C = [C,br,'\endhead'];
+            C = [C, br, '\endhead'];
         end
         nHead = 0;
     end
@@ -87,13 +89,13 @@ for iRow = 1 : nRow
         cRow = [cRow,' \\']; %#ok<AGROW>
     end
     if This.options.long && iRow == nHead 
-        cRow = [cRow,br,'\endhead']; %#ok<AGROW>
+        cRow = [cRow, br, '\endhead']; %#ok<AGROW>
     end
-    C = [C,br,cRow]; %#ok<AGROW>
+    C = [C, br, cRow]; %#ok<AGROW>
 end
 
 % End the tabular environment; `finish()` is defined in `tabularobj`.
-C = [C,br,finish(This)];
+C = [C, br, finish(This)];
 
 
 % Nested functions...
@@ -118,7 +120,7 @@ C = [C,br,finish(This)];
         if iCol < nCol
             cRow = [cRow,' & '];
         end
-    end % doOneCell().
+    end % doOneCell()
 
 
 end

@@ -18,11 +18,4 @@ if ~isempty(This.options.saveas)
     char2file(C,[fileTitle,'.tex']);
 end
 
-% Dump remaining footnotes into parent's footnote container.
-if ~isempty(This.footnoteContainer) && ~isempty(This.parent)
-    This.parent.footnoteContainer = [ ...
-        This.parent.footnoteContainer, ...
-        This.footnoteContainer];
-end
-
 end

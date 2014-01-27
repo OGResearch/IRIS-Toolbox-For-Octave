@@ -29,10 +29,6 @@ This.options = dbmerge(This.options,opt);
 
 %--------------------------------------------------------------------------
 
-Info = struct();
-Info.latexRun = 0;
-Info.figureHandle = [];
-
 % Create the temporary directory.
 doCreateTempDir();
 
@@ -45,11 +41,8 @@ templateFile = fullfile(thisDir,'report.tex');
 
 % Pass the publish options on to the report object and align objects
 % either of which can be a parent of figure.
-reportCode = latexcode(This);
-Info.figureHandle = This.figureHandle;
-
 c = file2char(templateFile);
-c = strrep(c,'$document$',reportCode);
+c = strrep(c,'$document$',latexcode(This));
 c = xxDocument(This,c,pkg);
 
 % Create a temporary tex name and save the LaTeX file.
@@ -66,11 +59,14 @@ if opt.compile
 end
 
 [latexPath,latexTitle] = fileparts(latexFile);
-This.tempFile{end+1} = fullfile(latexPath,[latexTitle,'.*']);
+addtempfile(This,fullfile(latexPath,[latexTitle,'.*']));
 
 if opt.cleanup
     cleanup(This);
 end
+
+% Copy output information fields to a struct.
+Info = outpstruct(This.hInfo);
 
 % Nested functions...
 
@@ -81,7 +77,7 @@ end
         if ischar(pkg)
             pkg = regexp(pkg,'\w+','match');
         end
-        if This.longTable
+        if This.hInfo.longTable
             pkg{end+1} = 'longtable';
         end
     end % doGetListOfPkg()
@@ -91,25 +87,27 @@ end
     function doCreateTempDir()
         % Assign the temporary directory name property.
         if isfunc(opt.tempdir)
-            This.tempDirName = opt.tempdir();
+            tempDir = opt.tempdir();
         else
-            This.tempDirName = opt.tempdir;
+            tempDir = opt.tempdir;
         end
         % Try to create the temp dir.
-        if ~exist(This.tempDirName,'dir')
-            status = mkdir(This.tempDirName);
+        if ~exist(tempDir,'dir')
+            status = mkdir(tempDir);
             if ~status
                 utils.error('report', ...
                     'Cannot create temporary directory ''%s''.', ...
-                    This.tempDirName);
+                    tempDir);
             end
         end
+        This.hInfo.tempDir = tempDir;
     end % doCreateTempDir()
 
 
 %**************************************************************************
     function doSaveLatexFile()
-        latexFile = [tempname(This.tempDirName),'.tex'];
+        tempDir = This.hInfo.tempDir;
+        latexFile = [tempname(tempDir),'.tex'];
         char2file(c,latexFile);
     end % doSaveLatexFile()
 
@@ -119,8 +117,8 @@ end
         % Use try-catch to make sure the helper files are deleted at the
         % end of `publish`.
         try
-            [pdfName,Info.latexRun] = ...
-                latex.compilepdf(latexFile,compilePdfOpt{:});
+            [pdfName,count] = latex.compilepdf(latexFile,compilePdfOpt{:});
+            This.hInfo.latexRun = count;
             movefile(pdfName,OutpFile);
         catch Error
             msg = regexprep(Error.message,'\s+',' ');

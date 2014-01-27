@@ -10,6 +10,7 @@ function C = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 br = sprintf('\n');
+C = '';
 
 if isempty(This.options.range)
     caption = This.title;
@@ -26,17 +27,18 @@ end
 % Start the tabular environment.
 This.ncol = length(This.options.range);
 This.options.colspec = colspec(This);
-C = begin(This);
+
+C = [C,begin(This)];
 
 % Create headline.
-C = [C,br,'\hline',br, ...
+C = [C, br, '\hline', br, ...
     headline(This), ...
-    '\\',br,'\hline',br];
+    '\\', br, '\hline', br ];
 
 % If this is a long table (with the latex longtable package used), mark the
 % end of headlines.
 if This.options.long
-    C = [C,'\endhead',br];
+    C = [C,'\endhead', br ];
 end
 
 % Cycle over children and create table rows.
@@ -46,9 +48,9 @@ for i = 1 : nChild
     C = [C,c1]; %#ok<AGROW>
     if isfield(This.children{i}.options,'separator') ...
             && ~isempty(This.children{i}.options.separator)
-        C = [C,br,This.children{i}.options.separator]; %#ok<AGROW>
+        C = [C, br, This.children{i}.options.separator]; %#ok<AGROW>
     end
-    C = [C,br]; %#ok<AGROW>
+    C = [C, br ]; %#ok<AGROW>
 end
 
 C = [C,finish(This)];

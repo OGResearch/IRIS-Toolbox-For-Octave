@@ -31,7 +31,7 @@ classdef tabularobj < report.genericobj
         function [This,varargin] = setoptions(This,varargin)
             This = setoptions@report.genericobj(This,varargin{:});
             if This.options.long
-                notify(This,'longTable');
+                This.hInfo.longTable = true;
             end
         end
         
