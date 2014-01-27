@@ -1,5 +1,5 @@
 function Dat = yy(varargin)
-% yy  IRIS serial date numbers for yearly dates.
+% yy  IRIS serial date number for yearly date.
 %
 % Syntax
 % =======
@@ -9,12 +9,13 @@ function Dat = yy(varargin)
 % Input arguments
 % ================
 %
-% * `Y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
 % Output arguments
 % =================
 %
-% * `Dat` [ numeric ] - IRIS serial date numbers representing the input years.
+% * `Dat` [ numeric ] - IRIS serial date numbers representing the yearly
+% date.
 %
 % Description
 % ============

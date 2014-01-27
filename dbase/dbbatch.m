@@ -140,7 +140,7 @@ for i = 1 : length(List0)
         if ~isempty(msg)
             fprintf(1,[ ...
                 '\n*** The above warning occurred when DBBATCH ', ...
-                'attempted to evaluate ''%s''.\n'],tmpexpr);
+                'attempted to evaluate ''%s''.\n'],msg);
         end
     catch Error
         errorlist(end+(1:2)) = {expr{i},Error.message}; %#ok<AGROW>

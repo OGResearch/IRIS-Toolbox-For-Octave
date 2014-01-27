@@ -1,5 +1,5 @@
 function D = dbclip(D,Range)
-% dbclip  Clip all tseries entries in a database down to the specified date range.
+% dbclip  Clip all tseries entries in database down to specified date range.
 %
 % Syntax
 % =======

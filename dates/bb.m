@@ -1,5 +1,5 @@
 function Dat = bb(varargin)
-% bb  IRIS serial date numbers for bimonthly dates.
+% bb  IRIS serial date number for bimonthly date.
 %
 % Syntax
 % =======
@@ -12,13 +12,14 @@ function Dat = bb(varargin)
 %
 % * `Y` [ numeric ] - Years.
 %
-% * `B` [ numeric ] - Bimonth; if omitted, first bimonth is assumed.
+% * `B` [ numeric ] - Bimonth; if omitted, first bimonth
+% (January-February) is assumed.
 %
 % Output arguments
 % =================
 %
-% * `Dat` [ numeric ] - IRIS serial date numbers representing the input
-% bi-months.
+% * `Dat` [ numeric ] - IRIS serial date numbers representing the
+% bimonthly date.
 %
 % Description
 % ============

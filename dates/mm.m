@@ -10,15 +10,15 @@ function Dat = mm(varargin)
 % Input arguments
 % ================
 %
-% * `Y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
-% * `M` [ numeric ] - Months; if omitted, first month (January) is assumed.
+% * `M` [ numeric ] - Month; if omitted, first month (January) is assumed.
 %
 % Output arguments
 % =================
 %
-% * `Dat` [ numeric ] - IRIS serial date numbers representing the input
-% months.
+% * `Dat` [ numeric ] - IRIS serial date number representing the monthly
+% date.
 %
 % Description
 % ============

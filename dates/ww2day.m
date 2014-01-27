@@ -28,6 +28,24 @@ function Day = ww2day(Dat,WDay)
 % Example
 % ========
 %
+% The first week of the year 2009 starts on Monday, 29 December 2008 (it is
+% the first week of 2009 by ISO 8601 definition, because Thursday of that
+% week falls in 2009).
+%
+% The following command returns the Thursday of that week (note that
+% `datestr` is a standard Matlab function, not an IRIS function),
+%
+%     firstWeek09 = ww(2009,1);
+%     datestr( ww2day(firstWeek09) )
+%     ans =
+%     01-Jan-2009
+%
+% while this command returns the Monday of the same week,
+%
+%     datestr( ww2day(firstWeek09,'Monday') )
+%     ans =
+%     29-Dec-2008
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
@@ -38,8 +56,7 @@ catch
     WDay = 'Thu';
 end
 
-days = {'Monday','Tuesday','Wednesday', ...
-    'Thursday','Friday','Saturday','Sunday'};
+days = {'Mon','Tue','Wed','Thu','Fri','Sat','Sun'};
 
 %--------------------------------------------------------------------------
 

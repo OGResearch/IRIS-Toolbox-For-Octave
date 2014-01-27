@@ -12,7 +12,7 @@ function NewDat = convert(Dat,ToFreq,varargin)
 % * `Dat` [ numeric ] - IRIS serial date numbers that will be converted to
 % the new frequency, `NewFreq`.
 %
-% * `NewFreq` [ `1` | `2` | `4` | `6` | `12` ] - New frequency to
+% * `NewFreq` [ `1` | `2` | `4` | `6` | `12` | `52` ] - New frequency to
 % which the dates `d1` will be converted.
 %
 % Output arguments

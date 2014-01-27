@@ -10,15 +10,15 @@ function Dat = qq(varargin)
 % Input arguments
 % ================
 %
-% * `Y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
-% * `Q` [ numeric ] - Quarters; if omitted, first quarter is assumed.
+% * `Q` [ numeric ] - Quarter; if omitted, first quarter is assumed.
 %
 % Output arguments
 % =================
 %
-% * `Dat` [ numeric ] - IRIS serial date numbers representing the input
-% quarterly dates.
+% * `Dat` [ numeric ] - IRIS serial date number representing the quarterly
+% date.
 %
 % Description
 % ============
