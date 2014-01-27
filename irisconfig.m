@@ -19,6 +19,8 @@ Config.extensions = {'model','s','q'};
 % Date preferences.
 Config.freqletters = 'YHQBMW';
 Config.dateformat = 'YFP';
+% Plot date formats for each frequency: Y, H, Q, B, M, W. Indeterminate
+% frequency is simply printed as a number.
 Config.plotdateformat = {'Y','Y:P','Y:P','Y:P','Y:P','Y:P'};
 Config.months = { ...
     'January','February','March','April','May','June', ...
