@@ -13,8 +13,6 @@ Config = struct();
 
 % Factory defaults.
 %------------------
-% Extensions associated with Matlab Editor.
-Config.extensions = {'model','s','q'};
 
 % Date preferences.
 Config.freqletters = 'YHQBMW';
@@ -135,7 +133,6 @@ Config.protected = { ...
 %**************************************************************************
     function doValidateConfig()
         Config.validate = struct( ...
-            'extensions',@iscellstr, ...
             'freqletters',@(x) (ischar(x) && numel(x) == numel(unique(x)) && numel(x) == 6) ...
             || isequal(x,'config'), ...
             'dateformat',@(x) ischar(x) || iscellstr(x), ...
@@ -161,7 +158,9 @@ Config.protected = { ...
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function FPath = xxLocateFile(File,Folder)
@@ -188,4 +187,4 @@ else
     FPath = findtexmf(File);
 end
 
-end % xxLocateFile().
+end % xxLocateFile()

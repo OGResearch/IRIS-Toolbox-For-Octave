@@ -73,15 +73,6 @@ function irisset(varargin)
 % This program is called to convert EPS graphics files to PDFs in
 % reports.
 %
-% Other options
-% ---------------
-%
-% * `'extensions='` [ cellstr | *{'model','s','q'}* ] - List of extensions
-% that are automatically associated with the Matlab editor. The advantage
-% of such associations is that the IRIS [model files](modellang/Contents),
-% [steady-state files](sstatelang/Contents), and
-% [quick-report](qreport/Contents) files get syntax-highlighted.
-%
 % Description
 % ============
 %

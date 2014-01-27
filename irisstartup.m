@@ -84,9 +84,6 @@ rehash();
 irisreset();
 config = irisget();
 
-% Add IRIS extensions to Matlab Editor.
-irisextensions();
-
 if ~shutup
     % Delete progress message.
     progress(1:end) = sprintf('\b');
