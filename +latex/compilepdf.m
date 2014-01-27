@@ -68,7 +68,9 @@ fprintf('\n');
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function IsRerun = xxRerunTest(Result,FTitle)
@@ -88,4 +90,4 @@ try %#ok<TRYNC>
     IsRerun = IsRerun || findFunc(c,'Rerun');
 end
 
-end % xxRerunTest().
+end % xxRerunTest()
