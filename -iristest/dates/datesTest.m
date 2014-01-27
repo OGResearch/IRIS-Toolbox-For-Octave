@@ -45,7 +45,7 @@ assertEqual(This, actual, expected) ;
 
 actual = dat2char(ww(2002,1), ...
     'dateFormat=','$YYYY-MM-DD') ;
-expected = '2001-12-31';
+expected = '2002-01-03';
 assertEqual(This, actual, expected) ;
 
 actual = dat2char(dd(2002,1,1), ...
