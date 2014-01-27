@@ -39,7 +39,7 @@ if numel(P) == 1 && isnan(P)
     std = nan(nStd,nPer,nData3,nData4);
 elseif ~isempty(P)
     P = timedom.fixcov(P);
-    nStd = min([size(X,1),size(P,1)]);
+    nStd = min(size(X,1),size(P,1));
     std = zeros(nStd,nPer,nData3,nData4);
     for i = 1 : nData3
         for j = 1 : nData4
