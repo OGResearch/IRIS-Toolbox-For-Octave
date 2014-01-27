@@ -136,7 +136,7 @@ classdef tseries < userdataobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         start = NaN;
@@ -181,7 +181,7 @@ classdef tseries < userdataobj
             % ========
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             This.Comment = {''};

@@ -38,7 +38,7 @@ classdef poster
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
     properties
         paramList = {};
@@ -74,7 +74,7 @@ classdef poster
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
                         
             if isempty(varargin)
                 return

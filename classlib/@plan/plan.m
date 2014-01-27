@@ -59,7 +59,7 @@ classdef plan < userdataobj & getsetobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         startDate = NaN;
@@ -122,7 +122,7 @@ classdef plan < userdataobj & getsetobj
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             This = This@getsetobj();

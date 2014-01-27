@@ -69,7 +69,7 @@ function varargout = dbsplit(D,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 lastRule = min([length(varargin),find(cellfun(@ischar,varargin),1)-1]);
 rule = varargin(1:lastRule);

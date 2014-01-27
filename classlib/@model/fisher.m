@@ -69,7 +69,7 @@ function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate required input arguments.
 pp = inputParser();

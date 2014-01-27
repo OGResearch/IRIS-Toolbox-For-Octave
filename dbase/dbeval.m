@@ -57,7 +57,7 @@ function varargout = dbeval(D,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) ...
         && (isstruct(varargin{1}) || isa(varargin{1},'modelobj'))

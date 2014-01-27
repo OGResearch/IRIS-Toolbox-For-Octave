@@ -56,7 +56,7 @@ function D = dbclip(D,Range)
 %         y: [4x1 tseries]
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('D',@isstruct);

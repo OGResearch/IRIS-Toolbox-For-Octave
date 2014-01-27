@@ -5,7 +5,7 @@ function Data = myoutpdata(This,Fmt,Rng,X,P,Names,AddDb) %#ok<INUSL>
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     P;

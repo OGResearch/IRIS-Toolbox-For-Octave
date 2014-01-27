@@ -7,7 +7,7 @@ function [Eqtn,EqtnLabel,EqtnLhs,EqtnRhs,EqtnSign, ...
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 EqtnLabel = cell(1,0);
 EqtnLhs = cell(1,0);

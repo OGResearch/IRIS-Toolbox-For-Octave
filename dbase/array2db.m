@@ -30,7 +30,7 @@ function D = array2db(X,RANGE,LIST,ISLOG,D)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 %#ok<*VUNUS>

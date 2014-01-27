@@ -77,7 +77,7 @@ function [This,Data,Inx,Crit] = sort(This,Data,SortBy,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('A',@(x) isa(x,'SVAR'));

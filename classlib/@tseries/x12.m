@@ -215,7 +215,7 @@ function varargout = x12(x,range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('tseries.x12',varargin{:});
 

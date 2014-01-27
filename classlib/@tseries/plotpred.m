@@ -57,7 +57,7 @@ function [H1,H2,H3,Range,Data,Grid] = plotpred(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(varargin)
     return

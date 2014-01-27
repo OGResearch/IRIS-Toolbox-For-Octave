@@ -2,7 +2,7 @@ function R = randsn(Dim,Ex,Sx,Tau)
 % randsn  Split-normally distributed random numbers.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

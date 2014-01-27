@@ -5,7 +5,7 @@ function [Obj,V,Est,PEst] = oolik(L0,L1,L2,L3,NObs,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
  

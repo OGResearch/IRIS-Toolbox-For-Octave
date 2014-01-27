@@ -69,7 +69,7 @@ function [y2,b,rho,u1,u2] = chowlin(y1,x2,range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
    range = Inf;

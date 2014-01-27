@@ -22,4 +22,4 @@
 %         x = rho*x{-1} %{ this is a valid block comment %} + epsilon;
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

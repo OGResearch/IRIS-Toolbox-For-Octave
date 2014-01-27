@@ -5,7 +5,7 @@ function DEqtn = mydiffeqtn(Eqtn,Mode,NmOcc,TmOcc,Log,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(TmOcc)
     TmOcc = zeros(size(NmOcc));

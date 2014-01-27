@@ -121,7 +121,7 @@ classdef model < modelobj & estimateobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
         % Name of the original model file.
@@ -482,7 +482,7 @@ classdef model < modelobj & estimateobj
             % expressions.
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             % Superclass constructors.
             This = This@modelobj();

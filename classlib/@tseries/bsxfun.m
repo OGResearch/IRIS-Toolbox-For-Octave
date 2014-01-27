@@ -38,7 +38,7 @@ function X = bsxfun(FUnc,X,Y)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate input arguments.
 pp = inputParser();

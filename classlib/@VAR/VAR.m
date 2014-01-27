@@ -86,7 +86,7 @@ classdef VAR < varobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         K = []; % Constant vector.
@@ -221,7 +221,7 @@ classdef VAR < varobj
             % `d.z`.
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@varobj(varargin{:});
             if nargin == 0

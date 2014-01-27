@@ -93,7 +93,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('S',@(x) isa(x,'systempriors'));

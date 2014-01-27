@@ -5,7 +5,7 @@ function X = mytrendarray(This,Id,TVec,Delog,iAlt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 
 % Note that `iAlt` is allowed to be greater that `nAlt`.

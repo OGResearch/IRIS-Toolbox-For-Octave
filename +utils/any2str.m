@@ -5,7 +5,7 @@ function C = any2str(X,Prec)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Prec; %#ok<VUNUS>

@@ -2,7 +2,7 @@ function [OutpFile,Info] = publish(This,OutpFile,varargin)
 % publish  Help provided in +report/publish.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % The following options passed down to latex.compilepdf:
 % * `'cd='` (obsolete)

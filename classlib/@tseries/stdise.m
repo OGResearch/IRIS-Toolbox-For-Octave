@@ -34,7 +34,7 @@ function [This,XMean,XStd] = stdise(This,Flag)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2
    Flag = 0;

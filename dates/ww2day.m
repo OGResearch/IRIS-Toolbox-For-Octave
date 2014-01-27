@@ -48,7 +48,7 @@ function Day = ww2day(Dat,WDay)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     WDay; %#ok<VUNUS>

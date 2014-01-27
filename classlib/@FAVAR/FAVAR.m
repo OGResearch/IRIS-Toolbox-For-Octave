@@ -34,7 +34,7 @@ classdef FAVAR < varobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         Mean = []; % Vector of estimated means used to standardise the input data.
@@ -114,7 +114,7 @@ classdef FAVAR < varobj
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@varobj(varargin{:});
             if length(varargin) == 1

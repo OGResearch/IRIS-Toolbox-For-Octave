@@ -5,7 +5,7 @@ function [MLL,Score,Info,Se2] = mydiffloglik(This,Data,Pri,LikOpt,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isfield(Opt,'progress')
     Opt.progress = false;

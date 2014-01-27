@@ -4,7 +4,7 @@ function varargout = ploteig(varargin)
 % See help on [`grfun.ploteig`](grfun/ploteig).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.ploteig(varargin{:});
 

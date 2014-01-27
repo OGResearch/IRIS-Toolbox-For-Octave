@@ -46,7 +46,7 @@ function varargout = scatter(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % AREA, BAR, PLOT, CONBAR, PLOTCMP, PLOTYY, STEM, SCATTER
 

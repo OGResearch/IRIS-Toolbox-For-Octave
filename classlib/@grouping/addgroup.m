@@ -30,7 +30,7 @@ function This = addgroup(This,GroupName,GroupContentsList)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser() ;
 pp.addRequired('G',@(x) isa(x,'grouping')) ;

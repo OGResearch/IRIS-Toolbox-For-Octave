@@ -5,7 +5,7 @@ function [f,count] = ffrf2(T,R,~,Z,H,~,U,Omg,freq,tolerance,maxiter)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(tolerance)
     tolerance = 1e-7;

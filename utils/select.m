@@ -38,7 +38,7 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 %     C0 = select(C,{'X','Y','Z','Z{-1}'});
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();

@@ -5,7 +5,7 @@ function [Discr,MaxAbsDiscr,Flag,List] = mychksstate(This,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % The input struct Opt is expected to include
 %

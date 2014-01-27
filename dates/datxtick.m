@@ -30,7 +30,7 @@ function datxtick(varargin)
 % See [`dat2str`](dates/dat2str) for date formatting options available.
 %
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 %
 % Description
 % ============
@@ -47,7 +47,7 @@ function datxtick(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishandle(varargin{1}))
     H = varargin{1};

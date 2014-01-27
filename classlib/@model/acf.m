@@ -107,7 +107,7 @@ function [CC,RR,List] = acf(This,varargin)
 %     [C,R] = acf(m,'filter','per >= 4 & per <= 40')
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.acf',varargin{:});
 

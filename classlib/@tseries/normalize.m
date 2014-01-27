@@ -4,7 +4,7 @@ function x = normalize(varargin)
 % See help on [`tseries/normalise`](tseries/normalise).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 

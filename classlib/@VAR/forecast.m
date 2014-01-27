@@ -54,7 +54,7 @@ function Outp = forecast(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 JData = [];
 if ~isempty(varargin) && ~ischar(varargin{1})

@@ -55,7 +55,7 @@ function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1};

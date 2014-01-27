@@ -5,7 +5,7 @@ function [Y,varargout] = x12(X,StartDate,Dummy,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 switch lower(Opt.mode)
     case {0,'mult','m'}

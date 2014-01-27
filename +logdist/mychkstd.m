@@ -3,7 +3,7 @@ function C = mychkstd(C)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if not( norm(triu(C)-C) < eps )
     % Compute square root matrix using Cholesky

@@ -135,7 +135,7 @@ function [S,field] = dat2str(Dat,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isstruct(varargin{1})
     opt = varargin{1};

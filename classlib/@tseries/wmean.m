@@ -34,7 +34,7 @@ function x = wmean(this,dates,beta)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2
     dates = Inf;

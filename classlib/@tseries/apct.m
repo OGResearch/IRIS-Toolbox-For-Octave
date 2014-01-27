@@ -25,7 +25,7 @@ function X = apct(X,Q)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Q; %#ok<VUNUS>

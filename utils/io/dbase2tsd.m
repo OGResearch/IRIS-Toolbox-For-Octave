@@ -21,7 +21,7 @@ function [saved,range] = dbase2tsd(d,fname,varargin)
 %     'inf' [ numeric | <a href="default.html">realmax()</a> ] Numerical value for Infs.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 default = {...
   'nan',1e15,@isnumericscalar, ...

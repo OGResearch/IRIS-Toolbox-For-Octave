@@ -5,7 +5,7 @@ function mydatxtick(H,Range,Time,Freq,UserRange,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if length(H) > 1
     for iH = H(:).'

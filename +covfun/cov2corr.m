@@ -11,7 +11,7 @@ function R = cov2corr(C,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % If called from within `acf` functions, std errors will be taken from
 % the first page of each parameterisation. Otherwise, std errors will

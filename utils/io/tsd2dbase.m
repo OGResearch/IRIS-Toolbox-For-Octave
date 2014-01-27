@@ -21,7 +21,7 @@ function d = tsd2dbase(fname,varargin)
 %     'replace' [ char | <a href="default.html">'_'</a> ] Replace other-than-word characters in time series names with this one.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % old syntax tsd2dbase(fname,d)
 if ~isempty(varargin) && isstruct(varargin{1})

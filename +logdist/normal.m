@@ -39,7 +39,7 @@ function F = normal(Mean,Std,W)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team and Boyan Bejanov.
+% -Copyright (c) 2007-2014 IRIS Solutions Team and Boyan Bejanov.
 
 %--------------------------------------------------------------------------
 

@@ -97,7 +97,7 @@ function [hfig,hax,hline,htit,plotdb] = qplot(cdfname,data,range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 p = inputParser();

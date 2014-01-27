@@ -73,7 +73,7 @@ function [This,NPath,EigVal] = solve(This,varargin)
 %
 
 % -IRIS Toolbox. 2008/10/20.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.solve',varargin{1:end});
 

@@ -5,7 +5,7 @@ function [C,Diffuse] = acovf(T,R,~,Z,H,~,U,Omg,Eig,Order)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

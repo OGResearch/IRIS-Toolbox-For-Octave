@@ -5,7 +5,7 @@ function Leg = plot(This,Ax)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Sergey Plotnikov.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Sergey Plotnikov.
 
 %--------------------------------------------------------------------------
 

@@ -5,7 +5,7 @@ function [OutpFmt,Range,Y,E,I] = mydatarequest(This,Data,Range,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 ise = nargout > 3;
 isi = nargout > 4;
