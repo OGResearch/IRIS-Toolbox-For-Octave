@@ -2,13 +2,13 @@
 
     \filetitle{dbextend}{Combine tseries observations from two or more databases}{dbase/dbextend}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 D = dbextend(D,D1,D2,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@ D = dbextend(D,D1,D2,...)
   in the tseries objects of the same name in the primary database.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -27,7 +27,7 @@ D = dbextend(D,D1,D2,...)
   \texttt{D} {[} struct {]} - Output database.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 If more than two databases are combined then they are processed
 one-by-one: the first is combined with the second, then the result is
@@ -49,6 +49,6 @@ combined with the third, and so on, using the following rules:
   object, the second input object is used.
 \end{itemize}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

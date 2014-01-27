@@ -15,7 +15,7 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 % * `selection` [ cell | cellstr | char ] - Selection of variables for
 % which the corresponding submatrices will be returned.
 %
-% Output arugments
+% Output arguments
 % =================
 %
 % * `X` [ numeric ] - Subblock of the original array `X` corresponding to

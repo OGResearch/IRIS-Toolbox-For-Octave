@@ -36,24 +36,24 @@ function xls2csv(InpFile,OutpFile,varargin)
 %
 % See also $irisroot/+thirdparty/xls2csv.js for copyright information.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % Save the first worksheets of the following XLS files to CSV files.
 %
 %     xls2csv('myDataFile.xls');
 %     xls2csv('C:\Data\myDataFile.xls');
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % Save the worksheet named 'Sheet3' to a CSV file; the name of the CSV file
 % will be `'myDataFile.csv'`.
 %
 %     xls2csv('myDataFile.xls',[],'sheet=','Sheet3');
 %
-% Example 3
-% ==========
+% Example
+% ========
 %
 % Save the second worksheet to a CSV file under the name
 % `'myDataFile_2.csv'`.

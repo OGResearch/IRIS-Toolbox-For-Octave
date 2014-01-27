@@ -71,8 +71,8 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 % case, use the dot or colon syntax: `$.0`, `$.1`, `$.2` for ower case, and
 % `$:0`, `$:1`, `$:2` for upper case.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % For each field (all assumed to be tseries) create a first difference, and
 % name the new series `DX` where `X` is the name of the original series.
@@ -82,8 +82,8 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 % Note that the original series will be presered in the database, together
 % with the newly created ones.
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % Suppose that in database `D` you want to seasonally adjust all time
 % series whose names end with `_u`, and give these seasonally adjusted series

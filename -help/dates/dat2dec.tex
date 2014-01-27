@@ -2,31 +2,36 @@
 
     \filetitle{dat2dec}{Convert dates to their decimal representations}{dates/dat2dec}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
-DEC = dat2dec(DAT)
+Dec = dat2dec(Dat)
+Dec = dat2dec(Dat,Pos)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{DAT} {[} numeric {]} - IRIS serial date number.
+  \texttt{Dat} {[} numeric {]} - IRIS serial date number.
+\item
+  \texttt{Pos} {[} \emph{\texttt{'start'}} \textbar{} \texttt{'centre'}
+  \textbar{} \texttt{'end'} {]} - Point within the period that will
+  represent the date; if omitted, \texttt{Pos} is set to
+  \texttt{'start'}.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{DEC} {[} numeric {]} - Decimal number representing the input
+  \texttt{Dec} {[} numeric {]} - Decimal number representing the input
   dates, computed as \texttt{year + (per-1)/freq}.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

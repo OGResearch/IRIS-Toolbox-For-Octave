@@ -2,13 +2,13 @@
 
     \filetitle{filter}{Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given}{FAVAR/filter}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [A,D,CC,F,U,E] = filter(A,D,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@
   \texttt{Range} {[} numeric {]} - Filter date range.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -39,7 +39,7 @@
   \texttt{E} {[} tseries {]} - Re-estimated structural residuals.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -73,13 +73,13 @@
   be re-used, not re-computed.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 It is the user's responsibility to make sure that \texttt{filter} and
 \texttt{forecast} called with \texttt{'persist='} set to true are valid,
 i.e.~that the previously computed FMSE matrices can be really re-used in
 the current run.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

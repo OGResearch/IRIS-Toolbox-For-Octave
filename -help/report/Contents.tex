@@ -1,7 +1,7 @@
 
     \foldertitle{report}{Report functions}{report/Contents}
 
-	\paragraph{New report}\label{new-report}
+	\paragraph{New report}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -11,7 +11,7 @@
   \href{report/copy}{\texttt{copy}} - Create a copy of a report object.
 \end{itemize}
 
-\paragraph{Compiling PDF report}\label{compiling-pdf-report}
+\paragraph{Compiling PDF report}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -20,7 +20,7 @@
   object.
 \end{itemize}
 
-\paragraph{Top-level objects}\label{top-level-objects}
+\paragraph{Top-level objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -40,12 +40,12 @@
 \item
   \href{report/array}{\texttt{array}} - Insert array with user data.
 \item
-  \href{report/tex}{\texttt{tex}} - Include \LaTeX~code or verbatim text
+  \href{report/tex}{\texttt{tex}} - Include \LaTeX~code or verbatim
   input in report.
 \end{itemize}
 
 \paragraph{Inspecting and maninpulating report
-objects}\label{inspecting-and-maninpulating-report-objects}
+objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -60,7 +60,7 @@ objects}\label{inspecting-and-maninpulating-report-objects}
   type within report object.
 \end{itemize}
 
-\paragraph{Figure objects}\label{figure-objects}
+\paragraph{Figure objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -68,7 +68,7 @@ objects}\label{inspecting-and-maninpulating-report-objects}
   \href{report/graph}{\texttt{graph}} - Add graph to figure.
 \end{itemize}
 
-\paragraph{Table and graph objects}\label{table-and-graph-objects}
+\paragraph{Table and graph objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -90,7 +90,7 @@ objects}\label{inspecting-and-maninpulating-report-objects}
   graph.
 \end{itemize}
 
-\paragraph{Structuring reports}\label{structuring-reports}
+\paragraph{Structuring reports}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -112,19 +112,24 @@ objects}\label{inspecting-and-maninpulating-report-objects}
 \end{itemize}
 
 \paragraph{Getting on-line help on report
-functions}\label{getting-on-line-help-on-report-functions}
+functions}
 
 \begin{verbatim}
 help report
 help report/function_name
 \end{verbatim}
 
-\paragraph{Generic options}\label{generic-options}
+\paragraph{Generic options}
 
 The following generic options can be used on any of the report objects.
 
 \begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'inputFormat='} {[} *\texttt{'plain'} \textbar{}
+  \texttt{'latex'} {]} - Input format for user supplied text strings
+  (such as captions, headings, footnotes, etc); \texttt{'latex'} means
+  they are assumed to be valid \LaTeX strings, and will be inserted
+  straight into the report code with no modification.
 \item
   \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - (Not
   inheritable from parent objects) Save the LaTeX code generated for the

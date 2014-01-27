@@ -456,16 +456,16 @@ classdef model < modelobj & estimateobj
             % existing model object is to change the `'removeLeads='` option. Of course,
             % you can always achieve the same by loading the original model file.
             %
-            % Example 1
-            % ==========
+            % Example
+            % ========
             %
             % Read in a model code file named `my.model`, and declare the model as
             % linear:
             %
             %     m = model('my.model','linear',true);
             %
-            % Example 2
-            % ==========
+            % Example
+            % ========
             %
             % Read in a model code file named `my.model`, declare the model as linear,
             % and assign some of the model parameters:

@@ -138,7 +138,7 @@ List = dbsave(D,FName,Dates,...)</code></pre>
 <h5 id="saving-user-data-with-the-database">Saving user data with the database</h5>
 <p>If your database contains field named <code>'userdata='</code>, this will be saved in the CSV file on a separate row. The <code>'userdata='</code> field can be any combination of numeric, char, and cell arrays and 1-by-1 structs.</p>
 <p>You can use the <code>'userdata='</code> field to describe the database or preserve any sort of metadata. To change the name of the field that is treated as user data, use the <code>'userData='</code> option.</p>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>Create a simple database with two time series.</p>
 <pre><code>d = struct();
 d.x = tseries(qq(2010,1):qq(2010,4),@rand);
@@ -156,7 +156,7 @@ d =
           x: [4x1 tseries]
           y: [4x1 tseries]</code></pre>
 <p>the database will preserve the <code>'userdata='</code> field.</p>
-<h5 id="example-2">Example 2</h5>
+<h4 id="example-1">Example</h4>
 <p>To change the field name under which you store your own user data, use the <code>'userdata='</code> option when running <code>dbsave</code>,</p>
 <pre><code>d = struct();
 d.x = tseries(qq(2010,1):qq(2010,4),@rand);
@@ -173,5 +173,5 @@ d =
             y: [4x1 tseries]</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

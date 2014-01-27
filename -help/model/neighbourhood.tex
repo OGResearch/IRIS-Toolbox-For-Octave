@@ -2,13 +2,13 @@
 
     \filetitle{neighbourhood}{Evaluate the local behaviour of the objective function around the estimated parameter values}{model/neighbourhood}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [D,FigH,AxH,ObjH,LikH,EstH,BH] = neighbourhood(M,PS,Neigh,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -24,7 +24,7 @@
   parameter estimates.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -55,7 +55,7 @@ The following output arguments are non-empty only if you choose
   \texttt{BH} {[} numeric {]} - Handles to the bounds plotted.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -68,12 +68,12 @@ The following output arguments are non-empty only if you choose
   these points will be used instead of those based on \texttt{Neigh}.
 \end{itemize}
 
-\paragraph{Plotting options}\label{plotting-options}
+\paragraph{Plotting options}
 
 See help on \href{grfun/plotneigh}{\texttt{grfun.plotneigh}} for options
 available when you choose \texttt{'plot='} true.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 In the output database, \texttt{D}, each parameter is a 1-by-3 cell
 array. The first cell is a vector of parameter values at which the local
@@ -84,6 +84,6 @@ values of the data likelihood component. The third cell is a vector of
 four numbers: the parameter estimate, the value of the objective
 function at optimum, the lower bound and the upper bound.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

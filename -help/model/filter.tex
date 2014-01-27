@@ -2,13 +2,13 @@
 
     \filetitle{filter}{Kalman smoother and estimator of out-of-likelihood parameters}{model/filter}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@
   \texttt{Range} {[} numeric {]} - Filter date range.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -47,7 +47,7 @@
   variables.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -141,7 +141,7 @@
 \end{itemize}
 
 \paragraph{Options for models with non-linearised
-equations}\label{options-for-models-with-non-linearised-equations}
+equations}
 
 \begin{itemize}
 \item
@@ -156,14 +156,14 @@ equations}\label{options-for-models-with-non-linearised-equations}
   \texttt{0}.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The \texttt{'ahead='} and \texttt{'rollback='} options cannot be
 combined with one another, or with multiple data sets, or with multiple
 parameterisations.
 
 \subparagraph{Initial conditions in time
-domain}\label{initial-conditions-in-time-domain}
+domain}
 
 By default (with \texttt{'initCond=' 'stochastic'}), the Kalman filter
 starts from the model-implied asymptotic distribution. You can change
@@ -186,13 +186,13 @@ following four different values:
   for how to view the list of required initial conditions.
 \item
   mean-mse struct (i.e.~struct with fields \texttt{.mean} and
-  \texttt{.mse}) -- a struct through which you supplye the mean and MSE
+  \texttt{.mse}) -- a struct through which you supply the mean and MSE
   for all the required initial conditions.
 \end{itemize}
 
 \subparagraph{Contributions of measurement variables to the estimates of
 all
-variables}\label{contributions-of-measurement-variables-to-the-estimates-of-all-variables}
+variables}
 
 Use the option \texttt{'returnCont=' true} to request the decomposition
 of measurement variables, transition variables, and shocks into the
@@ -209,6 +209,6 @@ difference between the actual path for a particular variable and the sum
 of the contributions (or their product in the case of log-varibles) is
 due to the effect of constant terms and deterministic trends.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

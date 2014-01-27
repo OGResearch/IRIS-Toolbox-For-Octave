@@ -2,13 +2,13 @@
 
     \filetitle{acf}{Autocovariance and autocorrelation functions for model variables}{model/acf}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [C,R,List] = acf(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@
   be computed.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@
   of \texttt{C} and \texttt{R}.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -65,7 +65,7 @@
   variables.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-Alt matrices,
 where N is the number of measurement and transition variables (including
@@ -77,7 +77,7 @@ parameterisations in the input model object, \texttt{M}. If
 N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and
 transition shocks in the model.
 
-\subparagraph{ACF with linear filters}\label{acf-with-linear-filters}
+\subparagraph{ACF with linear filters}
 
 You can use the option \texttt{'filter='} to get the ACF for variables
 as though they were filtered through a linear filter. You can specify
@@ -97,7 +97,7 @@ can use the following references:
   \texttt{'freq'}, the frequency.
 \end{itemize}
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 A first-difference filter (i.e.~computes the ACF for the first
 differences of the respective variables):
@@ -106,7 +106,7 @@ differences of the respective variables):
 [C,R] = acf(m,'filter=','1-L')
 \end{verbatim}
 
-\paragraph{Example 2}\label{example-2}
+\paragraph{Example}
 
 The cyclical component of the Hodrick-Prescott filter with the smoothing
 parameter, $lambda$, 1,600. The formula for the filter follows from the
@@ -118,7 +118,7 @@ classical Wiener-Kolmogorov signal extraction theory,
 [C,R] = acf(m,'filter','1600/(1600 + 1/abs((1-L)^2)^2)')
 \end{verbatim}
 
-\paragraph{Example 3}\label{example-3}
+\paragraph{Example}
 
 A band-pass filter with user-specified lower and upper bands. The
 band-pass filters can be defined either in frequencies or periodicities;

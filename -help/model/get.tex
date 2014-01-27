@@ -2,14 +2,14 @@
 
     \filetitle{get}{Query model object properties}{model/get}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 Ans = get(M,Query)
 [Ans,Ans,...] = get(M,Query,Query,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +18,7 @@ Ans = get(M,Query)
   \texttt{Query} {[} char {]} - Query to the model object.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -27,7 +27,7 @@ Ans = get(M,Query)
 \end{itemize}
 
 \paragraph{Valid queries to model
-objects}\label{valid-queries-to-model-objects}
+objects}
 
 This is the categorised list of queries to model objects. Note that
 letter \texttt{'y'} is used in various contexts to denote measurement
@@ -37,7 +37,7 @@ variables, \texttt{'d'} deterministic trend equations, \texttt{'l'}
 dynamic links, and \texttt{'r'} reporting equations. The property names
 are case insensitive.
 
-\subparagraph{Steady state}\label{steady-state}
+\subparagraph{Steady state}
 
 \begin{itemize}
 \item
@@ -80,7 +80,7 @@ are case insensitive.
 \end{itemize}
 
 \subparagraph{Variables, shocks, and
-parameters}\label{variables-shocks-and-parameters}
+parameters}
 
 \begin{itemize}
 \item
@@ -117,7 +117,7 @@ parameters}\label{variables-shocks-and-parameters}
   model code.
 \end{itemize}
 
-\subparagraph{Equations}\label{equations}
+\subparagraph{Equations}
 
 \begin{itemize}
 \item
@@ -133,7 +133,7 @@ parameters}\label{variables-shocks-and-parameters}
 \end{itemize}
 
 \subparagraph{First-order Taylor expansion of
-equations}\label{first-order-taylor-expansion-of-equations}
+equations}
 
 \begin{itemize}
 \item
@@ -149,7 +149,7 @@ equations}\label{first-order-taylor-expansion-of-equations}
 \end{itemize}
 
 \subparagraph{Descriptions and aliases of variables, parameters, and
-shocks}\label{descriptions-and-aliases-of-variables-parameters-and-shocks}
+shocks}
 
 \begin{itemize}
 \item
@@ -173,7 +173,7 @@ shocks}\label{descriptions-and-aliases-of-variables-parameters-and-shocks}
 \end{itemize}
 
 \subparagraph{Equation labels and
-aliases}\label{equation-labels-and-aliases}
+aliases}
 
 \begin{itemize}
 \item
@@ -196,7 +196,7 @@ aliases}\label{equation-labels-and-aliases}
   dynamic links (\texttt{l}), and reporting equations (\texttt{r}).
 \end{itemize}
 
-\subparagraph{Parameter values}\label{parameter-values}
+\subparagraph{Parameter values}
 
 \begin{itemize}
 \item
@@ -214,7 +214,7 @@ aliases}\label{equation-labels-and-aliases}
   deviations of shocks.
 \end{itemize}
 
-\subparagraph{Eigenvalues}\label{eigenvalues}
+\subparagraph{Eigenvalues}
 
 \begin{itemize}
 \item
@@ -232,7 +232,7 @@ aliases}\label{equation-labels-and-aliases}
 \end{itemize}
 
 \subparagraph{Model structure, solution,
-build}\label{model-structure-solution-build}
+build}
 
 \begin{itemize}
 \item
@@ -297,10 +297,10 @@ build}\label{model-structure-solution-build}
   \href{model/sspace}{\texttt{model/sspace}} function.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{First-order Taylor expansion of
-equations}\label{first-order-taylor-expansion-of-equations-1}
+equations}
 
 The expressions for symbolic/automatic derivatives of individual model
 equations returned by \texttt{'derivatives'} are expressions that
@@ -327,7 +327,7 @@ in the derivatives for non-stationary (unit-root) models. For stationary
 models, the lags and leads can be removed and each simply replaced with
 the current date of the respective variable.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 d = get(m,'derivatives');

@@ -340,7 +340,7 @@ for iLoop = 1 : nLoop
         predCols = iLoop;
     end
 
-    % Populate hdata output arugments.
+    % Populate hdata output arguments.
     if s.retPred
         doRetPred();
     end

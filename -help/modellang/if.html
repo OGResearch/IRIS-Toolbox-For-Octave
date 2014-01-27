@@ -132,7 +132,7 @@ code.LaTeX {
 <h4 id="description">Description</h4>
 <p>The <code>!if...!elseif...!else...!end</code> command works the same way as its counterpart in the Matlab programming language.</p>
 <p>Use the <code>!if...!else...!end</code> command to create branches or versions of the model code. Whether a block of code in a particular branch is used or discarded, depends on the condition after the opening <code>!if</code> command and the conditions after subsequent <code>!elseif</code> commands if present. The condition must be a Matlab expression that evaluates to true or false. The condition can refer to model parameters, or to other fields included in the database passed in through the option '<code>assign=</code>' in the <a href="../model/model.html"><code>model</code></a> function.</p>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <pre><code>!if B &lt; Inf
     % This is a linearised sticky-price Phillips curve.
     pi = A*pi{-1} + (1-A)*pi{1} + B*log(mu*rmc);
@@ -141,7 +141,7 @@ code.LaTeX {
     rmc = 1/mu;
 !end</code></pre>
 <p>If you set the parameter <code>B</code> to Inf in the parameter database when reading in the model file, then the flexible-price equatio, <code>rmc = 0</code>, is used and the Phillips curve equation discarded. To use the Phillips curve equation instead, you need to re-read the model file with <code>B</code> set to a number other than Inf. In this example, <code>B</code> needs to be, obviously, declared as a model parameter.</p>
-<h4 id="example-2">Example 2</h4>
+<h4 id="example-1">Example</h4>
 <pre><code>!if exogenous == true
     x = y;
 !else
@@ -161,5 +161,5 @@ m = model(&#39;my.model&#39;,&#39;assign=&#39;,P);</code></pre>
 <pre><code>m = model(&#39;my.model&#39;,&#39;exogenous=&#39;,true);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

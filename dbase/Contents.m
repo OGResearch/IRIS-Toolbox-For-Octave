@@ -27,7 +27,7 @@
 % =================
 %
 % * [`dbbatch`](dbase/dbbatch) - Run a batch job to create new database fields.
-% * [`dbclip`](dbase/dbclip) - Clip all tseries entries in a database down to the specified date range.
+% * [`dbclip`](dbase/dbclip) - Clip all tseries entries in database down to specified date range.
 % * [`dbcol`](dbase/dbcol) - Retrieve the specified column or columns from database entries.
 % * [`dbfun`](dbase/dbfun) - Apply a function to database fields.
 % * [`dbplot`](dbase/dbplot) - Plot from database.

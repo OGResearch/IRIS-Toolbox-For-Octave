@@ -145,8 +145,8 @@ code.LaTeX {
 </ul>
 <p>By default, the date row is printed as a leading row with dates formated using the option <code>'dateFormat='</code>. Alternatively, you can specify this option as a cell array of two strings. In that case, the dates will be printed in two rows. The first row will have a date string displayed and centred for every year, and the first cell of the <code>'dateFormat='</code> option will be used for formatting. The second row will have a date displayed for every period (i.e. every column), and the second cell of the <code>'dateFormat='</code> option will be used for formatting.</p>
 <h5 id="user-defined-structure-of-the-table-columns">User-defined structure of the table columns</h5>
-<p>Use can use the <code>'columnStruct='</code> option to define your own table columns. This gives you more flexibility than when using the <code>'range='</code> option in defining the content of the table.</p>
-<p>The option <code>'columnStruct='</code> must be a 1-by-N struct, where N is the number of columns you want in the table, with the following fields:</p>
+<p>Use the option <code>'colStruct='</code> to define your own table columns. This gives you more flexibility than when using the <code>'range='</code> option in defining the content of the table.</p>
+<p>The option <code>'colStruct='</code> must be a 1-by-N struct, where N is the number of columns you want in the table, with the following fields:</p>
 <ul>
 <li><p><code>'name='</code> - specifies the descriptor of the column that will be displayed in the headline;</p></li>
 <li><p><code>'func='</code> - specifies a function that will be applied to the input series; if <code>'func='</code> is empty, no function will be applied. The function must evaluate to a tseries or a numeric scalar.</p></li>
@@ -172,5 +172,5 @@ x.table(&#39;Second table&#39;, ...
 x.publish(&#39;myreport.pdf&#39;);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

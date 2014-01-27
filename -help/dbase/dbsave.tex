@@ -2,14 +2,14 @@
 
     \filetitle{dbsave}{Save database as CSV file}{dbase/dbsave}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 List = dbsave(D,FName)
 List = dbsave(D,FName,Dates,...)
 \end{verbatim}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -18,7 +18,7 @@ List = dbsave(D,FName,Dates,...)
   entries.
 \end{itemize}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -32,7 +32,7 @@ List = dbsave(D,FName,Dates,...)
   date range on which the tseries objects will be saved.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -70,12 +70,12 @@ List = dbsave(D,FName,Dates,...)
   file.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The data saved include also imaginary parts of complex numbers.
 
 \subparagraph{Saving user data with the
-database}\label{saving-user-data-with-the-database}
+database}
 
 If your database contains field named \texttt{'userdata='}, this will be
 saved in the CSV file on a separate row. The \texttt{'userdata='} field
@@ -86,7 +86,7 @@ You can use the \texttt{'userdata='} field to describe the database or
 preserve any sort of metadata. To change the name of the field that is
 treated as user data, use the \texttt{'userData='} option.
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 Create a simple database with two time series.
 
@@ -122,7 +122,7 @@ d =
 
 the database will preserve the \texttt{'userdata='} field.
 
-\subparagraph{Example 2}\label{example-2}
+\paragraph{Example}
 
 To change the field name under which you store your own user data, use
 the \texttt{'userdata='} option when running \texttt{dbsave},

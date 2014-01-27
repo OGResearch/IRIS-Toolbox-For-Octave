@@ -72,8 +72,8 @@ function Saved = dbsave(D,FName,varargin)
 % any sort of metadata. To change the name of the field that is treated as
 % user data, use the `'userData='` option.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % Create a simple database with two time series.
 %
@@ -101,8 +101,8 @@ function Saved = dbsave(D,FName,varargin)
 %
 % the database will preserve the `'userdata='` field.
 %
-% Example 2
-% -----------
+% Example
+% ========
 %
 % To change the field name under which you store your own user data, use
 % the `'userdata='` option when running `dbsave`,

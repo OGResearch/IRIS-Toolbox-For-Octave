@@ -156,9 +156,11 @@ code.LaTeX {
 <ul>
 <li><p><code>.latexRun</code> -- the total number of LaTeX compiler runs needed to resolve cross-references and other dependencies;</p></li>
 <li><p><code>.figureHandle</code> -- a vector of figure window handles created during the report production process, and not closed (i.e. still existing in the Matlab workspace); to keep figure windows open, use the figure object option <code>'close=' false</code>. If all <code>figure</code> and <code>userfigure</code> objects inside a report have <code>'close=' true</code> then <code>Info.figureHandle</code> will be empty.</p></li>
+<li><p><code>.tempDir</code> -- empty unless <code>publish</code> is called with <code>'cleanup=' false</code>; in that case, this is the name of a temporary directory in which all files are saved necessary to build the output PDF are saved.</p></li>
+<li><p><code>.tempFile</code> -- empty unless <code>publish</code> is called with <code>'cleanup=' false</code>; in that case, this is the list of all files (saved in the temporary directory) necessary to build the output PDF.</p></li>
 </ul>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

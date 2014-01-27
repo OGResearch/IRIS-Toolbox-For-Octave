@@ -126,7 +126,7 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'maxIter='</code> [ numeric | <em><code>0</code></em> ] - Maximum number of attempts when <code>'method'='draw'</code>.</p></li>
-<li><p><code>'method='</code> [ <em><code>'chol'</code></em> | <code>'draw'</code> | <code>'qr'</code> | <code>'svd'</code> ] - Method that will be used to identify structural residuals.</p></li>
+<li><p><code>'method='</code> [ <em><code>'chol'</code></em> | <code>'householder'</code> | <code>'qr'</code> | <code>'svd'</code> ] - Method that will be used to identify structural VAR and structural shocks.</p></li>
 <li><p><code>'nDraw='</code> [ numeric | <em><code>0</code></em> ] - Target number of successful draws when <code>'method'='draw'</code>.</p></li>
 <li><p><code>'reorder='</code> [ numeric | <em>empty</em> ] - Reorder VAR variables before identifying structural shocks, and bring the variables back in original order afterwards. Use the option '<code>backorderResiduals='</code> to control if also the structural shocks are to be brought back in original order.</p></li>
 <li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
@@ -147,5 +147,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

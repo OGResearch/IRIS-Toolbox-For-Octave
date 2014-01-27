@@ -2,13 +2,13 @@
 
     \filetitle{regress}{Centred population regression for selected model variables}{model/regress}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [B,CovRes,R2] = regress(M,Lhs,Rhs,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -25,7 +25,7 @@
   in the state-space vector.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -39,7 +39,7 @@
   (R-squared).
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -49,7 +49,7 @@
   objects or plain numeric arrays.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 Population regressions calculated by this function are always centred.
 This means the regressions are always calculated as if estimated on
@@ -61,7 +61,7 @@ The Lhs and Rhs variables that are log-variables must include
 is declared to be a log variable, then you must refer to \texttt{log(X)}
 or \texttt{log(X\{-1\})}.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 [B,C] = regress('log(R)',{'log(R{-1})','log(dP)'});

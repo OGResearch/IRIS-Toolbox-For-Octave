@@ -110,18 +110,20 @@ code.LaTeX {
 <div class="headline">Convert dates to their decimal representations</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>DEC = dat2dec(DAT)</code></pre>
+<pre><code>Dec = dat2dec(Dat)
+Dec = dat2dec(Dat,Pos)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><code>DAT</code> [ numeric ] - IRIS serial date number.</li>
+<li><p><code>Dat</code> [ numeric ] - IRIS serial date number.</p></li>
+<li><p><code>Pos</code> [ <em><code>'start'</code></em> | <code>'centre'</code> | <code>'end'</code> ] - Point within the period that will represent the date; if omitted, <code>Pos</code> is set to <code>'start'</code>.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>DEC</code> [ numeric ] - Decimal number representing the input dates, computed as <code>year + (per-1)/freq</code>.</li>
+<li><code>Dec</code> [ numeric ] - Decimal number representing the input dates, computed as <code>year + (per-1)/freq</code>.</li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

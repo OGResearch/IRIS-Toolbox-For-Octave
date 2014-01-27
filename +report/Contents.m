@@ -20,7 +20,7 @@
 % * [`matrix`](report/matrix) - Insert matrix or numeric array.
 % * [`modelfile`](report/modelfile) - Write formatted model file.
 % * [`array`](report/array) - Insert array with user data.
-% * [`tex`](report/tex) - Include \LaTeX\ code or verbatim text input in report.
+% * [`tex`](report/tex) - Include \LaTeX\ code or verbatim input in report.
 %
 % Inspecting and maninpulating report objects
 % ============================================

@@ -112,8 +112,8 @@
 % `X` is the width of an extra vertical space (in points) added between the
 % respective lines.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % These commands create a table with two rows separated by a horizontal
 % rule, and three columns in each of them. The middle columns will have
@@ -133,8 +133,8 @@
 % 
 %     open test1.pdf;
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % Use the option `'inputFormat='` to change the way the input strings are
 % interpreted. Compare the two tables in the resulting PDF.

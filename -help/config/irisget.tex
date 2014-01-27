@@ -2,14 +2,14 @@
 
     \filetitle{irisget}{Query current IRIS config options}{config/irisget}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 Value = irisget(Option)
 S = irisget()
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -18,7 +18,7 @@ S = irisget()
   option.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@ S = irisget()
   and their current values.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 You can view any of the modifiable options listed in
 \href{config/irisset}{\texttt{irisset}}, plus the following
@@ -49,7 +49,7 @@ non-modifiable ones (these cannot be changed by the user):
 When called without any input arguments, the \texttt{irisget} function
 returns a struct with all options and their current values.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 irisget('dateformat')

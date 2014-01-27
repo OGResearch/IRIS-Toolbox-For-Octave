@@ -2,3 +2,4 @@ syntax: glob
 .DS_Store
 hgignore*
 fort.6
+*.synctex.gz

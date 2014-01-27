@@ -11,7 +11,7 @@ function varargout = autoexogenise(This,varargin)
 %
 %     M = autoexogenise(M,A)
 %
-% Input arugments
+% Input arguments
 % ================
 %
 % * `M` [ model ] - Model object.

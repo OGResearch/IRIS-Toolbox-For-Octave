@@ -12,7 +12,7 @@ function Flag = isempty(This,varargin)
 % * `S` [ systempriors ] - System priors,
 % [`systempriors`](systempriors/Contents), object.
 %
-% Output arugments
+% Output arguments
 % =================
 %
 % * `Flag` [ true | false ] - True if the system priors object, `S`, is

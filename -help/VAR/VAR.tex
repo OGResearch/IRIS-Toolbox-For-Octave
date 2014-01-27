@@ -2,19 +2,19 @@
 
     \filetitle{VAR}{Create new, empty reduced-form VAR object}{VAR/VAR}
 
-	\paragraph{Syntax for plain VAR}\label{syntax-for-plain-var}
+	\paragraph{Syntax for plain VAR}
 
 \begin{verbatim}
 V = VAR(YNames)
 \end{verbatim}
 
-\paragraph{Syntax for panel VAR}\label{syntax-for-panel-var}
+\paragraph{Syntax for panel VAR}
 
 \begin{verbatim}
 V = VAR(YNames,GroupNames)
 \end{verbatim}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -27,13 +27,13 @@ V = VAR(YNames,GroupNames)
   function\_handle {]} - Names of groups of data for panel estimation.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 This function creates a new empty VAR object. It is usually followed by
 the \href{VAR/estimate}{\texttt{estimate}} function to estimate the VAR
 parameters on data.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 To estimate a VAR, you first need to create an empty VAR object
 specifying the variable names, and then run the \url{VAR/estimate}

@@ -2,14 +2,14 @@
 
     \filetitle{xls2csv}{Convert XLS file to CSV file}{dbase/xls2csv}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 xls2csv(InpFile)
 xls2csv(InpFile,OutpFile,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@ xls2csv(InpFile,OutpFile,...)
   derived from the XLS input file name.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -31,7 +31,7 @@ xls2csv(InpFile,OutpFile,...)
   can be either the sheet number or the sheet name.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 This function calls a third-party JavaScript (courtesy of Christopher
 West). The script uses an MS Excel application on the background, and
@@ -43,7 +43,7 @@ first worksheet found in the input XLS file; use the option
 
 See also \$irisroot/+thirdparty/xls2csv.js for copyright information.
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 Save the first worksheets of the following XLS files to CSV files.
 
@@ -52,7 +52,7 @@ xls2csv('myDataFile.xls');
 xls2csv('C:\Data\myDataFile.xls');
 \end{verbatim}
 
-\paragraph{Example 2}\label{example-2}
+\paragraph{Example}
 
 Save the worksheet named `Sheet3' to a CSV file; the name of the CSV
 file will be \texttt{'myDataFile.csv'}.
@@ -61,7 +61,7 @@ file will be \texttt{'myDataFile.csv'}.
 xls2csv('myDataFile.xls',[],'sheet=','Sheet3');
 \end{verbatim}
 
-\paragraph{Example 3}\label{example-3}
+\paragraph{Example}
 
 Save the second worksheet to a CSV file under the name
 \texttt{'myDataFile\_2.csv'}.

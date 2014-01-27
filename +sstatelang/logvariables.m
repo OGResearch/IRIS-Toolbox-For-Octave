@@ -7,8 +7,8 @@
 %         Variable_Name, Variable_Name
 %         Variable_Name
 %
-% Inverted syntax
-% ================
+% Syntax with inverted list
+% ==========================
 %
 %     !log_variables
 %         !all_but

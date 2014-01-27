@@ -193,8 +193,8 @@ function varargout = x12(x,range,varargin)
 % * `.ma` - a numeric array with the point estimates of the MA coefficients
 % (non-seasonal and seasonal).
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % If you wish to run `x12` on the entire range on which the input time
 % series is defined, and do not use any options, you can omit the second
@@ -205,8 +205,8 @@ function varargout = x12(x,range,varargin)
 %     xsa = x12(x,Inf);
 %     xsa = x12(x,get(x,'range'));
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % If you wish to specify some of the options, you have to enter a date
 % range or use `Inf`:

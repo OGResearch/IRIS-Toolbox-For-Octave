@@ -96,7 +96,7 @@ function D = dbload(varargin)
 %
 % Use the `'freq='` option whenever there is ambiguity in intepreting
 % the date strings, and IRIS is not able to determine the frequency
-% correctly (see Example 1).
+% correctly (see Example).
 %
 % Structure of CSV database files
 % --------------------------------
@@ -154,8 +154,8 @@ function D = dbload(varargin)
 %     +---------+---------+---------+--
 %     |         |         |         |
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % Typical example of using the `'freq='` option is a quarterly database
 % with dates represented by the corresponding months, such as a sequence

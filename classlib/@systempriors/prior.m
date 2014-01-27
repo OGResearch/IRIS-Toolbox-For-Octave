@@ -7,7 +7,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 %     S = prior(S,Expr,PriorFunc,...)
 %     S = prior(S,Expr,[],...)
 %
-% Input arugments
+% Input arguments
 % ================
 %
 % * `S` [ systempriors ] - System priors object.

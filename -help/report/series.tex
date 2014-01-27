@@ -2,13 +2,13 @@
 
     \filetitle{series}{Add new data to graph or table}{report/series}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 P.series(Cap,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -23,7 +23,7 @@ P.series(Cap,X,...)
 \end{itemize}
 
 \paragraph{Options for both table series and graph
-series}\label{options-for-both-table-series-and-graph-series}
+series}
 
 \begin{itemize}
 \item
@@ -39,7 +39,7 @@ series}\label{options-for-both-table-series-and-graph-series}
   when input data is a multivariate tseries object.
 \end{itemize}
 
-\paragraph{Options for table series}\label{options-for-table-series}
+\paragraph{Options for table series}
 
 \begin{itemize}
 \item
@@ -99,7 +99,7 @@ series}\label{options-for-both-table-series-and-graph-series}
   column of tables.
 \end{itemize}
 
-\paragraph{Options for graph series}\label{options-for-graph-series}
+\paragraph{Options for graph series}
 
 \begin{itemize}
 \item
@@ -123,15 +123,15 @@ series}\label{options-for-both-table-series-and-graph-series}
   series; see also comments on LHS-RHS plots in Description.
 \end{itemize}
 
-\paragraph{Generic options}\label{generic-options}
+\paragraph{Generic options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{Using the \texttt{'nan='}, \texttt{'inf='},
 \texttt{'pureZero='} and \texttt{'printedZero='}
-options}\label{using-the-nan-inf-purezero-and-printedzero-options}
+options}
 
 When specifying the LaTeX string for these options, bear in mind that
 the table entries are printed in the math model. This means that
@@ -140,7 +140,7 @@ text formatting command allowed within a math mode. Most frequently, it
 would be \texttt{'\textbackslash{}textnormal\{...\}'}.
 
 \subparagraph{Using the \texttt{'plotFunc='}
-option}\label{using-the-plotfunc-option}
+option}
 
 When you set the option to \texttt{'plotpred'}, the input data
 \texttt{X} (second input argument) must be a multicolumn tseries object
@@ -148,7 +148,7 @@ where the first column is the time series observations, and the second
 and further columns are its Kalman filter predictions as returned by the
 \texttt{filter} function.
 
-\subparagraph{Conditional formatting}\label{conditional-formatting}
+\subparagraph{Conditional formatting}
 
 The conditional format struct (or an array of structs) specified through
 the \texttt{'condFormat='} option must have two fields, \texttt{.test}
@@ -227,7 +227,7 @@ You can combine multiple tests and their correponding formats in one
 structure; they will be all applied to each entry in the specified
 order.
 
-\subparagraph{LHS-RHS plots}\label{lhs-rhs-plots}
+\subparagraph{LHS-RHS plots}
 
 The LHS-RHS report graphs are still an experimental feature.
 
@@ -240,7 +240,7 @@ command, or \texttt{'style='} in the respective
 \href{report/graph}{\texttt{graph}} command.
 
 \paragraph{Example of a conditional format
-structure}\label{example-of-a-conditional-format-structure}
+structure}
 
 \begin{verbatim}
 cf = struct();

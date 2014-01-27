@@ -2,13 +2,13 @@
 
     \filetitle{arwm}{Adaptive random-walk Metropolis posterior simulator}{poster/arwm}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [Theta,LogPost,AR,Scale,FinalCov] = arwm(Pos,NDraw,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +18,7 @@
   burn-in.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -39,7 +39,7 @@
   Scale(end)\^{}2*FinalCov.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -104,12 +104,12 @@
   - Target acceptance ratio.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 Use the \href{poster/stats}{\texttt{poster/stats}} function to process
 the simulated chain of parameters, and calculate selected statistics.
 
-\subparagraph{Parallelised ARWM}\label{parallelised-arwm}
+\subparagraph{Parallelised ARWM}
 
 Set \texttt{'nStep='} greater than \texttt{1}, and
 \texttt{'firstPrefetch='} smaller than \texttt{NDraw} to start a
@@ -127,7 +127,7 @@ turning down adaptation before pre-fetching starts, i.e.~by setting
 \texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
 obviously, by re-setting the random number generator).
 
-\paragraph{References}\label{references}
+\paragraph{References}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -140,6 +140,6 @@ obviously, by re-setting the random number generator).
   Series in Economics and Finance No. 706.
 \end{enumerate}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 
