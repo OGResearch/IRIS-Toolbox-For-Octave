@@ -112,7 +112,7 @@ for i = 1 : nx
             stat = warning();
             warning('off'); %#ok<WNOFF>
             delete([tmptitle,'.*']);
-            if ismac()
+            if ismac() && exist('fort.6','file')
                 delete('fort.6');
             end
             warning(stat);
