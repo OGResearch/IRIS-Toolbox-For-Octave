@@ -13,7 +13,7 @@ classdef codecreator < handle
             end
         end
         function This = nl(This,varargin)
-            if isempty(varargin) || ~isnumericscalar(varargin{1})
+            if isempty(varargin) || ~is.numericscalar(varargin{1})
                 nNl = 1;
             else
                 nNl = varargin{1};
@@ -22,7 +22,7 @@ classdef codecreator < handle
             This.code = [This.code,nl(ones([1,nNl]))];
         end
         function [This,varargin] = indent(This,varargin)
-            if isempty(varargin) || ~isnumericscalar(varargin{1})
+            if isempty(varargin) || ~is.numericscalar(varargin{1})
                 nIndent = 1;
             else
                 nIndent = varargin{1};

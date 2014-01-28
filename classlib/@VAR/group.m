@@ -40,7 +40,7 @@ function This = group(This,Grp)
 
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Group',@(x) ischar(x) || isnumericscalar(x) || islogical(x));
+pp.addRequired('Group',@(x) ischar(x) || is.numericscalar(x) || islogical(x));
 pp.parse(This,Grp);
 
 %--------------------------------------------------------------------------

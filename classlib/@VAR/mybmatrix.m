@@ -9,7 +9,7 @@ function [B,Flag] = mybmatrix(This,Alt)
 
 try
     Alt; %#ok<VUNUS>
-    if isnumericscalar(Alt)
+    if is.numericscalar(Alt)
         n3 = 1;
     else
         n3 = size(This.A,3);

@@ -67,7 +67,7 @@ for i = 1 : length(list)
             value = regexprep(value,',\s*',', ');
             value = strtrim(value);
             value = sprintf('"%s"',value);
-        elseif isnumericscalar(value)
+        elseif is.numericscalar(value)
             value = sprintf('%g',value); %#ok<PFCEL>
         else
             value = '???';

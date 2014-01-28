@@ -80,7 +80,7 @@ options = passvalopt('tseries.chowlin',varargin{:});
 %**************************************************************************
 
 f1 = get(y1,'freq');
-if isnumericscalar(x2)
+if is.numericscalar(x2)
    f2 = x2;
    x2 = [];
 else

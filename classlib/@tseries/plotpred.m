@@ -64,7 +64,7 @@ if isempty(varargin)
 end
 
 % Handle to axes object.
-if isnumericscalar(varargin{1}) && ishandle(varargin{1})
+if is.numericscalar(varargin{1}) && ishandle(varargin{1})
     ax = varargin{1};
     varargin(1) = [];
 else

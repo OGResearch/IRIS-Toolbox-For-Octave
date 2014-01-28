@@ -104,7 +104,7 @@ for i = find(isnan(X))
     namePos = find(namePos,1);
     % `lag` is a negative number.
     lag = sscanf(lag,'{%g}');
-    if ~isnumericscalar(lag) || ~isfinite(lag)
+    if ~is.numericscalar(lag) || ~isfinite(lag)
         continue
     end
     % `maxlag` is a negative number.

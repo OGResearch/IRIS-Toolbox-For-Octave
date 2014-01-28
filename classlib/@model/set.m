@@ -126,7 +126,7 @@ end
         switch query
             
             case 'nalt'
-                if isnumericscalar(Value) ...
+                if is.numericscalar(Value) ...
                         && Value > 0 && Value == round(Value)
                     This = alter(This,Value);
                 else
@@ -150,7 +150,7 @@ end
                 end
                 
             case 'torigin'
-                if isnumericscalar(Value) && Value == round(Value)
+                if is.numericscalar(Value) && Value == round(Value)
                     This.torigin = Value;
                 else
                     Validated = false;
@@ -160,7 +160,7 @@ end
                 This = userdata(This,Value);
                 
             case 'epsilon'
-                if isnumericscalar(Value) && Value > 0
+                if is.numericscalar(Value) && Value > 0
                     This.epsilon = Value;
                 else
                     Validated = false;

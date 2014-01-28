@@ -125,7 +125,7 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % Validate required inputs.
 pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@isnumericscalar);
+pp.addRequired('NDraw',@is.numericscalar);
 pp.parse(This,NDraw);
 
 % Parse options.

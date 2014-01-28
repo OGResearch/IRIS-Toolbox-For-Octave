@@ -23,7 +23,7 @@ Eqtn = char(Eqtn);
 Eqtn = sydney.mysymb2eqtn(Eqtn);
 
 x = sscanf(Eqtn,'%g');
-if isnumericscalar(x) && isfinite(x)
+if is.numericscalar(x) && isfinite(x)
     Eqtn = x;
 end
 

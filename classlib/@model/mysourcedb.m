@@ -8,7 +8,7 @@ function Outp = mysourcedb(This,Range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 nCol = [];
-if ~isempty(varargin) && isnumericscalar(varargin{1})
+if ~isempty(varargin) && is.numericscalar(varargin{1})
     nCol = varargin{1};
     varargin(1) = [];
 end

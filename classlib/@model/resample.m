@@ -94,7 +94,7 @@ pp = inputParser();
 pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
 pp.addRequired('Range',@(x) isnumeric(x));
-pp.addRequired('NDraw',@(x) isnumericscalar(x));
+pp.addRequired('NDraw',@(x) is.numericscalar(x));
 pp.addRequired('J',@(x) isempty(x) || isstruct(x));
 pp.parse(This,Inp,Range,NDraw,J);
 

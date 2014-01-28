@@ -131,18 +131,18 @@ br = sprintf('\n');
 switch lower(opt.template)
     case 'paper'
         template = file2char(fullfile(irisroot(),'+latex','paper.tex'));
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1.1;
         end
     case 'present'
         template = file2char(fullfile(irisroot(),'+latex','present.tex'));
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1;
         end
         opt.toc = false;
     otherwise
         template = file2char(opt.template);
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1;
         end
 end

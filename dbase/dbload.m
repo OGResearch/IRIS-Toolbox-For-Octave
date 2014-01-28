@@ -314,7 +314,7 @@ doPopulateDatabase();
         end
         
         % Date frequency conversion.
-        if ~isempty(opt.convert) && isnumericscalar(opt.convert)
+        if ~isempty(opt.convert) && is.numericscalar(opt.convert)
             opt.convert = {opt.convert};
         end
     end % doOptions()
@@ -336,7 +336,7 @@ doPopulateDatabase();
             else
                 line = file(start:eol-1);
             end
-            if isnumericscalar(opt.namerow) && rowCount < opt.namerow
+            if is.numericscalar(opt.namerow) && rowCount < opt.namerow
                 doMoveToNextEol();
                 continue
             end

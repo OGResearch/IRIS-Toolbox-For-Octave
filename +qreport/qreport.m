@@ -241,7 +241,7 @@ for i = 1 : length(Q)
         if ch.isTransform
             for k = 1 : nSeries
                 % First, calculate deviations, then apply a tranformation function.
-                if isnumericscalar(Opt.deviationfrom)
+                if is.numericscalar(Opt.deviationfrom)
                     t = Opt.deviationfrom;
                     if isa(series{k},'tseries')
                         if ~isfinite(series{k}(t))
@@ -304,7 +304,7 @@ for i = 1 : length(Q)
                 ch.caption = [sprintf('%s & ',ch.eval{1:end-1}),ch.eval{end}];
                 if ch.isTransform
                     func = '';
-                    if isnumericscalar(Opt.deviationfrom)
+                    if is.numericscalar(Opt.deviationfrom)
                         func = [', Dev from ',dat2char(Opt.deviation)];
                     end
                     if isa(Opt.transform,'function_handle')

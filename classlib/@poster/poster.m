@@ -101,7 +101,7 @@ classdef poster
                 This.logPriorFunc = cell([1,n]); %#ok<MCSUP>
                 This.lowerBounds = -inf([1,n]); %#ok<MCSUP>
                 This.upperBounds = inf([1,n]); %#ok<MCSUP>
-            elseif isnumericscalar(List)
+            elseif is.numericscalar(List)
                 n = List;
                 This.paramList = cell([1,n]);
                 for i = 1 : n

@@ -42,7 +42,7 @@ end
 
 pp = inputParser();
 pp.addRequired('X',@is.tseries);
-pp.addRequired('K',@isnumericscalar);
+pp.addRequired('K',@is.numericscalar);
 pp.parse(X,K);
 
 %--------------------------------------------------------------------------

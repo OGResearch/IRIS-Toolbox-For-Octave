@@ -81,7 +81,7 @@ pp = inputParser();
 pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp.addRequired('Range',@isnumeric);
-pp.addRequired('NDraw',@(x) isnumericscalar(x) && x == round(x) && x >= 0);
+pp.addRequired('NDraw',@(x) is.numericscalar(x) && x == round(x) && x >= 0);
 pp.parse(This,Inp,Range,NDraw);
 
 % Panel VAR.

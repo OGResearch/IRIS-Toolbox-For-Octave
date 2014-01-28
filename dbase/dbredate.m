@@ -37,8 +37,8 @@ function D = dbredate(D,OldDate,NewDate)
 
 pp = inputParser();
 pp.addRequired('d',@isstruct);
-pp.addRequired('oldDate',@isnumericscalar);
-pp.addRequired('newDate',@isnumericscalar);
+pp.addRequired('oldDate',@is.numericscalar);
+pp.addRequired('newDate',@is.numericscalar);
 pp.parse(D,OldDate,NewDate);
 
 %--------------------------------------------------------------------------

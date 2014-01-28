@@ -50,7 +50,7 @@ end
 % Parse input arguments.
 pp = inputParser();
 pp.addRequired('Text',@ischar);
-pp.addRequired('Open',@isnumericscalar);
+pp.addRequired('Open',@is.numericscalar);
 pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
 pp.parse(C,Open,Fill);
 

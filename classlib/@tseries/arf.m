@@ -70,7 +70,7 @@ end
 pp = inputParser();
 pp.addRequired('X',@is.tseries);
 pp.addRequired('A',@isnumeric);
-pp.addRequired('Z',@(x) isnumericscalar(x) || is.tseries(x));
+pp.addRequired('Z',@(x) is.numericscalar(x) || is.tseries(x));
 pp.addRequired('RANGE',@isnumeric);
 pp.parse(X,A,Z,Range);
 

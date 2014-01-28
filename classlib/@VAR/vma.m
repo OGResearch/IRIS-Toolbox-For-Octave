@@ -30,7 +30,7 @@ function Phi = vma(This,N)
 
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('N',@isnumericscalar);
+pp.addRequired('N',@is.numericscalar);
 pp.parse(This,N);
 
 %--------------------------------------------------------------------------

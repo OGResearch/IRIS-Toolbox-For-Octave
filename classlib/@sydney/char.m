@@ -224,7 +224,7 @@ fmt = '%.15g';
 if ischar(A)
     % Name of a variable.
     C = A;
-elseif isnumericscalar(A)
+elseif is.numericscalar(A)
     % Constant.
     if A == 0
         C = '0';

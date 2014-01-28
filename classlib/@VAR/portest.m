@@ -45,10 +45,10 @@ function [Stat,Crit] = portest(This,Inp,H,varargin)
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.addRequired('H',@isnumericscalar);
+pp.addRequired('H',@is.numericscalar);
 pp.parse(This,Inp,H);
 
-if length(varargin) == 1 && isnumericscalar(varargin{1})
+if length(varargin) == 1 && is.numericscalar(varargin{1})
     % Bkw compatibility.
     varargin = [{'level='},varargin];
 end

@@ -224,7 +224,7 @@ end
 
 % Nonlinearised simulation through the option `'nonlinearise='`.
 if isNonlinOpt
-    if isnumericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
+    if is.numericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
         qStart = 1;
         qEnd = opt.nonlinearise;
     else

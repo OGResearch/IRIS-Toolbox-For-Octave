@@ -337,7 +337,7 @@ classdef genericobj < handle
                     Valid = false;
                 end
                 if ~isempty(c.date) ...
-                        && ~isnumericscalar(c.date)
+                        && ~is.numericscalar(c.date)
                     Valid = false;
                 end
             end

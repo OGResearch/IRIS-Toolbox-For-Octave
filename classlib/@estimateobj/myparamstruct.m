@@ -43,10 +43,10 @@ E = rmfield(E,Pri.plist);
             % Starting value.
             if isstruct(InitVal) ...
                     && isfield(InitVal,name) ...
-                    && isnumericscalar(InitVal.(name))
+                    && is.numericscalar(InitVal.(name))
                 p0 = InitVal.(name);
             elseif ischar(InitVal) && strcmpi(InitVal,'struct') ...
-                    && ~isempty(spec) && isnumericscalar(spec{1})
+                    && ~isempty(spec) && is.numericscalar(spec{1})
                 p0 = spec{1};
             else
                 p0 = NaN;
@@ -60,13 +60,13 @@ E = rmfield(E,Pri.plist);
             % Lower and upper bounds
             %------------------------
             % Lower bound.
-            if length(spec) > 1 && isnumericscalar(spec{2})
+            if length(spec) > 1 && is.numericscalar(spec{2})
                 pl = spec{2};
             else
                 pl = -Inf;
             end
             % Upper bound.
-            if length(spec) > 2  && isnumericscalar(spec{3})
+            if length(spec) > 2  && is.numericscalar(spec{3})
                 pu = spec{3};
             else
                 pu = Inf;

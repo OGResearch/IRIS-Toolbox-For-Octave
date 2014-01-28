@@ -63,7 +63,7 @@ end
             x = Inp{1};
             if isa(func,'function_handle')
                 x = func(x);
-                if ~isa(x,'tseries') && ~isnumericscalar(x)
+                if ~isa(x,'tseries') && ~is.numericscalar(x)
                     utils.error('report', ...
                         ['Function %s fails to evaluate to tseries or numeric scalar ', ...
                         'when applied to this series: ''%s''.'], ...
@@ -73,8 +73,8 @@ end
             if isa(x,'tseries')
                 x = x(date);
             end
-            if ~isnumericscalar(x)
-                if ~isa(x,'tseries') && ~isnumericscalar(x)
+            if ~is.numericscalar(x)
+                if ~isa(x,'tseries') && ~is.numericscalar(x)
                     utils.error('report', ...
                         ['Value in column #%g ', ...
                         'fails evalute to numeric scalar for this series: ''%s''.'], ...

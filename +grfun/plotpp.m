@@ -703,7 +703,7 @@ end
     function doDescribeInit()
         try
             ing = InG.(list{iGraph}){1};
-            if isnumericscalar(ing)
+            if is.numericscalar(ing)
                 Tit{iGraph} = [Tit{iGraph}, ...
                     sprintf('\nstart: %g',ing)];
             end

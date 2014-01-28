@@ -57,7 +57,7 @@ end
         try %#ok<TRYNC>
             c = C0(2:end-1); % Strip out the enclosing curly braces.
             xx = xxProtectedEval(c); % Use protected eval to avoid conflict with workspace.
-            if isnumericscalar(xx) && xx == round(xx)
+            if is.numericscalar(xx) && xx == round(xx)
                 if round(xx) == 0
                     C = '';
                     return

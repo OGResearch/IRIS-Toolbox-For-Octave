@@ -173,7 +173,7 @@ classdef sydney
         end
 
         function Flag = isnumber(Z)
-            Flag = isempty(Z.func) && isnumericscalar(Z.args);
+            Flag = isempty(Z.func) && is.numericscalar(Z.args);
         end
         
     end
