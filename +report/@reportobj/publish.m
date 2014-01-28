@@ -86,7 +86,7 @@ Info = outpstruct(This.hInfo);
 %**************************************************************************
     function doCreateTempDir()
         % Assign the temporary directory name property.
-        if isfunc(opt.tempdir)
+        if is.func(opt.tempdir)
             tempDir = opt.tempdir();
         else
             tempDir = opt.tempdir;

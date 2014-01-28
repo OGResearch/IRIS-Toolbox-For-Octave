@@ -339,7 +339,7 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
-pp.addRequired('M',@ismodel);
+pp.addRequired('M',@is.model);
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));

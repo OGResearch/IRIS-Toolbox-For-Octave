@@ -68,10 +68,10 @@ end
 [expr,tit] = preparser.labeledexpr(list);
 empty = cellfun(@isempty,tit);
 tit(empty) = expr(empty);
-isvar = cellfun(@isvarname,expr);
+isVar = cellfun(@isvarname,expr);
 
 % Vectorise s/s expressions.
-expr(~isvar) = strfun.vectorise(expr(~isvar));
+expr(~isVar) = strfun.vectorise(expr(~isVar));
 
 % Cycle over expressions to evaluate them.
 for i = 1 : nlist

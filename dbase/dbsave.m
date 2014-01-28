@@ -211,7 +211,7 @@ for i = 1 : numel(List)
     
     name = List{i};
     
-    if istseries(D.(name))
+    if is.tseries(D.(name))
         tmpData = D.(name)(Dates);
         tmpComment = comment(D.(name));
         savedInx(i) = true;

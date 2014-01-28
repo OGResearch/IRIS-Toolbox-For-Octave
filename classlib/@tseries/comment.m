@@ -72,7 +72,7 @@ function This = comment(This,varargin)
 
 if ~isempty(varargin)
     pp = inputParser();
-    pp.addRequired('x',@istseries);
+    pp.addRequired('x',@is.tseries);
     pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
     pp.parse(This,varargin{1});
 end

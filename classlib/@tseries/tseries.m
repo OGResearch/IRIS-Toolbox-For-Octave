@@ -191,7 +191,7 @@ classdef tseries < userdataobj
                 return
             end
             % Tseries input.
-            if nargin == 1 && istseries(varargin{1})
+            if nargin == 1 && is.tseries(varargin{1})
                 This = varargin{1};
                 return
             end
@@ -234,7 +234,7 @@ classdef tseries < userdataobj
             pp = inputParser();
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
+                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
             
@@ -250,7 +250,7 @@ classdef tseries < userdataobj
             % Create data from a function handle or function name.
             if ischar(usrData) && strcmpi(usrData,'lintrend')
                 usrData = (1 : nPer).';
-            elseif ischar(usrData) || isfunc(usrData)
+            elseif ischar(usrData) || is.func(usrData)
                 try
                     usrData = feval(usrData,[nPer,1]);
                 catch %#ok<CTCH>

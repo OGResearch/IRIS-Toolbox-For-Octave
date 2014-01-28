@@ -37,7 +37,7 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('Q',@isnumericscalar);
 pp.parse(X,Q);
 

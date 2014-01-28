@@ -106,7 +106,7 @@ elseif isstruct(X)
     Inx(isnan(Inx)) = [];
     list = fieldnames(X);
     for i = 1 : length(list)
-        if istseries(X.(list{i}))
+        if is.tseries(X.(list{i}))
             X.(list{i}) = X.(list{i}){:,Inx};
         end
     end

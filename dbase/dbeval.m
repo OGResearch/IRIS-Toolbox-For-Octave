@@ -69,8 +69,8 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('D',@(x) isstruct(x) || ismodel(x));
-pp.addRequired('SS',@(x) isstruct(x) || ismodel(x));
+pp.addRequired('D',@(x) isstruct(x) || is.model(x));
+pp.addRequired('SS',@(x) isstruct(x) || is.model(x));
 pp.addRequired('Expr', ...
     @(x) isempty(x) || iscellstr(x{1}) || iscellstr(x));
 pp.parse(D,SS,varargin);

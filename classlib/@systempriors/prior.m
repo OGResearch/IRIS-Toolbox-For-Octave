@@ -98,7 +98,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 pp = inputParser();
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
-pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
+pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
 pp.parse(This,Def,PriorFunc);
 
 opt = passvalopt('systempriors.prior',varargin{:});

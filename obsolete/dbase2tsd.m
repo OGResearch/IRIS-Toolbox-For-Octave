@@ -46,7 +46,7 @@ saved = {};
 range = [Inf,-Inf];
 for i = 1 : length(list)
   % not a time series
-  if ~istseries(d.(list{i}))
+  if ~is.tseries(d.(list{i}))
     continue
   end
   si = size(d.(list{i}));

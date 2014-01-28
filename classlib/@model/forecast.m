@@ -692,7 +692,7 @@ end
         end
         % Add comments to time series.
         for i = find(this.nametype <= 3)
-            if isfield(d,this.name{i}) && istseries(d.(this.name{i}))
+            if isfield(d,this.name{i}) && is.tseries(d.(this.name{i}))
                 if ~isempty(comments)
                     temp = comments;
                     nanIndex = ~cellfun(@ischar,temp);

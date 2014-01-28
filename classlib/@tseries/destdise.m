@@ -31,7 +31,7 @@ function This = destdise(This,XMean,XStd)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('XMean',@isnumeric);
 pp.addRequired('XStd',@isnumeric);
 pp.parse(This,XMean,XStd);

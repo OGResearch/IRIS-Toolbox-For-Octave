@@ -192,7 +192,7 @@ if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
 end
 
 pp = inputParser();
-pp.addRequired('model',@ismodel);
+pp.addRequired('model',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));

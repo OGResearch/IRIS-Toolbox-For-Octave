@@ -68,9 +68,9 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('A',@isnumeric);
-pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
+pp.addRequired('Z',@(x) isnumericscalar(x) || is.tseries(x));
 pp.addRequired('RANGE',@isnumeric);
 pp.parse(X,A,Z,Range);
 
@@ -105,7 +105,7 @@ if nPer <= order
 end
 
 % Get exogenous (z) data.
-if istseries(Z)
+if is.tseries(Z)
     zdata = mygetdata(Z,Range);
     zdata = zdata(:,:);
     % expand zdata in 2nd dimension if needed

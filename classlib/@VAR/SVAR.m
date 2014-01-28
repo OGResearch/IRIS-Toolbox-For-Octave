@@ -16,7 +16,7 @@ end
 % Parse required input arguments.
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
+pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || is.tseries(x) ...
     || isstruct(x));
 pp.parse(V,Data);
 

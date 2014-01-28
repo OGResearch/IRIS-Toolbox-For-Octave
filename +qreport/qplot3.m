@@ -101,7 +101,7 @@ function [hfig,hax,hline,htit,plotdb] = qplot(cdfname,data,range,varargin)
 
 % Parse required input arguments.
 p = inputParser();
-p.addRequired('filename',@(x) ischar(x) || isfunc(x));
+p.addRequired('filename',@(x) ischar(x) || is.func(x));
 p.addRequired('dbase',@(x) isstruct(x));
 p.addRequired('range',@isnumeric);
 p.parse(cdfname,data,range);
@@ -197,7 +197,7 @@ for i = 1 : length(gd)
             [x{:}] = dbeval(data,tmpformula{:});
             if ~isinf(options.round) && ~isnan(options.round)
                 for ix = 1 : length(x)
-                    if istseries(x{ix})
+                    if is.tseries(x{ix})
                         x{ix} = round(x{ix},options.round);
                     elseif isnumeric(x{ix})
                         factor = 10^options.round;
@@ -313,14 +313,14 @@ function [h,range,data] = plot_(hax,range,x,tag,Legend,options,varargin)
 switch tag
     case '!--' % Line graph.
         data = [x{:}];
-        if istseries(data)
+        if is.tseries(data)
             [h,range,data] = plot(range,data,varargin{:});
         else
             h = plot(range,data,varargin{:});
         end
     case '!::' % Bar graph.
         data = [x{:}];
-        if istseries(data)
+        if is.tseries(data)
             [h,range,data] = bar(range,[x{:}],varargin{:});
         else
             h = plot(range,data,varargin{:});

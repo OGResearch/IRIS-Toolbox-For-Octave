@@ -72,7 +72,7 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('x',@istseries);
+pp.addRequired('x',@is.tseries);
 pp.addRequired('band',@(x) isnumeric(x) && length(x) == 2);
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Band,Range);

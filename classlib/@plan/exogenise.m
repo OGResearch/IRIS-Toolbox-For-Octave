@@ -54,7 +54,7 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@isplan);
+pp.addRequired('P',@is.plan);
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('WEIGHT', ...

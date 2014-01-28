@@ -30,6 +30,12 @@ function X = loadstruct(FName)
 
 %--------------------------------------------------------------------------
 
+% ##### Jan 2014 OBSOLETE and scheduled for removal.
+utils.warning('obsolete', ...
+    ['The function loadstruct() is obsolete, and', ...
+    'will be removed from IRIS in a future release. ', ...
+    'Use save() and load(), or saveasto() and loadasfrom() instead.']);
+
 % Load all entries.
 % Because keywords are loaded with underscores, fix their names.
 list = who('-file',FName);

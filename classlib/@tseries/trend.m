@@ -52,7 +52,7 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Range);
 

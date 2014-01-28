@@ -20,7 +20,7 @@ set(Ax,'nextPlot','add');
 pt = nan(1,nint);
 stdata = stdata.*This.options.factor;
 asym = This.options.asym;
-if istseries(asym)
+if is.tseries(asym)
     asym = asym(time);
     asym(isnan(asym)) = 1;
 end

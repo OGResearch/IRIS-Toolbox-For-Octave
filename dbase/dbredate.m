@@ -44,7 +44,7 @@ pp.parse(D,OldDate,NewDate);
 %--------------------------------------------------------------------------
 
 list = fieldnames(D);
-tseriesInx = structfun(@istseries,D);
+tseriesInx = structfun(@is.tseries,D);
 structInx = structfun(@isstruct,D);
 
 % Cycle over all tseries objects.

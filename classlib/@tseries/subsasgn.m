@@ -83,7 +83,7 @@ function This = xxSetData(This,S,Y)
 [This,S,dates,freqTest] = xxExpand(This,S);
 
 % Get RHS tseries object data.
-if istseries(Y)
+if is.tseries(Y)
     Y = mygetdata(Y,dates);
 end
 

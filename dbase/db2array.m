@@ -165,7 +165,7 @@ for i = 1 : nList
         NotFound(i) = true;
         continue
     end
-    if istseries(D.(name))
+    if is.tseries(D.(name))
         Xi = [];
         doGetTseriesData();
         doAddData();

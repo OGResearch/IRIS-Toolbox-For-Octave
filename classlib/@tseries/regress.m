@@ -66,8 +66,8 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('y',@istseries);
-pp.addRequired('x',@istseries);
+pp.addRequired('y',@is.tseries);
+pp.addRequired('x',@is.tseries);
 pp.addRequired('range',@isnumeric);
 pp.parse(Y,X,Range);
 

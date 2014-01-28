@@ -52,7 +52,7 @@ function [This,Outp] = filter(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
+pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isstruct(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);

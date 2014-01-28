@@ -1,4 +1,4 @@
-function X = bsxfun(FUnc,X,Y)
+function X = bsxfun(Func,X,Y)
 % bsxfunc  Standard BSXFUN implemented for tseries objects.
 %
 % Syntax
@@ -42,10 +42,10 @@ function X = bsxfun(FUnc,X,Y)
 
 % Validate input arguments.
 pp = inputParser();
-pp.addRequired('Func',@isfunc);
+pp.addRequired('Func',@is.func);
 pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
 pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
-pp.parse(FUnc,X,Y);
+pp.parse(Func,X,Y);
 
 %--------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ else
     start = Y.start;
 end
 
-data = bsxfun(FUnc,data1,data2);
+data = bsxfun(Func,data1,data2);
 
 if size(data,1) ~= nPer
     utils.error('tseries', ...

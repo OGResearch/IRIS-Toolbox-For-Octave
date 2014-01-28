@@ -460,7 +460,7 @@ isYGrid = Opt.grid;
 switch Tag
     case '!--' % Line graph.
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = plot(AA,Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
             plot(Range,Data,varargin{:});
@@ -470,14 +470,14 @@ switch Tag
         end
     case '!::' % Bar graph.
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = bar(Range,[X{:}],varargin{:});
         else
             bar(Range,Data,varargin{:});
         end
     case '!ii' % Stem graph
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = stem(Range,[X{:}],varargin{:});
         else
             stem(Range,Data,varargin{:});

@@ -69,7 +69,7 @@ end
 % Remove time subscripts from non-tseries field names in the equations.
 list = fieldnames(D);
 for i = 1 : length(list)
-    if ~istseries(D.(list{i})) && ~any(strcmp(This.lhs,list{i}))
+    if ~is.tseries(D.(list{i})) && ~any(strcmp(This.lhs,list{i}))
         This.rhs = strrep(This.rhs,sprintf('d.%s(t,:)',list{i}),sprintf('d.%s',list{i}));
     end
 end

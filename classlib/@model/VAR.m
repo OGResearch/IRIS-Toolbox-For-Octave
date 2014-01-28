@@ -41,7 +41,7 @@ function V = VAR(This,Select,Range,varargin)
 
 % Parse required arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Select,Range);

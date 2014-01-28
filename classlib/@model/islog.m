@@ -31,7 +31,7 @@ function Flag = islog(This,Name)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
 pp.parse(This,Name);
 

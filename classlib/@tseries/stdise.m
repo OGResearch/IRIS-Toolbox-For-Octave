@@ -41,7 +41,7 @@ if nargin < 2
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('Flag',@(x) isequal(x,0) || isequal(x,1) );
 pp.parse(This,Flag);
 

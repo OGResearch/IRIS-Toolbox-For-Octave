@@ -135,7 +135,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 
 % Parse required inputs.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Inp,Range);
@@ -224,7 +224,7 @@ end
 
 % Nonlinearised simulation through the option `'nonlinearise='`.
 if isNonlinOpt
-    if isnumericscalar(opt.nonlinearise) && isround(opt.nonlinearise)
+    if isnumericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
         qStart = 1;
         qEnd = opt.nonlinearise;
     else

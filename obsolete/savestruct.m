@@ -27,6 +27,12 @@ function savestruct(FName,X)
 
 %--------------------------------------------------------------------------
 
+% ##### Jan 2014 OBSOLETE and scheduled for removal.
+utils.warning('obsolete', ...
+    ['The function savestruct() is obsolete, and', ...
+    'will be removed from IRIS in a future release. ', ...
+    'Use save() and load(), or saveasto() and loadasfrom() instead.']);
+
 % Allow both savestruct(fname,d) and savestruct(d,fname).
 if (isobject(FName) || isstruct(FName) || iscell(FName)) && ischar(X)
     [FName,X] = deal(X,FName);
@@ -49,6 +55,6 @@ end
 X.SAVESTRUCT_CLASS = cl; %#ok<STRNU>
 
 % Save individual fields of underlying struct.
-save(FName,'-struct','x','-mat');
+save(FName,'-struct','X','-mat');
 
 end

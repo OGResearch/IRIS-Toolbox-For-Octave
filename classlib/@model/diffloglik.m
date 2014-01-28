@@ -64,7 +64,7 @@ function [MinusLogLik,Grad,Hess,V] ...
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('model',@ismodel);
+pp.addRequired('model',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));

@@ -205,7 +205,7 @@ function C = xxArgs2Char(X,Flag)
 
 if isa(X,'sydney')
     C = char(X,Flag);
-elseif isfunc(X)
+elseif is.func(X)
     C = ['@',func2str(X)];
 elseif ischar(X)
     C = ['''',X,''''];

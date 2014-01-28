@@ -71,7 +71,7 @@ for j = 1 : numel(list)
     end
     x = d.(list{j});
     y = s.(list{j});
-    if istseries(x) && istseries(y)
+    if is.tseries(x) && is.tseries(y)
         if get(x,'freq') == get(y,'freq')
             % Two non-empty tseries with the same frequency.
             d.(list{j}) = [x;y];

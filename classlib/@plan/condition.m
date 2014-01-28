@@ -35,7 +35,7 @@ function This = condition(This,List,Dates)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('p',@isplan);
+pp.addRequired('p',@is.plan);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('dates',@isnumeric);
 pp.parse(This,List,Dates);

@@ -78,7 +78,7 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
+pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp.addRequired('Range',@isnumeric);
 pp.addRequired('NDraw',@(x) isnumericscalar(x) && x == round(x) && x >= 0);
