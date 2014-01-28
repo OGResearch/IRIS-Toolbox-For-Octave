@@ -53,7 +53,7 @@
 \contentsline {paragraph}{Output arguments}{17}{section*.63}
 \contentsline {paragraph}{Description}{17}{section*.64}
 \contentsline {section}{\numberline {3}Getting on-line help}{18}{section.3}
-\contentsline {part}{Part\nobreakspace {}II\ ---\ \hspace {1em}Modelling}{20}{part.2}
+\contentsline {part}{Part\nobreakspace {}II\ ---\ \hspace {1em}Model development and operation}{20}{part.2}
 \contentsline {section}{\numberline {4}Model file language}{21}{section.4}
 \contentsline {paragraph}{Variables, parameters, substitutions and functions}{21}{section*.65}
 \contentsline {paragraph}{Equations}{21}{section*.66}

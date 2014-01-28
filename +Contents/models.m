@@ -1,4 +1,4 @@
-% models  Modelling.
+% models  Model development and operation.
 %
 % * [modellang](modellang/Contents) - Model file language.
 %

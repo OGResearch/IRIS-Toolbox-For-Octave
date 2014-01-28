@@ -21,7 +21,7 @@
     <tocitem target="gettinghelp/Contents.html" image="HelpIcon.USER_GUIDE">Getting on-line help
     </tocitem>
 </tocitem>
-<tocitem target="Contents/models.html" image="HelpIcon.USER_GUIDE">Modelling
+<tocitem target="Contents/models.html" image="HelpIcon.USER_GUIDE">Model development and operation
     <tocitem target="modellang/Contents.html" image="HelpIcon.USER_GUIDE">Model file language
         <tocitem target="modellang/alias.html" image="HelpIcon.BLOCK">!! &#8212; Beginning of aliasing in descriptions and labels</tocitem>
         <tocitem target="modellang/sstateversion.html" image="HelpIcon.BLOCK">!! &#8212; Steady-state version of an equation</tocitem>
