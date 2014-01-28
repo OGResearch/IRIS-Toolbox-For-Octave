@@ -2,7 +2,7 @@
 %
 % * [sessions](Contents/sessions) - IRIS sessions.
 %
-% * [models](Contents/models) - Model development and operation.
+% * [models](Contents/models) - Modelling.
 %
 % * [VARs](Contents/VARs) - Multivariate time series analysis.
 %

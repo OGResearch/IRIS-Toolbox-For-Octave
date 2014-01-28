@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  27 JAN 2014 17:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  28 JAN 2014 11:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**IRIS_Man.tex
+**IRIS_Man
 (./IRIS_Man.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
@@ -986,7 +986,7 @@ Here is how much of TeX's memory you used:
  10856 multiletter control sequences out of 15000+600000
  22911 words of font info for 53 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,12n,33p,786b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,12n,33p,782b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
  </Users/myself/Library/texlive/2013/texmf-var/fonts/pk/ljfour/public/concmath-
 fonts/xccmi5.600pk> </Users/myself/Library/texlive/2013/texmf-var/fonts/pk/ljfo
@@ -1016,7 +1016,7 @@ fb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sform8.pfb><
 /usr/local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sfoti10.pfb></us
 r/local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/
 local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on IRIS_Man.pdf (438 pages, 1157831 bytes).
+Output written on IRIS_Man.pdf (438 pages, 1157938 bytes).
 PDF statistics:
  8387 PDF objects out of 8907 (max. 8388607)
  7780 compressed objects within 78 object streams
