@@ -45,19 +45,21 @@ oldPos = get(Ax,'position');
 Fig = get(Ax,'parent');
 set(Fig,'units','normalized');
 
+margin = 0.001;
+
 if ischar(varargin{1})
     where = varargin{1};
     varargin(1) = []; 
     switch where
         case 'bottom'
-            bottomPos = 0.001;
+            bottomPos = margin;
             if ~isempty(varargin)
                 bottomPos = varargin{1};
                 varargin(1) = []; %#ok<NASGU>
             end
             newPos = [0.5-oldPos(3)/2,bottomPos,oldPos(3:4)];
         case 'top'
-            topPos = 0.999;
+            topPos = 1 - margin;
             if length(varargin) > 1
                 topPos = varargin{1};
                 varargin(1) = []; %#ok<NASGU>

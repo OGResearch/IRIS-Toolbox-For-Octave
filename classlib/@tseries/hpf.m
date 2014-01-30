@@ -194,7 +194,6 @@ else
     Range = Inf;
 end
 
-    
 if isempty(Range)
     varargout{1} = empty(X);
     varargout{2} = empty(X);
