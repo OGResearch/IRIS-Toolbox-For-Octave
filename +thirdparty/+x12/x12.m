@@ -65,7 +65,7 @@ Outp = cell(1,nx);
 Err = cell(1,nx);
 Y = nan(nPer+kb+kf,nx);
 for i = 1 : nx
-    [~,tmptitle] = fileparts(tempname(pwd()));
+    [~,tmpTitle] = fileparts(tempname(pwd()));
     first = find(~isnan(X(:,i)),1);
     last = find(~isnan(X(:,i)),1,'last');
     data = X(first:last,i);
@@ -82,27 +82,27 @@ for i = 1 : nx
         end
         offset = first - 1;
         [aux,fcast,bcast,ok] = ...
-            xxRunX12(thisDir,tmptitle,data,StartDate+offset,Dummy,Opt);
+            xxRunX12(thisDir,tmpTitle,data,StartDate+offset,Dummy,Opt);
         for j = 1 : nOutp
             varargout{j}(first:last,i) = aux(:,j);
         end
         % Append forecasts and backcasts to original data.
         Y(first:last+kb+kf,i) = [bcast;data;fcast];
         % Catch output file.
-        if exist([tmptitle,'.out'],'file')
-            Outp{i} = xxReadOutputFile([tmptitle,'.out']);
+        if exist([tmpTitle,'.out'],'file')
+            Outp{i} = xxReadOutputFile([tmpTitle,'.out']);
         end
         % Catch error file.
-        if exist([tmptitle,'.err'],'file')
-            Err{i} = xxReadOutputFile([tmptitle,'.err']);
+        if exist([tmpTitle,'.err'],'file')
+            Err{i} = xxReadOutputFile([tmpTitle,'.err']);
             iErrMsg = regexp(Err{i},'(?<=ERROR:).*','match','once');
             iErrMsg = regexprep(iErrMsg,'[\r\n]+','\n');
             iErrMsg = regexprep(iErrMsg,'[ \t]+',' ');
             iErrMsg = regexprep(iErrMsg,'\n[ \t\n]+','\n');
         end
         % Catch ARIMA model specification.
-        if exist([tmptitle,'.mdl'],'file')
-            Mdl(i) = xxReadModel([tmptitle,'.mdl'],Outp{i});
+        if exist([tmpTitle,'.mdl'],'file')
+            Mdl(i) = xxReadModel([tmpTitle,'.mdl'],Outp{i});
         end
         % Delete all X12 files.
         if ~isempty(Opt.saveas)
@@ -111,7 +111,7 @@ for i = 1 : nx
         if Opt.cleanup
             stat = warning();
             warning('off'); %#ok<WNOFF>
-            delete([tmptitle,'.*']);
+            delete([tmpTitle,'.*']);
             if ismac() && exist('fort.6','file')
                 delete('fort.6');
             end
@@ -119,10 +119,12 @@ for i = 1 : nx
         end
         if ~ok
             utils.warning('x12', ...
-                ['Unable to read X12 output file(s). This is most likely because ', ...
-                'X12 failed to estimate an appropriate seasonal model or failed to ', ...
-                'converge. Run X12 with three output arguments ', ...
-                'to capture the X12 output and error messages.\n\n', ...
+                ['Unable to read at least on the X13 output file(s). ', ...
+                'The most likely cause is ', ...
+                'that X13 failed to estimate an appropriate ', ...
+                'seasonal model or failed to ', ...
+                'converge. Run X13 with three output arguments ', ...
+                'to capture the X13 output and error messages.\n\n', ...
                 'X13 says:%s'], ...
                 iErrMsg);
         end
@@ -165,7 +167,7 @@ varargout{nOutp+3} = Mdl;
 %**************************************************************************
     function doSaveAs()
         [fPath,fTitle] = fileparts(Opt.saveas);
-        list = dir([tmptitle,'.*']);
+        list = dir([tmpTitle,'.*']);
         for ii = 1 : length(list)
             [~,~,fExt] = fileparts(list(ii).name);
             copyfile(list(ii).name,fullfile(fPath,[fTitle,fExt]));
@@ -247,8 +249,8 @@ if status ~= 0
 end
 
 % Read in-sample results.
-nper = length(Data);
-[Data,dataOk] = xxGetOutputData(TempTitle,nper,Opt.output,2);
+nPer = length(Data);
+[Data,dataOk] = xxGetOutputData(TempTitle,nPer,Opt.output,2);
 
 % Try to read forecasts.
 fcastOk = true;
@@ -265,9 +267,6 @@ if kb > 0
 end
 
 Ok = dataOk && fcastOk && bcastOk;
-if ~Ok
-    return
-end
 
 if flipSign
     Data = -Data;
@@ -375,17 +374,18 @@ end % xxSpecFile()
 
 
 %**************************************************************************
-function [Data,Flag] = xxGetOutputData(TempTitle,NPer,Output,NCol)
+function [Data,Flag] = xxGetOutputData(TempTitle,NPer,Outp,NCol)
 
-if ischar(Output)
-    Output = {Output};
+if ischar(Outp)
+    Outp = {Outp};
 end
 Flag = true;
 Data = zeros(NPer,0);
 format = repmat(' %f',[1,NCol]);
-for ioutput = 1 : length(Output)
-    output = Output{ioutput};
-    fId = fopen(sprintf('%s.%s',TempTitle,output),'r');
+nOutp = length(Outp);
+for i = 1 : nOutp
+    iOutp = Outp{i};
+    fId = fopen(sprintf('%s.%s',TempTitle,iOutp),'r');
     if fId > -1
         fgetl(fId); % skip first 2 lines
         fgetl(fId);
