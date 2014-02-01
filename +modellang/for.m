@@ -51,8 +51,8 @@
 % numeric vector, a char vector, or a cell array of numerics and/or
 % strings.
 % 
-% Example 1
-% ==========
+% Example
+% ========
 % 
 % In a model code file, instead of writing a number of definitions of
 % growth rates like the following ones
@@ -70,8 +70,8 @@
 %         d? = ?/?{-1} - 1;
 %     !end
 % 
-% Example 2
-% ==========
+% Example
+% ========
 % 
 % We redo the example 1, but using now the fact that you can have as many
 % variable declaration sections or equation sections as you wish. The
@@ -110,8 +110,8 @@
 % Obviously, you now do not include the growth rate variables in the
 % section where you declare the rest of the variables.
 % 
-% Example 3
-% ==========
+% Example 
+% ========
 % 
 % In a model code file, instead of writing a number of autoregression 
 % processes like the following ones
@@ -128,8 +128,8 @@
 %         ?# = rho?.#*?{-1} + e?.#;
 %     !end
 % 
-% Example 4
-% ==========
+% Example
+% ========
 % 
 % We redo Example 3, but now for six variables named 'A1', 'A2', 'B1',
 % 'B2', 'C1', 'C2', nesting two '!for...!do...!end' structures one within
@@ -155,8 +155,8 @@
 %     C1 = rhoc1*C1{-1} + ec1;
 %     C2 = rhoc2*C2{-1} + ec2;
 %
-% Example 5
-% ==========
+% Example
+% ========
 %
 % We use a Matlab expression (the colon operator) to simplify the list of
 % tokens. The following block of code
@@ -177,4 +177,4 @@
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

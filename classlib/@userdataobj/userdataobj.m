@@ -5,7 +5,7 @@ classdef userdataobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
         % User data attached to IRIS objects.

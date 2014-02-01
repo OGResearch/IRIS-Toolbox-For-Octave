@@ -37,7 +37,7 @@ function Flag = datcmp(Dat1,Dat2)
 %         0     0     0     0     1     0     0     0
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();

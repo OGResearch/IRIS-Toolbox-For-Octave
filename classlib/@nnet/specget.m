@@ -5,57 +5,109 @@ function [X,Flag,Query] = specget(This,Query)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-try
-    
-    Xcount = 0 ;
-    
+try    
     switch Query
-                    
-        case 'bias'
-            X = NaN(This.nBias,1) ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Bias)
-                    Xcount = Xcount + 1 ;
-                    X(Xcount) = This.Params{iLayer}.Bias{iNode} ;
+                
+        case 'activation'
+            X = NaN(This.nActivationParams,This.nAlt) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.ActivationParams ;
                 end
             end
             Flag = true ;
             
-        case 'transfer'
-            X = NaN(This.nTransfer,1) ;
-            for iLayer = 1:This.nLayer+2
-                for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                    Xcount = Xcount + 1 ;
-                    X(Xcount) = This.Params{iLayer}.Transfer{iNode} ;
+        case 'activationlb'
+            X = NaN(This.nActivationParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.ActivationLB ;
                 end
             end
             Flag = true ;
 
-        case 'weight'
-            X = NaN(This.nWeight,1) ;
-            for iLayer = 1:This.nLayer+2
-                if iLayer>1
-                    for iNode = 1:numel(This.Params{iLayer}.Weight)
-                        for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                            Xcount = Xcount + 1 ;
-                            X(Xcount) = This.Params{iLayer}.Weight{iNode}(iInput) ;
-                        end
-                    end
+        case 'activationub'
+            X = NaN(This.nActivationParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.ActivationUB ;
+                end
+            end
+            Flag = true ;
+
+        case 'activationindex'
+            X = 1:This.nActivationParams ;
+            Flag = true ;
+        
+        case 'output'
+            X = NaN(This.nOutputParams,This.nAlt) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.OutputParams ;
+                end
+            end
+            Flag = true ;
+        
+        case 'outputlb'
+            X = NaN(This.nOutputParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.OutputLB ;
+                end
+            end
+            Flag = true ;
+        
+        case 'outputub'
+            X = NaN(This.nOutputParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.OutputIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.OutputUB ;
                 end
             end
             Flag = true ;
             
-        case 'param'
-            X = [specget(This,'bias'); specget(This,'transfer'); specget(This,'weight')] ;
+        case 'hyper'
+            X = NaN(This.nHyperParams,This.nAlt) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.HyperParams ;
+                end
+            end
             Flag = true ;
             
+        case 'hyperlb'
+            X = NaN(This.nHyperParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.HyperLB ;
+                end
+            end
+            Flag = true ;
+
+        case 'hyperub'
+            X = NaN(This.nHyperParams,1) ;
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    X(This.Neuron{iLayer}{iNode}.HyperIndex,:) ...
+                        = This.Neuron{iLayer}{iNode}.HyperUB ;
+                end
+            end
+            Flag = true ;
+                                    
         otherwise
             Flag = false ;
-            
     end
 catch
     Flag = false ;

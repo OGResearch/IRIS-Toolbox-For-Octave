@@ -5,15 +5,8 @@ classdef reportobj < report.genericobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-    properties
-        longTable = false;
-        footnoteCounter = 0;
-        tempDirName = '';
-        figureHandle = zeros(1,0);
-        tempFile = cell(1,0);
-    end
     
     methods
         
@@ -22,13 +15,21 @@ classdef reportobj < report.genericobj
         function This = reportobj(varargin)
             This = This@report.genericobj(varargin{:});
             This.default = [This.default,{ ...
-                'centering',true,@islogicalscalar,false, ...
+                'centering',true,@is.logicalscalar,false, ...
+                'epstopdf',Inf,@(x) isequal(x,Inf) || ischar(x),false, ...
                 'orientation','landscape', ...
                 @(x) any(strcmpi(x,{'landscape','portrait'})),false, ...
                 'typeface','',@ischar,false, ...
                 }];
             This.parent = [];
+            This.hInfo = report.hinfoobj();
         end
+        
+        function [This,varargin] = setoptions(This,varargin)
+            This = setoptions@report.genericobj(This,varargin{:});
+            This.hInfo.orientation = This.options.orientation;
+            This.hInfo.epstopdf = This.options.epstopdf;
+        end        
         
         % Destructor
         %------------
@@ -41,29 +42,11 @@ classdef reportobj < report.genericobj
         varargout = publish(varargin)
         
     end
+
     
     methods (Access=protected,Hidden)
         varargout = speclatexcode(varargin)
         varargout = add(varargin)
-    end
-    
-    
-    methods (Hidden)
-        
-        % Event callbacks
-        %-----------------
-        function cbOpenFigureWindow(This,EventObj,~)
-            This.figureHandle(end+1) = EventObj.handle;
-        end
-        
-        function cbNewTempFile(This,~,EventData)
-            This.tempFile = [This.tempFile,EventData.data];
-        end
-        
-        function cbLongTable(This,~,~)
-            This.longTable = true;
-        end
-
     end
     
     
@@ -79,41 +62,23 @@ classdef reportobj < report.genericobj
         
         function This = table(This,varargin)
             newObj = report.tableobj(varargin{:});
-            % Register listeners
-            %--------------------
-            addlistener(newObj,'longTable', ...
-                @This.cbLongTable);
             This = add(This,newObj,varargin{2:end});
         end
         
         function This = matrix(This,varargin)
             newObj = report.matrixobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
-            % Register listeners
-            %--------------------
-            addlistener(newObj,'longTable', ...
-                @This.cbLongTable);
         end
         
         function This = array(This,varargin)
             newObj = report.arrayobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
-            % Register listeners
-            %--------------------
-            addlistener(newObj,'longTable', ...
-                @This.cbLongTable);
         end
         
         function This = figure(This,varargin)
             if length(varargin) == 1 || ischar(varargin{2})
                 newObj = report.figureobj(varargin{:});
                 This = add(This,newObj,varargin{2:end});
-                % Register listeners
-                %--------------------
-                addlistener(newObj,'openFigureWindow', ...
-                    @This.cbOpenFigureWindow);
-                addlistener(newObj,'newTempFile', ...
-                    @This.cbNewTempFile);
             else
                 % For bkw compatibility.
                 % ##### Nov 2013 OBSOLETE and scheduled for removal.
@@ -129,12 +94,6 @@ classdef reportobj < report.genericobj
         function This = userfigure(This,varargin)
             newObj = report.userfigureobj(varargin{:});
             This = add(This,newObj,varargin{2:end});
-            % Register listeners
-            %--------------------
-            addlistener(newObj,'openFigureWindow', ...
-                @This.cbOpenFigureWindow);
-            addlistener(newObj,'newTempFile', ...
-                @This.cbNewTempFile);
         end
         
         function This = tex(This,varargin)

@@ -2,14 +2,14 @@
 
     \filetitle{resample}{Resample from the model implied distribution}{model/resample}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 Outp = resample(M,Inp,Range,NDraw,...)
 Oupt = resample(M,Inp,Range,NDraw,J,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -28,7 +28,7 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   means of shocks.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -36,7 +36,7 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   \texttt{Outp} {[} struct {]} - Output database with resampled data.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -77,13 +77,13 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   \texttt{'method=' 'bootstrap'}.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 When you use wild bootstrap for resampling the initial condition, the
 results are based on an assumption that the mean of the initial
 condition is the asymptotic mean implied by the model (i.e.~the steady
 state).
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

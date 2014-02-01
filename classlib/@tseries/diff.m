@@ -30,7 +30,7 @@ function X = diff(X,K)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % diff, df, pct, apct
 
@@ -41,8 +41,8 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
-pp.addRequired('K',@isnumericscalar);
+pp.addRequired('X',@is.tseries);
+pp.addRequired('K',@is.numericscalar);
 pp.parse(X,K);
 
 %--------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-function D = datdiff(D1,D2)
+function [D,E] = datdiff(D1,D2)
 % datdiff  Number of periods between two dates with check for date frequency.
 %
 % Syntax
@@ -42,12 +42,12 @@ function D = datdiff(D1,D2)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 D = nan(size(D1));
-index = freqcmp(D1,D2);
-D(index) = round(D1(index) - D2(index));
+inx = freqcmp(D1,D2);
+D(inx) = floor(D1(inx)) - floor(D2(inx));
 
 end

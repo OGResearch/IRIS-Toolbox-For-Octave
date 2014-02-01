@@ -2,14 +2,14 @@
 
     \filetitle{prior}{Add new prior to system priors object}{systempriors/prior}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 S = prior(S,Expr,PriorFunc,...)
 S = prior(S,Expr,[],...)
 \end{verbatim}
 
-\paragraph{Input arugments}\label{input-arugments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -24,7 +24,7 @@ S = prior(S,Expr,[],...)
   function, \texttt{{[}{]}}, means a uniform prior.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -33,7 +33,7 @@ S = prior(S,Expr,[],...)
   new prior added.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -44,10 +44,10 @@ S = prior(S,Expr,[],...)
   - Upper bound for the prior.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{System properties that can be used in
-\texttt{Expr}}\label{system-properties-that-can-be-used-in-expr}
+\texttt{Expr}}
 
 \begin{itemize}
 \item
@@ -77,14 +77,14 @@ log of that variables is returned, e.g.
 \texttt{ffrf{[}log(TVarName),MVarName,T{]}}.
 
 \subparagraph{Expressions involving combinations or functions of
-parameters}\label{expressions-involving-combinations-or-functions-of-parameters}
+parameters}
 
 Model parameter names can be referred to in \texttt{Expr} preceded by a
 dot (period), e.g. \texttt{.alpha\^{}2 + .beta\^{}2} defines a prior on
 the sum of squares of the two parameters (\texttt{alpha} and
 \texttt{beta}).
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 Create a new, empty systemprios object based on an existing model.
 

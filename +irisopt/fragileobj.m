@@ -5,14 +5,14 @@ function Def = fragileobj()
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 Def = struct();
 
 Def.restore = { ...
-    'delimiter,delimiters',true,@islogicalscalar, ...
+    'delimiter,delimiters',true,@is.logicalscalar, ...
     };
 
 end

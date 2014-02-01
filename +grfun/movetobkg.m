@@ -4,14 +4,14 @@ function movetobkg(Par,Bkg)
 % Syntax
 % =======
 %
-%     grfun.movetobkg(Parent,Children)
+%     grfun.movetobkg(Parent,ToBkg)
 %
 % Input arguments
 % ================
 %
 % * `Parent` [ numeric ] - Graphics handle to a parent object.
 %
-% * `Children` [ numeric ] - Graphics handle to children that will be moved
+% * `ToBkg` [ numeric ] - Graphics handle to children that will be moved
 % to the background.
 %
 % Description

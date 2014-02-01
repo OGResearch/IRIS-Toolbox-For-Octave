@@ -5,7 +5,7 @@ function [OutpFmt,Range,Y,E,I] = mydatarequest(This,Data,Range,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 ise = nargout > 3;
 isi = nargout > 4;
@@ -37,7 +37,7 @@ end
 if isstruct(Data)
     [Y,E,I] = doStruct();
     inpFmt = 'dbase';
-elseif istseries(Data)
+elseif is.tseries(Data)
     [Y,E] = doTseries();
     I = [];
     inpFmt = 'tseries';
@@ -85,7 +85,7 @@ end
         y = [];
         for i = 1 : ny
             name = This.Ynames{i};
-            if isfield(Data,name) && istseries(Data.(name))
+            if isfield(Data,name) && is.tseries(Data.(name))
                 yi = rangedata(Data.(name),Range);
                 yi = permute(yi,[1,3,2]);
             else

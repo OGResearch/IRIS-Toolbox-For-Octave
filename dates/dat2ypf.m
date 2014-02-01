@@ -1,24 +1,24 @@
-function [year,per,freq] = dat2ypf(dat)
+function [Year,Per,Freq] = dat2ypf(Dat)
 % dat2ypf  Convert IRIS serial date number to year, period and frequency.
 %
 % Syntax
 % =======
 %
-%     [y,p,f] = dat2ypf(dat)
+%     [Y,P,F] = dat2ypf(Dat)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - IRIS serial date numbers.
+% * `Dat` [ numeric ] - IRIS serial date numbers.
 %
 % Output arguments
 % =================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Years.
 %
-% * `p` [ numeric ] - Periods within year.
+% * `P` [ numeric ] - Periods within year.
 %
-% * `f` [ numeric ] - Date frequencies.
+% * `F` [ numeric ] - Date frequencies.
 %
 % Description
 % ============
@@ -28,22 +28,35 @@ function [year,per,freq] = dat2ypf(dat)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-yp = floor(dat);
-freq = datfreq(dat);
-index = freq == 0;
+Freq = datfreq(Dat);
+ixZero = Freq == 0;
+ixWeekly = Freq == 52;
+ixRegular = ~ixZero & ~ixWeekly;
 
-[year,per] = deal(nan(size(dat)));
+[Year,Per] = deal(nan(size(Dat)));
 
-% Determinate frequencies.
-year(~index)  = floor(yp(~index) ./ freq(~index));
-per(~index) = round(yp(~index) - year(~index).*freq(~index) + 1);
+% Regular frequencies.
+if any(ixRegular)
+    yp = floor(Dat);
+    Year(ixRegular)  = floor(yp(ixRegular) ./ Freq(ixRegular));
+    Per(ixRegular) = ...
+        round(yp(ixRegular) - Year(ixRegular).*Freq(ixRegular) + 1);
+end
 
-% Indeterminate frequency.
-year(index) = 0;
-per(index) = dat(index); 
+% Indeterminate or daily frequency.
+if any(ixZero)
+    Year(ixZero) = 0;
+    Per(ixZero) = Dat(ixZero);
+end
+
+% Weekly frequency.
+if any(ixWeekly)
+    x = ww2day(Dat(ixWeekly));
+    [Year(ixWeekly),Per(ixWeekly)] = day2ypfweekly(x);
+end
 
 end

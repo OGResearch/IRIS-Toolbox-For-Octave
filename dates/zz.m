@@ -1,23 +1,23 @@
-function dat = zz(varargin)
-% zz  IRIS serial date numbers for dates with half-yearly frequency.
+function Dat = zz(varargin)
+% zz  IRIS serial date numbers half-yearly dates.
 %
 % Syntax
 % =======
 %
-%     d = zz(y)
-%     d = zz(y,z)
+%     Dat = zz(Y)
+%     Dat = zz(Y,H)
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers.
+% * `Dat` [ numeric ] - IRIS serial date numbers.
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Years.
 %
-% * `z` [ numeric ] - Half-years; if missing, first half-year is assumed.
+% * `H` [ numeric ] - Half-years; if missing, first half-year is assumed.
 %
 % Description
 % ============
@@ -27,10 +27,16 @@ function dat = zz(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-dat = datcode(2,varargin{:});
+% ##### Dec 2013 OBSOLETE and scheduled for removal.
+utils.warning('obsolete', ...
+    ['The function zz() is obsolete ', ...
+    'and will be removed from IRIS in a future release. ', ...
+    'Use hh() instead.']);
+
+Dat = datcode(2,varargin{:});
 
 end

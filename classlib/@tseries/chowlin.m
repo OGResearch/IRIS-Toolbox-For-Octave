@@ -69,7 +69,7 @@ function [y2,b,rho,u1,u2] = chowlin(y1,x2,range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
    range = Inf;
@@ -80,7 +80,7 @@ options = passvalopt('tseries.chowlin',varargin{:});
 %**************************************************************************
 
 f1 = get(y1,'freq');
-if isnumericscalar(x2)
+if is.numericscalar(x2)
    f2 = x2;
    x2 = [];
 else

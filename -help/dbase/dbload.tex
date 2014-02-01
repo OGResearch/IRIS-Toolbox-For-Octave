@@ -2,14 +2,14 @@
 
     \filetitle{dbload}{Create database by loading CSV file}{dbase/dbload}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 D = dbload(FName, ...)
 D = dbload(D,FName, ...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@ D = dbload(D,FName, ...)
   new entries from the input CSV data file entries will be added.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -29,7 +29,7 @@ D = dbload(D,FName, ...)
   file(s).
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -73,9 +73,10 @@ D = dbload(D,FName, ...)
   extension.
 \item
   \texttt{'nameRow='} {[} char \textbar{} numeric \textbar{}
-  \emph{empty} {]} - String at the beginning of the row with variable
-  names, or the line number at which the row with variable names appears
-  (first row is numbered 1).
+  \emph{\texttt{\{'','Variables'\}}} {]} - String, or cell array of
+  possible strings, that is found at the beginning (in the first cell)
+  of the row with variable names, or the line number at which the row
+  with variable names appears (first row is numbered 1).
 \item
   \texttt{'nameFunc='} {[} cell \textbar{} function\_handle \textbar{}
   \emph{empty} {]} - Function used to change or transform the variable
@@ -109,14 +110,14 @@ D = dbload(D,FName, ...)
   that will be included as user data in each time series.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 Use the \texttt{'freq='} option whenever there is ambiguity in
 intepreting the date strings, and IRIS is not able to determine the
-frequency correctly (see Example 1).
+frequency correctly (see Example).
 
 \subparagraph{Structure of CSV database
-files}\label{structure-of-csv-database-files}
+files}
 
 The minimalist structure of a CSV database file has a leading row with
 variables names, a leading column with dates in the basic IRIS format,
@@ -178,7 +179,7 @@ tseries objects as fields of their userdata.
 |         |         |         |
 \end{verbatim}
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 Typical example of using the \texttt{'freq='} option is a quarterly
 database with dates represented by the corresponding months, such as a

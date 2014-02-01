@@ -5,7 +5,7 @@ function [This,Data,B,Count] = myidentify(This,Data,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -15,26 +15,13 @@ nAlt = size(This.A,3);
 A = poly.var2poly(This.A);
 Omg = This.Omega;
 
-% Handle residuals.
-isData = nargin > 1 && nargout > 1 && ~isempty(Data);
-
-if isData
-    % Get data.
-    [outpFmt,range,y,e] = mydatarequest(This,Data,Inf,Opt);
-    if size(e,3) == 1 && nAlt > 1
-        y = y(:,:,ones(1,nAlt));
-        e = e(:,:,ones(1,nAlt));
-    end
-else
-    y = [];
-    e = [];
-end
-
 % Std dev of structural residuals requested by the user.
-This.std(1,:) = Opt.std(1,ones(1,nAlt));
+This.std = Opt.std(1,ones(1,nAlt));
 
 This.method = cell(1,nAlt);
 B = zeros(ny,ny,nAlt);
+q = Inf;
+
 Count = 1;
 switch lower(Opt.method)
     case 'chol'
@@ -43,11 +30,7 @@ switch lower(Opt.method)
         for iAlt = 1 : nAlt
             B(:,:,iAlt) = chol(Omg(:,:,iAlt)).';
         end
-        if Opt.std ~= 1
-            B = B / Opt.std;
-        end
         doBackOrder();
-        doConvertResid();
     case 'qr'
         This.method(:) = {'QR'};
         doReorder();
@@ -61,15 +44,11 @@ switch lower(Opt.method)
             end
             B(:,:,iAlt) = B0*Q;
         end
-        if Opt.std ~= 1
-            B = B / Opt.std;
-        end
         doBackOrder();
-        doConvertResid();
     case 'svd'
         This.method(:) = {'SVD'};
         q = Opt.rank;
-        [B,e] = covfun.orthonorm(Omg,q,Opt.std,e);
+        B = covfun.orthonorm(Omg,q,Opt.std);
         % Recompute covariance matrix of reduced-form residuals if it is
         % reduced rank.
         if q < ny
@@ -78,11 +57,6 @@ switch lower(Opt.method)
                 This.Omega(:,:,iAlt) = ...
                     B(:,1:q,iAlt)*B(:,1:q,iAlt)'*var;
             end
-            % Cannot produce structural residuals for reduced-rank cov matrix.
-            Data = [];
-            isData = false;
-        else
-            doConvertResid();
         end
     case 'householder'
         This.method(:) = {'Householder'};
@@ -105,31 +79,15 @@ switch lower(Opt.method)
         end
         [B,Count] = xxDraw(This,Opt);
         nAlt = size(B,3);
-        if nAlt > 0
-            if Opt.std ~= 1
-                B = B / Opt.std;
-            end
-            This = alter(This,nAlt);
-            if isData
-                % Expand the number of data sets to match the number of
-                % newly created structural parameterisations.
-                y = y(:,:,ones(1,nAlt));
-                e = e(:,:,ones(1,nAlt));
-            end
-            doConvertResid();
-        else
-            isData = false;
-            This = alter(This,0);
-            Data = [];
-        end
+        This = alter(This,nAlt);
+end
+
+if Opt.std ~= 1
+    B = B / Opt.std;
 end
 
 This.B(:,:,:) = B;
-if isData
-    % Output data.
-    names = get(This,'names');
-    Data = myoutpdata(This,outpFmt,range,[y;e],[],names);
-end
+This.rank = q;
 
 
 % Nested functions...
@@ -183,18 +141,7 @@ end
         end
     end % doBackOrder()
 
-
-%**************************************************************************
-    function doConvertResid()
-        if isData
-            for iLoop = 1 : nAlt
-                e(:,:,iLoop) = B(:,:,iLoop) \ e(:,:,iLoop);
-            end
-        end
-    end % doConvertResid()
-
 end
-
 
 % Subfunctions...
 

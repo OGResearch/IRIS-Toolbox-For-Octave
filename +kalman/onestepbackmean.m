@@ -5,7 +5,7 @@ function [Y2,F2,B2,E2,r,A2] = onestepbackmean(S,Time,Pe,A0,F0,YDelta,D,r)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

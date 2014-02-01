@@ -58,9 +58,10 @@ function D = dbload(varargin)
 % data file; `'auto'` means the format will be determined by the file
 % extension.
 %
-% * `'nameRow='` [ char | numeric | *empty* ] - String at the beginning of
-% the row with variable names, or the line number at which the row with
-% variable names appears (first row is numbered 1).
+% * `'nameRow='` [ char | numeric | *`{'','Variables'}`* ] - String, or
+% cell array of possible strings, that is found at the beginning (in the
+% first cell) of the row with variable names, or the line number at which
+% the row with variable names appears (first row is numbered 1).
 %
 % * `'nameFunc='` [ cell | function_handle | *empty* ] - Function used to
 % change or transform the variable names. If a cell array of function
@@ -95,7 +96,7 @@ function D = dbload(varargin)
 %
 % Use the `'freq='` option whenever there is ambiguity in intepreting
 % the date strings, and IRIS is not able to determine the frequency
-% correctly (see Example 1).
+% correctly (see Example).
 %
 % Structure of CSV database files
 % --------------------------------
@@ -153,8 +154,8 @@ function D = dbload(varargin)
 %     +---------+---------+---------+--
 %     |         |         |         |
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % Typical example of using the `'freq='` option is a quarterly database
 % with dates represented by the corresponding months, such as a sequence
@@ -165,7 +166,7 @@ function D = dbload(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isstruct(varargin{1})
     D = varargin{1};
@@ -193,6 +194,7 @@ if iscellstr(fName)
 end
 
 opt = passvalopt('dbase.dbload',varargin{1:end});
+opt = datdefaults(opt);
 
 % Pre-process options.
 doOptions();
@@ -282,27 +284,12 @@ end
 % Populate the output database with tseries and numeric data.
 doPopulateDatabase();
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doOptions()
-        if strncmp(opt.dateformat,'$',1)
-            opt.dateformat(1) = '';
-            opt.freq = 'daily';
-        end
-        
-        if isequal(opt.freq,365)
-            opt.freq = 'daily';
-        end
-        
-        if isempty(opt.dateformat)
-            if strcmpi(opt.freq,'daily')
-                opt.dateformat = 'dd/mm/yyyy';
-            else
-                opt.dateformat = 'YFP';
-            end
-        end
-        
         % Headers for rows to be skipped.
         if ischar(opt.skiprows)
             opt.skiprows = {opt.skiprows};
@@ -327,10 +314,11 @@ doPopulateDatabase();
         end
         
         % Date frequency conversion.
-        if ~isempty(opt.convert) && isnumericscalar(opt.convert)
+        if ~isempty(opt.convert) && is.numericscalar(opt.convert)
             opt.convert = {opt.convert};
         end
-    end % doOptions().
+    end % doOptions()
+
 
 %**************************************************************************
     function doReadHeaders()
@@ -348,7 +336,7 @@ doPopulateDatabase();
             else
                 line = file(start:eol-1);
             end
-            if isnumericscalar(opt.namerow) && rowCount < opt.namerow
+            if is.numericscalar(opt.namerow) && rowCount < opt.namerow
                 doMoveToNextEol();
                 continue
             end
@@ -459,7 +447,8 @@ doPopulateDatabase();
             end
         end
         
-    end % doReadHeaders().
+    end % doReadHeaders()
+
 
 %**************************************************************************
     function doReadNumericData()
@@ -503,10 +492,9 @@ doPopulateDatabase();
         % Define white spaces.
         whiteSpace = sprintf(' \b\r\t');
         
-        % Read numeric data.
-        % We need to distinguish 
-        % Empty cells will be treated either as NaN or NaN+NaNi depending on the
-        % presence or absence of complex numbers in the rest of the table.
+        % Read numeric data; empty cells will be treated either as `NaN` or
+        % `NaN+NaNi` depending on the presence or absence of complex
+        % numbers in the rest of that particular row.
         data = textscan(file,'',-1, ...
             'delimiter',',','whiteSpace',whiteSpace, ...
             'headerLines',0,'headerColumns',1,'emptyValue',-Inf, ...
@@ -518,6 +506,9 @@ doPopulateDatabase();
         end
         data = data{1};
         miss = false(size(data));
+        % The value `-Inf` indicates a possible missing value (but may be a
+        % genuine `-Inf`, too). Re-read the table again, with missing
+        % values represented by `NaN` this time to pin down missing values.
         isMaybeMissing = real(data) == -Inf;
         if any(isMaybeMissing(:))
             data1 = textscan(file,'',-1, ...
@@ -528,7 +519,8 @@ doPopulateDatabase();
             isMaybeMissing1 = isnan(real(data1));
             miss(isMaybeMissing & isMaybeMissing1) = true;
         end
-    end % doReadNumericData().
+    end % doReadNumericData()
+
 
 %**************************************************************************
     function doParseDates()
@@ -542,15 +534,10 @@ doPopulateDatabase();
         end
         % Convert date strings.
         if ~isempty(dateCol) && ~all(emptyDate)
-            if strcmpi(opt.freq,'daily')
-                dates(~emptyDate) = datenum(dateCol(~emptyDate), ...
-                    lower(opt.dateformat));
-            else
-                dates(~emptyDate) = str2dat(dateCol(~emptyDate), ...
-                    'dateformat',opt.dateformat, ...
-                    'freq',opt.freq, ...
-                    'freqletters',opt.freqletters);
-            end
+            dates(~emptyDate) = str2dat(dateCol(~emptyDate), ...
+                'dateFormat=',opt.dateformat, ...
+                'freq=',opt.freq, ...
+                'freqLetters=',opt.freqletters);
             if opt.firstdateonly
                 dates(2:end) = dates(1) + (1 : length(dates)-1);
             end
@@ -559,16 +546,19 @@ doPopulateDatabase();
         % rows. This is because of non-tseries data.
         nanDate = isnan(dates);
         dates(nanDate) = [];
+        
         % Check for mixed frequencies.
-        if ~isempty(dates) && ~strcmpi(opt.freq,'daily')
-            tmpFreq = datfreq(dates);
-            if any(tmpFreq(1) ~= tmpFreq)
+        if ~isempty(dates)
+            x = datfreq(dates);
+            if any(x(1) ~= x)
                 utils.error('data', ...
-                    'Dates in CSV database ''%s'' have mixed frequencies.', ...
+                    ['CSV data file ''%s'' contains dates ', ...
+                    'with mixed frequencies.'], ...
                     fName);
             end
         end
-    end % doParseDates().
+    end % doParseDates()
+
 
 %**************************************************************************
     function doPopulateDatabase()
@@ -667,7 +657,8 @@ doPopulateDatabase();
             end
         end
         
-    end % doPopulateDatabase().
+    end % doPopulateDatabase()
+
 
 %**************************************************************************
     function doChgNames()
@@ -690,7 +681,8 @@ doPopulateDatabase();
             case 'upper'
                 name = upper(name);
         end
-    end % doChgNames().
+    end % doChgNames()
+
 
 %**************************************************************************
     function doChkNames()
@@ -699,7 +691,8 @@ doPopulateDatabase();
         % repeated names in `name`, the function adds `1`, `2`, etc. to make them
         % unqiue.
         name(inx) = genvarname(name(inx));
-    end % doChkNames().
+    end % doChkNames()
+
 
 %**************************************************************************
     function doUserdataField()
@@ -718,14 +711,17 @@ doPopulateDatabase();
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function File = xxReadFile(FName)
 % xxReadFile  Read the CSV file.
 File = file2char(FName);
 File = strfun.converteols(File);
-end %% xxReadFile().
+end %% xxReadFile()
+
 
 %**************************************************************************
 function File = xxPreProcess(File,Opt)
@@ -740,29 +736,26 @@ end
 for i = 1 : length(func)
     File = func{i}(File);
 end
-end % xxPreProcess().
+end % xxPreProcess()
+
 
 %**************************************************************************
 function S = xxGetSize(C)
 % xxGetSize  Read the size string 1-by-1-by-1 etc. as a vector.
-
 % New style of saving size: [1-by-1-by-1].
 % Old style of saving size: [1][1][1].
-
 C = strrep(C(2:end-1),'][','-by-');
 S = sscanf(C,'%g-by-');
 S = S(:).';
+end % xxGetSize()
 
-end % xxGetSize().
 
 %**************************************************************************
 function Name = xxGetUserdataFieldName(C)
-
 Name = regexp(C,'\[([^\]]+)\]','once','tokens');
 if ~isempty(Name)
     Name = Name{1};
 else
     Name = '';
 end
-
-end % xxGetUserdataFieldName().
+end % xxGetUserdataFieldName()

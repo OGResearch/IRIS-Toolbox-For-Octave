@@ -13,7 +13,7 @@ function [AssignPos,StdcorrPos] = mynameposition(This,Input,varargin)
 % `stdcorr` positions or NaNs.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

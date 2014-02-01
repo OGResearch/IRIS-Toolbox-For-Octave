@@ -58,7 +58,7 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('Sample', @isnumeric );

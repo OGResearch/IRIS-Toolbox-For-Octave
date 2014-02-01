@@ -3,7 +3,7 @@
     \filetitle{x12}{Access to X12 seasonal adjustment program}{tseries/x12}
 
 	\paragraph{Syntax with a single type of output
-requested}\label{syntax-with-a-single-type-of-output-requested}
+requested}
 
 \begin{verbatim}
 [Y,OutpFile,ErrFile,Model,X] = x12(X)
@@ -11,7 +11,7 @@ requested}\label{syntax-with-a-single-type-of-output-requested}
 \end{verbatim}
 
 \paragraph{Syntax with mutliple types of output
-requested}\label{syntax-with-mutliple-types-of-output-requested}
+requested}
 
 \begin{verbatim}
 [Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
@@ -20,7 +20,7 @@ requested}\label{syntax-with-mutliple-types-of-output-requested}
 See the option \texttt{'output='} for the types of output data available
 from X12.
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@ from X12.
   run; if not specified or Inf the entire available range will be used.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -57,7 +57,7 @@ from X12.
   \texttt{'backcast='} are used.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -149,9 +149,9 @@ from X12.
   the \texttt{estimation} specs in the X12-ARIMA manual.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-\subparagraph{Missing observations}\label{missing-observations}
+\subparagraph{Missing observations}
 
 If you keep \texttt{'missing=' false} (this is the default for backward
 compatibility), \texttt{x12} will not run on series with in-sample
@@ -163,7 +163,7 @@ filling in values predicted by the estimated ARIMA process. You can
 request the series with missing values filled in by including
 \texttt{MV} in the option \texttt{'output='}.
 
-\subparagraph{Spec file}\label{spec-file}
+\subparagraph{Spec file}
 
 The default X12-ARIMA spec file is \texttt{+thirdparty/x12/default.spc}.
 You can create your own spec file to include options that are not
@@ -224,7 +224,7 @@ Two of the placeholders, \texttt{'\$series\_data\$} and
 spec file, IRIS throws an error.
 
 \subparagraph{Estimates of ARIMA model
-parameters}\label{estimates-of-arima-model-parameters}
+parameters}
 
 The ARIMA model specification, \texttt{Model}, is a struct with three
 fields:
@@ -243,7 +243,7 @@ fields:
   coefficients (non-seasonal and seasonal).
 \end{itemize}
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 If you wish to run \texttt{x12} on the entire range on which the input
 time series is defined, and do not use any options, you can omit the
@@ -256,7 +256,7 @@ xsa = x12(x,Inf);
 xsa = x12(x,get(x,'range'));
 \end{verbatim}
 
-\paragraph{Example 2}\label{example-2}
+\paragraph{Example}
 
 If you wish to specify some of the options, you have to enter a date
 range or use \texttt{Inf}:

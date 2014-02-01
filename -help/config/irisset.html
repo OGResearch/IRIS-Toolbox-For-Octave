@@ -120,26 +120,23 @@ irisset(Option,Value,Option,Value,...)</code></pre>
 <h4 id="modifiable-iris-configuration-options">Modifiable IRIS configuration options</h4>
 <h5 id="dates-and-formats">Dates and formats</h5>
 <ul>
-<li><p><code>'dateFormat='</code> [ char | <em>'YPF'</em> ] - Date format used to display dates in the command window, CSV databases, and reports. Note that the default date format for graphs is controlled by the <code>'plotdateformat='</code> option. The default 'YFP' means that the year, frequency letter, and period is displayed. See also help on <a href="../dates/dat2str.html"><code>dat2str</code></a> for more date formatting details. The <code>'dateformat='</code> option is also found in many IRIS functions whenever it is relevant, and can be used to overwrite the <code>'irisset='</code> settings.</p></li>
-<li><p><code>'freqLetters='</code> [ char | <em>'YHQBM'</em> ] - Five letters used to represent the five possible frequencies of the IRIS dates: yearly, half-yearly, quarterly, bi-monthly, and monthly, such as the 'Q' in '2010Q1' denoting.</p></li>
-<li><p><code>'months='</code> [ cellstr | <em>{'January',...,'December'}</em> ] - Twelve strings representing the names of the twelve months. This option can be used whenever you want to replace the default English names with your local language. .</p></li>
-<li><p><code>'plotDateFormat='</code> [ char | <em>'Y:P'</em> ] - Date format used to display dates in graphs including graphs in reports. The default is 'Y:P', which is different from the <code>'dateformat='</code> option.</p></li>
+<li><p><code>'dateFormat='</code> [ char | <em><code>'YPF'</code></em> ] - Date format used to display dates in the command window, CSV databases, and reports. Note that the default date format for graphs is controlled by the <code>'plotdateformat='</code> option. The default 'YFP' means that the year, frequency letter, and period is displayed. See also help on <a href="../dates/dat2str.html"><code>dat2str</code></a> for more date formatting details. The <code>'dateformat='</code> option is also found in many IRIS functions whenever it is relevant, and can be used to overwrite the <code>'irisset='</code> settings.</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBMW'</code></em> ] - Six letters used to represent the six possible frequencies of the IRIS dates: yearly, half-yearly, quarterly, bi-monthly, monthly, and weekly, such as the <code>'Q'</code> in <code>'2010Q1'</code> denoting a quarter.</p></li>
+<li><p><code>'months='</code> [ cellstr | <em><code>{'January',...,'December'}</code></em> ] - Twelve strings representing the names of the twelve months; this option can be used whenever you want to replace the default English names with your local language. .</p></li>
+<li><code>'plotDateFormat='</code> [ char | <em><code>{'Y','Y:P','Y:P','Y:P','Y:P','Y:P'}</code></em> ]</li>
+<li><p>Default date formats used to display dates in graphs including graphs in reports. The default date formats are 6 strings, one for each of the date frequencies, in the following order: yearly (1), half-yearly (2), quarterly (4), bimonthly (6), monthly (12), and weekly (52). Dates with indeterminate frequency are printed as plain numbers.</p></li>
 <li><p><code>'tseriesFormat='</code> [ char | <em>empty</em> ] - Format string for displaying time series data on the screen. See help on the Matlab <code>sprintf</code> function for how to set up format strings. If empty the default format of the <code>num2str</code> function is used.</p></li>
 <li><p><code>tseriesMaxWSpace='</code> [ numeric | <em><code>5</code></em> ] - Maximum number of white spaces printed between individual columns of a multivariate tseries object on the screen.</p></li>
-<li><p><code>'standinMonth='</code> [ <em>'first'</em> | 'last' | numeric ] - This option specifies which month will be used to represent lower-frequency periods (such as a quarters) when a month-displaying format is used in <code>'dateformat='</code>.</p></li>
+<li><p><code>'standinMonth='</code> [ <em><code>'first'</code></em> | <code>'last'</code> | numeric ] - This option specifies which month will be used to represent lower-frequency periods (such as a quarters) when a month-displaying format is used in <code>'dateformat='</code>.</p></li>
 </ul>
 <h5 id="external-tools-used-by-iris">External tools used by IRIS</h5>
 <ul>
 <li><p><code>'pdflatexPath='</code> [ char ] - Location of the <code>pdflatex.exe</code> program. This program is called to compile report and publish m-files. By default, IRIS attempts to locate <code>pdflatex.exe</code> by running TeX's <code>kpsewhich</code>, and <code>which</code> on Unix platforms.</p></li>
 <li><p><code>'epstopdfPath='</code> [ char ] - Location of the <code>epstopdf.exe</code> program. This program is called to convert EPS graphics files to PDFs in reports.</p></li>
 </ul>
-<h5 id="other-options">Other options</h5>
-<ul>
-<li><code>'extensions='</code> [ cellstr | <em>{'model','s','q'}</em> ] - List of extensions that are automatically associated with the Matlab editor. The advantage of such associations is that the IRIS <a href="../modellang/Contents.html">model files</a>, <a href="../sstatelang/Contents.html">steady-state files</a>, and <a href="../qreport/Contents.html">quick-report</a> files get syntax-highlighted.</li>
-</ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

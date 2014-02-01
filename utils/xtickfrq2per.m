@@ -1,19 +1,25 @@
-function xtickfrq2per(h,format)
-    
-    if ~exist('h','var')
-        h = gca();
-    end
-    
-    if ~exist('format','var')
-        format = '%.1f';
-    end
-    
-    xtick = 2*pi./get(h,'xtick');
-    n  = length(xtick);
-    xticklabel = cell(1,n);
-    for i = 1 : n
-        xticklabel{i} = sprintf(format,xtick(i));
-    end
-    set(h,'xticklabel',xticklabel,'xtickmode','manual');
-    
+function xtickfrq2per(H,Fmt)
+
+try
+    H; %#ok<VUNUS>
+catch
+    H = gca();
+end
+
+try
+    Fmt; %#ok<VUNUS>
+catch
+    Fmt = '%.1f';
+end
+
+%--------------------------------------------------------------------------
+
+xTick = 2*pi./get(H,'xtick');
+n  = length(xTick);
+xTickLabel = cell(1,n);
+for i = 1 : n
+    xTickLabel{i} = sprintf(Fmt,xTick(i));
+end
+set(H,'xticklabel',xTickLabel,'xtickmode','manual');
+
 end

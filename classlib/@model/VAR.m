@@ -37,11 +37,11 @@ function V = VAR(This,Select,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Select,Range);

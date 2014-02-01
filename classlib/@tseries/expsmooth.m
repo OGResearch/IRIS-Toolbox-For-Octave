@@ -1,10 +1,10 @@
-function X = expsmooth(X,BETA,Range,varargin)
+function This = expsmooth(This,Beta,Range,varargin)
 % ews  Exponential smoothing.
 %
 % Syntax
 % =======
 %
-%     X = expsmooth(X,BETA,...)
+%     X = expsmooth(X,Beta,...)
 %
 % Input arguments
 % ================
@@ -36,9 +36,11 @@ function X = expsmooth(X,BETA,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~exist('RANGE','var')
+try
+    Range; %#ok<VUNUS>
+catch
     Range = Inf;
 end
 
@@ -46,18 +48,18 @@ opt = passvalopt('tseries.expsmooth',varargin{:});
 
 %--------------------------------------------------------------------------
 
-X = resize(X,Range);
+This = resize(This,Range);
 
 if opt.log
-    X.data = log(X.data);
+    This.data = log(This.data);
 end
 
-X.data = tseries.myexpsmooth(X.data,BETA,opt.init);
+This.data = tseries.myexpsmooth(This.data,Beta,opt.init);
 
 if opt.log
-    X.data = exp(X.data);
+    This.data = exp(This.data);
 end
 
-X = mytrim(X);
+This = mytrim(This);
 
 end

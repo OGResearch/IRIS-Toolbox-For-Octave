@@ -48,11 +48,11 @@ function [This,Outp] = filter(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
+pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isstruct(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);

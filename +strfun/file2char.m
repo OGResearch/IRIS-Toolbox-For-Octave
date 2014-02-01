@@ -33,7 +33,7 @@ function [c,flag] = file2char(fname,type,lines)
 
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
    lines = Inf;

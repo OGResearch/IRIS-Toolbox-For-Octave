@@ -20,7 +20,7 @@ function daily(This)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 
 if datfreq(This.start) ~= 0
@@ -31,60 +31,25 @@ end
 
 %--------------------------------------------------------------------------
 
-% Display header.
-strfun.loosespace();
-mydispheader(This);
-
-% Re-arrange data into a 2D matrix.
-This.data = This.data(:,:);
-
-% Display data, one month per row
-[x,rowStart] = xxCalendar(This);
-output = ' ';
-blanks(1:size(This.data,2)-1) = {' '};
-for i = 1 : length(rowStart)
-    output = char(output,datestr(rowStart(i),'    mmm-YYYY:'),blanks{:});
-end
-output = strjust(output,'right');
-divider = ' ';
-divider = divider(ones([size(output,1),1]));
-output = [output,divider(:,[1,1])];
-for i = 1 : 31
-    tmp = strjust(char(sprintf('[%g]',i),num2str(x(:,i))),'right');
-    output = [output,tmp]; %#ok<AGROW>
-    if i < 31
-        output = [output,divider(:,[1,1,1,1])]; %#ok<AGROW>
-    end
-end
-disp(output);
-
-% Display comment.
-disp(This.Comment);
-
-% [startyear,startmonth,startday] = datevec(this.start);
+disp(This,'',@xxDisp2dDaily);
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function [x,RowStart] = xxCalendar(This)
+function X = xxDisp2dDaily(Start,Data,Tab,Sep,Num2StrFunc)
 
-if isnan(This.start) || isempty(This.data)
-    x = [];
-    RowStart = NaN;
-    return
-end
-
-[nPer,ncol] = size(This.data);
-[startYear,startMonth,startDay] = datevec(This.start);
-[endYear,endMonth,endDay] = datevec(This.start + nPer - 1);
-data = This.data;
+[nPer,nCol] = size(Data);
+[startYear,startMonth,startDay] = datevec(Start);
+[endYear,endMonth,endDay] = datevec(Start + nPer - 1);
 
 % Pad missing observations at the beginning of the first month
 % and at the end of the last month with NaNs.
 tmp = eomday(endYear,endMonth);
-data = [nan([startDay-1,ncol]);data;nan([tmp-endDay,ncol])];
+Data = [nan(startDay-1,nCol);Data;nan(tmp-endDay,nCol)];
 
 % Start-date and end-date of the calendar matrixt.
 % startdate = datenum(startyear,startmonth,1);
@@ -92,7 +57,7 @@ data = [nan([startDay-1,ncol]);data;nan([tmp-endDay,ncol])];
 
 year = startYear : endYear;
 nYear = length(year);
-year = year(ones([1,12]),:);
+year = year(ones(1,12),:);
 year = year(:);
 
 month = 1 : 12;
@@ -106,15 +71,36 @@ month(end-(12-endMonth)+1:end) = [];
 nPer = length(month);
 
 lastDay = eomday(year,month);
-x = [];
+X = [];
 for t = 1 : nPer
-    tmp = nan(ncol,31);
-    tmp(:,1:lastDay(t)) = transpose(data(1:lastDay(t),:));
-    x = [x;tmp]; %#ok<AGROW>
-    data(1:lastDay(t),:) = [];
+    tmp = nan(nCol,31);
+    tmp(:,1:lastDay(t)) = transpose(Data(1:lastDay(t),:));
+    X = [X;tmp]; %#ok<AGROW>
+    Data(1:lastDay(t),:) = [];
 end
 
-RowStart = datenum(year,month,1);
+% Date string.
+rowStart = datenum(year,month,1);
+nRow = length(rowStart);
+dates = cell(1,1 + nCol*nRow);
+dates(:) = {''};
+dates(2:nCol:end) = dat2str(rowStart,'dateFormat=',['$Mmm-YYYY',Sep]);
+dates = char(dates);
 
+% Data string.
+divider = '    ';
+divider = divider(ones(size(X,1)+1,1),:);
+dataStr = '';
+for i = 1 : 31
+    c = Num2StrFunc(X(:,i));
+    dataStr = [dataStr, ...
+        strjust(char(sprintf('[%g]',i),c),'right')]; %#ok<AGROW>
+    if i < 31
+        dataStr = [dataStr,divider]; %#ok<AGROW>
+    end
 end
-% xxcalendar().
+
+repeat = ones(size(dates,1),1);
+X = [Tab(repeat,:),dates,dataStr];
+
+end % xxCalendar()

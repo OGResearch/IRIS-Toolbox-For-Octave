@@ -34,14 +34,14 @@ function [This,XMean,XStd] = stdise(This,Flag)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2
    Flag = 0;
 end
 
 pp = inputParser();
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('Flag',@(x) isequal(x,0) || isequal(x,1) );
 pp.parse(This,Flag);
 

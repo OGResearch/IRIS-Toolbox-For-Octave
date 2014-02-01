@@ -162,7 +162,7 @@ code.LaTeX {
 <li><p><code>'fixed'</code> -- the filter starts from the model-implied asymptotic mean (steady state) but with no initial uncertainty. The initial condition is treated as a vector of fixed, non-stochastic, numbers.</p></li>
 <li><p><code>'optimal'</code> -- the filter starts from a vector of fixed numbers that is estimated optimally (likelihood maximising).</p></li>
 <li><p>database (i.e. struct with fields for individual model variables) -- a database through which you supply the mean for all the required initial conditions, see help on <a href="../model/get.html"><code>model/get</code></a> for how to view the list of required initial conditions.</p></li>
-<li><p>mean-mse struct (i.e. struct with fields <code>.mean</code> and <code>.mse</code>) -- a struct through which you supplye the mean and MSE for all the required initial conditions.</p></li>
+<li><p>mean-mse struct (i.e. struct with fields <code>.mean</code> and <code>.mse</code>) -- a struct through which you supply the mean and MSE for all the required initial conditions.</p></li>
 </ul>
 <h5 id="contributions-of-measurement-variables-to-the-estimates-of-all-variables">Contributions of measurement variables to the estimates of all variables</h5>
 <p>Use the option <code>'returnCont=' true</code> to request the decomposition of measurement variables, transition variables, and shocks into the contributions of each individual measurement variable. The resulting output database will include one extra subdatabase called <code>.cont</code>. In the <code>.cont</code> subdatabase, each time series will have Ny columns where Ny is the number of measurement variables in the model. The k-th column will be the contribution of the observations on the k-th measurement variable.</p>
@@ -170,5 +170,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

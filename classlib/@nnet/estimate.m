@@ -1,7 +1,7 @@
 function [This,xF,Obj] = estimate(This,Data,Range,varargin)
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser() ;
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
@@ -16,98 +16,50 @@ end
 % Parse options
 options = passvalopt('nnet.estimate',varargin{:}) ;
 options = optim.myoptimopts(options) ;
-if iscellstr(options.Estimate)
-    options.Estimate = nnet.myalias(options.Estimate) ;
-    % set default bounds
-    options.lbWeight = -Inf ;
-    options.ubWeight = Inf ;
-    options.lbTransfer = 0 ;
-    options.ubTransfer = Inf ;
-    options.lbBias = -Inf ;
-    options.ubBias = Inf ;
-else
-    Ecell = options.Estimate ;
-    options.Estimate = cell(size(Ecell)) ;
-    % user specified bounds
-    for iOpt = 1:numel(Ecell)
-        aname = nnet.myalias(Ecell{iOpt}{1}) ;
-        switch aname                
-            case 'bias'
-                options.lbBias = Ecell{iOpt}{2} ;
-                options.ubBias = Ecell{iOpt}{3} ;
-                
-            case 'transfer'
-                options.lbTransfer = Ecell{iOpt}{2} ;
-                options.ubTransfer = Ecell{iOpt}{3} ;
-                
-            case 'weight'
-                options.lbWeight = Ecell{iOpt}{2} ;
-                options.ubWeight = Ecell{iOpt}{3} ;
-
-            otherwise
-                utils.error('nnet:estimate',...
-                    'Unrecognized group of parameters %s.\n',Ecell{iOpt}{1}) ;
-        end
-        options.Estimate{iOpt} = aname ;
-    end
-end
-options.Estimate = sort(options.Estimate) ;
+options.Select = nnet.myalias(options.Select) ;
+options.Select = sort(options.Select) ;
 
 % Display
 if ~strcmpi(options.display,'off') 
     fprintf(1,'\nEstimating neural network: \n') ;
     
-    % Weight
-    tf = any(strcmpi(options.Estimate,'weight')) ;
-    fprintf(1,'\t[%g] weight parameters', ...
-        tf*This.nWeight) ;
-    if tf
-        fprintf(1,' with bounds [%g,%g]\n',options.lbWeight,options.ubWeight) ;
-    else
-        fprintf(1,'\n') ;
-    end
+    % Activation
+    tf = any(strcmpi(options.Select,'activation')) ;
+    fprintf(1,'\t[%g] activation parameters\n', ...
+        tf*This.nActivationParams) ;
     
-    % Bias
-    tf = any(strcmpi(options.Estimate,'bias')) ;
-    fprintf(1,'\t[%g] bias parameters', ...
-        tf*This.nBias) ;
-    if tf
-        fprintf(1,' with bounds [%g,%g]\n',options.lbBias,options.ubBias) ;
-    else
-        fprintf(1,'\n') ;
-    end
+    % Hyper
+    tf = any(strcmpi(options.Select,'hyper')) ;
+    fprintf(1,'\t[%g] hyper parameters\n', ...
+        tf*This.nHyperParams) ;
     
-    % Transfer
-    tf = any(strcmpi(options.Estimate,'transfer')) ;
-    fprintf(1,'\t[%g] transfer parameters', ...
-        tf*This.nTransfer) ;
-    if tf
-        fprintf(1,' with bounds [%g,%g]\n\n',options.lbTransfer,options.ubTransfer) ;
-    else
-        fprintf(1,'\n\n') ;
-    end
+    % Output
+    tf = any(strcmpi(options.Select,'output')) ;
+    fprintf(1,'\t[%g] output parameters\n', ...
+        tf*This.nOutputParams) ;
 end
+fprintf(1,'\n') ;
 
 % Setup initial parameter vector and bounds
 lb = [] ;
 ub = [] ;
 x0 = [] ;
-for iOpt = 1:numel(options.Estimate) 
-    switch options.Estimate{iOpt}
-        case 'bias'
-            lb = [lb; options.lbBias*ones(This.nBias,1)] ;
-            ub = [ub; options.ubBias*ones(This.nBias,1)] ;
-            x0 = [x0; get(This,'bias')] ;
+for iOpt = 1:numel(options.Select) 
+    switch options.Select{iOpt}
+        case 'activation'
+            lb = [lb; get(This,'activationLB')] ;
+            ub = [ub; get(This,'activationUB')] ;
+            x0 = [x0; get(This,'activation')] ;
                 
-        case 'transfer'
-            lb = [lb; options.lbTransfer*ones(This.nTransfer,1)] ;
-            ub = [ub; options.ubTransfer*ones(This.nTransfer,1)] ;
-            x0 = [x0; get(This,'transfer')] ;
+        case 'hyper'
+            lb = [lb; get(This,'hyperLB')] ;
+            ub = [ub; get(This,'hyperUB')] ;
+            x0 = [x0; get(This,'hyper')] ;
 
-        case 'weight'
-            lb = [lb; options.lbWeight*ones(This.nWeight,1)] ;
-            ub = [ub; options.ubWeight*ones(This.nWeight,1)] ;
-            x0 = [x0; get(This,'weight')] ; %#ok<*AGROW>
+        case 'output'
+            lb = [lb; get(This,'outputLB')] ;
+            ub = [ub; get(This,'outputUB')] ;
+            x0 = [x0; get(This,'output')] ; %#ok<*AGROW>
 
     end
 end
@@ -159,18 +111,18 @@ else
 end
 
 Xcount = 0 ;
-for iOpt = 1:numel(options.Estimate) 
-    switch options.Estimate{iOpt}
-        case 'bias'
-            This = set(This,'bias',xF(1:This.nBias)) ;
-            Xcount = This.nBias ;
+for iOpt = 1:numel(options.Select) 
+    switch options.Select{iOpt}
+        case 'activation'
+            This = set(This,'activation',xF(1:This.nActivationParams)) ;
+            Xcount = This.nActivationParams ;
                 
-        case 'transfer'
-            This = set(This,'transfer',xF(Xcount+1:Xcount+This.nTransfer)) ;
-            Xcount = Xcount + This.nTransfer ;
+        case 'hyper'
+            This = set(This,'hyper',xF(Xcount+1:Xcount+This.nHyperParams)) ;
+            Xcount = Xcount + This.nHyperParams ;
             
-        case 'weight'
-            This = set(This,'weight',xF(Xcount+1:Xcount+This.nWeight)) ;
+        case 'output'
+            This = set(This,'output',xF(Xcount+1:Xcount+This.nOutputParams)) ;
 
     end
 end

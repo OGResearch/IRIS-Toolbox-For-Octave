@@ -1,4 +1,4 @@
-function Saved = dbsave(D,FName,Dates,varargin)
+function Saved = dbsave(D,FName,varargin)
 % dbsave  Save database as CSV file.
 %
 % Syntax
@@ -72,8 +72,8 @@ function Saved = dbsave(D,FName,Dates,varargin)
 % any sort of metadata. To change the name of the field that is treated as
 % user data, use the `'userData='` option.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % Create a simple database with two time series.
 %
@@ -101,8 +101,8 @@ function Saved = dbsave(D,FName,Dates,varargin)
 %
 % the database will preserve the `'userdata='` field.
 %
-% Example 2
-% -----------
+% Example
+% ========
 %
 % To change the field name under which you store your own user data, use
 % the `'userdata='` option when running `dbsave`,
@@ -126,7 +126,12 @@ function Saved = dbsave(D,FName,Dates,varargin)
 %                 y: [4x1 tseries]
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+if ~isempty(varargin) && isnumeric(varargin{1})
+    Dates = varargin{1};
+    varargin(1) = [];
+end
 
 try
     Dates;
@@ -206,7 +211,7 @@ for i = 1 : numel(List)
     
     name = List{i};
     
-    if istseries(D.(name))
+    if is.tseries(D.(name))
         tmpData = D.(name)(Dates);
         tmpComment = comment(D.(name));
         savedInx(i) = true;
@@ -274,7 +279,9 @@ if opt.savesubdb && any(isSubdb)
     doSaveSubdb();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doSaveSubdb()
@@ -284,18 +291,18 @@ end
             saved = dbsave(D.(iiName),iiFName,Dates,varargin{:});
             Saved{end+1} = saved;
         end
-    end % doSaveSubdb().
+    end % doSaveSubdb()
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function c = xxPrintSize(s)
 % xxPrintSize  Print the size of the saved variable in the format
 % 1-by-1-by-1 etc.
-
 c = [sprintf('%g',s(1)),sprintf('-by-%g',s(2:end))];
 c = ['[',c,']'];
-
-end % xxPrintSize().
+end % xxPrintSize()

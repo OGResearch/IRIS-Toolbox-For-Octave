@@ -5,7 +5,7 @@ function [This,D,NanDeriv] = myderiv(This,EqSelect,IAlt,Symbolic,Linear)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 isNanDeriv = nargout > 2;
 

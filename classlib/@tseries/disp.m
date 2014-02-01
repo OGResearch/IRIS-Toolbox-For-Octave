@@ -5,7 +5,7 @@ function disp(This,Name,Disp2D)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Name; %#ok<VUNUS>
@@ -16,7 +16,7 @@ end
 try
     Disp2D; %#ok<VUNUS>
 catch %#ok<CTCH>
-    Disp2D = @xxDisp2DDefault;
+    Disp2D = @xxDisp2d;
 end
 
 %--------------------------------------------------------------------------
@@ -34,12 +34,17 @@ disp(' ');
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function xxDispND(Start,Data,Comment,Pos,Name,Disp2D,NDim,Config)
 lastDimSize = size(Data,NDim);
 nPer = size(Data,1);
+tab = sprintf('\t');
+sep = sprintf(':  ');
+num2StrFunc = @(x) xxNum2Str(x,Config.tseriesformat);
 if NDim > 2
     subsref = cell([1,NDim]);
     subsref(1:NDim-1) = {':'};
@@ -54,16 +59,11 @@ else
         strfun.loosespace();
     end
     if nPer > 0
-        [dates,Data] = Disp2D(Start,Data);
-        try
-            dataStr = num2str(Data,Config.tseriesformat);
-        catch %#ok<CTCH>
-            dataStr = num2str(Data);
-        end
+        X = Disp2D(Start,Data,tab,sep,num2StrFunc);
         % Reduce the number of white spaces between numbers to 5 at most.
-        dataStr = xxReduceSpaces(dataStr,Config.tseriesmaxwspace);
+        X = xxReduceSpaces(X,Config.tseriesmaxwspace);
         % Print the dates and data.
-        disp([dates,dataStr]);
+        disp(X);
     end
     % Make sure long scalar comments are never displayed as `[1xN char]`.
     if length(Comment) == 1
@@ -78,19 +78,29 @@ else
         disp(Comment);
     end
 end
-end % xxDispND().
+end % xxDispND()
+
 
 %**************************************************************************
-function [Dates,Data] = xxDisp2DDefault(Start,Data)
+function X = xxDisp2d(Start,Data,Tab,Sep,Num2StrFunc)
+dateFormat = 'YFP';
+dateFormatW = '$ (Thu DD-Mmm-YYYY)';
 nPer = size(Data,1);
 range = Start + (0 : nPer-1);
-tab = sprintf('\t');
-sep = sprintf(':  ');
-Dates = [ ...
-    tab(ones(1,nPer),:), ...
-    strjust(dat2char(range)),sep(ones(1,nPer),:), ...
+dates = strjust(dat2char(range,'dateFormat=',dateFormat));
+if datfreq(range(1)) == 52
+    dates = [dates, ...
+        strjust(dat2char(range,'dateFormat=',dateFormatW))];
+end
+dates = [ ...
+    Tab(ones(1,nPer),:), ...
+    dates, ...
+    Sep(ones(1,nPer),:), ...
     ];
-end % xxDisp2DDefault().
+dataChar = Num2StrFunc(Data);
+X = [dates,dataChar];
+end % xxDisp2DDefault()
+
 
 %**************************************************************************
 function C = xxReduceSpaces(C,Max)
@@ -100,3 +110,13 @@ s(inx) = 'S';
 s = regexprep(s,sprintf('(?<=S{%g})S',Max),'X');
 C(:,s == 'X') = '';
 end % xxReduceSpaces().
+
+
+%**************************************************************************
+function C = xxNum2Str(X,Fmt)
+try
+    C = num2str(X,Fmt);
+catch %#ok<CTCH>
+    C = num2str(X);
+end
+end % xxNum2Str()

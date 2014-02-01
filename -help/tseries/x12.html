@@ -175,15 +175,15 @@ code.LaTeX {
 <li><p><code>.ar</code> - a numeric array with the point estimates of the AR coefficients (non-seasonal and seasonal).</p></li>
 <li><p><code>.ma</code> - a numeric array with the point estimates of the MA coefficients (non-seasonal and seasonal).</p></li>
 </ul>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>If you wish to run <code>x12</code> on the entire range on which the input time series is defined, and do not use any options, you can omit the second input argument (the date range). These following three calls to <code>x12</code> do exactly the same:</p>
 <pre><code>xsa = x12(x);
 xsa = x12(x,Inf);
 xsa = x12(x,get(x,&#39;range&#39;));</code></pre>
-<h4 id="example-2">Example 2</h4>
+<h4 id="example-1">Example</h4>
 <p>If you wish to specify some of the options, you have to enter a date range or use <code>Inf</code>:</p>
 <pre><code>xsa = x12(x,Inf,&#39;mode=&#39;,&#39;add&#39;);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

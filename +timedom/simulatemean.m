@@ -5,7 +5,7 @@ function [Y,W,E] = simulatemean(T,R,K,Z,H,D,~,A0,E,Nper,Ant,Dev,Q,q)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % TODO: Simplify treatment of ea and eu.
 

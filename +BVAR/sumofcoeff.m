@@ -28,10 +28,10 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('Mu',@isnumericscalar);
+pp.addRequired('Mu',@is.numericscalar);
 pp.parse(Mu);
 
 if ~isempty(varargin) && nargout == 1

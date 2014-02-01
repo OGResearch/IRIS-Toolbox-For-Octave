@@ -1,4 +1,13 @@
 function [T,TT,TS,S] = mytrend(X,Start,Opt)
+% mytrend  [Not a public function] Determinstic trend in a series of observations.
+%
+% Backend IRIS function
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
 
 freq = datfreq(Start);
 if islogical(Opt.season)
@@ -10,15 +19,15 @@ if islogical(Opt.season)
 else
     S = Opt.season;
 end
-if isnumericscalar(S) && (~any(S == [2,4,6,12]))
+if is.numericscalar(S) && (~any(S == [2,4,6,12]))
     S = [];
 end
 
 % Break points.
-nper = size(X,1);
+nPer = size(X,1);
 bp = round(Opt.break - Start + 1);
 bp = bp(:).';
-bp(bp < 1 | bp > nper) = [];
+bp(bp < 1 | bp > nPer) = [];
 bp = sort(bp);
 
 % Logarithm requested by the user.
@@ -45,7 +54,9 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function [TT,TS] = xxLevelTrend(X,BP,S)
@@ -74,7 +85,8 @@ for i = 1 : nx
     end
 end
 
-end % xxLevelTrend().
+end % xxLevelTrend()
+
 
 %**************************************************************************
 function [TT,TS] = xxDiffTrend(X,BP,S,Opt)
@@ -123,7 +135,8 @@ for i = 1 : nx
     end
 end
 
-end % xxDiffTrend().
+end % xxDiffTrend()
+
 
 %**************************************************************************
 function S = xxSeason(NPer,NS)
@@ -138,7 +151,8 @@ else
     S = zeros(NPer,0);
 end
 
-end % xxSeason().
+end % xxSeason()
+
 
 %**************************************************************************
 function M = xxTimeLine(nper,bp,diff)
@@ -158,4 +172,4 @@ for i = 1 : nbp
     M(bp(i):end,k+i) = x(1 : nper-bp(i)+1);
 end
 
-end % xxTimeLine().
+end % xxTimeLine()

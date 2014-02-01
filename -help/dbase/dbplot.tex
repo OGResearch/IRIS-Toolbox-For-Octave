@@ -2,14 +2,14 @@
 
     \filetitle{dbplot}{Plot from database}{dbase/dbplot}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [FF,AA,PDb] = dbplot(D,List,Range,...)
 [FF,AA,PDb] = dbplot(D,Range,List,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@
   \texttt{Range} {[} numeric {]} - Date range.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -33,7 +33,7 @@
   \texttt{PDB} {[} struct {]} - Database with actually plotted series.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -46,7 +46,7 @@
 See help on \href{qreport/qplot}{\texttt{qreport/qplot}} for other
 options available.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The function \texttt{dbplot} opens a new figure window (as many as
 needed to accommodate all graphs given the option \texttt{'subplot='}),
@@ -60,7 +60,7 @@ the expression with a \texttt{\^{}} (hat) symbol, the function specified
 in the \texttt{'transform='} option will not be applied to that
 expression.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 dbplot(d,qq(2010,1):qq(2015,4),{'x','"Series Y" y','^"Series z"', ...

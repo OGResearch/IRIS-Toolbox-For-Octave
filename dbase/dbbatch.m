@@ -71,8 +71,8 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 % case, use the dot or colon syntax: `$.0`, `$.1`, `$.2` for ower case, and
 % `$:0`, `$:1`, `$:2` for upper case.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % For each field (all assumed to be tseries) create a first difference, and
 % name the new series `DX` where `X` is the name of the original series.
@@ -82,8 +82,8 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 % Note that the original series will be presered in the database, together
 % with the newly created ones.
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % Suppose that in database `D` you want to seasonally adjust all time
 % series whose names end with `_u`, and give these seasonally adjusted series
@@ -100,7 +100,7 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % TODO: Streamline dbquery/unmask.
 
@@ -140,7 +140,7 @@ for i = 1 : length(List0)
         if ~isempty(msg)
             fprintf(1,[ ...
                 '\n*** The above warning occurred when DBBATCH ', ...
-                'attempted to evaluate ''%s''.\n'],tmpexpr);
+                'attempted to evaluate ''%s''.\n'],msg);
         end
     catch Error
         errorlist(end+(1:2)) = {expr{i},Error.message}; %#ok<AGROW>

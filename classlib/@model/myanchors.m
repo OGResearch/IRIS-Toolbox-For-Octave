@@ -5,7 +5,7 @@ function [YA,XA,EaReal,EaImag,YC,XC,QA,WReal,WImag] = myanchors(This,P,Range)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Check date frequencies.
 if datfreq(P.startDate) ~= datfreq(Range(1)) ...

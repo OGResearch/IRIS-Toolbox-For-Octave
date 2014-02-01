@@ -11,7 +11,7 @@ function varargout = autoexogenise(This,varargin)
 %
 %     M = autoexogenise(M,A)
 %
-% Input arugments
+% Input arguments
 % ================
 %
 % * `M` [ model ] - Model object.
@@ -40,7 +40,7 @@ function varargout = autoexogenise(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

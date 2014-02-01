@@ -138,7 +138,7 @@ function [xOpt,fval,exitflag,output,population,scores,LAMBDA] = ...
 % Distributed under BSD license.
 %
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     options; %#ok<VUNUS>

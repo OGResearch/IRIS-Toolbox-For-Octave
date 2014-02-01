@@ -38,7 +38,7 @@ function [Ln,Cp] = hline(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 Ln = zeros(1,0);
 Cp = zeros(1,0);
@@ -73,9 +73,6 @@ pp.parse(Ax,Loc);
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 %--------------------------------------------------------------------------
-
-% Check for plotyy peers, and return the background axes object.
-Ax = grfun.mychkforpeers(Ax);
 
 yLim = get(Ax,'yLim');
 

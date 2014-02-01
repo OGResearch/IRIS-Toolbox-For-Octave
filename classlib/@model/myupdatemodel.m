@@ -5,7 +5,7 @@ function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError,IsExpansion)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % `IsError`: Throw error if update fails.
 try

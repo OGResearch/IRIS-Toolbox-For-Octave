@@ -155,7 +155,7 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % of required initial conditions.
 %
 % * mean-mse struct (i.e. struct with fields `.mean` and `.mse`) -- a struct
-% through which you supplye the mean and MSE for all the required initial
+% through which you supply the mean and MSE for all the required initial
 % conditions.
 %
 % Contributions of measurement variables to the estimates of all variables
@@ -180,7 +180,7 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 nArgOut = nargout;
 
@@ -192,7 +192,7 @@ if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
 end
 
 pp = inputParser();
-pp.addRequired('model',@ismodel);
+pp.addRequired('model',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));

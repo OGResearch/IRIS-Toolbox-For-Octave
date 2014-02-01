@@ -31,11 +31,11 @@ function This = condition(This,List,Dates)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('p',@isplan);
+pp.addRequired('p',@is.plan);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('dates',@isnumeric);
 pp.parse(This,List,Dates);

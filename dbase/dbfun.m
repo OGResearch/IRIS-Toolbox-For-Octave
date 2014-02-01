@@ -59,11 +59,11 @@ function [X,Flag,ErrList,WarnList] = dbfun(Func,D,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('Func',@(x) isfunc(x) || ischar(x));
+pp.addRequired('Func',@(x) is.func(x) || ischar(x));
 pp.addRequired('D',@isstruct);
 pp.parse(Func,D);
 

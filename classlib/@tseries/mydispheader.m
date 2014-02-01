@@ -5,17 +5,17 @@ function mydispheader(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 tmpSize = size(This.data);
-nper = tmpSize(1);
+nPer = tmpSize(1);
 fprintf('\t');
 if isempty(This.data)
    fprintf('empty ');
 end
-fprintf('tseries object: %g%s\n',nper,sprintf('-by-%g',tmpSize(2:end)));
+fprintf('tseries object: %g%s\n',nPer,sprintf('-by-%g',tmpSize(2:end)));
 strfun.loosespace();
 
 end

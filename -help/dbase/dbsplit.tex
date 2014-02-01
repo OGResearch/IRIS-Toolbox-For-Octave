@@ -2,13 +2,13 @@
 
     \filetitle{dbsplit}{Split database into mutliple databases}{dbase/dbsplit}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [D1,D2,...,DN,D] = dbsplit(D,Rule1,Rule2,...,RuleN,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -22,7 +22,7 @@
   be used to name the entry in the output database.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -34,7 +34,7 @@
   \texttt{'discard=' false}).
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -46,7 +46,7 @@
   in more than one output databases.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The test regexp pattern and the new name pattern in each rule work as an
 expression-replace pair in \texttt{regexprep} -- see
@@ -54,7 +54,7 @@ expression-replace pair in \texttt{regexprep} -- see
 can capture tokens \texttt{(...)} for use in the new name pattern,
 \texttt{\$1}, \texttt{\$2}, etc.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 The database \texttt{D} contains time series for two regions,
 \texttt{US} and \texttt{EU}:

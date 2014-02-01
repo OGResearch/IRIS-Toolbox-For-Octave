@@ -4,7 +4,7 @@ function varargout = hline(varargin)
 % See help on [`grfun.hline`](grfun/hline).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.hline(varargin{:});
 

@@ -1,24 +1,24 @@
-function dat = qq(varargin)
-% qq  IRIS serial date numbers for dates with quarterly frequency.
+function Dat = qq(varargin)
+% qq  IRIS serial date number for quarterly date.
 %
 % Syntax
 % =======
 %
-%     d = qq(y)
-%     d = qq(y,q)
+%     Dat = qq(Y)
+%     Dat = qq(Y,Q)
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
-% * `q` [ numeric ] - Quarters; if missing, first quarter is assumed.
+% * `Q` [ numeric ] - Quarter; if omitted, first quarter is assumed.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers representing the input
-% quarterly dates.
+% * `Dat` [ numeric ] - IRIS serial date number representing the quarterly
+% date.
 %
 % Description
 % ============
@@ -28,10 +28,10 @@ function dat = qq(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-dat = datcode(4,varargin{:});
+Dat = datcode(4,varargin{:});
 
 end

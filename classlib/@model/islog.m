@@ -27,11 +27,11 @@ function Flag = islog(This,Name)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
 pp.parse(This,Name);
 

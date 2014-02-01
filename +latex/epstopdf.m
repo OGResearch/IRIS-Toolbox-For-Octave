@@ -5,14 +5,14 @@ function epstopdf(List,CmdArgs,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     CmdArgs; %#ok<VUNUS>
 catch %#ok<CTCH>
    if ispc()
       % Add a border to the image. The --enlarge option doesn't exist on
-      % Unix/Linux, though.
+      % Unix/Linux platforms.
       CmdArgs = '--enlarge=10';
       % cmdArguments = '';
    else
@@ -22,8 +22,8 @@ end
 
 % Parse inputarguments.
 pp = inputParser();
-pp.addRequired('LIST',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('CMDARGS',@(x) ischar(x) || isempty(x));
+pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
 pp.parse(List,CmdArgs);
 
 % Parse options.
@@ -43,6 +43,23 @@ if isempty(epstopdf)
       'EPSTOPDF path unknown. Cannot convert EPS to PDF files.');
 end
 
+% Try to make sure GhostScript is on the system path on Unix/Linus/Mac.
+% Otherwise, it's up to the user to export the path at the beginning of the
+% Matlab executable.
+changePath = false;
+if isunix()
+    try %#ok<TRYNC>
+        path0 = getenv('PATH');
+        [~,x0] = system('which gs');
+        % This is the most likely location.
+        [~,x1] = system('which /usr/local/bin/gs');
+        if isempty(x0) && ~isempty(x1)
+            setenv('PATH',[path0,':','/usr/local/bin']);
+            changePath = true;
+        end
+    end
+end
+
 for i = 1 : length(List)
   [fPath,fTitle,fExt] = fileparts(List{i});
    fPath = strtrim(fPath);
@@ -59,6 +76,13 @@ for i = 1 : length(List)
       system(command);
    end
    cd(thisDir);
+end
+
+% Clean up.
+if changePath
+    try %#ok<TRYNC>
+        setenv('PATH',path0);
+    end
 end
 
 end

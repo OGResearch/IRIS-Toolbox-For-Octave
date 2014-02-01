@@ -1,4 +1,4 @@
-function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,Range,varargin)
+function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,varargin)
 % regress  Ordinary or weighted least-square regression.
 %
 % Syntax
@@ -55,16 +55,19 @@ function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if nargin < 3
-   Range = Inf;
+if ~isempty(varargin) && isnumeric(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
+    Range = Inf;
 end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('y',@istseries);
-pp.addRequired('x',@istseries);
+pp.addRequired('y',@is.tseries);
+pp.addRequired('x',@is.tseries);
 pp.addRequired('range',@isnumeric);
 pp.parse(Y,X,Range);
 
@@ -74,31 +77,33 @@ opt = passvalopt('tseries.regress',varargin{:});
 %--------------------------------------------------------------------------
 
 if length(Range) == 1 && isinf(Range)
-   Range = get([X,Y],'minrange');
+    Range = get([X,Y],'minRange');
 else
-   Range = Range(1) : Range(end);
+    Range = Range(1) : Range(end);
 end
 
 xData = rangedata(X,Range);
-ydata = rangedata(Y,Range);
+yData = rangedata(Y,Range);
 if opt.constant
-   xData(:,end+1) = 1;
+    xData(:,end+1) = 1;
 end
 
+rowInx = all(~isnan([xData,yData]),2);
+
 if isempty(opt.weighting)
-   [B,BStd,eVar,BCov] = lscov(xData,ydata);
+    [B,BStd,eVar,BCov] = lscov(xData(rowInx,:),yData(rowInx,:));
 else
-   w = rangedata(opt.weighting,Range);
-   [B,BStd,eVar,BCov] = lscov(xData,ydata,w);
+    w = rangedata(opt.weighting,Range);
+    [B,BStd,eVar,BCov] = lscov(xData(rowInx,:),yData(rowInx,:),w(rowInx,:));
 end
 EStd = sqrt(eVar);
 
 if nargout > 2
-   E = replace(Y,ydata - xData*B,Range(1));
+    E = replace(Y,yData - xData*B,Range(1));
 end
 
 if nargout > 4
-   YFit = replace(Y,xData*B,Range(1));
+    YFit = replace(Y,xData*B,Range(1));
 end
 
 end

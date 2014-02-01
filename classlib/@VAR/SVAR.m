@@ -5,16 +5,18 @@ function [This,Data,B,Count] = SVAR(V,Data,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if nargin == 1
+try
+    Data; %#ok<VUNUS>
+catch
     Data = [];
 end
 
 % Parse required input arguments.
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
+pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || is.tseries(x) ...
     || isstruct(x));
 pp.parse(V,Data);
 
@@ -39,5 +41,12 @@ end
 
 % Identify the B matrix.
 [This,Data,B,Count] = myidentify(This,Data,opt);
+
+if nargin < 2 || nargout < 2 || isempty(Data)
+    return
+end
+
+% Convert reduced-form residuals to structural shocks.
+Data = mystructuralshocks(This,Data,opt);
 
 end

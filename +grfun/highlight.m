@@ -49,7 +49,7 @@ function [Pp,Cp] = highlight(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishghandle(varargin{1}))
     Ax = varargin{1};
@@ -101,46 +101,46 @@ for iAx = Ax(:).'
     range = range([1,end]);
     if isequal(getappdata(h,'tseries'),true)
         freq = datfreq(range(1));
-        timeScale = dat2grid(range);
+        timeScale = dat2dec(range,'centre');
         if isempty(timeScale)
             continue
         end
-        if freq > 0
-            around = 1/(2*freq);
+        if isnan(opt.around)
+            around = 0.5 / max(1,freq);
         else
-            around = 0.5;
+            around = opt.around ;
         end
         timeScale = [timeScale(1)-around,timeScale(end)+around];
     else
         timeScale = [range(1)-opt.around,range(end)+opt.around];
     end
-
+    
     yLim = get(h,'ylim');
     yData = yLim([1,1,2,2]);
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.colour, ...
         'parent',h,'edgeColor','none');
-
+    
     % Add caption to the highlight.
     if ~isempty(opt.caption)
         cp = grfun.mycaption(h,timeScale([1,end]), ...
             opt.caption,opt.vposition,opt.hposition);
         Cp = [Cp,cp];
     end
-
+    
     % Move the highlight patch object to the background.
     ch = get(h,'children');
     ch(ch == pt) = [];
     ch(end+1) = pt;
     set(h,'children',ch);
-
+    
     % Update y-data whenever the parent y-lims change.
     grfun.listener(h,pt,'highlight');
-
+    
     % Reset the order of figure children.
     set(fg,'children',fgch);
     Pp = [Pp,pt]; %#ok<*AGROW>
-
+    
 end
 
 % Tag the highlights and captions for `qstyle`.

@@ -1,20 +1,20 @@
-function y = enddate(x)
+function D = enddate(X)
 % enddate  Date of the last available observation in a tseries object.
 %
 % Syntax
 % =======
 %
-%     d = enddate(x)
+%     D = enddate(X)
 %
 % Input arguments
 % ================
 %
-% * `x` [ tseries ] - Tseries object.
+% * `X` [ tseries ] - Tseries object.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date number representing the date of the
+% * `D` [ numeric ] - IRIS serial date number representing the date of the
 % last observation available in the input tseries.
 %
 % Description
@@ -29,10 +29,10 @@ function y = enddate(x)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-y = x.start + size(x.data,1) - 1;
+D = X.start + size(X.data,1) - 1;
 
 end

@@ -20,24 +20,21 @@
 % LaTeX is a free typesetting system used to produce PDF reports in IRIS.
 % We recommend MiKTeX, available from `www.miktex.org`.
 % 
-% Components not needed
-% ======================
+% Components distributed with IRIS
+% =================================
 %
-% Some components were needed in the past but are not any longer.
-%
-% X13-ARIMA-SEATS (formerly X12-ARIMA)
-% -------------------------------------
+% X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)
+% -----------------------------------------------
 % 
 % Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly
-% X12-ARIMA) program is now incoporated in, and distributed with IRIS. You
-% don't need to care about anything to be able to use it.
+% X12-ARIMA) program is now incoporated in, and distributed with IRIS. No
+% extra installation or setup is needed.
 % 
-% Symbolic Math Toolbox
-% -----------------------
+% Symbolic/automatic differentiator
+% ----------------------------------
 %
-% IRIS is now equipped with its own symbolic/automatic differentiator. You
-% do not need to have the Symbolic Math Toolbox installed to be able to
-% compute exact Taylor expansions.
+% IRIS is now equipped with its own symbolic/automatic differentiator,
+% Sydney. There is no need to install the Symbolic Math Toolbox.
 %
 % Installing IRIS
 % ================
@@ -45,8 +42,9 @@
 % Step 1
 % --------
 % 
-% Download the latest IRIS zip archive, `IRIS_Tbx_#_YYYYMMDD.zip`, from
-% `www.iris-toolbox.com`, and save it in a temporary location on your disk.
+% Download the latest IRIS zip archive, `IRIS_Tbx_YYYYMMDD.zip`, from the
+% download area at `www.iris-toolbox.com`, and save it in a temporary
+% location on your disk.
 % 
 % Step 2
 % --------
@@ -98,4 +96,4 @@
 % 
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

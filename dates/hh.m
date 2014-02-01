@@ -1,24 +1,25 @@
-function dat = hh(varargin)
-% hh  IRIS serial date numbers for dates with half-yearly frequency.
+function Dat = hh(varargin)
+% hh  IRIS serial date number for half-yearly date.
 %
 % Syntax
 % =======
 %
-%     d = hh(y)
-%     d = hh(y,h)
+%     Dat = hh(Y)
+%     Dat = hh(Y,H)
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
-% * `h` [ numeric ] - Half-years; if missing, first half-year is used.
+% * `H` [ numeric ] - Half-year; if missing, first half-year (January to
+% June) is assumed.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers representing the input
-% half-years.
+% * `Dat` [ numeric ] - IRIS serial date numbers representing the
+% half-yearly date.
 %
 % Description
 % ============
@@ -28,10 +29,10 @@ function dat = hh(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-dat = datcode(2,varargin{:});
+Dat = datcode(2,varargin{:});
 
 end

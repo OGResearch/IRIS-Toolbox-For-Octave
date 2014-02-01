@@ -44,12 +44,12 @@ function [sample,lp_Sample,len] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
 
 % Validate required inputs.
 pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@isnumericscalar);
+pp.addRequired('NDraw',@is.numericscalar);
 pp.parse(This,NDraw);
 
 % Parse options.

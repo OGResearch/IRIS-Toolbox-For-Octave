@@ -121,7 +121,7 @@ classdef model < modelobj & estimateobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
         % Name of the original model file.
@@ -254,7 +254,6 @@ classdef model < modelobj & estimateobj
         varargout = forecast(varargin)
         varargout = fprintf(varargin)
         varargout = get(varargin)
-        varargout = horzcat(varargin)
         varargout = icrf(varargin)
         varargout = ifrf(varargin)
         varargout = irf(varargin)
@@ -309,7 +308,7 @@ classdef model < modelobj & estimateobj
     end
     
     methods (Access=protected,Hidden)
-        varargout = myaffectedeqtn(varargin)        
+        varargout = myaffectedeqtn(varargin)
         varargout = myalpha2xb(varargin)
         varargout = myanchors(varargin)
         varargout = myautoexogenise(varargin)
@@ -352,7 +351,7 @@ classdef model < modelobj & estimateobj
         varargout = mysstateopt(varargin)
         varargout = mysstateswap(varargin)
         varargout = mystruct2obj(varargin)
-        varargout = mysubsalt(varargin)                
+        varargout = mysubsalt(varargin)
         varargout = mysymbdiff(varargin)
         varargout = mysystem(varargin)
         varargout = mytrendarray(varargin)
@@ -362,7 +361,6 @@ classdef model < modelobj & estimateobj
     
     methods (Static)
         varargout = failed(varargin)
-        varargout = i2model(varargin)
     end
     
     methods (Static,Hidden)
@@ -371,7 +369,6 @@ classdef model < modelobj & estimateobj
         varargout = mymse2var(varargin)
         varargout = myoutoflik(varargin)
         varargout = loadobj(varargin)
-        varargout = dataformat(varargin)
     end
     
     % Constructor and dependent properties.
@@ -459,16 +456,16 @@ classdef model < modelobj & estimateobj
             % existing model object is to change the `'removeLeads='` option. Of course,
             % you can always achieve the same by loading the original model file.
             %
-            % Example 1
-            % ==========
+            % Example
+            % ========
             %
             % Read in a model code file named `my.model`, and declare the model as
             % linear:
             %
             %     m = model('my.model','linear',true);
             %
-            % Example 2
-            % ==========
+            % Example
+            % ========
             %
             % Read in a model code file named `my.model`, declare the model as linear,
             % and assign some of the model parameters:
@@ -485,7 +482,7 @@ classdef model < modelobj & estimateobj
             % expressions.
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             % Superclass constructors.
             This = This@modelobj();

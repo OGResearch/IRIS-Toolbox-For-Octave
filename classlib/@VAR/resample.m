@@ -53,7 +53,7 @@ function Outp = resample(This,Inp,Range,NDraw,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Handle obsolete syntax.
 throwWarn = false;
@@ -78,10 +78,10 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
+pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp.addRequired('Range',@isnumeric);
-pp.addRequired('NDraw',@(x) isnumericscalar(x) && x == round(x) && x >= 0);
+pp.addRequired('NDraw',@(x) is.numericscalar(x) && x == round(x) && x >= 0);
 pp.parse(This,Inp,Range,NDraw);
 
 % Panel VAR.

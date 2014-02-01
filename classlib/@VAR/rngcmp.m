@@ -25,7 +25,7 @@ function Flag = rngcmp(V1,V2)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('V1',@(x) isa(x,'VAR'));

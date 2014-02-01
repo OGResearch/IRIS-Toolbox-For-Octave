@@ -33,11 +33,11 @@ function [This,Y0,K0,Y1,G1] = uncmean(YBar,Mu,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('YBar',@isnumeric);
-pp.addRequired('Mu',@isnumericscalar);
+pp.addRequired('Mu',@is.numericscalar);
 pp.parse(YBar,Mu);
 
 if ~isempty(varargin) && nargout == 1

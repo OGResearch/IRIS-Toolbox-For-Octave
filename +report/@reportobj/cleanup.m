@@ -5,29 +5,36 @@ function cleanup(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % Delete all helper files produced when latex codes for children were
 % built.
-nTempFile = length(This.tempFile);
+
+tempFile = This.hInfo.tempFile;
+tempDir = This.hInfo.tempDir;
+nTempFile = length(tempFile);
 isDeleted = false(1,nTempFile);
+
 for i = 1 : nTempFile
-    file = This.tempFile{i};
+    file = tempFile{i};
     if ~isempty(dir(file))
         delete(file);
-        isDeleted(i) = true;
+        isDeleted(i) = isempty(dir(file));
     end
 end
-This.tempFile(isDeleted) = [];
+tempFile(isDeleted) = [];
 
 % Delete temporary dir if empty.
-if ~isempty(This.tempDirName)
-    status = rmdir(This.tempDirName);
+if ~isempty(tempDir)
+    status = rmdir(tempDir);
     if status == 1
-        This.tempDirName = '';
+        tempDir = '';
     end
 end
+
+This.hInfo.tempFile = tempFile;
+This.hInfo.tempDir = tempDir;
 
 end

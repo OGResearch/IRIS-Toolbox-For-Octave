@@ -4,7 +4,7 @@ function varargout = qstyle(varargin)
 % See help on [`qreport.qstyle`](qreport/qstyle).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = qreport.qstyle(varargin{:});
 

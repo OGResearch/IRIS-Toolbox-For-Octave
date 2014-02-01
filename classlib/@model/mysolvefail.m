@@ -61,7 +61,7 @@ if any(inx)
         end
         Body = [sna, ...
             'Singularity or NaN in this measurement equation in%s: ''%s''.'];
-	elseif issolved(solve(This,'linear=',true)) && isnan(This)
+	elseif isnan(This) && issolved(solve(This,'linear=',true))
 		Args = {};
 		Body = [sna, ...
 			'Model is linear but is not declared linear and does not have a steady state solution:%s'];

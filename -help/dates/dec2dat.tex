@@ -1,29 +1,33 @@
 
 
-    \filetitle{dec2dat}{Convert decimal numbers to IRIS serial date numbers}{dates/dec2dat}
+    \filetitle{dec2dat}{Convert decimal representation of date to IRIS serial date number}{dates/dec2dat}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
-dat = dec2dat(dec,freq)
+Dat = dec2dat(Dec,Freq)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
-  \texttt{dec} {[} numeric {]} - Decimal numbers representing dates.
+  \texttt{Dec} {[} numeric {]} - Decimal numbers representing dates.
 \item
-  \texttt{freq} {[} freq {]} - Date frequency.
+  \texttt{Freq} {[} freq {]} - Date frequency.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  dat {[} numeric {]} - IRIS serial data numbers corresponding to the
-  input decimals.
+  Dat {[} numeric {]} - IRIS serial date numbers corresponding to the
+  decimal representations \texttt{Dec}.
 \end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
 
 

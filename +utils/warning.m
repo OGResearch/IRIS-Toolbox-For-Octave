@@ -5,7 +5,7 @@ function warning(Memo,Body,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ end
 
 stack = utils.getstack();
 
-msg = sprintf('<a href="">IRIS Toolbox Warning</a> :: %s.', ...
+msg = sprintf('<a href="">IRIS Toolbox Warning</a> @ %s.', ...
     (Memo));
 if isempty(varargin)
     msg = [msg,sprintf('\n*** '),Body];

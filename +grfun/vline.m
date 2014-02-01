@@ -38,7 +38,7 @@ function [Ln,Cp] = vline(varargin)
 % * `'vPosition='` [ `'bottom'` | `'middle'` | *`'top'`* | numeric ] -
 % Vertical position of the caption.
 %
-% * `'timePosition='` [ `'after'` | `'before'` | `'middle'` ] - Placement
+% * `'timePosition='` [ `'after'` | `'before'` | *`'middle'`* ] - Placement
 % of the vertical line on the time axis: in the middle of the specified
 % period, immediately before it (between the specified period and the
 % previous one), or immediately after it (between the specified period and
@@ -52,7 +52,7 @@ function [Ln,Cp] = vline(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 Ln = zeros(1,0);
 Cp = zeros(1,0);
@@ -95,15 +95,11 @@ Ax = grfun.mychkforpeers(Ax);
 % point.
 x = Loc;
 if isequal(getappdata(Ax,'tseries'),true)
-    x = dat2grid(x);
+    x = dat2dec(x,'centre');
     freq = getappdata(Ax,'freq');
-    if ~isempty(freq) && isnumericscalar(freq) ...
-            && any(freq == [0,1,2,4,6,12])
-        if freq > 0
-            dx = 1/(2*freq);
-        else
-            dx = 0.5;
-        end
+    if ~isempty(freq) && is.numericscalar(freq) ...
+            && any(freq == [0,1,2,4,6,12,52])
+            dx = 0.5 / max(1,freq);
         switch opt.timeposition
             case 'before'
                 x = x - dx;

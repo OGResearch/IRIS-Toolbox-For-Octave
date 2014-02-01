@@ -1,11 +1,11 @@
-function mydatxtick(H,Time,Freq,UserRange,Opt)
+function mydatxtick(H,Range,Time,Freq,UserRange,Opt)
 % mydatxtick  [Not a public function] Set up x-axis for tseries object graphs.
 %
 % Backend IRIS function.
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if length(H) > 1
     for iH = H(:).'
@@ -32,123 +32,103 @@ end
 peer = getappdata(H,'graphicsPlotyyPeer');
 
 % Determine x-limits first.
-first = [];
-last = [];
-doFirst();
-doLast();
-xLim = [first,last];
-if Freq > 0
-    xLim = dat2grid(xLim,Opt.dateposition);
-end
-set([H,peer], ...
-    'xLim',xLim, ...
-    'xLimMode','manual');
+firstDate = [];
+lastDate = [];
+xLim = [];
+doXLim();
 
 % Allow temporarily auto ticks and labels.
 set(H, ...
     'xTickMode','auto', ...
     'xTickLabelMode','auto');
 
-xTick = [];
+xTick = get(H(1),'xTick');
+xTickDates = [];
 if Freq == 0
-    doZeroFreq();
+    doXTickZero();
 else
-    doNormalFreq();
+    doXTick();
 end
 
 % Adjust x-limits if the graph includes bars.
 doXLimAdjust();
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function doFirst()
-        first = UserRange(1);
-        if isinf(first)
-            if Freq > 0
-                % Lower limit if user entered Inf: First period in first plotted
-                % year.
-                first = datcode(Freq,floor(Time(1)),1);
+    function doXLim()
+        if isequal(UserRange,Inf)
+            if Freq == 0
+                firstDate = Range(1);
+                lastDate = Range(end);
+                xLim = [firstDate,lastDate];
+            elseif Freq == 52
+                firstDate = Range(1);
+                lastDate = Range(end);
+                xLim = [Time(1),Time(end)];
             else
-                first = Time(1);
+                % First period in first plotted year to last period in last plotted year.
+                firstDate = datcode(Freq,floor(Time(1)),1);
+                lastDate = datcode(Freq,floor(Time(end)),Freq);
+                xLim = dat2dec([firstDate,lastDate],Opt.dateposition);
             end
+        else
+            firstDate = UserRange(1);
+            lastDate = UserRange(end);
+            xLim = dat2dec([firstDate,lastDate],Opt.dateposition);
         end
-    end % doFirst().
+        set([H,peer], ...
+            'xLim',xLim, ...
+            'xLimMode','manual');
+    end % doXLim()
+
 
 %**************************************************************************
-    function doLast()
-        last = UserRange(end);
-        if isinf(last)
-            if Freq > 0
-                % Upper limit if user entered Inf: Last period in last plotted
-                % year.
-                last = datcode(Freq,floor(Time(end)),Freq);
-            else
-                last = Time(end);
-            end
-        end
-    end % doLast().
-
-%**************************************************************************
-    function doNormalFreq()
+    function doXTick()
         if isequal(Opt.datetick,Inf)
             % Determine step and xTick.
             % Step is number of periods.
             % If multiple axes handles are passed in (e.g. plotyy) use just
             % the first one to get xTick but set the properties for both
             % eventually.
-            xTick = get(H(1),'xTick');
             if length(xTick) > 1
-                step = round(Freq*(xTick(2) - xTick(1)));
+                step = max(1,round(Freq*(xTick(2) - xTick(1))));
             else
                 step = 1;
             end
-            if step < 1
-                step = 1;
-            end
-            if step < Freq
-                % Make sure freq/step is integer.
-                if rem(Freq,step) > 0
-                    step = Freq / floor(Freq/step);
-                end
-            elseif step > Freq
-                % Make sure step/freq is integer.
-                if rem(step,Freq) > 0
-                    step = Freq * floor(step/Freq);
-                end
-            end
-            nstep = round(Freq/step*(xLim(2) - xLim(1)));
-            xTick = xLim(1) + step/Freq*(0 : nstep);
+            xTickDates = firstDate : step : lastDate;
         elseif isnumeric(Opt.datetick)
-            xTick = dat2grid(Opt.datetick,Opt.dateposition);
+            xTickDates = Opt.datetick;
         elseif ischar(Opt.datetick)
+            tempRange = firstDate : lastDate;
+            [~,tempPer] = dat2ypf(tempRange);
             switch lower(Opt.datetick)
                 case 'yearstart'
-                    temprange = first : last;
-                    [ans,tempper] = dat2ypf(temprange); %#ok<NOANS,ASGLU>
-                    xTick = dat2grid( ...
-                        temprange(tempper == 1), ...
-                        Opt.dateposition);
+                    xTickDates = tempRange(tempPer == 1);
                 case 'yearend'
-                    temprange = first : last;
-                    [ans,tempper] = dat2ypf(temprange); %#ok<NOANS,ASGLU>
-                    xTick = dat2grid( ...
-                        temprange(tempper == Freq), ...
-                        Opt.dateposition);
+                    xTickDates = tempRange(tempPer == Freq);
                 case 'yearly'
-                    xTick = dat2grid( ...
-                        first : Freq : last, ...
-                        Opt.dateposition);
+                    match = tempPer(1);
+                    if Freq == 52 && match == 53
+                        match = 52;
+                        xTickDates = tempRange(tempPer == match);
+                        xTickDates = [tempRange(1),xTickDates];
+                    else
+                        xTickDates = tempRange(tempPer == match);
+                    end
             end
         end
-        doSetXTick();
-    end % doNormalFreq().
+        xTick = dat2dec(xTickDates,Opt.dateposition);
+        doSetXTickLabel();
+    end % doXTick()
+
 
 %**************************************************************************
-    function doZeroFreq()
+    function doXTickZero()
         % Make sure the xTick step is not smaller than 1.
         if isinf(Opt.datetick)
-            xTick = get(H(1),'xTick');
             if any(diff(xTick) < 1)
                 xTick = xTick(1) : xTick(end);
                 set(H, ...
@@ -156,28 +136,53 @@ doXLimAdjust();
                     'xTickMode','manual');
             end
         else
+            xTick = Opt.datetick;
             set(H,...
-                'xTick',Opt.datetick,...
+                'xTick',xTick,...
                 'xTickMode','manual');
         end
         if strncmp(Opt.dateformat,'$',1)
-            doSetXTick();
+            doSetXTickLabel();
         end
-    end % doZeroFreq().
+    end % doXTickZero()
+
 
 %**************************************************************************
-    function doSetXTick()
+    function doSetXTickLabel()
         set(H, ...
             'xTick',xTick, ...
             'xTickMode','manual');
         % Set xTickLabel.
         Opt = datdefaults(Opt,true);
-        xTickLabel = ...
-            dat2str(grid2dat(xTick,Freq,Opt.dateposition),Opt);
+        % Plot date format can be a cellstr under two circumstances:
+        %
+        % * either the user specifies different date formats for the first,
+        % second, etc. dates plotted in the graph,
+        %
+        % * or the `'dateformat='` option comes from `irisconfig` where it
+        % is set up as a cellstr with different date formats for each of
+        % the recognized frequencies.
+        %
+        % If it is the second case, choose the
+        % correct date format now. If it is the first case, pass the
+        % `'dateFormat='` option into the `dat2str` function.
+        freqList = [1,2,4,6,12,52];
+        if iscell(Opt.dateformat) ...
+                && length(Opt.dateformat) == length(freqList)
+            inx = Freq == freqList;
+            if ~isempty(inx)
+                Opt.dateformat = Opt.dateformat{inx};
+            else
+                utils.error('dates:mydatxtick', ...
+                    'Cannot recognize date frequency in a plot command.');
+            end
+        end
+        xTickLabel = dat2str(xTickDates,Opt);
         set(H, ...
             'xTickLabel',xTickLabel, ...
             'xTickLabelMode','manual');
-    end % doSetXTick().
+    end % doSetXTickLabel()
+
 
 %**************************************************************************
     function doXLimAdjust()
@@ -196,6 +201,7 @@ doXLimAdjust();
                 setappdata(peer,'trueXLim',xLim);
             end
         end
-    end % doXLimAdjust().
+    end % doXLimAdjust()
+
 
 end

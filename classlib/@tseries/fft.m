@@ -41,7 +41,7 @@ function [y,range,freq,per] = fft(x,range,varargin)
 
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 options = passvalopt('tseries.fft',varargin{:});
 

@@ -70,7 +70,7 @@ classdef tseries < userdataobj
     % ======================================
     %
     % Note that most of the sample characteristics are listed above in the
-    % Maths and statistics functions and operatiors section.
+    % Maths and statistics functions and operators section.
     %
     % * [`acf`](tseries/acf) - Sample autocovariance and autocorrelation functions.
     % * [`hpdi`](tseries/hpdi) - Highest probability density interval.
@@ -136,7 +136,7 @@ classdef tseries < userdataobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         start = NaN;
@@ -181,7 +181,7 @@ classdef tseries < userdataobj
             % ========
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             This.Comment = {''};
@@ -191,7 +191,7 @@ classdef tseries < userdataobj
                 return
             end
             % Tseries input.
-            if nargin == 1 && istseries(varargin{1})
+            if nargin == 1 && is.tseries(varargin{1})
                 This = varargin{1};
                 return
             end
@@ -234,7 +234,7 @@ classdef tseries < userdataobj
             pp = inputParser();
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
+                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
             
@@ -250,7 +250,7 @@ classdef tseries < userdataobj
             % Create data from a function handle or function name.
             if ischar(usrData) && strcmpi(usrData,'lintrend')
                 usrData = (1 : nPer).';
-            elseif ischar(usrData) || isfunc(usrData)
+            elseif ischar(usrData) || is.func(usrData)
                 try
                     usrData = feval(usrData,[nPer,1]);
                 catch %#ok<CTCH>
@@ -647,7 +647,7 @@ classdef tseries < userdataobj
         function x = norminv(x,varargin)
             x.data = norminv(x.data,varargin{:});
             x = mytrim(x);
-        end        
+        end
         function x = logncdf(x,varargin)
             x.data = logncdf(x.data,varargin{:});
             x = mytrim(x);
@@ -672,7 +672,7 @@ classdef tseries < userdataobj
             x.data = gevinv(x.data,varargin{:});
             x = mytrim(x);
         end
-
+        
         
         % Functions whose behaviour depends on the dimension.
         function x = any(x,dim)
@@ -744,7 +744,7 @@ classdef tseries < userdataobj
         % Alias for prctile.
         function varargout = pctile(varargin)
             [varargout{1:nargout}] = prctile(varargin{:});
-        end        
+        end
         function x = std(x,flag,dim)
             if nargin < 2
                 flag = 0;
@@ -769,7 +769,7 @@ classdef tseries < userdataobj
             end
             x = unop(@var,x,dim,flag,dim);
         end
-        
+    
         % Indexing.
         function index = end(x,k,n) %#ok<INUSD>
             if k == 1

@@ -1,53 +1,114 @@
-classdef neuron
-	
-	properties
-		ActivationFn@char = '' ;
-		OutputFn@char = '' ;
-		Position@double = [NaN,NaN] ;
-		Weight@double = [] ;
-		nAlt = NaN ;
-		OutputParams = [] ;
-	end
-	
-	methods
-		
-		function This = neuron(ActivationFn,OutputFn,nAlt,nInputs,Position)
-			This.ActivationFn = ActivationFn ;
-			This.OutputFn = OutputFn ;
-			This.nAlt = nAlt ;
-			This.Weight = NaN(nInputs,nAlt) ;
-			This.Position = Position ;
-		end
-		
-		function Dou = eval(This,Din,Range)
-			
-			switch This.ActivationFn
-				case 'bias'
-					Dou = 1 ;
-				otherwise
-					Dou = xxOutput(xxActivation(resize(Din,Range))) ;
-			end
-						
-			function out = xxActivation(in)
-				switch This.ActivationFn
-					case 'linear'
-						out = This.Weight'*in ;
-					case 'minkovsky'
-						out = norm(in-This.Weight,This.ActivationParams) ;
-				end
-						
-			end
-			function out = xxOutput(in)
-				switch This.OutputFn
-					case 's4'
-						out = (This.OutputParams.*in)./sqrt(1+This.OutputParams.^2*in.^2) ;
-					case 'logistic'
-						out = 1./(1-exp(in)) ;
-					case 'tanh'
-						atmp = exp(-in*This.OutputParams) ;
-						out = (1-atmp)/(1+atmp) ;
-				end
-			end
-		end
-	end
+classdef neuron < handle
+    % neuron  [Not a public class definition]
+    % 
+    % Backend IRIS class.
+    % No help provided.
+    
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
+    
+    properties
+        ActivationFn@char = '' ;
+        ActivationParams = [] ;
+        ActivationIndex = [] ;
+        ActivationLB = [] ;
+        ActivationUB = [] ;
+        ActivationLBDefault = [] ;
+        ActivationUBDefault = [] ;
+        ActivationIndexLocal = [] ;
+        ActivationRemovedLocal = [] ;
+        nActivationParams = [] ;
+        
+        OutputFn@char = '' ;
+        OutputParams = [] ;
+        OutputIndex = [] ;
+        OutputLB = [] ;
+        OutputUB = [] ;
+        OutputLBDefault = [] ;
+        OutputUBDefault = [] ;
+        
+        HyperParams = [] ;
+        HyperIndex = [] ;
+        HyperLB = [] ;
+        HyperUB = [] ;
+        HyperLBDefault = [] ;
+        HyperUBDefault = [] ;
+        
+        ForwardConnection = {} ;
+        BackwardConnection = {} ;
+        
+        Position@double = [NaN,NaN] ;
+        nAlt = NaN ;
+        Bias = false ;
+    end
+        
+    methods
+        
+        function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex,HyperIndex)
+            % neuron  [Not a public function]
+            %
+            % Backend IRIS function.
+            % No help provided.
+            
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
+            
+            % Activation
+            This.ActivationFn = ActivationFn ;
+            This.ActivationParams = NaN(nInputs,1) ;
+            This.ActivationIndex = ActivationIndex+1:ActivationIndex+numel(This.ActivationParams) ;
+            This.ActivationLBDefault = -Inf ;
+            This.ActivationUBDefault = Inf ;
+            This.ActivationLB = repmat(This.ActivationLBDefault,numel(This.ActivationParams),1) ;
+            This.ActivationUB = repmat(This.ActivationUBDefault,numel(This.ActivationParams),1) ;
+            This.ActivationIndexLocal = 1:numel(This.ActivationParams) ;
+            This.ActivationRemovedLocal = [] ;
+            This.nActivationParams = numel(This.ActivationParams) ;
+            
+            % Output
+            This.OutputFn = OutputFn ;
+            This.OutputParams = NaN ;
+            This.OutputIndex = OutputIndex+1:OutputIndex+numel(This.OutputParams) ;
+            This.OutputLBDefault = 0 ;
+            This.OutputUBDefault = Inf ;
+            This.OutputLB = repmat(This.OutputLBDefault,numel(This.OutputParams),1) ;
+            This.OutputUB = repmat(This.OutputUBDefault,numel(This.OutputParams),1) ;
+            
+            % Hyper
+            This.HyperParams = NaN ;
+            This.HyperIndex = HyperIndex+1 ;
+            switch ActivationFn
+                case 'minkovsky'
+                    This.HyperParams = 2 ;
+                otherwise
+                    This.HyperParams = 1 ;
+            end
+            This.HyperLBDefault = 0 ;
+            This.HyperUBDefault = Inf ;
+            This.HyperLB = repmat(This.HyperLBDefault,numel(This.HyperParams),1) ;
+            This.HyperUB = repmat(This.HyperUBDefault,numel(This.HyperParams),1) ;
+            
+            % Everything else
+            This.nAlt = 1 ;
+            This.Position = Position ;
+            switch ActivationFn
+                case 'bias'
+                    This.Bias = true ;
+                otherwise
+                    This.Bias = false ;
+            end
+        end
+        
+        varargout = eval(varargin) ;
+        varargout = saliency(varargin) ;
+        
+        out = dAdI(Obj,Data) ;
+        out = dAdP(Obj,Data) ;
+        out = dOdA(Obj,Data) ;
+        out = dOdI(obj,Data) ;
+        out = dOdP(obj,Data) ;
+        
+    end
 end
+
+

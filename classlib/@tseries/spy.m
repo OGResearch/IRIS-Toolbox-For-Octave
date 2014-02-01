@@ -46,7 +46,7 @@ function [Ax,Li] = spy(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishghandle(varargin{1})) ...
         && strcmpi(get(varargin{1}(1),'type'),'axes')
@@ -76,7 +76,7 @@ P.parse(range,X);
 [opt,varargin] = passvalopt('tseries.spy',varargin{:});
 freq = get(X,'freq');
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [x,range] = rangedata(X,range);
 x = x(:,:,1);
@@ -84,7 +84,7 @@ x = opt.test(x.');
 if ~islogical(x)
     x = logical(x);
 end
-time = dat2grid(range);
+time = dat2dec(range,'centre');
 xCoor = repmat(1 : size(x,2),size(x,1),1);
 xCoor = time(xCoor);
 yCoor = repmat(1 : size(x,1),1,size(x,2));
@@ -95,7 +95,7 @@ set(gca(),'YDir','reverse','yLim',[0,size(x,1)+1], ...
 setappdata(Ax,'tseries',true);
 setappdata(Ax,'freq',freq);
 setappdata(Ax,'xLimAdjust',true);
-mydatxtick(Ax,time,freq,range,opt);
+mydatxtick(Ax,range,time,freq,range,opt);
 
 set(Ax,'gridLineStyle',':');
 yLim = [1,size(x,1)];

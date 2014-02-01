@@ -33,7 +33,7 @@ function str = strrepoutside(str,find,replace,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Handle cellstr on input.
 nstr = numel(str);

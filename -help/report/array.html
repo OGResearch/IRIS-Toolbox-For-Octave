@@ -146,14 +146,39 @@ code.LaTeX {
 <p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
 <h4 id="example">Example</h4>
 <p>These commands create a table with two rows separated by a horizontal rule, and three columns in each of them. The middle columns will have Greek letters printed in  math mode.</p>
-<pre><code>A = { ...
+<pre><code>x = report.new();
+
+A = { ...
     &#39;First row&#39;,&#39;{$\alpha$}&#39;,10000; ...
     &#39;-----&#39;,&#39;&#39;,&#39;&#39;; ...
-    &#39;Second row,&#39;{$\beta$}&#39;,20000; ...
+    &#39;Second row&#39;,&#39;{$\beta$}&#39;,20000; ...
 };
 
-P.array(&#39;My table&#39;,A);</code></pre>
+x.array(&#39;My Table&#39;,A);
+
+x.publish(&#39;test1.pdf&#39;);
+
+open test1.pdf;</code></pre>
+<h4 id="example-1">Example</h4>
+<p>Use the option <code>'inputFormat='</code> to change the way the input strings are interpreted. Compare the two tables in the resulting PDF.</p>
+<pre><code>x = report.new();
+
+A = { ...
+    1,2,3; ...
+    &#39;$\alpha$&#39;,&#39;b&#39;,&#39;c&#39;, ...
+    };
+
+x.array(&#39;Table with Plain Input Format (Default)&#39;,A, ...
+    &#39;heading=&#39;,{&#39;A&#39;,&#39;B&#39;,&#39;$\Gamma$&#39;;&#39;-----&#39;,&#39;&#39;,&#39;&#39;});
+
+x.array(&#39;Table with LaTeX Input Format&#39;,A, ...
+    &#39;heading=&#39;,{&#39;A&#39;,&#39;B&#39;,&#39;$\Gamma$&#39;;&#39;-----&#39;,&#39;&#39;,&#39;&#39;}, ...
+    &#39;inputFormat=&#39;,&#39;latex&#39;);
+
+x.publish(&#39;test2.pdf&#39;);
+
+open test2.pdf;</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

@@ -1,15 +1,15 @@
-function x = dat2char(dat,varargin)
+function C = dat2char(Dat,varargin)
 % dat2char  Convert dates to character array.
 %
 % Syntax
 % =======
 %
-%     C = dat2char(D,...)
+%     C = dat2char(Dat,...)
 %
 % Input arguments
 % ================
 %
-% * `D` [ numeric ] - IRIS serial date numbers that will be converted to
+% * `Dat` [ numeric ] - IRIS serial date numbers that will be converted to
 % character array.
 %
 % Output arguments
@@ -42,11 +42,11 @@ function x = dat2char(dat,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-datstr = dat2str(dat,varargin{1:end});
-x = char(datstr);
+datStr = dat2str(Dat,varargin{1:end});
+C = char(datStr);
 
 end

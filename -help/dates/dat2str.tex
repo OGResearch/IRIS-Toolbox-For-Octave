@@ -2,13 +2,13 @@
 
     \filetitle{dat2str}{Convert IRIS dates to cell array of strings}{dates/dat2str}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 S = dat2str(Dat,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@ S = dat2str(Dat,...)
   \texttt{Dat} {[} numeric {]} - IRIS serial date number(s).
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,7 +25,7 @@ S = dat2str(Dat,...)
   input dates.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -41,15 +41,24 @@ S = dat2str(Dat,...)
   months} {]} - Cell array of twelve strings representing the names of
   months.
 \item
-  \texttt{'standinMonth='} {[} numeric \textbar{} `last' \textbar{}
-  \emph{1} {]} - Which month will represent a
+  \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+  \textbar{} \texttt{*1*} {]} - Which month will represent a
   lower-than-monthly-frequency date if month is part of the date format
   string.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-The date format string can include any combination of the following
+There are two types of date strings in IRIS: year-period strings and
+calendar date strings. The year-period strings can be printed for dates
+with yearly, half-yearly, quarterly, bimonthly, monthly, weekly, and
+indeterminate frequencies. The calendar date strings can be printed for
+dates with weekly and daily frequencies. Date formats for calendar date
+strings must start with a dollar sign, \texttt{\$}.
+
+\subparagraph{Year-period date strings}
+
+Regular date formats can include any combination of the following
 fields:
 
 \begin{itemize}
@@ -61,7 +70,7 @@ fields:
   \texttt{'YY'} - Two-digit year.
 \item
   \texttt{'P'} - Period within the year (half-year, quarter, bi-month,
-  month).
+  month, week).
 \item
   \texttt{'PP'} - Two-digit period within the year.
 \item
@@ -81,6 +90,12 @@ fields:
   \texttt{'MMM'}, \texttt{'Mmm'}, \texttt{'mmm'} - Case-sensitive
   three-letter abbreviation of month.
 \item
+  \texttt{'Q'} - Upper-case roman numeral for the month or stand-in
+  month.
+\item
+  \texttt{'r'} - Lower-case roman numeral for the month or stand-in
+  month.
+\item
   \texttt{'F'} - Upper-case letter representing the date frequency.
 \item
   \texttt{'f'} - Lower-case letter representing the date frequency.
@@ -96,15 +111,52 @@ fields:
 \item
   \texttt{'W'} - End-of-month workday; stand-in month used for
   non-monthly dates.
-\item
-  \texttt{'DD'} - Two-digit day numeral; daily dates only.
-\item
-  \texttt{'D'} - Day numeral; daily dates only.
 \end{itemize}
 
-To get some of the above letters printed literally in the date string,
-use a percent sign as an escape character, i.e. `\%Y', etc.
+\subparagraph{Calendar date strings}
 
-\paragraph{Example}\label{example}
+Calendar date formats must start with a dollar sign, \texttt{\$}, and
+can include any combination of the following fields:
+
+\begin{itemize}
+\item
+  \texttt{'Y'} - Year.
+\item
+  \texttt{'YYYY'} - Four-digit year.
+\item
+  \texttt{'YY'} - Two-digit year.
+\item
+  \texttt{'DD'} - Two-digit day numeral; daily and weekly dates only.
+\item
+  \texttt{'D'} - Day numeral; daily and weekly dates only.
+\item
+  \texttt{'M'} - Month numeral.
+\item
+  \texttt{'MM'} - Two-digit month numeral.
+\item
+  \texttt{'MMMM'}, \texttt{'Mmmm'}, \texttt{'mmmm'} - Case-sensitive
+  name of month.
+\item
+  \texttt{'MMM'}, \texttt{'Mmm'}, \texttt{'mmm'} - Case-sensitive
+  three-letter abbreviation of month.
+\item
+  \texttt{'Q'} - Upper-case roman numeral for the month.
+\item
+  \texttt{'r'} - Lower-case roman numeral for the month.
+\item
+  \texttt{'DD'} - Two-digit day numeral.
+\item
+  \texttt{'D'} - Day numeral.
+\end{itemize}
+
+\subparagraph{Escaping control letters}
+
+To get the format letters printed literally in the date string, use a
+percent sign as an escape character: \texttt{'\%Y'}, \texttt{'\%P'},
+\texttt{'\%F'}, \texttt{'\%f'}, \texttt{'\%M'}, \texttt{'\%m'},
+\texttt{'\%R'}, \texttt{'\%r'}, \texttt{'\%Q'}, \texttt{'\%q'},
+\texttt{'\%D'}, \texttt{'\%E'}, \texttt{'\%D'}.
+
+\paragraph{Example}
 
 

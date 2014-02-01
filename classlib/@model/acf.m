@@ -76,16 +76,16 @@ function [CC,RR,List] = acf(This,varargin)
 % * `'per'`, the periodicity;
 % * `'freq'`, the frequency.
 % 
-% Example 1
-% ==========
+% Example
+% ========
 %
 % A first-difference filter (i.e. computes the ACF for the first
 % differences of the respective variables):
 %
 %     [C,R] = acf(m,'filter=','1-L')
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % The cyclical component of the Hodrick-Prescott filter with the
 % smoothing parameter, $lambda$, 1,600. The formula for the filter follows
@@ -95,8 +95,8 @@ function [CC,RR,List] = acf(This,varargin)
 %
 %     [C,R] = acf(m,'filter','1600/(1600 + 1/abs((1-L)^2)^2)')
 %
-% Example 3
-% ==========
+% Example
+% ========
 %
 % A band-pass filter with user-specified lower and upper bands. The
 % band-pass filters can be defined either in frequencies or periodicities;
@@ -107,7 +107,7 @@ function [CC,RR,List] = acf(This,varargin)
 %     [C,R] = acf(m,'filter','per >= 4 & per <= 40')
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.acf',varargin{:});
 

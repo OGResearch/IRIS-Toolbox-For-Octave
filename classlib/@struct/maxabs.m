@@ -1,7 +1,9 @@
-function x = maxabs(x,y)
-if exist('y','var')
-    x = dbfun(@maxabs,x,y);
+function x = maxabs(x,varargin)
+
+if ~isempty(varargin)
+    x = dbfun(@maxabs,x,varargin{1});
 else
     x = dbfun(@maxabs,x);
 end
+
 end

@@ -130,7 +130,7 @@ code.LaTeX {
 <li><p>all occurrences in the template of <code>?:Control_Name</code> are replaced with the currently processed string converted to upper case; this option is NOT available with the short-cut syntax;</p></li>
 </ul>
 <p>The list of tokens can be based on Matlab expressions. The expressions must be enclosed in square brackets, and must evaluate into either a numeric vector, a char vector, or a cell array of numerics and/or strings.</p>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>In a model code file, instead of writing a number of definitions of growth rates like the following ones</p>
 <pre><code>dP = P/P{-1} - 1;
 dW = W/W{-1} - 1;
@@ -142,7 +142,7 @@ dY = Y/Y{-1} - 1;</code></pre>
 !do
     d? = ?/?{-1} - 1;
 !end</code></pre>
-<h4 id="example-2">Example 2</h4>
+<h4 id="example-1">Example</h4>
 <p>We redo the example 1, but using now the fact that you can have as many variable declaration sections or equation sections as you wish. The '!for...!do...!end' structure can therefore not only produce the equations for you, but also make sure all the growth rate variables are properly declared.</p>
 <pre><code>!for
     P, W, X, Y
@@ -170,7 +170,7 @@ dY = Y/Y{-1} - 1;</code></pre>
 !transition_equations
     dY = Y/Y{-1} - 1;</code></pre>
 <p>Obviously, you now do not include the growth rate variables in the section where you declare the rest of the variables.</p>
-<h4 id="example-3">Example 3</h4>
+<h4 id="example-2">Example</h4>
 <p>In a model code file, instead of writing a number of autoregression processes like the following ones</p>
 <pre><code>X = rhox*X{-1} + ex;
 Y = rhoy*Y{-1} + ey;
@@ -181,7 +181,7 @@ Z = rhoz*Z{-1} + ez;</code></pre>
 !do
     ?# = rho?.#*?{-1} + e?.#;
 !end</code></pre>
-<h4 id="example-4">Example 4</h4>
+<h4 id="example-3">Example</h4>
 <p>We redo Example 3, but now for six variables named 'A1', 'A2', 'B1', 'B2', 'C1', 'C2', nesting two '!for...!do...!end' structures one within the other:</p>
 <pre><code>!for
     ?letter = A, B, C
@@ -200,7 +200,7 @@ B1 = rhob1*B1{-1} + eb1;
 B2 = rhob2*B2{-1} + eb2;
 C1 = rhoc1*C1{-1} + ec1;
 C2 = rhoc2*C2{-1} + ec2;</code></pre>
-<h4 id="example-5">Example 5</h4>
+<h4 id="example-4">Example</h4>
 <p>We use a Matlab expression (the colon operator) to simplify the list of tokens. The following block of code</p>
 <pre><code>!for
     1, 2, 3, 4, 5, 6, 7
@@ -215,5 +215,5 @@ C2 = rhoc2*C2{-1} + ec2;</code></pre>
 !end</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

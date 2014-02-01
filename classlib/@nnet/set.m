@@ -26,14 +26,9 @@ function This = set(This,varargin)
 % Valid requests to neural network model objects
 % ===============================================
 %
-% Equation labels and aliases
-% ----------------------------
-%
-% * `'weight='`, `'bias='`, `'transfer='` [ numeric | function_handle ]
-% - Change values of different classes of parameters.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('This',@(x) isa(x,'nnet'));
@@ -42,44 +37,6 @@ pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
 
 %--------------------------------------------------------------------------
-
-% If Params doesn't exist, create it (relevant for @nnet constructor)
-if isempty(This.Params)
-    This.Params ...
-        = cellfun(@(x) struct(), cell(This.nLayer+2,1), 'UniformOutput', false) ;
-    
-    % No weighting possible at input nodes
-    This.Params{1}.Bias ...
-        = cellfun(any2func(NaN), cell(This.nInputs,1), 'UniformOutput', false) ;
-    This.Params{1}.Transfer ...
-        = cellfun(any2func(NaN), cell(This.nInputs,1), 'UniformOutput', false) ;
-    
-    % First nodes weight inputs
-    This.Params{2}.Weight ...
-        = cellfun(any2func(NaN(This.nInputs,1)), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-    This.Params{2}.Bias ...
-        = cellfun(any2func(NaN), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-    This.Params{2}.Transfer ...
-        = cellfun(any2func(NaN), cell(This.HiddenLayout(1),1), 'UniformOutput', false) ;
-    
-    % Subsequent nodes weight outputs of previous layer
-    for iLayer = 2:This.nLayer
-        This.Params{iLayer+1}.Weight ...
-            = cellfun(any2func(NaN(This.HiddenLayout(iLayer-1),1)), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-        This.Params{iLayer+1}.Bias ...
-            = cellfun(any2func(NaN), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-        This.Params{iLayer+1}.Transfer ...
-            = cellfun(any2func(NaN), cell(This.HiddenLayout(iLayer),1), 'UniformOutput', false) ;
-    end
-    
-    % Output nodes weight outputs of last layer
-    This.Params{end}.Weight ...
-        = cellfun(any2func(NaN(This.HiddenLayout(end),1)), cell(This.nOutputs,1), 'UniformOutput', false) ;
-    This.Params{end}.Bias ...
-        = cellfun(any2func(NaN), cell(This.nOutputs,1), 'UniformOutput', false) ;
-    This.Params{end}.Transfer ...
-        = cellfun(any2func(NaN), cell(This.nOutputs,1), 'UniformOutput', false) ;
-end
 
 % Body
 varargin(1:2:end-1) = strtrim(varargin(1:2:end-1));
@@ -93,14 +50,14 @@ end
 
 % Report queries that are not modifiable model object properties.
 if any(~found)
-    utils.error('model', ...
-        'This is not a modifiable model object property: ''%s''.', ...
+    utils.error('nnet', ...
+        'This is not a modifiable neural network model object property: ''%s''.', ...
         varargin{~found});
 end
 
 % Report values that do not pass validation.
 if any(~validated)
-    utils.error('model', ...
+    utils.error('nnet', ...
         'The value for this property does not pass validation: ''%s''.', ...
         varargin{~validated});
 end
@@ -114,111 +71,97 @@ end
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
-        if isfunc(Value) || isnumericscalar(Value)
-            switch query
-                                    
-                case 'bias'
-                    Value = any2func(Value) ;
-                    for iLayer = 1:This.nLayer+2
-                        for iNode = 1:numel(This.Params{iLayer}.Bias)
-                            This.Params{iLayer}.Bias{iNode} = Value() ;
-                        end
-                    end
-                    
-                case 'transfer'
-                    Value = any2func(Value) ;
-                    for iLayer = 1:This.nLayer+2
-                        for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                            This.Params{iLayer}.Transfer{iNode} = Value() ;
-                        end
-                    end
-
-                case 'weight'
-                    Value = any2func(Value) ;
-                    for iLayer = 1:This.nLayer+2
-                        if iLayer>1
-                            for iNode = 1:numel(This.Params{iLayer}.Weight)
-                                for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                                    This.Params{iLayer}.Weight{iNode}(iInput) = Value() ;
-                                end
-                            end
-                        end
-                    end
-                    
-                case 'param'
-                    Value = any2func(Value) ;
-                    This = set(This,'weight',Value) ;
-                    This = set(This,'bias',Value) ;
-                    This = set(This,'transfer',Value) ;
-                    
-                case 'userdata'
-                    This = userdata(This,Value);
-                    
-                otherwise
-                    Found = false;
-                    
-            end
-        else
-            % Value is a vector
-            Xcount = 0 ;
-            switch query
-                case 'bias'
-                    if This.nBias == numel(Value)
-                        for iLayer = 1:This.nLayer+2
-                            for iNode = 1:numel(This.Params{iLayer}.Bias)
-                                Xcount = Xcount + 1 ;
-                                This.Params{iLayer}.Bias{iNode} = Value(Xcount) ;
-                            end
-                        end
-                    else
-                        utils.error('nnet:set',...
-                            'Dimension mismatch.') ;
-                    end
-                    
-                case 'transfer'
-                    if This.nTransfer == numel(Value)
-                        for iLayer = 1:This.nLayer+2
-                            for iNode = 1:numel(This.Params{iLayer}.Transfer)
-                                Xcount = Xcount + 1 ;
-                                This.Params{iLayer}.Transfer{iNode} = Value(Xcount) ;
-                            end
-                        end
-                    else
-                        utils.error('nnet:set',...
-                            'Dimension mismatch.') ;
-                    end
-                    
-                case 'weight'
-                    if This.nWeight == numel(Value)
-                        for iLayer = 1:This.nLayer+2
-                            if iLayer>1
-                                for iNode = 1:numel(This.Params{iLayer}.Weight)
-                                    for iInput = 1:numel(This.Params{iLayer}.Weight{iNode})
-                                        Xcount = Xcount + 1 ;
-                                        This.Params{iLayer}.Weight{iNode}(iInput) = Value(Xcount) ;
-                                    end
-                                end
-                            end
-                        end
-                    else
-                        utils.error('nnet:set',...
-                            'Dimension mismatch.') ;
-                    end
-                    
-                otherwise
-                    Found = false ;
-                    
-            end
+        switch query
+            case 'activation'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('activation',Value) ;
+                else
+                    xxLayerNodeIndexLoop('ActivationParams','ActivationIndex',Value) ;
+                end
+                
+            case 'activationlb'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('activationLB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('ActivationLB','ActivationIndex',Value) ;
+                end
+                
+            case 'activationub'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('activationUB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('ActivationUB','ActivationIndex',Value) ;
+                end
+                
+            case 'output'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('output',Value) ;
+                else
+                    xxLayerNodeIndexLoop('OutputParams','OutputIndex',Value) ;
+                end
+                
+            case 'outputlb'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('outputLB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('OutputLB','OutputIndex',Value) ;
+                end
+                
+            case 'outputub'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('outputUB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('OutputUB','OutputIndex',Value) ;
+                end
+                
+            case 'hyper'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('hyper',Value) ;
+                else
+                    xxLayerNodeIndexLoop('HyperParams','HyperIndex',Value) ;
+                end
+                
+            case 'hyperlb'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('hyperLB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('HyperLB','HyperIndex',Value) ;
+                end
+                
+            case 'hyperub'
+                if is.func(Value) || is.numericscalar(Value)
+                    xxLayerNodeLoop('hyperUB',Value) ;
+                else
+                    xxLayerNodeIndexLoop('HyperUB','HyperIndex',Value) ;
+                end
+                                
+            case 'userdata'
+                This = userdata( This, Value );
+                
+            otherwise
+                Found = false;
+                
         end
-        
     end % doSet().
 
-    function fh = any2func(in)
-        if isfunc(in)
-            fh = in ;
-        else
-            fh = @(x) in ;
+    function xxLayerNodeLoop(str,Value)
+        for iLayer = 1:This.nLayer+1
+            for iNode = 1:numel(This.Neuron{iLayer})
+                This.Neuron{iLayer}{iNode} ...
+                    = set( This.Neuron{iLayer}{iNode}, str, Value ) ;
+            end
         end
     end
 
+    function xxLayerNodeIndexLoop(name,indexName,Value,offset)
+        if nargin<4
+            offset = 0 ;
+        end
+        for iLayer = 1:This.nLayer+1
+            for iNode = 1:numel(This.Neuron{iLayer})
+                This.Neuron{iLayer}{iNode}.(name) ...
+                    = Value( This.Neuron{iLayer}{iNode}.(indexName) + offset ) ;
+            end
+        end
+    end
 end

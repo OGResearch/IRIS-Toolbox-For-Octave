@@ -5,16 +5,14 @@ function Query = myalias(Query)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % Alias param, params, parameter, parameters.
-Query = regexprep(Query,'param.*','param');
+Query = regexprep(Query,'param.*','param') ;
 
 % Alias nalt, nalter.
-Query = regexprep(Query,'nalt(er)?','nalt');
-
-Query = regexprep(Query,'weight.*','weight') ;
+Query = regexprep(Query,'nalt(er)?','nalt') ;
 
 end

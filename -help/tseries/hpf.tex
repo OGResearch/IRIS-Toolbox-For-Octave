@@ -2,7 +2,7 @@
 
     \filetitle{hpf}{Hodrick-Prescott filter with tunes (aka LRX filter)}{tseries/hpf}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [T,C,CutOff,Lambda] = hpf(X)
@@ -10,14 +10,14 @@
 \end{verbatim}
 
 \paragraph{Syntax with output arguments
-swapped}\label{syntax-with-output-arguments-swapped}
+swapped}
 
 \begin{verbatim}
 [C,T,CutOff,Lambda] = hpf2(X)
 [C,T,CutOff,Lambda] = hpf2(X,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@ swapped}\label{syntax-with-output-arguments-swapped}
   series) is used.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -49,7 +49,7 @@ swapped}\label{syntax-with-output-arguments-swapped}
   used instead of \texttt{'lambda='}.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -90,10 +90,10 @@ one-sided filter, \texttt{2} runs a two-sided filter.
   - Logarithmise the data before filtering, de-logarithmise afterwards.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{The underlying optimisation
-problem}\label{the-underlying-optimisation-problem}
+problem}
 
 The function \texttt{hpf} solves a constrained optimisation problem
 described by the following Lagrangian
@@ -155,7 +155,7 @@ in which the respective bracketed terms are defined (observations or
 tunes exist). You can combine any number of any tunes in one run of
 \texttt{hpf}, including out-of-sample tunes (see below).
 
-\subparagraph{How to enter the tunes}\label{how-to-enter-the-tunes}
+\subparagraph{How to enter the tunes}
 
 \begin{itemize}
 \item
@@ -181,7 +181,7 @@ tunes exist). You can combine any number of any tunes in one run of
   part becomes zero and the tune becomes a hard tune.
 \end{itemize}
 
-\subparagraph{Out-of-sample tunes}\label{out-of-sample-tunes}
+\subparagraph{Out-of-sample tunes}
 
 Tunes can be imposed also at dates before the first observation of the
 input series, or after the last observation. In other words, the time
@@ -189,7 +189,7 @@ series in \texttt{'level='} and/or \texttt{'growth='} can have a more
 extended Range (at either side) than the filtered input series.
 
 \subparagraph{Default smoothing
-parameters}\label{default-smoothing-parameters}
+parameters}
 
 If the user does not specify the smoothing parameter using the
 \texttt{'lambda='} option, a default value is used. The default value is
@@ -216,6 +216,6 @@ Note that there is no default value for data with indeterminate or daily
 frequency: for these types of time series, you must always use the
 option ``lambda=''.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

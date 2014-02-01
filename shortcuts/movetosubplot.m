@@ -4,7 +4,7 @@ function varargout = movetosubplot(varargin)
 % See help on [`grfun.movetosubplot`](grfun/movetosubplot).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.movetosubplot(varargin{:});
 

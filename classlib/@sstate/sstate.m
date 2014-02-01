@@ -30,7 +30,7 @@ classdef sstate < userdataobj & getsetobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     % TODO: Pass in parameters when constructing sstate to enable using
     % !if..!else..!end and !switch..!case..!end.
@@ -90,7 +90,7 @@ classdef sstate < userdataobj & getsetobj
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             if nargin == 0

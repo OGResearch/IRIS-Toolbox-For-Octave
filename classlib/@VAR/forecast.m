@@ -54,7 +54,7 @@ function Outp = forecast(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 JData = [];
 if ~isempty(varargin) && ~ischar(varargin{1})
@@ -64,7 +64,7 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@isvar);
+pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
 pp.addRequired('Cond',@(x) myisvalidinpdata(This,x));

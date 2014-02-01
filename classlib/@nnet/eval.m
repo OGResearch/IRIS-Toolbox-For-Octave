@@ -1,7 +1,7 @@
-function [OutData] = eval(This,InData,Range,varargin)
+function OutData = eval(This,InData,Range,varargin)
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin<3
 	Range = Inf ;
@@ -19,16 +19,7 @@ if This.nAlt>1
 	utils.error('nnet:eval',...
 		'Eval does not support input neural network objects with multiple parameterizations.') ;
 end
-if isinf(Range)
-	if isstruct(InData)
-		Var = cellfun(@(x) x{1}, ...
-			regexp(This.Inputs,'\{[-\+]?\d*}','split'), ...
-			'UniformOutput', false) ;
-		Range = dbrange(InData,Var) ;
-	else
-		Range = range(InData) ;
-	end
-end
+Range = myrange(This,InData,Range) ;
 
 % Parse options
 options = passvalopt('nnet.eval',varargin{:}) ;
@@ -41,41 +32,48 @@ if options.Ahead>1 && This.nOutputs>1
 	options.Output = 'dbase' ;
 end
 
+
 % Body
-switch options.Output
-	case 'tseries'
-		OutData = tseries() ;
-	case 'dbase'
-		OutData = struct() ;
-		for iOutput = 1:This.nOutputs
-			OutData.(This.Outputs{iOutput}) = tseries() ;
-		end
-end
 if options.Ahead>1
+    if mysameio(This)
+        utils.error('nnet:eval','Input and output variables must be the same.') ;
+    end
 	kPred = InData ;
 	for k = 1:options.Ahead
 		kPred = eval(This,kPred,Range) ;
-		switch options.Output
-			case 'dbase'
-				for iOutput = 1:This.nOutputs
-					OutData.(This.Outputs{iOutput})(Range+k-1,k) = kPred(:,iOutput) ;
-				end
-			case 'tseries'
-				% only one output if output is tseries and ahead>1
-				OutData(Range+k-1,k) = kPred(:) ;
+		for iOutput = 1:This.nOutputs
+			OutData.(This.Outputs{iOutput})(Range+k-1,k) = kPred(:,iOutput) ;
 		end
 	end
-else	
+else
 	% Hidden Layers
 	for iLayer = 1:This.nLayer
-		OutData = tseries() ;
-		for iNode = 1:This.Layout(iLayer)
+        NN = numel(This.Neuron{iLayer}) ;
+		OutData = tseries(Range,Inf(numel(Range),NN)) ;
+		for iNode = 1:NN
 			OutData(Range,iNode) ...
-				= eval(This.Neuron{iLayer}{iNode},InData) ;
+				= eval( This.Neuron{iLayer}{iNode}, InData ) ;
 		end
+		InData = OutData ;
 	end
 	
+	% Output layer
+	iLayer = This.nLayer + 1 ;
+	OutData = tseries(Range,Inf(numel(Range),This.nOutputs)) ;
+	for iNode = 1:This.nOutputs
+		OutData(Range,iNode) ...
+			= eval( This.Neuron{iLayer}{iNode}, InData ) ;
+	end
+end
+
+if strcmpi(options.Output,'dbase')
+	OutData = array2db(OutData,Range,This.Outputs) ;
 end
 
 end
+
+
+
+
+
 

@@ -5,7 +5,7 @@ function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,Freq,Incl,Tol,MaxIter)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 ny = size(Z,1);
 [nx,nb] = size(T);

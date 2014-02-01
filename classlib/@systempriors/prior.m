@@ -7,7 +7,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 %     S = prior(S,Expr,PriorFunc,...)
 %     S = prior(S,Expr,[],...)
 %
-% Input arugments
+% Input arguments
 % ================
 %
 % * `S` [ systempriors ] - System priors object.
@@ -93,12 +93,12 @@ function This = prior(This,Def,PriorFunc,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
-pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
+pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
 pp.parse(This,Def,PriorFunc);
 
 opt = passvalopt('systempriors.prior',varargin{:});

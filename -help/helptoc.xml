@@ -21,7 +21,7 @@
     <tocitem target="gettinghelp/Contents.html" image="HelpIcon.USER_GUIDE">Getting on-line help
     </tocitem>
 </tocitem>
-<tocitem target="Contents/models.html" image="HelpIcon.USER_GUIDE">Modelling
+<tocitem target="Contents/models.html" image="HelpIcon.USER_GUIDE">Model development and operation
     <tocitem target="modellang/Contents.html" image="HelpIcon.USER_GUIDE">Model file language
         <tocitem target="modellang/alias.html" image="HelpIcon.BLOCK">!! &#8212; Beginning of aliasing in descriptions and labels</tocitem>
         <tocitem target="modellang/sstateversion.html" image="HelpIcon.BLOCK">!! &#8212; Steady-state version of an equation</tocitem>
@@ -268,7 +268,7 @@
 </tocitem>
 <tocitem target="Contents/data.html" image="HelpIcon.USER_GUIDE">Time series and database management
     <tocitem target="dates/Contents.html" image="HelpIcon.USER_GUIDE">Dates and date ranges
-        <tocitem target="dates/bb.html" image="HelpIcon.FUNCTION">bb &#8212; IRIS serial date numbers for dates with bi-monthly frequency</tocitem>
+        <tocitem target="dates/bb.html" image="HelpIcon.FUNCTION">bb &#8212; IRIS serial date number for bimonthly date</tocitem>
         <tocitem target="dates/bbtoday.html" image="HelpIcon.FUNCTION">bbtoday &#8212; IRIS serial date number for current bi-month</tocitem>
         <tocitem target="dates/clp2dat.html" image="HelpIcon.FUNCTION">clp2dat &#8212; Convert text in system clipboard to dates</tocitem>
         <tocitem target="dates/dat2char.html" image="HelpIcon.FUNCTION">dat2char &#8212; Convert dates to character array</tocitem>
@@ -287,18 +287,23 @@
         <tocitem target="dates/dateoy.html" image="HelpIcon.FUNCTION">dateoy &#8212; End of year for the specified daily date</tocitem>
         <tocitem target="dates/daterange.html" image="HelpIcon.FUNCTION">daterange &#8212; Use the colon operator to create date ranges</tocitem>
         <tocitem target="dates/datxtick.html" image="HelpIcon.FUNCTION">datxtick &#8212; Change ticks, labels and/or date frequency on x-axis in existing tseries graphs</tocitem>
+        <tocitem target="dates/daysinyear.html" image="HelpIcon.FUNCTION">daysinyear &#8212; Number of days in year</tocitem>
         <tocitem target="dates/dd.html" image="HelpIcon.FUNCTION">dd &#8212; Matlab serial date numbers that can be used to construct daily tseries objects</tocitem>
         <tocitem target="dates/ddtoday.html" image="HelpIcon.FUNCTION">ddtoday &#8212; Matlab serial date number for today's date</tocitem>
-        <tocitem target="dates/dec2dat.html" image="HelpIcon.FUNCTION">dec2dat &#8212; Convert decimal numbers to IRIS serial date numbers</tocitem>
-        <tocitem target="dates/hh.html" image="HelpIcon.FUNCTION">hh &#8212; IRIS serial date numbers for dates with half-yearly frequency</tocitem>
+        <tocitem target="dates/dec2dat.html" image="HelpIcon.FUNCTION">dec2dat &#8212; Convert decimal representation of date to IRIS serial date number</tocitem>
+        <tocitem target="dates/hh.html" image="HelpIcon.FUNCTION">hh &#8212; IRIS serial date number for half-yearly date</tocitem>
         <tocitem target="dates/hhtoday.html" image="HelpIcon.FUNCTION">hhtoday &#8212; IRIS serial date number for current half-year</tocitem>
-        <tocitem target="dates/mm.html" image="HelpIcon.FUNCTION">mm &#8212; IRIS serial date numbers for dates with monthly frequency</tocitem>
+        <tocitem target="dates/mm.html" image="HelpIcon.FUNCTION">mm &#8212; IRIS serial date number for monthly date</tocitem>
         <tocitem target="dates/mmtoday.html" image="HelpIcon.FUNCTION">mmtoday &#8212; IRIS serial date number for current month</tocitem>
-        <tocitem target="dates/qq.html" image="HelpIcon.FUNCTION">qq &#8212; IRIS serial date numbers for dates with quarterly frequency</tocitem>
+        <tocitem target="dates/qq.html" image="HelpIcon.FUNCTION">qq &#8212; IRIS serial date number for quarterly date</tocitem>
         <tocitem target="dates/qqtoday.html" image="HelpIcon.FUNCTION">qqtoday &#8212; IRIS serial date number for current quarter</tocitem>
         <tocitem target="dates/rngcmp.html" image="HelpIcon.FUNCTION">rngcmp &#8212; Compare two IRIS date ranges</tocitem>
         <tocitem target="dates/str2dat.html" image="HelpIcon.FUNCTION">str2dat &#8212; Convert strings to IRIS serial date numbers</tocitem>
-        <tocitem target="dates/yy.html" image="HelpIcon.FUNCTION">yy &#8212; IRIS serial date numbers for dates with yearly frequency</tocitem>
+        <tocitem target="dates/weeksinyear.html" image="HelpIcon.FUNCTION">weeksinyear &#8212; Number of weeks in year</tocitem>
+        <tocitem target="dates/ww.html" image="HelpIcon.FUNCTION">ww &#8212; IRIS serial date number for weekly date</tocitem>
+        <tocitem target="dates/ww2day.html" image="HelpIcon.FUNCTION">ww2day &#8212; Convert weekly IRIS serial date number to Matlab serial date number</tocitem>
+        <tocitem target="dates/wwtoday.html" image="HelpIcon.FUNCTION">wwtoday &#8212; IRIS serial date number for current week</tocitem>
+        <tocitem target="dates/yy.html" image="HelpIcon.FUNCTION">yy &#8212; IRIS serial date number for yearly date</tocitem>
         <tocitem target="dates/yytoday.html" image="HelpIcon.FUNCTION">yytoday &#8212; IRIS serial date number for current year</tocitem>
     </tocitem>
     <tocitem target="tseries/Contents.html" image="HelpIcon.USER_GUIDE">Time series objects and functions
@@ -374,7 +379,7 @@
         <tocitem target="dbase/db2array.html" image="HelpIcon.FUNCTION">db2array &#8212; Convert tseries database entries to numeric array</tocitem>
         <tocitem target="dbase/db2tseries.html" image="HelpIcon.FUNCTION">db2tseries &#8212; Combine tseries database entries in one multivariate tseries object</tocitem>
         <tocitem target="dbase/dbbatch.html" image="HelpIcon.FUNCTION">dbbatch &#8212; Run a batch job to create new database fields</tocitem>
-        <tocitem target="dbase/dbclip.html" image="HelpIcon.FUNCTION">dbclip &#8212; Clip all tseries entries in a database down to the specified date range</tocitem>
+        <tocitem target="dbase/dbclip.html" image="HelpIcon.FUNCTION">dbclip &#8212; Clip all tseries entries in database down to specified date range</tocitem>
         <tocitem target="dbase/dbcol.html" image="HelpIcon.FUNCTION">dbcol &#8212; Retrieve the specified column or columns from database entries</tocitem>
         <tocitem target="dbase/dbextend.html" image="HelpIcon.FUNCTION">dbextend &#8212; Combine tseries observations from two or more databases</tocitem>
         <tocitem target="dbase/dbfun.html" image="HelpIcon.FUNCTION">dbfun &#8212; Apply a function to database fields</tocitem>
@@ -421,7 +426,7 @@
         <tocitem target="report/series.html" image="HelpIcon.FUNCTION">series &#8212; Add new data to graph or table</tocitem>
         <tocitem target="report/subheading.html" image="HelpIcon.FUNCTION">subheading &#8212; Enter subheading in table</tocitem>
         <tocitem target="report/table.html" image="HelpIcon.FUNCTION">table &#8212; Start new table</tocitem>
-        <tocitem target="report/tex.html" image="HelpIcon.FUNCTION">tex &#8212; Include LaTeX code or verbatim text input in report</tocitem>
+        <tocitem target="report/tex.html" image="HelpIcon.FUNCTION">tex &#8212; Include LaTeX code or verbatim input in report</tocitem>
         <tocitem target="report/userfigure.html" image="HelpIcon.FUNCTION">userfigure &#8212; Insert existing figure window</tocitem>
         <tocitem target="report/vline.html" image="HelpIcon.FUNCTION">vline &#8212; Add vertical line to graph</tocitem>
     </tocitem>

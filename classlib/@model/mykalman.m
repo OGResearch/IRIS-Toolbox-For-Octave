@@ -5,7 +5,7 @@ function [Obj,RegOutp,HData] = mykalman(This,Inp,HData,Opt,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % This Kalman filter handles the following special cases:
 % * non-stationary initial conditions (treated as fixed numbers);
@@ -340,7 +340,7 @@ for iLoop = 1 : nLoop
         predCols = iLoop;
     end
 
-    % Populate hdata output arugments.
+    % Populate hdata output arguments.
     if s.retPred
         doRetPred();
     end

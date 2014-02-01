@@ -110,12 +110,12 @@ code.LaTeX {
 <div class="headline">Convert tseries object to a different frequency</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Y = convert(X,NewFreq)
+<pre><code>Y = convert(X,NewFreq,...)
 Y = convert(X,NewFreq,Range,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ tseries ] - Input tseries object that will be converted to a new frequency, <code>freq</code>, aggregating or intrapolating the data.</p></li>
-<li><p><code>NewFreq</code> [ numeric | char ] - New frequency to which the input data will be converted: <code>1</code> or <code>'A'</code> for annual, <code>2</code> or <code>'H'</code> for half-yearly, <code>4</code> or <code>'Q'</code> for quarterly, <code>6</code> or <code>'B'</code> for bi-monthly, and <code>12</code> or <code>'M'</code> for monthly.</p></li>
+<li><p><code>NewFreq</code> [ numeric | char ] - New frequency to which the input data will be converted: <code>1</code> or <code>'A'</code> for yearly, <code>2</code> or <code>'H'</code> for half-yearly, <code>4</code> or <code>'Q'</code> for quarterly, <code>6</code> or <code>'B'</code> for bi-monthly, and <code>12</code> or <code>'M'</code> for monthly.</p></li>
 <li><p><code>Range</code> [ numeric ] - Date range on which the input data will be converted.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
@@ -147,5 +147,5 @@ Y = convert(X,NewFreq,Range,...)</code></pre>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

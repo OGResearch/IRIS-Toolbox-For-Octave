@@ -59,7 +59,7 @@ function [X,T] = bpass(X,Band,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Range = Inf;
@@ -72,7 +72,7 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('x',@istseries);
+pp.addRequired('x',@is.tseries);
 pp.addRequired('band',@(x) isnumeric(x) && length(x) == 2);
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Band,Range);

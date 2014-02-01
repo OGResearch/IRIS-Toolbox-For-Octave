@@ -5,7 +5,7 @@ function S = xsf(T,R,~,Z,H,~,U,Omg,Freq,Filter,ApplyTo)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Filter; %#ok<*VUNUS>

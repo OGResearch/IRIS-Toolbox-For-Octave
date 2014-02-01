@@ -7,8 +7,8 @@
 %         Variable_Name, Variable_Name
 %         Variable_Name
 %
-% Inverted syntax
-% ================
+% Syntax with inverted list
+% ==========================
 %
 %     !log_variables
 %         !all_but
@@ -23,4 +23,4 @@
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

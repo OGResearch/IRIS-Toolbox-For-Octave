@@ -71,7 +71,7 @@ function Outp = resample(This,Inp,Range,NDraw,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Called `resample(This,Inp,Range,NDraw,J,...)'
 J = [];
@@ -91,10 +91,10 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@ismodel);
-pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || istseries(x));
+pp.addRequired('M',@is.model);
+pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
 pp.addRequired('Range',@(x) isnumeric(x));
-pp.addRequired('NDraw',@(x) isnumericscalar(x));
+pp.addRequired('NDraw',@(x) is.numericscalar(x));
 pp.addRequired('J',@(x) isempty(x) || isstruct(x));
 pp.parse(This,Inp,Range,NDraw,J);
 

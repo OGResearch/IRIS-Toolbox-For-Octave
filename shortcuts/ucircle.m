@@ -4,7 +4,7 @@ function varargout = ucircle(varargin)
 % See help on [`grfun.ucircle`](grfun/ucircle).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.ucircle(varargin{:});
 

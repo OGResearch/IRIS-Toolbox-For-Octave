@@ -15,7 +15,7 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 % * `selection` [ cell | cellstr | char ] - Selection of variables for
 % which the corresponding submatrices will be returned.
 %
-% Output arugments
+% Output arguments
 % =================
 %
 % * `X` [ numeric ] - Subblock of the original array `X` corresponding to
@@ -38,7 +38,7 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 %     C0 = select(C,{'X','Y','Z','Z{-1}'});
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
@@ -106,7 +106,7 @@ elseif isstruct(X)
     Inx(isnan(Inx)) = [];
     list = fieldnames(X);
     for i = 1 : length(list)
-        if istseries(X.(list{i}))
+        if is.tseries(X.(list{i}))
             X.(list{i}) = X.(list{i}){:,Inx};
         end
     end

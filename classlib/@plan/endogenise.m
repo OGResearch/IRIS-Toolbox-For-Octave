@@ -38,7 +38,7 @@ function This = endogenise(This,List,Dates,Weight)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
@@ -55,11 +55,11 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@isplan);
+pp.addRequired('P',@is.plan);
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('Weight', ...
-    @(x) isnumericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
+    @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
     && real(x) >= 0 && imag(x) >= 0);
 pp.parse(This,List,Dates,Weight);
 

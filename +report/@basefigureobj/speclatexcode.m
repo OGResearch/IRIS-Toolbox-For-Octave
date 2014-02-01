@@ -5,11 +5,9 @@ function C = speclatexcode(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-C = '';
 
 % Create a figure window, and update the property `This.handle`.
 This = myplot(This);
@@ -22,8 +20,7 @@ This = myplot(This);
 includeGraphics = '';
 if ~isempty(This.handle) && ~isempty(get(This.handle,'children'))
     try
-        rootOpt = getrootprop(This,'options');
-        includeGraphics = mycompilepdf(This,rootOpt);
+        includeGraphics = mycompilepdf(This,This.hInfo);
     catch Error
         try %#ok<TRYNC>
             close(This.handle);
@@ -44,8 +41,7 @@ if ~isempty(This.handle)
             close(This.handle);
         end
     else
-        % Broadcast an openFigureWindow event.
-        notify(This,'openFigureWindow');
+        addfigurehandle(This,This.handle);
         if ~isempty(This.title)
             % If the figure stays open, add title.
             % TODO: Add also subtitle.

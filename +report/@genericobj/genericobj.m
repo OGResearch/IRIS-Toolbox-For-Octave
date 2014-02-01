@@ -5,7 +5,7 @@ classdef genericobj < handle
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         parent = [];
@@ -13,9 +13,10 @@ classdef genericobj < handle
         childof = {};
         caption = '';
         options = struct();
-        % autodata = {};
         default = {};
-        footnoteContainer = {};
+        
+        hInfo = [];
+        %footnoteContainer = {};
     end
     
     properties (Dependent)
@@ -132,11 +133,9 @@ classdef genericobj < handle
     end
     
     methods (Access=protected)
-        varargout = getrootprop(varargin)
         varargout = interpret(varargin)
         varargout = latexcode(varargin)
         varargout = root(varargin)
-        varargout = setrootprop(varargin)
         varargout = speclatexcode(varargin)
         varargout = shortclass(varargin)
         varargout = printcaption(varargin)
@@ -216,39 +215,58 @@ classdef genericobj < handle
                 C = [C,'}',br];
             end
         end
-
-        % Footnotes and footnote counter
-        %--------------------------------
         
+        % hInfo methods
+        %---------------
+        
+        function addtempfile(This,NewTempFile)
+            if ischar(NewTempFile)
+                NewTempFile = {NewTempFile};
+            end
+            tempFile = This.hInfo.tempFile;
+            tempFile = [tempFile,NewTempFile];
+            This.hInfo.tempFile = tempFile;
+        end
+        
+        function addfigurehandle(This,NewFigureHandle)
+            figureHandle = This.hInfo.figureHandle;
+            figureHandle = [figureHandle,NewFigureHandle];
+            This.hInfo.figureHandle = figureHandle;
+        end
+
         function C = footnotemark(This)
             if isempty(This.options.footnote)
                 C = '';
                 return
             end
             br = sprintf('\n');
+            footnote = This.hInfo.footnote;
             number = sprintf('%g',footnotenumber(This));
             text = interpret(This,This.options.footnote);
             C = ['\footnotemark[',number,']'];
-            This.footnoteContainer{end+1} = [ ...
-                br,'\footnotetext[',number,']{',text,'}'];
+            footnote{end+1} = [br,'\footnotetext[',number,']{',text,'}'];
+            This.hInfo.footnote = footnote;
         end
         
         function C = footnotetext(This)
-            if isempty(This.footnoteContainer)
+            footnote = This.hInfo.footnote;
+            if isempty(footnote)
                 C = '';
                 return
             end
-            C = [This.footnoteContainer{:}];
-            This.footnoteContainer = {};
+            C = [footnote{:}];
+            footnote = {};
+            This.hInfo.footnote = footnote;
         end
         
         function N = footnotenumber(This)
-            N = getrootprop(This,'footnoteCounter');
+            N = This.hInfo.footnoteCount;
             N = N + 1;
-            setrootprop(This,'footnoteCounter',N);
+            This.hInfo.footnoteCount = N;
         end
         
     end
+    
     
     methods (Static,Hidden)
         
@@ -319,7 +337,7 @@ classdef genericobj < handle
                     Valid = false;
                 end
                 if ~isempty(c.date) ...
-                        && ~isnumericscalar(c.date)
+                        && ~is.numericscalar(c.date)
                     Valid = false;
                 end
             end

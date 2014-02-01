@@ -5,7 +5,7 @@ function This = mymodel2model(This,Assign,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ if ~isempty(Opt.epsilon)
 end
 
 % Time origin (base year) for deterministic trends.
-if ~isempty(Opt.torigin) && isintscalar(Opt.torigin)
+if ~isempty(Opt.torigin) && is.intscalar(Opt.torigin)
     This.torigin = Opt.torigin;
 end
 

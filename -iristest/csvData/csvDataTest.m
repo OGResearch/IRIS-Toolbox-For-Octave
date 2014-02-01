@@ -19,3 +19,23 @@ expDbase.z = tseries(range, [100; NaN; 300; 400]) ;
 assertEqual(This, actDbase, expDbase) ;
 
 end % testMissingObs()
+
+
+%**************************************************************************
+function testDailyCsv(This)
+
+d = dbload('testDailyCsv.csv', ...
+    'dateFormat=', '$M/D/YYYY', ...
+    'freq=', 365) ;
+actDbase = db2array(d, {'A', 'B', 'C', 'D'}) ;
+actDbase(isnan(actDbase)) = 0 ;
+
+expDbase = csvread('testDailyCsv.csv', 1, 1) ;
+
+assertEqual(This, actDbase, expDbase) ;
+
+end % testDailyCsv()
+
+
+
+

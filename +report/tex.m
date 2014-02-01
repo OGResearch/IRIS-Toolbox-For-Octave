@@ -1,4 +1,4 @@
-% tex  Include \LaTeX\ code or verbatim text input in report.
+% tex  Include \LaTeX\ code or verbatim input in report.
 %
 % Syntax with input specified in comment block
 % =============================================
@@ -55,4 +55,4 @@
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

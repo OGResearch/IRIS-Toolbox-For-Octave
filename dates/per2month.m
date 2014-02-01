@@ -5,7 +5,7 @@ function M = per2month(Per,Freq,StandinMonth)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ if ischar(StandinMonth)
         case {'first','start'}
             StandinMonth = 1;
         case {'last','end'}
-            StandinMonth = 12/Freq;
+            StandinMonth = 12 ./ Freq;
         otherwise
             StandinMonth = 1;
     end

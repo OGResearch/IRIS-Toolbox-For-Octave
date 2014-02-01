@@ -1,20 +1,21 @@
-function dat = yy(varargin)
-% yy  IRIS serial date numbers for dates with yearly frequency.
+function Dat = yy(varargin)
+% yy  IRIS serial date number for yearly date.
 %
 % Syntax
 % =======
 %
-%     d = yy(y)
+%     Dat = yy(Y)
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers representing the input years.
+% * `Dat` [ numeric ] - IRIS serial date numbers representing the yearly
+% date.
 %
 % Description
 % ============
@@ -24,10 +25,10 @@ function dat = yy(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-dat = datcode(1,varargin{:});
+Dat = datcode(1,varargin{:});
 
 end

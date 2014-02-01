@@ -5,7 +5,7 @@ classdef annotateobj < report.genericobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         location = [];
@@ -13,23 +13,23 @@ classdef annotateobj < report.genericobj
     end
     
     methods
-        function this = annotateobj(varargin)
-            this = this@report.genericobj(varargin{:});
-            this.childof = {'graph'};
-            this.default = [this.default, { ...
+        function This = annotateobj(varargin)
+            This = This@report.genericobj(varargin{:});
+            This.childof = {'graph'};
+            This.default = [This.default, { ...
                 'vposition','top', ...
-                    @(x) (isnumericscalar(x) && x >= 0 &&  x <= 1) ...
-                    || (isanychari(x,{'top','bottom','centre','center','middle'})),true,...
+                @(x) (is.numericscalar(x) && x >= 0 &&  x <= 1) ...
+                || (is.anychari(x,{'top','bottom','centre','center','middle'})),true,...
                 'hposition','right', ...
-                    @(x) isanychari(x,{'left','right','centre','center','middle'}),true,...
+                @(x) is.anychari(x,{'left','right','centre','center','middle'}),true,...
                 'timeposition','middle', ...
-                    @(x) isanychari(x,{'middle','after','before'}),true, ...
-            }];
+                @(x) is.anychari(x,{'middle','after','before'}),true, ...
+                }];
         end
         
-        function [this,varargin] = specargin(this,varargin)
+        function [This,varargin] = specargin(This,varargin)
             if ~isempty(varargin)
-                this.location = varargin{1};
+                This.location = varargin{1};
                 varargin(1) = [];
             end
         end
