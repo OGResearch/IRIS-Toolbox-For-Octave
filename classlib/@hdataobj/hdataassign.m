@@ -43,18 +43,23 @@ for i = 1 : length(solId)
                 permute(X(j,1,:),[2,3,1]);
         end
     end
-    % Current-dated transition variables.
+    % Current-dated assignments.
     t = maxLag + (1 : nPer);
     for j = find(imagId == 0)
         jName = name{realId(j)};
-        This.data.(jName)(t,Pos{:}) = permute(X(j,:,:),[2,3,1]);
+        jData = This.data.(jName);
+        jx = X(j,:,:);
+        jData(t,Pos{:}) = permute(jx,[2,3,1]);
+        This.data.(jName) = jData;
     end
     
 end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function D = xxVar2Std(D)
@@ -70,4 +75,4 @@ if any(inx(:))
 end
 D = sqrt(D);
 
-end % xxVar2Std().
+end % xxVar2Std()
