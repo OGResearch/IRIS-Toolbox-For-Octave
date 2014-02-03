@@ -298,7 +298,6 @@ classdef model < modelobj & estimateobj
         varargout = datarequest(varargin)
         varargout = disp(varargin)
         varargout = end(varargin)
-        varargout = fieldnames(varargin)
         varargout = getnonlinobj(varargin)
         varargout = objfunc(varargin)
         varargout = isempty(varargin)
