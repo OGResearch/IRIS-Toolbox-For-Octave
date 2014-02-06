@@ -1,6 +1,7 @@
 %% places
 curFolder = pwd();
 thisFolder = fileparts(mfilename('fullpath'));
+addpath(thisFolder);
 
 %% iris startup
 cd([thisFolder filesep '..']);
@@ -23,7 +24,11 @@ for ix = 1:length(subFolders)
         testsCalled = testsCalled + 1;
         fprintf('\n\t** %s\n',testFiles(jx).name);
         try
-          run(testFiles(jx).name);
+          err0 = [];
+          err0 = runTest(testFiles(jx).name);
+          if ~isempty(err0)
+            rethrow(err0);
+          end
           fprintf('\t-> Passed!\n');
           testsPassed = testsPassed + 1;
         catch err
