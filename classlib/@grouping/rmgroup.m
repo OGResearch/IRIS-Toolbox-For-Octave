@@ -32,9 +32,15 @@ function This = rmgroup(This,varargin)
 GroupName = varargin;
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('G',@(x) isa(x,'grouping'));
+pp.addRequired('GroupName',@iscellstr);
+pp.parse(This,GroupName);
+else
 pp = pp.addRequired('G',@(x) isa(x,'grouping'));
 pp = pp.addRequired('GroupName',@iscellstr);
 pp = pp.parse(This,GroupName);
+end
 
 %--------------------------------------------------------------------------
 
@@ -62,5 +68,4 @@ if any(~valid)
 end
 
 end
-
 

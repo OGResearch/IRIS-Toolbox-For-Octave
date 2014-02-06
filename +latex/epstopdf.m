@@ -22,9 +22,15 @@ end
 
 % Parse inputarguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('LIST',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('CMDARGS',@(x) ischar(x) || isempty(x));
+pp.parse(List,CmdArgs);
+else
 pp = pp.addRequired('LIST',@(x) ischar(x) || iscellstr(x));
 pp = pp.addRequired('CMDARGS',@(x) ischar(x) || isempty(x));
 pp = pp.parse(List,CmdArgs);
+end
 
 % Parse options.
 opt = passvalopt('latex.epstopdf',varargin{:});

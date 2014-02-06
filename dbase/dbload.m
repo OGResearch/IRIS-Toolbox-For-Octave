@@ -178,9 +178,15 @@ fName = varargin{1};
 varargin(1) = [];
 
 P = inputParser();
+if ismatlab
+P.addRequired('d',@isstruct);
+P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
+P.parse(D,fName);
+else
 P = P.addRequired('d',@isstruct);
 P = P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
 P = P.parse(D,fName);
+end
 
 % Loop over all input databases subcontracting `dbload` and merging the
 % resulting databases in one.

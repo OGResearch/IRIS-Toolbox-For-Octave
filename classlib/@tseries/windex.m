@@ -44,10 +44,17 @@ if nargin < 3
 end
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('X',@istseries);
+pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
+pp.addRequired('Range',@isnumeric);
+pp.parse(X,W,Range);
+else
 pp = pp.addRequired('X',@istseries);
 pp = pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.parse(X,W,Range);
+end
 
 options = passvalopt('tseries.windex',varargin{:});
 

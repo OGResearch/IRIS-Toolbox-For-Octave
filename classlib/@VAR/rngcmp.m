@@ -28,9 +28,15 @@ function Flag = rngcmp(V1,V2)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('V1',@(x) isa(x,'VAR'));
+pp.addRequired('V2',@(x) isa(x,'VAR'));
+pp.parse(V1,V2);
+else
 pp = pp.addRequired('V1',@(x) isa(x,'VAR'));
 pp = pp.addRequired('V2',@(x) isa(x,'VAR'));
 pp = pp.parse(V1,V2);
+end
 
 %--------------------------------------------------------------------------
 

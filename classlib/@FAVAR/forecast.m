@@ -51,11 +51,19 @@ function [D,CC,F,U,E] = forecast(This,Inp,Range,J,varargin)
 
 % Parse required input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('f',@isfavar);
+pp.addRequired('init',@(x) istseries(x) || isstruct(x));
+pp.addRequired('range',@isnumeric);
+pp.addRequired('j',@(x) isempty(x) || istseries(x) || isstruct(x));
+pp.parse(This,Inp,Range,J);
+else
 pp = pp.addRequired('f',@isfavar);
 pp = pp.addRequired('init',@(x) istseries(x) || isstruct(x));
 pp = pp.addRequired('range',@isnumeric);
 pp = pp.addRequired('j',@(x) isempty(x) || istseries(x) || isstruct(x));
 pp = pp.parse(This,Inp,Range,J);
+end
 
 % Parse options.
 opt = passvalopt('FAVAR.forecast',varargin{:});

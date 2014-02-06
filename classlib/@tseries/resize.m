@@ -34,9 +34,15 @@ function [X,NewRange] = resize(X,Range)
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('x',@(x) isa(x,'tseries'));
+pp.addRequired('range',@isnumeric);
+pp.parse(X,Range);
+else
 pp = pp.addRequired('x',@(x) isa(x,'tseries'));
 pp = pp.addRequired('range',@isnumeric);
 pp = pp.parse(X,Range);
+end
 
 %--------------------------------------------------------------------------
 

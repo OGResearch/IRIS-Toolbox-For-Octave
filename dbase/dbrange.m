@@ -59,9 +59,15 @@ end
 
 % Validate input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('D',@isstruct);
+pp.addRequired('List',@(x) iscellstr(x) || isequal(x,Inf));
+pp.parse(D,List);
+else
 pp = pp.addRequired('D',@isstruct);
 pp = pp.addRequired('List',@(x) iscellstr(x) || isequal(x,Inf));
 pp = pp.parse(D,List);
+end
 
 % Validate options.
 opt = passvalopt('dbase.dbrange',varargin{:});

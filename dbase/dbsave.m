@@ -141,10 +141,17 @@ end
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('D',@isstruct);
+pp.addRequired('FName',@ischar);
+pp.addRequired('Dates',@isnumeric);
+pp.parse(D,FName,Dates);
+else
 pp = pp.addRequired('D',@isstruct);
 pp = pp.addRequired('FName',@ischar);
 pp = pp.addRequired('Dates',@isnumeric);
 pp = pp.parse(D,FName,Dates);
+end
 
 % Parse options.
 opt = passvalopt('dbase.dbsave',varargin{:});

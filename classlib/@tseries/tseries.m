@@ -230,13 +230,21 @@ classdef tseries < userdataobj
                 usrComment = varargin{3};
             end
             
-            % Parse required input arguments.
+            % Parse required input arguments
             pp = inputParser();
-            pp = pp.addRequired('Dates',@isnumeric);
-            pp = pp.addRequired('Data',@(x) ...
+            if ismatlab
+              pp.addRequired('Dates',@isnumeric);
+              pp.addRequired('Data',@(x) ...
                 isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-            pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-            pp = pp.parse(usrDates,usrData,usrComment);
+              pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+              pp.parse(usrDates,usrData,usrComment);
+            else
+              pp = pp.addRequired('Dates',@isnumeric);
+              pp = pp.addRequired('Data',@(x) ...
+                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
+              pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+              pp = pp.parse(usrDates,usrData,usrComment);
+            end
             
             %--------------------------------------------------------------
             

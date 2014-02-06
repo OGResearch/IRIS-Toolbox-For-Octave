@@ -31,9 +31,15 @@ function This = splitgroup(This,varargin)
 GroupName = varargin;
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('G',@(x) isa(x,'grouping'));
+pp.addRequired('GroupName',@iscellstr);
+pp.parse(This,GroupName);
+else
 pp = pp.addRequired('G',@(x) isa(x,'grouping'));
 pp = pp.addRequired('GroupName',@iscellstr);
 pp = pp.parse(This,GroupName);
+end
 
 %--------------------------------------------------------------------------
 
@@ -59,5 +65,4 @@ for iGroup = 1:numel(GroupName)
 end
 
 end
-
 

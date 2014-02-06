@@ -68,9 +68,15 @@ varargin(1) = [];
 
 % Parse input arguments.
 P = inputParser();
+if ismatlab
+P.addRequired('range',@isnumeric);
+P.addRequired('x',@(x) isa(x,'tseries'));
+P.parse(range,X);
+else
 P = P.addRequired('range',@isnumeric);
 P = P.addRequired('x',@(x) isa(x,'tseries'));
 P = P.parse(range,X);
+end
 
 % Parse options.
 [opt,varargin] = passvalopt('tseries.spy',varargin{:});

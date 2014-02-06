@@ -43,10 +43,17 @@ function [Stat,Crit] = portest(This,Inp,H,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('V',@(x) isa(x,'VAR'));
+pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp.addRequired('H',@isnumericscalar);
+pp.parse(This,Inp,H);
+else
 pp = pp.addRequired('V',@(x) isa(x,'VAR'));
 pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp = pp.addRequired('H',@isnumericscalar);
 pp = pp.parse(This,Inp,H);
+end
 
 if length(varargin) == 1 && isnumericscalar(varargin{1})
     % Bkw compatibility.

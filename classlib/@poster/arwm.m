@@ -124,9 +124,15 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 
 % Validate required inputs.
 pp = inputParser();
+if ismatlab
+pp.addRequired('Pos',@(x) isa(x,'poster'));
+pp.addRequired('NDraw',@isnumericscalar);
+pp.parse(This,NDraw);
+else
 pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
 pp = pp.addRequired('NDraw',@isnumericscalar);
 pp = pp.parse(This,NDraw);
+end
 
 % Parse options.
 opt = passvalopt('poster.arwm',varargin{:});
@@ -482,6 +488,15 @@ FinalCov = P*P.';
                 elseif opt.nstep < log2(opt.nstep*(nWorkers+1))
                     utils.warning('poster', ...
                         'Sequential version will be faster. Consider decreasing the number of prefetch steps.');
+                end
+            else
+                utils.warning('poster', ...
+                    'Prefetching without parallelism is pointless.');
+            end
+        end
+    end % doChkParallel().
+
+endrefetch steps.');
                 end
             else
                 utils.warning('poster', ...

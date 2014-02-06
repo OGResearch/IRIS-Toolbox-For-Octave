@@ -31,9 +31,15 @@ function Flag = islog(This,Name)
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('m',@ismodel);
+pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
+pp.parse(This,Name);
+else
 pp = pp.addRequired('m',@ismodel);
 pp = pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
 pp = pp.parse(This,Name);
+end
 
 if ischar(Name)
     Name = regexp(Name,'\w+','match');

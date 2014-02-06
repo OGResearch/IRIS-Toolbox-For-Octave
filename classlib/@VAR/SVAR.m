@@ -13,10 +13,17 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('V',@(x) isa(x,'VAR'));
+pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
+    || isstruct(x));
+pp.parse(V,Data);
+else
 pp = pp.addRequired('V',@(x) isa(x,'VAR'));
 pp = pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
     || isstruct(x));
 pp = pp.parse(V,Data);
+end
 
 opt = passvalopt('SVAR.SVAR',varargin{1:end});
 

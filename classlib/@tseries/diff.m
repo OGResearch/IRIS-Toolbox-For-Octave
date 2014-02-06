@@ -41,9 +41,15 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('X',@istseries);
+pp.addRequired('K',@isnumericscalar);
+pp.parse(X,K);
+else
 pp = pp.addRequired('X',@istseries);
 pp = pp.addRequired('K',@isnumericscalar);
 pp = pp.parse(X,K);
+end
 
 %--------------------------------------------------------------------------
 

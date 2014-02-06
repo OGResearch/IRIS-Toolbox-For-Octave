@@ -53,10 +53,17 @@ function Outp = simulate(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
+pp.addRequired('V',@(x) isa(x,'VAR'));
+pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp.parse(This,Inp,Range);
+else
 pp = pp.addRequired('V',@(x) isa(x,'VAR'));
 pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp = pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
 pp = pp.parse(This,Inp,Range);
+end
 
 % Panel VAR.
 if ispanel(This)

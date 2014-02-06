@@ -115,6 +115,14 @@ if isempty(Func)
     return
 end
 
+if isfunc(Func)
+    funcAsChar = func2str(Func);
+elseif ischar(Func) || iscellstr(Func)
+    funcAsChar = char(Func);
+else
+    funcAsChar = '';
+end
+
 % Do the actual plot.
 set(Ax,'xTickMode','auto','xTickLabelMode','auto');
 H = [];
@@ -123,7 +131,7 @@ doPlot();
 if isequal(opt.xlimmargin,true) ...
         || (ischar(opt.xlimmargin) ...
         && strcmpi(opt.xlimmargin,'auto') ...
-        && any(strcmp(char(Func),{'bar','barcon'})))
+        && any(strcmp(funcAsChar,{'bar','barcon'})))
     setappdata(Ax,'xLimAdjust',true);
     peer = getappdata(Ax,'graphicsPlotyyPeer');
     if ~isempty(peer)
@@ -168,8 +176,10 @@ end
 % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
 % we also handle cases where the current figure includes both tseries and
 % non-tseries graphs.
-obj = datacursormode(gcf());
-set(obj,'UpdateFcn',@utils.datacursor);
+if ismatlab
+    obj = datacursormode(gcf());
+    set(obj,'UpdateFcn',@utils.datacursor);
+end
 
 % Nested functions.
 
@@ -190,7 +200,7 @@ set(obj,'UpdateFcn',@utils.datacursor);
 
 %**************************************************************************
     function doPlot()
-        switch char(Func)
+        switch funcAsChar
             case {'scatter'}
                 if nx ~= 2
                     utils.error('tseries', ...

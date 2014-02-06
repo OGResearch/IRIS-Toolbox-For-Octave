@@ -100,10 +100,17 @@ classdef grouping < userdataobj & getsetobj
             Type = varargin{2};
             
             pp = inputParser();
+if ismatlab
+            pp.addRequired('M',@(x) isa(x,'modelobj'));
+            pp.addRequired('Type',@(x) ischar(x) ...
+                && any(strncmpi(x,{'shock','measu'},5)));
+            pp.parse(M,Type);
+else
             pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
             pp = pp.addRequired('Type',@(x) ischar(x) ...
                 && any(strncmpi(x,{'shock','measu'},5)));
             pp = pp.parse(M,Type);
+end
             
             This.type = Type;
             switch This.type

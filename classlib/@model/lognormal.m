@@ -53,10 +53,17 @@ function D = lognormal(This,D,varargin)
 % -Copyright (c) 2007-2013 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('this',@ismodel);
+pp.addRequired('data', ...
+    @(x) isstruct(x) && isfield(x,'mean') && isfield(x,'std'));
+pp.parse(This,D);
+else
 pp = pp.addRequired('this',@ismodel);
 pp = pp.addRequired('data', ...
     @(x) isstruct(x) && isfield(x,'mean') && isfield(x,'std'));
 pp = pp.parse(This,D);
+end
 
 Opt = passvalopt('model.lognormal',varargin{:});
 

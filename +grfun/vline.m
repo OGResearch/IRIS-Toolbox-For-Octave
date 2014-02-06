@@ -78,10 +78,17 @@ if nAx > 1
 end
 
 pp = inputParser();
+if ismatlab
+pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+    && all(strcmp(get(x,'type'),'axes')));
+pp.addRequired('XPos',@isnumeric);
+pp.parse(Ax,Loc);
+else
 pp = pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
     && all(strcmp(get(x,'type'),'axes')));
 pp = pp.addRequired('XPos',@isnumeric);
 pp = pp.parse(Ax,Loc);
+end
 
 [opt,lineOpt] = passvalopt('grfun.vline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
