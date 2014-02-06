@@ -9,7 +9,7 @@ try
   clear ts1 ts2 tsc
 catch err
   clear ts1 ts2 tsc
-  if strncmp(err.message,'binary operator ''+'' not implemented',35)
+  if ~isempty(strfind(err.message,'binary operator ''+'' not implemented'))
     error('expected error:: plus() method of [tseries] is unable to overload Octave''s ''+'' operator');
   else
     rethrow(err);

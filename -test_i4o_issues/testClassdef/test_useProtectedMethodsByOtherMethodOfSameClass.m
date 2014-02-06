@@ -4,7 +4,7 @@ ts1 = tseries(qq(1,1):qq(2,4),1:8);
 % check if methods with protected access can be called from within other methods
 % of the same class
 try
-  disp(ts1)
+  disp(ts1);
   clear ts1
 catch err
   clear ts1

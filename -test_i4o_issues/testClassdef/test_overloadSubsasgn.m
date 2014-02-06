@@ -6,7 +6,7 @@ try
   clear ts1
 catch err
   clear ts1
-  if strncmp(err.message,'subsasgn: object cannot be index with',37)
+  if ~isempty(strfind(err.message,'subsasgn: object cannot be index with'))
     error('expected error:: subsasgn() method cannot be overloaded');
   else
     rethrow(err);

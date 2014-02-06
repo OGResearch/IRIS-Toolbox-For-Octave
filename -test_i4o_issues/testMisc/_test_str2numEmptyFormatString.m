@@ -6,7 +6,7 @@ try
   end
 catch err
   clear strTestVar
-  if strncmp(err.message,'my_err_identifier',17)
+  if ~isempty(strfind(err.message,'my_err_identifier'))
     error('expected error:: Octave didn''t crash when empty format string provided for num2str()');
   else
     rethrow(err);
