@@ -21,7 +21,7 @@ try
         return
     end
 catch %#ok<CTCH>
-    if isequalwithequalnans(Time,NaN) %#ok<FPARK>
+    if isequaln(Time,NaN) %#ok<FPARK>
         return
     end
 end

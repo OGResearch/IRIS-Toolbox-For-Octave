@@ -32,7 +32,7 @@ if isequal(This.options.legend,Inf)
             LegendEntry{i} = mark;
         end
     end
-elseif isequalwithequalnans(This.options.legend,NaN)
+elseif isequaln(This.options.legend,NaN)
     % Exclude the series from legend.
     LegendEntry = {};
     Exclude = true;

@@ -26,12 +26,12 @@ br = sprintf('\n');
 if isDates
     yearFmt = dateFormat{1};
     currentFmt = dateFormat{2};
-    twoLines = isDates && ~isequalwithequalnans(yearFmt,NaN);
+    twoLines = isDates && ~isequaln(yearFmt,NaN);
 else
     twoLines = false;
     for i = 1 : nCol
         twoLines = ...
-            ~isequalwithequalnans(This.options.colstruct(i).name{1},NaN);
+            ~isequaln(This.options.colstruct(i).name{1},NaN);
         if twoLines
             break
         end
@@ -88,10 +88,10 @@ for i = 1 : nPer
         if twoLines
             firstLineText = This.options.colstruct(i).name{1};
             firstLineChg = i == nPer ...
-                || ~isequalwithequalnans( ...
+                || ~isequaln( ...
                 This.options.colstruct(i).name{1}, ...
                 This.options.colstruct(i+1).name{1});
-            if isequalwithequalnans(firstLineText,NaN)
+            if isequaln(firstLineText,NaN)
                 firstLineText = '';
             end
         end

@@ -69,7 +69,7 @@ for i = 1 : nint
     end
 end
 
-if isequalwithequalnans(This.options.fanlegend,NaN)
+if isequaln(This.options.fanlegend,NaN)
     grfun.excludefromlegend(pt(:));
     Leg(1:nint) = [];
 end
