@@ -25,10 +25,10 @@ while ~feof(fid)
   rest = [rest,lbr,tline];
 end
 
-pblk_adj = regexprep(pblk,[vnm '\s*=\s*'],'');
+pblk_adj = regexprep(pblk,['(' vnm ')(\..*?\n)'],'$1 = $1$2');
 
 fseek(fid,spos,'bof');
-fprintf(fid,'if ismatlab\n%selse\n%send%s',pblk_adj,pblk,rest);
+fprintf(fid,'if ismatlab\n%selse\n%send%s',pblk,pblk_adj,rest);
 
 
 fclose(fid);
