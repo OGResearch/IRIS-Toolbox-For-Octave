@@ -3,3 +3,6 @@ syntax: glob
 hgignore*
 fort.6
 *.synctex.gz
+*.m~
+octave-workspace
+*.orig
