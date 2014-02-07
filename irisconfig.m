@@ -102,15 +102,19 @@ end
 
 % Options that cannot be customised.
 % IRIS root folder.
-tmp = cd();
+tmp = pwd();
 cd(fileparts(which('irisstartup.m')));
-Config.irisroot = cd();
+Config.irisroot = pwd();
 cd(tmp);
 
 % Read IRIS version. The IRIS version is stored in the root Contents.m
 % file, and is displayed by the Matlab ver() command.
 x = ver();
-index = strcmp('IRIS Toolbox',{x.Name});
+if ismatlab
+    index = strcmp('IRIS Toolbox',{x.Name});
+else
+    index = strcmp('iris-toolbox',{x.Name}); % name of Octave package (preliminary)
+end
 if any(index)
     Config.version = x(index).Version;
 else
