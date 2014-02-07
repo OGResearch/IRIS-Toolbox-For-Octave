@@ -85,12 +85,12 @@ function This = set(This,varargin)
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('m',@is.model);
+pp.addRequired('m',@(isArg)is.model(isArg));
 pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
 else
-pp = pp.addRequired('m',@is.model);
+pp = pp.addRequired('m',@(isArg)is.model(isArg));
 pp = pp.addRequired('name',@iscellstr);
 pp = pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp = pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));

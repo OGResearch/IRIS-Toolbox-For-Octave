@@ -45,12 +45,12 @@ function Outp = bn(This,Inp,Range,varargin)
 % Parse required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('m',@is.model);
+pp.addRequired('m',@(isArg)is.model(isArg));
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@(x) isnumeric(x));
 pp.parse(This,Inp,Range);
 else
-pp = pp.addRequired('m',@is.model);
+pp = pp.addRequired('m',@(isArg)is.model(isArg));
 pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp = pp.addRequired('range',@(x) isnumeric(x));
 pp = pp.parse(This,Inp,Range);

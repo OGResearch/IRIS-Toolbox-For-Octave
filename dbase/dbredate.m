@@ -38,20 +38,20 @@ function D = dbredate(D,OldDate,NewDate)
 pp = inputParser();
 if ismatlab
 pp.addRequired('d',@isstruct);
-pp.addRequired('oldDate',@is.numericscalar);
-pp.addRequired('newDate',@is.numericscalar);
+pp.addRequired('oldDate',@(isArg)is.numericscalar(isArg));
+pp.addRequired('newDate',@(isArg)is.numericscalar(isArg));
 pp.parse(D,OldDate,NewDate);
 else
 pp = pp.addRequired('d',@isstruct);
-pp = pp.addRequired('oldDate',@is.numericscalar);
-pp = pp.addRequired('newDate',@is.numericscalar);
+pp = pp.addRequired('oldDate',@(isArg)is.numericscalar(isArg));
+pp = pp.addRequired('newDate',@(isArg)is.numericscalar(isArg));
 pp = pp.parse(D,OldDate,NewDate);
 end
 
 %--------------------------------------------------------------------------
 
 list = fieldnames(D);
-tseriesInx = structfun(@is.tseries,D);
+tseriesInx = structfun(@(isArg)is.tseries(isArg),D);
 structInx = structfun(@isstruct,D);
 
 % Cycle over all tseries objects.

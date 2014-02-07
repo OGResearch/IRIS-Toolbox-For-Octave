@@ -193,13 +193,13 @@ end
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('model',@is.model);
+pp.addRequired('model',@(isArg)is.model(isArg));
 pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
 pp.parse(This,Inp,Range,j);
 else
-pp = pp.addRequired('model',@is.model);
+pp = pp.addRequired('model',@(isArg)is.model(isArg));
 pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp = pp.addRequired('range',@isnumeric);
 pp = pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));

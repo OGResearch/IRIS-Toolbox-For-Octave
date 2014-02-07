@@ -32,10 +32,10 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@(isArg)is.numericscalar(isArg));
 pp.parse(Mu);
 else
-pp = pp.addRequired('Mu',@is.numericscalar);
+pp = pp.addRequired('Mu',@(isArg)is.numericscalar(isArg));
 pp = pp.parse(Mu);
 end
 

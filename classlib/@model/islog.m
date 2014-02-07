@@ -32,11 +32,11 @@ function Flag = islog(This,Name)
 % Parse input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('m',@is.model);
+pp.addRequired('m',@(isArg)is.model(isArg));
 pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
 pp.parse(This,Name);
 else
-pp = pp.addRequired('m',@is.model);
+pp = pp.addRequired('m',@(isArg)is.model(isArg));
 pp = pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
 pp = pp.parse(This,Name);
 end

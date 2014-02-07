@@ -55,7 +55,7 @@ end
 % Parse required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('P',@is.plan);
+pp.addRequired('P',@(isArg)is.plan(isArg));
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('WEIGHT', ...
@@ -63,7 +63,7 @@ pp.addRequired('WEIGHT', ...
     && real(x) >= 0 && imag(x) >= 0 && x ~= 0);
 pp.parse(This,List,Dates,Flag);
 else
-pp = pp.addRequired('P',@is.plan);
+pp = pp.addRequired('P',@(isArg)is.plan(isArg));
 pp = pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp = pp.addRequired('Dates',@isnumeric);
 pp = pp.addRequired('WEIGHT', ...

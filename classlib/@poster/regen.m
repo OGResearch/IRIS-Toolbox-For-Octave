@@ -50,11 +50,11 @@ function [sample,lp_Sample,len] ...
 pp = inputParser();
 if ismatlab
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@is.numericscalar);
+pp.addRequired('NDraw',@(isArg)is.numericscalar(isArg));
 pp.parse(This,NDraw);
 else
 pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp = pp.addRequired('NDraw',@is.numericscalar);
+pp = pp.addRequired('NDraw',@(isArg)is.numericscalar(isArg));
 pp = pp.parse(This,NDraw);
 end
 

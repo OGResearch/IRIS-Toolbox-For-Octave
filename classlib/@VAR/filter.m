@@ -53,12 +53,12 @@ function [This,Outp] = filter(This,Inp,Range,varargin)
 % Parse input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('V',@is.VAR);
+pp.addRequired('V',@(isArg)is.VAR(isArg));
 pp.addRequired('Inp',@(x) isstruct(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);
 else
-pp = pp.addRequired('V',@is.VAR);
+pp = pp.addRequired('V',@(isArg)is.VAR(isArg));
 pp = pp.addRequired('Inp',@(x) isstruct(x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.parse(This,Inp,Range);

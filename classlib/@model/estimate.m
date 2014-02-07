@@ -340,14 +340,14 @@ end
 % Validate required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('M',@is.model);
+pp.addRequired('M',@(isArg)is.model(isArg));
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
 else
-pp = pp.addRequired('M',@is.model);
+pp = pp.addRequired('M',@(isArg)is.model(isArg));
 pp = pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp = pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp = pp.addRequired('Est',@(x) isstruct(x) || iscell(x));

@@ -79,13 +79,13 @@ end
 % Parse required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('V',@is.VAR);
+pp.addRequired('V',@(isArg)is.VAR(isArg));
 pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp.addRequired('Range',@isnumeric);
 pp.addRequired('NDraw',@(x) is.numericscalar(x) && x == round(x) && x >= 0);
 pp.parse(This,Inp,Range,NDraw);
 else
-pp = pp.addRequired('V',@is.VAR);
+pp = pp.addRequired('V',@(isArg)is.VAR(isArg));
 pp = pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.addRequired('NDraw',@(x) is.numericscalar(x) && x == round(x) && x >= 0);

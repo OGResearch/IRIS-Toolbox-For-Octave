@@ -53,11 +53,11 @@ function varargout = get(This,varargin)
 
 P = inputParser();
 if ismatlab
-P.addRequired('x',@is.tseries);
+P.addRequired('x',@(isArg)is.tseries(isArg));
 P.addRequired('name',@iscellstr);
 P.parse(This,varargin);
 else
-P = P.addRequired('x',@is.tseries);
+P = P.addRequired('x',@(isArg)is.tseries(isArg));
 P = P.addRequired('name',@iscellstr);
 P = P.parse(This,varargin);
 end

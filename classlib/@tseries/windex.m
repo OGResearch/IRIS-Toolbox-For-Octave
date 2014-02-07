@@ -45,12 +45,12 @@ end
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('X',@is.tseries);
+pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('W',@(x) isnumeric(x) || is.tseries(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(X,W,Range);
 else
-pp = pp.addRequired('X',@is.tseries);
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp = pp.addRequired('W',@(x) isnumeric(x) || is.tseries(x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.parse(X,W,Range);

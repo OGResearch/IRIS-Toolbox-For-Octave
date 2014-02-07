@@ -65,13 +65,13 @@ function [MinusLogLik,Grad,Hess,V] ...
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('model',@is.model);
+pp.addRequired('model',@(isArg)is.model(isArg));
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
 pp.parse(This,Data,Range,PList);
 else
-pp = pp.addRequired('model',@is.model);
+pp = pp.addRequired('model',@(isArg)is.model(isArg));
 pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp = pp.addRequired('range',@isnumeric);
 pp = pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));

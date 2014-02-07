@@ -42,12 +42,12 @@ end
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('X',@is.tseries);
-pp.addRequired('K',@is.numericscalar);
+pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp.addRequired('K',@(isArg)is.numericscalar(isArg));
 pp.parse(X,K);
 else
-pp = pp.addRequired('X',@is.tseries);
-pp = pp.addRequired('K',@is.numericscalar);
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp = pp.addRequired('K',@(isArg)is.numericscalar(isArg));
 pp = pp.parse(X,K);
 end
 

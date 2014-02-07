@@ -79,12 +79,12 @@ function Outp = jforecast(This,Inp,Range,varargin)
 
 pp = inputParser();
 if ismatlab
-pp.addRequired('M',@is.model);
+pp.addRequired('M',@(isArg)is.model(isArg));
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);
 else
-pp = pp.addRequired('M',@is.model);
+pp = pp.addRequired('M',@(isArg)is.model(isArg));
 pp = pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.parse(This,Inp,Range);

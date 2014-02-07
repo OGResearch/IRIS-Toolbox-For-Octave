@@ -46,12 +46,12 @@ pp = inputParser();
 if ismatlab
 pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.addRequired('H',@is.numericscalar);
+pp.addRequired('H',@(isArg)is.numericscalar(isArg));
 pp.parse(This,Inp,H);
 else
 pp = pp.addRequired('V',@(x) isa(x,'VAR'));
 pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp = pp.addRequired('H',@is.numericscalar);
+pp = pp.addRequired('H',@(isArg)is.numericscalar(isArg));
 pp = pp.parse(This,Inp,H);
 end
 

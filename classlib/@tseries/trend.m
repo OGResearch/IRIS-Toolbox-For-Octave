@@ -53,11 +53,11 @@ end
 % Parse required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('X',@is.tseries);
+pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Range);
 else
-pp = pp.addRequired('X',@is.tseries);
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.parse(This,Range);
 end

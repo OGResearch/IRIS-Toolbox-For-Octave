@@ -51,12 +51,12 @@ end
 pp = inputParser();
 if ismatlab
 pp.addRequired('Text',@ischar);
-pp.addRequired('Open',@is.numericscalar);
+pp.addRequired('Open',@(isArg)is.numericscalar(isArg));
 pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
 pp.parse(C,Open,Fill);
 else
 pp = pp.addRequired('Text',@ischar);
-pp = pp.addRequired('Open',@is.numericscalar);
+pp = pp.addRequired('Open',@(isArg)is.numericscalar(isArg));
 pp = pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
 pp = pp.parse(C,Open,Fill);
 end

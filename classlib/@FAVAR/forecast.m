@@ -52,13 +52,13 @@ function [D,CC,F,U,E] = forecast(This,Inp,Range,J,varargin)
 % Parse required input arguments.
 pp = inputParser();
 if ismatlab
-pp.addRequired('A',@is.FAVAR);
+pp.addRequired('A',@(isArg)is.FAVAR(isArg));
 pp.addRequired('D',@(x) is.tseries(x) || isstruct(x));
 pp.addRequired('Range',@isnumeric);
 pp.addRequired('J',@(x) isempty(x) || is.tseries(x) || isstruct(x));
 pp.parse(This,Inp,Range,J);
 else
-pp = pp.addRequired('A',@is.FAVAR);
+pp = pp.addRequired('A',@(isArg)is.FAVAR(isArg));
 pp = pp.addRequired('D',@(x) is.tseries(x) || isstruct(x));
 pp = pp.addRequired('Range',@isnumeric);
 pp = pp.addRequired('J',@(x) isempty(x) || is.tseries(x) || isstruct(x));
