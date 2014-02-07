@@ -180,7 +180,7 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 nArgOut = nargout;
 
@@ -192,19 +192,11 @@ if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
 end
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('model',@ismodel);
+pp.addRequired('model',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
 pp.parse(This,Inp,Range,j);
-else
-pp = pp.addRequired('model',@ismodel);
-pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
-pp = pp.parse(This,Inp,Range,j);
-end
 
 % This FILTER function options.
 [opt,varargin] = passvalopt('model.filter',varargin{:});

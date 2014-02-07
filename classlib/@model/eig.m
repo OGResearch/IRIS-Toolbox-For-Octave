@@ -25,7 +25,7 @@ function eigval = eig(this,alt)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2 || isequal(alt,Inf)
     alt = 1 : size(this.Assign,3);

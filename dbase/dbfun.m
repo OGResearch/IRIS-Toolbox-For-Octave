@@ -59,19 +59,13 @@ function [X,Flag,ErrList,WarnList] = dbfun(Func,D,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('Func',@(x) isfunc(x) || ischar(x));
+pp.addRequired('Func',@(x) is.func(x) || ischar(x));
 pp.addRequired('D',@isstruct);
 pp.parse(Func,D);
-else
-pp = pp.addRequired('Func',@(x) isfunc(x) || ischar(x));
-pp = pp.addRequired('D',@isstruct);
-pp = pp.parse(Func,D);
-end
 
 % Find last database in varargin
 last = find(cellfun(@isstruct,varargin),1,'last') ;
@@ -205,9 +199,6 @@ end
             opt.fresh = ~opt.merge;
         end
     end % doOptions().
-
-
-endions().
 
 
 end

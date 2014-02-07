@@ -5,7 +5,7 @@ function char2file(Char,File,Type)
 % No help provided.
 
 % -The IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Type = 'char';

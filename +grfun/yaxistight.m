@@ -25,7 +25,7 @@ function yaxistight(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1}(:).';

@@ -1,5 +1,5 @@
-    % setup  Installing IRIS.
-%
+% setup  Installing IRIS.
+% 
 % Requirements
 % =============
 % 
@@ -16,47 +16,42 @@
 % 
 % LaTeX
 % -------
-%
-% LaTeX is a free typesetting system used to produce PDF reports in IRIS.
-% We recommend MiKTeX, available from `www.miktex.org`.
 % 
-% Components not needed
-% ======================
-%
-% Some components were needed in the past but are not any longer.
-%
-% X13-ARIMA-SEATS (formerly X12-ARIMA)
-% -------------------------------------
+% LaTeX is a free typesetting system used to produce PDF reports in IRIS.
+% 
+% Components distributed with IRIS
+% =================================
+% 
+% X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)
+% -----------------------------------------------
 % 
 % Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly
-% X12-ARIMA) program is now incoporated in, and distributed with IRIS. You
-% don't need to care about anything to be able to use it.
+% X12-ARIMA) program is now incoporated in, and distributed with IRIS. No
+% extra installation or setup is needed.
 % 
-% Symbolic Math Toolbox
-% -----------------------
-%
-% IRIS is now equipped with its own symbolic/automatic differentiator. You
-% do not need to have the Symbolic Math Toolbox installed to be able to
-% compute exact Taylor expansions.
-%
+% Symbolic/automatic differentiator
+% ----------------------------------
+% 
+% Symbolic/automatic differentiator. IRIS is equipped with its own
+% symbolic/automatic differentiator, Sydney. There is no need to have the
+% Symbolic Math Toolbox as was the case in earlier versions of IRIS.
+% 
 % Installing IRIS
 % ================
 % 
 % Step 1
 % --------
 % 
-% Download the latest IRIS zip archive, `IRIS_Tbx_#_YYYYMMDD.zip`, from
-% `www.iris-toolbox.com`, and save it in a temporary location on your disk.
+% Download the latest IRIS zip archive, `IRIS_Tbx_YYYYMMDD.zip`, from the
+% download area on the website, and save it in a temporary location on your
+% disk.
 % 
 % Step 2
 % --------
 % 
 % Unzip the archive into a folder on your hard drive, e.g. `C:\IRIS_Tbx`.
-% We will call this directory the IRIS root folder.
+% This folder is called the IRIS root.
 % 
-% Installing IRIS on a network drive may cause some minor problems,
-% especially on MS Windows systems; check out `help changeNotification` in
-% Matlab.
 % 
 % Step 3
 % --------
@@ -87,15 +82,15 @@
 % equations, variables, parameters) syntax-highlighted. Syntax highlighting
 % improves enormously the readability of the files. It helps you understand
 % the model better, and discover typos and mistakes more quickly.
-%
-% Add any number of extensions you want to use for model files (such as
-% `'mod'`, `'model'`, etc.) to the Matlab editor. Open the menu File -
-% Preferences, and click on the Editor/Debugger - Language tab (make sure
-% 'Matlab' is selected at the top as the Language). Use the Add button in
-% the File extensions panel to associate any number of new extensions with
-% the editor. Re-start the editor. The IRIS model files will be syntax
-% highligted from that moment on.
 % 
+% Add any number of extensions you want to use for model files (such as
+% `'*.model'`) to the Matlab editor. Open the menu Home - Preferences,
+% unfold Editor/Debugger and choose Language. Make sure Matlab is selected
+% at the top as the language. Use the Add button in the File extensions
+% panel to associate any number of new extensions with the editor. Re-start
+% the editor. The IRIS model files will be syntax highlighted from that
+% moment on.
+%
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

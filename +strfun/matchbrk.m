@@ -32,7 +32,7 @@ function [Close,Inside,ThisLevel] = matchbrk(C,Open,Fill)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Open; %#ok<*VUNUS>
@@ -49,10 +49,10 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp = pp.addRequired('Text',@ischar);
-pp = pp.addRequired('Open',@isnumericscalar);
-pp = pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
-pp = pp.parse(C,Open,Fill);
+pp.addRequired('Text',@ischar);
+pp.addRequired('Open',@is.numericscalar);
+pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
+pp.parse(C,Open,Fill);
 
 Close = [];
 Inside = '';

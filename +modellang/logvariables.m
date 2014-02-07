@@ -7,8 +7,8 @@
 %         Variable_Name, Variable_Name, 
 %         Variable_Name, ...
 %
-% Inverted syntax
-% ================
+% Syntax with inverted list
+% ==========================
 %
 %     !log_variables
 %         !all_but
@@ -41,8 +41,8 @@
 % expressions will be declared as log-variables. See also help on regular
 % expressions in the Matlab documentation.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % The following block of code will cause the variables `Y`, `C`, `I`, and
 % `K` to be declared as log-variables, and hence log-linearised in the
@@ -63,8 +63,8 @@
 %         !all_but
 %         r, pie
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 % We again achieve the same result as above, but now using a regular
 % expression.
@@ -80,4 +80,4 @@
 % `K` will be declared as log-variables.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

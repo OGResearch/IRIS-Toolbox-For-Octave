@@ -5,7 +5,7 @@ function Leg = plot(This,Ax)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Sergey Plotnikov.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Sergey Plotnikov.
 
 %--------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ set(Ax,'nextPlot','add');
 pt = nan(1,nint);
 stdata = stdata.*This.options.factor;
 asym = This.options.asym;
-if istseries(asym)
+if is.tseries(asym)
     asym = asym(time);
     asym(isnan(asym)) = 1;
 end

@@ -13,10 +13,8 @@ function [This,Data,Inx,Crit] = sort(This,Data,SortBy,varargin)
 % * `A` [ SVAR ] - SVAR object with multiple parameterisations that will
 % be sorted.
 %
-% * `Data` [ tseries | struct | empty ] - SVAR data (endogenous variables
-% and structural shocks); the structural shocks will be re-ordered
-% according to the SVAR parameterisations. You can leave the input argument
-% `Data` empty.
+% * `Data` [ struct | empty ] - SVAR database; if non-empty, the structural
+% shocks will be re-ordered according to the SVAR parameterisations.
 %
 % * `SortBy` [ char ] - Text string that will be evaluated to compute the
 % criterion by which the parameterisations will be sorted; see Description
@@ -79,7 +77,13 @@ function [This,Data,Inx,Crit] = sort(This,Data,SortBy,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+pp = inputParser();
+pp.addRequired('A',@(x) isa(x,'SVAR'));
+pp.addRequired('Data',@(x) isempty(x) || isstruct(x));
+pp.addRequired('SortBy',@ischar);
+pp.parse(This,Data,SortBy);
 
 opt = passvalopt('SVAR.sort',varargin{:});
 isData = nargout > 1 && ~isempty(Data);
@@ -92,8 +96,8 @@ nAlt = size(This.A,3);
 % Handle residuals.
 if isData
     % Get data.
-    [outpFmt,rng,y,e] = mydatarequest(This,Data,Inf,opt);
-    nData = size(y,3);
+    [outpFmt,rng,~,e] = mydatarequest(This,Data,Inf,opt);
+    nData = size(e,3);
     if nData ~= nAlt
         utils.error('SVAR', ...
             ['The number of data sets (%g) must match ', ...
@@ -122,11 +126,9 @@ end
 Inx = doSort();
 This = mysubsalt(This,Inx);
 
-Data = [];
 if isData
     e = e(:,:,Inx);
-    Data = myoutpdata(This,outpFmt,rng,[y;e],[], ...
-        [This.Ynames,This.Enames]);
+    Data = myoutpdata(This,outpFmt,rng,e,[],This.Enames,Data);
 end
 
 

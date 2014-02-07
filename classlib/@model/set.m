@@ -81,20 +81,13 @@ function This = set(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
-else
-pp = pp.addRequired('m',@ismodel);
-pp = pp.addRequired('name',@iscellstr);
-pp = pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
-pp = pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
-end
 
 %--------------------------------------------------------------------------
 
@@ -133,7 +126,7 @@ end
         switch query
             
             case 'nalt'
-                if isnumericscalar(Value) ...
+                if is.numericscalar(Value) ...
                         && Value > 0 && Value == round(Value)
                     This = alter(This,Value);
                 else
@@ -157,7 +150,7 @@ end
                 end
                 
             case 'torigin'
-                if isnumericscalar(Value) && Value == round(Value)
+                if is.numericscalar(Value) && Value == round(Value)
                     This.torigin = Value;
                 else
                     Validated = false;
@@ -167,7 +160,7 @@ end
                 This = userdata(This,Value);
                 
             case 'epsilon'
-                if isnumericscalar(Value) && Value > 0
+                if is.numericscalar(Value) && Value > 0
                     This.epsilon = Value;
                 else
                     Validated = false;

@@ -5,7 +5,7 @@ function C = speclatexcode(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ for iRow = 1 : nx
     else
         mark = '';
     end
-    C = [C,br, ...
+    C = [C, br, ...
         latexonerow(This,iRow,time,iData,mark,text)]; ...
         %#ok<AGROW>
 end

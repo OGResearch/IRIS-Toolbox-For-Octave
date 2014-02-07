@@ -3,7 +3,7 @@ function [S,C,S1,C1] = myresponse(This,Time,Phi0,Select,Opt)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Tell if `Time` is `NPer` or `Range`.
 [range,nPer] = varobj.mytelltime(Time);

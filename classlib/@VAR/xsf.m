@@ -52,19 +52,13 @@ function [S,D] = xsf(This,Freq,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('VAR',@(x) isa(x,'VAR'));
 pp.addRequired('freq',@isnumeric);
 pp.parse(This,Freq);
-else
-pp = pp.addRequired('VAR',@(x) isa(x,'VAR'));
-pp = pp.addRequired('freq',@isnumeric);
-pp = pp.parse(This,Freq);
-end
 
 opt = passvalopt('VAR.xsf',varargin{:});
 

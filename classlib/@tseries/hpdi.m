@@ -1,4 +1,4 @@
-function x = hpdi(x,prob,dim)
+function This = hpdi(This,Prob,Dim)
 % hpdi  Highest probability density interval.
 %
 % Syntax
@@ -28,26 +28,28 @@ function x = hpdi(x,prob,dim)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~exist('dim','var')
-    dim = 1;
+try
+    Dim; %#ok<VUNUS>
+catch
+    Dim = 1;
 end
 
-if dim > 2
-    dim = 2;
+if Dim > 2
+    Dim = 2;
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-[low,high] = tseries.myhpdi(x.data(:,:),prob,dim);
+[low,high] = tseries.myhpdi(This.data(:,:),Prob,Dim);
 
-if dim == 1
-    x = [low;high];
+if Dim == 1
+    This = [low;high];
 else
-    x.data = [low,high];
-    x.Comment = {'HPDI low','HPDI high'};
-    x = mytrim(x);
+    This.data = [low,high];
+    This.Comment = {'HPDI low','HPDI high'};
+    This = mytrim(This);
 end
 
 end

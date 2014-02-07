@@ -25,7 +25,7 @@ function X = apct(X,Q)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Q; %#ok<VUNUS>
@@ -37,15 +37,9 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('X',@istseries);
-pp.addRequired('Q',@isnumericscalar);
+pp.addRequired('X',@is.tseries);
+pp.addRequired('Q',@is.numericscalar);
 pp.parse(X,Q);
-else
-pp = pp.addRequired('X',@istseries);
-pp = pp.addRequired('Q',@isnumericscalar);
-pp = pp.parse(X,Q);
-end
 
 %--------------------------------------------------------------------------
 

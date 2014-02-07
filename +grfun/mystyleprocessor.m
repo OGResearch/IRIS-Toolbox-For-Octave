@@ -5,7 +5,7 @@ function SET = mystyleprocessor(H,Command) %#ok<STOUT>
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % `Command` is a string that can use the following references:
 %

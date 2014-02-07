@@ -5,7 +5,7 @@ function h = mycaption(ax,location,caption,vPosition,hPosition)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -50,6 +50,7 @@ switch lower(vPosition)
 end
 
 h = text(x,ylim(1)+y*yspan,caption, ...
+   'parent',ax, ...
    'color',[0,0,0], ...
    'verticalAlignment',vAlign, ...
    'horizontalAlignment',hAlign);

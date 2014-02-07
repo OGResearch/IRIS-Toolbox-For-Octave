@@ -2,13 +2,13 @@
 
     \filetitle{simulate}{Simulate VAR model}{VAR/simulate}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 Outp = simulate(V,Inp,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@ Outp = simulate(V,Inp,Range,...)
   \texttt{Inf}.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -29,7 +29,7 @@ Outp = simulate(V,Inp,Range,...)
   \texttt{Outp} {[} tseries {]} - Simulated output data.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -46,10 +46,10 @@ Outp = simulate(V,Inp,Range,...)
   data.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{Backward simulation
-(backcast)}\label{backward-simulation-backcast}
+(backcast)}
 
 If the \texttt{Range} is a vector of decreasing dates, the simulation is
 performed backward. The VAR object is first converted to its backward
@@ -57,6 +57,6 @@ representation using the function
 \href{VAR/backward}{\texttt{backward}}, and then the data are simulated
 from the latest date to the earliest date.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

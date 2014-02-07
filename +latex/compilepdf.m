@@ -5,7 +5,7 @@ function [Pdf,Count] = compilepdf(InpFile,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('latex.compilepdf',varargin{:});
 
@@ -68,7 +68,9 @@ fprintf('\n');
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function IsRerun = xxRerunTest(Result,FTitle)
@@ -88,4 +90,4 @@ try %#ok<TRYNC>
     IsRerun = IsRerun || findFunc(c,'Rerun');
 end
 
-end % xxRerunTest().
+end % xxRerunTest()

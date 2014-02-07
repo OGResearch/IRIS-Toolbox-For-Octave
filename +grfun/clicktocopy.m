@@ -20,17 +20,12 @@ function clicktocopy(ax)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('h',@(x) all(ishghandle(x)) ...
    && all(strcmp(get(x,'type'),'axes')));
-else
-pp = pp.addRequired('h',@(x) all(ishghandle(x)) ...
-   && all(strcmp(get(x,'type'),'axes')));
-end
 
 %--------------------------------------------------------------------------
 

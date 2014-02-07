@@ -30,19 +30,13 @@ function [X,NewRange] = resize(X,Range)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('x',@(x) isa(x,'tseries'));
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Range);
-else
-pp = pp.addRequired('x',@(x) isa(x,'tseries'));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.parse(X,Range);
-end
 
 %--------------------------------------------------------------------------
 

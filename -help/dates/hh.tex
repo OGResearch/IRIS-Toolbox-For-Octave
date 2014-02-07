@@ -1,35 +1,35 @@
 
 
-    \filetitle{hh}{IRIS serial date numbers for dates with half-yearly frequency}{dates/hh}
+    \filetitle{hh}{IRIS serial date number for half-yearly date}{dates/hh}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
-d = hh(y)
-d = hh(y,h)
+Dat = hh(Y)
+Dat = hh(Y,H)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
-  \texttt{y} {[} numeric {]} - Years.
+  \texttt{Y} {[} numeric {]} - Year.
 \item
-  \texttt{h} {[} numeric {]} - Half-years; if missing, first half-year
-  is used.
+  \texttt{H} {[} numeric {]} - Half-year; if missing, first half-year
+  (January to June) is assumed.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{d} {[} numeric {]} - IRIS serial date numbers representing the
-  input half-years.
+  \texttt{Dat} {[} numeric {]} - IRIS serial date numbers representing
+  the half-yearly date.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

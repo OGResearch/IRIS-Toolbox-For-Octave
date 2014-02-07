@@ -38,7 +38,7 @@ classdef poster
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
     properties
         paramList = {};
@@ -74,7 +74,7 @@ classdef poster
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
                         
             if isempty(varargin)
                 return
@@ -101,7 +101,7 @@ classdef poster
                 This.logPriorFunc = cell([1,n]); %#ok<MCSUP>
                 This.lowerBounds = -inf([1,n]); %#ok<MCSUP>
                 This.upperBounds = inf([1,n]); %#ok<MCSUP>
-            elseif isnumericscalar(List)
+            elseif is.numericscalar(List)
                 n = List;
                 This.paramList = cell([1,n]);
                 for i = 1 : n

@@ -6,7 +6,7 @@ function Range = myrange(This,InData,Range)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isinf(Range)
 	if isstruct(InData)

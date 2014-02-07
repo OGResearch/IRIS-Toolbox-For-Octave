@@ -38,19 +38,13 @@ function This = prune(This,Data,varargin)
 % times. 
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse options
 pp = inputParser() ;
-if ismatlab
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
 pp.addRequired('Data',@(x) isa(x,'struct')) ;
 pp.parse(This,Data) ;
-else
-pp = pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp = pp.addRequired('Data',@(x) isa(x,'struct')) ;
-pp = pp.parse(This,Data) ;
-end
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1} ;
@@ -160,6 +154,7 @@ end
     end
 
 end
+
 
 
 

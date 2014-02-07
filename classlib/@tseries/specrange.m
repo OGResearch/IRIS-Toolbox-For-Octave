@@ -1,26 +1,26 @@
-function range = specrange(this,range)
+function Range = specrange(This,Range)
 
-if isempty(range)
+if isempty(Range)
     return
 end
 
-if isequal(range,':')
-    range = this.start + (0 : size(this.data,1)-1);
+if isequal(Range,':')
+    Range = This.start + (0 : size(This.data,1)-1);
     return
 end
 
-if isinf(range(1))
-    startdate = this.start;
+if isinf(Range(1))
+    startDate = This.start;
 else
-    startdate = range(1);
+    startDate = Range(1);
 end
 
-if isinf(range(end))
-    enddate = this.start + size(this.data,1) - 1;
+if isinf(Range(end))
+    endDate = This.start + size(This.data,1) - 1;
 else
-    enddate = range(end);
+    endDate = Range(end);
 end
 
-range = startdate : enddate;
+Range = startDate : endDate;
 
 end

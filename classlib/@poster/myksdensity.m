@@ -5,7 +5,7 @@ function [X,Y] = myksdensity(Theta,Low,High,NPoints)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 
@@ -26,14 +26,14 @@ elseif isinf(Low) && ~isinf(High) && High ~= 0
 end
 
 try
-    if isintscalar(NPoints)
+    if is.intscalar(NPoints)
         npoints = NPoints;
     else
         npoints = 100;
     end
     [Y,X] = ksdensity(Theta,'support',[Low,High],'npoints',npoints);
 catch 
-    if isintscalar(NPoints)
+    if is.intscalar(NPoints)
         npoints = NPoints;
     else
         npoints = 2^10;

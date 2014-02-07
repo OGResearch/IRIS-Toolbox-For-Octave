@@ -2,13 +2,13 @@
 
     \filetitle{publish}{Compile PDF from report object}{report/publish}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [OutpFile,Info] = P.publish(InpFile,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@
   will be saved.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@
   building the PDF report; see Description.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -107,10 +107,10 @@
   Percentage of the total page area that will be used.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{Difference between \texttt{'display='} and
-\texttt{'echo='}}\label{difference-between-display-and-echo}
+\texttt{'echo='}}
 
 There are two differences between these otherwise similar options:
 
@@ -129,7 +129,7 @@ There are two differences between these otherwise similar options:
   \texttt{Ctrl+C} may be needed to regain control.
 \end{itemize}
 
-\subparagraph{Information struct}\label{information-struct}
+\subparagraph{Information struct}
 
 The second output argument, \texttt{Info}, is a struct with details of
 building the PDF report. It contains the following fields:
@@ -145,8 +145,17 @@ building the PDF report. It contains the following fields:
   the figure object option \texttt{'close=' false}. If all
   \texttt{figure} and \texttt{userfigure} objects inside a report have
   \texttt{'close=' true} then \texttt{Info.figureHandle} will be empty.
+\item
+  \texttt{.tempDir} -- empty unless \texttt{publish} is called with
+  \texttt{'cleanup=' false}; in that case, this is the name of a
+  temporary directory in which all files are saved necessary to build
+  the output PDF are saved.
+\item
+  \texttt{.tempFile} -- empty unless \texttt{publish} is called with
+  \texttt{'cleanup=' false}; in that case, this is the list of all files
+  (saved in the temporary directory) necessary to build the output PDF.
 \end{itemize}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

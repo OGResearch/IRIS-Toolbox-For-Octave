@@ -48,7 +48,13 @@ function forblocks = compile(s,outputfile,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+try
+    outputfile; %#ok<VUNUS>
+catch
+    outputfile = [];
+end
 
 if length(varargin) == 1 && isstruct(varargin{1})
    opt = varargin{1};
@@ -57,7 +63,7 @@ else
 end
 
 % Auto name for the output file.
-if ~exist('outputfile','var') || isempty(outputfile)
+if isempty(outputfile)
    [temppath,temptitle] = fileparts(s.fname);
    outputfile = fullfile(temppath,[temptitle,'.m']);
 end
@@ -102,7 +108,7 @@ forblocks = startIndex : endIndex;
 % Use numerical solution instead of symbolic if Symbolic Math Tbx not
 % installed or if requested by user.
 index = strcmp('symbolic',s.type);
-if any(index) && (~issymbolic || ~opt.symbolic)
+if any(index) && (isempty(ver('symbolic')) || ~opt.symbolic)
    s.type(index) = {'numerical'};   
    if opt.symbolic
       warning('iris:sstate', [ ...

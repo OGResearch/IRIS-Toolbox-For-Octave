@@ -2,14 +2,14 @@
 
     \filetitle{model}{Create new model object based on model file}{model/model}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 m = model(fname,...)
 m = model(m,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@ m = model(m,...)
   as if from a model file.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -29,7 +29,7 @@ m = model(m,...)
   code file or files.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -74,9 +74,9 @@ m = model(m,...)
   user data to the model object.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-\subparagraph{Loading a model file}\label{loading-a-model-file}
+\subparagraph{Loading a model file}
 
 The \texttt{model} function can be used to read in a
 \href{modellang/Contents}{model file} named \texttt{fname}, and create a
@@ -88,14 +88,14 @@ If \texttt{fname} is a cell array of more than one filenames then all
 files are combined together (in order of appearance).
 
 \subparagraph{Re-building an existing model
-object}\label{re-building-an-existing-model-object}
+object}
 
 The only instance where you may need to call a model function on an
 existing model object is to change the \texttt{'removeLeads='} option.
 Of course, you can always achieve the same by loading the original model
 file.
 
-\paragraph{Example 1}\label{example-1}
+\paragraph{Example}
 
 Read in a model code file named \texttt{my.model}, and declare the model
 as linear:
@@ -104,7 +104,7 @@ as linear:
 m = model('my.model','linear',true);
 \end{verbatim}
 
-\paragraph{Example 2}\label{example-2}
+\paragraph{Example}
 
 Read in a model code file named \texttt{my.model}, declare the model as
 linear, and assign some of the model parameters:

@@ -35,7 +35,7 @@ function This = subsasgn(This,S,Y)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ function This = xxSetData(This,S,Y)
 [This,S,dates,freqTest] = xxExpand(This,S);
 
 % Get RHS tseries object data.
-if istseries(Y)
+if is.tseries(Y)
     Y = mygetdata(Y,dates);
 end
 

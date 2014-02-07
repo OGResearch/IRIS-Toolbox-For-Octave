@@ -31,20 +31,13 @@ function This = redate(This,OldDate,NewDate)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('x',@(x) isa(x,'tseries'));
-pp.addRequired('oldDate',@isnumericscalar);
-pp.addRequired('newDate',@isnumericscalar);
+pp.addRequired('oldDate',@is.numericscalar);
+pp.addRequired('newDate',@is.numericscalar);
 pp.parse(This,OldDate,NewDate);
-else
-pp = pp.addRequired('x',@(x) isa(x,'tseries'));
-pp = pp.addRequired('oldDate',@isnumericscalar);
-pp = pp.addRequired('newDate',@isnumericscalar);
-pp = pp.parse(This,OldDate,NewDate);
-end
 
 %--------------------------------------------------------------------------
 

@@ -119,14 +119,45 @@
 % rule, and three columns in each of them. The middle columns will have
 % Greek letters printed in \LaTeX\ math mode.
 %
+%     x = report.new();
+% 
 %     A = { ...
 %         'First row','{$\alpha$}',10000; ...
 %         '-----','',''; ...
 %         'Second row','{$\beta$}',20000; ...
 %     };
+% 
+%     x.array('My Table',A);
+% 
+%     x.publish('test1.pdf');
+% 
+%     open test1.pdf;
 %
-%     P.array('My table',A);
+% Example
+% ========
+%
+% Use the option `'inputFormat='` to change the way the input strings are
+% interpreted. Compare the two tables in the resulting PDF.
+%
+%     x = report.new();
+% 
+%     A = { ...
+%         1,2,3; ...
+%         '$\alpha$','b','c', ...
+%         };
+% 
+%     x.array('Table with Plain Input Format (Default)',A, ...
+%         'heading=',{'A','B','$\Gamma$';'-----','',''});
+% 
+%     x.array('Table with LaTeX Input Format',A, ...
+%         'heading=',{'A','B','$\Gamma$';'-----','',''}, ...
+%         'inputFormat=','latex');
+% 
+%     x.publish('test2.pdf');
+% 
+%     open test2.pdf;
 %
 
+
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

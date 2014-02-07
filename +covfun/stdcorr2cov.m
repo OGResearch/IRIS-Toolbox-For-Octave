@@ -5,7 +5,7 @@ function Omg = stdcorr2cov(stdcorr,ne)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Transpose `stdcorr` if it is a row vector, and its length matches the
 % prescribed size.

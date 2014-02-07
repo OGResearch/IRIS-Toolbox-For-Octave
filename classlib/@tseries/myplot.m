@@ -6,7 +6,7 @@ function [H,Range,Data,Time,UserRange,Freq,varargout] ...
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % If the caller supplies empty `Func`, the graph will not be actually
 % rendered. This is a dry call to `myplot` used from within `plotyy`.
@@ -109,18 +109,10 @@ if ~isempty(comprise)
 end
 
 Data = mygetdata(X,Range);
-Time = dat2grid(Range,opt.dateposition);
+Time = dat2dec(Range,opt.dateposition);
 
 if isempty(Func)
     return
-end
-
-if isfunc(Func)
-    funcAsChar = func2str(Func);
-elseif ischar(Func) || iscellstr(Func)
-    funcAsChar = char(Func);
-else
-    funcAsChar = '';
 end
 
 % Do the actual plot.
@@ -131,7 +123,7 @@ doPlot();
 if isequal(opt.xlimmargin,true) ...
         || (ischar(opt.xlimmargin) ...
         && strcmpi(opt.xlimmargin,'auto') ...
-        && any(strcmp(funcAsChar,{'bar','barcon'})))
+        && any(strcmp(char(Func),{'bar','barcon'})))
     setappdata(Ax,'xLimAdjust',true);
     peer = getappdata(Ax,'graphicsPlotyyPeer');
     if ~isempty(peer)
@@ -152,7 +144,9 @@ end
 if isTimeAxis && ~isTimeNan
     setappdata(Ax,'tseries',true);
     setappdata(Ax,'freq',Freq);
-    mydatxtick(Ax,Time,Freq,UserRange,opt);
+    setappdata(Ax,'range',Range);
+    setappdata(Ax,'datePosition',opt.dateposition);
+    mydatxtick(Ax,Range,Time,Freq,UserRange,opt);
 end
 
 % Perform user supplied function.
@@ -176,31 +170,32 @@ end
 % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
 % we also handle cases where the current figure includes both tseries and
 % non-tseries graphs.
-if ismatlab
-    obj = datacursormode(gcf());
-    set(obj,'UpdateFcn',@utils.datacursor);
-end
+obj = datacursormode(gcf());
+set(obj,'UpdateFcn',@utils.datacursor);
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function range = doMergeRange(range,comprise)
-        first = grid2dat(comprise(1),Freq,opt.dateposition);
+    function Range = doMergeRange(Range,Comprise)
+        first = dec2dat(Comprise(1),Freq,opt.dateposition);
         % Make sure ranges with different frequencies are merged
         % properly.
-        while dat2grid(first-1,opt.dateposition) > comprise(1)
+        while dat2dec(first-1,opt.dateposition) > Comprise(1)
             first = first - 1;
         end
-        last = grid2dat(comprise(end),Freq,opt.dateposition);
-        while dat2grid(last+1,opt.dateposition) < comprise(end)
+        last = dec2dat(Comprise(end),Freq,opt.dateposition);
+        while dat2dec(last+1,opt.dateposition) < Comprise(end)
             last = last + 1;
         end
-        range = min(range(1),first) : max(range(end),last);
-    end % doMergeRange().
+        Range = min(Range(1),first) : max(Range(end),last);
+    end % doMergeRange()
+
 
 %**************************************************************************
     function doPlot()
-        switch funcAsChar
+        switch char(Func)
             case {'scatter'}
                 if nx ~= 2
                     utils.error('tseries', ...
@@ -224,6 +219,7 @@ end
                 end
                 isTimeAxis = true;
         end
-    end % doPlot().
+    end % doPlot()
+
 
 end

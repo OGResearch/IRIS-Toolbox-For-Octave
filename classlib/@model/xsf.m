@@ -61,11 +61,11 @@ function [S,D,List,Freq] = xsf(This,Freq,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.xsf',varargin{:});
 
-if isnumericscalar(Freq) && Freq == round(Freq)
+if is.numericscalar(Freq) && Freq == round(Freq)
     nFreq = Freq;
     Freq = linspace(0,pi,nFreq);
 else

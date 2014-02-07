@@ -5,7 +5,7 @@ function P = regexppattern(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -15,16 +15,8 @@ if isempty(This)
 end
 
 n = length(This.storage);
-cCode = This.offset + 1;
-if ~ismatlab
-    cCode = highCharCode2utf8(cCode);
-end
-first = char(cCode);
-cCode = This.offset + n;
-if ~ismatlab
-    cCode = highCharCode2utf8(cCode);
-end
-last = char(cCode);
+first = char(This.offset + 1);
+last = char(This.offset + n);
 P = [first,'-',last];
 
 end

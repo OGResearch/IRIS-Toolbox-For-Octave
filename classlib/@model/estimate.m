@@ -327,7 +327,7 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Fifth input argument can be a systempriors object.
 if isempty(varargin) || ischar(varargin{1})
@@ -339,21 +339,12 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('M',@ismodel);
+pp.addRequired('M',@is.model);
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
-else
-pp = pp.addRequired('M',@ismodel);
-pp = pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp = pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
-pp = pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
-pp = pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
-pp = pp.parse(This,Data,Range,E,SP);
-end
 
 estOpt = passvalopt('model.estimate',varargin{:});
 

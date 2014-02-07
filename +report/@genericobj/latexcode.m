@@ -5,7 +5,7 @@ function C = latexcode(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -16,13 +16,6 @@ if ~isempty(This.options.saveas)
     % temporary directory.
     [~,fileTitle] = fileparts(This.options.saveas);
     char2file(C,[fileTitle,'.tex']);
-end
-
-% Dump remaining footnotes into parent's footnote container.
-if ~isempty(This.footnoteContainer) && ~isempty(This.parent)
-    This.parent.footnoteContainer = [ ...
-        This.parent.footnoteContainer, ...
-        This.footnoteContainer];
 end
 
 end

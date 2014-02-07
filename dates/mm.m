@@ -1,24 +1,24 @@
-function dat = mm(varargin)
-% mm  IRIS serial date numbers for dates with monthly frequency.
+function Dat = mm(varargin)
+% mm  IRIS serial date number for monthly date.
 %
 % Syntax
 % =======
 %
-%     d = mm(y)
-%     d = mm(y,m)
+%     Dat = mm(Y)
+%     Dat = mm(Y,M)
 %
 % Input arguments
 % ================
 %
-% * `y` [ numeric ] - Years.
+% * `Y` [ numeric ] - Year.
 %
-% * `m` [ numeric ] - Months; if missing, first month (January) is assumed.
+% * `M` [ numeric ] - Month; if omitted, first month (January) is assumed.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date numbers representing the input
-% months.
+% * `Dat` [ numeric ] - IRIS serial date number representing the monthly
+% date.
 %
 % Description
 % ============
@@ -28,10 +28,10 @@ function dat = mm(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-dat = datcode(12,varargin{:});
+Dat = datcode(12,varargin{:});
 
 end

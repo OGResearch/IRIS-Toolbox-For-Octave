@@ -61,22 +61,14 @@ function [MinusLogLik,Grad,Hess,V] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('model',@ismodel);
+pp.addRequired('model',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
 pp.parse(This,Data,Range,PList);
-else
-pp = pp.addRequired('model',@ismodel);
-pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
-pp = pp.parse(This,Data,Range,PList);
-end
 
 [opt,varargin] = passvalopt('model.diffloglik',varargin{:});
 

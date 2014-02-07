@@ -39,19 +39,13 @@ function Flag = rngcmp(R1,R2)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('R1',@isnumeric);
 pp.addRequired('R2',@isnumeric);
 pp.parse(R1,R2);
-else
-pp = pp.addRequired('R1',@isnumeric);
-pp = pp.addRequired('R2',@isnumeric);
-pp = pp.parse(R1,R2);
-end
 
 %--------------------------------------------------------------------------
 

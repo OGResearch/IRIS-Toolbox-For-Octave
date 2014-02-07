@@ -6,7 +6,7 @@ function [PropCov,Hess] ...
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ for ip = 1 : np
     % Diff parameter priors.
     if EstOpt.evalpprior
         iDiffPPrior = (pp - 2*p0 + pm) / h2;
-        if ~isempty(Pri.prior{ip}) && isfunc(Pri.prior{ip})
+        if ~isempty(Pri.prior{ip}) && is.func(Pri.prior{ip})
             try %#ok<TRYNC>
                 iDiffPPrior = Pri.prior{ip}(x0(ip),'info');
             end

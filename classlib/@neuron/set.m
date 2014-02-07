@@ -5,20 +5,13 @@ function This = set(This,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('This',@(x) isa(x,'neuron'));
 pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
-else
-pp = pp.addRequired('This',@(x) isa(x,'neuron'));
-pp = pp.addRequired('name',@iscellstr);
-pp = pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
-pp = pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
-end
 
 %--------------------------------------------------------------------------
 
@@ -55,7 +48,7 @@ end
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
-        if isfunc(Value) || isnumericscalar(Value)
+        if is.func(Value) || is.numericscalar(Value)
             Value = @(x) Value() ;
             switch query
                 case 'activation'

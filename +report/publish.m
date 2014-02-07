@@ -118,9 +118,17 @@
 % option `'close=' false`. If all `figure` and `userfigure` objects inside
 % a report have `'close=' true` then `Info.figureHandle` will be empty.
 %
+% * `.tempDir` -- empty unless `publish` is called with `'cleanup=' false`;
+% in that case, this is the name of a temporary directory in which all
+% files are saved necessary to build the output PDF are saved.
+%
+% * `.tempFile` -- empty unless `publish` is called with `'cleanup='
+% false`; in that case, this is the list of all files (saved in the
+% temporary directory) necessary to build the output PDF.
+%
 % Example
 % ========
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

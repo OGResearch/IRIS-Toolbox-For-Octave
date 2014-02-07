@@ -33,18 +33,13 @@ function varargout = caption(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin)
     Cpt = varargin{1};
     pp = inputParser();
-if ismatlab
     pp.addRequired('Cpt',@ischar);
     pp.parse(Cpt);
-else
-    pp = pp.addRequired('Cpt',@ischar);
-    pp = pp.parse(Cpt);
-end
 end
 
 %--------------------------------------------------------------------------

@@ -75,20 +75,13 @@ function Outp = jforecast(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('M',@ismodel);
+pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);
-else
-pp = pp.addRequired('M',@ismodel);
-pp = pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
-pp = pp.addRequired('Range',@isnumeric);
-pp = pp.parse(This,Inp,Range);
-end
 Range = Range(1) : Range(end);
 
 if ~isempty(varargin) && ~ischar(varargin{1})
@@ -110,7 +103,7 @@ if isequal(opt.dtrends,'auto')
 end
 
 % Tunes.
-isSwap = isplan(opt.plan) && ~isempty(opt.plan,'tunes');
+isSwap = is.plan(opt.plan) && ~isempty(opt.plan,'tunes');
 
 % Create real and imag `stdcorr` vectors from user-supplied databases.
 [opt.stdcorrreal,opt.stdcorrimag] = mytune2stdcorr(This,Range,cond,opt);
@@ -308,8 +301,8 @@ for iLoop = 1 : nLoop
         else
             [M,Ma,N,Na] = myforecastswap(This,iLoop,ixExog,ixEndog,last);
         end
-        stdcorre = [];
-        stdcorru = [];
+        antStdcorr = [];
+        unaStdcorr = [];
         doStdcorr();
     end
     
@@ -330,8 +323,8 @@ for iLoop = 1 : nLoop
     end
     
     % Expected and unexpected shocks.
-    e = s.antFunc(eInp(:,:,min(end,iLoop)));
-    u = s.unantFunc(eInp(:,:,min(end,iLoop)));
+    antE = s.antFunc(eInp(:,:,min(end,iLoop)));
+    unaE = s.unantFunc(eInp(:,:,min(end,iLoop)));
     
     if isSwap
         % Tunes on measurement variables.
@@ -362,7 +355,7 @@ for iLoop = 1 : nLoop
     if last > 0
         % inp := [const;a0;u;e].
         inp = [+(~opt.deviation);a0(:); ...
-            vecFunc(u(:,1:last));vecFunc(e(:,1:last))];
+            vecFunc(unaE(:,1:last));vecFunc(antE(:,1:last))];
         % outp := [y;x].
         outp = [y(:);x(:)];
         
@@ -377,8 +370,8 @@ for iLoop = 1 : nLoop
             % Prhs is the MSE/Cov matrix of the RHS.
             Prhs = zeros(1+nb+2*ne*last);
             Prhs(1+(1:nb),1+(1:nb)) = Pa0;
-            Pu = covfun.stdcorr2cov(stdcorru(:,1:last),ne);
-            Pe = covfun.stdcorr2cov(stdcorre(:,1:last),ne);
+            Pu = covfun.stdcorr2cov(unaStdcorr(:,1:last),ne);
+            Pe = covfun.stdcorr2cov(antStdcorr(:,1:last),ne);
             inx = 1+nb+(1:ne);
             for i = 1 : last
                 Prhs(inx,inx) = Pu(:,:,i);
@@ -436,8 +429,8 @@ for iLoop = 1 : nLoop
         doLhsRhs2Yxuea();
         
     else
-        u = zeros(ne,last);
-        e = zeros(ne,last);
+        unaE = zeros(ne,last);
+        antE = zeros(ne,last);
         a = a0;
         if ~opt.meanonly
             Pa = Pa0;
@@ -538,9 +531,9 @@ doRetOutp();
         inp(1) = [];
         x0 = U*inp(1:nb);
         inp(1:nb) = [];
-        u = reshape(inp(1:ne*last),[ne,last]);
+        unaE = reshape(inp(1:ne*last),[ne,last]);
         inp(1:ne*last) = [];
-        e = reshape(inp(1:ne*last),[ne,last]);
+        antE = reshape(inp(1:ne*last),[ne,last]);
         inp(1:ne*last) = [];
         
         if opt.meanonly
@@ -606,8 +599,8 @@ doRetOutp();
         % the original vector is empty.
         xCurr(1:end,last+1:nPer) = 0;
         y(1:end,last+1:nPer) = 0;
-        e(1:end,last+1:nPer) = 0;
-        u(1:end,last+1:nPer) = 0;        
+        antE(1:end,last+1:nPer) = 0;
+        unaE(1:end,last+1:nPer) = 0;        
         Ucurr = U(ixXbCurr,:);
         Tfcurr = Tf(ixXfCurr,:);
         Kfcurr = Kf(ixXfCurr,:);
@@ -631,12 +624,12 @@ doRetOutp();
             return
         end
         
-        Du(1:end,last+1:nPer) = stdcorru(1:ne,last+1:nPer).^2;
-        De(1:end,last+1:nPer) = stdcorre(1:ne,last+1:nPer).^2;
+        Du(1:end,last+1:nPer) = unaStdcorr(1:ne,last+1:nPer).^2;
+        De(1:end,last+1:nPer) = antStdcorr(1:ne,last+1:nPer).^2;
         Rfcurr = Rf(ixXfCurr,:);
         for t = last+1 : nPer
-            Pue = covfun.stdcorr2cov(stdcorru(:,t),ne) ...
-                + covfun.stdcorr2cov(stdcorre(:,t),ne);
+            Pue = covfun.stdcorr2cov(unaStdcorr(:,t),ne) ...
+                + covfun.stdcorr2cov(antStdcorr(:,t),ne);
             Pxfcurr = Tfcurr*Pa*Tfcurr.' + Rfcurr*Pue*Rfcurr.';
             Pa = Ta*Pa*Ta.' + Ra*Pue*Ra.';
             Pxbcurr = Ucurr*Pa*Ucurr.';
@@ -664,19 +657,19 @@ doRetOutp();
         % TODO: use `mycombinestdcorr` here.
         % Combine `stdcorr` from the current parameterisation and the
         % `stdcorr` supplied through the tune database.
-        stdcorre = This.stdcorr(1,:,iLoop).';
-        stdcorre = stdcorre(:,ones(1,nPer));
+        antStdcorr = This.stdcorr(1,:,iLoop).';
+        antStdcorr = antStdcorr(:,ones(1,nPer));
         stdcorrixreal = ~isnan(opt.stdcorrreal);
         if any(stdcorrixreal(:))
-            stdcorre(stdcorrixreal) = ...
+            antStdcorr(stdcorrixreal) = ...
                 opt.stdcorrreal(stdcorrixreal);
         end
         
-        stdcorru = This.stdcorr(1,:,iLoop).';
-        stdcorru = stdcorru(:,ones(1,nPer));
+        unaStdcorr = This.stdcorr(1,:,iLoop).';
+        unaStdcorr = unaStdcorr(:,ones(1,nPer));
         ixStdcorrImag = ~isnan(opt.stdcorrimag);
         if any(ixStdcorrImag(:))
-            stdcorru(ixStdcorrImag) = ...
+            unaStdcorr(ixStdcorrImag) = ...
                 opt.stdcorrimag(ixStdcorrImag);
         end
         
@@ -684,36 +677,45 @@ doRetOutp();
         % anticipated endogenised shock would have a non-zero unanticipated
         % std dev, and vice versa.
         if isSwap
-            tempstd = stdcorre(1:ne,1:last);
+            tempstd = antStdcorr(1:ne,1:last);
             tempstd(ea) = 0;
             tempstd(ua) = 0;
-            stdcorre(1:ne,1:last) = tempstd;
-            tempstd = stdcorru(1:ne,1:last);
+            antStdcorr(1:ne,1:last) = tempstd;
+            tempstd = unaStdcorr(1:ne,1:last);
             tempstd(ea) = 0;
             tempstd(ua) = 0;
-            stdcorru(1:ne,1:last) = tempstd;
+            unaStdcorr(1:ne,1:last) = tempstd;
         end
         
         if ~opt.anticipate
-            [stdcorru,stdcorre] = deal(stdcorre,stdcorru);
+            [unaStdcorr,antStdcorr] = deal(antStdcorr,unaStdcorr);
         end
     end % doStdcorr().
 
 %**************************************************************************
     function doAssignSmooth()
         % Final point forecast.
-        tempX = nan(nx,nXPer);
-        tempX(ixXCurr,2:end) = xCurr;
-        tempX(nf+1:end,1) = x0;
+        outpY = [nan(ny,1),y];
+        
+        outpX = nan(nx,nXPer);
+        outpX(ixXCurr,2:end) = xCurr;
+        outpX(nf+1:end,1) = x0;
+        
         if opt.anticipate
-            eu = complex(e,u);
+            realOutpE = antE;
+            imagOutpE = unaE;
         else
-            eu = complex(u,e);
+            realOutpE = unaE;
+            imagOutpE = antE;
         end
-        hdataassign(hData.mean,This,iLoop, ...
-            [nan(ny,1),y], ...
-            tempX, ...
-            [nan(ne,1),eu]);
+        if all(imagOutpE(:) == 0 | isnan(imagOutpE(:)))
+            outpE = [nan(ne,1),realOutpE];
+        else
+            outpE = [nan(ne,1)*(1+1i),complex(realOutpE,imagOutpE)];
+        end
+        
+        hdataassign(hData.mean,This,iLoop,outpY,outpX,outpE);
+        
         % Final std forecast.
         if ~opt.meanonly
             Dx = nan(nx,nPer);

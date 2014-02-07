@@ -5,7 +5,7 @@ function varargout = error(Mnemonic,Body,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -13,33 +13,13 @@ if ~isempty(Body) && Body(1) == '#'
     Body = xxFrequents(Body);
 end
 
-%{
-% Get the stack of callers and remove; we remove all backend IRIS function
-% from it.
-stack = dbstack('-completenames');
-
-% Get the IRIS root directory name.
-[ans,irisfolder] = fileparts(irisget('irisroot')); %#ok<NOANS,ASGLU>
-% Exclude functions contained in the IRIS root directory.
-omit = 0;
-nStack = length(stack);
-while omit < nStack ...
-        && ~isempty(strfind(stack(omit+1).file,irisfolder))
-    omit = omit + 1;
-end
-
-% Remove all backend IRIS functions from the stack and throw the error with
-% the remaining callers only.
-stack(1:omit-1) = [];
-%}
-
 % Throw an error with stack of non-IRIS function calls.
 stack = utils.getstack();
 if isempty(stack)
     stack = struct('file','','name','command prompt.','line',NaN);
 end
 
-msg = sprintf('IRIS Toolbox Error :: %s.',(Mnemonic));
+msg = sprintf('IRIS Toolbox Error @ %s.',(Mnemonic));
 if isempty(varargin)
     msg = [msg,sprintf('\n*** '),Body];
 else
@@ -59,7 +39,7 @@ end
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
@@ -74,4 +54,4 @@ switch Body
     otherwise
         Body = '';
 end
-end % xxFrequents().
+end % xxFrequents()

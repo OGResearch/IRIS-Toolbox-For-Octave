@@ -42,19 +42,13 @@ function [W,List] = ifrf(This,Freq,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('freq',@isnumeric);
 pp.parse(This,Freq);
-else
-pp = pp.addRequired('m',@ismodel);
-pp = pp.addRequired('freq',@isnumeric);
-pp = pp.parse(This,Freq);
-end
 
 % Parse options.
 opt = passvalopt('model.ifrf',varargin{:});

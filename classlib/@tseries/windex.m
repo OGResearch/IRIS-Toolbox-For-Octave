@@ -37,24 +37,17 @@ function X = windex(X,W,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Range = Inf;
 end
 
 pp = inputParser();
-if ismatlab
-pp.addRequired('X',@istseries);
-pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
+pp.addRequired('X',@is.tseries);
+pp.addRequired('W',@(x) isnumeric(x) || is.tseries(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(X,W,Range);
-else
-pp = pp.addRequired('X',@istseries);
-pp = pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
-pp = pp.addRequired('Range',@isnumeric);
-pp = pp.parse(X,W,Range);
-end
 
 options = passvalopt('tseries.windex',varargin{:});
 
@@ -62,7 +55,7 @@ options = passvalopt('tseries.windex',varargin{:});
 
 X.data = X.data(:,:);
 temp = X;
-if istseries(W)
+if is.tseries(W)
     W.data = W.data(:,:);
     temp = mytrim([temp,W]);
 end
@@ -73,7 +66,7 @@ data = rangedata(X,Range);
 nPer = length(Range);
 
 % Get the weights.
-if istseries(W)
+if is.tseries(W)
     W = rangedata(W,Range);
 elseif size(W,1) == 1
     W = W(ones([1,nPer]),:);

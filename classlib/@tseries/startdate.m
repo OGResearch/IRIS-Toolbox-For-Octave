@@ -1,20 +1,20 @@
-function y = startdate(x)
+function Y = startdate(X)
 % startdate  Date of the first available observation in a tseries object.
 %
 % Syntax
 % =======
 %
-%     d = startdate(x)
+%     D = startdate(X)
 %
 % Input arguments
 % ================
 %
-% * `x` [ tseries ] - Tseries object.
+% * `X` [ tseries ] - Tseries object.
 %
 % Output arguments
 % =================
 %
-% * `d` [ numeric ] - IRIS serial date number representing the date of the
+% * `D` [ numeric ] - IRIS serial date number representing the date of the
 % first observation available in the input tseries.
 %
 % Description
@@ -22,17 +22,17 @@ function y = startdate(x)
 %
 % The `startdate` function is equivalent to calling
 %
-%     get(x,'startDate')
+%     get(X,'startDate')
 %
 % Example
 % ========
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-y = x.start;
+Y = X.start;
 
 end

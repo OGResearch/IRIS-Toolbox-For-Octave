@@ -18,7 +18,7 @@ end
 
 DATA = bsxfunc(FUNC,DATA,Y);
 
-if istseries
+if is.tseries
     X.data = DATA;
 else
     X = DATA;

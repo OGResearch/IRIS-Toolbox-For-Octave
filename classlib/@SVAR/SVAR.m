@@ -47,7 +47,7 @@ classdef SVAR < VAR & svarobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
     end
@@ -88,8 +88,8 @@ classdef SVAR < VAR & svarobj
             % * `'maxIter='` [ numeric | *`0`* ] - Maximum number of attempts when
             % `'method'='draw'`.
             %
-            % * `'method='` [ *`'chol'`* | `'draw'` | `'qr'` | `'svd'` ] - Method that
-            % will be used to identify structural residuals.
+            % * `'method='` [ *`'chol'`* | `'householder'` | `'qr'` | `'svd'` ] -
+            % Method that will be used to identify structural VAR and structural shocks.
             %
             % * `'nDraw='` [ numeric | *`0`* ] - Target number of successful draws when
             % `'method'='draw'`.
@@ -150,7 +150,7 @@ classdef SVAR < VAR & svarobj
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@VAR();
             if nargin == 0

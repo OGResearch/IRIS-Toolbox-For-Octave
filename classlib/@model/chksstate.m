@@ -50,7 +50,7 @@ function [Flag,varargout] = chksstate(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [opt,varargin] = passvalopt('model.chksstate',varargin{:});
 isSort = nargout > 3;

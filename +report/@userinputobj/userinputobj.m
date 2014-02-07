@@ -5,7 +5,7 @@ classdef userinputobj < report.genericobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         userinput = '';
@@ -17,8 +17,8 @@ classdef userinputobj < report.genericobj
             This = This@report.genericobj(varargin{:});
             This.childof = {'report'};
             This.default = [This.default,{ ...
-                'centering',false,@islogicalscalar,true, ...
-                'verbatim',false,@islogicalscalar,true, ...                                
+                'centering',false,@is.logicalscalar,true, ...
+                'verbatim',false,@is.logicalscalar,true, ...                                
                 }];
         end
         

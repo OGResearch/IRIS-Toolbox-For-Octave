@@ -37,19 +37,13 @@ function Flag = datcmp(Dat1,Dat2)
 %         0     0     0     0     1     0     0     0
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('D1',@isnumeric);
 pp.addRequired('D2',@isnumeric);
 pp.parse(Dat1,Dat2);
-else
-pp = pp.addRequired('D1',@isnumeric);
-pp = pp.addRequired('D2',@isnumeric);
-pp = pp.parse(Dat1,Dat2);
-end
 
 %--------------------------------------------------------------------------
 

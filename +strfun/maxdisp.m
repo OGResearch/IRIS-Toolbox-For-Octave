@@ -1,12 +1,24 @@
-function c = maxdisp(c,n)
+function C = maxdisp(C,N)
+% maxdisp  [Not a public function] Clip the string to the first N
+% characters, showing an ellipsis in longer strings.
+%
+% Backend IRIS function.
+% No help provided.
 
-if ~exist('n','var')
-    n = 40;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+try
+    N; %#ok<VUNUS>
+catch
+    N = 40;
 end
 
-if length(c) > n
-    c = c(1:n);
-    c(end-2:end) = '...';
+%--------------------------------------------------------------------------
+
+if length(C) > N
+    C = C(1:N);
+    C(end-2:end) = '...';
 end
 
 end

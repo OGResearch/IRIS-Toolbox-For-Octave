@@ -5,19 +5,13 @@ function [S,Range,Select] = myrf(This,Time,Func,Select,Opt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('M',@(x) isa(This,'model'));
 pp.addRequired('TIME',@isnumeric);
 pp.parse(This,Time);
-else
-pp = pp.addRequired('M',@(x) isa(This,'model'));
-pp = pp.addRequired('TIME',@isnumeric);
-pp = pp.parse(This,Time);
-end
 
 % Tell whether time is nper or range.
 if length(Time) == 1 && round(Time) == Time && Time > 0

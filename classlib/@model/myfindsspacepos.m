@@ -6,7 +6,7 @@ function [SspacePos,NamePos,SSpacePosLag,SspaceInx] ...
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 throwError = any(strcmp(varargin,'-error'));
 
@@ -104,7 +104,7 @@ for i = find(isnan(X))
     namePos = find(namePos,1);
     % `lag` is a negative number.
     lag = sscanf(lag,'{%g}');
-    if ~isnumericscalar(lag) || ~isfinite(lag)
+    if ~is.numericscalar(lag) || ~isfinite(lag)
         continue
     end
     % `maxlag` is a negative number.

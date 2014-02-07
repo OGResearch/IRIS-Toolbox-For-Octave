@@ -5,7 +5,7 @@ function [This,NPath,NanDeriv,Sing1] = mysolve(This,IAlt,Opt,ExpMatrices)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     IAlt;
@@ -145,11 +145,7 @@ end
         while true
             AA = fA(EqOrder,:);
             BB = fB(EqOrder,:);
-            if ismatlab
-                [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
-            else
-                [SS,TT,QQ,ZZ] = qz(AA,BB);
-            end
+            [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
             % Ordered inverse eigvals.
             EigVal = -ordeig(SS,TT);
             EigVal = EigVal(:).';

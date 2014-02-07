@@ -120,19 +120,13 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
 
 % Validate required inputs.
 pp = inputParser();
-if ismatlab
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@isnumericscalar);
+pp.addRequired('NDraw',@is.numericscalar);
 pp.parse(This,NDraw);
-else
-pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp = pp.addRequired('NDraw',@isnumericscalar);
-pp = pp.parse(This,NDraw);
-end
 
 % Parse options.
 opt = passvalopt('poster.arwm',varargin{:});
@@ -420,7 +414,7 @@ FinalCov = P*P.';
         %  NOTE: this binary indexing gives values from 0 to 2^n-1.  Since in
         %  MATLAB indices are unit-based, we add one to get a valid MATLAB index.
         %
-        %  Copyright (c) 2012-2013 Boyan Bejanov and the IRIS Solutions Team
+        %  Copyright (c) 2012-2014 Boyan Bejanov and the IRIS Solutions Team
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
@@ -488,15 +482,6 @@ FinalCov = P*P.';
                 elseif opt.nstep < log2(opt.nstep*(nWorkers+1))
                     utils.warning('poster', ...
                         'Sequential version will be faster. Consider decreasing the number of prefetch steps.');
-                end
-            else
-                utils.warning('poster', ...
-                    'Prefetching without parallelism is pointless.');
-            end
-        end
-    end % doChkParallel().
-
-endrefetch steps.');
                 end
             else
                 utils.warning('poster', ...

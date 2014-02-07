@@ -5,7 +5,7 @@ classdef modelobj < getsetobj & userdataobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (Hidden)
         % Linear or non-linear model.
@@ -60,6 +60,7 @@ classdef modelobj < getsetobj & userdataobj
         varargout = chkpriors(varargin)        
         varargout = emptydb(varargin)
         varargout = export(varargin)
+        varargout = horzcat(varargin)
         varargout = iscompatible(varargin)
         varargout = islinear(varargin)
         varargout = isname(varargin)
@@ -77,6 +78,7 @@ classdef modelobj < getsetobj & userdataobj
         varargout = saveobj(varargin)
         varargout = size(varargin)
         varargout = specget(varargin)
+        varargout = vertcat(varargin)
     end
     
     

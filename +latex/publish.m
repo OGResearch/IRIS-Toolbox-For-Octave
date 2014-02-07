@@ -85,7 +85,13 @@ function publish(InpFile,OutpFile,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+try
+    OutpFile; %#ok<VUNUS>
+catch
+    OutpFile = [];
+end
 
 opt = passvalopt('latex.publish',varargin{:});
 
@@ -105,7 +111,7 @@ inputTitle = cell(size(InpFile));
 for i = 1 : nInput
     [inputPath,inputTitle{i},inputExt{i}] = fileparts(InpFile{i});
     texFile{i} = [inputTitle{i},'.tex'];
-    if i == 1 && (~exist('outputfile','var') || isempty(OutpFile))
+    if i == 1 && isempty(OutpFile)
         OutpFile = fullfile(inputPath,[inputTitle{i},'.pdf']);
     end
     if isempty(inputExt{i})
@@ -125,18 +131,18 @@ br = sprintf('\n');
 switch lower(opt.template)
     case 'paper'
         template = file2char(fullfile(irisroot(),'+latex','paper.tex'));
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1.1;
         end
     case 'present'
         template = file2char(fullfile(irisroot(),'+latex','present.tex'));
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1;
         end
         opt.toc = false;
     otherwise
         template = file2char(opt.template);
-        if ~isnumericscalar(opt.linespread)
+        if ~is.numericscalar(opt.linespread)
             opt.linespread = 1;
         end
 end

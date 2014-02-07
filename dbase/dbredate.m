@@ -33,25 +33,18 @@ function D = dbredate(D,OldDate,NewDate)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('d',@isstruct);
-pp.addRequired('oldDate',@isnumericscalar);
-pp.addRequired('newDate',@isnumericscalar);
+pp.addRequired('oldDate',@is.numericscalar);
+pp.addRequired('newDate',@is.numericscalar);
 pp.parse(D,OldDate,NewDate);
-else
-pp = pp.addRequired('d',@isstruct);
-pp = pp.addRequired('oldDate',@isnumericscalar);
-pp = pp.addRequired('newDate',@isnumericscalar);
-pp = pp.parse(D,OldDate,NewDate);
-end
 
 %--------------------------------------------------------------------------
 
 list = fieldnames(D);
-tseriesInx = structfun(@istseries,D);
+tseriesInx = structfun(@is.tseries,D);
 structInx = structfun(@isstruct,D);
 
 % Cycle over all tseries objects.

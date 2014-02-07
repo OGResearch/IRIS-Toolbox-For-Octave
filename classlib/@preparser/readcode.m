@@ -6,7 +6,7 @@ function [Code,Labels,Export,Subs,Comment] ...
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(Params)
     Params = struct([]);
@@ -55,15 +55,14 @@ Code = strfun.converteols(Code);
 
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
-tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
-if ~isempty(tokens)
-    Comment = strtrim(tokens{1});
-end
+%tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
+match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
+Comment = strtrim(match);
 
 % Characters beyond char(highcharcode) not allowed except comments.
 % Default is 1999.
 charCap = irisget('highcharcode');
-if (ismatlab && any(Code > char(charCap))) || (~ismatlab && any(char2double(Code)>charCap))
+if any(Code > char(charCap))
     utils.error('preparser',[errorParsing, ...
         'The file contains characters beyond char(%g).'],charCap);
 end

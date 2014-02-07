@@ -3,7 +3,7 @@ IRIS Toolbox
 Software License Agreement
 
 ------------------------------------------------------------
-Copyright (C) 2007--2013 Jaromir Benes. All rights reserved.
+Copyright (C) 2007-2014 Jaromir Benes. All rights reserved.
 ------------------------------------------------------------
 
 Redistribution and use in source and binary forms, with or without

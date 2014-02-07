@@ -136,7 +136,7 @@ classdef tseries < userdataobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         start = NaN;
@@ -181,7 +181,7 @@ classdef tseries < userdataobj
             % ========
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             This.Comment = {''};
@@ -191,7 +191,7 @@ classdef tseries < userdataobj
                 return
             end
             % Tseries input.
-            if nargin == 1 && istseries(varargin{1})
+            if nargin == 1 && is.tseries(varargin{1})
                 This = varargin{1};
                 return
             end
@@ -230,21 +230,13 @@ classdef tseries < userdataobj
                 usrComment = varargin{3};
             end
             
-            % Parse required input arguments
+            % Parse required input arguments.
             pp = inputParser();
-            if ismatlab
-              pp.addRequired('Dates',@isnumeric);
-              pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-              pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-              pp.parse(usrDates,usrData,usrComment);
-            else
-              pp = pp.addRequired('Dates',@isnumeric);
-              pp = pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
-              pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-              pp = pp.parse(usrDates,usrData,usrComment);
-            end
+            pp.addRequired('Dates',@isnumeric);
+            pp.addRequired('Data',@(x) ...
+                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
+            pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+            pp.parse(usrDates,usrData,usrComment);
             
             %--------------------------------------------------------------
             
@@ -258,7 +250,7 @@ classdef tseries < userdataobj
             % Create data from a function handle or function name.
             if ischar(usrData) && strcmpi(usrData,'lintrend')
                 usrData = (1 : nPer).';
-            elseif ischar(usrData) || isfunc(usrData)
+            elseif ischar(usrData) || is.func(usrData)
                 try
                     usrData = feval(usrData,[nPer,1]);
                 catch %#ok<CTCH>
@@ -779,7 +771,6 @@ classdef tseries < userdataobj
         end
     
         % Indexing.
-        
         function index = end(x,k,n) %#ok<INUSD>
             if k == 1
                 index = x.start + size(x.data,1) - 1;
@@ -787,7 +778,6 @@ classdef tseries < userdataobj
                 index = size(x.data,k);
             end
         end
-        
         function n = numel(~,varargin)
             n = 1;
         end

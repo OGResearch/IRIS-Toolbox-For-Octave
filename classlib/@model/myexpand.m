@@ -5,7 +5,7 @@ function [R,Y,Jk] = myexpand(R,Y,k,Xa,Xf,Ru,J,Jk,Yu)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 

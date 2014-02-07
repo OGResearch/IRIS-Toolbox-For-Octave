@@ -5,16 +5,11 @@ function Pos = position(This,K)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dblK = double(K);
-if ~ismatlab
-    dblK = back2highCharCode(dblK);
-end
-
-Pos = round(dblK - This.offset);
+Pos = round(double(K) - This.offset);
 
 if Pos < 1 || Pos > length(This.storage)
     utils.error('fragileobj', ...

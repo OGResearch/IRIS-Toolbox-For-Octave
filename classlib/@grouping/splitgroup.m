@@ -26,20 +26,14 @@ function This = splitgroup(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 GroupName = varargin;
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('G',@(x) isa(x,'grouping'));
 pp.addRequired('GroupName',@iscellstr);
 pp.parse(This,GroupName);
-else
-pp = pp.addRequired('G',@(x) isa(x,'grouping'));
-pp = pp.addRequired('GroupName',@iscellstr);
-pp = pp.parse(This,GroupName);
-end
 
 %--------------------------------------------------------------------------
 
@@ -65,4 +59,5 @@ for iGroup = 1:numel(GroupName)
 end
 
 end
+
 

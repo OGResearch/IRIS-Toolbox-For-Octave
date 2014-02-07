@@ -5,7 +5,7 @@ function [This,D,NanDeriv] = myderiv(This,EqSelect,IAlt,Symbolic,Linear)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 isNanDeriv = nargout > 2;
 
@@ -212,8 +212,7 @@ end
             
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
-%            D.f(iiEq,inx) = value; % commented out
-            D.f(iiEq,inx) = value(:)'; % instead of the line above -- Octave can't automatically transpose row assigning to column of sparse matrix
+            D.f(iiEq,inx) = value;
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))

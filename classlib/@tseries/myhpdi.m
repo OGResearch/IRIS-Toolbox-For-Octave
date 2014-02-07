@@ -5,7 +5,7 @@ function [Low,High] = myhpdi(X,Cover,Dim)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Troy Matheson.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Troy Matheson.
 
 %--------------------------------------------------------------------------
 

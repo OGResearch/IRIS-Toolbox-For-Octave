@@ -15,7 +15,7 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 % * `selection` [ cell | cellstr | char ] - Selection of variables for
 % which the corresponding submatrices will be returned.
 %
-% Output arugments
+% Output arguments
 % =================
 %
 % * `X` [ numeric ] - Subblock of the original array `X` corresponding to
@@ -38,25 +38,16 @@ function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 %     C0 = select(C,{'X','Y','Z','Z{-1}'});
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('X',@isnumeric);
 pp.addRequired('descript',@(x) iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
 pp.addRequired('selection',@(x) ischar(x) || iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
 pp.parse(X,Descript,Select);
-else
-pp = pp.addRequired('X',@isnumeric);
-pp = pp.addRequired('descript',@(x) iscellstr(x) ...
-    || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
-pp = pp.addRequired('selection',@(x) ischar(x) || iscellstr(x) ...
-    || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
-pp = pp.parse(X,Descript,Select);
-end
 
 %--------------------------------------------------------------------------
 
@@ -115,7 +106,7 @@ elseif isstruct(X)
     Inx(isnan(Inx)) = [];
     list = fieldnames(X);
     for i = 1 : length(list)
-        if istseries(X.(list{i}))
+        if is.tseries(X.(list{i}))
             X.(list{i}) = X.(list{i}){:,Inx};
         end
     end

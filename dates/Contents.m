@@ -3,15 +3,17 @@
 % Creating IRIS serial date numbers
 % ==================================
 %
-% * [`bb`](dates/bb) - IRIS serial date numbers for dates with bi-monthly frequency.
+% * [`bb`](dates/bb) - IRIS serial date number for bimonthly date.
 % * [`bbtoday`](dates/bbtoday) - IRIS serial date number for current bi-month.
-% * [`hh`](dates/hh) - IRIS serial date numbers for dates with half-yearly frequency.
+% * [`hh`](dates/hh) - IRIS serial date number for half-yearly date.
 % * [`hhtoday`](dates/hhtoday) - IRIS serial date number for current half-year.
-% * [`mm`](dates/mm) - IRIS serial date numbers for dates with monthly frequency.
+% * [`mm`](dates/mm) - IRIS serial date number for monthly date.
 % * [`mmtoday`](dates/mmtoday) - IRIS serial date number for current month.
-% * [`qq`](dates/qq) - IRIS serial date numbers for dates with quarterly frequency.
+% * [`qq`](dates/qq) - IRIS serial date number for quarterly date.
 % * [`qqtoday`](dates/qqtoday) - IRIS serial date number for current quarter.
-% * [`yy`](dates/yy) - IRIS serial date numbers for dates with yearly frequency.
+% * [`ww`](dates/ww) - IRIS serial date number for weekly date.
+% * [`wwtoday`](dates/wwtoday) - IRIS serial date number for current week.
+% * [`yy`](dates/yy) - IRIS serial date number for yearly date.
 % * [`yytoday`](dates/yytoday) - IRIS serial date number for current year.
 %
 % Computing special dates (daily dates only)
@@ -40,7 +42,7 @@
 % * [`dat2dec`](dates/dat2dec) - Convert dates to their decimal representations.
 % * [`dat2str`](dates/dat2str) - Convert IRIS dates to cell array of strings.
 % * [`dat2ypf`](dates/dat2ypf) - Convert IRIS serial date number to year, period and frequency.
-% * [`dec2dat`](dates/dec2dat) - Convert decimal numbers to IRIS serial date numbers.
+% * [`dec2dat`](dates/dec2dat) - Convert decimal representation of date to IRIS serial date number.
 % * [`str2dat`](dates/str2dat) - Convert strings to IRIS serial date numbers.
 %
 % Date comparison
@@ -50,11 +52,14 @@
 % * [`datdiff`](dates/datdiff) - Number of periods between two dates with check for date frequency.
 % * [`rngcmp`](dates/rngcmp) - Compare two IRIS date ranges.
 %
-% Daily dates
-% ============
+% Daily and weekly dates
+% =======================
 %
+% * [`daysinyear`](dates/daysinyear) - Number of days in year.
 % * [`dd`](dates/dd) - Matlab serial date numbers that can be used to construct daily tseries objects.
 % * [`ddtoday`](dates/ddtoday) - Matlab serial date number for today's date.
+% * [`ww2day`](dates/ww2day) - Convert weekly IRIS serial date number to Matlab serial date number.
+% * [`weeksinyear`](dates/weeksinyear) - Number of weeks in year.
 %
 % Getting on-line help on date functions
 % =======================================
@@ -64,4 +69,4 @@
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

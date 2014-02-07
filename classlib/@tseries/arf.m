@@ -60,7 +60,7 @@ function X = arf(X,A,Z,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 4
     Range = Inf;
@@ -68,19 +68,11 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('X',@istseries);
+pp.addRequired('X',@is.tseries);
 pp.addRequired('A',@isnumeric);
-pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
+pp.addRequired('Z',@(x) is.numericscalar(x) || is.tseries(x));
 pp.addRequired('RANGE',@isnumeric);
 pp.parse(X,A,Z,Range);
-else
-pp = pp.addRequired('X',@istseries);
-pp = pp.addRequired('A',@isnumeric);
-pp = pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
-pp = pp.addRequired('RANGE',@isnumeric);
-pp = pp.parse(X,A,Z,Range);
-end
 
 %--------------------------------------------------------------------------
 
@@ -113,7 +105,7 @@ if nPer <= order
 end
 
 % Get exogenous (z) data.
-if istseries(Z)
+if is.tseries(Z)
     zdata = mygetdata(Z,Range);
     zdata = zdata(:,:);
     % expand zdata in 2nd dimension if needed

@@ -42,9 +42,9 @@ function [T,R,k,Z,H,d,U,Cov] = sspace(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~isempty(varargin) && isnumericscalar(varargin{1}) 
+if ~isempty(varargin) && is.numericscalar(varargin{1}) 
    Alt = varargin{1};
    varargin(1) = []; %#ok<NASGU>
 else

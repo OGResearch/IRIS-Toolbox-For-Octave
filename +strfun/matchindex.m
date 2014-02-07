@@ -1,7 +1,7 @@
 function [Ind,Match,Tkn] = matchindex(List,Ptn)
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isstruct(List)
    List = fieldnames(List);

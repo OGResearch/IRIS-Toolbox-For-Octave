@@ -131,21 +131,14 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required inputs.
 pp = inputParser();
-if ismatlab
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Inp,Range);
-else
-pp = pp.addRequired('m',@ismodel);
-pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.parse(This,Inp,Range);
-end
 
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});
@@ -231,7 +224,7 @@ end
 
 % Nonlinearised simulation through the option `'nonlinearise='`.
 if isNonlinOpt
-    if isnumericscalar(opt.nonlinearise) && isround(opt.nonlinearise)
+    if is.numericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
         qStart = 1;
         qEnd = opt.nonlinearise;
     else

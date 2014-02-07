@@ -30,7 +30,7 @@ function datxtick(varargin)
 % See [`dat2str`](dates/dat2str) for date formatting options available.
 %
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 %
 % Description
 % ============
@@ -47,7 +47,7 @@ function datxtick(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishandle(varargin{1}))
     H = varargin{1};
@@ -61,15 +61,9 @@ NewRange = varargin{1};
 varargin(1) = [];
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('H',@(x) all(ishandle(x)));
 pp.addRequired('Range',@(x) isnumeric(x) && all(isfinite(x)) && ~isempty(x));
 pp.parse(H,NewRange);
-else
-pp = pp.addRequired('H',@(x) all(ishandle(x)));
-pp = pp.addRequired('Range',@(x) isnumeric(x) && all(isfinite(x)) && ~isempty(x));
-pp = pp.parse(H,NewRange);
-end
 
 opt = passvalopt('dates.datxtick',varargin{:});
 
@@ -79,14 +73,16 @@ opt = passvalopt('dates.datxtick',varargin{:});
 for iH = H
     valid = isequal(getappdata(iH,'tseries'),true);
     oldFreq = getappdata(iH,'freq');
-    if ~valid || ~isnumericscalar(oldFreq)
+    if ~valid || ~is.numericscalar(oldFreq)
         utils.errors('dates', ...
             ['This axes object has not been created ', ...
             'as a valid tseries graph: %g.'], ...
             iH);
     end
-    oldRange = get(iH,'xTick');
-    mydatxtick(iH,oldRange,newFreq,NewRange,opt);
+    oldRange = getappdata(iH,'range');
+    oldDatePosition = getappdata(iH,'datePosition');
+    oldTime = dat2dec(oldRange,oldDatePosition);
+    mydatxtick(iH,oldRange,oldTime,newFreq,NewRange,opt);
 end
 
 end

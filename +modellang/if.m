@@ -44,8 +44,8 @@
 % in the database passed in through the option '`assign=`' in the
 % [`model`](model/model) function.
 %
-% Example 1
-% ==========
+% Example
+% ========
 % 
 %     !if B < Inf
 %         % This is a linearised sticky-price Phillips curve.
@@ -62,8 +62,8 @@
 % number other than Inf. In this example, `B` needs to be, obviously,
 % declared as a model parameter.
 % 
-% Example 2
-% ==========
+% Example
+% ========
 % 
 %     !if exogenous == true
 %         x = y;
@@ -98,4 +98,4 @@
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

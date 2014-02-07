@@ -68,19 +68,13 @@ function This = comment(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin)
     pp = inputParser();
-if ismatlab
-    pp.addRequired('x',@istseries);
+    pp.addRequired('x',@is.tseries);
     pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
     pp.parse(This,varargin{1});
-else
-    pp = pp.addRequired('x',@istseries);
-    pp = pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
-    pp = pp.parse(This,varargin{1});
-end
 end
 
 %--------------------------------------------------------------------------

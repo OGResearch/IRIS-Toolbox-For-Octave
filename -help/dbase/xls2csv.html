@@ -125,17 +125,17 @@ xls2csv(InpFile,OutpFile,...)</code></pre>
 <p>This function calls a third-party JavaScript (courtesy of Christopher West). The script uses an MS Excel application on the background, and hence MS Excel must be installed on the computer.</p>
 <p>Only one worksheet at a time can be saved to CSV. By default, it is the first worksheet found in the input XLS file; use the option <code>'sheet='</code> to control which worksheet will be saved.</p>
 <p>See also $irisroot/+thirdparty/xls2csv.js for copyright information.</p>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>Save the first worksheets of the following XLS files to CSV files.</p>
 <pre><code>xls2csv(&#39;myDataFile.xls&#39;);
 xls2csv(&#39;C:\Data\myDataFile.xls&#39;);</code></pre>
-<h4 id="example-2">Example 2</h4>
+<h4 id="example-1">Example</h4>
 <p>Save the worksheet named 'Sheet3' to a CSV file; the name of the CSV file will be <code>'myDataFile.csv'</code>.</p>
 <pre><code>xls2csv(&#39;myDataFile.xls&#39;,[],&#39;sheet=&#39;,&#39;Sheet3&#39;);</code></pre>
-<h4 id="example-3">Example 3</h4>
+<h4 id="example-2">Example</h4>
 <p>Save the second worksheet to a CSV file under the name <code>'myDataFile_2.csv'</code>.</p>
 <pre><code>xls2csv(&#39;myDataFile.xls&#39;,&#39;myDataFile_2.csv,&#39;sheet=&#39;,2);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

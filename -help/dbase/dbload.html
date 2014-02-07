@@ -132,7 +132,7 @@ D = dbload(D,FName, ...)</code></pre>
 <li><p><code>'freq='</code> [ <code>0</code> | <code>1</code> | <code>2</code> | <code>4</code> | <code>6</code> | <code>12</code> | <code>365</code> | <code>'daily'</code> | <em>empty</em> ] - Advise frequency of dates; if empty, frequency will be automatically recognised.</p></li>
 <li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBM'</code></em> ] - Letters representing frequency of dates in date column.</p></li>
 <li><p><code>'inputFormat='</code> [ <em><code>'auto'</code></em> | <code>'csv'</code> | <code>'xls'</code> ] - Format of input data file; <code>'auto'</code> means the format will be determined by the file extension.</p></li>
-<li><p><code>'nameRow='</code> [ char | numeric | <em>empty</em> ] - String at the beginning of the row with variable names, or the line number at which the row with variable names appears (first row is numbered 1).</p></li>
+<li><p><code>'nameRow='</code> [ char | numeric | <em><code>{'','Variables'}</code></em> ] - String, or cell array of possible strings, that is found at the beginning (in the first cell) of the row with variable names, or the line number at which the row with variable names appears (first row is numbered 1).</p></li>
 <li><p><code>'nameFunc='</code> [ cell | function_handle | <em>empty</em> ] - Function used to change or transform the variable names. If a cell array of function handles, each function will be applied in the given order.</p></li>
 <li><p><code>'nan='</code> [ char | <em><code>NaN</code></em> ] - String representing missing observations (case insensitive).</p></li>
 <li><p><code>'preProcess='</code> [ function_handle | cell | empty ] - Apply this function, or cell array of functions, to the raw text file before parsing the data.</p></li>
@@ -142,7 +142,7 @@ D = dbload(D,FName, ...)</code></pre>
 <li><p><code>'userDataFieldList='</code> [ cellstr | numeric | empty ] - List of row headers, or vector of row numbers, that will be included as user data in each time series.</p></li>
 </ul>
 <h4 id="description">Description</h4>
-<p>Use the <code>'freq='</code> option whenever there is ambiguity in intepreting the date strings, and IRIS is not able to determine the frequency correctly (see Example 1).</p>
+<p>Use the <code>'freq='</code> option whenever there is ambiguity in intepreting the date strings, and IRIS is not able to determine the frequency correctly (see Example).</p>
 <h5 id="structure-of-csv-database-files">Structure of CSV database files</h5>
 <p>The minimalist structure of a CSV database file has a leading row with variables names, a leading column with dates in the basic IRIS format, and individual columns with numeric data:</p>
 <pre><code>+---------+---------+---------+--
@@ -182,10 +182,10 @@ D = dbload(D,FName, ...)</code></pre>
 |  2010Q2 |       2 |      20 |
 +---------+---------+---------+--
 |         |         |         |</code></pre>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>Typical example of using the <code>'freq='</code> option is a quarterly database with dates represented by the corresponding months, such as a sequence 2000-01-01, 2000-04-01, 2000-07-01, 2000-10-01, etc. In this case, you can use the following options:</p>
 <pre><code>d = dbload(&#39;filename.csv&#39;,&#39;dateFormat&#39;,&#39;YYYY-MM-01&#39;,&#39;freq&#39;,4);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

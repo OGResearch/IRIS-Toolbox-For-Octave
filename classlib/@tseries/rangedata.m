@@ -39,7 +39,7 @@ function [Y,Range] = rangedata(X,Range)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ if nargin == 1
 end
 
 tmpSize = size(X.data);
-if isempty(Range) || isequaln(Range,NaN)
+if isempty(Range) || isequalwithequalnans(Range,NaN)
     Y = zeros([0,tmpSize(2:end)]);
     return
 end

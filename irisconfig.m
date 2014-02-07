@@ -5,7 +5,7 @@ function Config = irisconfig()
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -13,13 +13,13 @@ Config = struct();
 
 % Factory defaults.
 %------------------
-% Extensions associated with Matlab Editor.
-Config.extensions = {'model','s','q'};
 
 % Date preferences.
-Config.freqletters = 'YHQBM';
+Config.freqletters = 'YHQBMW';
 Config.dateformat = 'YFP';
-Config.plotdateformat = 'Y:P';
+% Plot date formats for each frequency: Y, H, Q, B, M, W. Indeterminate
+% frequency is simply printed as a number.
+Config.plotdateformat = {'Y','Y:P','Y:P','Y:P','Y:P','Y:P'};
 Config.months = { ...
     'January','February','March','April','May','June', ...
     'July','August','September','October','November','December'};
@@ -102,19 +102,15 @@ end
 
 % Options that cannot be customised.
 % IRIS root folder.
-tmp = pwd();
+tmp = cd();
 cd(fileparts(which('irisstartup.m')));
-Config.irisroot = pwd();
+Config.irisroot = cd();
 cd(tmp);
 
 % Read IRIS version. The IRIS version is stored in the root Contents.m
 % file, and is displayed by the Matlab ver() command.
 x = ver();
-if ismatlab
-    index = strcmp('IRIS Toolbox',{x.Name});
-else
-    index = strcmp('iris-toolbox',{x.Name}); % name of Octave package (preliminary)
-end
+index = strcmp('IRIS Toolbox',{x.Name});
 if any(index)
     Config.version = x(index).Version;
 else
@@ -137,11 +133,10 @@ Config.protected = { ...
 %**************************************************************************
     function doValidateConfig()
         Config.validate = struct( ...
-            'extensions',@iscellstr, ...
-            'freqletters',@(x) (ischar(x) && numel(x) == numel(unique(x)) && numel(x) == 5) ...
+            'freqletters',@(x) (ischar(x) && numel(x) == numel(unique(x)) && numel(x) == 6) ...
             || isequal(x,'config'), ...
             'dateformat',@(x) ischar(x) || iscellstr(x), ...
-            'plotdateformat',@(x) ischar(x), ...
+            'plotdateformat',@(x) iscellstr(x) && length(x) == 6, ...
             'months',@(x) (iscellstr(x) && numel(x) == 12) ...
             || isequal(x,'config'), ...
             'standinmonth',@(x) (isnumeric(x) && numel(x) == 1 && x > 0) || isequal(x,'first') || isequal(x,'last') ...
@@ -149,7 +144,7 @@ Config.protected = { ...
             ... 'reportpreamble',@ischar, ...
             ... 'publishpreamble',@ischar, ...
             'tseriesformat',@ischar, ...
-            'tseriesmaxwspace',@(x) isnumericscalar(x) && x == round(x) && x > 0, ...
+            'tseriesmaxwspace',@(x) is.numericscalar(x) && x == round(x) && x > 0, ...
             'latexpath',@ischar, ...
             'dvipspath',@ischar, ...
             'dvipdfmpath',@ischar, ...
@@ -163,7 +158,9 @@ Config.protected = { ...
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function FPath = xxLocateFile(File,Folder)
@@ -190,4 +187,4 @@ else
     FPath = findtexmf(File);
 end
 
-end % xxLocateFile().
+end % xxLocateFile()

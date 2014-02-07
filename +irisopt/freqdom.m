@@ -5,14 +5,14 @@ function default = freqdom()
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
 default = struct();
 
 default.xsf2phase = { ...
-    'unwrap',false,@islogicalscalar, ...
+    'unwrap',false,@is.logicalscalar, ...
     };
 
 end

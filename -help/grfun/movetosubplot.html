@@ -110,7 +110,9 @@ code.LaTeX {
 <div class="headline">Move an existing axes object or legend to specified subplot position</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Ax = movetosubplot(Ax,M,N,P)</code></pre>
+<pre><code>Ax = grfun.movetosubplot(Ax,M,N,P)
+Ax = grfun.movetosubplot(Ax,&#39;bottom&#39;)
+Ax = grfun.movetosubplot(Ax,&#39;top&#39;)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>Ax</code> [ numeric ] - Handle to an existing axes object or legend.</p></li>
@@ -121,8 +123,9 @@ code.LaTeX {
 <li><code>AX</code> [ numeric ] - Handle to the axes or legend moved to the new position.</li>
 </ul>
 <h4 id="description">Description</h4>
+<p>The syntax with <code>'bottom'</code> and <code>'top'</code> places the axes centered at, respectively, the bottom or top of the figure window.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

@@ -2,14 +2,14 @@
 
     \filetitle{convert}{Convert tseries object to a different frequency}{tseries/convert}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
-Y = convert(X,NewFreq)
+Y = convert(X,NewFreq,...)
 Y = convert(X,NewFreq,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@ Y = convert(X,NewFreq,Range,...)
 \item
   \texttt{NewFreq} {[} numeric \textbar{} char {]} - New frequency to
   which the input data will be converted: \texttt{1} or \texttt{'A'} for
-  annual, \texttt{2} or \texttt{'H'} for half-yearly, \texttt{4} or
+  yearly, \texttt{2} or \texttt{'H'} for half-yearly, \texttt{4} or
   \texttt{'Q'} for quarterly, \texttt{6} or \texttt{'B'} for bi-monthly,
   and \texttt{12} or \texttt{'M'} for monthly.
 \item
@@ -27,7 +27,7 @@ Y = convert(X,NewFreq,Range,...)
   will be converted.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -36,7 +36,7 @@ Y = convert(X,NewFreq,Range,...)
   \texttt{X} to the new frequency.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -49,7 +49,7 @@ Y = convert(X,NewFreq,Range,...)
 \end{itemize}
 
 \paragraph{Options for high- to low-frequency conversion
-(aggregation)}\label{options-for-high--to-low-frequency-conversion-aggregation}
+(aggregation)}
 
 \begin{itemize}
 \item
@@ -63,7 +63,7 @@ Y = convert(X,NewFreq,Range,...)
 \end{itemize}
 
 \paragraph{Options for low- to high-frequency conversion
-(interpolation)}\label{options-for-low--to-high-frequency-conversion-interpolation}
+(interpolation)}
 
 \begin{itemize}
 \item
@@ -77,7 +77,7 @@ Y = convert(X,NewFreq,Range,...)
   low-frequency date grid.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The function handle that you pass in through the `method' option when
 you aggregate the data (convert higher frequency to lower frequency)
@@ -98,6 +98,6 @@ the data are processed en block columnwise. If this call fails,
 argument, the data, but this is not a safe option under some
 circumstances since dimension mismatch may occur.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

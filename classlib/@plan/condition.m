@@ -31,21 +31,14 @@ function This = condition(This,List,Dates)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('p',@isplan);
+pp.addRequired('p',@is.plan);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('dates',@isnumeric);
 pp.parse(This,List,Dates);
-else
-pp = pp.addRequired('p',@isplan);
-pp = pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp = pp.addRequired('dates',@isnumeric);
-pp = pp.parse(This,List,Dates);
-end
 
 % Convert char list to cell of str.
 if ischar(List)

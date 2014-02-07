@@ -49,7 +49,7 @@ function [C,Q] = acf(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.acf',varargin{:});
 isCorr = nargout > 1;

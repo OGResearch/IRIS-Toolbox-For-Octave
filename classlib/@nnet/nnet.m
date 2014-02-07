@@ -99,20 +99,13 @@ classdef nnet < userdataobj & getsetobj
             % Journal of Forecasting. 
             %
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             pp = inputParser() ;
-if ismatlab
             pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
             pp.parse(Inputs,Outputs,Layout) ;
-else
-            pp = pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
-            pp = pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
-            pp = pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
-            pp = pp.parse(Inputs,Outputs,Layout) ;
-end
             
             % Superclass constructors
             This = This@userdataobj();
@@ -254,3 +247,4 @@ end
     
     
 end
+

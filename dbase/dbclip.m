@@ -1,5 +1,5 @@
 function D = dbclip(D,Range)
-% dbclip  Clip all tseries entries in a database down to the specified date range.
+% dbclip  Clip all tseries entries in database down to specified date range.
 %
 % Syntax
 % =======
@@ -56,20 +56,13 @@ function D = dbclip(D,Range)
 %         y: [4x1 tseries]
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('D',@isstruct);
 pp.addRequired('Range', ...
     @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
 pp.parse(D,Range);
-else
-pp = pp.addRequired('D',@isstruct);
-pp = pp.addRequired('Range', ...
-    @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
-pp = pp.parse(D,Range);
-end
 
 if isnumeric(Range)
     Range = {Range};

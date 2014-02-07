@@ -5,7 +5,7 @@ function S = alt2str(Alt,Format,To)
 % No help provided.
 
 % -IRIS Toolbox. 2008/10/20.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Format = strtrim(Format);

@@ -5,10 +5,10 @@ classdef getsetobj
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-%    properties
-%    end
+    properties
+    end
     
     methods
         function This = getsetobj(varargin)

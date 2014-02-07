@@ -5,50 +5,52 @@ function C = speclatexcode(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
+br = sprintf('\n');
 C = '';
 
 nChild = length(This.children);
 if nChild == 0
     return
 end
-br = sprintf('\n');
-nCol = min([This.ncol,nChild]);
+
+nCol = min(This.ncol,nChild);
 oneCol = ...
     ['l@{\hspace*{',sprintf('%gem',This.options.hspace),'}}'];
 colSpec = ...
     ['{@{\hspace*{-3pt}}',repmat(oneCol,1,nCol-1),'l}'];
 C = [C,'\begin{tabular}[t]',colSpec];
-children = This.children;
+ch = This.children;
 
-while ~isempty(children)
-    n = min([nCol,length(children)]);
+while ~isempty(ch)
+    n = min(nCol,length(ch));
     % All objects in this row.
-    objs = children(1:n);
-    children(1:n) = [];
+    objs = ch(1:n);
+    ch(1:n) = [];
     
     [This,objs] = xxShareCaption(This,objs);
     
     if ~isempty(This.title)
-        C = [C,br,printcaption(This,n,'c',7)]; %#ok<AGROW>
+        C = [C, br, ...
+            printcaption(This,n,'c',7)]; %#ok<AGROW>
     end
     
     for i = 1 : n
         c1 = latexcode(objs{i});
-        C = [C,br,c1]; %#ok<AGROW>
+        C = [C, br, c1]; %#ok<AGROW>
         if i < n
-            C = [C,br,'&']; %#ok<AGROW>
+            C = [C, br, '&']; %#ok<AGROW>
         end
     end
-    if ~isempty(children)
-        C = [C,br,'\\ \\ \\']; %#ok<AGROW>
+    if ~isempty(ch)
+        C = [C, br, '\\ \\ \\']; %#ok<AGROW>
     end
 end
 
-C = [C,br,'\end{tabular}'];
+C = [C, br, '\end{tabular}'];
 
 end
 
@@ -92,4 +94,4 @@ else
     This.caption = {'',''};
 end
 
-end % xxShareCaption().
+end % xxShareCaption()

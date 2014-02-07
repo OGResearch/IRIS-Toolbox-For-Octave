@@ -1,5 +1,5 @@
 syntax: glob
-*.m~
-octave-workspace
-*.orig
--test_i4o_issues/testX13/fort.6
+.DS_Store
+hgignore*
+fort.6
+*.synctex.gz

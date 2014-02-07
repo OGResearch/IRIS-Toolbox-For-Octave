@@ -31,7 +31,7 @@ function Dates = find(X,Func)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Func; %#ok<VUNUS>
@@ -40,15 +40,9 @@ catch
 end
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('X',@(x) isa(x,'tseries'));
 pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
 pp.parse(X,Func);
-else
-pp = pp.addRequired('X',@(x) isa(x,'tseries'));
-pp = pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
-pp = pp.parse(X,Func);
-end
 
 %--------------------------------------------------------------------------
 

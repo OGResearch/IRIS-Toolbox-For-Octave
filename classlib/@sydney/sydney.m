@@ -5,7 +5,7 @@ classdef sydney
     % No help provided.
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         func = '';
@@ -173,7 +173,7 @@ classdef sydney
         end
 
         function Flag = isnumber(Z)
-            Flag = isempty(Z.func) && isnumericscalar(Z.args);
+            Flag = isempty(Z.func) && is.numericscalar(Z.args);
         end
         
     end

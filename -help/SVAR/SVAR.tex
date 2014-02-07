@@ -2,13 +2,13 @@
 
     \filetitle{SVAR}{Convert reduced-form VAR to structural VAR}{SVAR/SVAR}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [S,DATA,B,COUNT] = SVAR(V,DATA,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +18,7 @@
   the input VAR object.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -34,7 +34,7 @@
   otherwise \texttt{COUNT=1}.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -42,8 +42,9 @@
   Maximum number of attempts when \texttt{'method'='draw'}.
 \item
   \texttt{'method='} {[} \emph{\texttt{'chol'}} \textbar{}
-  \texttt{'draw'} \textbar{} \texttt{'qr'} \textbar{} \texttt{'svd'} {]}
-  - Method that will be used to identify structural residuals.
+  \texttt{'householder'} \textbar{} \texttt{'qr'} \textbar{}
+  \texttt{'svd'} {]} - Method that will be used to identify structural
+  VAR and structural shocks.
 \item
   \texttt{'nDraw='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
   Target number of successful draws when \texttt{'method'='draw'}.
@@ -82,10 +83,10 @@
   the option \texttt{'test='}.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 \subparagraph{Identification random Householder
-transformations}\label{identification-random-householder-transformations}
+transformations}
 
 The structural impact matrices \texttt{B} are randomly generated using a
 Householder transformation algorithm. Each matrix is tested by
@@ -106,6 +107,6 @@ The \texttt{test} string can refer to the following characteristics:
   response of the \texttt{i}-th variable to the \texttt{j}-th shock.
 \end{itemize}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 

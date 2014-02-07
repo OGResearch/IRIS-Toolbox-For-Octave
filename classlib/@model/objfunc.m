@@ -5,7 +5,7 @@ function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,EstOpt,LikOpt)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
     
 %--------------------------------------------------------------------------
 

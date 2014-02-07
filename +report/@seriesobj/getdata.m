@@ -1,11 +1,11 @@
 function [Outp,Time] = getdata(This,Inp,Range,ColStruct)
-% LATEXONEROW  [Not a public function] Evaluate data for report/series.
+% getdata  [Not a public function] Evaluate data for report/series.
 %
 % Backend IRIS function.
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -16,7 +16,9 @@ else
     doColStruct();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doDates()
@@ -34,7 +36,7 @@ end
         % We cannot pre-allocate `outp` properly because the number of
         % columns is unknown at this point.
         Outp = [];
-        for ii = [0,1,2,4,6,12]
+        for ii = [0,1,2,4,6,12,52]
             rangePos = rangeFreq == ii;
             dataPos = dataFreq == ii;
             if any(rangePos) && any(dataPos)
@@ -47,7 +49,8 @@ end
                 Outp(rangePos,:) = thisData;
             end
         end
-    end % doDates().
+    end % doDates()
+
 
 %**************************************************************************
     function doColStruct()
@@ -60,7 +63,7 @@ end
             x = Inp{1};
             if isa(func,'function_handle')
                 x = func(x);
-                if ~isa(x,'tseries') && ~isnumericscalar(x)
+                if ~isa(x,'tseries') && ~is.numericscalar(x)
                     utils.error('report', ...
                         ['Function %s fails to evaluate to tseries or numeric scalar ', ...
                         'when applied to this series: ''%s''.'], ...
@@ -70,8 +73,8 @@ end
             if isa(x,'tseries')
                 x = x(date);
             end
-            if ~isnumericscalar(x)
-                if ~isa(x,'tseries') && ~isnumericscalar(x)
+            if ~is.numericscalar(x)
+                if ~isa(x,'tseries') && ~is.numericscalar(x)
                     utils.error('report', ...
                         ['Value in column #%g ', ...
                         'fails evalute to numeric scalar for this series: ''%s''.'], ...
@@ -82,6 +85,7 @@ end
                 Outp(ii,:) = x;
             end
         end
-    end % doColStruct().
+    end % doColStruct()
+
 
 end

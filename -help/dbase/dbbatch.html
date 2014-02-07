@@ -135,11 +135,11 @@ code.LaTeX {
 <p>This function is primarily meant to create new database fields, each based on an existing one. If you, on the otherhand, only wish to modify a number of existing fields without adding any new ones, use <a href="../dbase/dbfun.html"><code>dbfun</code></a> instead.</p>
 <p>The expression <code>Expr</code> is evaluated in the caller workspace, and hence may refer to any variables existing in the workspace, not only to the database and its fields.</p>
 <p>To convert the strings <code>$0</code>, <code>$1</code>, <code>$2</code>, etc. to lower case or upper case, use the dot or colon syntax: <code>$.0</code>, <code>$.1</code>, <code>$.2</code> for ower case, and <code>$:0</code>, <code>$:1</code>, <code>$:2</code> for upper case.</p>
-<h4 id="example-1">Example 1</h4>
+<h4 id="example">Example</h4>
 <p>For each field (all assumed to be tseries) create a first difference, and name the new series <code>DX</code> where <code>X</code> is the name of the original series.</p>
 <pre><code>d = dbbatch(d,&#39;D$0&#39;,&#39;diff(d.$0)&#39;);</code></pre>
 <p>Note that the original series will be presered in the database, together with the newly created ones.</p>
-<h4 id="example-2">Example 2</h4>
+<h4 id="example-1">Example</h4>
 <p>Suppose that in database <code>D</code> you want to seasonally adjust all time series whose names end with <code>_u</code>, and give these seasonally adjusted series names without the _u.</p>
 <pre><code>d = dbbatch(d,&#39;$1&#39;,&#39;x12(d.$0)&#39;,&#39;nameFilter&#39;,&#39;(.*)u&#39;);</code></pre>
 <p>or, if you want to make sure only tseries objects will be selected (in case there are database entries ending with a <code>u</code> other than tseries objects)</p>
@@ -147,5 +147,5 @@ code.LaTeX {
     &#39;nameFilter=&#39;,&#39;(.*)u&#39;,&#39;classFilter=&#39;,&#39;tseries&#39;);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

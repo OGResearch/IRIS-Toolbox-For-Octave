@@ -33,7 +33,7 @@ classdef grouping < userdataobj & getsetobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties ( Hidden) %GetAccess=protected, SetAccess=protected,
         type = '' ;
@@ -82,7 +82,7 @@ classdef grouping < userdataobj & getsetobj
             %
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
             This = This@getsetobj();
@@ -100,17 +100,10 @@ classdef grouping < userdataobj & getsetobj
             Type = varargin{2};
             
             pp = inputParser();
-if ismatlab
             pp.addRequired('M',@(x) isa(x,'modelobj'));
             pp.addRequired('Type',@(x) ischar(x) ...
                 && any(strncmpi(x,{'shock','measu'},5)));
             pp.parse(M,Type);
-else
-            pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
-            pp = pp.addRequired('Type',@(x) ischar(x) ...
-                && any(strncmpi(x,{'shock','measu'},5)));
-            pp = pp.parse(M,Type);
-end
             
             This.type = Type;
             switch This.type

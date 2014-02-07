@@ -34,19 +34,19 @@ function X = interp(X,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
-
-opt = passvalopt('tseries.interp',varargin{:});
-
-if isempty(X)
-    return
-end
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && ~ischar(varargin{1})
     Range = varargin{1};
     varargin(1) = [];
 else
     Range = Inf;
+end
+
+opt = passvalopt('tseries.interp',varargin{:});
+
+if isempty(X)
+    return
 end
 
 %--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ else
 end
 
 data = X.data(:,:);
-grid = dat2grid(Range);
+grid = dat2dec(Range,'centre');
 grid = grid - grid(1);
 for i = 1 : size(data,2)
     inx = ~isnan(data(:,i));

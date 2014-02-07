@@ -22,7 +22,13 @@ function C = saveas(P,FName)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+try
+    FName; %#ok<VUNUS>
+catch
+    FName = [];
+end
 
 %--------------------------------------------------------------------------
 
@@ -30,7 +36,7 @@ function C = saveas(P,FName)
 % saving the pre-parsed file.
 C = restore(P.code,P.labels);
 
-if exist('FName','var') && ~isempty(FName)
+if ~isempty(FName)
     char2file(C,FName);
 end
 

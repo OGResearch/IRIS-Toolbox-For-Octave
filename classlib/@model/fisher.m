@@ -69,21 +69,14 @@ function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('this',@(x) isa(x,'model'));
 pp.addRequired('nper',@(x) isnumeric(x) && length(x) == 1);
 pp.addRequired('plist',@(x) iscellstr(x) || ischar(x));
 pp.parse(This,NPer,PList);
-else
-pp = pp.addRequired('this',@(x) isa(x,'model'));
-pp = pp.addRequired('nper',@(x) isnumeric(x) && length(x) == 1);
-pp = pp.addRequired('plist',@(x) iscellstr(x) || ischar(x));
-pp = pp.parse(This,NPer,PList);
-end
 
 % Read and validate optional input arguments.
 opt = passvalopt('model.fisher',varargin{:});
@@ -362,9 +355,6 @@ elseif r == m
 else
     [U,~,V] = svd(A,0);
     S = diag(1./s(1:r));
-    X = V(:,1:r)*S*U(:,1:r)';
-end
-end % xxPInverse(). = diag(1./s(1:r));
     X = V(:,1:r)*S*U(:,1:r)';
 end
 end % xxPInverse().

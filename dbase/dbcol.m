@@ -30,7 +30,7 @@ function varargout = dbcol(this,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Handle multiple input/output arguments.
 if length(varargin) > 1
@@ -55,7 +55,7 @@ end
 %--------------------------------------------------------------------------
 
 for i = 1 : length(list)
-    if istseries(this.(list{i}))
+    if is.tseries(this.(list{i}))
         try %#ok<TRYNC>
             this.(list{i}) = this.(list{i}){:,inx};
         end

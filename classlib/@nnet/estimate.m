@@ -1,20 +1,13 @@
 function [This,xF,Obj] = estimate(This,Data,Range,varargin)
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser() ;
-if ismatlab
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
 pp.addRequired('Data',@isstruct) ;
 pp.addRequired('Range',@(x) isnumeric(x) && isvector(x)) ;
 pp.parse(This,Data,Range) ;
-else
-pp = pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp = pp.addRequired('Data',@isstruct) ;
-pp = pp.addRequired('Range',@(x) isnumeric(x) && isvector(x)) ;
-pp = pp.parse(This,Data,Range) ;
-end
 if This.nAlt>1
     utils.error('nnet:estimate',...
         'Estimate does not support input neural network objects with multiple parameterizations.') ;
@@ -135,3 +128,4 @@ for iOpt = 1:numel(options.Select)
 end
 
 end
+

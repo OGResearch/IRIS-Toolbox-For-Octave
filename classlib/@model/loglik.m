@@ -116,7 +116,7 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % These variables are cleared at the end of the file unless the user
 % specifies `'persist=' true`.

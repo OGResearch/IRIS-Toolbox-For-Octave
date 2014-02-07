@@ -44,19 +44,13 @@ function [sample,lp_Sample,len] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
 
 % Validate required inputs.
 pp = inputParser();
-if ismatlab
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@isnumericscalar);
+pp.addRequired('NDraw',@is.numericscalar);
 pp.parse(This,NDraw);
-else
-pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp = pp.addRequired('NDraw',@isnumericscalar);
-pp = pp.parse(This,NDraw);
-end
 
 % Parse options.
 opt = passvalopt('poster.regen',varargin{:});
@@ -187,5 +181,4 @@ lp_Sample = [lp_initSample lp_regenSample] ;
         newTheta = theta + sig*u ;
     end
 
-end
 end

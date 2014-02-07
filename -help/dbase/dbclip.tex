@@ -1,14 +1,14 @@
 
 
-    \filetitle{dbclip}{Clip all tseries entries in a database down to the specified date range}{dbase/dbclip}
+    \filetitle{dbclip}{Clip all tseries entries in database down to specified date range}{dbase/dbclip}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 D = dbclip(D,Range)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@ D = dbclip(D,Range)
   frequency/periodicity.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -30,7 +30,7 @@ D = dbclip(D,Range)
   \texttt{range}.
 \end{itemize}
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 This functions looks up all tseries objects within the database
 \texttt{d}, including tseries objects nested in sub-databases, and cuts
@@ -47,7 +47,7 @@ following: monthly, bi-monthly, quarterly, half-yearly, yearly,
 indeterminate). Each tseries entry will be clipped to the range that
 matches its date frequency.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 d = struct();

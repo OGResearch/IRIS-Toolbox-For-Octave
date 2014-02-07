@@ -47,23 +47,15 @@ function [D,CC,F,U,E] = forecast(This,Inp,Range,J,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('f',@isfavar);
-pp.addRequired('init',@(x) istseries(x) || isstruct(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('j',@(x) isempty(x) || istseries(x) || isstruct(x));
+pp.addRequired('A',@is.FAVAR);
+pp.addRequired('D',@(x) is.tseries(x) || isstruct(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('J',@(x) isempty(x) || is.tseries(x) || isstruct(x));
 pp.parse(This,Inp,Range,J);
-else
-pp = pp.addRequired('f',@isfavar);
-pp = pp.addRequired('init',@(x) istseries(x) || isstruct(x));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.addRequired('j',@(x) isempty(x) || istseries(x) || isstruct(x));
-pp = pp.parse(This,Inp,Range,J);
-end
 
 % Parse options.
 opt = passvalopt('FAVAR.forecast',varargin{:});
@@ -78,11 +70,11 @@ Range = Range(1) : Range(end);
 if isstruct(Inp) ...
       && ~isfield(Inp,'init') ...
       && isfield(Inp,'mean') ...
-      && istseries(Inp.mean)
+      && is.tseries(Inp.mean)
    Inp = Inp.mean;
 end
 
-if istseries(Inp)
+if is.tseries(Inp)
    % Only mean tseries supplied; no uncertainty in initial condition.
    reqRange = Range(1)-pp : Range(1)-1;
    [~,~,x0] = mydatarequest(This,Inp,reqRange);

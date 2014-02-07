@@ -8,7 +8,7 @@ function [Opt,varargout] = passvalopt(Spec,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent DEF;
 

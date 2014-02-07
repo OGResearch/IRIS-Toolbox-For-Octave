@@ -52,7 +52,7 @@ function [DMC,C] = dbminuscontrol(This,D,C)
 %
 
 % -The IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
@@ -64,17 +64,10 @@ catch
 end
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('M',@(x) isa(x,'modelobj'));
 pp.addRequired('D',@isstruct);
 pp.addRequired('C',@(x) isstruct(x) || isempty(x));
 pp.parse(This,D,C);
-else
-pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
-pp = pp.addRequired('D',@isstruct);
-pp = pp.addRequired('C',@(x) isstruct(x) || isempty(x));
-pp = pp.parse(This,D,C);
-end
 
 %--------------------------------------------------------------------------
 

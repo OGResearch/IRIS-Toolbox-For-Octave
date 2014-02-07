@@ -49,7 +49,7 @@ function [Pp,Cp] = highlight(varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishghandle(varargin{1}))
     Ax = varargin{1};
@@ -101,16 +101,12 @@ for iAx = Ax(:).'
     range = range([1,end]);
     if isequal(getappdata(h,'tseries'),true)
         freq = datfreq(range(1));
-        timeScale = dat2grid(range);
+        timeScale = dat2dec(range,'centre');
         if isempty(timeScale)
             continue
         end
         if isnan(opt.around)
-            if freq > 0
-                around = 1/(2*freq);
-            else
-                around = 0.5;
-            end
+            around = 0.5 / max(1,freq);
         else
             around = opt.around ;
         end

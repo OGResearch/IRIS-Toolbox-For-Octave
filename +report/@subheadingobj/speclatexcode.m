@@ -1,11 +1,11 @@
-function C = speclatexcode(This)
+function C = speclatexcode(This,Hinfo)
 % speclatexcode  [Not a public function] Produce LaTeX code for subheading objects.
 %
 % Backend IRIS function.
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

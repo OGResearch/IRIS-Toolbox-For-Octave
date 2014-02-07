@@ -20,19 +20,19 @@
 % with the Matlab editor, anything after an exclamation point is displayed
 % red making it easier to spot the steady-state equations.
 %
-% Example 1
-% ==========
+% Example
+% ========
 %
 % The following steady state version will be, of course, valid only in
 % stationary models where we can safely remove lags and leads.
 %
 %     Lambda = Lambda{1}*(1+r)*beta !! r = 1/beta - 1;
 %
-% Example 2
-% ==========
+% Example
+% ========
 %
 %     log(A) = log(A{-1}) + epsilon_a !! A = 1;
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

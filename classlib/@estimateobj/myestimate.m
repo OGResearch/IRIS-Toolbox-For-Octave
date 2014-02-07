@@ -5,7 +5,7 @@ function [This,PStar,ObjStar,PCov,Hess] = myestimate(This,Data,Pri,EstOpt,LikOpt
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Set Optimization Toolbox options structure.
 EstOpt = optim.myoptimopts(EstOpt) ;

@@ -4,7 +4,9 @@ function Ax = movetosubplot(Ax,varargin)
 % Syntax
 % =======
 %
-%     Ax = movetosubplot(Ax,M,N,P)
+%     Ax = grfun.movetosubplot(Ax,M,N,P)
+%     Ax = grfun.movetosubplot(Ax,'bottom')
+%     Ax = grfun.movetosubplot(Ax,'top')
 %
 % Input arguments
 % ================
@@ -23,26 +25,45 @@ function Ax = movetosubplot(Ax,varargin)
 % Description
 % ============
 %
+% The syntax with `'bottom'` and `'top'` places the axes centered at,
+% respectively, the bottom or top of the figure window.
+%
 % Example
 % ========
-
+%
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
+
+if isempty(varargin)
+    return
+end
 
 oldPos = get(Ax,'position');
 Fig = get(Ax,'parent');
 set(Fig,'units','normalized');
 
+margin = 0.001;
+
 if ischar(varargin{1})
-    switch varargin{1}
+    where = varargin{1};
+    varargin(1) = []; 
+    switch where
         case 'bottom'
-            bottomPos = 0; %0.01;
+            bottomPos = margin;
+            if ~isempty(varargin)
+                bottomPos = varargin{1};
+                varargin(1) = []; %#ok<NASGU>
+            end
             newPos = [0.5-oldPos(3)/2,bottomPos,oldPos(3:4)];
         case 'top'
-            topPos = 1; %0.98;
+            topPos = 1 - margin;
+            if length(varargin) > 1
+                topPos = varargin{1};
+                varargin(1) = []; %#ok<NASGU>
+            end
             newPos = [0.5-oldPos(3)/2,topPos-oldPos(4),oldPos(3:4)];
     end
 else

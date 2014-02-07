@@ -24,8 +24,8 @@ function X = pct(X,S,varargin)
 % Options
 % ========
 %
-% * `'outputFreq='` [ `1` | `2` | `4` | `6` | `12` | *`Inf`* ] - Convert
-% the rate of change to the requested date frequency; `Inf` means plain
+% * `'outputFreq='` [ `1` | `2` | `4` | `6` | `12` | *empty* ] - Convert
+% the rate of change to the requested date frequency; empty means plain
 % rate of change with no conversion.
 %
 % Description
@@ -46,7 +46,7 @@ function X = pct(X,S,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     S; %#ok<VUNUS>
@@ -62,18 +62,10 @@ if isempty(X.data)
     return
 end
 
-if isequal(opt.outputfreq,Inf)
-    Q = 1;
-else
+Q = 1;
+if ~isempty(opt.outputfreq)
     inpFreq = datfreq(X.start);
-    if inpFreq == 0
-        utils.warning('tseries', ...
-            ['Cannot use the option ''outputFreq=''  ', ...
-            'for time series with indeterminate date frequency.']);
-        Q = 1;
-    else
-        Q = inpFreq / opt.outputfreq / abs(S);
-    end
+    Q = inpFreq / opt.outputfreq / abs(S);
 end
 
 X = unop(@tseries.mypct,X,0,S,Q);

@@ -58,7 +58,7 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % See help on built-in `plot` function for other options available.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin == 0
     H1 = [];

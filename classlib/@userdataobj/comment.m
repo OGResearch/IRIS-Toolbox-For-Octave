@@ -33,18 +33,13 @@ function varargout = comment(This,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin)
     Cmt = varargin{1};
     pp = inputParser();
-if ismatlab
     pp.addRequired('Cmt',@ischar);
     pp.parse(Cmt);
-else
-    pp = pp.addRequired('Cmt',@ischar);
-    pp = pp.parse(Cmt);
-end
 end
 
 %--------------------------------------------------------------------------

@@ -5,13 +5,13 @@ function [Outp,IxTseries] = catcheck(varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % Non-tseries inputs.
 try
-   IxTseries = cellfun(@istseries,varargin);
+   IxTseries = cellfun(@is.tseries,varargin);
    ixNumeric = cellfun(@isnumeric,varargin);
 catch
    IxTseries = cellfun('isclass',varargin,'tseries');

@@ -5,17 +5,18 @@ function [Path,Folder] = findtexmf(File)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 Path = '';
 Folder = '';
 
-% Try FINDTEXMF only on non-Unix platforms.
-if ~isunix()
-    [flag,outp] = system(['findtexmf --file-type=exe ',File]);
-else
+% Try FINDTEXMF first.
+[flag,outp] = system(['findtexmf --file-type=exe ',File]);
+
+% If FINDTEXMF fails, try to run WHICH on Unix platforms.
+if flag ~= 0 && isunix()
     % Try /usr/texbin first.
     list = dir(fullfile('/usr/texbin',File));
     if length(list) == 1

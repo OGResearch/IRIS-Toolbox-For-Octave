@@ -74,21 +74,14 @@ function [d,FigH,AxH,ObjH,LikH,EstH,BH] ...
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('M',@(x) isa(x,'estimateobj'));
 pp.addRequired('Pos',@(x) isa(x,'poster'));
 pp.addRequired('Pct',@isnumeric);
 pp.parse(This,POS,Pct);
-else
-pp = pp.addRequired('M',@(x) isa(x,'estimateobj'));
-pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp = pp.addRequired('Pct',@isnumeric);
-pp = pp.parse(This,POS,Pct);
-end
 
 % Parse options.
 [opt,varargin] = passvalopt('model.neighbourhood',varargin{:});

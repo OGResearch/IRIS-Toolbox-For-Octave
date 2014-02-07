@@ -5,7 +5,7 @@ function varargout = myfilter(Inp,Range,Order,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % The function `myfilter` is called from within `hpf`, `llf` and `bwf`.
 

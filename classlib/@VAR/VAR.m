@@ -86,7 +86,7 @@ classdef VAR < varobj
     %
     
     % -IRIS Toolbox.
-    % -Copyright (c) 2007-2013 IRIS Solutions Team.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         K = []; % Constant vector.
@@ -117,7 +117,6 @@ classdef VAR < varobj
         varargout = fprintf(varargin)
         varargout = get(varargin)
         varargout = group(varargin)
-        varargout = horzcat(varargin)
         varargout = infocrit(varargin)
         varargout = instrument(varargin)
         varargout = integrate(varargin)  
@@ -140,7 +139,7 @@ classdef VAR < varobj
     end
     
     methods (Hidden)
-%        varargout = end(varargin)
+        varargout = end(varargin)
         varargout = saveobj(varargin)
         varargout = specget(varargin)
         varargout = SVAR(varargin)
@@ -222,7 +221,7 @@ classdef VAR < varobj
             % `d.z`.
             
             % -IRIS Toolbox.
-            % -Copyright (c) 2007-2013 IRIS Solutions Team.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@varobj(varargin{:});
             if nargin == 0

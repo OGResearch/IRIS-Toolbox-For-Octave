@@ -8,7 +8,7 @@ function This = rmnan(This)
 % Only works for activation parameters at this point. 
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isnan(This)
     return ;

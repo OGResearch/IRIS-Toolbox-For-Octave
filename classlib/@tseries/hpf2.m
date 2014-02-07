@@ -4,7 +4,7 @@ function varargout = hpf2(varargin)
 % See help on [`tseries/hpf`](tseries/hpf).
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % BWF2, HPF2, LLF2
 

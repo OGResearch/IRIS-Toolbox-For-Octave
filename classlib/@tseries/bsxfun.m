@@ -1,4 +1,4 @@
-function X = bsxfun(FUnc,X,Y)
+function X = bsxfun(Func,X,Y)
 % bsxfunc  Standard BSXFUN implemented for tseries objects.
 %
 % Syntax
@@ -38,21 +38,14 @@ function X = bsxfun(FUnc,X,Y)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('Func',@isfunc);
+pp.addRequired('Func',@is.func);
 pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
 pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
-pp.parse(FUnc,X,Y);
-else
-pp = pp.addRequired('Func',@isfunc);
-pp = pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
-pp = pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
-pp = pp.parse(FUnc,X,Y);
-end
+pp.parse(Func,X,Y);
 
 %--------------------------------------------------------------------------
 
@@ -78,7 +71,7 @@ else
     start = Y.start;
 end
 
-data = bsxfun(FUnc,data1,data2);
+data = bsxfun(Func,data1,data2);
 
 if size(data,1) ~= nPer
     utils.error('tseries', ...

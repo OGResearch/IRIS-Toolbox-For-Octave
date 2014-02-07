@@ -41,7 +41,7 @@ function d = dbextend(d,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isstruct(d) || any(~cellfun(@isstruct,varargin))
     utils.error('data', ...
@@ -71,7 +71,7 @@ for j = 1 : numel(list)
     end
     x = d.(list{j});
     y = s.(list{j});
-    if istseries(x) && istseries(y)
+    if is.tseries(x) && is.tseries(y)
         if get(x,'freq') == get(y,'freq')
             % Two non-empty tseries with the same frequency.
             d.(list{j}) = [x;y];

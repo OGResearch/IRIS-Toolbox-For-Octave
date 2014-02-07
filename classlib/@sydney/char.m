@@ -29,7 +29,7 @@ function C = char(This,Flag)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent PLUSPREC TIMESPREC UMINUSPREC;
 if isempty(PLUSPREC) || isempty(TIMESPREC)
@@ -205,7 +205,7 @@ function C = xxArgs2Char(X,Flag)
 
 if isa(X,'sydney')
     C = char(X,Flag);
-elseif isfunc(X)
+elseif is.func(X)
     C = ['@',func2str(X)];
 elseif ischar(X)
     C = ['''',X,''''];
@@ -224,7 +224,7 @@ fmt = '%.15g';
 if ischar(A)
     % Name of a variable.
     C = A;
-elseif isnumericscalar(A)
+elseif is.numericscalar(A)
     % Constant.
     if A == 0
         C = '0';

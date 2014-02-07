@@ -37,21 +37,14 @@ function V = VAR(This,Select,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Select,Range);
-else
-pp = pp.addRequired('m',@ismodel);
-pp = pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.parse(This,Select,Range);
-end
 
 % Parse options.
 opt = passvalopt('model.VAR',varargin{:});

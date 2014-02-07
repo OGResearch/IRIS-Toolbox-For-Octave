@@ -125,7 +125,7 @@ code.LaTeX {
 <li><a href="../report/matrix.html"><code>matrix</code></a> - Insert matrix or numeric array.</li>
 <li><a href="../report/modelfile.html"><code>modelfile</code></a> - Write formatted model file.</li>
 <li><a href="../report/array.html"><code>array</code></a> - Insert array with user data.</li>
-<li><a href="../report/tex.html"><code>tex</code></a> - Include  code or verbatim text input in report.</li>
+<li><a href="../report/tex.html"><code>tex</code></a> - Include  code or verbatim input in report.</li>
 </ul>
 <h4 id="inspecting-and-maninpulating-report-objects">Inspecting and maninpulating report objects</h4>
 <ul>
@@ -161,9 +161,10 @@ help report/function_name</code></pre>
 <h4 id="generic-options">Generic options</h4>
 <p>The following generic options can be used on any of the report objects.</p>
 <ul>
-<li><code>'saveAs='</code> [ char | <em>empty</em> ] - (Not inheritable from parent objects) Save the LaTeX code generated for the respective report element in a text file under the specified name.</li>
+<li><p><code>'inputFormat='</code> [ *<code>'plain'</code> | <code>'latex'</code> ] - Input format for user supplied text strings (such as captions, headings, footnotes, etc); <code>'latex'</code> means they are assumed to be valid strings, and will be inserted straight into the report code with no modification.</p></li>
+<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - (Not inheritable from parent objects) Save the LaTeX code generated for the respective report element in a text file under the specified name.</p></li>
 </ul>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

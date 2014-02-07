@@ -5,22 +5,25 @@ function C = speclatexcode(This)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 br = sprintf('\n');
+C = '';
+
 This.nlead = double(anyrowname(This));
 % Start of tabular and tabular spec.
 if isempty(This.options.colspec)
     This.options.colspec = colspec(This);
 end
-C = begin(This);
 
-C = [C,br,'\hline',br];
+C = [C,begin(This)];
+
+C = [C, br, '\hline', br ];
 % User-supplied heading.
 if ~isempty(This.options.heading)
-    C = [C,br,This.options.heading];
+    C = [C, br, This.options.heading];
 end
 
 % Print column names.
@@ -42,13 +45,13 @@ if anycolname(This)
     if This.nlead == 1
         c1 = [' & ',c1];
     end
-    C = [C,c1,' \\',br,'\hline',br];
+    C = [C,c1,' \\', br, '\hline', br ];
 end
 
 % Cycle over the matrix rows.
 for iRow = 1 : This.nrow
     if This.nlead == 1
-        C = [C,br,'{',...
+        C = [C, br, '{',...
             interpret(This,This.options.rownames{iRow}),...
             '}']; %#ok<AGROW>
     end
@@ -70,7 +73,7 @@ for iRow = 1 : This.nrow
 end
 
 % Finish all environments.
-C = [C,br,finish(This)];
+C = [C, br, finish(This)];
 
 
 % Nested functions...

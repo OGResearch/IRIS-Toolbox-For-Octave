@@ -40,21 +40,14 @@ function Outp = bn(This,Inp,Range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
 pp = inputParser();
-if ismatlab
-pp.addRequired('m',@ismodel);
+pp.addRequired('m',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@(x) isnumeric(x));
 pp.parse(This,Inp,Range);
-else
-pp = pp.addRequired('m',@ismodel);
-pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp = pp.addRequired('range',@(x) isnumeric(x));
-pp = pp.parse(This,Inp,Range);
-end
 
 opt = passvalopt('model.bn',varargin{:});
 
@@ -104,7 +97,7 @@ for iLoop = 1 : nLoop
         end
         
         nUnit = mynunit(This,iLoop);
-        if ~iseye(Ta(1:nUnit,1:nUnit))
+        if ~is.eye(Ta(1:nUnit,1:nUnit))
             diffStationary(iLoop) = false;
             continue
         end

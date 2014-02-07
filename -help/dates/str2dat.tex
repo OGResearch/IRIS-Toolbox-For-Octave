@@ -2,13 +2,13 @@
 
     \filetitle{str2dat}{Convert strings to IRIS serial date numbers}{dates/str2dat}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 Dat = str2dat(S,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@ Dat = str2dat(S,...)
   dates.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,22 +25,23 @@ Dat = str2dat(S,...)
   \texttt{Dat} {[} numeric {]} - IRIS serial date numbers.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
   \texttt{'freq='} {[} \texttt{1} \textbar{} \texttt{2} \textbar{}
   \texttt{4} \textbar{} \texttt{6} \textbar{} \texttt{12} \textbar{}
-  \emph{empty} {]} - Enforce frequency.
+  \texttt{52} \textbar{} \texttt{365} \textbar{} \emph{empty} {]} -
+  Enforce frequency.
 \end{itemize}
 
 See help on \href{dates/dat2str}{\texttt{dat2str}} for other options
 available.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 \begin{verbatim}
 d = str2dat('04-2010','dateFormat=','MM-YYYY');

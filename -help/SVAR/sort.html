@@ -115,7 +115,7 @@ code.LaTeX {
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>A</code> [ SVAR ] - SVAR object with multiple parameterisations that will be sorted.</p></li>
-<li><p><code>Data</code> [ tseries | struct | empty ] - SVAR data (endogenous variables and structural shocks); the structural shocks will be re-ordered according to the SVAR parameterisations. You can leave the input argument <code>Data</code> empty.</p></li>
+<li><p><code>Data</code> [ struct | empty ] - SVAR database; if non-empty, the structural shocks will be re-ordered according to the SVAR parameterisations.</p></li>
 <li><p><code>SortBy</code> [ char ] - Text string that will be evaluated to compute the criterion by which the parameterisations will be sorted; see Description for how to write <code>SortBy</code>.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
@@ -140,5 +140,5 @@ code.LaTeX {
 <pre><code>S2 = sort(S1,[],&#39;S(:,1,1:4)&#39;)</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
 </html>

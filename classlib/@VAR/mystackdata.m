@@ -5,7 +5,7 @@ function [Y0,K0,Y1,G1,CI,NGrp] = mystackdata(This,Y,Opt) %#ok<INUSL>
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
  
 % Pretend plain VAR is a panel VAR with one group of data.
 if ~iscell(Y)

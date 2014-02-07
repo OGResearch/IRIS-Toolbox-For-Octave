@@ -5,7 +5,7 @@ function [FF,AA,PDb] = qreport(FileName,D,Range,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [opt,varargin] = passvalopt('qreport.qreport',varargin{:});
 
@@ -129,6 +129,9 @@ function [Inp,S] = xxGetNext(Inp,Opt)
 S = struct();
 S.tag = '';
 S.caption = '';
+S.isLogDev = false;
+S.isLinDev = false;
+S.isTransform = true;
 
 if isempty(Inp)
     return
@@ -139,11 +142,11 @@ if ischar(Inp)
     Inp = strrep(Inp,'!**','!..');
     % Q-file code from `qplot`.
     tags = '#|!\+\+|!\-\-|!::|!ii|!II|!\.\.|!\^\^';
-    [tok,e] = regexp(Inp,['(',tags,')(\^?)(.*?)(?=',tags,'|$)'], ...
+    [tok,e] = regexp(Inp,['(',tags,')([\^#@]{0,2})(.*?)(?=',tags,'|$)'], ...
         'tokens','end','once');
     if ~isempty(tok)
         S.tag = tok{1};
-        doTransform = ~strncmp(tok{2},'^',1);
+        doFlags(tok{2});
         tok = regexp(tok{3},'([^\n]*)(.*)','once','tokens');
         S.caption = tok{1};
         body = tok{2};
@@ -155,10 +158,7 @@ elseif iscellstr(Inp)
     Inp = Inp(2:end);
     if ~isempty(c)
         S.tag = Opt.plotfunc;
-        doTransform = ~strncmp(c,'^',1);
-        if ~doTransform
-            c = c(2:end);
-        end
+        doFlags(c(1:min(2,end)));
         [body,S.caption] = preparser.labeledexpr(c);
     else
         S.tag = '!..';
@@ -188,10 +188,11 @@ end
 % Expressions and legends.
 [S.eval,S.legend] = xxReadBody(body);
 
-S.transform = [];
-if doTransform && ~strcmp(S.tag,'!++')
-    S.transform = Opt.transform;
-end
+    function doFlags(C)
+        S.isTransform = ~any(C == '^');
+        S.isLogDev = any(C == '@');
+        S.isLinDev = ~S.isLogDev && any(C == '#');
+    end
 
 end % xxGetNext()
 
@@ -225,27 +226,49 @@ end % xxResolveAutoSubplot()
 %**************************************************************************
 function Q = xxEvalExpr(Q,D,Opt)
 
-doround = ~isinf(Opt.round) && ~isnan(Opt.round);
+isRound = ~isinf(Opt.round) && ~isnan(Opt.round);
+
+invalidBase = {};
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
         if strcmp(ch.tag,'!..')
             continue
         end
-        neval = length(ch.eval);
-        series = cell(1,neval);
+        nSeries = length(ch.eval);
+        series = cell(1,nSeries);
         [series{:}] = dbeval(D,Opt.sstate,ch.eval{:});
-        if isa(ch.transform,'function_handle')
-            for k = 1 : length(series)
-                series{k} = ch.transform(series{k});
+        if ch.isTransform
+            for k = 1 : nSeries
+                % First, calculate deviations, then apply a tranformation function.
+                if is.numericscalar(Opt.deviationfrom)
+                    t = Opt.deviationfrom;
+                    if isa(series{k},'tseries')
+                        if ~isfinite(series{k}(t))
+                            invalidBase{end+1} = ch.eval{:}; %#ok<AGROW>
+                        end
+                        series{k} = xxDeviationFrom(series{k}, ...
+                            t,ch.isLogDev,ch.isLinDev,Opt.deviationtimes);
+                    end
+                end
+                if isa(Opt.transform,'function_handle')
+                    series{k} = Opt.transform(series{k});
+                end
             end
         end
-        if doround
+        if isRound
             series = myround(series);
         end
         Q{i}.children{j}.series = series;
     end
 end
+
+if ~isempty(invalidBase)
+    utils.warning('qreport', ...
+        ['This expression results in NaN or Inf in base period ',...
+        'for calculating deviations: ''%s''.'], ...
+        invalidBase{:})
+end;
 
     function x = myround(x)
         for ii = 1 : length(x)
@@ -279,10 +302,17 @@ for i = 1 : length(Q)
                 ch.caption = Opt.caption;
             else
                 ch.caption = [sprintf('%s & ',ch.eval{1:end-1}),ch.eval{end}];
-                if isa(ch.transform,'function_handle')
-                    c = char(ch.transform);
-                    c = regexprep(c,'^@\(.*?\)','','once');
-                    ch.caption = [ch.caption,', ',c];
+                if ch.isTransform
+                    func = '';
+                    if is.numericscalar(Opt.deviationfrom)
+                        func = [', Dev from ',dat2char(Opt.deviation)];
+                    end
+                    if isa(Opt.transform,'function_handle')
+                        c = func2str(ch.transform);
+                        func = [func,', ', ...
+                            regexprep(c,'^@\(.*?\)','','once')]; %#ok<AGROW>
+                    end
+                    ch.caption = [ch.caption,func];
                 end
             end
         end
@@ -327,8 +357,9 @@ for i = 1 : length(Q)
                 % New panel/subplot.
                 doNewPanel();
                 
-                x = Q{i}.children{j}.series;
-                leg = Q{i}.children{j}.legend;
+                ch = Q{i}.children{j};
+                x = ch.series;
+                leg = ch.legend;
                 
                 % Get title; it can be either a string or a function handle that will be
                 % applied to the plotted tseries object.
@@ -350,10 +381,9 @@ for i = 1 : length(Q)
                 if ~isempty(tit)
                     grfun.title(tit,'interpreter=',Opt.interpreter);
                 end
-                % Create a name for the entry in the output database based
-                % on the (user-supplied) prefix and the current panel's
-                % name. Substitute '_' for any [^\w]. If not a valid Matlab
-                % name, replace with "Panel#".
+                % Create a name for the entry in the output database based on the
+                % (user-supplied) prefix and the name of the current panel. Substitute '_'
+                % for any [^\w]. If not a valid Matlab name, replace with "Panel#".
                 if Opt.outputdata && addToOutput
                     plotDbName = tit;
                     plotDbName = regexprep(plotDbName,'[ ]*//[ ]*','___');
@@ -430,7 +460,7 @@ isYGrid = Opt.grid;
 switch Tag
     case '!--' % Line graph.
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = plot(AA,Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
             plot(Range,Data,varargin{:});
@@ -440,14 +470,14 @@ switch Tag
         end
     case '!::' % Bar graph.
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = bar(Range,[X{:}],varargin{:});
         else
             bar(Range,Data,varargin{:});
         end
     case '!ii' % Stem graph
         Data = [X{:}];
-        if istseries(Data)
+        if is.tseries(Data)
             [h,Range,Data] = stem(Range,[X{:}],varargin{:});
         else
             stem(Range,Data,varargin{:});
@@ -639,3 +669,15 @@ else
 end
 
 end % xxGetTitle()
+
+
+%**************************************************************************
+function X = xxDeviationFrom(X,T,IsLogDev,IsLinDev,Times)
+
+if IsLinDev
+    X = Times*(X - X(T));
+elseif IsLogDev
+    X = Times*(X./X(T) - 1);
+end
+
+end % xxDeviationFrom()

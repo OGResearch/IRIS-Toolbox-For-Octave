@@ -65,7 +65,7 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 utils.warning('obsolete', ...
     ['The function forecast(...) is obsolete, and will be removed from ', ...
@@ -639,7 +639,7 @@ function d = dp2db(this,d,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(varargin)
     delog = true;
@@ -692,7 +692,7 @@ end
         end
         % Add comments to time series.
         for i = find(this.nametype <= 3)
-            if isfield(d,this.name{i}) && istseries(d.(this.name{i}))
+            if isfield(d,this.name{i}) && is.tseries(d.(this.name{i}))
                 if ~isempty(comments)
                     temp = comments;
                     nanIndex = ~cellfun(@ischar,temp);

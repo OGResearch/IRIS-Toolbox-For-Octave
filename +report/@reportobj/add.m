@@ -6,12 +6,14 @@ function This = add(This,Child,varargin)
 % No help provided.
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 par = [];
 x = This;
+
+Child.hInfo = This.hInfo;
 
 while true
     if any(strcmpi(shortclass(x),Child.childof)) ...
@@ -29,9 +31,8 @@ if ~isequal(par,[])
     % Set parent first so that it is available in `specargin` and `setoptions`.
     Child.parent = par;
     [Child,varargin] = specargin(Child,varargin{:});
-    Child = setoptions(Child,par.options,varargin{:});
+    Child = setoptions(Child,par.options,varargin{:});    
     par.children{end+1} = Child;
-    % Child.autodata = par.autodata;
 else
     label1 = shortclass(Child);
     if ~isempty(Child.title)

@@ -2,13 +2,13 @@
 
     \filetitle{table}{Start new table}{report/table}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 P.table(Caption,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@ P.table(Caption,...)
   Description for splitting the title or subtitle into multiple lines.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -97,11 +97,11 @@ P.table(Caption,...)
   vertical line (divider) will be placed.
 \end{itemize}
 
-\paragraph{Generic options}\label{generic-options}
+\paragraph{Generic options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 Tables are top-level report objects and cannot be nested within other
 report objects, except \href{report/align}{\texttt{align}}. Table
@@ -126,14 +126,14 @@ the second cell of the \texttt{'dateFormat='} option will be used for
 formatting.
 
 \subparagraph{User-defined structure of the table
-columns}\label{user-defined-structure-of-the-table-columns}
+columns}
 
-Use can use the \texttt{'columnStruct='} option to define your own table
-columns. This gives you more flexibility than when using the
-\texttt{'range='} option in defining the content of the table.
+Use the option \texttt{'colStruct='} to define your own table columns.
+This gives you more flexibility than when using the \texttt{'range='}
+option in defining the content of the table.
 
-The option \texttt{'columnStruct='} must be a 1-by-N struct, where N is
-the number of columns you want in the table, with the following fields:
+The option \texttt{'colStruct='} must be a 1-by-N struct, where N is the
+number of columns you want in the table, with the following fields:
 
 \begin{itemize}
 \item
@@ -149,7 +149,7 @@ the number of columns you want in the table, with the following fields:
   resulted in a numeric scalar.
 \end{itemize}
 
-\subparagraph{Titles and subtitles}\label{titles-and-subtitles}
+\subparagraph{Titles and subtitles}
 
 The input argument \texttt{Caption} can be either a text string, or a
 1-by-2 cell array of strings. In the latter case, the first cell will be
@@ -162,7 +162,7 @@ LaTeX commands wrapped in curly brackets:
 is the width of an extra vertical space (in points) added between the
 respective lines.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 Compare the headers of these two tables:
 

@@ -2,13 +2,13 @@
 
     \filetitle{array}{Insert array with user data}{report/array}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 P.array(Caption,Data)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -23,7 +23,7 @@ P.array(Caption,Data)
   text entries are allowed.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -107,11 +107,11 @@ P.array(Caption,Data)
   \texttt{\textbackslash{}textit\{...\}}).
 \end{itemize}
 
-\paragraph{Generic options}\label{generic-options}
+\paragraph{Generic options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}\label{description}
+\paragraph{Description}
 
 The input cell array \texttt{Data} can contain either strings or numeric
 values, or horizontal rules. Numeric values are printed using the
@@ -122,7 +122,7 @@ the respective row, with all other cells empty in that row. If you wish
 to include a \LaTeX~command or a piece of \LaTeX~code, you must enclose
 it in curly brackets.
 
-\subparagraph{Titles and subtitles}\label{titles-and-subtitles}
+\subparagraph{Titles and subtitles}
 
 The input argument \texttt{Caption} can be either a text string, or a
 1-by-2 cell array of strings. In the latter case, the first cell will be
@@ -135,20 +135,51 @@ LaTeX commands wrapped in curly brackets:
 is the width of an extra vertical space (in points) added between the
 respective lines.
 
-\paragraph{Example}\label{example}
+\paragraph{Example}
 
 These commands create a table with two rows separated by a horizontal
 rule, and three columns in each of them. The middle columns will have
 Greek letters printed in \LaTeX~math mode.
 
 \begin{verbatim}
+x = report.new();
+
 A = { ...
     'First row','{\$\textbackslash alpha\$}',10000; ...
     '-----','',''; ...
-    'Second row,'{\$\textbackslash beta\$}',20000; ...
+    'Second row','{\$\textbackslash beta\$}',20000; ...
 };
 
-P.array('My table',A);
+x.array('My Table',A);
+
+x.publish('test1.pdf');
+
+open test1.pdf;
+\end{verbatim}
+
+\paragraph{Example}
+
+Use the option \texttt{'inputFormat='} to change the way the input
+strings are interpreted. Compare the two tables in the resulting PDF.
+
+\begin{verbatim}
+x = report.new();
+
+A = { ...
+    1,2,3; ...
+    '$\alpha$','b','c', ...
+    };
+
+x.array('Table with Plain Input Format (Default)',A, ...
+    'heading=',{'A','B','$\Gamma$';'-----','',''});
+
+x.array('Table with LaTeX Input Format',A, ...
+    'heading=',{'A','B','$\Gamma$';'-----','',''}, ...
+    'inputFormat=','latex');
+
+x.publish('test2.pdf');
+
+open test2.pdf;
 \end{verbatim}
 
 

@@ -32,7 +32,7 @@ for ip = find(This.nameType == 2)
         continue
     end
     x = Inp.(name);
-    valid(ip) = isnumericscalar(x);
+    valid(ip) = is.numericscalar(x);
     if ~valid(ip)
         continue
     end

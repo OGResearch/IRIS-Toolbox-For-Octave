@@ -29,19 +29,13 @@ function [This,Y0,K0,Y1,G1] = covmat(C,Repeat,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
-pp.addRequired('Rep',@(x) isnumericscalar(x) && x > 0 && x == round(x));
+pp.addRequired('Rep',@(x) is.numericscalar(x) && x > 0 && x == round(x));
 pp.parse(C,Repeat);
-else
-pp = pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
-pp = pp.addRequired('Rep',@(x) isnumericscalar(x) && x > 0 && x == round(x));
-pp = pp.parse(C,Repeat);
-end
 
 %--------------------------------------------------------------------------
 

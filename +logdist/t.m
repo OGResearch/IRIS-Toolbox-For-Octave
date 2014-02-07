@@ -37,7 +37,7 @@ function F = t(Mean,Std,Df)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team and Boyan Bejanov.
+% -Copyright (c) 2007-2014 IRIS Solutions Team and Boyan Bejanov.
 
 if nargin<3
     Df = Inf ;

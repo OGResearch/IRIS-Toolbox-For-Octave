@@ -4,7 +4,7 @@ function [This,Y0,K0,Y1,G1] = litterman(Rho,Mu,Lmb,varargin)
 % Syntax
 % =======
 %
-%     O = BVAR.litterman(Rho,Sgm,Lmb)
+%     O = BVAR.litterman(Rho,Mu,Lmb)
 %
 % Input arguments
 % ================
@@ -26,7 +26,7 @@ function [This,Y0,K0,Y1,G1] = litterman(Rho,Mu,Lmb,varargin)
 % Description
 % ============
 %
-% See [the section explaining the weights on prior dummies](BVAR/Contents),
+% See the section explaining the [weights on prior dummies](BVAR/Contents),
 % i.e. the input argument `Mu`.
 %
 % Example
@@ -34,20 +34,13 @@ function [This,Y0,K0,Y1,G1] = litterman(Rho,Mu,Lmb,varargin)
 %
 
 % -IRIS Toolbox.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('Rho',@(x) isnumeric(x) && all(x >= 0 & x <= 1));
 pp.addRequired('Mu',@(x) isnumeric(x) && all(x >= 0));
-pp.addRequired('Lmb',@(x) isnumericscalar(x) && x >= 0);
+pp.addRequired('Lmb',@(x) is.numericscalar(x) && x >= 0);
 pp.parse(Rho,Mu,Lmb);
-else
-pp = pp.addRequired('Rho',@(x) isnumeric(x) && all(x >= 0 & x <= 1));
-pp = pp.addRequired('Mu',@(x) isnumeric(x) && all(x >= 0));
-pp = pp.addRequired('Lmb',@(x) isnumericscalar(x) && x >= 0);
-pp = pp.parse(Rho,Mu,Lmb);
-end
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...

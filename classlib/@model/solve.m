@@ -73,7 +73,7 @@ function [This,NPath,EigVal] = solve(This,varargin)
 %
 
 % -IRIS Toolbox. 2008/10/20.
-% -Copyright (c) 2007-2013 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.solve',varargin{1:end});
 
@@ -105,8 +105,8 @@ end
 expMatrices = true;
 [This,NPath,nanDeriv,sing2] = mysolve(This,Inf,opt,expMatrices);
 
-if (opt.warning || opt.error) && any(NPath ~= 1) && iswarning('model')
-    doErrorWarning();
+if (opt.warning || opt.error) && any(NPath ~= 1)
+    doErrWarn();
 end
 
 if nargout > 2
@@ -114,13 +114,13 @@ if nargout > 2
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
 
     
-    function doErrorWarning()
+    function doErrWarn()
         if opt.error
             func = @utils.error;
         else
@@ -128,7 +128,7 @@ end
         end
         [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
         func('model',body,args{:});
-    end % doErrorWarning()
+    end % doErrWarn()
 
 
 end
