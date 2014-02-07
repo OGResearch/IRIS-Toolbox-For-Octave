@@ -1,9 +1,10 @@
 ts = tseries(qq(2010,1:18),@(n)randn(n,5));
 
 try
-  barcon(ts)
+  barcon(ts);
 catch err
-if ~isempty(strfind(err.message,'''h'' undefined near line'))
+  close all;
+  if ~isempty(strfind(err.message,'''h'' undefined near line'))
     error('expected error:: variable value did not reach package function');
   else
     rethrow(err);
