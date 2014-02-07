@@ -31,8 +31,13 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('Mu',@is.numericscalar);
 pp.parse(Mu);
+else
+pp = pp.addRequired('Mu',@is.numericscalar);
+pp = pp.parse(Mu);
+end
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...

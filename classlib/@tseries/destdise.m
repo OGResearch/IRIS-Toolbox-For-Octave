@@ -31,10 +31,17 @@ function This = destdise(This,XMean,XStd)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('X',@is.tseries);
 pp.addRequired('XMean',@isnumeric);
 pp.addRequired('XStd',@isnumeric);
 pp.parse(This,XMean,XStd);
+else
+pp = pp.addRequired('X',@is.tseries);
+pp = pp.addRequired('XMean',@isnumeric);
+pp = pp.addRequired('XStd',@isnumeric);
+pp = pp.parse(This,XMean,XStd);
+end
 
 %--------------------------------------------------------------------------
 

@@ -8,10 +8,17 @@ function This = group(This,Grp)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Group',@(x) ...
     ischar(x) || is.numericscalar(x) || islogical(Grp));
 pp.parse(This,Grp);
+else
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('Group',@(x) ...
+    ischar(x) || is.numericscalar(x) || islogical(Grp));
+pp = pp.parse(This,Grp);
+end
 
 %--------------------------------------------------------------------------
 

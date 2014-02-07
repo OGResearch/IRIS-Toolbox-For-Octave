@@ -61,8 +61,13 @@ function [M, Sig, W, fh] = kcluster(Sample, varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('Sample', @isnumeric );
 pp.parse( Sample );
+else
+pp = pp.addRequired('Sample', @isnumeric );
+pp = pp.parse( Sample );
+end
 
 % Parse options.
 opt = passvalopt('dest.kcluster',varargin{:});
@@ -231,6 +236,15 @@ end
                 d = sqrt( sum( C.*C, 2 ) ) ;
             end
             
+        end %refineCenters
+    end %xxKcluster
+
+end % kcluster().
+
+
+
+
+        
         end %refineCenters
     end %xxKcluster
 

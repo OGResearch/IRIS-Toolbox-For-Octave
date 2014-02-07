@@ -41,9 +41,15 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('X',@is.tseries);
 pp.addRequired('K',@is.numericscalar);
 pp.parse(X,K);
+else
+pp = pp.addRequired('X',@is.tseries);
+pp = pp.addRequired('K',@is.numericscalar);
+pp = pp.parse(X,K);
+end
 
 %--------------------------------------------------------------------------
 

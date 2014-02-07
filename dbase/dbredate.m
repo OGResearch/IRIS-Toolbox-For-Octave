@@ -36,10 +36,17 @@ function D = dbredate(D,OldDate,NewDate)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('d',@isstruct);
 pp.addRequired('oldDate',@is.numericscalar);
 pp.addRequired('newDate',@is.numericscalar);
 pp.parse(D,OldDate,NewDate);
+else
+pp = pp.addRequired('d',@isstruct);
+pp = pp.addRequired('oldDate',@is.numericscalar);
+pp = pp.addRequired('newDate',@is.numericscalar);
+pp = pp.parse(D,OldDate,NewDate);
+end
 
 %--------------------------------------------------------------------------
 

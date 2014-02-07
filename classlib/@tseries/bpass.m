@@ -72,10 +72,17 @@ end
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('x',@is.tseries);
 pp.addRequired('band',@(x) isnumeric(x) && length(x) == 2);
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Band,Range);
+else
+pp = pp.addRequired('x',@is.tseries);
+pp = pp.addRequired('band',@(x) isnumeric(x) && length(x) == 2);
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(X,Band,Range);
+end
 
 % Parse options.
 [opt,varargin] = passvalopt('tseries.bpass',varargin{:});

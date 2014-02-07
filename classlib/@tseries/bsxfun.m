@@ -42,10 +42,17 @@ function X = bsxfun(Func,X,Y)
 
 % Validate input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('Func',@is.func);
 pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
 pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
 pp.parse(Func,X,Y);
+else
+pp = pp.addRequired('Func',@is.func);
+pp = pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
+pp = pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
+pp = pp.parse(Func,X,Y);
+end
 
 %--------------------------------------------------------------------------
 

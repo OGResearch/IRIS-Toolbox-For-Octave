@@ -29,9 +29,15 @@ function Phi = vma(This,N)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('N',@is.numericscalar);
 pp.parse(This,N);
+else
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('N',@is.numericscalar);
+pp = pp.parse(This,N);
+end
 
 %--------------------------------------------------------------------------
 

@@ -33,11 +33,19 @@ function This = addgroup(This,GroupName,GroupContentsList)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser() ;
+if ismatlab
 pp.addRequired('G',@(x) isa(x,'grouping')) ;
 pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
 pp.addRequired('GroupContents',@(x) ~isempty(x) ...
     && (iscell(x) || ischar(x)) ) ;
 pp.parse(This,GroupName,GroupContentsList) ;
+else
+pp = pp.addRequired('G',@(x) isa(x,'grouping')) ;
+pp = pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
+pp = pp.addRequired('GroupContents',@(x) ~isempty(x) ...
+    && (iscell(x) || ischar(x)) ) ;
+pp = pp.parse(This,GroupName,GroupContentsList) ;
+end
 
 if ischar(GroupContentsList)
     GroupContentsList = regexp(GroupContentsList,'[^ ,;]+','match') ;
@@ -93,5 +101,4 @@ doChkUnique() ;
 
 
 end
-
 

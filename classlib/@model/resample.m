@@ -91,12 +91,21 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
 pp.addRequired('Range',@(x) isnumeric(x));
 pp.addRequired('NDraw',@(x) is.numericscalar(x));
 pp.addRequired('J',@(x) isempty(x) || isstruct(x));
 pp.parse(This,Inp,Range,NDraw,J);
+else
+pp = pp.addRequired('M',@is.model);
+pp = pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x));
+pp = pp.addRequired('NDraw',@(x) is.numericscalar(x));
+pp = pp.addRequired('J',@(x) isempty(x) || isstruct(x));
+pp = pp.parse(This,Inp,Range,NDraw,J);
+end
 
 % Parse options.
 opt = passvalopt('model.resample',varargin{:});

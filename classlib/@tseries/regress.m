@@ -66,10 +66,17 @@ end
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('y',@is.tseries);
 pp.addRequired('x',@is.tseries);
 pp.addRequired('range',@isnumeric);
 pp.parse(Y,X,Range);
+else
+pp = pp.addRequired('y',@is.tseries);
+pp = pp.addRequired('x',@is.tseries);
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(Y,X,Range);
+end
 
 % Parse options.
 opt = passvalopt('tseries.regress',varargin{:});

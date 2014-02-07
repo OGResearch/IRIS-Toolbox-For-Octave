@@ -41,10 +41,17 @@ function V = VAR(This,Select,Range,varargin)
 
 % Parse required arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('m',@is.model);
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Select,Range);
+else
+pp = pp.addRequired('m',@is.model);
+pp = pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(This,Select,Range);
+end
 
 % Parse options.
 opt = passvalopt('model.VAR',varargin{:});
