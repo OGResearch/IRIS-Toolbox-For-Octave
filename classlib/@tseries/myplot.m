@@ -170,9 +170,14 @@ end
 % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
 % we also handle cases where the current figure includes both tseries and
 % non-tseries graphs.
-obj = datacursormode(gcf());
-set(obj,'UpdateFcn',@utils.datacursor);
-
+try
+    obj = datacursormode(gcf());
+    set(obj,'UpdateFcn',@utils.datacursor);
+catch err
+    if ismatlab
+        rethrow(err);
+    end
+end
 
 % Nested functions...
 
