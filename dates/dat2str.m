@@ -280,12 +280,22 @@ end
             'EE|E|WW|W|', ...
             'DD|D', ...
             ')'];
-        
-        replaceFunc = @doReplace; %#ok<NASGU>
+            
+        if ismatlab
+            replaceFunc = @doReplace; %#ok<NASGU>
+        end
         
         while true
             found = false;
-            fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
+            if ismatlab
+                fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
+            else
+                tokExt = regexp(fmt,ptn,'once','tokenExtents');
+                if ~isempty(tokExt)
+                    fmt = [fmt(1:tokExt(1)-1), ...
+                      doReplace(fmt(tokExt(1):tokExt(2))), fmt(tokExt(2)+1:end)];
+                end
+            end
             if ~found
                 break
             end
