@@ -100,12 +100,7 @@ end
         
         % Intro message.
         fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
-        fprintf('version #%s.',irisget('version'));
-        fprintf('\n');
-        fprintf('\tCheck out <a href="http://groups.google.com/group/iris-toolbox">');
-        fprintf('IRIS Toolbox forum</a>');
-        fprintf(' and ');
-        fprintf('<a href="http://iris-toolbox.blogspot.com">IRIS Toolbox blog</a>.');
+        fprintf('Release #%s.',irisget('version'));
         fprintf('\n');
         fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
         fprintf('<a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">');
