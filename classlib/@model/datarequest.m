@@ -68,29 +68,29 @@ try %#ok<TRYNC>
     end
 end
 
-switch Req
+switch lower(Req)
     case 'init'
         % Initial condition for the mean and MSE of Alpha.
         if nargout < 4
-            [xInitMean,nanInitMean] = doData2XInit();
-            xInitMse = [];
-            aInitMean = doXInit2AInit();
-            varargout{1} = aInitMean;
-            varargout{2} = xInitMean;
-            varargout{3} = nanInitMean;
+            [xbInitMean,ixNanInitMean] = doData2XbInit();
+            xbInitMse = [];
+            alpInitMean = doXbInit2AlpInit();
+            varargout{1} = alpInitMean;
+            varargout{2} = xbInitMean;
+            varargout{3} = ixNanInitMean;
         else
-            [xInitMean,nanInitMean,xInitMse,nanInitMse] = doData2XInit();
-            [aInitMean,aInitMse] = doXInit2AInit();
-            varargout{1} = aInitMean;
-            varargout{2} = xInitMean;
-            varargout{3} = nanInitMean;
-            varargout{4} = aInitMse;
-            varargout{5} = xInitMse;
-            varargout{6} = nanInitMse;
+            [xbInitMean,ixNanInitMean,xbInitMse,ixNanInitMse] = doData2XbInit();
+            [alpInitMean,alpInitMse] = doXbInit2AlpInit();
+            varargout{1} = alpInitMean;
+            varargout{2} = xbInitMean;
+            varargout{3} = ixNanInitMean;
+            varargout{4} = alpInitMse;
+            varargout{5} = xbInitMse;
+            varargout{6} = ixNanInitMse;
         end
-    case 'xinit'
+    case 'xbinit'
         % Initial condition for the mean and MSE of X.
-        [varargout{1:nargout}] = doData2XInit();
+        [varargout{1:nargout}] = doData2XbInit();
     case 'y'
         % Measurement variables; a star
         y = doData2Y();
@@ -142,48 +142,49 @@ end
 % Nested functions.
 
 %**************************************************************************
-    function [XInitMean,NanInitMean,XInitMse,NanInitMse] = doData2XInit()
-        XInitMean = nan(nb,1,nAlt);
-        XInitMse = [];
-        % Mean.
+    function [XbInitMean,IxNanInitMean,XbInitMse,IxNanInitMse] ...
+            = doData2XbInit()
+        XbInitMean = nan(nb,1,nAlt);
+        XbInitMse = [];
+        % Xf Mean.
         if ~isempty(dMean)
             realId = real(This.solutionid{2}(nf+1:end));
             imagId = imag(This.solutionid{2}(nf+1:end));
-            XInitMean = db2array(dMean,This.name(realId),Range(1)-1, ...
+            XbInitMean = db2array(dMean,This.name(realId),Range(1)-1, ...
                 imagId,This.log(realId),warn);
-            XInitMean = permute(XInitMean,[2,1,3]);
+            XbInitMean = permute(XbInitMean,[2,1,3]);
         end
-        % MSE.
+        % Xf MSE.
         if nargout >= 3 && ~isempty(dMse)
-            XInitMse = rangedata(dMse,Range(1)-1);
-            XInitMse = ipermute(XInitMse,[3,2,1,4]);
+            XbInitMse = rangedata(dMse,Range(1)-1);
+            XbInitMse = ipermute(XbInitMse,[3,2,1,4]);
         end
         % Detect NaN init conditions.
-        NanInitMean = false(nb,1);
-        NanInitMse = false(nb,1);
-        for ii = 1 : size(XInitMean,3)
+        IxNanInitMean = false(nb,1);
+        IxNanInitMse = false(nb,1);
+        for ii = 1 : size(XbInitMean,3)
             required = This.icondix(1,:,min(ii,end));
             required = required(:);
-            NanInitMean = NanInitMean | ...
-                (isnan(XInitMean(:,1,ii)) & required);
-            if ~isempty(XInitMse)
-                NanInitMse = NanInitMse | ...
-                    (any(isnan(XInitMse(:,:,ii)),2) & required);
+            IxNanInitMean = IxNanInitMean | ...
+                (isnan(XbInitMean(:,1,ii)) & required);
+            if ~isempty(XbInitMse)
+                IxNanInitMse = IxNanInitMse | ...
+                    (any(isnan(XbInitMse(:,:,ii)),2) & required);
             end
         end
         % Report NaN init conditions in mean.
-        if any(NanInitMean)
+        if any(IxNanInitMean)
             id = This.solutionid{2}(nf+1:end);
-            NanInitMean = myvector(This,id(NanInitMean)-1i);
+            IxNanInitMean = myvector(This,id(IxNanInitMean)-1i);
         else
-            NanInitMean = {};
+            IxNanInitMean = {};
         end
         % Report NaN init conditions in MSE.
-        if any(NanInitMse)
+        if any(IxNanInitMse)
             id = This.solutionid{2}(nf+1:end);
-            NanInitMse = myvector(This,id(NanInitMse)-1i);
+            IxNanInitMse = myvector(This,id(IxNanInitMse)-1i);
         else
-            NanInitMse = {};
+            IxNanInitMse = {};
         end
     end % doData2XInit().
 
@@ -191,45 +192,45 @@ end
 % Get initial conditions for xb and alpha.
 % Those that are not required are set to `NaN` in `xInitMean, and
 % to 0 when computing `aInitMean`.
-    function [AInitMean,AInitMse] = doXInit2AInit()
-        % Transform mean x to alpha.
-        nData = size(xInitMean,3);
+    function [AlpInitMean,AlpInitMse] = doXbInit2AlpInit()
+        % Transform Mean[Xb] to Mean[Alpha].
+        nData = size(xbInitMean,3);
         if nData < nAlt
-            xInitMean(:,1,end+1:nAlt) = ...
-                xInitMean(:,1,end*ones(1,nAlt-nData));
+            xbInitMean(:,1,end+1:nAlt) = ...
+                xbInitMean(:,1,end*ones(1,nAlt-nData));
             nData = nAlt;
         end
-        AInitMean = xInitMean;
+        AlpInitMean = xbInitMean;
         for iiData = 1 : nData
             U = This.solution{7}(:,:,min(iiData,end));
             if all(~isnan(U(:)))
                 notRequired = ~This.icondix(1,:,min(iiData,end));
-                inx = isnan(xInitMean(:,1,iiData)) & notRequired(:);
-                AInitMean(inx,1,iiData) = 0;
-                AInitMean(:,1,iiData) = U\AInitMean(:,1,iiData);
+                inx = isnan(xbInitMean(:,1,iiData)) & notRequired(:);
+                AlpInitMean(inx,1,iiData) = 0;
+                AlpInitMean(:,1,iiData) = U\AlpInitMean(:,1,iiData);
             else
-                AInitMean(:,1,iiData) = NaN;
+                AlpInitMean(:,1,iiData) = NaN;
             end
         end
-        % Transform MSE x to alpha.
-        if nargout < 2 || isempty(xInitMse)
-            AInitMse = xInitMse;
+        % Transform MSE[Xb] to MSE[Alpha].
+        if nargout < 2 || isempty(xbInitMse)
+            AlpInitMse = xbInitMse;
             return
         end
-        nData = size(xInitMse,4);
+        nData = size(xbInitMse,4);
         if nData < nAlt
-            xInitMse(:,:,1,end+1:nAlt) = ...
-                xInitMse(:,:,1,end*ones(1,nAlt-nData));
+            xbInitMse(:,:,1,end+1:nAlt) = ...
+                xbInitMse(:,:,1,end*ones(1,nAlt-nData));
             nData = nAlt;
         end
-        AInitMse = xInitMse;
+        AlpInitMse = xbInitMse;
         for iiData = 1 : nData
             U = This.solution{7}(:,:,min(iiData,end));
             if all(~isnan(U(:)))
-                AInitMse(:,:,1,iiData) = U\AInitMse(:,:,1,iiData);
-                AInitMse(:,:,1,iiData) = AInitMse(:,:,1,iiData)/U.';
+                AlpInitMse(:,:,1,iiData) = U\AlpInitMse(:,:,1,iiData);
+                AlpInitMse(:,:,1,iiData) = AlpInitMse(:,:,1,iiData)/U.';
             else
-                AInitMse(:,:,1,iiData) = NaN;
+                AlpInitMse(:,:,1,iiData) = NaN;
             end
         end
     end % doXInit2AInit().
