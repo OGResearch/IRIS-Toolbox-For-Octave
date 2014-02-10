@@ -116,6 +116,9 @@ end % xxReduceSpaces().
 function C = xxNum2Str(X,Fmt)
 try
     C = num2str(X,Fmt);
+    if ~ismatlab && isempty(Fmt)
+        error('Invalid format');
+    end
 catch %#ok<CTCH>
     C = num2str(X);
 end
