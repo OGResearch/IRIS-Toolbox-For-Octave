@@ -102,6 +102,6 @@ expS12 = tseries(range,[ ...
    2.982451512496400
    2.136182829967600]);
 
-assert(actS.data,expS.data,absTol);
-assert(actS1.data,expS1.data,absTol);
-assert(actS12.data,expS12.data,absTol);
+myassert(actS.data,expS.data,absTol);
+myassert(actS1.data,expS1.data,absTol);
+myassert(actS12.data,expS12.data,absTol);

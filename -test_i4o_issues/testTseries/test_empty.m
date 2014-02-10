@@ -1,4 +1,4 @@
 x = tseries() ;
 
-assert(startdate(x), NaN) ;
-assert(enddate(x), NaN) ;
+myassert(startdate(x), NaN) ;
+myassert(enddate(x), NaN) ;

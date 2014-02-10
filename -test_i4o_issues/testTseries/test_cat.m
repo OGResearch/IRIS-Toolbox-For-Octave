@@ -6,10 +6,10 @@ b = tseries(qq(1,1),2);
 observ = double([a, b]);
 expect = [double(a), double(b)];
 
-assert(observ, expect, absTol);
+myassert(observ, expect, absTol);
 
 b = tseries(qq(1,2),2);
 observ = double([a; b]);
 expect = [double(a); double(b)];
 
-assert(observ, expect, absTol);
+myassert(observ, expect, absTol);

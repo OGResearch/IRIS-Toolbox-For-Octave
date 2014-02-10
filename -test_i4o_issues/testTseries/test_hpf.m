@@ -15,7 +15,7 @@ expect = [ ...
    -0.000490226884807
    -0.040143170872499 ...
    ] ;
-assert(observ, expect, absTol) ;
+myassert(observ, expect, absTol) ;
 
 observ = double(hpf2(x)) ;
 expect = [ ... 
@@ -29,5 +29,5 @@ expect = [ ...
     0.950510453233008
     0.412608712126564
    -0.503877940016871] ;
-assert(observ, expect, absTol) ;
+myassert(observ, expect, absTol) ;
 
