@@ -134,14 +134,22 @@ end
 % User-supplied initial conditions.
 if LikOpt.domain == 't'
     if isstruct(LikOpt.initcond)
-        [ainit,~,naninitmean,Painit,~,naninitmse] = ...
-            datarequest('init',This,LikOpt.initcond,Range);
-        if isempty(Painit)
+        [xbInitMean,isNanInitMean,xbInitMse,isNanInitMse] = ...
+            datarequest('xbInit',This,LikOpt.initcond,Range);
+        if isempty(xbInitMse)
             nb = size(This.solution{1},2);
-            Painit = zeros(nb,nb,size(ainit,3));
+            xbInitMse = zeros(nb,nb,size(ainit,3));
         end
         doChkNanInit();
-        LikOpt.initcond = {ainit,Painit};
+        LikOpt.initcond = {xbInitMean,xbInitMse};
+    end
+    % Initial mean for unit root elements of Alpha.
+    if isstruct(LikOpt.initmeanunit)
+        [xbInitMean,isNanInitMean] = ...
+            datarequest('xbInit',This,LikOpt.initmeanunit,Range);
+        isNanInitMse = [];
+        doChkNanInit();
+        LikOpt.initmeanunit = xbInitMean;
     end
 end
 
@@ -166,17 +174,17 @@ end
 
 %**************************************************************************
     function doChkNanInit()
-        if ~isempty(naninitmean)
+        if ~isempty(isNanInitMean)
             utils.error('model', ...
                 ['This initial condition is not available: ', ...
                 'Mean ''%s''.'], ...
-                naninitmean{:});
+                isNanInitMean{:});
         end
-        if ~isempty(naninitmse)
+        if ~isempty(isNanInitMse)
             utils.error('model', ...
                 ['This initial condition is not available: ', ...
                 'MSE ''%s''.'], ...
-                naninitmse{:});
+                isNanInitMse{:});
         end        
     end % doChkNanInit().
 

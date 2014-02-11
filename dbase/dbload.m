@@ -607,12 +607,11 @@ doPopulateDatabase();
                     iMiss(dateInx,:) = miss(~nanDate,count+(1:nCol));
                     iData(iMiss) = NaN*unit;
                     iData = reshape(iData,nPer,tmpSize(2:end));
-                    thisComment = reshape(comment(count+(1:nCol)),1,tmpSize(2:end));
-                    % d.(thisName) = tseries(dates,thisData,thisComment);
+                    iComment = reshape(comment(count+(1:nCol)),1,tmpSize(2:end));
                     D.(iName) = template;
                     D.(iName).start = minDate;
                     D.(iName).data = iData;
-                    D.(iName).Comment = thisComment;
+                    D.(iName).Comment = iComment;
                     D.(iName) = mytrim(D.(iName));
                 else
                     % Create an empty tseries object with proper 2nd and higher

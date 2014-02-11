@@ -134,6 +134,7 @@ for iLoop = 1 : nLoop
         s.Z = This.solution{4}(:,:,iLoop);
         s.H = This.solution{5}(:,:,iLoop);
         s.U = This.solution{7}(:,:,iLoop);
+        s.ixRequired = This.icondix(1,:,iLoop);
         s.nunit = mynunit(This,iLoop);
         s.Tf = T(1:nf,:);
         s.Ta = T(nf+1:end,:);
@@ -208,7 +209,7 @@ for iLoop = 1 : nLoop
 
     % Initial distribution
     %----------------------
-    doInitCond();
+    s = kalman.init(s,iLoop,Opt);
     
     % Next tunes on the means of the shocks
     %---------------------------------------
@@ -235,16 +236,16 @@ for iLoop = 1 : nLoop
     
     % Number of initial conditions to be optimised
     %----------------------------------------------
+    s.ninit = 0;
     if isequal(Opt.initcond,'optimal')
         % All initial conditions, including stationary variables, will be
         % optimised.
         s.ninit = nb;
-    elseif iscell(Opt.initcond) || strcmpi(Opt.initcond,'dirty')
-        % No initial condition will be optimised if it is supplied by the user.
-        s.ninit = 0;
-    else
-        % Estimate fixed initial conditions only if there is at least one
-        % non-stationary measurement variable with at least one observation.
+    elseif isequal(Opt.initmeanunit,'optimal')
+        % Estimate fixed initial conditions for unit root processes if the
+        % user did not supply data on `'initMeanUnit='` and there is at
+        % least one non-stationary measurement variable with at least one
+        % observation.
         z = s.Z(any(s.yindex,2),1:s.nunit);
         if any(any(abs(z) > realSmall))
             s.ninit = s.nunit;
@@ -374,7 +375,9 @@ if ~all(isSolution)
         sprintf(' #%g',find(~isSolution)));
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doRequestOutp()
@@ -396,7 +399,8 @@ end
         s.retCont = s.retPredCont || s.retFilterCont || s.retSmoothCont;
         s.storePredict = s.ahead > 1 ...
             || s.retPred || s.retFilter || s.retSmooth;
-    end % doRequestOutp().
+    end % doRequestOutp()
+
 
 %**************************************************************************
     function doRetPred()
@@ -462,7 +466,8 @@ end
             hdataassign(HData.predcont,This,':',yy,xx,ee);
         end
 
-    end % doRetPred().
+    end % doRetPred()
+
 
 %**************************************************************************
     function doRetFilter()
@@ -506,7 +511,8 @@ end
             HData.smoothmse(:,:,:,iLoop) = s.Pb2*s.V;
         end
         
-    end % doRetFilter().
+    end % doRetFilter()
+
 
 %**************************************************************************
     function doRetSmooth()
@@ -559,54 +565,8 @@ end
             HData.smoothmse(:,:,:,iLoop) = s.Pb2*s.V;
         end
         
-    end % doRetSmooth().
+    end % doRetSmooth()
 
-%**************************************************************************
-    function doInitCond()
-        % doInitCond  Set up initial condition for the mean and MSE matrix.
-        nunit = s.nunit;
-        stable = [false(1,nunit),true(1,nb-nunit)];
-        
-        % Initialise mean.
-        s.ainit = zeros(nb,1);
-        if iscell(Opt.initcond)
-            % User-supplied initial condition.
-            s.ainit(:,1) = Opt.initcond{1}(:,1,min(end,iLoop));
-        elseif ~isempty(s.ka)
-            % Asymptotic initial condition for the stable part of the alpha vector;
-            % the unstable part is kept at zero initially.
-            I = eye(nb - nunit);
-            a1 = zeros(nunit,1);
-            a2 = (I - s.Ta(stable,stable)) \ s.ka(stable,1);
-            s.ainit = [a1;a2];
-        end
-
-        % Initialise the MSE matrix.
-        s.Painit = zeros(nb);
-        if iscell(Opt.initcond) && ~isempty(Opt.initcond{2})
-            % User-supplied initial condition.
-            s.Painit = Opt.initcond{2}(:,:,1,min(end,iLoop));
-        elseif nb > nunit ...
-                && any(strcmpi(Opt.initcond,'stochastic'))
-            % R matrix with rows corresponding to stable alpha and columns
-            % corresponding to transition shocks.
-            RR = s.Ra(:,1:ne);
-            RR = RR(stable,s.tshocks);
-            % Reduced form covariance corresponding to stable alpha. Use the structural
-            % shock covariance sub-matrix corresponding to transition shocks only in
-            % the pre-sample period.
-            Sa = RR*s.Omg(s.tshocks,s.tshocks,1)*RR.';
-            % Compute asymptotic initial condition.
-            if sum(stable) == 1
-                Pa0stable = Sa / (1 - s.Ta(stable,stable).^2);
-            else
-                Pa0stable = ...
-                    covfun.lyapunov(s.Ta(stable,stable),Sa);
-                Pa0stable = (Pa0stable + Pa0stable.')/2;
-            end
-            s.Painit(stable,stable) = Pa0stable;
-        end
-    end % doInitCond().
 
 %**************************************************************************
     function doPrepareNonlin()
@@ -633,11 +593,12 @@ end
         s2.nLoop = nLoop;
         s2.xxlog = This.log(real(This.solutionid{2}));
         s2.segment = 1;
-    end % doPrepareNonlin().
+    end % doPrepareNonlin()
+
 
 end
 
-% Subfunctions.
+% Subfunctions...
 
 %**************************************************************************
 function S = xxAhead(S)
@@ -705,7 +666,8 @@ if S.retPred
     S.f0 = ipermute(f0,[1,3,4,2]);
 end
 
-end % xxAhead().
+end % xxAhead()
+
 
 %**************************************************************************
 function S = xxPredXfMean(S)
@@ -729,7 +691,8 @@ for t = 2 : nPer
     end
 end
 
-end % xxPredXfMean().
+end % xxPredXfMean()
+
 
 %**************************************************************************
 function S = xxFilterMean(S)
@@ -767,7 +730,8 @@ for t = lastObs : -1 : 2
     S.e1(:,t) = e1;
 end
 
-end % xxFilterMean().
+end % xxFilterMean()
+
 
 %**************************************************************************
 function S = xxFilterMse(S)
@@ -806,7 +770,8 @@ for t = lastObs : -1 : 2
     S.Db1(:,t) = Db1;
 end
 
-end % xxFilterMse().
+end % xxFilterMse()
+
 
 %**************************************************************************
 function S = xxSmoothMse(S)
@@ -847,7 +812,8 @@ for t = lastObs : -1 : lastSmooth
     S.Db2(:,t) = Db2;
 end
 
-end % xxSmoothMse().
+end % xxSmoothMse()
+
 
 %**************************************************************************
 function S = xxSmoothMean(S)
@@ -881,7 +847,8 @@ for t = lastObs : -1 : lastSmooth
     S.e2(:,t) = e2;
 end
 
-end % xxSmoothMean().
+end % xxSmoothMean()
+
 
 %**************************************************************************
 function [D,Ka,Kf] = xxShockTunes(S,Opt)
@@ -937,7 +904,8 @@ for t = 2 : last
     Ka(:,t) = Ka(:,t) + Ra(:,1:ne*k)*ee(:);
 end
 
-end % xxShockTunes().
+end % xxShockTunes()
+
 
 %**************************************************************************
 function S = xxOmg2SaSy(S)
@@ -1009,7 +977,8 @@ if lastOmg < nPer
     S.syinf(:,end+1:nPer) = S.syinf(:,ones(1,nPer-lastOmg));
 end
 
-end % xxOmg2SaSy().
+end % xxOmg2SaSy()
+
 
 %**************************************************************************
 function [Pb2,Dy2,Df2,Db2,N] = xxOneStepBackMse(S,T,N)
@@ -1052,4 +1021,4 @@ if ny > 0
     Dy2 = diag(Py2);
 end
 
-end % xxOneStepBackMse().
+end % xxOneStepBackMse()
