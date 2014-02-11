@@ -1,0 +1,62 @@
+
+
+    \filetitle{plotcmp}{Comparison graph for two time series}{tseries/plotcmp}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[Ax,Lhs,Rhs] = plotcmp(X,...)
+[Ax,Lhs,Rhs] = plotcmp(Range,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Tseries object with two or more columns;
+  the difference (between the second and the first column (or any other
+  linear combination of its columns specified through the option
+  \texttt{'compare='}) will be displayed as an RHS area or bar graph.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handles to the LHS and RHS axes.
+\item
+  \texttt{Lhs} {[} numeric {]} - Handles to the two original lines.
+\item
+  \texttt{Rhs} {[} numeric {]} - Handles to the area or bar difference
+  graph.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'compare='} {[} numeric \textbar{} \emph{\texttt{{[}-1;1{]}}}
+  {]} - Linear combination of the observations that will be plotted in
+  the RHS graph;
+  \texttt{{[}-1;1{]} means a difference between the second series and the first series,}X\{:,2\}-X\{:,1\}`.
+\item
+  \texttt{'cmpColor='} {[} numeric \textbar{}
+  \emph{\texttt{{[}1,0.75,0.75{]}}} {]} - Color that will be used to
+  plot the area or bar difference (comparison) graph.
+\item
+  \texttt{'cmpPlotFunc='} {[} \texttt{@area} \textbar{}
+  \emph{\texttt{@bar}} {]} - Function that will be used to plot the
+  difference (comparision) data on the RHS.
+\end{itemize}
+
+See help on \href{tseries/plotyy}{\texttt{tseries/plotyy}} for other
+options available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

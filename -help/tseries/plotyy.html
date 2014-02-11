@@ -1,0 +1,144 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/plotyy">plotyy</h2>
+<div class="headline">Line plot function with LHS and RHS axes for time series</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[Ax,Lhs,Rhs,Range] = plotyy(X,Y,...)
+[Ax,Lhs,Rhs,Range] = plotyy(Range,X,Y,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Range</code> [ numeric ] - Date range; if not specified the entire range of the input tseries object will be plotted.</p></li>
+<li><p><code>X</code> [ tseries ] - Input tseries object whose columns will be plotted and labelled on the LHS.</p></li>
+<li><p><code>Y</code> [ tseries ] - Input tseries object whose columns will be plotted and labelled on the RHS.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>Ax</code> [ numeric ] - Handles to the LHS and RHS axes.</p></li>
+<li><p><code>Lhs</code> [ numeric ] - Handles to series plotted on the LHS axis.</p></li>
+<li><p><code>Rhs</code> [ numeric ] - Handles to series plotted on the RHS axis.</p></li>
+<li><p><code>Range</code> [ numeric ] - Actually plotted date range.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'conincident='</code> [ <code>true</code> | <em><code>false</code></em> ] - Make the LHS and RHS y-axis grids coincident.</p></li>
+<li><p><code>'dateFormat='</code> [ char | <em>irisget('plotdateformat')</em> ] - Date format for the tick marks on the x-axis.</p></li>
+<li><p><code>'dateTick='</code> [ numeric | <em><code>Inf</code></em> ] - Vector of dates locating tick marks on the x-axis; Inf means they will be created automatically.</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em>'YHQBM'</em> ] - Five letters to represent the five date frequencies (yearly, half-yearly, quarterly, bi-monthly, and monthly).</p></li>
+<li><p><code>'lhsPlotFunc='</code> <span class="citation">[ @area | @bar | *@plot* | @stem ]</span> - Function that will be used to plot the LHS data.</p></li>
+<li><p><code>'lhsTight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Make the LHS y-axis tight.</p></li>
+<li><p><code>'rhsPlotFunc='</code> <span class="citation">[ @area | @bar | *@plot* | @stem ]</span> - Function that will be used to plot the RHS data.</p></li>
+<li><p><code>'rhsTight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Make the RHS y-axis tight.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

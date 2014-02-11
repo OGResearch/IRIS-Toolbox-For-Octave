@@ -1,0 +1,138 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="FAVAR/Contents">Factor-augmented vector autoregressions: FAVAR objects and functions</h1>
+
+
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../FAVAR/FAVAR.html"><code>FAVAR</code></a> - Create new, empty FAVAR object.</li>
+</ul>
+<h4 id="getting-information-about-favar-objects">Getting information about FAVAR objects</h4>
+<ul>
+<li><a href="../FAVAR/comment.html"><code>comment</code></a> - Get or set user comments in an IRIS object.</li>
+<li><a href="../FAVAR/get.html"><code>get</code></a> - Query model object properties.</li>
+<li><a href="../FAVAR/isempty.html"><code>isempty</code></a> - True if VAR based object is empty.</li>
+<li><a href="../FAVAR/userdata.html"><code>userdata</code></a> - Get or set user data in an IRIS object.</li>
+<li><a href="../FAVAR/VAR.html"><code>VAR</code></a> - Return a VAR object describing the factor dynamics.</li>
+</ul>
+<h4 id="estimation">Estimation</h4>
+<ul>
+<li><a href="../FAVAR/estimate.html"><code>estimate</code></a> - Estimate FAVAR using static principal components.</li>
+</ul>
+<h4 id="filtering-and-forecasting">Filtering and forecasting</h4>
+<ul>
+<li><a href="../FAVAR/filter.html"><code>filter</code></a> - Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given.</li>
+<li><a href="../FAVAR/forecast.html"><code>forecast</code></a> - Forecast FAVAR factors and observables.</li>
+</ul>
+<h4 id="getting-on-line-help-on-favar-functions">Getting on-line help on FAVAR functions</h4>
+<pre><code>help FAVAR
+help FAVAR/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

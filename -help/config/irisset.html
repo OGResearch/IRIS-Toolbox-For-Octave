@@ -1,0 +1,142 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="config/irisset">irisset</h2>
+<div class="headline">Change configurable IRIS options</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>irisset(Option,Value)
+irisset(Option,Value,Option,Value,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Option</code> [ char ] - Name of the IRIS configuration option that will be modified.</p></li>
+<li><p><code>Value</code> [ ... ] - New value that will be assigned to the option.</p></li>
+</ul>
+<h4 id="modifiable-iris-configuration-options">Modifiable IRIS configuration options</h4>
+<h5 id="dates-and-formats">Dates and formats</h5>
+<ul>
+<li><p><code>'dateFormat='</code> [ char | <em><code>'YPF'</code></em> ] - Date format used to display dates in the command window, CSV databases, and reports. Note that the default date format for graphs is controlled by the <code>'plotdateformat='</code> option. The default 'YFP' means that the year, frequency letter, and period is displayed. See also help on <a href="../dates/dat2str.html"><code>dat2str</code></a> for more date formatting details. The <code>'dateformat='</code> option is also found in many IRIS functions whenever it is relevant, and can be used to overwrite the <code>'irisset='</code> settings.</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBMW'</code></em> ] - Six letters used to represent the six possible frequencies of the IRIS dates: yearly, half-yearly, quarterly, bi-monthly, monthly, and weekly, such as the <code>'Q'</code> in <code>'2010Q1'</code> denoting a quarter.</p></li>
+<li><p><code>'months='</code> [ cellstr | <em><code>{'January',...,'December'}</code></em> ] - Twelve strings representing the names of the twelve months; this option can be used whenever you want to replace the default English names with your local language. .</p></li>
+<li><code>'plotDateFormat='</code> [ char | <em><code>{'Y','Y:P','Y:P','Y:P','Y:P','Y:P'}</code></em> ]</li>
+<li><p>Default date formats used to display dates in graphs including graphs in reports. The default date formats are 6 strings, one for each of the date frequencies, in the following order: yearly (1), half-yearly (2), quarterly (4), bimonthly (6), monthly (12), and weekly (52). Dates with indeterminate frequency are printed as plain numbers.</p></li>
+<li><p><code>'tseriesFormat='</code> [ char | <em>empty</em> ] - Format string for displaying time series data on the screen. See help on the Matlab <code>sprintf</code> function for how to set up format strings. If empty the default format of the <code>num2str</code> function is used.</p></li>
+<li><p><code>tseriesMaxWSpace='</code> [ numeric | <em><code>5</code></em> ] - Maximum number of white spaces printed between individual columns of a multivariate tseries object on the screen.</p></li>
+<li><p><code>'standinMonth='</code> [ <em><code>'first'</code></em> | <code>'last'</code> | numeric ] - This option specifies which month will be used to represent lower-frequency periods (such as a quarters) when a month-displaying format is used in <code>'dateformat='</code>.</p></li>
+</ul>
+<h5 id="external-tools-used-by-iris">External tools used by IRIS</h5>
+<ul>
+<li><p><code>'pdflatexPath='</code> [ char ] - Location of the <code>pdflatex.exe</code> program. This program is called to compile report and publish m-files. By default, IRIS attempts to locate <code>pdflatex.exe</code> by running TeX's <code>kpsewhich</code>, and <code>which</code> on Unix platforms.</p></li>
+<li><p><code>'epstopdfPath='</code> [ char ] - Location of the <code>epstopdf.exe</code> program. This program is called to convert EPS graphics files to PDFs in reports.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

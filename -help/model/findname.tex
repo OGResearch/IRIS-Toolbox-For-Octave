@@ -1,0 +1,41 @@
+
+
+    \filetitle{findname}{Find names of variables, shocks, or parameters by their descriptors}{model/findname}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[Name,Name,...] = findname(M,Desc,Desc,...)
+[List,List,...] = findname(M,'-rexp',Rexp,Rexp,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object in which the names will be
+  searched for.
+\item
+  \texttt{Desc} {[} char {]} - Variable, shock, or parameter descriptors
+  that will be searched for.
+\item
+  \texttt{Rexp} {[} char {]} - Regular expressions that will be matched
+  against variable, shock, and parameter descriptors.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{Name} {[} char {]} - First name found with the descriptor
+  \texttt{Desc}.
+\item
+  \texttt{List} {[} cellstr {]} - List of names whose descriptors match
+  the regular expression \texttt{Rexp}.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

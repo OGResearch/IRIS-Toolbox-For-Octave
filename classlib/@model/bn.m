@@ -1,0 +1,179 @@
+function Outp = bn(This,Inp,Range,varargin)
+% bn  Beveridge-Nelson trends.
+%
+% Syntax
+% =======
+%
+%     Outp = bn(M,Inp,Range,...)
+%
+% Input arguments
+% ================
+%
+% * `M` [ model ] - Solved model object.
+%
+% * `Inp` [ struct | cell ] - Input data on which the BN trends will be
+% computed.
+%
+% * `Range` [ numeric ] - Date range on which the BN trends will be
+% computed.
+%
+% Output arguments
+% =================
+%
+% * `Outp` [ struct | cell ] - Output data with the BN trends.
+%
+% Options
+% ========
+%
+% * `'deviations='` [ `true` | *`false`* ] - Input and output data are
+% deviations from balanced-growth paths.
+%
+% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement variables
+% in input and output data include deterministic trends specified in
+% [`!dtrends`](modellang/dtrends) equations.
+%
+% Description
+% ============
+%
+% Example
+% ========
+%
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+% Parse required input arguments.
+pp = inputParser();
+pp.addRequired('m',@is.model);
+pp.addRequired('data',@(x) isstruct(x) || iscell(x));
+pp.addRequired('range',@(x) isnumeric(x));
+pp.parse(This,Inp,Range);
+
+opt = passvalopt('model.bn',varargin{:});
+
+% Auto set the 'dtrends' option.
+if ischar(opt.dtrends) && strcmpi(opt.dtrends,'auto')
+    opt.dtrends = ~opt.deviation;
+end
+
+%--------------------------------------------------------------------------
+
+nx = length(This.solutionid{2});
+nb = size(This.solution{1},2);
+nf = nx - nb;
+ne = length(This.solutionid{3});
+nAlt = size(This.Assign,3);
+Range = Range(1) : Range(end);
+nPer = length(Range);
+
+% Alpha vector.
+A = datarequest('alpha',This,Inp,Range);
+nData = size(A,3);
+
+% Exogenous variables.
+G = datarequest('g',This,Inp,Range);
+
+% Total number of output data sets.
+nLoop = max([nData,nAlt]);
+
+% Pre-allocate hdataobj for output data.
+hd = hdataobj(This,struct('IsPreSample',false),nPer,nLoop);
+
+repeat = ones(1,nPer);
+isSolution = true(1,nAlt);
+diffStationary = true(1,nAlt);
+
+for iLoop = 1 : nLoop
+    
+    if iLoop <= nAlt
+        T = This.solution{1}(:,:,iLoop);
+        Tf = T(1:nf,:);
+        Ta = T(nf+1:end,:);
+        
+        % Continue immediate if solution is not available.
+        isSolution(iLoop) = all(~isnan(T(:)));
+        if ~isSolution(iLoop)
+            continue
+        end
+        
+        nUnit = mynunit(This,iLoop);
+        if ~is.eye(Ta(1:nUnit,1:nUnit))
+            diffStationary(iLoop) = false;
+            continue
+        end
+        Z = This.solution{4}(:,:,iLoop);
+        U = This.solution{7}(:,:,iLoop);
+        if ~opt.deviation
+            Ka = This.solution{3}(nf+1:end,1,iLoop);
+            aBar = zeros(nb,1);
+            aBar(nUnit+1:end) = ...
+                (eye(nb-nUnit) - Ta(nUnit+1:end,nUnit+1:end)) ...
+                \ Ka(nUnit+1:end);
+            aBar = aBar(:,repeat);
+            Kf = This.solution{3}(1:nf,1,iLoop);
+            D = This.solution{6};
+            Kf = Kf(:,repeat);
+            D = D(:,repeat);
+        end
+        if opt.dtrends
+            W = mydtrendsrequest(This,'range',Range,G,iLoop);
+        end
+    end
+    
+    a = A(:,:,min(iLoop,end));
+    if ~opt.deviation
+        a = a - aBar;
+    end
+    
+    % Forward cumsum of stable alpha.
+    aCum = (eye(nb-nUnit) - Ta(nUnit+1:end,nUnit+1:end)) ...
+        \ a(nUnit+1:end,:);
+    
+    % Beveridge Nelson for non-stationary variables.
+    a(1:nUnit,:) = a(1:nUnit,:) + ...
+        Ta(1:nUnit,nUnit+1:end)*aCum;
+    
+    if opt.deviation
+        a(nUnit+1:end,:) = 0;
+    else
+        a(nUnit+1:end,:) = aBar(nUnit+1:end,:);
+    end
+    
+    xf = Tf*a;
+    xb = U*a;
+    y = Z*a;
+    
+    if ~opt.deviation
+        xf = xf + Kf;
+        y = y + D;
+    end
+    if opt.dtrends
+        y = y + W;
+    end
+    
+    % Store output data #iloop.
+    x = [xf;xb];
+    e = zeros(ne,nPer);
+    hdataassign(hd,This,iLoop,y,x,e);
+    
+end
+
+% Report NaN solutions.
+if ~all(isSolution)
+    utils.warning('model', ...
+        'Solution(s) not available:%s.', ...
+        preparser.alt2str(~isSolution));
+end
+
+% Parameterisations that are not difference-stationary.
+if any(~diffStationary)
+    utils.warning('model', ...
+        ['Cannot run bn() on the following parameterisations ', ...
+        'because they are I(2) or higher:%s.'], ...
+        preparser.alt2str(~diffStationary));
+end
+
+% Create output database from hdataobj.
+Outp = hdata2tseries(hd,This,Range);
+
+end

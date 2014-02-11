@@ -1,0 +1,46 @@
+
+
+    \filetitle{addparam}{Add VAR parameters to a database (struct)}{VAR/addparam}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+D = addparam(V,D)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object whose parameter matrices will be
+  added to database (struct) \texttt{D}.
+\item
+  \texttt{D} {[} struct {]} - Database to which the model parameters
+  will be added.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  `D {[} struct {]} - Database with the VAR parameter matrices added.
+\end{itemize}
+
+\paragraph{Description}
+
+The newly created database entries are named \texttt{A\_} (transition
+matrix), \texttt{K\_} (constant terms), \texttt{B\_} (matrix of
+instantaneous whock effects), and \texttt{Cov\_} (covariance matrix of
+shocks). Be aware that all existing database entries in \texttt{D} named
+\texttt{A\_}, \texttt{K\_}, \texttt{B\_}, or \texttt{Omg\_} will be
+overwritten.
+
+\paragraph{Example}
+
+\begin{verbatim}
+D = struct();
+D = addparam(V,D);
+\end{verbatim}
+
+

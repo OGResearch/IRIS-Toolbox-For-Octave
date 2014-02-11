@@ -1,0 +1,221 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/get">get</h2>
+<div class="headline">Query model object properties</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Ans = get(M,Query)
+[Ans,Ans,...] = get(M,Query,Query,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>Query</code> [ char ] - Query to the model object.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Ans</code> [ ... ] - Answer to the query.</li>
+</ul>
+<h4 id="valid-queries-to-model-objects">Valid queries to model objects</h4>
+<p>This is the categorised list of queries to model objects. Note that letter <code>'y'</code> is used in various contexts to denote measurement variables or equations, <code>'x'</code> transition variables or equations, <code>'e'</code> shocks, <code>'p'</code> parameters, <code>'g'</code> exogenous variables, <code>'d'</code> deterministic trend equations, <code>'l'</code> dynamic links, and <code>'r'</code> reporting equations. The property names are case insensitive.</p>
+<h5 id="steady-state">Steady state</h5>
+<ul>
+<li><p><code>'sstate'</code> -- Returns [ struct ] a database with the steady states for all model variables. The steady states are described by complex numbers in which the real part is the level and the imaginary part is the growth rate.</p></li>
+<li><p><code>'sstateLevel'</code> -- Returns [ struct ] a database with the steady-state levels for all model variables.</p></li>
+<li><p><code>'sstateGrowth'</code> -- Returns [ struct ] a database with steady-state growth (first difference for linearised variables, gross rate of growth for log-linearised variables) for all model variables.</p></li>
+<li><p><code>'dtrends'</code> -- Returns [ struct ] a database with the effect of the deterministic trends on the measurement variables. The effect is described by complex numbers the same way as the steady state.</p></li>
+<li><p><code>'dtrendsLevel'</code> -- Returns [ struct ] a database with the effect of the deterministic trends on the steady-state levels of the measurement variables.</p></li>
+<li><p><code>'dtrendsGrowth'</code> -- Returns [ struct ] a database with the effect of deterministic trends on steady-state growth of the measurement variables.</p></li>
+<li><p><code>'sstate+dtrends'</code> -- Returns [ struct ] the same as 'sstate' except that the measurement variables are corrected for the effect of the deterministic trends.</p></li>
+<li><p><code>'sstateLevel+dtrendsLevel'</code> -- Returns [ struct ] the same as 'sstateLevel' except that the measurement variables are corrected for the effect of the deterministic trends.</p></li>
+<li><p><code>'sstateGrowth+dtrendsGrowth'</code> -- Returns [ struct ] the same as <code>'sstateGrowth'</code> except that the measurement variables are corrected for the effect of the deterministic trends.</p></li>
+</ul>
+<h5 id="variables-shocks-and-parameters">Variables, shocks, and parameters</h5>
+<ul>
+<li><p><code>'yList'</code>, <code>'xList'</code>, <code>'eList'</code>, <code>'pList'</code>, <code>'gList'</code> - Return [ cellstr ] the lists of, respectively, measurement variables (<code>y</code>), transition variables (<code>x</code>), shocks (<code>e</code>), parameters (<code>p</code>), and exogenous variables (<code>g</code>), each in order of appearance of the names in declaration sections of the original model file. Note that the list of parameters, <code>'pList'</code>, does not include the names of std deviations or cross-correlations.</p></li>
+<li><p><code>'eyList'</code> -- Returns [ cellstr ] the list of measurement shocks in order of their appearance in the model code declarations; only those shocks that actually occur in at least one measurement equation are returned.</p></li>
+<li><p><code>'exList'</code> -- Returns [ cellstr ] the list of transition shocks in order of their appearance in the model code declarations; only those shocks that actually occur in at least one transition equation are returned.</p></li>
+<li><p><code>'stdList'</code> -- Returns [ cellstr ] the list of the names of the standard deviations for the shocks in order of the appearance of the corresponding shocks in the model code.</p></li>
+<li><p><code>'corrList'</code> -- Returns [ cellstr ] the list of the names of cross-correlation coefficients for the shocks in order of the appearance of the corresponding shocks in the model code.</p></li>
+<li><p><code>'stdCorrList'</code> -- Returns [ cellstr ] the list of the names of std deviations and cross-correlation coefficients for the shocks in order of the appearance of the corresponding shocks in the model code.</p></li>
+</ul>
+<h5 id="equations">Equations</h5>
+<ul>
+<li><p><code>'yEqtn'</code>, <code>'xEqtn'</code>, <code>'dEqtn'</code>, <code>'lEqtn'</code>, <code>'rEqtn'</code> - Return [ cellstr ] the lists of, respectively, to measurement equations (<code>y</code>), transition equations (<code>x</code>), deterministic trends (<code>d</code>), dynamic links (<code>l</code>), and reporting equations (<code>r</code>), each in order of appearance in the original model file.</p></li>
+<li><p><code>'links'</code> -- Returns [ struct ] a database with the dynamic links with fields names after the LHS name.</p></li>
+</ul>
+<h5 id="first-order-taylor-expansion-of-equations">First-order Taylor expansion of equations</h5>
+<ul>
+<li><p><code>'derivatives'</code> -- Returns [ cellstr ] the symbolic/automatic derivatives for each model equation; in each equation, the derivatives w.r.t. all variables present in that equation are evaluated at once and returned as a vector of numbers; see also <code>'wrt'</code>.</p></li>
+<li><p><code>'wrt'</code> - Returns [ cellstr ] the list of the variables (and their auxiliary lags or leads) with respect to which the corresponding equation in <code>'derivatives'</code> is differentiated.</p></li>
+</ul>
+<h5 id="descriptions-and-aliases-of-variables-parameters-and-shocks">Descriptions and aliases of variables, parameters, and shocks</h5>
+<ul>
+<li><p><code>'descript'</code> -- Returns [ struct ] a database with user descriptions of model variables, shocks, and parameters.</p></li>
+<li><p><code>'yDescript'</code>, <code>'xDescript'</code>, <code>'eDescript'</code>, <code>'pDescript'</code>, <code>'gDescript'</code> - Return [ cellstr ] user descriptions of, respectively, measurement variables (<code>y</code>), transition variables (<code>x</code>), shocks (<code>e</code>), parameters (<code>p</code>), and exogenous variables (<code>g</code>).</p></li>
+<li><p><code>'alias'</code> -- Returns [ struct ] a database with all aliases of model variables, shocks, and parameters.</p></li>
+<li><p><code>'yAlias'</code>, <code>'xAlias'</code>, <code>'eAlias'</code>, <code>'pAlias'</code>, <code>'gAlias'</code> - Return [ cellstr ] the aliases of, respectively, measurement variables (<code>y</code>), transition variables (<code>x</code>), shocks (<code>e</code>), parameters (<code>p</code>), and exogenous variables (<code>g</code>).</p></li>
+</ul>
+<h5 id="equation-labels-and-aliases">Equation labels and aliases</h5>
+<ul>
+<li><p><code>'labels'</code> -- Returns [ cellstr ] the list of all user labels added to equations.</p></li>
+<li><p><code>'yLabels'</code>, <code>'xLabels'</code>, <code>'dLabels'</code>, <code>'lLabels'</code>, <code>'rLabels'</code> - Return [ cellstr ] user labels added, respectively, to measurement equations (<code>y</code>), transition equations (<code>x</code>), deterministic trends (<code>d</code>), dynamic links (<code>l</code>), and reporting equations (<code>r</code>).</p></li>
+<li><p><code>'eqtnAlias'</code> -- Returns [ cellstr ] the list of all aliases added to equations.</p></li>
+<li><p><code>'yEqtnAlias'</code>, <code>'xEqtnAlias'</code>, <code>'dEqtnAlias'</code>, <code>'lEqtnAlias'</code>, <code>'rEqtnAlias'</code> - Return [ cellstr ] the aliases of, respectively, measurement equations (<code>y</code>), transition equations (<code>x</code>), deterministic trends (<code>d</code>), dynamic links (<code>l</code>), and reporting equations (<code>r</code>).</p></li>
+</ul>
+<h5 id="parameter-values">Parameter values</h5>
+<ul>
+<li><p><code>'corr'</code> -- Returns [ struct ] a database with current cross-correlation coefficients of shocks.</p></li>
+<li><p><code>'nonzeroCorr'</code> -- Returns [ struct ] a database with current nonzero cross-correlation coefficients of shocks.</p></li>
+<li><p><code>'parameters'</code> -- Returns [ struct ] a database with current parameter values, including the std devs and non-zero corr coefficients.</p></li>
+<li><p><code>'std'</code> -- Returns [ struct ] a database with current std deviations of shocks.</p></li>
+</ul>
+<h5 id="eigenvalues">Eigenvalues</h5>
+<ul>
+<li><p><code>'stableRoots'</code> -- Returns [ cell of numeric ] a vector of the model eigenvalues that are smaller than one in magnitude (allowing for rounding errors around one).</p></li>
+<li><p><code>'unitRoots'</code> -- Returns [ cell of numeric ] a vector of the model eigenvalues that equal one in magnitude (allowing for rounding errors around one).</p></li>
+<li><p><code>'unstableRoots'</code> [ cell of numeric ] A vector of the model eigenvalues that are greater than one in magnitude (allowing for rounding errors around one).</p></li>
+</ul>
+<h5 id="model-structure-solution-build">Model structure, solution, build</h5>
+<ul>
+<li><p><code>'build'</code> -- Returns [ numeric ] IRIS version number under which the model object has been built.</p></li>
+<li><p><code>'log'</code> -- Returns [ struct ] a database with <code>true</code> for each log-linearised variables, and <code>false</code> for each linearised variable.</p></li>
+<li><p><code>'maxLag'</code> -- Returns [ numeric ] the maximum lag in the model.</p></li>
+<li><p><code>'maxLead'</code> -- Returns [ numeric ] the maximum lead in the model.</p></li>
+<li><p><code>'stationary'</code> -- Returns [ struct ] a database with <code>true</code> for each stationary variables, and <code>false</code> for each unit-root (non-stationary) variables (under current solution).</p></li>
+<li><p><code>'nonStationary'</code> -- Returns [ struct ] a database with <code>true</code> for each unit-root (non-stationary) varible, and <code>false</code> for each stationary variable (under current solution).</p></li>
+<li><p><code>'stationaryList'</code> -- Returns [ cellstr ] the list of stationary variables (under current solution).</p></li>
+<li><p><code>'nonStationaryList'</code> -- Returns [ cellstr ] cell with the list of unit-root (non-stationary) variables (under current solution).</p></li>
+<li><p><code>'initCond'</code> -- Returns [ cellstr ] the list of the lagged transition variables that need to be supplied as initial conditions in simulations and forecasts. The list of the initial conditions is solution-specific as the state-spece coefficients at some of the lags may evaluate to zero depending on the current parameters.</p></li>
+<li><p><code>'yVector'</code> -- Returns [ cellstr ] the list of measurement variables in order of their appearance in the rows and columns of state-space matrices (effectively identical to <code>'yList'</code>) from the <a href="../model/sspace.html"><code>model/sspace</code></a> function.</p></li>
+<li><p><code>'xVector'</code> -- Returns [ cellstr ] the list of transition variables, and their auxiliary lags and leads, in order of their appearance in the rows and columns of state-space matrices from the <a href="../model/sspace.html"><code>model/sspace</code></a> function.</p></li>
+<li><p><code>'xfVector'</code> -- Returns [ cellstr ] the list of forward-looking (i.e. non-predetermined) transition variables, and their auxiliary lags and leads, in order of their appearance in the rows and columns of state-space matrices from the <a href="../model/sspace.html"><code>model/sspace</code></a> function.</p></li>
+<li><p><code>'xbVector'</code> -- Returns [ cellstr ] the list of backward-looking (i.e. predetermined) transition variables, and their auxiliary lags and leads, in order of their appearance in the rows and columns of state-space matrices from the <a href="../model/sspace.html"><code>model/sspace</code></a> function.</p></li>
+<li><p><code>'eVector'</code> -- Returns [ cellstr ] the list of the shocks in order of their appearance in the rows and columns of state-space matrices (effectively identical to <code>'eList'</code>) from the <a href="../model/sspace.html"><code>model/sspace</code></a> function.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="first-order-taylor-expansion-of-equations-1">First-order Taylor expansion of equations</h5>
+<p>The expressions for symbolic/automatic derivatives of individual model equations returned by <code>'derivatives'</code> are expressions that evaluate the derivatives with respect to all variables present in that equation at once. The list of variables with respect to which each equation is differentiated is returned by <code>'wrt'</code>.</p>
+<p>The expressions returned by the query <code>'derivatives'</code> can refer to</p>
+<ul>
+<li>the names of model parameters, such as <code>alpha</code>;</li>
+<li>the names of transition or measurement variables, such as <code>X</code>;</li>
+<li>the lags or leads of variables, such as <code>X{-1}</code> or <code>X{2}</code>.</li>
+</ul>
+<p>Note that the lags and leads of variables must be, in general, preserved in the derivatives for non-stationary (unit-root) models. For stationary models, the lags and leads can be removed and each simply replaced with the current date of the respective variable.</p>
+<h4 id="example">Example</h4>
+<pre><code>d = get(m,&#39;derivatives&#39;);
+w = get(m,&#39;wrt&#39;);</code></pre>
+<p>The 1-by-N cell array <code>d</code> (where N is the total number of equations in the model) will contain expressions that evaluate to the vector of derivatives of the individual equations w.r.t. to the variables present in that equation:</p>
+<pre><code>d{k}</code></pre>
+<p>is an expression that returns, in general, a vector of M numbers. These M numbers are the derivatives of the k-th equation w.r.t to M variables whose list is in</p>
+<pre><code>w{k}</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

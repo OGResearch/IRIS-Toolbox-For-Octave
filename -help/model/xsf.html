@@ -1,0 +1,142 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/xsf">xsf</h2>
+<div class="headline">Power spectrum and spectral density of model variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[S,D,List] = xsf(M,Freq,...)
+[S,D,List,Freq] = xsf(M,NFreq,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>Freq</code> [ numeric ] - Vector of frequencies at which the XSFs will be evaluated.</p></li>
+<li><p><code>NFreq</code> [ numeric ] - Total number of requested frequencies; the frequencies will be evenly spread between 0 and <code>pi</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>S</code> [ namedmat | numeric ] - Power spectrum matrices.</p></li>
+<li><p><code>D</code> [ namedmat | numeric ] - Spectral density matrices.</p></li>
+<li><p><code>List</code> [ cellstr ] - List of variable in order of appearance in rows and columns of <code>S</code> and <code>D</code>.</p></li>
+<li><p><code>Freq</code> [ numeric ] - Vector of frequencies at which the XSFs has been evaluated.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'applyTo='</code> [ cellstr | char | <em><code>Inf</code></em> ] - List of variables to which the option <code>'filter='</code> will be applied; <code>Inf</code> means all variables.</p></li>
+<li><p><code>'filter='</code> [ char | <em>empty</em> ] - Linear filter that is applied to variables specified by 'applyto'.</p></li>
+<li><p><code>'nFreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the 'filter' is numerically integrated.</p></li>
+<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrices <code>S</code> and <code>F</code> will be either namedmat objects or plain numeric arrays; if the option <code>'select='</code> is used, <code>'output='</code> is always a namedmat object.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar on in the command window.</p></li>
+<li><p><code>'select='</code> [ cellstr | <em><code>Inf</code></em> ] - Return XSF for selected variables only; <code>Inf</code> means all variables.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

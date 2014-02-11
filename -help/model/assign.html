@@ -1,0 +1,148 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/assign">assign</h2>
+<div class="headline">Assign parameters, steady states, std deviations or cross-correlations</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[M,Assigned] = assign(M,P)
+[M,Assigned] = assign(M,Name,Value,Name,Value,...)
+[M,Assigned] = assign(M,List,Values)</code></pre>
+<h4 id="syntax-for-fast-assign">Syntax for fast assign</h4>
+<pre><code>% Initialise
+assign(M,List);
+
+% Fast assign
+M = assign(M,Values);
+...
+M = assign(M,Values);
+...</code></pre>
+<h4 id="syntax-for-assigning-only-steady-state-levels">Syntax for assigning only steady-state levels</h4>
+<pre><code>M = assign(M,&#39;-level&#39;,...)</code></pre>
+<h4 id="syntax-for-assignin-only-steady-state-growth-rates">Syntax for assignin only steady-state growth rates</h4>
+<pre><code>M = assign(M,&#39;-growth&#39;,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>P</code> [ struct | model ] - Database whose fields refer to parameter names, variable names, std deviations, or cross-correlations; or another model object.</p></li>
+<li><p><code>Name</code> [ char ] - A parameter name, variable name, std deviation, cross-correlation, or a regular expression that will be matched against model names.</p></li>
+<li><p><code>Value</code> [ numeric ] - A value (or a vector of values in case of multiple parameterisations) that will be assigned.</p></li>
+<li><p><code>List</code> [ cellstr ] - A list of parameter names, variable names, std deviations, or cross-correlations.</p></li>
+<li><p><code>Values</code> [ numeric ] - A vector of values.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object with newly assigned parameters and/or steady states.</p></li>
+<li><p><code>Assigned</code> [ cellstr | <code>Inf</code> ] - List of actually assigned parameter names, variables names (steady states), std deviations, and cross-correlations; <code>Inf</code> indicates that all values has been assigned from another model object.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

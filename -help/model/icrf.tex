@@ -1,0 +1,51 @@
+
+
+    \filetitle{icrf}{Initial-condition response functions}{model/icrf}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+S = icrf(M,NPer,...)
+S = icrf(M,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object for which the initial
+  condition responses will be simulated.
+\item
+  \texttt{Range} {[} numeric {]} - Date range with the first date being
+  the shock date.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{S} {[} struct {]} - Database with initial condition response
+  series.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'delog='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Delogarithmise the responses for variables declared as
+  \texttt{!variables:log}.
+\item
+  \texttt{'size='} {[} numeric \textbar{} \emph{\texttt{1}} for linear
+  models \textbar{} \emph{\texttt{log(1.01)}} for non-linear models {]}
+  - Size of the deviation in initial conditions.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

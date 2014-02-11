@@ -1,0 +1,44 @@
+
+
+    \filetitle{exogenise}{Exogenise variables or re-exogenise shocks at the specified dates}{plan/exogenise}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+P = exogenise(P,List,Dates)
+P = exogenise(P,Dates,List)
+P = exogenise(P,List,Dates,Mode)
+P = exogenise(P,Dates,List,Mode)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} plan {]} - Simulation plan.
+\item
+  \texttt{List} {[} cellstr \textbar{} char {]} - List of variables that
+  will be exogenised, or list of shocks that will be re-exogenised.
+\item
+  \texttt{Dates} {[} numeric {]} - Dates at which the variables will be
+  exogenised.
+\item
+  \texttt{Flag} {[} \texttt{1} \textbar{} \texttt{1i} {]} - Only when
+  re-exogenising shocks: Select the anticipation mode in which the shock
+  will be re-exogenised; if omitted, \texttt{Flag = 1}.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{P} {[} plan {]} - Simulation plan with new information on
+  exogenised variables included.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

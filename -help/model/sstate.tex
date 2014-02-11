@@ -1,0 +1,143 @@
+
+
+    \filetitle{sstate}{Compute steady state or balance-growth path of the model}{model/sstate}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+M = sstate(M,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Parameterised model object.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Model object with newly computed steady
+  state assigned.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Solve for steady state using a linear
+  approach, i.e.~based on the first-order solution matrices and the
+  vector of constants.
+\item
+  \texttt{'warning='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Display IRIS warning produced by this function.
+\end{itemize}
+
+\subparagraph{Options for non-linear
+models}
+
+\begin{itemize}
+\item
+  \texttt{'blocks='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Re-arrarnge steady-state equations in recursive blocks before
+  computing steady state.
+\item
+  \texttt{'display='} {[} \emph{\texttt{'iter'}} \textbar{}
+  \texttt{'final'} \textbar{} \texttt{'notify'} \textbar{}
+  \texttt{'off'} {]} - Level of screen output, see Optim Tbx.
+\item
+  \texttt{'endogenise='} {[} cellstr \textbar{} char \textbar{}
+  \emph{empty} {]} - List of parameters that will be endogenised when
+  computing the steady state; the number of endogenised parameters must
+  match the number of transtion variables exogenised in the
+  \texttt{'exogenised='} option.
+\item
+  \texttt{'exogenise='} {[} cellstr \textbar{} char \textbar{}
+  \emph{empty} {]} - List of transition variables that will be
+  exogenised when computing the steady state; the number of exogenised
+  variables must match the number of parameters exogenised in the
+  \texttt{'exogenise='} option.
+\item
+  \texttt{'fix='} {[} cellstr \textbar{} \emph{empty} {]} - List of
+  variables whose steady state will not be computed and kept fixed to
+  the currently assigned values.
+\item
+  \texttt{'fixAllBut='} {[} cellstr \textbar{} \emph{empty} {]} -
+  Inverse list of variables whose steady state will not be computed and
+  kept fixed to the currently assigned values.
+\item
+  \texttt{'fixGrowth='} {[} cellstr \textbar{} \emph{empty} {]} - List
+  of variables whose steady-state growth will not be computed and kept
+  fixed to the currently assigned values.
+\item
+  \texttt{'fixGrowthAllBut='} {[} cellstr \textbar{} \emph{empty} {]} -
+  Inverse list of variables whose steady-state growth will not be
+  computed and kept fixed to the currently assigned values.
+\item
+  \texttt{'fixLevel='} {[} cellstr \textbar{} \emph{empty} {]} - List of
+  variables whose steady-state levels will not be computed and kept
+  fixed to the currently assigned values.
+\item
+  \texttt{'fixLevelAllBut='} {[} cellstr \textbar{} \emph{empty} {]} -
+  Inverse list of variables whose steady-state levels will not be
+  computed and kept fixed to the currently assigned values.
+\item
+  \texttt{'growth='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - If \texttt{true}, both the steady-state levels and growth rates
+  will be computed; if \texttt{false}, only the levels will be computed
+  assuming that the model is either stationary or that the correct
+  steady-state growth rates are already assigned in the model object.
+\item
+  \texttt{'optimSet='} {[} cell \textbar{} \emph{empty} {]} - Name-value
+  pairs with Optim Tbx settings; see \texttt{help optimset} for details
+  on these settings.
+\item
+  \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Refresh dynamic links after steady state is computed.
+\item
+  \texttt{'reuse='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Reuse the steady-state values calculated for a parameterisation
+  to initialise the next parameterisation.
+\item
+  \texttt{'solver='} {[} \texttt{'fsolve'} \textbar{}
+  \emph{\texttt{'lsqnonlin'}} {]} - Solver function used to solve for
+  the steady state of non-linear models; it can be either of the two
+  Optimization Tbx functions, or a user-supplied solver.
+\item
+  \texttt{'sstate='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  \textbar{} cell {]} - If \texttt{true} or a cell array, the steady
+  state is re-computed in each iteration; the cell array can be used to
+  modify the default options with which the \texttt{sstate} function is
+  called.
+\end{itemize}
+
+\subparagraph{Options for linear
+models}
+
+\begin{itemize}
+\item
+  \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Refresh dynamic links before steady state is computed.
+\item
+  \texttt{'solve='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Solve model before computing steady state.
+\end{itemize}
+
+\paragraph{Description}
+
+Note that for backward compatibility, the option \texttt{'growth='} is
+set to \texttt{false} by default so that either the model is assumed
+stationary or the steady-state growth rates have been already
+pre-assigned to the model object. To use the \texttt{sstate} function
+for computing both the steady-state levels and steady-state growth rates
+in a balanced-growth model, you need to set the option
+\texttt{'growth=' true}.
+
+\paragraph{Example}
+
+
