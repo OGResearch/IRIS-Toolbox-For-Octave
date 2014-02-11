@@ -55,6 +55,7 @@ classdef VAR < varobj
     % Manipulating VARs
     % ==================
     %
+    % * [`assign`](VAR/assign) - 
     % * [`alter`](VAR/alter) - Expand or reduce the number of alternative parameterisations within a VAR object.
     % * [`backward`](VAR/backward) - Backward VAR process.
     % * [`demean`](VAR/demean) - Remove constant from VAR object.
@@ -104,6 +105,7 @@ classdef VAR < varobj
     end
     
     methods
+        varargout = assign(varargin)
         varargout = acf(varargin)
         varargout = backward(varargin)
         varargout = companion(varargin)
