@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="SVAR/SVAR">SVAR</h2>
+<div class="headline">Convert reduced-form VAR to structural VAR</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[S,DATA,B,COUNT] = SVAR(V,DATA,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - Reduced-form VAR object.</p></li>
+<li><p><code>DATA</code> [ struct | tseries ] - Data associated with the input VAR object.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>S</code> [ VAR ] - Structural VAR object.</p></li>
+<li><p><code>DATA</code> [ struct | tseries ] - Data with transformed structural residuals.</p></li>
+<li><p><code>B</code> [ numeric ] - Impact matrix of structural residuals.</p></li>
+<li><p><code>COUNT</code> [ numeric ] - Number of draws actually performed (both successful and unsuccessful) when <code>'method'='draw'</code>; otherwise <code>COUNT=1</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>0</code></em> ] - Maximum number of attempts when <code>'method'='draw'</code>.</p></li>
+<li><p><code>'method='</code> [ <em><code>'chol'</code></em> | <code>'householder'</code> | <code>'qr'</code> | <code>'svd'</code> ] - Method that will be used to identify structural VAR and structural shocks.</p></li>
+<li><p><code>'nDraw='</code> [ numeric | <em><code>0</code></em> ] - Target number of successful draws when <code>'method'='draw'</code>.</p></li>
+<li><p><code>'reorder='</code> [ numeric | <em>empty</em> ] - Reorder VAR variables before identifying structural shocks, and bring the variables back in original order afterwards. Use the option '<code>backorderResiduals='</code> to control if also the structural shocks are to be brought back in original order.</p></li>
+<li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
+<li><p><code>'rank='</code> [ numeric | <em><code>Inf</code></em> ] - Reduced rank of the covariance matrix of structural residuals when <code>'method=' 'svd'</code>; <code>Inf</code> means full rank is preserved.</p></li>
+<li><p><code>'backOrderResiduals='</code> [ <em><code>true</code></em> | <code>false</code> ] - Bring the identified structural shocks back in original order after identification; works with <code>'reorder='</code>.</p></li>
+<li><p><code>'std='</code> [ numeric | <em><code>1</code></em> ] - Std deviation of structural residuals; the resulting structural covariance matrix will be re-scaled (divided) by this factor.</p></li>
+<li><p><code>'test='</code> [ char ] - Works with <code>'method=draw'</code> only; a string that will be evaluated for each random draw of the impact matrix <code>B</code>. The evaluation must result in <code>true</code> or <code>false</code>; only the matrices <code>B</code> that evaluate to <code>true</code> will be kept. See Description for more on how to write the option <code>'test='</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="identification-random-householder-transformations">Identification random Householder transformations</h5>
+<p>The structural impact matrices <code>B</code> are randomly generated using a Householder transformation algorithm. Each matrix is tested by evaluating the <code>test</code> string supplied by the user. If it evaluates to true the matrix is kept and one more SVAR parameterisation is created, if it is false the matrix is discarded.</p>
+<p>The <code>test</code> string can refer to the following characteristics:</p>
+<ul>
+<li><p><code>S</code> -- the impulse (or shock) response function; the <code>S(i,j,k)</code> element is the response of the <code>i</code>-th variable to the <code>j</code>-th shock in period <code>k</code>.</p></li>
+<li><p><code>Y</code> -- the asymptotic cumulative response function; the <code>Y(i,j)</code> element is the asumptotic (long-run) cumulative response of the <code>i</code>-th variable to the <code>j</code>-th shock.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

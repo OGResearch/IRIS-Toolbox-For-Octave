@@ -1,0 +1,158 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="grfun/plotpp">plotpp</h2>
+<div class="headline">Plot prior and/or posterior distributions and/or posterior mode</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[PrG,PoG,H] = grfun.plotpp(E,[],[],...)
+[PrG,PoG,H] = grfun.plotpp(E,Est,[],...)
+[PrG,PoG,H] = grfun.plotpp(E,[],Theta,...)
+[PrG,PoG,H] = grfun.plotpp(E,[],Stats,...)
+[PrG,PoG,H] = grfun.plotpp(E,Est,Theta,...)
+[PrG,PoG,H] = grfun.plotpp(E,Est,Stats,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>E</code> [ struct ] - Estimation input struct, see <a href="../model/estimate.html"><code>estimate</code></a>, with prior function handles from the <a href="../logdist/Contents.html">logdist</a> package.</p></li>
+<li><p><code>Est</code> [ struct | empty ] - Output struct returned by the <a href="../model/estimate.html"><code>model/estimate</code></a> function; <code>Est</code> will be used to plot the maximised posterior modes.</p></li>
+<li><p><code>Theta</code> [ numeric | empty ] - Array with the chain of draws from the posterior simulator <a href="../poster/arwm.html"><code>arwm</code></a>.</p></li>
+<li><p><code>Stats</code> [ struct | empty ] - Output struct returned by the posterior simulator statistics function <a href="../poster/stats.html"><code>stats</code></a>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>PrG</code> [ struct ] - Struct with x- and y-axis coordinates to plot the prior distribution for each parameter.</p></li>
+<li><p><code>PoG</code> [ struct ] - Struct with x- and y-axis coordinates to plot the posterior distribution for each parameter.</p></li>
+<li><p><code>H</code> [ struct ] - Struct with handles to the graphics objects plotted by <code>plotpp</code>; the struct has the following fields with vectors of handles: <code>figure</code>, <code>axes</code>, <code>prior</code>, <code>poster</code>, <code>bounds</code>, <code>init</code>, <code>mode</code>, <code>title</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'caption='</code> [ <em>empty</em> | cellstr ] - User-supplied graph titles; if empty, default captions will be automatically created.</p></li>
+<li><p><code>'describe='</code> [ <em>'auto'</em> | true | false ] - Include information on prior distributions, starting values, and maximised posterior modes in the graph titles; <code>'auto'</code> means the descriptions will be shown only if <code>'plotPrior='</code> is true.</p></li>
+<li><p><code>'ksdensity='</code> [ numeric | <em>empty</em> ] - Number of points over which the density will be calculated; if empty, default number will be used depending on the backend function available.</p></li>
+<li><p><code>'plotInit='</code> [ <em><code>true</code></em> | <code>false</code> | cell ] - Plot starting values (initial consition used in posterior mode maximisation) as vertical stems.</p></li>
+<li><p><code>'plotPrior='</code> [ <em><code>true</code></em> | <code>false</code> | cell ] - Plot prior distributions.</p></li>
+<li><p><code>'plotMode='</code> [ <em><code>true</code></em> | <code>false</code> | cell ] - Plot maximised posterior modes as vertical stems; the modes are taken from <code>Est</code> (and not from <code>Stats</code> or <code>Theta</code>).</p></li>
+<li><p><code>'plotPoster='</code> [ <em><code>true</code></em> | <code>false</code> | cell ] - Plot posterior distributions.</p></li>
+<li><p><code>'plotBounds='</code> [ <em><code>true</code></em> | <code>false</code> | cell ] - Plot lower and/or upper bounds as vertical lines; if <code>false</code>, the bounds will be plotted only added if within the graph x-limits.</p></li>
+<li><p><code>'sigma='</code> [ numeric | <em>3</em> ] - Number of std devs from the mean or the mode (whichever covers a larger area) to the left and to right that will be plotted unless running out of bounds.</p></li>
+<li><p><code>'tight='</code> [ <em><code>true</code></em> | <code>false</code> ] - Make graph axes tight.</p></li>
+<li><p><code>'title=</code>' [ <em><code>true</code></em> | <code>false</code> | cell ] - Display graph titles, and specify graphics options for the titles.</p></li>
+<li><p><code>'xLims='</code> [ struct | <em>empty</em> ] - Control the x-limits of the prior and posterior graphs.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The options that control what will be plotted in the graphs (i.e. <code>'plotInit='</code>, <code>'plotPrior='</code>, <code>'plotMode='</code>, <code>'plotPoster='</code>, <code>'plotBounds='</code>,<code>'title='</code>) can be set to one of the following three values:</p>
+<ul>
+<li><code>true</code>,</li>
+<li><code>false</code>,</li>
+<li>a cell array with sub-options to control the appearance of the respetive line; these will be passed into the respective plotting function.</li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,177 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dates/dat2str">dat2str</h2>
+<div class="headline">Convert IRIS dates to cell array of strings</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>S = dat2str(Dat,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>Dat</code> [ numeric ] - IRIS serial date number(s).</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>S</code> [ cellstr ] - Cellstr with strings representing the input dates.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'dateFormat='</code> [ char | cellstr | <em>'YYYYFP'</em> ] - Date format string, or array of format strings (possibly different for each date).</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em>'YHQBM'</em> ] - Letters representing the five possible frequencies (annual,semi-annual,quarterly,bimontly,monthly).</p></li>
+<li><p><code>'months='</code> [ cellstr | <em>English names of months</em> ] - Cell array of twelve strings representing the names of months.</p></li>
+<li><p><code>'standinMonth='</code> [ numeric | <code>'last'</code> | <code>*1*</code> ] - Which month will represent a lower-than-monthly-frequency date if month is part of the date format string.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>There are two types of date strings in IRIS: year-period strings and calendar date strings. The year-period strings can be printed for dates with yearly, half-yearly, quarterly, bimonthly, monthly, weekly, and indeterminate frequencies. The calendar date strings can be printed for dates with weekly and daily frequencies. Date formats for calendar date strings must start with a dollar sign, <code>$</code>.</p>
+<h5 id="year-period-date-strings">Year-period date strings</h5>
+<p>Regular date formats can include any combination of the following fields:</p>
+<ul>
+<li><p><code>'Y'</code> - Year.</p></li>
+<li><p><code>'YYYY'</code> - Four-digit year.</p></li>
+<li><p><code>'YY'</code> - Two-digit year.</p></li>
+<li><p><code>'P'</code> - Period within the year (half-year, quarter, bi-month, month, week).</p></li>
+<li><p><code>'PP'</code> - Two-digit period within the year.</p></li>
+<li><p><code>'R'</code> - Upper-case roman numeral for the period within the year.</p></li>
+<li><p><code>'r'</code> - Lower-case roman numeral for the period within the year.</p></li>
+<li><p><code>'M'</code> - Month numeral.</p></li>
+<li><p><code>'MM'</code> - Two-digit month numeral.</p></li>
+<li><p><code>'MMMM'</code>, <code>'Mmmm'</code>, <code>'mmmm'</code> - Case-sensitive name of month.</p></li>
+<li><p><code>'MMM'</code>, <code>'Mmm'</code>, <code>'mmm'</code> - Case-sensitive three-letter abbreviation of month.</p></li>
+<li><p><code>'Q'</code> - Upper-case roman numeral for the month or stand-in month.</p></li>
+<li><p><code>'r'</code> - Lower-case roman numeral for the month or stand-in month.</p></li>
+<li><p><code>'F'</code> - Upper-case letter representing the date frequency.</p></li>
+<li><p><code>'f'</code> - Lower-case letter representing the date frequency.</p></li>
+<li><p><code>'EE'</code> - Two-digit end-of-month day; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'E'</code> - End-of-month day; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'WW'</code> - Two-digit end-of-month workday; stand-in month used for non-monthly dates.</p></li>
+<li><p><code>'W'</code> - End-of-month workday; stand-in month used for non-monthly dates.</p></li>
+</ul>
+<h5 id="calendar-date-strings">Calendar date strings</h5>
+<p>Calendar date formats must start with a dollar sign, <code>$</code>, and can include any combination of the following fields:</p>
+<ul>
+<li><p><code>'Y'</code> - Year.</p></li>
+<li><p><code>'YYYY'</code> - Four-digit year.</p></li>
+<li><p><code>'YY'</code> - Two-digit year.</p></li>
+<li><p><code>'DD'</code> - Two-digit day numeral; daily and weekly dates only.</p></li>
+<li><p><code>'D'</code> - Day numeral; daily and weekly dates only.</p></li>
+<li><p><code>'M'</code> - Month numeral.</p></li>
+<li><p><code>'MM'</code> - Two-digit month numeral.</p></li>
+<li><p><code>'MMMM'</code>, <code>'Mmmm'</code>, <code>'mmmm'</code> - Case-sensitive name of month.</p></li>
+<li><p><code>'MMM'</code>, <code>'Mmm'</code>, <code>'mmm'</code> - Case-sensitive three-letter abbreviation of month.</p></li>
+<li><p><code>'Q'</code> - Upper-case roman numeral for the month.</p></li>
+<li><p><code>'r'</code> - Lower-case roman numeral for the month.</p></li>
+<li><p><code>'DD'</code> - Two-digit day numeral.</p></li>
+<li><p><code>'D'</code> - Day numeral.</p></li>
+</ul>
+<h5 id="escaping-control-letters">Escaping control letters</h5>
+<p>To get the format letters printed literally in the date string, use a percent sign as an escape character: <code>'%Y'</code>, <code>'%P'</code>, <code>'%F'</code>, <code>'%f'</code>, <code>'%M'</code>, <code>'%m'</code>, <code>'%R'</code>, <code>'%r'</code>, <code>'%Q'</code>, <code>'%q'</code>, <code>'%D'</code>, <code>'%E'</code>, <code>'%D'</code>.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

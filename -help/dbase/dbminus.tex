@@ -1,0 +1,39 @@
+
+
+    \filetitle{minus}{Remove entries from a database}{dbase/dbminus}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+D = D - List
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database from which some entries
+  will be removed.
+\item
+  \texttt{List} {[} char \textbar{} cellstr {]} - List of entries that
+  will be removed from \texttt{D}.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Output database with entries listed in
+  \texttt{List} removed from it.
+\end{itemize}
+
+\paragraph{Description}
+
+This functino works the same way as the built-in function
+\texttt{rmfield} except it does not throw an error when some of the
+entries listed in \texttt{List} are not found in \texttt{D}.
+
+\paragraph{Example}
+
+

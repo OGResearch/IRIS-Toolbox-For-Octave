@@ -1,0 +1,35 @@
+
+
+    \filetitle{covmat}{Covariance matrix prior dummy observations for BVARs}{BVAR/covmat}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+O = BVAR.covmat(C,Rep)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{C} {[} numeric {]} - Prior covariance matrix of residuals; if
+  \texttt{C} is a vector it will be converted to a diagonal matrix.
+\item
+  \texttt{Rep} {[} numeric {]} - The number of times the dummy
+  observations will be repeated.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
+  \href{VAR/estimate}{\texttt{VAR/estimate}} function.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

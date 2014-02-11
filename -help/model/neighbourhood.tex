@@ -1,0 +1,89 @@
+
+
+    \filetitle{neighbourhood}{Evaluate the local behaviour of the objective function around the estimated parameter values}{model/neighbourhood}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[D,FigH,AxH,ObjH,LikH,EstH,BH] = neighbourhood(M,PS,Neigh,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model \textbar{} bkwmodel {]} - Model or bkwmodel
+  object.
+\item
+  \texttt{PS} {[} poster {]} - Posterior simulator (poster) object
+  returned by the \href{model/estimate}{\texttt{model/estimate}}
+  function.
+\item
+  \texttt{Neigh} {[} numeric {]} - The neighbourhood in which the
+  objective function will be evaluated defined as multiples of the
+  parameter estimates.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Struct describing the local behaviour of
+  the objective function and the data likelihood (minus log likelihood)
+  within the specified range around the optimum for each parameter.
+\end{itemize}
+
+The following output arguments are non-empty only if you choose
+\texttt{'plot='} true:
+
+\begin{itemize}
+\item
+  \texttt{FigH} {[} numeric {]} - Handles to the figures created.
+\item
+  \texttt{AxH} {[} numeric {]} - Handles to the axes objects created.
+\item
+  \texttt{ObjH} {[} numeric {]} - Handles to the objective function
+  curves plotted.
+\item
+  \texttt{LikH} {[} numeric {]} - Handles to the data likelihood curves
+  plotted.
+\item
+  \texttt{EstH} {[} numeric {]} - Handles to the actual estimate marks
+  plotted.
+\item
+  \texttt{BH} {[} numeric {]} - Handles to the bounds plotted.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'plot='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Call the \href{grfun/plotneigh}{\texttt{grfun.plotneigh}}
+  function from within \texttt{neighbourhood} to visualise the results.
+\item
+  \texttt{'neighbourhood='} {[} struct \textbar{} \emph{empty} {]} -
+  Struct specifying the neighbourhood points for some of the parameters;
+  these points will be used instead of those based on \texttt{Neigh}.
+\end{itemize}
+
+\paragraph{Plotting options}
+
+See help on \href{grfun/plotneigh}{\texttt{grfun.plotneigh}} for options
+available when you choose \texttt{'plot='} true.
+
+\paragraph{Description}
+
+In the output database, \texttt{D}, each parameter is a 1-by-3 cell
+array. The first cell is a vector of parameter values at which the local
+behaviour was investigated. The second cell is a matrix with two column
+vectors: the values of the overall minimised objective function (as set
+up in the \href{model/estimate}{\texttt{estimate}} function), and the
+values of the data likelihood component. The third cell is a vector of
+four numbers: the parameter estimate, the value of the objective
+function at optimum, the lower bound and the upper bound.
+
+\paragraph{Example}
+
+

@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/figure">figure</h2>
+<div class="headline">Start new figure</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.figure(Caption,...)</code></pre>
+<h4 id="syntax-to-capture-an-existing-figure-window">Syntax to capture an existing figure window</h4>
+<p>This is an obsolete syntax, and will be removed from IRIS in a future release. Use <a href="../report/userfigure.html"><code>report/userfigure</code></a> instead.</p>
+<pre><code>P.figure(Caption,H,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Caption</code> [ char | cellstr ] - Title or a cell array with title and subtitle displayed at the top of the figure; see Description for splitting the title or subtitle into multiple lines.</p></li>
+<li><p><code>H</code> [ numeric ] - See help on <a href="../report/userfigure.html"><code>report/userfigure</code></a>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - LaTeX format commands for typesetting the figure caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
+<li><p><code>'close='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) Close the underlying figure window when finished; see Description.</p></li>
+<li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inheritable from parent objects) LaTeX commands that will be inserted after the figure.</p></li>
+<li><p><code>'figureOptions='</code> [ cell | <em>empty</em> ] - Figure options that will be applied to the figure handle after all graphs are drawn.</p></li>
+<li><p><code>'figureScale='</code> [ numeric | <em><code>0.85</code></em> ] - (Inheritable from parent objects) Scale of the figure in the LaTeX document.</p></li>
+<li><p><code>'footnote='</code> [ char | <em>empty</em> ] - Footnote at the figure title; only shows if the title is non-empty.</p></li>
+<li><p><code>'sideways='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inheritable from parent objects) Print the table rotated by 90 degrees.</p></li>
+<li><p><code>'style='</code> [ struct | <em>empty</em> ] - Apply this cascading style structure to the figure; see <a href="../qreport/qstyle.html"><code>qstyle</code></a>.</p></li>
+<li><p><code>'subplot='</code> [ numeric | <em><code>'auto'</code></em> ] - (Inheritable from parent objects) Subplot division of the figure.</p></li>
+<li><p><code>'typeface='</code> [ char | <em>empty</em> ] - (Not inheritable from parent objects) LaTeX code specifying the typeface for the figure as a whole; it must use the declarative forms (such as <code>\itshape</code>) and not the command forms (such as <code>\textit{...}</code>).</p></li>
+<li><p><code>'visible='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inheritable from parent objects) Visibility of the underlying Matlab figure window.</p></li>
+</ul>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<p>Figures are top-level report objects and cannot be nested within other report objects, except <a href="../report/align.html"><code>align</code></a>. Figure objects can have the following types of children:</p>
+<ul>
+<li><a href="../report/graph.html"><code>graph</code></a>;</li>
+<li><a href="../report/empty.html"><code>empty</code></a>.</li>
+</ul>
+<h5 id="titles-and-subtitles">Titles and subtitles</h5>
+<p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
+<p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
+<h5 id="figure-handle">Figure handle</h5>
+<p>If the option <code>'close='</code> is set to <code>false</code> the figure window will remain open after the report is published. The handle to this figure window will be included in the field <code>.figureHandle</code> of the information struct <code>Info</code> returned by <a href="../report/publish.html"><code>report/publish</code></a>.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

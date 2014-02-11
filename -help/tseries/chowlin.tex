@@ -1,0 +1,79 @@
+
+
+    \filetitle{chowlin}{Chow-Lin distribution of low-frequency observations over higher-frequency periods}{tseries/chowlin}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[Y2,B,RHO,U1,U2] = chowlin(Y1,X2)
+[Y2,B,RHO,U1,U2] = chowlin(Y1,X2,range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{Y1} {[} tseries {]} - Low-frequency input tseries object that
+  will be distributed over higher-frequency observations.
+\item
+  \texttt{X2} {[} tseries {]} - Tseries object with regressors used to
+  distribute the input data.
+\item
+  \texttt{range} {[} numeric {]} - Low-frequency date range on which the
+  distribution will be computed.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{Y2} {[} tseries {]} - Output data distributed with higher
+  frequency.
+\item
+  \texttt{B} {[} numeric {]} - Vector of regression coefficients.
+\item
+  \texttt{RHO} {[} numeric {]} - Actually used autocorrelation
+  coefficient in the residuals.
+\item
+  \texttt{U1} {[} tseries {]} - Low-frequency regression residuals.
+\item
+  \texttt{U2} {[} tseries {]} - Higher-frequency regression residuals.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'constant='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Include a constant term in the regression.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the data before distribution, de-logarithmise
+  afterwards.
+\item
+  \texttt{'ngrid='} {[} numeric \textbar{} \emph{\texttt{200}} {]} -
+  Number of grid search points for finding autocorrelation coefficient
+  for higher-frequency residuals.
+\item
+  \texttt{'rho='} {[} \emph{\texttt{'estimate'}} \textbar{}
+  \texttt{'positive'} \textbar{} \texttt{'negative'} \textbar{} numeric
+  {]} - How to determine the autocorrelation coefficient for
+  higher-frequency residuals.
+\item
+  \texttt{'timeTrend='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Include a time trend in the regression.
+\end{itemize}
+
+\paragraph{Description}
+
+Chow,G.C., and A.Lin (1971). Best Linear Unbiased Interpolation,
+Distribution and Extrapolation of Time Series by Related Times Series.
+Review of Economics and Statistics, 53, pp.~372-75.
+
+See also Appendix 2 in Robertson, J.C., and E.W.Tallman (1999). Vector
+Autoregressions: Forecasting and Reality. FRB Atlanta Economic Review,
+1st Quarter 1999, pp.4-17.
+
+\paragraph{Example}
+
+

@@ -1,0 +1,157 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/model">model</h2>
+<div class="headline">Create new model object based on model file</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>m = model(fname,...)
+m = model(m,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>fname</code> [ char | cellstr ] - Name(s) of the model file(s) that will loaded and converted to a new model object.</p></li>
+<li><p><code>m</code> [ model ] - Existing model object that will be rebuilt as if from a model file.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>m</code> [ model ] - New model object based on the input model code file or files.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'multiple='</code> [ true | <em>false</em> ] - Allow each variable, shock, or parameter name to be declared (and assigned) more than once in the model file.</p></li>
+<li><p><code>'assign='</code> [ struct | <em>empty</em> ] - Assign model parameters and/or steady states from this database at the time the model objects is being created.</p></li>
+<li><p><code>'baseYear='</code> [ numeric | <em>2000</em> ] - Base year for constructing deterministic time trends.</p></li>
+<li><p><code>'comment='</code> [ char | <em>empty</em> ] - Text comment attached to the model object.</p></li>
+<li><p><code>'declareParameters='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>false</code>, skip parameter declaration in the model file, and determine the list of parameters automatically as names found in equations but not declared.</p></li>
+<li><p><code>'epsilon='</code> [ numeric | <em>eps^(1/4)</em> ] - The minimum relative step size for numerical differentiation.</p></li>
+<li><p><code>'linear='</code> [ <code>true</code> | <em><code>false</code></em> ] - Indicate linear models.</p></li>
+<li><p><code>'removeLeads='</code> [ <code>true</code> | <em><code>false</code></em> ] - Remove all leads from the state-space vector, keep included only current dates and lags.</p></li>
+<li><p><code>'sstateOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Read in only the steady-state versions of equations (if available).</p></li>
+<li><p><code>'std='</code> [ numeric | <em>1</em> for linear models | <em>0.01</em> for non-linear models ] - Default standard deviation for model shocks.</p></li>
+<li><p><code>'userdata='</code> [ ... | <em>empty</em> ] - Attach user data to the model object.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="loading-a-model-file">Loading a model file</h5>
+<p>The <code>model</code> function can be used to read in a <a href="../modellang/Contents.html">model file</a> named <code>fname</code>, and create a model object <code>m</code> based on the model file. You can then work with the model object in your own m-files, using using the IRIS <a href="../model/Contents.html">model functions</a> and standard Matlab functions.</p>
+<p>If <code>fname</code> is a cell array of more than one filenames then all files are combined together (in order of appearance).</p>
+<h5 id="re-building-an-existing-model-object">Re-building an existing model object</h5>
+<p>The only instance where you may need to call a model function on an existing model object is to change the <code>'removeLeads='</code> option. Of course, you can always achieve the same by loading the original model file.</p>
+<h4 id="example">Example</h4>
+<p>Read in a model code file named <code>my.model</code>, and declare the model as linear:</p>
+<pre><code>m = model(&#39;my.model&#39;,&#39;linear&#39;,true);</code></pre>
+<h4 id="example-1">Example</h4>
+<p>Read in a model code file named <code>my.model</code>, declare the model as linear, and assign some of the model parameters:</p>
+<pre><code>m = model(&#39;my.model&#39;,&#39;linear=&#39;,true,&#39;assign=&#39;,P);</code></pre>
+<p>Note that this is equivalent to</p>
+<pre><code>m = model(&#39;my.model&#39;,&#39;linear=&#39;,true);
+m = assign(m,P);</code></pre>
+<p>unless some of the parameters passed in to the <code>model</code> fuction are needed to evaluate <a href="../modellang/if.html"><code>if</code></a> or <a href="../modellang/switch.html"><code>!switch</code></a> expressions.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

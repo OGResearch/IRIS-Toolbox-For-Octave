@@ -1,0 +1,93 @@
+
+
+    \filetitle{autocaption}{Create captions for graphs of model variables or parameters}{model/autocaption}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+C = autocaption(M,X,Template,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{X} {[} cellstr \textbar{} struct \textbar{} poster {]} - A
+  cell array of model names, a struct with model names, or a
+  \href{poster/Contents}{\texttt{poster}} object.
+\item
+  \texttt{Template} {[} char {]} - Prescription for how to create the
+  caption; see Description for details.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{C} {[} cellstr {]} - Cell array of captions, with one for each
+  model name (variable, shock, parameter) found in \texttt{X}, in order
+  of their appearance in \texttt{X}.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'corr='} {[} char \textbar{}
+  \emph{\texttt{'Corr \$shock1\$ X \$shock2\$'}} {]} - Template to
+  create \texttt{\$descript\$} and \texttt{\$alias\$} for correlation
+  coefficients based on \texttt{\$descript\$} and \texttt{\$alias\$} of
+  the underlying shocks.
+\item
+  \texttt{'std='} {[} char \textbar{} \emph{\texttt{'Std \$shock\$'}}
+  {]} - Template to create \texttt{\$descript\$} and \texttt{\$alias\$}
+  for std deviation based on \texttt{\$descript\$} and
+  \texttt{\$alias\$} of the underlying shock.
+\end{itemize}
+
+\paragraph{Description}
+
+The function \texttt{autocaption} can be used to supply user-created
+captions to title graphs in \texttt{grfun/plotpp},
+\texttt{grfun/plotneigh}, \texttt{model/shockplot},
+\texttt{dbase/dbplot}, and \texttt{qreport/qplot}, through their option
+\texttt{'caption='}.
+
+The \texttt{Template} can contain the following substitution strings:
+
+\begin{itemize}
+\item
+  \texttt{\$name\$} -- will be replaced with the name of the respective
+  variable, shock, or parameter;
+\item
+  \texttt{\$descript\$} -- will be replaced with the description of the
+  respective variable, shock, or parameter;
+\item
+  \texttt{\$alias\$} -- will be replaced with the alias of the
+  respective variable, shock, or parameter.
+\end{itemize}
+
+The options \texttt{'corr='} and \texttt{'std='} will be used to create
+\texttt{\$descript\$} and `$alias$ for std deviations and
+cross-correlations of shocks (which cannot be created in the model
+code). The options are expected to use the following substitution
+strings:
+
+\begin{itemize}
+\item
+  \texttt{'\$shock\$'} -- will be replaced with the description or alias
+  of the underlying shock in a std deviation;
+\item
+  \texttt{'\$shock1\$'} -- will be replaced with the description or
+  alias of the first underlying shock in a cross correlation;
+\item
+  \texttt{'\$shock2\$'} -- will be replaced with the description or
+  alias of the second underlying shock in a cross correlation.
+\end{itemize}
+
+\paragraph{Example}
+
+
