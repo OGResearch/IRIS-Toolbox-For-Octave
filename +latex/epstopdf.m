@@ -42,7 +42,7 @@ if ischar(List)
    List = strtrim(List);
 end
 
-thisDir = cd();
+thisDir = pwd();
 epstopdf = irisget('epstopdfpath');
 if isempty(epstopdf)
    error('iris:latex',...
