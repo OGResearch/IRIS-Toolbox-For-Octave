@@ -135,10 +135,18 @@ end
             '(?<!%)D','(?<varday>\\d{1,2})'; ... One- or two-digit day
             };
         for ii = 1 : size(subs,1)
-            x = regexprep(x,subs{ii,1},char(offset+ii));
+            chrCode = offset+ii;
+            if ~ismatlab
+                chrCode = highCharCode2utf8(chrCode);
+            end
+            x = regexprep(x,subs{ii,1},char(chrCode));
         end
         for ii = 1 : size(subs,1)
-            x = regexprep(x,char(offset+ii),subs{ii,2});
+            chrCode = offset+ii;
+            if ~ismatlab
+                chrCode = highCharCode2utf8(chrCode);
+            end
+            x = regexprep(x,char(chrCode),subs{ii,2});
         end
         x = regexprep(x,'%([YFPMQRID])','$1');
     end % doPattern()
