@@ -10,6 +10,8 @@ else
   end
   if ischar(expect) || iscellstr(expect)
     assert(strcmp(observ, expect));
+  elseif any(isnan(expect))
+    assert(isequaln(observ,expect));
   else
     absTol = absTol * ones(size(expect));
     assert(any(abs(observ-expect) <= absTol));

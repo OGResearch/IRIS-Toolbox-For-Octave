@@ -1,4 +1,4 @@
-ts = tseries(qq(2010,1:18),@(n)randn(n,5));
+ts = tseries(qq(2010,1:18),randn(18,5));
 
 try
   barcon(ts);
