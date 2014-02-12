@@ -429,6 +429,7 @@ classdef tseries < userdataobj
         varargout = mynanstd(varargin)
         varargout = mynansum(varargin)
         varargout = mynanvar(varargin)
+        varargout = myprctile(varargin)
         varargout = mypct(varargin)
         varargout = myplot(varargin)
         varargout = myshift(varargin)
@@ -739,7 +740,7 @@ classdef tseries < userdataobj
             if nargin < 3
                 dim = 1;
             end
-            x = unop(@prctile,x,dim,p,dim);
+            x = unop(@tseries.myprctile,x,dim,p,dim);
         end
         % Alias for prctile.
         function varargout = pctile(varargin)
