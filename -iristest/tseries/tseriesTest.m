@@ -1,6 +1,6 @@
 function Tests = tseriesTest()
 
-Tests = functiontests(localfunctions) ;
+Tests = functiontests(localfunctions);
 
 end
 
@@ -17,10 +17,10 @@ end % setupOnce()
 %**************************************************************************
 function testWrongFreqConcat(This)
 
-a = tseries(dd(1,1,1),1) ;
-b = tseries(qq(2,2),2) ;
-assertError(This, @()[a,b], 'IRIS:tseries:catcheck') ;
-assertError(This, @()[a;b], 'IRIS:tseries:catcheck') ;
+a = tseries(dd(1,1,1),1);
+b = tseries(qq(2,2),2);
+assertError(This, @()[a,b], 'IRIS:tseries:catcheck');
+assertError(This, @()[a;b], 'IRIS:tseries:catcheck');
 
 end % testWrongFreqConcat()
 
@@ -43,9 +43,9 @@ end % testCat()
 %**************************************************************************
 function testEmpty(This)
 
-x = tseries() ;
-assertEqual(This, startdate(x), NaN) ;
-assertEqual(This, enddate(x), NaN) ;
+x = tseries();
+assertEqual(This, startdate(x), NaN);
+assertEqual(This, enddate(x), NaN);
 
 end % testEmpty()
 
@@ -53,10 +53,10 @@ end % testEmpty()
 %**************************************************************************
 function testAssign(This) 
 
-x = tseries() ;
+x = tseries();
 x(1:5) = 2 : 6 ;
-assertEqual(This, double(x), (2:6)') ;
-assertEqual(This, range(x), 1:5) ;
+assertEqual(This, double(x), (2:6)');
+assertEqual(This, range(x), 1:5);
 
 end % testAssign()
 
@@ -65,7 +65,7 @@ end % testAssign()
 function testSubsindex(This)
 
 x = This.TestData.x ;
-assertEqual(This, x(:), double(x)) ;
+assertEqual(This, x(:), double(x));
 
 end % testSubsindex()
 
@@ -74,7 +74,7 @@ end % testSubsindex()
 function testDetrend(This)
 
 x = This.TestData.x ;
-actual = double(detrend(x)) ;
+actual = double(detrend(x));
 expected = [ ...
     0
     0.221770008206370
@@ -86,8 +86,8 @@ expected = [ ...
     1.225492225135581
     0.802196029942541
     0 ...
-    ] ;
-assertEqual(This, actual, expected, 'absTol', This.TestData.absTol) ;
+    ];
+assertEqual(This, actual, expected, 'absTol', This.TestData.absTol);
 
 end % testDetrend()
 
@@ -95,9 +95,9 @@ end % testDetrend()
 %**************************************************************************
 function testIsScalar(This)
 
-assertEqual(This, isscalar(tseries(1, 1)), true) ;
-assertEqual(This, isscalar(tseries(1:2, 1)), true) ;
-assertEqual(This, isscalar(tseries(1, [1 2])), false) ;
+assertEqual(This, isscalar(tseries(1, 1)), true);
+assertEqual(This, isscalar(tseries(1:2, 1)), true);
+assertEqual(This, isscalar(tseries(1, [1 2])), false);
 
 end % testIsScalar()
 
@@ -106,7 +106,7 @@ end % testIsScalar()
 function testRound(This)
 
 x = This.TestData.x ;
-assertEqual(This, double(round(x)), round(double(x))) ;
+assertEqual(This, double(round(x)), round(double(x)));
 
 end % testRound
 
@@ -116,7 +116,7 @@ end % testRound
 function testBxsfun(This)
 
 x = This.TestData.x ;
-assertEqual(This, double(bsxfun(@max, x, 0)), bsxfun(@max, double(x), 0)) ;
+assertEqual(This, double(bsxfun(@max, x, 0)), bsxfun(@max, double(x), 0));
 
 end % testBxsfun()
 
@@ -125,7 +125,7 @@ end % testBxsfun()
 function testAcf(This)
 
 x = This.TestData.x ;
-assertEqual(This, acf(x), var(x), 'absTol', This.TestData.absTol) ;
+assertEqual(This, acf(x), var(x), 'absTol', This.TestData.absTol);
 
 end % testAcf
 
@@ -135,7 +135,7 @@ function testMean(This)
 
 x = This.TestData.x ;
 assertEqual(This, mean(x), 0.141118837121801, ...
-    'absTol', This.TestData.absTol) ;
+    'absTol', This.TestData.absTol);
 
 end % testMean()
 
@@ -145,7 +145,7 @@ function testHpf(This)
 
 x = This.TestData.x;
 
-actual = double(hpf(x)) ; 
+actual = double(hpf(x)); 
 expected = [ ...
     0.332158721583314
     0.287235347551190
@@ -157,10 +157,10 @@ expected = [ ...
     0.038847793390374
    -0.000490226884807
    -0.040143170872499 ...
-   ] ;
-assertEqual(This, actual, expected, 'absTol', This.TestData.absTol) ;
+   ];
+assertEqual(This, actual, expected, 'absTol', This.TestData.absTol);
 
-actual = double(hpf2(x)) ;
+actual = double(hpf2(x));
 expected = [ ... 
     0.509312263224583
     0.622062079274492
@@ -171,8 +171,8 @@ expected = [ ...
     0.579172752033176
     0.950510453233008
     0.412608712126564
-   -0.503877940016871] ;
-assertEqual(This, actual, expected, 'absTol', This.TestData.absTol) ;
+   -0.503877940016871];
+assertEqual(This, actual, expected, 'absTol', This.TestData.absTol);
 
 end % testHpf()
 
@@ -190,8 +190,38 @@ end % testIsempty
 function testRedate(This)
 
 x = This.TestData.x;
-actual = range(redate(x,qq(1,1),qq(2,2))) ;
-expected = qq(2,2) : qq(4,3) ;
+actual = range(redate(x,qq(1,1),qq(2,2)));
+expected = qq(2,2) : qq(4,3);
 assertEqual(This, actual, expected, 'absTol', This.TestData.absTol);
 
 end % testRedate
+
+
+%**************************************************************************
+function testPrctile(This)
+
+d = rand(50,5,10,8);
+d(1,1,1,1) = NaN;
+d(20,:,:,:) = NaN;
+x = tseries(1:size(d,1),d);
+p = [0,10,28,50,76,100];
+
+expPrctile = cell(1,6);
+actPrctile = cell(1,6);
+
+% Run dimensions beyond ndims(d).
+for i = 1 : 6
+    % Stat Tbx.
+    expPrctile{i} = prctile(d,p,i);
+
+    % IRIS prctile implementation.
+    aux = prctile(x,p,i);
+    if i > 1
+        aux = aux.data;
+    end
+    actPrctile{i} = aux;
+end
+
+assertEqual(This, actPrctile, expPrctile);
+
+end
