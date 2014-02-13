@@ -42,7 +42,11 @@ for iAx = Ax
         '-and','-not','tag','vline', ...
         '-and','-not','tag','hline', ...
         '-and','-not','tag','zeroline');
-    lim = objbounds(ch);
+    try
+        lim = objbounds(ch);
+    catch
+        lim = [];
+    end
     if isempty(lim)
         yLim = get(iAx,'yLim');
     else
