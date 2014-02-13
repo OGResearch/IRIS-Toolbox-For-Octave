@@ -45,7 +45,7 @@ end
 R.publish('report1.pdf','display',false);
 catch err
   if ~isempty(strfind(err.message,'class not found: genericobj'))
-    error('expected error:: octave unexpectedly changed working directory to ~');
+    error('expected error:: octave cannot find class from the same package');
   else
     rethrow(err);
   end
