@@ -200,9 +200,14 @@ end
         invalid = {};
         for ii = find(lhsInx | rhsInx)
             ch = This.children{ii};
-            if ~any(strcmpi(char(ch.options.plotfunc), ...
+            if is.func(options.plotfunc)
+                chPF = func2str(options.plotfunc);
+            else
+                chPF = char(options.plotfunc);
+            end
+            if ~any(strcmpi(chPF, ...
                     {'plot','bar','stem','area'}))
-                invalid{end+1} = char(ch.options.plotfunc); %#ok<AGROW>
+                invalid{end+1} = chPF; %#ok<AGROW>
             end
         end
         if ~isempty(invalid)

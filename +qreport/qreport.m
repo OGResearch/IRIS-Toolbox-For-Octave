@@ -619,8 +619,12 @@ end % xxSaveAs()
 %**************************************************************************
 function Opt = xxPlotFunc(Opt)
 % xxPlotFunc  Convert the `'plotFunc='` option in `dbplot` to the corresponding tag.
-
-switch char(Opt.plotfunc)
+if is.func(Opt.plotfunc)
+    chPF = func2str(Opt.plotfunc);
+else
+    chPF = char(Opt.plotfunc);
+end
+switch chPF
     case 'plot'
         Opt.plotfunc = '!--';
     case 'bar'

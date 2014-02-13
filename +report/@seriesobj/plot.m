@@ -12,8 +12,12 @@ function [LegeEntry,H,Time,Data,Grid] = plot(This,Ax)
 par = This.parent;
 
 if size(This.data{1}(:,:),2) > 0
-    
-    switch char(This.options.plotfunc)
+    if is.func(This.options.plotfunc)
+        chPF = func2str(This.options.plotfunc);
+    else
+        chPF = char(This.options.plotfunc);
+    end
+    switch chPF
         case 'plotcmp'
             % axes(ax);
             [~,H,rr,lhsRange,lhsData,lhsGrid, ...

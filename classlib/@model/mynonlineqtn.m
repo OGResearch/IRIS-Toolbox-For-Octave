@@ -64,7 +64,7 @@ end
     function doBkwComp()
         % Make sure `eqtn` is a text string, and remove function handle header.
         if isa(eqtn,'function_handle')
-            eqtn = char(eqtn);
+            eqtn = func2str(eqtn);
         end
         if eqtn(1) == '@'
             eqtn = regexprep(eqtn,'@\(.*?\)','');

@@ -115,6 +115,15 @@ if isempty(Func)
     return
 end
 
+% make char representation of Func
+chFunc = Func;
+if is.func(chFunc)
+    chFunc = func2str(chFunc);
+else
+    chFunc = char(chFunc);
+end
+  
+
 % Do the actual plot.
 set(Ax,'xTickMode','auto','xTickLabelMode','auto');
 H = [];
@@ -123,7 +132,7 @@ doPlot();
 if isequal(opt.xlimmargin,true) ...
         || (ischar(opt.xlimmargin) ...
         && strcmpi(opt.xlimmargin,'auto') ...
-        && any(strcmp(char(Func),{'bar','barcon'})))
+        && any(strcmp(chFunc,{'bar','barcon'})))
     setappdata(Ax,'xLimAdjust',true);
     peer = getappdata(Ax,'graphicsPlotyyPeer');
     if ~isempty(peer)
@@ -200,7 +209,7 @@ end
 
 %**************************************************************************
     function doPlot()
-        switch char(Func)
+        switch chFunc
             case {'scatter'}
                 if nx ~= 2
                     utils.error('tseries', ...

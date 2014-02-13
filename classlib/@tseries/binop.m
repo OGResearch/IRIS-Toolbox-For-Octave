@@ -55,7 +55,7 @@ else
     if isa(a,'tseries')
         x = a;
         a = a.data;
-        if any(strcmp(char(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
+        if any(strcmp(func2str(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
                 && bsize(1) == 1 && all(bsize(2:end) == asize(2:end))
             % Expand non-tseries data in first dimension to match the number
             % of periods of the tseries object for elementwise operators.
@@ -65,7 +65,7 @@ else
     else
         x = b;
         b = b.data;
-        if any(strcmp(char(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
+        if any(strcmp(func2str(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
                 && asize(1) == 1 && all(asize(2:end) == bsize(2:end))
             % Expand non-tseries data in first dimension to match the number
             % of periods of the tseries object for elementwise operators.

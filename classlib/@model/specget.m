@@ -340,7 +340,7 @@ end
         nEqtn = sum(select);
         X = cell(1,nEqtn);
         for iieq = find(select)
-            u = char(This.deqtnF{iieq});
+            u = func2str(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
             replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
             replaceZero = @doReplaceZero; %#ok<NASGU>
