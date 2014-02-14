@@ -1,0 +1,45 @@
+
+
+    \filetitle{FAVAR}{Create new, empty FAVAR object}{FAVAR/FAVAR}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+F = FAVAR(YNames)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{YNames} {[} cellstr \textbar{} char {]} - Names of observed
+  variables in the FAVAR model.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{F} {[} FAVAR {]} - New FAVAR object.
+\end{itemize}
+
+\paragraph{Description}
+
+This function creates a new empty FAVAR object. It is usually followed
+by the \href{FAVAR/estimate}{estimate} function to estimate the FAVAR
+parameters on data.
+
+\paragraph{Example}
+
+To estimate a FAVAR, you first need to create an empty VAR object, and
+then run the \href{FAVAR/estimate}{FAVAR} function on it, e.g.
+
+\begin{verbatim}
+list = {'DLCPI','DLGDP','R'};
+f = FAVAR(list);
+f = estimate(f,d,range);
+\end{verbatim}
+
+

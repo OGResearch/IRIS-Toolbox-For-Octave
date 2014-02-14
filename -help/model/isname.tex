@@ -1,0 +1,36 @@
+
+
+    \filetitle{isname}{True for valid names of variables, parameters, or shocks in model object}{model/isname}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+Flag = isname(M,Name)
+[Flag,Flag,...] = isname(M,Name,Name,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{Name} {[} char {]} - A text string that will be matched
+  against the names of variables, parameters and shocks in the model
+  object \texttt{M}.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  for input strings that are valid names in the model object \texttt{M}.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

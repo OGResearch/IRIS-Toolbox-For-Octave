@@ -1,0 +1,22 @@
+function P = regexppattern(This)
+% regexppattern  [Not a public function] Regexp list of all replacement codes.
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+if isempty(This)
+    P = '';
+    return
+end
+
+n = length(This.storage);
+first = char(This.offset + 1);
+last = char(This.offset + n);
+P = [first,'-',last];
+
+end

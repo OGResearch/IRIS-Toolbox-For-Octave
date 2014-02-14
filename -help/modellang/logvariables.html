@@ -1,0 +1,155 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/logvariables">!log_variables</h2>
+<div class="headline">List of log-linearised variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>!log_variables
+    Variable_Name, Variable_Name, 
+    Variable_Name, ...</code></pre>
+<h4 id="syntax-with-inverted-list">Syntax with inverted list</h4>
+<pre><code>!log_variables
+    !all_but
+    Variable_Name, Variable_Name, 
+    Variable_Name, ...</code></pre>
+<h4 id="syntax-with-regular-expressions">Syntax with regular expression(s)</h4>
+<pre><code>!log_variables
+    Variable_Name, Variable_Name, 
+    Variable_Name, ...
+    &lt;REGEXP&gt;, &lt;REGEXP&gt;, ...</code></pre>
+<h4 id="description">Description</h4>
+<p>List all log-variables under this headings. Only measurement or transition variables can be declared as log-variables.</p>
+<p>In non-linear models, all variables are linearised around the steady state or a balanced-growth path. If you wish to log-linearise some of them instead, put them on a <code>!log_variables</code> list. You can also use the <code>!all_but</code> keyword to indicate an inverse list: all variables will be log-linearised except those listed.</p>
+<p>To create the list of log-variables, you can also use regular expressions, each enlosed in a pair of angle brackets, <code>&lt;</code> and <code>&gt;</code>. All measurement and transition variables whose names match one of the regular expressions will be declared as log-variables. See also help on regular expressions in the Matlab documentation.</p>
+<h4 id="example">Example</h4>
+<p>The following block of code will cause the variables <code>Y</code>, <code>C</code>, <code>I</code>, and <code>K</code> to be declared as log-variables, and hence log-linearised in the model solution, while <code>r</code> and <code>pie</code> will be linearised:</p>
+<pre><code>!transition_variables
+    Y, C, I, K, r, pie
+
+!log_variables
+    Y, C, I, K</code></pre>
+<p>You can do the same job by writing</p>
+<pre><code>!transition_variables
+    Y, C, I, K, r, pie
+
+!log_variables
+    !all_but
+    r, pie</code></pre>
+<h4 id="example-1">Example</h4>
+<p>We again achieve the same result as above, but now using a regular expression.</p>
+<pre><code>!transition_variables
+    Y, C, I, K, r, pie
+
+!log_variables
+    &lt;[A-Z]\w*&gt;</code></pre>
+<p>The regular expression <code>[A-Z]\w*</code> selects all variables whose names start with an upper-case letter. Hence, again the variables <code>Y</code>, <code>C</code>, <code>I</code>, and <code>K</code> will be declared as log-variables.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

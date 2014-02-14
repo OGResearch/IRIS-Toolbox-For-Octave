@@ -1,0 +1,51 @@
+
+
+    \filetitle{dat2char}{Convert dates to character array}{dates/dat2char}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+C = dat2char(Dat,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Dat} {[} numeric {]} - IRIS serial date numbers that will be
+  converted to character array.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{C} {[} char {]} - Character array representing the input
+  dates; each line of the array represents one date from \texttt{D}.
+\end{itemize}
+
+\paragraph{Options}
+
+See help on \href{dates/dat2str}{\texttt{dat2str}} for options
+available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+We create a quarterly date using the function \texttt{qq}; this function
+returns an IRIS serial date number. We then use \texttt{dat2char} to
+print a humna-readable text representation of that date.
+
+\begin{verbatim}
+d = qq(2015,3)
+d =
+   8.0620e+03
+dat2char(d)
+ans =
+2015Q3
+\end{verbatim}
+
+

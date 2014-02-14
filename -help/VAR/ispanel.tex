@@ -1,0 +1,38 @@
+
+
+    \filetitle{ispanel}{True for panel VAR based objects}{VAR/ispanel}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+Flag = ispanel(X)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} VAR \textbar{} SVAR \textbar{} FAVAR {]} - VAR based
+  object.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if the VAR based object, \texttt{X}, is based on a panel of data.
+\end{itemize}
+
+\paragraph{Description}
+
+Plain, i.e.~non-panel, VAR based objects are created by calling the
+constructor with one input argument: the list of variables. Panel VAR
+based objects are created by calling the constructor with two input
+arguments: the list of variables, and the names of groups of data.
+
+\paragraph{Example}
+
+

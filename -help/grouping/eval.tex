@@ -1,0 +1,45 @@
+
+
+    \filetitle{eval}{Evaluate contributions in input database S using grouping object G}{grouping/eval}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[S,L] = eval(G,S)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{G} {[} grouping {]} - Grouping object.
+\item
+  \texttt{S} {[} dbase {]} - Input dabase with individual contributions.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} dbase {]} - Output database with grouped contributions.
+\item
+  \texttt{L} {[} cellstr {]} - Legend entries based on the list of group
+  names.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+For a model object M, database D and simulation range R,
+
+\begin{verbatim}
+S = simulate(M,D,R,'contributions=',true) ;
+G = grouping(M)
+...
+G = addgroup(G,GroupName,GroupContents) ;
+...
+S = eval(S,G)
+\end{verbatim}
+
+

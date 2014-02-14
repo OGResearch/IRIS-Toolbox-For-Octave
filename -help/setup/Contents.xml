@@ -1,0 +1,90 @@
+<folder>
+
+<foldername>setup</foldername><filename>Contents</filename>
+
+<h1 id="setup/Contents">Installing IRIS</h1>
+
+<h3>Requirements</h3>
+
+<ul><li>Matlab R2009a or later.</li></ul>
+
+<h3>Optional components</h3>
+
+<h4>Optimization Toolbox</h4>
+
+<p>The Optimization Toolbox is needed to compute the steady state of
+non-linear models, and to run estimation.</p>
+
+<h4>LaTeX</h4>
+
+<p>LaTeX is a free typesetting system used to produce PDF reports in IRIS.
+We recommend MiKTeX, available from <tt>www.miktex.org</tt>.</p>
+
+<h4>Components not needed</h4>
+
+<p>Some components were needed in the past but are not any longer.</p>
+
+<h4>X12-ARIMA</h4>
+
+<p>Courtesy of the U.S. Census Bureau, the X12-ARIMA program is now
+incoporated in, and distributed with IRIS. You don't need to care about
+anything to be able to use it.</p>
+
+<h4>Symbolic Math Toolbox</h4>
+
+<p>IRIS is now equipped with its own symbolic/automatic differentiator, so
+you do not need to have the Symbolic Math Toolbox installed to be able to
+compute exact Taylor expansions.</p>
+
+<h3>Installing IRIS</h3>
+
+<h4>Step 1</h4>
+
+<p>Download the latest IRIS zip archive, <tt>IRIS_Tbx_#_YYYYMMDD.zip</tt>, from
+<tt>www.iris-toolbox.com</tt>, and save it in a temporary location on your disk.</p>
+
+<h4>Step 2</h4>
+
+<p>Unzip the archive into a folder on your hard drive, e.g. <tt>C:\IRIS_Tbx</tt>.
+We will call this directory the IRIS root folder.</p>
+
+<p>Installing IRIS on a network drive may cause some minor problems,
+especially on MS Windows systems; check out <tt>help changeNotification</tt> in
+Matlab.</p>
+
+<h4>Step 3</h4>
+
+<p>After installing a new version of IRIS, we recommend that you remove all
+older versions of IRIS from the Matlab search path, and restart Matlab.</p>
+
+<h4>Getting started</h4>
+
+<p>Each time you want to start working with IRIS, run the following line
+<pre>   >> addpath C:\IRIS_Tbx; irisstartup
+</pre></p>
+
+<p>where <tt>C:\IRIS_Tbx</tt> needs to be, obviously, replaced with the proper IRIS
+root folder chosen in Step 2 above.</p>
+
+<p>Alternatively, you can put the IRIS root folder permanently on the Matlab
+seatch path (using the menu File&nbsp;&ndash;&nbsp;Set Path), and only run the
+<tt>irisstartup</tt> command at the beginning of each IRIS session.</p>
+
+<p>See also <link id="config/Contents">Starting and quitting IRIS</link>.</p>
+
+<h3>Syntax highlighting</h3>
+
+<p>You can get the model files (i.e. the files that describe the model
+equations, variables, parameters) syntax-highlighted. Syntax highlighting
+improves enormously the readability of the files. It helps you understand
+the model better, and discover typos and mistakes more quickly.</p>
+
+<p>Add any number of extensions you want to use for model files (such as
+'mod', 'model', etc.) to the Matlab editor. Open the menu File -
+Preferences, and click on the Editor/Debugger&nbsp;&ndash;&nbsp;Language tab (make sure
+'Matlab' is selected at the top as the Language). Use the Add button in
+the File extensions panel to associate any number of new extensions with
+the editor. Re-start the editor. The IRIS model files will be syntax
+highligted from that moment on.</p>
+
+</folder>

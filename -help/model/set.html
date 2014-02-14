@@ -1,0 +1,150 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/set">set</h2>
+<div class="headline">Change modifiable model object property</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>M = set(M,Request,Value)
+M = set(M,Request,Value,Request,Value,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>Request</code> [ char ] - Name of a modifiable model object property that will be changed.</p></li>
+<li><p><code>Value</code> [ ... ] - Value to which the property will be set.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Model object with the requested property or properties modified.</li>
+</ul>
+<h4 id="valid-requests-to-model-objects">Valid requests to model objects</h4>
+<h5 id="equation-labels-and-aliases">Equation labels and aliases</h5>
+<ul>
+<li><p><code>'yLabels='</code>, <code>'xLabels='</code>, <code>'dLabels='</code>, <code>'lLabels='</code> [ cellstr ] - Change the labels attached to, respectively, measurement equations (<code>y</code>), transition equations (<code>x</code>), deterministic trends (<code>d</code>), and dynamic links (<code>d</code>).</p></li>
+<li><p><code>'labels='</code> [ cell ] - Change the labels attached to all equations; needs to be a cellstr matching the size of <code>get(M,'labels')</code>.</p></li>
+<li><p><code>'yeqtnAlias='</code>, <code>'xeqtnAlias='</code>, <code>'deqtnAlias='</code>, <code>'leqtnAlias='</code> [ cellstr ] - Change the aliases of, respectively, measurement equations (<code>y</code>), transition equations (<code>x</code>), deterministic trends (<code>d</code>), and dynamic links (<code>d</code>).</p></li>
+<li><p><code>'eqtnAlias='</code> [ cell ] - Change the aliases of all equations; needs to be a cellstr matching the size of <code>get(M,'eqtnAlias')</code>.</p></li>
+</ul>
+<h5 id="descriptions-and-aliases-of-variables-shocks-and-parameters">Descriptions and aliases of variables, shocks, and parameters</h5>
+<ul>
+<li><p><code>'yDescript='</code>, <code>'xDescript='</code>, <code>'eDescript='</code>, <code>'pDescript='</code> [ cellstr ] - Change the descriptions of, respectively, measurement variables (<code>y</code>), transition variables (<code>x</code>), shocks (<code>e</code>), and exogenous variables (<code>g</code>).</p></li>
+<li><p><code>'descript='</code> [ struct ] - Change the descriptions of all variables, parameters, and shocks; needs to be a struct (database) with fields corresponding to model names.</p></li>
+<li><p><code>'yAlias='</code>, <code>'xAlias='</code>, <code>'eAlias='</code>, <code>'pAlias='</code> [ cellstr ] - Change the aliases of, respectively, measurement variables (<code>y</code>), transition variables (<code>x</code>), shocks (<code>e</code>), and exogenous variables (<code>g</code>).</p></li>
+<li><p><code>'alias='</code> [ struct ] - Change the aliases of all variables, parameters, and shocks; needs to be a struct (database) with fields corresponding to model names.</p></li>
+</ul>
+<h5 id="other-requests">Other requests</h5>
+<ul>
+<li><p><code>'nAlt='</code> [ numeric ] - Change the number of alternative parameterisations.</p></li>
+<li><p><code>'stdVec='</code> [ numeric ] - Change the whole vector of std deviations.</p></li>
+<li><p><code>'tOrigin='</code> [ numeric ] - Change the base year for computing deterministic time trends in measurement variables.</p></li>
+<li><p><code>'epsilon='</code> [ numeric ] - Change the relative differentiation step when computing Taylor expansion.</p></li>
+</ul>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

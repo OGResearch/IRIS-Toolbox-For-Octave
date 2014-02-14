@@ -1,0 +1,135 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/db2array">db2array</h2>
+<div class="headline">Convert tseries database entries to numeric array</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[X,Incl,Range] = db2array(D)
+[X,Incl,Range] = db2array(D,List)
+[X,Incl,Range] = db2array(D,List,Range)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Input database with tseries objects that will be converted to a numeric array.</p></li>
+<li><p><code>List</code> [ char | cellstr ] - List of tseries names that will be converted to a numeric array; if not specified, all tseries entries found in the input database, <code>D</code>, will be included in the output arrays, <code>X</code>.</p></li>
+<li><p><code>Range</code> [ numeric | <code>Inf</code> ] - Date range; <code>Inf</code> means a range from the very first non-NaN observation to the very last non-NaN observation.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>X</code> [ numeric ] - Numeric array with observations from individual tseries objects in columns.</p></li>
+<li><p><code>Incl</code> [ cellstr ] - List of tseries names that have been actually found in the database.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range actually used; this output argument is useful when the input argument <code>Range</code> is missing or <code>Inf</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The output array, <code>X</code>, is always NPer-by-NList-by-NAlt, where NPer is the length of the <code>Range</code> (the number of periods), NList is the number of tseries included in the <code>List</code>, and NAlt is the maximum number of columns that any of the tseries included in the <code>List</code> have.</p>
+<p>All tseries with more than one dimension (i.e. with more than one column) are always expanded along 3rd dimension only. For instance, a 10-by-2-by-3 tseries will occupy a 10-by-1-by-6 space in <code>X</code> at its respective location.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

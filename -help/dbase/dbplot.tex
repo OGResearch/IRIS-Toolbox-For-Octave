@@ -1,0 +1,70 @@
+
+
+    \filetitle{dbplot}{Plot from database}{dbase/dbplot}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[FF,AA,PDb] = dbplot(D,List,Range,...)
+[FF,AA,PDb] = dbplot(D,Range,List,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Database with input data.
+\item
+  \texttt{List} {[} cellstr {]} - List of expressions (or labelled
+  expressions) that will be evaluated and plotted in separate graphs.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{FF} {[} numeric {]} - Handles to figures created by
+  \texttt{qplot}.
+\item
+  \texttt{AA} {[} cell {]} - Handles to axes created by \texttt{qplot}.
+\item
+  \texttt{PDB} {[} struct {]} - Database with actually plotted series.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'plotFunc='} {[} @bar \textbar{} @hist \textbar{} *@plot*
+  \textbar{} @plotpred \textbar{} @stem {]} - Plot function used to
+  create the graphs.
+\end{itemize}
+
+See help on \href{qreport/qplot}{\texttt{qreport/qplot}} for other
+options available.
+
+\paragraph{Description}
+
+The function \texttt{dbplot} opens a new figure window (as many as
+needed to accommodate all graphs given the option \texttt{'subplot='}),
+and creates a graph for each entry in the cell array \texttt{List}.
+
+\texttt{List} can contain the names of the database time series,
+expression referring to the database fields evaluating to time series.
+You can also add labels (that will be displayed as graph titles)
+enclosed in double quotes and preceding the expressions. If you start
+the expression with a \texttt{\^{}} (hat) symbol, the function specified
+in the \texttt{'transform='} option will not be applied to that
+expression.
+
+\paragraph{Example}
+
+\begin{verbatim}
+dbplot(d,qq(2010,1):qq(2015,4),{'x','"Series Y" y','^"Series z"', ...
+   'transform=',@(x) 100*(x-1));
+\end{verbatim}
+
+
