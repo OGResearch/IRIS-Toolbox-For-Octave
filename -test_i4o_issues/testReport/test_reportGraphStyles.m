@@ -1,4 +1,3 @@
-try
 %% Create artificial series
 x = cell(1,4);
 x{1} = tseries(qq(2010,1):qq(2015,4),randn(24,3)*rand);
@@ -16,14 +15,14 @@ sty.axes.xgrid = 'on';
 sty.axes.ygrid = 'on';
 sty.axes.tight = true;
 
-sty.axes.ylim = [ ... %?styleprocessor?
+sty.axes.ylim = [ ... %styleprocessor
     '!! ylim = get(H,''ylim'');', ...
     'k = 0.05*(ylim(2)-ylim(1));', ...
     'SET = [ylim(1)-k,ylim(2)+k];' ];
 
 sty.xlabel.string = 'quarters';
 
-sty.line.color = {'blue','red'}; %?lessvalues?
+sty.line.color = {'blue','g'}; %lessvalues
 sty.line.linestyle = {'-','--',':'};
 sty.line.linewidth = {1,2,2};
 
@@ -34,7 +33,7 @@ R = report.new('','orientation','portrait');
 
 R.figure('This is a figure...', ...
     'subplot',[3,2], ...
-    'highlight',qq(2012,1):qq(2013,4),'style',sty);
+    'highlight',qq(2012,1):qq(2013,4),'style',sty,'visible',true);
 
 for i = 1 : 4    
     R.graph(sprintf('Graph #%g',i));
@@ -42,11 +41,4 @@ for i = 1 : 4
 end
 
 %% Publish report
-R.publish('report1.pdf','display',false);
-catch err
-  if ~isempty(strfind(err.message,'class not found: genericobj'))
-    error('expected error:: octave cannot find class from the same package');
-  else
-    rethrow(err);
-  end
-end
+R.publish('report1.pdf','display',false,'cleanup',false);
