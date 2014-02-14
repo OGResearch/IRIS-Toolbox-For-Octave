@@ -237,7 +237,7 @@ classdef nnet < userdataobj & getsetobj
     end
     
     methods( Hidden )
-        varargout = assign(varargin) ;
+        varargout = copy(varargin) ;
         varargout = rmnan(varargin) ;
         varargout = myrange(varargin) ;
         varargout = mysameio(varargin) ;
