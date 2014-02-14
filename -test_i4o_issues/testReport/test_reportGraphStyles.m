@@ -41,4 +41,4 @@ for i = 1 : 4
 end
 
 %% Publish report
-R.publish('report1.pdf','display',false,'cleanup',false);
+R.publish('report1.pdf','display',false,'cleanup',true);
