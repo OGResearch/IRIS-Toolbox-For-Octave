@@ -6,3 +6,4 @@ fort.6
 *.m~
 octave-workspace
 *.orig
+-test_i4o_issues/testReport/oct-*
