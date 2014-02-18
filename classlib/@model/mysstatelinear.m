@@ -20,18 +20,29 @@ doRefresh();
 eigValTol = This.Tolerance(1);
 realSmall = getrealsmall();
 ny = sum(This.nametype == 1);
+nAlt = size(This.Assign,3);
 
-[Flag,inx] = isnan(This,'solution');
+[Flag,isNanSol] = isnan(This,'solution');
 if isWarn && Flag
     utils.warning('model', ...
         ['Cannot compute linear steady state ', ...
         'because solution is not available:%s.'], ...
-        preparser.alt2str(inx));
+        preparser.alt2str(isNanSol));
 end
 
-for iAlt = find(~inx)
+isDiffStat = true(1,nAlt);
+for iAlt = find(~isNanSol)
     doOneSstate();
 end
+
+% Some parameterizations are not difference stationary.
+if any(~isDiffStat)
+    utils.warning('model', ...
+        ['Model is not stationary or difference stationary. ', ...
+        'Some steady-state growth rates are not fixed numbers:%s.'], ...
+        preparser.alt2str(~isDiffStat));
+end
+
 
 if any(This.log)
     realAssign = real(This.Assign(1,This.log,:));
@@ -41,14 +52,17 @@ end
 
 doRefresh();
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doRefresh()
         if ~isempty(This.Refresh) && Opt.refresh
             This = refresh(This);
         end
-    end % doRefresh();
+    end % doRefresh()
+
 
 %**************************************************************************
     function doOneSstate()
@@ -77,10 +91,7 @@ doRefresh();
             temp = pinv(E1 - E2) * [Ka;Ka];
             a2 = temp(nUnit+(1:nStable));
             da1 = temp(nb+(1:nUnit));
-            utils.warning('model', ...
-                ['Model is not stationary or difference stationary. ', ...
-                'Some of the steady-state growth rates are not pinned down ', ...
-                'to fixed numbers.']);
+            isDiffStat(iAlt) = false;
         else
             % I(0) or I(1) systems.
             a2 = (eye(nStable) - Ta(nUnit+1:end,nUnit+1:end)) ...
@@ -109,6 +120,6 @@ doRefresh();
             dy = Z(:,1:nUnit)*da1;
             This.Assign(1,This.nametype == 1,iAlt) = y(:).' + 1i*dy(:).';
         end
-    end % doOneSstate().
+    end % doOneSstate()
 
 end
