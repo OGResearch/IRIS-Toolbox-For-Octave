@@ -8,7 +8,7 @@ function varargout = conbar(varargin)
 
 % AREA, BAR, PLOT, CONBAR, PLOTYY, STEM
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = barcon(varargin{:});
 

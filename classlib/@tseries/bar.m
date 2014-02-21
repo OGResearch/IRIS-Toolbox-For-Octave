@@ -52,7 +52,7 @@ function varargout = bar(varargin)
 
 % AREA, BAR, PLOT, CONBAR, PLOTYY, STEM
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = tseries.myplot(@bar,varargin{:});
 
