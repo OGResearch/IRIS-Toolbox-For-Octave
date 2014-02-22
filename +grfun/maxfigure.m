@@ -1,10 +1,17 @@
 function Fig = maxfigure(varargin)
-% maxfigure  Create graphics window maximised across the entire screen.
+% maxfigure  Maximize figure window.
 %
 % Syntax
 % =======
 %
+%     Fig = maxfigure(H,...)
 %     Fig = maxfigure(...)
+%
+% Input arguments
+% ================
+%
+% * `H` [ handle ] - Handle to existing figure window that will be
+% maximized; if omitted, a new maximized figure window will be created.
 %
 % Output arguments
 % =================
@@ -33,6 +40,13 @@ function Fig = maxfigure(varargin)
 %--------------------------------------------------------------------------
 
 screenSize = get(0,'screenSize');
-Fig = figure('outerPosition',screenSize,varargin{:});
+
+if ~isempty(varargin) && all(ishandle(varargin{1}))
+    Fig = varargin{1};
+    varargin(1) = [];
+    set(Fig,'outerPosition',screenSize,varargin{:});
+else
+    Fig = figure('outerPosition',screenSize,varargin{:});
+end
     
 end
