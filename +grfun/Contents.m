@@ -14,6 +14,7 @@
 % * [`plotpp`](grfun/plotpp) - Plot prior and/or posterior distributions and/or posterior mode.
 % * [`plotmat`](grfun/plotmat) - Visualise 2D matrix.
 % * [`plotneigh`](grfun/plotneigh) - Plot local behaviour of objective function after estimation.
+% * [`printpdf`](grfun/printpdf) - 
 % * [`vline`](grfun/vline) - Add vertical line with text caption at the specified position.
 % * [`zeroline`](grfun/zeroline) - Add zero line if Y-axis limits include zero.
 %

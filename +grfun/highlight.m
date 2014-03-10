@@ -29,8 +29,8 @@ function [Pp,Cp] = highlight(varargin)
 % * `'caption='` [ char ] - Annotate the highlighted area with this text
 % string.
 %
-% * `'color='` [ numeric | *[0.9,0.9,0.9]* ] - An RGB color code or a Matlab
-% color name.
+% * `'color='` [ numeric | *`0.9`* ] - An RGB color code, a Matlab
+% color name, or a scalar shade of gray.
 %
 % * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude the highlighted area
 % from legend.
@@ -51,6 +51,8 @@ function [Pp,Cp] = highlight(varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+%#ok<*AGROW>
+
 if all(ishghandle(varargin{1}))
     Ax = varargin{1};
     varargin(1) = [];
@@ -61,9 +63,11 @@ end
 range = varargin{1};
 varargin(1) = [];
 
+Pp = []; % Handles to patch objects.
+Cp = []; % Handles to caption objects.
+
+% Multiple separate ranges.
 if iscell(range)
-    Pp = [];
-    Cp = [];
     for i = 1 : numel(range)
         [pt,cp] = highlight(Ax,range{i},varargin{:});
         Pp = [Pp,pt(:).'];
@@ -74,18 +78,11 @@ end
 
 opt = passvalopt('grfun.highlight',varargin{:});
 
-if ~isempty(opt.color)
-    opt.colour = opt.color;
-end
-
-if ~isempty(opt.grade)
-    opt.colour = opt.grade*[1,1,1];
+if is.numericscalar(opt.color)
+    opt.color = opt.color*[1,1,1];
 end
 
 %--------------------------------------------------------------------------
-
-Pp = [];
-Cp = [];
 
 for iAx = Ax(:).'
     % Preserve the order of figure children.
@@ -95,37 +92,42 @@ for iAx = Ax(:).'
     % Check for plotyy peers, and return the background axes object.
     h = grfun.mychkforpeers(iAx);
     
-    % Make axes sit on top of lines and patches so that grid is visible.
-    set(h,'layer','top');
+    % Move grid to the foreground, and change grid style to black dotted
+    % line. Otherwise, the grid lines will not be visible.
+    set(h,'layer','top', ...
+        'gridLineStyle',':', ...
+        'gridColor',0.7*[1,1,1]);
     
     range = range([1,end]);
+    around = opt.around;
     if isequal(getappdata(h,'tseries'),true)
         freq = datfreq(range(1));
         timeScale = dat2dec(range,'centre');
         if isempty(timeScale)
             continue
         end
-        if isnan(opt.around)
+        if isnan(around)
             around = 0.5 / max(1,freq);
-        else
-            around = opt.around ;
         end
         timeScale = [timeScale(1)-around,timeScale(end)+around];
     else
-        timeScale = [range(1)-opt.around,range(end)+opt.around];
+        if isnan(around)
+            around = 0.5;
+        end
+        timeScale = [range(1)-around,range(end)+around];
     end
     
     yLim = get(h,'ylim');
     yData = yLim([1,1,2,2]);
     xData = timeScale([1,2,2,1]);
-    pt = patch(xData,yData,opt.colour, ...
-        'parent',h,'edgeColor','none');
+    pt = patch(xData,yData,opt.color, ...
+       'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent);
     
     % Add caption to the highlight.
+    cp = [];
     if ~isempty(opt.caption)
         cp = grfun.mycaption(h,timeScale([1,end]), ...
             opt.caption,opt.vposition,opt.hposition);
-        Cp = [Cp,cp];
     end
     
     % Move the highlight patch object to the background.
@@ -139,8 +141,9 @@ for iAx = Ax(:).'
     
     % Reset the order of figure children.
     set(fg,'children',fgch);
-    Pp = [Pp,pt]; %#ok<*AGROW>
     
+    Pp = [Pp,pt];
+    Cp = [Cp,cp];
 end
 
 % Tag the highlights and captions for `qstyle`.

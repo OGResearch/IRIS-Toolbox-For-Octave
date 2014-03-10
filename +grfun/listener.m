@@ -1,12 +1,20 @@
 function Ls = listener(Leader,Follower,Name,varargin)
+% listener  [Not a public function] Add listeners to IRIS graphics objects.
+%
+% Backed IRIS function.
+% No help provided.
 
-% Choose the appropriate listener function.
-if ~feature('HGUsingMATLABClasses')
-    listenerFcn = @handle.listener;
-    postSetStr = 'PropertyPostSet';
-else
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+if is.hg2()
     listenerFcn = @event.proplistener;
     postSetStr = 'PostSet';
+else
+    listenerFcn = @handle.listener;
+    postSetStr = 'PropertyPostSet';
 end
 
 % Convert graphics handle to graphics object.
@@ -45,25 +53,30 @@ setappdata(Follower,[Name,'Listener'],Ls);
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function xxHighlight(Obj,Evd,Ax,Pt) %#ok<INUSL>
     y = get(Ax,'yLim');
     set(Pt,'yData',[y(1),y(1),y(2),y(2),y(1)]);
-end % xxHighlight().
+end % xxHighlight()
+
 
 %**************************************************************************
 function xxVLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
     y = get(Ax,'yLim');
     set(Ln,'yData',y);
-end % xxVLine().
+end % xxVLine()
+
 
 %**************************************************************************
 function xxHLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
     x = get(Ax,'xLim');
     set(Ln,'xData',x);
-end % xxHLine().
+end % xxHLine()
+
 
 %**************************************************************************
 function xxCaption(Obj,Evd,Ax,Cp,K) %#ok<INUSL>
@@ -72,4 +85,4 @@ function xxCaption(Obj,Evd,Ax,Cp,K) %#ok<INUSL>
     pos = get(Cp,'position');
     pos(2) = yLim(1) + K*ySpan;
     set(Cp,'position',pos);
-end % xxCaption().
+end % xxCaption()
