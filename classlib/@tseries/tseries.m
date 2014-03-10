@@ -1,4 +1,6 @@
-classdef tseries < userdataobj
+classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
+        tseries < userdataobj
+    
     % tseries  Time series objects and functions.
     %
     % Tseries methods:
