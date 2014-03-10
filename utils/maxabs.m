@@ -1,4 +1,4 @@
-function d = maxabs(x,y)
+function D = maxabs(X,Y)
 % maxabs  Maximum absolute difference between two varibles.
 %
 % Syntax
@@ -54,11 +54,11 @@ function d = maxabs(x,y)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 if nargin > 1
-   x = x - y;
+   X = X - Y;
 end
-d = max(abs(x(:)));
+D = max(abs(X(:)));
 
 end

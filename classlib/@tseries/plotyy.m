@@ -117,12 +117,12 @@ end
 
 % Mimic plotting the RHS graph without creating an axes object.
 [~,RangeRhs,dataRhs,timeRhs,userRangeRhs,freqRhs] = ...
-    tseries.myplot([],0,RangeRhs,XRhs); %#ok<ASGLU>
+    tseries.myplot([],RangeRhs,XRhs); %#ok<ASGLU>
 
 % Mimic plotting the LHS graph without creating an axes object.
 comprise = timeRhs([1,end]);
 [~,RangeLhs,dataLhs,timeLhs,userRangeLhs,freqLhs] = ...
-    tseries.myplot([],0,{RangeLhs,comprise},XLhs);
+    tseries.myplot([],{RangeLhs,comprise},XLhs);
 
 % Plot now.
 dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);

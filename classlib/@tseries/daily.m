@@ -51,7 +51,7 @@ function X = xxDisp2dDaily(Start,Data,Tab,Sep,Num2StrFunc)
 tmp = eomday(endYear,endMonth);
 Data = [nan(startDay-1,nCol);Data;nan(tmp-endDay,nCol)];
 
-% Start-date and end-date of the calendar matrixt.
+% Start-date and end-date of the calendar matrix.
 % startdate = datenum(startyear,startmonth,1);
 % enddate = datenum(endyear,endmonth,tmp);
 

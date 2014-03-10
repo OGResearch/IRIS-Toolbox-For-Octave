@@ -1,5 +1,5 @@
 function mychksyntax(This)
-% mychksstate  [Not a public function] Check equations for syntax errors.
+% mychksyntax  [Not a public function] Check equations for syntax errors.
 %
 % Backend IRIS function.
 % No help provided.

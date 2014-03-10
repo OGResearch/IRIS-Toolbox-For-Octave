@@ -1,11 +1,10 @@
-function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
-    = arwm(This,NDraw,varargin)
+function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
 % arwm  Adaptive random-walk Metropolis posterior simulator.
 %
 % Syntax
 % =======
 %
-%     [Theta,LogPost,AR,Scale,FinalCov] = arwm(Pos,NDraw,...)
+%     [Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
 %
 % Input arguments
 % ================
@@ -22,7 +21,7 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % * `LogPost` [ numeric ] - Vector of log posterior density (up to a
 % constant) in each draw.
 %
-% * `AR` [ numeric ] - Vector of cumulative acceptance ratios in each draw.
+% * `AccRat` [ numeric ] - Vector of cumulative acceptance ratios.
 %
 % * `Scale` [ numeric ] - Vector of proposal scale factors in each draw.
 %
@@ -84,8 +83,11 @@ function [Theta,LogPost,AccRatio,Sgm,FinalCov] ...
 % Description
 % ============
 %
-% Use the [`poster/stats`](poster/stats) function to process the simulated
-% chain of parameters, and calculate selected statistics.
+% The function `poster/arwm` returns the simulated chain of parameters and
+% the corresponding value of the log posterior density. To obtain simulated
+% sample statistics for each parameter (such as posterior mean, median,
+% percentiles, etc.) use the function [`poster/stats`](poster/stats) to
+% process the simulated chain and calculate the statistics.
 %
 % Parallelised ARWM
 % ------------------
@@ -135,7 +137,7 @@ opt = passvalopt('poster.arwm',varargin{:});
 
 Theta = [];
 LogPost = [];
-AccRatio = [];
+AccRat = [];
 Sgm = [];
 FinalCov = []; %#ok<NASGU>
 
@@ -182,7 +184,7 @@ logPost = mylogpost(This,theta);
 % Pre-allocate output data.
 Theta = zeros(nPar,nAlloc);
 LogPost = zeros(1,nAlloc);
-AccRatio = zeros(1,nAlloc);
+AccRat = zeros(1,nAlloc);
 if isAdaptiveScale
     Sgm = zeros(1,nAlloc);
 else
@@ -197,7 +199,7 @@ end
 
 % Main loop
 %-----------
-nAccepted = 0;
+nAcc = 0;
 count = 0;
 SaveCount = 0;
 
@@ -301,13 +303,13 @@ FinalCov = P*P.';
         % Add the j-th theta to the chain unless it's still burn-in.
         if j > burnin
             count = count + 1;
-            nAccepted = nAccepted + double(IsAccepted);
+            nAcc = nAcc + double(IsAccepted);
             % Paremeter draws.
             Theta(:,count) = theta;
             % Value of log posterior at the current draw.
             LogPost(count) = logPost;
             % Acceptance ratio so far.
-            AccRatio(count) = nAccepted / (j-burnin);
+            AccRat(count) = nAcc / (j-burnin);
             % Adaptive scale factor.
             if isAdaptiveScale
                 Sgm(count) = sgm;
@@ -336,12 +338,12 @@ FinalCov = P*P.';
             if n == 0
                 Theta = [];
                 LogPost = [];
-                AccRatio = [];
+                AccRat = [];
                 Sgm = [];
             elseif n < nAlloc
                 Theta = Theta(:,1:n);
                 LogPost = LogPost(1:n);
-                AccRatio = AccRatio(1:n);
+                AccRat = AccRat(1:n);
                 if isAdaptiveScale
                     Sgm = Sgm(:,1:n);
                 end

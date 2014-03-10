@@ -209,16 +209,16 @@ end
 %**************************************************************************
 function [Year,Ab] = xxMatlabRelease()
 
-try
+Year = 0;
+Ab = '';
+
+try %#ok<TRYNC>
     s = ver('MATLAB');
-    Year = sscanf(s.Release(3:6),'%g',1);
-    if isempty(Year)
-        Year = 0;
+    tok = regexp(s.Release,'R(\d{4})([ab])','tokens','once');
+    if ~isempty(tok)
+        Year = sscanf(tok{1},'%g',1);
+        Ab = tok{2};
     end
-    Ab = s.Release(7);
-catch %#ok<CTCH>
-    Year = 0;
-    Ab = '';
 end
 
 end % xxMatlabRelease()

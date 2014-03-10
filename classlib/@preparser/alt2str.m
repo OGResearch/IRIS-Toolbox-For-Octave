@@ -16,7 +16,7 @@ end
 try
     To = strtrim(To);
 catch %#ok<CTCH>
-    To = '-';
+    To = '..';
 end
 
 if islogical(Alt)

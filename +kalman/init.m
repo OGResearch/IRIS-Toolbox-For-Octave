@@ -15,42 +15,41 @@ ne = S.ne;
 ixStable = [false(1,nUnit),true(1,nb-nUnit)];
 
 % Initialise mean.
-S.ainit = zeros(nb,1);
+a0 = zeros(nb,1);
 if iscell(Opt.initcond)
     % User-supplied initial condition.
     % Convert Mean[Xb] to Mean[Alpha].
-    S.ainit = Opt.initcond{1}(:,1,min(end,ILoop));
-    toZero = isnan(S.ainit) & ~S.ixRequired(:);
-    S.ainit(toZero) = 0;
-    S.ainit = S.U \ S.ainit;
+    a0 = Opt.initcond{1}(:,1,min(end,ILoop));
+    toZero = isnan(a0) & ~S.ixRequired(:);
+    a0(toZero) = 0;
+    a0 = S.U \ a0;
 elseif ~isempty(S.ka)
     % Asymptotic initial condition for the stable part of Alpha;
     % the unstable part is kept at zero initially.
     I = eye(nb - nUnit);
     a1 = zeros(nUnit,1);
     a2 = (I - S.Ta(ixStable,ixStable)) \ S.ka(ixStable,1);
-    S.ainit = [a1;a2];
+    a0 = [a1;a2];
 end
 
 if nUnit > 0 && isnumeric(Opt.initmeanunit)
-    % Initialise mean for unit root processes.
+    % User supplied data to initialise mean for unit root processes.
     % Convert Xb to Alpha.
-    xbInitMean = Opt.initmeanunit(:,1,min(end,ILoop));
-    toZero = isnan(xbInitMean) & ~S.ixRequired(:);
-    xbInitMean(toZero) = 0;
-    S.ainit(1:nUnit) = S.U(:,1:nUnit) \ xbInitMean; 
+    xb0 = Opt.initmeanunit(:,1,min(end,ILoop));
+    toZero = isnan(xb0) & ~S.ixRequired(:);
+    xb0(toZero) = 0;
+    a0(1:nUnit) = S.U(:,1:nUnit) \ xb0; 
 end
 
 % Initialise the MSE matrix.
-S.Painit = zeros(nb);
+Pa0 = zeros(nb);
 if iscell(Opt.initcond) && ~isempty(Opt.initcond{2})
     % User-supplied initial condition.
-    % Convert MSED[Xb] to MSE[Alpha].
-    S.Painit = Opt.initcond{2}(:,:,1,min(end,ILoop));
-    S.Painit = S.U \ S.Painit;
-    S.Painit = S.Painit / S.U.';
-elseif nb > nUnit ...
-        && any(strcmpi(Opt.initcond,'stochastic'))
+    % Convert MSE[Xb] to MSE[Alpha].
+    Pa0 = Opt.initcond{2}(:,:,1,min(end,ILoop));
+    Pa0 = S.U \ Pa0;
+    Pa0 = Pa0 / S.U.';
+elseif nb > nUnit && any(strcmpi(Opt.initcond,'stochastic'))
     % R matrix with rows corresponding to stable Alpha and columns
     % corresponding to transition shocks.
     RR = S.Ra(:,1:ne);
@@ -67,7 +66,10 @@ elseif nb > nUnit ...
             covfun.lyapunov(S.Ta(ixStable,ixStable),Sa);
         Pa0stable = (Pa0stable + Pa0stable.')/2;
     end
-    S.Painit(ixStable,ixStable) = Pa0stable;
+    Pa0(ixStable,ixStable) = Pa0stable;
 end
+
+S.ainit = a0;
+S.Painit = Pa0;
 
 end

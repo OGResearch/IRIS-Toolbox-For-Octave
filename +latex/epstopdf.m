@@ -1,5 +1,5 @@
 function epstopdf(List,CmdArgs,varargin)
-% epstopdf  [Not a public function] Run EPSTOPDF to convert EPS grapics to PDF.
+% epstopdf  [Not a public function] Run EPSTOPDF to convert EPS graphics to PDF.
 %
 % Backend IRIS function.
 % No help provided.
@@ -126,7 +126,7 @@ char2file(c,File);
         S2 = S2 - Enlarge(min(2,end));
         S3 = S3 + Enlarge(min(3,end));
         S4 = S4 + Enlarge(min(4,end));
-        S = sprintf('BoundingBox:    %g   %g   %g   %g',S1,S2,S3,S4);
+        S = sprintf('BoundingBox: %g %g %g %g',S1,S2,S3,S4);
     end
 
 end % xxEnlargeBox()

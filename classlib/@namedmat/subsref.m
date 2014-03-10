@@ -1,4 +1,13 @@
 function X = subsref(This,varargin)
+% subsref  [Not a public function] Subscripted reference for namedmat objects.
+%
+% Backed IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
 
 s = varargin{1};
 isPreserved = strcmp(s(1).type,'()') && length(s(1).subs) >= 2;
@@ -23,8 +32,9 @@ if strcmp(s(1).type,'()')
             end
         end
         if any(~validRowName)
-            utils.error('namedmat', ...
-                'This is not a valid row name in the namedmat object: ''%s''.', ...
+            utils.error('namedmat:subsref', ...
+                ['This is not a valid row name ', ...
+                'in the namedmat object: ''%s''.'], ...
                 usrName{~validRowName});
         end
         s(1).subs{1} = rowPos;
@@ -33,7 +43,7 @@ if strcmp(s(1).type,'()')
     % Convert char or cellstr col references to positions.
     if length(s(1).subs) > 1 ...
             && (ischar(s(1).subs{2}) || iscellstr(s(1).subs{2})) ...
-            && ~isequal(s(1).subs{2},':') ...
+            && ~isequal(s(1).subs{2},':')
         if ischar(s(1).subs{2})
             usrName = regexp(s(1).subs{2},'\w+','match');
         end
@@ -49,8 +59,9 @@ if strcmp(s(1).type,'()')
             end
         end
         if any(~validColName)
-            utils.error('namedmat', ...
-                'This is not a valid column name in the namedmat object: ''%s''.', ...
+            utils.error('namedmat:subsref', ...
+                ['This is not a valid column name ', ...
+                'in the namedmat object: ''%s''.'], ...
                 usrName{~validColName});
         end
         s(1).subs{2} = colPos;

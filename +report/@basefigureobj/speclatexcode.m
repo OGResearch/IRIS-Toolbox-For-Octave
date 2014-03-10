@@ -33,8 +33,8 @@ if ~isempty(This.handle) && ~isempty(get(This.handle,'children'))
     end
 end
 
-% Close figure window or broadcast an open figure window event
-%--------------------------------------------------------------
+% Close figure window or add its handle to the list of open figures
+%-------------------------------------------------------------------
 if ~isempty(This.handle)
     if This.options.close
         try %#ok<TRYNC>
