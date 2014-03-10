@@ -82,7 +82,7 @@ switch request
         if size(T,1) == 0
             inx = false(1,size(T,3));
         else
-            inx = any(any(isnan(T(:)),1),2) | any(any(isnan(R(:)),1),2);
+            inx = any(any(isnan(T),1),2) | any(any(isnan(R),1),2);
             inx = inx(:).';
         end
         Flag = any(inx);
