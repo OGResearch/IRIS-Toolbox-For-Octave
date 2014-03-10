@@ -74,7 +74,7 @@ mychksstateOpt = mychksstateopt(This,varargin{:});
 % `discr` is a matrix of discrepancies; it has two columns when we
 % evalulate full dynamic equations, and one column when we evaluate sstate
 % equations.
-[discr,maxAbsDiscr,Flag,list] = mychksstate(This,mychksstateOpt);
+[Flag,discr,maxAbsDiscr,list] = mychksstate(This,mychksstateOpt);
 
 if any(~Flag) && opt.error
     tmp = {};
