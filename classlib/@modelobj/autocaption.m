@@ -89,7 +89,9 @@ else
         ['The second input argument must be a poster object, ', ...
         'a struct, or a cellstr.']);
 end
-List = strtrim(List);
+
+% Take the first word, discard all other characters.
+List = regexp(List,'[A-Za-z]\w*','match','once');
 
 if isempty(Template)
     C = List;
