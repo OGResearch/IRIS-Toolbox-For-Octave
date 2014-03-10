@@ -9,7 +9,7 @@ function Flag = plotdateformat(X)
 
 %--------------------------------------------------------------------------
 
-Flag = ischar(X) ...
+Flag = ischar(X) || iscellstr(X) ...
     || (isstruct(X) && all(isfield(X,{'yy','hh','qq','bb','mm','ww'})));
 
 end
