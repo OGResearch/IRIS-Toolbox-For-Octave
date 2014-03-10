@@ -154,27 +154,23 @@ doXLimAdjust();
             'xTickMode','manual');
         % Set xTickLabel.
         Opt = datdefaults(Opt,true);
-        % Plot date format can be a cellstr under two circumstances:
-        %
-        % * either the user specifies different date formats for the first,
-        % second, etc. dates plotted in the graph,
-        %
-        % * or the `'dateformat='` option comes from `irisconfig` where it
-        % is set up as a cellstr with different date formats for each of
-        % the recognized frequencies.
-        %
-        % If it is the second case, choose the
-        % correct date format now. If it is the first case, pass the
-        % `'dateFormat='` option into the `dat2str` function.
-        freqList = [1,2,4,6,12,52];
-        if iscell(Opt.dateformat) ...
-                && length(Opt.dateformat) == length(freqList)
-            inx = Freq == freqList;
-            if ~isempty(inx)
-                Opt.dateformat = Opt.dateformat{inx};
-            else
-                utils.error('dates:mydatxtick', ...
-                    'Cannot recognize date frequency in a plot command.');
+        % Default value for '.plotDateFormat' is a struct with a different
+        % date format for each date frequency. Fetch the right date format
+        % now, and pass it into `dat2str()`.
+        if isstruct(Opt.dateformat)
+            switch Freq
+                case 1
+                    Opt.dateformat = Opt.dateformat.yy;
+                case 2
+                    Opt.dateformat = Opt.dateformat.hh;
+                case 4
+                    Opt.dateformat = Opt.dateformat.qq;
+                case 6
+                    Opt.dateformat = Opt.dateformat.bb;
+                case 12
+                    Opt.dateformat = Opt.dateformat.mm;
+                case 52
+                    Opt.dateformat = Opt.dateformat.ww;
             end
         end
         xTickLabel = dat2str(xTickDates,Opt);

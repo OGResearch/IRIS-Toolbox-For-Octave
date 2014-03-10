@@ -33,14 +33,9 @@ switch freq
         disp(This);
     case 52
         disp(This);
+        utils.warning('tseries:yearly', ...
+            'The function yearly() is not implemented for weekly series yet.');
     otherwise
-        % Include pre-sample and post-sample periods to complete full years.
-        freq = datfreq(This.start);
-        startYear = dat2ypf(This.start);
-        nPer = size(This.data,1);
-        endYear = dat2ypf(This.start+nPer-1);
-        This.start = datcode(freq,startYear,1);
-        This.data = rangedata(This,[This.start,datcode(freq,endYear,freq)]);
         % Call `disp` with yearly disp2d implementation.
         disp(This,'',@xxDisp2dYearly);
 end
@@ -53,13 +48,32 @@ end
 
 %**************************************************************************
 function X = xxDisp2dYearly(Start,Data,Tab,Sep,Num2StrFunc)
-[nPer,nX] = size(Data);
-freq = datfreq(Start);
+% `Data` is always 2D at most.
+[nPer,nx] = size(Data);
+[~,p,freq] = dat2ypf(Start);
+
+% If the input tseries does not start in the first period of the year, padd
+% `Data` with NaN's at the beginning.
+if p > 1
+    nPre = p - 1;
+    Data = [nan(nPre,nx);Data];
+    nPer = size(Data,1);
+end
+
+% If the input tseries does not end in the last period of the year, padd
+% `Data` with NaN's at the end.
 nYear = nPer / freq;
-Data = reshape(Data,[freq,nYear,nX]);
+if nYear < ceil(nYear)
+    nPost = freq*ceil(nYear) - nPer;
+    Data = [Data;nan(nPost,nx)];
+    nYear = ceil(nYear);
+end
+
+% Reshape `Data` to get one year per row.
+Data = reshape(Data,freq,nYear,nx);
 Data = permute(Data,[3,1,2]);
-tmpData = Data;
-Data = [];
+
+dataTable = [];
 dates = {};
 for i = 1 : nYear
     lineStart = Start + (i-1)*freq;
@@ -69,13 +83,15 @@ for i = 1 : nYear
         strjust(dat2char(lineEnd)), ...
         Sep, ...
         ]; %#ok<AGROW>
-    if nX > 1
-        dates{end+(1:nX-1)} = ''; %#ok<AGROW>
+    if nx > 1
+        dates{end+(1:nx-1)} = ''; %#ok<AGROW>
     end
-    Data = [Data;tmpData(:,:,i)]; %#ok<AGROW>
+    dataTable = [dataTable;Data(:,:,i)]; %#ok<AGROW>
 end
+
 dates = char(dates);
-dataChar = Num2StrFunc(Data);
+dataChar = Num2StrFunc(dataTable);
 repeat = ones(size(dates,1),1);
 X = [Tab(repeat,:),dates,dataChar];
-end % xxDisp2dYearly().
+
+end % xxDisp2dYearly()

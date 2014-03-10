@@ -76,7 +76,6 @@ for ibg = bg(:).'
 end
 ch = [ch;bg];
 set(Ax(end),'children',ch);
-set(Ax(end),'layer','top');
 
 % Add legend.
 lg = [];
@@ -92,6 +91,7 @@ if isequal(This.options.legend,true) ...
     else
         lg = legend(Ax(1),legendEntries{:}, ...
             'location',This.options.legendlocation);
+        
     end
     set(lg,'color','white');
 end
@@ -140,14 +140,17 @@ if ~isempty(This.options.postprocess)
     grfun.mystyleprocessor(Ax,This.options.postprocess);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doOpenRhsAxes()
         Ax = plotyy(Ax,NaN,NaN,NaN,NaN);
         delete(get(Ax(1),'children'));
         delete(get(Ax(2),'children'));
-    end % doOpenRhsAxes().
+    end % doOpenRhsAxes()
+
 
 %**************************************************************************
     function doHoldAll()
@@ -157,13 +160,14 @@ end
             setappdata(iAx,'PlotHoldStyle',true);
             set(iAx,'yLimMode','auto','yTickMode','auto');
         end
-        set(Ax,'yColor',[0,0,0]);
+        set(Ax,'gridLineStyle',':','gridColor',0.7*[1,1,1]);
         setappdata(Ax(1),'PlotColorIndex',0);
         if length(Ax) > 1
             set(Ax(2),'cLim',[-5,5]);
             setappdata(Ax(2),'PlotColorIndex',2);
         end
-    end % doInitRhsAxes().
+    end % doHoldAll()
+
 
 %**************************************************************************
     function doPlot()
@@ -176,7 +180,7 @@ end
                     plot(This.children{ii},Ax(2)); %#ok<AGROW>
             end
         end
-    end % doPlotLhs().
+    end % doPlotLhs()
 
 
 %**************************************************************************
@@ -193,7 +197,8 @@ end
             end
         end
         
-    end % doIsLhsOrRhsOrAnnotate().
+    end % doIsLhsOrRhsOrAnnotate()
+
 
 %**************************************************************************
     function doChkPlotFunc()
@@ -211,7 +216,8 @@ end
                 'with LHS and RHS axes: ''%s''.'], ...
                 invalid{:});
         end
-    end % doChkPlotFunc().
+    end % doChkPlotFunc()
+
 
 %**************************************************************************
     function doLegendLocation()
@@ -221,6 +227,7 @@ end
                 ['Legend location cannot be ''Best'' in LHS-RHS graphs. ', ...
                 '(This is a Matlab issue.) Setting the location to ''South''.']);
         end
-    end % doLegendLocation().
+    end % doLegendLocation()
+
 
 end

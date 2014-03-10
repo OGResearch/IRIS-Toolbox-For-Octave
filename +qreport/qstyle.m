@@ -37,19 +37,22 @@ function qstyle(GS,H,varargin)
 % The following is the list of standard Matlab grahics objects the
 % top-level fields can refer to:
 %
-% * `figure`;
-% * `axes`;
-% * `title`;
-% * `xlabel`;
-% * `ylabel`;
-% * `zlabel`;
-% * `line`;
-% * `bar`;
-% * `patch`;
-% * `text`.
+% * `figure`
+% * `axes`
+% * `title`
+% * `xlabel`
+% * `ylabel`
+% * `zlabel`
+% * `line`
+% * `bar`
+% * `patch`
+% * `text`
 %
-% In addition, you can also refer to the following special instances of
-% objects created by IRIS functions:
+% Special object names
+% ---------------------
+%
+% In addition to standard Matlab graphics object names, you can also refer
+% to the following special instances of objects created by IRIS functions:
 %
 % * `rhsaxes` (an RHS axes object created by `plotyy`)
 % * `legend` (represented by an axes object);
@@ -77,6 +80,15 @@ function qstyle(GS,H,varargin)
 % variable named `SET` whose value will then assigned to the respective
 % property. The commands have access to variable `H`, a handle to the
 % current object.
+%
+% Setting font size
+% ------------------
+%
+% Font size (in objects like axes, title, etc.) can be set to either a
+% numeric scalar (which is the default Matlab behavior) or a character
+% string describing a numerical value followed by a percent sign, such as
+% `'150%'`. In that case, the font size will be set to the corresponding
+% percentage of the current size.
 %
 % Example
 % ========
@@ -119,7 +131,7 @@ for i = H(:).'
     switch get(i,'type')
         case 'figure'
             xxFigure(i,GS,opt);
-        case 'axes'
+        case {'axes','legend'} % HG2 legends are not axes objects.
             xxAxes(i,GS,opt);
         otherwise
             utils.error('qreport', ...
@@ -344,6 +356,20 @@ end % xxAxes().
 function Flag = xxExceptions(H,Name,Value)
 
 Flag = true;
+
+if strcmpi(Name,'fontsize') ...
+        && ~isempty(Value) && ischar(Value) ...
+        && strncmp(fliplr(strtrim(Value)),'%',1)
+    Value = sscanf(Value,'%g');
+    try
+        old = get(H,'fontSize');
+        new = old * Value/100;
+        set(H,'fontSize',new);
+    catch
+        Flag = false;
+    end
+    return
+end
 
 switch get(H,'type')
     case 'axes'

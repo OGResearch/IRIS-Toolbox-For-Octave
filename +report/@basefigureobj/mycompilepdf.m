@@ -15,7 +15,7 @@ set(This.handle,'paperType',This.options.papertype);
 if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
         || (isequal(Opt.orientation,'portrait') && This.options.sideways)
     orient(This.handle,'landscape');
-    angle = -90;
+    angle = is.hg2(0,-90);
     raise = 10;
 else
     orient(This.handle,'tall');
@@ -67,8 +67,9 @@ InclGraph = [ ...
         end
         % Try to print figure window to EPSC.
         try
-            print(This.handle,'-depsc',graphicsName);
-            addtempfile(This,[graphicsName,'.eps']);            
+            %print(This.handle,'-painters','-depsc',graphicsName);
+            grfun.printpdf(This.handle,graphicsName);
+            addtempfile(This,[graphicsName,'.eps']);         
         catch Error
             utils.error('report', ...
                 ['Cannot print figure #%g to EPS file: ''%s''.\n', ...

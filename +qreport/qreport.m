@@ -158,7 +158,7 @@ elseif iscellstr(Inp)
     Inp = Inp(2:end);
     if ~isempty(c)
         S.tag = Opt.plotfunc;
-        doFlags(c(1:min(2,end)));
+        c = doFlags(c);
         [body,S.caption] = preparser.labeledexpr(c);
     else
         S.tag = '!..';
@@ -188,11 +188,29 @@ end
 % Expressions and legends.
 [S.eval,S.legend] = xxReadBody(body);
 
-    function doFlags(C)
-        S.isTransform = ~any(C == '^');
-        S.isLogDev = any(C == '@');
-        S.isLinDev = ~S.isLogDev && any(C == '#');
-    end
+
+    function C = doFlags(C)
+        while true && ~isempty(C)
+            switch C(1)
+                case '^'
+                    S.isTransform = false;
+                case '@'
+                    if ~S.isLinDev
+                        S.isLogDev = true;
+                    end
+                case '#'
+                    if ~S.isLogDev
+                        S.isLinDev = true;
+                    end
+                case ' '
+                    % Do nothing.
+                otherwise
+                    break
+            end
+            C(1) = '';
+        end
+    end % doFlags()
+
 
 end % xxGetNext()
 
@@ -305,7 +323,7 @@ for i = 1 : length(Q)
                 if ch.isTransform
                     func = '';
                     if is.numericscalar(Opt.deviationfrom)
-                        func = [', Dev from ',dat2char(Opt.deviation)];
+                        func = [', Dev from ',dat2char(Opt.deviationfrom)];
                     end
                     if isa(Opt.transform,'function_handle')
                         c = func2str(ch.transform);
@@ -526,12 +544,12 @@ if Opt.zeroline
     grfun.zeroline(AA);
 end
 
-if ~isempty(Opt.highlight)
-    grfun.highlight(AA,Opt.highlight);
-end
-
 if ~isempty(Opt.vline)
     grfun.vline(AA,Opt.vline);
+end
+
+if ~isempty(Opt.highlight)
+    grfun.highlight(AA,Opt.highlight);
 end
 
 end % xxPlot()
@@ -549,15 +567,15 @@ if Opt.addclick
 end
 
 if ~isempty(Opt.clear)
-    h = [AA{:}];
-    h = h(Opt.clear);
-    for ih = h(:).'
-        cla(ih);
-        set(ih, ...
-            'xTickLabel','','xTickLabelMode','manual', ...
-            'yTickLabel','','yTickLabelMode','manual', ...
-            'xgrid','off','ygrid','off');
-        delete(get(ih,'title'));
+    aa = [AA{:}];
+    aa = aa(Opt.clear);
+    if ~isempty(aa)
+        tt = get(aa,'title');
+        if iscell(tt)
+            tt = [tt{:}];
+        end
+        delete(tt);
+        delete(aa);
     end
 end
 
@@ -567,6 +585,10 @@ for i = 1 : length(FTit)
     if ~isempty(FTit{i})
         grfun.ftitle(FF(i),FTit{i});
     end
+end
+
+if Opt.maxfigure
+    grfun.maxfigure(FF);
 end
 
 if Opt.drawnow
@@ -607,7 +629,7 @@ if any(strcmpi(Opt.saveasformat,{'.pdf'}))
     for f = FF(:).'
         figure(f);
         orient('landscape');
-        print('-dpsc','-append',psfile);
+        print('-dpsc','-painters','-append',psfile);
     end
     latex.ps2pdf(psfile);
     delete(psfile);

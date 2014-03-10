@@ -139,7 +139,7 @@ retResiduals = opt.returnresiduals;
 
 % Stack initial conditions.
 x0 = x0(:,p:-1:1,:);
-x0 = reshape(x0(:),ny*p,nLoop);
+x0 = reshape(x0(:),ny*p,size(x0,3));
 
 Y = nan(ny,nXPer,nLoop);
 E = nan(ny,nXPer,nLoop);

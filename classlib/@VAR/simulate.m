@@ -96,7 +96,7 @@ end
 e(:,1:pp,:) = NaN;
 nPer = length(Range);
 nData = size(x,3);
-nLoop = max([nAlt,nData]);
+nLoop = max(nAlt,nData);
 
 if opt.contributions
     if nLoop > 1

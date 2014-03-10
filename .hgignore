@@ -3,3 +3,4 @@ syntax: glob
 hgignore*
 fort.6
 *.synctex.gz
+iristbx*

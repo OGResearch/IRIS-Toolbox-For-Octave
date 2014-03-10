@@ -1,11 +1,11 @@
 function This = instrument(This,varargin)
-% instrument  Define conditioning instruments in VAR models.
+% instrument  Define forecast conditioning instruments in VAR models.
 %
 % Syntax to add forecast instruments
 % ===================================
 %
 %     V = instrument(V,Def)
-%     V = instrument(V,Name,Exprn)
+%     V = instrument(V,Name,Expr)
 %     V = instrument(V,Name,Vec)
 %
 % Syntax to remove all forecast instruments
@@ -18,15 +18,16 @@ function This = instrument(This,varargin)
 %
 % * `V` [ VAR ] - VAR object to which forecast instruments will be added.
 %
-% * `Def` [ char | cellstr ] - Definition string for the new conditioning
-% instruments.
+% * `Def` [ char | cellstr ] - Definition of the new forecast conditioning
+% instrument.
 %
-% * `Name` [ char ] - Name of the new conditiong instrument.
+% * `Name` [ char ] - Name of the new forecast conditiong instrument.
 %
-% * `Exprn` [ char ] - Expression defining the new conditiong instrument.
+% * `Expr` [ char ] - Expression defining the new forecast conditiong
+% instrument.
 %
 % * `Vec` [ numeric ] - Vector of coeffients to combine the VAR variables
-% to create the new conditioning instrument.
+% to create the new forecast conditioning instrument.
 %
 % Output arguments
 % =================
@@ -44,7 +45,7 @@ function This = instrument(This,varargin)
 %     'name := expression'
 %
 % where `name` is the name of the new conditioning instrument, and
-% `expression` is an expression referrring to existing VAR variable names
+% `expression` is an expression referring to existing VAR variable names
 % and/or their lags.
 %
 % Alternatively, you can separate the name and the expression into two

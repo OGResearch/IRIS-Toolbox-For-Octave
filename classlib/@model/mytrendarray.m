@@ -39,7 +39,8 @@ else
     X = doOneTrendArray();
 end
 
-% Nested functions.
+% Nested functions...
+
 
 %**************************************************************************
     function X = doOneTrendArray()

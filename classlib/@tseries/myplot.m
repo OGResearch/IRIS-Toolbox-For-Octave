@@ -17,8 +17,10 @@ function [H,Range,Data,Time,UserRange,Freq,varargout] ...
 if length(varargin{1}) == 1 && ishghandle(varargin{1})
     Ax = varargin{1}(1);
     varargin(1) = [];
-else
+elseif ~isempty(Func)
     Ax = gca();
+else
+    Ax = [];
 end
 
 % User-defined range. Otherwise the entire range of the tseries object
@@ -84,18 +86,17 @@ end
 
 Freq = datfreq(Range(1));
 
-% Original x-axis limits.
-if isequal(getappdata(Ax,'xLimAdjust'),true)
-    xLim0 = getappdata(Ax,'trueXLim');
-else
-    xLim0 = get(Ax,'xLim');
-end
-
 % If hold==on, make sure the new range comprises thes existing dates if
 % the existing graph is a tseries graph.
 if ~isempty(Func) ...
         && ~isempty(Range) && strcmp(get(Ax,'nextPlot'),'add') ...
         && isequal(getappdata(Ax,'tseries'),true)
+    % Original x-axis limits.
+    if isequal(getappdata(Ax,'xLimAdjust'),true)
+        xLim0 = getappdata(Ax,'trueXLim');
+    else
+        xLim0 = get(Ax,'xLim');
+    end
     Range = doMergeRange(Range([1,end]),xLim0);
 end
 

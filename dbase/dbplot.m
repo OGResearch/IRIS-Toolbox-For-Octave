@@ -51,7 +51,8 @@ function [FF,AA,PDb] = dbplot(D,List,Range,varargin)
 % Example
 % ========
 %
-%     dbplot(d,qq(2010,1):qq(2015,4),{'x','"Series Y" y','^"Series z"', ...
+%     dbplot(d,qq(2010,1):qq(2015,4), ...
+%        {'x','"Series Y" y','^"Series z"'}, ...
 %        'transform=',@(x) 100*(x-1));
 %
 

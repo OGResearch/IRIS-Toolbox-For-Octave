@@ -44,22 +44,26 @@ classdef namedmat < double
     end
     
     methods
-        function this = namedmat(x,varargin)
+        function This = namedmat(X,varargin)
             % namedmat  Create a new matrix with named rows and columns.
             %
             % Syntax
             % =======
             %
-            %     X = namedmat(X,ROWNAMES,COLNAMES)
+            %     X = namedmat(X,RowNames,ColNames)
+            %     X = namedmat(X,Names)
             %
             % Input arguments
             % ================
             %
             % * `X` [ numeric ] - Matrix or multidimensional array.
             %
-            % * `ROWNAMES` [ cellstr ] - Names for individual rows of `X`.
+            % * `RowNames` [ cellstr ] - Names for individual rows of `X`.
             %
-            % * `COLNAMES` [ cellstr ] - Names for individual columns of
+            % * `ColNames` [ cellstr ] - Names for individual columns of
+            % `X`.
+            %
+            % * `Names` [ cellstr ] - Names for both rows and columns of
             % `X`.
             %
             % Output arguments
@@ -93,26 +97,29 @@ classdef namedmat < double
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            %**************************************************************************
+            %--------------------------------------------------------------
             
             if nargin == 0
-                x = [];
+                X = [];
             end
-            this = this@double(x);
+            This = This@double(X);
             if ~isempty(varargin)
-                this.Rownames = varargin{1};
+                This.Rownames = varargin{1};
                 varargin(1) = [];
-                if length(this.Rownames) ~= size(x,1)
+                if ~isempty(This.Rownames) ...
+                        && length(This.Rownames) ~= size(X,1)
                     utils.error('namedmat', ...
-                        'Number of rows must match number of row names.');
+                        'Number of row names must match number of rows.');
                 end
-            end
-            if ~isempty(varargin)
-                this.Colnames = varargin{1};
-                varargin(1) = []; %#ok<NASGU>
-                if length(this.Rownames) ~= size(x,1)
-                    utils.error('namedmat', ...
-                        'Number of columns must match number of column names.');
+                if ~isempty(varargin)
+                    This.Colnames = varargin{1};
+                    varargin(1) = []; %#ok<NASGU>
+                    if ~isempty(This.Colnames) ...
+                            && length(This.Colnames) ~= size(X,2)
+                        utils.error('namedmat', ...
+                            ['Number of column names must match ', ...
+                            'number of columns.']);
+                    end
                 end
             end
         end

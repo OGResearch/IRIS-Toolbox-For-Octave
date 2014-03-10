@@ -19,23 +19,6 @@
 % 
 % LaTeX is a free typesetting system used to produce PDF reports in IRIS.
 % 
-% Components distributed with IRIS
-% =================================
-% 
-% X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)
-% -----------------------------------------------
-% 
-% Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly
-% X12-ARIMA) program is now incoporated in, and distributed with IRIS. No
-% extra installation or setup is needed.
-% 
-% Symbolic/automatic differentiator
-% ----------------------------------
-% 
-% Symbolic/automatic differentiator. IRIS is equipped with its own
-% symbolic/automatic differentiator, Sydney. There is no need to have the
-% Symbolic Math Toolbox as was the case in earlier versions of IRIS.
-% 
 % Installing IRIS
 % ================
 % 
@@ -48,12 +31,18 @@
 % 
 % Step 2
 % --------
+%
+% If you are going to install IRIS in a folder where an older version
+% already resides, you MUST first delete the old version completely.
+%
+% Step 3
+% --------
 % 
 % Unzip the archive into a folder on your hard drive, e.g. `C:\IRIS_Tbx`.
 % This folder is called the IRIS root.
 % 
 % 
-% Step 3
+% Step 4
 % --------
 % 
 % After installing a new version of IRIS, we recommend that you remove all
@@ -78,18 +67,34 @@
 % Syntax highlighting
 % ====================
 % 
-% You can get the model files (i.e. the files that describe the model
-% equations, variables, parameters) syntax-highlighted. Syntax highlighting
-% improves enormously the readability of the files. It helps you understand
+% You can get the IRIS model files syntax-highlighted. Syntax highlighting
+% improves enormously the readability of the files: it helps you understand
 % the model better, and discover typos and mistakes more quickly.
-% 
+%
 % Add any number of extensions you want to use for model files (such as
-% `'*.model'`) to the Matlab editor. Open the menu Home - Preferences,
-% unfold Editor/Debugger and choose Language. Make sure Matlab is selected
-% at the top as the language. Use the Add button in the File extensions
-% panel to associate any number of new extensions with the editor. Re-start
-% the editor. The IRIS model files will be syntax highlighted from that
-% moment on.
+% `'model'` or `'iris'`, there is really no limitation) to the Matlab
+% editor. Open the menu Home - Preferences, unfold Editor/Debugger and
+% choose Language. Make sure Matlab is selected at the top as the language.
+% Use the Add button in the File extensions panel to associate any number
+% of new extensions with the editor. Re-start the editor. The IRIS model
+% files will be syntax highlighted from that moment on.
+% 
+% Components distributed with IRIS
+% =================================
+% 
+% X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)
+% -----------------------------------------------
+% 
+% Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly
+% X12-ARIMA) program is now incoporated in, and distributed with IRIS. No
+% extra installation or setup is needed.
+% 
+% Symbolic/automatic differentiator
+% ----------------------------------
+% 
+% Symbolic/automatic differentiator. IRIS is equipped with its own
+% symbolic/automatic differentiator, Sydney. There is no need to have the
+% Symbolic Math Toolbox as was the case in earlier versions of IRIS.
 %
 
 % -IRIS Toolbox.

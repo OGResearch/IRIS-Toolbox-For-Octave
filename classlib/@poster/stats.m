@@ -218,7 +218,9 @@ if opt.mdd
     Stat.mdd = doMdd();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doMean()
@@ -230,7 +232,8 @@ end
         else
             thetaMean = sum(Theta,2) / nDraw;
         end
-    end % doMean().
+    end % doMean()
+
 
 %**************************************************************************
     function doCov()
@@ -250,7 +253,8 @@ end
             end
             Sgm = Theta * Theta.' / nDraw;
         end
-    end % doCov().
+    end % doCov()
+
 
 %**************************************************************************
     function d = doMdd()
@@ -283,7 +287,8 @@ end
             end
         end
         d = -mean(d);
-    end % doMdd().
+    end % doMdd()
+
 
 %**************************************************************************
     function doUuu()
@@ -308,7 +313,8 @@ end
                 uuu(jj) = Theta(:,jj).' * invSgm * Theta(:,jj); %#ok<MINV>
             end
         end
-    end % doUuu().
+    end % doUuu()
+
 
 %**************************************************************************
     function doChkPosterFile()
@@ -336,7 +342,8 @@ end
                 'This is not a valid posterior simulation file: ''%s''.', ...
                 inpFile);
         end
-    end % doChkPosterFiles().
+    end % doChkPosterFiles()
+
 
 %**************************************************************************
     function doOutpOpt()
@@ -382,6 +389,7 @@ end
                 opt.hist = 50;
             end
         end
-    end % doOutpOpt().
+    end % doOutpOpt()
+
 
 end

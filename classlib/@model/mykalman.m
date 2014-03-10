@@ -19,6 +19,12 @@ function [Obj,RegOutp,HData] = mykalman(This,Inp,HData,Opt,varargin)
 % * infinite std devs of measurement shocks equivalent to missing obs.
 % * contributions of measurement variables to transition variables.
 
+try
+    Opt.initmeanunit;
+catch
+    Opt.initmeanunit = 'optimal';
+end
+
 nao = nargout;
 ny = length(This.solutionid{1});
 nx = size(This.solution{1},1);

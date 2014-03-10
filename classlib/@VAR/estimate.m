@@ -51,8 +51,8 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % * `'comment='` [ char | `Inf` ] - Assign comment to the estimated VAR
 % object; `Inf` means the existing comment will be preserved.
 %
-% * `'constraints='` [ char ] - General linear constraints on the VAR
-% parameters.
+% * `'constraints='` [ char | cellstr ] - General linear constraints on the
+% VAR parameters.
 %
 % * `'constant='` [ *`true`* | `false` ] - Include a constant vector in the
 % VAR.

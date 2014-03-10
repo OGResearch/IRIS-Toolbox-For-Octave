@@ -45,7 +45,7 @@ oldPos = get(Ax,'position');
 Fig = get(Ax,'parent');
 set(Fig,'units','normalized');
 
-margin = 0.001;
+margin = is.hg2(0.01,0.001);
 
 if ischar(varargin{1})
     where = varargin{1};
