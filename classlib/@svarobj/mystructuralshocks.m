@@ -1,6 +1,5 @@
 function Outp = mystructuralshocks(This,Inp,Opt)
-% mystructuralshocks  [Not a public function] Convert reduced-form VAR
-% residuals to structural VAR shocks.
+% mystructuralshocks  [Not a public function] Convert reduced-form VAR residuals to structural VAR shocks.
 %
 % Backend IRIS function.
 % No help provided.
@@ -20,7 +19,7 @@ ny = size(This.A,1);
 nAlt = size(This.A,3);
 
 % Input data.
-[outpFmt,range,~,e] = mydatarequest(This,Inp,Inf,Opt);
+[outpFmt,range,y,e] = mydatarequest(This,Inp,Inf,Opt);
 
 if size(e,3) == 1 && nAlt > 1
     e = e(:,:,ones(1,nAlt));
@@ -35,7 +34,17 @@ for iAlt = 1 : nAlt
 end
 
 % Output data.
-eNames = get(This,'eNames');
-Outp = myoutpdata(This,outpFmt,range,e,[],eNames,Inp);
+yList = get(This,'yList');
+eList = get(This,'eList');
+
+if strcmpi(outpFmt,'tseries')
+    % For tseries input/output data, we need to combine again both the y
+    % and e data.
+    Outp = myoutpdata(This,outpFmt,range,[y;e],[],[yList,eList]);
+else
+    % For dbase input/output data, simply replace the e data in the output
+    % database.
+    Outp = myoutpdata(This,outpFmt,range,e,[],eList,Inp);
+end
 
 end
