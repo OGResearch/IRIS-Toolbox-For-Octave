@@ -34,7 +34,6 @@ NewEqtn(:) = {''};
 NewEqtnF = NewEqtn;
 NewEqtnS = NewEqtn;
 NewNonlin = false(size(eqtn));
-logList = find(This.log);
 zd = sydney(LossDisc,{});
 
 % The lagrangian is
@@ -102,7 +101,7 @@ for eq = first : LossPos
         sh = tmOcc(j) - This.tzero;
         newEq = nmOcc(j);
         
-        % Multiply derivatives wrt lagged variables by the discount factor.
+        % Multiply derivatives wrt lags and leads by the discount factor.
         if sh == 0
             % Do nothing.
         elseif sh == -1
@@ -114,24 +113,26 @@ for eq = first : LossPos
         end
         
         % If this is not the loss function, multiply the derivative by
-        % the multiplier.
+        % the multiplier. The appropriate lag or lead of the multiplier
+        % will be introduced together with other variables in <?Shift?>.
         if eq < LossPos
             mult = template;
-            if sh == 0
-                mult.args = sprintf('x%g',eq);
-            elseif sh <= -1
-                mult.args = sprintf('x%gp%g',eq,-sh);
-            elseif sh >= 1
-                mult.args = sprintf('x%gm%g',eq,sh);
-            end
+            mult.args = sprintf('x%g',eq);
             diffz{j} = diffz{j}*mult;
         end
 
         dEqtn = char(reduce(diffz{j}),'human');
         
+        % Shift lags and leads of variables (but not parameters) in the
+        % derivative by -sh if sh ~= 0.
+        if sh ~= 0
+            %?Shift?
+            dEqtn = sydney.myshift(dEqtn,-sh,This.nametype <= 2);
+        end
+        
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
         if ~This.linear
-            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',logList); %#ok<FNDSB>
+            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
  
         dEqtn = regexprep(dEqtn,'x(\d+)p(\d+)', ...

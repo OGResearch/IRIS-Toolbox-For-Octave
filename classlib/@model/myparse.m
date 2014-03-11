@@ -318,8 +318,10 @@ end
 maxT = max([S.maxt]);
 minT = min([S.mint]);
 if isLoss
-    % Anticipate that multipliers will have leads as far as the greatest lag.
-    maxT = max([maxT,-minT]);
+    % Anticipate that multipliers will have leads as far as the greatest
+    % lag, and lags as far as the greatest lead.
+    maxT = maxT - minT;
+    minT = minT - maxT;    
 end
 maxT = maxT + 1;
 minT = minT - 1;
