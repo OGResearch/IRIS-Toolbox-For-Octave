@@ -79,7 +79,7 @@ switch request
         R = This.solution{2}(:,:,alt);
         % Transition matrix can be empty in 2nd dimension (no lagged
         % variables).
-        if size(T,1) == 0
+        if size(T,1) > 0 && size(T,2) == 0
             inx = false(1,size(T,3));
         else
             inx = any(any(isnan(T),1),2) | any(any(isnan(R),1),2);

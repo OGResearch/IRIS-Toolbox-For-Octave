@@ -74,10 +74,6 @@ end
 
 string = strrep(string,'\\',sprintf('\n'));
 
-if is.hg2()
-    opt.location = 'north';
-end
-
 switch lower(opt.location)
     case 'north'
         x1 = 0;
@@ -108,7 +104,7 @@ switch lower(opt.location)
         valign = 'top';
     case 'south'
         x1 = 0;
-        x2 = is.hg2(0,0.5);
+        x2 = 0.5;
         x3 = 1;
         y1 = 0;
         y2 = 0;
