@@ -21,7 +21,7 @@ D = zeros(ny,nPer);
 X = zeros(ny,nPOut,nPer);
 
 % Get the requested parameterisation.
-x = This.Assign(1,:,IAlt);
+x = This.Assign(1,:,min(end,IAlt));
 
 % Reset out-of-likelihood parameters to zero.
 if nPOut > 0

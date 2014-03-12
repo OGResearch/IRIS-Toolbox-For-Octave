@@ -85,6 +85,7 @@ classdef model < modelobj & estimateobj
     %
     % * [`data4lhsmrhs`](model/data4lhsmrhs) - Prepare data array for running `lhsmrhs`.
     % * [`emptydb`](model/emptydb) - Create model-specific database with variables, shocks, and parameters.
+    % * [`rollback`](model/rollback) - 
     % * [`sstatedb`](model/sstatedb) - Create model-specific steady-state or balanced-growth-path database.
     % * [`zerodb`](model/zerodb) - Create model-specific zero-deviation database.
     %
@@ -271,6 +272,7 @@ classdef model < modelobj & estimateobj
         varargout = refresh(varargin)
         varargout = reporting(varargin)
         varargout = resample(varargin)
+        varargout = rollback(varargin)
         varargout = set(varargin)
         varargout = shockplot(varargin)
         varargout = simulate(varargin)

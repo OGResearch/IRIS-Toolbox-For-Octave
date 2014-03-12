@@ -98,6 +98,7 @@ if ~s.isObjOnly
     RegOutp.Delta = nan(nPOut,nLoop,Opt.precision);
     RegOutp.PDelta = nan(nPOut,nPOut,nLoop,Opt.precision);
     RegOutp.SampleCov = nan(ne,ne,nLoop);
+    RegOutp.NLoop = nLoop;
 end
 
 % Indices of shocks occuring in measurement and transition equations.
