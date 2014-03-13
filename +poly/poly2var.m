@@ -7,15 +7,16 @@ function A = poly2var(A)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-[ny,ny,p,nalt] = size(A);
+[~,ny,p,nAlt] = size(A);
 p = p - 1;
-for ialt = 1 : nalt
-   if any(A(:,:,1,ialt) ~= eye(ny))
-      error('Polynomial must be monic.');
-   end
+for iAlt = 1 : nAlt
+    if any(A(:,:,1,iAlt) ~= eye(ny))
+        utils.error('poly:polyvar', ...
+            'Polynomial must be monic.');
+    end
 end
-A = reshape(-A(:,:,2:end,:),[ny,ny*p,nalt]);
+A = reshape(-A(:,:,2:end,:),[ny,ny*p,nAlt]);
 
 end

@@ -7,7 +7,7 @@ function C = polysum(A,B)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 n = size(A,1);
 
@@ -20,15 +20,15 @@ C = zeros([n,n,pc+1]);
 A = cat(3,A,zeros([n,n,pc-pa]));
 B = cat(3,B,zeros([n,n,pc-pb]));
 
-for I = 0 : pc
-   C(:,:,1+I) = A(:,:,1+I) + B(:,:,1+I);
+for i = 0 : pc
+    C(:,:,1+i) = A(:,:,1+i) + B(:,:,1+i);
 end
 
 aux = find(any(any(C ~= 0,1),2));
 if isempty(aux)
-   C = C(:,:,1);
+    C = C(:,:,1);
 else
-   C = C(:,:,1:aux(end));
+    C = C(:,:,1:aux(end));
 end
 
 end
