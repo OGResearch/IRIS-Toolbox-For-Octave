@@ -463,7 +463,9 @@ elseif isstruct(opt.dboverlay)
     Outp = dboverlay(opt.dboverlay,Outp);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doChkNanExog()
@@ -478,7 +480,8 @@ end
                 'This variable is exogenised to NaN, Inf or complex number: ''%s''.', ...
                 list{inx});
         end
-    end % doChkNanExog().
+    end % doChkNanExog()
+
 
 %**************************************************************************
     function doChkDetermined()
@@ -488,7 +491,8 @@ end
                 'the number of endogenised data points (%g).'], ...
                 nnzexog(opt.plan),nnzendog(opt.plan));
         end
-    end % doChkDetermined().
+    end % doChkDetermined()
+
 
 %**************************************************************************
     function doAssignOutput()
@@ -512,7 +516,8 @@ end
             [nan(ny,1,n),use.y], ...
             [xf;xb], ...
             [nan(ne,1,n),use.e]);
-    end % doAssignOutput().
+    end % doAssignOutput()
+
 
 %**************************************************************************
     function doChkConflicts()
@@ -528,7 +533,8 @@ end
                 utils.error('model','#Cannot_simulate_contributions');
             end
         end
-    end % doChkConflicts().
+    end % doChkConflicts()
+
 
 %**************************************************************************
     function doChkNonlinConflicts()
@@ -537,7 +543,8 @@ end
                 ['Non-linearised simulations cannot combine ', ...
                 'anticipated and unanticipated endogenised shocks.']);
         end
-    end % doChkNonlinConflicts().
+    end % doChkNonlinConflicts()
+
 
 %**************************************************************************
     function doGetData()        
@@ -558,7 +565,7 @@ end
         end
         % Exogenous variables in dtrend equations.
         use.G = G(:,:,min(iLoop,end));
-        
-    end % doGetData().
+    end % doGetData()
+
 
 end

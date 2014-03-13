@@ -1,5 +1,4 @@
-function [SolId,Name,Log,NameLabel,ContribEList,ContribYList] ...
-    = hdatareq(This)
+function [SolId,Name,Log,NameLabel,ContEList,ContYList] = hdatareq(This)
 % hdatareq  [Not a public function] Object properties needed to initialise an hdata obj.
 %
 % Backend IRIS function.
@@ -20,7 +19,11 @@ SolId{3} = ny + (1 : ny);
 Name = [This.Ynames,This.Enames];
 Log = false(size(Name));
 NameLabel = Name;
-ContribEList = This.Enames;
-ContribYList = This.Ynames;
+
+% Shock contributions list.
+ContEList = [This.Enames,{'Init+Const'}];
+
+% Measurement contributions list.
+ContYList = This.Ynames;
 
 end

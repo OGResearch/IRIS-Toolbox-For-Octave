@@ -9,7 +9,16 @@ function D = hdata2tseries(This,Obj,Range)
 
 %--------------------------------------------------------------------------
 
-[solId,name,Log,nameLabel,contEList,contYList] = hdatareq(Obj);
+[solId,name,ixLog,nameLabel,contEList,contYList] = hdatareq(Obj);
+
+switch This.Contrib
+    case 'E'
+        contList = contEList;
+    case 'Y'
+        contList = contYList;
+    otherwise
+        contList = {};
+end
 
 Range = Range(1) : Range(end);
 
@@ -42,7 +51,7 @@ for i = 1 : length(solId)
         if sn(1) ~= nXPer
             doThrowInternal();
         end
-        if Log(pos)
+        if ixLog(pos)
             This.data.(jName) = exp(This.data.(jName));
         end
         
@@ -52,6 +61,12 @@ for i = 1 : length(solId)
         D.(jName).data = This.data.(jName);
         doComments();
         D.(jName) = mytrim(D.(jName));
+        if isempty(This.Contrib)
+            D.(jName) = comment(D.(jName),nameLabel{pos});
+        else
+            D.(jName) = comment(D.(jName), ...
+                utils.concomment(jName,contList,ixLog(pos)));
+        end
         
         % Free memory.
         This.data.(jName) = [];
@@ -74,29 +89,5 @@ end
             'Please report this error with a copy of the screen message.']);
     end % doThrowInternal()
 
-
-%**************************************************************************
-    function doComments()
-        if isempty(This.Contrib)
-            c = cell([1,sn(2:end)]);
-            if ~isempty(nameLabel{pos})
-                c(:) = nameLabel(pos);
-            else
-                c(:) = name(pos);
-            end
-        else
-            switch This.Contrib
-                case 'E'
-                    c = [contEList,{'Init + Const'}];
-                case 'Y'
-                    c = contYList;
-            end
-            
-            % Create comment string.
-            rpl = utils.concomment(name{pos},'$0',Log(pos));
-            c = regexprep(c,'.*',rpl,'once');
-        end
-        D.(jName).Comment = c;
-    end % doComments()
 
 end
