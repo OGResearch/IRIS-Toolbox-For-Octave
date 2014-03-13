@@ -24,19 +24,20 @@ end
 [nPer,nData] = size(Y);
 nc = size(opt.colormap,1);
 
-% Make sure we never run short of colors.
+% Make sure the colormap never runs out of colors.
 while nData > nc
     opt.colormap = [opt.colormap;opt.colormap];
     nc = size(opt.colormap,1);
 end
+
 if opt.evenlyspread
     % Colors are evenly spread across the color map.
-    colorindex = 1 + round(0 : (nc-1)/(nData-1) : nc-1);
+    colorInx = 1 + round(0 : (nc-1)/(nData-1) : nc-1);
 else
     % Colors are taken in order of appearance in the color map.
-    colorindex = 1 : nData;
+    colorInx = 1 : nData;
 end
-Colors = opt.colormap(colorindex,:);    
+Colors = opt.colormap(colorInx,:);    
 
 % Remember the `nextPlot` status.
 nextPlot = get(Ax,'nextPlot');
@@ -49,7 +50,6 @@ else
 end
 d = avgXStep*opt.barwidth/2;
 
-H = nan(nPer,nData);
 yy = nan(4,nPer,nData);
 xx = nan(4,nPer);
 
@@ -97,11 +97,12 @@ for i = 1 : nPer
 end
 
 % Plot bars for one series and all periods at once.
+H = [];
 for j = 1 : nData
     if j == 2
         set(Ax,'nextPlot','add');
     end
-    H(:,j) = fill(xx,yy(:,:,j),Colors(j,:));
+    H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
 end
 
 % Make all bar clusters invisible except the first one.
