@@ -130,7 +130,7 @@ pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.parse(This,Inp);
 
-% Get input data; the user range is supposed to INCLUDE the pre-sample
+% Get input data; the user range is supposed to **include** the pre-sample
 % initial condition.
 [y,xRange,Ynames,inpFmt,varargin] = myinpdata(This,Inp,varargin{:});
 
@@ -164,6 +164,11 @@ nObs = size(y0,2);
 p = opt.order;
 nData = size(y0,3);
 nGrp = max(1,length(This.GroupNames));
+
+if ny == 0
+    utils.error('VAR:estimate', ...
+        'Cannot estimate VAR object with no variables.');
+end
 
 if ~isempty(opt.mean)
     if length(opt.mean) == 1
