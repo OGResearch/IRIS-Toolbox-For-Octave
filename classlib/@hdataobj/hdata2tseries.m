@@ -59,7 +59,6 @@ for i = 1 : length(solId)
         D.(jName) = template;
         D.(jName).start = xStart;
         D.(jName).data = This.data.(jName);
-        doComments();
         D.(jName) = mytrim(D.(jName));
         if isempty(This.Contrib)
             D.(jName) = comment(D.(jName),nameLabel{pos});
