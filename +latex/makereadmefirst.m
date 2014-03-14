@@ -26,35 +26,45 @@ fileList = {};
 for i = 3 : nSect-1
     s = sect{i};
     s = strfun.removecomments(s,'%',{'%{','%}'});
-    s = regexprep(s,'edit [^\n]+','');
-    file = regexp(s,'\w+','match');
-    ci = sprintf('%g',i);
-    if isempty(file)
-        utils.error('latex:makereadmefirst', ...
-            'No m-file names in section #%s.',ci);
-    elseif length(file) > 1
-        utils.error('latex:makereadmefirst', ...
-            ['Multiple m-file names in section #',ci,': ''%s''.'], ...
-            file{:});
+    
+    file = regexp(s,'edit (\w+\.model)','once','tokens');
+    if ~isempty(file)
+        % Model file.
+        ext = '.model';
+        file = file{1};
+    else
+        % M-file.
+        s = regexprep(s,'edit [^\n]+','');
+        file = regexp(s,'\w+','match');
+        ci = sprintf('%g',i);
+        if isempty(file)
+            utils.error('latex:makereadmefirst', ...
+                'No m-file names in section #%s.',ci);
+        elseif length(file) > 1
+            utils.error('latex:makereadmefirst', ...
+                ['Multiple m-file names in section #',ci,': ''%s''.'], ...
+                file{:});
+        end
+        ext = '.m';
+        file = file{1};
     end
-    file = file{1};
+    
+    file = [file,ext]; %#ok<AGROW>
     intro = latex.mfile2intro(file);
     intro = regexprep(intro,'^%[ ]*[Bb]y.*?\n','','once','lineanchors');
-    % Add two lines:
-    % * % edit filename.m;
-    % * filename;
-    sect{i} = [intro,br,br, ...
-        '% edit ',file,'.m;',br, ...
-        file,';'];
+    sect{i} = [intro,br,br,'% edit ',file,';'];
+    if isequal(ext,'.m')
+        sect{i} = [sect{i},br,file,';'];
+    end
     fileList{end+1} = file; %#ok<AGROW>
 end
 
 % Last section is Publish M-Files to PDFs...
-e = file2char(fullfile(irisroot(),'+latex','howtopublish.m'));
+pub = file2char(fullfile(irisroot(),'+latex','howtopublish.m'));
 for i = 1 : length(fileList)
-    e = [e,br,'%     latex.publish(''',fileList{i},'.m'');']; %#ok<AGROW>
+    pub = [pub,br,'%     latex.publish(''',fileList{i},''');']; %#ok<AGROW>
 end
-sect{end} = e;
+sect{end} = pub;
 
 % Make sure there are exactly two line breaks at the end of each section,
 % and one line break at the end of the file.
