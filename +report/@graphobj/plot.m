@@ -160,7 +160,12 @@ end
             setappdata(iAx,'PlotHoldStyle',true);
             set(iAx,'yLimMode','auto','yTickMode','auto');
         end
-        set(Ax,'gridLineStyle',':','gridColor',0.7*[1,1,1]);
+        % Change grid line style back to black dotted line in HG2; see
+        % remarks in grfun.highlight.
+        if is.hg2()
+            set(Ax,'gridLineStyle',':', ...
+                'gridColor',0.7*[1,1,1]);
+        end
         setappdata(Ax(1),'PlotColorIndex',0);
         if length(Ax) > 1
             set(Ax(2),'cLim',[-5,5]);

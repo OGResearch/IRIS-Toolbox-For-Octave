@@ -92,11 +92,19 @@ for iAx = Ax(:).'
     % Check for plotyy peers, and return the background axes object.
     h = grfun.mychkforpeers(iAx);
     
-    % Move grid to the foreground, and change grid style to black dotted
-    % line. Otherwise, the grid lines will not be visible.
-    set(h,'layer','top', ...
-        'gridLineStyle',':', ...
-        'gridColor',0.7*[1,1,1]);
+    % Move grid to the foreground for the grid to be visible.
+    set(h,'layer','top');
+    
+    % Change grid style in HG2 back to black dotted line for the grid lines
+    % not to interfere so much with the plotted data.
+    if is.hg2()
+        set(h,'gridLineStyle',':', ...
+            'gridColor',0.7*[1,1,1]);
+    end
+    
+    % NOTE: Instead of moving the grid to the foreground, we could use
+    % transparent color for the highligh object (faceAlpha). This is
+    % however not supported by the Painters renderer.
     
     range = range([1,end]);
     around = opt.around;
