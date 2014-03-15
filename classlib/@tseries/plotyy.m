@@ -23,13 +23,13 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % Output arguments
 % =================
 %
-% * `Ax` [ numeric ] - Handles to the LHS and RHS axes.
+% * `Ax` [ handle | numeric ] - Handles to the LHS and RHS axes.
 %
-% * `Lhs` [ numeric ] - Handles to series plotted on the LHS axis.
+% * `Lhs` [ handle | numeric ] - Handles to series plotted on the LHS axis.
 %
-% * `Rhs` [ numeric ] - Handles to series plotted on the RHS axis.
+% * `Rhs` [ handle | numeric ] - Handles to series plotted on the RHS axis.
 %
-% * `Range` [ numeric ] - Actually plotted date range.
+% * `Range` [ handle | numeric ] - Actually plotted date range.
 %
 % Options
 % ========
@@ -37,23 +37,23 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % * `'conincident='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
 % grids coincident.
 %
-% * `'dateFormat='` [ char | *irisget('plotdateformat')* ] - Date format
+% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
 % for the tick marks on the x-axis.
 %
 % * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
 % marks on the x-axis; Inf means they will be created automatically.
 %
-% * `'freqLetters='` [ char | *'YHQBM'* ] - Five letters to represent the
+% * `'freqLetters='` [ char | *`'YHQBM'`* ] - Five letters to represent the
 % five date frequencies (yearly, half-yearly, quarterly, bi-monthly, and
 % monthly).
 %
-% * `'lhsPlotFunc='` [ @area | @bar | *@plot* | @stem ] - Function that
-% will be used to plot the LHS data.
+% * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
+% that will be used to plot the LHS data.
 %
 % * `'lhsTight='` [ `true` | *`false`* ] - Make the LHS y-axis tight.
 %
-% * `'rhsPlotFunc='` [ @area | @bar | *@plot* | @stem ] - Function that
-% will be used to plot the RHS data.
+% * `'rhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
+% that will be used to plot the RHS data.
 %
 % * `'rhsTight='` [ `true` | *`false`* ] - Make the RHS y-axis tight.
 %

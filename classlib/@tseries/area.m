@@ -4,37 +4,37 @@ function varargout = area(varargin)
 % Syntax
 % =======
 %
-%     [h,range] = area(x,...)
-%     [h,range] = area(range,x,...)
-%     [h,range] = area(a,range,x,...)
+%     [H,Range] = area(X,...)
+%     [H,Range] = area(Range,X,...)
+%     [H,Range] = area(Ax,Range,X,...)
 %
 % Input arguments
 % ================
 %
-% * `a` [ numeric ] - Handle to axes in which the graph will be plotted; if
-% not specified, the current axes will used.
+% * `Ax` [ handle | numeric ] - Handle to axes in which the graph will be
+% plotted; if not specified, the current axes will used.
 %
-% * `range` [ numeric ] - Date range; if not specified the entire range of
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
 % the input tseries object will be plotted.
 %
-% * `x` [ tseries ] - Input tseries object whose columns will be ploted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % an area graph.
 %
 % Output arguments
 % =================
 %
-% * `h` [ numeric ] - Handle(s) to the area(s) plotted.
+% * `H` [ handle | numeric ] - Handles to areas plotted.
 %
-% * `range` [ numeric ] - Actually plotted date range.
+% * `Range` [ numeric ] - Actually plotted date range.
 %
 % Options
 % ========
 %
-% * `'dateformat='` [ char | *irisget('plotdateformat')* ] - Date format for
-% the tick marks on the x-axis.
+% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
+% for the tick marks on the x-axis.
 %
-% * `'datetick='` [ numeric | *`Inf`* ] - Vector of dates locating tick marks
-% on the x-axis; Inf means they will be created automatically.
+% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
+% marks on the x-axis; Inf means they will be created automatically.
 %
 % * `'tight='` [ `true` | *`false`* ] - Make the y-axis tight.
 %

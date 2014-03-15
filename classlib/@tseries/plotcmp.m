@@ -21,17 +21,18 @@ function [Ax,Lhs,Rhs,varargout] = plotcmp(varargin)
 % Output arguments
 % =================
 %
-% * `Ax` [ numeric ] - Handles to the LHS and RHS axes.
+% * `Ax` [ handle | numeric ] - Handles to the LHS and RHS axes.
 %
-% * `Lhs` [ numeric ] - Handles to the two original lines.
+% * `Lhs` [ handle | numeric ] - Handles to the two original lines.
 %
-% * `Rhs` [ numeric ] - Handles to the area or bar difference graph.
+% * `Rhs` [ handle | numeric ] - Handles to the area or bar difference
+% graph.
 %
 % Options
 % ========
 %
 % * `'compare='` [ numeric | *`[-1;1]`* ] - Linear combination of the
-% observations that will be plotted in the RHS graph; `[-1;1] means a
+% observations that will be plotted in the RHS graph; `[-1;1]` means a
 % difference between the second series and the first series,
 % `X{:,2}-X{:,1}`.
 %

@@ -4,33 +4,33 @@ function varargout = bar(varargin)
 % Syntax
 % =======
 %
-%     [H,Range] = bar(x,...)
-%     [H,Range] = bar(Range,x,...)
-%     [H,Range] = bar(a,Range,x,...)
+%     [H,Range] = bar(X,...)
+%     [H,Range] = bar(Range,X,...)
+%     [H,Range] = bar(Ax,Range,X,...)
 %
 % Input arguments
 % ================
 %
-% * `a` [ numeric ] - Handle to axes in which the graph will be plotted; if
-% not specified, the current axes will used.
+% * `Ax` [ handle | numeric ] - Handle to axes in which the graph will be
+% plotted; if not specified, the current axes will used.
 %
 % * `Range` [ numeric ] - Date Range; if not specified the entire Range of
 % the input tseries object will be plotted.
 %
-% * `x` [ tseries ] - Input tseries object whose columns will be ploted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % a bar graph.
 %
 % Output arguments
 % =================
 %
-% * `H` [ numeric ] - Handles to the bars plotted.
+% * `H` [ handle | numeric ] - Handles to bars plotted.
 %
 % * `Range` [ numeric ] - Actually plotted date Range.
 %
 % Options
 % ========
 %
-% * `'dateFormat='` [ char | *irisget('plotdateformat')* ] - Date format
+% * `'dateFormat='` [ char | *`irisget('plotdateformat')`* ] - Date format
 % for the tick marks on the x-axis.
 %
 % * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
