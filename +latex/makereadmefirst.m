@@ -27,11 +27,13 @@ for i = 3 : nSect-1
     s = sect{i};
     s = strfun.removecomments(s,'%',{'%{','%}'});
     
-    file = regexp(s,'edit (\w+\.model)','once','tokens');
+    file = regexp(s,'edit (\w+)\.model','once','tokens');
     if ~isempty(file)
         % Model file.
         ext = '.model';
         file = file{1};
+        % Do not comment out the `edit filename;` line for model files.
+        cmtout = '';
     else
         % M-file.
         s = regexprep(s,'edit [^\n]+','');
@@ -47,16 +49,17 @@ for i = 3 : nSect-1
         end
         ext = '.m';
         file = file{1};
+        % Comment out the `edit filename;` line for m-files.
+        cmtout = '% ';
     end
     
-    file = [file,ext]; %#ok<AGROW>
-    intro = latex.mfile2intro(file);
+    intro = latex.mfile2intro([file,ext]);
     intro = regexprep(intro,'^%[ ]*[Bb]y.*?\n','','once','lineanchors');
-    sect{i} = [intro,br,br,'% edit ',file,';'];
+    sect{i} = [intro,br,br,cmtout,'edit ',file,ext,';'];
     if isequal(ext,'.m')
         sect{i} = [sect{i},br,file,';'];
     end
-    fileList{end+1} = file; %#ok<AGROW>
+    fileList{end+1} = [file,ext]; %#ok<AGROW>
 end
 
 % Last section is Publish M-Files to PDFs...
