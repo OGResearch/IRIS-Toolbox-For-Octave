@@ -272,6 +272,9 @@ for t = floorToDates(1) : floorToDates(end)
             if Opt.ignorenan
                 iFromX = iFromX(~isnan(iFromX));
             end
+            if ~isequal(Opt.select,Inf)
+                iFromX = iFromX(Opt.select);
+            end
             if isempty(iFromX)
                 toX(1,iCol) = NaN;
             else
