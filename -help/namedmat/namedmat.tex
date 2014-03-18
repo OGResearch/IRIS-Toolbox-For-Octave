@@ -5,7 +5,8 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-X = namedmat(X,ROWNAMES,COLNAMES)
+X = namedmat(X,RowNames,ColNames)
+X = namedmat(X,Names)
 \end{verbatim}
 
 \paragraph{Input arguments}
@@ -14,10 +15,13 @@ X = namedmat(X,ROWNAMES,COLNAMES)
 \item
   \texttt{X} {[} numeric {]} - Matrix or multidimensional array.
 \item
-  \texttt{ROWNAMES} {[} cellstr {]} - Names for individual rows of
+  \texttt{RowNames} {[} cellstr {]} - Names for individual rows of
   \texttt{X}.
 \item
-  \texttt{COLNAMES} {[} cellstr {]} - Names for individual columns of
+  \texttt{ColNames} {[} cellstr {]} - Names for individual columns of
+  \texttt{X}.
+\item
+  \texttt{Names} {[} cellstr {]} - Names for both rows and columns of
   \texttt{X}.
 \end{itemize}
 

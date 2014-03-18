@@ -107,7 +107,7 @@ code.LaTeX {
 
 
 <h2 id="tseries/x12">x12</h2>
-<div class="headline">Access to X12 seasonal adjustment program</div>
+<div class="headline">Access to X13-ARIMA-SEATS seasonal adjustment program</div>
 
 <h4 id="syntax-with-a-single-type-of-output-requested">Syntax with a single type of output requested</h4>
 <pre><code>[Y,OutpFile,ErrFile,Model,X] = x12(X)
@@ -130,32 +130,41 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'backcast='</code> [ numeric | <em><code>0</code></em> ] - Run a backcast based on the fitted ARIMA model for this number of periods back to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X12-ARIMA manual. The backcast is included in the output argument <code>X</code>.</p></li>
+<li><p><code>'backcast='</code> [ numeric | <em><code>0</code></em> ] - Run a backcast based on the fitted ARIMA model for this number of periods back to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual. The backcast is included in the output argument <code>X</code>.</p></li>
 <li><p><code>'cleanup='</code> [ <em><code>true</code></em> | <code>false</code> ] - Delete temporary X12 files when done; the temporary files are named <code>iris_x12a.*</code>.</p></li>
 <li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the input data before, and de-logarithmise the output data back after, running <code>x12</code>.</p></li>
-<li><p><code>'forecast='</code> [ numeric | <em><code>0</code></em> ] - Run a forecast based on the fitted ARIMA model for this number of periods ahead to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X12-ARIMA manual. The forecast is included in the output argument <code>X</code>.</p></li>
+<li><p><code>'forecast='</code> [ numeric | <em><code>0</code></em> ] - Run a forecast based on the fitted ARIMA model for this number of periods ahead to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual. The forecast is included in the output argument <code>X</code>.</p></li>
 <li><p><code>'display='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display X12 output messages in command window; if false the messages will be saved in a TXT file.</p></li>
-<li><p><code>'dummy='</code> [ tseries | <em>empty</em> ] - User dummy variable or variables (in case of a multivariate tseries object) used in X12-ARIMA regression; the dummy variables must also include values for forecasts and backcasts if you request them; the type of the dummy can be specified in the option <code>'dummyType='</code>.</p></li>
-<li><p><code>'dummyType='</code> [ <code>'ao'</code> | <em><code>'holiday'</code></em> | <code>'td'</code> ] - Type of the user dummy (which is specified through the option <code>'dummy='</code>); the three basic types of dummies are additive outlier (<code>'ao'</code>), holiday flows (<code>'holiday'</code>), and trading days (<code>'td'</code>); see the X12-ARIMA or X13-ARIMA documentation for more details (available from the U.S.Census Bureau website), look for the section on the REGRESSION spec, options 'user' and 'usertype'.</p></li>
-<li><p><code>'mode='</code> [ <em><code>'auto'</code></em> | <code>'add'</code> | <code>'logadd'</code> | <code>'mult'</code> | <code>'pseudoadd'</code> | <code>'sign'</code> ] - Seasonal adjustment mode (see help on the <code>x11</code> specs in the X12-ARIMA manual); <code>'auto'</code> means that series with only positive or only negative numbers will be adjusted in the <code>'mult'</code> (multiplicative) mode, while series with combined positive and negative numbers in the <code>'add'</code> (additive) mode.</p></li>
-<li><p><code>'maxIter='</code> [ numeric | <em><code>1500</code></em> ] - Maximum number of iterations for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X12-ARIMA manual.</p></li>
-<li><p><code>'maxOrder='</code> [ numeric | <em><code>[2,1]</code></em> ] - A 1-by-2 vector with maximum order for the regular ARMA model (can be <code>1</code>, <code>2</code>, <code>3</code>, or <code>4</code>) and maximum order for the seasonal ARMA model (can be <code>1</code> or <code>2</code>). See help on the <code>automdl</code> specs in the X12-ARIMA manual.</p></li>
+<li><p><code>'dummy='</code> [ tseries | <em>empty</em> ] - User dummy variable or variables (in case of a multivariate tseries object) used in X13-ARIMA-SEATS regression; the dummy variables must also include values for forecasts and backcasts if you request them; the type of the dummy can be specified in the option <code>'dummyType='</code>.</p></li>
+<li><p><code>'dummyType='</code> [ <code>'ao'</code> | <em><code>'holiday'</code></em> | <code>'td'</code> ] - Type of the user dummy (which is specified through the option <code>'dummy='</code>); the three basic types of dummies are additive outlier (<code>'ao'</code>), holiday flows (<code>'holiday'</code>), and trading days (<code>'td'</code>); see the X13-ARIMA-SEATS or X13-ARIMA documentation for more details (available from the U.S.Census Bureau website), look for the section on the REGRESSION spec, options 'user' and 'usertype'.</p></li>
+<li><p><code>'mode='</code> [ <em><code>'auto'</code></em> | <code>'add'</code> | <code>'logadd'</code> | <code>'mult'</code> | <code>'pseudoadd'</code> | <code>'sign'</code> ] - Seasonal adjustment mode (see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual); <code>'auto'</code> means that series with only positive or only negative numbers will be adjusted in the <code>'mult'</code> (multiplicative) mode, while series with combined positive and negative numbers in the <code>'add'</code> (additive) mode.</p></li>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>1500</code></em> ] - Maximum number of iterations for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'maxOrder='</code> [ numeric | <em><code>[2,1]</code></em> ] - A 1-by-2 vector with maximum order for the regular ARMA model (can be <code>1</code>, <code>2</code>, <code>3</code>, or <code>4</code>) and maximum order for the seasonal ARMA model (can be <code>1</code> or <code>2</code>). See help on the <code>automdl</code> specs in the X13-ARIMA-SEATS manual.</p></li>
 <li><p>'missing=' [ <code>true</code> | <em><code>false</code></em> ] - Allow for in-sample missing observations, and fill in values predicted by an estimated ARIMA process; if <code>false</code>, the seasonal adjustment will not run and a warning will be thrown.</p></li>
-<li><p><code>'output='</code> [ char | cellstr | <em><code>'SA'</code></em> ] - List of requested output data; the cellstr or comma-separated list can combine <code>'IR'</code> for the irregular component, <code>'SA'</code> for the final seasonally adjusted series, <code>'SF'</code> for seasonal factors, <code>'TC'</code> for the trend-cycle, and <code>'MV'</code> for the original series with missing observations replaced with ARIMA estimates. See also help on the <code>x11</code> specs in the X12-ARIMA manual.</p></li>
-<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - Name (or a whole path) under which X12-ARIMA output files will be saved.</p></li>
-<li><p><code>'specFile='</code> [ char | <em><code>'default'</code></em> ] - Name of the X12-ARIMA spec file; if <code>'default'</code> the IRIS default spec file will be used, see description.</p></li>
-<li><p><code>'tdays='</code> [ <code>true</code> | <em><code>false</code></em> ] - Correct for the number of trading days. See help on the <code>x11regression</code> specs in the X12-ARIMA manual.</p></li>
-<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X12-ARIMA manual.</p></li>
+<li><p><code>'output='</code> [ char | cellstr | <em><code>'SA'</code></em> ] - List of requested output data; the cellstr or comma-separated list can combine any number of the request specifications listed below in subsection Output request; See also help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - Name (or a whole path) under which X13-ARIMA-SEATS output files will be saved.</p></li>
+<li><p><code>'specFile='</code> [ char | <em><code>'default'</code></em> ] - Name of the X13-ARIMA-SEATS spec file; if <code>'default'</code> the IRIS default spec file will be used, see description.</p></li>
+<li><p><code>'tdays='</code> [ <code>true</code> | <em><code>false</code></em> ] - Correct for the number of trading days. See help on the <code>x11regression</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
 </ul>
 <h4 id="description">Description</h4>
+<h5 id="output-requests">Output requests</h5>
+<p>The option `'output=' can combine any number of the following requests:</p>
+<ul>
+<li><p><code>'SA'</code> - seasonally adjusted series;</p></li>
+<li><p><code>'SF'</code> - seasonal factors;</p></li>
+<li><p><code>'TC'</code> - trend-cycle component;</p></li>
+<li><p><code>'IR'</code> - irregular component;</p></li>
+<li><p><code>'MV'</code> - the original input series with missing values fitted by running an estimated ARIMA model.</p></li>
+</ul>
 <h5 id="missing-observations">Missing observations</h5>
 <p>If you keep <code>'missing=' false</code> (this is the default for backward compatibility), <code>x12</code> will not run on series with in-sample missing observations, and a warning will be thrown.</p>
-<p>If you set <code>'missing=' true</code>, you allow for in-sample missing observations. The X12-ARIMA program handles missing observations by filling in values predicted by the estimated ARIMA process. You can request the series with missing values filled in by including <code>MV</code> in the option <code>'output='</code>.</p>
+<p>If you set <code>'missing=' true</code>, you allow for in-sample missing observations. The X13-ARIMA-SEATS program handles missing observations by filling in values predicted by the estimated ARIMA process. You can request the series with missing values filled in by including <code>MV</code> in the option <code>'output='</code>.</p>
 <h5 id="spec-file">Spec file</h5>
-<p>The default X12-ARIMA spec file is <code>+thirdparty/x12/default.spc</code>. You can create your own spec file to include options that are not available through the IRIS interface. You can use the following pre-defined placeholders letting IRIS fill in some of the information needed (check out the default file):</p>
+<p>The default X13-ARIMA-SEATS spec file is <code>+thirdparty/x12/default.spc</code>. You can create your own spec file to include options that are not available through the IRIS interface. You can use the following pre-defined placeholders letting IRIS fill in some of the information needed (check out the default file):</p>
 <ul>
 <li><code>$series_data$</code> is replaced with a column vector of input observations;</li>
-<li><code>$series_freq$</code> is replaced with a number representing the date frequency: either 4 for quarterly, or 12 for monthly (other frequencies are currenlty not supported by X12-ARIMA);</li>
+<li><code>$series_freq$</code> is replaced with a number representing the date frequency: either 4 for quarterly, or 12 for monthly (other frequencies are currenlty not supported by X13-ARIMA-SEATS);</li>
 <li><code>$series_startyear$</code> is replaced with the start year of the input series;</li>
 <li><code>$series_startper$</code> is replaced with the start quarter or month of the input series;</li>
 <li><code>$transform_function$</code> is replaced with <code>log</code> or <code>none</code> depending on the mode selected by the user;</li>

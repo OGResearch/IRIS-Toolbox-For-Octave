@@ -50,13 +50,13 @@ options}
   language. .
 \item
   \texttt{'plotDateFormat='} {[} char \textbar{}
-  \emph{\texttt{\{'Y','Y:P','Y:P','Y:P','Y:P','Y:P'\}}} {]}
-\item
-  Default date formats used to display dates in graphs including graphs
-  in reports. The default date formats are 6 strings, one for each of
-  the date frequencies, in the following order: yearly (1), half-yearly
-  (2), quarterly (4), bimonthly (6), monthly (12), and weekly (52).
-  Dates with indeterminate frequency are printed as plain numbers.
+  \emph{\texttt{struct('yy','Y','hh','Y:P','qq','Y:P','bb','Y:P','mm','Y:P','ww','Y:P')}}
+  {]} - Default date formats used to display dates in graphs including
+  graphs in reports. The default date formats are set individually for
+  each of the 6 ate frequencies in a struct with the following fields:
+  \texttt{.yy}, \texttt{.hh}, \texttt{.qq}, \texttt{.bb}, \texttt{.mm},
+  \texttt{.ww}. Dates with indeterminate frequency are printed as plain
+  numbers.
 \item
   \texttt{'tseriesFormat='} {[} char \textbar{} \emph{empty} {]} -
   Format string for displaying time series data on the screen. See help

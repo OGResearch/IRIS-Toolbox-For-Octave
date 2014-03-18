@@ -107,10 +107,15 @@ code.LaTeX {
 
 
 <h2 id="grfun/maxfigure">maxfigure</h2>
-<div class="headline">Create graphics window maximised across the entire screen</div>
+<div class="headline">Maximize figure window</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Fig = maxfigure(...)</code></pre>
+<pre><code>Fig = maxfigure(H,...)
+Fig = maxfigure(...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>H</code> [ handle ] - Handle to existing figure window that will be maximized; if omitted, a new maximized figure window will be created.</li>
+</ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><code>Fig</code> [ numeric ] - Handle to the figure created.</li>

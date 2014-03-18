@@ -66,7 +66,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % * [`llf2`](tseries/llf2) - Swap output arguments of the local linear trend filter with tunes.
     % * [`moving`](tseries/moving) - Apply function to moving window of observations.
     % * [`trend`](tseries/trend) - Estimate a time trend.
-    % * [`x12`](tseries/x12) - Access to X12 seasonal adjustment program.
+    % * [`x12`](tseries/x12) - Access to X13-ARIMA-SEATS seasonal adjustment program.
     %
     % Estimation and sample characteristics
     % ======================================

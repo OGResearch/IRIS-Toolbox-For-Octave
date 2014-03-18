@@ -126,18 +126,19 @@ code.LaTeX {
 <pre><code>S.object.property = value;</code></pre>
 <p>The following is the list of standard Matlab grahics objects the top-level fields can refer to:</p>
 <ul>
-<li><code>figure</code>;</li>
-<li><code>axes</code>;</li>
-<li><code>title</code>;</li>
-<li><code>xlabel</code>;</li>
-<li><code>ylabel</code>;</li>
-<li><code>zlabel</code>;</li>
-<li><code>line</code>;</li>
-<li><code>bar</code>;</li>
-<li><code>patch</code>;</li>
-<li><code>text</code>.</li>
+<li><code>figure</code></li>
+<li><code>axes</code></li>
+<li><code>title</code></li>
+<li><code>xlabel</code></li>
+<li><code>ylabel</code></li>
+<li><code>zlabel</code></li>
+<li><code>line</code></li>
+<li><code>bar</code></li>
+<li><code>patch</code></li>
+<li><code>text</code></li>
 </ul>
-<p>In addition, you can also refer to the following special instances of objects created by IRIS functions:</p>
+<h5 id="special-object-names">Special object names</h5>
+<p>In addition to standard Matlab graphics object names, you can also refer to the following special instances of objects created by IRIS functions:</p>
 <ul>
 <li><code>rhsaxes</code> (an RHS axes object created by <code>plotyy</code>)</li>
 <li><code>legend</code> (represented by an axes object);</li>
@@ -155,6 +156,8 @@ code.LaTeX {
 <li><p>a cell array of multiple different values that will be assigned to the objects of the same type in order of their creation;</p></li>
 <li><p>a text string starting with a double exclamation point, <code>!!</code>, followed by Matlab commands. The commands are expected to eventually create a variable named <code>SET</code> whose value will then assigned to the respective property. The commands have access to variable <code>H</code>, a handle to the current object.</p></li>
 </ul>
+<h5 id="setting-font-size">Setting font size</h5>
+<p>Font size (in objects like axes, title, etc.) can be set to either a numeric scalar (which is the default Matlab behavior) or a character string describing a numerical value followed by a percent sign, such as <code>'150%'</code>. In that case, the font size will be set to the corresponding percentage of the current size.</p>
 <h4 id="example">Example</h4>
 
 </body>

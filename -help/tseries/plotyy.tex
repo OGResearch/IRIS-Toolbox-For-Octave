@@ -27,15 +27,17 @@
 
 \begin{itemize}
 \item
-  \texttt{Ax} {[} numeric {]} - Handles to the LHS and RHS axes.
+  \texttt{Ax} {[} handle \textbar{} numeric {]} - Handles to the LHS and
+  RHS axes.
 \item
-  \texttt{Lhs} {[} numeric {]} - Handles to series plotted on the LHS
-  axis.
+  \texttt{Lhs} {[} handle \textbar{} numeric {]} - Handles to series
+  plotted on the LHS axis.
 \item
-  \texttt{Rhs} {[} numeric {]} - Handles to series plotted on the RHS
-  axis.
+  \texttt{Rhs} {[} handle \textbar{} numeric {]} - Handles to series
+  plotted on the RHS axis.
 \item
-  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+  \texttt{Range} {[} handle \textbar{} numeric {]} - Actually plotted
+  date range.
 \end{itemize}
 
 \paragraph{Options}
@@ -47,27 +49,27 @@
   coincident.
 \item
   \texttt{'dateFormat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
+  \emph{\texttt{irisget('plotDateFormat')}} {]} - Date format for the
+  tick marks on the x-axis.
 \item
   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
   Vector of dates locating tick marks on the x-axis; Inf means they will
   be created automatically.
 \item
-  \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} - Five
-  letters to represent the five date frequencies (yearly, half-yearly,
-  quarterly, bi-monthly, and monthly).
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBM'}}
+  {]} - Five letters to represent the five date frequencies (yearly,
+  half-yearly, quarterly, bi-monthly, and monthly).
 \item
-  \texttt{'lhsPlotFunc='} {[} @area \textbar{} @bar \textbar{} *@plot*
-  \textbar{} @stem {]} - Function that will be used to plot the LHS
-  data.
+  \texttt{'lhsPlotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
+  \textbar{} \emph{\texttt{@plot}} \textbar{} \texttt{@stem} {]} -
+  Function that will be used to plot the LHS data.
 \item
   \texttt{'lhsTight='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Make the LHS y-axis tight.
 \item
-  \texttt{'rhsPlotFunc='} {[} @area \textbar{} @bar \textbar{} *@plot*
-  \textbar{} @stem {]} - Function that will be used to plot the RHS
-  data.
+  \texttt{'rhsPlotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
+  \textbar{} \emph{\texttt{@plot}} \textbar{} \texttt{@stem} {]} -
+  Function that will be used to plot the RHS data.
 \item
   \texttt{'rhsTight='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Make the RHS y-axis tight.

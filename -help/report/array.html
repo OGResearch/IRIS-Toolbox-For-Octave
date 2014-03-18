@@ -120,32 +120,32 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'arrayStretch='</code> [ numeric | <em><code>1.15</code></em> ] - (Inherited) Stretch between lines in the array (in pts).</p></li>
-<li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - (Inherited) Â format commands for typesetting the array caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
+<li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - (Inherited)  format commands for typesetting the array caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
 <li><p><code>'colWidth='</code> [ numeric | <em><code>NaN</code></em> ] - (Inheritable from parent objects) Width, or a vector of widhts, of the array columns in <code>em</code>units; <code>NaN</code> means the width of the column will adjust automatically.</p></li>
 <li><p><code>'format='</code> [ char | <em><code>'%.2f'</code></em> ] - (Inherited) Numeric format string; see help on the built-in <code>sprintf</code> function.</p></li>
 <li><p><code>'footnote='</code> [ char | <em>empty</em> ] - (Inherited) Footnote at the array title; only shows if the title is non-empty.</p></li>
-<li><p><code>'heading='</code> [ char | cellstr | <em>empty</em> ] - (Inherited) User-supplied heading, i.e. an extra row or rows at the top of the array. The heading can be either a Â code, or a cell array whose size is consistent with <code>Data</code>. The heading is repeated at the top of each new page when used with <code>'long=' true</code>.</p></li>
-<li><p><code>'inf='</code> [ char | <em><code>'$\infty$'</code></em> ] - (Inherited) Â string that will be used to typeset <code>Inf</code>s.</p></li>
+<li><p><code>'heading='</code> [ char | cellstr | <em>empty</em> ] - (Inherited) User-supplied heading, i.e. an extra row or rows at the top of the array. The heading can be either a  code, or a cell array whose size is consistent with <code>Data</code>. The heading is repeated at the top of each new page when used with <code>'long=' true</code>.</p></li>
+<li><p><code>'inf='</code> [ char | <em><code>'$\infty$'</code></em> ] - (Inherited)  string that will be used to typeset <code>Inf</code>s.</p></li>
 <li><p><code>'long='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inherited) If <code>true</code>, the array may stretch over more than one page.</p></li>
 <li><p><code>'longFoot='</code> [ char | <em>empty</em> ] - (Inherited) Footnote that appears at the bottom of the array (if it is longer than one page) on each page except the last one; works only with <code>'long='</code> <code>true</code>.</p></li>
 <li><p><code>'longFootPosition='</code> [ <code>'centre'</code> | <em><code>'left'</code></em> | <code>'right'</code> ] - (Inherited) Horizontal alignment of the footnote in long arrays; works only with <code>'long='</code> <code>true</code>.</p></li>
-<li><p><code>'nan='</code> [ char | <em><code>'$\cdots$'</code></em> ] - (Inherited) Â string that will be used to typeset <code>NaN</code>s.</p></li>
-<li><p><code>'pureZero='</code> [ char | <em>empty</em> ] - (Inherited) Â string that will be used to typeset pure zero entries; if empty the zeros will be printed using the current numeric format.</p></li>
-<li><p><code>'printedZero='</code> [ char | <em>empty</em> ] - (Inherited) Â string that will be used to typeset the entries that would appear as zero under the current numeric format used; if empty these numbers will be printed using the current numeric format.</p></li>
+<li><p><code>'nan='</code> [ char | <em><code>'$\cdots$'</code></em> ] - (Inherited)  string that will be used to typeset <code>NaN</code>s.</p></li>
+<li><p><code>'pureZero='</code> [ char | <em>empty</em> ] - (Inherited)  string that will be used to typeset pure zero entries; if empty the zeros will be printed using the current numeric format.</p></li>
+<li><p><code>'printedZero='</code> [ char | <em>empty</em> ] - (Inherited)  string that will be used to typeset the entries that would appear as zero under the current numeric format used; if empty these numbers will be printed using the current numeric format.</p></li>
 <li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inherited) <br />commands that will be inserted after the array.</p></li>
 <li><p><code>'sideways='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inherited) Print the array rotated by 90 degrees.</p></li>
-<li><p><code>'tabcolsep='</code> [ <code>NaN</code> | numeric ] - (Inherited) Space between columns in the array, measured in em units; <code>NaN</code> means the Â default.</p></li>
-<li><p><code>'typeface='</code> [ char | <em>empty</em> ] - (Not inherited) Â code specifying the typeface for the array as a whole; it must use the declarative forms (such as <code>\itshape</code>) and not the command forms (such as <code>\textit{...}</code>).</p></li>
+<li><p><code>'tabcolsep='</code> [ <code>NaN</code> | numeric ] - (Inherited) Space between columns in the array, measured in em units; <code>NaN</code> means the  default.</p></li>
+<li><p><code>'typeface='</code> [ char | <em>empty</em> ] - (Not inherited)  code specifying the typeface for the array as a whole; it must use the declarative forms (such as <code>\itshape</code>) and not the command forms (such as <code>\textit{...}</code>).</p></li>
 </ul>
 <h4 id="generic-options">Generic options</h4>
 <p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
 <h4 id="description">Description</h4>
-<p>The input cell array <code>Data</code> can contain either strings or numeric values, or horizontal rules. Numeric values are printed using the standard <code>sprintf</code> function and formatted using the <code>'format='</code> option. Horizontal rules must be entered as a string of five (or more) dashes, <code>'-----'</code>, in the first cell of the respective row, with all other cells empty in that row. If you wish to include a Â command or a piece of Â code, you must enclose it in curly brackets.</p>
+<p>The input cell array <code>Data</code> can contain either strings or numeric values, or horizontal rules. Numeric values are printed using the standard <code>sprintf</code> function and formatted using the <code>'format='</code> option. Horizontal rules must be entered as a string of five (or more) dashes, <code>'-----'</code>, in the first cell of the respective row, with all other cells empty in that row. If you wish to include a  command or a piece of  code, you must enclose it in curly brackets.</p>
 <h5 id="titles-and-subtitles">Titles and subtitles</h5>
 <p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
 <p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
 <h4 id="example">Example</h4>
-<p>These commands create a table with two rows separated by a horizontal rule, and three columns in each of them. The middle columns will have Greek letters printed in Â math mode.</p>
+<p>These commands create a table with two rows separated by a horizontal rule, and three columns in each of them. The middle columns will have Greek letters printed in  math mode.</p>
 <pre><code>x = report.new();
 
 A = { ...

@@ -28,7 +28,7 @@ classdef model < modelobj & estimateobj
     % * [`iscompatible`](model/iscompatible) - True if two models can occur together on the LHS and RHS in an assignment.
     % * [`islinear`](model/islinear) - True for models declared as linear.
     % * [`islog`](model/islog) - True for log-linearised variables.
-    % * [`ismissing`](model/ismissing) - 
+    % * [`ismissing`](model/ismissing) - True if some initical conditions are missing from input database.
     % * [`isnan`](model/isnan) - Check for NaNs in model object.
     % * [`isname`](model/isname) - True for valid names of variables, parameters, or shocks in model object.
     % * [`issolved`](model/issolved) - True if a model solution exists.
@@ -85,7 +85,7 @@ classdef model < modelobj & estimateobj
     %
     % * [`data4lhsmrhs`](model/data4lhsmrhs) - Prepare data array for running `lhsmrhs`.
     % * [`emptydb`](model/emptydb) - Create model-specific database with variables, shocks, and parameters.
-    % * [`rollback`](model/rollback) - 
+    % * [`rollback`](model/rollback) - Prepare database for a rollback run of Kalman filter.
     % * [`sstatedb`](model/sstatedb) - Create model-specific steady-state or balanced-growth-path database.
     % * [`zerodb`](model/zerodb) - Create model-specific zero-deviation database.
     %

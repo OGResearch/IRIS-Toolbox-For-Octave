@@ -133,7 +133,8 @@ code.LaTeX {
 <p>The function <code>dbplot</code> opens a new figure window (as many as needed to accommodate all graphs given the option <code>'subplot='</code>), and creates a graph for each entry in the cell array <code>List</code>.</p>
 <p><code>List</code> can contain the names of the database time series, expression referring to the database fields evaluating to time series. You can also add labels (that will be displayed as graph titles) enclosed in double quotes and preceding the expressions. If you start the expression with a <code>^</code> (hat) symbol, the function specified in the <code>'transform='</code> option will not be applied to that expression.</p>
 <h4 id="example">Example</h4>
-<pre><code>dbplot(d,qq(2010,1):qq(2015,4),{&#39;x&#39;,&#39;&quot;Series Y&quot; y&#39;,&#39;^&quot;Series z&quot;&#39;, ...
+<pre><code>dbplot(d,qq(2010,1):qq(2015,4), ...
+   {&#39;x&#39;,&#39;&quot;Series Y&quot; y&#39;,&#39;^&quot;Series z&quot;&#39;}, ...
    &#39;transform=&#39;,@(x) 100*(x-1));</code></pre>
 
 </body>

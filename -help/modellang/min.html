@@ -107,15 +107,16 @@ code.LaTeX {
 
 
 <h2 id="modellang/min">min</h2>
-<div class="headline">Define the loss function in a time-consistent optimal policy model</div>
+<div class="headline">Define loss function for optimal policy</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>min(DISC) EXPRESSION;</code></pre>
+<pre><code>min(Disc) Expr;</code></pre>
 <h4 id="syntax-for-exact-non-linear-simulations">Syntax for exact non-linear simulations</h4>
-<pre><code>min#(DISC) EXPRESSION;</code></pre>
+<pre><code>min#(Disc) Expr;</code></pre>
 <h4 id="description">Description</h4>
-<p>The loss function must be types as one of the transition equations. The <code>DISC</code> is a parameter or an expression defining the discount factor (applied to future dates), the <code>EXPRESSION</code> defines the loss fuction proper.</p>
-<p>If you use the <code>min#(DISC)</code> syntax, all equations created by differentiating the lagrangian w.r.t. individual variables will be earmarked for exact non-linear simulations provided the respective derivative is nonzero.</p>
+<p>The loss function must be types as one of the transition equations. The <code>Disc</code> is a parameter or an expression defining the discount factor (applied to future dates), and the expression <code>Expr</code> defines the loss fuction.</p>
+<p>If you use the <code>min#(Disc)</code> syntax, all equations created by differentiating the lagrangian w.r.t. individual variables will be earmarked for exact nonlinear simulations provided the respective derivative is nonzero. This only makes sense if the loss function is other than quadratic, and hence its derivatives are nonlinear.</p>
+<p>There are two types of optimal policy that can be calculated: time-consistent suboptimal policy, and time-inconsistent optimal policy with commitment. Use the option <code>'optimal='</code> in the function <a href="../model/model.html"><code>model</code></a> at the time of loading the model file to switch between these two types of policy; the option can be either <code>'consistent'</code> (default) or <code>'commitment'</code>.</p>
 <h4 id="example">Example</h4>
 <p>This is a simple model file with a Phillips curve and a quadratic loss function.</p>
 <pre><code>!transition_variables

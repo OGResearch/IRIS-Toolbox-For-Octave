@@ -110,12 +110,14 @@ code.LaTeX {
 <div class="headline">Create a new matrix with named rows and columns</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>X = namedmat(X,ROWNAMES,COLNAMES)</code></pre>
+<pre><code>X = namedmat(X,RowNames,ColNames)
+X = namedmat(X,Names)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ numeric ] - Matrix or multidimensional array.</p></li>
-<li><p><code>ROWNAMES</code> [ cellstr ] - Names for individual rows of <code>X</code>.</p></li>
-<li><p><code>COLNAMES</code> [ cellstr ] - Names for individual columns of <code>X</code>.</p></li>
+<li><p><code>RowNames</code> [ cellstr ] - Names for individual rows of <code>X</code>.</p></li>
+<li><p><code>ColNames</code> [ cellstr ] - Names for individual columns of <code>X</code>.</p></li>
+<li><p><code>Names</code> [ cellstr ] - Names for both rows and columns of <code>X</code>.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>

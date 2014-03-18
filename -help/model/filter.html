@@ -142,7 +142,6 @@ code.LaTeX {
 <li><p><code>'objFunc='</code> [ <em><code>'-loglik'</code></em> | <code>'prederr'</code> ] - Objective function computed; can be either minus the log likelihood function or weighted sum of prediction errors.</p></li>
 <li><p><code>'objRange='</code> [ numeric | <em><code>Inf</code></em> ] - The objective function will be computed on this subrange only; <code>Inf</code> means the entire filter range.</p></li>
 <li><p><code>'precision='</code> [ <em><code>'double'</code></em> | <code>'single'</code> ] - Numeric precision to which output data will be stored; all calculations themselves always run to double precision.</p></li>
-<li><p><code>'rollback='</code> [ numeric | <em>empty</em> ] - Date up to which to roll back individual observations on measurement variables from the end of the sample.</p></li>
 <li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - Std devs of shocks assigned in the model object will be treated as relative std devs, and a common variance scale factor will be estimated.</p></li>
 <li><p><code>'returnCont='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return contributions of measurement variables to the estimates of all variables and shocks.</p></li>
 <li><p><code>'returnMse='</code> [ <em><code>true</code></em> | <code>false</code> ] - Return MSE matrices for predetermined state variables; these can be used for settin up initial condition in subsequent call to another <code>filter</code> or <code>jforecast</code>.</p></li>
