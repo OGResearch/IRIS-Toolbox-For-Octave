@@ -60,7 +60,7 @@ for eq = first : LossPos
 
     % Find the index of transition variables.
     inx = This.nametype(nmOcc) == 2;
-    if strncmpi(Type,'consis',6)
+    if strcmpi(Type,'consistent') || strcmpi(Type,'discretion')
         % This is a consistent (discretionary) policy. We only
         % differentiate wrt to current dates or lags of transition
         % variables. Remove leads from the list of variables we will

@@ -25,11 +25,11 @@
 % other than quadratic, and hence its derivatives are nonlinear.
 %
 % There are two types of optimal policy that can be calculated:
-% time-consistent suboptimal policy, and time-inconsistent optimal policy
-% with commitment. Use the option `'optimal='` in the function
+% time-consistent discretionary policy, and time-inconsistent optimal
+% policy with commitment. Use the option `'optimal='` in the function
 % [`model`](model/model) at the time of loading the model file to switch
 % between these two types of policy; the option can be either
-% `'consistent'` (default) or `'commitment'`.
+% `'discretion'` (default) or `'commitment'`.
 %
 % Example
 % ========
