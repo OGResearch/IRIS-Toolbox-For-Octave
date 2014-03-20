@@ -130,7 +130,7 @@ m = model(m,...)</code></pre>
 <li><p><code>'declareParameters='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>false</code>, skip parameter declaration in the model file, and determine the list of parameters automatically as names found in equations but not declared.</p></li>
 <li><p><code>'epsilon='</code> [ numeric | <em>eps^(1/4)</em> ] - The minimum relative step size for numerical differentiation.</p></li>
 <li><p><code>'linear='</code> [ <code>true</code> | <em><code>false</code></em> ] - Indicate linear models.</p></li>
-<li><p><code>'optimal='</code> [ <code>'commitment'</code> | <em><code>'consistent'</code></em> ] - Type of optimal policy calculated; only applies when the keyword <a href="../modellang/min.html"><code>min</code></a> is used in the model file.</p></li>
+<li><p><code>'optimal='</code> [ <code>'commitment'</code> | <em><code>'discretion'</code></em> ] - Type of optimal policy calculated; only applies when the keyword <a href="../modellang/min.html"><code>min</code></a> is used in the model file.</p></li>
 <li><p><code>'removeLeads='</code> [ <code>true</code> | <em><code>false</code></em> ] - Remove all leads from the state-space vector, keep included only current dates and lags.</p></li>
 <li><p><code>'sstateOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Read in only the steady-state versions of equations (if available).</p></li>
 <li><p><code>'std='</code> [ numeric | <em>1</em> for linear models | <em>0.01</em> for non-linear models ] - Default standard deviation for model shocks.</p></li>
