@@ -426,7 +426,7 @@ classdef model < modelobj & estimateobj
             %
             % * `'linear='` [ `true` | *`false`* ] - Indicate linear models.
             %
-            % * `'optimal='` [ `'commitment'` | *`'consistent'`* ] - Type
+            % * `'optimal='` [ `'commitment'` | *`'discretion'`* ] - Type
             % of optimal policy calculated; only applies when the keyword
             % [`min`](modellang/min) is used in the model file.
             %
@@ -535,14 +535,12 @@ classdef model < modelobj & estimateobj
                         ['You should NEVER reset the eigenvalue tolerance unless you are ', ...
                         'absolutely sure you know what you are doing!']);
                 end
-                if isempty(varargin)
-                    return
-                end
                 if ~isstruct(Opt.assign)
                     % Default for `'assign='` is an empty array.
                     Opt.assign = struct();
                 end
                 Opt.assign.sstateOnly = Opt.sstateonly;
+                Opt.assign.linear = Opt.linear;
                 for iArg = 1 : 2 : length(varargin)
                     Opt.assign.(varargin{iArg}) = varargin{iArg+1};
                 end
