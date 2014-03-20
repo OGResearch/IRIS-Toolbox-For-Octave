@@ -788,9 +788,11 @@ end
 
 
     function doLossFunc()
-        % doLossFunc  Find loss function amongst equations.
-        start = regexp(S.eqtnrhs,'^min#?\(','once');
-        lossInx = ~cellfun(@isempty,start);
+        % doLossFunc  Find loss function amongst equations; the loss
+        % function starts with `min(` or `min#(` and the expression must
+        % not have an equal sign, i.e. the LHS must be empty.
+        findMin = regexp(S.eqtnrhs,'^min#?\(','once');
+        lossInx = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.eqtnlhs);
         if sum(lossInx) == 1
             IsLoss = true;
             % Order the loss function last.
