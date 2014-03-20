@@ -33,15 +33,13 @@ classdef preparser < userdataobj
                 This = varargin{1};
                 return
             end
-            inputFiles = varargin{1};
+            inpFiles = varargin{1};
             varargin(1) = [];
-            if ischar(inputFiles)
-                inputFiles = {inputFiles};
+            if ischar(inpFiles)
+                inpFiles = {inpFiles};
             end
-            This.fname = inputFiles{1};
-            for i = 2 : length(inputFiles)
-                This.fname = [This.fname,' & ',inputFiles{2}];
-            end
+            This.fname = [This.fname,sprintf(' & %s',inpFiles{:})];
+            This.fname(1:3) = '';
             % Parse options.
             if ~isempty(varargin) && isstruct(varargin{1})
                 opt = varargin{1};
@@ -59,7 +57,7 @@ classdef preparser < userdataobj
             This.assign = opt.assign;
             % Read the code files and resolve preparser commands.
             [This.code,This.labels,This.Export,This.subs,This.Comment] = ...
-                preparser.readcode(inputFiles, ...
+                preparser.readcode(inpFiles, ...
                 opt.assign,This.labels,{},'',opt);
             % Create a clone of the preparsed code.
             if ~isempty(opt.clone)
