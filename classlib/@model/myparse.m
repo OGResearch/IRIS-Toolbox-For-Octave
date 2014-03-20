@@ -517,7 +517,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         
         % Determine residual names.
         addNames = setdiff(allNames,declaredNames);
-        
+
         % Re-create the parameter declaration section.
         nAdd = length(addNames);
         S(3).name = addNames;
