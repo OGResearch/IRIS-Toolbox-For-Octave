@@ -67,7 +67,11 @@ InclGraph = [ ...
         end
         % Try to print figure window to EPSC.
         try
-            print(This.handle,'-depsc',graphicsName);
+            if ismatlab
+                print(This.handle,'-depsc',graphicsName);
+            else
+                print(This.handle,'-depsc','-tight',graphicsName);
+            end
             addtempfile(This,[graphicsName,'.eps']);            
         catch Error
             utils.error('report', ...
