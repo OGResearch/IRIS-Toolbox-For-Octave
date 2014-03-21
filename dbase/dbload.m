@@ -348,6 +348,9 @@ doPopulateDatabase();
             end
             tokens = regexp(line, ...
                 '([^",]*),|([^",]*)$|"(.*?)",|"(.*?)"$','tokens');
+            if ~ismatlab && isempty(tokens{1}) % workaround for Octave's bug #38149 (regexp doesn't return empty tokens for matches at the beginning of a pattern)
+                tokens{1} = {''};
+            end
             tokens = [tokens{:}];
             if isempty(tokens) || all(cellfun(@isempty,tokens))
                 ident = '%';
