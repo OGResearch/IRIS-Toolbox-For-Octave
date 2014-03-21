@@ -28,6 +28,7 @@ classdef model < modelobj & estimateobj
     % * [`iscompatible`](model/iscompatible) - True if two models can occur together on the LHS and RHS in an assignment.
     % * [`islinear`](model/islinear) - True for models declared as linear.
     % * [`islog`](model/islog) - True for log-linearised variables.
+    % * [`ismissing`](model/ismissing) - True if some initical conditions are missing from input database.
     % * [`isnan`](model/isnan) - Check for NaNs in model object.
     % * [`isname`](model/isname) - True for valid names of variables, parameters, or shocks in model object.
     % * [`issolved`](model/issolved) - True if a model solution exists.
@@ -84,6 +85,7 @@ classdef model < modelobj & estimateobj
     %
     % * [`data4lhsmrhs`](model/data4lhsmrhs) - Prepare data array for running `lhsmrhs`.
     % * [`emptydb`](model/emptydb) - Create model-specific database with variables, shocks, and parameters.
+    % * [`rollback`](model/rollback) - Prepare database for a rollback run of Kalman filter.
     % * [`sstatedb`](model/sstatedb) - Create model-specific steady-state or balanced-growth-path database.
     % * [`zerodb`](model/zerodb) - Create model-specific zero-deviation database.
     %
@@ -259,6 +261,7 @@ classdef model < modelobj & estimateobj
         varargout = irf(varargin)
         varargout = iscompatible(varargin)
         varargout = islog(varargin)
+        varargout = ismissing(varargin)
         varargout = isnan(varargin)
         varargout = issolved(varargin)
         varargout = isstationary(varargin)
@@ -269,6 +272,7 @@ classdef model < modelobj & estimateobj
         varargout = refresh(varargin)
         varargout = reporting(varargin)
         varargout = resample(varargin)
+        varargout = rollback(varargin)
         varargout = set(varargin)
         varargout = shockplot(varargin)
         varargout = simulate(varargin)
@@ -422,6 +426,10 @@ classdef model < modelobj & estimateobj
             %
             % * `'linear='` [ `true` | *`false`* ] - Indicate linear models.
             %
+            % * `'optimal='` [ `'commitment'` | *`'discretion'`* ] - Type
+            % of optimal policy calculated; only applies when the keyword
+            % [`min`](modellang/min) is used in the model file.
+            %
             % * `'removeLeads='` [ `true` | *`false`* ] - Remove all leads from the
             % state-space vector, keep included only current dates and lags.
             %
@@ -445,8 +453,8 @@ classdef model < modelobj & estimateobj
             % own m-files, using using the IRIS [model functions](model/Contents) and
             % standard Matlab functions.
             %
-            % If `fname` is a cell array of more than one filenames then all files are
-            % combined together (in order of appearance).
+            % If `fname` is a cell array of more than one file names then all files are
+            % combined together in order of appearance.
             %
             % Re-building an existing model object
             % -------------------------------------
@@ -482,6 +490,8 @@ classdef model < modelobj & estimateobj
             
             % -IRIS Toolbox.
             % -Copyright (c) 2007-2014 IRIS Solutions Team.
+            
+            %--------------------------------------------------------------
             
             % Superclass constructors.
             This = This@modelobj();
@@ -525,14 +535,12 @@ classdef model < modelobj & estimateobj
                         ['You should NEVER reset the eigenvalue tolerance unless you are ', ...
                         'absolutely sure you know what you are doing!']);
                 end
-                if isempty(varargin)
-                    return
-                end
                 if ~isstruct(Opt.assign)
                     % Default for `'assign='` is an empty array.
                     Opt.assign = struct();
                 end
                 Opt.assign.sstateOnly = Opt.sstateonly;
+                Opt.assign.linear = Opt.linear;
                 for iArg = 1 : 2 : length(varargin)
                     Opt.assign.(varargin{iArg}) = varargin{iArg+1};
                 end

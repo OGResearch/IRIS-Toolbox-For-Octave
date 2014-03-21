@@ -132,9 +132,9 @@ code.LaTeX {
 <li><p><code>'G='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the matrix at the co-integrating vector, <code>G</code>.</p></li>
 <li><p><code>'cointeg='</code> [ numeric | <em>empty</em> ] - Co-integrating vectors (in rows) that will be imposed on the estimated VAR.</p></li>
 <li><p><code>'comment='</code> [ char | <code>Inf</code> ] - Assign comment to the estimated VAR object; <code>Inf</code> means the existing comment will be preserved.</p></li>
-<li><p><code>'constraints='</code> [ char ] - General linear constraints on the VAR parameters.</p></li>
+<li><p><code>'constraints='</code> [ char | cellstr ] - General linear constraints on the VAR parameters.</p></li>
 <li><p><code>'constant='</code> [ <em><code>true</code></em> | <code>false</code> ] - Include a constant vector in the VAR.</p></li>
-<li><p><code>'covParameters='</code> [ <code>true</code> | <em><code>false</code></em> ] - Calculate the covariance matrix of estimated parameters.</p></li>
+<li><p><code>'covParam='</code> [ <code>true</code> | <em><code>false</code></em> ] - Calculate and store the covariance matrix of estimated parameters.</p></li>
 <li><p><code>'eqtnByEqtn='</code> [ <code>true</code> | <em><code>false</code></em> ] - Estimate the VAR equation by equation.</p></li>
 <li><p><code>'maxIter='</code> [ numeric | <em><code>1</code></em> ] - Maximum number of iterations when generalised least squares algorithm is involved.</p></li>
 <li><p><code>'mean='</code> [ numeric | <em>empty</em> ] - Impose a particular asymptotic mean on the VAR process.</p></li>

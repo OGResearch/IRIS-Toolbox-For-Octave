@@ -37,7 +37,7 @@ nAlt = size(This.Omega,3);
 This.aic = nan(1,nAlt);
 This.sbc = nan(1,nAlt);
 
-if all(~This.fitted(:))
+if all(~This.fitted(:)) || ~isfinite(This.nhyper)
     return
 end
 

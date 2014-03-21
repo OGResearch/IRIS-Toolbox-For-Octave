@@ -119,13 +119,13 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>Ax</code> [ numeric ] - Handles to the LHS and RHS axes.</p></li>
-<li><p><code>Lhs</code> [ numeric ] - Handles to the two original lines.</p></li>
-<li><p><code>Rhs</code> [ numeric ] - Handles to the area or bar difference graph.</p></li>
+<li><p><code>Ax</code> [ handle | numeric ] - Handles to the LHS and RHS axes.</p></li>
+<li><p><code>Lhs</code> [ handle | numeric ] - Handles to the two original lines.</p></li>
+<li><p><code>Rhs</code> [ handle | numeric ] - Handles to the area or bar difference graph.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'compare='</code> [ numeric | <em><code>[-1;1]</code></em> ] - Linear combination of the observations that will be plotted in the RHS graph; <code>[-1;1] means a difference between the second series and the first series,</code>X{:,2}-X{:,1}`.</p></li>
+<li><p><code>'compare='</code> [ numeric | <em><code>[-1;1]</code></em> ] - Linear combination of the observations that will be plotted in the RHS graph; <code>[-1;1]</code> means a difference between the second series and the first series, <code>X{:,2}-X{:,1}</code>.</p></li>
 <li><p><code>'cmpColor='</code> [ numeric | <em><code>[1,0.75,0.75]</code></em> ] - Color that will be used to plot the area or bar difference (comparison) graph.</p></li>
 <li><p><code>'cmpPlotFunc='</code> [ <code>@area</code> | <em><code>@bar</code></em> ] - Function that will be used to plot the difference (comparision) data on the RHS.</p></li>
 </ul>

@@ -49,29 +49,31 @@ top-level fields can refer to:
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{figure};
+  \texttt{figure}
 \item
-  \texttt{axes};
+  \texttt{axes}
 \item
-  \texttt{title};
+  \texttt{title}
 \item
-  \texttt{xlabel};
+  \texttt{xlabel}
 \item
-  \texttt{ylabel};
+  \texttt{ylabel}
 \item
-  \texttt{zlabel};
+  \texttt{zlabel}
 \item
-  \texttt{line};
+  \texttt{line}
 \item
-  \texttt{bar};
+  \texttt{bar}
 \item
-  \texttt{patch};
+  \texttt{patch}
 \item
-  \texttt{text}.
+  \texttt{text}
 \end{itemize}
 
-In addition, you can also refer to the following special instances of
-objects created by IRIS functions:
+\subparagraph{Special object names}
+
+In addition to standard Matlab graphics object names, you can also refer
+to the following special instances of objects created by IRIS functions:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -115,6 +117,14 @@ following:
   the respective property. The commands have access to variable
   \texttt{H}, a handle to the current object.
 \end{itemize}
+
+\subparagraph{Setting font size}
+
+Font size (in objects like axes, title, etc.) can be set to either a
+numeric scalar (which is the default Matlab behavior) or a character
+string describing a numerical value followed by a percent sign, such as
+\texttt{'150\%'}. In that case, the font size will be set to the
+corresponding percentage of the current size.
 
 \paragraph{Example}
 

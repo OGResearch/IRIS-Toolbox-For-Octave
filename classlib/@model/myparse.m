@@ -318,8 +318,10 @@ end
 maxT = max([S.maxt]);
 minT = min([S.mint]);
 if isLoss
-    % Anticipate that multipliers will have leads as far as the greatest lag.
-    maxT = max([maxT,-minT]);
+    % Anticipate that multipliers will have leads as far as the greatest
+    % lag, and lags as far as the greatest lead.
+    maxT = maxT - minT;
+    minT = minT - maxT;    
 end
 maxT = maxT + 1;
 minT = minT - 1;
@@ -430,7 +432,7 @@ if isLoss
     % equation will be put in place of the loss function and the `naddeqtn-1`
     % empty placeholders.
     [newEqtn,newEqtnF,newEqtnS,NewNonlin] ...
-        = myoptpolicy(This,lossPos,lossDisc);
+        = myoptpolicy(This,lossPos,lossDisc,Opt.optimal);
     
     % Add the new equations to the model object, and parse them.
     last = find(This.eqtntype == 2,1,'last');
@@ -473,7 +475,7 @@ This.eqtnN(:) = {''};
 This.eqtnF = strfun.vectorise(This.eqtnF);
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
@@ -515,7 +517,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         
         % Determine residual names.
         addNames = setdiff(allNames,declaredNames);
-        
+
         % Re-create the parameter declaration section.
         nAdd = length(addNames);
         S(3).name = addNames;
@@ -688,10 +690,10 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         doInsert('multiplier',true);
         % Loss function is always ordered last among transition equations.
         lossPos = length(This.eqtn);
-        % We will add `naddeqtn` new transition equations, i.e. the
-        % derivatives of the Lagrangiag wrt the existing transition
+        % We will add `nAddEqtn` new transition equations, i.e. the
+        % derivatives of the Lagrangian wrt the existing transition
         % variables. At the same time, we will remove the loss function so
-        % we need to create only `naddeqtn-1` placeholders.
+        % we need to create only `nAddEqtn-1` placeholders.
         This.eqtn(end+(1:nAddEqtn)) = {''};
         This.eqtnF(end+(1:nAddEqtn)) = {''};
         This.eqtnS(end+(1:nAddEqtn)) = {''};
@@ -784,10 +786,13 @@ for iEq = 1 : neqtn
     end
 end
 
+
     function doLossFunc()
-        % doLossFunc  Find loss function amongst equations.
-        start = regexp(S.eqtnrhs,'^min#?\(','once');
-        lossInx = ~cellfun(@isempty,start);
+        % doLossFunc  Find loss function amongst equations; the loss
+        % function starts with `min(` or `min#(` and the expression must
+        % not have an equal sign, i.e. the LHS must be empty.
+        findMin = regexp(S.eqtnrhs,'^min#?\(','once');
+        lossInx = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.eqtnlhs);
         if sum(lossInx) == 1
             IsLoss = true;
             % Order the loss function last.
@@ -800,16 +805,11 @@ end
             end
             S.eqtnlhs{end} = '';
             S.eqtnrhs{end} = strrep(S.eqtnrhs{end},'#','');
-            %{
-            % Get the discount factor from inside of the min(...) brackets.
-            [close,LossFuncDisc] = strfun.matchbrk(S.eqtnrhs{end},4);
-            % Remove the min operator.
-            S.eqtnrhs{end} = S.eqtnrhs{end}(close+1:end);
-            %}
         elseif sum(lossInx) > 1
             MultipleLoss = true;
         end
     end % doLossFunc()
+
 
 end % xxReadEqtns()
 
@@ -926,9 +926,12 @@ function [ErrMsg,ErrList] = xxChkStructure(This,shockType)
 
 nEqtn = length(This.eqtn);
 nName = length(This.name);
-nt = size(This.occur,2) / nName;
-occurF = reshape(full(This.occur),[nEqtn,nName,nt]);
 tZero = This.tzero;
+occurF = This.occur;
+if issparse(occurF)
+   nt = size(occurF,2) / nName;
+   occurF = reshape(full(occurF),[nEqtn,nName,nt]);
+end
 
 ErrMsg = '';
 ErrList = {};

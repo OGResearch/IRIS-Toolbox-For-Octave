@@ -1,4 +1,4 @@
-function Eqtn = mysymb2eqtn(Eqtn,Mode,LogList)
+function Eqtn = mysymb2eqtn(Eqtn,Mode,IsLog)
 % mysymb2eqtn  [Not a public function] Replace sydney representation of variables back with a variable array.
 %
 % Backend IRIS function.
@@ -36,7 +36,7 @@ switch Mode
         Eqtn = regexprep(Eqtn,'\<x(\d+)\>(?!\()','(%($1))');
         Eqtn = regexprep(Eqtn,'\<L(\d+)\>(?!\()','(%($1))');
         Eqtn = regexprep(Eqtn,'\<g(\d+)\>(?!\()','NaN');
-        for i = LogList(:).'
+        for i = find(IsLog(:).')
             ptn = ['(%(',sprintf('%g',i)];
             rpl = ['exp(%(',sprintf('%g',i)];
             Eqtn = strrep(Eqtn,ptn,rpl);

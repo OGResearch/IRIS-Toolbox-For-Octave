@@ -59,6 +59,7 @@ elseif ~ismatlab
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));
+isIdChk = ~any(strcmpi(varargin,'-noidchk'));
 
 if ~shutup
     progress = 'Starting up an IRIS session...';
@@ -93,15 +94,26 @@ rehash();
 irisreset();
 config = irisget();
 
+version = irisget('version');
+if isIdChk
+    doIdChk();
+end
+
 if ~shutup
     % Delete progress message.
-    progress(1:end) = sprintf('\b');
-    fprintf(progress);
+    doDeleteProgress();
     doMessage();
 end
 
 
-% Nested functions.
+% Nested functions...
+
+
+%**************************************************************************
+    function doDeleteProgress()
+        progress(1:end) = sprintf('\b');
+        fprintf(progress); 
+    end % doDeleteProgress()
 
 
 %**************************************************************************
@@ -110,12 +122,7 @@ end
         % Intro message.
         if ismatlab
             fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
-            fprintf('version #%s.',irisget('version'));
-            fprintf('\n');
-            fprintf('\tCheck out <a href="http://groups.google.com/group/iris-toolbox">');
-            fprintf('IRIS Toolbox forum</a>');
-            fprintf(' and ');
-            fprintf('<a href="http://iris-toolbox.blogspot.com">IRIS Toolbox blog</a>.');
+            fprintf('Release %s.',version);
             fprintf('\n');
             fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
             fprintf('<a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">');
@@ -123,11 +130,7 @@ end
             fprintf('\n\n');
         else
             fprintf('%8sIRIS Toolbox ','');
-            fprintf('version #%s, [FOR OCTAVE].',irisget('version'));
-            fprintf('\n');
-            fprintf('\tCheck out IRIS Toolbox forum');
-            fprintf(' and ');
-            fprintf('IRIS Toolbox blog.');
+            fprintf('Release %s, [FOR OCTAVE].',version);
             fprintf('\n');
             fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
             fprintf('IRIS Solutions Team.');
@@ -207,30 +210,64 @@ end
         
         fprintf('\n');
         
-    end % doMessage().
+    end % doMessage()
+
+
+%**************************************************************************
+    function doIdChk()
+        list = dir(fullfile(root,'iristbx*'));
+        if length(list) == 1
+            idFileVersion = strrep(list.name,'iristbx','');
+            if ~strcmp(version,idFileVersion)
+                doDeleteProgress();
+                utils.error('irisstartup', ...
+                    ['The IRIS version check file (%s) does not match ', ...
+                    'the current version of IRIS (%s). ', ...
+                    'Delete everything from the IRIS root folder, ', ...
+                    'and reinstall IRIS.'], ...
+                    idFileVersion,version);
+            end
+        elseif isempty(list)
+            doDeleteProgress();
+            utils.error('irisstartup', ...
+                ['The IRIS version check file is missing. ', ...
+                'Delete everything from the IRIS root folder, ', ...
+                'and reinstall IRIS.']);
+        else
+            doDeleteProgress();
+            utils.error('irisstartup', ...
+                ['There are mutliple IRIS version check files ', ...
+                'found in the IRIS root folder. This is because ', ...
+                'you installed a new IRIS in a folder with an old ', ...
+                'version, without deleting the old version first. ', ...
+                'Delete everything from the IRIS root folder, ', ...
+                'and reinstall IRIS.']);
+        end
+    end % doIdChk()
+
 
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
 function [Year,Ab] = xxMatlabRelease()
 
-try
+Year = 0;
+Ab = '';
+
+try %#ok<TRYNC>
     s = ver('MATLAB');
-    Year = sscanf(s.Release(3:6),'%g',1);
-    if isempty(Year)
-        Year = 0;
+    tok = regexp(s.Release,'R(\d{4})([ab])','tokens','once');
+    if ~isempty(tok)
+        Year = sscanf(tok{1},'%g',1);
+        Ab = tok{2};
     end
-    Ab = s.Release(7);
-catch %#ok<CTCH>
-    Year = 0;
-    Ab = '';
 end
 
-end % xxMatlabRelease().
+end % xxMatlabRelease()
 
 function verNum = xxOctaveRelease()
 
@@ -242,4 +279,4 @@ catch %#ok<CTCH>
     verNum = [];
 end
 
-end % xxOctaveRelease().
+end % xxOctaveRelease()

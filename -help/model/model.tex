@@ -58,6 +58,11 @@ m = model(m,...)
   \texttt{'linear='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   {]} - Indicate linear models.
 \item
+  \texttt{'optimal='} {[} \texttt{'commitment'} \textbar{}
+  \emph{\texttt{'discretion'}} {]} - Type of optimal policy calculated;
+  only applies when the keyword \href{modellang/min}{\texttt{min}} is
+  used in the model file.
+\item
   \texttt{'removeLeads='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Remove all leads from the state-space
   vector, keep included only current dates and lags.
@@ -84,8 +89,8 @@ model object \texttt{m} based on the model file. You can then work with
 the model object in your own m-files, using using the IRIS
 \href{model/Contents}{model functions} and standard Matlab functions.
 
-If \texttt{fname} is a cell array of more than one filenames then all
-files are combined together (in order of appearance).
+If \texttt{fname} is a cell array of more than one file names then all
+files are combined together in order of appearance.
 
 \subparagraph{Re-building an existing model
 object}

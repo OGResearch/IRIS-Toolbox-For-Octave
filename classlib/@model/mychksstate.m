@@ -1,4 +1,4 @@
-function [Discr,MaxAbsDiscr,Flag,List] = mychksstate(This,Opt)
+function [Flag,Discr,MaxAbsDiscr,List] = mychksstate(This,Opt)
 % mychksstate  [Not a public function] Discrepancy in steady state of model equtions.
 %
 % Backend IRIS function.
@@ -12,6 +12,12 @@ function [Discr,MaxAbsDiscr,Flag,List] = mychksstate(This,Opt)
 % * `.sstateeqtn` -- switch between evaluating full dynamic versus
 % steady-state equations;
 % * `.tolerance` -- tolerance level.
+
+try
+    Opt; %#ok<VUNUS>
+catch
+    Opt = passvalopt('model.mychksstate');
+end
 
 %--------------------------------------------------------------------------
 
@@ -40,8 +46,6 @@ end
 
 
 %**************************************************************************
-
-
     function doFullEqtn()
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
@@ -66,8 +70,6 @@ end
 
 
 %**************************************************************************
-
-    
     function doSstateEqtn()
         Discr = nan(nEqtnXY,1,nAlt);
         eqtn = This.eqtnS(This.eqtntype <= 2);

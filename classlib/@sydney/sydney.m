@@ -182,6 +182,7 @@ classdef sydney
         
         varargout = d(varargin)
         varargout = mydiffeqtn(varargin)
+        varargout = myshift(varargin)
         varargout = mysymb2eqtn(varargin)
         varargout = myeqtn2symb(varargin)
         varargout = parse(varargin)

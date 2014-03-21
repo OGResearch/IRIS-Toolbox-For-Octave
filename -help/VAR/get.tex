@@ -29,7 +29,96 @@ Ans = get(V,Query)
 \paragraph{Valid queries to VAR
 objects}
 
+\subparagraph{VAR variables}
+
+\begin{itemize}
+\item
+  \texttt{'yList'} -- Returns {[} cellstr {]} the names of endogenous
+  variables.
+\item
+  \texttt{'eList'} -- Returns {[} cellstr {]} the names of residuals or
+  shocks.
+\item
+  \texttt{'iList'} -- Returns {[} cellstr {]} the names of conditioning
+  (forecast) instruments.
+\item
+  \texttt{'ny'} -- Returns {[} numeric {]} the number of variables.
+\item
+  \texttt{'ne'} -- Returns {[} numeric {]} the number of residuals or
+  shocks.
+\item
+  \texttt{'ni'} -- Returns {[} numeric {]} the number of conditioning
+  (forecast) instruments.
+\end{itemize}
+
+\subparagraph{System matrices}
+
+\begin{itemize}
+\item
+  \texttt{'A\#'}, \texttt{'A*'}, \texttt{'A\$'} -- Returns {[} numeric
+  {]} the transition matrix in a particular form; see Description.
+\item
+  \texttt{'K'}, \texttt{'const'} -- Returns {[} numeric {]} the constant
+  vector or matrix (the latter for panel VARs).
+\item
+  \texttt{'Omg'}, \texttt{'Omega'} -- Returns {[} numeric {]} the
+  covariance matrix of one-step-ahead forecast errors, i.e.~reduced-form
+  residuals. Note that this query returns the same matrix also for
+  structural VAR (SVAR) objects.
+\item
+  \texttt{'Sgm'}, \texttt{'Sigma'} -- Returns {[} numeric {]} the
+  covariance matrix of the VAR parameter estimates; the matrix is
+  non-empty only if the option \texttt{'covParam='} has been set to
+  \texttt{true} at estimation time.
+\item
+  \texttt{'G'} -- Returns {[} numeric {]} the coefficient matrix on
+  cointegration terms.
+\end{itemize}
+
+\subparagraph{Information criteria}
+
+\begin{itemize}
+\item
+  \texttt{'AIC'} -- Returns {[} numeric {]} Akaike information
+  criterion.
+\item
+  \texttt{'SBC'} -- Returns {[} numeric {]} Schwarz bayesian criterion.
+\end{itemize}
+
+\subparagraph{Other queries}
+
+\begin{itemize}
+\item
+  \texttt{'cumLong'} -- Returns {[} numeric {]} the matrix of long-run
+  cumulative responses.
+\item
+  \texttt{'nFree'} -- Returns {[} numeric {]} the number of freely
+  estimated (hyper-) parameters.
+\item
+  \texttt{'order'}, \texttt{'p'} -- Returns {[} numeric {]} the order of
+  the VAR object.
+\end{itemize}
+
 \paragraph{Description}
+
+\subparagraph{Transition matrix}
+
+There are three queries to request the VAR transition matrix:
+\texttt{'A\#'}, \texttt{'A*'}, \texttt{'A\$'}. They differ in how the
+higher-order transition matrices are arranged.
+
+\begin{itemize}
+\item
+  \texttt{'A\#'} returns \texttt{cat(3,I,-A1,...,-Ap)} where \texttt{I}
+  is an identity matrix, and \texttt{A1}, \ldots{} \texttt{Ap} are the
+  coefficient matrices on individual lags.
+\item
+  \texttt{'A\#'} returns \texttt{cat(3,A1,...,Ap)} where \texttt{A1},
+  \ldots{} \texttt{Ap} are the coefficient matrices on individual lags.
+\item
+  \texttt{'A\$'} returns \texttt{{[}A1,...,Ap{]}} where \texttt{A1},
+  \ldots{} \texttt{Ap} are the coefficient matrices on individual lags.
+\end{itemize}
 
 \paragraph{Example}
 

@@ -51,14 +51,14 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % * `'comment='` [ char | `Inf` ] - Assign comment to the estimated VAR
 % object; `Inf` means the existing comment will be preserved.
 %
-% * `'constraints='` [ char ] - General linear constraints on the VAR
-% parameters.
+% * `'constraints='` [ char | cellstr ] - General linear constraints on the
+% VAR parameters.
 %
 % * `'constant='` [ *`true`* | `false` ] - Include a constant vector in the
 % VAR.
 %
-% * `'covParameters='` [ `true` | *`false`* ] - Calculate the covariance
-% matrix of estimated parameters.
+% * `'covParam='` [ `true` | *`false`* ] - Calculate and store the
+% covariance matrix of estimated parameters.
 %
 % * `'eqtnByEqtn='` [ `true` | *`false`* ] - Estimate the VAR equation by
 % equation.
@@ -136,7 +136,7 @@ pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp = pp.parse(This,Inp);
 end
 
-% Get input data; the user range is supposed to INCLUDE the pre-sample
+% Get input data; the user range is supposed to **include** the pre-sample
 % initial condition.
 [y,xRange,Ynames,inpFmt,varargin] = myinpdata(This,Inp,varargin{:});
 
@@ -169,6 +169,12 @@ ny = size(y0,1);
 nObs = size(y0,2);
 p = opt.order;
 nData = size(y0,3);
+nGrp = max(1,length(This.GroupNames));
+
+if ny == 0
+    utils.error('VAR:estimate', ...
+        'Cannot estimate VAR object with no variables.');
+end
 
 if ~isempty(opt.mean)
     if length(opt.mean) == 1
@@ -206,11 +212,7 @@ else
     This.nhyper = size(This.Rr,2) - 1;
 end
 
-% Number of priors.
-nPrior = size(opt.bvar,3);
-
-% Total number of cycles.
-nLoop = max([nData,nPrior]);
+nLoop = nData;
 
 % Estimate reduced-form VAR parameters. The size of coefficient matrices
 % will always be determined by p whether this is a~level VAR or
@@ -220,7 +222,7 @@ DatFitted = cell(1,nLoop);
 Count = zeros(1,nLoop);
 
 % Pre-allocate VAR matrices.
-This = myprealloc(This,ny,p,ng,nXPer,nLoop);
+This = myprealloc(This,ny,p,nXPer,nLoop,nGrp,ng);
 
 % Create command-window progress bar.
 if opt.progress
@@ -269,9 +271,6 @@ for iLoop = 1 : nLoop
     
 end
 
-% Reset the instrument matrix.
-This.Zi = zeros(0,ny*p+1);
-
 % Calculate triangular representation.
 if opt.schur
     This = schur(This);
@@ -281,9 +280,9 @@ end
 This = infocrit(This);
 
 % Expand the output data to match the size of residuals if necessary.
-if size(y,3) < nLoop
-    n = size(y,3);
-    y(:,:,end+1:nLoop) = y(:,:,end*ones(1,n));
+n = size(y,3);
+if n < nLoop
+    y0(:,:,end+1:nLoop) = y0(:,:,end*ones(1,n));
 end
 
 % Report observations that could not be fitted.
@@ -305,7 +304,7 @@ if ~isequal(opt.comment,Inf)
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
@@ -371,11 +370,6 @@ end
             resid = resid(:,1:nXPer);
             Outp = myoutpdata(This,outpFmt,This.range, ...
                 [y0;resid],[],[This.Ynames,This.Enames]);
-        end
-    end % doOutpData().
-
-
-end       [y0;resid],[],[This.Ynames,This.Enames]);
         end
     end % doOutpData().
 

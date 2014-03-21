@@ -49,7 +49,7 @@
 %
 % Pseudofunctions do not start with an exclamation point.
 %
-% * [`min`](modellang/min) - Define the loss function in a time-consistent optimal policy model.
+% * [`min`](modellang/min) - Define loss function for optimal policy.
 %
 % Special operators
 % ==================

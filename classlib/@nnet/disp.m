@@ -37,6 +37,10 @@ if ~isempty(This)
         fprintf(1,', %s',This.Outputs{ii}) ;
     end
     
+    if This.nPruned>0
+        fprintf('\n\t[%g] connections removed by pruning',This.nPruned) ;
+    end
+    
     fprintf('\n\n') ;
     
     % Comments

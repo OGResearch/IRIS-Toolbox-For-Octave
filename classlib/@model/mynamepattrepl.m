@@ -23,6 +23,12 @@ goffset = sum(This.nametype < 5);
 % Name patterns to search.
 for i = inx
     NamePatt{i} = ['\<',This.name{i},'\>'];
+    if This.nametype(i) == 4
+        % Replace parameter names including their possible time subscripts
+        % and/or steady-state references. Parameter lags and leads are
+        % simply ignored.
+        NamePatt{i} = ['&?',NamePatt{i},'(\{[^\}]+\})?'];
+    end
 end
 
 % % ... variables, shocks, parameters

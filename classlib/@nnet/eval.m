@@ -13,7 +13,7 @@ end
 pp = inputParser() ;
 if ismatlab
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp.addRequired('Data',@(x) isa(x,'tseries') || isa(x,'struct')) ;
+pp.addRequired('InData',@(x) isa(x,'tseries') || isa(x,'struct')) ;
 pp.addOptional('Range',@(x) isnumeric(x) && isvector(x)) ;
 pp.parse(This,InData,Range) ;
 else

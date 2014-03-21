@@ -1,27 +1,35 @@
-% min  Define the loss function in a time-consistent optimal policy model.
+% min  Define loss function for optimal policy.
 %
 % Syntax
 % =======
 %
-%     min(DISC) EXPRESSION;
+%     min(Disc) Expr;
 %
 % Syntax for exact non-linear simulations
 % ========================================
 % 
-%     min#(DISC) EXPRESSION;
+%     min#(Disc) Expr;
 %
 % Description
 % ============
 %
 % The loss function must be types as one of the transition equations. The
-% `DISC` is a parameter or an expression defining the discount factor
-% (applied to future dates), the `EXPRESSION` defines the loss fuction
-% proper.
+% `Disc` is a parameter or an expression defining the discount factor
+% (applied to future dates), and the expression `Expr` defines the loss
+% fuction.
 %
-% If you use the `min#(DISC)` syntax, all equations created by
+% If you use the `min#(Disc)` syntax, all equations created by
 % differentiating the lagrangian w.r.t. individual variables will be
-% earmarked for exact non-linear simulations provided the respective
-% derivative is nonzero.
+% earmarked for exact nonlinear simulations provided the respective
+% derivative is nonzero. This only makes sense if the loss function is
+% other than quadratic, and hence its derivatives are nonlinear.
+%
+% There are two types of optimal policy that can be calculated:
+% time-consistent discretionary policy, and time-inconsistent optimal
+% policy with commitment. Use the option `'optimal='` in the function
+% [`model`](model/model) at the time of loading the model file to switch
+% between these two types of policy; the option can be either
+% `'discretion'` (default) or `'commitment'`.
 %
 % Example
 % ========

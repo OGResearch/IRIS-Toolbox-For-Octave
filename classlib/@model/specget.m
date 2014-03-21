@@ -198,8 +198,9 @@ switch Query
     case {'icond','initcond','required'}
         % List of intial conditions required at least for one parameterisation.
         id = This.solutionid{2}(nf+1:end);
-        icIx = any(This.icondix,3);
-        X = myvector(This,id(icIx)-1i);
+        inx = any(This.icondix,3);
+        id = id(inx) - 1i;
+        X = myvector(This,id);
         
     case {'forward'}
         ne = sum(This.nametype == 3);

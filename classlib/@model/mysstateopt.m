@@ -62,12 +62,10 @@ end
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
-
-
 function Opt = xxDisplayOpt(This,Opt) %#ok<INUSL>
 if islogical(Opt.display)
     if Opt.display
@@ -80,8 +78,6 @@ end % xxDisplayOpt()
 
 
 %**************************************************************************
-
-
 function Opt = xxOptimOpt(This,Opt) %#ok<INUSL>
 % Use Levenberg-Marquardt because it can handle underdetermined systems.
 oo = Opt.optimset;
@@ -100,8 +96,6 @@ end % xxOptimOpt()
 
 
 %**************************************************************************
-
-
 function Opt = xxBlocks(This,Opt)
 
 % Process fix options first.
@@ -248,7 +242,7 @@ Opt.zeroGInx = zeroGInx;
         else
             fixG = find(canBeFixed);
         end
-    end % doOpt2Fix()
+    end % doFixOpt()
 
 
 end % xxBlocks()

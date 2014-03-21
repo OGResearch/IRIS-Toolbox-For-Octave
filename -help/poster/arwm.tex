@@ -5,7 +5,7 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-[Theta,LogPost,AR,Scale,FinalCov] = arwm(Pos,NDraw,...)
+[Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
 \end{verbatim}
 
 \paragraph{Input arguments}
@@ -28,8 +28,8 @@
   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
   to a constant) in each draw.
 \item
-  \texttt{AR} {[} numeric {]} - Vector of cumulative acceptance ratios
-  in each draw.
+  \texttt{AccRat} {[} numeric {]} - Vector of cumulative acceptance
+  ratios.
 \item
   \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
   each draw.
@@ -106,8 +106,12 @@
 
 \paragraph{Description}
 
-Use the \href{poster/stats}{\texttt{poster/stats}} function to process
-the simulated chain of parameters, and calculate selected statistics.
+The function \texttt{poster/arwm} returns the simulated chain of
+parameters and the corresponding value of the log posterior density. To
+obtain simulated sample statistics for each parameter (such as posterior
+mean, median, percentiles, etc.) use the function
+\href{poster/stats}{\texttt{poster/stats}} to process the simulated
+chain and calculate the statistics.
 
 \subparagraph{Parallelised ARWM}
 

@@ -9,9 +9,6 @@ function [FF,AA,PDb] = qreport(FileName,D,Range,varargin)
 
 [opt,varargin] = passvalopt('qreport.qreport',varargin{:});
 
-% Choose default plot function for calls by `dbplot`.
-opt = xxPlotFunc(opt);
-
 %--------------------------------------------------------------------------
 
 if ~isempty(opt.saveas)
@@ -65,7 +62,7 @@ if ischar(Inp)
     p = preparser(Inp, ...
         'removeComments=',{{'%{','%}'},'(?<!\\)%'}, ...
         'clone=',Opt.clone);
-
+    
     % Put labels back in the code, including the quotes.
     c = restore(p.code,p.labels);
     
@@ -88,20 +85,20 @@ Q = {};
 first = true;
 while ~isempty(c)
     [c,q] = xxGetNext(c,Opt);
-    if strcmp(q.tag,'#')
+    if isequal(q.func,'subplot')
         Opt.subplot = doGetSubPlot(q.caption);
         continue
     end
     % Add a new figure if there's none at the beginning of the qreport.
-    if first && ~strcmp(q.tag,'!++')
+    if first && ~isequal(q.func,'figure')
         q0 = struct();
-        q0.tag = '!++';
+        q0.func = 'figure';
         q0.caption = '';
         q0.subplot = Opt.subplot;
         q0.children = {};
         Q{end+1} = q0; %#ok<AGROW>
     end
-    if strcmp(q.tag,'!++')
+    if isequal(q.func,'figure')
         Q{end+1} = q; %#ok<AGROW>
     else
         Q{end}.children{end+1} = q;
@@ -127,7 +124,7 @@ end % xxInp2Struct()
 function [Inp,S] = xxGetNext(Inp,Opt)
 
 S = struct();
-S.tag = '';
+S.func = '';
 S.caption = '';
 S.isLogDev = false;
 S.isLinDev = false;
@@ -145,7 +142,7 @@ if ischar(Inp)
     [tok,e] = regexp(Inp,['(',tags,')([\^#@]{0,2})(.*?)(?=',tags,'|$)'], ...
         'tokens','end','once');
     if ~isempty(tok)
-        S.tag = tok{1};
+        S.func = xxTag2PlotFunc(tok{1});
         doFlags(tok{2});
         tok = regexp(tok{3},'([^\n]*)(.*)','once','tokens');
         S.caption = tok{1};
@@ -157,11 +154,11 @@ elseif iscellstr(Inp)
     c = strtrim(Inp{1});
     Inp = Inp(2:end);
     if ~isempty(c)
-        S.tag = Opt.plotfunc;
-        doFlags(c(1:min(2,end)));
+        S.func = Opt.plotfunc;
+        c = doFlags(c);
         [body,S.caption] = preparser.labeledexpr(c);
     else
-        S.tag = '!..';
+        S.func = 'empty';
         S.caption = '';
         S.eval = {};
         S.legend = {};
@@ -175,11 +172,11 @@ end
 % Title.
 S.caption = strtrim(S.caption);
 
-if strcmp(S.tag,'#')
+if isequal(S.func,'subplot')
     return
 end
 
-if strcmp(S.tag,'!++')
+if isequal(S.func,'figure')
     S.subplot = Opt.subplot;
     S.children = {};
     return
@@ -188,11 +185,29 @@ end
 % Expressions and legends.
 [S.eval,S.legend] = xxReadBody(body);
 
-    function doFlags(C)
-        S.isTransform = ~any(C == '^');
-        S.isLogDev = any(C == '@');
-        S.isLinDev = ~S.isLogDev && any(C == '#');
-    end
+
+    function C = doFlags(C)
+        while true && ~isempty(C)
+            switch C(1)
+                case '^'
+                    S.isTransform = false;
+                case '@'
+                    if ~S.isLinDev
+                        S.isLogDev = true;
+                    end
+                case '#'
+                    if ~S.isLogDev
+                        S.isLinDev = true;
+                    end
+                case ' '
+                    % Do nothing.
+                otherwise
+                    break
+            end
+            C(1) = '';
+        end
+    end % doFlags()
+
 
 end % xxGetNext()
 
@@ -232,7 +247,7 @@ invalidBase = {};
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if strcmp(ch.tag,'!..')
+        if isequal(ch.func,'empty')
             continue
         end
         nSeries = length(ch.eval);
@@ -290,7 +305,7 @@ function Q = xxEmptyTitles(Q,Opt)
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if strcmp(ch.tag,'!..')
+        if strcmp(ch.func,'empty')
             continue
         end
         if isempty(ch.caption)
@@ -305,7 +320,7 @@ for i = 1 : length(Q)
                 if ch.isTransform
                     func = '';
                     if is.numericscalar(Opt.deviationfrom)
-                        func = [', Dev from ',dat2char(Opt.deviation)];
+                        func = [', Dev from ',dat2char(Opt.deviationfrom)];
                     end
                     if isa(Opt.transform,'function_handle')
                         c = func2str(ch.transform);
@@ -335,13 +350,18 @@ nRow = NaN;
 nCol = NaN;
 pos = NaN;
 FTit = {};
+errorList = {};
+unknownList = {};
+
 for i = 1 : length(Q)
     % New figure.
     doNewFigure();
     
     nchild = length(Q{i}.children);
     for j = 1 : nchild
-        tag = Q{i}.children{j}.tag;
+        
+        func = Q{i}.children{j}.func;
+        
         % If `'overflow='` is true we automatically open a new figure when the
         % subplot count overflows; this is the default behaviour for `dbplot`.
         % Otherwise, an error occurs; this is the default behaviour for `qplot`.
@@ -349,70 +369,84 @@ for i = 1 : length(Q)
             % Open a new figure and reset the subplot position `pos`.
             doNewFigure();
         end
-        switch tag
-            case {'!..'}
-                % Blank space, do not count.
-                pos = pos + 1;
-            otherwise
-                % New panel/subplot.
-                doNewPanel();
-                
-                ch = Q{i}.children{j};
-                x = ch.series;
-                leg = ch.legend;
-                
-                % Get title; it can be either a string or a function handle that will be
-                % applied to the plotted tseries object.
-                tit = xxGetTitle(Q{i}.children{j}.caption,x);
-                
-                finalLegend = doCreateLegend();
-                % Create an entry for the current panel in the output database. Do not
-                % if plotting the panel fails.
-                addToOutput = true;
-                try
-                    [range,data] = ...
-                        xxPlot(tag,aa,Range,x,finalLegend,Opt,varargin{:});
-                catch me
-                    addToOutput = true;
-                    utils.warning('qreport',...
-                        'Error plotting ''%s''.\n\tMatlab says: %s',...
-                        Q{i}.children{j}.caption,me.message);
-                end
-                if ~isempty(tit)
-                    grfun.title(tit,'interpreter=',Opt.interpreter);
-                end
-                % Create a name for the entry in the output database based on the
-                % (user-supplied) prefix and the name of the current panel. Substitute '_'
-                % for any [^\w]. If not a valid Matlab name, replace with "Panel#".
-                if Opt.outputdata && addToOutput
-                    plotDbName = tit;
-                    plotDbName = regexprep(plotDbName,'[ ]*//[ ]*','___');
-                    plotDbName = regexprep(plotDbName,'[^\w]+','_');
-                    plotDbName = [ ...
-                        sprintf(Opt.prefix,count), ...
-                        plotDbName ...
-                        ]; %#ok<AGROW>
-                    if ~isvarname(plotDbName)
-                        plotDbName = sprintf('Panel%g',count);
-                    end
-                    try
-                        PlotDb.(plotDbName) = ...
-                            tseries(range,data,finalLegend);
-                    catch %#ok<CTCH>
-                        PlotDb.(plotDbName) = NaN;
-                    end
-                end
-                if ~isempty(Opt.xlabel)
-                    xlabel(Opt.xlabel);
-                end
-                if ~isempty(Opt.ylabel)
-                    ylabel(Opt.ylabel);
-                end
-                count = count + 1;
-                pos = pos + 1;
+        
+        if isequal(func,'empty')
+            pos = pos + 1;
+            continue    
         end
+        
+        % New panel/subplot.
+        doNewPanel();
+        
+        ch = Q{i}.children{j};
+        x = ch.series;
+        leg = ch.legend;
+        
+        % Get title; it can be either a string or a function handle that will be
+        % applied to the plotted tseries object.
+        tit = xxGetTitle(Q{i}.children{j}.caption,x);
+        
+        finalLegend = doCreateLegend();
+        % Create an entry for the current panel in the output database. Do not
+        % if plotting the panel fails.
+        try
+            [range,data,ok] = ...
+                xxPlot(func,aa,Range,x,finalLegend,Opt,varargin{:});
+            if ~ok
+                unknownList{end+1} = Q{i}.children{j}.caption; %#ok<AGROW>
+            end
+        catch me
+            errorList{end+1} = Q{i}.children{j}.caption; %#ok<AGROW>
+            errorList{end+1} = me.message; %#ok<AGROW>
+        end
+        if ~isempty(tit)
+            grfun.title(tit,'interpreter=',Opt.interpreter);
+        end
+        % Create a name for the entry in the output database based on the
+        % (user-supplied) prefix and the name of the current panel. Substitute '_'
+        % for any [^\w]. If not a valid Matlab name, replace with "Panel#".
+        if Opt.outputdata
+            plotDbName = tit;
+            plotDbName = regexprep(plotDbName,'[ ]*//[ ]*','___');
+            plotDbName = regexprep(plotDbName,'[^\w]+','_');
+            plotDbName = [ ...
+                sprintf(Opt.prefix,count), ...
+                plotDbName ...
+                ]; %#ok<AGROW>
+            if ~isvarname(plotDbName)
+                plotDbName = sprintf('Panel%g',count);
+            end
+            try
+                PlotDb.(plotDbName) = ...
+                    tseries(range,data,finalLegend);
+            catch %#ok<CTCH>
+                PlotDb.(plotDbName) = NaN;
+            end
+        end
+        if ~isempty(Opt.xlabel)
+            xlabel(Opt.xlabel);
+        end
+        if ~isempty(Opt.ylabel)
+            ylabel(Opt.ylabel);
+        end
+        count = count + 1;
+        pos = pos + 1;
     end
+        
 end
+
+if ~isempty(errorList)
+    utils.warning('qreport:qreport',...
+        'Error plotting ''%s''.\n\tMatlab says: %s',...
+        errorList{:});
+end
+
+if ~isempty(unknownList)
+    utils.warning('qreport:qreport', ...
+        'Unknown or invalid plot function when plotting ''%s''.', ...
+        unknownList{:});
+end
+
 
     function FinalLeg = doCreateLegend()
         % Splice legend and marks.
@@ -431,6 +465,7 @@ end
         end
     end % doCreateLegend().
 
+
     function doNewFigure()
         ff = figure('selectionType','open');
         FF = [FF,ff];
@@ -442,58 +477,57 @@ end
         FTit{end+1} = Q{i}.caption;
     end % doNewFigure().
 
+
     function doNewPanel()
         aa = subplot(nRow,nCol,pos);
         AA{i} = [AA{i},aa];
         set(aa,'activePositionProperty','position');
     end % doNewPanel().
 
+
 end % xxRender()
 
 
 %**************************************************************************
-function [Range,Data] = xxPlot(Tag,AA,Range,X,Leg,Opt,varargin)
+function [Range,Data,Ok] = xxPlot(Func,AA,Range,X,Leg,Opt,varargin)
 
 isXGrid = Opt.grid;
 isYGrid = Opt.grid;
 
-switch Tag
-    case '!--' % Line graph.
+Data = [];
+Ok = true;
+
+if is.func(Func)
+    chPF = func2str(Func);
+else
+    chPF = char(Func);
+end
+
+switch chPF
+    case {'plot','bar','barcon','stem'}
         Data = [X{:}];
         if is.tseries(Data)
-            [h,Range,Data] = plot(AA,Range,Data,varargin{:}); %#ok<*ASGLU>
+            [h,Range,Data] = Func(Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
-            plot(Range,Data,varargin{:});
-            %axis tight;
+            Func(Range,Data,varargin{:});
         else
             % Do nothing.
         end
-    case '!::' % Bar graph.
-        Data = [X{:}];
-        if is.tseries(Data)
-            [h,Range,Data] = bar(Range,[X{:}],varargin{:});
-        else
-            bar(Range,Data,varargin{:});
-        end
-    case '!ii' % Stem graph
-        Data = [X{:}];
-        if is.tseries(Data)
-            [h,Range,Data] = stem(Range,[X{:}],varargin{:});
-        else
-            stem(Range,Data,varargin{:});
-        end
-    case '!II' % Error bar graph.
+    case 'errorbar' % Error bar graph.
         [h1,h2,Range,Data] = errorbar(Range,X{:},varargin{:});
-    case '!>>' % Prediction plot.
+    case 'plotpred' % Prediction plot.
         [h1,h2,h3,Range,Data] = plotpred(Range,X{:},varargin{:});
-    case '!^^' % Histogram.
+    case 'hist' % Histogram.
         Data = [X{:}];
         Data = Data(Range,:);
         [count,pos] = hist(Data);
         h = bar(pos,count,'barWidth',0.8); %#ok<NASGU>
         isXGrid = false;
-    case '!??' % Plotcmp.
+    case 'plotcmp' % Plotcmp.
         [AA,ll,rr,Range,Data] = plotcmp(Range,[X{:}],varargin{:});
+    otherwise
+        Ok = false;
+        return
 end
 
 if Opt.tight
@@ -526,12 +560,12 @@ if Opt.zeroline
     grfun.zeroline(AA);
 end
 
-if ~isempty(Opt.highlight)
-    grfun.highlight(AA,Opt.highlight);
-end
-
 if ~isempty(Opt.vline)
     grfun.vline(AA,Opt.vline);
+end
+
+if ~isempty(Opt.highlight)
+    grfun.highlight(AA,Opt.highlight);
 end
 
 end % xxPlot()
@@ -549,15 +583,15 @@ if Opt.addclick
 end
 
 if ~isempty(Opt.clear)
-    h = [AA{:}];
-    h = h(Opt.clear);
-    for ih = h(:).'
-        cla(ih);
-        set(ih, ...
-            'xTickLabel','','xTickLabelMode','manual', ...
-            'yTickLabel','','yTickLabelMode','manual', ...
-            'xgrid','off','ygrid','off');
-        delete(get(ih,'title'));
+    aa = [AA{:}];
+    aa = aa(Opt.clear);
+    if ~isempty(aa)
+        tt = get(aa,'title');
+        if iscell(tt)
+            tt = [tt{:}];
+        end
+        delete(tt);
+        delete(aa);
     end
 end
 
@@ -567,6 +601,10 @@ for i = 1 : length(FTit)
     if ~isempty(FTit{i})
         grfun.ftitle(FF(i),FTit{i});
     end
+end
+
+if Opt.maxfigure
+    grfun.maxfigure(FF);
 end
 
 if Opt.drawnow
@@ -607,7 +645,7 @@ if any(strcmpi(Opt.saveasformat,{'.pdf'}))
     for f = FF(:).'
         figure(f);
         orient('landscape');
-        print('-dpsc','-append',psfile);
+        print('-dpsc','-painters','-append',psfile);
     end
     latex.ps2pdf(psfile);
     delete(psfile);
@@ -617,31 +655,32 @@ end % xxSaveAs()
 
 
 %**************************************************************************
-function Opt = xxPlotFunc(Opt)
+function Func = xxTag2PlotFunc(Tag)
 % xxPlotFunc  Convert the `'plotFunc='` option in `dbplot` to the corresponding tag.
-if is.func(Opt.plotfunc)
-    chPF = func2str(Opt.plotfunc);
-else
-    chPF = char(Opt.plotfunc);
-end
-switch chPF
-    case 'plot'
-        Opt.plotfunc = '!--';
-    case 'bar'
-        Opt.plotfunc = '!::';
-    case 'errorbar'
-        Opt.plotfunc = '!II';
-    case 'stem'
-        Opt.plotfunc = '!ii';
-    case 'hist'
-        Opt.plotfunc = '!^^';
-    case 'plotpred'
-        Opt.plotfunc = '!>>';
-    case 'plotcmp'
-        Opt.plotfunc = '!??';
+
+switch Tag
+    case '#'
+        Func = 'subplot';
+    case '!++'
+        Func = 'figure';
+    case '!..'
+        Func = 'empty';
+    case '!--'
+        Func = @plot;
+    case '!::'
+        Func = @bar;
+    case '!II'
+        Func = @errorbar;
+    case '!ii'
+        Func = @stem;
+    case '!^^'
+        Func = @hist;
+    case '!>>'
+        Func = @plotpred;
+    case '!??'
+        Func = @plotcmp;
     otherwise
-        % Error bar graphs are not available in `dbplot`.
-        Opt.plotfunc = '!--';
+        Func = @plot;
 end
 
 end % xxPlotFunc()

@@ -122,7 +122,42 @@ code.LaTeX {
 <li><code>Ans</code> [ ... ] - Answer to the query.</li>
 </ul>
 <h4 id="valid-queries-to-var-objects">Valid queries to VAR objects</h4>
+<h5 id="var-variables">VAR variables</h5>
+<ul>
+<li><p><code>'yList'</code> -- Returns [ cellstr ] the names of endogenous variables.</p></li>
+<li><p><code>'eList'</code> -- Returns [ cellstr ] the names of residuals or shocks.</p></li>
+<li><p><code>'iList'</code> -- Returns [ cellstr ] the names of conditioning (forecast) instruments.</p></li>
+<li><p><code>'ny'</code> -- Returns [ numeric ] the number of variables.</p></li>
+<li><p><code>'ne'</code> -- Returns [ numeric ] the number of residuals or shocks.</p></li>
+<li><p><code>'ni'</code> -- Returns [ numeric ] the number of conditioning (forecast) instruments.</p></li>
+</ul>
+<h5 id="system-matrices">System matrices</h5>
+<ul>
+<li><p><code>'A#'</code>, <code>'A*'</code>, <code>'A$'</code> -- Returns [ numeric ] the transition matrix in a particular form; see Description.</p></li>
+<li><p><code>'K'</code>, <code>'const'</code> -- Returns [ numeric ] the constant vector or matrix (the latter for panel VARs).</p></li>
+<li><p><code>'Omg'</code>, <code>'Omega'</code> -- Returns [ numeric ] the covariance matrix of one-step-ahead forecast errors, i.e. reduced-form residuals. Note that this query returns the same matrix also for structural VAR (SVAR) objects.</p></li>
+<li><p><code>'Sgm'</code>, <code>'Sigma'</code> -- Returns [ numeric ] the covariance matrix of the VAR parameter estimates; the matrix is non-empty only if the option <code>'covParam='</code> has been set to <code>true</code> at estimation time.</p></li>
+<li><p><code>'G'</code> -- Returns [ numeric ] the coefficient matrix on cointegration terms.</p></li>
+</ul>
+<h5 id="information-criteria">Information criteria</h5>
+<ul>
+<li><p><code>'AIC'</code> -- Returns [ numeric ] Akaike information criterion.</p></li>
+<li><p><code>'SBC'</code> -- Returns [ numeric ] Schwarz bayesian criterion.</p></li>
+</ul>
+<h5 id="other-queries">Other queries</h5>
+<ul>
+<li><p><code>'cumLong'</code> -- Returns [ numeric ] the matrix of long-run cumulative responses.</p></li>
+<li><p><code>'nFree'</code> -- Returns [ numeric ] the number of freely estimated (hyper-) parameters.</p></li>
+<li><p><code>'order'</code>, <code>'p'</code> -- Returns [ numeric ] the order of the VAR object.</p></li>
+</ul>
 <h4 id="description">Description</h4>
+<h5 id="transition-matrix">Transition matrix</h5>
+<p>There are three queries to request the VAR transition matrix: <code>'A#'</code>, <code>'A*'</code>, <code>'A$'</code>. They differ in how the higher-order transition matrices are arranged.</p>
+<ul>
+<li><p><code>'A#'</code> returns <code>cat(3,I,-A1,...,-Ap)</code> where <code>I</code> is an identity matrix, and <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+<li><p><code>'A#'</code> returns <code>cat(3,A1,...,Ap)</code> where <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+<li><p><code>'A$'</code> returns <code>[A1,...,Ap]</code> where <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+</ul>
 <h4 id="example">Example</h4>
 
 </body>

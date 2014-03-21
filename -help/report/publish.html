@@ -132,14 +132,14 @@ code.LaTeX {
 <li><p><code>'display='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display the compiler report on the final iteration.</p></li>
 <li><p><code>'echo='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>true</code>, the optional flag <code>'-echo'</code> will be used in the Matlab function <code>system</code> when compiling the PDF; this causes the screen output and all prompts to be displayed for each run of the compiler.</p></li>
 <li><p><code>'epsToPdf='</code> [ char | <em><code>Inf</code></em> ] - Command line arguments for EPSTOPDF; <code>Inf</code> means OS-specific arguments are used.</p></li>
-<li><p><code>'fontEnc='</code> [ char | <em><code>'T1'</code></em> ] - Â font encoding.</p></li>
+<li><p><code>'fontEnc='</code> [ char | <em><code>'T1'</code></em> ] -  font encoding.</p></li>
 <li><p><code>'makeTitle='</code> [ <code>true</code> | <em><code>false</code></em> ] - Produce title page (with title, author, date, and abstract).</p></li>
 <li><p><code>'package='</code> [ char | cellstr | <em>empty</em> ] - Package or list of packages that will be imported in the preamble of the LaTeX file.</p></li>
 <li><p><code>'paperSize='</code> [ <code>'a4paper'</code> | <em><code>'letterpaper'</code></em> ] - Paper size.</p></li>
 <li><p><code>'orientation='</code> [ <em><code>'landscape'</code></em> | <code>'portrait'</code> ] - Paper orientation.</p></li>
-<li><p><code>'preamble='</code> [ char | <em>empty</em> ] - Â commands that will be placed in the Â file preamble.</p></li>
+<li><p><code>'preamble='</code> [ char | <em>empty</em> ] -  commands that will be placed in the  file preamble.</p></li>
 <li><p><code>'timeStamp='</code> [ char | <em><code>'datestr(now())'</code></em> ] - String printed in the top-left corner of each page.</p></li>
-<li><p><code>'tempDir='</code> [ char | <em><code>tempname(pwd())</code></em> ] - Directory for storing temporary files; the directory is deleted at the end of the execution if it's empty.</p></li>
+<li><p><code>'tempDir='</code> [ char | <em><code>tempname(cd())</code></em> ] - Directory for storing temporary files; the directory is deleted at the end of the execution if it's empty.</p></li>
 <li><p><code>'maxRerun='</code> [ numeric | <em><code>5</code></em> ] - Maximum number of times the <br />compiler will be run to resolve cross-references, etc.</p></li>
 <li><p><code>'minRerun='</code> [ numeric | <em><code>1</code></em> ] - Minimum number of times the <br />compiler will be run to resolve cross-references, etc.</p></li>
 <li><p><code>'textScale='</code> [ numeric | <em><code>0.8</code></em> ] - Percentage of the total page area that will be used.</p></li>
@@ -149,7 +149,7 @@ code.LaTeX {
 <p>There are two differences between these otherwise similar options:</p>
 <ul>
 <li><p>When publishing the final PDF, the PDFLaTeX compiler may be called more than once to resolve cross-references, the table of contents, and so on. Setting <code>'display=' true</code> only displays the screen output from the final iteration only, while <code>'echo=' true</code> displays the screen outputs from all iterations.</p></li>
-<li><p>In the case of a compiler error unrelated to the Â code, the compiler may stop and prompt the user to respond. The prompt only appears on the screen when <code>'echo=' true</code>. Otherwise, Matlab may remain in a busy state with no on-screen information, and <code>Ctrl+C</code> may be needed to regain control.</p></li>
+<li><p>In the case of a compiler error unrelated to the  code, the compiler may stop and prompt the user to respond. The prompt only appears on the screen when <code>'echo=' true</code>. Otherwise, Matlab may remain in a busy state with no on-screen information, and <code>Ctrl+C</code> may be needed to regain control.</p></li>
 </ul>
 <h5 id="information-struct">Information struct</h5>
 <p>The second output argument, <code>Info</code>, is a struct with details of building the PDF report. It contains the following fields:</p>

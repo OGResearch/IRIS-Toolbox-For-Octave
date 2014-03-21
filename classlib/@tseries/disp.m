@@ -1,4 +1,4 @@
-function disp(This,Name,Disp2D)
+function disp(This,Name,Disp2DFunc)
 % disp  [Not a public function] Disp method for tseries objects.
 %
 % Backend IRIS function.
@@ -14,9 +14,9 @@ catch %#ok<CTCH>
 end
 
 try
-    Disp2D; %#ok<VUNUS>
+    Disp2DFunc; %#ok<VUNUS>
 catch %#ok<CTCH>
-    Disp2D = @xxDisp2d;
+    Disp2DFunc = @xxDisp2d;
 end
 
 %--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ start = This.start;
 data = This.data;
 dataNDim = ndims(data);
 config = irisget();
-xxDispND(start,data,This.Comment,[],Name,Disp2D,dataNDim,config);
+xxDispND(start,data,This.Comment,[],Name,Disp2DFunc,dataNDim,config);
 
 disp@userdataobj(This);
 disp(' ');
@@ -39,7 +39,7 @@ end
 
 
 %**************************************************************************
-function xxDispND(Start,Data,Comment,Pos,Name,Disp2D,NDim,Config)
+function xxDispND(Start,Data,Comment,Pos,Name,Disp2DFUnc,NDim,Config)
 lastDimSize = size(Data,NDim);
 nPer = size(Data,1);
 tab = sprintf('\t');
@@ -51,7 +51,7 @@ if NDim > 2
     for i = 1 : lastDimSize
         subsref(NDim) = {i};
         xxDispND(Start,Data(subsref{:}),Comment(subsref{:}), ...
-            [i,Pos],Name,Disp2D,NDim-1,Config);
+            [i,Pos],Name,Disp2DFUnc,NDim-1,Config);
     end
 else
     if ~isempty(Pos)
@@ -59,7 +59,7 @@ else
         strfun.loosespace();
     end
     if nPer > 0
-        X = Disp2D(Start,Data,tab,sep,num2StrFunc);
+        X = Disp2DFUnc(Start,Data,tab,sep,num2StrFunc);
         % Reduce the number of white spaces between numbers to 5 at most.
         X = xxReduceSpaces(X,Config.tseriesmaxwspace);
         % Print the dates and data.

@@ -63,7 +63,8 @@ expression.
 \paragraph{Example}
 
 \begin{verbatim}
-dbplot(d,qq(2010,1):qq(2015,4),{'x','"Series Y" y','^"Series z"', ...
+dbplot(d,qq(2010,1):qq(2015,4), ...
+   {'x','"Series Y" y','^"Series z"'}, ...
    'transform=',@(x) 100*(x-1));
 \end{verbatim}
 

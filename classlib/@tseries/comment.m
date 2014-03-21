@@ -94,10 +94,11 @@ else
     if ischar(varargin{1})
         This.Comment(:) = varargin(1);
     else
-        s1 = size(This.Comment);
+        s1 = size(This.data);
+        s1(1) = 1;
         s2 = size(varargin{1});
         if length(s1) == length(s2) && all(s1 == s2)
-            This.Comment(:) = varargin{1}(:);
+            This.Comment = varargin{1};
         else
             utils.error('tseries', ...
                 'Incorrect size of comments attempted to be assigned.');

@@ -5,22 +5,22 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-[h,range] = plot(x,...)
-[h,range] = plot(range,x,...)
-[h,range] = plot(a,range,x,...)
+[H,Range] = plot(X,...)
+[H,Range] = plot(Range,X,...)
+[H,Range] = plot(Ax,Range,X,...)
 \end{verbatim}
 
 \paragraph{Input arguments}
 
 \begin{itemize}
 \item
-  \texttt{a} {[} numeric {]} - Handle to axes in which the graph will be
-  plotted; if not specified, the current axes will used.
+  \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
 \item
-  \texttt{range} {[} numeric {]} - Date range; if not specified the
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
   entire range of the input tseries object will be plotted.
 \item
-  \texttt{x} {[} tseries {]} - Input tseries object whose columns will
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
   be ploted as a line graph.
 \end{itemize}
 
@@ -28,9 +28,9 @@
 
 \begin{itemize}
 \item
-  \texttt{h} {[} numeric {]} - Handles to the lines plotted.
+  \texttt{H} {[} numeric {]} - Handles to lines plotted.
 \item
-  \texttt{range} {[} numeric {]} - Actually plotted date range.
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
 \end{itemize}
 
 \paragraph{Options}
@@ -38,15 +38,15 @@
 \begin{itemize}
 \item
   \texttt{'dateFormat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
+  \emph{\texttt{irisget('plotdateformat')}} {]} - Date format for the
+  tick marks on the X-axis.
 \item
-  \texttt{'datePosition='} {[} \emph{`centre'} \textbar{} `end'
-  \textbar{} `start' {]} - Position of each date point within a given
-  period span.
+  \texttt{'datePosition='} {[} \emph{\texttt{'centre'}} \textbar{}
+  \texttt{'end'} \textbar{} \texttt{'start'} {]} - Position of each date
+  point within a given period span.
 \item
-  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the X-axis; Inf means they will
   be created automatically.
 \item
   \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}

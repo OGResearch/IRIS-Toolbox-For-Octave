@@ -1,4 +1,4 @@
-function varargout = dbcol(this,varargin)
+function varargout = dbcol(This,varargin)
 % dbcol  Retrieve the specified column or columns from database entries.
 %
 % Syntax
@@ -36,37 +36,44 @@ function varargout = dbcol(this,varargin)
 if length(varargin) > 1
     varargout = cell(size(varargin));
     for i = 1 : length(varargin)
-        varargout{i} = dbcol(this,varargin{i});
+        varargout{i} = dbcol(This,varargin{i});
     end
     return
 end
 
 % Single input/output argument from here on.
 inx = varargin{1};
-list = fieldnames(this);
+list = fieldnames(This);
 if isempty(list)
-    varargout{1} = this;
+    varargout{1} = This;
     return
 end
-if ischar(inx) && strcmp(inx,'end')
-    inx = length(this.(list{1}));
-end
+
+isEnd = isequal(inx,'end');
 
 %--------------------------------------------------------------------------
 
 for i = 1 : length(list)
-    if is.tseries(this.(list{i}))
+    if is.tseries(This.(list{i}))
         try %#ok<TRYNC>
-            this.(list{i}) = this.(list{i}){:,inx};
+            if isEnd
+                This.(list{i}) = This.(list{i}){:,end};
+            else
+                This.(list{i}) = This.(list{i}){:,inx};
+            end
         end
-    elseif isnumeric(this.(list{i})) ...
-            || islogical(this.(list{i})) ...
-            || iscell(this.(list{i}))
+    elseif isnumeric(This.(list{i})) ...
+            || islogical(This.(list{i})) ...
+            || iscell(This.(list{i}))
         try %#ok<TRYNC>
-            this.(list{i}) = this.(list{i})(:,inx);
+            if isEnd
+                This.(list{i}) = This.(list{i})(:,end);
+            else
+                This.(list{i}) = This.(list{i})(:,inx);
+            end
         end
     end
 end
-varargout{1} = this;
+varargout{1} = This;
 
 end

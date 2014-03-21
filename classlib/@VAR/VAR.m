@@ -48,13 +48,14 @@ classdef VAR < varobj
     % * [`ferf`](VAR/ferf) - Forecast error response function.
     % * [`filter`](VAR/filter) - Filter data using a VAR model.
     % * [`forecast`](VAR/forecast) - Unconditional or conditional VAR forecasts.
-    % * [`instrument`](VAR/instrument) - Define conditioning instruments in VAR models.
+    % * [`instrument`](VAR/instrument) - Define forecast conditioning instruments in VAR models.
     % * [`resample`](VAR/resample) - Resample from a VAR object.
     % * [`simulate`](VAR/simulate) - Simulate VAR model.
     %
     % Manipulating VARs
     % ==================
     %
+    % * [`assign`](VAR/assign) - Manually assign system matrices to VAR object.
     % * [`alter`](VAR/alter) - Expand or reduce the number of alternative parameterisations within a VAR object.
     % * [`backward`](VAR/backward) - Backward VAR process.
     % * [`demean`](VAR/demean) - Remove constant from VAR object.
@@ -104,6 +105,7 @@ classdef VAR < varobj
     end
     
     methods
+        varargout = assign(varargin)
         varargout = acf(varargin)
         varargout = backward(varargin)
         varargout = companion(varargin)

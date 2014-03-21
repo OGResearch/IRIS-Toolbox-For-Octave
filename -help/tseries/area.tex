@@ -5,22 +5,23 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-[h,range] = area(x,...)
-[h,range] = area(range,x,...)
-[h,range] = area(a,range,x,...)
+[H,Range] = area(X,...)
+[H,Range] = area(Range,X,...)
+[H,Range] = area(Ax,Range,X,...)
 \end{verbatim}
 
 \paragraph{Input arguments}
 
 \begin{itemize}
 \item
-  \texttt{a} {[} numeric {]} - Handle to axes in which the graph will be
-  plotted; if not specified, the current axes will used.
+  \texttt{Ax} {[} handle \textbar{} numeric {]} - Handle to axes in
+  which the graph will be plotted; if not specified, the current axes
+  will used.
 \item
-  \texttt{range} {[} numeric {]} - Date range; if not specified the
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
   entire range of the input tseries object will be plotted.
 \item
-  \texttt{x} {[} tseries {]} - Input tseries object whose columns will
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
   be ploted as an area graph.
 \end{itemize}
 
@@ -28,20 +29,21 @@
 
 \begin{itemize}
 \item
-  \texttt{h} {[} numeric {]} - Handle(s) to the area(s) plotted.
+  \texttt{H} {[} handle \textbar{} numeric {]} - Handles to areas
+  plotted.
 \item
-  \texttt{range} {[} numeric {]} - Actually plotted date range.
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
 \end{itemize}
 
 \paragraph{Options}
 
 \begin{itemize}
 \item
-  \texttt{'dateformat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
+  \texttt{'dateFormat='} {[} char \textbar{}
+  \emph{\texttt{irisget('plotDateFormat')}} {]} - Date format for the
+  tick marks on the x-axis.
 \item
-  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
   Vector of dates locating tick marks on the x-axis; Inf means they will
   be created automatically.
 \item

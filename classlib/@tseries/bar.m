@@ -4,37 +4,37 @@ function varargout = bar(varargin)
 % Syntax
 % =======
 %
-%     [h,range] = bar(x,...)
-%     [h,range] = bar(range,x,...)
-%     [h,range] = bar(a,range,x,...)
+%     [H,Range] = bar(X,...)
+%     [H,Range] = bar(Range,X,...)
+%     [H,Range] = bar(Ax,Range,X,...)
 %
 % Input arguments
 % ================
 %
-% * `a` [ numeric ] - Handle to axes in which the graph will be plotted; if
-% not specified, the current axes will used.
+% * `Ax` [ handle | numeric ] - Handle to axes in which the graph will be
+% plotted; if not specified, the current axes will used.
 %
-% * `range` [ numeric ] - Date range; if not specified the entire range of
+% * `Range` [ numeric ] - Date Range; if not specified the entire Range of
 % the input tseries object will be plotted.
 %
-% * `x` [ tseries ] - Input tseries object whose columns will be ploted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % a bar graph.
 %
 % Output arguments
 % =================
 %
-% * `h` [ numeric ] - Handles to the bars plotted.
+% * `H` [ handle | numeric ] - Handles to bars plotted.
 %
-% * `range` [ numeric ] - Actually plotted date range.
+% * `Range` [ numeric ] - Actually plotted date Range.
 %
 % Options
 % ========
 %
-% * `'dateformat='` [ char | *irisget('plotdateformat')* ] - Date format for
-% the tick marks on the x-axis.
+% * `'dateFormat='` [ char | *`irisget('plotdateformat')`* ] - Date format
+% for the tick marks on the x-axis.
 %
-% * `'datetick='` [ numeric | *`Inf`* ] - Vector of dates locating tick marks
-% on the x-axis; Inf means they will be created automatically.
+% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
+% marks on the x-axis; Inf means they will be created automatically.
 %
 % * `'tight='` [ `true` | *`false`* ] - Make the y-axis tight.
 %
@@ -52,7 +52,7 @@ function varargout = bar(varargin)
 
 % AREA, BAR, PLOT, CONBAR, PLOTYY, STEM
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = tseries.myplot(@bar,varargin{:});
 

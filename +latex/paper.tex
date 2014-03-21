@@ -19,21 +19,26 @@
 
 \documentclass[10pt,$papersize$,fleqn]{article}
 
-\usepackage[T1]{fontenc}
 \usepackage[$papersize$,portrait,scale=$textscale$,pdftex]{geometry}
 \usepackage{amsmath,color,sectsty,graphicx,listings}
 \usepackage{myheadings}
 \usepackage{concmath}
+%\usepackage{newcent}
+%\usepackage{mathptmx}
+%\usepackage[bitstream-charter]{mathdesign}
+%\usepackage{newtxtext,newtxmath}
+\usepackage[T1]{fontenc}
 
 $packages$
 
-\newcommand{\mylcmss}{\fontfamily{lcmss}\selectfont}
+%\newcommand{\mylcmss}{\fontfamily{lcmss}\selectfont}
+\newcommand{\mylcmss}{}
 
 \sectionfont{\centering\Large\mdseries\mylcmss}
 \subsectionfont{\centering\large\mdseries\mylcmss}
 
 \renewcommand{\thesubsection}{\arabic{subsection}}
-\renewcommand{\abstractname}{{\mdseries\mylcmss Introduction}}
+\renewcommand{\abstractname}{{\mdseries\mylcmss Summary}}
 \renewcommand{\contentsname}{Contents}
 
 \definecolor{outputcodecolor}{rgb}{0,0,0.68}
@@ -106,8 +111,10 @@ $packages$
 
 %%%%% Bookmarks %%%%%
 \newcommand{\circled}[1]
-{{\large\textcircled{\footnotesize\sffamily\bfseries\raisebox{0.2pt}{#1}}}}
-\newcommand{\bookmark}[1]{\textcolor{bookmarkcolor}{\circled{#1}}}
+{{\Large\textcircled{\footnotesize\sffamily\raisebox{0.2pt}{#1}}}}
+
+%\newcommand{\bookmark}[1]{\textcolor{bookmarkcolor}{\circled{#1}}}
+\newcommand{\bookmark}[1]{\textcolor{bookmarkcolor}{\footnotesize\fbox{#1}}}
 
 %%%%% Table of contents %%%%%
 \newcommand{\mytableofcontents}
@@ -119,7 +126,7 @@ $packages$
 
 %%%%% Title page %%%%%
 \newcommand{\introduction}[2]
-{\title{\fontfamily{lcmss}\selectfont#1#2}
+{\title{\mylcmss#1#2}
 \author{$author$}
 \date{\medskip $date$}
 \renewcommand{\codesize}{\codesizeintitle}

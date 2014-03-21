@@ -1,11 +1,11 @@
-function h = ftitle(varargin)
+function Aa = ftitle(varargin)
 % ftitle  Add title to figure window.
 %
 % Syntax
 % =======
 %
-%     AA = grfun.ftitle(Titles,...)
-%     AA = grfun.ftitle(FF,Titles,...)
+%     Aa = grfun.ftitle(Titles,...)
+%     Aa = grfun.ftitle(FF,Titles,...)
 %
 % Input arguments
 % ================
@@ -20,7 +20,7 @@ function h = ftitle(varargin)
 % Output arguments
 % =================
 %
-% * `AA` [ numeric ] - Handle or handles to annotation objects.
+% * `Aa` [ numeric ] - Handle or handles to annotation objects.
 %
 % Options
 % ========
@@ -40,15 +40,15 @@ function h = ftitle(varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishandle(varargin{1}(:)))
-    hfig = varargin{1};
+    ff = varargin{1};
     varargin(1) = [];
 elseif isstruct(varargin{1}) ...
         && isfield(varargin{1},'figure') ...
         && all(ishandle(varargin{1}.figure(:)))
-    hfig = varargin{1}.figure;
+    ff = varargin{1}.figure;
     varargin(1) = [];    
 else
-    hfig = gcf();
+    ff = gcf();
 end
 
 string = varargin{1};
@@ -79,9 +79,9 @@ switch lower(opt.location)
         x1 = 0;
         x2 = 0.5;
         x3 = 1;
-        y1 = 1;
-        y2 = 1;
-        y3 = 1;
+        y1 = 0.99;
+        y2 = 0.99;
+        y3 = 0.99;
         rotation = 0;
         valign = 'top';
     case 'west'
@@ -113,34 +113,90 @@ switch lower(opt.location)
         valign = 'bottom';
 end
 
-textoptions = { ...
-    'rotation',rotation, ...
-    'verticalAlignment',valign, ...
-    'fontWeight','bold', ...
-    'lineStyle','none', ...
+textOpt = { ...
+    'VerticalAlignment',valign, ...
+    'FontWeight','bold', ...
+    'LineStyle','none', ...
+    'Margin',is.hg2(0,0.0001), ...
     };
 
-h = [];
-for ifig = hfig(:).'
-    ca = get(ifig,'currentAxes');
-    ax = axes('position',[0,0,1,1],'parent',ifig,'visible','off');
-    
-    if ~isempty(string{1})
-        h(end+1) = text(x1,y1,string{1}, ...
-            'parent',ax,'horizontalAlignment','left', ...
-            textoptions{:},varargin{:});
-    end
-    if ~isempty(string{2})
-        h(end+1) = text(x2,y2,string{2}, ...
-            'parent',ax,'horizontalAlignment','center', ...
-            textoptions{:},varargin{:});
-    end
-    if ~isempty(string{3})
-        h(end+1) = text(x3,y3,string{3}, ...
-            'parent',ax, ...
-            'horizontalAlignment','right',textoptions{:},varargin{:});
-    end
-    set(ifig,'currentAxes',ca);
+if ~is.hg2()
+    textOpt = [textOpt,{ ...
+        'Rotation',rotation, ...
+        }];
 end
+
+Aa = [];
+for iFig = ff(:).'
+    if is.hg2()
+        doHg2();
+    else
+        doHg1();
+    end
+end
+
+
+% Nested functions...
+
+
+%**************************************************************************
+    function doHg1()
+        ca = get(iFig,'currentAxes');
+        ax = axes('position',[0,0,1,1],'parent',iFig,'visible','off');
+        if ~isempty(string{1})
+            Aa = [Aa, ...
+                text(x1,y1,string{1}, ...
+                'parent',ax,'horizontalAlignment','left', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{2})
+            Aa = [Aa, ...
+                text(x2,y2,string{2}, ...
+                'parent',ax,'horizontalAlignment','center', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{3})
+            Aa = [Aa, ...
+                text(x3,y3,string{3}, ...
+                'parent',ax, ...
+                'horizontalAlignment','right', ...
+                textOpt{:},varargin{:})];
+        end
+        set(iFig,'currentAxes',ca);
+    end % doHg1()
+
+
+%**************************************************************************
+    function doHg2()
+        fontSize = get(0,'defaultAxesFontSize') * 1.15;
+        if ~isempty(string{1})
+            Aa = [Aa, ...
+                annotation('TextBox',[x1,y1,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{1}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','left', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{2})
+            Aa = [Aa, ...
+                annotation('TextBox',[x2,y2,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{2}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','center', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{3})
+            Aa = [Aa, ...
+                annotation('TextBox',[x3,y3,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{3}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','right', ...
+                textOpt{:},varargin{:})];
+        end
+    end % doHg2()
+
 
 end

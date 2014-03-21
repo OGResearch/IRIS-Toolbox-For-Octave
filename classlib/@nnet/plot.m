@@ -18,7 +18,7 @@ end
 
 % Plot inputs
 pos = linspace(1,maxH,This.nInputs+2) ;
-pos = pos(2:3) ;
+pos = pos(2:end-1) ;
 for iInput = 1:This.nInputs
     hold on
     scatter(0,pos(iInput),400,[.2 .7 .2],'s','filled') ;

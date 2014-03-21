@@ -107,21 +107,21 @@ code.LaTeX {
 
 
 <h2 id="VAR/instrument">instrument</h2>
-<div class="headline">Define conditioning instruments in VAR models</div>
+<div class="headline">Define forecast conditioning instruments in VAR models</div>
 
 <h4 id="syntax-to-add-forecast-instruments">Syntax to add forecast instruments</h4>
 <pre><code>V = instrument(V,Def)
-V = instrument(V,Name,Exprn)
+V = instrument(V,Name,Expr)
 V = instrument(V,Name,Vec)</code></pre>
 <h4 id="syntax-to-remove-all-forecast-instruments">Syntax to remove all forecast instruments</h4>
 <pre><code>V = instrument(V)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>V</code> [ VAR ] - VAR object to which forecast instruments will be added.</p></li>
-<li><p><code>Def</code> [ char | cellstr ] - Definition string for the new conditioning instruments.</p></li>
-<li><p><code>Name</code> [ char ] - Name of the new conditiong instrument.</p></li>
-<li><p><code>Exprn</code> [ char ] - Expression defining the new conditiong instrument.</p></li>
-<li><p><code>Vec</code> [ numeric ] - Vector of coeffients to combine the VAR variables to create the new conditioning instrument.</p></li>
+<li><p><code>Def</code> [ char | cellstr ] - Definition of the new forecast conditioning instrument.</p></li>
+<li><p><code>Name</code> [ char ] - Name of the new forecast conditiong instrument.</p></li>
+<li><p><code>Expr</code> [ char ] - Expression defining the new forecast conditiong instrument.</p></li>
+<li><p><code>Vec</code> [ numeric ] - Vector of coeffients to combine the VAR variables to create the new forecast conditioning instrument.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 

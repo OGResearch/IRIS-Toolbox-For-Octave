@@ -72,7 +72,6 @@ if ~S.isObjOnly
     S.M = nan(ny,nPOut+nInit,nPer);
     
     if S.storePredict
-        
         % `a0`, `y0`, `ydelta` are allocated as an ny-by-1-by-nPer array because we
         % re-use the same algorithm for both regular runs of the filter and the
         % contributions.
@@ -219,8 +218,8 @@ for t = 2 : nPer
         M = [M1,M2];
     end
     
-    % Likelihood components
-    %-----------------------
+    % Objective function components
+    %-------------------------------
     if objRange(t)
         % The following variables may change in `doCond`, but we need to store the
         % original values in `doStorePed`.
@@ -288,11 +287,9 @@ if ~S.isObjOnly && S.retCont
     S.sumMtFiM = sumMtFiM;
 end
 
-% Free memory.
-S.Sa = [];
-S.Sy = [];
 
-% Nested functions.
+% Nested functions...
+
 
 %**************************************************************************
     function doStorePed()
@@ -305,7 +302,8 @@ S.Sy = [];
         if S.storePredict
             doStorePredict();
         end
-    end % doStorePed().
+    end % doStorePed()
+
 
 %**************************************************************************
     function doStorePredict()
@@ -349,7 +347,8 @@ S.Sy = [];
         if isEst && S.retCont
             S.MtFi(:,xy,t) = MtFi;
         end
-    end % doStorePredict().
+    end % doStorePredict()
+
 
 %**************************************************************************
     function doNonlinPredict()
@@ -361,7 +360,8 @@ S.Sy = [];
         a = S2.w(nf+1:end,1);
         % Store prediction for forward-looking transition variables.
         S.f0(:,1,t) = S2.w(1:nf,1);
-    end % doNonlinPredict().
+    end % doNonlinPredict()
+
 
 %**************************************************************************
     function doCondition()
@@ -401,6 +401,7 @@ S.Sy = [];
                 Mx = zeros(0,nPOut+nInit);
             end
         end
-    end % doCondition().
+    end % doCondition()
+
 
 end

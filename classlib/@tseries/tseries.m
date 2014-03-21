@@ -1,4 +1,6 @@
-classdef tseries < userdataobj
+classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
+        tseries < userdataobj
+    
     % tseries  Time series objects and functions.
     %
     % Tseries methods:
@@ -64,7 +66,7 @@ classdef tseries < userdataobj
     % * [`llf2`](tseries/llf2) - Swap output arguments of the local linear trend filter with tunes.
     % * [`moving`](tseries/moving) - Apply function to moving window of observations.
     % * [`trend`](tseries/trend) - Estimate a time trend.
-    % * [`x12`](tseries/x12) - Access to X12 seasonal adjustment program.
+    % * [`x12`](tseries/x12) - Access to X13-ARIMA-SEATS seasonal adjustment program.
     %
     % Estimation and sample characteristics
     % ======================================
@@ -437,6 +439,7 @@ end
         varargout = mynanstd(varargin)
         varargout = mynansum(varargin)
         varargout = mynanvar(varargin)
+        varargout = myprctile(varargin)
         varargout = mypct(varargin)
         varargout = myplot(varargin)
         varargout = myshift(varargin)
@@ -747,7 +750,7 @@ end
             if nargin < 3
                 dim = 1;
             end
-            x = unop(@prctile,x,dim,p,dim);
+            x = unop(@(varargin)tseries.myprctile(varargin),x,dim,p,dim);
         end
         % Alias for prctile.
         function varargout = pctile(varargin)

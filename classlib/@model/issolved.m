@@ -30,6 +30,15 @@ function Flag = issolved(m)
 
 %--------------------------------------------------------------------------
 
+T = m.solution{1};
+nAlt = size(T,3);
+
+% Models with no equations return `false`.
+if size(T,1) == 0
+    Flag = false(1,nAlt);
+    return
+end
+
 [~,Flag] = isnan(m,'solution');
 Flag = ~Flag;
 

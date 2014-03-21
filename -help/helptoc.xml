@@ -53,7 +53,7 @@
         <tocitem target="modellang/diff.html" image="HelpIcon.BLOCK">diff &#8212; First difference pseudofunction</tocitem>
         <tocitem target="modellang/difflog.html" image="HelpIcon.BLOCK">difflog &#8212; First log-difference pseudofunction</tocitem>
         <tocitem target="modellang/dot.html" image="HelpIcon.BLOCK">dot &#8212; Gross rate of growth pseudofunction</tocitem>
-        <tocitem target="modellang/min.html" image="HelpIcon.BLOCK">min &#8212; Define the loss function in a time-consistent optimal policy model</tocitem>
+        <tocitem target="modellang/min.html" image="HelpIcon.BLOCK">min &#8212; Define loss function for optimal policy</tocitem>
         <tocitem target="modellang/movavg.html" image="HelpIcon.BLOCK">movavg &#8212; Moving average pseudofunction</tocitem>
         <tocitem target="modellang/movsum.html" image="HelpIcon.BLOCK">movsum &#8212; Moving sum pseudofunction</tocitem>
         <tocitem target="modellang/movprod.html" image="HelpIcon.BLOCK">movsum &#8212; Moving product pseudofunction</tocitem>
@@ -92,6 +92,7 @@
         <tocitem target="model/iscompatible.html" image="HelpIcon.FUNCTION">iscompatible &#8212; True if two models can occur together on the LHS and RHS in an assignment</tocitem>
         <tocitem target="model/islinear.html" image="HelpIcon.FUNCTION">islinear &#8212; True for models declared as linear</tocitem>
         <tocitem target="model/islog.html" image="HelpIcon.FUNCTION">islog &#8212; True for log-linearised variables</tocitem>
+        <tocitem target="model/ismissing.html" image="HelpIcon.FUNCTION">ismissing &#8212; True if some initical conditions are missing from input database</tocitem>
         <tocitem target="model/isname.html" image="HelpIcon.FUNCTION">isname &#8212; True for valid names of variables, parameters, or shocks in model object</tocitem>
         <tocitem target="model/isnan.html" image="HelpIcon.FUNCTION">isnan &#8212; Check for NaNs in model object</tocitem>
         <tocitem target="model/issolved.html" image="HelpIcon.FUNCTION">issolved &#8212; True if a model solution exists</tocitem>
@@ -109,6 +110,7 @@
         <tocitem target="model/reporting.html" image="HelpIcon.FUNCTION">reporting &#8212; Run reporting equations</tocitem>
         <tocitem target="model/resample.html" image="HelpIcon.FUNCTION">resample &#8212; Resample from the model implied distribution</tocitem>
         <tocitem target="model/reset.html" image="HelpIcon.FUNCTION">reset &#8212; Reset specific values within model object</tocitem>
+        <tocitem target="model/rollback.html" image="HelpIcon.FUNCTION">rollback &#8212; Prepare database for a rollback run of Kalman filter</tocitem>
         <tocitem target="model/set.html" image="HelpIcon.FUNCTION">set &#8212; Change modifiable model object property</tocitem>
         <tocitem target="model/shockplot.html" image="HelpIcon.FUNCTION">shockplot &#8212; Short-cut for running and plotting plain shock simulation</tocitem>
         <tocitem target="model/simulate.html" image="HelpIcon.FUNCTION">simulate &#8212; Simulate model</tocitem>
@@ -201,6 +203,7 @@
         <tocitem target="VAR/acf.html" image="HelpIcon.FUNCTION">acf &#8212; Autocovariance and autocorrelation functions for VAR variables</tocitem>
         <tocitem target="VAR/addparam.html" image="HelpIcon.FUNCTION">addparam &#8212; Add VAR parameters to a database (struct)</tocitem>
         <tocitem target="VAR/alter.html" image="HelpIcon.FUNCTION">alter &#8212; Expand or reduce the number of alternative parameterisations within a VAR object</tocitem>
+        <tocitem target="VAR/assign.html" image="HelpIcon.FUNCTION">assign &#8212; Manually assign system matrices to VAR object</tocitem>
         <tocitem target="VAR/backward.html" image="HelpIcon.FUNCTION">backward &#8212; Backward VAR process</tocitem>
         <tocitem target="VAR/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
         <tocitem target="VAR/companion.html" image="HelpIcon.FUNCTION">companion &#8212; Matrices of first-order companion VAR</tocitem>
@@ -216,7 +219,7 @@
         <tocitem target="VAR/group.html" image="HelpIcon.FUNCTION">group &#8212; Retrieve VAR object from panel VAR for specified group of data</tocitem>
         <tocitem target="VAR/horzcat.html" image="HelpIcon.FUNCTION">horzcat &#8212; Combine two compatible VAR objects in one object with multiple parameterisations</tocitem>
         <tocitem target="VAR/infocrit.html" image="HelpIcon.FUNCTION">infocrit &#8212; Populate information criteria for a parameterised VAR</tocitem>
-        <tocitem target="VAR/instrument.html" image="HelpIcon.FUNCTION">instrument &#8212; Define conditioning instruments in VAR models</tocitem>
+        <tocitem target="VAR/instrument.html" image="HelpIcon.FUNCTION">instrument &#8212; Define forecast conditioning instruments in VAR models</tocitem>
         <tocitem target="VAR/integrate.html" image="HelpIcon.FUNCTION">integrate &#8212; Integrate VAR process and data associated with it</tocitem>
         <tocitem target="VAR/iscompatible.html" image="HelpIcon.FUNCTION">iscompatible &#8212; True if two VAR objects can occur together on the LHS and RHS in an assignment</tocitem>
         <tocitem target="VAR/isexplosive.html" image="HelpIcon.FUNCTION">isexplosive &#8212; True if any eigenvalue is outside unit circle</tocitem>
@@ -285,7 +288,7 @@
         <tocitem target="dates/dateom.html" image="HelpIcon.FUNCTION">dateom &#8212; End of month for the specified daily date</tocitem>
         <tocitem target="dates/dateoq.html" image="HelpIcon.FUNCTION">dateoq &#8212; End of quarter for the specified daily date</tocitem>
         <tocitem target="dates/dateoy.html" image="HelpIcon.FUNCTION">dateoy &#8212; End of year for the specified daily date</tocitem>
-        <tocitem target="dates/daterange.html" image="HelpIcon.FUNCTION">daterange &#8212; Use the colon operator to create date ranges</tocitem>
+        <tocitem target="dates/datrange.html" image="HelpIcon.FUNCTION">datrange &#8212; Numerically safe way to create a date range</tocitem>
         <tocitem target="dates/datxtick.html" image="HelpIcon.FUNCTION">datxtick &#8212; Change ticks, labels and/or date frequency on x-axis in existing tseries graphs</tocitem>
         <tocitem target="dates/daysinyear.html" image="HelpIcon.FUNCTION">daysinyear &#8212; Number of days in year</tocitem>
         <tocitem target="dates/dd.html" image="HelpIcon.FUNCTION">dd &#8212; Matlab serial date numbers that can be used to construct daily tseries objects</tocitem>
@@ -371,7 +374,7 @@
         <tocitem target="tseries/tseries.html" image="HelpIcon.FUNCTION">tseries &#8212; Create new time series (tseries) object</tocitem>
         <tocitem target="tseries/windex.html" image="HelpIcon.FUNCTION">windex &#8212; Simple weighted or Divisia index</tocitem>
         <tocitem target="tseries/wmean.html" image="HelpIcon.FUNCTION">wmean &#8212; Weighted average of time series observations</tocitem>
-        <tocitem target="tseries/x12.html" image="HelpIcon.FUNCTION">x12 &#8212; Access to X12 seasonal adjustment program</tocitem>
+        <tocitem target="tseries/x12.html" image="HelpIcon.FUNCTION">x12 &#8212; Access to X13-ARIMA-SEATS seasonal adjustment program</tocitem>
         <tocitem target="tseries/yearly.html" image="HelpIcon.FUNCTION">yearly &#8212; Display tseries object one full year per row</tocitem>
     </tocitem>
     <tocitem target="dbase/Contents.html" image="HelpIcon.USER_GUIDE">Basic database management
@@ -450,13 +453,14 @@
         <tocitem target="grfun/bottomlegend.html" image="HelpIcon.FUNCTION">bottomlegend &#8212; Horizontal graph legend displayed at the bottom of the figure window</tocitem>
         <tocitem target="grfun/ftitle.html" image="HelpIcon.FUNCTION">ftitle &#8212; Add title to figure window</tocitem>
         <tocitem target="grfun/highlight.html" image="HelpIcon.FUNCTION">highlight &#8212; Highlight specified range or date range in a graph</tocitem>
-        <tocitem target="grfun/maxfigure.html" image="HelpIcon.FUNCTION">maxfigure &#8212; Create graphics window maximised across the entire screen</tocitem>
+        <tocitem target="grfun/maxfigure.html" image="HelpIcon.FUNCTION">maxfigure &#8212; Maximize figure window</tocitem>
         <tocitem target="grfun/movetobkg.html" image="HelpIcon.FUNCTION">movetobkg &#8212; Move graphics objects to the background</tocitem>
         <tocitem target="grfun/movetosubplot.html" image="HelpIcon.FUNCTION">movetosubplot &#8212; Move an existing axes object or legend to specified subplot position</tocitem>
         <tocitem target="grfun/plotcircle.html" image="HelpIcon.FUNCTION">plotcircle &#8212; Draw a circle or disc</tocitem>
         <tocitem target="grfun/plotmat.html" image="HelpIcon.FUNCTION">plotmat &#8212; Visualise 2D matrix</tocitem>
         <tocitem target="grfun/plotneigh.html" image="HelpIcon.FUNCTION">plotneigh &#8212; Plot local behaviour of objective function after estimation</tocitem>
         <tocitem target="grfun/plotpp.html" image="HelpIcon.FUNCTION">plotpp &#8212; Plot prior and/or posterior distributions and/or posterior mode</tocitem>
+        <tocitem target="grfun/printpdf.html" image="HelpIcon.FUNCTION">printpdf &#8212; Print figure window to PDF via EPS</tocitem>
         <tocitem target="grfun/vline.html" image="HelpIcon.FUNCTION">vline &#8212; Add vertical line with text caption at the specified position</tocitem>
         <tocitem target="grfun/zeroline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add zero line if Y-axis limits include zero</tocitem>
         <tocitem target="grfun/hline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add vertical line with text caption at the specified position</tocitem>

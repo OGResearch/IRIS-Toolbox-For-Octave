@@ -1,4 +1,4 @@
-function text = removecomments(text,varargin)
+function Text = removecomments(Text,varargin)
 % removecomments  Remove comments from text.
 %
 % Backend IRIS function.
@@ -19,7 +19,7 @@ if nargin == 1
         };
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 for i = 1 : length(varargin)
     
@@ -27,22 +27,22 @@ for i = 1 : length(varargin)
         
         % Remove line comments.
         % Line comments can be specified as regexps.
-        text = regexprep(text,[varargin{i},'[^\n]*\n'],'\n');
-        text = regexprep(text,[varargin{i},'[^\n]*$'],'');
+        Text = regexprep(Text,[varargin{i},'[^\n]*\n'],'\n');
+        Text = regexprep(Text,[varargin{i},'[^\n]*$'],'');
         
     elseif iscell(varargin{i}) && length(varargin{i}) == 2
         
         % Remove block comments.
         % Block comments cannot be specified as regexps.
-        text = strrep(text,varargin{i}{1},char(1));
-        text = strrep(text,varargin{i}{2},char(2));
-        textlength = 0;
-        while length(text) ~= textlength
-            textlength = length(text);
-            text = regexprep(text,'\x{1}[^\x{1}]*?\x{2}','');
+        Text = strrep(Text,varargin{i}{1},char(1));
+        Text = strrep(Text,varargin{i}{2},char(2));
+        textLen = 0;
+        while length(Text) ~= textLen
+            textLen = length(Text);
+            Text = regexprep(Text,'\x{1}[^\x{1}]*?\x{2}','');
         end
-        text = strrep(text,char(1),varargin{i}{1});
-        text = strrep(text,char(2),varargin{i}{2});
+        Text = strrep(Text,char(1),varargin{i}{1});
+        Text = strrep(Text,char(2),varargin{i}{2});
         
     end
     

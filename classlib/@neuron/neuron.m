@@ -1,6 +1,6 @@
 classdef neuron < handle
     % neuron  [Not a public class definition]
-    % 
+    %
     % Backend IRIS class.
     % No help provided.
     
@@ -41,7 +41,7 @@ classdef neuron < handle
         nAlt = NaN ;
         Bias = false ;
     end
-        
+    
     methods
         
         function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex,HyperIndex)
@@ -99,15 +99,18 @@ classdef neuron < handle
             end
         end
         
+    end
+    
+    methods( Hidden )
         varargout = eval(varargin) ;
         varargout = saliency(varargin) ;
+        varargout = copy(varargin) ;
         
         out = dAdI(Obj,Data) ;
         out = dAdP(Obj,Data) ;
         out = dOdA(Obj,Data) ;
         out = dOdI(obj,Data) ;
         out = dOdP(obj,Data) ;
-        
     end
 end
 

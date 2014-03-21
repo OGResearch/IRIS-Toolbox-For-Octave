@@ -29,7 +29,7 @@
 % Creating date ranges
 % =====================
 %
-% * [`daterange`](dates/daterange) - Use the colon operator to create date ranges.
+% * [`datrange`](dates/datrange) - Numerically safe way to create a date range.
 % * [`datxtick`](dates/datxtick) - Change ticks, labels and/or date frequency on x-axis in existing tseries graphs.
 %
 % Converting dates

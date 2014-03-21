@@ -1,5 +1,5 @@
 function [NewEqtn,NewEqtnF,NewEqtnS,NewNonlin] ...
-    = myoptpolicy(This,LossPos,LossDisc)
+    = myoptpolicy(This,LossPos,LossDisc,Type)
 % myoptpolicy  [Not a public function] Calculate equations for discretionary optimal policy.
 %
 % Backend IRIS function.
@@ -34,7 +34,6 @@ NewEqtn(:) = {''};
 NewEqtnF = NewEqtn;
 NewEqtnS = NewEqtn;
 NewNonlin = false(size(eqtn));
-logList = find(This.log);
 zd = sydney(LossDisc,{});
 
 % The lagrangian is
@@ -58,11 +57,17 @@ for eq = first : LossPos
     [tmOcc,nmOcc] = myfindoccur(This,eq,'variables_shocks');
     tmOcc = tmOcc(:).';
     nmOcc = nmOcc(:).';
+
+    % Find the index of transition variables.
+    inx = This.nametype(nmOcc) == 2;
+    if strcmpi(Type,'consistent') || strcmpi(Type,'discretion')
+        % This is a consistent (discretionary) policy. We only
+        % differentiate wrt to current dates or lags of transition
+        % variables. Remove leads from the list of variables we will
+        % differentiate wrt.
+        inx = inx & tmOcc <= This.tzero;
+    end
     
-    % This is a discretionary policy. We only differentiate wrt to current
-    % dates or lags of transition variables. Remove leads from the list of
-    % variables wrt which we will differentiate.
-    inx = This.nametype(nmOcc) == 2 & tmOcc <= This.tzero;
     tmOcc = tmOcc(inx);
     nmOcc = nmOcc(inx);
     nOcc = length(tmOcc);
@@ -74,10 +79,14 @@ for eq = first : LossPos
         if tmOcc(j) == This.tzero
             % Time index == 0: replace x(1,23,t) with x23.
             unknown{j} = sprintf('x%g',nmOcc(j));
-        else
+        elseif tmOcc(j) < This.tzero
             % Time index < 0: replace x(1,23,t-1) with x23m1.
             unknown{j} = sprintf('x%gm%g', ...
                 nmOcc(j),round(This.tzero-tmOcc(j)));
+        elseif tmOcc(j) > This.tzero
+            % Time index > 0: replace x(1,23,t+1) with x23p1.
+            unknown{j} = sprintf('x%gp%g', ...
+                nmOcc(j),round(tmOcc(j)-This.tzero));
         end
     end
     
@@ -89,47 +98,52 @@ for eq = first : LossPos
   
     for j = 1 : nOcc
 
-        shift = -(tmOcc(j) - This.tzero);
+        sh = tmOcc(j) - This.tzero;
         newEq = nmOcc(j);
         
-        % Multiply derivatives wrt lagged variables by the discount factor.
-        if shift == 1
+        % Multiply derivatives wrt lags and leads by the discount factor.
+        if sh == 0
+            % Do nothing.
+        elseif sh == -1
             diffz{j} = zd * diffz{j};
-        elseif shift > 1
-            diffz{j} = power(zd,shift) * diffz{j};
+        elseif sh == 1
+            diffz{j} = diffz{j} / zd;
+        else
+            diffz{j} = power(zd,-sh) * diffz{j};
         end
         
         % If this is not the loss function, multiply the derivative by
-        % the multiplier.
+        % the multiplier. The appropriate lag or lead of the multiplier
+        % will be introduced together with other variables in <?Shift?>.
         if eq < LossPos
-            if shift == 0
-                x = template;
-                x.args = sprintf('x%g',eq);
-                diffz{j} = diffz{j}*x;
-            elseif shift == 1
-                x = template;
-                x.args = sprintf('x%gp1',eq);
-                diffz{j} = diffz{j}*x;
-            else
-                x = template;
-                x.args = sprintf('x%gp%g',eq,shift);
-                diffz{j} = diffz{j}*x;
-            end
+            mult = template;
+            mult.args = sprintf('x%g',eq);
+            diffz{j} = diffz{j}*mult;
         end
 
         dEqtn = char(reduce(diffz{j}),'human');
         
+        % Shift lags and leads of variables (but not parameters) in the
+        % derivative by -sh if sh ~= 0.
+        if sh ~= 0
+            %?Shift?
+            dEqtn = sydney.myshift(dEqtn,-sh,This.nametype <= 2);
+        end
+        
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
         if ~This.linear
-            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',logList); %#ok<FNDSB>
+            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
  
         dEqtn = regexprep(dEqtn,'x(\d+)p(\d+)', ...
             '${[name{sscanf($1,''%g'')},''{+'',$2,''}'']}');
+        
         dEqtn = regexprep(dEqtn,'x(\d+)m(\d+)', ...
             '${[name{sscanf($1,''%g'')},''{-'',$2,''}'']}');
+        
         dEqtn = regexprep(dEqtn,'x(\d+)', ...
             '${name{sscanf($1,''%g'')}}');
+        
         dEqtn = regexprep(dEqtn, ...
             'L(:,\d+)','${[''&'',name{sscanf($1,''%g'')}]}');
         

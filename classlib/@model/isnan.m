@@ -75,13 +75,20 @@ switch request
         end
         Flag = any(inx);
     case {'solution'}
-        sol = This.solution{1}(:,:,alt);
-        inx = isempty(sol) | any(any(isnan(sol),1),2);
-        inx = inx(:)';
+        T = This.solution{1}(:,:,alt);
+        R = This.solution{2}(:,:,alt);
+        % Transition matrix can be empty in 2nd dimension (no lagged
+        % variables).
+        if size(T,1) > 0 && size(T,2) == 0
+            inx = false(1,size(T,3));
+        else
+            inx = any(any(isnan(T),1),2) | any(any(isnan(R),1),2);
+            inx = inx(:).';
+        end
+        Flag = any(inx);
         if nargout > 1
             List = inx;
         end
-        Flag = any(inx);
     case {'expansion'}
         expand = This.Expand{1}(:,:,alt);
         inx = isempty(expand) | any(any(isnan(expand),1),2);

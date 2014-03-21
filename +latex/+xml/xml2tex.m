@@ -39,33 +39,36 @@ C = xxIdiosyncrasy(C);
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function C = xxBookmarks(B)
-persistent bookmarks typeset;
+persistent bookmarks %typeset;
 if nargin == 0 && nargout == 0
     code = xxOriginalCode();
     bookmarks = regexp(code,'%\?(\w+)\?','tokens');
     bookmarks = [bookmarks{:}];
     [~,inx] = unique(bookmarks,'first');
     bookmarks = bookmarks(sort(inx));
-    nbkm = length(bookmarks);
-    typeset = xxBookmarkTypeset();
-    typeset = typeset(1:nbkm);
+    %nbkm = length(bookmarks);
+    %typeset = xxBookmarkTypeset();
+    %typeset = typeset(1:nbkm);
     return
 end
 C = '';
 if ischar(B)
     inx = strcmp(B,bookmarks);
     if any(inx)
-        C = typeset{inx};
+        C = sprintf('%g',find(inx,1)); % typeset{inx};
     else
         C = '?';
     end
     C = ['\bookmark{',C,'}'];
 end
-end % xxBookmarks().
+end % xxBookmarks()
+
 
 %**************************************************************************
 function [C,Author,Event] = xxIntroduction(X,Type,Opt)
@@ -156,7 +159,8 @@ if ~isequal(Type,'master')
     C = [C,br,'\bigskip\par'];
 end
 C = [C,br,br];
-end % xxIntroduction().
+end % xxIntroduction()
+
 
 %**************************************************************************
 function C = xxToc(X,Type,Opt) %#ok<INUSL>
@@ -170,7 +174,8 @@ if isequal(Type,'master')
 end
 C = [C,'\mytableofcontents',br,br];
 end
-% toc().
+% toc()
+
 
 %**************************************************************************
 function C = xxNormalCell(X,Type,Opt) %#ok<INUSD>
@@ -229,7 +234,8 @@ if nImg > 0
     end
 end
 C = [cBegin,br,C,br,cEnd,br,br];
-end % xxNormalCell().
+end % xxNormalCell()
+
 
 %**************************************************************************
 function [Code1,N] = xxOriginalCode(X)
@@ -259,7 +265,8 @@ N = sum(code(1:start-1) == char(10)) + 1;
 nReplace = sum(X == char(10));
 replace = char(10*ones(1,nReplace));
 code = [code(1:start-1),replace,code(finish+1:end)];
-end % xxOriginalCode().
+end % xxOriginalCode()
+
 
 %**************************************************************************
 function C = xxText(X)
@@ -354,13 +361,15 @@ for i = 1 : n
             C = [C,c1]; %#ok<AGROW>
     end
 end
-end % xxText().
+end % xxText()
+
 
 %**************************************************************************
 function C = xxIdiosyncrasy(C)
 C = strrep(C,'\end{itemize}\begin{itemize}','');
 C = strrep(C,'\end{enumerate}\begin{enumerate}','');
-end % xxIdiosyncrasy().
+end % xxIdiosyncrasy()
+
 
 %**************************************************************************
 function C = xxImg(X)
@@ -382,7 +391,8 @@ br = sprintf('\n');
 C = [br,'{\centering', ...
     br,'\includegraphics[scale=$figurescale$]{',[fTitle,fExt],'}', ...
     br,'\par}'];
-end % xxImg().
+end % xxImg()
+
 
 %**************************************************************************
 function C = xxSpecChar(C)
@@ -396,72 +406,29 @@ C = strrep(C,'<','\ensuremath{<}');
 C = strrep(C,'>','\ensuremath{>}');
 C = strrep(C,'~','\ensuremath{\sim}');
 C = strrep(C,'^','\^{ }');
-end %xxSpecChar().
+end %xxSpecChar()
+
 
 %**************************************************************************
+%{
 function X = xxBookmarkTypeset()
-X = {
-    '1'
-    '2'
-    '3'
-    '4'
-    '5'
-    '6'
-    '7'
-    '8'
-    '9'
-    'a'
-    'b'
-    'c'
-    'd'
-    'e'
-    'f'
-    'g'
-    'h'
-    'i'
-    'j'
-    'k'
-    'l'
-    'm'
-    'n'
-    'o'
-    'p'
-    'q'
-    'r'
-    's'
-    't'
-    'u'
-    'v'
-    'w'
-    'x'
-    'y'
-    'z'
-    'A'
-    'B'
-    'C'
-    'D'
-    'E'
-    'F'
-    'G'
-    'H'
-    'I'
-    'J'
-    'K'
-    'L'
-    'M'
-    'N'
-    'O'
-    'P'
-    'Q'
-    'R'
-    'S'
-    'T'
-    'U'
-    'V'
-    'W'
-    'X'
-    'Y'
-    'Z'
+
+persistent B
+
+if ~isempty(B)
+    X = B;
+    return
+end
+
+B = {};
+for i = 1 : 99
+    B{end+1,1} = sprintf('%g',i);
+end
+for i = 97 : 122
+    B{end+1,1} = char(i);
+end
+
+B = [B;{ ...
     '$\alpha$'
     '$\beta$'
     '$\gamma$'
@@ -496,5 +463,8 @@ X = {
     '$\Phi$'
     '$\Psi$'
     '$\Omega$'
-    };
-end % xxBookmarkTypeset().
+    }];
+X = B;
+
+end % xxBookmarkTypeset()
+%}

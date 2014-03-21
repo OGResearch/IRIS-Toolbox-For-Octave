@@ -1,4 +1,4 @@
-function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError,IsExpansion)
+function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError,IsExpMat)
 % myupdatemodel  [Not a public function] Update parameters, sstate, solve, and refresh.
 %
 % Backend IRIS function.
@@ -14,11 +14,11 @@ catch %#ok<CTCH>
     IsError = true;
 end
 
-% `IsExpansion`: Compute matrices for forward expansion of the solution.
+% `IsExpMat`: Compute matrices for forward expansion of the solution.
 try
-    IsExpansion; %#ok<VUNUS>
+    IsExpMat; %#ok<VUNUS>
 catch %#ok<CTCH>
-    IsExpansion = false;
+    IsExpMat = false;
 end
 
 %--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ if This.linear
     % Linear models
     %---------------
     if Opt.solve
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpansion);
+        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpMat,Opt.solve);
     else
         nPath = 1;
     end
@@ -112,9 +112,7 @@ else
         chkSstateOk = isempty(sstateErrList);
     end
     if sstateOk && chkSstateOk && Opt.solve
-        % Trigger fast solve by passing in only one input argument. This
-        % does not compute expansion matrices.
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpansion);
+        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpMat);
     else
         nPath = 1;
     end

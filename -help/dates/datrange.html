@@ -1,0 +1,141 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dates/datrange">datrange</h2>
+<div class="headline">Numerically safe way to create a date range</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Rng = datrange(Start,End)
+Rng = datrange(Start,End,Step)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Start</code> [ numeric ] - Start date of the range.</p></li>
+<li><p><code>End</code> [ numeric ] - End date of the range.</p></li>
+<li><p><code>Step</code> [ numeric ] - Step size in the number of base periods; if omitted, <code>Step = 1</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Rng</code> [ numeric ] - Date vector <code>Start : Step : End</code>.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Most of the time, using a colon operator to create a date range works fine,</p>
+<pre><code>Start : Step : End</code></pre>
+<p>Under some rare circumstances, the colon operator may bump into round error difficulties as IRIS serial date numbers are non-integer values. In that case, the function <code>datrange</code> provides a safe workaround:</p>
+<pre><code>datrange(Start,End,Step)</code></pre>
+<p>is equivalent (but numerically safer) to</p>
+<pre><code>Start : Step : End</code></pre>
+<h4 id="example">Example</h4>
+<p>The date ranges created in this example are identical, and no numerical inaccuracies exist:</p>
+<pre><code>r1 = qq(2000,1) : qq(2010,4);
+r2 = datrange(qq(2000,1),qq(2010,4));
+format long
+r1 - r2</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

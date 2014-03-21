@@ -116,19 +116,15 @@ code.LaTeX {
 <h5 id="optimization-toolbox">Optimization Toolbox</h5>
 <p>The Optimization Toolbox is needed to compute the steady state of non-linear models, and to run estimation.</p>
 <h5 id="latex">LaTeX</h5>
-<p>LaTeX is a free typesetting system used to produce PDF reports in IRIS. We recommend MiKTeX, available from <code>www.miktex.org</code>.</p>
-<h4 id="components-distributed-with-iris">Components distributed with IRIS</h4>
-<h5 id="x13-arima-seats-formerly-x12-arima-x11-arima">X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)</h5>
-<p>Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly X12-ARIMA) program is now incoporated in, and distributed with IRIS. No extra installation or setup is needed.</p>
-<h5 id="symbolicautomatic-differentiator">Symbolic/automatic differentiator</h5>
-<p>IRIS is now equipped with its own symbolic/automatic differentiator, Sydney. There is no need to install the Symbolic Math Toolbox.</p>
+<p>LaTeX is a free typesetting system used to produce PDF reports in IRIS.</p>
 <h4 id="installing-iris">Installing IRIS</h4>
 <h5 id="step-1">Step 1</h5>
-<p>Download the latest IRIS zip archive, <code>IRIS_Tbx_YYYYMMDD.zip</code>, from the download area at <code>www.iris-toolbox.com</code>, and save it in a temporary location on your disk.</p>
+<p>Download the latest IRIS zip archive, <code>IRIS_Tbx_YYYYMMDD.zip</code>, from the download area on the website, and save it in a temporary location on your disk.</p>
 <h5 id="step-2">Step 2</h5>
-<p>Unzip the archive into a folder on your hard drive, e.g. <code>C:\IRIS_Tbx</code>. We will call this directory the IRIS root folder.</p>
-<p>Installing IRIS on a network drive may cause some minor problems, especially on MS Windows systems; check out <code>help changeNotification</code> in Matlab.</p>
+<p>If you are going to install IRIS in a folder where an older version already resides, you MUST first delete the old version completely.</p>
 <h5 id="step-3">Step 3</h5>
+<p>Unzip the archive into a folder on your hard drive, e.g. <code>C:\IRIS_Tbx</code>. This folder is called the IRIS root.</p>
+<h5 id="step-4">Step 4</h5>
 <p>After installing a new version of IRIS, we recommend that you remove all older versions of IRIS from the Matlab search path, and restart Matlab.</p>
 <h5 id="getting-started">Getting started</h5>
 <p>Each time you want to start working with IRIS, run the following line</p>
@@ -137,8 +133,13 @@ code.LaTeX {
 <p>Alternatively, you can put the IRIS root folder permanently on the Matlab seatch path (using the menu File - Set Path), and only run the <code>irisstartup</code> command at the beginning of each IRIS session.</p>
 <p>See also the section on <a href="../config/Contents.html">Starting and quitting IRIS</a>.</p>
 <h4 id="syntax-highlighting">Syntax highlighting</h4>
-<p>You can get the model files (i.e. the files that describe the model equations, variables, parameters) syntax-highlighted. Syntax highlighting improves enormously the readability of the files. It helps you understand the model better, and discover typos and mistakes more quickly.</p>
-<p>Add any number of extensions you want to use for model files (such as <code>'mod'</code>, <code>'model'</code>, etc.) to the Matlab editor. Open the menu File - Preferences, and click on the Editor/Debugger - Language tab (make sure 'Matlab' is selected at the top as the Language). Use the Add button in the File extensions panel to associate any number of new extensions with the editor. Re-start the editor. The IRIS model files will be syntax highligted from that moment on.</p>
+<p>You can get the IRIS model files syntax-highlighted. Syntax highlighting improves enormously the readability of the files: it helps you understand the model better, and discover typos and mistakes more quickly.</p>
+<p>Add any number of extensions you want to use for model files (such as <code>'model'</code> or <code>'iris'</code>, there is really no limitation) to the Matlab editor. Open the menu Home - Preferences, unfold Editor/Debugger and choose Language. Make sure Matlab is selected at the top as the language. Use the Add button in the File extensions panel to associate any number of new extensions with the editor. Re-start the editor. The IRIS model files will be syntax highlighted from that moment on.</p>
+<h4 id="components-distributed-with-iris">Components distributed with IRIS</h4>
+<h5 id="x13-arima-seats-formerly-x12-arima-x11-arima">X13-ARIMA-SEATS (formerly X12-ARIMA, X11-ARIMA)</h5>
+<p>Courtesy of the U.S. Census Bureau, the X13-ARIMA-SEATS (formerly X12-ARIMA) program is now incoporated in, and distributed with IRIS. No extra installation or setup is needed.</p>
+<h5 id="symbolicautomatic-differentiator">Symbolic/automatic differentiator</h5>
+<p>Symbolic/automatic differentiator. IRIS is equipped with its own symbolic/automatic differentiator, Sydney. There is no need to have the Symbolic Math Toolbox as was the case in earlier versions of IRIS.</p>
 
 </body>
 <div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>

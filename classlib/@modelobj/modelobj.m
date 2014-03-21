@@ -26,9 +26,9 @@ classdef modelobj < getsetobj & userdataobj
         % Name aliases.
         namealias = cell(1,0);
         % Parameter and steady-state values.
-        Assign = zeros(1,0);
+        Assign = zeros(1,0,0);
         % Std devs and cross-correlations.
-        stdcorr = zeros(1,0);
+        stdcorr = zeros(1,0,0);
         % Flags for log-Linearised variables.
         log = false(1,0);
         % List of equations in user form.

@@ -103,7 +103,7 @@ end
 e(:,1:pp,:) = NaN;
 nPer = length(Range);
 nData = size(x,3);
-nLoop = max([nAlt,nData]);
+nLoop = max(nAlt,nData);
 
 if opt.contributions
     if nLoop > 1
@@ -167,5 +167,14 @@ end
 
 % Output data.
 Outp = myoutpdata(This,outpFmt,Range,[x;e],[],names);
+
+% Contributions comments.
+if opt.contributions && strcmp(outpFmt,'dbase')
+    contList = [This.Enames,{'Init+Const'}];
+    for i = 1 : length(names)
+        c = utils.concomment(names{i},contList);
+        Outp.(names{i}) = comment(Outp.(names{i}),c);
+    end
+end
 
 end

@@ -4,20 +4,20 @@ function Text = grabtext(StartTag,EndTag)
 % Syntax
 % =======
 %
-%     C = strfun.grabtext(STARTTAG,ENDTAG)
+%     C = strfun.grabtext(StartTag,EndTag)
 %
 % Input arguments
 % ================
 %
-% * `STARTTAG` [ char ] - Start tag.
+% * `StartTag` [ char ] - Start tag.
 %
-% * `ENDTAG` [ char ] - End tag.
+% * `EndTag` [ char ] - End tag.
 %
 % Output arguments
 % =================
 %
-% * `C` [ char ] - Block comment with `STARTTAG` at the first line, and
-% `ENDTAG` at the last line.
+% * `C` [ char ] - Block comment with `StartTag` at the first line, and
+% `EndTag` at the last line.
 %
 % Description
 % ============

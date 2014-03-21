@@ -15,8 +15,7 @@ classdef genericobj < handle
         options = struct();
         default = {};
         
-        hInfo = [];
-        %footnoteContainer = {};
+        hInfo = []; % Store a handle object to carry global information.
     end
     
     properties (Dependent)

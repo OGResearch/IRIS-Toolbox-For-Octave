@@ -173,6 +173,11 @@ elseif iscellstr(varargin(1:2:end))
         if isempty(varargin{j})
             continue
         end
+        % Allow for equal signs in `assign(m,'alpha=',1)`.
+        varargin{j} = strtrim(varargin{j});
+        if ~isempty(varargin{j}) && varargin{j}(end) == '='
+            varargin{j}(end) = '';
+        end
         [assignInx,stdcorrInx] = mynameposition(This,varargin{j});
         for i = find(assignInx).'
             if (growth || level) && any(imag(varargin{j+1}(:)) ~= 0)

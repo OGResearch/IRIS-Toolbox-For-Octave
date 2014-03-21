@@ -12,6 +12,7 @@ classdef nnet < userdataobj & getsetobj
         
         Layout = [] ;
         
+        nPruned ;
         nActivationParams ;
         nOutputParams ;
         nHyperParams ;
@@ -126,6 +127,7 @@ end
             This.nLayer = numel(This.Layout) ;
             This.nInputs = numel(This.Inputs) ;
             This.nOutputs = numel(This.Outputs) ;
+            This.nPruned = 0 ;
             
             % Parse options
             options = passvalopt('nnet.nnet',varargin{:});
@@ -225,18 +227,11 @@ end
         
         varargout = disp(varargin) ;
         varargout = size(varargin) ;
-        varargout = datarequest(varargin) ;
         varargout = set(varargin) ;
-        varargout = horzcat(varargin) ;
-        varargout = vertcat(varargin) ;
         varargout = eval(varargin) ;
         varargout = plot(varargin) ;
-        varargout = sstate(varargin) ;
         varargout = prune(varargin) ;
-        varargout = myrange(varargin) ;
-        varargout = mysameio(varargin) ;
         varargout = isnan(varargin) ;
-        varargout = rmnan(varargin) ;
         
         % Destructor method
         function delete(This)
@@ -248,9 +243,20 @@ end
         end
     end
     
-    methods (Static,Hidden)
+    methods( Hidden )
+        varargout = copy(varargin) ;
+        varargout = rmnan(varargin) ;
+        varargout = myrange(varargin) ;
+        varargout = mysameio(varargin) ;
+        varargout = datarequest(varargin) ;
+        varargout = horzcat(varargin) ;
+        varargout = vertcat(varargin) ;
+    end
+    
+    methods( Static, Hidden )
         varargout = myalias(varargin)
     end
     
     
 end
+

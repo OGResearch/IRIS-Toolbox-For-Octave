@@ -64,15 +64,15 @@
   comment to the estimated VAR object; \texttt{Inf} means the existing
   comment will be preserved.
 \item
-  \texttt{'constraints='} {[} char {]} - General linear constraints on
-  the VAR parameters.
+  \texttt{'constraints='} {[} char \textbar{} cellstr {]} - General
+  linear constraints on the VAR parameters.
 \item
   \texttt{'constant='} {[} \emph{\texttt{true}} \textbar{}
   \texttt{false} {]} - Include a constant vector in the VAR.
 \item
-  \texttt{'covParameters='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - Calculate the covariance matrix of
-  estimated parameters.
+  \texttt{'covParam='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Calculate and store the covariance matrix
+  of estimated parameters.
 \item
   \texttt{'eqtnByEqtn='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Estimate the VAR equation by equation.

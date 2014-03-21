@@ -18,7 +18,7 @@ else
     if This.linear
         fprintf('linear ');
     else
-        fprintf('non-linear ');
+        fprintf('nonlinear ');
     end
     fprintf('model object: [%g] parameterisation(s)\n',nAlt);
     doPrintNEqtn();
@@ -28,14 +28,17 @@ end
 disp@userdataobj(This);
 disp(' ');
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doPrintNEqtn()
         nm = sum(This.eqtntype == 1);
         nt = sum(This.eqtntype == 2);
         fprintf('\tnumber of equations: [%g %g]\n',nm,nt);
-    end % doPrintNEqtn().
+    end % doPrintNEqtn()
+
 
 %**************************************************************************
     function doPrintSolution()
@@ -43,6 +46,7 @@ disp(' ');
         nSolution = sum(~inx);
         fprintf('\tsolution(s) available: [%g] parameterisation(s)\n', ...
             nSolution);
-    end % doPrintSolution().
+    end % doPrintSolution()
+
 
 end

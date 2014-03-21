@@ -9,19 +9,22 @@ classdef varobj < userdataobj & getsetobj
 
     
     properties
-        A = []; % Transition matrix.
         Ynames = {}; % Endogenous variables.
         Enames = {}; % Residuals.
         Qnames = {}; % Exogenous variables.
         GroupNames = {}; % Panel groups.
-        range = zeros(1,0);
-        fitted = false(1,0);
-        Omega = zeros(0);
-        eigval = zeros(1,0);
+        
+        A = []; % Transition matrix.
+        Omega = zeros(0); % Covariance matrix of reduced-form residuals.
+        eigval = zeros(1,0); % Eigenvalues.
+
+        range = zeros(1,0); % Estimation range.
+        fitted = false(1,0); % Index of periods actually fitted.
     end
     
     
     methods
+        varargout = assign(varargin)
         varargout = group(varargin)
         varargout = horzcat(varargin)
         varargout = isempty(varargin)
@@ -47,6 +50,7 @@ classdef varobj < userdataobj & getsetobj
         varargout = mygroupnames(varargin)
         varargout = mynalt(varargin)
         varargout = myny(varargin)       
+        varargout = myprealloc(varargin)
         varargout = mysubsalt(varargin)
         varargout = myynames(varargin)
         specdisp(varargin)

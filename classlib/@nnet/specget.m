@@ -16,7 +16,7 @@ try
             X = NaN(This.nActivationParams,This.nAlt) ;
             for iLayer = 1:This.nLayer+1
                 for iNode = 1:numel(This.Neuron{iLayer})
-                    X(This.Neuron{iLayer}{iNode}.ActivationIndex,:) ...
+                    X(This.Neuron{iLayer}{iNode}.ActivationIndex) ...
                         = This.Neuron{iLayer}{iNode}.ActivationParams ;
                 end
             end

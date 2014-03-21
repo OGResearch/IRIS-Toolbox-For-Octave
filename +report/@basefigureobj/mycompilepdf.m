@@ -15,7 +15,7 @@ set(This.handle,'paperType',This.options.papertype);
 if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
         || (isequal(Opt.orientation,'portrait') && This.options.sideways)
     orient(This.handle,'landscape');
-    angle = -90;
+    angle = is.hg2(0,-90);
     raise = 10;
 else
     orient(This.handle,'tall');
@@ -68,7 +68,8 @@ InclGraph = [ ...
         % Try to print figure window to EPSC.
         try
             if ismatlab
-                print(This.handle,'-depsc',graphicsName);
+                %print(This.handle,'-painters','-depsc',graphicsName);
+                grfun.printpdf(This.handle,graphicsName);
             else
                 print(This.handle,'-depsc','-tight',graphicsName);
             end

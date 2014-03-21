@@ -95,10 +95,6 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % output data will be stored; all calculations themselves always run to
 % double precision.
 %
-% * `'rollback='` [ numeric | *empty* ] - Date up to which to roll back
-% individual observations on measurement variables from the end of the
-% sample.
-%
 % * `'relative='` [ *`true`* | `false` ] - Std devs of shocks assigned in the
 % model object will be treated as relative std devs, and a common variance
 % scale factor will be estimated.
@@ -222,8 +218,12 @@ nAlt = size(This.Assign,3);
 % Check option conflicts.
 doChkConflicts();
 
-% Create additional data sets for rollback.
-doRollBack();
+%--------------------------------------------------------------------------
+
+ny = length(This.solutionid{1});
+nb = size(This.solution{1},2);
+xRange = Range(1)-1 : Range(end);
+nXPer = length(xRange);
 
 % Throw a warning if some of the data sets have no observations.
 nanData = all(all(isnan(Inp),1),2);
@@ -233,20 +233,18 @@ if any(nanData)
         sprintf(' #%g',(nanData)));
 end
 
-%--------------------------------------------------------------------------
-
-ny = length(This.solutionid{1});
-nb = size(This.solution{1},2);
-nPer = length(Range);
-xRange = Range(1)-1 : Range(end);
-nXPer = length(xRange);
-
 % Pre-allocated requested hdata output arguments.
 hData = struct();
 doPreallocHData();
 
 % Run the Kalman filter.
 [obj,regOutp,hData] = mykalman(This,Inp,hData,likOpt); %#ok<ASGLU>
+
+% If needed, expand the number of model parameterizations to include
+% estimated variance factors and/or out-of=lik parameters.
+if nAlt < regOutp.NLoop && (likOpt.relative || ~isempty(regOutp.Delta))
+    This = alter(This,regOutp.NLoop);
+end
 
 % Post-process regular (non-hdata) output arguments; update the std
 % parameters in the model object if `'relative=' true`.
@@ -255,7 +253,9 @@ doPreallocHData();
 % Post-process hdata output arguments.
 Outp = hdataobj.hdatafinal(hData,This,xRange);
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doChkConflicts()
@@ -264,39 +264,13 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                 ['Cannot combine the option ''ahead='' greater than 1 ', ...
                 'with multiple data sets or parameterisations.']);
         end
-        if ~isempty(opt.rollback) ...
-                && (nData > 1 || nAlt > 1 || likOpt.ahead > 1)
-            utils.error('model', ...
-                ['Cannot combine a non-empty option ''rollback='' with ', ...
-                'multiple data sets, parameterisations, ', ...
-                'or the option ''ahead=''.']);
-        end
         if likOpt.returncont && any(likOpt.condition)
             utils.error('model', ...
-                ['Cannot combine the option ''returncont=true'' with ', ...
+                ['Cannot combine the option ''returnCont=true'' with ', ...
                 'a non-empty option ''condition=''.']);
         end
-    end % doChkConflicts().
+    end % doChkConflicts()
 
-%**************************************************************************
-    function doRollBack()
-        if ~isempty(opt.rollback)
-            index = round(opt.rollback(:).' - Range(1)) + 1;
-            opt.rollback = index(index >= 1 & index <= nPer);
-            opt.rollback = sort(opt.rollback,'descend');
-            % Create additional sets of observables for rollbacks.
-            if ~isempty(opt.rollback)
-                for ii = opt.rollback
-                    adddata = hData(:,:,end*ones(1,ny));
-                    for jj = 1 : ny
-                        adddata(ny+1-j:ny,ii,jj) = NaN;
-                    end
-                    hData = cat(3,hData,adddata);
-                end
-                nData = size(hData,3);
-            end
-        end
-    end % doRollBack().
 
 %**************************************************************************
     function doPreallocHData()
@@ -385,6 +359,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                 end
             end
         end
-    end % doPreallocHData().
+    end % doPreallocHData()
+
 
 end

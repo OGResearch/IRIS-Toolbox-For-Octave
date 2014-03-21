@@ -41,6 +41,13 @@ elseif is.tseries(Data)
     [Y,E] = doTseries();
     I = [];
     inpFmt = 'tseries';
+    
+    % ##### Feb 2014 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['Using tseries objects as input/output data to/from VAR objects', ...
+        'is obsolete, and will be removed from a future version of IRIS. ', ...
+        'Use databases (structs) instead.']);
+    
 elseif ~isempty(Data)
     [Y,E] = doArray();
     I = [];

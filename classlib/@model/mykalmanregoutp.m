@@ -37,6 +37,7 @@ if isfield(RegOutp,'V')
     V = RegOutp.V;
 end
 
+% Update out-of-lik parameters in the model object.
 Delta = struct();
 deltaList = This.name(LikOpt.outoflik);
 if isfield(RegOutp,'Delta')
@@ -63,10 +64,6 @@ end
 if LikOpt.relative && nargout > 6
     ne = sum(This.nametype == 3);
     nAlt = size(This.Assign,3);
-    nv = length(V);
-    if nv > nAlt
-        This(end+1:nv) = This(end);
-    end
     se = sqrt(V);
     for iAlt = 1 : nAlt
         This.stdcorr(1,1:ne,iAlt) = This.stdcorr(1,1:ne,iAlt)*se(iAlt);
