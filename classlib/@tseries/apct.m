@@ -49,6 +49,6 @@ end
 
 %--------------------------------------------------------------------------
 
-X = unop(@tseries.mypct,X,0,-1,Q);
+X = unop(@(varargin)tseries.mypct(varargin{:}),X,0,-1,Q);
 
 end
