@@ -12,6 +12,8 @@ subFolders = regexp(genpath(thisFolder),pathsep(),'split');
 subFolders = subFolders(2:end);
 
 errors = [];
+testsCalledOverall = 0;
+testsPassedOverall = 0;
 for ix = 1:length(subFolders)
   if ~isempty(subFolders{ix})
     cd(subFolders{ix});
@@ -41,8 +43,14 @@ for ix = 1:length(subFolders)
     if testsCalled == 0
       fprintf('\n\n < No tests in this folder >\n\n');
     else
-      fprintf('\n < Tests passed: %g. Tests failed: %g >\n\n',testsPassed,testsCalled-testsPassed);
+      fprintf('\n < Tests passed: %g. Tests failed: %g >\n\n',testsPassed,...
+        testsCalled-testsPassed);
     end
     cd(curFolder);
+    testsCalledOverall = testsCalledOverall + testsCalled;
+    testsPassedOverall = testsPassedOverall + testsPassed;
   end
 end
+
+fprintf('\n\n -=[ %g of %g tests have succeeded in total ]=-\n',testsPassedOverall,...
+  testsCalledOverall);
