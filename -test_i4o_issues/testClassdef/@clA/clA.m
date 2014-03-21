@@ -11,7 +11,7 @@ classdef clA
   methods
     function this = clA(varargin)
       this.data = [1 2 3];
-      this.dataProt = [];
+      this.dataProt = [3 2 1];
     end
     function varargout = subsref(this,s)
       switch s.type
@@ -43,5 +43,14 @@ classdef clA
         index = size(this.data,k);
       end
     end
+   function this = saveobj(this)
+     this.dataProt = inf;
+   end
+  end
+    
+  methods (Static=true, Hidden)
+   function this = loadobj(this)
+     this.data = inf;
+   end
   end
 end
