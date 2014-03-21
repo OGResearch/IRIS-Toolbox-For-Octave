@@ -9,4 +9,8 @@ function this = saveobj(this)
 
 %**************************************************************************
 
+if ~ismatlab
+    this = struct('start',this.start,'data',this.data,'Comment',this.Comment,'UserData',this.UserData);
+end
+
 end
