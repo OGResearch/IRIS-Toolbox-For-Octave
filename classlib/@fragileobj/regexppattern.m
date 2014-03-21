@@ -15,8 +15,16 @@ if isempty(This)
 end
 
 n = length(This.storage);
-first = char(This.offset + 1);
-last = char(This.offset + n);
+cCode = This.offset + 1;
+if ~ismatlab
+    cCode = highCharCode2utf8(cCode);
+end
+first = char(cCode);
+cCode = This.offset + n;
+if ~ismatlab
+    cCode = highCharCode2utf8(cCode);
+end
+last = char(cCode);
 P = [first,'-',last];
 
 end

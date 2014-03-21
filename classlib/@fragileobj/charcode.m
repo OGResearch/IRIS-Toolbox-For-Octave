@@ -14,6 +14,9 @@ if k > 65535
     utils.error('fragileobj', ...
         'Index of protected items exceeds 65535.');
 end
+if ~ismatlab
+    k = highCharCode2utf8(k);
+end
 C = char(k);
 
 end
