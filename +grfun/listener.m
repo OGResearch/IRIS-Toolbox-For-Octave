@@ -1,47 +1,56 @@
 function Ls = listener(Leader,Follower,Name,varargin)
 
 % Choose the appropriate listener function.
-if ~feature('HGUsingMATLABClasses')
-    listenerFcn = @handle.listener;
-    postSetStr = 'PropertyPostSet';
-else
-    listenerFcn = @event.proplistener;
-    postSetStr = 'PostSet';
-end
 
-% Convert graphics handle to graphics object.
-leaderObj = handle(Leader);
+if ismatlab
+    if ~feature('HGUsingMATLABClasses')
+        listenerFcn = @(h,prop,pEvent,fun) handle.listener(h,findprop(h,prop),pEvent,fun);
+        postSetStr = 'PropertyPostSet';
+    else
+        listenerFcn = @(h,prop,pEvent,fun) event.proplistener(h,findprop(h,prop),pEvent,fun);
+        postSetStr = 'PostSet';
+    end
+    % Convert graphics handle to graphics object.
+    leaderObj = handle(Leader);
+else
+    listenerFcn = @(h,prop,dummy,fun) addlistener(h,prop,fun);
+    leaderObj = Leader;
+    postSetStr = '';
+end
 
 switch lower(Name)
     
     case 'highlight'
-        Ls = listenerFcn(leaderObj, ...
-            findprop(leaderObj,'YLim'),...
+        listenerFcn(leaderObj, ...
+            'YLim',...
             postSetStr, ...
             @(obj,evd)(xxHighlight(obj,evd,Leader,Follower)));
 
     case 'vline'
-        Ls = listenerFcn(leaderObj, ...
-            findprop(leaderObj,'YLim'),...
+        listenerFcn(leaderObj, ...
+            'YLim',...
             postSetStr, ...
             @(obj,evd)(xxVLine(obj,evd,Leader,Follower)));
 
     case {'hline','zeroline'}
-        Ls = listenerFcn(leaderObj, ...
-            findprop(leaderObj,'XLim'),...
+        listenerFcn(leaderObj, ...
+            'XLim',...
             postSetStr, ...
             @(obj,evd)(xxHLine(obj,evd,Leader,Follower)));
         
     case 'caption'
-        Ls = listenerFcn(leaderObj, ...
-            findprop(leaderObj,'YLim'),...
+        listenerFcn(leaderObj, ...
+            'YLim',...
             postSetStr, ...
             @(obj,evd)(xxCaption(obj,evd,Leader,Follower,varargin{1})));
 
 end
 
 % Make sure the listener object persists.
-setappdata(Follower,[Name,'Listener'],Ls);
+try %#ok<TRYNC>
+    Ls = ans;
+    setappdata(Follower,[Name,'Listener'],Ls);
+end
 
 end
 
