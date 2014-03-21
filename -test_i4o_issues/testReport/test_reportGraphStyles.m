@@ -33,11 +33,12 @@ R = report.new('','orientation','portrait');
 
 R.figure('This is a figure...', ...
     'subplot',[3,2], ...
-    'highlight',qq(2012,1):qq(2013,4),'style',sty,'visible',true);
+    'style',sty,'visible',true);
 
-for i = 1 : 4    
+for i = 1 : 4
     R.graph(sprintf('Graph #%g',i));
         R.series('',x{i});
+        R.highlight('',qq(2012,1):qq(2013,4));
 end
 
 %% Publish report
