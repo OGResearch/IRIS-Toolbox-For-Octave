@@ -42,11 +42,7 @@ for iAx = Ax
         '-and','-not','tag','vline', ...
         '-and','-not','tag','hline', ...
         '-and','-not','tag','zeroline');
-    try
-        lim = objbounds(ch);
-    catch
-        lim = [];
-    end
+    lim = grfun.myobjbounds(ch);
     if isempty(lim)
         xLim = get(iAx,'xLim');
     else
