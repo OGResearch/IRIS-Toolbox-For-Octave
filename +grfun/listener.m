@@ -59,7 +59,9 @@ end
 %**************************************************************************
 function xxHighlight(Obj,Evd,Ax,Pt) %#ok<INUSL>
     y = get(Ax,'yLim');
-    set(Pt,'yData',[y(1),y(1),y(2),y(2),y(1)]);
+    oldYData = get(Pt,'yData');
+    newYData = [y(1),y(1),y(2),y(2),y(1)];
+    set(Pt,'yData',newYData(1:length(oldYData)));
 end % xxHighlight().
 
 %**************************************************************************
