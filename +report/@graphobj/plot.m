@@ -186,7 +186,7 @@ end
             if isfield(ch.options,'yaxis') ...
                     && strcmpi(ch.options.yaxis,'right');
                 rhsInx(ii) = true;
-            elseif isa(ch,'report.annotateobj')
+            elseif myisa(ch,'report.annotateobj')
                 annotateInx(ii) = true;
             else
                 lhsInx(ii) = true;
