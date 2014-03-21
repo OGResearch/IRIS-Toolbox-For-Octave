@@ -1,3 +1,3 @@
 function flag = ismatlab()
-  flag = ~isempty(ver('MATLAB'));
+  flag = ~exist('OCTAVE_VERSION','builtin');
 end
