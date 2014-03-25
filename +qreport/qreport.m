@@ -525,7 +525,7 @@ switch char(Func)
 end
 
 if Opt.tight
-    isTseries = getappdata(AA);
+    isTseries = getappdata(AA,'tseries');
     if isequal(isTseries,true)
         grfun.yaxistight(AA);
     else
