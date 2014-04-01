@@ -10,7 +10,8 @@ function varargout = error(Mnemonic,Body,varargin)
 %--------------------------------------------------------------------------
 
 if ~isempty(Body) && Body(1) == '#'
-    Body = xxFrequents(Body);
+    cls = regexp(Mnemonic,'[^:]+','once','match');
+    Body = xxFrequents(Body,cls);
 end
 
 % Throw an error with stack of non-IRIS function calls.
@@ -43,15 +44,25 @@ end
 
 
 %**************************************************************************
-function Body = xxFrequents(Body)
+function Body = xxFrequents(Body,Cls)
+
 switch Body
+
     case '#Name_not_exists'
-        Body = 'This name does not exist in the model object: %s.';
+        Body = ['This name does not exist in the ',Cls,' object: %s.'];
+    
     case '#Cannot_simulate_contributions'
         Body = ['Cannot simulate multiple parameterisations ', ...
             'or multiple data sets ', ...
             'with ''contributions='' true'];
+        
+    case '#Internal'
+        Body = ['Internal IRIS error. ', ...
+            'Please report this error with a copy of the screen message.'];
+    
     otherwise
         Body = '';
+        
 end
+
 end % xxFrequents()

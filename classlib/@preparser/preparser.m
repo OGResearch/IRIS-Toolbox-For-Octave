@@ -8,10 +8,10 @@ classdef preparser < userdataobj
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
     properties
-        assign = struct();
         fname = '';
         code = '';
         labels = fragileobj();
+        assign = struct();
         Export = {};
         subs = struct();
     end

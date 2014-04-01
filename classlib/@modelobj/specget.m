@@ -91,7 +91,16 @@ switch Query
         
     case {'nametype'}
         X = This.nametype;
+                
+    case {'torigin','baseyear'}
+        X = This.torigin;
+        if isempty(X)
+            X = irisget('baseYear');
+        end
         
+    case 'build'
+        X = This.build;
+
     % Equations
     %-----------
     
@@ -132,7 +141,9 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
 function [List,Values,X] = xxGetStd(This)
@@ -145,7 +156,8 @@ if nargout > 2
     X = xxNum2Struct(Values,List);
 end
 
-end % xxGetStd().
+end % xxGetStd()
+
 
 %**************************************************************************
 function [List,Values,X] = xxGetCorr(This,Query)
@@ -176,7 +188,8 @@ for k = 1 : length(i)
     X.(name) = permute(R(i(k),j(k),:),[2,3,1]);
 end
 
-end % xxGetCorr().
+end % xxGetCorr()
+
 
 %**************************************************************************
 function X = xxGetParam(This)
@@ -187,7 +200,8 @@ assignlist = This.name(This.nametype == 4);
 [corrList,corr] = xxGetCorr(This,'nonzerocorr');
 X = xxNum2Struct([assign,std,corr],[assignlist,stdList,corrList]);
 
-end % xxGetParam().
+end % xxGetParam()
+
 
 %**************************************************************************
 function S = xxNum2Struct(X,List)
@@ -196,4 +210,4 @@ S = cell2struct( ...
     num2cell(permute(X,[2,3,1]),2), ...
     List(:),1);
 
-end % xxNum2Struct().
+end % xxNum2Struct()

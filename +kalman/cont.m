@@ -104,7 +104,6 @@ if S.retFilterCont
     for t = lastObs : -1 : 2
         jy = yInx(:,t);
         [yc1temp,fc1(:,:,t),bc1(:,:,t),ec1(:,:,t)] ...
-        ...    = xxOneStepBackCont(S,t,pec(:,:,t),ac0(:,:,t),fc0(:,:,t),0);
             = kalman.onestepbackmean(S,t, ...
             pec(:,:,t),ac0(:,:,t),fc0(:,:,t),ydeltac(:,:,t),[],0);
         if any(~jy)

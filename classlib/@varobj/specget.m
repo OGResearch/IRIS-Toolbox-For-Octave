@@ -16,6 +16,7 @@ nAlt = size(This.A,3);
 realSmall = getrealsmall();
 
 switch lower(Query)
+    
     case {'omg','omega','cove','covresiduals'}
         X = This.Omega;
     case {'eig','eigval','roots'}
@@ -58,8 +59,10 @@ switch lower(Query)
         X = nAlt;
     case {'groupnames','grouplist'}
         X = This.GroupNames;
+        
     otherwise
         Flag = false;
+        
 end
 
 end

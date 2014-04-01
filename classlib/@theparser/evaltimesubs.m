@@ -1,10 +1,10 @@
-function [Eqtn,MaxT,MinT,ValidTimeSubs] = evaltimesubs(This,UsrEqtn) %#ok<INUSL>
+function [Eqtn,MaxT,MinT,ValidSubs] = evaltimesubs(This,UsrEqtn) %#ok<INUSL>
 % evaltimesubs  Validate and evaluate time subscripts.
 
 nEqtn = length(UsrEqtn);
 MaxT = 0;
 MinT = 0;
-ValidTimeSubs = true(1,nEqtn);
+ValidSubs = true(1,nEqtn);
 
 Eqtn = UsrEqtn;
 
@@ -35,7 +35,7 @@ if ~isempty(s)
     for iEq = 1 : nEqtn
         Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
     end
-    if any(~ValidTimeSubs)
+    if any(~ValidSubs)
         return
     end
 end
@@ -69,7 +69,7 @@ end
                 end
             end
         end
-        ValidTimeSubs(iEq) = false;
+        ValidSubs(iEq) = false;
     end
 
 end %% xxEvalTimeSubs()

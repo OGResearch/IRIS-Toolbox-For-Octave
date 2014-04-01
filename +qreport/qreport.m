@@ -555,7 +555,7 @@ if Opt.zeroline
 end
 
 if ~isempty(Opt.vline)
-    grfun.vline(AA,Opt.vline);
+    grfun.vline(AA,Opt.vline,'color=','black');
 end
 
 if ~isempty(Opt.highlight)

@@ -28,19 +28,19 @@ if iscellstr(Input)
     AssignPos = nan(1,n);
     StdcorrPos = nan(1,n);
     for i = 1 : n
-        [assignInx,stdcorrInx] ...
-            = modelobj.mynameindex(name,eList,Input{i});
-        if any(assignInx)
-            AssignPos(i) = find(assignInx);
+        [asgnIx,stdcorrIx] = modelobj.mynameindex(name,eList,Input{i});
+        if any(asgnIx)
+            AssignPos(i) = find(asgnIx);
         end
-        if any(stdcorrInx)
-            StdcorrPos(i) = find(stdcorrInx);
+        if any(stdcorrIx)
+            StdcorrPos(i) = find(stdcorrIx);
         end
     end
     if any(strcmp(varargin,'error'))
         found = ~isnan(AssignPos) | ~isnan(StdcorrPos);
         if any(~found)
-            utils.error('model','#Name_not_exists',Input{~found});
+            utils.error('model:mynameposition', ...
+                '#Name_not_exists',Input{~found});
         end
     end
     

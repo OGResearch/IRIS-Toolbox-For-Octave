@@ -18,7 +18,7 @@ pos = find(This.nametype == 2);
 C = [C,xxPrintNames(This,'!transition_variables',pos)];
 
 pos = find(This.nametype == 3);
-[mshocks,tshocks] = myshocktypes(This);
+[mshocks,tshocks] = myshocktype(This);
 C = [C,xxPrintNames(This,'!measurement_shocks',pos(mshocks),false)];
 C = [C,xxPrintNames(This,'!transition_shocks',pos(tshocks),false)];
 

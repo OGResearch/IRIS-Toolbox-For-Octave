@@ -115,10 +115,10 @@ switch Query
         % Remove references to database d from reporting equations.
         X = regexprep(X,'d\.([a-zA-Z])','$1');
         
-    case {'nonlineqtn'}
+    case {'neqtn','nonlineqtn'}
         X = This.eqtn(This.nonlin);
         
-    case {'nonlinlabel'}
+    case {'nlabel','nonlinlabel'}
         X = This.eqtnlabel(This.nonlin);
         
     case 'rlabel'
@@ -226,9 +226,6 @@ switch Query
     case 'epsilon'
         X = This.epsilon;
         
-    case {'torigin','baseyear'}
-        X = This.torigin;
-        
     case 'userdata'
         X = userdata(This);
         
@@ -260,9 +257,6 @@ switch Query
         X = length(This.solutionid{1});
     case 'ne'
         X = length(This.solutionid{3});
-        
-    case 'build'
-        X = This.build;
         
     otherwise
         Flag = false;

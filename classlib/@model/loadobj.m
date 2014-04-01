@@ -94,7 +94,7 @@ if ~isfield(This.deriv0,'n') || isempty(This.deriv0.n)
     This.deriv0.n = zeros(ny+nx,0);
 end
 
-% Effect of add-faactors in solution for non-linear equations.
+% Effect of add-factors in solution for non-linear equations.
 if length(This.solution) < 8 || isempty(This.solution{8})
     This.solution{8} = nan(nx,0,nAlt);
 end

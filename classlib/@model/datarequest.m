@@ -103,7 +103,9 @@ switch lower(Req)
         if ~isempty(LoglikOpt) && isstruct(LoglikOpt) ...
                 && isfield(LoglikOpt,'domain') ...
                 && strncmpi(LoglikOpt.domain,'f',1)
-            y = fft(y.').';
+            y = permute(y,[2,1,3]);
+            y = fft(y);
+            y = ipermute(y,[2,1,3]);
         end
         g = doData2G();
         nYData = size(y,3);

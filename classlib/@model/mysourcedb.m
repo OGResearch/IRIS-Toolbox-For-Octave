@@ -61,7 +61,9 @@ n = n1 + n2 + n3;
 nLoop = max([nAlt,nCol,nDraw]);
 Outp = struct();
 
-tTrend = myrange2ttrend(This,xRange);
+% Deterministic time trend.
+timeTrend = dat2ttrend(xRange,This);
+
 %tVec = double(round(xRange - xRange(1)));
 if opt.deviation
     X = zeros(n,nXPer,nAlt);
@@ -69,8 +71,8 @@ if opt.deviation
 else
     X = zeros(n,nXPer,nAlt);
     inx = find(This.nametype == 1 | This.nametype == 2);
-    X(inx,:,:) = mytrendarray(This,inx,tTrend,false,Inf);
-    G = mytrendarray(This,find(This.nametype == 5),tTrend,false,Inf);
+    X(inx,:,:) = mytrendarray(This,inx,timeTrend,false,Inf);
+    G = mytrendarray(This,find(This.nametype == 5),timeTrend,false,Inf);
 end
 
 if opt.dtrends
@@ -120,7 +122,7 @@ for i = find(This.nametype == 5)
 end
 
 % Add time trend.
-Outp.ttrend = replace(tmp,tTrend.',xRange(1),'Time trend');    
+Outp.ttrend = replace(tmp,timeTrend.',xRange(1),'Time trend');    
 
 end
 
