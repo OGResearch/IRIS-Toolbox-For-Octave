@@ -39,7 +39,7 @@ nData = size(Inp,3);
 %--------------------------------------------------------------------------
 
 s = struct();
-s.isnonlin = Opt.nonlinearise > 0 && any(This.nonlin);
+s.isnonlin = Opt.nonlinear > 0 && any(This.nonlin);
 s.ahead = Opt.ahead;
 s.isObjOnly = nao == 1;
 
@@ -88,7 +88,12 @@ if ~s.isObjOnly
 end
 
 % Pre-allocate the non-hdata output arguments.
-Obj = nan(1,nLoop,Opt.precision);
+nObj = 1;
+if Opt.objdecomp
+    nObj = nPer;
+end
+Obj = nan(nObj,nLoop,Opt.precision);
+
 if ~s.isObjOnly
     % Regular (non-hdata) output arguments.
     RegOutp = struct();
@@ -102,7 +107,7 @@ if ~s.isObjOnly
 end
 
 % Indices of shocks occuring in measurement and transition equations.
-[s.mshocks,s.tshocks] = myshocktypes(This);
+[s.mshocks,s.tshocks] = myshocktype(This);
 
 % Prepare struct and options for non-linear simulations (prediction
 % step).
@@ -273,7 +278,7 @@ for iLoop = 1 : nLoop
     end
     % Run prediction error decomposition and evaluate user-requested
     % objective function.
-    [Obj(iLoop),s] = kalman.ped(s,s2,Opt);
+    [Obj(:,iLoop),s] = kalman.ped(s,s2,Opt);
     
     % Return immediately if only the object
     if s.isObjOnly
@@ -580,7 +585,7 @@ end
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
         s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
         s2.isNonlin = true;
-        s2.qAnchors = false(nEqtn,Opt.nonlinearise);
+        s2.qAnchors = false(nEqtn,Opt.nonlinear);
         s2.qAnchors(This.nonlin,:) = true;
         s2.yAnchors = [];
         s2.xAnchors = [];
@@ -588,7 +593,7 @@ end
         s2.euanchors = [];
         s2.weightsA = [];
         s2.weightsU = [];
-        s2.npernonlin = Opt.nonlinearise;
+        s2.npernonlin = Opt.nonlinear;
         s2.tplusk = s2.npernonlin - 1;
         s2.progress = [];
         s2.a0 = [];

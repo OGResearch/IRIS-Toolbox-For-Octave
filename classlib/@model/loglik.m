@@ -69,6 +69,11 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 % Options
 % ========
 %
+% % * `'objDecomp='` [ `true` | *`false`* ] - Decompose the objective
+% function into the contributions of individual time periods (in time
+% domain) or individual frequencies (in frequency domain); the
+% contributions are added as extra rows in the output argument `Obj`.
+%
 % * `'persist='` [ `true` | *`false`* ] -- Pre-process and store the overhead
 % (data and options) for subsequent fast calls.
 %

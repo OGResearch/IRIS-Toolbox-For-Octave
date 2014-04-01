@@ -13,9 +13,10 @@ function [Obj,RegOutp] = myfdlik(This,Inp,~,LikOpt)
 
 s = struct();
 s.noutoflik = length(LikOpt.outoflik);
-s.isObjOnly = narargout == 1;
+s.isObjOnly = nargout == 1;
 
 nAlt = size(This.Assign,3);
+ny = sum(This.nametype == 1);
 ne = sum(This.nametype == 3);
 realSmall = getrealsmall();
 
@@ -37,6 +38,7 @@ if ~LikOpt.zero
     ixFrq(freq == 0) = false;
 end
 ixFrq = find(ixFrq);
+nFrq = length(ixFrq);
 
 % Kronecker delta.
 kr = ones(1,N);
@@ -49,7 +51,12 @@ end
 nLoop = max(nAlt,nData);
 
 % Pre-allocate output data.
-Obj = nan(1,nLoop);
+nObj = 1;
+if LikOpt.objdecomp
+    nObj = nFrq + 1;
+end
+Obj = nan(nObj,nLoop);
+
 if ~s.isObjOnly
     RegOutp = struct();
     RegOutp.V = nan(1,nLoop,LikOpt.precision);
@@ -95,7 +102,9 @@ for iLoop = 1 : nLoop
             S = mytrendarray(This,id,1:nPer,false,iLoop);
             isSstate = any(S(:) ~= 0);
             if isSstate
-                S = fft(S.').';
+                S = S.';
+                S = fft(S);
+                S = S.';
             end
         end
         
@@ -103,6 +112,7 @@ for iLoop = 1 : nLoop
         
     % Fourier transform of deterministic trends.
     isDtrends = false;
+    nOutOfLik = 0;
     if LikOpt.dtrends
         [D,M] = mydtrends4lik(This,LikOpt.ttrend,LikOpt.outoflik,g,iLoop);
         isDtrends = any(D(:) ~= 0);
@@ -115,6 +125,7 @@ for iLoop = 1 : nLoop
             M = fft(M);
             M = ipermute(M,[3,1,2]);
         end
+        nOutOfLik = size(M,2);
     end
         
     % Subtract sstate trends from observations; note that fft(y-s)
@@ -136,21 +147,22 @@ for iLoop = 1 : nLoop
     M = M(~excl,:,:);
     M = M / sqrt(nPer);
     
-    L0 = 0;
-    L1 = 0;
-    L2 = 0;
-    L3 = 0;
-    nobs = 0;
+    L0 = zeros(1,nFrq+1);
+    L1 = zeros(1,nFrq+1);
+    L2 = zeros(nOutOfLik,nOutOfLik,nFrq+1);
+    L3 = zeros(nOutOfLik,nFrq+1);
+    nObs = zeros(1,nFrq+1);
     
+    pos = 0;
     for i = ixFrq
-        freqi = freq(i);
-        deltai = kr(i);
-        yi = yy(:,i);
+        pos = pos + 1;
+        iFreq = freq(i);
+        iDelta = kr(i);
+        iY = y(:,i);
         doOneFrequency();
     end
     
-    [Obj(iLoop),V,Delta,PDelta] = ...
-        kalman.oolik(L0,L1,L2,L3,nobs,LikOpt);
+    [Obj(:,iLoop),V,Delta,PDelta] = kalman.oolik(L0,L1,L2,L3,nObs,LikOpt);
     
     if s.isObjOnly
         continue
@@ -162,21 +174,24 @@ for iLoop = 1 : nLoop
     
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
     function doOneFrequency()
-        nobs = nobs + deltai*nYIncl;
-        ZiW = Z / ((eye(size(T)) - T*exp(-1i*freqi)));
+        nObs(1,1+pos) = iDelta*nYIncl;
+        ZiW = Z / ((eye(size(T)) - T*exp(-1i*iFreq)));
         G = ZiW*Sa*ZiW' + Sy;
         G(diagInx) = real(G(diagInx));
-        L0 = L0 + deltai*real(log(det(G)));
-        L1 = L1 + deltai*real((y(:,i)'/G)*yi);
+        L0(1,1+pos) = iDelta*real(log(det(G)));
+        L1(1,1+pos) = iDelta*real((y(:,i)'/G)*iY);
         if isOutOfLik
             MtGi = M(:,:,i)'/G;
-            L2 = L2 + deltai*real(MtGi*M(:,:,i));
-            L3 = L3 + deltai*real(MtGi*yi);
+            L2(:,:,1+pos) = iDelta*real(MtGi*M(:,:,i));
+            L3(:,1+pos) = iDelta*real(MtGi*iY);
         end
-    end % doOneFrequency().
+    end % doOneFrequency()
+
 
 end

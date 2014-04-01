@@ -34,9 +34,16 @@ K1 = zeros(nb,0);
 pe = zeros(0,1);
 ZP = zeros(0,nb);
 
+% Objective function.
+Obj = NaN;
+if Opt.objdecomp
+    Obj = nan(1,nPer);
+end
+
 % Initialise objective function components.
-sumpeFipe = 0;
-sumlogdetF = 0;
+peFipe = zeros(1,nPer);
+logdetF = zeros(1,nPer);
+
 % Effect of outofliks and fixed init states on a(t).
 Q1 = zeros(nb,nPOut);
 Q2 = eye(nb,nInit);
@@ -51,13 +58,8 @@ isEst = isPout || isInit;
 objRange = S.objrange;
 
 % Initialise sum terms used in out-of-lik estimation.
-if isEst
-    sumMtFiM = 0;
-    sumMtFipe = 0;
-else
-    sumMtFiM = [];
-    sumMtFipe = [];
-end
+MtFiM = zeros(nPOut+nInit,nPOut+nInit,nPer);
+MtFipe = zeros(nPOut+nInit,nPer);
 
 % Initialise matrices that are to be stored.
 if ~S.isObjOnly
@@ -117,7 +119,7 @@ a = S.ainit;
 P = S.Painit;
 
 % Number of actually observed data points.
-nObs = 0;
+nObs = zeros(1,nPer);
 
 % Main loop
 %-----------
@@ -201,7 +203,7 @@ for t = 2 : nPer
         % Only evaluate the cond number if the test is requested by the user.
         condNumber = rcond(F);
         if condNumber < Opt.fmsecondtol || isnan(condNumber)
-            Obj = 1e+10;
+            Obj(1) = 1e+10;
             return
         end
     end
@@ -245,21 +247,21 @@ for t = 2 : nPer
             else
                 MtFi = 0;
             end
-            sumMtFipe = sumMtFipe + MtFi*pex;
-            sumMtFiM = sumMtFiM + MtFi*Mx;
+            MtFipe(:,t) = MtFi*pex;
+            MtFiM(:,:,t) = MtFi*Mx;
         end
         
         % Compute components of the objective function if this period is included
         % in the user specified objective range.
-        nObs = nObs + sum(double(xy));
+        nObs(1,t) = sum(double(xy));
         if Opt.objfunc == 1
             % Likelihood function.
-            sumpeFipe = sumpeFipe + (pex.'/Fx)*pex;
-            sumlogdetF = sumlogdetF + log(det(Fx));
+            peFipe(1,t) = (pex.'/Fx)*pex;
+            logdetF(1,t) = log(det(Fx));
         elseif Opt.objfunc == 2
             % Weighted sum of prediction errors.
             W = Opt.weighting(xy,xy);
-            sumpeFipe = sumpeFipe + pex.'*W*pex;
+            peFipe(1,t) = pex.'*W*pex;
         end
     end
     
@@ -272,8 +274,7 @@ end % End of main for-loop.
 
 % Evaluate common variance scalar, out-of-lik parameters, fixed init
 % conditions, and concentrated likelihood function.
-[Obj,V,est,Pest] = ...
-    kalman.oolik(sumlogdetF,sumpeFipe,sumMtFiM,sumMtFipe,nObs,Opt);
+[Obj,V,est,Pest] = kalman.oolik(logdetF,peFipe,MtFiM,MtFipe,nObs,Opt);
 
 % Store estimates of out-of-lik parameters, `delta`, cov matrix of
 % estimates of out-of-lik parameters, `Pdelta`, fixed init conditions,
@@ -284,7 +285,11 @@ S.init = est(nPOut+1:end,:);
 S.V = V;
 
 if ~S.isObjOnly && S.retCont
-    S.sumMtFiM = sumMtFiM;
+    if isEst
+        S.sumMtFiM = sum(MtFiM,1);
+    else
+        S.sumMtFiM = [];
+    end
 end
 
 
@@ -378,7 +383,7 @@ end
         ac = a + Kc*pec;
         Pc = P - Kc*Zc*P;
         Pc = (Pc + Pc.')/2;
-        % Index of available non-condition observations.
+        % Index of available non-conditioning observations.
         xy = jy & ~cy;
         if any(xy)
             Zx = S.Z(xy,:);

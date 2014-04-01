@@ -25,14 +25,18 @@ nper = length(Range);
 ny = sum(This.nametype == 1);
 
 % Time trend for dtrend equations.
-LikOpt.ttrend = myrange2ttrend(This,Range);
+LikOpt.ttrend = dat2ttrend(Range,This);
 
 if ischar(LikOpt.dtrends)
     LikOpt.dtrends = ~LikOpt.deviation;
 end
 
 % Conditioning measurement variables.
-LikOpt.condition = myselect(This,'y',LikOpt.condition);
+if LikOpt.domain == 't'
+    LikOpt.condition = myselect(This,'y',LikOpt.condition);
+elseif LikOpt.domain == 'f'
+    LikOpt.exclude = myselect(This,'y',LikOpt.exclude);
+end
 
 % Out-of-lik parameters.
 if isempty(LikOpt.outoflik)
@@ -138,7 +142,7 @@ if LikOpt.domain == 't'
             datarequest('xbInit',This,LikOpt.initcond,Range);
         if isempty(xbInitMse)
             nb = size(This.solution{1},2);
-            xbInitMse = zeros(nb,nb,size(ainit,3));
+            xbInitMse = zeros(nb,nb,size(xbInitMean,3));
         end
         doChkNanInit();
         LikOpt.initcond = {xbInitMean,xbInitMse};
