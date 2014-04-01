@@ -1,4 +1,4 @@
-function This = mymodel2model(This,Assign,Opt)
+function This = mymodel2model(This,Asgn,Opt)
 % mymodel2model  [Not a public function] Rebuild model object properties.
 %
 % Backend IRIS function.
@@ -21,9 +21,7 @@ if ~isempty(Opt.epsilon)
 end
 
 % Time origin (base year) for deterministic trends.
-if ~isempty(Opt.torigin) && is.intscalar(Opt.torigin)
-    This.torigin = Opt.torigin;
-end
+This.torigin = Opt.torigin;
 
 % Create model-specific meta data.
 if any(This.nonlin)
@@ -51,23 +49,23 @@ end
 % Pre-allocate solution matrices etc. Also assign zero steady states to
 % shocks and default stdevs.
 doPrealloc();
-if ~isempty(Assign) ...
-        && isstruct(Assign) ...
-        && ~isempty(fieldnames(Assign))
+if ~isempty(Asgn) ...
+        && isstruct(Asgn) ...
+        && ~isempty(fieldnames(Asgn))
     % Check number of alt params in input database. Exclude shocks.
     list = This.name(This.nametype ~= 3);
     maxlength = 1;
     for i = 1 : length(list)
-        if isfield(Assign,list{i}) && isnumeric(Assign.(list{i}))
-            Assign.(list{i}) = transpose(Assign.(list{i})(:));
-            maxlength = max(maxlength,length(Assign.(list{i})));
+        if isfield(Asgn,list{i}) && isnumeric(Asgn.(list{i}))
+            Asgn.(list{i}) = transpose(Asgn.(list{i})(:));
+            maxlength = max(maxlength,length(Asgn.(list{i})));
         end
     end
     % Expand number of alt params if necessary.
     if maxlength > 1
         This = alter(This,maxlength);
     end
-    This = assign(This,Assign);
+    This = assign(This,Asgn);
 end
 
 % Pre-compute symbolic derivatives of

@@ -1,4 +1,4 @@
-function S = parse(This,Opt)
+function [S,Asgn] = parse(This,Opt)
 % parse [Not a public function] Execute theparser object.
 %
 % Backend IRIS function.
@@ -18,12 +18,14 @@ This = altsyntax(This);
 S = struct();
 
 S.blk = [];
+
 S.name = cell(1,0);
 S.nametype = zeros(1,0);
 S.namelabel = cell(1,0);
 S.namealias = cell(1,0);
 S.namevalue = cell(1,0);
 S.nameflag = false(1,0);
+
 S.eqtn = cell(1,0);
 S.eqtntype = zeros(1,0);
 S.eqtnlabel = cell(1,0);
@@ -34,6 +36,7 @@ S.eqtnsign = cell(1,0);
 S.sstatelhs = cell(1,0);
 S.sstaterhs = cell(1,0);
 S.sstatesign = cell(1,0);
+
 S.maxt = zeros(1,0);
 S.mint = zeros(1,0);
 
@@ -46,6 +49,7 @@ invalid.allBut = false;
 invalid.flag = {};
 invalid.timeSubs = {};
 invalid.emptyEqtn = {};
+invalid.stdcorr = {};
 
 % Read individual blocks and check for unknown keywords.
 [blk,invalid.key,invalid.allBut] = readblk(This);
@@ -59,6 +63,15 @@ for iBlk = find(This.nameBlk)
         S(iBlk).namevalue,S(iBlk).nameflag] ...
         = parsenames(This,S(iBlk).blk);
     S(iBlk).nametype = This.nameType(iBlk)*ones(size(S(iBlk).name));
+    if ~This.stdcorrAllowed(iBlk)
+        % Report all names starting with `std_` or `corr_`.
+        ixStd = strncmp(S(iBlk).name,'std_',4);
+        ixCorr = strncmp(S(iBlk).name,'corr_',5);
+        ixStdcorr = ixStd | ixCorr;
+        if any(ixStdcorr)
+            invalid.stdcorr = [invalid.stdcorr,S(iBlk).name(ixStdcorr)];
+        end
+    end
 end
 
 % Read names in flag block (only one flag block allowed).
@@ -99,11 +112,96 @@ if Opt.sstateonly
     S = xxSstateOnly(S);
 end
 
-% Nested functions.
+% Clear multiple names if allowed; the last occurence will be used within
+% each block. Mutliple names defined in different blocks are never allowed,
+% and will be caught in `doChkMultiple()`.
+if Opt.multiple
+    doClearMultiple();
+end
+
+% Collect in-file assignments, evaluate them, add to the Asgn database, and
+% remove all references to stdcorr names in name blocks.
+[This,S] = assign(This,S);
+Asgn = This.assign;
+
+% Verify naming rules.
+doChkNamingRules();
+
+% Check for multiple names.
+doChkMultiple();
+
+
+% Nested functions...
+
+
+%**************************************************************************
+    function doChkNamingRules()
+        % Names must not start with 0-9 or _.
+        iinx = This.nameBlk;
+        list = [S(iinx).name];
+        valid = cellfun(@isempty,regexp(list,'^[0-9_]','once'));
+        if any(~valid)
+            utils.error('theparser:parse',[utils.errorparsing(This), ....
+                'This is not a valid name: ''%s''.'], ...
+                list{~valid});
+        end
+        % The name `ttrend` is a reserved name for time trend in
+        % `!dtrends`.
+        valid = ~strcmp(list,'ttrend');
+        if any(~valid)
+            utils.error('theparser:parse',[utils.errorparsing(This), ....
+                'The reserved keyword ''ttrend'' ', ...
+                'must not be used as a name.'], ...
+                list{~valid});
+        end
+        % Shock names must not contain double scores because of the way
+        % cross-correlations are referenced.
+        iinx = This.stdcorrBasis;
+        list = [S(iinx).name];
+        valid = cellfun(@isempty,strfind(list,'__'));
+        if any(~valid)
+            utils.error('theparser:parse',[utils.errorparsing(This), ....
+                'Names of shocks and residuals are not allowed to include ', ...
+                'a double underscore: ''%s''.'], ...
+                list{~valid});
+        end
+    end % doChkNamingRules()
+
+
+%**************************************************************************
+    function doClearMultiple()
+        % Take the last defined/assigned name in each name block.
+        for iiBlk = find(This.nameBlk)
+            [~,ixRemove] = strfun.unique(S(iiBlk).name);
+            if any(ixRemove)
+                S(iiBlk).name(ixRemove) = [];
+                S(iiBlk).nametype(ixRemove) = [];
+                S(iiBlk).namelabel(ixRemove) = [];
+                S(iiBlk).namealias(ixRemove) = [];
+                S(iiBlk).namevalue(ixRemove) = [];
+                S(iiBlk).nameflag(ixRemove) = [];
+            end
+        end
+    end % doClearMultiple()
+
+
+%**************************************************************************
+    function doChkMultiple()
+        % Check for multiple names unless `'multiple=' true`.
+        iinx = This.nameBlk;
+        list = [S(iinx).name];
+        [~,~,ixMultiple] = strfun.unique(list);
+        if any(ixMultiple)
+            utils.error('theparser:parse',[utils.errorparsing(This), ...
+                'This name is declared more than once: ''%s''.'], ...
+                list{ixMultiple});
+        end
+    end % doChkMultiple()
 
 
 %**************************************************************************
     function doChkInvalid()
+        ep = utils.errorparsing(This);
         
         % Blocks marked as essential cannot be empty.
         for iiBlk = find(This.essential)
@@ -112,23 +210,23 @@ end
                 caller(end+1) = ' '; %#ok<AGROW>
             end
             if isempty(S(iiBlk).blk) || all(S(iiBlk).blk <= char(32))
-                utils.error('theparser:parse',[errorparsing(This), ...
+                utils.error('theparser:parse',[ep,...
                     'Cannot find a non-empty ''%s'' block. ', ...
                     'This is not a valid ',caller,'file.'], ...
                     This.blkName{iiBlk});
             end
         end
         
-        % Inconsistent use of `!all_but` inn `!log_variables` sections.
+        % Inconsistent use of `!all_but` in `!log_variables` sections.
         if invalid.allBut
-            utils.error('theparser:parse',[errorparsing(This), ...
+            utils.error('theparser:parse',[ep, ...
                 'The keyword !all_but may appear in either all or none of ', ...
                 'the !log_variables sections.']);
         end
         
         % Invalid keyword.
         if ~isempty(invalid.key)
-            utils.error('theparser:parse',[errorparsing(This), ...
+            utils.error('theparser:parse',[ep, ...
                 'This is not a valid keyword: ''%s''.'], ...
                 invalid.key{:});
         end
@@ -136,16 +234,16 @@ end
         % Invalid names on the log-variable list.
         if ~isempty(invalid.flag)
             flagBlkname = This.blkName{This.flagBlk};
-            utils.error('theparser:parse',[errorparsing(This), ...
+            utils.error('theparser:parse',[ep, ...
                 'This name is not allowed ', ...
-                'on the ''',flagBlkname,''' list: ''%s''.'], ...
+                'in the ''',flagBlkname,''' list: ''%s''.'], ...
                 invalid.flag{:});
         end
         
         % Invalid time subscripts.
         if ~isempty(invalid.timeSubs)
             invalid.timeSubs = restore(invalid.timeSubs,This.labels);
-            utils.error('theparser:parse',[errorparsing(This), ...
+            utils.error('theparser:parse',[ep, ...
                 'Cannot evaluate time index in this equation: ''%s''.'], ...
                 invalid.timeSubs{:});
         end
@@ -153,12 +251,19 @@ end
         % Equations that consist of labels only (throw a warning, not error).
         if ~isempty(invalid.emptyEqtn)
             invalid.emptyEqtn = restore(invalid.emptyEqtn,This.labels);
-            utils.warning('theparser:parse',[errorparsing(This), ...
+            utils.warning('theparser:parse',[ep, ...
                 'This equation is empty, and will be removed: ''%s''.'], ...
                 invalid.emptyEqtn{:});
         end            
         
+        % Names starting with 'std_' or 'corr_' except those allowed.
+        if ~isempty(invalid.stdcorr)
+            utils.error('theparser:parse',[ep, ...
+                'This is not a valid name of its type: ''%s''.'], ...
+                invalid.stdcorr{:});
+        end
     end % doChkInvalid()
+
 
 end
 

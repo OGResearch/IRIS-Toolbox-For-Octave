@@ -1,4 +1,4 @@
-function [This,A] = myfile2model(This,FName,Opt)
+function [This,Asgn] = myfile2model(This,FName,Opt)
 % myfile2model  [Not a public function] Translate model file to model object properties.
 %
 % Backend IRIS function.
@@ -21,7 +21,7 @@ This.Export = p.Export;
 export(This);
 
 % Parse the model code proper.
-[This,A] = myparse(This,p,Opt);
+[This,Asgn] = myparse(This,p,Opt);
 This.Comment = p.Comment;
 
 % Mark the build.

@@ -13,6 +13,8 @@ function This = model(This)
 This.blkName{end+1} = '!measurement_variables';
 This.nameType(end+1) = 1;
 This.nameBlk(end+1) = true;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = true;
@@ -22,6 +24,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!transition_variables';
 This.nameBlk(end+1) = true;
 This.nameType(end+1) = 2;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = true;
@@ -31,6 +35,8 @@ This.essential(end+1) = true;
 This.blkName{end+1} = '!parameters';
 This.nameBlk(end+1) = true;
 This.nameType(end+1) = 4;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = true;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -40,6 +46,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!log_variables';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = true;
 This.flaggable(end+1) = false;
@@ -49,6 +57,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!measurement_equations';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -58,6 +68,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!transition_equations';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -67,6 +79,8 @@ This.essential(end+1) = true;
 This.blkName{end+1} = '!dtrends';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -76,6 +90,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!reporting_equations';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -84,7 +100,9 @@ This.essential(end+1) = false;
 % 9 - Measurement shocks.
 This.blkName{end+1} = '!measurement_shocks';
 This.nameBlk(end+1) = true;
-This.nameType(end+1) = 31;
+This.nameType(end+1) = 3.1;
+This.stdcorrBasis(end+1) = true;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -93,7 +111,9 @@ This.essential(end+1) = false;
 % 10 - Transition shocks.
 This.blkName{end+1} = '!transition_shocks';
 This.nameBlk(end+1) = true;
-This.nameType(end+1) = 32;
+This.nameType(end+1) = 3.2;
+This.stdcorrBasis(end+1) = true;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -103,6 +123,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!links';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -112,6 +134,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!autoexogenise';
 This.nameBlk(end+1) = false;
 This.nameType(end+1) = NaN;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = true;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -121,6 +145,8 @@ This.essential(end+1) = false;
 This.blkName{end+1} = '!exogenous_variables';
 This.nameBlk(end+1) = true;
 This.nameType(end+1) = 5;
+This.stdcorrBasis(end+1) = false;
+This.stdcorrAllowed(end+1) = false;
 This.eqtnBlk(end+1) = false;
 This.flagBlk(end+1) = false;
 This.flaggable(end+1) = false;
@@ -160,6 +186,14 @@ This.otherKey = { ...
     '!linear', ...
     '!ttrend', ...
     '!min', ...
+    };
+
+% Order in which values assigned to names will be evaluated in assign().
+This.assignBlkOrd = { ...
+    '!parameters', ...
+    '!exogenous_variables', ...
+    '!transition_variables', ...
+    '!measurement_variables', ...
     };
 
 end

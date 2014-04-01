@@ -1,4 +1,4 @@
-function [This,Assign] = myparse(This,P,Opt)
+function [This,Asgn] = myparse(This,P,Opt)
 % myparse  [Not a public function] Parse model code.
 %
 % Backend IRIS function.
@@ -9,7 +9,7 @@ function [This,Assign] = myparse(This,P,Opt)
 
 %--------------------------------------------------------------------------
 
-Assign = P.assign;
+ep = utils.errorparsing(This);
 
 % Linear or non-linear model
 %----------------------------
@@ -17,17 +17,31 @@ Assign = P.assign;
 % Linear or non-linear model. First, check for the presence of th keyword
 % `!linear` in the model code. However, if the user have specified the
 % `'linear='` option in the `model` function, use that.
-[This.linear,P.code] = strfun.findremove(P.code,'!linear');
-if ~isempty(Opt.linear)
-    This.linear = Opt.linear;
+if ~isempty(strfind(P.code,'!linear'))
+    P.code = strrep(P.code,'!linear','');
+    
+    % ##### Mar 2014 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['Using the keyword !linear in model files is obsolete, ', ...
+        'and this feature will be removed from a future version of IRIS. ', ...
+        'Use the option ''linear='' in the function model() instead.']);
+
+    This.linear = true;
 end
 
-% Run the theta parser
-%----------------------
+% Run the parser
+%----------------
 
-% Run theparser on the model file.
 the = theparser('model',P);
-S = parse(the,Opt);
+[S,Asgn] = parse(the,Opt);
+
+nameBlkOrd = blkpos(the,{ ...
+    '!measurement_variables', ...
+    '!transition_variables', ...
+    '!measurement_shocks', ...
+    '!transition_shocks', ...
+    '!parameters', ...
+    '!exogenous_variables'});
 
 if ~Opt.declareparameters
     doDeclareParameters();
@@ -36,124 +50,11 @@ end
 % Variables, shocks and parameters
 %----------------------------------
 
-blkOrder = [1,2,9,10,3,13];
-
 % Read the individual names of variables, shocks, and parameters.
-name = [S(blkOrder).name];
-nameType = [S(blkOrder).nametype];
-nameLabel = [S(blkOrder).namelabel];
-nameAlias = [S(blkOrder).namealias];
-nameValue = [S(blkOrder).namevalue];
-
-% Re-type shocks.
-shockType = nan(size(nameType));
-shockType(nameType == 31) = 1; % Measurement shocks.
-shockType(nameType == 32) = 2; % Transition shocks.
-nameType(nameType == 31 | nameType == 32) = 3;
-
-% Check the following naming rules:
-%
-% * Names must not start with 0-9 or _.
-% * The name `ttrend` is a reserved name for time trend in `!dtrends`.
-% * Shock names must not contain double scores because of the way
-% cross-correlations are referenced.
-%
-invalid = ~cellfun(@isempty,regexp(name,'^[0-9_]','once')) ...
-    | strcmp(name,'ttrend') ...
-    | (~cellfun(@isempty,strfind(name,'__')) & nameType == 3);
-if any(invalid)
-    % Invalid variable or parameter names.
-    utils.error('model',[utils.errorparsing(This), ....
-        'This is not a valid variable, shock, or parameter name: ''%s''.'], ...
-        name{invalid});
-end
-
-% Evaluate values assigned in the model code and/or in the `assign`
-% database. Evaluate parameters first so that they are available for
-% steady-state expressions.
-
-    function C = doReplaceNameValue(C)
-        if any(strcmpi(C,{'Inf','Nan'}))
-            return
-        end
-        C = ['Assign.',C];
-    end
-
-nameValue = strtrim(nameValue);
-ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-rplFunc = @doReplaceNameValue; %#ok<NASGU>
-nameValue = regexprep(nameValue,ptn,'${rplFunc($0)}');
-if isstruct(Assign) && ~isempty(Assign)
-    doNotEvalList = fieldnames(Assign);
-else
-    doNotEvalList = {};
-end
-for iType = 5 : -1 : 1
-    % Assign a value from declaration only if not in the input database.
-    for j = find(nameType == iType)
-        if isempty(nameValue{j}) || any(strcmp(name{j},doNotEvalList))
-            continue
-        end
-        try
-            temp = eval(nameValue{j});
-            if isnumeric(temp) && length(temp) == 1
-                Assign.(name{j}) = temp;
-            end
-        catch %#ok<CTCH>
-            Assign.(name{j}) = NaN;
-        end
-    end
-end
-
-% Find all names starting with `std_` or `corr_`.
-stdInx = strncmp(name,'std_',4);
-corrInx = strncmp(name,'corr_',5);
-
-% Variables or shock names cannot start with `std_` or `corr_`.
-invalid = (stdInx | corrInx) & nameType ~= 4;
-if any(invalid)
-    utils.error('model',[utils.errorparsing(This), ...
-        'This is not a valid variable or shock name: ''%s''.'], ...
-        name{invalid});
-end
-
-% Remove the declared `std_` and `corr_` names from the list of names.
-if any(stdInx) || any(corrInx)
-    stdName = name(stdInx);
-    corrName = name(corrInx);
-    name(stdInx | corrInx) = [];
-    nameLabel(stdInx | corrInx) = [];
-    nameAlias(stdInx | corrInx) = [];
-    nameType(stdInx | corrInx) = [];
-end
-
-% Check for multiple names unless `'multiple=' true`.
-if ~Opt.multiple
-    nonUnique = strfun.nonunique(name);
-    if ~isempty(nonUnique)
-        utils.error('model',[utils.errorparsing(This), ...
-            'This name is declared more than once: ''%s''.'], ...
-            nonUnique{:});
-    end
-else
-    % Take the last defined/assigned unique name.
-    [name,inx] = unique(name,'last');
-    nameType = nameType(inx);
-    shockType = shockType(inx);
-    nameLabel = nameLabel(inx);
-    nameAlias = nameAlias(inx);
-end
-
-% Sort variable, shock and parameter names by the nametype.
-[This.nametype,inx] = sort(nameType);
-This.name = name(inx);
-This.namelabel = nameLabel(inx);
-This.namealias = nameAlias(inx);
-shockType = shockType(inx);
-shockType = shockType(This.nametype == 3);
-
-% Check that std and corr names refer to valid shock names.
-doChkStdcorrNames();
+This.name = [S(nameBlkOrd).name];
+This.nametype = [S(nameBlkOrd).nametype];
+This.namelabel = [S(nameBlkOrd).namelabel];
+This.namealias = [S(nameBlkOrd).namealias];
 
 % Log variables
 %---------------
@@ -196,7 +97,7 @@ This.nonlin(end+(1:n)) = false;
     = xxReadEqtns(S(6));
 
 if multipleLoss
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'Multiple loss functions found in transition equations.']);
 end
 
@@ -231,19 +132,19 @@ end
 [This,logMissing,invalid,multipleLoss] = xxReadDtrends(This,S(7));
 
 if ~isempty(logMissing)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'The LHS variable must be logarithmised in this dtrend equation: ''%s''.'], ...
         logMissing{:});
 end
 
 if ~isempty(invalid)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'Invalid LHS in this dtrend equation: ''%s''.'], ...
         invalid{:});
 end
 
 if ~isempty(multipleLoss)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'Mutliple dtrend equations ', ...
         'for this measurement variable: ''%s''.'], ...
         multipleLoss{:});
@@ -254,7 +155,7 @@ end
 [This,invalid] = xxReadLinks(This,S(11));
 
 if ~isempty(invalid)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'Invalid LHS in this dynamic link: ''%s''.'], ...
         invalid{:});
 end
@@ -264,13 +165,13 @@ end
 [This,invalid,nonUnique] = xxReadAutoexogenise(This,S(12));
 
 if ~isempty(invalid)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'Invalid autoexogenise definition: ''%s''.'], ...
         invalid{:});
 end
 
 if ~isempty(nonUnique)
-    utils.error('model',[utils.errorparsing(This), ...
+    utils.error('model',[ep, ...
         'This shock is included in more than one ', ...
         'autoexogenise definitions: ''%s''.'], ...
         nonUnique{:});
@@ -362,6 +263,10 @@ if ~This.linear
     This.eqtnS = regexprep(This.eqtnS, ...
         '\(%\(!(\d+)\)\)\{@([+\-]\d+)\}', ...
         '(%(!$1)$2*%%(!$1))');
+    
+    % Replace ?(!10) with g(10).
+    This.eqtnS = strrep(This.eqtnS,'?(!','g(');
+    
 else
     This.eqtnS(:) = {''};
 end
@@ -401,23 +306,28 @@ This.eqtnF = strrep(This.eqtnF,'!','');
 % references.
 doChkTimeSsref();
 
-% Find the occurences of variable, shocks, and parameters in individual
-% equations.
-This = myoccurence(This,Inf);
-
 if isLoss
     % Find the closing bracket in min(...), retrieve the discount factor, and
     % remove the whole term from the loss function equation.
-    [close,lossDisc] = strfun.matchbrk(This.eqtnF{lossPos},4);
-    if isempty(close)
-        utils.error('model:myparse',[utils.errorparsing(This), ...
+    [endDisc,lossDisc] = strfun.matchbrk(This.eqtnF{lossPos},4);
+    if isempty(endDisc)
+        utils.error('model:myparse',[ep, ...
             'Syntax error in the loss function.']);
     end
     if isempty(lossDisc)
-        utils.error('model',[utils.errorparsing(This), ...
+        utils.error('model',[ep, ...
             'Loss function discount factor is empty.']);
     end    
-    This.eqtnF{lossPos}(1:close) = '';
+end
+
+% Find the occurences of variable, shocks, and parameters in individual
+% equations, including the loss function and its discount factor. The
+% occurences in the loss function will be replaced later with the
+% occurences in the Lagrangian derivatives.
+This = myoccurrence(This,Inf); 
+
+if isLoss
+    This.eqtnF{lossPos}(1:endDisc) = '';
 end
 
 % Check equation syntax before we compute optimal policy but after we
@@ -426,9 +336,15 @@ if Opt.chksyntax
     mychksyntax(This);
 end
 
+% Check the model structure -- part 1 before the loss function is processed.
+[errMsg,errList] = xxChkStructure1(This);
+if ~isempty(errMsg)
+    utils.error('model',[ep,errMsg],errList{:});
+end
+
 if isLoss
     % Create optimal policy equations by adding the derivatives of the
-    % lagrangian wrt to the original transition variables. These `naddeqtn` new
+    % Lagrangian wrt to the original transition variables. These `naddeqtn` new
     % equation will be put in place of the loss function and the `naddeqtn-1`
     % empty placeholders.
     [newEqtn,newEqtnF,newEqtnS,NewNonlin] ...
@@ -449,7 +365,7 @@ if isLoss
     end
     
     % Update occurence arrays with new equations.
-    This = myoccurence(This,lossPos:last);
+    This = myoccurrence(This,lossPos:last);
 end
 
 % Finishing touches
@@ -459,11 +375,10 @@ end
 This.occur = sparse(This.occur(:,:));
 This.occurS = sparse(This.occurS);
 
-% Check the model structure.
-[errMsg,errList] = xxChkStructure(This,shockType);
+% Check the model structure -- part 2 after the loss function is processed.
+[errMsg,errList] = xxChkStructure2(This);
 if ~isempty(errMsg)
-    utils.error('model', ...
-        [utils.errorparsing(This),errMsg],errList{:});
+    utils.error('model',[ep,errMsg],errList{:});
 end
 
 % Create placeholders for non-linearised equations.
@@ -473,6 +388,9 @@ This.eqtnN(:) = {''};
 % Vectorise operators in full equations; this is needed in numeric
 % differentiation.
 This.eqtnF = strfun.vectorise(This.eqtnF);
+
+% Retype shocks.
+This.nametype = floor(This.nametype);
 
 
 % Nested functions...
@@ -484,7 +402,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
             | ~cellfun(@isempty,strfind(This.eqtnS,'{'));
         if any(inx)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Misplaced or invalid time subscript ', ...
                 'in this equation: ''%s'''], ...
                 This.eqtn{inx});
@@ -493,7 +411,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'&')) ...
             | ~cellfun(@isempty,strfind(This.eqtnS,'&'));
         if any(inx)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Misplaced or invalid steady-state reference ', ...
                 'in this equation: ''%s'''], ...
                 This.eqtn{inx});
@@ -505,14 +423,21 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
     function doDeclareParameters()
         
         % All declared names except parameters.
-        inx = true(1,length(S));
-        inx(3) = false;
-        declaredNames = [S(inx).name];
+        pos = blkpos(the,{ ...
+            '!measurement_variables', ...
+            '!transition_variables', ...
+            '!measurement_shocks', ...
+            '!transition_shocks', ...
+            '!exogenous_variables'});
+        declaredNames = [S(pos).name];
         
-        % All names occuring in equations.
-        c = [S.eqtn];
-        c = [c{:}];
-        allNames = regexp(c,'\<[A-Za-z]\w*\>(?![\(\.])','match');
+        % All names occuring in transition and measurement equations.
+        pos = blkpos(the,{ ...
+            '!measurement_equations', ...
+            '!transition_equations'});
+        allEqtn = [S(pos).eqtn];
+        allEqtn = [allEqtn{:}];
+        allNames = regexp(allEqtn,'\<[A-Za-z]\w*\>(?![\(\.])','match');
         allNames = unique(allNames);
         
         % Determine residual names.
@@ -520,51 +445,17 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 
         % Re-create the parameter declaration section.
         nAdd = length(addNames);
-        S(3).name = addNames;
-        S(3).nametype = 4*ones(1,nAdd);
+        pos = blkpos(the,'!parameters');
+        S(pos).name = addNames;
+        S(pos).nametype = 4*ones(1,nAdd);
         tempCell = cell(1,nAdd);
         tempCell(:) = {''};
-        S(3).namelabel = tempCell;
-        S(3).namealias = tempCell;
-        S(3).namevalue = tempCell;
-        S(3).nameflag = false(1,nAdd);
+        S(pos).namelabel = tempCell;
+        S(pos).namealias = tempCell;
+        S(pos).namevalue = tempCell;
+        S(pos).nameflag = false(1,nAdd);
         
     end % doDeclareParameters()
-
-
-%**************************************************************************
-    function doChkStdcorrNames()
-        
-        if ~any(stdInx) && ~any(corrInx)
-            % No std or corr names declared.
-            return
-        end
-        
-        if ~isempty(stdName)
-            % Check that all std names declared by the user refer to a valid shock
-            % name.
-            [ans,pos] = mynameposition(This,stdName); %#ok<NOANS,ASGLU>
-            invalid = stdName(isnan(pos));
-            if ~isempty(invalid)
-                utils.error('model',[utils.errorparsing(This), ...
-                    'This is not a valid std deviation name: ''%s''.'], ...
-                    invalid{:});
-            end
-        end
-        
-        if ~isempty(corrName)
-            % Check that all corr names declared by the user refer to valid shock
-            % names.
-            [ans,pos] = mynameposition(This,corrName); %#ok<NOANS,ASGLU>
-            invalid = corrName(isnan(pos));
-            if ~isempty(invalid)
-                utils.error('model',[utils.errorparsing(This), ...
-                    'This is not a valid cross-correlation name: ''%s''.'], ...
-                    invalid{:});
-            end
-        end
-        
-    end % doChkStdcorrNames()
 
 
 %**************************************************************************
@@ -614,14 +505,14 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         
         % Report std or corr names used in equations other than links.
         if ~isempty(stdcorr)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Std or corr name ''%s'' cannot be used in ''%s''.'], ...
                 stdcorr{:});
         end
         
         % Report non-function names that have not been declared.
         if ~isempty(undeclared)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Undeclared or mistyped name ''%s'' in ''%s''.'], ...
                 undeclared{:});
         end
@@ -636,7 +527,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         % Not allowed in linear models.
         if This.linear
             if any(inx)
-                utils.error('model',[utils.errorparsing(This), ...
+                utils.error('model',[ep, ...
                     'Steady-state references not allowed ', ...
                     'in linear models: ''%s''.'], ...
                     This.eqtn{inx});
@@ -647,7 +538,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         % Not allowed in deterministic trends.
         temp = inx & This.eqtntype == 3;
         if any(temp)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Steady-state references not allowed ', ...
                 'in dtrends equations: ''%s''.'], ...
                 This.eqtn{temp});
@@ -655,7 +546,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         % Not allowed in dynamic links.
         temp = inx & This.eqtntype == 4;
         if any(temp)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'Steady-state references not allowed ', ...
                 'in dynamic links: ''%s''.'], ...
                 This.eqtn{temp});
@@ -672,13 +563,20 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         % lagrangian wrt to the individual variables.
         nAddEqtn = sum(This.nametype == 2) - 1;
         nAddName = sum(This.eqtntype == 2) - 1;
-        % The default name is |'Mu_Eq%g'| but can be changed through the
+        % The default name is `Mu_Eq%g` but can be changed through the
         % option `'multiplierName='`.
         newName = cell(1,nAddName-1);
         for ii = 1 : nAddName
             newName{ii} = sprintf(Opt.multipliername,ii);
         end
-        % Insert the new names between at the beginning of the blocks of existing
+        [~,inx] = strfun.unique(newName);
+        if any(inx)
+            utils.error('model:myparse',[ep, ...
+                'Name template for optimal policy multipliers ', ...
+                'does not produce unique names: ''%s''.'], ....
+                Opt.multipliername);
+        end
+        % Insert the new names between at the beginning of the block of existing
         % transition variables.
         preInx = This.nametype < 2;
         postInx = This.nametype >= 2;
@@ -701,7 +599,6 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         This.eqtnalias(end+(1:nAddEqtn)) = {''};
         This.nonlin(end+(1:nAddEqtn)) = false;
         This.eqtntype(end+(1:nAddEqtn)) = 2;
-        
         function doInsert(Field,New)
             if length(New) == 1 && nAddName > 1
                 New = repmat(New,1,nAddName);
@@ -718,7 +615,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
         % dochkemptyeqtn  Check for empty full equations.
         emptyInx = cellfun(@isempty,This.eqtnF);
         if any(emptyInx)
-            utils.error('model',[utils.errorparsing(This), ...
+            utils.error('model',[ep, ...
                 'This equation is empty: ''%s''.'], ...
                 This.eqtn{emptyInx});
         end
@@ -875,17 +772,18 @@ end % xxReadDtrends()
 %**************************************************************************
 function [This,Invalid] = xxReadLinks(This,S)
 
-nname = length(This.name);
-neqtn = length(S.eqtn);
+nName = length(This.name);
+nEqtn = length(S.eqtn);
 
-valid = false(1,neqtn);
-refresh = nan(1,neqtn);
-for iEq = 1 : neqtn
+valid = false(1,nEqtn);
+refresh = nan(1,nEqtn);
+inxE = floor(This.nametype) == 3;
+for iEq = 1 : nEqtn
     if isempty(S.eqtn{iEq})
         continue
     end
     [assignInx,stdcorrInx] = modelobj.mynameindex( ...
-        This.name,This.name(This.nametype == 3),S.eqtnlhs{iEq});
+        This.name,This.name(inxE),S.eqtnlhs{iEq});
     %index = strcmp(This.name,S.eqtnlhs{iEq});
     if any(assignInx)
         % The LHS name is a variable, shock, or parameter name.
@@ -894,18 +792,18 @@ for iEq = 1 : neqtn
     elseif any(stdcorrInx)
         % The LHS name is a std or corr name.
         valid(iEq) = true;
-        refresh(iEq) = nname + find(stdcorrInx);
+        refresh(iEq) = nName + find(stdcorrInx);
     end
 end
 
 Invalid = S.eqtn(~valid);
-This.eqtn(end+(1:neqtn)) = S.eqtn;
-This.eqtnF(end+(1:neqtn)) = S.eqtnrhs;
-This.eqtnS(end+(1:neqtn)) = {''};
-This.eqtnlabel(end+(1:neqtn)) = S.eqtnlabel;
-This.eqtnalias(end+(1:neqtn)) = S.eqtnalias;
-This.eqtntype(end+(1:neqtn)) = 4;
-This.nonlin(end+(1:neqtn)) = false;
+This.eqtn(end+(1:nEqtn)) = S.eqtn;
+This.eqtnF(end+(1:nEqtn)) = S.eqtnrhs;
+This.eqtnS(end+(1:nEqtn)) = {''};
+This.eqtnlabel(end+(1:nEqtn)) = S.eqtnlabel;
+This.eqtnalias(end+(1:nEqtn)) = S.eqtnalias;
+This.eqtntype(end+(1:nEqtn)) = 4;
+This.nonlin(end+(1:nEqtn)) = false;
 This.Refresh = refresh;
 
 end % xxReadLinks()
@@ -922,16 +820,17 @@ end % xxReadautoExogenise()
 
 
 %**************************************************************************
-function [ErrMsg,ErrList] = xxChkStructure(This,shockType)
+function [ErrMsg,ErrList] = xxChkStructure1(This)
 
 nEqtn = length(This.eqtn);
 nName = length(This.name);
 tZero = This.tzero;
 occurF = This.occur;
-if issparse(occurF)
+if size(occurF,3) == 1
    nt = size(occurF,2) / nName;
    occurF = reshape(full(occurF),[nEqtn,nName,nt]);
 end
+occurS = This.occurS;
 
 ErrMsg = '';
 ErrList = {};
@@ -939,6 +838,146 @@ ErrList = {};
 % Lags and leads.
 tt = true(1,size(occurF,3));
 tt(tZero) = false;
+
+flNameType = floor(This.nametype);
+
+% No lags/leads of measurement variables.
+aux = any(any(occurF(:,This.nametype == 1,tt),3),1);
+if any(aux)
+    ErrList = This.name(This.nametype == 1);
+    ErrList = ErrList(aux);
+    ErrMsg = ...
+        'This measurement variable occurs with a lag/lead: ''%s''.';
+    return
+end
+
+% No lags/leads of shocks.
+aux = any(any(occurF(:,flNameType == 3,tt),3),1);
+if any(aux)
+    ErrList = This.name(flNameType == 3);
+    ErrList = ErrList(aux);
+    ErrMsg = 'This shock occurs with a lag/lead: ''%s''.';
+    return
+end
+
+% No lags/leads of parameters.
+aux = any(any(occurF(:,This.nametype == 4,tt),3),1);
+if any(aux)
+    ErrList = This.name(This.nametype == 4);
+    ErrList = ErrList(aux);
+    ErrMsg = 'This parameter occurs with a lag/lead: ''%s''.';
+    return
+end
+
+% Lags and leads of exogenous variables are capture as misplaced time
+% subscripts.
+
+% No lags/leads of exogenous variables.
+% check = any(any(occurF(:,This.nametype == 5,tt),3),1);
+% if any(check)
+%     ErrList = This.name(This.nametype == 4);
+%     ErrList = ErrList(check);
+%     ErrMsg = 'This exogenous variables occurs with a lag/lead: ''%s''.';
+%     return
+% end
+
+% No measurement variables in transition equations.
+aux = any(any(occurF(This.eqtntype == 2,This.nametype == 1,:),3),2);
+if any(aux)
+    ErrList = This.eqtn(This.eqtntype == 2);
+    ErrList = ErrList(aux);
+    ErrMsg = ['This transition equation refers to ', ...
+        'measurement variable(s): ''%s''.'];
+    return
+end
+
+% No leads of transition variables in measurement equations.
+tt = true([1,size(occurF,3)]);
+tt(1:tZero) = false;
+aux = any(any(occurF(This.eqtntype == 1,This.nametype == 2,tt),3),2);
+if any(aux)
+    ErrList = This.eqtn(This.eqtntype == 1);
+    ErrList = ErrList(aux);
+    ErrMsg = ['Lead(s) of transition variable(s) in this ', ...
+        'measurement equation: ''%s''.'];
+    return
+end
+
+% Current date of any measurement variable in each measurement
+% equation.
+aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),2);
+if any(aux)
+    ErrList = This.eqtn(This.eqtntype == 1);
+    ErrList = ErrList(aux);
+    ErrMsg = ['No current-dated measurement variables ', ...
+        'in this measurement equation: ''%s''.'];
+    return
+end
+
+if any(flNameType == 3)
+    % Find transition shocks in measurement equations.
+    aux = any(occurF(This.eqtntype == 1,This.nametype == 3.2,tZero),1);
+    if any(aux)
+        ErrList = This.name(This.nametype == 3.2);
+        ErrList = ErrList(aux);
+        ErrMsg = ['This transition shock occurs ', ...
+            'in measurement equation(s): ''%s''.'];
+        return
+    end
+    % Find measurement shocks in transition equations.
+    aux = any(occurF(This.eqtntype == 2,This.nametype == 3.1,tZero),1);
+    if any(aux)
+        ErrList = This.name(This.nametype == 3.1);
+        ErrList = ErrList(aux);
+        ErrMsg = ['This measurement shock occurs ', ...
+            'in transition equation(s): ''%s''.'];
+        return
+    end
+end
+
+% Only parameters and exogenous variables can occur in deterministic trend
+% equations.
+rows = This.eqtntype == 3;
+cols = This.nametype < 4;
+check = any(any(occurF(rows,cols,:),3),2);
+if any(check)
+    ErrList = This.eqtn(rows);
+    ErrList = ErrList(check);
+    ErrMsg = ['The RHS of this dtrend equation ', ...
+        'refers to name(s) ', ...
+        'other than parameters or exogenous variables: ''%s''.'];
+    return
+end
+
+% Exogenous variables only in dtrend equations.
+rows = This.eqtntype ~= 3;
+cols = This.nametype == 5;
+check = any(any(occurF(rows,cols,:),3),2) | any(occurS(rows,cols),2);
+if any(check)
+    ErrList = This.eqtn(rows);
+    ErrList = ErrList(check);
+    ErrMsg = ['Exogenous variables allowed only in ', ...
+        'dtrend equations: ''%s''.'];
+    return
+end
+
+end % xxChkStructure1()
+
+
+%**************************************************************************
+function [ErrMsg,ErrList] = xxChkStructure2(This)
+
+nEqtn = length(This.eqtn);
+nName = length(This.name);
+tZero = This.tzero;
+occurF = This.occur;
+if size(occurF,3) == 1
+   nt = size(occurF,2) / nName;
+   occurF = reshape(full(occurF),[nEqtn,nName,nt]);
+end
+
+ErrMsg = '';
+ErrList = {};
 
 % At least one transition variable.
 if ~any(This.nametype == 2)
@@ -1013,125 +1052,4 @@ if nte ~= ntv
     return
 end
 
-% No lags/leads of measurement variables.
-aux = any(any(occurF(:,This.nametype == 1,tt),3),1);
-if any(aux)
-    ErrList = This.name(This.nametype == 1);
-    ErrList = ErrList(aux);
-    ErrMsg = ...
-        'This measurement variable occurs with a lag/lead: ''%s''.';
-    return
-end
-
-% No lags/leads of shocks.
-aux = any(any(occurF(:,This.nametype == 3,tt),3),1);
-if any(aux)
-    ErrList = This.name(This.nametype == 3);
-    ErrList = ErrList(aux);
-    ErrMsg = 'This shock occurs with a lag/lead: ''%s''.';
-    return
-end
-
-% No lags/leads of parameters.
-aux = any(any(occurF(:,This.nametype == 4,tt),3),1);
-if any(aux)
-    ErrList = This.name(This.nametype == 4);
-    ErrList = ErrList(aux);
-    ErrMsg = 'This parameter occurs with a lag/lead: ''%s''.';
-    return
-end
-
-% No lags/leads of exogenous variables.
-check = any(any(occurF(:,This.nametype == 5,tt),3),1);
-if any(check)
-    ErrList = This.name(This.nametype == 4);
-    ErrList = ErrList(check);
-    ErrMsg = 'This exogenous variables occurs with a lag/lead: ''%s''.';
-    return
-end
-
-% No measurement variables in transition equations.
-aux = any(any(occurF(This.eqtntype == 2,This.nametype == 1,:),3),2);
-if any(aux)
-    ErrList = This.eqtn(This.eqtntype == 2);
-    ErrList = ErrList(aux);
-    ErrMsg = ['This transition equation refers to ', ...
-        'measurement variable(s): ''%s''.'];
-    return
-end
-
-% No leads of transition variables in measurement equations.
-tt = true([1,size(occurF,3)]);
-tt(1:tZero) = false;
-aux = any(any(occurF(This.eqtntype == 1,This.nametype == 2,tt),3),2);
-if any(aux)
-    ErrList = This.eqtn(This.eqtntype == 1);
-    ErrList = ErrList(aux);
-    ErrMsg = ['Lead(s) of transition variable(s) in this ', ...
-        'measurement equation: ''%s''.'];
-    return
-end
-
-% Current date of any measurement variable in each measurement
-% equation.
-aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),2);
-if any(aux)
-    ErrList = This.eqtn(This.eqtntype == 1);
-    ErrList = ErrList(aux);
-    ErrMsg = ['No current-dated measurement variables ', ...
-        'in this measurement equation: ''%s''.'];
-    return
-end
-
-if any(This.nametype == 3)
-    % Find shocks in measurement equations.
-    check1 = any(occurF(This.eqtntype == 1,This.nametype == 3,tZero),1);
-    % Find shocks in transition equations.
-    check2 = any(occurF(This.eqtntype == 2,This.nametype == 3,tZero),1);
-    % No measurement shock in transition equations.
-    aux = check2 & shockType == 1;
-    if any(aux)
-        ErrList = This.name(This.nametype == 3);
-        ErrList = ErrList(aux);
-        ErrMsg = ['This measurement shock occurs ', ...
-            'in transition equation(s): ''%s''.'];
-        return
-    end
-    % No transition shock in measurement equations.
-    aux = check1 & shockType == 2;
-    if any(aux)
-        ErrList = This.name(This.nametype == 3);
-        ErrList = ErrList(aux);
-        ErrMsg = ['This transition shock occurs ', ...
-            'in measurement equation(s): ''%s''.'];
-        return
-    end
-end
-
-% Only parameters and exogenous variables can occur in deterministic trend
-% equations.
-rows = This.eqtntype == 3;
-cols = This.nametype < 4;
-check = any(any(occurF(rows,cols,:),3),2);
-if any(check)
-    ErrList = This.eqtn(rows);
-    ErrList = ErrList(check);
-    ErrMsg = ['This dtrend equation ', ...
-        'refers to name(s) ', ...
-        'other than parameters or exogenous variables: ''%s''.'];
-    return
-end
-
-% Exogenous variables only in dtrend equations.
-rows = This.eqtntype ~= 3;
-cols = This.nametype == 5;
-check = any(any(occurF(rows,cols,:),3),2);
-if any(check)
-    ErrList = This.eqtn(rows);
-    ErrList = ErrList(check);
-    ErrMsg = ['Exogenous variables allowed only in ', ...
-        'dtrend equations: ''%s''.'];
-    return
-end
-
-end % xxChkStructure()
+end % xxChkStructure2()

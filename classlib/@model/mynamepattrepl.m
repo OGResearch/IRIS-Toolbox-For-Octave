@@ -11,6 +11,7 @@ function [NamePatt,NameReplF,NameReplS] = mynamepattrepl(This)
 %--------------------------------------------------------------------------
 
 nName = length(This.name);
+flNameType = floor(This.nametype);
 
 NamePatt = cell(1,nName);
 NameReplF = cell(1,nName);
@@ -18,12 +19,12 @@ NameReplS = cell(1,nName);
 
 len = cellfun(@length,This.name);
 [~,inx] = sort(len,2,'descend');
-goffset = sum(This.nametype < 5);
+offsetG = sum(flNameType < 5);
 
 % Name patterns to search.
 for i = inx
     NamePatt{i} = ['\<',This.name{i},'\>'];
-    if This.nametype(i) == 4
+    if flNameType(i) == 4
         % Replace parameter names including their possible time subscripts
         % and/or steady-state references. Parameter lags and leads are
         % simply ignored.
@@ -38,15 +39,17 @@ end
 
 % Replacements in full equations.
 for i = inx
-    switch This.nametype(i)
+    switch flNameType(i)
         case {1,2,3,4}
             % %(:,@15,!).
             ic = sprintf('%g',i);
             repl = ['%(:,!',ic,',@)'];
-        otherwise
+        case 5 % Exogenous variables.
             % ?(@15,:).
-            ic = sprintf('%g',i-goffset);
-            repl = ['?(!',ic,'%g,:)'];
+            ic = sprintf('%g',i-offsetG);
+            repl = ['?(!',ic,',:)'];
+        otherwise
+            utils.error('model:mynamepattrepl','#Internal');
     end
     NameReplF{i} = repl;
 end
@@ -55,7 +58,7 @@ end
 if ~This.linear 
     for i = inx
         ic = sprintf('%g',i);
-        switch This.nametype(i)
+        switch flNameType(i)
             case {1,2} % Measurement and transition variables.
                 % (%(@15)) or exp(%(@15)).
                 repl = ['(%(!',ic,'))'];
@@ -68,7 +71,10 @@ if ~This.linear
                 % %(@15).
                 repl = ['%(!',ic,')'];
             case 5 % Exogenous variables.
-                repl = 'NaN';
+                ic = sprintf('%g',i-offsetG);
+                repl = ['?(!',ic,')'];
+            otherwise
+                utils.error('model:mynamepattrepl','#Internal');
         end
         NameReplS{i} = repl;
     end

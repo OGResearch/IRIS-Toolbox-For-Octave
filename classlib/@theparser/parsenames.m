@@ -39,6 +39,7 @@ if nargout > 2
     Value = strrep(Value,'!','');
     % Restore protected brackets.
     Value = restore(Value,f);
+    Value = strtrim(Value);
 end
 NameFlag = false(size(Name));
 
