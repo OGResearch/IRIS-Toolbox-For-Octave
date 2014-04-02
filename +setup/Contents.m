@@ -56,7 +56,7 @@
 %     >> addpath C:\IRIS_Tbx; irisstartup
 % 
 % where `C:\IRIS_Tbx` needs to be, obviously, replaced with the proper IRIS
-% root folder chosen in Step 2 above.
+% root folder chosen in Step 3 above.
 % 
 % Alternatively, you can put the IRIS root folder permanently on the Matlab
 % seatch path (using the menu File - Set Path), and only run the
