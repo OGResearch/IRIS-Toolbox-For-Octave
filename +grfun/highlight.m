@@ -125,11 +125,11 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    yLim = get(h,'ylim');
-    yData = yLim([1,1,2,2]);
+    yData = realmax*[-1,-1,1,1];
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.color, ...
-       'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent);
+       'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...
+       'yLimInclude','off');
     
     % Add caption to the highlight.
     cp = [];
@@ -144,9 +144,6 @@ for iAx = Ax(:).'
     ch(end+1) = pt;
     set(h,'children',ch);
     
-    % Update y-data whenever the parent y-lims change.
-    grfun.listener(h,pt,'highlight');
-    
     % Reset the order of figure children.
     set(fg,'children',fgch);
     
@@ -158,7 +155,11 @@ end
 set(Pp,'tag','highlight');
 set(Cp,'tag','highlight-caption');
 
-if ~isempty(Pp) && opt.excludefromlegend
+if isempty(Pp)
+    return
+end
+
+if opt.excludefromlegend
     % Exclude highlighted area from legend.
     grfun.excludefromlegend(Pp);
 end
