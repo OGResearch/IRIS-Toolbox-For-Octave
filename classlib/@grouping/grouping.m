@@ -45,7 +45,8 @@ classdef grouping < userdataobj & getsetobj
         descript = cell(1,0) ;
         
         otherName = 'Other';
-        constName = 'Init + Const';
+%         constName = 'Init+Const';
+%         nonlinName = 'Nonlinear';
     end
     
     properties (Hidden, Dependent)
@@ -104,15 +105,20 @@ classdef grouping < userdataobj & getsetobj
             pp.addRequired('Type',@(x) ischar(x) ...
                 && any(strncmpi(x,{'shock','measu'},5)));
             pp.parse(M,Type);
-            
-            This.type = Type;
-            switch This.type
+
+            switch lower(Type(1:5))
                 case 'shock'
+                    This.type = 'shocks';
                     listRequest = 'eList';
                     descriptRequest = 'eDescript';
-                case 'measurement'
-                    listRequest = 'eList';
-                    descriptRequest = 'eDescript';
+                case 'measu'
+                    This.type = 'measurement';
+                    listRequest = 'yList';
+                    descriptRequest = 'yDescript';
+                otherwise
+                    utils.error('grouping:grouping', ...
+                        'Unknown grouping type: ''%s''.', ...
+                        This.type);
             end
             This.list = get(M,listRequest) ;
             This.descript = get(M,descriptRequest) ;

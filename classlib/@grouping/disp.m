@@ -10,15 +10,36 @@ function disp(This)
 %--------------------------------------------------------------------------
 
 if isempty(This)
-    fprintf('\tempty grouping object\n');
-else
-    isOther = ~isempty(This.otherContents) ;
-    nGroup = length(This.groupNames) ;
-    if isOther
-        nGroup = nGroup + 1 ;
+    if isempty(This.type)
+        fprintf('\tempty grouping object\n');
+    else
+        fprintf('\tempty %s grouping object\n',This.type);
     end
+else
+    isOther = any(This.otherContents) ;
+    nGroup = length(This.groupNames) + double(isOther) ;
+    fprintf('\t%s grouping object: [%g] group(s)\n',This.type,nGroup) ;
+end
+
+if ~isempty(This.type)
     
-    fprintf(1,'\t%s grouping object: [%g] group(s)\n',This.type,nGroup) ;
+    names = 'empty';
+    if ~isempty(This.list)
+        names = strfun.displist(This.list);
+    end
+    fprintf('\t%s names: %s\n',This.type,names);
+    
+    if ~isempty(This.groupNames)
+        names = This.groupNames;
+        if any(This.otherContents)
+            names = [names,This.otherName];
+        end
+        names = strfun.displist(names);
+    else
+        names = 'empty';
+    end
+    fprintf('\tgroup names: %s',names);
+    fprintf('\n');
 end
 
 disp@userdataobj(This);

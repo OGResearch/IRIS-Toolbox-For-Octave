@@ -1,5 +1,5 @@
 function This = addgroup(This,GroupName,GroupContentsList)
-% addgroup  Add measurement variable or shock grouping to grouping object.
+% addgroup  Add measurement variable group or shock group to grouping object.
 %
 % Syntax
 % =======
@@ -13,14 +13,15 @@ function This = addgroup(This,GroupName,GroupContentsList)
 %
 % * `GroupName` [ char ] - Group name.
 %
-% * `GroupContents` [ char | cell ] - Names of shocks or measurement
-% variables to be included in the new group; `GroupContents` can also be
-% regular expressions.
+% * `GroupContents` [ char | cell | `Inf` ] - Names of shocks or
+% measurement variables to be included in the new group; `GroupContents`
+% can also be regular expressions; `Inf` the group will contain all shocks
+% or measurement variables not included in any existing group.
 %
 % Output arguments
 % =================
 %
-% * `G` [ grouping ] - Grouping object.
+% * `G` [ grouping ] - Grouping object with the new group.
 %
 % Description
 % ============
@@ -36,7 +37,7 @@ pp = inputParser() ;
 pp.addRequired('G',@(x) isa(x,'grouping')) ;
 pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
 pp.addRequired('GroupContents',@(x) ~isempty(x) ...
-    && (iscell(x) || ischar(x)) ) ;
+    && (iscell(x) || ischar(x)) || isequal(x,Inf) ) ;
 pp.parse(This,GroupName,GroupContentsList) ;
 
 if ischar(GroupContentsList)
@@ -45,17 +46,24 @@ end
 
 %--------------------------------------------------------------------------
 
-groupContents = false(size(This.list)) ;
+nList = length(This.list) ;
 valid = true(size(GroupContentsList)) ;
-for i = 1 : length(GroupContentsList)
-    ind = strfun.matchindex(This.list,GroupContentsList{i}) ;
-    valid(i) = any(ind);
-    groupContents = groupContents | ind;
+if isequal(GroupContentsList,Inf)
+    groupContents = This.otherContents ;
+    if isempty(groupContents)
+        groupContents = true(nList,1) ;
+    end
+else
+    groupContents = false(1,nList) ;
+    for i = 1 : length(GroupContentsList)
+        ind = strfun.matchindex(This.list,GroupContentsList{i}) ;
+        valid(i) = any(ind);
+        groupContents = groupContents | ind ;
+    end
+    groupContents = groupContents.';
 end
 
 doChkName() ;
-
-groupContents = groupContents.';
 
 ind = strcmpi(This.groupNames,GroupName) ;
 if any(ind)
@@ -93,5 +101,3 @@ doChkUnique() ;
 
 
 end
-
-
