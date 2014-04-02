@@ -286,7 +286,7 @@ S.V = V;
 
 if ~S.isObjOnly && S.retCont
     if isEst
-        S.sumMtFiM = sum(MtFiM,1);
+        S.sumMtFiM = sum(MtFiM,3);
     else
         S.sumMtFiM = [];
     end
