@@ -27,11 +27,23 @@
   names.
 \end{itemize}
 
+\paragraph{Options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'append='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Append in the output database all remaining data columns from
+  the input database that do not correspond to any contribution of
+  shocks or measurement variables.
+\end{itemize}
+
 \paragraph{Description}
 
 \paragraph{Example}
 
-For a model object M, database D and simulation range R,
+For a model object \texttt{M}, database \texttt{D} and simulation range
+\texttt{R},
 
 \begin{verbatim}
 S = simulate(M,D,R,'contributions=',true) ;

@@ -30,7 +30,7 @@
 % =====================
 %
 % * [`datrange`](dates/datrange) - Numerically safe way to create a date range.
-% * [`dat2ttrend`](dates/dat2ttrend) - 
+% * [`dat2ttrend`](dates/dat2ttrend) - Construct linear time trend from date range.
 % * [`datxtick`](dates/datxtick) - Change ticks, labels and/or date frequency on x-axis in existing tseries graphs.
 %
 % Converting dates

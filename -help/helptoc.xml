@@ -147,7 +147,7 @@
         <tocitem target="plan/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for plan objects</tocitem>
     </tocitem>
     <tocitem target="grouping/Contents.html" image="HelpIcon.USER_GUIDE">Grouping objects for aggregation of contributions
-        <tocitem target="grouping/addgroup.html" image="HelpIcon.FUNCTION">addgroup &#8212; Add measurement variable or shock grouping to grouping object</tocitem>
+        <tocitem target="grouping/addgroup.html" image="HelpIcon.FUNCTION">addgroup &#8212; Add measurement variable group or shock group to grouping object</tocitem>
         <tocitem target="grouping/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Details of a grouping object</tocitem>
         <tocitem target="grouping/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate contributions in input database S using grouping object G</tocitem>
         <tocitem target="grouping/grouping.html" image="HelpIcon.FUNCTION">grouping &#8212; Create new, empty grouping object</tocitem>
@@ -279,6 +279,7 @@
         <tocitem target="dates/dat2clp.html" image="HelpIcon.FUNCTION">dat2clp &#8212; Convert dates to text and paste to system clipboard</tocitem>
         <tocitem target="dates/dat2dec.html" image="HelpIcon.FUNCTION">dat2dec &#8212; Convert dates to their decimal representations</tocitem>
         <tocitem target="dates/dat2str.html" image="HelpIcon.FUNCTION">dat2str &#8212; Convert IRIS dates to cell array of strings</tocitem>
+        <tocitem target="dates/dat2ttrend.html" image="HelpIcon.FUNCTION">dat2ttrend &#8212; Construct linear time trend from date range</tocitem>
         <tocitem target="dates/dat2ypf.html" image="HelpIcon.FUNCTION">dat2ypf &#8212; Convert IRIS serial date number to year, period and frequency</tocitem>
         <tocitem target="dates/datbom.html" image="HelpIcon.FUNCTION">datbom &#8212; Beginning of month for the specified daily date</tocitem>
         <tocitem target="dates/datboq.html" image="HelpIcon.FUNCTION">datboq &#8212; Beginning of quarter for the specified daily date</tocitem>

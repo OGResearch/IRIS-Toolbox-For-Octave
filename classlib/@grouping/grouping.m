@@ -22,7 +22,7 @@ classdef grouping < userdataobj & getsetobj
     % Setting up and using groups
     % ============================
     %
-    % * [`addgroup`](grouping/addgroup) - Add measurement variable or shock grouping to grouping object.
+    % * [`addgroup`](grouping/addgroup) - Add measurement variable group or shock group to grouping object.
     % * [`eval`](grouping/eval) - Evaluate contributions in input database S using grouping object G.
     %
     % Getting on-line help on groups

@@ -106,34 +106,27 @@ code.LaTeX {
 
 
 
-<h2 id="grouping/eval">eval</h2>
-<div class="headline">Evaluate contributions in input database S using grouping object G</div>
+<h2 id="dates/dat2ttrend">dat2ttrend</h2>
+<div class="headline">Construct linear time trend from date range</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[S,L] = eval(G,S)</code></pre>
+<pre><code>[TTrend,BaseDate] = dat2ttrend(Range)
+[TTrend,BaseDate] = dat2ttrend(Range,Obj)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>G</code> [ grouping ] - Grouping object.</p></li>
-<li><p><code>S</code> [ dbase ] - Input dabase with individual contributions.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range from which an integer linear time trend will be constructed.</p></li>
+<li><p><code>Obj</code> [ model | VAR ] - Model or VAR object whose base year will be used to construct the time trend; if omitted, the base year from <code>irisget('baseYear')</code> will be used.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>S</code> [ dbase ] - Output database with grouped contributions.</p></li>
-<li><p><code>L</code> [ cellstr ] - Legend entries based on the list of group names.</p></li>
-</ul>
-<h4 id="options">Options</h4>
-<ul>
-<li><code>'append='</code> [ <em><code>true</code></em> | <code>false</code> ] - Append in the output database all remaining data columns from the input database that do not correspond to any contribution of shocks or measurement variables.</li>
+<li><p><code>TTrend</code> [ numeric ] - Integer linear time trend, unique to the input date range <code>Range</code> and the base year.</p></li>
+<li><p><code>BaseDate</code> [ numeric ] - Base date used to normalize the input date range; see Description.</p></li>
 </ul>
 <h4 id="description">Description</h4>
+<p>For regular date frequencies, the time trend is constructed the following way. First, a base date is created first period in the base year of a given frequency. For instance, for a quarterly input range, <code>BaseDate = qq(baseYear,1)</code>, for a monthly input range, <code>BaseDate == mm(baseYear,1)</code>, etc. Then, the output trend is an integer vector normalized to the base date,</p>
+<pre><code>TTrend = floor(Range - BaseDate);</code></pre>
+<p>For indeterminate date frequencies, <code>BaseDate = 0</code>, and the output time trend is simply the input date range.</p>
 <h4 id="example">Example</h4>
-<p>For a model object <code>M</code>, database <code>D</code> and simulation range <code>R</code>,</p>
-<pre><code>S = simulate(M,D,R,&#39;contributions=&#39;,true) ;
-G = grouping(M)
-...
-G = addgroup(G,GroupName,GroupContents) ;
-...
-S = eval(S,G)</code></pre>
 
 </body>
 <div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>

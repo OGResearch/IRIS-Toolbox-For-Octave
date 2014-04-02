@@ -1,6 +1,6 @@
 
 
-    \filetitle{addgroup}{Add measurement variable or shock grouping to grouping object}{grouping/addgroup}
+    \filetitle{addgroup}{Add measurement variable group or shock group to grouping object}{grouping/addgroup}
 
 	\paragraph{Syntax}
 
@@ -16,9 +16,11 @@ G = addgroup(G,GroupName,GroupContents)
 \item
   \texttt{GroupName} {[} char {]} - Group name.
 \item
-  \texttt{GroupContents} {[} char \textbar{} cell {]} - Names of shocks
-  or measurement variables to be included in the new group;
-  \texttt{GroupContents} can also be regular expressions.
+  \texttt{GroupContents} {[} char \textbar{} cell \textbar{}
+  \texttt{Inf} {]} - Names of shocks or measurement variables to be
+  included in the new group; \texttt{GroupContents} can also be regular
+  expressions; \texttt{Inf} the group will contain all shocks or
+  measurement variables not included in any existing group.
 \end{itemize}
 
 \paragraph{Output arguments}
@@ -26,7 +28,7 @@ G = addgroup(G,GroupName,GroupContents)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{G} {[} grouping {]} - Grouping object.
+  \texttt{G} {[} grouping {]} - Grouping object with the new group.
 \end{itemize}
 
 \paragraph{Description}
