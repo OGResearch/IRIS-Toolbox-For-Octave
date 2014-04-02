@@ -101,7 +101,8 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % scale factor will be estimated.
 %
 % * `'returnCont='` [ `true` | *`false`* ] - Return contributions of
-% measurement variables to the estimates of all variables and shocks.
+% prediction errors in measurement variables to the estimates of all
+% variables and shocks.
 %
 % * `'returnMse='` [ *`true`* | `false` ] - Return MSE matrices for
 % predetermined state variables; these can be used for settin up initial
@@ -272,6 +273,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
         isSmooth = ~isempty(strfind(opt.data,'smooth'));
         nLoop = max(nData,nAlt);
         nPred = max(nLoop,likOpt.ahead);
+        nCont = ny;
         if nArgOut >= 2
             % Prediction step.
             if isPred
@@ -296,7 +298,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                             struct('IsPreSample',false, ...
                             'Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end
@@ -323,7 +325,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                             struct('IsPreSample',false, ...
                             'Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end
@@ -347,7 +349,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                         hData.smoothcont = hdataobj(This, ...
                             struct('Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end

@@ -21,7 +21,7 @@ NameLabel(ixEmpty) = Name(ixEmpty);
 % Shock contributions list.
 ContEList = [This.name(This.nametype == 3),{'Init+Const'},{'Nonlinear'}];
 
-% Measurement contributions list.
+% Measurement PE contributions list.
 ContYList = This.name(This.nametype == 1);
 
 end
