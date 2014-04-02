@@ -221,8 +221,6 @@ classdef model < modelobj & estimateobj
             };
         % True for predetermined variables for which initial condition is truly needed.
         icondix = false(1,0);
-        % Base year for deterministic trends.
-        torigin = 2000;
         % True for multipliers (optimal policy).
         multiplier = false(1,0);
     end
@@ -336,15 +334,14 @@ classdef model < modelobj & estimateobj
         varargout = mynamepattrepl(varargin)
         varargout = mynonlineqtn(varargin)
         varargout = mynunit(varargin)
-        varargout = myoccurence(varargin)
+        varargout = myoccurrence(varargin)
         varargout = myoptpolicy(varargin)
         varargout = myparamstruct(varargin)
         varargout = myparse(varargin)
         varargout = mypreploglik(varargin)
         varargout = myprepsimulate(varargin)
-        varargout = myrange2ttrend(varargin)
         varargout = myreshape(varargin)
-        varargout = myshocktypes(varargin)
+        varargout = myshocktype(varargin)
         varargout = mysolve(varargin)
         varargout = mysolvefail(varargin)
         varargout = mysourcedb(varargin)
@@ -496,6 +493,7 @@ classdef model < modelobj & estimateobj
             % Superclass constructors.
             This = This@modelobj();
             This = This@estimateobj();
+            opt = struct();
             
             if nargin == 0
                 % Empty model object.
@@ -511,9 +509,10 @@ classdef model < modelobj & estimateobj
                 if ischar(varargin{1}) || iscellstr(varargin{1})
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
-                    opt = doOptions();
-                    [This,a] = myfile2model(This,fileName,opt);
-                    This = mymodel2model(This,a,opt);
+                    doOptions();
+                    This.linear = opt.linear;
+                    [This,asgn] = myfile2model(This,fileName,opt);
+                    This = mymodel2model(This,asgn,opt);
                 elseif isa(varargin{1},'model')
                     This = varargin{1};
                     varargin(1) = [];
@@ -525,26 +524,28 @@ classdef model < modelobj & estimateobj
                     'Incorrect number or type of input argument(s).');
             end
             
-            function Opt = doOptions()
-                [Opt,varargin] = passvalopt('model.model',varargin{:});
-                if isempty(Opt.tolerance)
+            
+            function doOptions()
+                [opt,varargin] = passvalopt('model.model',varargin{:});
+                if isempty(opt.tolerance)
                     This.Tolerance(1) = getrealsmall();
                 else
-                    This.Tolerance(1) = Opt.tolerance(1);
+                    This.Tolerance(1) = opt.tolerance(1);
                     utils.warning('model', ...
                         ['You should NEVER reset the eigenvalue tolerance unless you are ', ...
                         'absolutely sure you know what you are doing!']);
                 end
-                if ~isstruct(Opt.assign)
+                if ~isstruct(opt.assign)
                     % Default for `'assign='` is an empty array.
-                    Opt.assign = struct();
+                    opt.assign = struct();
                 end
-                Opt.assign.sstateOnly = Opt.sstateonly;
-                Opt.assign.linear = Opt.linear;
+                opt.assign.sstateOnly = opt.sstateonly;
+                opt.assign.linear = opt.linear;
                 for iArg = 1 : 2 : length(varargin)
-                    Opt.assign.(varargin{iArg}) = varargin{iArg+1};
+                    opt.assign.(varargin{iArg}) = varargin{iArg+1};
                 end
-            end % doOptions().
+            end % doOptions()
+            
             
         end
         

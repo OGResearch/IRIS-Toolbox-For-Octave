@@ -17,14 +17,14 @@ if isequal(NPer,Inf)
     NPer = size(S.e,2);
 end
 
-S.y = nan(ny,NPer,ne+1);
-S.w = nan(nx,NPer,ne+1); % := [xf;a]
+S.y = zeros(ny,NPer,ne+2);
+S.w = zeros(nx,NPer,ne+2); % := [xf;alp]
 
 % Store input shocks.
 e0 = S.e;
 
 % Pre-allocate space for output contributions.
-S.e = zeros(size(e0,1),size(e0,2),ne+1);
+S.e = zeros(size(e0,1),size(e0,2),ne+2);
 
 % Contributions of individual shocks.
 for ii = 1 : ne
@@ -36,5 +36,7 @@ end
 % Contribution of initial condition and constant.
 [S.y(:,:,ne+1),S.w(:,:,ne+1)] = simulate.plainlinear( ...
     S,S.a0,S.e(:,:,ne+1),NPer,Opt.deviation);
+
+% Leave the contributions of nonlinearities zeros.
 
 end
