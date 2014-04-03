@@ -69,7 +69,7 @@ end
 nAlt = size(This.Assign,3);
 
 % Pre-process options passed to `mychksstate`.
-mychksstateOpt = mychksstateopt(This,varargin{:});
+mychksstateOpt = mychksstateopt(This,'verbose',varargin{:});
 
 % `discr` is a matrix of discrepancies; it has two columns when we
 % evalulate full dynamic equations, and one column when we evaluate sstate

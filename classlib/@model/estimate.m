@@ -97,7 +97,9 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 % * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links in each
 % iteration.
 %
-% * `'solve='` [ *`true`* | `false` ] - Re-compute solution in each iteration.
+% * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution in
+% each iteration; you can specify a cell array with options for the `solve`
+% function.
 %
 % * `'optimiser='` [ *`'default'`* | `'pso'` | cell | function_handle ] -
 % Minimisation procedure.
@@ -114,10 +116,10 @@ function [PStar,Pos,PCov,Hess,This,V,Delta,PDelta,Delta1,PDelta1] ...
 %     optimisation procedure, or a cell array with a function handle and
 %     additional input arguments (see below).
 %
-% * `'sstate='` [ `true` | *`false`* | cell | function_handle ] - Re-compute
-% steady state in each iteration. You can specify a cell array with options
-% for the `sstate` function, or a function handle whose behaviour is
-% described below.
+% * `'sstate='` [ `true` | *`false`* | cell | function_handle ] -
+% Re-compute steady state in each iteration; you can specify a cell array
+% with options for the `sstate` function, or a function handle whose
+% behaviour is described below.
 %
 % * `'tolFun='` [ numeric | *`1e-6`* ] - Termination tolerance on the
 % objective function.
@@ -350,7 +352,8 @@ estOpt = passvalopt('model.estimate',varargin{:});
 
 % Initialise and pre-process sstate and chksstate options.
 estOpt.sstate = mysstateopt(This,'silent',estOpt.sstate);
-estOpt.chksstate = mychksstateopt(This,estOpt.chksstate);
+estOpt.chksstate = mychksstateopt(This,'silent',estOpt.chksstate);
+estOpt.solve = mysolveopt(This,'silent',estOpt.solve);
 
 if isempty(This.Refresh)
     estOpt.refresh = false;
@@ -397,8 +400,8 @@ pri = myparamstruct(This,E,SP,estOpt.penalty,estOpt.initval);
 % Assign estimated parameters, refresh dynamic links, and re-compute steady
 % state, solution, and expansion matrices.
 throwError = true;
-expMatrices = true;
-This = myupdatemodel(This,pStar,pri,estOpt,throwError,expMatrices);
+estOpt.solve.fast = false;
+This = myupdatemodel(This,pStar,pri,estOpt,throwError);
 
 % Set up posterior object
 %-------------------------

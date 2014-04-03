@@ -139,7 +139,8 @@ end
         This.solution{5} = nan(ny,ne); % H
         This.solution{6} = nan(ny,1); % D
         This.solution{7} = nan(nb,nb); % U
-        This.solution{8} = nan(nFKeep+nb,nn); % M -- non-lin addfactors.
+        This.solution{8} = nan(nFKeep+nb,nn); % Y - non-lin addfactors.
+        This.solution{9} = nan(ny,nb); % Zb - Untransformed measurement.
         
         This.Expand{1} = nan(nb,nf); % Xa
         This.Expand{2} = nan(nFKeep,nf); % Xf

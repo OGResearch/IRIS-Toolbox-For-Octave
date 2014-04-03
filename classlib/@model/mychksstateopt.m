@@ -1,4 +1,4 @@
-function Opt = mychksstateopt(This,varargin) %#ok<INUSL>
+function Opt = mychksstateopt(This,Mode,varargin) %#ok<INUSL>
 % mychsstateopt  [Not a public function] Prepare steady-state check options.
 %
 % Backend IRIS function.

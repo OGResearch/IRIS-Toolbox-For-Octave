@@ -28,7 +28,7 @@ k0 = size(R,2)/ne - 1;
 
 % Check that R and Y are expanded to the same horizon.
 if nn > 0 && k0 ~= size(Y,2)/nn - 1
-    utils.error('model:myexpand','#Internal.');
+    utils.error('model:myexpand','#Internal');
 end
 
 % Requested expansion not longer than the existing.

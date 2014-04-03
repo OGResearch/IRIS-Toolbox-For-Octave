@@ -17,7 +17,8 @@ end
 
 % Initialise steady-state solver and chksstate options.
 Opt.sstate = mysstateopt(This,'silent',Opt.sstate);
-Opt.chksstate = mychksstateopt(This,Opt.chksstate);
+Opt.chksstate = mychksstateopt(This,'silent',Opt.chksstate);
+Opt.solve = mysolveopt(This,'silent',Opt.solve);
 
 %--------------------------------------------------------------------------
 

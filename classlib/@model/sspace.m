@@ -78,7 +78,7 @@ opt = passvalopt('model.sspace',varargin{:});
 
 %--------------------------------------------------------------------------
 
-[T,R,K,Z,H,D,U,Omg] = mysspace(m,':',true);
+[T,R,K,Z,H,D,U,Omg,Zb] = mysspace(m,':',true);
 nx = size(T,1);
 nb = size(T,2);
 nf = nx - nb;
@@ -96,7 +96,8 @@ if ~opt.triangular
         T(nf+1:end,:,iAlt) = U(:,:,iAlt)*T(nf+1:end,:,iAlt);
         R(nf+1:end,:,iAlt) = U(:,:,iAlt)*R(nf+1:end,:,iAlt);
         K(nf+1:end,:,iAlt) = U(:,:,iAlt)*K(nf+1:end,:,iAlt);
-        Z(:,:,iAlt) = Z(:,:,iAlt) / U(:,:,iAlt);
+        % Z(:,:,iAlt) = Z(:,:,iAlt) / U(:,:,iAlt);
+        Z(:,:,iAlt) = Zb(:,:,iAlt);
         U(:,:,iAlt) = eye(size(U));
     end
 end

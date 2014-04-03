@@ -17,6 +17,8 @@ end
 
 Affected = true(size(This.eqtn));
 
+Assign0 = This.Assign0;
+
 % User forces all equations to be selected.
 if ~Select
     return
@@ -28,8 +30,8 @@ if ~any(any(This.deriv0.f(This.eqtntype <= 2,:)))
 end
 
 % Changes in steady states and parameters.
-changed = This.Assign(1,:,iAlt) ~= This.Assign0 ...
-    & (~isnan(This.Assign(1,:,iAlt)) | ~isnan(This.Assign0));
+changed = This.Assign(1,:,iAlt) ~= Assign0 ...
+    & (~isnan(This.Assign(1,:,iAlt)) | ~isnan(Assign0));
 if Linear
     % Only parameter changes matter in linear models.
     changed = changed & This.nametype == 4;

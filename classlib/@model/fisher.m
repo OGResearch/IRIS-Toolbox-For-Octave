@@ -54,8 +54,9 @@ function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 % * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links in each
 % differentiation step.
 %
-% * `'solve='` [ *`true`* | `false` ] - Re-solve model in each differentiation
-% step.
+% * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution in
+% each differentiation step; you can specify a cell array with options for
+% the `solve` function.
 %
 % * `'sstate='` [ `true` | *`false`* | cell ] - Re-compute steady state in each
 % differentiation step; if the model is non-linear, you can pass in a cell
@@ -108,7 +109,8 @@ end
 
 % Initialise steady-state solver and chksstate options.
 opt.sstate = mysstateopt(This,'silent',opt.sstate);
-opt.chksstate = mychksstateopt(This,opt.chksstate);
+opt.chksstate = mychksstateopt(This,'silent',opt.chksstate);
+opt.solve = mysolveopt(This,'silent',opt.solve);
 
 %--------------------------------------------------------------------------
 

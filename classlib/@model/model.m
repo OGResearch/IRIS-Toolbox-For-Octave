@@ -209,8 +209,8 @@ classdef model < modelobj & estimateobj
         epsilon = eps^(1/3);
         % Matrices necessary to generate forward expansion of model solution.
         Expand = {};
-        % Model state-space matrices T, R, K, Z, H, D, U, Y.
-        solution = {[],[],[],[],[],[],[],[]};
+        % Model state-space matrices T, R, K, Z, H, D, U, Y, ZZ.
+        solution = {[],[],[],[],[],[],[],[],[]};
         % Vectors of measurement variables, transition variables, and shocks in rows and columns of state-space matrices.
         solutionid = {[],[],[]};
         % Vectors of variables names with lags, leads and/or logs.
@@ -223,6 +223,8 @@ classdef model < modelobj & estimateobj
         icondix = false(1,0);
         % True for multipliers (optimal policy).
         multiplier = false(1,0);
+        % Handle to last derivatives and system matrices.
+        % LastSolve = hinfoobj();
     end
     
     % Transient properties.
@@ -344,6 +346,7 @@ classdef model < modelobj & estimateobj
         varargout = myshocktype(varargin)
         varargout = mysolve(varargin)
         varargout = mysolvefail(varargin)
+        varargout = mysolveopt(varargin)
         varargout = mysourcedb(varargin)
         varargout = mysspace(varargin)
         varargout = mysstatelinear(varargin)

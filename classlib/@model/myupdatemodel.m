@@ -1,4 +1,4 @@
-function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError,IsExpMat)
+function [This,UpdateOk] = myupdatemodel(This,P,Pri,Opt,IsError)
 % myupdatemodel  [Not a public function] Update parameters, sstate, solve, and refresh.
 %
 % Backend IRIS function.
@@ -12,13 +12,6 @@ try
     IsError; %#ok<VUNUS>
 catch %#ok<CTCH>
     IsError = true;
-end
-
-% `IsExpMat`: Compute matrices for forward expansion of the solution.
-try
-    IsExpMat; %#ok<VUNUS>
-catch %#ok<CTCH>
-    IsExpMat = false;
 end
 
 %--------------------------------------------------------------------------
@@ -64,10 +57,10 @@ end
 if This.linear
     % Linear models
     %---------------
-    if Opt.solve
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpMat,Opt.solve);
+    if ~isequal(Opt.solve,false)
+        [This,nPth,nanDerv,sing2] = mysolve(This,1,Opt.solve);
     else
-        nPath = 1;
+        nPth = 1;
     end
     if isstruct(Opt.sstate)
         This = mysstatelinear(This);
@@ -84,7 +77,7 @@ else
     sstateOk = true;
     sstateErrList = {};
     chkSstateOk = true;
-    nanDeriv = [];
+    nanDerv = [];
     sing2 = false;
     if isstruct(Opt.sstate)
         % Call to the IRIS sstate solver.
@@ -111,14 +104,14 @@ else
         sstateErrList = sstateErrList{1};
         chkSstateOk = isempty(sstateErrList);
     end
-    if sstateOk && chkSstateOk && Opt.solve
-        [This,nPath,nanDeriv,sing2] = mysolve(This,1,[],IsExpMat);
+    if sstateOk && chkSstateOk && ~isequal(Opt.solve,false)
+        [This,nPth,nanDerv,sing2] = mysolve(This,1,Opt.solve);
     else
-        nPath = 1;
+        nPth = 1;
     end
 end
 
-UpdateOk = nPath == 1 && sstateOk && chkSstateOk;
+UpdateOk = nPth == 1 && sstateOk && chkSstateOk;
 
 if ~IsError
     return
@@ -126,7 +119,7 @@ elseif ~UpdateOk
     % Throw error and give access to the failed model object
     %--------------------------------------------------------
     model.failed(This,sstateOk,chkSstateOk,sstateErrList, ...
-        nPath,nanDeriv,sing2);
+        nPth,nanDerv,sing2);
 end
 
 end
