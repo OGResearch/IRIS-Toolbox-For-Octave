@@ -643,7 +643,7 @@ end
             This.icondix(1,:,Alts) = false;
 
             % Reset expansion matrices.
-            if ~isempty(This.Expand)
+            if ~isempty(This.Expand) && nf > 0
                 This.Expand{1}(:,:,Alts) = NaN;
                 This.Expand{2}(:,:,Alts) = NaN;
                 This.Expand{3}(:,:,Alts) = NaN;
