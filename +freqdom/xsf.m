@@ -1,4 +1,4 @@
-function S = xsf(T,R,~,Z,H,~,U,Omg,Freq,Filter,ApplyTo)
+function S = xsf(T,R,~,Z,H,~,U,Omg,nUnit,Freq,Filter,ApplyTo)
 % xsf  [Not a public function] Power spectrum generating function for general state space.
 %
 % Backend IRIS function.
@@ -27,12 +27,14 @@ realSmall = getrealsmall();
 ny = size(Z,1);
 [nx,nb] = size(T);
 nf = nx - nb;
-nUnit = sum(all(abs(eye(nb) - T(nf+1:end,:)) < realSmall,1));
 ne = size(R,2);
 
 Tf = T(1:nf,:);
 Rf = R(1:nf,1:ne);
 Ra = R(nf+1:end,:);
+% Ta11 is an I matrix in difference-stationary models, but not an I matrix
+% in I(2) and higher models.
+Ta11 = T(nf+(1:nUnit),nf+(1:nUnit));
 Ta12 = T(nf+1:nf+nUnit,nUnit+1:end);
 Ta22 = T(nf+nUnit+1:end,nUnit+1:end);
 SgmAA = Ra*Omg*transpose(Ra);
@@ -77,7 +79,7 @@ for i = 1 : nFreq
     end
     if ~isempty(U)
         s(ny+nf+1:end,:) = U*s(ny+nf+1:end,:);
-        s(:,ny+nf+1:end) = s(:,ny+nf+1:end)*transpose(U);
+        s(:,ny+nf+1:end) = s(:,ny+nf+1:end)*U.';
         if lmb == 0
             % Diffuse xb.
             xbindex = find(any(abs(U(:,1:nUnit)) > realSmall,2));
@@ -105,7 +107,7 @@ end
     function [Sxx,Saa] = doInv()
         A = Tf*ee;
         % B = inv(eye(nb) - Ta*ee) = inv([A11,A12;0,A22]);
-        % A11 = eye(nunit) - eye(unit)*ee
+        % A11 = eye(nunit) - Ta11*ee
         % A12 = -Ta12*ee
         % A22 = eye(nb-nunit) - Ta22*ee
         B22 = inv(eye(nb-nUnit) - Ta22*ee);
@@ -115,8 +117,8 @@ end
             B12 = zeros(nUnit,nb-nUnit);
         else
             % Non-zero frequencies.
+            B11 = inv(eye(nUnit) - Ta11*ee);
             d = 1/(1-ee);
-            B11 = diag(d(ones(1,nUnit)));
             B12 = d*Ta12*B22*ee; %#ok<MINV>
         end
         B = [B11,B12;zeros(nb-nUnit,nUnit),B22];

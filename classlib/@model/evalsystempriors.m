@@ -69,12 +69,15 @@ for iAlt = 1 : nAlt
         SRF(:,active,:) = Phi(:,:,2:end);
     end
     
+    % Number of unit roots.
+    nUnit = mynunit(This,1);
+
     % Frequency response function.
     FFRF = [];
     if ~isempty(S,'ffrf')
         freq = S.systemFunc.ffrf.page;
         incl = Inf;
-        FFRF = freqdom.ffrf3(T,R,[],Z,H,[],U,Omg,freq,incl,[],[]);
+        FFRF = freqdom.ffrf3(T,R,[],Z,H,[],U,Omg,nUnit,freq,incl,[],[]);
     end
     
     % Covariance function.
@@ -94,7 +97,7 @@ for iAlt = 1 : nAlt
     PWS = [];
     if ~isempty(S,'pws') || ~isempty(S,'spd')
         freq = S.systemFunc.pws.page;
-        PWS = freqdom.xsf(T,R,[],Z,H,[],U,Omg,freq);
+        PWS = freqdom.xsf(T,R,[],Z,H,[],U,Omg,nUnit,freq);
     end
     
     % Spectral density function.

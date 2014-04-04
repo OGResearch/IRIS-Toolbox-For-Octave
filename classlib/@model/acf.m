@@ -166,8 +166,9 @@ for iAlt = 1 : nAlt
             inx = true(1,ne);
         end
         if isFilter
+            nUnit = mynunit(This,iAlt);
             S = freqdom.xsf( ...
-                T,R(:,inx),[],Z,H(:,inx),[],U,Omg(inx,inx), ...
+                T,R(:,inx),[],Z,H(:,inx),[],U,Omg(inx,inx),nUnit, ...
                 freq,filter,applyTo);
             CC(:,:,:,iCont,iAlt) = freqdom.xsf2acf(S,freq,acfOrder);
         else

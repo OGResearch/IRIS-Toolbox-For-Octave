@@ -106,7 +106,9 @@ for iAlt = 1 : nAlt
         continue
     end
     
-    S(:,:,:,iAlt) = freqdom.xsf(T,R,[],Z,H,[],U,Omega,Freq,filter,applyTo);
+    nUnit = mynunit(This,iAlt);
+    S(:,:,:,iAlt) = freqdom.xsf(T,R,[],Z,H,[],U,Omega,nUnit, ...
+        Freq,filter,applyTo);
     if opt.progress
         update(progress,iAlt/nAlt);
     end

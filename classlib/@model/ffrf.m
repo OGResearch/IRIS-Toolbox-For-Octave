@@ -133,17 +133,18 @@ end
     function doFfrf()
         [flag,nanAlt] = isnan(This,'solution');
         for iAlt = find(~nanAlt)
+            nUnit = mynunit(This,iAlt);
             [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
             % Compute FFRF.
             F(:,:,:,iAlt) = ...
-                freqdom.ffrf3(T,R,[],Z,H,[],U,Omega, ...
+                freqdom.ffrf3(T,R,[],Z,H,[],U,Omega,nUnit, ...
                 Freq,incl,opt.tolerance,opt.maxiter);
         end
         % Solution not available.
         if flag
             utils.warning('model', ...
-                'Solution not available:%s.', ...
-                preparser.alt2str(nanAlt));
+                'Solution not available [%s].', ...
+                strtrim(preparser.alt2str(nanAlt)));
         end
     end % doFfrf().
 

@@ -1,4 +1,4 @@
-function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,Freq,Incl,Tol,MaxIter)
+function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,NUnit,Freq,Incl,Tol,MaxIter)
 % ffrf3  [Not a public function] Frequence response function for general state space.
 %
 % Backend IRIS function.
@@ -48,11 +48,16 @@ if any(zeroFreqInx)
     doZeroFreq();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doNonzeroFreq()
-        S = freqdom.xsf(T,R,[],Z1,H1,[],U,Omg,Freq(~zeroFreqInx),[],[]);
+        S = freqdom.xsf(T,R,[],Z1,H1,[],U,Omg,NUnit, ...
+            Freq(~zeroFreqInx),[],[]);
         nNonzero = sum(~zeroFreqInx);
         Yn = zeros(nx,ny1,nNonzero);
         for i = 1 : nNonzero
@@ -61,9 +66,12 @@ end
             Yn(:,:,i) = S12' / S11;
         end
         Y(:,Incl,~zeroFreqInx) = Yn;
-    end % doNonzeroFreq().
+    end % doNonzeroFreq()
+
 
 %**************************************************************************
+    
+    
     function doZeroFreq()
         % dozerofreq  Compute FFRF for zero frequency by deriving a polynomial
         % representation of steady-state Kalman filter.
@@ -126,6 +134,7 @@ end
         end
         nZero = sum(zeroFreqInx);
         Y(:,Incl,zeroFreqInx) = Y0(:,:,ones(1,nZero));
-    end % doZeroFreq().
+    end % doZeroFreq()
+
 
 end
