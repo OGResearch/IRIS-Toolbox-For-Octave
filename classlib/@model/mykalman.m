@@ -123,7 +123,7 @@ if ~s.isObjOnly && Opt.progress
     progress = progressbar('IRIS model.kalman progress');
 end
 
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 
 for iLoop = 1 : nLoop
     
@@ -200,8 +200,8 @@ for iLoop = 1 : nLoop
     
     % Continue immediately if solution is not available; report NaN solutions
     % post mortem.
-    isSolution(iLoop) = all(~isnan(T(:)));
-    if ~isSolution(iLoop)
+    isSol(iLoop) = all(~isnan(T(:)));
+    if ~isSol(iLoop)
         continue
     end
     
@@ -381,10 +381,10 @@ for iLoop = 1 : nLoop
     
 end
 
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        sprintf(' #%g',find(~isSolution)));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 
@@ -392,6 +392,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRequestOutp()
         s.retPredMean = isfield(HData,'predmean');
         s.retPredMse = isfield(HData,'predmse');
@@ -482,6 +484,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRetFilter()
         
         if s.retFilterMean
@@ -527,6 +531,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRetSmooth()
         
         if s.retSmoothMean
@@ -581,6 +587,8 @@ end
 
 
 %**************************************************************************
+
+
     function doPrepareNonlin()
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
         s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
@@ -612,7 +620,10 @@ end
 
 % Subfunctions...
 
+
 %**************************************************************************
+
+
 function S = xxAhead(S)
 % xxAhead  K-step ahead predictions and prediction errors for K>2 when
 % requested by caller. This function must be called after correction for
@@ -682,6 +693,8 @@ end % xxAhead()
 
 
 %**************************************************************************
+
+
 function S = xxPredXfMean(S)
 % xxPredXfMean  Point prediction step for fwl transition variables. The
 % MSE matrices are computed in `xxSmoothMse` only when needed.
@@ -707,6 +720,8 @@ end % xxPredXfMean()
 
 
 %**************************************************************************
+
+
 function S = xxFilterMean(S)
 
 nb = size(S.Ta,1);
@@ -746,6 +761,8 @@ end % xxFilterMean()
 
 
 %**************************************************************************
+
+
 function S = xxFilterMse(S)
 % xxFilterMse  MSE matrices for updating step.
 
@@ -786,6 +803,8 @@ end % xxFilterMse()
 
 
 %**************************************************************************
+
+
 function S = xxSmoothMse(S)
 % xxSmoothMse  Smoother for MSE matrices of all variables.
 
@@ -828,6 +847,8 @@ end % xxSmoothMse()
 
 
 %**************************************************************************
+
+
 function S = xxSmoothMean(S)
 % xxSmoothMean  Kalman smoother for point estimates of all variables.
 
@@ -863,6 +884,8 @@ end % xxSmoothMean()
 
 
 %**************************************************************************
+
+
 function [D,Ka,Kf] = xxShockTunes(S,Opt)
 % xxShockTunes  Add tunes on shock means to constant terms.
 
@@ -920,6 +943,8 @@ end % xxShockTunes()
 
 
 %**************************************************************************
+
+
 function S = xxOmg2SaSy(S)
 
 % Convert the structural covariance matrix `Omg` to reduced-form
@@ -993,6 +1018,8 @@ end % xxOmg2SaSy()
 
 
 %**************************************************************************
+
+
 function [Pb2,Dy2,Df2,Db2,N] = xxOneStepBackMse(S,T,N)
 % xxOneStepBackMse  One-step backward smoothing for MSE matrices.
 

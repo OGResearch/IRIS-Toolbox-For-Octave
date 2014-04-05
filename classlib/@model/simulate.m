@@ -320,7 +320,7 @@ use = simulate.antunantfunc(use,opt.anticipate);
 % Main loop
 %-----------
 
-isSolution = true(1,nLoop);
+isSol = true(1,nLoop);
 
 if opt.progress && (This.linear || opt.display == 0)
     use.progress = progressbar('IRIS model.simulate progress');
@@ -339,7 +339,7 @@ for iLoop = 1 : nLoop
     
     % Simulation is not available, return immediately.
     if any(~isfinite(use.T(:)))
-        isSolution(iLoop) = false;
+        isSol(iLoop) = false;
         continue
     end
         
@@ -449,10 +449,10 @@ if isTune
 end
 
 % Report solutions not available.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % Convert hdataobj to struct. The comments assigned to the output series

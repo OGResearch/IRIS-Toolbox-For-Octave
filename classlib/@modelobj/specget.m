@@ -134,9 +134,6 @@ switch Query
         type = find(Query(1) == 'yx');
         X = This.eqtnalias(This.eqtntype == type);
         
-    case 'lastsolve'
-        X = This.lastSolve.x;
-        
     otherwise
         Flag = false;
         

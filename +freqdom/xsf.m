@@ -106,10 +106,17 @@ end
 %**************************************************************************
     function [Sxx,Saa] = doInv()
         A = Tf*ee;
-        % B = inv(eye(nb) - Ta*ee) = inv([A11,A12;0,A22]);
-        % A11 = eye(nunit) - Ta11*ee
-        % A12 = -Ta12*ee
-        % A22 = eye(nb-nunit) - Ta22*ee
+        % B = inv(eye(nb) - Ta*ee) = inv([A11,A12;0,A22]) where
+        %
+        % * A11 = eye(nUnit) - Ta11*ee (Ta11 is eye(nUnit) only in
+        % diff-stationary models).
+        %
+        % * A12 = -Ta12*ee.
+        %
+        % * A21 is zeros.
+        %
+        % * A22 = eye(nb-nUnit) - Ta22*ee.
+        %
         B22 = inv(eye(nb-nUnit) - Ta22*ee);
         if lmb == 0
             % Zero frequency; non-stationary variables not defined here.

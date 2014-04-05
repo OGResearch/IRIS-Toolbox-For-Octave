@@ -577,14 +577,14 @@ end
 if any(underdetetermined)
     utils.warning('model', ...
         ['Underdetermined conditional forecast system; ', ...
-        'forecast not computed:%s.'], ...
-        sprintf(' #%g',find(underdetermined)));
+        'forecast not computed %s.'], ...
+        preparser.alt2str(underdetermined));
 end
 
 % Expansion not avaiable.
 if any(nansolution)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
+        'Solution(s) not available %s.', ...
         preparser.alt2str(nansolution));
 end
 
@@ -592,7 +592,7 @@ end
 
 %**************************************************************************
 % Subfunction simulatemse_().
-function [Py,Pfa] = simulatemse_(T,R,K,Z,H,D,U,Pe,initmse,nper)
+function [Py,Pfa] = simulatemse_(T,R,~,Z,H,~,~,Pe,initmse,nper)
 
 % Make sure cov matrices are numerically symmetric.
 symm = @(X) (X + X')/2;

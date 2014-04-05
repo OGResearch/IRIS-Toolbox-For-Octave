@@ -101,14 +101,17 @@ switch request
             List = inx;
         end
         Flag = any(inx);
-    case {'derivative','derivatives'}
-        nalt = size(This.Assign,3);
-        neqtn = length(This.eqtn);
-        eqselect = true(1,neqtn);
-        List = false(1,neqtn);
+    case {'deriv','derivative','derivatives'}
+        nAlt = size(This.Assign,3);
+        nEqtn = length(This.eqtn);
+        eqSelect = true(1,nEqtn);
+        List = false(1,nEqtn);
         Flag = false;
-        for iAlt = 1 : nalt
-            [~,~,nanDeriv] = myderiv(This,eqselect,iAlt,true,This.linear);
+        opt = struct();
+        opt.linear = This.linear;
+        opt.select = true;
+        for iAlt = 1 : nAlt
+            [~,~,nanDeriv] = myderiv(This,eqSelect,iAlt,opt);
             Flag = Flag || any(nanDeriv);
             List(nanDeriv) = true;
         end

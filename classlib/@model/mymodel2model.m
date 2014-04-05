@@ -81,49 +81,15 @@ if ~isempty(This.Refresh) % && any(~isnan(m.Assign(:)))
     This = refresh(This);
 end
 
-% Nested functions.
+
+% Nested functions...
+
+
+%**************************************************************************
 
 
     function doPrealloc()
-        if issparse(This.occur)
-            nt = size(This.occur,2)/length(This.name);
-        else
-            nt = size(This.occur,3);
-        end
-        
-        nDeriv = nt*sum(This.nametype <= 3);
-        n = sum(This.eqtntype <= 2);
-        This.deriv0.c = zeros(n,1);
-        This.deriv0.f = sparse(zeros(n,nDeriv));
-        tempEye = -eye(n);
-        This.deriv0.n = tempEye(:,This.nonlin);
-        
-        % Sizes of system matrices (different from solution matrices).
-        ny = sum(This.nametype == 1);
-        nx = length(This.systemid{2});
-        ne = sum(This.nametype == 3);
-        nf = sum(imag(This.systemid{2}) >= 0);
-        nb = nx - nf;
-        This.system0.K{1} = zeros(ny,1);
-        This.system0.K{2} = zeros(nx,1);
-        This.system0.A{1} = sparse(zeros(ny,ny));
-        This.system0.B{1} = sparse(zeros(ny,nb));
-        This.system0.E{1} = sparse(zeros(ny,ne));
-        This.system0.N{1} = [];
-        This.system0.A{2} = sparse(zeros(nx,nx));
-        This.system0.B{2} = sparse(zeros(nx,nx));
-        This.system0.E{2} = sparse(zeros(nx,ne));
-        This.system0.N{2} = zeros(nx,sum(This.nonlin));
-        
-        This.Assign = nan(1,length(This.name));
-        % Steady state of shocks fixed to zero, cannot be changed.
-        This.Assign(This.nametype == 3) = 0;
-        % Steady state of exogenous variables preset to zero, but can be changed.
-        This.Assign(This.nametype == 5) = 0;
-        This.Assign0 = This.Assign;
-        This.stdcorr = zeros(1,ne+ne*(ne-1)/2);
-        This.stdcorr(1,1:ne) = defaultStd;
-        
+
         ny = sum(This.nametype == 1);
         nx = length(This.systemid{2});
         nb = sum(imag(This.systemid{2}) < 0);
@@ -131,6 +97,15 @@ end
         ne = sum(This.nametype == 3);
         nFKeep = sum(~This.d2s.remove);
         nn = sum(This.nonlin);
+        nName = length(This.name);
+
+        This.Assign = nan(1,nName);
+        % Steady state of shocks fixed to zero, cannot be changed.
+        This.Assign(This.nametype == 3) = 0;
+        % Steady state of exogenous variables preset to zero, but can be changed.
+        This.Assign(This.nametype == 5) = 0;
+        This.stdcorr = zeros(1,ne+ne*(ne-1)/2);
+        This.stdcorr(1,1:ne) = defaultStd;
         
         This.solution{1} = nan(nFKeep+nb,nb); % T
         This.solution{2} = nan(nFKeep+nb,ne); % R
@@ -151,6 +126,11 @@ end
         
         This.eigval = nan(1,nx);
         This.icondix = false(1,nb);
+        
+        % Reset handle to last system
+        %-----------------------------
+        This = myresetlastsyst(This);
+
     end % doPrealloc()
 
 

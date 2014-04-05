@@ -64,45 +64,36 @@ Sing1 = false(sum(This.eqtntype == 1),nAlt);
 NanDerv = cell(1,nAlt);
 
 for iAlt = Alts
-    % Select only the equations in which at least one parameter or steady state
-    % has changed since the last differentiation.
-    eqSelect = myaffectedeqtn(This,iAlt,Opt.select,Opt.linear);
-    if ~isMeas
-        eqSelect(This.eqtntype == 1) = false;
-    elseif ~isTrans
-        eqSelect(This.eqtntype == 2) = false;
-    end
-    eqSelect(This.eqtntype >= 3) = false;
-    [This,deriv,nanDeriv] = myderiv(This,eqSelect,iAlt, ...
-        Opt.symbolic,Opt.linear);
-    if any(nanDeriv)
+
+    % Differentiate equations and set up unsolved system matrices; check
+    % for NaN derivatives.
+    [syst,NanDerv{iAlt}] = mysystem(This,iAlt,Opt);
+    if any(NanDerv{iAlt})
         NPath(iAlt) = -3;
-        NanDerv{iAlt} = nanDeriv;
         continue
     end
-    [This,system] = mysystem(This,deriv,eqSelect,iAlt);
     
     % Check system matrices for complex numbers.
-    if ~isreal(system.K{1}) ...
-            || ~isreal(system.K{2}) ...
-            || ~isreal(system.A{1}) ...
-            || ~isreal(system.A{2}) ...
-            || ~isreal(system.B{1}) ...
-            || ~isreal(system.B{2}) ...
-            || ~isreal(system.E{1}) ...
-            || ~isreal(system.E{2})
+    if ~isreal(syst.K{1}) ...
+            || ~isreal(syst.K{2}) ...
+            || ~isreal(syst.A{1}) ...
+            || ~isreal(syst.A{2}) ...
+            || ~isreal(syst.B{1}) ...
+            || ~isreal(syst.B{2}) ...
+            || ~isreal(syst.E{1}) ...
+            || ~isreal(syst.E{2})
         NPath(iAlt) = 1i;
         continue;
     end
     % Check system matrices for NaNs.
-    if any(isnan(system.K{1})) ...
-            || any(isnan(system.K{2})) ...
-            || any(isnan(system.A{1}(:))) ...
-            || any(isnan(system.A{2}(:))) ...
-            || any(isnan(system.B{1}(:))) ...
-            || any(isnan(system.B{2}(:))) ...
-            || any(isnan(system.E{1}(:))) ...
-            || any(isnan(system.E{2}(:)))
+    if any(isnan(syst.K{1})) ...
+            || any(isnan(syst.K{2})) ...
+            || any(isnan(syst.A{1}(:))) ...
+            || any(isnan(syst.A{2}(:))) ...
+            || any(isnan(syst.B{1}(:))) ...
+            || any(isnan(syst.B{2}(:))) ...
+            || any(isnan(syst.E{1}(:))) ...
+            || any(isnan(syst.E{2}(:)))
         NPath(iAlt) = NaN;
         continue;
     end
@@ -184,8 +175,8 @@ end
 
     function [SS,TT,QQ,ZZ,eqOrd] = doSchur()
         % Ordered real QZ decomposition.
-        fA = full(system.A{2});
-        fB = full(system.B{2});
+        fA = full(syst.A{2});
+        fB = full(syst.B{2});
         eqOrd = 1 : size(fA,1);
         % If the QZ re-ordering fails, change the order of equations --
         % place the first equation last, and repeat.
@@ -322,24 +313,24 @@ end
         if eqOrd(1) == 1
             % No equation re-ordering.
             % Constant.
-            C = QQ*system.K{2};
+            C = QQ*syst.K{2};
             % Effect of transition shocks.
-            D = QQ*full(system.E{2});
+            D = QQ*full(syst.E{2});
             if isNonlin
                 % Effect of add-factors in transition equations earmarked
                 % for non-linear simulations.
-                N = QQ*system.N{2};
+                N = QQ*syst.N{2};
             end
         else
             % Equations have been re-ordered while computing QZ.
             % Constant.
-            C = QQ*system.K{2}(eqOrd,:);
+            C = QQ*syst.K{2}(eqOrd,:);
             % Effect of transition shocks.
-            D = QQ*full(system.E{2}(eqOrd,:));
+            D = QQ*full(syst.E{2}(eqOrd,:));
             if isNonlin
                 % Effect of add-factors in transition equations earmarked
                 % for non-linear simulations.
-                N = QQ*system.N{2}(eqOrd,:);
+                N = QQ*syst.N{2}(eqOrd,:);
             end
         end
         
@@ -521,27 +512,27 @@ end
         % measurement matrix will be calculated later on.
         % y(t) = ZZ xb(t) + D + H e(t)
         if ny > 0
-            Zb = -full(system.A{1}\system.B{1});
+            Zb = -full(syst.A{1}\syst.B{1});
             if any(isnan(Zb(:)))
                 Flag = false;
                 % Find singularities in measurement equations and their culprits.
-                if rcond(full(system.A{1})) <= realSmall
-                    s = size(system.A{1},1);
-                    r = rank(full(system.A{1}));
+                if rcond(full(syst.A{1})) <= realSmall
+                    s = size(syst.A{1},1);
+                    r = rank(full(syst.A{1}));
                     d = s - r;
-                    [u,~] = svd(full(system.A{1}));
+                    [u,~] = svd(full(syst.A{1}));
                     Sing1(:,iAlt) = ...
                         any(abs(u(:,end-d+1:end)) > realSmall,2);
                 end
                 return
             end
-            H = -full(system.A{1}\system.E{1});
+            H = -full(syst.A{1}\syst.E{1});
             if any(isnan(H(:)))
                 Flag = false;
                 return
             end
             if Opt.linear
-                D = full(-system.A{1}\system.K{1});
+                D = full(-syst.A{1}\syst.K{1});
             else
                 D = ssY - Zb*ssXb(:,2);
             end

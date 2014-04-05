@@ -1,5 +1,5 @@
 function This = mynonlineqtn(This)
-% mynonlineqtn  [Not a public function] Create function handles for evaluating non-linearised equations.
+% mynonlineqtn  [Not a public function] Create function handles for evaluating nonlinear equations.
 %
 % Backend IRIS function.
 % No help provided.
@@ -9,24 +9,42 @@ function This = mynonlineqtn(This)
 
 %--------------------------------------------------------------------------
 
-% Reset non-linear equations to empty strings.
+% Reset nonlinear equations to empty strings.
 This.eqtnN = cell(size(This.eqtnF));
 This.eqtnN(:) = {''};
 
 replacefunc = @doReplace; %#ok<NASGU>
 for i = find(This.nonlin)
     eqtn = This.eqtnF{i};
-    doBkwComp();
+    
+    % Convert fuction handle to char.
+    doFunc2Char();
+    
     % Replace variables, shocks, and parameters.
     eqtn = regexprep(eqtn, ...
         'x\(:,(\d+),t([\+\-]\d+)?\)','${replacefunc($1,$2)}');
     % Replace references to steady states.
     eqtn = regexprep(eqtn, ...
         'L\(:,(\d+),t([\+\-]\d+)?\)','L(:,$1)');
-    This.eqtnN{i} = eqtn;
+    
+    eqtn = strtrim(eqtn);
+    if isempty(eqtn)
+        continue
+    end
+    
+    % Convert char to function handle.
+    eqtn = str2func(['@(y,xx,e,p,t,L) ',eqtn]);
+    
+    This.eqtnN{i} = eqtn;      
 end
 
+
+% Nested functions...
+
+
 %**************************************************************************
+
+    
     function C = doReplace(N,Shift)
         N = str2double(N);
         if isempty(Shift)
@@ -58,17 +76,22 @@ end
             inx = N - offset;
             C = sprintf('p(%g)',inx);
         end
-    end % doReplace().
+    end % doReplace()
+
 
 %**************************************************************************
-    function doBkwComp()
+
+    
+    function doFunc2Char()
         % Make sure `eqtn` is a text string, and remove function handle header.
         if isa(eqtn,'function_handle')
             eqtn = char(eqtn);
         end
+        eqtn = strtrim(eqtn);
         if eqtn(1) == '@'
             eqtn = regexprep(eqtn,'@\(.*?\)','');
         end
-    end % doBkwComp().
+    end % doFunc2Char()
+
 
 end

@@ -155,7 +155,6 @@ if opt.progress
 end
 
 throwErr = true;
-expandSol = false;
 
 for iAlt = 1 : nAlt    
     % Fetch the i-th parameterisation.
@@ -189,7 +188,7 @@ for iAlt = 1 : nAlt
         isSstate = ~opt.deviation && ~isnan(assignPos(i));
         
         % Steady state, state space and SGF at p0(i) + step(i).
-        m = myupdatemodel(m,pp,pri,opt,throwErr,expandSol);
+        m = myupdatemodel(m,pp,pri,opt,throwErr);
         if isSstate
             yp = doGetSstate();
         end
@@ -197,7 +196,7 @@ for iAlt = 1 : nAlt
         Gp = xxSgfy(Tp,Rp,Zp,Hp,Omgp,nunitp,Freq,opt);
         
         % Steady state,state space and SGF at p0(i) - step(i).
-        m = myupdatemodel(m,pm,pri,opt,throwErr,expandSol);
+        m = myupdatemodel(m,pm,pri,opt,throwErr);
         if isSstate
             ym = doGetSstate();
         end

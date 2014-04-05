@@ -80,12 +80,12 @@ if any(~Flag) && opt.error
     tmp = {};
     for i = find(~Flag)
         for j = 1 : length(list{i})
-            tmp{end+1} = i; %#ok<AGROW>
+            tmp{end+1} = preparser.alt2str(i); %#ok<AGROW>
             tmp{end+1} = list{i}{j}; %#ok<AGROW>
         end
     end
     utils.error('model', ...
-        'Steady-state error in this equation in #%g: ''%s''', ...
+        'Steady-state error in this equation %s: ''%s''', ...
         tmp{:});
 end
 

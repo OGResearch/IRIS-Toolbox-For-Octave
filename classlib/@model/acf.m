@@ -143,14 +143,14 @@ sspaceVec = [This.solutionvector{1:2}];
 % Call timedom package to compute autocovariance function.
 isContributions = opt.contributions;
 acfOrder = opt.order;
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
     isExpand = false;
     [T,R,~,Z,H,~,U,Omg] = mysspace(This,iAlt,isExpand);
 
     % Continue immediately if solution is not available.
-    isSolution(iAlt) = all(~isnan(T(:)));
-    if ~isSolution(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
 
@@ -180,10 +180,10 @@ for iAlt = 1 : nAlt
 end
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % Squeeze the covariance matrices if ~contributions.

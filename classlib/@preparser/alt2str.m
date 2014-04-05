@@ -1,4 +1,4 @@
-function S = alt2str(Alt,Format,To)
+function S = alt2str(Alt,Label)
 % alt2str  [Not a public function] Convert vector to compact list.
 %
 % Backend IRIS function.
@@ -8,15 +8,9 @@ function S = alt2str(Alt,Format,To)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    Format = strtrim(Format);
-catch %#ok<CTCH>
-    Format = '#%g';
-end
-
-try
-    To = strtrim(To);
-catch %#ok<CTCH>
-    To = '..';
+    Label; %#ok<VUNUS>
+catch
+    Label = 'Param';
 end
 
 if islogical(Alt)
@@ -25,6 +19,9 @@ end
 Alt = Alt(:).';
 
 %--------------------------------------------------------------------------
+
+Format = '#%g';
+FromTo = '...'
 
 S = '';
 if isempty(Alt)
@@ -43,6 +40,9 @@ d2 = [d,false];
 inx = d1 & d2;
 c(inx) = {'-'};
 S = [c{:}];
-S = regexprep(S,'-+ ',To);
+S = regexprep(S,'-+ ',FromTo);
+
+% [#1 #5...#10 #100].
+S = ['[',Label,' ',strtrim(S),']'];
 
 end

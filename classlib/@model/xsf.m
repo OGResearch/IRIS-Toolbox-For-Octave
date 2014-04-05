@@ -96,13 +96,13 @@ if opt.progress
 end
 
 S = nan(ny+nx,ny+nx,nFreq,nAlt);
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
     [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
     
     % Continue immediately if solution is not available.
-    isSolution(iAlt) = all(~isnan(T(:)));
-    if ~isSolution(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
     
@@ -116,10 +116,10 @@ end
 S = S / (2*pi);
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % List of variables in rows and columns of `S` and `D`.

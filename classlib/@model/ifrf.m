@@ -67,13 +67,13 @@ nAlt = size(This.Assign,3);
 W = zeros(ny+nx,ne,nFreq,nAlt);
 
 if ne > 0
-    isSolution = true(1,nAlt);
+    isSol = true(1,nAlt);
     for iAlt = 1 : nAlt
         [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
         
         % Continue immediately if solution is not available.
-        isSolution(iAlt) = all(~isnan(T(:)));
-        if ~isSolution(iAlt)
+        isSol(iAlt) = all(~isnan(T(:)));
+        if ~isSol(iAlt)
             continue
         end
         
@@ -83,10 +83,10 @@ if ne > 0
 end
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        sprintf(' #%g',find(~isSolution)));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 List = { ...

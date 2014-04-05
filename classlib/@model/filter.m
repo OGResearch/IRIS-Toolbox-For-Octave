@@ -223,8 +223,8 @@ nXPer = length(xRange);
 nanData = all(all(isnan(Inp),1),2);
 if any(nanData)
     utils.warning('model', ...
-        'No observations available in the input database%s.', ...
-        sprintf(' #%g',(nanData)));
+        'No observations available in input database %s.', ...
+        preparser.alt2str(nanData,'Dataset'));
 end
 
 % Pre-allocated requested hdata output arguments.

@@ -258,6 +258,9 @@ switch Query
     case 'ne'
         X = length(This.solutionid{3});
         
+    case 'lastsyst'
+        X = This.lastSyst;
+        
     otherwise
         Flag = false;
         
@@ -268,7 +271,7 @@ if chkSolution
     [solutionFlag,inx] = isnan(This,'solution');
     if solutionFlag
         utils.warning('model', ...
-            'Solution(s) not available:%s', ...
+            'Solution(s) not available %s', ...
             preparser.alt2str(inx));
     end
 end

@@ -86,7 +86,7 @@ X = nan([ny+nx,ne,nPer,nAlt]);
 Y = nan([ny+nx,ne,nPer,nAlt]);
 
 isZeroCorr = true(1,nAlt);
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
     
     % Continue immediately if some cross-corrs are non-zero.
@@ -98,8 +98,8 @@ for iAlt = 1 : nAlt
     [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
     
     % Continue immediately if solution is not available.
-    isSolution(iAlt) = all(~isnan(T(:)));
-    if ~isSolution(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
     
@@ -109,17 +109,17 @@ for iAlt = 1 : nAlt
 end
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % Report non-zero cross-correlations.
 if ~all(isZeroCorr)
     utils.warning('model', ...
-        ['Cannot compute FEVD for parameterisations with ', ...
-        'non-zero cross-correlations:%s.'], ...
+        ['Cannot compute FEVD with ', ...
+        'nonzero cross-correlations %s.'], ...
         preparser.alt2str(~isZeroCorr));
 end
 
