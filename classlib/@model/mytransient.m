@@ -25,6 +25,9 @@ doNonlinEqtn();
 
 
     function doLastSyst()
+
+        % Reset lastSyst to a new hlastsystobj handle object.
+        This.lastSyst = hlastsystobj();
         
         % Parameters and steady states
         %------------------------------

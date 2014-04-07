@@ -198,9 +198,9 @@ classdef model < modelobj & estimateobj
     % recreate all transient properties.
     properties(GetAccess=public,SetAccess=protected,Hidden,Transient)
         % Anonymous function handles to equations evaluating the LHS-RHS.
-        eqtnN = cell(1,0);
+        eqtnN = [];
         % Handle to last derivatives and system matrices.
-        lastSyst = hlastsystobj();
+        lastSyst = [];
     end
     
     methods
