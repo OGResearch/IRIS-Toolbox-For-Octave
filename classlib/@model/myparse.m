@@ -160,21 +160,20 @@ if ~isempty(invalid)
         invalid{:});
 end
 
-% Read autoexogenise definitions (variable/shock pairs).
-
-[This,invalid,nonUnique] = xxReadAutoexogenise(This,S(12));
-
-if ~isempty(invalid)
+% Read autoexogenise definitions (variable/shock pairs)
+%-------------------------------------------------------
+s = S( blkpos(the,'!autoexogenise') );
+[This,ixValid,multList] = myautoexogenise(This,s.eqtnlhs,s.eqtnrhs);
+if any(~ixValid)
     utils.error('model',[ep, ...
         'Invalid autoexogenise definition: ''%s''.'], ...
-        invalid{:});
+        s.eqtn{~ixValid});
 end
-
-if ~isempty(nonUnique)
+if ~isempty(multList)
     utils.error('model',[ep, ...
         'This shock is included in more than one ', ...
         'autoexogenise definitions: ''%s''.'], ...
-        nonUnique{:});
+        multList{:});
 end
 
 % Process equations
@@ -807,16 +806,6 @@ This.nonlin(end+(1:nEqtn)) = false;
 This.Refresh = refresh;
 
 end % xxReadLinks()
-
-
-%**************************************************************************
-function [This,Invalid,Nonunique] = xxReadAutoexogenise(This,S)
-
-% `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
-[This,invalid,Nonunique] = myautoexogenise(This,S.eqtnlhs,S.eqtnrhs);
-Invalid = S.eqtn(invalid);
-
-end % xxReadautoExogenise()
 
 
 %**************************************************************************

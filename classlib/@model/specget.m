@@ -230,7 +230,7 @@ switch Query
         X = userdata(This);
         
     % Database of autoexogenise definitions d.variable = 'shock';
-    case {'autoexogenise','autoexogenised'}
+    case {'autoexogenise','autoexogenised','autoexogenize','autoexogenized'}
         X = autoexogenise(This);
         
     case {'activeshocks','inactiveshocks'}
