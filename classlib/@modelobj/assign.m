@@ -141,6 +141,7 @@ elseif n <= 2 && isstruct(varargin{1})
         cc = strrep(clone,'?',c);
     end
     [assignPos,stdcorrPos] = mynameposition(This,cc);
+    ixValidLength = true(1,length(cc));
     for i = find(~isnan(assignPos))
         x = d.(c{i});
         if (growth || level) && any(imag(x(:)) ~= 0)
@@ -153,12 +154,26 @@ elseif n <= 2 && isstruct(varargin{1})
         elseif level
             x = x + 1i*imag(This.Assign(1,assignPos(i),:));
         end
-        This.Assign(1,assignPos(i),:) = x;
-        Assign(assignPos(i)) = true;
+        ixValidLength(i) = numel(x) == 1 ...
+            || size(This.Assign,3) == numel(x);
+        if ixValidLength(i)
+            This.Assign(1,assignPos(i),:) = x;
+            Assign(assignPos(i)) = true;
+        end
     end
     for i = find(~isnan(stdcorrPos))
-        This.stdcorr(1,stdcorrPos(i),:) = d.(c{i});
-        stdcorr(stdcorrPos(i)) = true;
+        ixValidLength(i) = numel(x) == 1 ...
+            || size(This.Assign,3) == numel(x);
+        if ixValidLength(i)
+            This.stdcorr(1,stdcorrPos(i),:) = d.(c{i});
+            stdcorr(stdcorrPos(i)) = true;
+        end
+    end
+    if any(~ixValidLength)
+        utils.error('modelobj:assign', ...
+            ['Incorrect number of alternative values assigned ', ...
+            'to this parameter: ''%s''.'], ...
+            cc{~ixValidLength});
     end
     doReset();
     if nargout == 1

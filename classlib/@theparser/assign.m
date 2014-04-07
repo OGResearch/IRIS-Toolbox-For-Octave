@@ -46,8 +46,8 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         
         try
             x = eval(value);
-            if is.numericscalar(x)
-                asgn.(name) = x;
+            if isnumeric(x) % is.numericscalar(x)
+                asgn.(name) = x(:).';
             end
         catch %#ok<CTCH>
             asgn.(name) = NaN;
