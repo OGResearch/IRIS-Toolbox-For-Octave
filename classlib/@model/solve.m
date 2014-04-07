@@ -120,7 +120,7 @@ end
             func = @utils.warning;
         end
         [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
-        func('model',body,args{:});
+        func('model:solve',body,args{:});
     end % doErrWarn()
 
 
