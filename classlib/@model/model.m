@@ -170,7 +170,7 @@ classdef model < modelobj & estimateobj
             cell(1,0), ...
             };
         % Derivatives to system matrices.
-        d2s = struct();
+        d2s = [];
         % Model eigenvalues.
         eigval = zeros(1,0);
         % Differentiation step when calculating numerical derivatives.
@@ -194,13 +194,12 @@ classdef model < modelobj & estimateobj
     end
     
     % Transient properties are not saved to disk files, and need to be
-    % recreated each time a model object is loaded.
+    % recreated each time a model object is loaded. Use mytransient() to
+    % recreate all transient properties.
     properties(GetAccess=public,SetAccess=protected,Hidden,Transient)
-        % Anonymous function handles to equations evaluating the LHS-RHS;
-        % use mynonlineqtn() to recreate.
+        % Anonymous function handles to equations evaluating the LHS-RHS.
         eqtnN = cell(1,0);
-        % Handle to last derivatives and system matrices; use
-        % myresetlastsyst() to recreate.
+        % Handle to last derivatives and system matrices.
         lastSyst = hlastsystobj();
     end
     
@@ -304,7 +303,6 @@ classdef model < modelobj & estimateobj
         varargout = mykalmanregoutp(varargin)
         varargout = mymodel2model(varargin)
         varargout = mynamepattrepl(varargin)
-        varargout = mynonlineqtn(varargin)
         varargout = mynunit(varargin)
         varargout = myoccurrence(varargin)
         varargout = myoptpolicy(varargin)
@@ -327,6 +325,7 @@ classdef model < modelobj & estimateobj
         varargout = mysubsalt(varargin)
         varargout = mysymbdiff(varargin)
         varargout = mysystem(varargin)
+        varargout = mytransient(varargin)
         varargout = mytrendarray(varargin)
         varargout = myvector(varargin)
         varargout = outputdbase(varargin)
@@ -478,9 +477,6 @@ classdef model < modelobj & estimateobj
                 % Convert struct (potentially based on old model object
                 % syntax) to model object.
                 This = mystruct2obj(This,varargin{1});
-                % Create transient properties.
-                This = mynonlineqtn(This);
-                This = myresetlastsyst(This);
             elseif nargin > 0
                 if ischar(varargin{1}) || iscellstr(varargin{1})
                     fileName = strtrim(varargin{1});

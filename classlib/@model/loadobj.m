@@ -1,4 +1,4 @@
-function This = loadobj(This)
+function This = loadobj(This,varargin)
 % loadobj  [Not a public function] Prepare model object for use in workspace and handle bkw compatibility.
 %
 % Backend IRIS function.
@@ -10,11 +10,6 @@ function This = loadobj(This)
 %--------------------------------------------------------------------------
 
 This = modelobj.loadobj(This);
-
-if ~isa(This,'model') && ~isfield(This,'d2s')
-    % Convert meta to D2S.
-    doD2s();
-end
 
 if ~isa(This,'model')
     if isfield(This,'eqtnnonlin')
@@ -28,6 +23,20 @@ end
 
 if isstruct(This)
     This = model(This);
+end
+
+solutionid = This.solutionid;
+if isempty(This.d2s)
+    opt = struct();
+    opt.addlead = false;
+    opt.removeleads = all(imag(This.solutionid{2}) <= 0);
+    This = myd2s(This,opt);
+end
+if ~isequal(solutionid,This.solutionid)
+    disp('Model object failed to be loaded from a disk file.');
+    disp('Create the model object again from the model file.');
+    This = model();
+    return
 end
 
 ny = sum(This.nametype == 1);
@@ -137,18 +146,15 @@ try
 catch %#ok<CTCH>
     % The function `myeqtn2afcn` may fail because of an old structure of
     % derivatives or missing equations for constant terms in linear models.
-    This = mysymbdiff(This);
+    isSymbDiff = true;
+    This = mysymbdiff(This,isSymbDiff);
     This = myeqtn2afcn(This);
 end
 
 % Transient properties
 %----------------------
-
-% Function handles for evaluating nonlinear equations.
-This = mynonlineqtn(This);
-
-% Handle to last solved system.
-This = myresetlastsyst(This);
+% Reset last system, and create function handles to nonlinear equations.
+This = mytransient(This);
 
 
 % Nested functions...
@@ -175,33 +181,6 @@ This = myresetlastsyst(This);
         This.namelabel(:,end-ne+1:end) = [];
         This.log(:,end-ne+1:end) = [];
     end % doStdcorr()
-
-
-%**************************************************************************
-
-    
-    function doD2s()
-        This.d2s = struct();
-        % Positions in derivative matrices.
-        This.d2s.y_ = This.metaderiv.y;
-        This.d2s.xu1_ = This.metaderiv.uplus;
-        This.d2s.xu_ = This.metaderiv.u;
-        This.d2s.xp1_ = This.metaderiv.pplus;
-        This.d2s.xp_ = This.metaderiv.p;
-        This.d2s.e_ = This.metaderiv.e;
-        % Positions in unsolved system matrices.
-        This.d2s.y = This.metasystem.y;
-        This.d2s.xu1 = This.metasystem.uplus;
-        This.d2s.xu = This.metasystem.u;
-        This.d2s.xp1 = This.metasystem.pplus;
-        This.d2s.xp = This.metasystem.p;
-        This.d2s.e = This.metasystem.e;
-        % Dynamic identities.
-        This.d2s.ident1 = This.systemident.xplus;
-        This.d2s.ident = This.systemident.x;
-        % Non-predetermined variables removed from solution.
-        This.d2s.remove = This.metadelete;
-    end % doD2s()
 
 
 end

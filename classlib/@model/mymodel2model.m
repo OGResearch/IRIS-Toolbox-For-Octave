@@ -33,10 +33,6 @@ if any(This.nonlin)
 end
 This = myd2s(This,Opt);
 
-% Create equations for evaluating the LHS minus RHS; these can be created
-% only after we know the solution ids.
-This = mynonlineqtn(This);
-
 % Assign default stddevs.
 if ~isnan(Opt.std) && ~isempty(Opt.std)
     defaultStd = Opt.std;
@@ -80,6 +76,9 @@ This = myeqtn2afcn(This);
 if ~isempty(This.Refresh) % && any(~isnan(m.Assign(:)))
     This = refresh(This);
 end
+
+% Recreate transient properties.
+This = mytransient(This);
 
 
 % Nested functions...
@@ -127,10 +126,6 @@ end
         This.eigval = nan(1,nx);
         This.icondix = false(1,nb);
         
-        % Reset handle to last system
-        %-----------------------------
-        This = myresetlastsyst(This);
-
     end % doPrealloc()
 
 

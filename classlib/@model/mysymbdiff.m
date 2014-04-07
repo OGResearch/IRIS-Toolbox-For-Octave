@@ -7,6 +7,12 @@ function This = mysymbdiff(This,IsSymbDiff)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+try
+    IsSymbDiff; %#ok<VUNUS>
+catch
+    IsSymbDiff = true;
+end
+
 %--------------------------------------------------------------------------
 
 % No derivatives computed for dynamic links.
