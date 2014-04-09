@@ -16,6 +16,9 @@ if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
         || (isequal(Opt.orientation,'portrait') && This.options.sideways)
     orient(This.handle,'landscape');
     angle = is.hg2(0,-90);
+    if ~ismatlab
+        angle = 0;
+    end
     raise = 10;
 else
     orient(This.handle,'tall');
