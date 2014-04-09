@@ -42,7 +42,13 @@ if isRhs
     doOpenRhsAxes();
 end
 
-doHoldAll();
+if ismatlab
+    doHoldAll();
+else
+    for iAx = Ax(:).'
+        hold(iAx,'all');
+    end
+end
 doPlot();
 
 if isRhs
@@ -91,7 +97,6 @@ if isequal(This.options.legend,true) ...
     else
         lg = legend(Ax(1),legendEntries{:}, ...
             'location',This.options.legendlocation);
-        
     end
     set(lg,'color','white');
 end
