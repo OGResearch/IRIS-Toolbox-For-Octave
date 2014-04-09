@@ -92,7 +92,11 @@ for j = 1 : numel(list)
     end
 end
 templist = fieldnames(s);
-templist = templist - list;
+if ismatlab % temporary solution while overloading of built-in class methods is not allowed in Octave
+    templist = templist - list;
+else
+    templist = setdiff(templist, list);
+end
 for j = 1 : length(templist)
     d.(templist{j}) = s.(templist{j});
 end
