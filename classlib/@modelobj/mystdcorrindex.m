@@ -34,8 +34,11 @@ ShkInx2 = false(1,nStdcorr);
 if length(Name) >= 5 && strncmp(Name,'std_',4)
     
     % Position of a std deviation.
-    
-    stdList = regexprep(eList,'.*','std_$0');
+    if ismatlab
+        stdList = regexprep(eList,'.*','std_$0');
+    else
+        stdList = myregexprep(eList,'.*','${[''std_'' $0]}');
+    end
     StdcorrInx(1:ne) = strfun.strcmporregexp(stdList,Name);
     ShkInx1 = StdcorrInx;
     ShkInx2 = nan(size(ShkInx1));
