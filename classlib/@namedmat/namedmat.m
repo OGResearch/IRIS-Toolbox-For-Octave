@@ -1,4 +1,4 @@
-classdef namedmat < double
+classdef namedmat% < double
     % namedmat  Matrices with named rows and columns.
     %
     % Matrices with named rows and columns are returned by several IRIS
