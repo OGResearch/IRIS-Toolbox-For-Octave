@@ -24,7 +24,7 @@ if ~isempty(This.savefig)
     fid = fopen(figFile,'w+');
     fwrite(fid,This.savefig);
     fclose(fid);
-    This.handle = open(figFile);
+    This.handle = myloadfig(This,figFile);
     set(This.handle,'visible',visibleFlag);
     delete(figFile);
 end

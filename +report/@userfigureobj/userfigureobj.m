@@ -23,7 +23,8 @@ classdef userfigureobj < report.basefigureobj
                         'a valid handle to a figure window.']);
                 end
                 figFile = [tempname(pwd()),'.fig'];
-                saveas(h,figFile);
+                % find
+                mysavefig(This,h,figFile);
                 fid = fopen(figFile);
                 This.savefig = fread(fid);
                 fclose(fid);
@@ -40,6 +41,8 @@ classdef userfigureobj < report.basefigureobj
     methods (Access=protected,Hidden)
         
         varargout = myplot(varargin)
+        mysavefig(varargin)
+        varargout = myloadfig(varargin)
         
     end
     
