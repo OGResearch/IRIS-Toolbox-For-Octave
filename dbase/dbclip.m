@@ -92,7 +92,7 @@ for i = 1 : nList
             continue
         end
         D.(name) = resize(D.(name),Range{pos});
-    elseif isstruct(D.(name))
+    elseif isa(D.(name),'struct')
         % Clip a sub-database.
         D.(name) = dbclip(D.(name),Range);
     end
