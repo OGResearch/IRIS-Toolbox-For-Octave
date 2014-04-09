@@ -135,7 +135,7 @@ if ismatlab
                 pp.addRequired('Range',@isnumeric);
                 pp.parse(varargin{1:2});
 else
-                pp = pp.addRequired('M',@(x) isa(x,'modelobj'));
+                pp = pp.addRequired('M',@(x) myisa(x,'modelobj'));
                 pp = pp.addRequired('Range',@isnumeric);
                 pp = pp.parse(varargin{1:2});
 end
