@@ -44,13 +44,24 @@ end
 
 %**************************************************************************
 function xxCopyAxes(h,varargin)
-   if ~isequal(get(h,'type'),'axes')
+    if ~isequal(get(h,'type'),'axes')
       h = get(h,'parent');
-   end
-   new = copyobj(h,figure());
-   set(new, ...
+    end
+    if ~ismatlab
+        kids = findall(h,'-property','userdata');
+        toShow = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),kids);
+        set(kids(toShow),'handleVisibility','on');
+    end
+    new = copyobj(h,figure());
+    if ~ismatlab
+        newKids = findall(new,'-property','userdata');
+        toHide = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),newKids);
+        set(kids(toShow),'handleVisibility','off');
+        set(newKids(toHide),'handleVisibility','off');
+    end
+    set(new, ...
       'position',[0.1300,0.1100,0.7750,0.8150], ...
       'units','normalized', ...
       'buttonDownFcn','');
-end
-% xxCopyAxes().
+    end
+    % xxCopyAxes().
