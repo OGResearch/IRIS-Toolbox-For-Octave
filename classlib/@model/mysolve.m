@@ -1,4 +1,4 @@
-function [This,NPath,NanDerv,Sing1] = mysolve(This,Alts,Opt)
+function [This,NPath,NanDerv,Sing1] = mysolve(This,SelAlt,Opt)
 % mysolve  [Not a public function] First-order quasi-triangular solution.
 %
 % Backend IRIS function.
@@ -18,9 +18,9 @@ function [This,NPath,NanDerv,Sing1] = mysolve(This,Alts,Opt)
 % * -4 .. Steady state does not hold
 
 try
-    Alts;
+    SelAlt;
 catch %#ok<CTCH>
-    Alts = 1;
+    SelAlt = 1;
 end
 
 %--------------------------------------------------------------------------
@@ -38,13 +38,14 @@ nf = nx - nb;
 ne = sum(This.nametype == 3);
 nn = sum(This.nonlin);
 fKeep = ~This.d2s.remove;
-nFKeep = sum(fKeep);
+nfKeep = sum(fKeep);
+nxKeep = nfKeep + nb;
 nAlt = size(This.Assign,3);
 
-if islogical(Alts)
-    Alts = find(Alts);
-elseif isequal(Alts,Inf)
-    Alts = 1 : nAlt;
+if islogical(SelAlt)
+    SelAlt = find(SelAlt);
+elseif isequal(SelAlt,Inf)
+    SelAlt = 1 : nAlt;
 end
 
 % Reset icondix, eigenvalues, solution matrices, expansion matrices
@@ -54,7 +55,7 @@ doReset();
 % Set `NPATH` to 1 initially to handle correctly the cases when only a
 % subset of parameterisations is solved for.
 NPath = ones(1,nAlt);
-Alts = Alts(:).';
+SelAlt = SelAlt(:).';
 
 if Opt.progress
     progress = progressbar('IRIS model.solve progress');
@@ -63,7 +64,7 @@ end
 Sing1 = false(sum(This.eqtntype == 1),nAlt);
 NanDerv = cell(1,nAlt);
 
-for iAlt = Alts
+for iAlt = SelAlt
 
     % Differentiate equations and set up unsolved system matrices; check
     % for NaN derivatives.
@@ -111,9 +112,9 @@ for iAlt = Alts
             ssY = mytrendarray(This, ...
                 find(This.nametype == 1),0,false,iAlt);
             ssXf = mytrendarray(This, ...
-                This.solutionid{2}(1:nFKeep),[-1,0],false,iAlt);
+                This.solutionid{2}(1:nfKeep),[-1,0],false,iAlt);
             ssXb = mytrendarray(This, ...
-                This.solutionid{2}(nFKeep+1:end),[-1,0],false,iAlt);
+                This.solutionid{2}(nfKeep+1:end),[-1,0],false,iAlt);
         end
         
         % Solution matrices
@@ -161,7 +162,7 @@ for iAlt = Alts
     end
     
     if Opt.progress
-        update(progress,iAlt/length(Alts));
+        update(progress,iAlt/length(SelAlt));
     end
 
 end
@@ -389,7 +390,7 @@ end
         if Opt.linear
             Ku = -(S22+T22)\C2;
         else
-            Ku = zeros(nFKeep,1);
+            Ku = zeros(nfKeep,1);
         end
         if any(isnan(Ku(:)))
             Flag = false;
@@ -574,9 +575,9 @@ end
         if isempty(This.solution) || isempty(This.solution{1})
             % Preallocate nonexisting solution matrices.
             % Transition matrices.
-            This.solution{1} = nan(nFKeep+nb,nb,nAlt); % T
-            This.solution{2} = nan(nFKeep+nb,ne*(k+1),nAlt); % R
-            This.solution{3} = nan(nFKeep+nb,1,nAlt); % K
+            This.solution{1} = nan(nxKeep,nb,nAlt); % T
+            This.solution{2} = nan(nxKeep,ne*(k+1),nAlt); % R
+            This.solution{3} = nan(nxKeep,1,nAlt); % K
             % Measurement matrices.
             This.solution{4} = nan(ny,nb,nAlt); % Z
             This.solution{5} = nan(ny,ne,nAlt); % H
@@ -584,7 +585,7 @@ end
             % Transformation of the alpha vector.
             This.solution{7} = nan(nb,nb,nAlt); % U
             % Effect of nonlinearirities.
-            This.solution{8} = nan(nFKeep+nb,nn*(k+1),nAlt); % Y
+            This.solution{8} = nan(nxKeep,nn*(k+1),nAlt); % Y
             % Auxiliary measurement matrix y = Zb*xb;
             This.solution{9} = nan(ny,nb,nAlt); % Zb
         end
@@ -604,57 +605,61 @@ end
         elseif isempty(This.Expand) || isempty(This.Expand{1})
             % Preallocate nonexisting expansion matrices.
             This.Expand{1} = nan(nb,nf,nAlt);
-            This.Expand{2} = nan(nFKeep,nf,nAlt);
+            This.Expand{2} = nan(nfKeep,nf,nAlt);
             This.Expand{3} = nan(nf,ne,nAlt);
             This.Expand{4} = nan(nf,nf,nAlt);
             This.Expand{5} = nan(nf,nf,nAlt);
             This.Expand{6} = nan(nf,nn,nAlt);
         end
         
+        nSelAlt = length(SelAlt);
         if isTrans            
             % Reset transition solution matrices.
-            This.solution{1}(:,:,Alts) = NaN; %nan(nFKeep+nb,nb,length(Alts));
+            This.solution{1}(:,:,SelAlt) = nan(nxKeep,nb,nSelAlt);
             n = size(This.solution{2},2);
             if n < ne*(k+1)
-                This.solution{2}(:,end+1:ne*(k+1),:) = NaN;
-                % n = ne*(k+1);
+                This.solution{2} = [This.solution{2}, ...
+                    nan(nxKeep,ne*(k+1)-n,nAlt)];
+                n = ne*(k+1);
             end
-            This.solution{2}(:,:,Alts) = NaN; %nan(nFKeep+nb,n,length(Alts));
-            This.solution{3}(:,:,Alts) = NaN; %nan(nFKeep+nb,1,length(Alts));
-            This.solution{7}(:,:,Alts) = NaN; %nan(nb,nb,length(Alts));
+            This.solution{2}(:,:,SelAlt) = nan(nxKeep,n,nSelAlt);
+            This.solution{3}(:,:,SelAlt) = nan(nxKeep,1,nSelAlt);
+            This.solution{7}(:,:,SelAlt) = nan(nb,nb,nSelAlt);
             n = size(This.solution{8},2);
             if n < nn*(k+1)
                 This.solution{8}(:,end+1:nn*(k+1),:) = NaN;
-                % n = nn*(k+1);
+                This.solution{8} = [This.solution{8}, ...
+                    nan(nxKeep,nn*(k+1)-n,nAlt)];
+                n = nn*(k+1);
             end
-            This.solution{8}(:,:,Alts) = NaN; %nan(nFKeep+nb,n,length(Alts));
+            This.solution{8}(:,:,SelAlt) = nan(nxKeep,n,nSelAlt);
             
             % Reset transition properties.
-            This.eigval(:,:,Alts) = NaN;
-            This.icondix(1,:,Alts) = false;
+            This.eigval(:,:,SelAlt) = NaN;
+            This.icondix(1,:,SelAlt) = false;
 
             % Reset expansion matrices.
             if ~isempty(This.Expand) && nf > 0
-                This.Expand{1}(:,:,Alts) = NaN;
-                This.Expand{2}(:,:,Alts) = NaN;
-                This.Expand{3}(:,:,Alts) = NaN;
-                This.Expand{4}(:,:,Alts) = NaN;
-                This.Expand{5}(:,:,Alts) = NaN;
-                This.Expand{6}(:,:,Alts) = NaN;
+                This.Expand{1}(:,:,SelAlt) = NaN;
+                This.Expand{2}(:,:,SelAlt) = NaN;
+                This.Expand{3}(:,:,SelAlt) = NaN;
+                This.Expand{4}(:,:,SelAlt) = NaN;
+                This.Expand{5}(:,:,SelAlt) = NaN;
+                This.Expand{6}(:,:,SelAlt) = NaN;
             end
         end
         
         if isMeas
             % Reset measurement solution matrices.
-            This.solution{5}(:,:,Alts) = nan(ny,ne,length(Alts));
-            This.solution{6}(:,:,Alts) = nan(ny,1,length(Alts));
-            This.solution{9}(:,:,Alts) = nan(ny,nb,nAlt);
+            This.solution{5}(:,:,SelAlt) = nan(ny,ne,nSelAlt);
+            This.solution{6}(:,:,SelAlt) = nan(ny,1,nSelAlt);
+            This.solution{9}(:,:,SelAlt) = nan(ny,nb,nAlt);
         end
         
         % Reset This.solution{4} no matter what: it depends both on
         % transition and measurement parameters and needs to be always
         % updated.
-        This.solution{4}(:,:,Alts) = nan(ny,nb,length(Alts));
+        This.solution{4}(:,:,SelAlt) = nan(ny,nb,nSelAlt);
         
     end % doReset()
 
