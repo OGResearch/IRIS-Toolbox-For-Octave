@@ -1,6 +1,6 @@
 function flag = myisa(this,cls)
 
-if ismatlab || isobject(this)
+if ismatlab || ~isobject(this)
     flag = isa(this,cls);
 else
     mc = metaclass(this);
