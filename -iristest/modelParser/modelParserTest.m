@@ -1,10 +1,12 @@
 function Tests = modelParserTest()
 Tests = functiontests(localfunctions);
 end
-
+%#ok<*DEFNU>
 
 %**************************************************************************
-function testQuotes(This) %#ok<*DEFNU>
+
+
+function testQuotes(This)
 
 m = model('testQuotes.model');
 
@@ -30,6 +32,8 @@ end % testQuotes()
 
 
 %**************************************************************************
+
+
 function testBracketsInQuotes(This)
 
 m = model('testBracketsInQuotes.model');
@@ -56,6 +60,8 @@ end % testBracketsInQuotes()
 
 
 %**************************************************************************
+
+
 function testAssignments(This)
 
 m = model('testAssignment.model');
@@ -73,6 +79,50 @@ end % testAssignments()
 
 
 %**************************************************************************
+
+
+function testMultipleAssignments(This)
+
+m = model('testMultipleAssignment.model');
+
+% Values assigned to variables in model file.
+actAssign = get(m,'sstate');
+expAssign = struct( ...
+    'x',[1,2,3], ...
+    'y',[4,5,6], ...
+    'z',[1,1,1], ...
+    'w',[NaN,NaN,NaN], ...
+    'alp',[10,10,10], ...
+    'bet',sin([1,2,3]) ...
+    );
+assertEqual(This,actAssign,expAssign);
+
+end % testMutlipleAssignments()
+
+
+%**************************************************************************
+
+
+function testAutoexogenize(This)
+
+m = model('testAutoexogenize.model');
+
+% Values assigned to variables in model file.
+actAssign = get(m,'autoexogenize');
+expAssign = struct( ...
+    'x','ex', ...
+    'y','ey', ...
+    'z','ez', ...
+    'w','ew' ...
+    );
+assertEqual(This,actAssign,expAssign);
+
+end % testAutoexogenize()
+
+
+%**************************************************************************
+
+
 function testEvalTimeSubs(This)
 
 p = theparser();
@@ -106,7 +156,10 @@ assertEqual(This,actValidTimeSubs,expValidTimeSubs);
 
 end % testEvalTimeSubs()
 
+
 %**************************************************************************
+
+
 function testParseEqtns(This)
 
 p = theparser();
@@ -189,4 +242,4 @@ assertEqual(This,actSstateRhs,expSstateRhs);
 assertEqual(This,actSstateSign,expSstateSign);
 assertEqual(This,[actMaxT,actMinT],[expMaxT,expMinT]);
 
-end
+end % testParseEqtns()
