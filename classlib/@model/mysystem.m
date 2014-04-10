@@ -17,14 +17,7 @@ function [Syst,NanDerv,Derv] = mysystem(This,IAlt,Opt)
 % Select only the equations in which at least one parameter or steady state
 % has changed since the last differentiation.
 eqSelect = myaffectedeqtn(This,IAlt,Opt);
-
-if strcmpi(Opt.eqtn,'all')
-    eqSelect = eqSelect & This.eqtntype <= 2;
-elseif strcmpi(Opt.eqtn,'measurement')
-    eqSelect = eqSelect & This.eqtntype == 1;
-elseif strcmpi(Opt.eqtn,'transition')
-    eqSelect = eqSelect & This.eqtntype == 2;
-end
+eqSelect = eqSelect & This.eqtntype <= 2;
 
 % Evaluate derivatives of equations wrt parameters
 %--------------------------------------------------
