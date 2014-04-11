@@ -47,17 +47,15 @@ function xxCopyAxes(h,varargin)
     if ~isequal(get(h,'type'),'axes')
       h = get(h,'parent');
     end
+    % Temporary show excluded from legend (for Octave's way of excluding)
     if ~ismatlab
-        kids = findall(h,'-property','userdata');
-        toShow = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),kids);
-        set(kids(toShow),'handleVisibility','on');
+        grfun.mytrigexcludedfromlegend(h,'on');
     end
     new = copyobj(h,figure());
+    % Hide back excluded from legend (for Octave's way of excluding)
     if ~ismatlab
-        newKids = findall(new,'-property','userdata');
-        toHide = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),newKids);
-        set(kids(toShow),'handleVisibility','off');
-        set(newKids(toHide),'handleVisibility','off');
+        grfun.mytrigexcludedfromlegend(h,'off');
+        grfun.mytrigexcludedfromlegend(new,'off');
     end
     set(new, ...
       'position',[0.1300,0.1100,0.7750,0.8150], ...

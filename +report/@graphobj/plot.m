@@ -74,6 +74,11 @@ for i = find(annotateInx)
     plot(This.children{i},Ax(end));
 end
 
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'on');
+end
+
 % Find children tagged `'background'` and move them to background.
 ch = get(Ax(end),'children');
 bg = findobj(ch,'flat','tag','background');
@@ -82,6 +87,11 @@ for ibg = bg(:).'
 end
 ch = [ch;bg];
 set(Ax(end),'children',ch);
+
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'off');
+end
 
 % Add legend.
 lg = [];

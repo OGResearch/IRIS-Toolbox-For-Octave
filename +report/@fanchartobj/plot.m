@@ -37,10 +37,18 @@ for i = 1 : nint
     vData = [lData;flipud(hData)];
     vData = vData + [cData;flipud(cData)];
     pt(i) = patch([grid;flipud(grid)],vData,'white');
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(Ax,'on');
+    end
     ch = get(Ax,'children');
     ch(ch == pt(i)) = [];
     ch(end+1) = pt(i); %#ok<AGROW>
     set(Ax,'children',ch);
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(Ax,'off');
+    end
     lineCol = get(h,'color');
     faceCol = whi*[1,1,1] + (1-whi)*lineCol;
     if This.options.exclude(min([i,end]))

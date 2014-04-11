@@ -87,6 +87,12 @@ end
 for iAx = Ax(:).'
     % Preserve the order of figure children.
     fg = get(iAx,'parent');
+    
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(fg,'on');
+    end
+    
     fgch = get(fg,'children');
     
     % Check for plotyy peers, and return the background axes object.
@@ -149,6 +155,11 @@ for iAx = Ax(:).'
     
     % Reset the order of figure children.
     set(fg,'children',fgch);
+    
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(fg,'off');
+    end
     
     Pp = [Pp,pt];
     Cp = [Cp,cp];

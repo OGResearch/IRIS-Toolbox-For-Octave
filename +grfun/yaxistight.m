@@ -37,6 +37,10 @@ end
 %--------------------------------------------------------------------------
 
 for iAx = Ax
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(iAx,'on');
+    end
     
     ch = findobj(iAx,'-not','tag','highlight', ...
         '-and','-not','tag','vline', ...
@@ -47,6 +51,11 @@ for iAx = Ax
         yLim = get(iAx,'yLim');
     else
         yLim = lim(3:4);
+    end
+    
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(iAx,'off');
     end
     
     if any(~isinf(yLim)) && yLim(1) < yLim(2)

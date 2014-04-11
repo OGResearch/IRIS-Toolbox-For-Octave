@@ -248,6 +248,12 @@ end
 % cascade through the legend axes.
 lg = findobj(H,'flat','Tag','legend');
 xxApplyTo(lg,D,'legend',Opt);
+
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(H,'on');
+end
+
 % Find the remaining regular axes. Cascade through them if requested by
 % the user.
 H = findobj(H,'flat','-not','Tag','legend');
@@ -356,6 +362,11 @@ end
 % These have been applied the regular `axes` field in the step above.
 for iPeer = rhsPeer
     xxApplyTo(iPeer,D,'rhsaxes',Opt);
+end
+    
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(H,'off');
 end
 
 end % xxAxes().

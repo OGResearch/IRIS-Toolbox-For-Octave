@@ -23,6 +23,11 @@ function movetobkg(Par,Bkg)
 
 %--------------------------------------------------------------------------
 
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Par,'on');
+end
+
 ch = get(Par,'children');
 for b = Bkg(:).'
     inx = ch == b;
@@ -32,5 +37,10 @@ for b = Bkg(:).'
     end
 end
 set(Par,'children',ch);
+
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Par,'off');
+end
 
 end

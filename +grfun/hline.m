@@ -91,6 +91,11 @@ for iLoc = Loc
     if yLim(1) < iLoc && yLim(2) > iLoc
         ln = plot(Ax,xLim,[iLoc,iLoc]);
         Ln = [Ln,ln]; %#ok<AGROW>
+    
+        % Temporary show excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(Ax,'on');
+        end
         
         % Move zero line to background right below the last line.
         ch = get(Ax,'children');
@@ -100,6 +105,11 @@ for iLoc = Loc
         
         % Update zeroline x-data whenever the parent axes x-lims change.
         grfun.listener(Ax,ln,'hline');
+    
+        % Hide back excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(Ax,'off');
+        end
         
         cp = [];
         Cp = [Cp,cp]; %#ok<AGROW>

@@ -8,9 +8,9 @@ function hFig = myloadfig(This,figFile)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 hFig = hgload(figFile);
-
-kids = findall(hFig,'-property','userdata');
-toHide = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),kids);
-set(kids(toHide),'handleVisibility','off');
+% Hide excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(hFig,'off');
+end
 
 end

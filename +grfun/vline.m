@@ -126,6 +126,11 @@ for i = 1 : nLoc
     ln = plot(Ax,x([i,i]),yLim);
     ln = ln(:).';
     
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(Ax,'on');
+    end
+    
     ch = get(Ax,'children');
     for j = ln
         % Update the vline y-data whenever the parent y-lims change.
@@ -135,6 +140,11 @@ for i = 1 : nLoc
         ch(end+1) = j; %#ok<AGROW>
     end
     set(Ax,'children',ch);
+    
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(Ax,'off');
+    end
     
     Ln = [Ln,ln]; %#ok<AGROW>
     

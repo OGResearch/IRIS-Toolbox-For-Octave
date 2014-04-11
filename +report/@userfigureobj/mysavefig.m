@@ -7,10 +7,14 @@ function mysavefig(This,hFig,figFile)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-kids = findall(hFig,'-property','userdata');
-toShow = arrayfun(@(x)isfield(get(x,'userData'),'notInLegend'),kids);
-set(kids(toShow),'handleVisibility','on');
-
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(hFig,'on');
+end
 hgsave(hFig,figFile,'-v7');
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(hFig,'off');
+end
 
 end
