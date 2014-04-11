@@ -396,10 +396,18 @@ switch get(H,'type')
             case 'yaxislocation'
                 if strcmpi(Value,'either')
                     grfun.axisoneitherside(H,'y');
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'xaxislocation'
                 if strcmpi(Value,'either')
                     grfun.axisoneitherside(H,'x');
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'yticklabelformat'
                 yTick = get(H,'yTick');
@@ -417,10 +425,18 @@ switch get(H,'type')
                     if ~isequal(isTseries,true)
                         grfun.xaxistight(H);
                     end
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'clicktocopy'
                 if isequal(Value,true)
                     grfun.clicktocopy(H);
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             otherwise
                 Flag = false;
