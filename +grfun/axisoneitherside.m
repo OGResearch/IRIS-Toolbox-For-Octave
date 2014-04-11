@@ -96,6 +96,8 @@ elseif ~keepTheOther
 end
 
 ax = [ax;ax2];
-linkaxes(ax,option);
+try % not implemented in Octave
+    linkaxes(ax,option);
+end
 
 end
