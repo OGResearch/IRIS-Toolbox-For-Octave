@@ -8,6 +8,10 @@ catch
     
     types = get(this,'type');
     
+    if ischar(types)
+        types = {types};
+    end
+    
     for ix = 1:numel(types)
         switch types{ix}
             case {'line', 'surface'}
