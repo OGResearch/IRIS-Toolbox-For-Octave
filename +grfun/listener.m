@@ -15,7 +15,7 @@ if ismatlab
         listenerFcn = @(h,prop,pEvent,fun) event.proplistener(h,findprop(h,prop),pEvent,fun);
         postSetStr = 'PostSet';
     else
-        @(h,prop,pEvent,fun) handle.listener(h,findprop(h,prop),pEvent,fun);
+        listenerFcn = @(h,prop,pEvent,fun) handle.listener(h,findprop(h,prop),pEvent,fun);
         postSetStr = 'PropertyPostSet';
     end
     % Convert graphics handle to graphics object.
