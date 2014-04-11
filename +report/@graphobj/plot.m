@@ -126,6 +126,10 @@ if ~isempty(This.options.style)
     % Apply styles to the axes object and its children.
     qstyle(This.options.style,Ax,'warning',false);
     if ~isempty(lg)
+        % refresh legend since in Octave it is not refreshed automatically
+        if ~ismatlab
+            lg = legend;
+        end
         % Apply styles to the legend axes.
         qstyle(This.options.style,lg,'warning',false);
     end
