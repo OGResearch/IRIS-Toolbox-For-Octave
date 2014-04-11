@@ -192,7 +192,15 @@ for i = 1 : length(list)
                 % Execture style processor.
                 value = grfun.mystyleprocessor(H(j),value);
             end
+            if ~ismatlab
+                ch = get(gcf,'children');
+                ch = ch(ch~=H(j));
+                pos = get(ch,'position');
+            end
             set(H(j),name,value);
+            if ~ismatlab
+                set(ch,{'position'},pos);
+            end
         catch Error
             flag = xxExceptions(H(j),name,value);
             if ~flag && Opt.warning
