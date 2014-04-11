@@ -130,7 +130,7 @@ for iAx = Ax(:).'
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.color, ...
        'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent);
-    
+    set(h,'ylim',yLim);
     % Add caption to the highlight.
     cp = [];
     if ~isempty(opt.caption)
