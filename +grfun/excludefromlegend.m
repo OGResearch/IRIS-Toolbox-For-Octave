@@ -18,11 +18,7 @@ if ismatlab
     end
 else
     set(h,{'handlevisibility'},{'off'});
-    for i = h(:)'
-        udata = get(i,'userData');
-        udata.notInLegend = [];
-        set(i,'userData',udata);
-    end
+    setappdata(h,'notInLegend',true);
 end
 
 end
