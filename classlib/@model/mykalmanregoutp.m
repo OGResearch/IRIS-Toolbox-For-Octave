@@ -51,21 +51,13 @@ end
 
 PDelta = [];
 if isfield(RegOutp,'PDelta')
-    if ismatlab
-        PDelta = namedmat(RegOutp.PDelta,deltaList,deltaList);
-    else
-        PDelta = RegOutp.PDelta;
-    end
+    PDelta = namedmat(RegOutp.PDelta,deltaList,deltaList);
 end
 
 SampleCov = [];
 if isfield(RegOutp,'SampleCov')
-    if ismatlab
-        eList = This.name(This.nametype == 3);
-        SampleCov = namedmat(RegOutp.SampleCov,eList,eList);
-    else
-        SampleCov = RegOutp.SampleCov;
-    end
+    eList = This.name(This.nametype == 3);
+    SampleCov = namedmat(RegOutp.SampleCov,eList,eList);
 end
 
 % Update the std parameters in the model object.
