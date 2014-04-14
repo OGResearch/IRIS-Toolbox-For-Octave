@@ -1,5 +1,5 @@
 function [Ln,Cp] = hline(varargin)
-% zeroline  Add vertical line with text caption at the specified position.
+% hline  Add horizontal line with text caption at the specified position.
 %
 % Syntax
 % =======
