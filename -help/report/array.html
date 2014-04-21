@@ -1,0 +1,184 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/array">array</h2>
+<div class="headline">Insert array with user data</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.array(Caption,Data)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Caption</code> [ char | cellstr ] - Title or a cell array with title and subtitle displayed at the top of the array; see Description for splitting the title or subtitle into multiple lines.</p></li>
+<li><p><code>Data</code> [ cell ] - Cell array with input data; numeric and text entries are allowed.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'arrayStretch='</code> [ numeric | <em><code>1.15</code></em> ] - (Inherited) Stretch between lines in the array (in pts).</p></li>
+<li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - (Inherited)  format commands for typesetting the array caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
+<li><p><code>'colWidth='</code> [ numeric | <em><code>NaN</code></em> ] - (Inheritable from parent objects) Width, or a vector of widhts, of the array columns in <code>em</code>units; <code>NaN</code> means the width of the column will adjust automatically.</p></li>
+<li><p><code>'format='</code> [ char | <em><code>'%.2f'</code></em> ] - (Inherited) Numeric format string; see help on the built-in <code>sprintf</code> function.</p></li>
+<li><p><code>'footnote='</code> [ char | <em>empty</em> ] - (Inherited) Footnote at the array title; only shows if the title is non-empty.</p></li>
+<li><p><code>'heading='</code> [ char | cellstr | <em>empty</em> ] - (Inherited) User-supplied heading, i.e. an extra row or rows at the top of the array. The heading can be either a  code, or a cell array whose size is consistent with <code>Data</code>. The heading is repeated at the top of each new page when used with <code>'long=' true</code>.</p></li>
+<li><p><code>'inf='</code> [ char | <em><code>'$\infty$'</code></em> ] - (Inherited)  string that will be used to typeset <code>Inf</code>s.</p></li>
+<li><p><code>'long='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inherited) If <code>true</code>, the array may stretch over more than one page.</p></li>
+<li><p><code>'longFoot='</code> [ char | <em>empty</em> ] - (Inherited) Footnote that appears at the bottom of the array (if it is longer than one page) on each page except the last one; works only with <code>'long='</code> <code>true</code>.</p></li>
+<li><p><code>'longFootPosition='</code> [ <code>'centre'</code> | <em><code>'left'</code></em> | <code>'right'</code> ] - (Inherited) Horizontal alignment of the footnote in long arrays; works only with <code>'long='</code> <code>true</code>.</p></li>
+<li><p><code>'nan='</code> [ char | <em><code>'$\cdots$'</code></em> ] - (Inherited)  string that will be used to typeset <code>NaN</code>s.</p></li>
+<li><p><code>'pureZero='</code> [ char | <em>empty</em> ] - (Inherited)  string that will be used to typeset pure zero entries; if empty the zeros will be printed using the current numeric format.</p></li>
+<li><p><code>'printedZero='</code> [ char | <em>empty</em> ] - (Inherited)  string that will be used to typeset the entries that would appear as zero under the current numeric format used; if empty these numbers will be printed using the current numeric format.</p></li>
+<li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inherited) <br />commands that will be inserted after the array.</p></li>
+<li><p><code>'sideways='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inherited) Print the array rotated by 90 degrees.</p></li>
+<li><p><code>'tabcolsep='</code> [ <code>NaN</code> | numeric ] - (Inherited) Space between columns in the array, measured in em units; <code>NaN</code> means the  default.</p></li>
+<li><p><code>'typeface='</code> [ char | <em>empty</em> ] - (Not inherited)  code specifying the typeface for the array as a whole; it must use the declarative forms (such as <code>\itshape</code>) and not the command forms (such as <code>\textit{...}</code>).</p></li>
+</ul>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<p>The input cell array <code>Data</code> can contain either strings or numeric values, or horizontal rules. Numeric values are printed using the standard <code>sprintf</code> function and formatted using the <code>'format='</code> option. Horizontal rules must be entered as a string of five (or more) dashes, <code>'-----'</code>, in the first cell of the respective row, with all other cells empty in that row. If you wish to include a  command or a piece of  code, you must enclose it in curly brackets.</p>
+<h5 id="titles-and-subtitles">Titles and subtitles</h5>
+<p>The input argument <code>Caption</code> can be either a text string, or a 1-by-2 cell array of strings. In the latter case, the first cell will be printed as a title, and the second cell will be printed as a subtitle.</p>
+<p>To split the title or subtitle into multiple lines, use the following LaTeX commands wrapped in curly brackets: <code>{\\}</code> or <code>{\\[Xpt]}</code>, where <code>X</code> is the width of an extra vertical space (in points) added between the respective lines.</p>
+<h4 id="example">Example</h4>
+<p>These commands create a table with two rows separated by a horizontal rule, and three columns in each of them. The middle columns will have Greek letters printed in  math mode.</p>
+<pre><code>x = report.new();
+
+A = { ...
+    &#39;First row&#39;,&#39;{$\alpha$}&#39;,10000; ...
+    &#39;-----&#39;,&#39;&#39;,&#39;&#39;; ...
+    &#39;Second row&#39;,&#39;{$\beta$}&#39;,20000; ...
+};
+
+x.array(&#39;My Table&#39;,A);
+
+x.publish(&#39;test1.pdf&#39;);
+
+open test1.pdf;</code></pre>
+<h4 id="example-1">Example</h4>
+<p>Use the option <code>'inputFormat='</code> to change the way the input strings are interpreted. Compare the two tables in the resulting PDF.</p>
+<pre><code>x = report.new();
+
+A = { ...
+    1,2,3; ...
+    &#39;$\alpha$&#39;,&#39;b&#39;,&#39;c&#39;, ...
+    };
+
+x.array(&#39;Table with Plain Input Format (Default)&#39;,A, ...
+    &#39;heading=&#39;,{&#39;A&#39;,&#39;B&#39;,&#39;$\Gamma$&#39;;&#39;-----&#39;,&#39;&#39;,&#39;&#39;});
+
+x.array(&#39;Table with LaTeX Input Format&#39;,A, ...
+    &#39;heading=&#39;,{&#39;A&#39;,&#39;B&#39;,&#39;$\Gamma$&#39;;&#39;-----&#39;,&#39;&#39;,&#39;&#39;}, ...
+    &#39;inputFormat=&#39;,&#39;latex&#39;);
+
+x.publish(&#39;test2.pdf&#39;);
+
+open test2.pdf;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

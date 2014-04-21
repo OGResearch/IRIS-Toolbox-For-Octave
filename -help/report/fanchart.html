@@ -1,0 +1,136 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/fanchart">fanchart</h2>
+<div class="headline">Add fanchart to graph</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.fanchart(Cap,X,Std,Prob,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Cap</code> [ char ] - Caption used as a legend entry for the line (mean of fanchart)</p></li>
+<li><p><code>X</code> [ tseries ] - Tseries object with input data to be displayed.</p></li>
+<li><p><code>Std</code> [ tseries ] - Tseries object with standard deviations of input data.</p></li>
+<li><p><code>Prob</code> [ numeric ] - Confidence porbabilities of intervals to be displayed.</p></li>
+</ul>
+<h4 id="options-for-fancharts">Options for fancharts</h4>
+<ul>
+<li><p><code>'asym='</code> [ numeric | tseries | <em><code>1</code></em> ] - Ratio of asymmetry (area of upper part to one of lower part).</p></li>
+<li><p><code>'exclude='</code> [ numeric | true | <em><code>false</code></em> ] - Exclude some of the confidence intervals.</p></li>
+<li><p><code>'factor='</code> [ numeric | <em><code>1</code></em> ] - factor to increase or decrease input standard deviations</p></li>
+<li><p><code>'fanLegend='</code> [ cell | <code>NaN</code> | <em><code>Inf</code></em> ] - Legend entries used instead of confidence interval values; Inf means all confidence intervals values will be used to construct legend entries; NaN means the intervals will be exluded from legend; <code>NaN</code> in cellstr means the intervals of respective fancharts will be exluded from legend.</p></li>
+</ul>
+<p>See help on <a href="../report/series.html"><code>report/series</code></a> for other options available.</p>
+<h4 id="description">Description</h4>
+<p>The confidence intervals are based on normal distributions with standard deviations supplied by the user. Optionally, the user can also specify assumptions about asymmetry and/or common correction factors.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,58 @@
+
+
+    \filetitle{filter}{Filter data using a VAR model}{VAR/filter}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[V,Outp] = filter(V,Inp,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Input VAR object.
+\item
+  \texttt{Inp} {[} struct {]} - Input database from which initial
+  condition will be read.
+\item
+  \texttt{Range} {[} numeric {]} - Forecast range.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Output VAR object.
+\item
+  \texttt{Outp} {[} struct {]} - Output database with prediction and/or
+  smoothed data.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'cross='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+  Multiply the off-diagonal elements of the covariance matrix
+  (cross-covariances) by this factor; \texttt{'cross='} must be equal to
+  or smaller than \texttt{1}.
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Both input and output data are deviations
+  from the unconditional mean.
+\item
+  \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Return a plain database with mean
+  forecasts only.
+\item
+  \texttt{'omega='} {[} numeric \textbar{} \emph{empty} {]} - Modify the
+  covariance matrix of residuals for this run of the filter.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

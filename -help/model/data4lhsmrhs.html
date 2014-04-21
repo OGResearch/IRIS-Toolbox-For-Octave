@@ -1,0 +1,135 @@
+/bin/bash: lhsmrhs: command not found
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/data4lhsmrhs">data4lhsmrhs</h2>
+<div class="headline">Prepare data array for running</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[YXE,List,XRange] = data4lhsmrhs(M,D,Range)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object whose equations will be later evaluated by calling <a href="../model/lhsmrhs.html"><code>lhsmrhs</code></a>.</p></li>
+<li><p><code>D</code> [ struct ] - Input database with observations on measurement variables, transition variables, and shocks on which <a href="../model/lhsmrhs.html"><code>lhsmrhs</code></a> will be evaluated.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which <a href="../model/lhsmrhs.html"><code>lhsmrhs</code></a> will be evaluated.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>YXE</code> [ numeric ] - Numeric array with the observations on measurement variables, transition variables, and shocks organised row-wise.</p></li>
+<li><p><code>List</code> [ cellstr ] - List of measurement variables, transition variables and shocks in order of their appearance in the rows of <code>YXE</code>.</p></li>
+<li><p><code>XRange</code> [ numeric ] - Extended range including pre-sample and post-sample observations needed to evaluate lags and leads of transition variables.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The resulting array, <code>YXE</code>, is <code>nVar</code> by <code>nXPer</code> by <code>nData</code>, where <code>nVar</code> is the total number of measurement variables, transition variables, and shocks, <code>nXPer</code> is the number of periods including the pre-sample and post-sample periods needed to evaluate lags and leads, and <code>nData</code> is the number of alternative data sets (i.e. the number of columns in each input time series) in the input database, <code>D</code>.</p>
+<h4 id="example">Example</h4>
+<pre><code>YXE = data4lhsmrhs(M,d,range);
+D = lhsmrhs(M,YXE);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

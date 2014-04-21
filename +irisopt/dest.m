@@ -1,0 +1,23 @@
+function Def = dest()
+% dest  [Not a public function] Default options for dest package functions.
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+Def = struct();
+
+Def.kcluster = { ...
+    'k,maxk', 4, @(x) is.intscalar(x) && x>0, ...
+    'selectk,select', 'bic', @(x) any(strcmpi(x,{'bic','fixed'})), ...
+    'maxit', 500, @(x) is.intscalar(x) && x>0, ...
+    'tol', 1e-6, @(x) is.numericscalar(x), ...
+    'vectorized', true, @islogical, ...
+    'display', false, @islogical, ...
+    };
+
+end

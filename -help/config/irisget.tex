@@ -1,0 +1,69 @@
+
+
+    \filetitle{irisget}{Query current IRIS config options}{config/irisget}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+Value = irisget(Option)
+S = irisget()
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Option} {[} char {]} - Name of the queried IRIS configuration
+  option.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{Value} {[} \ldots{} {]} - Current value of the queried
+  configuration option.
+\item
+  \texttt{S} {[} struct {]} - Structure with all configuration options
+  and their current values.
+\end{itemize}
+
+\paragraph{Description}
+
+You can view any of the modifiable options listed in
+\href{config/irisset}{\texttt{irisset}}, plus the following
+non-modifiable ones (these cannot be changed by the user):
+
+\begin{itemize}
+\item
+  \texttt{'userConfigPath='} {[} char {]} - The path to the user
+  configuration file called by the last executed
+  \href{config/irisstartup}{\texttt{irisstartup}}.
+\item
+  \texttt{'irisRoot='} {[} char {]} - The current IRIS root directory.
+\item
+  \texttt{'version='} {[} char {]} - The current IRIS version string.
+\end{itemize}
+
+When called without any input arguments, the \texttt{irisget} function
+returns a struct with all options and their current values.
+
+\paragraph{Example}
+
+\begin{verbatim}
+irisget('dateformat')
+
+ans =
+
+YFP
+
+g = irisget();
+g.dateformat
+
+ans =
+
+YFP
+\end{verbatim}
+
+

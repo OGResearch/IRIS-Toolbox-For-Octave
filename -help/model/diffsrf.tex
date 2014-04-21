@@ -1,0 +1,45 @@
+
+
+    \filetitle{diffsrf}{Differentiate shock response functions w.r.t. specified parameters}{model/diffsrf}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+S = diffsrf(M,RANGE,LIST,...)
+S = diffsrf(M,NPER,LIST,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object whose response functions will
+  be simulated and differentiated.
+\item
+  \texttt{RANGE} {[} numeric {]} - Simulation date range with the first
+  date being the shock date.
+\item
+  \texttt{NPER} {[} numeric {]} - Number of simulation periods.
+\item
+  \texttt{LIST} {[} char \textbar{} cellstr {]} - List of parameters
+  w.r.t. which the shock response functions will be differentiated.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{S} {[} struct {]} - Database with shock reponse derivatives
+  stowed in multivariate time series.
+\end{itemize}
+
+\paragraph{Options}
+
+See \href{model/srf}{\texttt{model/srf}} for options available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

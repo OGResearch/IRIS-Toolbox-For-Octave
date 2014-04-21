@@ -1,0 +1,140 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="namedmat/namedmat">namedmat</h2>
+<div class="headline">Create a new matrix with named rows and columns</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>X = namedmat(X,RowNames,ColNames)
+X = namedmat(X,Names)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ numeric ] - Matrix or multidimensional array.</p></li>
+<li><p><code>RowNames</code> [ cellstr ] - Names for individual rows of <code>X</code>.</p></li>
+<li><p><code>ColNames</code> [ cellstr ] - Names for individual columns of <code>X</code>.</p></li>
+<li><p><code>Names</code> [ cellstr ] - Names for both rows and columns of <code>X</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>X</code> [ namedmat ] - Matrix with named rows and columns.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Namedmat objects are used by some of the IRIS functions to preserve the names of variables that relate to individual rows and columns, such as in</p>
+<ul>
+<li><code>acf</code>, the autocovariance and autocorrelation functions,</li>
+<li><code>xsf</code>, the power spectrum and spectral density functions,</li>
+<li><code>fmse</code>, the forecast mean square error fuctions,</li>
+<li>etc.</li>
+</ul>
+<p>You can use the function <a href="../namedmat/select.html"><code>select</code></a> to extract submatrices by referring to a selection of names.</p>
+<p>Namedmat matrices derives from the built-in double class of objects, and hence you can use any operators and functions on them that are available for double objects.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

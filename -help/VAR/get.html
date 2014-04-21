@@ -1,0 +1,165 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="VAR/get">get</h2>
+<div class="headline">Query VAR object properties</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Ans = get(V,Query)
+[Ans,Ans,...] = get(V,Query,Query,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - VAR object.</p></li>
+<li><p><code>Query</code> [ char ] - Query to the VAR object.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Ans</code> [ ... ] - Answer to the query.</li>
+</ul>
+<h4 id="valid-queries-to-var-objects">Valid queries to VAR objects</h4>
+<h5 id="var-variables">VAR variables</h5>
+<ul>
+<li><p><code>'yList'</code> -- Returns [ cellstr ] the names of endogenous variables.</p></li>
+<li><p><code>'eList'</code> -- Returns [ cellstr ] the names of residuals or shocks.</p></li>
+<li><p><code>'iList'</code> -- Returns [ cellstr ] the names of conditioning (forecast) instruments.</p></li>
+<li><p><code>'ny'</code> -- Returns [ numeric ] the number of variables.</p></li>
+<li><p><code>'ne'</code> -- Returns [ numeric ] the number of residuals or shocks.</p></li>
+<li><p><code>'ni'</code> -- Returns [ numeric ] the number of conditioning (forecast) instruments.</p></li>
+</ul>
+<h5 id="system-matrices">System matrices</h5>
+<ul>
+<li><p><code>'A#'</code>, <code>'A*'</code>, <code>'A$'</code> -- Returns [ numeric ] the transition matrix in one of the three possible forms; see Description.</p></li>
+<li><p><code>'K'</code>, <code>'const'</code> -- Returns [ numeric ] the constant vector or matrix (the latter for panel VARs).</p></li>
+<li><p><code>'Omg'</code>, <code>'Omega'</code> -- Returns [ numeric ] the covariance matrix of one-step-ahead forecast errors, i.e. reduced-form residuals. Note that this query returns the same matrix also for structural VAR (SVAR) objects.</p></li>
+<li><p><code>'Sgm'</code>, <code>'Sigma'</code> -- Returns [ numeric ] the covariance matrix of the VAR parameter estimates; the matrix is non-empty only if the option <code>'covParam='</code> has been set to <code>true</code> at estimation time.</p></li>
+<li><p><code>'G'</code> -- Returns [ numeric ] the coefficient matrix on cointegration terms.</p></li>
+</ul>
+<h5 id="information-criteria">Information criteria</h5>
+<ul>
+<li><p><code>'AIC'</code> -- Returns [ numeric ] Akaike information criterion.</p></li>
+<li><p><code>'SBC'</code> -- Returns [ numeric ] Schwarz bayesian criterion.</p></li>
+</ul>
+<h5 id="other-queries">Other queries</h5>
+<ul>
+<li><p><code>'cumLong'</code> -- Returns [ numeric ] the matrix of long-run cumulative responses.</p></li>
+<li><p><code>'nFree'</code> -- Returns [ numeric ] the number of freely estimated (hyper-) parameters.</p></li>
+<li><p><code>'order'</code>, <code>'p'</code> -- Returns [ numeric ] the order of the VAR object.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="transition-matrix">Transition matrix</h5>
+<p>There are three queries to request the VAR transition matrix: <code>'A#'</code>, <code>'A*'</code>, <code>'A$'</code>. They differ in how the higher-order transition matrices are arranged.</p>
+<ul>
+<li><p><code>'A#'</code> returns <code>cat(3,I,-A1,...,-Ap)</code> where <code>I</code> is an identity matrix, and <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+<li><p><code>'A#'</code> returns <code>cat(3,A1,...,Ap)</code> where <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+<li><p><code>'A$'</code> returns <code>[A1,...,Ap]</code> where <code>A1</code>, ... <code>Ap</code> are the coefficient matrices on individual lags.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

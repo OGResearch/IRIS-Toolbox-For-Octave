@@ -1,0 +1,63 @@
+<folder>
+
+<foldername>VAR</foldername><filename>Contents</filename>
+
+<h1 id="VAR/Contents">Vector autoregressions: VAR objects and functions</h1>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="VAR/VAR"><tt>VAR</tt></link>&nbsp;&ndash;&nbsp;Create new reduced-form VAR object.</li></ul>
+
+<h3>Getting information about VAR objects</h3>
+
+<ul><li><link id="VAR/comment"><tt>comment</tt></link>&nbsp;&ndash;&nbsp;Get or set user comments in an IRIS object.</li>
+<li><link id="VAR/companion"><tt>companion</tt></link>&nbsp;&ndash;&nbsp;Matrices of first-order companion VAR.</li>
+<li><link id="VAR/eig"><tt>eig</tt></link>&nbsp;&ndash;&nbsp;Eigenvalues of a VAR process.</li>
+<li><link id="VAR/get"><tt>get</tt></link>&nbsp;&ndash;&nbsp;Query VAR object properties.</li>
+<li><link id="VAR/isexplosive"><tt>isexplosive</tt></link>&nbsp;&ndash;&nbsp;True if any eigenvalue is outside unit circle.</li>
+<li><link id="VAR/isstationary"><tt>isstationary</tt></link>&nbsp;&ndash;&nbsp;True if all eigenvalues are within unit circle.</li>
+<li><link id="VAR/length"><tt>length</tt></link>&nbsp;&ndash;&nbsp;Number of alternative parameterisations in VAR object.</li>
+<li><link id="VAR/mean"><tt>mean</tt></link>&nbsp;&ndash;&nbsp;Mean of VAR process.</li>
+<li><link id="VAR/sspace"><tt>sspace</tt></link>&nbsp;&ndash;&nbsp;Quasi-triangular state-space representation of VAR.</li>
+<li><link id="VAR/userdata"><tt>userdata</tt></link>&nbsp;&ndash;&nbsp;Get or set user data in an IRIS object.</li></ul>
+
+<h3>Referencing VAR objects</h3>
+
+<ul><li><link id="VAR/subsasgn"><tt>subsasgn</tt></link>&nbsp;&ndash;&nbsp;Subscripted assignment for VAR objects.</li>
+<li><link id="VAR/subsref"><tt>subsref</tt></link>&nbsp;&ndash;&nbsp;Subscripted reference for VAR objects.</li></ul>
+
+<h3>Simulation and forecasting</h3>
+
+<ul><li><link id="VAR/ferf"><tt>ferf</tt></link>&nbsp;&ndash;&nbsp;Forecast error response function.</li>
+<li><link id="VAR/forecast"><tt>forecast</tt></link>&nbsp;&ndash;&nbsp;Unconditional or conditional forecasts.</li>
+<li><link id="VAR/instrument"><tt>instrument</tt></link>&nbsp;&ndash;&nbsp;Define conditioning instruments for VAR model.</li>
+<li><link id="VAR/resample"><tt>resample</tt></link>&nbsp;&ndash;&nbsp;Resample from a VAR object.</li>
+<li><link id="VAR/simulate"><tt>simulate</tt></link>&nbsp;&ndash;&nbsp;Simulate VAR model.</li></ul>
+
+<h3>Manipulating VARs</h3>
+
+<ul><li><link id="VAR/alter"><tt>alter</tt></link>&nbsp;&ndash;&nbsp;Expand or reduce number of alternative parameterisations.</li>
+<li><link id="VAR/backward"><tt>backward</tt></link>&nbsp;&ndash;&nbsp;Backward VAR process.</li>
+<li><link id="VAR/demean"><tt>demean</tt></link>&nbsp;&ndash;&nbsp;Remove constant from VAR object and demean associated data.</li>
+<li><link id="VAR/horzcat"><tt>horzcat</tt></link>&nbsp;&ndash;&nbsp;Combine two compatible VAR objects in one object with multiple parameterisations.</li>
+<li><link id="VAR/integrate"><tt>integrate</tt></link>&nbsp;&ndash;&nbsp;Integrate VAR process and data associated with it.</li></ul>
+
+<h3>Stochastic properties</h3>
+
+<ul><li><link id="VAR/acf"><tt>acf</tt></link>&nbsp;&ndash;&nbsp;Autocovariance and autocorrelation functions for VAR variables.</li>
+<li><link id="VAR/fmse"><tt>fmse</tt></link>&nbsp;&ndash;&nbsp;Forecast mean square error matrices.</li>
+<li><link id="VAR/vma"><tt>vma</tt></link>&nbsp;&ndash;&nbsp;Matrices describing the VMA representation of a VAR process.</li>
+<li><link id="VAR/xsf"><tt>xsf</tt></link>&nbsp;&ndash;&nbsp;Power spectrum and spectral density functions for VAR variables.</li></ul>
+
+<h3>Estimation, identification, and statistical tests</h3>
+
+<ul><li><link id="VAR/estimate"><tt>estimate</tt></link>&nbsp;&ndash;&nbsp;Estimate a reduced-form VAR or BVAR.</li>
+<li><link id="VAR/lrtest"><tt>lrtest</tt></link>&nbsp;&ndash;&nbsp;Likelihood ratio test for VAR models.</li>
+<li><link id="VAR/portest"><tt>portest</tt></link>&nbsp;&ndash;&nbsp;Portmanteau test for autocorrelation in VAR residuals.</li></ul>
+
+<h3>Getting on-line help on VAR functions</h3>
+<pre>   help VAR
+   help VAR/function_name
+</pre>
+
+</folder>

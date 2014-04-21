@@ -1,0 +1,140 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/plot">plot</h2>
+<div class="headline">Line graph for tseries objects</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[H,Range] = plot(X,...)
+[H,Range] = plot(Range,X,...)
+[H,Range] = plot(Ax,Range,X,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Ax</code> [ numeric ] - Handle to axes in which the graph will be plotted; if not specified, the current axes will used.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range; if not specified the entire range of the input tseries object will be plotted.</p></li>
+<li><p><code>X</code> [ tseries ] - Input tseries object whose columns will be ploted as a line graph.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>H</code> [ numeric ] - Handles to lines plotted.</p></li>
+<li><p><code>Range</code> [ numeric ] - Actually plotted date range.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'dateFormat='</code> [ char | <em><code>irisget('plotdateformat')</code></em> ] - Date format for the tick marks on the X-axis.</p></li>
+<li><p><code>'datePosition='</code> [ <em><code>'centre'</code></em> | <code>'end'</code> | <code>'start'</code> ] - Position of each date point within a given period span.</p></li>
+<li><p><code>'dateTick='</code> [ numeric | <em><code>Inf</code></em> ] - Vector of dates locating tick marks on the X-axis; Inf means they will be created automatically.</p></li>
+<li><p><code>'tight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Make the y-axis tight.</p></li>
+</ul>
+<p>See help on built-in <code>plot</code> function for other options available.</p>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

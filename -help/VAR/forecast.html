@@ -1,0 +1,139 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="VAR/forecast">forecast</h2>
+<div class="headline">Unconditional or conditional VAR forecasts</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Outp = forecast(V,Inp,Range,...)
+Outp = forecast(V,Inp,Range,Cond,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - VAR object.</p></li>
+<li><p><code>Inp</code> [ struct ] - Input database from which initial condition will be read.</p></li>
+<li><p><code>Range</code> [ numeric ] - Forecast range; must not refer to <code>Inf</code>.</p></li>
+<li><p><code>Cond</code> [ struct | tseries ] - Conditioning database with the mean values of residuals, reduced-form conditions on endogenous variables, and conditioning instruments.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Outp</code> [ struct ] - Output database with forecasts of endogenous variables, residuals, and conditioning instruments.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'cross='</code> [ numeric | <em><code>1</code></em> ] - Multiply the off-diagonal elements of the covariance matrix (cross-covariances) by this factor; <code>'cross='</code> must be equal to or smaller than <code>1</code>.</p></li>
+<li><p><code>'dbOverlay='</code> [ <code>true</code> | <em><code>false</code></em> ] - Combine the output data with the input data; works only if the input data is a database.</p></li>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Both input and output data are deviations from the unconditional mean.</p></li>
+<li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return a plain database with mean forecasts only.</p></li>
+<li><p><code>'omega='</code> [ numeric | <em>empty</em> ] - Modify the covariance matrix of residuals for this forecast.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toc version="2.0">
+<tocitem target="Contents/index.html">The IRIS Toolbox
+
+<!-- START -->
+<tocitem target="Contents/sessions.html" image="HelpIcon.USER_GUIDE">IRIS sessions
+    <tocitem target="setup/Contents.html" image="HelpIcon.USER_GUIDE">Installing IRIS
+    </tocitem>
+    <tocitem target="config/Contents.html" image="HelpIcon.USER_GUIDE">Starting, quitting, and configuring IRIS
+        <tocitem target="config/iriscleanup.html" image="HelpIcon.FUNCTION">iriscleanup &#8212; Remove IRIS from Matlab and clean up</tocitem>
+        <tocitem target="config/irisfinish.html" image="HelpIcon.FUNCTION">irisfinish &#8212; Close the current IRIS session</tocitem>
+        <tocitem target="config/irisget.html" image="HelpIcon.FUNCTION">irisget &#8212; Query current IRIS config options</tocitem>
+        <tocitem target="config/irisrequired.html" image="HelpIcon.FUNCTION">irisrequired &#8212; Throw error if the installed version of IRIS fails to comply with the required minimum</tocitem>
+        <tocitem target="config/irisreset.html" image="HelpIcon.FUNCTION">irisreset &#8212; Reset IRIS configuration options to start-up values</tocitem>
+        <tocitem target="config/irisroot.html" image="HelpIcon.FUNCTION">irisroot &#8212; Current IRIS root folder</tocitem>
+        <tocitem target="config/irisset.html" image="HelpIcon.FUNCTION">irisset &#8212; Change configurable IRIS options</tocitem>
+        <tocitem target="config/irisstartup.html" image="HelpIcon.FUNCTION">irisstartup &#8212; Start an IRIS session</tocitem>
+        <tocitem target="config/irisuserconfighelp.html" image="HelpIcon.FUNCTION">irisuserconfig &#8212; User configuration file called at the IRIS start-up</tocitem>
+        <tocitem target="config/irisversion.html" image="HelpIcon.FUNCTION">irisversion &#8212; Current IRIS version</tocitem>
+    </tocitem>
+    <tocitem target="gettinghelp/Contents.html" image="HelpIcon.USER_GUIDE">Getting on-line help
+    </tocitem>
+</tocitem>
+<tocitem target="Contents/models.html" image="HelpIcon.USER_GUIDE">Model development and operation
+    <tocitem target="modellang/Contents.html" image="HelpIcon.USER_GUIDE">Model file language
+        <tocitem target="modellang/alias.html" image="HelpIcon.BLOCK">!! &#8212; Beginning of aliasing in descriptions and labels</tocitem>
+        <tocitem target="modellang/sstateversion.html" image="HelpIcon.BLOCK">!! &#8212; Steady-state version of an equation</tocitem>
+        <tocitem target="modellang/allbut.html" image="HelpIcon.BLOCK">!all_but &#8212; Inverse list of log-linearised variables</tocitem>
+        <tocitem target="modellang/autoexogenise.html" image="HelpIcon.BLOCK">!autoexogenise &#8212; Definition of variable/shock pairs for use in autoexogenised simulation plans</tocitem>
+        <tocitem target="modellang/dtrends.html" image="HelpIcon.BLOCK">!dtrends &#8212; Block of deterministic trend equations</tocitem>
+        <tocitem target="modellang/exogenousvariables.html" image="HelpIcon.BLOCK">!exogenous_variables &#8212; List of exogenous variables</tocitem>
+        <tocitem target="modellang/export.html" image="HelpIcon.BLOCK">!export &#8212; Create a carry-around file to be saved on the disk</tocitem>
+        <tocitem target="modellang/for.html" image="HelpIcon.BLOCK">!for...!do...!end &#8212; For loop for automated creation of model code</tocitem>
+        <tocitem target="modellang/if.html" image="HelpIcon.BLOCK">!if...!elseif...!else...!end &#8212; Choose block of code depending on a condition</tocitem>
+        <tocitem target="modellang/import.html" image="HelpIcon.BLOCK">!import &#8212; Include the content of another model file</tocitem>
+        <tocitem target="modellang/links.html" image="HelpIcon.BLOCK">!links &#8212; Define dynamic links</tocitem>
+        <tocitem target="modellang/logvariables.html" image="HelpIcon.BLOCK">!log_variables &#8212; List of log-linearised variables</tocitem>
+        <tocitem target="modellang/measurementequations.html" image="HelpIcon.BLOCK">!measurement_equations &#8212; Block of measurement equations</tocitem>
+        <tocitem target="modellang/measurementshocks.html" image="HelpIcon.BLOCK">!measurement_shocks &#8212; List of measurement shocks</tocitem>
+        <tocitem target="modellang/measurementvariables.html" image="HelpIcon.BLOCK">!measurement_variables &#8212; List of measurement variables</tocitem>
+        <tocitem target="modellang/parameters.html" image="HelpIcon.BLOCK">!parameters &#8212; List of parameters</tocitem>
+        <tocitem target="modellang/substitutions.html" image="HelpIcon.BLOCK">!substitutions &#8212; Define text substitutions</tocitem>
+        <tocitem target="modellang/switch.html" image="HelpIcon.BLOCK">!switch...!case...!otherwise...!end &#8212; Switch among several branches of the model code depending on the value of an expression</tocitem>
+        <tocitem target="modellang/transitionequations.html" image="HelpIcon.BLOCK">!transition_equations &#8212; Block of transition equations</tocitem>
+        <tocitem target="modellang/transitionshocks.html" image="HelpIcon.BLOCK">!transition_shocks &#8212; List of transition shocks</tocitem>
+        <tocitem target="modellang/transitionvariables.html" image="HelpIcon.BLOCK">!transition_variables &#8212; List of transition variables</tocitem>
+        <tocitem target="modellang/ttrend.html" image="HelpIcon.BLOCK">!ttrend &#8212; Linear time trend in deterministic trend equations</tocitem>
+        <tocitem target="modellang/linecomments.html" image="HelpIcon.BLOCK">% &#8212; Line comments</tocitem>
+        <tocitem target="modellang/blockcomments.html" image="HelpIcon.BLOCK">%{...%} &#8212; Block comments</tocitem>
+        <tocitem target="modellang/sstateref.html" image="HelpIcon.BLOCK">&amp; &#8212; Reference to the steady-state level of a variable</tocitem>
+        <tocitem target="modellang/regexpression.html" image="HelpIcon.BLOCK">&lt;...&gt; &#8212; Regular expression in log-varible list</tocitem>
+        <tocitem target="modellang/exactnonlin.html" image="HelpIcon.BLOCK">=# &#8212; Mark an equation for exact non-linear simulation</tocitem>
+        <tocitem target="modellang/diff.html" image="HelpIcon.BLOCK">diff &#8212; First difference pseudofunction</tocitem>
+        <tocitem target="modellang/difflog.html" image="HelpIcon.BLOCK">difflog &#8212; First log-difference pseudofunction</tocitem>
+        <tocitem target="modellang/dot.html" image="HelpIcon.BLOCK">dot &#8212; Gross rate of growth pseudofunction</tocitem>
+        <tocitem target="modellang/min.html" image="HelpIcon.BLOCK">min &#8212; Define loss function for optimal policy</tocitem>
+        <tocitem target="modellang/movavg.html" image="HelpIcon.BLOCK">movavg &#8212; Moving average pseudofunction</tocitem>
+        <tocitem target="modellang/movsum.html" image="HelpIcon.BLOCK">movsum &#8212; Moving sum pseudofunction</tocitem>
+        <tocitem target="modellang/movprod.html" image="HelpIcon.BLOCK">movsum &#8212; Moving product pseudofunction</tocitem>
+        <tocitem target="modellang/laglead.html" image="HelpIcon.BLOCK">{...} &#8212; Lag or lead</tocitem>
+    </tocitem>
+    <tocitem target="model/Contents.html" image="HelpIcon.USER_GUIDE">Model objects and functions
+        <tocitem target="model/acf.html" image="HelpIcon.FUNCTION">acf &#8212; Autocovariance and autocorrelation functions for model variables</tocitem>
+        <tocitem target="model/addparam.html" image="HelpIcon.FUNCTION">addparam &#8212; Add model parameters to a database (struct)</tocitem>
+        <tocitem target="model/alter.html" image="HelpIcon.FUNCTION">alter &#8212; Expand or reduce number of alternative parameterisations</tocitem>
+        <tocitem target="model/assign.html" image="HelpIcon.FUNCTION">assign &#8212; Assign parameters, steady states, std deviations or cross-correlations</tocitem>
+        <tocitem target="model/autocaption.html" image="HelpIcon.FUNCTION">autocaption &#8212; Create captions for graphs of model variables or parameters</tocitem>
+        <tocitem target="model/autoexogenise.html" image="HelpIcon.FUNCTION">autoexogenise &#8212; Get or set variable/shock pairs for use in autoexogenised simulation plans</tocitem>
+        <tocitem target="model/bn.html" image="HelpIcon.FUNCTION">bn &#8212; Beveridge-Nelson trends</tocitem>
+        <tocitem target="model/chksstate.html" image="HelpIcon.FUNCTION">chksstate &#8212; Check if equations hold for currently assigned steady0state values</tocitem>
+        <tocitem target="model/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
+        <tocitem target="model/data4lhsmrhs.html" image="HelpIcon.FUNCTION">data4lhsmrhs &#8212; Prepare data array for running `lhsmrhs`</tocitem>
+        <tocitem target="model/diffloglik.html" image="HelpIcon.FUNCTION">diffloglik &#8212; Approximate gradient and hessian of log-likelihood function</tocitem>
+        <tocitem target="model/diffsrf.html" image="HelpIcon.FUNCTION">diffsrf &#8212; Differentiate shock response functions w.r.t. specified parameters</tocitem>
+        <tocitem target="model/eig.html" image="HelpIcon.FUNCTION">eig &#8212; Eigenvalues of the model transition matrix</tocitem>
+        <tocitem target="model/emptydb.html" image="HelpIcon.FUNCTION">emptydb &#8212; Create model-specific database with variables, shocks, and parameters</tocitem>
+        <tocitem target="model/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate model parameters by optimising selected objective function</tocitem>
+        <tocitem target="model/evalsystempriors.html" image="HelpIcon.FUNCTION">evalsystempriors &#8212; Evaluate minus log of system prior density</tocitem>
+        <tocitem target="model/expand.html" image="HelpIcon.FUNCTION">expand &#8212; Compute forward expansion of model solution for anticipated shocks</tocitem>
+        <tocitem target="model/export.html" image="HelpIcon.FUNCTION">export &#8212; Save carry-around files on the disk</tocitem>
+        <tocitem target="model/fevd.html" image="HelpIcon.FUNCTION">fevd &#8212; Forecast error variance decomposition for model variables</tocitem>
+        <tocitem target="model/ffrf.html" image="HelpIcon.FUNCTION">ffrf &#8212; Filter frequency response function of transition variables to measurement variables</tocitem>
+        <tocitem target="model/filter.html" image="HelpIcon.FUNCTION">filter &#8212; Kalman smoother and estimator of out-of-likelihood parameters</tocitem>
+        <tocitem target="model/findeqtn.html" image="HelpIcon.FUNCTION">findeqtn &#8212; Find equations by the labels</tocitem>
+        <tocitem target="model/findname.html" image="HelpIcon.FUNCTION">findname &#8212; Find names of variables, shocks, or parameters by their descriptors</tocitem>
+        <tocitem target="model/fisher.html" image="HelpIcon.FUNCTION">fisher &#8212; Approximate Fisher information matrix in frequency domain</tocitem>
+        <tocitem target="model/fmse.html" image="HelpIcon.FUNCTION">fmse &#8212; Forecast mean square error matrices</tocitem>
+        <tocitem target="model/get.html" image="HelpIcon.FUNCTION">get &#8212; Query model object properties</tocitem>
+        <tocitem target="model/horzcat.html" image="HelpIcon.FUNCTION">horzcat &#8212; Combine two compatible model objects in one object with multiple parameterisations</tocitem>
+        <tocitem target="model/icrf.html" image="HelpIcon.FUNCTION">icrf &#8212; Initial-condition response functions</tocitem>
+        <tocitem target="model/ifrf.html" image="HelpIcon.FUNCTION">ifrf &#8212; Frequency response function to shocks</tocitem>
+        <tocitem target="model/iscompatible.html" image="HelpIcon.FUNCTION">iscompatible &#8212; True if two models can occur together on the LHS and RHS in an assignment</tocitem>
+        <tocitem target="model/islinear.html" image="HelpIcon.FUNCTION">islinear &#8212; True for models declared as linear</tocitem>
+        <tocitem target="model/islog.html" image="HelpIcon.FUNCTION">islog &#8212; True for log-linearised variables</tocitem>
+        <tocitem target="model/ismissing.html" image="HelpIcon.FUNCTION">ismissing &#8212; True if some initical conditions are missing from input database</tocitem>
+        <tocitem target="model/isname.html" image="HelpIcon.FUNCTION">isname &#8212; True for valid names of variables, parameters, or shocks in model object</tocitem>
+        <tocitem target="model/isnan.html" image="HelpIcon.FUNCTION">isnan &#8212; Check for NaNs in model object</tocitem>
+        <tocitem target="model/issolved.html" image="HelpIcon.FUNCTION">issolved &#8212; True if a model solution exists</tocitem>
+        <tocitem target="model/isstationary.html" image="HelpIcon.FUNCTION">isstationary &#8212; True if model or specified combination of variables is stationary</tocitem>
+        <tocitem target="model/jforecast.html" image="HelpIcon.FUNCTION">jforecast &#8212; Forecast with judgmental adjustments (conditional forecasts)</tocitem>
+        <tocitem target="model/length.html" image="HelpIcon.FUNCTION">length &#8212; Number of alternative parameterisations</tocitem>
+        <tocitem target="model/lhsmrhs.html" image="HelpIcon.FUNCTION">lhsmrhs &#8212; Evaluate the discrepancy between the LHS and RHS for each model equation and given data</tocitem>
+        <tocitem target="model/loglik.html" image="HelpIcon.FUNCTION">loglik &#8212; Evaluate minus the log-likelihood function in time or frequency domain</tocitem>
+        <tocitem target="model/lognormal.html" image="HelpIcon.FUNCTION">lognormal &#8212; Characteristics of log-normal distributions returned by filter of forecast</tocitem>
+        <tocitem target="model/model.html" image="HelpIcon.FUNCTION">model &#8212; Create new model object based on model file</tocitem>
+        <tocitem target="model/neighbourhood.html" image="HelpIcon.FUNCTION">neighbourhood &#8212; Evaluate the local behaviour of the objective function around the estimated parameter values</tocitem>
+        <tocitem target="model/omega.html" image="HelpIcon.FUNCTION">omega &#8212; Get or set the covariance matrix of shocks</tocitem>
+        <tocitem target="model/refresh.html" image="HelpIcon.FUNCTION">refresh &#8212; Refresh dynamic links</tocitem>
+        <tocitem target="model/regress.html" image="HelpIcon.FUNCTION">regress &#8212; Centred population regression for selected model variables</tocitem>
+        <tocitem target="model/reporting.html" image="HelpIcon.FUNCTION">reporting &#8212; Run reporting equations</tocitem>
+        <tocitem target="model/resample.html" image="HelpIcon.FUNCTION">resample &#8212; Resample from the model implied distribution</tocitem>
+        <tocitem target="model/reset.html" image="HelpIcon.FUNCTION">reset &#8212; Reset specific values within model object</tocitem>
+        <tocitem target="model/rollback.html" image="HelpIcon.FUNCTION">rollback &#8212; Prepare database for a rollback run of Kalman filter</tocitem>
+        <tocitem target="model/set.html" image="HelpIcon.FUNCTION">set &#8212; Change modifiable model object property</tocitem>
+        <tocitem target="model/shockplot.html" image="HelpIcon.FUNCTION">shockplot &#8212; Short-cut for running and plotting plain shock simulation</tocitem>
+        <tocitem target="model/simulate.html" image="HelpIcon.FUNCTION">simulate &#8212; Simulate model</tocitem>
+        <tocitem target="model/single.html" image="HelpIcon.FUNCTION">single &#8212; Convert solution matrices to single precision</tocitem>
+        <tocitem target="model/solve.html" image="HelpIcon.FUNCTION">solve &#8212; Calculate first-order accurate solution of the model</tocitem>
+        <tocitem target="model/srf.html" image="HelpIcon.FUNCTION">srf &#8212; Shock response functions</tocitem>
+        <tocitem target="model/sspace.html" image="HelpIcon.FUNCTION">sspace &#8212; State-space matrices describing the model solution</tocitem>
+        <tocitem target="model/sstate.html" image="HelpIcon.FUNCTION">sstate &#8212; Compute steady state or balance-growth path of the model</tocitem>
+        <tocitem target="model/sstatedb.html" image="HelpIcon.FUNCTION">sstatedb &#8212; Create model-specific steady-state or balanced-growth-path database</tocitem>
+        <tocitem target="model/sstatefile.html" image="HelpIcon.FUNCTION">sstatefile &#8212; Create a steady-state file based on the model object's steady-state equations</tocitem>
+        <tocitem target="model/stdscale.html" image="HelpIcon.FUNCTION">stdscale &#8212; Re-scale all std deviations by the same factor</tocitem>
+        <tocitem target="model/subsasgn.html" image="HelpIcon.FUNCTION">subsasgn &#8212; Subscripted assignment for model and systemfit objects</tocitem>
+        <tocitem target="model/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for model and systemfit objects</tocitem>
+        <tocitem target="model/system.html" image="HelpIcon.FUNCTION">system &#8212; System matrices before model is solved</tocitem>
+        <tocitem target="model/userdata.html" image="HelpIcon.FUNCTION">userdata &#8212; Get or set user data in an IRIS object</tocitem>
+        <tocitem target="model/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Population VAR for selected model variables</tocitem>
+        <tocitem target="model/vma.html" image="HelpIcon.FUNCTION">vma &#8212; Vector moving average representation of the model</tocitem>
+        <tocitem target="model/xsf.html" image="HelpIcon.FUNCTION">xsf &#8212; Power spectrum and spectral density of model variables</tocitem>
+        <tocitem target="model/zerodb.html" image="HelpIcon.FUNCTION">zerodb &#8212; Create model-specific zero-deviation database</tocitem>
+    </tocitem>
+    <tocitem target="plan/Contents.html" image="HelpIcon.USER_GUIDE">Simulation plans
+        <tocitem target="plan/autoexogenise.html" image="HelpIcon.FUNCTION">autoexogenise &#8212; Exogenise variables and automatically endogenise corresponding shocks</tocitem>
+        <tocitem target="plan/condition.html" image="HelpIcon.FUNCTION">condition &#8212; Condition forecast upon the specified variables at the specified dates</tocitem>
+        <tocitem target="plan/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Display details of a simulation plan</tocitem>
+        <tocitem target="plan/endogenise.html" image="HelpIcon.FUNCTION">endogenise &#8212; Endogenise shocks or re-endogenise variables at the specified dates</tocitem>
+        <tocitem target="plan/exogenise.html" image="HelpIcon.FUNCTION">exogenise &#8212; Exogenise variables or re-exogenise shocks at the specified dates</tocitem>
+        <tocitem target="plan/get.html" image="HelpIcon.FUNCTION">get &#8212; Query to plan object</tocitem>
+        <tocitem target="plan/nnzcond.html" image="HelpIcon.FUNCTION">nnzcond &#8212; Number of conditioning data points</tocitem>
+        <tocitem target="plan/nnzendog.html" image="HelpIcon.FUNCTION">nnzendog &#8212; Number of endogenised data points</tocitem>
+        <tocitem target="plan/nnzexog.html" image="HelpIcon.FUNCTION">nnzexog &#8212; Number of exogenised data points</tocitem>
+        <tocitem target="plan/nnznonlin.html" image="HelpIcon.FUNCTION">nnznonlin &#8212; Number of non-linearised data points</tocitem>
+        <tocitem target="plan/nonlinearise.html" image="HelpIcon.FUNCTION">nonlinearise &#8212; Select equations for simulation in an exact non-linear mode</tocitem>
+        <tocitem target="plan/plan.html" image="HelpIcon.FUNCTION">plan &#8212; Create new, empty simulation plan object</tocitem>
+        <tocitem target="plan/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for plan objects</tocitem>
+    </tocitem>
+    <tocitem target="grouping/Contents.html" image="HelpIcon.USER_GUIDE">Grouping objects for aggregation of contributions
+        <tocitem target="grouping/addgroup.html" image="HelpIcon.FUNCTION">addgroup &#8212; Add measurement variable group or shock group to grouping object</tocitem>
+        <tocitem target="grouping/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Details of a grouping object</tocitem>
+        <tocitem target="grouping/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate contributions in input database S using grouping object G</tocitem>
+        <tocitem target="grouping/grouping.html" image="HelpIcon.FUNCTION">grouping &#8212; Create new, empty grouping object</tocitem>
+        <tocitem target="grouping/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True for empty grouping object</tocitem>
+    </tocitem>
+    <tocitem target="systempriors/Contents.html" image="HelpIcon.USER_GUIDE">System priors
+        <tocitem target="systempriors/detail.html" image="HelpIcon.FUNCTION">detail &#8212; Display details of system priors object</tocitem>
+        <tocitem target="systempriors/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True if system priors object is empty</tocitem>
+        <tocitem target="systempriors/length.html" image="HelpIcon.FUNCTION">length &#8212; Number or priors in system priors object</tocitem>
+        <tocitem target="systempriors/prior.html" image="HelpIcon.FUNCTION">prior &#8212; Add new prior to system priors object</tocitem>
+        <tocitem target="systempriors/systempriors.html" image="HelpIcon.FUNCTION">systempriors &#8212; Create new, empty system priors object</tocitem>
+    </tocitem>
+    <tocitem target="poster/Contents.html" image="HelpIcon.USER_GUIDE">Posterior objects and functions
+        <tocitem target="poster/arwm.html" image="HelpIcon.FUNCTION">arwm &#8212; Adaptive random-walk Metropolis posterior simulator</tocitem>
+        <tocitem target="poster/eval.html" image="HelpIcon.FUNCTION">eval &#8212; Evaluate posterior density at specified points</tocitem>
+        <tocitem target="poster/poster.html" image="HelpIcon.FUNCTION">poster &#8212; Create new, empty posterior simulation (poster) object</tocitem>
+        <tocitem target="poster/regen.html" image="HelpIcon.FUNCTION">regen &#8212; Regeneration time MCMC Metropolis posterior simulator</tocitem>
+        <tocitem target="poster/stats.html" image="HelpIcon.FUNCTION">stats &#8212; Evaluate selected statistics of ARWM chain</tocitem>
+    </tocitem>
+    <tocitem target="logdist/Contents.html" image="HelpIcon.USER_GUIDE">Probability distribution package
+        <tocitem target="logdist/beta.html" image="HelpIcon.FUNCTION">beta &#8212; Create function proportional to log of beta distribution</tocitem>
+        <tocitem target="logdist/gamma.html" image="HelpIcon.FUNCTION">gamma &#8212; Create function proportional to log of gamma distribution</tocitem>
+        <tocitem target="logdist/chisquare.html" image="HelpIcon.FUNCTION">gamma &#8212; Create function proportional to log of Chi-Squared distribution</tocitem>
+        <tocitem target="logdist/invgamma.html" image="HelpIcon.FUNCTION">invgamma &#8212; Create function proportional to log of inv-gamma distribution</tocitem>
+        <tocitem target="logdist/lognormal.html" image="HelpIcon.FUNCTION">lognormal &#8212; Create function proportional to log of log-normal distribution</tocitem>
+        <tocitem target="logdist/normal.html" image="HelpIcon.FUNCTION">normal &#8212; Create function proportional to log of Normal or Student distribution</tocitem>
+        <tocitem target="logdist/uniform.html" image="HelpIcon.FUNCTION">uniform &#8212; Create function proportional to log of uniform distribution</tocitem>
+    </tocitem>
+    <tocitem target="sstatelang/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state file language
+        <tocitem target="sstatelang/allbut.html" image="HelpIcon.BLOCK">!all_but &#8212; Inverse list of variables with positive steady states</tocitem>
+        <tocitem target="sstatelang/equations.html" image="HelpIcon.BLOCK">!equations &#8212; Block of equations or assignments</tocitem>
+        <tocitem target="sstatelang/growthnames.html" image="HelpIcon.BLOCK">!growthnames &#8212; Pattern for creating growth names</tocitem>
+        <tocitem target="sstatelang/input.html" image="HelpIcon.BLOCK">!input &#8212; List of input parameters or variables</tocitem>
+        <tocitem target="sstatelang/logvariables.html" image="HelpIcon.BLOCK">!log_variables &#8212; Restrict the steady state of some of the variables to be positive</tocitem>
+        <tocitem target="sstatelang/solvefor.html" image="HelpIcon.BLOCK">!solvefor &#8212; List of variables for which the current equations block will be solved</tocitem>
+        <tocitem target="sstatelang/symbolic.html" image="HelpIcon.BLOCK">!symbolic &#8212; Attempt to solve the current equations block symbolically using the Symbolic Maths Toolbox</tocitem>
+    </tocitem>
+    <tocitem target="sstate/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state objects and functions
+        <tocitem target="sstate/compile.html" image="HelpIcon.FUNCTION">compile &#8212; Compile an m-file function based on a steady-state file</tocitem>
+        <tocitem target="sstate/sstate.html" image="HelpIcon.FUNCTION">sstate &#8212; Create new steady-state object based on sstate file</tocitem>
+        <tocitem target="sstate/standalonemfile.html" image="HelpIcon.FUNCTION">standalonemfile &#8212; Run a compiled stand-alone sstate m-file function</tocitem>
+    </tocitem>
+    <tocitem target="namedmat/Contents.html" image="HelpIcon.USER_GUIDE">Matrices with named rows and columns
+        <tocitem target="namedmat/colnames.html" image="HelpIcon.FUNCTION">colnames &#8212; Names of columns in namedmat object</tocitem>
+        <tocitem target="namedmat/namedmat.html" image="HelpIcon.FUNCTION">namedmat &#8212; Create a new matrix with named rows and columns</tocitem>
+        <tocitem target="namedmat/rownames.html" image="HelpIcon.FUNCTION">rownames &#8212; Names of rows in namedmat object</tocitem>
+        <tocitem target="namedmat/select.html" image="HelpIcon.FUNCTION">select &#8212; Select submatrix by referring to row names and column names</tocitem>
+        <tocitem target="namedmat/transpose.html" image="HelpIcon.FUNCTION">transpose &#8212; Transpose each page of matrix with names rows and columns</tocitem>
+    </tocitem>
+</tocitem>
+<tocitem target="Contents/VARs.html" image="HelpIcon.USER_GUIDE">Multivariate time series analysis
+    <tocitem target="VAR/Contents.html" image="HelpIcon.USER_GUIDE">Vector autoregressions (VAR) objects and functions
+        <tocitem target="VAR/acf.html" image="HelpIcon.FUNCTION">acf &#8212; Autocovariance and autocorrelation functions for VAR variables</tocitem>
+        <tocitem target="VAR/addparam.html" image="HelpIcon.FUNCTION">addparam &#8212; Add VAR parameters to a database (struct)</tocitem>
+        <tocitem target="VAR/alter.html" image="HelpIcon.FUNCTION">alter &#8212; Expand or reduce the number of alternative parameterisations within a VAR object</tocitem>
+        <tocitem target="VAR/assign.html" image="HelpIcon.FUNCTION">assign &#8212; Manually assign system matrices to VAR object</tocitem>
+        <tocitem target="VAR/backward.html" image="HelpIcon.FUNCTION">backward &#8212; Backward VAR process</tocitem>
+        <tocitem target="VAR/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
+        <tocitem target="VAR/companion.html" image="HelpIcon.FUNCTION">companion &#8212; Matrices of first-order companion VAR</tocitem>
+        <tocitem target="VAR/demean.html" image="HelpIcon.FUNCTION">demean &#8212; Remove constant from VAR object</tocitem>
+        <tocitem target="VAR/eig.html" image="HelpIcon.FUNCTION">eig &#8212; Eigenvalues of a VAR process</tocitem>
+        <tocitem target="VAR/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate a reduced-form VAR or BVAR</tocitem>
+        <tocitem target="VAR/ferf.html" image="HelpIcon.FUNCTION">ferf &#8212; Forecast error response function</tocitem>
+        <tocitem target="VAR/filter.html" image="HelpIcon.FUNCTION">filter &#8212; Filter data using a VAR model</tocitem>
+        <tocitem target="VAR/fmse.html" image="HelpIcon.FUNCTION">fmse &#8212; Forecast mean square error matrices</tocitem>
+        <tocitem target="VAR/forecast.html" image="HelpIcon.FUNCTION">forecast &#8212; Unconditional or conditional VAR forecasts</tocitem>
+        <tocitem target="VAR/fprintf.html" image="HelpIcon.FUNCTION">fprintf &#8212; Write VAR model as formatted model code to text file</tocitem>
+        <tocitem target="VAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query VAR object properties</tocitem>
+        <tocitem target="VAR/group.html" image="HelpIcon.FUNCTION">group &#8212; Retrieve VAR object from panel VAR for specified group of data</tocitem>
+        <tocitem target="VAR/horzcat.html" image="HelpIcon.FUNCTION">horzcat &#8212; Combine two compatible VAR objects in one object with multiple parameterisations</tocitem>
+        <tocitem target="VAR/infocrit.html" image="HelpIcon.FUNCTION">infocrit &#8212; Populate information criteria for a parameterised VAR</tocitem>
+        <tocitem target="VAR/instrument.html" image="HelpIcon.FUNCTION">instrument &#8212; Define forecast conditioning instruments in VAR models</tocitem>
+        <tocitem target="VAR/integrate.html" image="HelpIcon.FUNCTION">integrate &#8212; Integrate VAR process and data associated with it</tocitem>
+        <tocitem target="VAR/iscompatible.html" image="HelpIcon.FUNCTION">iscompatible &#8212; True if two VAR objects can occur together on the LHS and RHS in an assignment</tocitem>
+        <tocitem target="VAR/isexplosive.html" image="HelpIcon.FUNCTION">isexplosive &#8212; True if any eigenvalue is outside unit circle</tocitem>
+        <tocitem target="VAR/ispanel.html" image="HelpIcon.FUNCTION">ispanel &#8212; True for panel VAR based objects</tocitem>
+        <tocitem target="VAR/isstationary.html" image="HelpIcon.FUNCTION">isstationary &#8212; True if all eigenvalues are within unit circle</tocitem>
+        <tocitem target="VAR/length.html" image="HelpIcon.FUNCTION">length &#8212; Number of alternative parameterisations in VAR object</tocitem>
+        <tocitem target="VAR/lrtest.html" image="HelpIcon.FUNCTION">lrtest &#8212; Likelihood ratio test for VAR models</tocitem>
+        <tocitem target="VAR/mean.html" image="HelpIcon.FUNCTION">mean &#8212; Mean of VAR process</tocitem>
+        <tocitem target="VAR/nfitted.html" image="HelpIcon.FUNCTION">nfitted &#8212; Number of data points fitted in VAR estimation</tocitem>
+        <tocitem target="VAR/portest.html" image="HelpIcon.FUNCTION">portest &#8212; Portmanteau test for autocorrelation in VAR residuals</tocitem>
+        <tocitem target="VAR/resample.html" image="HelpIcon.FUNCTION">resample &#8212; Resample from a VAR object</tocitem>
+        <tocitem target="VAR/rngcmp.html" image="HelpIcon.FUNCTION">rngcmp &#8212; True if two VAR objects have been estimated using the same dates</tocitem>
+        <tocitem target="VAR/schur.html" image="HelpIcon.FUNCTION">schur &#8212; Compute and store triangular representation of VAR</tocitem>
+        <tocitem target="VAR/simulate.html" image="HelpIcon.FUNCTION">simulate &#8212; Simulate VAR model</tocitem>
+        <tocitem target="VAR/sprintf.html" image="HelpIcon.FUNCTION">sprintf &#8212; Print VAR model as formatted model code</tocitem>
+        <tocitem target="VAR/sspace.html" image="HelpIcon.FUNCTION">sspace &#8212; Quasi-triangular state-space representation of VAR</tocitem>
+        <tocitem target="VAR/subsasgn.html" image="HelpIcon.FUNCTION">subsasgn &#8212; Subscripted assignment for VAR objects</tocitem>
+        <tocitem target="VAR/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for VAR objects</tocitem>
+        <tocitem target="VAR/userdata.html" image="HelpIcon.FUNCTION">userdata &#8212; Get or set user data in an IRIS object</tocitem>
+        <tocitem target="VAR/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Create new, empty reduced-form VAR object</tocitem>
+        <tocitem target="VAR/vma.html" image="HelpIcon.FUNCTION">vma &#8212; Matrices describing the VMA representation of a VAR process</tocitem>
+        <tocitem target="VAR/xsf.html" image="HelpIcon.FUNCTION">xsf &#8212; Power spectrum and spectral density functions for VAR variables</tocitem>
+    </tocitem>
+    <tocitem target="SVAR/Contents.html" image="HelpIcon.USER_GUIDE">Structural vector autoregressions: SVAR objects and functions
+        <tocitem target="SVAR/fevd.html" image="HelpIcon.FUNCTION">fevd &#8212; Forecast error variance decomposition for SVAR variables</tocitem>
+        <tocitem target="SVAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query SVAR object properties</tocitem>
+        <tocitem target="SVAR/sort.html" image="HelpIcon.FUNCTION">sort &#8212; Sort SVAR parameterisations by squared distance of shock reponses to median</tocitem>
+        <tocitem target="SVAR/srf.html" image="HelpIcon.FUNCTION">srf &#8212; Shock (impulse) response function</tocitem>
+        <tocitem target="SVAR/SVAR.html" image="HelpIcon.FUNCTION">SVAR &#8212; Convert reduced-form VAR to structural VAR</tocitem>
+    </tocitem>
+    <tocitem target="BVAR/Contents.html" image="HelpIcon.USER_GUIDE">Bayesian VAR prior dummies: BVAR package
+        <tocitem target="BVAR/covmat.html" image="HelpIcon.FUNCTION">covmat &#8212; Covariance matrix prior dummy observations for BVARs</tocitem>
+        <tocitem target="BVAR/litterman.html" image="HelpIcon.FUNCTION">litterman &#8212; Litterman's prior dummy observations for BVARs</tocitem>
+        <tocitem target="BVAR/sumofcoeff.html" image="HelpIcon.FUNCTION">sumofcoeff &#8212; Doan et al sum-of-coefficient prior dummy observations for BVARs</tocitem>
+        <tocitem target="BVAR/uncmean.html" image="HelpIcon.FUNCTION">uncmean &#8212; Unconditional-mean dummy (or Sims' initial dummy) observations for BVARs</tocitem>
+        <tocitem target="BVAR/user.html" image="HelpIcon.FUNCTION">user &#8212; User-supplied prior dummy observations for BVARs</tocitem>
+    </tocitem>
+    <tocitem target="FAVAR/Contents.html" image="HelpIcon.USER_GUIDE">Factor-augmented vector autoregressions: FAVAR objects and functions
+        <tocitem target="FAVAR/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
+        <tocitem target="FAVAR/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate FAVAR using static principal components</tocitem>
+        <tocitem target="FAVAR/FAVAR.html" image="HelpIcon.FUNCTION">FAVAR &#8212; Create new, empty FAVAR object</tocitem>
+        <tocitem target="FAVAR/filter.html" image="HelpIcon.FUNCTION">filter &#8212; Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given</tocitem>
+        <tocitem target="FAVAR/forecast.html" image="HelpIcon.FUNCTION">forecast &#8212; Forecast FAVAR factors and observables</tocitem>
+        <tocitem target="FAVAR/get.html" image="HelpIcon.FUNCTION">get &#8212; Query model object properties</tocitem>
+        <tocitem target="FAVAR/isempty.html" image="HelpIcon.FUNCTION">isempty &#8212; True if VAR based object is empty</tocitem>
+        <tocitem target="FAVAR/userdata.html" image="HelpIcon.FUNCTION">userdata &#8212; Get or set user data in an IRIS object</tocitem>
+        <tocitem target="FAVAR/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Return a VAR object describing the factor dynamics</tocitem>
+    </tocitem>
+</tocitem>
+<tocitem target="Contents/data.html" image="HelpIcon.USER_GUIDE">Time series and database management
+    <tocitem target="dates/Contents.html" image="HelpIcon.USER_GUIDE">Dates and date ranges
+        <tocitem target="dates/bb.html" image="HelpIcon.FUNCTION">bb &#8212; IRIS serial date number for bimonthly date</tocitem>
+        <tocitem target="dates/bbtoday.html" image="HelpIcon.FUNCTION">bbtoday &#8212; IRIS serial date number for current bi-month</tocitem>
+        <tocitem target="dates/clp2dat.html" image="HelpIcon.FUNCTION">clp2dat &#8212; Convert text in system clipboard to dates</tocitem>
+        <tocitem target="dates/dat2char.html" image="HelpIcon.FUNCTION">dat2char &#8212; Convert dates to character array</tocitem>
+        <tocitem target="dates/dat2charlist.html" image="HelpIcon.FUNCTION">dat2charlist &#8212; Convert dates to a comma-separated list</tocitem>
+        <tocitem target="dates/dat2clp.html" image="HelpIcon.FUNCTION">dat2clp &#8212; Convert dates to text and paste to system clipboard</tocitem>
+        <tocitem target="dates/dat2dec.html" image="HelpIcon.FUNCTION">dat2dec &#8212; Convert dates to their decimal representations</tocitem>
+        <tocitem target="dates/dat2str.html" image="HelpIcon.FUNCTION">dat2str &#8212; Convert IRIS dates to cell array of strings</tocitem>
+        <tocitem target="dates/dat2ttrend.html" image="HelpIcon.FUNCTION">dat2ttrend &#8212; Construct linear time trend from date range</tocitem>
+        <tocitem target="dates/dat2ypf.html" image="HelpIcon.FUNCTION">dat2ypf &#8212; Convert IRIS serial date number to year, period and frequency</tocitem>
+        <tocitem target="dates/datbom.html" image="HelpIcon.FUNCTION">datbom &#8212; Beginning of month for the specified daily date</tocitem>
+        <tocitem target="dates/datboq.html" image="HelpIcon.FUNCTION">datboq &#8212; Beginning of quarter for the specified daily date</tocitem>
+        <tocitem target="dates/datboy.html" image="HelpIcon.FUNCTION">datboy &#8212; Beginning of year for the specified daily date</tocitem>
+        <tocitem target="dates/datcmp.html" image="HelpIcon.FUNCTION">datcmp &#8212; Compare two IRIS serial date numbers</tocitem>
+        <tocitem target="dates/datdiff.html" image="HelpIcon.FUNCTION">datdiff &#8212; Number of periods between two dates with check for date frequency</tocitem>
+        <tocitem target="dates/dateom.html" image="HelpIcon.FUNCTION">dateom &#8212; End of month for the specified daily date</tocitem>
+        <tocitem target="dates/dateoq.html" image="HelpIcon.FUNCTION">dateoq &#8212; End of quarter for the specified daily date</tocitem>
+        <tocitem target="dates/dateoy.html" image="HelpIcon.FUNCTION">dateoy &#8212; End of year for the specified daily date</tocitem>
+        <tocitem target="dates/datrange.html" image="HelpIcon.FUNCTION">datrange &#8212; Numerically safe way to create a date range</tocitem>
+        <tocitem target="dates/datxtick.html" image="HelpIcon.FUNCTION">datxtick &#8212; Change ticks, labels and/or date frequency on x-axis in existing tseries graphs</tocitem>
+        <tocitem target="dates/daysinyear.html" image="HelpIcon.FUNCTION">daysinyear &#8212; Number of days in year</tocitem>
+        <tocitem target="dates/dd.html" image="HelpIcon.FUNCTION">dd &#8212; Matlab serial date numbers that can be used to construct daily tseries objects</tocitem>
+        <tocitem target="dates/ddtoday.html" image="HelpIcon.FUNCTION">ddtoday &#8212; Matlab serial date number for today's date</tocitem>
+        <tocitem target="dates/dec2dat.html" image="HelpIcon.FUNCTION">dec2dat &#8212; Convert decimal representation of date to IRIS serial date number</tocitem>
+        <tocitem target="dates/hh.html" image="HelpIcon.FUNCTION">hh &#8212; IRIS serial date number for half-yearly date</tocitem>
+        <tocitem target="dates/hhtoday.html" image="HelpIcon.FUNCTION">hhtoday &#8212; IRIS serial date number for current half-year</tocitem>
+        <tocitem target="dates/mm.html" image="HelpIcon.FUNCTION">mm &#8212; IRIS serial date number for monthly date</tocitem>
+        <tocitem target="dates/mmtoday.html" image="HelpIcon.FUNCTION">mmtoday &#8212; IRIS serial date number for current month</tocitem>
+        <tocitem target="dates/qq.html" image="HelpIcon.FUNCTION">qq &#8212; IRIS serial date number for quarterly date</tocitem>
+        <tocitem target="dates/qqtoday.html" image="HelpIcon.FUNCTION">qqtoday &#8212; IRIS serial date number for current quarter</tocitem>
+        <tocitem target="dates/rngcmp.html" image="HelpIcon.FUNCTION">rngcmp &#8212; Compare two IRIS date ranges</tocitem>
+        <tocitem target="dates/str2dat.html" image="HelpIcon.FUNCTION">str2dat &#8212; Convert strings to IRIS serial date numbers</tocitem>
+        <tocitem target="dates/weeksinyear.html" image="HelpIcon.FUNCTION">weeksinyear &#8212; Number of weeks in year</tocitem>
+        <tocitem target="dates/ww.html" image="HelpIcon.FUNCTION">ww &#8212; IRIS serial date number for weekly date</tocitem>
+        <tocitem target="dates/ww2day.html" image="HelpIcon.FUNCTION">ww2day &#8212; Convert weekly IRIS serial date number to Matlab serial date number</tocitem>
+        <tocitem target="dates/wwtoday.html" image="HelpIcon.FUNCTION">wwtoday &#8212; IRIS serial date number for current week</tocitem>
+        <tocitem target="dates/yy.html" image="HelpIcon.FUNCTION">yy &#8212; IRIS serial date number for yearly date</tocitem>
+        <tocitem target="dates/yytoday.html" image="HelpIcon.FUNCTION">yytoday &#8212; IRIS serial date number for current year</tocitem>
+    </tocitem>
+    <tocitem target="tseries/Contents.html" image="HelpIcon.USER_GUIDE">Time series objects and functions
+        <tocitem target="tseries/acf.html" image="HelpIcon.FUNCTION">acf &#8212; Sample autocovariance and autocorrelation functions</tocitem>
+        <tocitem target="tseries/apct.html" image="HelpIcon.FUNCTION">apct &#8212; Annualised percent rate of change</tocitem>
+        <tocitem target="tseries/area.html" image="HelpIcon.FUNCTION">area &#8212; Area graph for tseries objects</tocitem>
+        <tocitem target="tseries/arf.html" image="HelpIcon.FUNCTION">arf &#8212; Run autoregressive function on a tseries object</tocitem>
+        <tocitem target="tseries/bar.html" image="HelpIcon.FUNCTION">bar &#8212; Bar graph for tseries objects</tocitem>
+        <tocitem target="tseries/barcon.html" image="HelpIcon.FUNCTION">barcon &#8212; Contribution bar graph for tseries objects</tocitem>
+        <tocitem target="tseries/bpass.html" image="HelpIcon.FUNCTION">bpass &#8212; Band-pass filter</tocitem>
+        <tocitem target="tseries/bsxfun.html" image="HelpIcon.FUNCTION">bsxfunc &#8212; Standard BSXFUN implemented for tseries objects</tocitem>
+        <tocitem target="tseries/bwf2.html" image="HelpIcon.FUNCTION">bwf &#8212; Swap output arguments of the Butterworth filter with tunes</tocitem>
+        <tocitem target="tseries/bwf.html" image="HelpIcon.FUNCTION">bwf &#8212; Butterworth filter with tunes</tocitem>
+        <tocitem target="tseries/chowlin.html" image="HelpIcon.FUNCTION">chowlin &#8212; Chow-Lin distribution of low-frequency observations over higher-frequency periods</tocitem>
+        <tocitem target="tseries/convert.html" image="HelpIcon.FUNCTION">convert &#8212; Convert tseries object to a different frequency</tocitem>
+        <tocitem target="tseries/cumsumk.html" image="HelpIcon.FUNCTION">cumsumk &#8212; Cumulative sum with a k-period leap</tocitem>
+        <tocitem target="tseries/daily.html" image="HelpIcon.FUNCTION">DAILY &#8212; Calendar view of a daily tseries object</tocitem>
+        <tocitem target="tseries/destdise.html" image="HelpIcon.FUNCTION">destdise &#8212; Destandardise tseries object by applying specified standard deviation and mean to it</tocitem>
+        <tocitem target="tseries/detrend.html" image="HelpIcon.FUNCTION">detrend &#8212; Remove a linear time trend</tocitem>
+        <tocitem target="tseries/diff.html" image="HelpIcon.FUNCTION">diff &#8212; First difference</tocitem>
+        <tocitem target="tseries/double.html" image="HelpIcon.FUNCTION">double &#8212; Return tseries observations as double-precision numeric array</tocitem>
+        <tocitem target="tseries/doubledata.html" image="HelpIcon.FUNCTION">doubledata &#8212; Convert tseries observations to double precision</tocitem>
+        <tocitem target="tseries/empty.html" image="HelpIcon.FUNCTION">empty &#8212; Empty tseries object preserving its size in 2nd and higher dimensions</tocitem>
+        <tocitem target="tseries/enddate.html" image="HelpIcon.FUNCTION">enddate &#8212; Date of the last available observation in a tseries object</tocitem>
+        <tocitem target="tseries/errorbar.html" image="HelpIcon.FUNCTION">errorbar &#8212; Line plot with error bars</tocitem>
+        <tocitem target="tseries/expsmooth.html" image="HelpIcon.FUNCTION">ews &#8212; Exponential smoothing</tocitem>
+        <tocitem target="tseries/fft.html" image="HelpIcon.FUNCTION">fft &#8212; Discrete Fourier transform of tseries object</tocitem>
+        <tocitem target="tseries/freq.html" image="HelpIcon.FUNCTION">freq &#8212; Frequency of a tseries object</tocitem>
+        <tocitem target="tseries/get.html" image="HelpIcon.FUNCTION">get &#8212; Query tseries object property</tocitem>
+        <tocitem target="tseries/hpdi.html" image="HelpIcon.FUNCTION">hpdi &#8212; Highest probability density interval</tocitem>
+        <tocitem target="tseries/hpf.html" image="HelpIcon.FUNCTION">hpf &#8212; Hodrick-Prescott filter with tunes (aka LRX filter)</tocitem>
+        <tocitem target="tseries/hpf2.html" image="HelpIcon.FUNCTION">hpf2 &#8212; Swap output arguments of the Hodrick-Prescott filter with tunes</tocitem>
+        <tocitem target="tseries/interp.html" image="HelpIcon.FUNCTION">interp &#8212; Interpolate missing observations</tocitem>
+        <tocitem target="tseries/isequal.html" image="HelpIcon.FUNCTION">isequal &#8212; [Not a public function] Compare two tseries objects</tocitem>
+        <tocitem target="tseries/length.html" image="HelpIcon.FUNCTION">length &#8212; Length of tseries object</tocitem>
+        <tocitem target="tseries/llf.html" image="HelpIcon.FUNCTION">llf &#8212; Local level filter (aka random walk plus white noise) with tunes</tocitem>
+        <tocitem target="tseries/llf2.html" image="HelpIcon.FUNCTION">llf2 &#8212; Swap output arguments of the local linear trend filter with tunes</tocitem>
+        <tocitem target="tseries/moving.html" image="HelpIcon.FUNCTION">moving &#8212; Apply function to moving window of observations</tocitem>
+        <tocitem target="tseries/ndims.html" image="HelpIcon.FUNCTION">ndims &#8212; Number of dimensions in tseries object data</tocitem>
+        <tocitem target="tseries/normalise.html" image="HelpIcon.FUNCTION">normalise &#8212; Normalise (or rebase) data to particular date</tocitem>
+        <tocitem target="tseries/pct.html" image="HelpIcon.FUNCTION">pct &#8212; Percent rate of change</tocitem>
+        <tocitem target="tseries/permute.html" image="HelpIcon.FUNCTION">permute &#8212; Permute dimensions of a tseries object</tocitem>
+        <tocitem target="tseries/plot.html" image="HelpIcon.FUNCTION">plot &#8212; Line graph for tseries objects</tocitem>
+        <tocitem target="tseries/plotcmp.html" image="HelpIcon.FUNCTION">plotcmp &#8212; Comparison graph for two time series</tocitem>
+        <tocitem target="tseries/plotpred.html" image="HelpIcon.FUNCTION">plotpred &#8212; Plot Kalman filter predictions</tocitem>
+        <tocitem target="tseries/plotyy.html" image="HelpIcon.FUNCTION">plotyy &#8212; Line plot function with LHS and RHS axes for time series</tocitem>
+        <tocitem target="tseries/redate.html" image="HelpIcon.FUNCTION">redate &#8212; Change time dimension of a tseries object</tocitem>
+        <tocitem target="tseries/regress.html" image="HelpIcon.FUNCTION">regress &#8212; Ordinary or weighted least-square regression</tocitem>
+        <tocitem target="tseries/reshape.html" image="HelpIcon.FUNCTION">reshape &#8212; Reshape size of time series in 2nd and higher dimensions</tocitem>
+        <tocitem target="tseries/resize.html" image="HelpIcon.FUNCTION">resize &#8212; Clip tseries object down to a specified date range</tocitem>
+        <tocitem target="tseries/rmse.html" image="HelpIcon.FUNCTION">rmse &#8212; Compute RMSE for given observations and predictions</tocitem>
+        <tocitem target="tseries/round.html" image="HelpIcon.FUNCTION">round &#8212; Round tseries data to specified number of decimals</tocitem>
+        <tocitem target="tseries/scatter.html" image="HelpIcon.FUNCTION">scatter &#8212; Scatter graph for tseries objects</tocitem>
+        <tocitem target="tseries/single.html" image="HelpIcon.FUNCTION">single &#8212; Return tseries observations as single-precision numeric array</tocitem>
+        <tocitem target="tseries/singledata.html" image="HelpIcon.FUNCTION">singledata &#8212; Convert tseries observations to single precision</tocitem>
+        <tocitem target="tseries/size.html" image="HelpIcon.FUNCTION">size &#8212; Size of tseries object data</tocitem>
+        <tocitem target="tseries/sort.html" image="HelpIcon.FUNCTION">sort &#8212; Sort tseries columns by specified criterion</tocitem>
+        <tocitem target="tseries/spy.html" image="HelpIcon.FUNCTION">spy &#8212; Visualise tseries observations that pass a test</tocitem>
+        <tocitem target="tseries/startdate.html" image="HelpIcon.FUNCTION">startdate &#8212; Date of the first available observation in a tseries object</tocitem>
+        <tocitem target="tseries/stdise.html" image="HelpIcon.FUNCTION">stdise &#8212; Standardise tseries data by subtracting mean and dividing by std deviation</tocitem>
+        <tocitem target="tseries/stem.html" image="HelpIcon.FUNCTION">stem &#8212; Plot tseries as discrete sequence data</tocitem>
+        <tocitem target="tseries/subsasgn.html" image="HelpIcon.FUNCTION">subsasgn &#8212; Subscripted assignment for tseries objects</tocitem>
+        <tocitem target="tseries/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference function for tseries objects</tocitem>
+        <tocitem target="tseries/trend.html" image="HelpIcon.FUNCTION">trend &#8212; Estimate a time trend</tocitem>
+        <tocitem target="tseries/tseries.html" image="HelpIcon.FUNCTION">tseries &#8212; Create new time series (tseries) object</tocitem>
+        <tocitem target="tseries/windex.html" image="HelpIcon.FUNCTION">windex &#8212; Simple weighted or Divisia index</tocitem>
+        <tocitem target="tseries/wmean.html" image="HelpIcon.FUNCTION">wmean &#8212; Weighted average of time series observations</tocitem>
+        <tocitem target="tseries/x12.html" image="HelpIcon.FUNCTION">x12 &#8212; Access to X13-ARIMA-SEATS seasonal adjustment program</tocitem>
+        <tocitem target="tseries/yearly.html" image="HelpIcon.FUNCTION">yearly &#8212; Display tseries object one full year per row</tocitem>
+    </tocitem>
+    <tocitem target="dbase/Contents.html" image="HelpIcon.USER_GUIDE">Basic database management
+        <tocitem target="dbase/array2db.html" image="HelpIcon.FUNCTION">array2db &#8212; Convert numeric array to database</tocitem>
+        <tocitem target="dbase/db2array.html" image="HelpIcon.FUNCTION">db2array &#8212; Convert tseries database entries to numeric array</tocitem>
+        <tocitem target="dbase/db2tseries.html" image="HelpIcon.FUNCTION">db2tseries &#8212; Combine tseries database entries in one multivariate tseries object</tocitem>
+        <tocitem target="dbase/dbbatch.html" image="HelpIcon.FUNCTION">dbbatch &#8212; Run a batch job to create new database fields</tocitem>
+        <tocitem target="dbase/dbclip.html" image="HelpIcon.FUNCTION">dbclip &#8212; Clip all tseries entries in database down to specified date range</tocitem>
+        <tocitem target="dbase/dbcol.html" image="HelpIcon.FUNCTION">dbcol &#8212; Retrieve the specified column or columns from database entries</tocitem>
+        <tocitem target="dbase/dbextend.html" image="HelpIcon.FUNCTION">dbextend &#8212; Combine tseries observations from two or more databases</tocitem>
+        <tocitem target="dbase/dbfun.html" image="HelpIcon.FUNCTION">dbfun &#8212; Apply a function to database fields</tocitem>
+        <tocitem target="dbase/dbload.html" image="HelpIcon.FUNCTION">dbload &#8212; Create database by loading CSV file</tocitem>
+        <tocitem target="dbase/dbmerge.html" image="HelpIcon.FUNCTION">dbmerge &#8212; Merge two or more databases</tocitem>
+        <tocitem target="dbase/dbminuscontrol.html" image="HelpIcon.FUNCTION">dbminuscontrol &#8212; Create simulation-minus-control database</tocitem>
+        <tocitem target="dbase/dbnames.html" image="HelpIcon.FUNCTION">dbnames &#8212; List of database entries filtered by name and/or class</tocitem>
+        <tocitem target="dbase/dbplot.html" image="HelpIcon.FUNCTION">dbplot &#8212; Plot from database</tocitem>
+        <tocitem target="dbase/dbprintuserdata.html" image="HelpIcon.FUNCTION">dbprintuserdata &#8212; Print names of database tseries along with specified fields of their userdata</tocitem>
+        <tocitem target="dbase/dbrange.html" image="HelpIcon.FUNCTION">dbrange &#8212; Find a range that encompasses the ranges of the listed tseries objects</tocitem>
+        <tocitem target="dbase/dbredate.html" image="HelpIcon.FUNCTION">dbredate &#8212; Redate all tseries objects in a database</tocitem>
+        <tocitem target="dbase/dbsave.html" image="HelpIcon.FUNCTION">dbsave &#8212; Save database as CSV file</tocitem>
+        <tocitem target="dbase/dbsearchuserdata.html" image="HelpIcon.FUNCTION">dbsearchuserdata &#8212; Search database to find tseries by matching the content of their userdata fields</tocitem>
+        <tocitem target="dbase/dbsplit.html" image="HelpIcon.FUNCTION">dbsplit &#8212; Split database into mutliple databases</tocitem>
+        <tocitem target="dbase/dbuserdatalov.html" image="HelpIcon.FUNCTION">dbuserdatalov &#8212; List of values found in a specified user data field in tseries objects</tocitem>
+        <tocitem target="dbase/dbminus.html" image="HelpIcon.FUNCTION">minus &#8212; Remove entries from a database</tocitem>
+        <tocitem target="dbase/dbmtimes.html" image="HelpIcon.FUNCTION">mtimes &#8212; Keep only the database entries that are on the list</tocitem>
+        <tocitem target="dbase/dbplus.html" image="HelpIcon.FUNCTION">plus &#8212; Merge entries from two databases together</tocitem>
+        <tocitem target="dbase/xls2csv.html" image="HelpIcon.FUNCTION">xls2csv &#8212; Convert XLS file to CSV file</tocitem>
+    </tocitem>
+</tocitem>
+<tocitem target="Contents/reporting.html" image="HelpIcon.USER_GUIDE">Reporting and publishing
+    <tocitem target="report/Contents.html" image="HelpIcon.USER_GUIDE">Report functions
+        <tocitem target="report/align.html" image="HelpIcon.FUNCTION">align &#8212; Vertically align the following K objects</tocitem>
+        <tocitem target="report/array.html" image="HelpIcon.FUNCTION">array &#8212; Insert array with user data</tocitem>
+        <tocitem target="report/band.html" image="HelpIcon.FUNCTION">band &#8212; Add new data with lower and upper bounds to graph or table</tocitem>
+        <tocitem target="report/copy.html" image="HelpIcon.FUNCTION">copy &#8212; Create a copy of a report object</tocitem>
+        <tocitem target="report/display.html" image="HelpIcon.FUNCTION">disp &#8212; Display the structure of report object</tocitem>
+        <tocitem target="report/disp.html" image="HelpIcon.FUNCTION">disp &#8212; Display the structure of report object</tocitem>
+        <tocitem target="report/empty.html" image="HelpIcon.FUNCTION">empty &#8212; Empty report object</tocitem>
+        <tocitem target="report/fanchart.html" image="HelpIcon.FUNCTION">fanchart &#8212; Add fanchart to graph</tocitem>
+        <tocitem target="report/figure.html" image="HelpIcon.FUNCTION">figure &#8212; Start new figure</tocitem>
+        <tocitem target="report/findall.html" image="HelpIcon.FUNCTION">findall &#8212; Find all objects of a given type within report object</tocitem>
+        <tocitem target="report/graph.html" image="HelpIcon.FUNCTION">graph &#8212; Add graph to figure</tocitem>
+        <tocitem target="report/highlight.html" image="HelpIcon.FUNCTION">highlight &#8212; Highlight range in graph</tocitem>
+        <tocitem target="report/include.html" image="HelpIcon.FUNCTION">include &#8212; Include text or LaTeX input file in the report</tocitem>
+        <tocitem target="report/matrix.html" image="HelpIcon.FUNCTION">matrix &#8212; Insert matrix or numeric array</tocitem>
+        <tocitem target="report/merge.html" image="HelpIcon.FUNCTION">merge &#8212; Merge the content of two or more report objects</tocitem>
+        <tocitem target="report/modelfile.html" image="HelpIcon.FUNCTION">modelfile &#8212; Write formatted model file</tocitem>
+        <tocitem target="report/new.html" image="HelpIcon.FUNCTION">new &#8212; Create new, empty report object</tocitem>
+        <tocitem target="report/pagebreak.html" image="HelpIcon.FUNCTION">pagebreak &#8212; Force page break</tocitem>
+        <tocitem target="report/publish.html" image="HelpIcon.FUNCTION">publish &#8212; Compile PDF from report object</tocitem>
+        <tocitem target="report/section.html" image="HelpIcon.FUNCTION">section &#8212; Start new section in report</tocitem>
+        <tocitem target="report/series.html" image="HelpIcon.FUNCTION">series &#8212; Add new data to graph or table</tocitem>
+        <tocitem target="report/subheading.html" image="HelpIcon.FUNCTION">subheading &#8212; Enter subheading in table</tocitem>
+        <tocitem target="report/table.html" image="HelpIcon.FUNCTION">table &#8212; Start new table</tocitem>
+        <tocitem target="report/tex.html" image="HelpIcon.FUNCTION">tex &#8212; Include LaTeX code or verbatim input in report</tocitem>
+        <tocitem target="report/userfigure.html" image="HelpIcon.FUNCTION">userfigure &#8212; Insert existing figure window</tocitem>
+        <tocitem target="report/vline.html" image="HelpIcon.FUNCTION">vline &#8212; Add vertical line to graph</tocitem>
+    </tocitem>
+    <tocitem target="qreportlang/Contents.html" image="HelpIcon.USER_GUIDE">Quick-report file language
+        <tocitem target="qreportlang/figure.html" image="HelpIcon.BLOCK">!++ &#8212; Create new figure window</tocitem>
+        <tocitem target="qreportlang/linegraph.html" image="HelpIcon.BLOCK">!-- &#8212; Create new line graph</tocitem>
+        <tocitem target="qreportlang/blank.html" image="HelpIcon.BLOCK">!.. &#8212; Skip the current subplot position leaving it blank</tocitem>
+        <tocitem target="qreportlang/bargraph.html" image="HelpIcon.BLOCK">!:: &#8212; Create new bar graph</tocitem>
+        <tocitem target="qreportlang/histgraph.html" image="HelpIcon.BLOCK">!^^ &#8212; Create new histogram</tocitem>
+        <tocitem target="qreportlang/errorbargraph.html" image="HelpIcon.BLOCK">!II &#8212; Create new errorbar graph</tocitem>
+        <tocitem target="qreportlang/stemgraph.html" image="HelpIcon.BLOCK">!ii &#8212; Create new stem graph</tocitem>
+        <tocitem target="qreportlang/subplot.html" image="HelpIcon.BLOCK">#MxN &#8212; Specify the subplot division of the figure windows</tocitem>
+        <tocitem target="qreportlang/linebreak.html" image="HelpIcon.BLOCK">// &#8212; Line break in graph title</tocitem>
+        <tocitem target="qreportlang/subtitle.html" image="HelpIcon.BLOCK">__ &#8212; Subtitle in graph title</tocitem>
+    </tocitem>
+    <tocitem target="qreport/Contents.html" image="HelpIcon.USER_GUIDE">Quick-report functions
+        <tocitem target="qreport/qplot.html" image="HelpIcon.FUNCTION">qplot &#8212; Quick report</tocitem>
+        <tocitem target="qreport/qstyle.html" image="HelpIcon.FUNCTION">qstyle &#8212; Apply styles to graphics object and its descandants</tocitem>
+    </tocitem>
+    <tocitem target="grfun/Contents.html" image="HelpIcon.USER_GUIDE">Graphics functions
+        <tocitem target="grfun/bottomlegend.html" image="HelpIcon.FUNCTION">bottomlegend &#8212; Horizontal graph legend displayed at the bottom of the figure window</tocitem>
+        <tocitem target="grfun/ftitle.html" image="HelpIcon.FUNCTION">ftitle &#8212; Add title to figure window</tocitem>
+        <tocitem target="grfun/highlight.html" image="HelpIcon.FUNCTION">highlight &#8212; Highlight specified range or date range in a graph</tocitem>
+        <tocitem target="grfun/maxfigure.html" image="HelpIcon.FUNCTION">maxfigure &#8212; Maximize figure window</tocitem>
+        <tocitem target="grfun/movetobkg.html" image="HelpIcon.FUNCTION">movetobkg &#8212; Move graphics objects to the background</tocitem>
+        <tocitem target="grfun/movetosubplot.html" image="HelpIcon.FUNCTION">movetosubplot &#8212; Move an existing axes object or legend to specified subplot position</tocitem>
+        <tocitem target="grfun/plotcircle.html" image="HelpIcon.FUNCTION">plotcircle &#8212; Draw a circle or disc</tocitem>
+        <tocitem target="grfun/plotmat.html" image="HelpIcon.FUNCTION">plotmat &#8212; Visualise 2D matrix</tocitem>
+        <tocitem target="grfun/plotneigh.html" image="HelpIcon.FUNCTION">plotneigh &#8212; Plot local behaviour of objective function after estimation</tocitem>
+        <tocitem target="grfun/plotpp.html" image="HelpIcon.FUNCTION">plotpp &#8212; Plot prior and/or posterior distributions and/or posterior mode</tocitem>
+        <tocitem target="grfun/printpdf.html" image="HelpIcon.FUNCTION">printpdf &#8212; Print figure window to PDF via EPS</tocitem>
+        <tocitem target="grfun/vline.html" image="HelpIcon.FUNCTION">vline &#8212; Add vertical line with text caption at the specified position</tocitem>
+        <tocitem target="grfun/zeroline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add zero line if Y-axis limits include zero</tocitem>
+        <tocitem target="grfun/hline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add vertical line with text caption at the specified position</tocitem>
+    </tocitem>
+</tocitem>
+<!-- END -->
+
+</tocitem>
+</toc>

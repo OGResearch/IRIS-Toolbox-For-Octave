@@ -1,0 +1,55 @@
+
+
+    \filetitle{scatter}{Scatter graph for tseries objects}{tseries/scatter}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[H,Range] = scatter([X,Y],...)
+[H,Range] = scatter(Range,[X,Y],...)
+[H,Range] = scatter(Ax,Range,[X,Y],...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X}, \texttt{Y} {[} tseries {]} - Two scalar tseries objects
+  plotted on the x-axis and the y-axis, respectively.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handles to the lines plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'dateformat='} {[} char \textbar{}
+  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+  on the x-axis.
+\item
+  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the x-axis; Inf means they will
+  be created automatically.
+\end{itemize}
+
+See help on built-in \texttt{plot} function for other options available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

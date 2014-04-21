@@ -1,0 +1,42 @@
+
+
+    \filetitle{addparam}{Add model parameters to a database (struct)}{model/addparam}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+D = addparam(M,D)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object whose parameters will be added
+  to database (struct) \texttt{D}.
+\item
+  \texttt{D} {[} struct {]} - Database to which the model parameters
+  will be added.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  `D {[} struct {]} - Database with the model parameters added.
+\end{itemize}
+
+\paragraph{Description}
+
+If there are database entries in \texttt{D} whose names conincide with
+the model parameters, they will be overwritten.
+
+\paragraph{Example}
+
+\begin{verbatim}
+D = struct();
+D = addparam(M,D);
+\end{verbatim}
+
+

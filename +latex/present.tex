@@ -1,0 +1,152 @@
+\begin{filecontents}{myheadings.sty}
+\newcommand{\ps@normalheadings}
+{
+    \renewcommand{\@oddhead}
+        {\footnotesize[{\ttfamily\mfilename}]\hfill\thepage}
+    \renewcommand{\@evenhead}{\@oddhead}
+    \renewcommand{\@oddfoot}{}
+    \renewcommand{\@evenfoot}{\@oddfoot}
+}
+\newcommand{\ps@firstpageheadings}
+{
+    \renewcommand{\@oddhead}
+    {
+        \footnotesize
+        \underline{\matlabversion}\hfill\underline{\irisversion}
+    }
+    \renewcommand{\@evenhead}{\@oddhead}
+    \renewcommand{\@oddfoot}{}
+    \renewcommand{\@evenfoot}{\@oddfoot}
+}
+\end{filecontents}
+
+\begin{filecontents}{myitemize.sty}
+\def\@listi{\leftmargin\leftmargini
+    \parsep 0.2\baselineskip
+    \topsep \parsep
+    \itemsep 0.2\baselineskip
+    \partopsep \z@}
+\def\@listii{\leftmargin\leftmarginii
+    \labelwidth\leftmarginii
+    \advance\labelwidth-\labelsep
+    \parsep 0.1\baselineskip
+    \topsep 0.1\baelinesep
+    \itemsep\parskip}            
+\end{filecontents}
+
+\documentclass[$papersize$,fleqn]{slides}
+            
+\usepackage[T1]{fontenc}
+\usepackage[$papersize$,landscape,scale=$textscale$,pdftex]{geometry}
+\usepackage{amsmath,color,graphicx,listings}
+\usepackage{myheadings,myitemize}
+
+$packages$
+
+\definecolor{outputcodecolor}{rgb}{0,0,0.68}
+\definecolor{inputcodebgcolor}{rgb}{0.8,0.8,0.8}
+\definecolor{outputcodebgcolor}{rgb}{0.94,0.94,1}
+
+\newcommand{\codesizeintitle}{\Large}
+\newcommand{\codesizeintext}{\normalsize}
+\newcommand{\codesize}{}
+
+\newenvironment{myabstract}
+{\pagebreak\begin{cell}{Summary}}
+{\end{cell}\pagebreak}
+
+\lstdefinestyle{inputcode}{
+   breaklines=false,
+   language={},
+   backgroundcolor=\color{inputcodebgcolor},
+   columns=flexible,
+   keepspaces=true,
+   frame=single,rulecolor=\color{inputcodebgcolor},framerule=0.1em,
+   numbers=left,
+   numberstyle={\ttfamily},
+   basicstyle={\color{black}\ttfamily\codesize},
+   escapechar=",
+   linewidth=500em,
+}
+
+\lstdefinestyle{outputcode}{
+   breaklines=false,
+   language={},
+   backgroundcolor=\color{outputcodebgcolor},
+   columns=flexible,
+   keepspaces=true,
+   frame=single,rulecolor=\color{outputcodebgcolor},framerule=0.1em,
+   numbers=none,columns=flexible,
+   basicstyle={\color{outputcodecolor}\ttfamily\codesize},
+   escapechar={},
+   linewidth=500em, %%%
+}
+
+\newcommand{\filetitle}{}
+\newcommand{\mfilename}{}
+\newcommand{\matlabversion}{$matlabversion$}
+\newcommand{\irisversion}{$irisversion$}
+\newcommand{\mfilenametitle}[1]{\smallskip\par {\normalsize[{\ttfamily #1}]}}
+
+%%%% Cell environment %%%%%
+\newenvironment{cell}[1]{
+    {\centering\bfseries\color{blue}{#1}\bigskip\par}}
+{}
+
+%%%% Split cell environment %%%%%
+\newenvironment{splitcell}{}{}
+
+%%%%% Intro text environment %%%%%
+\newenvironment{introtext}{}{\pagebreak}
+
+%%%%% Input code environment %%%%%
+\newenvironment{inputcode}
+{\medskip\lstset{style=inputcode}}
+{\pagebreak}
+
+%%%%% Ouput code environment %%%%%
+\newenvironment{outputcode}
+{\medskip\lstset{style=outputcode}}
+{\pagebreak}
+
+%%%%% Bookmarks %%%%%
+\newcommand{\circled}[1]
+    {{\large\textcircled{\footnotesize\sffamily\raisebox{0.2pt}{#1}}}}
+\newcommand{\bookmark}[1]
+    {\textcolor{red}{\circled{#1}}}
+
+%%%%% Title page %%%%%
+\newcommand{\byauthor}{\textit{by} \\[3pt]}
+\newcommand{\atevent}{\textit{at} \\[3pt]}
+\renewcommand{\and}{\\[2pt] }
+    
+%%%%% Introduction %%%%%
+\newcommand{\introduction}[2]
+{
+    \pagestyle{firstpageheadings}
+    \title{\sffamily#1#2}
+    \author{$author$}
+    \date{\medskip $date$}
+    \renewcommand{\codesize}{\codesizeintitle}
+    \maketitle    
+    \renewcommand{\codesize}{\codesizeintext}
+    \pagebreak
+    \pagestyle{normalheadings}
+}
+
+\renewcommand{\today}{\number\day\space\ifcase\month\or
+    January\or February\or March\or April\or May\or June\or
+    July\or August\or September\or October\or November\or December\fi
+    \space\number\year}
+
+\linespread{$linespread$}
+
+$preamble$
+
+\begin{document}
+
+\renewcommand{\codesize}{\codesizeintext}
+
+$body$
+
+\end{document}
