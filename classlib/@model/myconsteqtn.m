@@ -13,19 +13,28 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % * all non-log variables with 0;
 % * all log variables with 1.
 replaceFunc = @doReplace; %#ok<NASGU>
-Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)', ...
-   '${replaceFunc($0,$1)}');
+Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${replaceFunc($0,$1)}');
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
 Eqtn = sydney(Eqtn,{});
 Eqtn = reduce(Eqtn);
 Eqtn = char(Eqtn);
 Eqtn = sydney.mysymb2eqtn(Eqtn);
+Eqtn = strtrim(Eqtn);
 
-x = sscanf(Eqtn,'%g');
-if is.numericscalar(x) && isfinite(x)
+% If the constant is a plain number, store it as a numeric; we need to
+% make sure that the entire string has been used up, otherwise an
+% expression like 4*x(...) will be incorrectly stored as 4.
+[x,count] = sscanf(Eqtn,'%g');
+if count == length(Eqtn) && is.numericscalar(x) && isfinite(x)
     Eqtn = x;
 end
+
+
+% Nested equtions...
+
+
+%**************************************************************************
 
 
     function c = doReplace(c0,c1)
