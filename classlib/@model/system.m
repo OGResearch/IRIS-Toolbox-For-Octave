@@ -36,6 +36,9 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 % equations need to be re-differentiated based on parameter changes from
 % the last time the system matrices were calculated.
 %
+% * `'sparse='` [ `true` | *`false`* ] - Return sparse matrices; can be set
+% to `true` in models with one parameterization only.
+%
 % Description
 % ============
 %
@@ -69,16 +72,28 @@ end
 nAlt = size(This.Assign,3);
 
 % System matrices.
-for iAlt = 1 : nAlt
-    [Syst,~,Derv] = mysystem(This,iAlt,opt);
-    F(:,:,iAlt) = full(Syst.A{1}); %#ok<*AGROW>
-    G(:,:,iAlt) = full(Syst.B{1});
-    H(:,1,iAlt) = full(Syst.K{1});
-    J(:,:,iAlt) = full(Syst.E{1});
-    A(:,:,iAlt) = full(Syst.A{2});
-    B(:,:,iAlt) = full(Syst.B{2});
-    C(:,1,iAlt) = full(Syst.K{2});
-    D(:,:,iAlt) = full(Syst.E{2});
+if nAlt == 1 && opt.sparse
+    [Syst,~,Derv] = mysystem(This,1,opt);
+    F = Syst.A{1}; %#ok<*AGROW>
+    G = Syst.B{1};
+    H = Syst.K{1};
+    J = Syst.E{1};
+    A = Syst.A{2};
+    B = Syst.B{2};
+    C = Syst.K{2};
+    D = Syst.E{2};
+else
+    for iAlt = 1 : nAlt
+        [Syst,~,Derv] = mysystem(This,iAlt,opt);
+        F(:,:,iAlt) = func(Syst.A{1}); %#ok<*AGROW>
+        G(:,:,iAlt) = func(Syst.B{1});
+        H(:,1,iAlt) = func(Syst.K{1});
+        J(:,:,iAlt) = func(Syst.E{1});
+        A(:,:,iAlt) = func(Syst.A{2});
+        B(:,:,iAlt) = func(Syst.B{2});
+        C(:,1,iAlt) = func(Syst.K{2});
+        D(:,:,iAlt) = func(Syst.E{2});
+    end
 end
 
 % Lists of measurement variables, backward-looking transition variables, and
