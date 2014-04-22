@@ -143,14 +143,14 @@ code.LaTeX {
 <li><p><code>'noSolution='</code> [ <em><code>'error'</code></em> | <code>'penalty'</code> ] - Specifies what happens if solution or steady state fails to solve in an iteration: <code>'error='</code> stops the execution with an error message, <code>'penalty='</code> returns an extremely low value of the likelihood.</p></li>
 <li><p><code>'optimSet='</code> [ cell | <em>empty</em> ] - Cell array used to create the Optimization Toolbox options structure; works only with the option <code>'optimiser='</code> <code>'default'</code>.</p></li>
 <li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links in each iteration.</p></li>
-<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> ] - Re-compute solution in each iteration.</p></li>
+<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> | cellstr ] - Re-compute solution in each iteration; you can specify a cell array with options for the <code>solve</code> function.</p></li>
 <li><p><code>'optimiser='</code> [ <em><code>'default'</code></em> | <code>'pso'</code> | cell | function_handle ] - Minimisation procedure.</p>
 <ul>
 <li><p><code>'default'</code>: The Optimization Toolbox function <code>fminunc</code> or <code>fmincon</code> will be called depending on the presence or absence of lower and/or upper bounds.</p></li>
 <li><p><code>'pso'</code>: The Particle Swarm Optimizer will be called; use the option <code>'pso='</code> to specify further options to control the optimizer (see Options for Particle Swarm Optimizer below).</p></li>
 <li><p>function_handle or cell: Enter a function handle to your own optimisation procedure, or a cell array with a function handle and additional input arguments (see below).</p></li>
 </ul></li>
-<li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell | function_handle ] - Re-compute steady state in each iteration. You can specify a cell array with options for the <code>sstate</code> function, or a function handle whose behaviour is described below.</p></li>
+<li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell | function_handle ] - Re-compute steady state in each iteration; you can specify a cell array with options for the <code>sstate</code> function, or a function handle whose behaviour is described below.</p></li>
 <li><p><code>'tolFun='</code> [ numeric | <em><code>1e-6</code></em> ] - Termination tolerance on the objective function.</p></li>
 <li><p><code>'tolX='</code> [ numeric | <em><code>1e-6</code></em> ] - Termination tolerance on the estimated parameters.</p></li>
 </ul>

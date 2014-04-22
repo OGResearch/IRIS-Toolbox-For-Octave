@@ -552,7 +552,7 @@
 \contentsline {paragraph}{Input arguments}{131}{section*.649}
 \contentsline {paragraph}{Output arguments}{131}{section*.650}
 \contentsline {paragraph}{Options}{131}{section*.651}
-\contentsline {paragraph}{Description}{131}{section*.652}
+\contentsline {paragraph}{Description}{132}{section*.652}
 \contentsline {paragraph}{Example}{132}{section*.653}
 \contentsline {paragraph}{Syntax}{132}{section*.655}
 \contentsline {paragraph}{Input arguments}{132}{section*.656}
@@ -608,7 +608,7 @@
 \contentsline {paragraph}{Options}{142}{section*.714}
 \contentsline {paragraph}{Description}{142}{section*.715}
 \contentsline {paragraph}{Example}{142}{section*.716}
-\contentsline {paragraph}{Syntax for getting user data}{143}{section*.718}
+\contentsline {paragraph}{Syntax for getting user data}{142}{section*.718}
 \contentsline {paragraph}{Syntax for assigning user data}{143}{section*.719}
 \contentsline {paragraph}{Input arguments}{143}{section*.720}
 \contentsline {paragraph}{Output arguments}{143}{section*.721}
@@ -2253,47 +2253,47 @@
 \contentsline {paragraph}{Description}{437}{section*.2623}
 \contentsline {paragraph}{Example}{437}{section*.2624}
 \contentsline {paragraph}{Syntax}{437}{section*.2626}
-\contentsline {paragraph}{Input arguments}{437}{section*.2627}
-\contentsline {paragraph}{Description}{438}{section*.2628}
-\contentsline {paragraph}{Example}{438}{section*.2629}
-\contentsline {paragraph}{Syntax}{438}{section*.2631}
-\contentsline {paragraph}{Input arguments}{438}{section*.2632}
-\contentsline {paragraph}{Output arguments}{438}{section*.2633}
-\contentsline {paragraph}{Description}{438}{section*.2634}
-\contentsline {paragraph}{Example}{438}{section*.2635}
-\contentsline {paragraph}{Syntax}{439}{section*.2637}
-\contentsline {paragraph}{Input arguments}{439}{section*.2638}
-\contentsline {paragraph}{Output arguments}{439}{section*.2639}
-\contentsline {paragraph}{Options}{439}{section*.2640}
+\contentsline {paragraph}{Input arguments}{438}{section*.2627}
+\contentsline {paragraph}{Output arguments}{438}{section*.2628}
+\contentsline {paragraph}{Options}{438}{section*.2629}
+\contentsline {paragraph}{Description}{438}{section*.2630}
+\contentsline {paragraph}{Example}{438}{section*.2631}
+\contentsline {paragraph}{Syntax}{438}{section*.2633}
+\contentsline {paragraph}{Input arguments}{438}{section*.2634}
+\contentsline {paragraph}{Description}{439}{section*.2635}
+\contentsline {paragraph}{Example}{439}{section*.2636}
+\contentsline {paragraph}{Syntax}{439}{section*.2638}
+\contentsline {paragraph}{Input arguments}{439}{section*.2639}
+\contentsline {paragraph}{Output arguments}{439}{section*.2640}
 \contentsline {paragraph}{Description}{439}{section*.2641}
 \contentsline {paragraph}{Example}{439}{section*.2642}
-\contentsline {paragraph}{Syntax}{439}{section*.2644}
-\contentsline {paragraph}{Short-cut syntax}{439}{section*.2645}
-\contentsline {paragraph}{Input arguments}{440}{section*.2646}
-\contentsline {paragraph}{Output arguments}{440}{section*.2647}
-\contentsline {paragraph}{Options}{440}{section*.2648}
-\contentsline {paragraph}{Description}{440}{section*.2649}
-\contentsline {paragraph}{Example}{440}{section*.2650}
-\contentsline {paragraph}{Syntax}{441}{section*.2652}
+\contentsline {paragraph}{Syntax}{440}{section*.2644}
+\contentsline {paragraph}{Input arguments}{440}{section*.2645}
+\contentsline {paragraph}{Output arguments}{440}{section*.2646}
+\contentsline {paragraph}{Options}{440}{section*.2647}
+\contentsline {paragraph}{Description}{440}{section*.2648}
+\contentsline {paragraph}{Example}{440}{section*.2649}
+\contentsline {paragraph}{Syntax}{440}{section*.2651}
+\contentsline {paragraph}{Short-cut syntax}{440}{section*.2652}
 \contentsline {paragraph}{Input arguments}{441}{section*.2653}
 \contentsline {paragraph}{Output arguments}{441}{section*.2654}
 \contentsline {paragraph}{Options}{441}{section*.2655}
 \contentsline {paragraph}{Description}{441}{section*.2656}
-\contentsline {paragraph}{Example}{442}{section*.2657}
+\contentsline {paragraph}{Example}{441}{section*.2657}
 \contentsline {paragraph}{Syntax}{442}{section*.2659}
 \contentsline {paragraph}{Input arguments}{442}{section*.2660}
 \contentsline {paragraph}{Output arguments}{442}{section*.2661}
-\contentsline {paragraph}{Options}{443}{section*.2662}
-\contentsline {paragraph}{Description}{443}{section*.2663}
-\contentsline {paragraph}{Example}{444}{section*.2664}
-\contentsline {paragraph}{Syntax}{444}{section*.2666}
-\contentsline {paragraph}{Input arguments}{444}{section*.2667}
-\contentsline {paragraph}{Description}{444}{section*.2668}
-\contentsline {paragraph}{Example}{444}{section*.2669}
-\contentsline {paragraph}{Syntax}{445}{section*.2671}
-\contentsline {paragraph}{Input arguments}{445}{section*.2672}
-\contentsline {paragraph}{Output arguments}{445}{section*.2673}
-\contentsline {paragraph}{Options}{445}{section*.2674}
+\contentsline {paragraph}{Options}{442}{section*.2662}
+\contentsline {paragraph}{Description}{442}{section*.2663}
+\contentsline {paragraph}{Example}{443}{section*.2664}
+\contentsline {paragraph}{Syntax}{443}{section*.2666}
+\contentsline {paragraph}{Input arguments}{443}{section*.2667}
+\contentsline {paragraph}{Output arguments}{443}{section*.2668}
+\contentsline {paragraph}{Options}{444}{section*.2669}
+\contentsline {paragraph}{Description}{444}{section*.2670}
+\contentsline {paragraph}{Example}{445}{section*.2671}
+\contentsline {paragraph}{Syntax}{445}{section*.2673}
+\contentsline {paragraph}{Input arguments}{445}{section*.2674}
 \contentsline {paragraph}{Description}{445}{section*.2675}
 \contentsline {paragraph}{Example}{445}{section*.2676}
 \contentsline {paragraph}{Syntax}{446}{section*.2678}
@@ -2302,8 +2302,8 @@
 \contentsline {paragraph}{Options}{446}{section*.2681}
 \contentsline {paragraph}{Description}{446}{section*.2682}
 \contentsline {paragraph}{Example}{446}{section*.2683}
-\contentsline {paragraph}{Syntax}{446}{section*.2685}
-\contentsline {paragraph}{Input arguments}{446}{section*.2686}
+\contentsline {paragraph}{Syntax}{447}{section*.2685}
+\contentsline {paragraph}{Input arguments}{447}{section*.2686}
 \contentsline {paragraph}{Output arguments}{447}{section*.2687}
 \contentsline {paragraph}{Options}{447}{section*.2688}
 \contentsline {paragraph}{Description}{447}{section*.2689}

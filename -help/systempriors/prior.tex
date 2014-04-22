@@ -116,7 +116,7 @@ Add a prior on the sum of parameters \texttt{alpha1} and
 upper bounds.
 
 \begin{verbatim}
-s = prior('s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
+s = prior(s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
     'lowerBound=',0,'upperBound=',1);
 \end{verbatim}
 

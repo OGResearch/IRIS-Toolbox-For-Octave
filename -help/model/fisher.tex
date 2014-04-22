@@ -69,7 +69,9 @@
   {]} - Refresh dynamic links in each differentiation step.
 \item
   \texttt{'solve='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - Re-solve model in each differentiation step.
+  \textbar{} cellstr {]} - Re-compute solution in each differentiation
+  step; you can specify a cell array with options for the \texttt{solve}
+  function.
 \item
   \texttt{'sstate='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   \textbar{} cell {]} - Re-compute steady state in each differentiation

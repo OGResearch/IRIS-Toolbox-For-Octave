@@ -118,7 +118,8 @@ names.
   {]} - Refresh dynamic links in each iteration.
 \item
   \texttt{'solve='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - Re-compute solution in each iteration.
+  \textbar{} cellstr {]} - Re-compute solution in each iteration; you
+  can specify a cell array with options for the \texttt{solve} function.
 \item
   \texttt{'optimiser='} {[} \emph{\texttt{'default'}} \textbar{}
   \texttt{'pso'} \textbar{} cell \textbar{} function\_handle {]} -
@@ -141,7 +142,7 @@ names.
 \item
   \texttt{'sstate='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   \textbar{} cell \textbar{} function\_handle {]} - Re-compute steady
-  state in each iteration. You can specify a cell array with options for
+  state in each iteration; you can specify a cell array with options for
   the \texttt{sstate} function, or a function handle whose behaviour is
   described below.
 \item

@@ -124,7 +124,7 @@
         <tocitem target="model/stdscale.html" image="HelpIcon.FUNCTION">stdscale &#8212; Re-scale all std deviations by the same factor</tocitem>
         <tocitem target="model/subsasgn.html" image="HelpIcon.FUNCTION">subsasgn &#8212; Subscripted assignment for model and systemfit objects</tocitem>
         <tocitem target="model/subsref.html" image="HelpIcon.FUNCTION">subsref &#8212; Subscripted reference for model and systemfit objects</tocitem>
-        <tocitem target="model/system.html" image="HelpIcon.FUNCTION">system &#8212; System matrices before model is solved</tocitem>
+        <tocitem target="model/system.html" image="HelpIcon.FUNCTION">system &#8212; System matrices for unsolved model</tocitem>
         <tocitem target="model/userdata.html" image="HelpIcon.FUNCTION">userdata &#8212; Get or set user data in an IRIS object</tocitem>
         <tocitem target="model/VAR.html" image="HelpIcon.FUNCTION">VAR &#8212; Population VAR for selected model variables</tocitem>
         <tocitem target="model/vma.html" image="HelpIcon.FUNCTION">vma &#8212; Vector moving average representation of the model</tocitem>
@@ -454,6 +454,7 @@
         <tocitem target="grfun/bottomlegend.html" image="HelpIcon.FUNCTION">bottomlegend &#8212; Horizontal graph legend displayed at the bottom of the figure window</tocitem>
         <tocitem target="grfun/ftitle.html" image="HelpIcon.FUNCTION">ftitle &#8212; Add title to figure window</tocitem>
         <tocitem target="grfun/highlight.html" image="HelpIcon.FUNCTION">highlight &#8212; Highlight specified range or date range in a graph</tocitem>
+        <tocitem target="grfun/hline.html" image="HelpIcon.FUNCTION">hline &#8212; Add horizontal line with text caption at the specified position</tocitem>
         <tocitem target="grfun/maxfigure.html" image="HelpIcon.FUNCTION">maxfigure &#8212; Maximize figure window</tocitem>
         <tocitem target="grfun/movetobkg.html" image="HelpIcon.FUNCTION">movetobkg &#8212; Move graphics objects to the background</tocitem>
         <tocitem target="grfun/movetosubplot.html" image="HelpIcon.FUNCTION">movetosubplot &#8212; Move an existing axes object or legend to specified subplot position</tocitem>
@@ -464,7 +465,6 @@
         <tocitem target="grfun/printpdf.html" image="HelpIcon.FUNCTION">printpdf &#8212; Print figure window to PDF via EPS</tocitem>
         <tocitem target="grfun/vline.html" image="HelpIcon.FUNCTION">vline &#8212; Add vertical line with text caption at the specified position</tocitem>
         <tocitem target="grfun/zeroline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add zero line if Y-axis limits include zero</tocitem>
-        <tocitem target="grfun/hline.html" image="HelpIcon.FUNCTION">zeroline &#8212; Add vertical line with text caption at the specified position</tocitem>
     </tocitem>
 </tocitem>
 <!-- END -->

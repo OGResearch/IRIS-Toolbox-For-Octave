@@ -129,7 +129,7 @@ code.LaTeX {
 <ul>
 <li><p><code>'chkSstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - Check steady state in each iteration; works only in non-linear models.</p></li>
 <li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links for each change in a parameter.</p></li>
-<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> ] - Re-compute solution for each change in a parameter.</p></li>
+<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> | cellstr ] - Re-compute solution for each parameter change; you can specify a cell array with options for the <code>solve</code> function.</p></li>
 <li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - Re-compute steady state in each differentiation step; if the model is non-linear, you can pass in a cell array with options used in the <code>sstate</code> function.</p></li>
 </ul>
 <p>See help on <a href="../model/filter.html"><code>model/filter</code></a> for other options available.</p>

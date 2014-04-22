@@ -1,5 +1,5 @@
 function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
-% system  System matrices before model is solved.
+% system  System matrices for unsolved model.
 %
 % Syntax
 % =======

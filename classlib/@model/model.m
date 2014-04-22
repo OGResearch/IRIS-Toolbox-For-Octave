@@ -36,7 +36,7 @@ classdef model < modelobj & estimateobj
     % * [`length`](model/length) - Number of alternative parameterisations.
     % * [`omega`](model/omega) - Get or set the covariance matrix of shocks.
     % * [`sspace`](model/sspace) - State-space matrices describing the model solution.
-    % * [`system`](model/system) - System matrices before model is solved.
+    % * [`system`](model/system) - System matrices for unsolved model.
     % * [`userdata`](model/userdata) - Get or set user data in an IRIS object.
     %
     % Referencing model objects

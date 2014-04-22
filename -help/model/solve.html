@@ -122,6 +122,7 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'expand='</code> [ numeric | <em><code>0</code></em> | <code>NaN</code> ] - Number of periods ahead up to which the model solution will be expanded; if <code>NaN</code> the matrices needed to support solution expansion are not calculated and stored at all and the model cannot be used later in simulations or forecasts with anticipated shocks or plans.</p></li>
+<li><p><code>'eqtn='</code> [ <em><code>'all'</code></em> | <code>'measurement'</code> | <code>'transition'</code> ] - Update existing solution in the measurement block, or the transition block, or both.</p></li>
 <li><p><code>'error='</code> [ <code>true</code> | <em><code>false</code></em> ] - Throw an error if no unique stable solution exists; if <code>false</code>, a warning message only will be displayed.</p></li>
 <li><p><code>'linear='</code> [ <em><code>'auto'</code></em> | <code>true</code> | <code>false</code> ] - Solve the model using a linear approach, i.e. differentiating around zero and not the currently assigned steady state.</p></li>
 <li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
