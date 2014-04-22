@@ -154,7 +154,6 @@ classdef VAR < varobj
         varargout = myfitted(varargin)
         varargout = myglsqweights(varargin)
         varargout = myisvalidinpdata(varargin)
-        varargout = mynalt(varargin)
         varargout = myny(varargin)
         varargout = myprealloc(varargin)
         varargout = myrngcmp(varargin);

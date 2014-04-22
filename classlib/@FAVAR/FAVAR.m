@@ -64,7 +64,6 @@ classdef FAVAR < varobj
     end
     
     methods (Access=protected,Hidden)
-        varargout = mynalt(varargin)
         varargout = myny(varargin)
     end
     

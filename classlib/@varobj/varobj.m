@@ -48,7 +48,6 @@ classdef varobj < userdataobj & getsetobj
         varargout = mycompatible(varargin)
         varargout = myenames(varargin)
         varargout = mygroupnames(varargin)
-        varargout = mynalt(varargin)
         varargout = myny(varargin)       
         varargout = myprealloc(varargin)
         varargout = mysubsalt(varargin)
