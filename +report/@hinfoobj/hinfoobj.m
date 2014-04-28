@@ -15,7 +15,10 @@ classdef hinfoobj < handle
         tempDir = ''; % Name of temporary directory where all files are saved.
         tempFile = cell(1,0); % Master file title.
         figureHandle = zeros(1,0); % List of figure handles kept open after publishing.
-        longTable = false; % Use of longtable package.
+        package = struct( ...
+            'longtable',false, ...
+            'colortbl',false ...
+            ); % Extra packages required only when special features are used.
         footnote = cell(1,0); % Stack of unpublished footnotes.
         footnoteCount = 0; % Footnote running count.
     end

@@ -16,22 +16,26 @@ classdef tableobj < report.tabularobj
                 'datejustify',[], ...
                 @(x) isempty(x) || (ischar(x) && any(strncmpi(x,{'c','l','r'},1))), ...
                 true, ...
+                'colfootnote,columnfootnote',{},@(x) isempty(x) ...
+                || (iscell(x) && all(cellfun(@is.numericscalar,x(1:2:end))) && iscellstr(x(2:2:end))), ...
+                true, ...
                 'dateformat',irisget('dateformat'), ...
                 @(x) ischar(x) || iscellstr(x), ...
                 true, ...
                 'headlinejust','c', ...
-                @(x) ischar(x) && any(strncmpi(x,{'c','l','r'},1)), ...
+                @(x) ischar(x) && any(strncmp(x,{'c','l','r'},1)), ...
                 true, ...
+                'highlight',[],@isnumeric,true, ...
                 'range',[],@isnumeric,true, ...
                 'separator','\medskip\par',@ischar,true, ...
                 'typeface','',@ischar,false, ...
                 'vline',[],@isnumeric,true, ...
                 }];
             This.nlead = 3;
-        end % table().
+        end % table()
+        
         
         function This = setoptions(This,varargin)
-            
             % Call superclass setoptions to get all options assigned.
             This = setoptions@report.tabularobj(This,varargin{:});
             if isempty(This.options.colstruct) ...
@@ -52,14 +56,32 @@ classdef tableobj < report.tabularobj
                 end
             end
             
+            if isempty(This.options.colstruct)
+                tmpRange = This.options.range;
+            else
+                tmpRange = 1 : length(This.options.colstruct);
+            end
+            tmpRange = [tmpRange(1)-1,tmpRange];
+            
             % Find positions of vertical lines.
-            tempRange = [This.options.range(1)-1,This.options.range];
-            This.vline = [];
-            for i = This.options.vline(:)'
-                pos = datcmp(i,tempRange);
-                if any(pos)
-                    This.vline(end+1) = find(pos) - 1;
+            This.vline = zeros(1,0);
+            for i = This.options.vline(:).'
+                inx = datcmp(i,tmpRange);
+                if any(inx)
+                    This.vline(1,end+1) = find(inx) - 1;
                 end
+            end
+            
+            % Find positions of highlighted columns.
+            This.highlight = zeros(1,0);
+            for i = This.options.highlight(:).'
+                inx = datcmp(i,tmpRange);
+                if any(inx)
+                    This.highlight(1,end+1) = find(inx) - 1;
+                end
+            end
+            if ~isempty(This.highlight)
+                This.hInfo.package.colortbl = true;
             end
             
             % Add vertical lines wherever the date frequency changes.
@@ -82,16 +104,18 @@ classdef tableobj < report.tabularobj
             elseif iscell(This.options.dateformat) ...
                     && length(This.options.dateformat) == 1
                 This.options.dateformat = [{NaN},This.options.dateformat];
-            end
-            
-        end % setoptions().
+            end    
+        end % setoptions()
+        
         
         varargout = headline(varargin)
         
     end
 
+    
     methods (Access=protected,Hidden)
         varargout = speclatexcode(varargin)
     end
+    
     
 end

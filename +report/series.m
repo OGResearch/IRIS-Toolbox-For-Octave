@@ -49,9 +49,10 @@
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the series text.
 %
-% * `'highlight='` [ numeric | *empty* ] - (Inheritable from parent objects)
-% Periods that will get highlighted in tables; to highlight date ranges in
-% graphs, use the `'highlight='` option in the parent graph object.
+% * `'highlight='` [ numeric | *empty* ] - (Not inheritable from parent
+% objects) Periods that will get highlighted in tables; to highlight date
+% ranges in graphs, use the `'highlight='` option in the parent graph
+% object.
 %
 % * `'inf='` [ char | *`'\ensuremath{\infty}'`* ] - (Inheritable from parent objects)
 % LaTeX string that will be used to typeset Inf entries.

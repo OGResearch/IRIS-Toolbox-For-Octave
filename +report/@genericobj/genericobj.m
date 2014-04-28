@@ -25,6 +25,7 @@ classdef genericobj < handle
     
     methods
         
+        
         function This = genericobj(varargin)
             This.default = [This.default,{ ...
                 'captionformat',[],@(x) isempty(x) ...
@@ -47,10 +48,12 @@ classdef genericobj < handle
             if ~isempty(varargin)
                 This.caption = varargin{1};
             end
-        end
+        end % genericobj()
+        
         
         function [This,varargin] = specargin(This,varargin)
-        end
+        end % specargin()
+        
         
         function This = setoptions(This,ParentOpt,varargin)
             % The function `setoptions()` is called from within `add()`.
@@ -122,7 +125,8 @@ classdef genericobj < handle
                 This.options.captiontypeface = This.options.captionformat;
                 This.options.captionformat = [];
             end
-        end
+        end % setoptions()
+        
         
         varargout = copy(varargin)
         varargout = disp(varargin)
@@ -142,6 +146,7 @@ classdef genericobj < handle
     
     methods
         
+        
         function Title = get.title(This)
             if ischar(This.caption)
                 Title = This.caption;
@@ -150,7 +155,8 @@ classdef genericobj < handle
             else
                 Title = '';
             end
-        end
+        end % get.title()
+        
         
         function Subtitle = get.subtitle(This)
             if iscellstr(This.caption) && length(This.caption) > 1
@@ -158,11 +164,13 @@ classdef genericobj < handle
             else
                 Subtitle = '';
             end
-        end
+        end % get.subtitle()
+        
         
     end
     
     methods (Access=protected,Hidden)
+        
         
         function C = mytitletypeface(This)
             if iscell(This.options.captiontypeface)
@@ -173,7 +181,8 @@ classdef genericobj < handle
             if isinf(C)
                 C = '\large\bfseries';
             end
-        end
+        end % mytitletypeface()
+        
         
         function C = mysubtitletypeface(This)
             if iscell(This.options.captiontypeface)
@@ -184,7 +193,8 @@ classdef genericobj < handle
             if isinf(C)
                 C = '';
             end
-        end
+        end % mysubtitletypeface()
+        
         
         % When adding a new object, we find the right place by checking two things:
         % first, we match the child's childof list, and second, we ask the parent
@@ -192,10 +202,12 @@ classdef genericobj < handle
         % align objects with no more room.
         function Flag = accepts(This) %#ok<MANU>
             Flag = true;
-        end
+        end % accepts()
                 
+        
         % User-supplied typeface
         %------------------------
+        
         
         function C = begintypeface(This)
             C = '';
@@ -204,7 +216,8 @@ classdef genericobj < handle
                 br = sprintf('\n');
                 C = [C,'{',br,This.options.typeface,br];
             end
-        end
+        end % begintypeface()
+        
         
         function C = endtypeface(This)
             C = '';
@@ -213,10 +226,12 @@ classdef genericobj < handle
                 br = sprintf('\n');
                 C = [C,'}',br];
             end
-        end
+        end % endtypeface()
+        
         
         % hInfo methods
         %---------------
+        
         
         function addtempfile(This,NewTempFile)
             if ischar(NewTempFile)
@@ -225,27 +240,38 @@ classdef genericobj < handle
             tempFile = This.hInfo.tempFile;
             tempFile = [tempFile,NewTempFile];
             This.hInfo.tempFile = tempFile;
-        end
+        end % addtempfile()
+        
         
         function addfigurehandle(This,NewFigureHandle)
             figureHandle = This.hInfo.figureHandle;
             figureHandle = [figureHandle,NewFigureHandle];
             This.hInfo.figureHandle = figureHandle;
-        end
+        end % addfigurehandle()
 
-        function C = footnotemark(This)
-            if isempty(This.options.footnote)
+        
+        function C = footnotemark(This,Text)
+            try
+                Text; %#ok<VUNUS>
+            catch
+                try
+                    Text = This.options.footnote;
+                catch
+                    Text = '';
+                end
+            end
+            if isempty(Text)
                 C = '';
                 return
             end
             br = sprintf('\n');
-            footnote = This.hInfo.footnote;
             number = sprintf('%g',footnotenumber(This));
-            text = interpret(This,This.options.footnote);
+            Text = interpret(This,Text);
             C = ['\footnotemark[',number,']'];
-            footnote{end+1} = [br,'\footnotetext[',number,']{',text,'}'];
-            This.hInfo.footnote = footnote;
-        end
+            This.hInfo.footnote{end+1} = [br, ...
+                '\footnotetext[',number,']{',Text,'}'];
+        end % footnotemark()
+        
         
         function C = footnotetext(This)
             footnote = This.hInfo.footnote;
@@ -256,18 +282,21 @@ classdef genericobj < handle
             C = [footnote{:}];
             footnote = {};
             This.hInfo.footnote = footnote;
-        end
+        end % footnotetext()
+        
         
         function N = footnotenumber(This)
             N = This.hInfo.footnoteCount;
             N = N + 1;
             This.hInfo.footnoteCount = N;
-        end
+        end % footnotenumber()
+        
         
     end
     
     
     methods (Static,Hidden)
+        
         
         function C = makebox(Text,Format,ColW,Pos,Color)
             C = ['{',Text,'}'];
@@ -281,7 +310,8 @@ classdef genericobj < handle
             if ~isempty(Color)
                 C = ['\colorbox{',Color,'}{',C,'}'];
             end
-        end
+        end % makebox()
+        
         
         function C = sprintf(Value,Format,Opt)
             if ~isempty(Opt.purezero) && Value == 0
@@ -302,7 +332,8 @@ classdef genericobj < handle
                 d = Opt.printedzero;
             end
             C = ['\ensuremath{',d,'}'];
-        end
+        end % sprintf()
+        
         
         function C = turnbox(C,Angle)
             try
@@ -317,7 +348,8 @@ classdef genericobj < handle
             C = ['\settowidth{\tableColNameHeight}{',C,' }',...
                 '\rule{0pt}{\tableColNameHeight}',...
                 '\turnbox{',Angle,'}{',C,'}'];
-        end
+        end % turnbox()
+        
         
         function Valid = validatecolstruct(ColStruct)
             Valid = true;
@@ -340,7 +372,7 @@ classdef genericobj < handle
                     Valid = false;
                 end
             end
-        end
+        end % validatecolstruct()
         
     end
     

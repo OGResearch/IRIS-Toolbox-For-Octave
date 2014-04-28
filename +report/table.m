@@ -33,15 +33,22 @@
 % Width, or a vector of widhts, of the table columns in `em `units; `NaN`
 % means the width of the column will adjust automatically.
 %
-% * `'headlineJustify='` [ *`'c'`* | `'l'` | `'r'` ] - Horizontal alignment
-% of the headline entries (individual dates or user-defined text): Centre,
-% Left, Right.
+% * `'colFootnote='` [ cell | *empty* ] - Footnotes for individual dates in
+% the headings of the columns, of column names in user-defined tables; the
+% option must be a cell array with date-footnote pairs.
+%
+% * `'headlineJust='` [ *`'c'`* | `'l'` | `'r'` ] - Horizontal
+% justification of the headline entries (individual dates or user-defined
+% text): centre, left, right.
 %
 % * `'dateFormat='` [ char | cellstr | *`irisget('dateformat')`* ] -
 % (Inheritable from parent objects) Format string for the date row.
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the table title; only
 % shows if the title is non-empty.
+%
+% * `'highlight='` [ numeric | *empty* ] - Dates for which the entire
+% columns will be highlighted.
 %
 % * `'long='` [ true | *`false`* ] - (Inheritable from parent objects) If
 % true, the table may stretch over more than one page.

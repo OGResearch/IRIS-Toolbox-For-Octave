@@ -16,17 +16,16 @@ if isempty(Data)
     return
 end
 nPer = numel(Data);
-highlightInx = false(1,nPer);
+ixHighlight = false(1,nPer);
 for i = 1 : numel(This.options.highlight)
-    highlightInx = highlightInx | ...
-        round(Time - This.options.highlight(i)) == 0;
+    ixHighlight = ixHighlight | datcmp(Time,This.options.highlight(i));
 end
 c1 = cell(1,nPer);
 [year,per,freq] = dat2ypf(Time);
 
 for t = 1 : nPer
     hColor = '';
-    if highlightInx(t)
+    if ixHighlight(t)
         hColor = 'highlightcolor';
     end    
     a = struct();
@@ -45,9 +44,13 @@ for t = 1 : nPer
     C = [C,' & ',c1{t}]; %#ok<AGROW>
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doAttributes()
         % Prepare an attribute struct for cond formatting.
         a.value = Data(t);
@@ -63,6 +66,8 @@ end
         a.year = year(t);
         a.period = per(t);
         a.freq = freq(t);
-    end % doAttributes().
+        a.ishighlight = ixHighlight(t);
+    end % doAttributes()
+
 
 end
