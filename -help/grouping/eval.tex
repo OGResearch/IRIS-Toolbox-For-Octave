@@ -1,0 +1,57 @@
+
+
+    \filetitle{eval}{Evaluate contributions in input database S using grouping object G}{grouping/eval}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[S,L] = eval(G,S)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{G} {[} grouping {]} - Grouping object.
+\item
+  \texttt{S} {[} dbase {]} - Input dabase with individual contributions.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} dbase {]} - Output database with grouped contributions.
+\item
+  \texttt{L} {[} cellstr {]} - Legend entries based on the list of group
+  names.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'append='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Append in the output database all remaining data columns from
+  the input database that do not correspond to any contribution of
+  shocks or measurement variables.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+For a model object \texttt{M}, database \texttt{D} and simulation range
+\texttt{R},
+
+\begin{verbatim}
+S = simulate(M,D,R,'contributions=',true) ;
+G = grouping(M)
+...
+G = addgroup(G,GroupName,GroupContents) ;
+...
+S = eval(S,G)
+\end{verbatim}
+
+

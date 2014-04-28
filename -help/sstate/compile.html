@@ -1,0 +1,134 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="sstate/compile">compile</h2>
+<div class="headline">Compile an m-file function based on a steady-state file</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>compile(S)
+compile(S,Fname,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>S</code> [ sstate ] - Sstate object built on a steady-state file.</p></li>
+<li><p><code>Fname</code> [ char | empty ] - Filename of the compiled m-file function; if not specified or empty the original steady-state filename will be used with an '.m' extension.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'excludeZero='</code> [ <code>true</code> | <em><code>false</code></em> ] - Automatically detect and exclude zero solutions in blocks that result in multiple solutions.</p></li>
+<li><p><code>'deleteSymbolicMfiles='</code> [ <em><code>true</code></em> | <code>false</code> ] - Delete auxiliary m-files created to call the Symbolic Math toolbox.</p></li>
+<li><p><code>'end='</code> [ numeric | char | <em><code>Inf</code></em> ] - Compile the steady-state m-file function only up to this block.</p></li>
+<li><p><code>'simplify='</code> [ numeric | <em><code>Inf</code></em> ] - The minimum length for a symbolic expression to be simplified using the <code>simplify</code> function; Inf means no expressions will undergo simplification.</p></li>
+<li><p><code>'start='</code> [ numeric | char | <em>1</em> ] - Compile the steady-state m-file function starting from this block.</p></li>
+<li><p><code>'symbolic='</code> [ <em><code>true</code></em> | <code>false</code> ] - Call the Symbolic Math toolbox to solve blocks marked with a <a href="../sstatelang/symbolic.html"><code>!symbolic</code></a> keyword; otherwise, all blocks will be solved numerically regardless of their specification.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

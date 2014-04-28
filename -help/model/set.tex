@@ -1,0 +1,106 @@
+
+
+    \filetitle{set}{Change modifiable model object property}{model/set}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+M = set(M,Request,Value)
+M = set(M,Request,Value,Request,Value,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{Request} {[} char {]} - Name of a modifiable model object
+  property that will be changed.
+\item
+  \texttt{Value} {[} \ldots{} {]} - Value to which the property will be
+  set.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Model object with the requested property or
+  properties modified.
+\end{itemize}
+
+\paragraph{Valid requests to model
+objects}
+
+\subparagraph{Equation labels and
+aliases}
+
+\begin{itemize}
+\item
+  \texttt{'yLabels='}, \texttt{'xLabels='}, \texttt{'dLabels='},
+  \texttt{'lLabels='} {[} cellstr {]} - Change the labels attached to,
+  respectively, measurement equations (\texttt{y}), transition equations
+  (\texttt{x}), deterministic trends (\texttt{d}), and dynamic links
+  (\texttt{d}).
+\item
+  \texttt{'labels='} {[} cell {]} - Change the labels attached to all
+  equations; needs to be a cellstr matching the size of
+  \texttt{get(M,'labels')}.
+\item
+  \texttt{'yeqtnAlias='}, \texttt{'xeqtnAlias='},
+  \texttt{'deqtnAlias='}, \texttt{'leqtnAlias='} {[} cellstr {]} -
+  Change the aliases of, respectively, measurement equations
+  (\texttt{y}), transition equations (\texttt{x}), deterministic trends
+  (\texttt{d}), and dynamic links (\texttt{d}).
+\item
+  \texttt{'eqtnAlias='} {[} cell {]} - Change the aliases of all
+  equations; needs to be a cellstr matching the size of
+  \texttt{get(M,'eqtnAlias')}.
+\end{itemize}
+
+\subparagraph{Descriptions and aliases of variables, shocks, and
+parameters}
+
+\begin{itemize}
+\item
+  \texttt{'yDescript='}, \texttt{'xDescript='}, \texttt{'eDescript='},
+  \texttt{'pDescript='} {[} cellstr {]} - Change the descriptions of,
+  respectively, measurement variables (\texttt{y}), transition variables
+  (\texttt{x}), shocks (\texttt{e}), and exogenous variables
+  (\texttt{g}).
+\item
+  \texttt{'descript='} {[} struct {]} - Change the descriptions of all
+  variables, parameters, and shocks; needs to be a struct (database)
+  with fields corresponding to model names.
+\item
+  \texttt{'yAlias='}, \texttt{'xAlias='}, \texttt{'eAlias='},
+  \texttt{'pAlias='} {[} cellstr {]} - Change the aliases of,
+  respectively, measurement variables (\texttt{y}), transition variables
+  (\texttt{x}), shocks (\texttt{e}), and exogenous variables
+  (\texttt{g}).
+\item
+  \texttt{'alias='} {[} struct {]} - Change the aliases of all
+  variables, parameters, and shocks; needs to be a struct (database)
+  with fields corresponding to model names.
+\end{itemize}
+
+\subparagraph{Other requests}
+
+\begin{itemize}
+\item
+  \texttt{'nAlt='} {[} numeric {]} - Change the number of alternative
+  parameterisations.
+\item
+  \texttt{'stdVec='} {[} numeric {]} - Change the whole vector of std
+  deviations.
+\item
+  \texttt{'tOrigin='} {[} numeric {]} - Change the base year for
+  computing deterministic time trends in measurement variables.
+\item
+  \texttt{'epsilon='} {[} numeric {]} - Change the relative
+  differentiation step when computing Taylor expansion.
+\end{itemize}
+
+

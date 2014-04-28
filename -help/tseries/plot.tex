@@ -1,0 +1,62 @@
+
+
+    \filetitle{plot}{Line graph for tseries objects}{tseries/plot}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[H,Range] = plot(X,...)
+[H,Range] = plot(Range,X,...)
+[H,Range] = plot(Ax,Range,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+  be ploted as a line graph.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handles to lines plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'dateFormat='} {[} char \textbar{}
+  \emph{\texttt{irisget('plotdateformat')}} {]} - Date format for the
+  tick marks on the X-axis.
+\item
+  \texttt{'datePosition='} {[} \emph{\texttt{'centre'}} \textbar{}
+  \texttt{'end'} \textbar{} \texttt{'start'} {]} - Position of each date
+  point within a given period span.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the X-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Make the y-axis tight.
+\end{itemize}
+
+See help on built-in \texttt{plot} function for other options available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

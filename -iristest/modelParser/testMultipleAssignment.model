@@ -1,0 +1,18 @@
+!variables
+
+    x = [1,2,3]
+    y = [4,5,6]
+    z = 1
+    w
+    
+!parameters
+
+    alp = 10
+    bet = sin([1,2,3])
+    
+!equations
+
+    x = 0;
+    y = 0;
+    z = 0;
+    w = 0;

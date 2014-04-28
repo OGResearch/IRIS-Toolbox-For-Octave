@@ -1,0 +1,13 @@
+!variables
+    x, y
+
+!shocks
+    e, u
+    
+!parameters
+    alp, bet
+    
+!equations
+    x = 0;
+    y = 0;
+    

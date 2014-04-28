@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbsplit">dbsplit</h2>
+<div class="headline">Split database into mutliple databases</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[D1,D2,...,DN,D] = dbsplit(D,Rule1,Rule2,...,RuleN,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Input database that will be split.</p></li>
+<li><p><code>Rule1</code>, <code>Rule2</code>, ..., <code>RuleN</code> [ cellstr ] - Each rule is a 1-by-2 cell array, <code>{testRex,newName}</code>, where <code>testRex</code> is a test <code>regexp</code> pattern to select entries from the input database, <code>D</code>, for inclusion in the K-th output database, and <code>newName</code> is a new name pattern that will be used to name the entry in the output database.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>D1</code>, <code>D2</code>, ..., <code>DN</code> [ struct ] - Output databases.</p></li>
+<li><p><code>D</code> [ struct ] - Input database with remaining fields (if <code>'discard=' true</code>) or the original input database (if <code>'discard=' false</code>).</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'discard='</code> [ <em><code>true</code></em> | <em><code>false</code></em> ] - Discard input database entries when they are included in an output database, and do not re-use them in other output databases; if <code>false</code>, an input database entry can occur in more than one output databases.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The test regexp pattern and the new name pattern in each rule work as an expression-replace pair in <code>regexprep</code> -- see <code>doc regexprep</code>. The test patterns is a regexp string where you can capture tokens <code>(...)</code> for use in the new name pattern, <code>$1</code>, <code>$2</code>, etc.</p>
+<h4 id="example">Example</h4>
+<p>The database <code>D</code> contains time series for two regions, <code>US</code> and <code>EU</code>:</p>
+<pre><code>D = 
+    US_GDP: [40x1 tseries]
+    US_CPI: [40x1 tseries]
+    EU_GDP: [40x1 tseries]
+    EU_CPI: [40x1 tseries]</code></pre>
+<p>We split the database into two separate databases, one with <code>US</code> data only, the other with <code>EU</code> data only. We also strip the time series names of the country prefixes in the new databases.</p>
+<pre><code>[US,EU,DD[] = dbsplit(D,{&#39;^US_(.*)&#39;,&#39;$1&#39;},{&#39;^EU_(.*)&#39;,&#39;$1&#39;})
+
+US = 
+    GDP: [40x1 tseries]
+    CPI: [40x1 tseries]
+EU = 
+    CPI: [40x1 tseries]
+    GDP: [40x1 tseries]
+DD = 
+struct with no fields.</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

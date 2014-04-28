@@ -1,0 +1,39 @@
+
+
+    \filetitle{freq}{Frequency of a tseries object}{tseries/freq}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+f = freq(x)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{x} {[} tseries {]} - Tseries object.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{f} {[} 0 \textbar{} 1 \textbar{} 2 \textbar{} 4 \textbar{} 6
+  \textbar{} 12 {]} - Frequency of observations in the input tseries
+  object (\texttt{f} is the number of periods within a year).
+\end{itemize}
+
+\paragraph{Description}
+
+The \texttt{freq} function is equivalent to calling
+
+\begin{verbatim}
+get(x,'freq')
+\end{verbatim}
+
+\paragraph{Example}
+
+

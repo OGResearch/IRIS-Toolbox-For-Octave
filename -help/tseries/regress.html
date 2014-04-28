@@ -1,0 +1,142 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/regress">regress</h2>
+<div class="headline">Ordinary or weighted least-square regression</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X)
+[B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Y</code> [ tseries ] - Tseries object with independent (LHS) variables.</p></li>
+<li><p><code>X</code> [ tseries] - Tseries object with regressors (RHS) variables.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which the regression will be run; if not specified, the entire range available will be used.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>B</code> [ numeric ] - Vector of estimated regression coefficients.</p></li>
+<li><p><code>BStd</code> [ numeric ] - Vector of std errors of the estimates.</p></li>
+<li><p><code>E</code> [ tseries ] - Tseries object with the regression residuals.</p></li>
+<li><p><code>EStd</code> [ numeric ] - Estimate of the std deviation of the regression residuals.</p></li>
+<li><p><code>YFit</code> [ tseries ] - Tseries object with fitted LHS variables.</p></li>
+<li><p><code>Range</code> [ numeric ] - The actually used date range.</p></li>
+<li><p><code>bBCov</code> [ numeric ] - Covariance matrix of the coefficient estimates.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'constant='</code> [ <code>true</code> | <em><code>false</code></em> ] - Include a constant vector in the regression; if true the constant will be placed last in the matrix of regressors.</p></li>
+<li><p><code>'weighting='</code> [ tseries | <em>empty</em> ] - Tseries object with weights on the observations in the individual periods.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>This function calls the built-in <code>lscov</code> function.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,48 @@
+
+
+    \filetitle{dot}{Gross rate of growth pseudofunction}{modellang/dot}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+dot(EXPR)
+dot(EXPR,K)
+\end{verbatim}
+
+\paragraph{Description}
+
+If the input argument \texttt{k} is not specified, this pseudofunction
+expands to
+
+\begin{verbatim}
+((expression)/(expression{-1}))
+\end{verbatim}
+
+If the input argument \texttt{k} is specified, it expands to
+
+\begin{verbatim}
+((expression)/(expression{k}))
+\end{verbatim}
+
+The two derived expressions, \texttt{expression\{-1\}} and
+\texttt{expression\{k\}}, are based on \texttt{expression}, and have all
+its time subscripts shifted by --1 or by \texttt{k} periods,
+respectively.
+
+\paragraph{Example}
+
+The following two lines
+
+\begin{verbatim}
+dot(Z)
+dot(X+Y,-2)
+\end{verbatim}
+
+will expand to
+
+\begin{verbatim}
+((Z)/(Z{-1}))
+((X+Y)/(X{-2}+Y{-2}))
+\end{verbatim}
+
+

@@ -1,0 +1,253 @@
+
+
+    \filetitle{series}{Add new data to graph or table}{report/series}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+P.series(Cap,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Cap} {[} char {]} - Caption used as a default legend entry in
+  a graph, or in the leading column in a table.
+\item
+  \texttt{X} {[} tseries {]} - Input data that will be added to the
+  current table or graph.
+\end{itemize}
+
+\paragraph{Options for both table series and graph
+series}
+
+\begin{itemize}
+\item
+  \texttt{'marks='} {[} cellstr \textbar{} \emph{empty} {]} -
+  (Inheritable from parent objects) Marks that will be added to the
+  legend entries in graphs, or printed in a third column in tables, to
+  distinguish the individual columns of possibly multivariate input
+  tseries objects.
+\item
+  \texttt{'showMarks='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - (Inheritable from parent objects) Use the marks
+  defined in the \texttt{'marks='} option to label the individual rows
+  when input data is a multivariate tseries object.
+\end{itemize}
+
+\paragraph{Options for table series}
+
+\begin{itemize}
+\item
+  \texttt{'autoData='} {[} function\_handle \textbar{} cell \textbar{}
+  \emph{empty} {]} - Function, or a cell array of functions, that will
+  be used to produce new columns in the input tseries object (i.e.~new
+  rows of ouput in the report).
+\item
+  \texttt{'condFormat='} {[} struct \textbar{} \emph{empty} {]} -
+  (Inheritable from parent objects) Structure with .test and .format
+  fields describing conditional formatting of individual table entries.
+\item
+  \texttt{'decimal='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
+  (Inheritable from parent objects) Number of decimals that will be
+  displayed; if NaN the \texttt{'format='} option is used instead.
+\item
+  \texttt{'format='} {[} char \textbar{} \emph{\texttt{'\%.2f'}} {]} -
+  (Inheritable from parent objects) Numeric format string; see help on
+  the built-in \texttt{sprintf} function.
+\item
+  \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
+  at the series text.
+\item
+  \texttt{'highlight='} {[} numeric \textbar{} \emph{empty} {]} -
+  (Inheritable from parent objects) Periods that will get highlighted in
+  tables; to highlight date ranges in graphs, use the
+  \texttt{'highlight='} option in the parent graph object.
+\item
+  \texttt{'inf='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}ensuremath\{\textbackslash{}infty\}'}}
+  {]} - (Inheritable from parent objects) LaTeX string that will be used
+  to typeset Inf entries.
+\item
+  \texttt{'nan='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}ensuremath\{\textbackslash{}cdot\}'}}
+  {]} - (Inheritable from parent objects) LaTeX string that will be used
+  to typeset NaN entries.
+\item
+  \texttt{'pureZero='} {[} char \textbar{} \emph{empty} {]} -
+  (Inheritable from parent objects) LaTeX string that will be used to
+  typeset pure zero entries; if empty the zeros will be printed using
+  the current numeric format.
+\item
+  \texttt{'printedZero='} {[} char \textbar{} \emph{empty} {]} -
+  (Inheritable from parent objects) LaTeX string that will be used to
+  typeset the entries that would appear as zero under the current
+  numeric format used; if empty these numbers will be printed using the
+  current numeric format.
+\item
+  \texttt{'separator='} {[} char \textbar{} \emph{empty} {]} - (Not
+  inheritable from parent objects) LaTeX commands that will be inserted
+  immediately after the end of the table row, i.e.~appended to
+  \textbackslash{}, within a tabular mode.
+\item
+  \texttt{'units='} {[} char {]} - (Inheritable from parent objects)
+  Description of input data units that will be displayed in the second
+  column of tables.
+\end{itemize}
+
+\paragraph{Options for graph series}
+
+\begin{itemize}
+\item
+  \texttt{'legend='} {[} char \textbar{} cellstr \textbar{} \texttt{NaN}
+  \textbar{} \emph{\texttt{Inf}} {]} - (Not inheritable from parent
+  objects) Legend entries used instead of the series caption and marks;
+  Inf means the caption and marks will be used to construct legend
+  entries; NaN means the series will be exluded from legend.
+\item
+  \texttt{'plotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
+  \textbar{} \texttt{@barcon} \textbar{} \emph{\texttt{@plot}}
+  \textbar{} \texttt{@plotcmp} \textbar{} \texttt{@plotpred} \textbar{}
+  \texttt{@stem} {]} - (Inheritable from parent objects) Plot function
+  that will be used to create graphs.
+\item
+  \texttt{'plotOptions='} {[} cell \textbar{} \emph{empty} {]} - Options
+  passed as the last input arguments to the plot function.
+\item
+  \texttt{yAxis='} {[} \emph{\texttt{'left'}} \textbar{}
+  *\texttt{'right'} {]} - Choose the LHS or RHS axis to plot this
+  series; see also comments on LHS-RHS plots in Description.
+\end{itemize}
+
+\paragraph{Generic options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}
+
+\subparagraph{Using the \texttt{'nan='}, \texttt{'inf='},
+\texttt{'pureZero='} and \texttt{'printedZero='}
+options}
+
+When specifying the LaTeX string for these options, bear in mind that
+the table entries are printed in the math model. This means that
+whenever you wish to print a normal text, you need to use an appropriate
+text formatting command allowed within a math mode. Most frequently, it
+would be \texttt{'\textbackslash{}textnormal\{...\}'}.
+
+\subparagraph{Using the \texttt{'plotFunc='}
+option}
+
+When you set the option to \texttt{'plotpred'}, the input data
+\texttt{X} (second input argument) must be a multicolumn tseries object
+where the first column is the time series observations, and the second
+and further columns are its Kalman filter predictions as returned by the
+\texttt{filter} function.
+
+\subparagraph{Conditional formatting}
+
+The conditional format struct (or an array of structs) specified through
+the \texttt{'condFormat='} option must have two fields, \texttt{.test}
+and \texttt{.format}.
+
+The \texttt{.test} field is a text string with a Matlab expression. The
+expression must evaluate to a scalar true or false, and can refer to the
+following attributes associated with each entry in the data part of the
+table:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{value} - the numerical value of the entry,
+\item
+  \texttt{date} - the date under which the entry appears,
+\item
+  \texttt{year} - the year under which the entry appears,
+\item
+  \texttt{period} - the period within the year (e.g.~month or quarter)
+  under which the entry appears,
+\item
+  \texttt{freq} - the frequency of the date under which the entry
+  appears,
+\item
+  \texttt{text} - the text label on the left,
+\item
+  \texttt{mark} - the text mark on the left used to describe the
+  individual rows reported for multivariate series,
+\item
+  \texttt{row} - the row number within a multivariate series.
+\item
+  \texttt{rowvalues} - a row vector of all values on the current row.
+\end{itemize}
+
+If the table is based on user-defined structure of columns (option
+\texttt{'colstruct='} in \href{report/table}{\texttt{table}}), the
+following additional attributes are available
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{colname} - descriptor of the column (text in the headline).
+\end{itemize}
+
+You can combine a number of attribues within one test, using the logical
+operators, e.g.
+
+\begin{verbatim}
+'value > 0 && year > 2010'
+\end{verbatim}
+
+The \texttt{.format} fields of the conditional format structure consist
+of LaTeX commands that will be use to typeset the corresponding entry.
+The reference to the entry itself is through a question mark. The
+entries are typeset in math mode; this for instance meanse that for bold
+or italic typface, you must use the
+\texttt{\textbackslash{}mathbf\{...\}} and
+\texttt{\textbackslash{}mathit\{...\}} commands.
+
+In addition to standard LaTeX commands, you can use the following
+IRIS-specific commands in the format strings:
+
+\begin{itemize}
+\item
+  \texttt{\textbackslash{}sprintf\{FFFF\}} - to modify the way each
+  numeric entry that passes the test is printed by the \texttt{sprintf}
+  function; \texttt{FFFF} is one of the standard sprintf formattting
+  strings.
+\item
+  \texttt{\textbackslash{}hide\{?\}} - to hide the actual entry when it
+  is supposed to be replaced with something else.
+\end{itemize}
+
+You can combine multiple tests and their correponding formats in one
+structure; they will be all applied to each entry in the specified
+order.
+
+\subparagraph{LHS-RHS plots}
+
+The LHS-RHS report graphs are still an experimental feature.
+
+When the option \texttt{'yAxis='} is used to plot on both the LHS and
+the RHS y-axis, the plot functions are restricted to \texttt{@plot},
+\texttt{@bar}, \texttt{@area} and \texttt{@stem}. Also, because of a bug
+in Matlab, always control the color of the lines, bars and areas in all
+LHS-RHS graphs: use either the option \texttt{'plotOptions='} in this
+command, or \texttt{'style='} in the respective
+\href{report/graph}{\texttt{graph}} command.
+
+\paragraph{Example of a conditional format
+structure}
+
+\begin{verbatim}
+cf = struct();
+cf(1).test = 'value < 0';
+cf(1).format = '\mathit{?}';
+cf(2).test = 'date < qq(2010,1)';
+cf(2).format = '\color{blue}';
+\end{verbatim}
+
+

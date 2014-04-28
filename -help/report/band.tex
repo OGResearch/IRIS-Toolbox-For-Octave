@@ -1,0 +1,92 @@
+
+
+    \filetitle{band}{Add new data with lower and upper bounds to graph or table}{report/band}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+P.series(Caption,X,Low,High,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Caption} {[} char {]} - Caption used as a default legend entry
+  in a graph, or in the leading column in a table.
+\item
+  \texttt{X} {[} tseries {]} - Input data with the centre of the band.
+\item
+  \texttt{Low} {[} tseries {]} - Input data with lower bounds; can be
+  specified either relative to the centre or absolute, see the option
+  \texttt{'relative='}.
+\item
+  \texttt{High} {[} tseries {]} - Input data with upper bounds; can be
+  specified either relative to the centre or absolute, see the option
+  \texttt{'relative='}.
+\end{itemize}
+
+\paragraph{Options for table and graph
+bands}
+
+\begin{itemize}
+\item
+  \texttt{'low='} {[} char \textbar{} \emph{`Low'} {]} - (Inheritable
+  from parent objects) Mark used to denote the lower bound.
+\item
+  \texttt{'high='} {[} char \textbar{} \emph{`High'} {]} - (Inheritable
+  from parent objects) Mark used to denote the upper bound.
+\item
+  \texttt{'relative='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - (Inheritable from parent objects) If true, the
+  data for the lower and upper bounds are relative to the centre,
+  i.e.~the bounds will be added to the centre (in this case,
+  \texttt{LOW} must be negative numbers and \texttt{HIGH} must be
+  positive numbers). If false, the bounds are absolute data (in this
+  case \texttt{LOW} must be lower than \texttt{X}, and \texttt{HIGH}
+  must be higher than \texttt{X}).
+\end{itemize}
+
+\paragraph{Options for table bands}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'bandTypeface='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}footnotesize'}} {]} - (Inheritable from
+  parent objects) LaTeX format string used to typeset the lower and
+  upper bounds.\%
+\end{itemize}
+
+\paragraph{Options for graph bands}
+
+\begin{itemize}
+\item
+  \texttt{'plotType='} {[} \texttt{'errorbar'} \textbar{}
+  \emph{\texttt{'patch'}} {]} - Type of plot used to draw the band.
+\item
+  \texttt{'relative='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - (Inheritable from parent objects) If true the
+  lower and upper bounds will be, respectively, subtracted from and
+  added to to the middle line.
+\item
+  \texttt{'white='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} -
+  (Inheritable from parent objects) Proportion of white colour mixed
+  with the line colour and used to fill the area that depicts the band.
+\end{itemize}
+
+See help on \href{report/series}{\texttt{report/series}} for other
+options available.
+
+\paragraph{Generic options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

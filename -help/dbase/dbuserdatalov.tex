@@ -1,0 +1,36 @@
+
+
+    \filetitle{dbuserdatalov}{List of values found in a specified user data field in tseries objects}{dbase/dbuserdatalov}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+LOV = dbuserdatalov(D,FIELD)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database whose tseries objects will
+  be searched.
+\item
+  \texttt{FIELD} {[} char {]} - Name of a userdata field whose values
+  will be collected across all tseries objects.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{LOV} {[} cellstr {]} - List of values found in the field
+  \texttt{FIELD} of all tseries objects; only char values (text strings)
+  are included; each value is included only once in \texttt{LOV}.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

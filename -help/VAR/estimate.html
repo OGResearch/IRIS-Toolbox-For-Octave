@@ -1,0 +1,167 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="VAR/estimate">estimate</h2>
+<div class="headline">Estimate a reduced-form VAR or BVAR</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[V,VData,Fitted] = estimate(V,Inp,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - Empty VAR object.</p></li>
+<li><p><code>Inp</code> [ struct ] - Input database.</p></li>
+<li><p><code>Range</code> [ numeric ] - Estimation range, including <code>P</code> pre-sample periods, where <code>P</code> is the order of the VAR.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - Estimated reduced-form VAR object.</p></li>
+<li><p><code>VData</code> [ struct ] - Output database with the endogenous variables and the estimated residuals.</p></li>
+<li><p><code>Fitted</code> [ numeric ] - Periods in which fitted values have been calculated.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'A='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the transition matrix, <code>A</code>.</p></li>
+<li><p><code>'BVAR='</code> [ numeric ] - Prior dummy observations for estimating a BVAR; construct the dummy observations using the one of the <code>BVAR</code> functions.</p></li>
+<li><p><code>'C='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the constant vector, <code>C</code>.</p></li>
+<li><p><code>'diff='</code> [ <code>true</code> | <em><code>false</code></em> ] - Difference the series before estimating the VAR; integrate the series back afterwards.</p></li>
+<li><p><code>'G='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the matrix at the co-integrating vector, <code>G</code>.</p></li>
+<li><p><code>'cointeg='</code> [ numeric | <em>empty</em> ] - Co-integrating vectors (in rows) that will be imposed on the estimated VAR.</p></li>
+<li><p><code>'comment='</code> [ char | <code>Inf</code> ] - Assign comment to the estimated VAR object; <code>Inf</code> means the existing comment will be preserved.</p></li>
+<li><p><code>'constraints='</code> [ char | cellstr ] - General linear constraints on the VAR parameters.</p></li>
+<li><p><code>'constant='</code> [ <em><code>true</code></em> | <code>false</code> ] - Include a constant vector in the VAR.</p></li>
+<li><p><code>'covParam='</code> [ <code>true</code> | <em><code>false</code></em> ] - Calculate and store the covariance matrix of estimated parameters.</p></li>
+<li><p><code>'eqtnByEqtn='</code> [ <code>true</code> | <em><code>false</code></em> ] - Estimate the VAR equation by equation.</p></li>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>1</code></em> ] - Maximum number of iterations when generalised least squares algorithm is involved.</p></li>
+<li><p><code>'mean='</code> [ numeric | <em>empty</em> ] - Impose a particular asymptotic mean on the VAR process.</p></li>
+<li><p><code>'order='</code> [ numeric | <em><code>1</code></em> ] - Order of the VAR.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
+<li><p><code>'schur='</code> [ <em><code>true</code></em> | <code>false</code> ] - Calculate triangular (Schur) representation of the estimated VAR straight away.</p></li>
+<li><p><code>'stdize='</code> [ <code>true</code> | <em><code>false</code></em> ] - Adjust the prior dummy observations by the std dev of the observations.</p></li>
+<li><p><code>'timeWeights=</code>' [ tseries | empty ] - Time series of weights applied to individual periods in the estimation range.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance when generalised least squares algorithm is involved.</p></li>
+<li><p><code>'warning='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display warnings produced by this function.</p></li>
+</ul>
+<h4 id="options-for-panel-var">Options for panel VAR</h4>
+<ul>
+<li><p><code>'fixedEffect='</code> [ <code>true</code> | <em><code>false</code></em> ] - Include constant dummies for fixed effect in panel estimation; applies only if <code>'constant=' true</code>.</p></li>
+<li><p><code>'groupWeights='</code> [ numeric | <em>empty</em> ] - A 1-by-NGrp vector of weights applied to groups in panel estimation, where NGrp is the number of groups; the weights will be rescaled so as to sum up to <code>1</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="estimating-a-panel-var">Estimating a panel VAR</h5>
+<p>Panel VAR objects are created by calling the function <a href="../VAR/VAR.html"><code>VAR</code></a> with two input arguments: the list of variables, and the list of group names. To estimate a panel VAR, the input data, <code>Inp</code>, must be organised a super-database with sub-databases for each group, and time series for each variables within each group:</p>
+<pre><code>d.Group1_Name.Var1_Name
+d.Group1_Name.Var2_Name
+...
+d.Group2_Name.Var1_Name
+d.Group2_Name.Var2_Name
+...</code></pre>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/switch">!switch...!case...!otherwise...!end</h2>
+<div class="headline">Switch among several branches of the model code depending on the value of an expression</div>
+
+<h4 id="syntax-with-an-otherwise-clause">Syntax with an otherwise clause</h4>
+<pre><code>!switch Expression
+    !case Balue1
+        Block1
+    !case Balue2
+        Block2
+    ...
+    !otherwise
+        Otherwise_Block
+!end</code></pre>
+<h4 id="syntax-without-an-otherwise-clause">Syntax without an otherwise clause</h4>
+<pre><code>!switch Expression
+    !case Value1
+        Block1
+    !case Value2
+        Block2
+    ...
+!end</code></pre>
+<h4 id="description">Description</h4>
+<p>The <code>!switch...!case...!otherwise...!end</code> command works the same way as its counterpart in the Matlab programming language.</p>
+<p>Use the <code>!switch...!case...!end</code> command to create a larger number of branches of the model code. Which block of code is actually read in and which blocks are discarded depends on which value in the <code>!case</code> clauses matches the value of the <code>!switch</code> expression. This works exactly as the <code>switch...case...end</code> command in Matlab. The expression after the <code>!switch</code> part of the command must must be a valid Matlab expression, and can refer to the model parameters, or to other fields included in the parameter database passed in when you run the <a href="../model/model.html"><code>model</code></a> function; see <a href="../model/model.html">the option <code>'assign='</code></a>.</p>
+<p>If the expression fails to be matched by any value in the <code>!case</code> clauses, the branch in the <code>!otherwise</code> clause is used. If it is a <code>!switch</code> command without the <code>!otherwise</code> clause, the whole command is discarded. The Matlab function <code>isequal</code> is used to match the <code>!switch</code> expression with the <code>!case</code> values.</p>
+<h4 id="example">Example</h4>
+<pre><code>!switch policy_regime
+
+    !case &#39;IT&#39;
+        r = rho*r{-1} + (1-rho)*kappa*pie{4} + epsilon;
+
+    !case &#39;Managed_exchange_rate&#39;
+        s = s{-1} + epsilon;
+
+    !case &#39;Constant_money_growth&#39;
+        m-m{-1} = m{-1}-m{-2} + epsilon;
+   
+!end</code></pre>
+<p>When reading the model file in, create a parameter database, include at least a field named <code>policy_regime</code> in it, and use the option <code>'assign='</code> to pass the database in. Note that you do not need to declare <code>policy_regime</code> as a parameter in the model file.</p>
+<pre><code>P = struct();
+P.policy_regime = &#39;Managed_exchange_rate&#39;;
+...
+m = model(&#39;my.model&#39;,&#39;assign&#39;,P);</code></pre>
+<p>In this case, the managed exchange rate policy rule, <code>s = s{-1} + epsilon;</code> is read in and the rest of the <code>!switch</code> command is discarded. To use another branch of the <code>!switch</code> command you need to re-read the model file again with a different value assigned to the <code>policy_regime</code> field of the input database.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

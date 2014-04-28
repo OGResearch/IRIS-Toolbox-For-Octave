@@ -1,0 +1,147 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/autocaption">autocaption</h2>
+<div class="headline">Create captions for graphs of model variables or parameters</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>C = autocaption(M,X,Template,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>X</code> [ cellstr | struct | poster ] - A cell array of model names, a struct with model names, or a <a href="../poster/Contents.html"><code>poster</code></a> object.</p></li>
+<li><p><code>Template</code> [ char ] - Prescription for how to create the caption; see Description for details.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>C</code> [ cellstr ] - Cell array of captions, with one for each model name (variable, shock, parameter) found in <code>X</code>, in order of their appearance in <code>X</code>.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'corr='</code> [ char | <em><code>'Corr $shock1$ X $shock2$'</code></em> ] - Template to create <code>$descript$</code> and <code>$alias$</code> for correlation coefficients based on <code>$descript$</code> and <code>$alias$</code> of the underlying shocks.</p></li>
+<li><p><code>'std='</code> [ char | <em><code>'Std $shock$'</code></em> ] - Template to create <code>$descript$</code> and <code>$alias$</code> for std deviation based on <code>$descript$</code> and <code>$alias$</code> of the underlying shock.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The function <code>autocaption</code> can be used to supply user-created captions to title graphs in <code>grfun/plotpp</code>, <code>grfun/plotneigh</code>, <code>model/shockplot</code>, <code>dbase/dbplot</code>, and <code>qreport/qplot</code>, through their option <code>'caption='</code>.</p>
+<p>The <code>Template</code> can contain the following substitution strings:</p>
+<ul>
+<li><p><code>$name$</code> -- will be replaced with the name of the respective variable, shock, or parameter;</p></li>
+<li><p><code>$descript$</code> -- will be replaced with the description of the respective variable, shock, or parameter;</p></li>
+<li><p><code>$alias$</code> -- will be replaced with the alias of the respective variable, shock, or parameter.</p></li>
+</ul>
+<p>The options <code>'corr='</code> and <code>'std='</code> will be used to create <code>$descript$</code> and `<span class="LaTeX">$alias$</span> for std deviations and cross-correlations of shocks (which cannot be created in the model code). The options are expected to use the following substitution strings:</p>
+<ul>
+<li><p><code>'$shock$'</code> -- will be replaced with the description or alias of the underlying shock in a std deviation;</p></li>
+<li><p><code>'$shock1$'</code> -- will be replaced with the description or alias of the first underlying shock in a cross correlation;</p></li>
+<li><p><code>'$shock2$'</code> -- will be replaced with the description or alias of the second underlying shock in a cross correlation.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>
