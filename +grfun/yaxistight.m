@@ -47,7 +47,7 @@ for iAx = Ax
         if ~ismatlab
             grfun.mytrigexcludedfromlegend(iAx,'on');
         end
-        lim = grfun.myobjbounds(ch);
+        lim = grfun.myobjbounds(iAx);
         if isempty(lim)
             yLim = get(iAx,'yLim');
         else
