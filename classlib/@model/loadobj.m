@@ -1,4 +1,4 @@
-function This = loadobj(This)
+function This = loadobj(This,varargin)
 % loadobj  [Not a public function] Prepare model object for use in workspace and handle bkw compatibility.
 %
 % Backend IRIS function.
@@ -9,17 +9,7 @@ function This = loadobj(This)
 
 %--------------------------------------------------------------------------
 
-% If the input object is not a model, rebuild the model to make sure the
-% equations derived from the user equations (derivatives, etc) comply with
-% the latest version of IRIS.
-isRebuild = ~isa(This,'model');
-
 This = modelobj.loadobj(This);
-
-if ~isa(This,'model') && ~isfield(This,'d2s')
-    % Convert meta to D2S.
-    doD2s();
-end
 
 if ~isa(This,'model')
     if isfield(This,'eqtnnonlin')
@@ -28,15 +18,29 @@ if ~isa(This,'model')
         This.nonlin = false(size(This.eqtn));
     end
 elseif isempty(This.nonlin)
-    This.nonline = false(size(This.eqtn));
+    This.nonlin = false(size(This.eqtn));
 end
 
 if isstruct(This)
     This = model(This);
 end
 
+solutionid = This.solutionid;
+if isempty(This.d2s)
+    opt = struct();
+    opt.addlead = false;
+    opt.removeleads = all(imag(This.solutionid{2}) <= 0);
+    This = myd2s(This,opt);
+end
+if ~isequal(solutionid,This.solutionid)
+    disp('Model object failed to be loaded from a disk file.');
+    disp('Create the model object again from the model file.');
+    This = model();
+    return
+end
+
 ny = sum(This.nametype == 1);
-[nx,~,nAlt] = size(This.solution{1});
+nAlt = size(This.Assign,3);
 
 % Convert array of occurences to sparse matrix.
 if ~issparse(This.occur)
@@ -55,8 +59,8 @@ end
 
 % Store only non-empty dynamic links.
 link = This.eqtn(This.eqtntype == 4);
-emptylink = cellfun(@isempty,link);
-if any(emptylink)
+isEmptyLink = cellfun(@isempty,link);
+if any(isEmptyLink)
     occur = This.occur(This.eqtntype == 4,:);
     linkLabel = This.eqtnlabel(This.eqtntype == 4);
     linkF = This.eqtnF(This.eqtntype == 4);
@@ -84,19 +88,6 @@ end
 % simulations.
 if isempty(This.nonlin)
     This.nonlin = false(size(This.eqtn));
-end
-
-% Effect of add-factor on transition equations.
-if ~isfield(This.system0,'N') || isempty(This.system0.N)
-    This.system0.N = {[],zeros(nx,0)};
-end
-if ~isfield(This.deriv0,'n') || isempty(This.deriv0.n)
-    This.deriv0.n = zeros(ny+nx,0);
-end
-
-% Effect of add-faactors in solution for non-linear equations.
-if length(This.solution) < 8 || isempty(This.solution{8})
-    This.solution{8} = nan(nx,0,nAlt);
 end
 
 if ~isempty(This.Expand) ...
@@ -127,9 +118,6 @@ if isempty(This.multiplier)
     This.multiplier = false(size(This.name));
 end
 
-% This property is no longer in use.
-This.userdifflist = cell(1,0);
-
 if isempty(This.Tolerance) || isnan(This.Tolerance)
     This.Tolerance = getrealsmall();
 end
@@ -152,27 +140,29 @@ for i = 1 : length(This.eqtnF)
     This.eqtnF{i} = eqtn;
 end
 
-% Restore the transient property `eqtnN` , i.e. the function handles for
-% evaluating non-linearised equations.
-This = mynonlineqtn(This);
-
 % Convert equation strings to anonymous functions.
 try
     This = myeqtn2afcn(This);
 catch %#ok<CTCH>
     % The function `myeqtn2afcn` may fail because of an old structure of
     % derivatives or missing equations for constant terms in linear models.
-    This = mysymbdiff(This);
+    isSymbDiff = true;
+    This = mysymbdiff(This,isSymbDiff);
     This = myeqtn2afcn(This);
 end
 
-if isRebuild
-    This = model(This);
-end
+% Transient properties
+%----------------------
+% Reset last system, and create function handles to nonlinear equations.
+This = mytransient(This);
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
     function doStdcorr()
         ne = sum(This.nametype == 3);
         nName = length(This.name);
@@ -190,30 +180,7 @@ end
         This.nametype(:,end-ne+1:end) = [];
         This.namelabel(:,end-ne+1:end) = [];
         This.log(:,end-ne+1:end) = [];
-    end % doStdcorr().
+    end % doStdcorr()
 
-%**************************************************************************
-    function doD2s()
-        This.d2s = struct();
-        % Positions in derivative matrices.
-        This.d2s.y_ = This.metaderiv.y;
-        This.d2s.xu1_ = This.metaderiv.uplus;
-        This.d2s.xu_ = This.metaderiv.u;
-        This.d2s.xp1_ = This.metaderiv.pplus;
-        This.d2s.xp_ = This.metaderiv.p;
-        This.d2s.e_ = This.metaderiv.e;
-        % Positions in unsolved system matrices.
-        This.d2s.y = This.metasystem.y;
-        This.d2s.xu1 = This.metasystem.uplus;
-        This.d2s.xu = This.metasystem.u;
-        This.d2s.xp1 = This.metasystem.pplus;
-        This.d2s.xp = This.metasystem.p;
-        This.d2s.e = This.metasystem.e;
-        % Dynamic identities.
-        This.d2s.ident1 = This.systemident.xplus;
-        This.d2s.ident = This.systemident.x;
-        % Non-predetermined variables removed from solution.
-        This.d2s.remove = This.metadelete;
-    end % doD2s().
 
 end

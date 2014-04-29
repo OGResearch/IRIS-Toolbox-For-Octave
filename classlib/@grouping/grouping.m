@@ -22,7 +22,7 @@ classdef grouping < userdataobj & getsetobj
     % Setting up and using groups
     % ============================
     %
-    % * [`addgroup`](grouping/addgroup) - Add measurement variable or shock grouping to grouping object.
+    % * [`addgroup`](grouping/addgroup) - Add measurement variable group or shock group to grouping object.
     % * [`eval`](grouping/eval) - Evaluate contributions in input database S using grouping object G.
     %
     % Getting on-line help on groups
@@ -45,7 +45,8 @@ classdef grouping < userdataobj & getsetobj
         descript = cell(1,0) ;
         
         otherName = 'Other';
-        constName = 'Init + Const';
+%         constName = 'Init+Const';
+%         nonlinName = 'Nonlinear';
     end
     
     properties (Hidden, Dependent)
@@ -111,15 +112,20 @@ else
                 && any(strncmpi(x,{'shock','measu'},5)));
             pp = pp.parse(M,Type);
 end
-            
-            This.type = Type;
-            switch This.type
+
+            switch lower(Type(1:5))
                 case 'shock'
+                    This.type = 'shocks';
                     listRequest = 'eList';
                     descriptRequest = 'eDescript';
-                case 'measurement'
-                    listRequest = 'eList';
-                    descriptRequest = 'eDescript';
+                case 'measu'
+                    This.type = 'measurement';
+                    listRequest = 'yList';
+                    descriptRequest = 'yDescript';
+                otherwise
+                    utils.error('grouping:grouping', ...
+                        'Unknown grouping type: ''%s''.', ...
+                        This.type);
             end
             This.list = get(M,listRequest) ;
             This.descript = get(M,descriptRequest) ;

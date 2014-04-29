@@ -253,20 +253,23 @@ end
 
 
 %**************************************************************************
-function [Year,Ab] = xxMatlabRelease()
 
+
+function [Year,Ab] = xxMatlabRelease()
 Year = 0;
 Ab = '';
-
 try %#ok<TRYNC>
     s = ver('MATLAB');
-    tok = regexp(s.Release,'R(\d{4})([ab])','tokens','once');
-    if ~isempty(tok)
-        Year = sscanf(tok{1},'%g',1);
-        Ab = tok{2};
+    inx = strcmpi({s.Name},'MATLAB');
+    if any(inx)
+        s = s(find(inx,1));
+        tok = regexp(s.Release,'R(\d{4})([ab])','tokens','once');
+        if ~isempty(tok)
+            Year = sscanf(tok{1},'%g',1);
+            Ab = tok{2};
+        end
     end
 end
-
 end % xxMatlabRelease()
 
 function verNum = xxOctaveRelease()

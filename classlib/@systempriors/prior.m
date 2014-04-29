@@ -88,7 +88,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 % normal with mean 0.9 and std deviation 0.1, but the sum is forced to be
 % between 0 and 1 by imposing lower and upper bounds.
 %
-%     s = prior('s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
+%     s = prior(s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
 %         'lowerBound=',0,'upperBound=',1);
 %
 
@@ -330,4 +330,4 @@ function xxThrowError(Str)
 utils.error('systempriors', ...
     'Error parsing the definition string: ''%s''.', ...
     Str);
-end % xxThrowError(). % xxThrowError().
+end % xxThrowError().

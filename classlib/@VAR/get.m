@@ -42,8 +42,8 @@ function varargout = get(This,varargin)
 % System matrices
 % ----------------
 %
-% * `'A#'`, `'A*'`, `'A$'` - Returns [ numeric ] the transition matrix in a
-% particular form; see Description.
+% * `'A#'`, `'A*'`, `'A$'` - Returns [ numeric ] the transition matrix in
+% one of the three possible forms; see Description.
 %
 % * `'K'`, `'const'` - Returns [ numeric ] the constant vector or matrix
 % (the latter for panel VARs).

@@ -15,6 +15,7 @@ nf = size(S.Tf,1);
 ne = size(S.Ra,2);
 nPer = size(S.y1,2);
 
+nCont = ny;
 nPOut = S.npout;
 nInit = S.ninit;
 nEst = nPOut + nInit;
@@ -27,16 +28,16 @@ yInx = S.yindex;
 lastObs = S.lastObs;
 lastSmooth = S.lastSmooth;
 pe = S.peUnc;
-yc1 = zeros(ny,ny,nPer);
+yc1 = zeros(ny,nCont,nPer);
 
 % Prediction step
 %-----------------
-ac0 = nan(nb,ny,nPer);
-yc0 = nan(ny,ny,nPer);
-fc0 = nan(nf,ny,nPer);
-bc0 = nan(nb,ny,nPer);
-pec = nan(ny,ny,nPer);
-ydeltac = zeros(ny,ny,nPer);
+ac0 = nan(nb,nCont,nPer);
+yc0 = nan(ny,nCont,nPer);
+fc0 = nan(nf,nCont,nPer);
+bc0 = nan(nb,nCont,nPer);
+pec = nan(ny,nCont,nPer);
+ydeltac = zeros(ny,nCont,nPer);
 ac0(:,:,1) = 0;
 fc0(:,:,1) = 0;
 bc0(:,:,1) = 0;
@@ -87,7 +88,7 @@ if S.retPredCont
     S.yc0 = yc0;
     S.fc0 = fc0;
     S.bc0 = bc0;
-    S.ec0 = zeros(ne,ny,nPer);
+    S.ec0 = zeros(ne,nCont,nPer);
 end
 
 % Updating step
@@ -104,7 +105,6 @@ if S.retFilterCont
     for t = lastObs : -1 : 2
         jy = yInx(:,t);
         [yc1temp,fc1(:,:,t),bc1(:,:,t),ec1(:,:,t)] ...
-        ...    = xxOneStepBackCont(S,t,pec(:,:,t),ac0(:,:,t),fc0(:,:,t),0);
             = kalman.onestepbackmean(S,t, ...
             pec(:,:,t),ac0(:,:,t),fc0(:,:,t),ydeltac(:,:,t),[],0);
         if any(~jy)
@@ -121,9 +121,9 @@ end
 %----------------
 if S.retSmoothCont
     yc2 = yc1;
-    fc2 = nan(nf,ny,nPer);
-    bc2 = nan(nb,ny,nPer);
-    ec2 = zeros(ne,ny,nPer);
+    fc2 = nan(nf,nCont,nPer);
+    bc2 = nan(nb,nCont,nPer);
+    ec2 = zeros(ne,nCont,nPer);
     if lastObs < nPer
         yc2(:,:,lastObs+1:end) = yc0(:,:,lastObs+1:end);
         fc2(:,:,lastObs+1:end) = fc0(:,:,lastObs+1:end);

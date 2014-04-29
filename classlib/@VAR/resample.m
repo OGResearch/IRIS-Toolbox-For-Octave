@@ -210,14 +210,14 @@ end
 % Report NaNs in initial conditions.
 if any(nanInit)
     utils.warning('VAR', ...
-        'Some of the initial conditions for resampling are NaN:%s.', ...
+        'Some of the initial conditions for resampling are NaN %s.', ...
         preparser.alt2str(nanInit));
 end
 
 % Report NaNs in resampled residuals.
 if any(nanResid)
     utils.warning('VAR', ...
-        'Some of the resampled residuals are NaN:%s.', ...
+        'Some of the resampled residuals are NaN %s.', ...
         preparser.alt2str(nanResid));
 end
 
@@ -264,3 +264,4 @@ Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.Ynames);
     end % doDrawResiduals().
 
 end
+

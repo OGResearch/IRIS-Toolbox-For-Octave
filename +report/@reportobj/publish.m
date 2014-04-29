@@ -42,7 +42,12 @@ templateFile = fullfile(thisDir,'report.tex');
 % Pass the publish options on to the report object and align objects
 % either of which can be a parent of figure.
 c = file2char(templateFile);
-c = strrep(c,'$document$',latexcode(This));
+
+% Create LaTeX code for the entire report.
+doc = latexcode(This);
+
+% Insert the LaTeX code into the template.
+c = strrep(c,'$document$',doc);
 c = xxDocument(This,c,pkg);
 
 % Create a temporary tex name and save the LaTeX file.
@@ -68,22 +73,30 @@ end
 % Copy output information fields to a struct.
 Info = outpstruct(This.hInfo);
 
+
 % Nested functions...
 
 
 %**************************************************************************
+
+
     function doGetListOfPkg()
         pkg = This.options.package;
         if ischar(pkg)
             pkg = regexp(pkg,'\w+','match');
         end
-        if This.hInfo.longTable
+        if This.hInfo.package.longtable
             pkg{end+1} = 'longtable';
+        end
+        if This.hInfo.package.colortbl
+            pkg{end+1} = 'colortbl';
         end
     end % doGetListOfPkg()
 
 
 %**************************************************************************
+
+    
     function doCreateTempDir()
         % Assign the temporary directory name property.
         if is.func(opt.tempdir)
@@ -105,6 +118,8 @@ Info = outpstruct(This.hInfo);
 
 
 %**************************************************************************
+    
+    
     function doSaveLatexFile()
         tempDir = This.hInfo.tempDir;
         latexFile = [tempname(tempDir),'.tex'];
@@ -113,6 +128,8 @@ Info = outpstruct(This.hInfo);
 
 
 %**************************************************************************
+
+
     function doCompile()
         % Use try-catch to make sure the helper files are deleted at the
         % end of `publish`.
@@ -145,6 +162,8 @@ end
 
 
 %**************************************************************************
+
+
 function Doc = xxDocument(This,Doc,Pkg)
 
 opt = This.options;
@@ -154,6 +173,7 @@ if nargin < 3
 end
 
 br = sprintf('\n');
+
 
 try
     tempTitle = interpret(This,This.title);
@@ -181,6 +201,7 @@ catch
     Doc = strrep(Doc,'$titlefootnote$','');
 end
 
+
 try
     tempHead = strrep(tempHead,'\\',' / ');
     tempHead = interpret(This,tempHead);
@@ -189,11 +210,13 @@ catch
     Doc = strrep(Doc,'$headertitle$','');
 end
 
+
 try
     Doc = strrep(Doc,'$author$',opt.author);
 catch
     Doc = strrep(Doc,'$author$','');
 end
+
 
 try
     Doc = strrep(Doc,'$date$',opt.date);
@@ -201,17 +224,20 @@ catch
     Doc = strrep(Doc,'$date$','');
 end
 
+
 try
     Doc = strrep(Doc,'$papersize$',opt.papersize);
 catch %#ok<*CTCH>
     Doc = strrep(Doc,'$papersize$','');
 end
 
+
 try
     Doc = strrep(Doc,'$orientation$',opt.orientation);
 catch
     Doc = strrep(Doc,'$orientation$','');
 end
+
 
 try
     if isa(opt.timestamp,'function_handle')
@@ -222,11 +248,13 @@ catch
     Doc = strrep(Doc,'$headertimestamp$','');
 end
 
+
 try
     Doc = strrep(Doc,'$textscale$',sprintf('%g',opt.textscale));
 catch
     Doc = strrep(Doc,'$textscale$','0.75');
 end
+
 
 try
     Doc = strrep(Doc,'$graphwidth$',opt.graphwidth);
@@ -234,17 +262,20 @@ catch
     Doc = strrep(Doc,'$graphwidth$','4in');
 end
 
+
 try
     Doc = strrep(Doc,'$fontencoding$',opt.fontenc);
 catch
     Doc = strrep(Doc,'$fontencoding$','T1');
 end
 
+
 try
     Doc = strrep(Doc,'$preamble$',opt.preamble);
 catch
     Doc = strrep(Doc,'$preamble$','');
 end
+
 
 try
     if ~isempty(Pkg)
@@ -257,12 +288,21 @@ catch
     Doc = strrep(Doc,'$packages$','');
 end
 
+
 try
     c = sprintf('%g,%g,%g',opt.highlightcolor);
     Doc = strrep(Doc,'$highlightcolor$',c);
 catch
     Doc = strrep(Doc,'$highlightcolor$','0.9,0.9,0.9');
 end
+
+
+try %#ok<TRYNC>
+    if This.hInfo.package.colortbl
+        Doc = strrep(Doc,'% $colortbl$','');
+    end
+end
+
 
 try
     if opt.maketitle
@@ -301,6 +341,7 @@ if opt.maketitle
 end
 Doc = strrep(Doc,'$abstract$',repl);
 
+
 try
     if opt.maketitle
         repl = '\clearpage';
@@ -310,6 +351,8 @@ try
 catch
     repl = '';
 end
+
+
 Doc = strrep(Doc,'$clearfirstpage$',repl);
 
 end % xxDocument()

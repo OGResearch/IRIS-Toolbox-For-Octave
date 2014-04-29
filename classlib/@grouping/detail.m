@@ -28,7 +28,7 @@ if isempty(This)
     return
 end
 
-isOther = ~isempty(This.otherContents) ;
+isOther = any(This.otherContents) ;
 groupNames = This.groupNames ;
 groupContents = This.groupContents ;
 if isOther
@@ -38,7 +38,7 @@ end
 nGroup = length(groupNames) ;
 
 for iGroup = 1:nGroup
-    fprintf('\t%s:\n',groupNames{iGroup}) ;
+    fprintf('\t+Group ''%s'':\n',groupNames{iGroup}) ;
     list = This.list(groupContents{iGroup}) ;
     descript = This.descript(groupContents{iGroup}) ;
     for iCont = 1:numel(list)
@@ -51,9 +51,12 @@ end
 strfun.loosespace();
 
 
+% Nested functions...
+
+
     function doDispName()
         fprintf('\t\t') ;
-        fprintf('[%s]',iName);
+        fprintf('+%s',iName);
         if ~isempty(iDescript)
             fprintf(' ''%s''',iDescript) ;
         end

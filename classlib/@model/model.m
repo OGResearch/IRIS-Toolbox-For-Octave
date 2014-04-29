@@ -36,7 +36,7 @@ classdef model < modelobj & estimateobj
     % * [`length`](model/length) - Number of alternative parameterisations.
     % * [`omega`](model/omega) - Get or set the covariance matrix of shocks.
     % * [`sspace`](model/sspace) - State-space matrices describing the model solution.
-    % * [`system`](model/system) - System matrices before model is solved.
+    % * [`system`](model/system) - System matrices for unsolved model.
     % * [`userdata`](model/userdata) - Get or set user data in an IRIS object.
     %
     % Referencing model objects
@@ -133,26 +133,12 @@ classdef model < modelobj & estimateobj
         % Linear or non-linear model.
         % linear = false;
         % List of functions with user derivatives.
-        userdifflist = cell(1,0);
+        % userdifflist = cell(1,0);
         % Vector [1-by-nname] of positions of shocks assigned to variables for
         % `autoexogenise`.
         Autoexogenise = nan(1,0);
         % Unit-root tolerance.
         Tolerance = NaN;
-        % Names of variables, shocks, and parameters.
-        % name = {};
-        % Name type: 1=measurement variable, 2=transition variable, 3=shock, 4=parameter.
-        % nametype = [];
-        % Annotations for variables, shocks, and parameters.
-        % namelabel = cell(1,0);
-        % Linearised or log-linearised variable.
-        % log = [];
-        % List of equations in user form.
-        % eqtn = cell(1,0);
-        % Equation type: 1=measurement, 2=transition, 3=deterministic trend, 4=dynamic link.
-        % eqtntype = zeros(1,0);
-        % Equation labels.
-        % eqtnlabel = cell(1,0);
         % Anonymous function handles to streamlined full dynamic equations.
         eqtnF = cell(1,0);
         % Anonymous function handles to streamlined steady-state equations.
@@ -163,12 +149,6 @@ classdef model < modelobj & estimateobj
         nameblk = cell(1,0);
         % Block recursive structure for steady-state equations.
         eqtnblk = cell(1,0);
-        % Steady-state and parameter values.
-        % Assign = [];
-        % Steady-state and parameter values used to compute last Taylor expansion.
-        Assign0 = nan(1,0);
-        % Std deviations and cross-correlations of shocks.
-        % stdcorr = nan(1,0);
         % Anonymous function handles to derivatives.
         deqtnF = cell(1,0);
         % Function handles to constant terms in linear models.
@@ -189,28 +169,16 @@ classdef model < modelobj & estimateobj
             cell(1,0), ...
             cell(1,0), ...
             };
-        % Indices of derivatives used when lining up system matrices.
-        %metaderiv = struct();
-        % Positions in system matrices corresponding to `metaderiv`.
-        %metasystem = struct();
-        % Identities added to system matrices.
-        %systemident = struct();
-        % Indices of non-predetermined variables that duplicate identical predetermined variables.
-        %metadelete = false(1,0);
         % Derivatives to system matrices.
-        d2s = struct();
-        % Last Taylor expansion.
-        deriv0 = zeros(0);
-        % Last system matrices.
-        system0 = struct();
+        d2s = [];
         % Model eigenvalues.
         eigval = zeros(1,0);
         % Differentiation step when calculating numerical derivatives.
         epsilon = eps^(1/3);
         % Matrices necessary to generate forward expansion of model solution.
         Expand = {};
-        % Model state-space matrices T, R, K, Z, H, D, U, Y.
-        solution = {[],[],[],[],[],[],[],[]};
+        % Model state-space matrices T, R, K, Z, H, D, U, Y, ZZ.
+        solution = {[],[],[],[],[],[],[],[],[]};
         % Vectors of measurement variables, transition variables, and shocks in rows and columns of state-space matrices.
         solutionid = {[],[],[]};
         % Vectors of variables names with lags, leads and/or logs.
@@ -221,16 +189,18 @@ classdef model < modelobj & estimateobj
             };
         % True for predetermined variables for which initial condition is truly needed.
         icondix = false(1,0);
-        % Base year for deterministic trends.
-        torigin = 2000;
         % True for multipliers (optimal policy).
         multiplier = false(1,0);
     end
     
-    % Transient properties.
+    % Transient properties are not saved to disk files, and need to be
+    % recreated each time a model object is loaded. Use mytransient() to
+    % recreate all transient properties.
     properties(GetAccess=public,SetAccess=protected,Hidden,Transient)
         % Anonymous function handles to equations evaluating the LHS-RHS.
-        eqtnN = cell(1,0);
+        eqtnN = [];
+        % Handle to last derivatives and system matrices.
+        lastSyst = [];
     end
     
     methods
@@ -298,7 +268,6 @@ classdef model < modelobj & estimateobj
         varargout = mykalman(varargin)
         varargout = myupdatemodel(varargin)
         varargout = chk(varargin)
-        varargout = chksolution(varargin)
         varargout = datarequest(varargin)
         varargout = disp(varargin)
         varargout = end(varargin)
@@ -334,19 +303,18 @@ classdef model < modelobj & estimateobj
         varargout = mykalmanregoutp(varargin)
         varargout = mymodel2model(varargin)
         varargout = mynamepattrepl(varargin)
-        varargout = mynonlineqtn(varargin)
         varargout = mynunit(varargin)
-        varargout = myoccurence(varargin)
+        varargout = myoccurrence(varargin)
         varargout = myoptpolicy(varargin)
         varargout = myparamstruct(varargin)
         varargout = myparse(varargin)
         varargout = mypreploglik(varargin)
         varargout = myprepsimulate(varargin)
-        varargout = myrange2ttrend(varargin)
         varargout = myreshape(varargin)
-        varargout = myshocktypes(varargin)
+        varargout = myshocktype(varargin)
         varargout = mysolve(varargin)
         varargout = mysolvefail(varargin)
+        varargout = mysolveopt(varargin)
         varargout = mysourcedb(varargin)
         varargout = mysspace(varargin)
         varargout = mysstatelinear(varargin)
@@ -357,6 +325,7 @@ classdef model < modelobj & estimateobj
         varargout = mysubsalt(varargin)
         varargout = mysymbdiff(varargin)
         varargout = mysystem(varargin)
+        varargout = mytransient(varargin)
         varargout = mytrendarray(varargin)
         varargout = myvector(varargin)
         varargout = outputdbase(varargin)
@@ -496,6 +465,7 @@ classdef model < modelobj & estimateobj
             % Superclass constructors.
             This = This@modelobj();
             This = This@estimateobj();
+            opt = struct();
             
             if nargin == 0
                 % Empty model object.
@@ -504,16 +474,17 @@ classdef model < modelobj & estimateobj
                 % Copy model object.
                 This = varargin{1};
             elseif nargin == 1 && isstruct(varargin{1})
-                % Convert struct (potentially based on old model object syntax) to model
-                % object.
+                % Convert struct (potentially based on old model object
+                % syntax) to model object.
                 This = mystruct2obj(This,varargin{1});
             elseif nargin > 0
                 if ischar(varargin{1}) || iscellstr(varargin{1})
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
                     opt = doOptions();
-                    [This,a] = myfile2model(This,fileName,opt);
-                    This = mymodel2model(This,a,opt);
+                    This.linear = opt.linear;
+                    [This,asgn] = myfile2model(This,fileName,opt);
+                    This = mymodel2model(This,asgn,opt);
                 elseif isa(varargin{1},'model')
                     This = varargin{1};
                     varargin(1) = [];

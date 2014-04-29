@@ -88,8 +88,9 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % computed; can be either minus the log likelihood function or weighted sum
 % of prediction errors.
 %
-% * `'objRange='` [ numeric | *`Inf`* ] - The objective function will
-% be computed on this subrange only; `Inf` means the entire filter range.
+% * `'objRange='` [ numeric | *`Inf`* ] - The objective function will be
+% computed on the specified range only; `Inf` means the entire filter
+% range.
 %
 % * `'precision='` [ *`'double'`* | `'single'` ] - Numeric precision to which
 % output data will be stored; all calculations themselves always run to
@@ -100,7 +101,8 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % scale factor will be estimated.
 %
 % * `'returnCont='` [ `true` | *`false`* ] - Return contributions of
-% measurement variables to the estimates of all variables and shocks.
+% prediction errors in measurement variables to the estimates of all
+% variables and shocks.
 %
 % * `'returnMse='` [ *`true`* | `false` ] - Return MSE matrices for
 % predetermined state variables; these can be used for settin up initial
@@ -116,13 +118,13 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % Options for models with non-linearised equations
 % =================================================
 %
-% * `'nonlinearise='` [ numeric | *`0`* ] - If non-zero the prediction step
+% * `'nonlinear='` [ numeric | *`0`* ] - If non-zero the prediction step
 % in the Kalman filter will be run in an exact non-linear mode using the
 % same technique as [`model/simulate`](model/simulate).
 %
 % * `'simulate='` [ cell | empty ] - Options passed in to `simulate` when
 % invoking the non-linear simulation in the prediction step; only used when
-% `nonlinearise=` is greater than `0`.
+% `nonlinear=` is greater than `0`.
 %
 % Description
 % ============
@@ -229,8 +231,8 @@ nXPer = length(xRange);
 nanData = all(all(isnan(Inp),1),2);
 if any(nanData)
     utils.warning('model', ...
-        'No observations available in the input database%s.', ...
-        sprintf(' #%g',(nanData)));
+        'No observations available in input database %s.', ...
+        preparser.alt2str(nanData,'Dataset'));
 end
 
 % Pre-allocated requested hdata output arguments.
@@ -279,6 +281,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
         isSmooth = ~isempty(strfind(opt.data,'smooth'));
         nLoop = max(nData,nAlt);
         nPred = max(nLoop,likOpt.ahead);
+        nCont = ny;
         if nArgOut >= 2
             % Prediction step.
             if isPred
@@ -303,7 +306,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                             struct('IsPreSample',false, ...
                             'Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end
@@ -330,7 +333,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                             struct('IsPreSample',false, ...
                             'Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end
@@ -354,7 +357,7 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
                         hData.smoothcont = hdataobj(This, ...
                             struct('Precision',likOpt.precision, ...
                             'Contrib','Y'), ...
-                            nXPer,ny);
+                            nXPer,nCont);
                     end
                 end
             end

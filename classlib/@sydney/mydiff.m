@@ -48,8 +48,7 @@ if isempty(This.func)
         This = SYDNEY;
         This.args = 0;
     else
-        utils.error('sydney:mydiff', ...
-            'Internal sydney error.');
+        utils.error('sydney:mydiff','#Internal');
     end
     
     return

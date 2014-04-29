@@ -20,6 +20,7 @@ classdef arrayobj < report.tabularobj
                 'typeface','',@ischar,false, ...
                 }];
             This.vline = [];
+            This.highlight = [];
             This.nlead = 0;
         end
         

@@ -67,13 +67,13 @@ nAlt = size(This.A,3);
 C = nan(ny,ny,opt.order+1,nAlt);
 
 % Find explosive parameterisations.
-explosive = isexplosive(This);
+isExpl = isexplosive(This);
 
 if opt.progress
     pBar = progressbar('IRIS VAR.acf progress');
 end
 
-for iAlt = find(~explosive)
+for iAlt = find(~isExpl)
     [T,R,~,~,~,~,U,Cov] = sspace(This,iAlt);
     if isFilter
         S = freqdom.xsfvar(This.A(:,:,iAlt),Cov,freq,filter,applyTo);
@@ -98,15 +98,15 @@ for iAlt = find(~explosive)
     end
     % Update the progress bar.
     if opt.progress
-        update(pBar,iAlt/sum(~explosive));
+        update(pBar,iAlt/sum(~isExpl));
     end
 end
 
-if any(explosive)
+if any(isExpl)
     % Report explosive parameterisations.
     utils.warning('VAR', ...
-        'Cannot compute ACF for explosive parameterisations:%s.', ...
-        preparser.alt2str(explosive));
+        'Cannot compute ACF for explosive parameterisations %s.', ...
+        preparser.alt2str(isExpl));
 end
 
 % Fix entries with negative variances.

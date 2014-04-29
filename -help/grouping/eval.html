@@ -121,9 +121,13 @@ code.LaTeX {
 <li><p><code>S</code> [ dbase ] - Output database with grouped contributions.</p></li>
 <li><p><code>L</code> [ cellstr ] - Legend entries based on the list of group names.</p></li>
 </ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'append='</code> [ <em><code>true</code></em> | <code>false</code> ] - Append in the output database all remaining data columns from the input database that do not correspond to any contribution of shocks or measurement variables.</li>
+</ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
-<p>For a model object M, database D and simulation range R,</p>
+<p>For a model object <code>M</code>, database <code>D</code> and simulation range <code>R</code>,</p>
 <pre><code>S = simulate(M,D,R,&#39;contributions=&#39;,true) ;
 G = grouping(M)
 ...

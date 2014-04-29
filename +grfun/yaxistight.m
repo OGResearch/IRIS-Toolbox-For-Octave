@@ -37,29 +37,32 @@ end
 %--------------------------------------------------------------------------
 
 for iAx = Ax
-    % Temporary show excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(iAx,'on');
-    end
     
-    ch = findobj(iAx,'-not','tag','highlight', ...
-        '-and','-not','tag','vline', ...
-        '-and','-not','tag','hline', ...
-        '-and','-not','tag','zeroline');
-    lim = grfun.myobjbounds(ch);
-    if isempty(lim)
-        yLim = get(iAx,'yLim');
+    if false % is.hg2()
+%         try %#ok<TRYNC>
+%             set(iAx,'yLimSpec','tight');
+%         end
     else
-        yLim = lim(3:4);
-    end
+        % Temporary show excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(iAx,'on');
+        end
+        lim = grfun.myobjbounds(ch);
+        if isempty(lim)
+            yLim = get(iAx,'yLim');
+        else
+            yLim = lim(3:4);
+        end
     
-    % Hide back excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(iAx,'off');
-    end
+        % Hide back excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(iAx,'off');
+        end
     
-    if any(~isinf(yLim)) && yLim(1) < yLim(2)
-        set(iAx,'yLim',yLim,'yLimMode','manual');
+    
+        if any(~isinf(yLim)) && yLim(1) < yLim(2)
+            set(iAx,'yLim',yLim,'yLimMode','manual');
+        end
     end
     
 end

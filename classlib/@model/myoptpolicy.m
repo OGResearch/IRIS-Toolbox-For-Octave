@@ -11,13 +11,14 @@ function [NewEqtn,NewEqtnF,NewEqtnS,NewNonlin] ...
 %--------------------------------------------------------------------------
 
 template = sydney();
+flNameType = floor(This.nametype);
 
 % Make the model names visible inside dynamic regexps.
-name = This.name; %#ok<NASGU>
+name = This.name;
 
 eqtn = cell(size(This.eqtnF));
 eqtn(:) = {''};
-eqtn(This.nametype == 2) = This.eqtnF(This.nametype == 2);
+eqtn(flNameType == 2) = This.eqtnF(flNameType == 2);
 
 % Replace x(:,n,t+k) with xN, xNpK, or xNmK, and &x(n) with Ln.
 eqtn = sydney.myeqtn2symb(eqtn);
@@ -59,7 +60,7 @@ for eq = first : LossPos
     nmOcc = nmOcc(:).';
 
     % Find the index of transition variables.
-    inx = This.nametype(nmOcc) == 2;
+    inx = flNameType(nmOcc) == 2;
     if strcmpi(Type,'consistent') || strcmpi(Type,'discretion')
         % This is a consistent (discretionary) policy. We only
         % differentiate wrt to current dates or lags of transition
@@ -126,26 +127,18 @@ for eq = first : LossPos
         % Shift lags and leads of variables (but not parameters) in the
         % derivative by -sh if sh ~= 0.
         if sh ~= 0
-            %?Shift?
-            dEqtn = sydney.myshift(dEqtn,-sh,This.nametype <= 2);
+            dEqtn = sydney.myshift(dEqtn,-sh,flNameType <= 2);
         end
         
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
         if ~This.linear
             dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
- 
-        dEqtn = regexprep(dEqtn,'x(\d+)p(\d+)', ...
-            '${[name{sscanf($1,''%g'')},''{+'',$2,''}'']}');
-        
-        dEqtn = regexprep(dEqtn,'x(\d+)m(\d+)', ...
-            '${[name{sscanf($1,''%g'')},''{-'',$2,''}'']}');
-        
-        dEqtn = regexprep(dEqtn,'x(\d+)', ...
-            '${name{sscanf($1,''%g'')}}');
-        
-        dEqtn = regexprep(dEqtn, ...
-            'L(:,\d+)','${[''&'',name{sscanf($1,''%g'')}]}');
+         
+        % Create human equations.
+        replFunc = @doReplaceNames; %#ok<NASGU>
+        dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
+        dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
         
         % Put together the derivative of the Lagrangian wrt to variable
         % #neweq.
@@ -183,4 +176,21 @@ if ~This.linear
     NewEqtn(NewNonlin) = strrep(NewEqtn(NewNonlin),'=0;','=#0;');
 end
 
+
+% Nested functions...
+
+
+        function C = doReplaceNames(C1,C2)
+            C = name{sscanf(C1,'%g')};
+            if isempty(C2)
+                return
+            end
+            if C2(1) == 'p'
+                C = [C,'{+',C2(2:end),'}'];
+            elseif C2(1) == 'm'
+                C = [C,'{-',C2(2:end),'}'];
+            end
+        end
+
+    
 end

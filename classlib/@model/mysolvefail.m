@@ -1,50 +1,58 @@
 function [Body,Args] = mysolvefail(This,NPath,NanDeriv,Sing2)
+% mysolvefail  [Not a public function] Create error/warning message when function solve fails.
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
 
 sna = 'Solution not available. ';
-
-printAltFunc = @(x) sprintf(' #%g',find(x));
 
 inx = NPath == -4;
 if any(inx)
 	Body = [sna, ...
-		'The model is declared non-linear but fails to solve because of problems with the steady state.'];
-	Args = { printAltFunc(inx) };
+		'The model is declared non-linear but fails to solve ', ...
+        'because of problems with steady state %s.'];
+	Args = { preparser.alt2str(inx) };
 	return
 end
 
 inx = NPath == -2;
 if any(inx)
     Body = [sna, ...
-        'Singularity or linear dependency in some equations in%s.'];
-    Args = { printAltFunc(inx) };
+        'Singularity or linear dependency in some equations %s.'];
+    Args = { preparser.alt2str(inx) };
     return
 end
 
 inx = NPath == 0;
 if any(inx)
-    Body = [sna,'No stable solution in%s.'];
-    Args = { printAltFunc(inx) };
+    Body = [sna,'No stable solution %s.'];
+    Args = { preparser.alt2str(inx) };
     return
 end
 
 inx = isinf(NPath);
 if any(inx)
-    Body = [sna,'Multiple stable solutions in%s.'];
-    Args = { printAltFunc(inx) };
+    Body = [sna,'Multiple stable solutions %s.'];
+    Args = { preparser.alt2str(inx) };
     return
 end
 
 inx = imag(NPath) ~= 0;
 if any(inx)
-    Body = [sna,'Complex derivatives in%s.'];
-    Args = { printAltFunc(inx) };
+    Body = [sna,'Complex derivatives %s.'];
+    Args = { preparser.alt2str(inx) };
     return
 end
 
 inx = isnan(NPath);
 if any(inx)
-    Body = [sna,'NaNs in system matrices in%s.'];
-    Args = { printAltFunc(inx) };
+    Body = [sna,'NaNs in system matrices %s.'];
+    Args = { preparser.alt2str(inx) };
     return
 end
 
@@ -60,15 +68,16 @@ if any(inx)
             Args{end+1} = This.eqtn{ieq}; %#ok<AGROW>
         end
         Body = [sna, ...
-            'Singularity or NaN in this measurement equation in%s: ''%s''.'];
-	elseif isnan(This) && issolved(solve(This,'linear=',true))
+            'Singularity or NaN in this measurement equation %s: ''%s''.'];
+	elseif ~This.linear && isnan(This,'sstate')
 		Args = {};
 		Body = [sna, ...
-			'Model is linear but is not declared linear and does not have a steady state solution:%s'];
+			'Model is declared nonlinear but has some NaNs ', ...
+            'in its steady state %s.'];
     else
         Args = {};
         Body = [sna, ...
-            'Singularity in state-space matrices:%s.'];
+            'Singularity in state-space matrices %s.'];
     end
     return
 end
@@ -78,12 +87,12 @@ if any(inx)
     Args = {};
     for ii = find(inx)
         for jj = find(NanDeriv{ii})
-            Args{end+1} = printAltFunc(ii); %#ok<AGROW>
+            Args{end+1} = preparser.alt2str(ii); %#ok<AGROW>
             Args{end+1} = This.eqtn{jj}; %#ok<AGROW>
         end
     end
 	Body = [sna, ...
-        'NaN in derivatives of this equation in%s: ''%s''.'];
+        'NaN in derivatives of this equation %s: ''%s''.'];
 end
 
 end

@@ -31,6 +31,7 @@ classdef matrixobj < report.tabularobj & report.condformatobj
                 'typeface','',@ischar,false, ...
                 }];
             This.vline = [];
+            This.highlight = [];
             This.nlead = 0;
         end
         

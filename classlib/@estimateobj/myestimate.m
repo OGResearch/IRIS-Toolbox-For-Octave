@@ -32,6 +32,7 @@ if ~isempty(Pri.p0)
     % handle returned as an output of `estimate` will be not be affected by
     % re-scaling the std devs in the output model object. Make sure the
     % model is solved in the very first run.
+    LAMBDA = [];
     if ischar(EstOpt.solver)
         % Optimization toolbox
         %----------------------
@@ -59,9 +60,6 @@ if ~isempty(Pri.p0)
                 Pri.pl,Pri.pu,[],EstOpt.optimset,...
                 This,Data,Pri,EstOpt,LikOpt);
         end
-        % Find lower or upper bound hits.
-        bhit(double(LAMBDA.lower) ~= 0) = -1;
-        bhit(double(LAMBDA.upper) ~= 0) = 1;
     else
         % User-supplied optimisation routine
         %------------------------------------
@@ -77,9 +75,16 @@ if ~isempty(Pri.p0)
         [PStar,ObjStar,Hess{1}] = ...
             f(@(x) objfunc(x,This,Data,Pri,EstOpt,LikOpt), ...
             Pri.p0,Pri.pl,Pri.pu,EstOpt.optimset,args{:});
-        bhit(PStar == Pri.pl) = -1;
-        bhit(PStar == Pri.pu) = 1;
     end
+    
+    if isstruct(LAMBDA)
+        % Find lower or upper bound hits.
+        bhit(double(LAMBDA.lower) ~= 0) = -1;
+        bhit(double(LAMBDA.upper) ~= 0) = 1;
+    else
+        bhit(PStar <= Pri.pl) = -1;
+        bhit(PStar >= Pri.pu) = 1;
+    end        
     
     % Fix numerical inaccuracies since `fmincon` sometimes returns
     % values numerically below lower bounds or above upper bounds.

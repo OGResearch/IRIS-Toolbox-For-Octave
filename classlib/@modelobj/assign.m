@@ -58,11 +58,11 @@ elseif n == 1 && isa(varargin{1},'modelobj')
         Assigned = Inf;
         return
     elseif ~equalNames || ~equalTypes
-        utils.error('model', ...
+        utils.error('modelobj:assign', ...
             ['Cannot assign from a model object ', ...
             'with different names or name types.']);
     else
-        utils.error('model', ...
+        utils.error('modelobj:assign', ...
             ['Cannot assign from a model object ', ...
             'with different number of paratemeterisations.']);
     end
@@ -70,8 +70,8 @@ elseif n == 1 && isa(varargin{1},'modelobj')
 elseif n == 1 && isnumeric(varargin{1})
     % m = assign(m,array).
     if isempty(ASSIGNPOS) && isempty(STDCORRPOS)
-        utils.error('model', ...
-            ['ASSIGN must be initiliased before used ', ...
+        utils.error('modelobj:assign', ...
+            ['Function assign() must be initiliased before used ', ...
             'with a single numeric input.']);
     end
     Assign(ASSIGNPOS) = true;
@@ -107,9 +107,9 @@ elseif n <= 2 && iscellstr(varargin{1})
         value = value(1,:,ones(1,nAlt));
     end
     if (growth || level) && any(imag(value(:)) ~= 0)
-        utils.error('model', ...
-            ['You may only assign real numbers ', ...
-            'when using the ''-level'' or ''-growth'' options.']);
+        utils.error('modelobj:assign', ...
+            ['Cannot assign non-zero imag numbers ', ...
+            'with ''-level'' or ''-growth'' options.']);
     end
     if growth
         value(1,ASSIGNRHS,:) = real(This.Assign(1,ASSIGNPOS,:)) ...
@@ -138,24 +138,32 @@ elseif n <= 2 && isstruct(varargin{1})
     d = varargin{1};
     varargin(1) = [];
     c = fieldnames(d);
-    cc = c;
+    allName = c;
     if ~isempty(varargin) && ~isempty(varargin{1})
         clone = varargin{1};
         if ~preparser.mychkclonestring(clone)
-            utils.error('preparser', ...
+            utils.error('modelobj:assign', ...
                 'Invalid clone string: ''%s''.', ...
                 clone);
         end
-        cc = strrep(clone,'?',c);
+        allName = strrep(clone,'?',c);
     end
-    [assignPos,stdcorrPos] = mynameposition(This,cc);
+    [assignPos,stdcorrPos] = mynameposition(This,allName);
+    ixValidLen = true(1,length(allName));
+    ixValidImag = true(1,length(allName));
+    % Update .Assign.
     for i = find(~isnan(assignPos))
         x = d.(c{i});
-        if (growth || level) && any(imag(x(:)) ~= 0)
-            utils.error('model', ...
-                ['You may only assign real numbers ', ...
-                'when using the ''level'' or ''growth'' labels.']);
+        x = permute(x(:),[2,3,1]);
+        ixValidImag(i) = all(imag(x) == 0) || (~growth && ~level);
+        if ~ixValidImag(i)
+            continue
         end
+        ixValidLen(i) = any(numel(x) == [1,nAlt]);
+        if ~ixValidLen(i)
+            continue
+        end
+        x = permute(x,[2,3,1]);
         if growth
             x = real(This.Assign(1,assignPos(i),:)) + 1i*x;
         elseif level
@@ -164,10 +172,22 @@ elseif n <= 2 && isstruct(varargin{1})
         This.Assign(1,assignPos(i),:) = x;
         Assign(assignPos(i)) = true;
     end
+    % Update .stdcorr.
     for i = find(~isnan(stdcorrPos))
-        This.stdcorr(1,stdcorrPos(i),:) = d.(c{i});
+        x = d.(c{i});
+        x = permute(x(:),[2,3,1]);
+        ixValidImag(i) = all(imag(x) == 0);
+        if ~ixValidImag(i)
+            continue
+        end
+        ixValidLen(i) = any(numel(x) == [1,nAlt]);
+        if ~ixValidLen(i)
+            continue
+        end
+        This.stdcorr(1,stdcorrPos(i),:) = x;
         stdcorr(stdcorrPos(i)) = true;
     end
+    doChkValid();
     if ismatlab
         doReset();
     else
@@ -181,35 +201,49 @@ elseif iscellstr(varargin(1:2:end))
     % m = assign(m,name,value,name,value,...)
     Assign = false(1,size(This.Assign,2));
     stdcorr = false(1,size(This.stdcorr,2));
-    for j = 1 : 2 : length(varargin)
-        if isempty(varargin{j})
+    allName = strtrim(varargin(1:2:end));
+    % Allow for equal signs in `assign(m,'alpha=',1)`.
+    allName = regexprep(allName,'=$','');
+    allValue = varargin(2:2:end);
+    nName = length(allName);
+    ixValidLen = true(1,nName);
+    ixValidImag = true(1,nName);
+    for j = 1 : nName
+        name = allName{j};
+        if isempty(name)
             continue
         end
-        % Allow for equal signs in `assign(m,'alpha=',1)`.
-        varargin{j} = strtrim(varargin{j});
-        if ~isempty(varargin{j}) && varargin{j}(end) == '='
-            varargin{j}(end) = '';
+        value = allValue{j};
+        value = permute(value(:),[2,3,1]);
+        ixValidLen(j) = any(numel(value) == [1,nAlt]);
+        if ~ixValidLen(j)
+            continue
         end
-        [assignInx,stdcorrInx] = mynameposition(This,varargin{j});
-        for i = find(assignInx).'
-            if (growth || level) && any(imag(varargin{j+1}(:)) ~= 0)
-                utils.error('model', ...
-                    ['You may only assign real numbers ', ...
-                    'when using the ''level'' or ''growth'' labels.']);
-            end
+        [assignInx,stdcorrInx] = mynameposition(This,name);
+        assignInx = assignInx(:).';
+        stdcorrInx = stdcorrInx(:).';
+        ixValidImag(j) = all(imag(value) == 0) ...
+            || (~growth && ~level && ~any(stdcorrInx));
+        if ~ixValidImag(j)
+            continue
+        end
+        % Update .Assign.
+        for i = find(assignInx)
             if growth
-                varargin{j+1} = real(This.Assign(1,i,:)) + 1i*varargin{j+1};
+                value = real(This.Assign(1,i,:)) + 1i*value;
             elseif level
-                varargin{j+1} = varargin{j+1} + 1i*imag(This.Assign(1,i,:));
+                value = value + 1i*imag(This.Assign(1,i,:));
             end
-            This.Assign(1,i,:) = varargin{j+1};
+            This.Assign(1,i,:) = value;
             Assign(i) = true;
         end
-        if any(stdcorrInx)
-            This.stdcorr(1,stdcorrInx,:) = varargin{j+1};
-            stdcorr(stdcorrInx) = true;
+        % Update .stdcorr.
+        for i = find(stdcorrInx)
+            This.stdcorr(1,i,:) = value;
+            stdcorr(i) = true;
         end
     end
+    doChkValid();
     if ismatlab
         doReset();
     else
@@ -218,7 +252,7 @@ elseif iscellstr(varargin(1:2:end))
     
 else
     % Throw an invalid assignment error.
-    utils.error(class(This), ...
+    utils.error('modelobj:assign', ...
         'Invalid assignment to a %s object.', ...
         class(This));
 end
@@ -241,21 +275,47 @@ if nargout > 1
     end
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doReset()
         ASSIGNPOS = [];
         ASSIGNRHS = [];
         STDCORRPOS = [];
         STDCORRRHS = [];
-    end
-    
+    end % doReset()
+
+
+%**************************************************************************
+
+
     function [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct()
         ASSIGNPOS = [];
         ASSIGNRHS = [];
         STDCORRPOS = [];
         STDCORRRHS = [];
-    end
+    end % doReset4Oct
+
+
+%**************************************************************************
+
+
+    function doChkValid()
+        if any(~ixValidLen)
+            utils.error('modelobj:assign', ...
+                ['Incorrect number of alternative values assigned ', ...
+                'to this name: ''%s''.'], ...
+                allName{~ixValidLen});
+        end
+        if any(~ixValidImag)
+            utils.error('modelobj:assign', ...
+                'Cannot assign non-zero imag number to this name: ''%s''.', ...
+                allName{~ixValidImag});
+        end
+    end % doChkValid()
 
 end

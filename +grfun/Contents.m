@@ -6,7 +6,7 @@
 % * [`bottomlegend`](grfun/bottomlegend) - Horizontal graph legend displayed at the bottom of the figure window.
 % * [`ftitle`](grfun/ftitle) - Add title to figure window.
 % * [`highlight`](grfun/highlight) - Highlight specified range or date range in a graph.
-% * [`hline`](grfun/hline) - Add vertical line with text caption at the specified position.
+% * [`hline`](grfun/hline) - Add horizontal line with text caption at the specified position.
 % * [`maxfigure`](grfun/maxfigure) - Maximize figure window.
 % * [`movetobkg`](grfun/movetobkg) - Move graphics objects to the background.
 % * [`movetosubplot`](grfun/movetosubplot) - Move an existing axes object or legend to specified subplot position.

@@ -1,4 +1,4 @@
-function Affected = myaffectedeqtn(This,iAlt,Select,Linear)
+function Affected = myaffectedeqtn(This,iAlt,Opt)
 % myaffectedeqtn  [Not a public function] Equations affected by parameter changes since last system.
 %
 % Backend IRIS function.
@@ -7,30 +7,28 @@ function Affected = myaffectedeqtn(This,iAlt,Select,Linear)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-try
-    Select; %#ok<VUNUS>
-catch %#ok<CTCH>
-    Select = true;
+if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
+    Opt.linear = This.linear;
 end
 
 %--------------------------------------------------------------------------
 
 Affected = true(size(This.eqtn));
-
-% User forces all equations to be selected.
-if ~Select
+if ~Opt.select
     return
 end
 
-% If deriv0 does not exist we must select all equations.
-if ~any(any(This.deriv0.f(This.eqtntype <= 2,:)))
+Assign0 = This.lastSyst.asgn;
+
+% If last system does not exist, we must select all equations.
+if nnz(This.lastSyst.derv.f) == 0
     return
 end
 
 % Changes in steady states and parameters.
-changed = This.Assign(1,:,iAlt) ~= This.Assign0 ...
-    & (~isnan(This.Assign(1,:,iAlt)) | ~isnan(This.Assign0));
-if Linear
+changed = This.Assign(1,:,iAlt) ~= Assign0 ...
+    & (~isnan(This.Assign(1,:,iAlt)) | ~isnan(Assign0));
+if Opt.linear
     % Only parameter changes matter in linear models.
     changed = changed & This.nametype == 4;
 end

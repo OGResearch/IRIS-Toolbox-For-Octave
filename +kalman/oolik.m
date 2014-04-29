@@ -1,4 +1,4 @@
-function [Obj,V,Est,PEst] = oolik(L0,L1,L2,L3,NObs,Opt)
+function [Obj,V,Est,PEst] = oolik(LogDetF,PeFiPe,MtFiM,MtFiPe,NObs,Opt)
 % oolik  [Not a public function] Estimate out-of-lik parameters and sum up log-likelihood function components.
 %
 % Backed IRIS function.
@@ -8,7 +8,7 @@ function [Obj,V,Est,PEst] = oolik(L0,L1,L2,L3,NObs,Opt)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
- 
+
 try
     Opt.objfunc;
 catch
@@ -17,18 +17,20 @@ end
 
 %--------------------------------------------------------------------------
 
-% L0 := sum log det F;
-% L1 := sum pe Fi pe;
-% L2 := sum Mt Fi M;
-% L3 := sum Mt Fi pe;
+sumNObs = sum(NObs,2);
+sumLogDetF = sum(LogDetF,2);
+sumPeFiPe = sum(PeFiPe,2);
+sumMtFiM = sum(MtFiM,3);
+sumMtFiPe = sum(MtFiPe,2);
+isOutOfLik = ~isempty(sumMtFiM) && ~isempty(sumMtFiPe);
 
 % Estimate user-requested out-of-lik parameters.
-if ~isempty(L2) && ~isempty(L3)    
-    L2i = pinv(L2);
-    Est = L2i * L3;
+if isOutOfLik
+    L2i = pinv(sumMtFiM);
+    Est = L2i * sumMtFiPe;
     PEst = L2i;
     % Correct likelihood for estimated parameters.
-    L1 = L1 - Est.'*L3;
+    sumPeFiPe = sumPeFiPe - Est.'*sumMtFiPe;
 else
     Est = zeros(0,1);
     PEst = zeros(0);
@@ -37,22 +39,43 @@ end
 % Estimate common variance factor.
 V = 1;
 if Opt.relative && Opt.objfunc == 1
-    if NObs > 0
-        V = L1 / NObs;
-        L0 = L0 + NObs*log(V);
-        L1 = L1 / V;
+    if sumNObs > 0
+        V = sumPeFiPe / sumNObs;
+        sumLogDetF = sumLogDetF + sumNObs*log(V);
+        sumPeFiPe = sumPeFiPe / V;
     else
-        L1 = 0;
+        sumPeFiPe = 0;
     end
 end
 
-% Put together objective function.
+% Put together the requested objective function.
 if Opt.objfunc == 1
     % Minus log likelihood.
-    Obj = (NObs*log(2*pi) + L0 + L1) / 2;
+    log2Pi = log(2*pi);
+    Obj = (sumNObs*log2Pi + sumLogDetF + sumPeFiPe) / 2;
 else
     % Weighted prediction errors.
-    Obj = L1 / 2;
+    Obj = sumPeFiPe / 2;
 end
+
+if ~Opt.objdecomp
+    return
+end
+
+% Objective function factors (components).
+if isOutOfLik
+    PeFiPe = PeFiPe - Est.'*MtFiPe;
+end
+if V ~= 1
+    LogDetF = LogDetF + NObs*log(V);
+    PeFiPe = PeFiPe / V;
+end
+sumObj = Obj;
+if Opt.objfunc == 1
+    Obj = (NObs*log2Pi + LogDetF + PeFiPe) / 2;
+else
+    Obj = PeFiPe / 2;
+end
+Obj(1) = sumObj;
 
 end

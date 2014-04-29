@@ -32,9 +32,9 @@ ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
 
-isStationary = isstationary(This);
+isStat = isstationary(This);
 for iAlt = 1 : nAlt
-    if isStationary(iAlt)
+    if isStat(iAlt)
         [T,R,~,~,~,~,U,Omg] = sspace(This,iAlt);
         % 0th and 1st order autocovariance matrices of stacked y vector.
         C = covfun.acovf(T,R,[],[],[],[],U,Omg,This.eigval(1,:,iAlt),1);
@@ -56,11 +56,11 @@ for iAlt = 1 : nAlt
     end
 end
 
-if any(~isStationary)
+if any(~isStat)
     utils.warning('VAR', ...
         ['Cannot compute backward VAR ', ...
-        'for non-stationary parameterisations:%s.'], ...
-        preparser.alt2str(~isStationary));
+        'for non-stationary parameterisations %s.'], ...
+        preparser.alt2str(~isStat));
 end
 
 [This.T,This.U,This.eigval] = schur(This.A);

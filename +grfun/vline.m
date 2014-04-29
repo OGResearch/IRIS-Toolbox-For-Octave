@@ -116,14 +116,14 @@ if isequal(getappdata(Ax,'tseries'),true)
     end
 end
 
-yLim = get(Ax,'yLim');
+yLim = realmax()*[-1,1];
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
 nLoc = numel(Loc);
 for i = 1 : nLoc
 
-    ln = plot(Ax,x([i,i]),yLim);
+    ln = plot(Ax,x([i,i]),yLim,'yLimInclude','off');
     ln = ln(:).';
     
     % Temporary show excluded from legend (for Octave's way of excluding)
@@ -133,9 +133,7 @@ for i = 1 : nLoc
     
     ch = get(Ax,'children');
     for j = ln
-        % Update the vline y-data whenever the parent y-lims change.
-        grfun.listener(Ax,j,'vline');
-        % Move the highlight patch object to the background.
+        % Move the vline object to the background.
         ch(ch == j) = [];
         ch(end+1) = j; %#ok<AGROW>
     end
@@ -159,20 +157,22 @@ end
 % Reset `'nextPlot='` to its original value.
 set(Ax,'nextPlot',nextPlot);
 
-if ~isempty(Ln)
-    if ~isempty(lineOpt)
-        set(Ln,'color',[0,0,0]);
-        set(Ln,lineOpt{:});
-    end
-    
-    % Tag the vlines and captions for `qstyle`.
-    set(Ln,'tag','vline');
-    set(Cp,'tag','vline-caption');
-    
-    % Exclude the line object from legend.
-    if opt.excludefromlegend
-        grfun.excludefromlegend(Ln);
-    end
+if isempty(Ln)
+    return
+end
+
+if ~isempty(lineOpt)
+    set(Ln,'color',[0,0,0]);
+    set(Ln,lineOpt{:});
+end
+
+% Tag the vlines and captions for `qstyle`.
+set(Ln,'tag','vline');
+set(Cp,'tag','vline-caption');
+
+% Exclude the line object from legend.
+if opt.excludefromlegend
+    grfun.excludefromlegend(Ln);
 end
 
 end

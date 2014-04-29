@@ -44,8 +44,9 @@ function [MinusLogLik,Grad,Hess,V] ...
 % * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links for each change
 % in a parameter.
 %
-% * `'solve='` [ *`true`* | `false` ] - Re-compute solution for each change in a
-% parameter.
+% * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution for
+% each parameter change; you can specify a cell array with options for the
+% `solve` function.
 %
 % * `'sstate='` [ `true` | *`false`* | cell ] - Re-compute steady state in each
 % differentiation step; if the model is non-linear, you can pass in a cell

@@ -39,7 +39,7 @@ nData = size(Inp,3);
 %--------------------------------------------------------------------------
 
 s = struct();
-s.isnonlin = Opt.nonlinearise > 0 && any(This.nonlin);
+s.isnonlin = Opt.nonlinear > 0 && any(This.nonlin);
 s.ahead = Opt.ahead;
 s.isObjOnly = nao == 1;
 
@@ -88,7 +88,12 @@ if ~s.isObjOnly
 end
 
 % Pre-allocate the non-hdata output arguments.
-Obj = nan(1,nLoop,Opt.precision);
+nObj = 1;
+if Opt.objdecomp
+    nObj = nPer;
+end
+Obj = nan(nObj,nLoop,Opt.precision);
+
 if ~s.isObjOnly
     % Regular (non-hdata) output arguments.
     RegOutp = struct();
@@ -102,7 +107,7 @@ if ~s.isObjOnly
 end
 
 % Indices of shocks occuring in measurement and transition equations.
-[s.mshocks,s.tshocks] = myshocktypes(This);
+[s.mshocks,s.tshocks] = myshocktype(This);
 
 % Prepare struct and options for non-linear simulations (prediction
 % step).
@@ -118,7 +123,7 @@ if ~s.isObjOnly && Opt.progress
     progress = progressbar('IRIS model.kalman progress');
 end
 
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 
 for iLoop = 1 : nLoop
     
@@ -195,8 +200,8 @@ for iLoop = 1 : nLoop
     
     % Continue immediately if solution is not available; report NaN solutions
     % post mortem.
-    isSolution(iLoop) = all(~isnan(T(:)));
-    if ~isSolution(iLoop)
+    isSol(iLoop) = all(~isnan(T(:)));
+    if ~isSol(iLoop)
         continue
     end
     
@@ -273,7 +278,7 @@ for iLoop = 1 : nLoop
     end
     % Run prediction error decomposition and evaluate user-requested
     % objective function.
-    [Obj(iLoop),s] = kalman.ped(s,s2,Opt);
+    [Obj(:,iLoop),s] = kalman.ped(s,s2,Opt);
     
     % Return immediately if only the object
     if s.isObjOnly
@@ -376,10 +381,10 @@ for iLoop = 1 : nLoop
     
 end
 
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        sprintf(' #%g',find(~isSolution)));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 
@@ -387,6 +392,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRequestOutp()
         s.retPredMean = isfield(HData,'predmean');
         s.retPredMse = isfield(HData,'predmse');
@@ -477,6 +484,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRetFilter()
         
         if s.retFilterMean
@@ -522,6 +531,8 @@ end
 
 
 %**************************************************************************
+
+
     function doRetSmooth()
         
         if s.retSmoothMean
@@ -576,11 +587,13 @@ end
 
 
 %**************************************************************************
+
+
     function doPrepareNonlin()
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
         s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
         s2.isNonlin = true;
-        s2.qAnchors = false(nEqtn,Opt.nonlinearise);
+        s2.qAnchors = false(nEqtn,Opt.nonlinear);
         s2.qAnchors(This.nonlin,:) = true;
         s2.yAnchors = [];
         s2.xAnchors = [];
@@ -588,7 +601,7 @@ end
         s2.euanchors = [];
         s2.weightsA = [];
         s2.weightsU = [];
-        s2.npernonlin = Opt.nonlinearise;
+        s2.npernonlin = Opt.nonlinear;
         s2.tplusk = s2.npernonlin - 1;
         s2.progress = [];
         s2.a0 = [];
@@ -607,7 +620,10 @@ end
 
 % Subfunctions...
 
+
 %**************************************************************************
+
+
 function S = xxAhead(S)
 % xxAhead  K-step ahead predictions and prediction errors for K>2 when
 % requested by caller. This function must be called after correction for
@@ -677,6 +693,8 @@ end % xxAhead()
 
 
 %**************************************************************************
+
+
 function S = xxPredXfMean(S)
 % xxPredXfMean  Point prediction step for fwl transition variables. The
 % MSE matrices are computed in `xxSmoothMse` only when needed.
@@ -702,6 +720,8 @@ end % xxPredXfMean()
 
 
 %**************************************************************************
+
+
 function S = xxFilterMean(S)
 
 nb = size(S.Ta,1);
@@ -741,6 +761,8 @@ end % xxFilterMean()
 
 
 %**************************************************************************
+
+
 function S = xxFilterMse(S)
 % xxFilterMse  MSE matrices for updating step.
 
@@ -781,6 +803,8 @@ end % xxFilterMse()
 
 
 %**************************************************************************
+
+
 function S = xxSmoothMse(S)
 % xxSmoothMse  Smoother for MSE matrices of all variables.
 
@@ -823,6 +847,8 @@ end % xxSmoothMse()
 
 
 %**************************************************************************
+
+
 function S = xxSmoothMean(S)
 % xxSmoothMean  Kalman smoother for point estimates of all variables.
 
@@ -858,6 +884,8 @@ end % xxSmoothMean()
 
 
 %**************************************************************************
+
+
 function [D,Ka,Kf] = xxShockTunes(S,Opt)
 % xxShockTunes  Add tunes on shock means to constant terms.
 
@@ -915,6 +943,8 @@ end % xxShockTunes()
 
 
 %**************************************************************************
+
+
 function S = xxOmg2SaSy(S)
 
 % Convert the structural covariance matrix `Omg` to reduced-form
@@ -988,6 +1018,8 @@ end % xxOmg2SaSy()
 
 
 %**************************************************************************
+
+
 function [Pb2,Dy2,Df2,Db2,N] = xxOneStepBackMse(S,T,N)
 % xxOneStepBackMse  One-step backward smoothing for MSE matrices.
 

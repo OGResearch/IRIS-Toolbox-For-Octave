@@ -12,41 +12,43 @@ classdef theparser
         code = '';
         caller = '';
         labels = fragileobj();
+        assign = struct();
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
         nameBlk = false(1,0);
         nameType = nan(1,0);
+        stdcorrAllowed = false(1,0); % Stdcorr declarations allowed here.
+        stdcorrBasis = false(1,0); % Stdcorr names derived from here.
         eqtnBlk = false(1,0);
         flagBlk = false(1,0);
         flaggable = false(1,0);
         essential = false(1,0);
         otherKey = cell(1,0);
+        assignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
     end
     
     methods
+        
         
         function This = theparser(varargin)
             if isempty(varargin)
                 return
             end
+            
             if length(varargin) == 1 && isa(varargin{1},'theparser')
                 This = varargin{1};
                 return
             end
+            
             if length(varargin) == 1 && isa(varargin{1},'preparser')
-                This.fname = varargin{1}.fname;
-                This.code = varargin{1}.code;
-                This.labels = varargin{1}.labels;
+                doCopyPreparser(varargin{1});
                 return
             end
-            if length(varargin) == 2 ...
-                    && ischar(varargin{1}) && isa(varargin{2},'preparser')
-                This.caller = varargin{1};
-                This.fname = varargin{2}.fname;
-                This.code = varargin{2}.code;
-                This.labels = varargin{2}.labels;
+            
+            if length(varargin) >= 1 && ischar(varargin{1})
                 % Initialise class-specific theta parser.
+                This.caller = varargin{1};
                 switch This.caller
                     case 'model'
                         This = model(This);
@@ -55,23 +57,43 @@ classdef theparser
                             'Invalid caller class ''%s''.', ...
                             This.caller);
                 end
-                return
+                
+                % Copy info from preparser.
+                if length(varargin) >= 2 && isa(varargin{2},'preparser')
+                    doCopyPreparser(varargin{2});
+                end
+                
+            end
+             
+            function doCopyPreparser(Pre)
+                This.fname = Pre.fname;
+                This.code = Pre.code;
+                This.labels = Pre.labels;
+                This.assign = Pre.assign;
             end
         end
-        
+    end
+    
+    
+    methods
         varargout = altsyntax(varargin)
-        varargout = errorparsing(varargin)
+        varargout = blkpos(varargin)
         varargout = parse(varargin)
         varargout = parseeqtns(varargin)
         varargout = parseflags(varargin);
         varargout = parsenames(varargin)
         varargout = readblk(varargin)
+        varargout = specget(varargin)
     end
     
+    
+    methods (Static)
+        varargout = stdcorrindex(varargin)
+    end
+    
+    
     methods (Access=protected)
-        
         varargout = model(varargin)
-        
     end
     
 end

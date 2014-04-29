@@ -36,6 +36,11 @@ M = solve(M,...)
   the model cannot be used later in simulations or forecasts with
   anticipated shocks or plans.
 \item
+  \texttt{'eqtn='} {[} \emph{\texttt{'all'}} \textbar{}
+  \texttt{'measurement'} \textbar{} \texttt{'transition'} {]} - Update
+  existing solution in the measurement block, or the transition block,
+  or both.
+\item
   \texttt{'error='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   {]} - Throw an error if no unique stable solution exists; if
   \texttt{false}, a warning message only will be displayed.

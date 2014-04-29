@@ -1,10 +1,10 @@
-function [A,B,C,D,F,G,H,J,List,NF,Deriv] = system(This,Alt,varargin)
-% system  System matrices before model is solved.
+function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
+% system  System matrices for unsolved model.
 %
 % Syntax
 % =======
 %
-%     [A,B,C,D,F,G,H,J,List,NF] = system(M)
+%     [A,B,C,D,F,G,H,J,List,Nf] = system(M)
 %
 % Input arguments
 % ================
@@ -14,33 +14,16 @@ function [A,B,C,D,F,G,H,J,List,NF,Deriv] = system(This,Alt,varargin)
 % Output arguments
 % =================
 %
-% * `A` [ numeric ] - Matrix at the vector of expectations in the
-% transition equation.
-%
-% * `B` [ numeric ] - Matrix at current vector in the transition equations.
-%
-% * `C` [ numeric ] - Constant vector in the transition equations.
-%
-% * `D` [ numeric ] - Matrix at transition shocks in the transition
-% equations.
-%
-% * `F` [ numeric ] - Matrix at measurement variables in the measurement
-% equations.
-%
-% * `G` [ numeric ] - Matrix at predetermined transition variables in the
-% measurement variables.
-%
-% * `H` [ numeric ] - Constant vector in the measurement equations.
-%
-% * `J` [ numeric ] - Matrix at measurement shocks in the measurement
-% equations.
+% * `A`, `B`, `C`, `D`, `F`, `G`, `H` ,`J`  [ numeric ] - Matrices
+% describing the unsolved system, see Description.
 %
 % * `List` [ cell ] - Lists of measurement variables, transition variables
 % includint their auxiliary lags and leads, and shocks as they appear in
 % the rows and columns of the system matrices.
 %
-% * `NF` [ numeric ] - Number of non-predetermined (forward-looking)
-% transition variables.
+% * `Nf` [ numeric ] - Number of non-predetermined (forward-looking)
+% transition variables (multiplied by the first `Nf` columns of matrices
+% `A` and `B`).
 %
 % Options
 % ========
@@ -52,6 +35,10 @@ function [A,B,C,D,F,G,H,J,List,NF,Deriv] = system(This,Alt,varargin)
 % * `'select='` [ *`true`* | `false` ] - Automatically detect which
 % equations need to be re-differentiated based on parameter changes from
 % the last time the system matrices were calculated.
+%
+% * `'sparse='` [ `true` | *`false`* ] - Return matrices `A`, `B`, `D`,
+% `F`, `G`, and `J` as sparse matrices; can be set to `true` only in models
+% with one parameterization.
 %
 % Description
 % ============
@@ -83,27 +70,38 @@ end
 
 %--------------------------------------------------------------------------
 
-if nargin < 2
-    nAlt = size(This.Assign,3);
-    Alt = 1 : nAlt;
-elseif islogical(Alt)
-    Alt = find(Alt);
+nAlt = size(This.Assign,3);
+
+if opt.sparse && nAlt > 1
+    utils.warning('model:system', ...
+        ['Cannot return system matrices as sparse matrices in models ', ...
+        'with multiple parameterizations. Returning full matrices instead.']);
+    opt.sparse = false;
 end
 
 % System matrices.
-for iAlt = transpose(Alt(:))
-    eqSelect = myaffectedeqtn(This,iAlt,opt.select,opt.linear);
-    eqSelect(This.eqtntype >= 3) = false;
-    [This,Deriv] = myderiv(This,eqSelect,iAlt,opt.symbolic,opt.linear);
-    [This,sys] = mysystem(This,Deriv,eqSelect,iAlt);
-    F(:,:,iAlt) = full(sys.A{1}); %#ok<*AGROW>
-    G(:,:,iAlt) = full(sys.B{1});
-    H(:,1,iAlt) = full(sys.K{1});
-    J(:,:,iAlt) = full(sys.E{1});
-    A(:,:,iAlt) = full(sys.A{2});
-    B(:,:,iAlt) = full(sys.B{2});
-    C(:,1,iAlt) = full(sys.K{2});
-    D(:,:,iAlt) = full(sys.E{2});
+if opt.sparse && nAlt == 1
+    [Syst,~,Derv] = mysystem(This,1,opt);
+    F = Syst.A{1}; %#ok<*AGROW>
+    G = Syst.B{1};
+    H = Syst.K{1};
+    J = Syst.E{1};
+    A = Syst.A{2};
+    B = Syst.B{2};
+    C = Syst.K{2};
+    D = Syst.E{2};
+else
+    for iAlt = 1 : nAlt
+        [Syst,~,Derv] = mysystem(This,iAlt,opt);
+        F(:,:,iAlt) = full(Syst.A{1}); %#ok<*AGROW>
+        G(:,:,iAlt) = full(Syst.B{1});
+        H(:,1,iAlt) = full(Syst.K{1});
+        J(:,:,iAlt) = full(Syst.E{1});
+        A(:,:,iAlt) = full(Syst.A{2});
+        B(:,:,iAlt) = full(Syst.B{2});
+        C(:,1,iAlt) = full(Syst.K{2});
+        D(:,:,iAlt) = full(Syst.E{2});
+    end
 end
 
 % Lists of measurement variables, backward-looking transition variables, and
@@ -115,6 +113,6 @@ List = { ...
     };
 
 % Number of forward-looking variables.
-NF = sum(imag(This.systemid{2}) >= 0);
+Nf = sum(imag(This.systemid{2}) >= 0);
 
 end

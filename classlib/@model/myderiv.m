@@ -1,4 +1,4 @@
-function [This,D,NanDeriv] = myderiv(This,EqSelect,IAlt,Symbolic,Linear)
+function [D,NanDerv] = myderiv(This,EqSelect,IAlt,Opt)
 % myderiv  [Not a public function] Compute first-order expansion of equations around current steady state.
 %
 % Backed IRIS function.
@@ -9,20 +9,21 @@ function [This,D,NanDeriv] = myderiv(This,EqSelect,IAlt,Symbolic,Linear)
 
 isNanDeriv = nargout > 2;
 
+if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
+    Opt.linear = This.linear;
+end
+
 %--------------------------------------------------------------------------
 
 % Copy last computed derivatives.
-D = struct();
-D.c = This.deriv0.c;
-D.f = This.deriv0.f;
-D.n = This.deriv0.n;
+D = This.lastSyst.derv;
 
 assign = This.Assign(1,:,IAlt);
 nName = length(This.name);
 nEqtn = length(This.eqtn);
 EqSelect(This.eqtntype >= 3) = false;
 
-NanDeriv = false(1,nEqtn);
+NanDerv = false(1,nEqtn);
 
 % Prepare 3D occur array limited to occurences of variables and shocks in
 % measurement and transition equations.
@@ -36,7 +37,7 @@ if any(EqSelect)
     nt = size(This.occur,2) / nName;
     nVar = sum(This.nametype <= 3);
     t = This.tzero;
-    if Symbolic
+    if Opt.symbolic
         symbSelect = ~cellfun(@isempty,This.deqtnF);
     else
         symbSelect = false(1,nEqtn);
@@ -58,7 +59,7 @@ if any(EqSelect)
     D.n(EqSelect,:) = tempEye(EqSelect,This.nonlin);
     
     % Normalise derivatives by largest number in non-linear models.
-    if ~Linear
+    if ~Opt.linear
         for iEq = find(EqSelect)
             inx = D.f(iEq,:) ~= 0;
             if any(inx)
@@ -71,15 +72,8 @@ if any(EqSelect)
     
 end
 
-if IAlt == 1
-    This.Assign0(:) = This.Assign(1,:,IAlt);
-    This.deriv0.c(:) = D.c;
-    This.deriv0.f(:) = D.f;
-    This.deriv0.n(:) = D.n;
-end
 
-
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
@@ -91,7 +85,7 @@ end
         maxT = nt - t;
         tVec = minT : maxT;
         
-        if Linear
+        if Opt.linear
             init = zeros(1,nName);
             init(1,This.nametype == 4) = real(assign(This.nametype == 4));
             init = init(1,:,ones(1,nt));
@@ -113,7 +107,7 @@ end
         end
         
         % References to steady-state levels and growth rates.
-        if ~Linear
+        if ~Opt.linear
             L = init(:,:,t);
         else
             L = [];
@@ -143,7 +137,7 @@ end
             fPlus = eqtn(x,t,L);
             
             % Constant in linear models.
-            if Linear
+            if Opt.linear
                 x = grid;
                 D.c(iiEq) = eqtn(x,t,L);
             end
@@ -160,7 +154,7 @@ end
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))
-                NanDeriv(iiEq) = true;
+                NanDerv(iiEq) = true;
             end
 
         end
@@ -173,7 +167,7 @@ end
     
     function doSymbDeriv()
 
-        if Linear
+        if Opt.linear
             x = zeros(1,nName);
             if any(This.log)
                 x(1,This.log) = 1;
@@ -198,7 +192,7 @@ end
             
             % Constant in linear models. Becuase all variables are set to
             % zero, evaluating the equations gives the constant.
-            if Linear
+            if Opt.linear
                 if isnumeric(This.ceqtnF{iiEq})
                     c = This.ceqtnF{iiEq};
                 else
@@ -216,7 +210,7 @@ end
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))
-                NanDeriv(iiEq) = true;
+                NanDerv(iiEq) = true;
             end
 
         end

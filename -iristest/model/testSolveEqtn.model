@@ -1,0 +1,33 @@
+!variables
+
+    x, y, z
+   
+!parameters
+
+    a, b, c
+    A, B, C
+    
+!shocks
+    
+    EEa, EEb, EEc
+    
+!equations
+
+    a*x = x{-1} + (a+b) + EEa;
+    b*y = y{-1} + (b+c) + EEb;
+    c*z = c{-1} + (c+a) + EEc;
+
+!measurement_variables
+
+    X, Y, Z
+    
+!measurement_shocks
+    
+    EEA, EEB, EEC
+
+!measurement_equations
+
+    A*X = (A+B+C)*x + (A+2*B+3*C) + (A+B)*EEA;
+    B*Y = (A+B+C)*y + (B+2*C+3*A) + (B+C)*EEB;
+    C*Z = (A+B+C)*z + (C+2*A+3*B) + (C+A)*EEC;
+    

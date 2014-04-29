@@ -107,31 +107,25 @@ code.LaTeX {
 
 
 <h2 id="model/system">system</h2>
-<div class="headline">System matrices before model is solved</div>
+<div class="headline">System matrices for unsolved model</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[A,B,C,D,F,G,H,J,List,NF] = system(M)</code></pre>
+<pre><code>[A,B,C,D,F,G,H,J,List,Nf] = system(M)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><code>M</code> [ model ] - Model object whose system matrices will be returned.</li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>A</code> [ numeric ] - Matrix at the vector of expectations in the transition equation.</p></li>
-<li><p><code>B</code> [ numeric ] - Matrix at current vector in the transition equations.</p></li>
-<li><p><code>C</code> [ numeric ] - Constant vector in the transition equations.</p></li>
-<li><p><code>D</code> [ numeric ] - Matrix at transition shocks in the transition equations.</p></li>
-<li><p><code>F</code> [ numeric ] - Matrix at measurement variables in the measurement equations.</p></li>
-<li><p><code>G</code> [ numeric ] - Matrix at predetermined transition variables in the measurement variables.</p></li>
-<li><p><code>H</code> [ numeric ] - Constant vector in the measurement equations.</p></li>
-<li><p><code>J</code> [ numeric ] - Matrix at measurement shocks in the measurement equations.</p></li>
+<li><p><code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>F</code>, <code>G</code>, <code>H</code> ,<code>J</code> [ numeric ] - Matrices describing the unsolved system, see Description.</p></li>
 <li><p><code>List</code> [ cell ] - Lists of measurement variables, transition variables includint their auxiliary lags and leads, and shocks as they appear in the rows and columns of the system matrices.</p></li>
-<li><p><code>NF</code> [ numeric ] - Number of non-predetermined (forward-looking) transition variables.</p></li>
+<li><p><code>Nf</code> [ numeric ] - Number of non-predetermined (forward-looking) transition variables (multiplied by the first <code>Nf</code> columns of matrices <code>A</code> and <code>B</code>).</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'linear='</code> [ <em><code>'auto'</code></em> | <code>true</code> | <code>false</code> ] - Compute the model using a linear approach, i.e. differentiating around zero and not the currently assigned steady state.</p></li>
 <li><p><code>'select='</code> [ <em><code>true</code></em> | <code>false</code> ] - Automatically detect which equations need to be re-differentiated based on parameter changes from the last time the system matrices were calculated.</p></li>
+<li><p><code>'sparse='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return matrices <code>A</code>, <code>B</code>, <code>D</code>, <code>F</code>, <code>G</code>, and <code>J</code> as sparse matrices; can be set to <code>true</code> only in models with one parameterization.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <p>The system before the model is solved has the following form:</p>

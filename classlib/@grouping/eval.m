@@ -1,4 +1,4 @@
-function [S,L] = eval(This,S)
+function [S,L] = eval(This,S,varargin)
 % eval  Evaluate contributions in input database S using grouping object G.
 %
 % Syntax
@@ -20,13 +20,20 @@ function [S,L] = eval(This,S)
 %
 % * `L` [ cellstr ] - Legend entries based on the list of group names.
 %
+% Options
+% ========
+%
+% * `'append='` [ *`true`* | `false` ] - Append in the output database all
+% remaining data columns from the input database that do not correspond to
+% any contribution of shocks or measurement variables.
+%
 % Description
 % ============
 %
 % Example
 % ========
 %
-% For a model object M, database D and simulation range R,
+% For a model object `M`, database `D` and simulation range `R`,
 %
 %     S = simulate(M,D,R,'contributions=',true) ;
 %     G = grouping(M)
@@ -50,11 +57,18 @@ pp = pp.addRequired('G',@(x) isa(x,'grouping'));
 pp = pp.parse(S,This);
 end
 
-isOther = ~isempty(This.otherContents);
+opt = passvalopt('grouping.eval',varargin{:});
 
-% Contributions of shocks or measurement variables?
+isOther = any(This.otherContents);
+
+% Contributions of shocks or measurement variables.
 nGroup = numel(This.groupNames) ;
-nCol = nGroup + double(isOther) + 1;
+nNewCol = nGroup + double(isOther) ;
+
+% Number of old columns used in grouping; the remaing old columns will
+% simply appended to the final data (this includes things like Init+Const,
+% Nonlinear, etc.).
+nColUsed = length(This.list) ;
 
 varNames = fields(This.logVars) ;
 for iVar = 1:numel(varNames)
@@ -71,24 +85,24 @@ for iVar = 1:numel(varNames)
     
     % Do grouping
     [oldData,range] = rangedata(S.(iName)) ;
+    oldCmt = comment(S.(iName));
     nPer = size(oldData,1) ;
-    newData = nan(nPer,nCol) ;
+    
+    newData = nan(nPer,nNewCol) ;
     for iGroup = 1:nGroup
         ind = This.groupContents{iGroup} ;
         newData(:,iGroup) = meth(oldData(:,ind)) ;
     end
     
-    % Handle 'Other' group
+    % Handle 'Other' group.
     if isOther
         ind = This.otherContents ;
         newData(:,nGroup+1) = meth(oldData(:,ind)) ;
     end
     
-    % Handle 'Init + Const' group (cannot be grouped or removed)
-    newData(:,end) = oldData(:,end) ;
     
-    % Comment tseries() object
-    newCmt = cell(1,nCol) ;
+    % Comment the new tseries() object.
+    newCmt = cell(1,nNewCol) ;
     for iGroup = 1:nGroup
         newCmt{iGroup} = ...
             utils.concomment(iName,This.groupNames{iGroup},isLog) ;
@@ -96,7 +110,14 @@ for iVar = 1:numel(varNames)
     if isOther
         newCmt{nGroup+1} = utils.concomment(iName,This.otherName,isLog) ;
     end
-    newCmt{end} = utils.concomment(iName,This.constName,isLog) ;
+    
+    % Append remaining old data and old columns.
+    if opt.append
+        oldData(:,1:nColUsed) = [] ;
+        newData = [newData,oldData] ; %#ok<AGROW>
+        oldCmt(:,1:nColUsed) = [] ;
+        newCmt = [newCmt,oldCmt] ; %#ok<AGROW>
+    end
     
     S.(iName) = replace(S.(iName),newData,range(1),newCmt) ;
 end
@@ -105,6 +126,5 @@ L = This.groupNames;
 if isOther
     L = [L,{This.otherName}];
 end
-L = [L,{This.constName}];
 
 end

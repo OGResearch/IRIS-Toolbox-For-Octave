@@ -26,6 +26,10 @@ function [This,NPath,EigVal] = solve(This,varargin)
 % the model cannot be used later in simulations or forecasts with
 % anticipated shocks or plans.
 %
+% * `'eqtn='` [ *`'all'`* | `'measurement'` | `'transition'` ] - Update
+% existing solution in the measurement block, or the transition block, or
+% both.
+%
 % * `'error='` [ `true` | *`false`* ] - Throw an error if no unique stable
 % solution exists; if `false`, a warning message only will be displayed.
 %
@@ -76,17 +80,7 @@ function [This,NPath,EigVal] = solve(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.solve',varargin{1:end});
-
-% Backward compatibility.
-if opt.forward > 0 && opt.expand == 0
-    opt.expand = opt.forward;
-end
-
-if ischar(opt.linear) && strcmpi(opt.linear,'auto')
-    opt.linear = This.linear;
-elseif opt.linear ~= This.linear
-    opt.select = false;
-end
+opt = mysolveopt(This,'verbose',opt);
 
 %--------------------------------------------------------------------------
 
@@ -102,8 +96,7 @@ end
 
 % Calculate solutions for all parameterisations, and store expansion
 % matrices.
-expMatrices = true;
-[This,NPath,nanDeriv,sing2] = mysolve(This,Inf,opt,expMatrices);
+[This,NPath,nanDeriv,sing2] = mysolve(This,Inf,opt);
 
 if (opt.warning || opt.error) && any(NPath ~= 1)
     doErrWarn();
@@ -127,7 +120,7 @@ end
             func = @utils.warning;
         end
         [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
-        func('model',body,args{:});
+        func('model:solve',body,args{:});
     end % doErrWarn()
 
 

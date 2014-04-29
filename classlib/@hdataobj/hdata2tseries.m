@@ -83,9 +83,7 @@ end
 
 %**************************************************************************
     function doThrowInternal()
-        utils.error('hdataobj:hdata2tseries', ...
-            ['Internal IRIS error. ', ...
-            'Please report this error with a copy of the screen message.']);
+        utils.error('hdataobj:hdata2tseries','#Internal');
     end % doThrowInternal()
 
 

@@ -87,8 +87,8 @@ nLoop = max([nData,nAlt]);
 hd = hdataobj(This,struct('IsPreSample',false),nPer,nLoop);
 
 repeat = ones(1,nPer);
-isSolution = true(1,nAlt);
-diffStationary = true(1,nAlt);
+isSol = true(1,nAlt);
+isDiffStat = true(1,nAlt);
 
 for iLoop = 1 : nLoop
     
@@ -98,14 +98,14 @@ for iLoop = 1 : nLoop
         Ta = T(nf+1:end,:);
         
         % Continue immediate if solution is not available.
-        isSolution(iLoop) = all(~isnan(T(:)));
-        if ~isSolution(iLoop)
+        isSol(iLoop) = all(~isnan(T(:)));
+        if ~isSol(iLoop)
             continue
         end
         
         nUnit = mynunit(This,iLoop);
         if ~is.eye(Ta(1:nUnit,1:nUnit))
-            diffStationary(iLoop) = false;
+            isDiffStat(iLoop) = false;
             continue
         end
         Z = This.solution{4}(:,:,iLoop);
@@ -166,18 +166,18 @@ for iLoop = 1 : nLoop
 end
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % Parameterisations that are not difference-stationary.
-if any(~diffStationary)
+if any(~isDiffStat)
     utils.warning('model', ...
-        ['Cannot run bn() on the following parameterisations ', ...
-        'because they are I(2) or higher:%s.'], ...
-        preparser.alt2str(~diffStationary));
+        ['Cannot run Beveridge-Nelson on models with ', ...
+        'I(2) or higher processes %s.'], ...
+        preparser.alt2str(~isDiffStat));
 end
 
 % Create output database from hdataobj.

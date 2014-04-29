@@ -136,7 +136,6 @@ L = loglik(M);
 <li><p><code>Range</code> [ numeric ] - Date range.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
-<h5 id="test-title">Test title</h5>
 <ul>
 <li><p><code>Obj</code> [ numeric ] - Value of minus the log-likelihood function (or other objective function if specified in options).</p></li>
 <li><p><code>V</code> [ numeric ] - Estimated variance scale factor if the <code>'relative='</code> options is true; otherwise <code>V</code> is 1.</p></li>
@@ -147,7 +146,8 @@ L = loglik(M);
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'persist='</code> [ <code>true</code> | <em><code>false</code></em> ] -- Pre-process and store the overhead (data and options) for subsequent fast calls.</li>
+<li><p><code>'objDecomp='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the objective function into the contributions of individual time periods (in time domain) or individual frequencies (in frequency domain); the contributions are added as extra rows in the output argument <code>Obj</code>.</p></li>
+<li><p><code>'persist='</code> [ <code>true</code> | <em><code>false</code></em> ] -- Pre-process and store the overhead (data and options) for subsequent fast calls.</p></li>
 </ul>
 <p>See help on <a href="../model/filter.html"><code>model/filter</code></a> for other options available.</p>
 <h4 id="description">Description</h4>

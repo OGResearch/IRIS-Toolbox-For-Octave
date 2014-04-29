@@ -17,7 +17,8 @@ end
 
 % Initialise steady-state solver and chksstate options.
 Opt.sstate = mysstateopt(This,'silent',Opt.sstate);
-Opt.chksstate = mychksstateopt(This,Opt.chksstate);
+Opt.chksstate = mychksstateopt(This,'silent',Opt.chksstate);
+Opt.solve = mysolveopt(This,'silent',Opt.solve);
 
 %--------------------------------------------------------------------------
 
@@ -44,6 +45,8 @@ epsilon = eps()^(1/3);
 step = max([abs(p);ones(size(p))],[],1)*epsilon;
 twoSteps = nan(1,np);
 
+throwErr = true;
+
 % Create all parameterisations.
 This(1:2*np+1) = This;
 for i = 1 : np
@@ -53,9 +56,9 @@ for i = 1 : np
     mp(i) = mp(i) - step(i);
     twoSteps(i) = pp(i) - mp(i);
     mInx = 1 + 2*(i-1) + 1;
-    This(mInx) = myupdatemodel(This(mInx),pp,Pri,Opt,true);
+    This(mInx) = myupdatemodel(This(mInx),pp,Pri,Opt,throwErr);
     mInx = 1 + 2*(i-1) + 2;
-    This(mInx) = myupdatemodel(This(mInx),mp,Pri,Opt,true);
+    This(mInx) = myupdatemodel(This(mInx),mp,Pri,Opt,throwErr);
 end
 
 % Horizontal vectorisation.

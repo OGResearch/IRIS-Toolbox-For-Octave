@@ -1,5 +1,5 @@
 function Inx = strcmporregexp(List,String)
-% strcmporregexp  Match string by plain comparison or by regexp engine.
+% strcmporregexp  [Not a public function] Match string by plain comparison or by regexp engine.
 %
 % Backend IRIS function.
 % No help provided.

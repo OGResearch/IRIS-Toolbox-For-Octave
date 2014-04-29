@@ -65,8 +65,9 @@ end
 % Last section is Publish M-Files to PDFs...
 pub = file2char(fullfile(irisroot(),'+latex','howtopublish.m'));
 for i = 1 : length(fileList)
-    pub = [pub,br,'%     latex.publish(''',fileList{i},''');']; %#ok<AGROW>
+    pub = [pub,br,'    latex.publish(''',fileList{i},''');']; %#ok<AGROW>
 end
+pub = [pub,br,'%}',br];
 sect{end} = pub;
 
 % Make sure there are exactly two line breaks at the end of each section,

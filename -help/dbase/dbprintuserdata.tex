@@ -5,7 +5,7 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-dbprintuserdata(D,Field,...)
+dbprintuserdata(D,Fields,...)
 \end{verbatim}
 
 \paragraph{Input arguments}
@@ -15,8 +15,9 @@ dbprintuserdata(D,Field,...)
   \texttt{D} {[} struct {]} - Database whose tseries objects will be
   reported.
 \item
-  \texttt{Field} {[} char \textbar{} cellstr {]} - Names of the userdata
-  fields whose content will printed (if char or numeric scalar).
+  \texttt{Fields} {[} char \textbar{} cellstr {]} - Names of the
+  userdata fields whose content will printed (if char or numeric
+  scalar).
 \end{itemize}
 
 \paragraph{Options}

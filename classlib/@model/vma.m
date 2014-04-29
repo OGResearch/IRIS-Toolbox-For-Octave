@@ -60,13 +60,13 @@ ne = length(This.solutionid{3});
 nAlt = size(This.Assign,3);
 
 Phi = zeros(ny+nx,ne,NPer+1,nAlt);
-isSolution = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
    [T,R,K,Z,H,D,U,Omg] = mysspace(This,iAlt,false);
    
     % Continue immediately if solution is not available.
-    isSolution(iAlt) = all(~isnan(T(:)));
-    if ~isSolution(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
    
@@ -77,10 +77,10 @@ end
 Phi(:,:,1,:) = [];
 
 % Report NaN solutions.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % List of variables in rows (measurement and transion) and columns (shocks)

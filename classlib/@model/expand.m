@@ -1,23 +1,23 @@
-function m = expand(m,k)
+function This = expand(This,K)
 % expand  Compute forward expansion of model solution for anticipated shocks.
 %
 % Syntax
 % =======
 %
-%     m = expand(m,k)
+%     M = expand(M,K)
 %
 % Input arguments
 % ================
 %
-% * `m` [ model ] - Model object whose solution will be expanded.
+% * `M` [ model ] - Model object whose solution will be expanded.
 %
-% * `k` [ numeric ] - Number of periods ahead, t+k, up to which the
+% * `K` [ numeric ] - Number of periods ahead, t+k, up to which the
 % solution for anticipated shocks will be expanded.
 %
 % Output arguments
 % =================
 %
-% * `m` [ model ] - Model object with the solution expanded.
+% * `M` [ model ] - Model object with the solution expanded.
 %
 % Description
 % ============
@@ -29,41 +29,41 @@ function m = expand(m,k)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-ne = sum(m.nametype == 3);
-nn = sum(m.nonlin);
-nalt = size(m.Assign,3);
+ne = sum(This.nametype == 3);
+nn = sum(This.nonlin);
+nAlt = size(This.Assign,3);
 if ne == 0 && nn == 0
     return
 end
 
 % Impact matrix of structural shocks.
-R = m.solution{2};
+R = This.solution{2};
 
 % Impact matrix of non-linear add-factors.
-Y = m.solution{8};
+Y = This.solution{8};
 
 % Expansion up to t+k0 available.
 k0 = size(R,2)/ne - 1;
 
 % Expansion up to t+k0 already available.
-if k0 >= k
+if k0 >= K
     return
 end
 
-% Exand the R and Y solution matrices.
-m.solution{2}(:,end+(1:ne*(k-k0)),1:nalt) = NaN;
-m.solution{8}(:,end+(1:nn*(k-k0)),1:nalt) = NaN;
-for ialt = 1 : nalt
+% Expand the R and Y solution matrices.
+This.solution{2}(:,end+(1:ne*(K-k0)),1:nAlt) = NaN;
+This.solution{8}(:,end+(1:nn*(K-k0)),1:nAlt) = NaN;
+for iAlt = 1 : nAlt
     % m.Expand{5} Jk stores J^(k-1) and needs to be updated after each
     % expansion.
-    [m.solution{2}(:,:,ialt), ...
-        m.solution{8}(:,:,ialt), ...
-        m.Expand{5}(:,:,ialt)] = ...
-        model.myexpand(R(:,:,ialt),Y(:,:,ialt),k, ...
-        m.Expand{1}(:,:,ialt),m.Expand{2}(:,:,ialt),m.Expand{3}(:,:,ialt), ...
-        m.Expand{4}(:,:,ialt),m.Expand{5}(:,:,ialt),m.Expand{6}(:,:,ialt));
+    [This.solution{2}(:,:,iAlt), ...
+        This.solution{8}(:,:,iAlt), ...
+        This.Expand{5}(:,:,iAlt)] = ...
+        model.myexpand(R(:,:,iAlt),Y(:,:,iAlt),K, ...
+        This.Expand{1}(:,:,iAlt),This.Expand{2}(:,:,iAlt),This.Expand{3}(:,:,iAlt), ...
+        This.Expand{4}(:,:,iAlt),This.Expand{5}(:,:,iAlt),This.Expand{6}(:,:,iAlt));
 end
 
 end

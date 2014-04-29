@@ -34,7 +34,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % hold.
 %
 % * `Discrep` [ cell | empty ] - Cell array of tseries with final
-% discrepancies between LHS and RHS in equations earmarked for non-linear
+% discrepancies between LHS and RHS in equations marked for non-linear
 % simulations by a double-equal sign.
 %
 % Options
@@ -306,21 +306,15 @@ else
     Discr = {};
 end
 
-if opt.contributions
-    nOutp = ne + 1;
-else
-    nOutp = nLoop;
-end
-
 % Initialise handle to output data.
 xRange = Range(1)-1 : Range(end);
 nXPer = length(xRange);
-if ~opt.contributions
-    hData = hdataobj(This,[],nXPer,nOutp);
-else
+if opt.contributions
     hData = hdataobj(This, ...
         struct('Contrib','E'), ...
-        nXPer,nOutp);
+        nXPer,ne+2);
+else
+    hData = hdataobj(This,[],nXPer,nLoop);
 end
 
 % Maximum expansion needed.
@@ -333,10 +327,9 @@ use = simulate.antunantfunc(use,opt.anticipate);
 % Main loop
 %-----------
 
-isSolution = true(1,nLoop);
-use.progress = opt.progress && opt.display == 0;
+isSol = true(1,nLoop);
 
-if use.progress
+if opt.progress && (This.linear || opt.display == 0)
     use.progress = progressbar('IRIS model.simulate progress');
 else
     use.progress = [];
@@ -353,7 +346,7 @@ for iLoop = 1 : nLoop
     
     % Simulation is not available, return immediately.
     if any(~isfinite(use.T(:)))
-        isSolution(iLoop) = false;
+        isSol(iLoop) = false;
         continue
     end
         
@@ -390,8 +383,16 @@ for iLoop = 1 : nLoop
     use.y = [];
     use.w = [];
     if isNonlin
+        if opt.contributions
+            usecon = simulate.contributions(use,nPer,opt);
+        end
         use = simulate.findsegments(use);
         [use,exitFlag,discr,addFact] = simulate.nonlinear(use,opt);
+        if opt.contributions
+            usecon.w(:,:,ne+2) = use.w - sum(usecon.w,3);
+            usecon.y(:,:,ne+2) = use.y - sum(usecon.y,3);
+            use = usecon;
+        end
     else
         use.count = 0;
         use.u = [];
@@ -400,9 +401,6 @@ for iLoop = 1 : nLoop
             use = simulate.contributions(use,nPer,opt);
         else
             use = simulate.linear(use,nPer,opt);
-        end
-        if ~isempty(use.progress)
-            update(use.progress,use.iLoop/use.nLoop);
         end
     end
     
@@ -416,9 +414,13 @@ for iLoop = 1 : nLoop
     % Add measurement detereministic trends.
     if ny > 0 && opt.dtrends
         % Add to trends to the current simulation; when `'contributions='
-        % true`, we need to add the trends to last simulation (i.e. the
-        % contribution of init cond and constant).
-        use.y(:,:,end) = use.y(:,:,end) + use.W;
+        % true`, we need to add the trends to (ne+1)-th simulation
+        % (i.e. the contribution of init cond and constant).
+        if opt.contributions
+            use.y(:,:,ne+1) = use.y(:,:,ne+1) + use.W;
+        else
+            use.y = use.y + use.W;
+        end            
     end
     
     % Initial condition for the original state vector.
@@ -436,6 +438,11 @@ for iLoop = 1 : nLoop
         Discr{iLoop} = tseries(Range(1), ...
             permute(Discr{iLoop},[2,1,3]),label);
     end
+
+    % Update progress bar.
+    if ~isempty(use.progress)
+        update(use.progress,use.iLoop/use.nLoop);
+    end
     
 end
 % End of main loop.
@@ -449,10 +456,10 @@ if isTune
 end
 
 % Report solutions not available.
-if ~all(isSolution)
+if ~all(isSol)
     utils.warning('model', ...
-        'Solution(s) not available:%s.', ...
-        preparser.alt2str(~isSolution));
+        'Solution(s) not available %s.', ...
+        preparser.alt2str(~isSol));
 end
 
 % Convert hdataobj to struct. The comments assigned to the output series
@@ -484,7 +491,8 @@ end
         if any(inx)
             list = [This.solutionvector{1:2}];
             utils.error('model', ...
-                'This variable is exogenised to NaN, Inf or complex number: ''%s''.', ...
+                ['This variable is exogenised to NaN, Inf or ', ...
+                'complex number: ''%s''.'], ...
                 list{inx});
         end
     end % doChkNanExog()
@@ -494,8 +502,8 @@ end
     function doChkDetermined()
         if nnzexog(opt.plan) ~= nnzendog(opt.plan)
             utils.warning('model', ...
-                ['The number of exogenised data points (%g) does not match ', ...
-                'the number of endogenised data points (%g).'], ...
+                ['The number of exogenised data points (%g) does not ', ...
+                'match the number of endogenised data points (%g).'], ...
                 nnzexog(opt.plan),nnzendog(opt.plan));
         end
     end % doChkDetermined()
@@ -505,21 +513,23 @@ end
     function doAssignOutput()
         n = size(use.w,3);
         xf = [nan(nf,1,n),use.w(1:nf,:,:)];
-        xb = use.w(nf+1:end,:,:);
+        alp = use.w(nf+1:end,:,:);
+        xb = nan(size(alp));
         for ii = 1 : n
-            xb(:,:,ii) = use.U*xb(:,:,ii);
+            xb(:,:,ii) = use.U*alp(:,:,ii);
         end
-        tmpInit = zeros(nb,1,n);
-        tmpInit(:,1,end) = use.x0;
-        xb = [tmpInit,xb];
-        % Columns to place results in output data.
+        % Add initial condition to xb.
         if opt.contributions
-            cols = 1 : ne+1;
+            % Place initial condition to (ne+1)-th simulation.
+            pos = 1 : ne+2;
+            xb = [zeros(nb,1,ne+2),xb];
+            xb(:,1,ne+1) = use.x0;
         else
-            cols = iLoop;
+            pos = iLoop;
+            xb = [use.x0,xb];
         end
         % Add current results to output data.
-        hdataassign(hData,This,cols, ...
+        hdataassign(hData,This,pos, ...
             [nan(ny,1,n),use.y], ...
             [xf;xb], ...
             [nan(ne,1,n),use.e]);
@@ -531,10 +541,10 @@ end
         % The option `'contributions='` option cannot be used with the
         % `'plan='` option or with multiple parameterisations.
         if opt.contributions
-            if isTune || isNonlin
+            if isTune
                 utils.error('model', ...
-                    ['Cannot run SIMULATE with ''contributions='' true ', ...
-                    'and ''plan='' non-empty.']);
+                    ['Cannot run simulation with ''contributions='' true ', ...
+                    'and non-empty ''plan=''.']);
             end
             if nAlt > 1
                 utils.error('model','#Cannot_simulate_contributions');

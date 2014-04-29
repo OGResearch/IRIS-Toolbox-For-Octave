@@ -45,8 +45,8 @@ classdef reportobj < report.genericobj
 
     
     methods (Access=protected,Hidden)
-        varargout = speclatexcode(varargin)
         varargout = add(varargin)
+        varargout = speclatexcode(varargin)
     end
     
     

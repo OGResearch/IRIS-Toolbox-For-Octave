@@ -4,14 +4,14 @@ function dbprintuserdata(D,Field,varargin)
 % Syntax
 % =======
 %
-%     dbprintuserdata(D,Field,...)
+%     dbprintuserdata(D,Fields,...)
 %
 % Input arguments
 % ================
 %
 % * `D` [ struct ] - Database whose tseries objects will be reported.
 %
-% * `Field` [ char | cellstr ] - Names of the userdata fields whose
+% * `Fields` [ char | cellstr ] - Names of the userdata fields whose
 % content will printed (if char or numeric scalar).
 %
 % Options

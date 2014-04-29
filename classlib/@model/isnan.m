@@ -7,6 +7,7 @@ function [Flag,List] = isnan(This,varargin)
 %     [Flag,List] = isnan(M,'parameters')
 %     [Flag,List] = isnan(M,'sstate')
 %     [Flag,List] = isnan(M,'derivatives')
+%     [Flag,List] = isnan(M,'solution')
 %
 % Input arguments
 % ================
@@ -20,7 +21,7 @@ function [Flag,List] = isnan(This,varargin)
 % in the queried category.
 %
 % * `List` [ cellstr ] - List of parameters (if called with `'parameters'`)
-% or variables (if called with `'variables'`) that are assigned NaN in at
+% or variables (if called with `'sstate'`) that are assigned NaN in at
 % least one parameterisation, or equations (if called with `'derivatives'`)
 % that produce an NaN derivative in at least one parameterisation.
 %
@@ -54,22 +55,25 @@ end
 
 switch request
     case 'all'
-        assign = This.Assign(1,:,alt);
-        inx = any(isnan(assign),3);
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
         if nargout > 1
             List = This.name(inx);
         end
         Flag = any(inx);
     case {'p','parameter','parameters'}
-        assign = This.Assign(1,:,alt);
-        inx = any(isnan(assign),3) & This.nametype == 4;
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
+        inx = inx & This.nametype == 4;
         if nargout > 1
             List = This.name(inx);
         end
         Flag = any(inx);
     case {'sstate'}
-        assign = This.Assign(1,:,alt);
-        inx = any(isnan(assign),3) & This.nametype ~= 4;
+        % Check for NaNs in transition and measurement variables.
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
+        inx = inx & (This.nametype == 1 | This.nametype == 2);
         if nargout > 1
             List = This.name(inx);
         end
@@ -97,14 +101,17 @@ switch request
             List = inx;
         end
         Flag = any(inx);
-    case {'derivative','derivatives'}
-        nalt = size(This.Assign,3);
-        neqtn = length(This.eqtn);
-        eqselect = true(1,neqtn);
-        List = false(1,neqtn);
+    case {'deriv','derivative','derivatives'}
+        nAlt = size(This.Assign,3);
+        nEqtn = length(This.eqtn);
+        eqSelect = true(1,nEqtn);
+        List = false(1,nEqtn);
         Flag = false;
-        for iAlt = 1 : nalt
-            [~,~,nanDeriv] = myderiv(This,eqselect,iAlt,true,This.linear);
+        opt = struct();
+        opt.linear = This.linear;
+        opt.select = true;
+        for iAlt = 1 : nAlt
+            [~,~,nanDeriv] = myderiv(This,eqSelect,iAlt,opt);
             Flag = Flag || any(nanDeriv);
             List(nanDeriv) = true;
         end

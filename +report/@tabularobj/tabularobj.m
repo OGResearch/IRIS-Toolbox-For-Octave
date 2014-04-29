@@ -5,6 +5,7 @@ classdef tabularobj < report.genericobj
         nlead = NaN;
         nrow = NaN;
         vline = [];
+        highlight = [];
     end
     
     events
@@ -12,6 +13,7 @@ classdef tabularobj < report.genericobj
     end
     
     methods
+        
         
         function This = tabularobj(varargin)
             This = This@report.genericobj(varargin{:});
@@ -28,12 +30,14 @@ classdef tabularobj < report.genericobj
             }];
         end
         
+        
         function [This,varargin] = setoptions(This,varargin)
             This = setoptions@report.genericobj(This,varargin{:});
             if This.options.long
-                This.hInfo.longTable = true;
+                This.hInfo.package.longtable = true;
             end
         end
+        
         
         function C = begin(This)
             br = sprintf('\n');
@@ -83,6 +87,7 @@ classdef tabularobj < report.genericobj
             end
         end
         
+        
         function C = finish(This)
             br = sprintf('\n');
             C = '\hline';
@@ -95,16 +100,19 @@ classdef tabularobj < report.genericobj
             C = [C,finishsideways(This)];
         end
         
+        
         function C = beginwrapper(This,Space)
             br = sprintf('\n');
             C = ['\begin{tabular}[t]{@{\hspace*{-3pt}}c@{}}',br];
             C = [C,printcaption(This,1,'c',Space),br];
         end
         
+        
         function C = finishwrapper(This) %#ok<MANU>
             br = sprintf('\n');
             C = [br,'\end{tabular}'];
         end
+        
         
         function C = beginsideways(This)
             C = '';
@@ -114,18 +122,20 @@ classdef tabularobj < report.genericobj
             end
         end
         
+        
         function C = finishsideways(This)
             C = '';
             if This.options.sideways
                 br = sprintf('\n');
                 C = [C,br,'\end{sideways}'];
             end
-        end     
+        end
+        
         
         function C = colspec(This)
-            % Create column specs for tabular environment with all columns
-            % aligned right and vertical lines inserted at This.vline
-            % positions.
+            % Create column specs for tabular environment with all lead
+            % columns aligned left, all data columns aligned right and
+            % vertical lines inserted at This.vline positions.
             C = char('l'*ones(1,This.nlead));
             if This.ncol == 0
                 return
@@ -134,15 +144,20 @@ classdef tabularobj < report.genericobj
             if any(This.vline == 0)
                 C = [C,'|'];
             end
-            This.vline(This.vline < 1 | This.vline > This.ncol) = [];
+            
             c1 = char('r'*ones(1,This.ncol));
+            c1(This.highlight) = upper(c1(This.highlight));
+            
             c2 = char(' '*ones(1,This.ncol));
+            This.vline(This.vline < 1 | This.vline > This.ncol) = [];
             c2(This.vline) = '|';
+
             c3 = [c1;c2];
             c3 = transpose(c3(:));
             C = [C,c3];
             C(C == char(32)) = '';
         end
+        
         
     end
     

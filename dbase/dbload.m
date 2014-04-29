@@ -391,7 +391,12 @@ doPopulateDatabase();
                     && any(rowCount == opt.userdatafieldlist(:).') ...
                     )
                 fieldName = regexprep(ident,'\W','');
-                fieldName = genvarname(fieldName);
+                try
+                    fieldName = matlab.lang.makeUniqueStrings(fieldName);
+                catch
+                    % % ##### Mar 2014 OBSOLETE and scheduled for removal.
+                    fieldName = genvarname(fieldName); %#ok<DEPGENAM>
+                end
                 try %#ok<TRYNC>
                     seriesUserdata.(fieldName) = tokens(2:end);
                 end
@@ -682,6 +687,11 @@ doPopulateDatabase();
                 end
             end
         end
+        if ~iscellstr(name)
+            utils.error('dbase:dbload', ...
+                ['The function in the option ''nameFunc='' ', ...
+                'must return a char string.']);
+        end
         % Switch lower/upper case.
         switch lower(opt.case)
             case 'lower'
@@ -695,10 +705,15 @@ doPopulateDatabase();
 %**************************************************************************
     function doChkNames()
         inx = ~cellfun(@isempty,name);
-        % The function `genvarname` guarantees uniqueness of names. If there are
-        % repeated names in `name`, the function adds `1`, `2`, etc. to make them
-        % unqiue.
-        name(inx) = genvarname(name(inx));
+        % The function `matlab.lang.makeUniqueStrings` guarantees
+        % uniqueness of names. If there are repeated names in `name`, the
+        % function adds `1`, `2`, etc. to make them unqiue.
+        try
+            name(inx) = matlab.lang.makeUniqueStrings(name(inx));
+        catch
+            % ##### Mar 2014 OBSOLETE and scheduled for removal.
+            name(inx) = genvarname(name(inx)); %#ok<DEPGENAM>
+        end
     end % doChkNames()
 
 

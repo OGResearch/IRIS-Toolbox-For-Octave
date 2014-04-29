@@ -1,4 +1,4 @@
-function [T,R,K,Z,H,D,U,Omg] = mysspace(This,IAlt,Expand)
+function [T,R,K,Z,H,D,U,Omg,Zb] = mysspace(This,IAlt,Expand)
 % mysspace  [Not a public function] General state space with forward expansion.
 %
 % Backed IRIS function.
@@ -30,15 +30,21 @@ Z = This.solution{4}(:,:,IAlt);
 H = This.solution{5}(:,:,IAlt);
 D = This.solution{6}(:,:,IAlt);
 U = This.solution{7}(:,:,IAlt);
-nAlt = size(T,3);
+Y = This.solution{8}(:,:,IAlt); %#ok<NASGU>
+Zb = This.solution{9}(:,:,IAlt);
 
+nAlt = size(T,3);
+nb = size(T,2);
 ne = sum(This.nametype == 3);
+
 if ~Expand
     R = R(:,1:ne);
 end
-if isempty(Z)
-    nb = size(T,2);
+if isempty(Z)    
     Z = zeros(0,nb,nAlt);
+end
+if isempty(Zb)
+    Zb = zeros(0,nb,nAlt);
 end
 if isempty(H)
     H = zeros(0,ne,nAlt);

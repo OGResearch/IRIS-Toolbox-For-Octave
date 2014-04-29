@@ -135,6 +135,7 @@ end
 
 % Pre-process options passed to `mysstatenonlin`.
 sstateOpt = mysstateopt(This,'verbose',varargin{:});
+opt.solve = mysolveopt(This,'verbose',opt.solve);
 
 if ~This.linear
     
@@ -148,9 +149,9 @@ else
     
     % Linear models
     %---------------
-    if sstateOpt.solve
+    if ~isequal(opt.solve,false)
         % Solve the model first if requested by the user.
-        [This,NPath,EigVal] = solve(This,'refresh=',sstateOpt.refresh);
+        [This,NPath,EigVal] = solve(This,opt.solve);
     end
     [This,Flag] = mysstatelinear(This,sstateOpt);
 

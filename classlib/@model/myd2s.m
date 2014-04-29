@@ -1,4 +1,4 @@
-function This = myd2s(This,options)
+function This = myd2s(This,Opt)
 % myd2s  [Not a public function] Create derivative-to-system convertor.
 %
 % Backed IRIS function.
@@ -33,10 +33,10 @@ for i = 1 : nxx
         minShift(i) = min([minShift(i),findOccur]);
         maxShift(i) = max([maxShift(i),findOccur]);
         % User requests adding one lead to all fwl variables.
-        if options.addlead && maxShift(i) > 0
+        if Opt.addlead && maxShift(i) > 0
             maxShift(i) = maxShift(i) + 1;
         end
-        % Add one lead to fwl variables in equations earmarked for non-linear
+        % Add one lead to fwl variables in equations marked for non-linear
         % simulations if the max lead of that variabl occurs in one of those
         % equations.
         if isNonlin && maxShift(i) > 0
@@ -76,6 +76,8 @@ nx = length(This.systemid{2});
 nu = sum(imag(This.systemid{2}) >= 0);
 np = nx - nu;
 
+This.d2s = struct();
+
 % Pre-allocate vectors of positions in derivative matrices
 %----------------------------------------------------------
 This.d2s.y_ = zeros(1,0);
@@ -105,7 +107,7 @@ This.d2s.remove = false(1,nu);
 for i = 1 : nu
     This.d2s.remove(i) = ...
         any(This.systemid{2}(i)-1i == This.systemid{2}(nu+1:end)) ...
-        || (options.removeleads && imag(This.systemid{2}(i)) > 0);
+        || (Opt.removeleads && imag(This.systemid{2}(i)) > 0);
 end
 
 % Unpredetermined variables
@@ -153,7 +155,8 @@ for i = 1 : nx
     end
 end
 
-% Solution IDs.
+% Solution IDs
+%--------------
 nx = length(This.systemid{2});
 nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;

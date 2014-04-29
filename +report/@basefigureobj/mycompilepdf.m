@@ -57,6 +57,8 @@ InclGraph = [ ...
 
 
 %**************************************************************************
+
+
     function doPrintFigure()
         tempDir = This.hInfo.tempDir;
         % Create graphics file path and title.
@@ -114,5 +116,6 @@ InclGraph = [ ...
             end
         end
     end % doPrintFigure().
+
 
 end

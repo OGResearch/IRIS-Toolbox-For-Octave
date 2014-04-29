@@ -20,6 +20,7 @@ classdef estimateobj
     
     methods (Access=protected,Hidden)
         varargout = mydiffprior(varargin)
+        varargout = myestimate(varargin)
         varargout = myparamstruct(varargin)
     end
 

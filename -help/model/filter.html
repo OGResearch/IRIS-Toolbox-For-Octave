@@ -140,18 +140,18 @@ code.LaTeX {
 <li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return a plain database with mean data only; this option overrides the <code>'return*='</code> options, i.e. <code>'returnCont='</code>, <code>'returnMse='</code>, <code>'returnStd='</code>.</p></li>
 <li><p><code>'outOfLik='</code> [ cellstr | empty ] - List of parameters in deterministic trends that will be estimated by concentrating them out of the likelihood function.</p></li>
 <li><p><code>'objFunc='</code> [ <em><code>'-loglik'</code></em> | <code>'prederr'</code> ] - Objective function computed; can be either minus the log likelihood function or weighted sum of prediction errors.</p></li>
-<li><p><code>'objRange='</code> [ numeric | <em><code>Inf</code></em> ] - The objective function will be computed on this subrange only; <code>Inf</code> means the entire filter range.</p></li>
+<li><p><code>'objRange='</code> [ numeric | <em><code>Inf</code></em> ] - The objective function will be computed on the specified range only; <code>Inf</code> means the entire filter range.</p></li>
 <li><p><code>'precision='</code> [ <em><code>'double'</code></em> | <code>'single'</code> ] - Numeric precision to which output data will be stored; all calculations themselves always run to double precision.</p></li>
 <li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - Std devs of shocks assigned in the model object will be treated as relative std devs, and a common variance scale factor will be estimated.</p></li>
-<li><p><code>'returnCont='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return contributions of measurement variables to the estimates of all variables and shocks.</p></li>
+<li><p><code>'returnCont='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return contributions of prediction errors in measurement variables to the estimates of all variables and shocks.</p></li>
 <li><p><code>'returnMse='</code> [ <em><code>true</code></em> | <code>false</code> ] - Return MSE matrices for predetermined state variables; these can be used for settin up initial condition in subsequent call to another <code>filter</code> or <code>jforecast</code>.</p></li>
 <li><p><code>'returnStd='</code> [ <em><code>true</code></em> | <code>false</code> ] - Return database with std devs of model variables.</p></li>
 <li><p><code>'weighting='</code> [ numeric | <em>empty</em> ] - Weighting vector or matrix for prediction errors when <code>'objective=' 'prederr'</code>; empty means prediction errors are weighted equally.</p></li>
 </ul>
 <h4 id="options-for-models-with-non-linearised-equations">Options for models with non-linearised equations</h4>
 <ul>
-<li><p><code>'nonlinearise='</code> [ numeric | <em><code>0</code></em> ] - If non-zero the prediction step in the Kalman filter will be run in an exact non-linear mode using the same technique as <a href="../model/simulate.html"><code>model/simulate</code></a>.</p></li>
-<li><p><code>'simulate='</code> [ cell | empty ] - Options passed in to <code>simulate</code> when invoking the non-linear simulation in the prediction step; only used when <code>nonlinearise=</code> is greater than <code>0</code>.</p></li>
+<li><p><code>'nonlinear='</code> [ numeric | <em><code>0</code></em> ] - If non-zero the prediction step in the Kalman filter will be run in an exact non-linear mode using the same technique as <a href="../model/simulate.html"><code>model/simulate</code></a>.</p></li>
+<li><p><code>'simulate='</code> [ cell | empty ] - Options passed in to <code>simulate</code> when invoking the non-linear simulation in the prediction step; only used when <code>nonlinear=</code> is greater than <code>0</code>.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <p>The <code>'ahead='</code> and <code>'rollback='</code> options cannot be combined with one another, or with multiple data sets, or with multiple parameterisations.</p>

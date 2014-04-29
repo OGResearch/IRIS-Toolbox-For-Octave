@@ -69,7 +69,7 @@ end
 nAlt = size(This.Assign,3);
 
 % Pre-process options passed to `mychksstate`.
-mychksstateOpt = mychksstateopt(This,varargin{:});
+mychksstateOpt = mychksstateopt(This,'verbose',varargin{:});
 
 % `discr` is a matrix of discrepancies; it has two columns when we
 % evalulate full dynamic equations, and one column when we evaluate sstate
@@ -80,12 +80,12 @@ if any(~Flag) && opt.error
     tmp = {};
     for i = find(~Flag)
         for j = 1 : length(list{i})
-            tmp{end+1} = i; %#ok<AGROW>
+            tmp{end+1} = preparser.alt2str(i); %#ok<AGROW>
             tmp{end+1} = list{i}{j}; %#ok<AGROW>
         end
     end
     utils.error('model', ...
-        'Steady-state error in this equation in #%g: ''%s''', ...
+        'Steady-state error in this equation %s: ''%s''', ...
         tmp{:});
 end
 

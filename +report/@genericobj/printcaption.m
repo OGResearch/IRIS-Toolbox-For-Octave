@@ -41,7 +41,8 @@ if ~isempty(title)
     
 	% Split title.
     C = [C,xxSplitTitle(This,title, ...
-        NCol,Just,mytitletypeface(This),footnotemark(This))];
+        NCol,Just,mytitletypeface(This), ...
+        footnotemark(This))];
     
     % Split subtitle if not empty.
     if ~isempty(subTitle)

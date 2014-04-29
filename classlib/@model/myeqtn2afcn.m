@@ -99,19 +99,4 @@ end
 This.deqtnF = deqtnF;
 This.ceqtnF = ceqtnF;
 
-% Non-linear equations
-%----------------------
-eqtnN = This.eqtnN;
-
-% Non-linearised equations.
-for i = 1 : length(eqtnN)
-    if isempty(eqtnN{i})
-        continue
-    end
-    eqtnN{i} = removeFunc(eqtnN{i});
-    eqtnN{i} = str2func(['@(y,xx,e,p,t,L) ',eqtnN{i}]);
-end
-
-This.eqtnN = eqtnN;
-
 end

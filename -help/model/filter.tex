@@ -106,7 +106,7 @@
   errors.
 \item
   \texttt{'objRange='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  The objective function will be computed on this subrange only;
+  The objective function will be computed on the specified range only;
   \texttt{Inf} means the entire filter range.
 \item
   \texttt{'precision='} {[} \emph{\texttt{'double'}} \textbar{}
@@ -119,8 +119,8 @@
   factor will be estimated.
 \item
   \texttt{'returnCont='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - Return contributions of measurement
-  variables to the estimates of all variables and shocks.
+  \emph{\texttt{false}} {]} - Return contributions of prediction errors
+  in measurement variables to the estimates of all variables and shocks.
 \item
   \texttt{'returnMse='} {[} \emph{\texttt{true}} \textbar{}
   \texttt{false} {]} - Return MSE matrices for predetermined state
@@ -141,14 +141,14 @@ equations}
 
 \begin{itemize}
 \item
-  \texttt{'nonlinearise='} {[} numeric \textbar{} \emph{\texttt{0}} {]}
-  - If non-zero the prediction step in the Kalman filter will be run in
-  an exact non-linear mode using the same technique as
+  \texttt{'nonlinear='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+  If non-zero the prediction step in the Kalman filter will be run in an
+  exact non-linear mode using the same technique as
   \href{model/simulate}{\texttt{model/simulate}}.
 \item
   \texttt{'simulate='} {[} cell \textbar{} empty {]} - Options passed in
   to \texttt{simulate} when invoking the non-linear simulation in the
-  prediction step; only used when \texttt{nonlinearise=} is greater than
+  prediction step; only used when \texttt{nonlinear=} is greater than
   \texttt{0}.
 \end{itemize}
 

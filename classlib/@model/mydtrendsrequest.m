@@ -59,7 +59,7 @@ switch Req
     case 'range'
         nPer = numel(Range);
         eqtn = This.eqtnF(This.eqtntype == 3);
-        tTrend = myrange2ttrend(This,Range);
+        timeTrend = dat2ttrend(Range,This);
         W = zeros(ny,nPer,nAlt);
         count = 0;
         if ~isempty(Range)
@@ -68,7 +68,7 @@ switch Req
                 x = This.Assign(1,:,min(iAlt,end));
                 g = G(:,:,min(iAlt,end));
                 for j = 1 : ny
-                    W(j,:,count) = eqtn{j}(x,1,tTrend,g);
+                    W(j,:,count) = eqtn{j}(x,1,timeTrend,g);
                 end
             end
         end

@@ -55,9 +55,13 @@ if ~isequal(C1,'?')
     C = strrep(C1,'?',C);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
         function doInputArgs()
             n = length(This.attribute);
             args = cell(1,n);
@@ -68,9 +72,12 @@ end
                     args{ii} = NaN;
                 end
             end
-        end % doInputArgs().
+        end % doInputArgs()
+    
     
 %**************************************************************************
+
+
     function doSprintf()
         [tok,start,finish] = regexp(thisFormat, ...
             '\\sprintf\{(.*?)\}','tokens','start','end','once');
@@ -79,13 +86,17 @@ end
             thisFormat(start:finish) = '';
             thisFormat = strtrim(thisFormat);
         end
-    end % doSprintf().
+    end % doSprintf()
+
 
 %**************************************************************************
+
+
     function doPrintValue()
         C = report.seriesobj.sprintf(A.value,sprintFormat,This.options);
         C = report.seriesobj.makebox(C, ...
             '',ColW,Just,HColor);
-    end % doPrintValue().
+    end % doPrintValue()
+
 
 end

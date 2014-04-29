@@ -497,13 +497,7 @@ isYGrid = Opt.grid;
 Data = [];
 Ok = true;
 
-if is.func(Func)
-    chPF = func2str(Func);
-else
-    chPF = char(Func);
-end
-
-switch chPF
+switch mychar(Func)
     case {'plot','bar','barcon','stem'}
         Data = [X{:}];
         if is.tseries(Data)
@@ -531,7 +525,7 @@ switch chPF
 end
 
 if Opt.tight
-    isTseries = getappdata(AA);
+    isTseries = getappdata(AA,'tseries');
     if isequal(isTseries,true)
         grfun.yaxistight(AA);
     else
@@ -561,7 +555,7 @@ if Opt.zeroline
 end
 
 if ~isempty(Opt.vline)
-    grfun.vline(AA,Opt.vline);
+    grfun.vline(AA,Opt.vline,'color=','black');
 end
 
 if ~isempty(Opt.highlight)

@@ -40,6 +40,8 @@ classdef modelobj < getsetobj & userdataobj
         % Equation types:
         % 1=measurement, 2=transition, 3=deterministic trend, 4=dynamic link.
         eqtntype = zeros(1,0);
+        % Base year.
+        torigin = [];
     end
     
     methods
@@ -93,7 +95,6 @@ classdef modelobj < getsetobj & userdataobj
         varargout = loadobj(varargin)
         varargout = mycombinestdcorr(varargin)
         varargout = mynameindex(varargin);
-        varargout = mystdcorrindex(varargin)
         varargout = myalias(varargin)
     end
     

@@ -25,6 +25,7 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.fragileobj = irisopt.fragileobj();
     DEF.freqdom = irisopt.freqdom();
     DEF.grfun = irisopt.grfun();
+    DEF.grouping = irisopt.grouping();
     DEF.iris = irisopt.IRIS();
     DEF.latex = irisopt.latex();
     DEF.likfunc = irisopt.likfunc();

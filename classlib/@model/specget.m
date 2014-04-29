@@ -115,10 +115,10 @@ switch Query
         % Remove references to database d from reporting equations.
         X = regexprep(X,'d\.([a-zA-Z])','$1');
         
-    case {'nonlineqtn'}
+    case {'neqtn','nonlineqtn'}
         X = This.eqtn(This.nonlin);
         
-    case {'nonlinlabel'}
+    case {'nlabel','nonlinlabel'}
         X = This.eqtnlabel(This.nonlin);
         
     case 'rlabel'
@@ -226,14 +226,11 @@ switch Query
     case 'epsilon'
         X = This.epsilon;
         
-    case {'torigin','baseyear'}
-        X = This.torigin;
-        
     case 'userdata'
         X = userdata(This);
         
     % Database of autoexogenise definitions d.variable = 'shock';
-    case {'autoexogenise','autoexogenised'}
+    case {'autoexogenise','autoexogenised','autoexogenize','autoexogenized'}
         X = autoexogenise(This);
         
     case {'activeshocks','inactiveshocks'}
@@ -261,8 +258,8 @@ switch Query
     case 'ne'
         X = length(This.solutionid{3});
         
-    case 'build'
-        X = This.build;
+    case 'lastsyst'
+        X = This.lastSyst;
         
     otherwise
         Flag = false;
@@ -274,7 +271,7 @@ if chkSolution
     [solutionFlag,inx] = isnan(This,'solution');
     if solutionFlag
         utils.warning('model', ...
-            'Solution(s) not available:%s', ...
+            'Solution(s) not available %s', ...
             preparser.alt2str(inx));
     end
 end
@@ -341,7 +338,7 @@ end
         nEqtn = sum(select);
         X = cell(1,nEqtn);
         for iieq = find(select)
-            u = func2str(This.deqtnF{iieq});
+            u = mychar(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
             replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
             replaceZero = @doReplaceZero; %#ok<NASGU>

@@ -1,11 +1,11 @@
 
 
-    \filetitle{system}{System matrices before model is solved}{model/system}
+    \filetitle{system}{System matrices for unsolved model}{model/system}
 
 	\paragraph{Syntax}
 
 \begin{verbatim}
-[A,B,C,D,F,G,H,J,List,NF] = system(M)
+[A,B,C,D,F,G,H,J,List,Nf] = system(M)
 \end{verbatim}
 
 \paragraph{Input arguments}
@@ -21,36 +21,17 @@
 
 \begin{itemize}
 \item
-  \texttt{A} {[} numeric {]} - Matrix at the vector of expectations in
-  the transition equation.
-\item
-  \texttt{B} {[} numeric {]} - Matrix at current vector in the
-  transition equations.
-\item
-  \texttt{C} {[} numeric {]} - Constant vector in the transition
-  equations.
-\item
-  \texttt{D} {[} numeric {]} - Matrix at transition shocks in the
-  transition equations.
-\item
-  \texttt{F} {[} numeric {]} - Matrix at measurement variables in the
-  measurement equations.
-\item
-  \texttt{G} {[} numeric {]} - Matrix at predetermined transition
-  variables in the measurement variables.
-\item
-  \texttt{H} {[} numeric {]} - Constant vector in the measurement
-  equations.
-\item
-  \texttt{J} {[} numeric {]} - Matrix at measurement shocks in the
-  measurement equations.
+  \texttt{A}, \texttt{B}, \texttt{C}, \texttt{D}, \texttt{F},
+  \texttt{G}, \texttt{H} ,\texttt{J} {[} numeric {]} - Matrices
+  describing the unsolved system, see Description.
 \item
   \texttt{List} {[} cell {]} - Lists of measurement variables,
   transition variables includint their auxiliary lags and leads, and
   shocks as they appear in the rows and columns of the system matrices.
 \item
-  \texttt{NF} {[} numeric {]} - Number of non-predetermined
-  (forward-looking) transition variables.
+  \texttt{Nf} {[} numeric {]} - Number of non-predetermined
+  (forward-looking) transition variables (multiplied by the first
+  \texttt{Nf} columns of matrices \texttt{A} and \texttt{B}).
 \end{itemize}
 
 \paragraph{Options}
@@ -66,6 +47,11 @@
   {]} - Automatically detect which equations need to be
   re-differentiated based on parameter changes from the last time the
   system matrices were calculated.
+\item
+  \texttt{'sparse='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Return matrices \texttt{A}, \texttt{B}, \texttt{D}, \texttt{F},
+  \texttt{G}, and \texttt{J} as sparse matrices; can be set to
+  \texttt{true} only in models with one parameterization.
 \end{itemize}
 
 \paragraph{Description}

@@ -1,5 +1,5 @@
 function [Ln,Cp] = hline(varargin)
-% zeroline  Add vertical line with text caption at the specified position.
+% hline  Add horizontal line with text caption at the specified position.
 %
 % Syntax
 % =======
@@ -83,13 +83,13 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 yLim = get(Ax,'yLim');
 
-xLim = get(Ax,'xLim');
+xLim = realmax()*[-1,1];
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
 for iLoc = Loc
     if yLim(1) < iLoc && yLim(2) > iLoc
-        ln = plot(Ax,xLim,[iLoc,iLoc]);
+        ln = plot(Ax,xLim,[iLoc,iLoc],'xLimInclude','off');
         Ln = [Ln,ln]; %#ok<AGROW>
     
         % Temporary show excluded from legend (for Octave's way of excluding)
@@ -102,9 +102,6 @@ for iLoc = Loc
         if length(ch) > 1
             set(Ax,'children',ch([2:end,1]));
         end
-        
-        % Update zeroline x-data whenever the parent axes x-lims change.
-        grfun.listener(Ax,ln,'hline');
     
         % Hide back excluded from legend (for Octave's way of excluding)
         if ~ismatlab
@@ -119,15 +116,18 @@ end
 % Reset `'nextPlot='` to its original value.
 set(Ax,'nextPlot',nextPlot);
 
-if ~isempty(Ln)
-    set(Ln,'color',[0,0,0]);
-    if ~isempty(lineOpt)
-        set(Ln,lineOpt{:});
-    end
-    set(Ln,'tag','hline');
-    if opt.excludefromlegend
-        grfun.excludefromlegend(Ln);
-    end
+if isempty(Ln)
+    return
+end
+
+set(Ln,'color',[0,0,0]);
+if ~isempty(lineOpt)
+    set(Ln,lineOpt{:});
+end
+set(Ln,'tag','hline');
+
+if opt.excludefromlegend
+    grfun.excludefromlegend(Ln);
 end
 
 end

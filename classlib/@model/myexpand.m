@@ -7,7 +7,7 @@ function [R,Y,Jk] = myexpand(R,Y,k,Xa,Xf,Ru,J,Jk,Yu)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 % If one of the non-lin add-factor matrices has been entered as an empty
 % array, do not expand non-lin add-factors.
@@ -28,7 +28,7 @@ k0 = size(R,2)/ne - 1;
 
 % Check that R and Y are expanded to the same horizon.
 if nn > 0 && k0 ~= size(Y,2)/nn - 1
-    utils.error('internal','Internal IRIS error.');
+    utils.error('model:myexpand','#Internal');
 end
 
 % Requested expansion not longer than the existing.

@@ -52,7 +52,9 @@
   {]} - Refresh dynamic links for each change in a parameter.
 \item
   \texttt{'solve='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - Re-compute solution for each change in a parameter.
+  \textbar{} cellstr {]} - Re-compute solution for each parameter
+  change; you can specify a cell array with options for the
+  \texttt{solve} function.
 \item
   \texttt{'sstate='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   \textbar{} cell {]} - Re-compute steady state in each differentiation

@@ -54,8 +54,9 @@ function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 % * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links in each
 % differentiation step.
 %
-% * `'solve='` [ *`true`* | `false` ] - Re-solve model in each differentiation
-% step.
+% * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution in
+% each differentiation step; you can specify a cell array with options for
+% the `solve` function.
 %
 % * `'sstate='` [ `true` | *`false`* | cell ] - Re-compute steady state in each
 % differentiation step; if the model is non-linear, you can pass in a cell
@@ -115,7 +116,8 @@ end
 
 % Initialise steady-state solver and chksstate options.
 opt.sstate = mysstateopt(This,'silent',opt.sstate);
-opt.chksstate = mychksstateopt(This,opt.chksstate);
+opt.chksstate = mychksstateopt(This,'silent',opt.chksstate);
+opt.solve = mysolveopt(This,'silent',opt.solve);
 
 %--------------------------------------------------------------------------
 
@@ -160,7 +162,6 @@ if opt.progress
 end
 
 throwErr = true;
-expandSol = false;
 
 for iAlt = 1 : nAlt    
     % Fetch the i-th parameterisation.
@@ -194,7 +195,7 @@ for iAlt = 1 : nAlt
         isSstate = ~opt.deviation && ~isnan(assignPos(i));
         
         % Steady state, state space and SGF at p0(i) + step(i).
-        m = myupdatemodel(m,pp,pri,opt,throwErr,expandSol);
+        m = myupdatemodel(m,pp,pri,opt,throwErr);
         if isSstate
             yp = doGetSstate();
         end
@@ -202,7 +203,7 @@ for iAlt = 1 : nAlt
         Gp = xxSgfy(Tp,Rp,Zp,Hp,Omgp,nunitp,Freq,opt);
         
         % Steady state,state space and SGF at p0(i) - step(i).
-        m = myupdatemodel(m,pm,pri,opt,throwErr,expandSol);
+        m = myupdatemodel(m,pm,pri,opt,throwErr);
         if isSstate
             ym = doGetSstate();
         end
@@ -362,9 +363,6 @@ elseif r == m
 else
     [U,~,V] = svd(A,0);
     S = diag(1./s(1:r));
-    X = V(:,1:r)*S*U(:,1:r)';
-end
-end % xxPInverse().
     X = V(:,1:r)*S*U(:,1:r)';
 end
 end % xxPInverse().

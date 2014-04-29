@@ -151,16 +151,23 @@ end
 
 doRefresh();
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
     function doRefresh()
         if ~isempty(This.Refresh) && Opt.refresh
             This = refresh(This);
         end
-    end % doRefresh();
+    end % doRefresh()
+
 
 %**************************************************************************
+
+
     function y = doObjFunc(p)
         % doobjfunc  This is the objective function for the solver. Evaluate the
         % equations twice, at time t and t+10.
@@ -186,6 +193,7 @@ doRefresh();
             y = f(x,dx);
         end
         
+        
         function doRefresh()
             % dorefresh  Refresh dynamic links in each iteration.
             x(This.log) = exp(x(This.log));
@@ -198,11 +206,15 @@ doRefresh();
             x(This.log) = log(x(This.log));
             dx(This.log) = log(dx(This.log));
         end
-        % dorefresh().
+        % dorefresh()
         
-    end % doObjFunc(),
+        
+    end % doObjFunc()
+
 
 %**************************************************************************
+
+
     function doChkForNans()
         % Check for levels fixed to NaN.
         fixLevelInx = false(1,length(This.name));
@@ -224,6 +236,7 @@ doRefresh();
                 'because it is NaN: ''%s''.'], ...
                 This.name{nanSstate});
         end
-    end % dochkfornans().
+    end % dochkfornans()
+
 
 end
