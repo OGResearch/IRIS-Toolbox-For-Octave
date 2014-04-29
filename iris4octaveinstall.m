@@ -13,11 +13,11 @@ ix = find(strcmpi(varargin,'path_to_octave_packages'),1,'last');
 if ~isempty(ix) && (nargin > ix)
   path2octPkg = varargin{ix+1};
 else
-  path2octPkg = tilde_expand(fullfile('~','.octave_packages'));
+  path2octPkg = pkg('local_list');
 end
 
 % check iris version
-list = dir(fullfile(root,'iristbx*'));
+list = dir(fullfile(path2iris,'iristbx*'));
 if length(list) == 1
   irisVer = strrep(list.name,'iristbx','');
 elseif isempty(list)
@@ -43,7 +43,7 @@ end
 nPkg = numel(local_packages);
 ixIris = nPkg + 1;
 for ix = 1 : nPkg
-  if strcpmi(local_packages{ix}.name,'iris_toolbox')
+  if strcmpi(local_packages{ix}.name,'iris-toolbox')
     ixIris = ix;
     break
   end
@@ -61,7 +61,7 @@ save(path2octPkg,'local_packages');
   function doUpdateIrisPkgInfo
     pkgInfo.name = 'iris-toolbox';
     pkgInfo.version = irisVer;
-    pkgInfo.date = datstr(now(),'yyyy-mm-dd');
+    pkgInfo.date = datestr(now(),'yyyy-mm-dd');
     pkgInfo.author = 'IRIS Solutions Team';
     pkgInfo.maintainer = ['IRIS discussion forum community ', ...
       '<https://iristoolbox.codeplex.com/discussions>'];
@@ -84,3 +84,5 @@ save(path2octPkg,'local_packages');
     pkgInfo.loaded = 1;
     
   end
+  
+end
