@@ -38,7 +38,11 @@ Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
 if isempty(varargin)
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     Assigned = cell(1,0);
     return
     
@@ -122,7 +126,11 @@ elseif n <= 2 && iscellstr(varargin{1})
         stdcorr(STDCORRPOS) = true;
         This.stdcorr(1,STDCORRPOS,:) = value(1,STDCORRRHS,:);
     end
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     
 elseif n <= 2 && isstruct(varargin{1})
     % m = assign(m,struct), or
@@ -160,7 +168,11 @@ elseif n <= 2 && isstruct(varargin{1})
         This.stdcorr(1,stdcorrPos(i),:) = d.(c{i});
         stdcorr(stdcorrPos(i)) = true;
     end
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     if nargout == 1
         return
     end
@@ -198,7 +210,11 @@ elseif iscellstr(varargin(1:2:end))
             stdcorr(stdcorrInx) = true;
         end
     end
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     
 else
     % Throw an invalid assignment error.
@@ -229,6 +245,13 @@ end
 
 %**************************************************************************
     function doReset()
+        ASSIGNPOS = [];
+        ASSIGNRHS = [];
+        STDCORRPOS = [];
+        STDCORRRHS = [];
+    end
+    
+    function [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct()
         ASSIGNPOS = [];
         ASSIGNRHS = [];
         STDCORRPOS = [];
