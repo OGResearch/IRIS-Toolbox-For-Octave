@@ -1,4 +1,4 @@
-function C = latexdata(This,Ros,Time,Data,Format,Mark,Text)
+function C = latexdata(This,Row,Time,Data,Format,Mark,Text)
 % latexdata  [Not a public function] LaTeX code for data part of a table row.
 %
 % Backend IRIS function.
@@ -58,7 +58,7 @@ end
         a.date = Time(t);
         a.mark = Mark;
         a.text = Text;
-        a.row = Ros;
+        a.row = Row;
         a.col = t;
         if ~isDates
             a.colname = par.options.colstruct(t).name{2};

@@ -1,4 +1,4 @@
-function C = speclatexcode(This)
+function C = speclatexcode(This,IChild,NChild)
 % speclatexcode  [Not a public function] LaTeX code for report/series data.
 %
 % Backend IRIS function.
@@ -9,6 +9,7 @@ function C = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
+isLastChild = IChild < NChild;
 par = This.parent;
 [x,time] = getdata(This,This.data, ...
     par.options.range,This.options.colstruct);
@@ -27,7 +28,15 @@ for iRow = 1 : nx
     if iRow > 1
         C = [C,br]; %#ok<AGROW>
     end
+    isRowHighlight = This.options.rowhighlight(min(iRow,end));
+    if isRowHighlight
+        C = [C,'\rowcolor{highlightcolor} ']; %#ok<AGROW>
+        This.hInfo.package.colortbl = true;
+    end 
     C = [C,latexonerow(This,iRow,time,x(:,iRow),mark,text)]; %#ok<AGROW>
+    if isRowHighlight && isLastChild
+        C = [C,'\rowcolor{white}']; %#ok<AGROW>
+    end
 end
 
 end

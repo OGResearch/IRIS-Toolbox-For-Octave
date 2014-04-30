@@ -52,6 +52,7 @@ if isempty(range)
     end
     return
 end
+
 range = range(:).';
 nPer = length(range);
 if isDates
@@ -64,17 +65,48 @@ if isDates
     [year,per,freq] = dat2ypf(range); %#ok<ASGLU>
 end
 
-C = lead;
-theFirstLine = lead;
-hRule = lead;
+firstLine = lead; % First line.
+secondLine = lead; % Main line.
+divider = lead; % Dividers between first and second lines.
 yCount = 0;
 
 colFootDate = [ This.options.colfootnote{1:2:end} ];
 colFootText = This.options.colfootnote(2:2:end);
 
 for i = 1 : nPer
+    isLastCol = i == nPer;
     yCount = yCount + 1;
     colW = This.options.colwidth(min(i,end));
+    f = '';
+    if isDates
+        s = currentDates{i};
+        if isTwoLines
+            f = yearDates{i};
+            isFirstLineChg = isLastCol ...
+                || (year(i) ~= year(i+1) || freq(i) ~= freq(i+1));
+        end
+    else
+        s = This.options.colstruct(i).name{2};
+        if isTwoLines
+            f = This.options.colstruct(i).name{1};
+            isFirstLineChg = isLastCol ...
+                || ~isequalnFunc(This.options.colstruct(i).name{1}, ...
+                This.options.colstruct(i+1).name{1});
+            if isequalnFunc(f,NaN)
+                f = '';
+            end
+        end
+    end
+    
+    % Footnotes in the headings of individual columns.
+    inx = datcmp(colFootDate,range(i));
+    for j = find(inx)
+        if ~isempty(colFootText{j})
+            s = [s, ...
+                footnotemark(This,colFootText{j})]; %#ok<AGROW>
+        end
+    end
+
     col = This.options.headlinejust;
     if any(This.highlight == i)
         col = upper(col);
@@ -84,68 +116,38 @@ for i = 1 : nPer
     end
     if any(This.vline == i)
         col = [col,'|']; %#ok<AGROW>
-    end
-    firstLine = '';
-    if isDates
-        secondLine = currentDates{i};
-        if isTwoLines
-            firstLine = yearDates{i};
-            isFirstLineChg = i == nPer ...
-                || year(i) ~= year(i+1) ...
-                || freq(i) ~= freq(i+1);
-        end
-    else
-        secondLine = This.options.colstruct(i).name{2};
-        if isTwoLines
-            firstLine = This.options.colstruct(i).name{1};
-            isFirstLineChg = i == nPer ...
-                || ~isequalnFunc( ...
-                This.options.colstruct(i).name{1}, ...
-                This.options.colstruct(i+1).name{1});
-            if isequalnFunc(firstLine,NaN)
-                firstLine = '';
-            end
-        end
-    end
+    end    
     
-    % Footnotes in the headings of individual columns.
-    inx = datcmp(colFootDate,range(i));
-    for j = find(inx)
-        if ~isempty(colFootText{j})
-            secondLine = [secondLine, ...
-                footnotemark(This,colFootText{j})]; %#ok<AGROW>
-        end
-    end
-
     % Second (main) line.
-    C = [C,'&\multicolumn{1}{',col,'}{', ...
-        report.tableobj.makebox(secondLine, ...
-        '',colW,This.options.headlinejust,''), ...
-        '}']; %#ok<AGROW>
+    s = ['&\multicolumn{1}{',col,'}{', ...
+        report.tableobj.makebox(s,'',colW,This.options.headlinejust,''), ...
+        '}'];
+    secondLine = [secondLine,s]; %#ok<AGROW>
+    
     % Print the first line text across this and all previous columns that have
     % the same date/text on the first line.
+    % hRule = [hRule,'&\multicolumn{1}{c|}{}'];
     if isTwoLines && isFirstLineChg
         command = [ ...
             '&\multicolumn{', ...
             sprintf('%g',yCount), ...
             '}{c}'];
-        theFirstLine = [theFirstLine, ...
-            command,'{', ...
-            report.tableobj.makebox(firstLine, ...
-            '',NaN,'',''), ...
-            '}']; %#ok<AGROW>
-        hRule = [hRule,command]; %#ok<AGROW>
-        if ~isempty(firstLine)
-            hRule = [hRule,'{\hrulefill}']; %#ok<AGROW>
+        firstLine = [firstLine,command, ...
+            '{',report.tableobj.makebox(f,'',NaN,'',''),'}']; %#ok<AGROW>
+        divider = [divider,command]; %#ok<AGROW>
+        if ~isempty(f)
+            divider = [divider,'{\hrulefill}']; %#ok<AGROW>
         else
-            hRule = [hRule,'{}']; %#ok<AGROW>
+            divider = [divider,'{}']; %#ok<AGROW>
         end
         yCount = 0;
     end
 end
 
 if isTwoLines
-    C = [theFirstLine,'\\[-8pt]',br,hRule,'\\',br,C];
+    C = [firstLine,'\\[-8pt]',br,divider,'\\',br,secondLine];
+else
+    C = secondLine;
 end
 
 if iscellstr(C)

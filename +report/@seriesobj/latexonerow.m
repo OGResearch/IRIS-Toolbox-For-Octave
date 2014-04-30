@@ -26,31 +26,35 @@ C = [ ...
 
 
 %**************************************************************************
+
+
     function C = doLatexCaption()
-        if Row == 1
-            tit = interpret(This,This.title);
-            subtit = interpret(This,This.subtitle);
-            if isempty(subtit)
-                C = tit;
-                return
-            end
-            C = ['\multicolumn{3}{l}{',tit,'}', ...
-                repmat(' &',1,nPer),' \\',br];
-            C = [C,subtit];
-        else
-            C = '';
+        C = '';
+        if Row > 1
+            return
         end
+        tit = interpret(This,This.title);
+        subtit = interpret(This,This.subtitle);
+        if isempty(subtit)
+            C = tit;
+            return
+        end
+        C = ['\multicolumn{3}{l}{',tit,'}', ...
+            repmat(' &',1,nPer),' \\',br];
+        C = [C,subtit];
     end % doLatexCaption()
 
 
 %**************************************************************************
+
+
     function C = doLatexUnits()
-        if Row == 1
-            C = interpret(This,This.options.units);
-            C = ['~',C];
-        else
-            C = '';
+        C = '';
+        if Row > 1
+            return
         end
+        C = interpret(This,This.options.units);
+        C = ['~',C];
     end % doLatexUnits()
 
 

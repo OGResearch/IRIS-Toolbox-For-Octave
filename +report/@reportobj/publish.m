@@ -32,10 +32,6 @@ This.options = dbmerge(This.options,opt);
 % Create the temporary directory.
 doCreateTempDir();
 
-% Get the list of extra packages that needs to be loaded by LaTeX.
-pkg = {};
-doGetListOfPkg();
-
 thisDir = fileparts(mfilename('fullpath'));
 templateFile = fullfile(thisDir,'report.tex');
 
@@ -46,9 +42,14 @@ c = file2char(templateFile);
 % Create LaTeX code for the entire report.
 doc = latexcode(This);
 
+% Get the list of extra packages that needs to be loaded by LaTeX.
+pkg = {};
+doExtraPkg();
+
 % Insert the LaTeX code into the template.
 c = strrep(c,'$document$',doc);
 c = xxDocument(This,c,pkg);
+
 
 % Create a temporary tex name and save the LaTeX file.
 latexFile = '';
@@ -80,7 +81,7 @@ Info = outpstruct(This.hInfo);
 %**************************************************************************
 
 
-    function doGetListOfPkg()
+    function doExtraPkg()
         pkg = This.options.package;
         if ischar(pkg)
             pkg = regexp(pkg,'\w+','match');
@@ -91,7 +92,7 @@ Info = outpstruct(This.hInfo);
         if This.hInfo.package.colortbl
             pkg{end+1} = 'colortbl';
         end
-    end % doGetListOfPkg()
+    end % doExtraPkg()
 
 
 %**************************************************************************

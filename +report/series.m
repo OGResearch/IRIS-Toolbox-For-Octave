@@ -49,16 +49,14 @@
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the series text.
 %
-% * `'highlight='` [ numeric | *empty* ] - (Not inheritable from parent
-% objects) Periods that will get highlighted in tables; to highlight date
-% ranges in graphs, use the `'highlight='` option in the parent graph
-% object.
+% * `'highlight='` [ numeric | *empty* ] - Periods for which the data
+% entries will highlighted.
 %
-% * `'inf='` [ char | *`'\ensuremath{\infty}'`* ] - (Inheritable from parent objects)
-% LaTeX string that will be used to typeset Inf entries.
+% * `'inf='` [ char | *`'\ensuremath{\infty}'`* ] - (Inheritable from
+% parent objects) LaTeX string that will be used to typeset Inf entries.
 %
-% * `'nan='` [ char | *`'\ensuremath{\cdot}'`* ] - (Inheritable from parent objects)
-% LaTeX string that will be used to typeset NaN entries.
+% * `'nan='` [ char | *`'\ensuremath{\cdot}'`* ] - (Inheritable from parent
+% objects) LaTeX string that will be used to typeset NaN entries.
 %
 % * `'pureZero='` [ char | *empty* ] - (Inheritable from parent objects)
 % LaTeX string that will be used to typeset pure zero entries; if empty the
@@ -69,9 +67,14 @@
 % as zero under the current numeric format used; if empty these numbers
 % will be printed using the current numeric format.
 %
-% * `'separator='` [ char | *empty* ] - (Not inheritable from parent
-% objects) LaTeX commands that will be inserted immediately after the end
-% of the table row, i.e. appended to \\, within a tabular mode.
+% * `'rowHighlight='` [ `true` | *`false`* ] - Highlight the entire row,
+% including the text, units and marks at the beginnig; because of a bug in
+% the LaTex package `colortbl`, this option cannot be combined with the
+% option `'highlight='` in [`report/table`](report/table).
+%
+% * `'separator='` [ char | *empty* ] - LaTeX commands that will be
+% inserted immediately after the end of the table row, i.e. appended to \\,
+% within a tabular mode.
 %
 % * `'units='` [ char ] - (Inheritable from parent objects) Description of
 % input data units that will be displayed in the second column of tables.
@@ -79,10 +82,10 @@
 % Options for graph series
 % =========================
 %
-% * `'legend='` [ char | cellstr | `NaN` | *`Inf`* ] - (Not inheritable from
-% parent objects) Legend entries used instead of the series caption and
-% marks; Inf means the caption and marks will be used to construct legend
-% entries; NaN means the series will be exluded from legend.
+% * `'legend='` [ char | cellstr | `NaN` | *`Inf`* ] - Legend entries used
+% instead of the series caption and marks; Inf means the caption and marks
+% will be used to construct legend entries; NaN means the series will be
+% exluded from legend.
 %
 % * `'plotFunc='` [ `@area` | `@bar` | `@barcon` | *`@plot`* | `@plotcmp` |
 % `@plotpred` | `@stem` ] - (Inheritable from parent objects) Plot function
@@ -164,7 +167,7 @@
 %
 % * `\sprintf{FFFF}` - to modify the way each numeric entry that passes the
 % test is printed by the `sprintf` function; `FFFF` is one of the standard
-% sprintf formattting strings.
+% `sprintf` formatting strings.
 %
 % * `\hide{?}` - to hide the actual entry when it is supposed to be
 % replaced with something else.
@@ -184,8 +187,11 @@
 % `'plotOptions='` in this command, or `'style='` in the respective
 % [`graph`](report/graph) command.
 %
-% Example of a conditional format structure
-% ==========================================
+% Example (Conditional format structure)
+% =======================================
+%
+% Typeset negative values in italic, and values in periods before 2010Q1
+% blue:
 %
 %     cf = struct();
 %     cf(1).test = 'value < 0';

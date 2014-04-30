@@ -25,9 +25,8 @@
 % commands for typesetting the table caption and subcaption; you can use
 % Inf for either to indicate the default format.
 %
-% * `'colStruct='` [ struct | *empty* ] - (Not inheritable from parent
-% objects) User-defined structure of the table columns; use of this option
-% disables `'range='`.
+% * `'colStruct='` [ struct | *empty* ] - User-defined structure of the
+% table columns; use of this option disables `'range='`.
 %
 % * `'colWidth='` [ numeric | *`NaN`* ] - (Inheritable from parent objects)
 % Width, or a vector of widhts, of the table columns in `em `units; `NaN`
@@ -48,7 +47,9 @@
 % shows if the title is non-empty.
 %
 % * `'highlight='` [ numeric | *empty* ] - Dates for which the entire
-% columns will be highlighted.
+% columns will be highlighted; because of a bug in the LaTex package
+% `colortbl`, this option cannot be combined with the option
+% `'rowHighlight='` in [`report/series`](report/series).
 %
 % * `'long='` [ true | *`false`* ] - (Inheritable from parent objects) If
 % true, the table may stretch over more than one page.
@@ -75,10 +76,9 @@
 % Space between columns in the table, measured in em units; NaN means the
 % \LaTeX\ default.
 %
-% * `'typeface='` [ char | *empty* ] - (Not inheritable from parent objects)
-% \LaTeX\ code specifying the typeface for the table as a whole; it must use
-% the declarative forms (such as `\itshape`) and not the command forms
-% (such as `\textit{...}`).
+% * `'typeface='` [ char | *empty* ] - \LaTeX\ code specifying the typeface
+% for the table as a whole; it must use the declarative forms (such as
+% `\itshape`) and not the command forms (such as `\textit{...}`).
 %
 % * `'vline='` [ numeric | *empty* ] - (Inheritable from parent objects)
 % Vector of dates after which a vertical line (divider) will be placed.

@@ -43,12 +43,12 @@ end
 
 % Cycle over children and create table rows.
 nChild = length(This.children);
-for i = 1 : nChild
-    c1 = latexcode(This.children{i});
+for iChild = 1 : nChild
+    c1 = latexcode(This.children{iChild},iChild,nChild);
     C = [C,c1]; %#ok<AGROW>
-    if isfield(This.children{i}.options,'separator') ...
-            && ~isempty(This.children{i}.options.separator)
-        C = [C, br, This.children{i}.options.separator]; %#ok<AGROW>
+    if isfield(This.children{iChild}.options,'separator') ...
+            && ~isempty(This.children{iChild}.options.separator)
+        C = [C, br, This.children{iChild}.options.separator]; %#ok<AGROW>
     end
     C = [C, br ]; %#ok<AGROW>
 end
