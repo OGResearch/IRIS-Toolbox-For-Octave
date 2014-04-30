@@ -110,14 +110,14 @@ code.LaTeX {
 <div class="headline">Moving sum pseudofunction</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>movsum(EXPR)
-movsum(EXPR,K)</code></pre>
+<pre><code>movsum(Expr)
+movsum(Expr,K)</code></pre>
 <h4 id="description">Description</h4>
 <p>If the second input argument, <code>K</code>, is negative, this function expands to the moving sum of the last K periods (including the current period), i.e.</p>
-<pre><code>((EXPR)+(EXPR{-1})+ ... +(EXPR{-(K-1)})</code></pre>
-<p>where <code>EXPR{-N}</code> derives from <code>EXPR</code> and has all its time subscripts shifted by <code>-N</code> (if specified).</p>
+<pre><code>((Expr)+(Expr{-1})+ ... +(Expr{-(K-1)})</code></pre>
+<p>where <code>Expr{-N}</code> derives from <code>Expr</code> and has all its time subscripts shifted by <code>-N</code> (if specified).</p>
 <p>If the second input argument, <code>K</code>, is positive, this function expands to the moving sum of the next K periods ahead (including the current period), i.e.</p>
-<pre><code>((EXPR)+(EXPR{1})+ ... +(EXPR{K-1})</code></pre>
+<pre><code>((Expr)+(Expr{1})+ ... +(Expr{K-1})</code></pre>
 <p>If the second input argument, <code>K</code>, is not specified, the default value -4 is used (based on the fact that most of the macroeconomic models are quarterly).</p>
 <h4 id="example">Example</h4>
 <p>The following three lines</p>

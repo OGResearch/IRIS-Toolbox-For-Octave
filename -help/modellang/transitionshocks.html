@@ -111,16 +111,16 @@ code.LaTeX {
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>!transition_shocks
-    shock_name, shock_name, ...
+    ShockName, ShockName, ...
     ...</code></pre>
 <h4 id="short-cut-syntax">Short-cut syntax</h4>
 <pre><code>!shocks
-    shock_name, shock_name, ...
+    ShockName, ShockName, ...
     ...</code></pre>
 <h4 id="syntax-with-descriptors">Syntax with descriptors</h4>
 <pre><code>!transition_shocks
-    shock_name, shock_name, ...
-    &#39;Description of the shock...&#39; shock_name</code></pre>
+    ShockName, ShockName, ...
+    &#39;Description of the shock...&#39; ShockName</code></pre>
 <h4 id="description">Description</h4>
 <p>The <code>!transition_shocks</code> keyword starts a new declaration block for transition shocks (i.e. shocks to transition equation); the names of the shocks must be separated by commas, semi-colons, or line breaks. You can have as many declaration blocks as you wish in any order in your model file: They all get combined together when you read the model file in. Each shock must be declared (exactly once).</p>
 <p>You can add descriptors to the shocks (enclosed in single or double quotes, preceding the name of the shock); these will be stored in, and accessible from, the model object.</p>

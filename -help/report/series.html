@@ -129,17 +129,18 @@ code.LaTeX {
 <li><p><code>'decimal='</code> [ numeric | <em><code>NaN</code></em> ] - (Inheritable from parent objects) Number of decimals that will be displayed; if NaN the <code>'format='</code> option is used instead.</p></li>
 <li><p><code>'format='</code> [ char | <em><code>'%.2f'</code></em> ] - (Inheritable from parent objects) Numeric format string; see help on the built-in <code>sprintf</code> function.</p></li>
 <li><p><code>'footnote='</code> [ char | <em>empty</em> ] - Footnote at the series text.</p></li>
-<li><p><code>'highlight='</code> [ numeric | <em>empty</em> ] - (Inheritable from parent objects) Periods that will get highlighted in tables; to highlight date ranges in graphs, use the <code>'highlight='</code> option in the parent graph object.</p></li>
+<li><p><code>'highlight='</code> [ numeric | <em>empty</em> ] - Periods for which the data entries will highlighted.</p></li>
 <li><p><code>'inf='</code> [ char | <em><code>'\ensuremath{\infty}'</code></em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset Inf entries.</p></li>
 <li><p><code>'nan='</code> [ char | <em><code>'\ensuremath{\cdot}'</code></em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset NaN entries.</p></li>
 <li><p><code>'pureZero='</code> [ char | <em>empty</em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset pure zero entries; if empty the zeros will be printed using the current numeric format.</p></li>
 <li><p><code>'printedZero='</code> [ char | <em>empty</em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset the entries that would appear as zero under the current numeric format used; if empty these numbers will be printed using the current numeric format.</p></li>
-<li><p><code>'separator='</code> [ char | <em>empty</em> ] - (Not inheritable from parent objects) LaTeX commands that will be inserted immediately after the end of the table row, i.e. appended to \, within a tabular mode.</p></li>
+<li><p><code>'rowHighlight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Highlight the entire row, including the text, units and marks at the beginnig; because of a bug in the LaTex package <code>colortbl</code>, this option cannot be combined with the option <code>'highlight='</code> in <a href="../report/table.html"><code>report/table</code></a>.</p></li>
+<li><p><code>'separator='</code> [ char | <em>empty</em> ] - LaTeX commands that will be inserted immediately after the end of the table row, i.e. appended to \, within a tabular mode.</p></li>
 <li><p><code>'units='</code> [ char ] - (Inheritable from parent objects) Description of input data units that will be displayed in the second column of tables.</p></li>
 </ul>
 <h4 id="options-for-graph-series">Options for graph series</h4>
 <ul>
-<li><p><code>'legend='</code> [ char | cellstr | <code>NaN</code> | <em><code>Inf</code></em> ] - (Not inheritable from parent objects) Legend entries used instead of the series caption and marks; Inf means the caption and marks will be used to construct legend entries; NaN means the series will be exluded from legend.</p></li>
+<li><p><code>'legend='</code> [ char | cellstr | <code>NaN</code> | <em><code>Inf</code></em> ] - Legend entries used instead of the series caption and marks; Inf means the caption and marks will be used to construct legend entries; NaN means the series will be exluded from legend.</p></li>
 <li><p><code>'plotFunc='</code> [ <code>@area</code> | <code>@bar</code> | <code>@barcon</code> | <em><code>@plot</code></em> | <code>@plotcmp</code> | <code>@plotpred</code> | <code>@stem</code> ] - (Inheritable from parent objects) Plot function that will be used to create graphs.</p></li>
 <li><p><code>'plotOptions='</code> [ cell | <em>empty</em> ] - Options passed as the last input arguments to the plot function.</p></li>
 <li><p><code>yAxis='</code> [ <em><code>'left'</code></em> | *<code>'right'</code> ] - Choose the LHS or RHS axis to plot this series; see also comments on LHS-RHS plots in Description.</p></li>
@@ -174,14 +175,15 @@ code.LaTeX {
 <p>The <code>.format</code> fields of the conditional format structure consist of LaTeX commands that will be use to typeset the corresponding entry. The reference to the entry itself is through a question mark. The entries are typeset in math mode; this for instance meanse that for bold or italic typface, you must use the <code>\mathbf{...}</code> and <code>\mathit{...}</code> commands.</p>
 <p>In addition to standard LaTeX commands, you can use the following IRIS-specific commands in the format strings:</p>
 <ul>
-<li><p><code>\sprintf{FFFF}</code> - to modify the way each numeric entry that passes the test is printed by the <code>sprintf</code> function; <code>FFFF</code> is one of the standard sprintf formattting strings.</p></li>
+<li><p><code>\sprintf{FFFF}</code> - to modify the way each numeric entry that passes the test is printed by the <code>sprintf</code> function; <code>FFFF</code> is one of the standard <code>sprintf</code> formatting strings.</p></li>
 <li><p><code>\hide{?}</code> - to hide the actual entry when it is supposed to be replaced with something else.</p></li>
 </ul>
 <p>You can combine multiple tests and their correponding formats in one structure; they will be all applied to each entry in the specified order.</p>
 <h5 id="lhs-rhs-plots">LHS-RHS plots</h5>
 <p>The LHS-RHS report graphs are still an experimental feature.</p>
 <p>When the option <code>'yAxis='</code> is used to plot on both the LHS and the RHS y-axis, the plot functions are restricted to <code>@plot</code>, <code>@bar</code>, <code>@area</code> and <code>@stem</code>. Also, because of a bug in Matlab, always control the color of the lines, bars and areas in all LHS-RHS graphs: use either the option <code>'plotOptions='</code> in this command, or <code>'style='</code> in the respective <a href="../report/graph.html"><code>graph</code></a> command.</p>
-<h4 id="example-of-a-conditional-format-structure">Example of a conditional format structure</h4>
+<h4 id="example-conditional-format-structure">Example (Conditional format structure)</h4>
+<p>Typeset negative values in italic, and values in periods before 2010Q1 blue:</p>
 <pre><code>cf = struct();
 cf(1).test = &#39;value &lt; 0&#39;;
 cf(1).format = &#39;\mathit{?}&#39;;

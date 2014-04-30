@@ -129,18 +129,15 @@ S = irisget()</code></pre>
 <li><p><code>'version='</code> [ char ] - The current IRIS version string.</p></li>
 </ul>
 <p>When called without any input arguments, the <code>irisget</code> function returns a struct with all options and their current values.</p>
+<p>When used as input arguments in the <code>irisget</code> function, the option names are case-insensitive. When referring to field names of an output struct returned by the <code>irisget</code> function, all option names are lower-case and case-sensitive.</p>
 <h4 id="example">Example</h4>
-<pre><code>irisget(&#39;dateformat&#39;)
-
+<pre><code>irisget(&#39;dateFormat&#39;)
 ans =
-
 YFP
 
 g = irisget();
 g.dateformat
-
 ans =
-
 YFP</code></pre>
 
 </body>

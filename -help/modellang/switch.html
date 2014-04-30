@@ -107,20 +107,20 @@ code.LaTeX {
 
 
 <h2 id="modellang/switch">!switch...!case...!otherwise...!end</h2>
-<div class="headline">Switch among several branches of the model code depending on the value of an expression</div>
+<div class="headline">Switch among several cases based on expression</div>
 
 <h4 id="syntax-with-an-otherwise-clause">Syntax with an otherwise clause</h4>
-<pre><code>!switch Expression
+<pre><code>!switch Expr
     !case Balue1
         Block1
     !case Balue2
         Block2
     ...
     !otherwise
-        Otherwise_Block
+        OtherwiseBlock
 !end</code></pre>
 <h4 id="syntax-without-an-otherwise-clause">Syntax without an otherwise clause</h4>
-<pre><code>!switch Expression
+<pre><code>!switch Expr
     !case Value1
         Block1
     !case Value2

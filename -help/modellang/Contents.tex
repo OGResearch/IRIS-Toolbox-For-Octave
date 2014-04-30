@@ -77,7 +77,7 @@ variables}
   log-linearised variables.
 \item
   \href{modellang/regexpression}{\texttt{\textless{}...\textgreater{}}}
-  - Regular expression in log-varible list.
+  - Regular expression in log-variable list.
 \end{itemize}
 
 \paragraph{Model pseudofunctions}
@@ -99,9 +99,6 @@ Pseudofunctions do not start with an exclamation point.
   \href{modellang/sstateversion}{\texttt{!!}} - Steady-state version of
   an equation.
 \item
-  \href{modellang/alias}{\texttt{!!}} - Beginning of aliasing in
-  descriptions and labels.
-\item
   \href{modellang/ttrend}{\texttt{!ttrend}} - Linear time trend in
   deterministic trend equations.
 \item
@@ -112,6 +109,9 @@ Pseudofunctions do not start with an exclamation point.
 \item
   \href{modellang/exactnonlin}{\texttt{=\#}} - Mark an equation for
   exact non-linear simulation.
+\item
+  \href{modellang/alias}{\texttt{'...!!...'}} - Beginning of aliasing
+  inside descriptions and labels.
 \end{itemize}
 
 \paragraph{Preparser pseudofunctions}
@@ -147,6 +147,9 @@ Pseudofunctions do not start with an exclamation point.
   \href{modellang/substitutions}{\texttt{!substitutions}} - Define text
   substitutions.
 \item
+  \href{modellang/pseudosubs}{\texttt{\${[}...{]}\$}} -
+  Pseudosubstitutions.
+\item
   \href{modellang/import}{\texttt{!import}} - Include the content of
   another model file.
 \item
@@ -154,11 +157,10 @@ Pseudofunctions do not start with an exclamation point.
   to be saved on the disk.
 \item
   \href{modellang/if}{\texttt{!if...!elseif...!else...!end}} - Choose
-  block of code depending on a condition.
+  block of code based on logical condition.
 \item
   \href{modellang/switch}{\texttt{!switch...!case...!end}} - Switch
-  among several branches of the model code depending on the value of an
-  expression.
+  among several cases based on expression.
 \item
   \href{modellang/for}{\texttt{!for...!do...!end}} - For loop for
   automated creation of model code.
@@ -176,8 +178,8 @@ and commands without the exclamation point:
 
 \begin{verbatim}
 help modellang
-help modellang/!keyword
-help modellang/!command 
+help modellang/keyword
+help modellang/command 
 help modellang/pseudofunction
 \end{verbatim}
 

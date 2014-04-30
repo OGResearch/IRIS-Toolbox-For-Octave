@@ -33,19 +33,24 @@ P.table(Caption,...)
   LaTeX format commands for typesetting the table caption and
   subcaption; you can use Inf for either to indicate the default format.
 \item
-  \texttt{'colStruct='} {[} struct \textbar{} \emph{empty} {]} - (Not
-  inheritable from parent objects) User-defined structure of the table
-  columns; use of this option disables \texttt{'range='}.
+  \texttt{'colStruct='} {[} struct \textbar{} \emph{empty} {]} -
+  User-defined structure of the table columns; use of this option
+  disables \texttt{'range='}.
 \item
   \texttt{'colWidth='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
   (Inheritable from parent objects) Width, or a vector of widhts, of the
   table columns in \texttt{em}units; \texttt{NaN} means the width of the
   column will adjust automatically.
 \item
-  \texttt{'headlineJustify='} {[} \emph{\texttt{'c'}} \textbar{}
-  \texttt{'l'} \textbar{} \texttt{'r'} {]} - Horizontal alignment of the
-  headline entries (individual dates or user-defined text): Centre,
-  Left, Right.
+  \texttt{'colFootnote='} {[} cell \textbar{} \emph{empty} {]} -
+  Footnotes for individual dates in the headings of the columns, of
+  column names in user-defined tables; the option must be a cell array
+  with date-footnote pairs.
+\item
+  \texttt{'headlineJust='} {[} \emph{\texttt{'c'}} \textbar{}
+  \texttt{'l'} \textbar{} \texttt{'r'} {]} - Horizontal justification of
+  the headline entries (individual dates or user-defined text): centre,
+  left, right.
 \item
   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
   \emph{\texttt{irisget('dateformat')}} {]} - (Inheritable from parent
@@ -53,6 +58,12 @@ P.table(Caption,...)
 \item
   \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
   at the table title; only shows if the title is non-empty.
+\item
+  \texttt{'highlight='} {[} numeric \textbar{} \emph{empty} {]} - Dates
+  for which the entire columns will be highlighted; because of a bug in
+  the LaTex package \texttt{colortbl}, this option cannot be combined
+  with the option \texttt{'rowHighlight='} in
+  \href{report/series}{\texttt{report/series}}.
 \item
   \texttt{'long='} {[} true \textbar{} \emph{\texttt{false}} {]} -
   (Inheritable from parent objects) If true, the table may stretch over
@@ -86,10 +97,10 @@ P.table(Caption,...)
   (Inheritable from parent objects) Space between columns in the table,
   measured in em units; NaN means the \LaTeX~default.
 \item
-  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
-  inheritable from parent objects) \LaTeX~code specifying the typeface
-  for the table as a whole; it must use the declarative forms (such as
-  \texttt{\textbackslash{}itshape}) and not the command forms (such as
+  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} -
+  \LaTeX~code specifying the typeface for the table as a whole; it must
+  use the declarative forms (such as \texttt{\textbackslash{}itshape})
+  and not the command forms (such as
   \texttt{\textbackslash{}textit\{...\}}).
 \item
   \texttt{'vline='} {[} numeric \textbar{} \emph{empty} {]} -

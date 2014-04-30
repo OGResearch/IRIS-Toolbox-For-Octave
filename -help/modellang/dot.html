@@ -110,14 +110,14 @@ code.LaTeX {
 <div class="headline">Gross rate of growth pseudofunction</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>dot(EXPR)
-dot(EXPR,K)</code></pre>
+<pre><code>dot(Expr)
+dot(Expr,K)</code></pre>
 <h4 id="description">Description</h4>
 <p>If the input argument <code>k</code> is not specified, this pseudofunction expands to</p>
-<pre><code>((expression)/(expression{-1}))</code></pre>
+<pre><code>((Expr)/(Expr{-1}))</code></pre>
 <p>If the input argument <code>k</code> is specified, it expands to</p>
-<pre><code>((expression)/(expression{k}))</code></pre>
-<p>The two derived expressions, <code>expression{-1}</code> and <code>expression{k}</code>, are based on <code>expression</code>, and have all its time subscripts shifted by --1 or by <code>k</code> periods, respectively.</p>
+<pre><code>((Expr)/(Expr{k}))</code></pre>
+<p>The two derived expressions, <code>Expr{-1}</code> and <code>Expr{k}</code>, are based on <code>Expr</code>, and have all its time subscripts shifted by --1 or by <code>k</code> periods, respectively.</p>
 <h4 id="example">Example</h4>
 <p>The following two lines</p>
 <pre><code>dot(Z)

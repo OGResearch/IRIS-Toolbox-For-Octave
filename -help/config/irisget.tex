@@ -49,20 +49,21 @@ non-modifiable ones (these cannot be changed by the user):
 When called without any input arguments, the \texttt{irisget} function
 returns a struct with all options and their current values.
 
+When used as input arguments in the \texttt{irisget} function, the
+option names are case-insensitive. When referring to field names of an
+output struct returned by the \texttt{irisget} function, all option
+names are lower-case and case-sensitive.
+
 \paragraph{Example}
 
 \begin{verbatim}
-irisget('dateformat')
-
+irisget('dateFormat')
 ans =
-
 YFP
 
 g = irisget();
 g.dateformat
-
 ans =
-
 YFP
 \end{verbatim}
 

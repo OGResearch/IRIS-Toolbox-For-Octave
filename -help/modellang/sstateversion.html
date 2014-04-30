@@ -110,7 +110,7 @@ code.LaTeX {
 <div class="headline">Steady-state version of an equation</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Equation !! Steady_state_equation;</code></pre>
+<pre><code>Equation !! SteadyStateEquation;</code></pre>
 <h4 id="description">Description</h4>
 <p>For each transition or measurement equation, you can provide a separate steady-state version of it. The steady-state version is used when you run the <a href="../model/sstate.html"><code>sstate</code></a> function. This is useful when you can substantially simplify some parts of the dynamic equations, and help therefore the numerical solver to achieve faster and more accurate results.</p>
 <p>Why is a double exclamation point, <code>!!</code>, used to start the steady-state versions of equations? Because if you associate your model file extension with the Matlab editor, anything after an exclamation point is displayed red making it easier to spot the steady-state equations.</p>

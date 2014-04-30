@@ -5,8 +5,8 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-movsum(EXPR)
-movsum(EXPR,K)
+movsum(Expr)
+movsum(Expr,K)
 \end{verbatim}
 
 \paragraph{Description}
@@ -16,10 +16,10 @@ expands to the moving sum of the last K periods (including the current
 period), i.e.
 
 \begin{verbatim}
-((EXPR)+(EXPR{-1})+ ... +(EXPR{-(K-1)})
+((Expr)+(Expr{-1})+ ... +(Expr{-(K-1)})
 \end{verbatim}
 
-where \texttt{EXPR\{-N\}} derives from \texttt{EXPR} and has all its
+where \texttt{Expr\{-N\}} derives from \texttt{Expr} and has all its
 time subscripts shifted by \texttt{-N} (if specified).
 
 If the second input argument, \texttt{K}, is positive, this function
@@ -27,7 +27,7 @@ expands to the moving sum of the next K periods ahead (including the
 current period), i.e.
 
 \begin{verbatim}
-((EXPR)+(EXPR{1})+ ... +(EXPR{K-1})
+((Expr)+(Expr{1})+ ... +(Expr{K-1})
 \end{verbatim}
 
 If the second input argument, \texttt{K}, is not specified, the default

@@ -5,8 +5,8 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-diff(EXPR)
-diff(EXPR,K)
+diff(Expr)
+diff(Expr,K)
 \end{verbatim}
 
 \paragraph{Description}
@@ -15,17 +15,17 @@ If the input argument \texttt{K} is not specified, this pseudofunction
 expands to
 
 \begin{verbatim}
-((EXPR)-(EXPR{-1}))
+((Expr)-(Expr{-1}))
 \end{verbatim}
 
 If the input argument \texttt{K} is specified, it expands to
 
 \begin{verbatim}
-((EXPR)-(EXPR{K}))
+((Expr)-(Expr{K}))
 \end{verbatim}
 
-The two derived expressions, \texttt{EXPR\{-1\}} and \texttt{EXPR\{K\}},
-are based on \texttt{EXPR}, and have all its time subscripts shifted by
+The two derived expressions, \texttt{Expr\{-1\}} and \texttt{Expr\{K\}},
+are based on \texttt{Expr}, and have all its time subscripts shifted by
 --1 or by \texttt{K} periods, respectively.
 
 \paragraph{Example}

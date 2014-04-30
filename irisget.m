@@ -38,21 +38,23 @@ function varargout = irisget(varargin)
 % When called without any input arguments, the `irisget` function returns a
 % struct with all options and their current values.
 %
+% When used as input arguments in the `irisget` function, the option names
+% are case-insensitive. When referring to field names of an output struct
+% returned by the `irisget` function, all option names are lower-case and
+% case-sensitive.
+%
 % Example
 % ========
 %
-%     irisget('dateformat')
-% 
+%     irisget('dateFormat')
 %     ans =
-% 
 %     YFP
 % 
 %     g = irisget();
 %     g.dateformat
-% 
 %     ans =
-% 
 %     YFP
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.

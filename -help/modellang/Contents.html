@@ -131,7 +131,7 @@ code.LaTeX {
 <ul>
 <li><a href="../modellang/logvariables.html"><code>!log_variables</code></a> - List of log-linearised variables.</li>
 <li><a href="../modellang/allbut.html"><code>!all_but</code></a> - Inverse list of log-linearised variables.</li>
-<li><a href="../modellang/regexpression.html"><code>&lt;...&gt;</code></a> - Regular expression in log-varible list.</li>
+<li><a href="../modellang/regexpression.html"><code>&lt;...&gt;</code></a> - Regular expression in log-variable list.</li>
 </ul>
 <h4 id="model-pseudofunctions">Model pseudofunctions</h4>
 <p>Pseudofunctions do not start with an exclamation point.</p>
@@ -141,11 +141,11 @@ code.LaTeX {
 <h4 id="special-operators">Special operators</h4>
 <ul>
 <li><a href="../modellang/sstateversion.html"><code>!!</code></a> - Steady-state version of an equation.</li>
-<li><a href="../modellang/alias.html"><code>!!</code></a> - Beginning of aliasing in descriptions and labels.</li>
 <li><a href="../modellang/ttrend.html"><code>!ttrend</code></a> - Linear time trend in deterministic trend equations.</li>
 <li><a href="../modellang/laglead.html"><code>{...}</code></a> - Lag or lead.</li>
 <li><a href="../modellang/sstateref.html"><code>&amp;</code></a> - Reference to the steady-state level of a variable.</li>
 <li><a href="../modellang/exactnonlin.html"><code>=#</code></a> - Mark an equation for exact non-linear simulation.</li>
+<li><a href="../modellang/alias.html"><code>'...!!...'</code></a> - Beginning of aliasing inside descriptions and labels.</li>
 </ul>
 <h4 id="preparser-pseudofunctions">Preparser pseudofunctions</h4>
 <p>Pseudofunctions do not start with an exclamation point.</p>
@@ -160,10 +160,11 @@ code.LaTeX {
 <h4 id="preparser-control-commands">Preparser control commands</h4>
 <ul>
 <li><a href="../modellang/substitutions.html"><code>!substitutions</code></a> - Define text substitutions.</li>
+<li><a href="../modellang/pseudosubs.html"><code>$[...]$</code></a> - Pseudosubstitutions.</li>
 <li><a href="../modellang/import.html"><code>!import</code></a> - Include the content of another model file.</li>
 <li><a href="../modellang/export.html"><code>!export</code></a> - Create a carry-around file to be saved on the disk.</li>
-<li><a href="../modellang/if.html"><code>!if...!elseif...!else...!end</code></a> - Choose block of code depending on a condition.</li>
-<li><a href="../modellang/switch.html"><code>!switch...!case...!end</code></a> - Switch among several branches of the model code depending on the value of an expression.</li>
+<li><a href="../modellang/if.html"><code>!if...!elseif...!else...!end</code></a> - Choose block of code based on logical condition.</li>
+<li><a href="../modellang/switch.html"><code>!switch...!case...!end</code></a> - Switch among several cases based on expression.</li>
 <li><a href="../modellang/for.html"><code>!for...!do...!end</code></a> - For loop for automated creation of model code.</li>
 <li><a href="../modellang/linecomments.html"><code>%</code></a> - Line comments.</li>
 <li><a href="../modellang/blockcomments.html"><code>%{...%}</code></a> - Block comments.</li>
@@ -171,8 +172,8 @@ code.LaTeX {
 <h4 id="getting-on-line-help-on-model-file-language">Getting on-line help on model file language</h4>
 <p>When getting help on model file language, type the names of the keywords and commands without the exclamation point:</p>
 <pre><code>help modellang
-help modellang/!keyword
-help modellang/!command 
+help modellang/keyword
+help modellang/command 
 help modellang/pseudofunction</code></pre>
 <h4 id="matlab-functions-and-user-functions-in-model-files">Matlab functions and user functions in model files</h4>
 <p>You can use any of the built-in functions (Matlab functions, functions within the Toolboxes you have on your computer, and so on). In addition, you can also use your own functions (written as an m-file) as long as the m-file is on the Matlab search path or in the current directory.</p>

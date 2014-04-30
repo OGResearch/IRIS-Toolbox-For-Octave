@@ -5,8 +5,8 @@
 	\paragraph{Syntax}
 
 \begin{verbatim}
-dot(EXPR)
-dot(EXPR,K)
+dot(Expr)
+dot(Expr,K)
 \end{verbatim}
 
 \paragraph{Description}
@@ -15,19 +15,18 @@ If the input argument \texttt{k} is not specified, this pseudofunction
 expands to
 
 \begin{verbatim}
-((expression)/(expression{-1}))
+((Expr)/(Expr{-1}))
 \end{verbatim}
 
 If the input argument \texttt{k} is specified, it expands to
 
 \begin{verbatim}
-((expression)/(expression{k}))
+((Expr)/(Expr{k}))
 \end{verbatim}
 
-The two derived expressions, \texttt{expression\{-1\}} and
-\texttt{expression\{k\}}, are based on \texttt{expression}, and have all
-its time subscripts shifted by --1 or by \texttt{k} periods,
-respectively.
+The two derived expressions, \texttt{Expr\{-1\}} and \texttt{Expr\{k\}},
+are based on \texttt{Expr}, and have all its time subscripts shifted by
+--1 or by \texttt{k} periods, respectively.
 
 \paragraph{Example}
 

@@ -64,9 +64,7 @@ series}
   at the series text.
 \item
   \texttt{'highlight='} {[} numeric \textbar{} \emph{empty} {]} -
-  (Inheritable from parent objects) Periods that will get highlighted in
-  tables; to highlight date ranges in graphs, use the
-  \texttt{'highlight='} option in the parent graph object.
+  Periods for which the data entries will highlighted.
 \item
   \texttt{'inf='} {[} char \textbar{}
   \emph{\texttt{'\textbackslash{}ensuremath\{\textbackslash{}infty\}'}}
@@ -89,10 +87,16 @@ series}
   numeric format used; if empty these numbers will be printed using the
   current numeric format.
 \item
-  \texttt{'separator='} {[} char \textbar{} \emph{empty} {]} - (Not
-  inheritable from parent objects) LaTeX commands that will be inserted
-  immediately after the end of the table row, i.e.~appended to
-  \textbackslash{}, within a tabular mode.
+  \texttt{'rowHighlight='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Highlight the entire row, including the
+  text, units and marks at the beginnig; because of a bug in the LaTex
+  package \texttt{colortbl}, this option cannot be combined with the
+  option \texttt{'highlight='} in
+  \href{report/table}{\texttt{report/table}}.
+\item
+  \texttt{'separator='} {[} char \textbar{} \emph{empty} {]} - LaTeX
+  commands that will be inserted immediately after the end of the table
+  row, i.e.~appended to \textbackslash{}, within a tabular mode.
 \item
   \texttt{'units='} {[} char {]} - (Inheritable from parent objects)
   Description of input data units that will be displayed in the second
@@ -104,10 +108,10 @@ series}
 \begin{itemize}
 \item
   \texttt{'legend='} {[} char \textbar{} cellstr \textbar{} \texttt{NaN}
-  \textbar{} \emph{\texttt{Inf}} {]} - (Not inheritable from parent
-  objects) Legend entries used instead of the series caption and marks;
-  Inf means the caption and marks will be used to construct legend
-  entries; NaN means the series will be exluded from legend.
+  \textbar{} \emph{\texttt{Inf}} {]} - Legend entries used instead of
+  the series caption and marks; Inf means the caption and marks will be
+  used to construct legend entries; NaN means the series will be exluded
+  from legend.
 \item
   \texttt{'plotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
   \textbar{} \texttt{@barcon} \textbar{} \emph{\texttt{@plot}}
@@ -216,8 +220,8 @@ IRIS-specific commands in the format strings:
 \item
   \texttt{\textbackslash{}sprintf\{FFFF\}} - to modify the way each
   numeric entry that passes the test is printed by the \texttt{sprintf}
-  function; \texttt{FFFF} is one of the standard sprintf formattting
-  strings.
+  function; \texttt{FFFF} is one of the standard \texttt{sprintf}
+  formatting strings.
 \item
   \texttt{\textbackslash{}hide\{?\}} - to hide the actual entry when it
   is supposed to be replaced with something else.
@@ -239,8 +243,11 @@ LHS-RHS graphs: use either the option \texttt{'plotOptions='} in this
 command, or \texttt{'style='} in the respective
 \href{report/graph}{\texttt{graph}} command.
 
-\paragraph{Example of a conditional format
-structure}
+\paragraph{Example (Conditional format
+structure)}
+
+Typeset negative values in italic, and values in periods before 2010Q1
+blue:
 
 \begin{verbatim}
 cf = struct();
