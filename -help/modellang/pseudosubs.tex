@@ -1,0 +1,66 @@
+
+
+    \filetitle{\dollar[...]\dollar}{Pseudosubstitutions}{modellang/pseudosubs}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+$[Expr]$
+\end{verbatim}
+
+\paragraph{Description}
+
+The expression \texttt{Expr} enclosed within \texttt{\${[}...{]}\$} is
+evaluated as a Matlab expression, and converted to a character string.
+The expression may refer to parameters passed into the function
+\href{model}{\texttt{model/model}}, or to
+\href{modellang/for}{\texttt{!for}} loop control variable names. The
+expression must evaluate to a scalar number, a logical scalar, or
+character string.
+
+\paragraph{Example}
+
+The following line of code
+
+\begin{verbatim}
+pie{$[K]$}
+\end{verbatim}
+
+which is assumed to be part of a model file named \texttt{my.model},
+will expand to
+
+\begin{verbatim}
+pie{3}
+\end{verbatim}
+
+in either of the following two calls to the function \texttt{model}:
+
+\begin{verbatim}
+model('my.model','K=',3);
+
+P = struct();
+P.K = 3;
+model('my.model','assign=',P);
+\end{verbatim}
+
+\paragraph{Example}
+
+The following \href{modellang/for}{\texttt{!for}} loop
+
+\begin{verbatim}
+!for
+    [ 2 : 4 ]
+!do
+    x? = x$[?-1]${-1};
+!end
+\end{verbatim}
+
+will expand to
+
+\begin{verbatim}
+x2 = x1{-1};
+x3 = x2{-1};
+x4 = x3{-1};
+\end{verbatim}
+
+
