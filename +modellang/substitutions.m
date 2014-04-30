@@ -4,8 +4,8 @@
 % =======
 %
 %     !substitutions
-%         SUBSTITUTION_NAME := TEXT_STRING;
-%         SUBSTITUTION_NAME := TEXT_STRING;
+%         SubsName := TextString;
+%         SubsName := TextString;
 %         ...
 %
 % Description

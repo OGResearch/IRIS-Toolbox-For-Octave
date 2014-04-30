@@ -3,7 +3,7 @@
 % Syntax
 % =======
 %
-%     Equation !! Steady_state_equation;
+%     Equation !! SteadyStateEquation;
 %
 % Description
 % ============

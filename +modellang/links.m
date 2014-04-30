@@ -4,15 +4,15 @@
 % =======
 %
 %     !links
-%        Parameter_Name := Expression;
-%        Variable_Name := Expression;
+%        ParameterName := Expression;
+%        VariableName := Expression;
 %
 % Syntax with equation labels
 % ============================
 %
 %     !links
-%        'Equation label' Parameter_Name := Expression;
-%        'Equation label' Variable_Name := Expression;
+%        'Equation label' ParameterName := Expression;
+%        'Equation label' VariableName := Expression;
 %
 % Description
 % ============

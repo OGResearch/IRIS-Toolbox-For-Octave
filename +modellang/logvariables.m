@@ -4,23 +4,23 @@
 % =======
 %
 %     !log_variables
-%         Variable_Name, Variable_Name, 
-%         Variable_Name, ...
+%         VariableName, VariableName, 
+%         VariableName, ...
 %
 % Syntax with inverted list
 % ==========================
 %
 %     !log_variables
 %         !all_but
-%         Variable_Name, Variable_Name, 
-%         Variable_Name, ...
+%         VariableName, VariableName, 
+%         VariableName, ...
 %
 % Syntax with regular expression(s)
 % ==================================
 %
 %     !log_variables
-%         Variable_Name, Variable_Name, 
-%         Variable_Name, ...
+%         VariableName, VariableName, 
+%         VariableName, ...
 %         <REGEXP>, <REGEXP>, ...
 %
 % Description

@@ -42,7 +42,7 @@
 % 
 % * [`!log_variables`](modellang/logvariables) - List of log-linearised variables.
 % * [`!all_but`](modellang/allbut) - Inverse list of log-linearised variables.
-% * [`<...>`](modellang/regexpression) - Regular expression in log-varible list.
+% * [`<...>`](modellang/regexpression) - Regular expression in log-variable list.
 %
 % Model pseudofunctions
 % ======================
@@ -55,14 +55,14 @@
 % ==================
 % 
 % * [`!!`](modellang/sstateversion) - Steady-state version of an equation.
-% * [`!!`](modellang/alias) - Beginning of aliasing in descriptions and labels.
 % * [`!ttrend`](modellang/ttrend) - Linear time trend in deterministic trend equations.
 % * [`{...}`](modellang/laglead) - Lag or lead.
 % * [`&`](modellang/sstateref) - Reference to the steady-state level of a variable.
 % * [`=#`](modellang/exactnonlin) - Mark an equation for exact non-linear simulation.
+% * [`'...!!...'`](modellang/alias) - Beginning of aliasing inside descriptions and labels.
 %
-% Preparser pseudofunctions and pseudosubstitutions
-% ==================================================
+% Preparser pseudofunctions
+% ==========================
 %
 % Pseudofunctions do not start with an exclamation point.
 %
@@ -72,16 +72,16 @@
 % * [`movavg`](modellang/movavg) - Moving average pseudofunction.
 % * [`movprod`](modellang/movprod) - Moving product pseudofunction.
 % * [`movsum`](modellang/movsum) - Moving sum pseudofunction.
-% * ['$[...]$'](modellang/pseudosubs) - 
 %
 % Preparser control commands
 % ===========================
 % 
 % * [`!substitutions`](modellang/substitutions) - Define text substitutions.
+% * [`$[...]$`](modellang/pseudosubs) - Pseudosubstitutions.
 % * [`!import`](modellang/import) - Include the content of another model file.
 % * [`!export`](modellang/export) - Create a carry-around file to be saved on the disk.
-% * [`!if...!elseif...!else...!end`](modellang/if) - Choose block of code depending on a condition.
-% * [`!switch...!case...!end`](modellang/switch) - Switch among several branches of the model code depending on the value of an expression.
+% * [`!if...!elseif...!else...!end`](modellang/if) - Choose block of code based on logical condition.
+% * [`!switch...!case...!end`](modellang/switch) - Switch among several cases based on expression.
 % * [`!for...!do...!end`](modellang/for) - For loop for automated creation of model code.
 % * [`%`](modellang/linecomments) - Line comments.
 % * [`%{...%}`](modellang/blockcomments) - Block comments.
@@ -93,8 +93,8 @@
 % and commands without the exclamation point:
 %
 %     help modellang
-%     help modellang/!keyword
-%     help modellang/!command 
+%     help modellang/keyword
+%     help modellang/command 
 %     help modellang/pseudofunction
 %
 % Matlab functions and user functions in model files

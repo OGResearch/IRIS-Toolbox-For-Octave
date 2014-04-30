@@ -4,22 +4,22 @@
 % =======
 %
 %     !parameters
-%         parameter_name, parameter_name, ...
+%         ParameterName, ParameterName, ...
 %         ...
 %
 % Syntax with descriptors
 % ========================
 %
 %     !parameters
-%         parameter_name, parameter_name, ...
-%         'Description of the parameter...' parameter_name
+%         ParameterName, ParameterName, ...
+%         'Description of the parameter...' ParameterName
 %
 % Syntax with steady-state values
 % ================================
 %
 %     !parameters
-%         parameter_name, parameter_name, ...
-%         parameter_name = value
+%         ParameterName, ParameterName, ...
+%         ParameterName = value
 %
 % Description
 % ============

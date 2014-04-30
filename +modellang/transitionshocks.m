@@ -4,22 +4,22 @@
 % =======
 %
 %     !transition_shocks
-%         shock_name, shock_name, ...
+%         ShockName, ShockName, ...
 %         ...
 %
 % Short-cut syntax
 % =================
 %
 %     !shocks
-%         shock_name, shock_name, ...
+%         ShockName, ShockName, ...
 %         ...
 %
 % Syntax with descriptors
 % ========================
 %
 %     !transition_shocks
-%         shock_name, shock_name, ...
-%         'Description of the shock...' shock_name
+%         ShockName, ShockName, ...
+%         'Description of the shock...' ShockName
 %
 % Description
 % ============

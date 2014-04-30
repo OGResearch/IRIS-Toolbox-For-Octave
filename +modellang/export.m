@@ -3,8 +3,8 @@
 % Syntax
 % =======
 %
-%     !export(FILENAME)
-%         FILE_CONTENTS
+%     !export(FileName)
+%         FileContents
 %     !end
 %
 % Description
@@ -20,8 +20,8 @@
 % stored in the model objects. You can manually re-create and re-save the
 % files by running the function [`export`](model/export).
 %
-% Note that if no filename is provided or `FILENAME` is empty, the
-% corresponding `!export` block is discarded without an error or warning.
+% If no filename is provided or `FileName` is empty, the corresponding
+% `!export` block is discarded with no error or warning.
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.

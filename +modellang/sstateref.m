@@ -3,8 +3,12 @@
 % Syntax
 % =======
 %
-%     &Variable_Name
-%     $Variable_Name
+%     &VariableName
+%
+% Alternative syntax
+% ===================
+%
+%     $VariableName
 %
 % Description
 % ============

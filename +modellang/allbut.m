@@ -5,8 +5,8 @@
 %
 %     !log_variables
 %         !all_but
-%         Variable_Name, Variable_Name, 
-%         Variable_Name, ...
+%         VariableName, VariableName, 
+%         VariableName, ...
 %
 % Description
 % ============

@@ -4,7 +4,7 @@
 % =================
 % 
 %     !for
-%         List_of_Tokens
+%         ListOfTokens
 %     !do
 %         Template
 %     !end
@@ -13,7 +13,7 @@
 % ============
 % 
 %     !for
-%         ?Control_Name = List_of_Tokens
+%         ?ControlName = ListOfTokens
 %     !do
 %         Template
 %     !end
@@ -23,13 +23,13 @@
 %
 % Use the '!for...!do...!end' command to specify a template and let the
 % IRIS preparser automatically create multiple instances of the template by
-% iterating over a list of tokens. The preparser cycles over the
-% individual strings from the list; in each iteration, the current string
-% is used to replace all occurences of the control variable in the
-% template. The name of the control name is either a question mark, '?', in
-% the abbreviated syntax, or any string (not to blank spaces) specified by
-% the user starting with a question mark in the full syntax, such as '?x',
-% '?#', '?NAME', etc.
+% iterating over a list of tokens. The preparser cycles over the individual
+% strings from the list; in each iteration, the current string is used to
+% replace all occurences of the control variable in the template. The name
+% of the control name is either implicitly a question mark, '?', in the
+% abbreviated syntax, or any string starting with a question mark and not
+% containing blank spaces, question marks (other than the leading question
+% mark), colons or periods; for example, '?x', '?#', '?NAME+'.
 % 
 % The tokens (text strings) in the list must be separated by commas, blank
 % spaces, or line breaks and they themselves must not contain any of those.
@@ -38,11 +38,11 @@
 % * all occurrences of the control variable in the template are replaced
 % with the currently processed string;
 %
-% * all occurrences in the template of `?.Control_Name`  are
+% * all occurrences in the template of `?.ControlName`  are
 % replaced with the currently processed string converted to lower case;
 % this option is NOT available with the short-cut syntax;
 %
-% * all occurrences in the template of `?:Control_Name`  are
+% * all occurrences in the template of `?:ControlName`  are
 % replaced with the currently processed string converted to upper case;
 % this option is NOT available with the short-cut syntax;
 %
@@ -88,7 +88,7 @@
 %             d? = ?/?{-1} - 1;
 %     !end
 %
-% The preparser expands this structure to the following :
+% The preparser expands this structure as follows:
 %
 %     !transition_variables
 %         dP

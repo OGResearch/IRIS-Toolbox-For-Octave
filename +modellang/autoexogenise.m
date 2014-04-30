@@ -4,8 +4,8 @@
 % =======
 %
 %     !autoexogenise
-%         Variable_Name := Shock_Name; Variable_Name := Shock_Name;
-%         Variable_Name := Shock_Name;
+%         VariableName := ShockName; VariableName := ShockName;
+%         VariableName := ShockName;
 %
 % Description
 % ============

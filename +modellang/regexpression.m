@@ -1,10 +1,10 @@
-% <...>  Regular expression in log-varible list.
+% <...>  Regular expression in log-variable list.
 %
 % Syntax
 % =======
 %
 %     !log_variables
-%         <REGEXP>, <REGEXP>, ...
+%         <Regexp>, ...
 %
 % Description
 % ============

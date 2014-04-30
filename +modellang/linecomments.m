@@ -3,7 +3,7 @@
 % Syntax
 % =======
 %
-%     % Anything between the percent sign and the line break is discarded.
+%     % Anything from the percent sign until the end of line is discarded.
 %
 % Description
 % ============

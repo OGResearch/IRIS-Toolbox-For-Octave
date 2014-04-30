@@ -3,12 +3,12 @@
 % Syntax
 % =======
 %
-%     !import(FILENAME)
+%     !import(FileName)
 %
 % Description
 % ============
 %
-% The `!import` command loads the content of the specified file `FILENAME`.
+% The `!import` command loads the content of the specified file `FileName`.
 % This allows you to split the model code into several parts (each saved in
 % a separate file) and to reuse some bits of the model.
 %

@@ -4,15 +4,15 @@
 % =======
 %
 %     !measurement_shocks
-%         SHOCK_NAME, SHOCK_NAME, ...
+%         ShockName, ShockName, ...
 %         ...
 %
 % Syntax with descriptors
 % ========================
 %
 %     !measurement_shocks
-%         SHOCK_NAME, SHOCK_NAME, ...
-%         'Description of the shock...' SHOCK_NAME
+%         ShockName, ShockName, ...
+%         'Description of the shock...' ShockName
 %
 % Description
 % ============

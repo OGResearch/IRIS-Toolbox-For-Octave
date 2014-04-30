@@ -3,9 +3,9 @@
 % Syntax
 % =======
 %
-%     VARIABLE_NAME{-lag}
-%     VARIABLE_NAME{lead}
-%     VARIABLE_NAME{+lead}
+%     VariableName{-lag}
+%     VariableName{lead}
+%     VariableName{+lead}
 %
 % Description
 % ============

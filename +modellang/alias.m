@@ -1,4 +1,4 @@
-% !!  Beginning of aliasing in descriptions and labels.
+% '...!!...'  Beginning of aliasing inside descriptions and labels.
 %
 % Syntax in descriptions of variables, shocks, and parameters
 % ============================================================

@@ -1,22 +1,22 @@
-% !switch...!case...!otherwise...!end  Switch among several branches of the model code depending on the value of an expression.
+% !switch...!case...!otherwise...!end  Switch among several cases based on expression.
 % 
 % Syntax with an otherwise clause
 % ================================
 %
-%     !switch Expression
+%     !switch Expr
 %         !case Balue1
 %             Block1
 %         !case Balue2
 %             Block2
 %         ...
 %         !otherwise
-%             Otherwise_Block
+%             OtherwiseBlock
 %     !end
 % 
 % Syntax without an otherwise clause
 % ===================================
 %
-%     !switch Expression
+%     !switch Expr
 %         !case Value1
 %             Block1
 %         !case Value2

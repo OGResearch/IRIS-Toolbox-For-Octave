@@ -1,4 +1,4 @@
-% !if...!elseif...!else...!end  Choose block of code depending on a condition.
+% !if...!elseif...!else...!end  Choose block of code based on logical condition.
 % 
 % Syntax with else and elseif clauses
 % ====================================
