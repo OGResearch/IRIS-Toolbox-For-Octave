@@ -131,7 +131,12 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    yData = realmax*[-1,-1,1,1];
+    if ismatlab
+        yData = realmax*[-1,-1,1,1]; % such a limits causes OpenGL tesselation error in Octave
+    else
+        yLim = get(h,'ylim');
+        yData = yLim([1,1,2,2]);
+    end
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.color, ...
        'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...
@@ -149,6 +154,11 @@ for iAx = Ax(:).'
     ch(ch == pt) = [];
     ch(end+1) = pt;
     set(h,'children',ch);
+    
+    if ~ismatlab % keep old behaviour for Octave
+        % Update y-data whenever the parent y-lims change.
+        grfun.listener(h,pt,'highlight');
+    end
     
     % Reset the order of figure children.
     set(fg,'children',fgch);

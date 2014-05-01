@@ -83,7 +83,11 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 yLim = get(Ax,'yLim');
 
-xLim = realmax()*[-1,1];
+if ismatlab
+    xLim = realmax()*[-1,1]; % such a limits may cause OpenGL tesselation error in Octave
+else
+    xLim = get(Ax,'xLim');
+end
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
@@ -101,6 +105,11 @@ for iLoc = Loc
         ch = get(Ax,'children');
         if length(ch) > 1
             set(Ax,'children',ch([2:end,1]));
+        end
+        
+        if ~ismatlab % keep old behaviour for Octave
+            % Update hline x-data whenever the parent axes x-lims change.
+            grfun.listener(Ax,ln,'hline');
         end
     
         % Hide back excluded from legend (for Octave's way of excluding)

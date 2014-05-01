@@ -29,28 +29,28 @@ leaderObj = Leader;
 
 switch lower(Name)
     
-%     case 'highlight'
-%         listenerFcn(leaderObj, ...
-%             'YLim',...
-%             postSetStr, ...
-%             @(obj,evd)(xxHighlight(obj,evd,Leader,Follower)));
-% 
-%     case 'vline'
-%         listenerFcn(leaderObj, ...
-%             'YLim',...
-%             postSetStr, ...
-%             @(obj,evd)(xxVLine(obj,evd,Leader,Follower)));
-% 
-%     case {'hline','zeroline'}
-%         listenerFcn(leaderObj, ...
-%             'XLim',...
-%             postSetStr, ...
-%             @(obj,evd)(xxHLine(obj,evd,Leader,Follower)));
-%         
+    case 'highlight'
+       listenerFcn(leaderObj, ...
+           'YLim',...
+           postSetStr, ...
+           @(obj,evd)(xxHighlight(obj,evd,Leader,Follower)));
+    
+    case 'vline'
+       listenerFcn(leaderObj, ...
+           'YLim',...
+           postSetStr, ...
+           @(obj,evd)(xxVLine(obj,evd,Leader,Follower)));
+    
+    case {'hline','zeroline'}
+       listenerFcn(leaderObj, ...
+           'XLim',...
+           postSetStr, ...
+           @(obj,evd)(xxHLine(obj,evd,Leader,Follower)));
+       
     case 'caption'
-        listenerFcn(leaderObj, ...
-            'YLim',...
-            postSetStr, ...
+          listenerFcn(leaderObj, ...
+                'YLim',...
+              postSetStr, ...
             @(obj,evd)(xxCaption(obj,evd,Leader,Follower,varargin{1})));
 
 end
@@ -67,34 +67,40 @@ end
 % Subfunctions...
 
 
-% %**************************************************************************
-% function xxHighlight(Obj,Evd,Ax,Pt) %#ok<INUSL>
-%     y = get(Ax,'yLim');
-%     if isinf(y(1))
-%         y(1) = -realmax();
-%     end
-%     if isinf(y(2))
-%         y(2) = realmax();
-%     end
-%     oldYData = get(Pt,'yData');
-%     newYData = [y(1),y(1),y(2),y(2),y(1)];
-%     set(Pt,'yData',newYData(1:length(oldYData)));
-% end % xxHighlight()
-% 
-% 
-% %**************************************************************************
-% function xxVLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
-%     y = get(Ax,'yLim');
-%     set(Ln,'yData',y);
-% end % xxVLine()
-% 
-% 
-% %**************************************************************************
-% function xxHLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
-%     x = get(Ax,'xLim');
-%     set(Ln,'xData',x);
-% end % xxHLine()
-% 
+%**************************************************************************
+function xxHighlight(Obj,Evd,Ax,Pt) %#ok<INUSL>
+  if ~ismatlab
+    y = get(Ax,'yLim');
+    if isinf(y(1))
+        y(1) = -realmax();
+    end
+    if isinf(y(2))
+        y(2) = realmax();
+    end
+    oldYData = get(Pt,'yData');
+    newYData = [y(1),y(1),y(2),y(2),y(1)];
+    set(Pt,'yData',newYData(1:length(oldYData)));
+  end
+end % xxHighlight()
+
+
+%**************************************************************************
+function xxVLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
+  if ~ismatlab
+    y = get(Ax,'yLim');
+    set(Ln,'yData',y);
+  end
+end % xxVLine()
+
+
+%**************************************************************************
+function xxHLine(Obj,Evd,Ax,Ln) %#ok<INUSL>
+  if ~ismatlab
+    x = get(Ax,'xLim');
+    set(Ln,'xData',x);
+  end
+end % xxHLine()
+
 
 %**************************************************************************
 function xxCaption(Obj,Evd,Ax,Cp,K) %#ok<INUSL>

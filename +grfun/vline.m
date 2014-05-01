@@ -116,7 +116,11 @@ if isequal(getappdata(Ax,'tseries'),true)
     end
 end
 
-yLim = realmax()*[-1,1];
+if ismatlab
+    yLim = realmax()*[-1,1]; % such a limits may cause OpenGL tesselation error in Octave
+else
+    yLim = get(Ax,'yLim');
+end
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
@@ -133,6 +137,10 @@ for i = 1 : nLoc
     
     ch = get(Ax,'children');
     for j = ln
+        if ~ismatlab % keep old behaviour for Octave
+            % Update the vline y-data whenever the parent y-lims change.
+            grfun.listener(Ax,j,'vline');
+        end
         % Move the vline object to the background.
         ch(ch == j) = [];
         ch(end+1) = j; %#ok<AGROW>
