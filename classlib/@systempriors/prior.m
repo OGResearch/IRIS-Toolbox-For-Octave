@@ -105,7 +105,7 @@ else
 pp = pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp = pp.addRequired('Def',@ischar);
 pp = pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
-pp = pp.parse(This,Def,PriorFunc);
+pp = pp.parse(This,Def,PriorFunc); %#ok<NASGU>
 end
 
 opt = passvalopt('systempriors.prior',varargin{:});
@@ -302,7 +302,11 @@ replaceFunc = @doReplaceFunc; %#ok<NASGU>
 
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
-Def = regexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))','${replaceFunc($1)}');
+if ismatlab
+    Def = regexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))','${replaceFunc($1)}');
+else
+    Def = myregexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))','${doReplaceFunc($1)}');
+end
 
 if ~isempty(invalid)
     utils.error('systempriors', ...

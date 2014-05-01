@@ -137,8 +137,13 @@ for eq = first : LossPos
          
         % Create human equations.
         replFunc = @doReplaceNames; %#ok<NASGU>
-        dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
-        dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
+        if ismatlab
+            dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
+            dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
+        else
+            dEqtn = myregexprep(dEqtn,'x(\d+)([pm]\d+)?','${doReplaceNames($1,$2)}');
+            dEqtn = myregexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
+        end
         
         % Put together the derivative of the Lagrangian wrt to variable
         % #neweq.

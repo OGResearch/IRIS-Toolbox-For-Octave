@@ -114,7 +114,11 @@ end
 %**************************************************************************
     function x = doPattern()
         x = upper(opt.dateformat);
-        x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
+        if ismatlab
+            x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
+        else
+            x = myregexprep(x,'[\.\+\{\}\(\)]','${[''\'',$0]}');
+        end
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');
         subs = { ...

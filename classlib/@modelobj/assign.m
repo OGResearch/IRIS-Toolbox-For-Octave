@@ -264,8 +264,13 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    Assigned = [Assigned, ...
-        regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    if ismatlab
+        Assigned = [Assigned, ...
+            regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    else
+        Assigned = [Assigned, ...
+            strcat('std_',eList(stdcorr(1:ne)))];
+    end
     pos = find(tril(ones(ne),-1) == 1);
     temp = zeros(ne);
     temp(pos(stdcorr(ne+1:end))) = 1;

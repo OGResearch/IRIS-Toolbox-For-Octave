@@ -22,7 +22,7 @@ pp.parse(List,CmdArgs);
 else
 pp = pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp = pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
-pp = pp.parse(List,CmdArgs);
+pp = pp.parse(List,CmdArgs); %#ok<NASGU>
 end
 
 % Parse options.
@@ -108,8 +108,13 @@ function OldFileCont = xxEnlargeBox(File,Enlarge)
 c = file2char(File);
 OldFileCont = c;
 replaceFunc = @doEnlargeBox; %#ok<NASGU>
-c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
-    '${replaceFunc($0,$1,$2,$3,$4)}');
+if ismatlab
+    c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
+        '${replaceFunc($0,$1,$2,$3,$4)}');
+else
+   c = myregexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
+       '${doEnlargeBox($0,$1,$2,$3,$4)}');
+end
 char2file(c,File);
 
     function S = doEnlargeBox(S0,S1,S2,S3,S4)

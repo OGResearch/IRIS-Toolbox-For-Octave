@@ -102,7 +102,11 @@ for i = find(m.nametype <= 3)
     dx = nan([size(x,1),size(x,2),n]);
     for j = 1 : n
         dx(:,:,j) = (x(:,:,j) - x(:,:,n+j)) / twoSteps(j);
-        c(1,:,j) = regexprep(c(1,:,j),'.*',['$0/',plist{j}]);
+        if ismatlab
+            c(1,:,j) = regexprep(c(1,:,j),'.*',['$0/',plist{j}]);
+        else
+            c(1,:,j) = strcat(c(1,:,j),'/',plist{j});
+        end
     end
     if optionslog && m.log(i)
         dx = exp(dx);

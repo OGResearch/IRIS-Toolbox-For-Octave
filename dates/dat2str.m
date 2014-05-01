@@ -290,11 +290,7 @@ end
             if ismatlab
                 fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
             else
-                tokExt = regexp(fmt,ptn,'once','tokenExtents');
-                if ~isempty(tokExt)
-                    fmt = [fmt(1:tokExt(1)-1), ...
-                      doReplace(fmt(tokExt(1):tokExt(2))), fmt(tokExt(2)+1:end)];
-                end
+                fmt = myregexprep(fmt,ptn,'${doReplace($1)}','once');
             end
             if ~found
                 break

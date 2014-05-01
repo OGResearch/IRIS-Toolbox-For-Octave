@@ -134,7 +134,11 @@ if nargout > 3
     XX = struct();
     YY = struct();
     for i = find(imag(id) == 0)
-        c = regexprep(eEame,'.*',[List{1}{i},' <-- $0']);
+        if ismatlab
+            c = regexprep(eEame,'.*',[List{1}{i},' <-- $0']);
+        else
+            c = strcat(List{1}{i},{' <-- '},eEame);
+        end
         XX.(name{i}) = tseries(range,permute(X(i,:,:,:),[3,2,4,1]),c);
         YY.(name{i}) = tseries(range,permute(Y(i,:,:,:),[3,2,4,1]),c);
     end

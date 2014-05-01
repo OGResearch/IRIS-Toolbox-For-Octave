@@ -60,7 +60,11 @@ end
 % Combine and process input blocks.
 inputblock = '';
 replace = @replaceInput_; %#ok<NASGU>
-code = regexprep(code,'!input.*?(?=!equations|$)','${replace($0)}');
+if ismatlab
+    code = regexprep(code,'!input.*?(?=!equations|$)','${replace($0)}');
+else
+    code = myregexprep(code,'!input.*?(?=!equations|$)','${replaceInput_($0)}');
+end
 
 % Throw away variable annotations.
 inputblock = cleanup(inputblock,p.labels);
@@ -263,8 +267,13 @@ replacetimefunc = @replacetime; %#ok<NASGU>
 invalidtime = {};
 for i = 1 : nBlock
     % s.growth{i} = {};
-    s.eqtn{i} = regexprep(s.eqtn{i}, ...
-        '(\<[a-zA-Z]\w*\>)\{(.*?)\}','${replacetimefunc($1,$2)}');
+    if ismatlab
+        s.eqtn{i} = regexprep(s.eqtn{i}, ...
+            '(\<[a-zA-Z]\w*\>)\{(.*?)\}','${replacetimefunc($1,$2)}');
+    else
+        s.eqtn{i} = myregexprep(s.eqtn{i}, ...
+            '(\<[a-zA-Z]\w*\>)\{(.*?)\}','${replacetime($1,$2)}');
+    end
 end
 
 if ~isempty(invalidtime)

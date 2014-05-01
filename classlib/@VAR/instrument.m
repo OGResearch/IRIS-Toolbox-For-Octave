@@ -180,7 +180,11 @@ This.Zi = [This.Zi;[C,Z]];
     function doParseNameExprn()
         List = regexprep(List,'\s+','');
         List = regexprep(List,';$','','once');
-        List = regexprep(List,'.*','$0;','once');
+        if ismatlab
+            List = regexprep(List,'.*','$0;','once');
+        else
+            List = strcat(List,';');
+        end
         List = regexprep(List,'(?<!:)=',':=','once');
         validDef = true(1,nName);
         for ii = 1 : nName
@@ -208,7 +212,11 @@ This.Zi = [This.Zi;[C,Z]];
         xVector = This.Ynames;
         for ii = 2 : p
             time = sprintf('{-%g}',ii);
-            temp = regexprep(This.Ynames,'.*',['$0',time]);
+            if ismatlab
+                temp = regexprep(This.Ynames,'.*',['$0',time]);
+            else
+                temp = strcat(This.Ynames,time);
+            end
             xVector = [xVector,temp]; %#ok<AGROW>
         end
     end % doXVector()

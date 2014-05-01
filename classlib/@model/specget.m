@@ -342,10 +342,17 @@ end
             u = regexprep(u,'^@\(.*?\)','','once');
             replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
             replaceZero = @doReplaceZero; %#ok<NASGU>
-            u = regexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
-                '${replacePlusMinus($1,$2)}');
-            u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
-                '${replaceZero($1)}');
+            if ismatlab
+                u = regexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
+                    '${replacePlusMinus($1,$2)}');
+                u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
+                    '${replaceZero($1)}');
+            else
+                u = myregexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
+                    '${doReplacePlusMinus($1,$2)}');
+                u = myregexprep(u,'\<x\>\(:,(\d+),t\)', ...
+                    '${doReplaceZero($1)}');
+            end
             X{iieq} = u;
         end
         

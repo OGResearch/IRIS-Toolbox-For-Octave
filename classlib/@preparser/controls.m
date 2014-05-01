@@ -299,7 +299,11 @@ end
 
 % Expand `[ ... ]` in the `!for` body.
 replaceFunc = @doExpandSqb; %#ok<NASGU>
-forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
+if ismatlab
+    forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
+else
+    forBody = myregexprep(forBody,'\[[^\]]*\]','${doExpandSqb($0)}');
+end
 
 if ~isempty(Err)
     return

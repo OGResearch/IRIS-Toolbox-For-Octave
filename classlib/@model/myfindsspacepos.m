@@ -89,7 +89,11 @@ function X = xxSspacePosLag(This,UsrName,SspacePos)
 X = SspacePos;
 solutionId = [This.solutionid{1:2}];
 logName = This.name;
-logName(This.log) = regexprep(logName(This.log),'.*','log($0)');
+if ismatlab
+    logName(This.log) = regexprep(logName(This.log),'.*','log($0)');
+else
+    logName(This.log) = strcat('log(',logName(This.log),')');
+end
 for i = find(isnan(X))
     usrName = UsrName{i};
     lag  = regexp(usrName,'\{.*?\}','match','once');

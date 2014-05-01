@@ -93,8 +93,13 @@ doNonlinEqtn();
             doFunc2Char();
             
             % Replace variables, shocks, and parameters.
-            eqtn = regexprep(eqtn, ...
-                'x\(:,(\d+),t([\+\-]\d+)?\)','${replacefunc($1,$2)}');
+            if ismatlab
+                eqtn = regexprep(eqtn, ...
+                    'x\(:,(\d+),t([\+\-]\d+)?\)','${replacefunc($1,$2)}');
+            else
+                eqtn = myregexprep(eqtn, ...
+                    'x\(:,(\d+),t([\+\-]\d+)?\)','${doReplace($1,$2)}');
+            end
             % Replace references to steady states.
             eqtn = regexprep(eqtn, ...
                 'L\(:,(\d+),t([\+\-]\d+)?\)','L(:,$1)');
