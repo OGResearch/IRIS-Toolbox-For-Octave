@@ -11,6 +11,10 @@ function mysavefig(This,hFig,figFile)
 if ~ismatlab
     grfun.mytrigexcludedfromlegend(hFig,'on');
 end
+% set x/ylimmode to 'manual' to avoid their adjustment when loading from file
+hAx = findobj(hFig,'type','axes','-not','tag','legend');
+set(hAx,{'xlimmode'},'manual',{'ylimmode'},'manual');
+% save figure to a file
 hgsave(hFig,figFile,'-v7');
 % Hide back excluded from legend (for Octave's way of excluding)
 if ~ismatlab
