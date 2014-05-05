@@ -17,7 +17,7 @@ if isempty(C) || isempty(This)
     return
 end
 
-ptn = ['[',regexppattern(This),']'];
+ptn = regexppattern(This);
 rplFunc = @doReplace; %#ok<NASGU>
 C = regexprep(C,ptn,'${rplFunc($0)}');
 
@@ -28,8 +28,8 @@ C = regexprep(C,ptn,'${rplFunc($0)}');
 %**************************************************************************
 
 
-    function C = doReplace(K)
-        K = double(K) - This.Offset;
+    function C = doReplace(C0)
+        K = fragileobj.char2dec(C0) - This.Offset;
         C = This.Storage{K};
         if opt.delimiter
             C = [This.Open{K}(1),C,This.Close{K}(end)];

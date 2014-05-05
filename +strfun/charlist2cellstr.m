@@ -13,7 +13,7 @@ end
 
 X = strtrim(X);
 X = strfun.converteols(X);
-X = strfun.removecomments(X);
+X = preparser.removecomments(X);
 
 % Separators , ; end-of-line
 pattern = '(?<label>["''].*?["''])?\s*(?<string>[^"''#]*?)\s*(?=[#]|$)';

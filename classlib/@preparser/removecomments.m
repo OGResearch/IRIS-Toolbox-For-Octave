@@ -10,16 +10,19 @@ function Text = removecomments(Text,varargin)
 if nargin == 1
     % Standard IRIS commments.
     varargin = { ...
-        {'/*','*'}, ... Block comments.
+        ... {'/*','*/'}, ... Block comments.
         {'%{','%}'}, ... Block comments.
-        {'<!--','-->'}, ... Block comments.
+        ... {'<!--','-->'}, ... Block comments.
         '%', ... Line comments.
         '\.\.\.', ... Line comments.
-        '//', ... Line comments.
+        ... '//', ... Line comments.
         };
 end
 
 %--------------------------------------------------------------------------
+
+openCode = char(0);
+closeCode = char(1);
 
 for i = 1 : length(varargin)
     
@@ -34,16 +37,20 @@ for i = 1 : length(varargin)
         
         % Remove block comments.
         % Block comments cannot be specified as regexps.
-        Text = strrep(Text,varargin{i}{1},char(1));
-        Text = strrep(Text,varargin{i}{2},char(2));
-        textLen = 0;
-        while length(Text) ~= textLen
-            textLen = length(Text);
-            Text = regexprep(Text,'\x{1}[^\x{1}]*?\x{2}','');
+        open = varargin{i}{1};
+        close = varargin{i}{2};
+        Text = strrep(Text,open,openCode);
+        Text = strrep(Text,close,closeCode);
+        while true
+            lenText = length(Text);
+            ptn = [openCode,'[^',openCode,']*?',closeCode];
+            Text = regexprep(Text,ptn,'');
+            if length(Text) == lenText
+                break
+            end
         end
-        Text = strrep(Text,char(1),varargin{i}{1});
-        Text = strrep(Text,char(2),varargin{i}{2});
-        
+        Text = strrep(Text,openCode,open);
+        Text = strrep(Text,closeCode,close);
     end
     
 end

@@ -1,5 +1,5 @@
 function C = interpretplain(C)
-% interpretplain  [Not a public function] Treat LaTeX special characters in a
+% interpretplain  [Not a public function] Treat LaTeX special characters in
 % string.
 %
 % Backend IRIS function.

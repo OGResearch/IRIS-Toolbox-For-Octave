@@ -76,7 +76,7 @@ end
 [Code,Labels] = protectquotes(Code,Labels);
 
 % Remove standard line and block comments.
-Code = strfun.removecomments(Code,Opt.removecomments{:});
+Code = preparser.removecomments(Code,Opt.removecomments{:});
 
 % Remove triple exclamation point !!!.
 % This mark is meant to be used to highlight some bits of the code.

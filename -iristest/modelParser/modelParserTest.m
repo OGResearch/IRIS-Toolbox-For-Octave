@@ -3,6 +3,7 @@ Tests = functiontests(localfunctions);
 end
 %#ok<*DEFNU>
 
+
 %**************************************************************************
 
 
@@ -29,6 +30,23 @@ expLabel = { ...
 verifyEqual(This, actLabel, expLabel);
 
 end % testQuotes()
+
+
+%**************************************************************************
+
+
+function testForControlInQuotes(This)
+
+m = model('testForControlInQuotes.model');
+expLabel = { ...
+    'Equation for X', ...
+    'Equation for Y', ...
+    'Equation for Z', ...
+    };
+actLabel = get(m,'labels');
+assertEqual(This,actLabel,expLabel);
+
+end % testForControlInQuotes()
 
 
 %**************************************************************************

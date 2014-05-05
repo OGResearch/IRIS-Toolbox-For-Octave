@@ -14,9 +14,11 @@ if isempty(This)
     return
 end
 
-n = length(This.Storage);
-first = char(This.Offset + 1);
-last = char(This.Offset + n);
-P = [first,'-',last];
+n = length(This);
+P = dec2char(This,1);
+for i = 2 : n
+    P = [P,'|',dec2char(This,i)]; %#ok<AGROW>
+end
+P = [char(2),'(?:',P,')',char(3)];
 
 end

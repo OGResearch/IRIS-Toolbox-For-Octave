@@ -1,5 +1,5 @@
-function [This,NewPos,K] = copytoend(This,Pos)
-% copytoend  [Not a public function] Copy the entry at a given position at the end.
+function [This,NewPos,NewChar] = copytoend(This,Pos)
+% copytoend  [Not a public function] Copy given entry to end of storage.
 %
 % Backend IRIS function.
 % No help provided.
@@ -14,8 +14,6 @@ This.Open{end+1} = This.Open{Pos};
 This.Close{end+1} = This.Close{Pos};
 
 NewPos = length(This.Storage);
-
-K = round(This.Offset + NewPos);
-K = char(K);
+NewChar = charcode(This);
 
 end

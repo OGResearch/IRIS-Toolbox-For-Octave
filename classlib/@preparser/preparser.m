@@ -98,6 +98,7 @@ classdef preparser < userdataobj
         varargout = pseudofunc(varargin)
         varargout = pseudosubs(varargin)
         varargout = readcode(varargin)
+        varargout = removecomments(varargin)
         varargout = substitute(varargin)
     end
     

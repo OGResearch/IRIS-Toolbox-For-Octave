@@ -383,20 +383,19 @@ for i = 1 : nList
     
     % Substitute for the control variable in labels.
     if ~isempty(Labels)
-        ptn = ['[',regexppattern(Labels),']'];
+        ptn = regexppattern(Labels);
         % List of charcodes that actually occur in the `for` body.
         occur = regexp(C,ptn,'match');
-        % The list of occurences is a cellstr of single characters; convert to
-        % char vector.
-        for k = [occur{:}]
+        for j = 1 : length(occur)
+            jCode = occur{j};
             % Position of the charcode `k` in the storage.
-            pos = position(Labels,k);
-            % Copy the `pos`-th entry at the end.
-            [Labels,newPos,newK] = copytoend(Labels,pos);
-            % Create new entry in the storage.
+            pos = position(Labels,jCode);
+            % Copy the `pos`-th entry to the end of storage.
+            [Labels,newPos,newCode] = copytoend(Labels,pos);
+            % Substitute inside the comment string.
             Labels.Storage{newPos} ...
                 = doSubsForControl(Labels.Storage{newPos},control,list{i});
-            C = strrep(C,k,char(newK));
+            C = strrep(C,jCode,newCode);
         end
     end
     

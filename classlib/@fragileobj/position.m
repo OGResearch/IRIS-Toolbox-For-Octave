@@ -1,5 +1,5 @@
-function Pos = position(This,K)
-% position  [Not a public function] Position of a charcode in the storage.
+function Pos = position(This,C)
+% position  [Not a public function] Position of replacement string in the storage.
 %
 % Backend IRIS function.
 % No help provided.
@@ -9,11 +9,12 @@ function Pos = position(This,K)
 
 %--------------------------------------------------------------------------
 
-Pos = round(double(K) - This.Offset);
+
+Pos = round(fragileobj.char2dec(C) - This.Offset);
 
 if Pos < 1 || Pos > length(This.Storage)
-    utils.error('fragileobj', ...
-        'Charcode not found in the fragileobj object.');
+    utils.error('fragileobj:position', ...
+        'Replacement code not found in the fragileobj object.');
 end
 
 end

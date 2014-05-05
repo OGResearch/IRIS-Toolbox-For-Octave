@@ -14,7 +14,9 @@ if isnan(This.Offset) || isempty(This.Storage)
     return
 end
 
-ptn = ['[',regexppattern(This),']'];
-C = regexprep(C,ptn,'');
+for i = 1 : length(This)
+    ptn = [char(2),dec2char(This,i),char(3)];
+    C = strrep(C,ptn,'');
+end
 
 end
