@@ -14,9 +14,9 @@ if isempty(This)
     return
 end
 
-n = length(This.storage);
-first = char(This.offset + 1);
-last = char(This.offset + n);
+n = length(This.Storage);
+first = char(This.Offset + 1);
+last = char(This.Offset + n);
 P = [first,'-',last];
 
 end

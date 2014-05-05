@@ -9,13 +9,13 @@ function [This,NewPos,K] = copytoend(This,Pos)
 
 %--------------------------------------------------------------------------
 
-This.storage{end+1} = This.storage{Pos};
-This.open{end+1} = This.open{Pos};
-This.close{end+1} = This.close{Pos};
+This.Storage{end+1} = This.Storage{Pos};
+This.Open{end+1} = This.Open{Pos};
+This.Close{end+1} = This.Close{Pos};
 
-NewPos = length(This.storage);
+NewPos = length(This.Storage);
 
-K = round(This.offset + NewPos);
+K = round(This.Offset + NewPos);
 K = char(K);
 
 end

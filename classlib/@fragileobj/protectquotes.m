@@ -22,9 +22,9 @@ C = regexprep(C,pattern,'${replaceFunc($1,$2)}');
 
     
     function K = doReplace(Quote,String)
-        This.storage{end+1} = String;
-        This.open{end+1} = Quote;
-        This.close{end+1} = Quote;
+        This.Storage{end+1} = String;
+        This.Open{end+1} = Quote;
+        This.Close{end+1} = Quote;
         K = charcode(This);
     end % doReplace()
     

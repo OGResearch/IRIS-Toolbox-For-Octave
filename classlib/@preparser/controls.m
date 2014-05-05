@@ -394,8 +394,8 @@ for i = 1 : nList
             % Copy the `pos`-th entry at the end.
             [Labels,newPos,newK] = copytoend(Labels,pos);
             % Create new entry in the storage.
-            Labels.storage{newPos} ...
-                = doSubsForControl(Labels.storage{newPos},control,list{i});
+            Labels.Storage{newPos} ...
+                = doSubsForControl(Labels.Storage{newPos},control,list{i});
             C = strrep(C,k,char(newK));
         end
     end

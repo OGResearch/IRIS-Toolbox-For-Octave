@@ -9,7 +9,7 @@ function C = charcode(This)
 
 %--------------------------------------------------------------------------
 
-k = This.offset + length(This.storage);
+k = This.Offset + length(This.Storage);
 if k > 65535
     utils.error('fragileobj', ...
         'Index of protected items exceeds 65535.');

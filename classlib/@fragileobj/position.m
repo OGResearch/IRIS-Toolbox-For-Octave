@@ -9,9 +9,9 @@ function Pos = position(This,K)
 
 %--------------------------------------------------------------------------
 
-Pos = round(double(K) - This.offset);
+Pos = round(double(K) - This.Offset);
 
-if Pos < 1 || Pos > length(This.storage)
+if Pos < 1 || Pos > length(This.Storage)
     utils.error('fragileobj', ...
         'Charcode not found in the fragileobj object.');
 end

@@ -9,6 +9,6 @@ function Flag = isempty(This)
 
 %--------------------------------------------------------------------------
 
-Flag = isnan(This.offset) || isempty(This.storage);
+Flag = isnan(This.Offset) || isempty(This.Storage);
 
 end

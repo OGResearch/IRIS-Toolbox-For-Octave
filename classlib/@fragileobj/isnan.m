@@ -9,6 +9,6 @@ function Flag = isnan(This)
 
 %--------------------------------------------------------------------------
 
-Flag = isnan(This.offset);
+Flag = isnan(This.Offset);
 
 end

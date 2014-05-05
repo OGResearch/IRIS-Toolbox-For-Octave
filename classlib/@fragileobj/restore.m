@@ -29,10 +29,10 @@ C = regexprep(C,ptn,'${rplFunc($0)}');
 
 
     function C = doReplace(K)
-        K = double(K) - This.offset;
-        C = This.storage{K};
+        K = double(K) - This.Offset;
+        C = This.Storage{K};
         if opt.delimiter
-            C = [This.open{K}(1),C,This.close{K}(end)];
+            C = [This.Open{K}(1),C,This.Close{K}(end)];
         end
     end % doReplace()
 
