@@ -27,9 +27,9 @@ function [Ln,Cp] = vline(varargin)
 % Options
 % ========
 %
-% * `'caption='` [ char ] - Annotate the vline with this text string.
+% * `'caption='` [ char ] - Annotate vline with a text string.
 %
-% * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude the line from
+% * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude vline from
 % legend.
 %
 % * `'hPosition='` [ `'center'` | `'left'` | *`'right'`* ] - Horizontal

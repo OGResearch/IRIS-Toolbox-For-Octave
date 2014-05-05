@@ -26,14 +26,14 @@ function [Pp,Cp] = highlight(varargin)
 % Options
 % ========
 %
-% * `'caption='` [ char ] - Annotate the highlighted area with this text
+% * `'caption='` [ char ] - Annotate the highlighted area with a text
 % string.
 %
-% * `'color='` [ numeric | *`0.8`* ] - An RGB color code, a Matlab
-% color name, or a scalar shade of gray.
+% * `'color='` [ numeric | *`0.8`* ] - An RGB color code, a Matlab color
+% name, or a scalar shade of gray.
 %
-% * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude the highlighted area
-% from legend.
+% * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude the highlighted
+% area from legend.
 %
 % * `'hPosition='` [ 'center' | 'left' | *'right'* ] - Horizontal position
 % of the caption.
