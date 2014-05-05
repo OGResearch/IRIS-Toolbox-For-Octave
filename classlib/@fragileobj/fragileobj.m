@@ -17,7 +17,10 @@ classdef fragileobj
                 if ismatlab
                     dblC = double(C);
                 else
-                    dblC = char2double(C); % octave has multibyte codes, so they should be pre-transformed before max(), since highCharCode is not vector, but one number
+                    dblC = char2double(C); % octave has multibyte codes, so they should be pre-transformed before max(), since highCharCode is not a vector, but one number
+                    if max(dblC) > 255
+                        utils.warning('highcharcode','You have used characters which are not allowed in Octave. Errors are quite likely to occur.');
+                    end
                 end
                 This.offset = max(irisget('highcharcode'),max(dblC));
             end
