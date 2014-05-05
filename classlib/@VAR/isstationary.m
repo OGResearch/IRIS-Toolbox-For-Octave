@@ -33,7 +33,7 @@ opt = passvalopt('VAR.isstationary',varargin{:});
 
 %--------------------------------------------------------------------------
 
-Flag = all(abs(This.eigval) <= 1-opt.tolerance,2);
+Flag = all(abs(This.EigVal) <= 1-opt.tolerance,2);
 Flag = Flag(:).';
 
 end

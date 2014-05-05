@@ -9,17 +9,17 @@ classdef varobj < userdataobj & getsetobj
 
     
     properties
-        Ynames = {}; % Endogenous variables.
-        Enames = {}; % Residuals.
+        YNames = {}; % Endogenous variables.
+        ENames = {}; % Residuals.
         Qnames = {}; % Exogenous variables.
         GroupNames = {}; % Panel groups.
         
         A = []; % Transition matrix.
         Omega = zeros(0); % Covariance matrix of reduced-form residuals.
-        eigval = zeros(1,0); % Eigenvalues.
+        EigVal = zeros(1,0); % Eigenvalues.
 
-        range = zeros(1,0); % Estimation range.
-        fitted = false(1,0); % Index of periods actually fitted.
+        Fange = zeros(1,0); % Estimation range.
+        Fitted = false(1,0); % Index of periods actually fitted.
     end
     
     

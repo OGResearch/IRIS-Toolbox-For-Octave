@@ -73,7 +73,7 @@ X = cumsum(Phi.^2,3);
 if nargout > 1
     Y = nan(size(X));
 end
-varVec = This.std .^ 2;
+varVec = This.Std .^ 2;
 for iAlt = 1 : nAlt
     for t = 1 : nPer
         if varVec(iAlt) ~= 1
@@ -88,12 +88,12 @@ for iAlt = 1 : nAlt
 end
 
 % Create databases `XX` and `YY` from `X` and `Y`.
-if nargout > 2 && ~isempty(This.Ynames)
+if nargout > 2 && ~isempty(This.YNames)
     for i = 1 : ny
-        name = This.Ynames{i};
+        name = This.YNames{i};
         c = '';
-        if ~isempty(This.Enames)
-            c = utils.concomment(name,This.Enames);
+        if ~isempty(This.ENames)
+            c = utils.concomment(name,This.ENames);
         end
         XX.(name) = tseries(range,permute(X(i,:,:,:),[3,2,4,1]),c);
         if nargout > 3
@@ -104,10 +104,10 @@ end
 
 % Convert `X` and `Y` to namedmat objects if requested by the user.
 if strcmpi(opt.output,'namedmat') ...
-        && ~isempty(This.Ynames) && ~isempty(This.Enames)
-    X = namedmat(X,This.Ynames,This.Enames);
+        && ~isempty(This.YNames) && ~isempty(This.ENames)
+    X = namedmat(X,This.YNames,This.ENames);
     if nargout > 1
-        Y = namedmat(Y,This.Ynames,This.Enames);
+        Y = namedmat(Y,This.YNames,This.ENames);
     end
 end
 

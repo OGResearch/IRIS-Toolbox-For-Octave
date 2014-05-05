@@ -1,20 +1,21 @@
 function e = eig(a)
-% eig  Eigenvalues of the factor dynamic system.
+% eig  Eigenvalues of FAVAR model.
 %
 % Syntax
 % =======
 %
-%     e = eig(a)
+%     E = eig(A)
 %
 % Input arguments
 % ================
 %
-% * `a` [ FAVAR ] - FAVAR object.
+% * `A` [ FAVAR ] - FAVAR object.
 %
 % Output arguments
 % =================
 %
-% * `e` [ numeric ] - Eigenvalues associated with the factor system.
+% * `E` [ numeric ] - Eigenvalues associated with the dynamic system of the
+% FAVAR model.
 %
 % Description
 % ============
@@ -26,8 +27,8 @@ function e = eig(a)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-e = a.eigval;
+e = a.EigVal;
 
 end

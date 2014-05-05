@@ -62,7 +62,7 @@ nAlt = size(This.A,3);
 
 % Pre-process filter options.
 [isFilter,filter,freq,applyTo] ...
-    = freqdom.applyfilteropt(opt,[],This.Ynames);
+    = freqdom.applyfilteropt(opt,[],This.YNames);
 
 C = nan(ny,ny,opt.order+1,nAlt);
 
@@ -81,7 +81,7 @@ for iAlt = find(~isExpl)
     else
         % Compute contemporaneous ACF for its first-order state space form.
         % This gives us autocovariances up to order p-1.
-        c = covfun.acovf(T,R,[],[],[],[],U,Cov,This.eigval(1,:,iAlt),0);
+        c = covfun.acovf(T,R,[],[],[],[],U,Cov,This.EigVal(1,:,iAlt),0);
         if p > 1
             c0 = c;
             c = reshape(c0(1:ny,:),ny,ny,p);
@@ -120,7 +120,7 @@ end
 
 % Convert output to named matrices.
 if strcmp(opt.output,'namedmat')
-    yNames = This.Ynames;
+    yNames = This.YNames;
     if length(yNames) == ny
         C = namedmat(C,yNames,yNames);
         if isCorr

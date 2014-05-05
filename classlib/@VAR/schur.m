@@ -39,7 +39,7 @@ p = p / max(ny,1);
 if p == 0
     This.T = zeros(ny,ny,nAlt);
     This.U = repmat(eye(ny),[1,1,nAlt]);
-    This.eigval = zeros(1,ny,nAlt);
+    This.EigVal = zeros(1,ny,nAlt);
     return
 end
 
@@ -51,7 +51,7 @@ end
 realSmall = getrealsmall();
 This.U = nan(ny*p,ny*p,nAlt);
 This.T = nan(ny*p,ny*p,nAlt);
-This.eigval = nan(1,ny*p,nAlt);
+This.EigVal = nan(1,ny*p,nAlt);
 for ialt = 1 : nAlt
     if any(any(isnan(A(:,:,ialt))))
         continue
@@ -65,7 +65,7 @@ for ialt = 1 : nAlt
         clusters(unstable) = 2;
         clusters(unit) = 1;
         [This.U(:,:,ialt),This.T(:,:,ialt)] = ordschur(U,T,clusters);
-        This.eigval(1,:,ialt) = ordeig(This.T(:,:,ialt)).';
+        This.EigVal(1,:,ialt) = ordeig(This.T(:,:,ialt)).';
     end
 end
 

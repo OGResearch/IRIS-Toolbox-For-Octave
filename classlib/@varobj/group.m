@@ -19,6 +19,6 @@ if ischar(Grp)
     Grp = strcmp(Grp,This.GroupNames);
 end
 This.GroupNames = {};
-This.fitted = This.fitted(Grp,:,:);
+This.Fitted = This.Fitted(Grp,:,:);
 
 end

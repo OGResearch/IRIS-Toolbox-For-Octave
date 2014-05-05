@@ -95,12 +95,12 @@ classdef VAR < varobj
         Sigma = []; % Cov of parameters.
         T = []; % Shur decomposition of the transition matrix.
         U = []; % Schur transformation of the variables.
-        aic = []; % Akaike info criterion.
-        sbc = []; % Schwartz bayesian criterion.
+        Aic = []; % Akaike info criterion.
+        Sbc = []; % Schwartz bayesian criterion.
         Rr = []; % Parameter restrictions.
-        nhyper = NaN; % Number of estimated hyperparameters.
-        inames = cell(1,0); % Names of conditioning instruments.
-        ieqtn = cell(1,0); % Expressions for conditioning instruments.
+        NHyper = NaN; % Number of estimated hyperparameters.
+        INames = cell(1,0); % Names of conditioning instruments.
+        IEqtn = cell(1,0); % Expressions for conditioning instruments.
         Zi = []; % Measurement matrix for conditioning instruments.
     end
     
@@ -233,18 +233,27 @@ classdef VAR < varobj
                     return
                 elseif isstruct(varargin{1})
                     % Convert struct to VAR object.
-                    list = properties(This);
-                    for i = 1 : length(list)
-                        try %#ok<TRYNC>
-                            This.(list{i}) = varargin{1}.(list{i});
+                    s = varargin{1};
+                    plist = properties(This);
+                    slist = fieldnames(s);
+                    for i = 1 : length(plist)
+                        inx = strcmpi(slist,plist{i});
+                        if ~any(inx)
+                            continue
+                        end
+                        for pos = find(inx(:).')
+                            try %#ok<TRYNC>
+                                This.(plist{i}) = s.(slist{pos});
+                            end
                         end
                     end
                     % Populate triangular representation.
-                    if isempty(This.T) || isempty(This.U) || isempty(This.eigval)
+                    if isempty(This.T) || isempty(This.U) ...
+                            || isempty(This.EigVal)
                         This = schur(This);
                     end
                     % Populate information criteria.
-                    if isempty(This.aic) || isempty(This.sbc)
+                    if isempty(This.Aic) || isempty(This.Sbc)
                         This = infocrit(This);
                     end
                     return

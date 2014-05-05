@@ -92,14 +92,14 @@ function This = instrument(This,varargin)
 
 if isempty(varargin)
     % Clear conditioning instruments.
-    This.inames = {};
+    This.INames = {};
     This.Zi = [];
     return
 end
 
 %--------------------------------------------------------------------------
 
-if isempty(This.Ynames)
+if isempty(This.YNames)
     utils.error('VAR', ...
         ['Cannot create conditioning instruments in VAR ', ...
         'without named variables.']);
@@ -166,8 +166,8 @@ end
 
 doChkExprn();
 
-This.inames = [This.inames,Name];
-This.ieqtn = [This.ieqtn,List];
+This.INames = [This.INames,Name];
+This.IEqtn = [This.IEqtn,List];
 
 % The constant term is placed first in Zi, but last in user inputs/outputs.
 This.Zi = [This.Zi;[C,Z]];
@@ -205,10 +205,10 @@ This.Zi = [This.Zi;[C,Z]];
 
 %**************************************************************************
     function doXVector()
-        xVector = This.Ynames;
+        xVector = This.YNames;
         for ii = 2 : p
             time = sprintf('{-%g}',ii);
-            temp = regexprep(This.Ynames,'.*',['$0',time]);
+            temp = regexprep(This.YNames,'.*',['$0',time]);
             xVector = [xVector,temp]; %#ok<AGROW>
         end
     end % doXVector()
@@ -218,7 +218,7 @@ This.Zi = [This.Zi;[C,Z]];
     function doChkNames()
         isUnique = true(1,nName);
         isValid = true(1,nName);
-        chkList = [This.Ynames,This.inames];
+        chkList = [This.YNames,This.INames];
         for ii = 1 : nName
             isUnique(ii) = ~any(strcmp(Name{ii},chkList));
             isValid(ii) = isvarname(Name{ii});

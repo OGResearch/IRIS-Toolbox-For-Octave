@@ -9,14 +9,6 @@ function This = loadobj(This)
 
 %--------------------------------------------------------------------------
 
-if isfield(This,'ynames')
-    This.Ynames = This.ynames;
-end
-
-if isfield(This,'enames')
-    This.Enames = This.enames;
-end
-
 if isstruct(This)
     This = VAR(This);
 end

@@ -10,8 +10,8 @@ function specdisp(This)
 %--------------------------------------------------------------------------
 
 fprintf('\tidentification: ');
-if ~isempty(This.method)
-    u = unique(This.method);
+if ~isempty(This.Method)
+    u = unique(This.Method);
     fprintf('%s',strfun.displist(u));
 else
     fprintf('empty');

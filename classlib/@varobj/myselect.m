@@ -16,7 +16,7 @@ switch lower(Type)
         list = myenames(This);
 end
 
-N = length(This.Ynames);
+N = length(This.YNames);
 Select = Select(:).';
 Invalid = {};
 

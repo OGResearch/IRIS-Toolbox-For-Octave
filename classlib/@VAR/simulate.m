@@ -151,9 +151,9 @@ if isBackcast
     e = e(:,end:-1:1,:,:);
 end
 
-names = This.Ynames;
+names = This.YNames;
 if opt.returnresiduals
-    names = [names,This.Enames];
+    names = [names,This.ENames];
 else
     e = [];
 end
@@ -163,7 +163,7 @@ Outp = myoutpdata(This,outpFmt,Range,[x;e],[],names);
 
 % Contributions comments.
 if opt.contributions && strcmp(outpFmt,'dbase')
-    contList = [This.Enames,{'Init+Const'}];
+    contList = [This.ENames,{'Init+Const'}];
     for i = 1 : length(names)
         c = utils.concomment(names{i},contList);
         Outp.(names{i}) = comment(Outp.(names{i}),c);

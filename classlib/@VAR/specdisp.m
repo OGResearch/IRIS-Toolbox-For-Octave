@@ -10,10 +10,10 @@ function specdisp(This)
 %--------------------------------------------------------------------------
 
 fprintf('\tinstruments: ');
-if isempty(This.inames)
+if isempty(This.INames)
     fprintf('empty');
 else
-    fprintf('%s',strfun.displist(This.inames));
+    fprintf('%s',strfun.displist(This.INames));
 end
 fprintf('\n');
 

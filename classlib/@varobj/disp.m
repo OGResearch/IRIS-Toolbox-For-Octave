@@ -29,8 +29,8 @@ else
 end
 fprintf('\n');
 
-if ~isempty(This.Ynames)
-    yNames = strfun.displist(This.Ynames);
+if ~isempty(This.YNames)
+    yNames = strfun.displist(This.YNames);
 else
     yNames = 'empty';
 end

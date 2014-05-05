@@ -105,7 +105,7 @@ else
    y = nan(ny,nPer,nData);
    outpFmt = opt.output;
    if strcmpi(outpFmt,'auto')
-      if isempty(This.Ynames)
+      if isempty(This.YNames)
          outpFmt = 'tseries';
       else
          outpFmt = 'dbase';
@@ -123,7 +123,7 @@ if opt.cross < 1
 end
 
 if isequal(opt.invfunc,'auto')
-   if This.cross == 1 && opt.cross == 1
+   if This.Cross == 1 && opt.cross == 1
       invFunc = @pinv;
    else
       invFunc = @inv;
@@ -142,7 +142,7 @@ end
 
 s = struct();
 s.invFunc = invFunc;
-s.allObs = This.cross == 1 && opt.cross == 1;
+s.allObs = This.Cross == 1 && opt.cross == 1;
 s.tol = opt.tolerance;
 s.reuse = opt.persist;
 s.ahead = 1;

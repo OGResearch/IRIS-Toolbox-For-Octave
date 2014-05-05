@@ -154,8 +154,8 @@ end
 
 %--------------------------------------------------------------------------
 
-This.range = xRange;
-nXPer = length(This.range);
+This.Range = xRange;
+nXPer = length(xRange);
 
 ng = size(g1,1);
 nk = size(k0,1);
@@ -193,17 +193,17 @@ if isempty(This.Rr)
     % Unrestricted VAR.
     if ~opt.diff
         % Level VAR.
-        This.nhyper = ny*(nk+p*ny+ng);
+        This.NHyper = ny*(nk+p*ny+ng);
     else
         % Difference VAR or VEC.
-        This.nhyper = ny*(nk+(p-1)*ny+ng);
+        This.NHyper = ny*(nk+(p-1)*ny+ng);
     end
 else
     % Parameter restrictions in the hyperparameter form:
     % beta = R*gamma + r;
     % The number of hyperparams is given by the number of columns of R.
     % The Rr matrix is [R,r], so we need to subtract 1.
-    This.nhyper = size(This.Rr,2) - 1;
+    This.NHyper = size(This.Rr,2) - 1;
 end
 
 nLoop = nData;
@@ -256,7 +256,7 @@ for iLoop = 1 : nLoop
     end
     
     [This,fitted,DatFitted{iLoop}] = myfitted(This,ss.resid);
-    This.fitted(:,:,iLoop) = fitted;
+    This.Fitted(:,:,iLoop) = fitted;
     Count(iLoop) = ss.count;
 
     if opt.progress
@@ -302,10 +302,12 @@ end
 
 
 %**************************************************************************
+
+
     function doChkObsNotFitted()
-        allFitted = all(all(This.fitted,1),3);
+        allFitted = all(all(This.Fitted,1),3);
         if opt.warning && any(~allFitted(p+1:end))
-            missing = This.range(p+1:end);
+            missing = This.Range(p+1:end);
             missing = missing(~allFitted(p+1:end));
             [~,consec] = datconsecutive(missing);
             utils.warning('VAR', ...
@@ -313,10 +315,12 @@ end
                 'because of missing observations: %s.'], ...
                 consec{:});
         end
-    end % doChkObsNotFitted().
+    end % doChkObsNotFitted()
 
 
 %**************************************************************************
+
+
     function doNames()
         if isempty(Ynames)
             if length(opt.ynames) == ny
@@ -329,21 +333,23 @@ end
                     class(This));
                 Ynames = opt.ynames;
             else
-                Ynames = This.Ynames;
+                Ynames = This.YNames;
             end
         end
         if ~isempty(opt.enames)
             % ##### Nov 2013 OBSOLETE and scheduled for removal.
             Enames = opt.enames;
         else
-            Enames = This.Enames;
+            Enames = This.ENames;
         end
         This = myynames(This,Ynames);
         This = myenames(This,Enames);
-    end % doNames().
+    end % doNames()
 
 
 %**************************************************************************
+
+
     function doOutpData()
         if ispanel(This)
             % Panel VAR.
@@ -353,8 +359,8 @@ end
                 name = This.GroupNames{iiGrp};
                 iY0 = y0(:,1:nXPer,:);
                 iResid = resid(:,1:nXPer,:);
-                Outp.(name) = myoutpdata(This,'dbase',This.range, ...
-                    [iY0;iResid],[],[This.Ynames,This.Enames]);
+                Outp.(name) = myoutpdata(This,'dbase',This.Range, ...
+                    [iY0;iResid],[],[This.YNames,This.ENames]);
                 y0(:,1:nXPer+p,:) = [];
                 resid(:,1:nXPer+p,:) = [];
             end
@@ -362,10 +368,10 @@ end
             % Non-panel VAR.
             y0 = y0(:,1:nXPer);
             resid = resid(:,1:nXPer);
-            Outp = myoutpdata(This,outpFmt,This.range, ...
-                [y0;resid],[],[This.Ynames,This.Enames]);
+            Outp = myoutpdata(This,outpFmt,This.Range, ...
+                [y0;resid],[],[This.YNames,This.ENames]);
         end
-    end % doOutpData().
+    end % doOutpData()
 
 
 end

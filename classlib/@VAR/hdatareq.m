@@ -16,14 +16,14 @@ SolId{1} = 1 : ny;
 SolId{2} = zeros(1,0);
 SolId{3} = ny + (1 : ny);
 
-Name = [This.Ynames,This.Enames];
+Name = [This.YNames,This.ENames];
 Log = false(size(Name));
 NameLabel = Name;
 
 % Shock contributions list.
-ContEList = [This.Enames,{'Init+Const'}];
+ContEList = [This.ENames,{'Init+Const'}];
 
 % Measurement contributions list.
-ContYList = This.Ynames;
+ContYList = This.YNames;
 
 end

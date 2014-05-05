@@ -1,4 +1,4 @@
-function EigVal = eig(This)
+function E = eig(This)
 % eig  Eigenvalues of a VAR process.
 %
 % Syntax
@@ -32,6 +32,6 @@ function EigVal = eig(This)
 
 %--------------------------------------------------------------------------
 
-EigVal = This.eigval;
+E = This.EigVal;
 
 end

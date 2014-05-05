@@ -9,8 +9,8 @@ function W = myglsqweights(This,Opt)
 
 %--------------------------------------------------------------------------
 
-range = This.range;
-nXPer = length(This.range);
+xRange = This.Range;
+nXPer = length(xRange);
 p = Opt.order;
 
 if ispanel(This)
@@ -29,7 +29,7 @@ end
 
 % Time weights.
 if isTimeWeights
-    Wt = Opt.timeweights(range,:);
+    Wt = Opt.timeweights(xRange,:);
     Wt = Wt(:).';
     Wt = repmat(Wt,1,nGrp);
 else

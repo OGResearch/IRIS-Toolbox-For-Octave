@@ -16,23 +16,23 @@ A = poly.var2poly(This.A);
 Omg = This.Omega;
 
 % Std dev of structural residuals requested by the user.
-This.std = Opt.std(1,ones(1,nAlt));
+This.Std = Opt.std(1,ones(1,nAlt));
 
-This.method = cell(1,nAlt);
+This.Method = cell(1,nAlt);
 B = zeros(ny,ny,nAlt);
 q = Inf;
 
 Count = 1;
 switch lower(Opt.method)
     case 'chol'
-        This.method(:) = {'Cholesky'};
+        This.Method(:) = {'Cholesky'};
         doReorder();
         for iAlt = 1 : nAlt
             B(:,:,iAlt) = chol(Omg(:,:,iAlt)).';
         end
         doBackOrder();
     case 'qr'
-        This.method(:) = {'QR'};
+        This.Method(:) = {'QR'};
         doReorder();
         C = sum(A,3);
         for iAlt = 1 : nAlt
@@ -46,7 +46,7 @@ switch lower(Opt.method)
         end
         doBackOrder();
     case 'svd'
-        This.method(:) = {'SVD'};
+        This.Method(:) = {'SVD'};
         q = Opt.rank;
         B = covfun.orthonorm(Omg,q,Opt.std);
         % Recompute covariance matrix of reduced-form residuals if it is
@@ -59,7 +59,7 @@ switch lower(Opt.method)
             end
         end
     case 'householder'
-        This.method(:) = {'Householder'};
+        This.Method(:) = {'Householder'};
         % Use Householder transformations to draw random SVARs. Test each SVAR
         % using teh `'test='` string to decide whether to keep it or discard.
         if nAlt > 1
@@ -87,7 +87,7 @@ if Opt.std ~= 1
 end
 
 This.B(:,:,:) = B;
-This.rank = q;
+This.Rank = q;
 
 
 % Nested functions...
@@ -102,7 +102,7 @@ This.rank = q;
                 valid = true(1,nList);
                 Opt.reorder = nan(1,nList);
                 for i = 1 : nList
-                    pos = strcmp(This.Ynames,list{i});
+                    pos = strcmp(This.YNames,list{i});
                     valid(i) = any(pos);
                     if valid(i);
                         Opt.reorder(i) = find(pos);

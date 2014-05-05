@@ -64,7 +64,7 @@ end
 
 A = A(:,:,:);
 
-ny = length(This.Ynames);
+ny = length(This.YNames);
 nGrp = max(1,length(This.GroupNames));
 nAlt = size(A,3);
 nXPer = length(xRange);
@@ -88,7 +88,7 @@ end
 
 This.G = zeros(ny,0);
 This.Zi = zeros(0,ny*p+1);
-This.nhyper = nFree;
+This.NHyper = nFree;
 
 This = schur(This);
 This = infocrit(This);

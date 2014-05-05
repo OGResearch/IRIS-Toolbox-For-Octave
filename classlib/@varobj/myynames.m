@@ -15,7 +15,7 @@ function varargout = myynames(This,YNames)
 try
     YNames; 
 catch
-    varargout{1} = This.Ynames;
+    varargout{1} = This.YNames;
     return
 end
 
@@ -37,15 +37,15 @@ if ny > 0 && iscellstr(YNames) && ny ~= length(YNames)
 end
 
 if iscellstr(YNames)
-    This.Ynames = YNames(:).';
+    This.YNames = YNames(:).';
 elseif isa(YNames,'function_handle') && ny > 0
-    This.Ynames = cell(1,ny);
+    This.YNames = cell(1,ny);
     for i = 1 : ny
-        This.Ynames{i} = YNames(i);
+        This.YNames{i} = YNames(i);
     end
 end
 
-if unique(length(This.Ynames)) ~= length(This.Ynames)
+if unique(length(This.YNames)) ~= length(This.YNames)
     utils.error('VAR', ...
         'Variable names must be unique.');
 end

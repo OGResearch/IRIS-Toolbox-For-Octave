@@ -40,10 +40,10 @@ nAlt = max(nAlt1,nAlt2);
 
 Flag = false(1,nAlt);
 for iAlt = 1 : nAlt
-    fitted1 = V1.fitted(:,:,min(iAlt,end));
-    fitted2 = V2.fitted(:,:,min(iAlt,end));
-    range1 = V1.range(fitted1);
-    range2 = V2.range(fitted2);
+    fitted1 = V1.Fitted(:,:,min(iAlt,end));
+    fitted2 = V2.Fitted(:,:,min(iAlt,end));
+    range1 = V1.Range(fitted1);
+    range2 = V2.Range(fitted2);
     Flag(iAlt) = length(range1) == length(range2) ...
         && all(datcmp(range1,range2));
 end

@@ -11,7 +11,7 @@ function This = myprealloc(This,Ny,P,NXPer,NAlt,NGrp)
 
 This.A = nan(Ny,Ny*P,NAlt);
 This.Omega = nan(Ny,Ny,NAlt);
-This.eigval = nan(1,Ny*P,NAlt);
-This.fitted = false(NGrp,NXPer,NAlt);
+This.EigVal = nan(1,Ny*P,NAlt);
+This.Fitted = false(NGrp,NXPer,NAlt);
 
 end

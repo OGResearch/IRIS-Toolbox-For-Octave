@@ -233,14 +233,14 @@ if backcast
 end
 
 % Prepare output data.
-names = This.Ynames;
+names = This.YNames;
 if retResiduals
     Y = [Y;E];
-    names = [names,This.Enames];
+    names = [names,This.ENames];
 end
 if retInstruments
     Y = [Y;I];
-    names = [names,This.inames];
+    names = [names,This.INames];
 end
 
 % Output data for endougenous variables, residuals, and instruments.

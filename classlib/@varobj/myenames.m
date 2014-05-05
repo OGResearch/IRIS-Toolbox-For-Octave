@@ -11,7 +11,7 @@ function varargout = myenames(This,varargin)
 %#ok<*CTCH>
 
 if isempty(varargin)
-    varargout{1} = This.Enames;
+    varargout{1} = This.ENames;
     return
 end
 
@@ -20,8 +20,8 @@ end
 ENames = varargin{1};
 
 ny = size(This.A,1);
-if ny == 0 && ~isempty(This.Ynames)
-    ny = length(This.Ynames);
+if ny == 0 && ~isempty(This.YNames)
+    ny = length(This.YNames);
 end
 
 if ny == 0
@@ -35,7 +35,7 @@ elseif ischar(ENames)
     ENames = regexp(ENames,'\w+','match');
 elseif iscellstr(ENames)
     %
-elseif isa(ENames,'function_handle') && ~isempty(This.Ynames)
+elseif isa(ENames,'function_handle') && ~isempty(This.YNames)
     %
 else
     utils.error('VAR', ...
@@ -48,17 +48,17 @@ if ny > 0 && iscellstr(ENames) && ny ~= length(ENames)
 end
 
 if iscellstr(ENames)
-    This.Enames = ENames(:).';
-elseif ~isempty(This.Ynames) && isa(ENames,'function_handle')
-    This.Enames = cell(1,ny);
+    This.ENames = ENames(:).';
+elseif ~isempty(This.YNames) && isa(ENames,'function_handle')
+    This.ENames = cell(1,ny);
     for i = 1 : ny
-        This.Enames{i} = ENames(This.Ynames{i},i);
+        This.ENames{i} = ENames(This.YNames{i},i);
     end
 else
-    This.Enames = cell(1,0);
+    This.ENames = cell(1,0);
 end
 
-if unique(length(This.Enames)) ~= length(This.Enames)
+if unique(length(This.ENames)) ~= length(This.ENames)
     utils.error('VAR', ...
         'Residual names must be unique.');
 end

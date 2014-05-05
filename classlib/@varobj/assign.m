@@ -10,7 +10,7 @@ function This = assign(This,A,Omg,XRange,Fitted)
 %--------------------------------------------------------------------------
 
 A = A(:,:,:);
-ny = length(This.Ynames);
+ny = length(This.YNames);
 nAlt = size(A,3);
 p = size(A,2) / ny;
 
@@ -27,7 +27,7 @@ end
 This.A = A;
 This.Omega = Omg;
 
-This.range = XRange;
+This.Range = XRange;
 if ~isempty(XRange) && ~isempty(Fitted)
     if length(Fitted) ~= nAlt
         utils.error('varobj:assign', ...
@@ -35,7 +35,7 @@ if ~isempty(XRange) && ~isempty(Fitted)
     end
     for iAlt = 1 : nAlt
         pos = round(Fitted{iAlt} - XRange(1) + 1);
-        This.fitted(1,pos,iAlt) = true;
+        This.Fitted(1,pos,iAlt) = true;
     end
 end
 

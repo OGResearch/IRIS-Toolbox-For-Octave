@@ -37,7 +37,7 @@ for iAlt = 1 : nAlt
     if isStat(iAlt)
         [T,R,~,~,~,~,U,Omg] = sspace(This,iAlt);
         % 0th and 1st order autocovariance matrices of stacked y vector.
-        C = covfun.acovf(T,R,[],[],[],[],U,Omg,This.eigval(1,:,iAlt),1);
+        C = covfun.acovf(T,R,[],[],[],[],U,Omg,This.EigVal(1,:,iAlt),1);
         A = transpose(C(:,:,2)) / C(:,:,1);
         Q = A*C(:,:,2);
         Omg = C(:,:,1) + A*C(:,:,1)*transpose(A) - Q - transpose(Q);
@@ -63,6 +63,6 @@ if any(~isStat)
         preparser.alt2str(~isStat));
 end
 
-[This.T,This.U,This.eigval] = schur(This.A);
+[This.T,This.U,This.EigVal] = schur(This.A);
 
 end

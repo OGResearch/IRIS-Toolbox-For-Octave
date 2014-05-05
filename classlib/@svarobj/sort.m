@@ -128,7 +128,7 @@ This = mysubsalt(This,Inx);
 
 if isData
     e = e(:,:,Inx);
-    Data = myoutpdata(This,outpFmt,rng,e,[],This.Enames,Data);
+    Data = myoutpdata(This,outpFmt,rng,e,[],This.ENames,Data);
 end
 
 

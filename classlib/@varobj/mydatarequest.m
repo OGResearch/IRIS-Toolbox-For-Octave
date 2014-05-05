@@ -18,10 +18,10 @@ end
 
 %--------------------------------------------------------------------------
 
-ny = length(This.Ynames);
+ny = length(This.YNames);
 
 if isi
-    ni = length(This.inames);
+    ni = length(This.INames);
 end
 
 if any(isinf(Range))
@@ -84,14 +84,14 @@ end
 
 %**************************************************************************
     function [y,e,fi] = doStruct()
-        yNames = This.Ynames;
+        yNames = This.YNames;
         if infRange
             Range = dbrange(Data,yNames);
         end
         nPer = length(Range);
         y = [];
         for i = 1 : ny
-            name = This.Ynames{i};
+            name = This.YNames{i};
             if isfield(Data,name) && is.tseries(Data.(name))
                 yi = rangedata(Data.(name),Range);
                 yi = permute(yi,[1,3,2]);
@@ -104,7 +104,7 @@ end
         e = [];
         if ise
             for i = 1 : ny
-                name = This.Enames{i};
+                name = This.ENames{i};
                 if isfield(Data,name) ...
                         && isa(Data.(name),'tseries')
                     ei = rangedata(Data.(name),Range);
@@ -118,8 +118,8 @@ end
         % Forecast instruments.
         fi = [];
         if isi
-            iNames = This.inames;
-            ni = length(This.inames);
+            iNames = This.INames;
+            ni = length(This.INames);
             for i = 1 : ni
                 name = iNames{i};
                 if isfield(Data,name) ...

@@ -72,12 +72,12 @@ function [This,D,CC,FF,U,E,CTF,Rng] = estimate(This,varargin)
 % Get input data.
 [y,Rng,yNames,inpFmt,varargin] = myinpdata(This,varargin{:});
 
-if isempty(This.Ynames) && isequal(inpFmt,'dbase')
+if isempty(This.YNames) && isequal(inpFmt,'dbase')
     % ##### Nov 2013 OBSOLETE and scheduled for removal.
-    This.Ynames = yNames;
+    This.YNames = yNames;
 end
 
-This.range = Rng;
+This.Range = Rng;
 
 % Parse required input arguments.
 crit = varargin{1};
@@ -104,16 +104,16 @@ y0 = y;
     FAVAR.pc(y,crit,opt.method);
 
 % Estimate VAR(p,q) on factors.
-[This.A,This.B,This.Omega,This.T,This.U,E,This.fitted] = ...
+[This.A,This.B,This.Omega,This.T,This.U,E,This.Fitted] = ...
     FAVAR.estimatevar(FF,opt.order,opt.rank);
-This.eigval = ordeig(This.T);
+This.EigVal = ordeig(This.T);
 
 % Reduce or zero off-diagonal elements in the cov matrix of idiosyncratic
 % residuals if requested.
-This.cross = double(opt.cross);
-if This.cross < 1
+This.Cross = double(opt.cross);
+if This.Cross < 1
     index = logical(eye(size(This.Sigma)));
-    This.Sigma(~index) = This.cross*This.Sigma(~index);
+    This.Sigma(~index) = This.Cross*This.Sigma(~index);
 end
 
 if nargout > 1

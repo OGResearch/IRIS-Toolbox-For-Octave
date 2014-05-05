@@ -25,7 +25,7 @@ Fitted(:,end-p+1:end,:) = [];
 DatFitted = cell(nGrp,1);
 for iGrp = 1 : nGrp
     iFitted = Fitted(iGrp,:);
-    DatFitted{iGrp} = This.range(iFitted);
+    DatFitted{iGrp} = This.Range(iFitted);
 end
 
 end

@@ -38,7 +38,7 @@ opt = passvalopt('VAR.isexplosive',varargin{:});
 
 %--------------------------------------------------------------------------
 
-Flag = any(abs(This.eigval) > 1+opt.tolerance,2);
+Flag = any(abs(This.EigVal) > 1+opt.tolerance,2);
 Flag = Flag(:)';
 
 end

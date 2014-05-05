@@ -2,9 +2,9 @@ classdef svarobj
     
     properties
         B = []; % Coefficient matrix in front of structural residuals.
-        std = []; % Std dev of structural residuals.
-        method = {}; % Identification method.
-        rank = Inf;
+        Std = []; % Std dev of structural residuals.
+        Method = {}; % Identification method.
+        Rank = Inf;
     end
     
     methods

@@ -81,10 +81,10 @@ V.K = zeros(nz,nAlt);
 V.Omega = nan(nz,nz,nAlt);
 V.Sigma = [];
 V.G = nan(nz,0,nAlt);
-V.range = Range;
-V.fitted = true(1,nPer);
-V.fitted(1:p) = false;
-V.nhyper = nz*(nk+p*nz);
+V.Range = Range;
+V.Fitted = true(1,nPer);
+V.Fitted(1:p) = false;
+V.NHyper = nz*(nk+p*nz);
 
 for iAlt = 1 : nAlt
     Ci = C(:,:,:,iAlt);

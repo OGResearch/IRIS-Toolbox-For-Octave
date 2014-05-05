@@ -77,15 +77,15 @@ switch Query
     
     % Akaike info criterion.
     case 'aic'
-        X = This.aic;
+        X = This.Aic;
         
     % Schwarz bayesian criterion.
     case 'sbc'
-        X = This.sbc;
+        X = This.Sbc;
         
     % Number of freely estimated (hyper-) parameters.
     case {'nfree','nhyper'}
-        X = This.nhyper;
+        X = This.NHyper;
       
     % Order of VAR.
     case {'order','p'}
@@ -108,9 +108,9 @@ switch Query
         X = This.Rr;
 
     case {'inames','ilist'}
-        X = This.inames;
+        X = This.INames;
     case {'ieqtn'}
-        X = This.ieqtn;
+        X = This.IEqtn;
     case {'zi'}
         % The constant term comes first in Zi, but comes last in user
         % inputs/outputs.

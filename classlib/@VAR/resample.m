@@ -107,7 +107,7 @@ nAlt = size(This.A,3);
 doChkMultipleParams();
 
 if isequal(Range,Inf)
-    Range = This.range(1) + p : This.range(end);
+    Range = This.Range(1) + p : This.Range(end);
 end
 
 xRange = Range(1)-p : Range(end);
@@ -214,7 +214,7 @@ if any(nanResid)
 end
 
 % Return only endogenous variables, not shocks.
-Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.Ynames);
+Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.YNames);
 
 % Nested functions.
 

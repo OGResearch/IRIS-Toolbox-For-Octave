@@ -67,7 +67,7 @@ if H <= p
 end
 
 % Request residuals.
-[~,~,~,e] = mydatarequest(This,Inp,This.range);
+[~,~,~,e] = mydatarequest(This,Inp,This.Range);
 nData = size(e,3);
 if nData ~= nAlt
     utils.error('VAR', ...
@@ -83,7 +83,7 @@ end
 % Test statistic.
 Stat = zeros(1,nAlt);
 for iAlt = 1 : nAlt
-    fitted = This.fitted(1,:,iAlt);
+    fitted = This.Fitted(1,:,iAlt);
     nObs = sum(fitted);
     ei = e(:,fitted,iAlt);
     for i = 1 : H

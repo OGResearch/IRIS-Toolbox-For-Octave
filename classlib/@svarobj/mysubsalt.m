@@ -12,19 +12,19 @@ function This = mysubsalt(This,Lhs,Obj,Rhs)
 if nargin == 2
     % Subscripted reference This(Lhs).
     This.B = This.B(:,:,Lhs);
-    This.std = This.std(:,Lhs);
-    This.method = This.method(1,Lhs);
+    This.Std = This.Std(:,Lhs);
+    This.Method = This.Method(1,Lhs);
 elseif nargin == 3 && isempty(Obj)
     % Empty subscripted assignment This(Lhs) = empty.
     This.B(:,:,Lhs) = [];
-    This.std(:,Lhs) = [];
-    This.method(1,Lhs) = [];
+    This.Std(:,Lhs) = [];
+    This.Method(1,Lhs) = [];
 elseif nargin == 4 && mycompatible(This,Obj)
     % Proper subscripted assignment This(Lhs) = Obj(Rhs).
     try
         This.B(:,:,Lhs) = Obj.B(:,:,Rhs);
-        This.std(:,Lhs) = Obj.std(:,Rhs);
-        This.method(1,Lhs) = Obj.method(1,Rhs);
+        This.Std(:,Lhs) = Obj.Std(:,Rhs);
+        This.Method(1,Lhs) = Obj.Method(1,Rhs);
     catch %#ok<CTCH>
         utils.error('svarobj:mysubsalt', ...
             ['Subscripted assignment failed, ', ...

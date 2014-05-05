@@ -34,10 +34,10 @@ function This = infocrit(This)
 
 nAlt = size(This.Omega,3);
 
-This.aic = nan(1,nAlt);
-This.sbc = nan(1,nAlt);
+This.Aic = nan(1,nAlt);
+This.Sbc = nan(1,nAlt);
 
-if all(~This.fitted(:)) || ~isfinite(This.nhyper)
+if all(~This.Fitted(:)) || ~isfinite(This.NHyper)
     return
 end
 
@@ -47,9 +47,9 @@ for iAlt = 1 : nAlt
         continue
     end
     logDetOmg = log(det(This.Omega(:,:,iAlt)));
-    This.aic(iAlt) = logDetOmg + 2./nFitted(iAlt) * This.nhyper;
-    This.sbc(iAlt) = logDetOmg ...
-        + log(nFitted(iAlt))./nFitted(iAlt) * This.nhyper;
+    This.Aic(iAlt) = logDetOmg + 2./nFitted(iAlt) * This.NHyper;
+    This.Sbc(iAlt) = logDetOmg ...
+        + log(nFitted(iAlt))./nFitted(iAlt) * This.NHyper;
 end
 
 end

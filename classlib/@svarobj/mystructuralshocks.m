@@ -26,7 +26,7 @@ if size(e,3) == 1 && nAlt > 1
 end
 
 for iAlt = 1 : nAlt
-    if This.rank < ny
+    if This.Rank < ny
         e(:,:,iAlt) = pinv(This.B(:,:,iAlt)) * e(:,:,iAlt);
     else
         e(:,:,iAlt) = This.B(:,:,iAlt) \ e(:,:,iAlt);

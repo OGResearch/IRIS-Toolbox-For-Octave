@@ -18,7 +18,7 @@ if ispanel(This) && isstruct(varargin{1})
     varargin(1) = [];
     Rng = varargin{1};
     varargin(1) = [];
-    YNames = This.Ynames;
+    YNames = This.YNames;
     if any(isinf(Rng(:)))
         utils.error('varobj', ...
             'Cannot use Inf for input range in panel estimation.');
@@ -53,11 +53,11 @@ elseif isstruct(varargin{1})
         end
         varargin(1) = [];
     else
-        YNames = This.Ynames;
+        YNames = This.YNames;
     end
     
     if isObsolete
-        if ~isempty(This.Ynames)
+        if ~isempty(This.YNames)
             utils.error('varobj:myinpdata', ...
                 'Variable names already specified in the %s object.', ...
                 class(This));
@@ -68,7 +68,7 @@ elseif isstruct(varargin{1})
                 'Specify variable names at the time of creating ', ...
                 '%s objects instead.'], ...
                 class(This));
-            This.Ynames = YNames;
+            This.YNames = YNames;
             This = myenames(This,[]);
         end
     end
@@ -97,7 +97,7 @@ elseif is.tseries(varargin{1})
     varargin(1:2) = [];
     [Y,Rng] = rangedata(Y,Rng);
     Y = permute(Y,[2,1,3]);
-    YNames = This.Ynames;
+    YNames = This.YNames;
     
 else
     

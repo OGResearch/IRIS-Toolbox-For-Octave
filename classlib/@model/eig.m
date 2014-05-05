@@ -1,5 +1,5 @@
-function eigval = eig(this,alt)
-% eig  Eigenvalues of the model transition matrix.
+function E = eig(This,Alt)
+% eig  Eigenvalues of the transition matrix.
 %
 % Syntax
 % =======
@@ -27,14 +27,18 @@ function eigval = eig(this,alt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if nargin < 2 || isequal(alt,Inf)
-    alt = 1 : size(this.Assign,3);
-else
-    alt = alt(:)';
+try
+    Alt; %#ok<VUNUS>
+catch
+    Alt = Inf;
 end
 
-%**************************************************************************
+if isequal(Alt,Inf)
+    Alt = ':';
+end
 
-eigval = this.eigval(1,:,alt);
+%--------------------------------------------------------------------------
+
+E = This.eigval(1,:,Alt);
 
 end

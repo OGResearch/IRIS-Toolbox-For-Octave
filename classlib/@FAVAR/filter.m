@@ -115,7 +115,7 @@ end
 % cross-correlations are pulled down because then the idiosyncratic cov
 % matrix is non-singular.
 if isequal(opt.invfunc,'auto')
-    if This.cross == 1 && opt.cross == 1
+    if This.Cross == 1 && opt.cross == 1
         invFunc = @pinv;
     else
         invFunc = @inv;
@@ -134,7 +134,7 @@ end
 
 s = struct();
 s.invFunc = invFunc;
-s.allObs = This.cross == 1 && opt.cross == 1;
+s.allObs = This.Cross == 1 && opt.cross == 1;
 s.tol = opt.tolerance;
 s.reuse = opt.persist;
 s.ahead = 1;

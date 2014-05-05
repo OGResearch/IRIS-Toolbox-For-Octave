@@ -10,11 +10,11 @@ end
 
 ny = size(This.A,1);
 
-varVec = This.std(1,Alt) .^ 2;
+varVec = This.Std(1,Alt) .^ 2;
 varVec = permute(varVec(:),[2,3,1]);
 n3 = length(varVec);
 
-q = min(ny,This.rank);
+q = min(ny,This.Rank);
 Cov = eye(ny);
 Cov(:,q+1:end) = 0;
 Cov = Cov(:,:,ones(1,n3));

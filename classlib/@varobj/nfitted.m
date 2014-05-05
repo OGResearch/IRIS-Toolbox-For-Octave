@@ -32,7 +32,7 @@ function NFitted = nfitted(This)
 nAlt = size(This.A,3);
 NFitted = nan(1,nAlt);
 for iAlt = 1 : nAlt
-    iFitted = This.fitted(:,:,iAlt);
+    iFitted = This.Fitted(:,:,iAlt);
     NFitted(iAlt) = sum(double(iFitted(:)));
 end
 

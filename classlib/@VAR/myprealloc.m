@@ -16,8 +16,8 @@ This.G = nan(Ny,Ng,NAlt);
 This.T = nan(Ny*P,Ny*P,NAlt);
 This.U = nan(Ny*P,Ny*P,NAlt);
 This.Sigma = [];
-This.aic = nan(1,NAlt);
-This.sbc = nan(1,NAlt);
+This.Aic = nan(1,NAlt);
+This.Sbc = nan(1,NAlt);
 This.Zi = zeros(0,Ny*P+1);
 
 end

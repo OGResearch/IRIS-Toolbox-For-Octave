@@ -18,9 +18,9 @@ switch Query
     case 'cov'
         X = mycovmatrix(This);
     case 'std'
-        X = This.std;
+        X = This.Std;
     case 'method'
-        X = This.method;
+        X = This.Method;
     otherwise
         Flag = false;
 end

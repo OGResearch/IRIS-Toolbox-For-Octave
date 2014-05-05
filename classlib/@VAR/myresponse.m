@@ -40,22 +40,22 @@ else
 end
 
 S = myoutpdata(This,'auto',xRange, ...
-    [Phi;Eps],[],[This.Ynames,This.Enames]);
+    [Phi;Eps],[],[This.YNames,This.ENames]);
 
 % For bkw compatibility.
 if nargout > 2
     S1 = myoutpdata(This,'tseries',xRange, ...
-        [Phi;Eps],[],[This.Ynames,This.Enames]);
+        [Phi;Eps],[],[This.YNames,This.ENames]);
 end
 
 if nargout > 1
     Psi = cumsum(Phi,2);
     C = myoutpdata(This,'auto',xRange, ...
-        [Psi;Eps],[],[This.Ynames,This.Enames]);
+        [Psi;Eps],[],[This.YNames,This.ENames]);
     % For bkw compatibility.
     if nargout > 3
         C1 = myoutpdata(This,'tseries',xRange, ...
-            [Psi;Eps],[],[This.Ynames,This.Enames]);
+            [Psi;Eps],[],[This.YNames,This.ENames]);
     end
 end
 

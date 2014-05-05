@@ -72,7 +72,7 @@ end
 
 %**************************************************************************
     function [Mean,Init] = doMean(IAlt)
-        unit = abs(abs(This.eigval(1,:,IAlt)) - 1) <= realSmall;
+        unit = abs(abs(This.EigVal(1,:,IAlt)) - 1) <= realSmall;
         nUnit = sum(unit);
         Init = [];
         if nUnit == 0

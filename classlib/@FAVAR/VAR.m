@@ -1,4 +1,4 @@
-function w = VAR(f)
+function V = VAR(A)
 % VAR  Return a VAR object describing the factor dynamics.
 %
 % Syntax
@@ -27,38 +27,38 @@ function w = VAR(f)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 % TODO: Use parent VAR objects.
 
-[~,nx,p,q,nalt] = size(f);
+[~,nx,p,q,nalt] = size(A);
 
 % Create and populate a struct.
-w = struct();
-w.A = f.A; % Untransformed transition matrices.
-w.K = zeros([nx,nalt]); % Constant vector.
-w.B = f.B;
-w.std = 1;
-w.Omega = f.Omega; % Cov of reduced-form residuals.
+V = struct();
+V.A = A.A; % Untransformed transition matrices.
+V.K = zeros([nx,nalt]); % Constant vector.
+V.B = A.B;
+V.Std = 1;
+V.Omega = A.Omega; % Cov of reduced-form residuals.
 if q < nx
    for ialt = 1 : nalt
-      w.Omega(:,:,ialt) = f.B(:,:,ialt)*f.B(:,:,ialt)';
+      V.Omega(:,:,ialt) = A.B(:,:,ialt)*A.B(:,:,ialt)';
    end
-   w.B = [w.B,zeros([nx,nx-q,nalt])];
+   V.B = [V.B,zeros([nx,nx-q,nalt])];
 end
-w.Sigma = []; % Cov of parameters.
-w.T = f.T; % Shur decomposition of transition matrix.
-w.U = f.U; % Schur transformation of variables.
-w.range = f.range; % User range.
-w.fitted = f.fitted; % Effective estimation sample.
-w.Rr = []; % Parameter restrictions.
-w.nhyper = nx*p; % Number of estimated hyperparameters.
-w.eigval = f.eigval; % Vector of eigenvalues.
-w.Ynames = @(n) sprintf('factor%g',n); % Names of endogenous variables.
-w.Enames = @(yname,n) ['res_',yname]; % Names of residuals.
-% w.aic, w.sbc to be populated within VAR().
+V.Sigma = []; % Cov of parameters.
+V.T = A.T; % Shur decomposition of transition matrix.
+V.U = A.U; % Schur transformation of variables.
+V.Range = A.Range; % User range.
+V.Fitted = A.Fitted; % Effective estimation sample.
+V.Rr = []; % Parameter restrictions.
+V.NHyper = nx*p; % Number of estimated hyperparameters.
+V.EigVal = A.EigVal; % Vector of eigenvalues.
+V.YNames = @(n) sprintf('factor%g',n); % Names of endogenous variables.
+V.ENames = @(yname,n) ['res_',yname]; % Names of residuals.
+% w.Aic, w.Sbc to be populated within VAR().
 
 % Convert the struct to a VAR object.
-w = VAR(w);
+V = VAR(V);
 
 end

@@ -20,7 +20,7 @@ switch lower(Query)
     case {'omg','omega','cove','covresiduals'}
         X = This.Omega;
     case {'eig','eigval','roots'}
-        X = This.eigval;
+        X = This.EigVal;
     case {'stableroots','explosiveroots','unstableroots','unitroots'}
         switch Query
             case 'stableroots'
@@ -30,31 +30,31 @@ switch lower(Query)
             case 'unitroots'
                 test = @(x) abs(abs(x) - 1) <= realSmall;
         end
-        X = nan(size(This.eigval));
+        X = nan(size(This.EigVal));
         for ialt = 1 : nAlt
-            inx = test(This.eigval(1,:,ialt));
-            X(1,1:sum(inx),ialt) = This.eigval(1,inx,ialt);
+            inx = test(This.EigVal(1,:,ialt));
+            X(1,1:sum(inx),ialt) = This.EigVal(1,inx,ialt);
         end
         inx = all(isnan(X),3);
         X(:,inx,:) = [];
     case {'nper','nobs'}
-        X = permute(sum(This.fitted,2),[2,3,1]);
+        X = permute(sum(This.Fitted,2),[2,3,1]);
     case {'sample','fitted'}
         X = cell(1,nAlt);
         for ialt = 1 : nAlt
-            X{ialt} = This.range(This.fitted(1,:,ialt));
+            X{ialt} = This.Range(This.Fitted(1,:,ialt));
         end
     case {'range'}
-        X = This.range;
+        X = This.Range;
     case 'comment'
         % Bkw compatibility only; use comment(this) directly.
         X = comment(This);
     case {'ynames','ylist'}
-        X = This.Ynames;
+        X = This.YNames;
     case {'enames','elist'}
-        X = This.Enames;
+        X = This.ENames;
     case {'names','list'}
-        X = [This.Ynames,This.Enames];
+        X = [This.YNames,This.ENames];
     case {'nalt'}
         X = nAlt;
     case {'groupnames','grouplist'}

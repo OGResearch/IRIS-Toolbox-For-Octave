@@ -46,7 +46,7 @@ nAlt2 = size(V2.A,3);
 nAlt1 = size(V1.A,3);
 nAlt = max(nAlt1,nAlt2);
 
-if V1.nhyper == V2.nhyper
+if V1.NHyper == V2.NHyper
     utils.warning('VAR', ...
         ['LR-tested VAR objects have ', ...
         'identical numbers of free parameters.']);
@@ -54,7 +54,7 @@ end
 
 % Check the number of hyperparameters, and swap restricted and unrestricted
 % VARs if needed.
-if V1.nhyper < V2.nhyper
+if V1.NHyper < V2.NHyper
     [V1,V2] = deal(V2,V1);
 end
 
@@ -80,7 +80,7 @@ end
 
 % Critical value.
 if nargout > 1
-    Crit = chi2inv(1-Level,V1.nhyper-V2.nhyper);
+    Crit = chi2inv(1-Level,V1.NHyper-V2.NHyper);
 end
 
 end

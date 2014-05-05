@@ -14,8 +14,8 @@ if nargin == 2
     This = mysubsalt@varobj(This,Lhs);
     This.K = This.K(:,:,Lhs);
     This.G = This.G(:,:,Lhs);
-    This.aic = This.aic(1,Lhs);
-    This.sbc = This.sbc(1,Lhs);
+    This.Aic = This.Aic(1,Lhs);
+    This.Sbc = This.Sbc(1,Lhs);
     This.T = This.T(:,:,Lhs);
     This.U = This.U(:,:,Lhs);
     if ~isempty(This.Sigma)
@@ -26,8 +26,8 @@ elseif nargin == 3 && isempty(Obj)
     This = mysubsalt@varobj(This,Lhs,Obj);
     This.K(:,:,Lhs) = [];
     This.G(:,:,Lhs) = [];
-    This.aic(:,Lhs) = [];
-    This.sbc(:,Lhs) = [];
+    This.Aic(:,Lhs) = [];
+    This.Sbc(:,Lhs) = [];
     This.T(:,:,Lhs) = [];
     This.U(:,:,Lhs) = [];
     if ~isempty(This.Sigma) && ~isempty(x.Sigma)
@@ -39,8 +39,8 @@ elseif nargin == 4 && mycompatible(This,Obj)
     try
         This.K(:,:,Lhs) = Obj.K(:,:,Rhs);
         This.G(:,:,Lhs) = Obj.G(:,:,Rhs);
-        This.aic(:,Lhs) = Obj.aic(:,Rhs);
-        This.sbc(:,Lhs) = Obj.sbc(:,Rhs);
+        This.Aic(:,Lhs) = Obj.Aic(:,Rhs);
+        This.Sbc(:,Lhs) = Obj.Sbc(:,Rhs);
         This.T(:,:,Lhs) = Obj.T(:,:,Rhs);
         This.U(:,:,Lhs) = Obj.U(:,:,Rhs);
         if ~isempty(This.Sigma) && ~isempty(Obj.Sigma)
