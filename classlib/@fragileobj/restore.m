@@ -16,7 +16,7 @@ opt = passvalopt('fragileobj.restore',varargin{:});
 if isempty(C) || isempty(This)
     return
 end
-keyboard
+
 ptn = ['[',regexppattern(This),']'];
 if ismatlab
   rplFunc = @doReplace; %#ok<NASGU>
