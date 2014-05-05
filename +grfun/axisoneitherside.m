@@ -105,8 +105,20 @@ elseif ~keepTheOther
 end
 
 ax = [ax;ax2];
-try % not implemented in Octave
+if ismatlab % not implemented in Octave
     linkaxes(ax,option);
+else
+    switch option
+        case 'x'
+            set(ax,'XLimMode','manual');
+            hlink = linkprop(ax,'XLim');
+        case 'y'
+            set(ax,'YLimMode','manual');
+            hlink = linkprop(ax,'YLim');
+        case 'xy'
+            set(ax,'XLimMode','manual','YLimMode','manual');
+            hlink = linkprop(ax,{'XLim','YLim'});
+    end
 end
 
 end
