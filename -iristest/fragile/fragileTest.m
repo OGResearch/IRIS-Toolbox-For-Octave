@@ -7,6 +7,8 @@ end
 
 
 %**************************************************************************
+
+
 function testProtectBrackets(This)
 
 expTxt = file2char('testFragile.txt');
@@ -24,6 +26,8 @@ end % testProtectBrackets()
 
 
 %**************************************************************************
+
+
 function testProtectBraces(This)
 
 expTxt = file2char('testFragile.txt');
@@ -41,6 +45,8 @@ end % testProtectBraces()
 
 
 %**************************************************************************
+
+
 function testProtectQuotes(This)
 
 expTxt = file2char('testFragile.txt');
@@ -58,6 +64,8 @@ end % testProtectQuotes()
 
 
 %**************************************************************************
+
+
 function testProtectAll(This)
 
 expTxt = file2char('testFragile.txt');
