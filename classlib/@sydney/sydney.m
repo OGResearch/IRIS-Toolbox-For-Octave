@@ -202,7 +202,7 @@ classdef sydney
             % class.
             for i = 1 : length(funcList)
                 funcname = funcList{i}(1:end-1);
-                Expr = regexprep(Expr,['\<',funcname,'\>('], ...
+                Expr = regexprep(Expr,['\<',funcname,'\>\('], ...
                     ['sydney.parse(''',funcname,''',']);
             end
         end
