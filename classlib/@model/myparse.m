@@ -993,13 +993,15 @@ if any(aux)
 end
 
 % Current dates of all measurement variables.
-aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),1);
-if any(aux)
-    ErrList = This.name(This.nametype == 1);
-    ErrList = ErrList(aux);
-    ErrMsg = ...
-        'No current date of this measurement variable: ''%s''.';
-    return
+if ~isempty(occurF(This.eqtntype == 1,This.nametype == 1,tZero))
+    aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),1);
+    if any(aux)
+        ErrList = This.name(This.nametype == 1);
+        ErrList = ErrList(aux);
+        ErrMsg = ...
+            'No current date of this measurement variable: ''%s''.';
+        return
+    end
 end
 
 % At least one transition variable in each transition equation.
