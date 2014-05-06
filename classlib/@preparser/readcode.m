@@ -44,7 +44,11 @@ for i = 1 : nFileList
     end
 end
 
-fileStr = sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
+if ismatlab
+    fileStr = sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
+else
+    fileStr = sprintf('%s',fileStr);
+end
 if ~isempty(ParentFile)
     fileStr = [ParentFile,' > ',fileStr];
 end
