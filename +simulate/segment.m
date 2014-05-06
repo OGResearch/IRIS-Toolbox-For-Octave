@@ -89,9 +89,9 @@ end
 %--------------------
 if S.stop < 0
     if Opt.error
-        messageFunc = @utils.error;
+        messageFunc = @(varargin) utils.error(varargin{:});
     else
-        messageFunc = @utils.warning;
+        messageFunc = @(varargin) utils.warning(varargin{:});
     end
 
     switch S.stop
