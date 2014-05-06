@@ -68,7 +68,7 @@ Comment = strtrim(match);
 % Characters beyond char(highcharcode) not allowed except comments.
 % Default is 1999.
 charCap = irisget('highcharcode');
-if any(Code > char(charCap))
+if any(double(Code) > charCap)
     utils.error('preparser:readcode',[ep, ...
         'The file contains characters beyond char(%g).'],charCap);
 end
