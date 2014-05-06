@@ -93,7 +93,7 @@ classdef sydney
                         if ismatlab
                             tempFunc = str2func([preamble,expr]);
                         else
-                            tempFunc = eval([preamble,expr]);
+                            tempFunc = mystr2func([preamble,expr]);
                         end
                         
                         % Evaluate the equation's function handle on the

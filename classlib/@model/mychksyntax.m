@@ -29,10 +29,16 @@ end
 
 isLink = This.eqtntype == 4;
 
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
+
 % Full dynamic equations except links.
 inx = ~isLink;
 try
-    e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
     e(x,dx,L,t,ttrend,g);
 catch
     doLookUp('f',inx);
@@ -42,7 +48,7 @@ end
 if ~This.linear
     inx = ~isLink;
     try
-        e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnS{inx},']']);
+        e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.eqtnS{inx},']']);
         e(x,dx,L,t,ttrend,g);
     catch
         doLookUp('s',inx);
@@ -52,7 +58,7 @@ end
 % Links.
 inx = isLink;
 try
-    e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
     e(x,dx,L,t,ttrend,g);
 catch
     doLookUp('f',inx);
@@ -84,7 +90,7 @@ end
             
             try
                 e = strfun.vectorise(e);
-                e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
+                e = s2fH(['@(x,dx,L,t,ttrend,g)',e]);
                 
                 if This.eqtntype(iiEq) < 4
                     e(x,dx,L,t,ttrend,g);
@@ -100,7 +106,7 @@ end
                 end
                 
                 e = This.eqtnS{iiEq};
-                e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
+                e = s2fH(['@(x,dx,L,t,ttrend,g)',e]);
                 e(x,dx,L,t,ttrend,g);               
             catch E
                 % Undeclared names should have been already caught. But a few exceptions

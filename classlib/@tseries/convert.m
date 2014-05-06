@@ -209,7 +209,11 @@ end % last().
 function This = xxAggreg(This,Range,FromFreq,ToFreq,Opt)
 
 if ischar(Opt.method)
-    Opt.method = str2func(Opt.method);
+    if ismatlab
+        Opt.method = str2func(Opt.method);
+    else
+        Opt.method = mystr2func(Opt.method);
+    end
 end
 
 % Stretch the original range from the beginning of first year until the end

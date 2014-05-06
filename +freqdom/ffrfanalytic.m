@@ -24,6 +24,9 @@ f = strfun.vectorise(f);
 
 f = regexprep(f,'s(\d+)','s($1)');
 f = strrep(f,'L','exp(-1i*freq)');
-f = str2func(['@(freq,s)',f]);
-
+if ismatlab
+    f = str2func(['@(freq,s)',f]);
+else
+    f = mystr2func(['@(freq,s)',f]);
+end
 end

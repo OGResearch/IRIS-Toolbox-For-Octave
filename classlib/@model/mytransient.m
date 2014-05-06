@@ -87,6 +87,9 @@ doNonlinEqtn();
         
         if ismatlab
             replacefunc = @doReplace; %#ok<NASGU>
+            s2fH = @str2func;
+        else
+            s2fH = @mystr2func;
         end
         for ii = find(This.nonlin)
             eqtn = This.eqtnF{ii};
@@ -112,7 +115,7 @@ doNonlinEqtn();
             end
             
             % Convert char to function handle.
-            eqtn = str2func(['@(y,xx,e,p,t,L) ',eqtn]);
+            eqtn = s2fH(['@(y,xx,e,p,t,L) ',eqtn]);
             
             This.eqtnN{ii} = eqtn;
         end

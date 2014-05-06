@@ -121,8 +121,13 @@ Def0 = Def;
 Def = xxParseNames(This,Def);
 
 try
+    if ismatlab
+        s2fH = @str2func;
+    else
+        s2fH = @mystr2func;
+    end
     This.eval{end+1} ...
-        = str2func(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
+        = s2fH(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
 catch %#ok<CTCH>
     xxThrowError(Def0);
 end

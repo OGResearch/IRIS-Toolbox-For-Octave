@@ -35,7 +35,11 @@ end
 %**************************************************************************
 function [Z,C] = xxLinComb2Vec(S,nlist)
 
-f = str2func(['@(x)',S]);
+if ismatlab
+    f = str2func(['@(x)',S]);
+else
+    f = mystr2func(['@(x)',S]);
+end
 x = zeros(1,nlist);
 try
     C = f(x);

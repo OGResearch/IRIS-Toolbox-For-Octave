@@ -30,12 +30,17 @@ func = { ...
 nFunc = length(func);
 actValue = nan(1,nFunc);
 expValue = nan(1,nFunc);
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
 for i = 1 : nFunc
-    expFunc = str2func(['@(a,b,c,x,y,z) ',func{i}]);
+    expFunc = s2fH(['@(a,b,c,x,y,z) ',func{i}]);
     actFunc = sydney(func{i},{});
     actFunc = reduce(actFunc);
     actFunc = char(actFunc);
-    actFunc = str2func(['@(a,b,c,x,y,z) ',actFunc]);
+    actFunc = s2fH(['@(a,b,c,x,y,z) ',actFunc]);
     a = 1 + rand*10;
     b = 1 + rand*10;
     c = 1 + rand*10;

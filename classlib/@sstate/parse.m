@@ -40,10 +40,16 @@ else
     s.growthnames = 'd?';
 end
 
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
+
 % Create a function handle for Matlab expressions.
 if s.growthnames(1) == '[' && s.growthnames(end) == ']'
     s.growthnames = strrep(s.growthnames,'?','x');
-    s.growthnames = str2func(['@(x) ',s.growthnames]);
+    s.growthnames = s2fH(['@(x) ',s.growthnames]);
 end
 
 % Read-in log declarations and remove them from `code`. They are considered

@@ -92,7 +92,11 @@ end
         transform = [];
         if ~isempty(tokens)
             Query = tokens{2};
-            transform = str2func(tokens{1});
+            if ismatlab
+                transform = str2func(tokens{1});
+            else
+                transform = mystr2func(tokens{1});
+            end
         end
         
         switch Query

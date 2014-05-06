@@ -39,13 +39,18 @@ func = strrep(func,'!{','x{');
 func = strrep(func,'#(','p(');
 
 try
+    if ismatlab
+        s2fH = @str2func;
+    else
+        s2fH = @mystr2func;
+    end
     switch This.form
         case ''
-            func = str2func(['@(x,p) -log(',func,')']);
+            func = s2fH(['@(x,p) -log(',func,')']);
         case 'log'
-            func = str2func(['@(x,p) -(',func,')']);
+            func = s2fH(['@(x,p) -(',func,')']);
         case '-log'
-            func = str2func(['@(x,p) ',func]);
+            func = s2fH(['@(x,p) ',func]);
     end
 catch E
     utils.error('likfunc:myparse', ...

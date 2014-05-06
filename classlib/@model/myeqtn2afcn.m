@@ -17,6 +17,12 @@ removeFunc = @(x) regexprep(x,'@\(.*?\)','','once');
 % Full dynamic equations
 %------------------------
 
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
+
 eqtnF = This.eqtnF;
 
 % Full measurement and transition equations.
@@ -29,7 +35,7 @@ for i = find(This.eqtntype <= 2)
         eqtnF{i} = @(x,t,L) 0;
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        e = str2func(['@(x,t,L) ',eqtnF{i}]);
+        e = s2fH(['@(x,t,L) ',eqtnF{i}]);
         eqtnF{i} = e;
     end
 end
@@ -44,7 +50,7 @@ for i = find(This.eqtntype == 3)
         eqtnF{i} = @(x,t,ttrend,g) 0;
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        eqtnF{i} = str2func(['@(x,t,ttrend,g) ',eqtnF{i}]);
+        eqtnF{i} = s2fH(['@(x,t,ttrend,g) ',eqtnF{i}]);
     end
 end
 
@@ -57,7 +63,7 @@ for i = find(This.eqtntype == 4)
         eqtnF{i} = [];
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        eqtnF{i} = str2func(['@(x,t) ',eqtnF{i}]);
+        eqtnF{i} = s2fH(['@(x,t) ',eqtnF{i}]);
     end
 end
 
@@ -77,10 +83,10 @@ isDeqtnF = ~cellfun(@isempty,This.deqtnF);
 inx = This.eqtntype <= 2 & isDeqtnF;
 for i = find(inx)
     deqtnF{i} = removeFunc(deqtnF{i});
-    deqtnF{i} = str2func(['@(x,t,L) ',deqtnF{i}]);
+    deqtnF{i} = s2fH(['@(x,t,L) ',deqtnF{i}]);
     if ischar(ceqtnF{i})
         ceqtnF{i} = removeFunc(ceqtnF{i});
-        ceqtnF{i} = str2func(['@(x,t,L) ',ceqtnF{i}]);
+        ceqtnF{i} = s2fH(['@(x,t,L) ',ceqtnF{i}]);
     end
 end
 
@@ -92,7 +98,7 @@ for i = find(inx)
     end
     for j = 1 : length(deqtnF{i})
         deqtnF{i}{j} = removeFunc(deqtnF{i}{j});
-        deqtnF{i}{j} = str2func(['@(x,t,ttrend,g) ',deqtnF{i}{j}]);
+        deqtnF{i}{j} = s2fH(['@(x,t,ttrend,g) ',deqtnF{i}{j}]);
     end
 end
 

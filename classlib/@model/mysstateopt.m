@@ -139,6 +139,11 @@ end
 
 nBlk = length(nameBlkL);
 blkFunc = cell(1,nBlk);
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
 % Remove variables fixed by the user.
 % Prepare function handles to evaluate individual equation blocks.
 for ii = 1 : nBlk
@@ -157,7 +162,7 @@ for ii = 1 : nBlk
     eqtn = regexprep(eqtn,'log\(exp\(x\((\d+)\)\)\)','x($1)');
     % Create a function handle used to evaluate each block of
     % equations.
-    blkFunc{ii} = str2func(['@(x,dx) [',eqtn{:},']']);
+    blkFunc{ii} = s2fH(['@(x,dx) [',eqtn{:},']']);
 end
 
 % Index of level and growth variables endogenous in sstate calculation.

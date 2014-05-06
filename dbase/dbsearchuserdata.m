@@ -67,7 +67,11 @@ function varargout = dbsearchuserdata(d,varargin)
 func = @(x) all(x);
 if ~isempty(varargin)
     if (isequal(varargin{1},'-all') || isequal(varargin{1},'-any'))
-        func = str2func(['@',varargin{1}(2:end)]);
+        if ismatlab
+            func = str2func(['@',varargin{1}(2:end)]);
+        else
+            func = mystr2func(['@',varargin{1}(2:end)]);
+        end
         varargin(1) = [];
     end
 end

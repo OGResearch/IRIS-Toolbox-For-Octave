@@ -9,6 +9,12 @@ end
 
 %**************************************************************************
 
+if ismatlab
+    inp4nested = [];
+else
+    inp4nested = X;
+end
+
 switch action
    case 'get'
       index = strcmp(X.name,varargin{1});
@@ -41,21 +47,25 @@ switch action
       if isempty(varargin)
          X.lock(:) = tmp;
       else
-         index = findnames_(varargin);
+         index = findnames_(varargin,inp4nested);
          X.lock(index) = tmp;
       end
    case 'islocked'
-      index = findnames_(varargin);
+      index = findnames_(varargin,inp4nested);
       varargout{1} = X.lock(index);
    case 'locked'
       varargout{1} = X.name(X.lock);
    case 'unlocked'
       varargout{1} = X.name(~X.lock);
    case 'clear'
-      clear_();
+       if ismatlab
+           clear_();
+       else
+           X = clear4oct_();
+       end
    case 'save'
       if nargin > 1
-         index = findnames_(varargin);
+         index = findnames_(varargin,inp4nested);
          x = struct();
          x.name = X.name(index);
          x.data = X.data(index);
@@ -79,7 +89,7 @@ switch action
       X.data(index) = varargin{1}.data(~new);
    case 'remove'
       if ~isempty(varargin)
-         index = findnames_(varargin);
+         index = findnames_(varargin,inp4nested);
          X.name(index) = [];
          X.data(index) = [];
          X.lock(index) = [];
@@ -96,7 +106,10 @@ end
 
 %********************************************************************
 % Nested function findnames_().
-   function index = findnames_(selection)
+   function index = findnames_(selection,varargin)
+      if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+          X = varargin{1};
+      end
       index = strfun.findnames(X.name,selection,'[^\s,;]+');
       if any(isnan(index))
          container.error(2,selection(isnan(index)));
@@ -106,6 +119,15 @@ end
 
 % Nested function clear_().
    function clear_()
+      X = struct();
+      X.name = cell([1,0]);
+      X.data = cell([1,0]);
+      X.lock = false([1,0]);
+   end
+% End of nested function clear_().
+
+% Nested function clear4oct_().
+   function X = clear4oct_()
       X = struct();
       X.name = cell([1,0]);
       X.data = cell([1,0]);

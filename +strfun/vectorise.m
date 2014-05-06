@@ -19,15 +19,20 @@ func = @(v) regexprep(v,'(?<!\.)(\*|/|\\|\^)','.$1');
 
 valid = true(size(s));
 n = numel(s);
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
 for i = 1 : n
     if isempty(s{i})
         continue
     elseif ischar(s{i})
         s{i} = func(s{i});
     elseif isa(s{i},'function_handle')
-        c = char(s{i});
+        c = func2str(s{i});
         c = func(c);
-        s{i} = str2func(c);
+        s{i} = s2fH(c);
     else
         valid(i) = false;
     end

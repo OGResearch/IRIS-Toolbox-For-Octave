@@ -337,8 +337,13 @@ list = regexp(forBody,'[^\s,;]+','match');
                 % Replace references to fieldnames of `'D'` with `'D.fieldname'`.
                 C = regexprep(C,plist,'D.$1');
             end
+            if ismatlab
+                s2fH = @str2func;
+            else
+                s2fH = @mystr2func;
+            end
             % Create an anonymous function handle and evaluate it on D.
-            f = str2func(['@(D) ',C]);
+            f = s2fH(['@(D) ',C]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.
