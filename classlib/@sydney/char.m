@@ -69,12 +69,20 @@ end
 nArg = length(This.args);
 
 if strcmp(This.func,'plus')
-    doPlus();
+    if ismatlab
+        doPlus();
+    else
+        doPlus(PLUSPREC,UMINUSPREC);
+    end
     return
 end
 
 if strcmp(This.func,'times')
-    doTimes();
+    if ismatlab
+        doTimes();
+    else
+        doTimes(TIMESPREC);
+    end
     return
 end
 
@@ -146,7 +154,11 @@ end
 
 
 %**************************************************************************
-    function doPlus()
+    function doPlus(varargin)
+        if ~ismatlab && ~isempty(varargin)
+            PLUSPREC = varargin{1};
+            UMINUSPREC = varargin{2};
+        end
         C = '';
         for iiArg = 1 : nArg
             sign = '+';
@@ -177,7 +189,10 @@ end
 
 
 %**************************************************************************
-    function doTimes()
+    function doTimes(varargin)
+        if ~ismatlab && ~isempty(varargin)
+            TIMESPREC = varargin{1};
+        end
         C = '';
         for iiArg = 1 : nArg
             sign = '*';
