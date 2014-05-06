@@ -1,0 +1,42 @@
+
+
+    \filetitle{stdise}{Standardise tseries data by subtracting mean and dividing by std deviation}{tseries/stdise}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[X,M,S] = stdise(X)
+[X,M,S] = stdise(X,Flag)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose data will be
+  normalised.
+\item
+  \texttt{Flag} {[} 0 \textbar{} 1 {]} - \texttt{flag==0} normalises by
+  N-1, \texttt{flag==1} normalises by \texttt{N}, where \texttt{N} is
+  the sample length.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Output tseries object with standardised
+  data.
+\item
+  \texttt{XMeam} {[} numeric {]} - Estimated mean subtracted from the
+  input tseries observations.
+\item
+  \texttt{XStd} {[} numeric {]} - Estimated std deviation by which the
+  input tseries observations have been divided.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

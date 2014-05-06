@@ -1,0 +1,54 @@
+
+
+    \filetitle{fft}{Discrete Fourier transform of tseries object}{tseries/fft}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[y,range,freq,per] = fft(x)
+[y,range,freq,per] = fft(x,range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{x} {[} tseries {]} - Input tseries object that will be
+  transformed.
+\item
+  \texttt{range} {[} numeric \textbar{} Inf {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{y} {[} numeric {]} - Fourier transform with data organised in
+  columns.
+\item
+  \texttt{range} {[} numeric {]} - Actually used date range.
+\item
+  \texttt{freq} {[} numeric {]} - Frequencies corresponding to FFT
+  vector elements.
+\item
+  \texttt{per} {[} numeric {]} - Periodicities corresponding to FFT
+  vector elements.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'full='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Return Fourier transform on the whole interval {[}0,2*pi{]}; if
+  false only the interval {[}0,pi{]} is returned.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+\}
+
+

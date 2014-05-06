@@ -1,0 +1,60 @@
+
+
+    \filetitle{bar}{Bar graph for tseries objects}{tseries/bar}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[H,Range] = bar(X,...)
+[H,Range] = bar(Range,X,...)
+[H,Range] = bar(Ax,Range,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} handle \textbar{} numeric {]} - Handle to axes in
+  which the graph will be plotted; if not specified, the current axes
+  will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date Range; if not specified the
+  entire Range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+  be ploted as a bar graph.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} handle \textbar{} numeric {]} - Handles to bars
+  plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date Range.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'dateFormat='} {[} char \textbar{}
+  \emph{\texttt{irisget('plotdateformat')}} {]} - Date format for the
+  tick marks on the x-axis.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the x-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Make the y-axis tight.
+\end{itemize}
+
+See help on built-in \texttt{bar} function for other options available.
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

@@ -1,0 +1,128 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="config/irisstartup">irisstartup</h2>
+<div class="headline">Start an IRIS session</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>irisstartup
+irisstartup -shutup</code></pre>
+<h4 id="description">Description</h4>
+<p>We recommend that you keep the IRIS root directory on the permanent Matlab search path. Each time you wish to start working with IRIS, you run <code>irisstartup</code> form the command line. At the end of the session, you can run <a href="../config/irisfinish.html"><code>irisfinish</code></a> to remove IRIS subfolders from the temporary Matlab search path, and to clear persistent variables in some of the backend functions.</p>
+<p>The <a href="../config/irisstartup.html"><code>irisstartup</code></a> performs the following steps:</p>
+<ul>
+<li><p>Adds necessary IRIS subdirectories to the temporary Matlab search path.</p></li>
+<li><p>Removes redundant IRIS folders (e.g. other or older installations) from the Matlab search path.</p></li>
+<li><p>Resets IRIS configuration options to default, updates the location of TeX/LaTeX executables, and calls <a href="../config/irisuserconfighelp.html"><code>irisuserconfig</code></a> to modify the configuration option.</p></li>
+<li><p>Associates the default IRIS extensions with the Matlab Editor. If they had not been associated before, Matlab must be re-started for the association to take effect.</p></li>
+<li><p>Prints an introductory message on the screen unless <code>irisstartup</code> is called with the <code>-shutup</code> input argument.</p></li>
+</ul>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

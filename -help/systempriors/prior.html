@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="systempriors/prior">prior</h2>
+<div class="headline">Add new prior to system priors object</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>S = prior(S,Expr,PriorFunc,...)
+S = prior(S,Expr,[],...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>S</code> [ systempriors ] - System priors object.</p></li>
+<li><p><code>Expr</code> [ char ] - Expression that defines a value for which a prior density will be defined; see Description for system properties that can be referred to in the expression.</p></li>
+<li><p><code>PriorFunc</code> [ function_handle | empty ] - Function handle returning the log of prior density; empty prior function, <code>[]</code>, means a uniform prior.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>S</code> [ systempriors ] - The system priors object with the new prior added.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'lowerBound='</code> [ numeric | <em><code>-Inf</code></em> ] - Lower bound for the prior.</p></li>
+<li><p><code>'upperBound='</code> [ numeric | <em><code>Inf</code></em> ] - Upper bound for the prior.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="system-properties-that-can-be-used-in-expr">System properties that can be used in <code>Expr</code></h5>
+<ul>
+<li><p><code>srf[VarName,ShockName,T]</code> - Plain shock response function of variables <code>VarName</code> to shock <code>ShockName</code> in period <code>T</code>. Mind the square brackets.</p></li>
+<li><p><code>ffrf[VarName,MVarName,Freq]</code> - Filter frequency response function of transition variables <code>TVarName</code> to measurement variable <code>MVarName</code> at frequency <code>Freq</code>. Mind the square brackets.</p></li>
+<li><p><code>corr[VarName1,VarName2,Lag]</code> - Correlation between variable <code>VarName1</code> and variables <code>VarName2</code> lagged by <code>Lag</code> periods.</p></li>
+<li><p><code>spd[VarName1,VarName2,Freq]</code> - Spectral density between variables <code>VarName1</code> and <code>VarName2</code> at frequency <code>Freq</code>.</p></li>
+</ul>
+<p>If a variable is declared as a <a href="../modellang/logvariables.html"><code>log-variable</code></a>, it must be referred to as <code>log(VarName)</code> in the above expressions, and the log of that variables is returned, e.g. <code>srf[log(VarName),ShockName,T]</code>. or <code>ffrf[log(TVarName),MVarName,T]</code>.</p>
+<h5 id="expressions-involving-combinations-or-functions-of-parameters">Expressions involving combinations or functions of parameters</h5>
+<p>Model parameter names can be referred to in <code>Expr</code> preceded by a dot (period), e.g. <code>.alpha^2 + .beta^2</code> defines a prior on the sum of squares of the two parameters (<code>alpha</code> and <code>beta</code>).</p>
+<h4 id="example">Example</h4>
+<p>Create a new, empty systemprios object based on an existing model.</p>
+<pre><code>s = systempriors(m);</code></pre>
+<p>Add a prior on minus the shock response function of variable <code>ygap</code> to shock <code>eps_pie</code> in period 4. The prior density is lognormal with mean 0.3 and std deviation 0.05;</p>
+<pre><code>s = prior(s,&#39;-srf[ygap,eps_pie,4]&#39;,logdist.lognormal(0.3,0.05));</code></pre>
+<p>Add a prior on the gain of the frequency response function of transition variable <code>ygap</code> to measurement variable 'y' at frequency <code>2*pi/40</code>. The prior density is normal with mean 0.5 and std deviation 0.01. This prior says that we wish to keep the cut-off periodicity for trend-cycle decomposition close to 40 periods.</p>
+<pre><code>s = prior(s,&#39;abs(ffrf[ygap,y,2*pi/40])&#39;,logdist.normal(0.5,0.01));</code></pre>
+<p>Add a prior on the sum of parameters <code>alpha1</code> and <code>alpha2</code>. The prior is normal with mean 0.9 and std deviation 0.1, but the sum is forced to be between 0 and 1 by imposing lower and upper bounds.</p>
+<pre><code>s = prior(s,&#39;alpha1+alpha2&#39;,logdist.normal(0.9,0.1), ...
+    &#39;lowerBound=&#39;,0,&#39;upperBound=&#39;,1);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

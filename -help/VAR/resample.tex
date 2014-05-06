@@ -1,0 +1,68 @@
+
+
+    \filetitle{resample}{Resample from a VAR object}{VAR/resample}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+Outp = resample(V,Inp,Range,NDraw,...)
+Outp = resample(V,[],Range,NDraw,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object to resample from.
+\item
+  \texttt{Inp} {[} struct \textbar{} tseries {]} - Input database or
+  tseries used in bootstrap; not needed when
+  \texttt{'method=' 'montecarlo'}.
+\item
+  \texttt{Range} {[} numeric {]} - Range for which data will be
+  returned.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Outp} {[} struct \textbar{} tseries {]} - Resampled output
+  database or tseries.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Do not include the constant term in
+  simulations.
+\item
+  \texttt{'group='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
+  Choose group whose parameters will be used in resampling; required in
+  VAR objects with multiple groups when \texttt{'deviation=' false}.
+\item
+  \texttt{'method='} {[} `bootstrap' \textbar{} \emph{`montecarlo'}
+  \textbar{} function\_handle {]} - Bootstrap from estimated residuals,
+  resample from normal distribution, or use user-supplied sampler.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\item
+  \texttt{'randomise='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Randomise or fix pre-sample initial
+  condition.
+\item
+  \texttt{'wild='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Use wild bootstrap instead of standard Efron bootstrap when
+  \texttt{'method=' 'bootstrap'}.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

@@ -1,0 +1,35 @@
+
+
+    \filetitle{sumofcoeff}{Doan et al sum-of-coefficient prior dummy observations for BVARs}{BVAR/sumofcoeff}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+O = BVAR.sumofcoeff(Mu)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Mu} {[} numeric {]} - Weight on the dummy observations.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
+  \href{VAR/estimate}{\texttt{VAR/estimate}} function.
+\end{itemize}
+
+\paragraph{Description}
+
+See \href{BVAR/Contents}{the section explaining the weights on prior
+dummies}, i.e.~the input argument \texttt{Mu}.
+
+\paragraph{Example}
+
+

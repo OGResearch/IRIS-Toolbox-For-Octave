@@ -1,0 +1,140 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/rollback">rollback</h2>
+<div class="headline">Prepare database for a rollback run of Kalman filter</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Inp = rollback(M,Inp,Range,Date)</code></pre>
+<h4 id="input-argument">Input argument</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object with a single parameterization.</p></li>
+<li><p><code>Inp</code> [ struct ] - Database with a single set of input data for a Kalman filter.</p></li>
+<li><p><code>Range</code> [ numeric ] - Filter data range.</p></li>
+<li><p><code>Date</code> [ numeric ] - Date up to which the input data entries will be rolled back, see Description.</p></li>
+</ul>
+<h4 id="output-argument">Output argument</h4>
+<ul>
+<li><code>Inp</code> [ struct ] - New database with new data sets added to each tseries for measurement variables, taking out one observation at a time, see Description.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The function <code>rollback</code> takes a database with a single set of input data that is supposed to be used in a future call to a Kalman filter, <a href="../model/filter.html"><code>model/filter</code></a>, and creates additional data sets (i.e. addition columns in tseries for measurement variables contained in the database) in the following way:</p>
+<ul>
+<li><p>the total number of the new data sets (new columns added to each measurement tseries) is N = NPer*Ny where NPer is the number of rollback periods, from <code>Date</code> to the end of <code>Range</code> (including both), and Ny is the number of measurement variables in the model <code>M</code>.</p></li>
+<li><p>The first additional data set is created by removing the observation on the last measurement variable in the last period (i.e. end of <code>Range</code>) and replacing it with a <code>NaN</code>.</p></li>
+<li><p>The second additional data set is created by removing the observatoins on the last two measurement variables in the last period, and so on.</p></li>
+<li><p>The N-th (last) additional data set is created by removing all observations in all periods between <code>Data</code> and end of <code>Range</code>.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+<p>If the model <code>m</code> contains, for instance, 3 measurement variable, the following commands will produce a total of 13 Kalman filter runs, the first one on the original database d, and the other 12 on the rollback data sets, with individual observations removed one by one:</p>
+<pre><code>dd = rollback(m,d,qq(2000,1):qq(2015,4),qq(2015,1));
+[mf,f] = filter(m,dd,qq(2000,1):qq(2015,4));</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,72 @@
+
+
+    \filetitle{lhsmrhs}{Evaluate the discrepancy between the LHS and RHS for each model equation and given data}{model/lhsmrhs}
+
+	\paragraph{Syntax for casual
+evaluation}
+
+\begin{verbatim}
+Q = lhsmrhs(M,D,Range)
+\end{verbatim}
+
+\paragraph{Syntax for fast evaluation}
+
+\begin{verbatim}
+Q = lhsmrhs(M,YXE)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\texttt{M} {[} model {]} - Model object whose equations and currently
+assigned parameters will be evaluated.
+
+\texttt{YXE} {[} numeric {]} - Numeric array created from an input
+database by calling the function
+\href{model/data4lhsmrhs}{\texttt{data4lhsmrhs}}; \texttt{YXE} contains
+the observations on the measurement variables, transition variables, and
+shocks organised row-wise.
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database with observations on
+  measurement variables, transition variables, and shocks on which the
+  discrepancies will be evaluated.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the discrepancies
+  will be evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\texttt{Q} {[} numeric {]} - Numeric array with discrepancies between
+the LHS and RHS for each model equation.
+
+\paragraph{Description}
+
+The function \texttt{lhsmrhs} evaluates the discrepancy between the LHS
+and the RHS in each model equation; each lead is replaced with the
+actual observation supplied in the input data. The function
+\texttt{lhsmrhs} does not work for models with
+\href{modellang/sstateref}{references to steady state values}.
+
+The first syntax, with the array \texttt{YXE} pre-built in a call to
+\href{model/data4lhsmrhs}{\texttt{data4lhsmrhs}} is computationally much
+more efficient if you need to evaluate the LHS-RHS discrepancies
+repeatedly for different parameterisations.
+
+The output argument \texttt{D} is an \texttt{nEqtn} by \texttt{nPer} by
+\texttt{nAlt} array, where \texttt{nEqnt} is the number of measurement
+and transition equations, \texttt{nPer} is the number of periods used to
+create \texttt{X} in a prior call to
+\href{model/data4lhsmrhs}{\texttt{data4lhsmrhs}}, and \texttt{nAlt} is
+the greater of the number of alternative parameterisations in
+\texttt{M}, and the number of alternative datasets in the input data.
+
+\paragraph{Example}
+
+\begin{verbatim}
+YXE = data4lhsmrhs(M,d,range);
+Q = lhsmrhs(M,YXE);
+\end{verbatim}
+
+

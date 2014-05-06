@@ -1,0 +1,146 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/band">band</h2>
+<div class="headline">Add new data with lower and upper bounds to graph or table</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.series(Caption,X,Low,High,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Caption</code> [ char ] - Caption used as a default legend entry in a graph, or in the leading column in a table.</p></li>
+<li><p><code>X</code> [ tseries ] - Input data with the centre of the band.</p></li>
+<li><p><code>Low</code> [ tseries ] - Input data with lower bounds; can be specified either relative to the centre or absolute, see the option <code>'relative='</code>.</p></li>
+<li><p><code>High</code> [ tseries ] - Input data with upper bounds; can be specified either relative to the centre or absolute, see the option <code>'relative='</code>.</p></li>
+</ul>
+<h4 id="options-for-table-and-graph-bands">Options for table and graph bands</h4>
+<ul>
+<li><p><code>'low='</code> [ char | <em>'Low'</em> ] - (Inheritable from parent objects) Mark used to denote the lower bound.</p></li>
+<li><p><code>'high='</code> [ char | <em>'High'</em> ] - (Inheritable from parent objects) Mark used to denote the upper bound.</p></li>
+<li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) If true, the data for the lower and upper bounds are relative to the centre, i.e. the bounds will be added to the centre (in this case, <code>LOW</code> must be negative numbers and <code>HIGH</code> must be positive numbers). If false, the bounds are absolute data (in this case <code>LOW</code> must be lower than <code>X</code>, and <code>HIGH</code> must be higher than <code>X</code>).</p></li>
+</ul>
+<h4 id="options-for-table-bands">Options for table bands</h4>
+<ul>
+<li><code>'bandTypeface='</code> [ char | <em><code>'\footnotesize'</code></em> ] - (Inheritable from parent objects) LaTeX format string used to typeset the lower and upper bounds.%</li>
+</ul>
+<h4 id="options-for-graph-bands">Options for graph bands</h4>
+<ul>
+<li><p><code>'plotType='</code> [ <code>'errorbar'</code> | <em><code>'patch'</code></em> ] - Type of plot used to draw the band.</p></li>
+<li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) If true the lower and upper bounds will be, respectively, subtracted from and added to to the middle line.</p></li>
+<li><p><code>'white='</code> [ numeric | <em><code>0.8</code></em> ] - (Inheritable from parent objects) Proportion of white colour mixed with the line colour and used to fill the area that depicts the band.</p></li>
+</ul>
+<p>See help on <a href="../report/series.html"><code>report/series</code></a> for other options available.</p>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,26 @@
+function Flag = mycompatible(V1,V2)
+% mycompatible  [Not a public function] True if two varobj objects can occur together on the LHS and RHS in an assignment.
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+try
+    Flag = isa(V1,'varobj') && isa(V2,'varobj') ...
+        && strcmp(class(V1),class(V2)) ...
+        && isequal(V1.YNames,V2.YNames) ...
+        && isequal(V1.ENames,V2.ENames) ...
+        && rngcmp(V1.Range,V2.Range) ...
+        && size(V1.A,1) == size(V2.A,1) ...
+        && size(V1.A,2) == size(V2.A,2) ...
+        && size(V1.K,1) == size(V2.K,1) ...
+        && size(V1.K,2) == size(V2.K,2);        
+catch %#ok<CTCH>
+    Flag = false;
+end
+
+end

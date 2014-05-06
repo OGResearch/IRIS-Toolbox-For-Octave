@@ -1,0 +1,198 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/x12">x12</h2>
+<div class="headline">Access to X13-ARIMA-SEATS seasonal adjustment program</div>
+
+<h4 id="syntax-with-a-single-type-of-output-requested">Syntax with a single type of output requested</h4>
+<pre><code>[Y,OutpFile,ErrFile,Model,X] = x12(X)
+[Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)</code></pre>
+<h4 id="syntax-with-mutliple-types-of-output-requested">Syntax with mutliple types of output requested</h4>
+<pre><code>[Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)</code></pre>
+<p>See the option <code>'output='</code> for the types of output data available from X12.</p>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input data that will seasonally adjusted or filtered by the Census X12 Arima.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which the X12 will be run; if not specified or Inf the entire available range will be used.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>Y</code>, <code>Y1</code>, <code>Y2</code>, ... [ tseries ] - Requested output data, by default only one type of output is returned, the seasonlly adjusted data; see the option <code>'output='</code>.</p></li>
+<li><p><code>OutpFile</code> [ cellstr ] - Contents of the output log files produced by X12; each cell contains the log file for one type of output requested.</p></li>
+<li><p><code>ErrFile</code> [ cellstr ] - Contents of the error files produced by X12; each cell contains the error file for one type of output requested.</p></li>
+<li><p><code>Model</code> [ struct ] - Struct array with model specifications and parameter estimates for each of the ARIMA models fitted; <code>Model</code> matches the size of <code>X</code> is 2nd and higher dimensions.</p></li>
+<li><p><code>X</code> [ tseries ] - Original input data with forecasts and/or backcasts appended if the options <code>'forecast='</code> and/or <code>'backcast='</code> are used.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'backcast='</code> [ numeric | <em><code>0</code></em> ] - Run a backcast based on the fitted ARIMA model for this number of periods back to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual. The backcast is included in the output argument <code>X</code>.</p></li>
+<li><p><code>'cleanup='</code> [ <em><code>true</code></em> | <code>false</code> ] - Delete temporary X12 files when done; the temporary files are named <code>iris_x12a.*</code>.</p></li>
+<li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the input data before, and de-logarithmise the output data back after, running <code>x12</code>.</p></li>
+<li><p><code>'forecast='</code> [ numeric | <em><code>0</code></em> ] - Run a forecast based on the fitted ARIMA model for this number of periods ahead to improve on the seasonal adjustment; see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual. The forecast is included in the output argument <code>X</code>.</p></li>
+<li><p><code>'display='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display X12 output messages in command window; if false the messages will be saved in a TXT file.</p></li>
+<li><p><code>'dummy='</code> [ tseries | <em>empty</em> ] - User dummy variable or variables (in case of a multivariate tseries object) used in X13-ARIMA-SEATS regression; the dummy variables must also include values for forecasts and backcasts if you request them; the type of the dummy can be specified in the option <code>'dummyType='</code>.</p></li>
+<li><p><code>'dummyType='</code> [ <code>'ao'</code> | <em><code>'holiday'</code></em> | <code>'td'</code> ] - Type of the user dummy (which is specified through the option <code>'dummy='</code>); the three basic types of dummies are additive outlier (<code>'ao'</code>), holiday flows (<code>'holiday'</code>), and trading days (<code>'td'</code>); see the X13-ARIMA-SEATS or X13-ARIMA documentation for more details (available from the U.S.Census Bureau website), look for the section on the REGRESSION spec, options 'user' and 'usertype'.</p></li>
+<li><p><code>'mode='</code> [ <em><code>'auto'</code></em> | <code>'add'</code> | <code>'logadd'</code> | <code>'mult'</code> | <code>'pseudoadd'</code> | <code>'sign'</code> ] - Seasonal adjustment mode (see help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual); <code>'auto'</code> means that series with only positive or only negative numbers will be adjusted in the <code>'mult'</code> (multiplicative) mode, while series with combined positive and negative numbers in the <code>'add'</code> (additive) mode.</p></li>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>1500</code></em> ] - Maximum number of iterations for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'maxOrder='</code> [ numeric | <em><code>[2,1]</code></em> ] - A 1-by-2 vector with maximum order for the regular ARMA model (can be <code>1</code>, <code>2</code>, <code>3</code>, or <code>4</code>) and maximum order for the seasonal ARMA model (can be <code>1</code> or <code>2</code>). See help on the <code>automdl</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p>'missing=' [ <code>true</code> | <em><code>false</code></em> ] - Allow for in-sample missing observations, and fill in values predicted by an estimated ARIMA process; if <code>false</code>, the seasonal adjustment will not run and a warning will be thrown.</p></li>
+<li><p><code>'output='</code> [ char | cellstr | <em><code>'SA'</code></em> ] - List of requested output data; the cellstr or comma-separated list can combine any number of the request specifications listed below in subsection Output request; See also help on the <code>x11</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - Name (or a whole path) under which X13-ARIMA-SEATS output files will be saved.</p></li>
+<li><p><code>'specFile='</code> [ char | <em><code>'default'</code></em> ] - Name of the X13-ARIMA-SEATS spec file; if <code>'default'</code> the IRIS default spec file will be used, see description.</p></li>
+<li><p><code>'tdays='</code> [ <code>true</code> | <em><code>false</code></em> ] - Correct for the number of trading days. See help on the <code>x11regression</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="output-requests">Output requests</h5>
+<p>The option `'output=' can combine any number of the following requests:</p>
+<ul>
+<li><p><code>'SA'</code> - seasonally adjusted series;</p></li>
+<li><p><code>'SF'</code> - seasonal factors;</p></li>
+<li><p><code>'TC'</code> - trend-cycle component;</p></li>
+<li><p><code>'IR'</code> - irregular component;</p></li>
+<li><p><code>'MV'</code> - the original input series with missing values fitted by running an estimated ARIMA model.</p></li>
+</ul>
+<h5 id="missing-observations">Missing observations</h5>
+<p>If you keep <code>'missing=' false</code> (this is the default for backward compatibility), <code>x12</code> will not run on series with in-sample missing observations, and a warning will be thrown.</p>
+<p>If you set <code>'missing=' true</code>, you allow for in-sample missing observations. The X13-ARIMA-SEATS program handles missing observations by filling in values predicted by the estimated ARIMA process. You can request the series with missing values filled in by including <code>MV</code> in the option <code>'output='</code>.</p>
+<h5 id="spec-file">Spec file</h5>
+<p>The default X13-ARIMA-SEATS spec file is <code>+thirdparty/x12/default.spc</code>. You can create your own spec file to include options that are not available through the IRIS interface. You can use the following pre-defined placeholders letting IRIS fill in some of the information needed (check out the default file):</p>
+<ul>
+<li><code>$series_data$</code> is replaced with a column vector of input observations;</li>
+<li><code>$series_freq$</code> is replaced with a number representing the date frequency: either 4 for quarterly, or 12 for monthly (other frequencies are currenlty not supported by X13-ARIMA-SEATS);</li>
+<li><code>$series_startyear$</code> is replaced with the start year of the input series;</li>
+<li><code>$series_startper$</code> is replaced with the start quarter or month of the input series;</li>
+<li><code>$transform_function$</code> is replaced with <code>log</code> or <code>none</code> depending on the mode selected by the user;</li>
+<li><code>$forecast_maxlead$</code> is replaced with the requested number of ARIMA forecast periods used to extend the series before seasonal adjustment.</li>
+<li><code>$forecast_maxlead$</code> is replaced with the requested number of ARIMA forecast periods used to extend the series before seasonal adjustment.</li>
+<li><code>$tolerance$</code> is replaced with the requested convergence tolerance in the <code>estimation</code> spec.</li>
+<li><code>$maxiter$</code> is replaced with the requested maximum number of iterations in the <code>estimation</code> spec.</li>
+<li><code>$maxorder$</code> is replaced with two numbers separated by a blank space: maximum order of regular ARIMA, and maximum order of seasonal ARIMA.</li>
+<li><code>$x11_mode$</code> is replaced with the requested mode: <code>'add'</code> for additive, <code>'mult'</code> for multiplicative, <code>'pseudoadd'</code> for pseudo-additive, or <code>'logadd'</code> for log-additive;</li>
+<li><code>$x12_save$</code> is replaced with the list of the requested output series: <code>'d10'</code> for seasonals, <code>'d11'</code> for final seasonally adjusted series, <code>'d12'</code> for trend-cycle, <code>'d13'</code> for irregular component.</li>
+</ul>
+<p>Two of the placeholders, <code>'$series_data$</code> and <code>$x12_output$</code>, are required; if they are not found in the spec file, IRIS throws an error.</p>
+<h5 id="estimates-of-arima-model-parameters">Estimates of ARIMA model parameters</h5>
+<p>The ARIMA model specification, <code>Model</code>, is a struct with three fields:</p>
+<ul>
+<li><p><code>.spec</code> - a cell array with the first cell giving the structure of the non-seasonal ARIMA, and the second cell giving the structure of the seasonal ARIMA; both specifications follow the usual Box-Jenkins notation, e.g. <code>[0 1 1]</code>.</p></li>
+<li><p><code>.ar</code> - a numeric array with the point estimates of the AR coefficients (non-seasonal and seasonal).</p></li>
+<li><p><code>.ma</code> - a numeric array with the point estimates of the MA coefficients (non-seasonal and seasonal).</p></li>
+</ul>
+<h4 id="example">Example</h4>
+<p>If you wish to run <code>x12</code> on the entire range on which the input time series is defined, and do not use any options, you can omit the second input argument (the date range). These following three calls to <code>x12</code> do exactly the same:</p>
+<pre><code>xsa = x12(x);
+xsa = x12(x,Inf);
+xsa = x12(x,get(x,&#39;range&#39;));</code></pre>
+<h4 id="example-1">Example</h4>
+<p>If you wish to specify some of the options, you have to enter a date range or use <code>Inf</code>:</p>
+<pre><code>xsa = x12(x,Inf,&#39;mode=&#39;,&#39;add&#39;);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,43 @@
+<folder>
+
+<foldername>SVAR</foldername><filename>Contents</filename>
+
+<h1 id="SVAR/Contents">Structural vector autoregressions: SVAR objects and functions</h1>
+
+<h3>Constructor</h3>
+
+<ul><li><link id="SVAR/SVAR"><tt>SVAR</tt></link>&nbsp;&ndash;&nbsp;Convert reduced-form VAR to structural VAR.</li></ul>
+SVAR objects can call any of the <link id="VAR/Contents"><tt>VAR</tt></link> methods
+(functions). In addition, the following functions are available for SVAR
+objects.
+
+<h3>Getting information about SVAR objects</h3>
+
+<ul><li><link id="SVAR/fprintf"><tt>fprintf</tt></link>&nbsp;&ndash;&nbsp;Format SVAR as a model code and write to text file.</li>
+<li><link id="SVAR/get"><tt>get</tt></link>&nbsp;&ndash;&nbsp;Query SVAR object properties.</li>
+<li><link id="SVAR/sprintf"><tt>sprintf</tt></link>&nbsp;&ndash;&nbsp;Format SVAR as a model code and write to text string.</li></ul>
+
+<h3>Simulation</h3>
+
+<ul><li><link id="SVAR/srf"><tt>srf</tt></link>&nbsp;&ndash;&nbsp;Impulse, or shock, response function.</li></ul>
+
+<h3>Stochastic properties</h3>
+
+<ul><li><link id="SVAR/fevd"><tt>fevd</tt></link>&nbsp;&ndash;&nbsp;Forecast error variance decomposition for SVAR variables.</li></ul>
+
+<h3>Manipulating SVAR objects</h3>
+
+<ul><li><link id="SVAR/sort"><tt>sort</tt></link>&nbsp;&ndash;&nbsp;Sort SVAR parameterisations by squared distance of shock reponses to median.</li></ul>
+See help on <link id="VAR/Contents"><tt>VAR</tt></link> objects for other functions available.
+
+<h3>Getting on-line help on SVAR functions</h3>
+<pre>   help SVAR
+   help SVAR/function_name
+</pre>
+
+<h3>Getting on-line help on SVAR functions that are inherited from VARs</h3>
+<pre>   help VAR
+   help VAR/function_name
+</pre>
+
+</folder>

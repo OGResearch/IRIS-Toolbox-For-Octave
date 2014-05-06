@@ -1,0 +1,207 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="modellang/Contents">Model file language</h1>
+
+
+<p>Model file language is used to write model files. The model files are plain text files (saved under any filename with any extension) that describes the model: its equations, variables, parameters, etc. The model file, on the other hand, does not describe what to do with the model. To run the tasks you want to perform with the model, you need first to load the model file into Matlab using the <a href="../model/model.html"><code>model</code></a> function. This function creates a model object. Then you write your own m-files using Matlab and IRIS functions to perform the desired tasks with the model object.</p>
+<p>Why do all the keywords (except pseudofunctions) start with an exclamation point? Why do the comments have the same style as in Matlab? Why do substitutions and steady-state references use the dollar sign? Because this way, you can get the model files syntax-highlighted in the Matlab editor. Syntax highlighting improves enormously the readability of the files, and helps understand the model more quickly. See <a href="../setup/Contents.html">the setup instructions</a> for more details.</p>
+<h4 id="variables-parameters-substitutions-and-functions">Variables, parameters, substitutions and functions</h4>
+<ul>
+<li><a href="../modellang/transitionvariables.html"><code>!transition_variables</code></a> - List of transition variables.</li>
+<li><a href="../modellang/transitionshocks.html"><code>!transition_shocks</code></a> - List of transition shocks.</li>
+<li><a href="../modellang/measurementvariables.html"><code>!measurement_variables</code></a> - List of measurement variables.</li>
+<li><a href="../modellang/measurementshocks.html"><code>!measurement_shocks</code></a> - List of measurement shocks.</li>
+<li><a href="../modellang/exogenousvariables.html"><code>!exogenous_variables</code></a> - List of exogenous variables.</li>
+<li><a href="../modellang/parameters.html"><code>!parameters</code></a> - List of parameters.</li>
+<li><a href="../modellang/autoexogenise.html"><code>!autoexogenise</code></a> - Definition of variable/shock pairs for use in autoexogenised simulation plans.</li>
+</ul>
+<h4 id="equations">Equations</h4>
+<ul>
+<li><a href="../modellang/transitionequations.html"><code>!transition_equations</code></a> - Block of transition equations.</li>
+<li><a href="../modellang/measurementequations.html"><code>!measurement_equations</code></a> - Block of measurement equations.</li>
+<li><a href="../modellang/dtrends.html"><code>!dtrends</code></a> - Block of deterministic trend equations.</li>
+<li><a href="../modellang/links.html"><code>!links</code></a> - Define dynamic links.</li>
+</ul>
+<h4 id="linearised-and-log-linearised-variables">Linearised and log-linearised variables</h4>
+<ul>
+<li><a href="../modellang/logvariables.html"><code>!log_variables</code></a> - List of log-linearised variables.</li>
+<li><a href="../modellang/allbut.html"><code>!all_but</code></a> - Inverse list of log-linearised variables.</li>
+<li><a href="../modellang/regexpression.html"><code>&lt;...&gt;</code></a> - Regular expression in log-variable list.</li>
+</ul>
+<h4 id="model-pseudofunctions">Model pseudofunctions</h4>
+<p>Pseudofunctions do not start with an exclamation point.</p>
+<ul>
+<li><a href="../modellang/min.html"><code>min</code></a> - Define loss function for optimal policy.</li>
+</ul>
+<h4 id="special-operators">Special operators</h4>
+<ul>
+<li><a href="../modellang/sstateversion.html"><code>!!</code></a> - Steady-state version of an equation.</li>
+<li><a href="../modellang/ttrend.html"><code>!ttrend</code></a> - Linear time trend in deterministic trend equations.</li>
+<li><a href="../modellang/laglead.html"><code>{...}</code></a> - Lag or lead.</li>
+<li><a href="../modellang/sstateref.html"><code>&amp;</code></a> - Reference to the steady-state level of a variable.</li>
+<li><a href="../modellang/exactnonlin.html"><code>=#</code></a> - Mark an equation for exact non-linear simulation.</li>
+<li><a href="../modellang/alias.html"><code>'...!!...'</code></a> - Beginning of aliasing inside descriptions and labels.</li>
+</ul>
+<h4 id="preparser-pseudofunctions">Preparser pseudofunctions</h4>
+<p>Pseudofunctions do not start with an exclamation point.</p>
+<ul>
+<li><a href="../modellang/diff.html"><code>diff</code></a> - First difference pseudofunction.</li>
+<li><a href="../modellang/dot.html"><code>dot</code></a> - Gross rate of growth pseudofunction.</li>
+<li><a href="../modellang/difflog.html"><code>difflog</code></a> - First log-difference pseudofunction.</li>
+<li><a href="../modellang/movavg.html"><code>movavg</code></a> - Moving average pseudofunction.</li>
+<li><a href="../modellang/movprod.html"><code>movprod</code></a> - Moving product pseudofunction.</li>
+<li><a href="../modellang/movsum.html"><code>movsum</code></a> - Moving sum pseudofunction.</li>
+</ul>
+<h4 id="preparser-control-commands">Preparser control commands</h4>
+<ul>
+<li><a href="../modellang/substitutions.html"><code>!substitutions</code></a> - Define text substitutions.</li>
+<li><a href="../modellang/pseudosubs.html"><code>$[...]$</code></a> - Pseudosubstitutions.</li>
+<li><a href="../modellang/import.html"><code>!import</code></a> - Include the content of another model file.</li>
+<li><a href="../modellang/export.html"><code>!export</code></a> - Create a carry-around file to be saved on the disk.</li>
+<li><a href="../modellang/if.html"><code>!if...!elseif...!else...!end</code></a> - Choose block of code based on logical condition.</li>
+<li><a href="../modellang/switch.html"><code>!switch...!case...!end</code></a> - Switch among several cases based on expression.</li>
+<li><a href="../modellang/for.html"><code>!for...!do...!end</code></a> - For loop for automated creation of model code.</li>
+<li><a href="../modellang/linecomments.html"><code>%</code></a> - Line comments.</li>
+<li><a href="../modellang/blockcomments.html"><code>%{...%}</code></a> - Block comments.</li>
+</ul>
+<h4 id="getting-on-line-help-on-model-file-language">Getting on-line help on model file language</h4>
+<p>When getting help on model file language, type the names of the keywords and commands without the exclamation point:</p>
+<pre><code>help modellang
+help modellang/keyword
+help modellang/command 
+help modellang/pseudofunction</code></pre>
+<h4 id="matlab-functions-and-user-functions-in-model-files">Matlab functions and user functions in model files</h4>
+<p>You can use any of the built-in functions (Matlab functions, functions within the Toolboxes you have on your computer, and so on). In addition, you can also use your own functions (written as an m-file) as long as the m-file is on the Matlab search path or in the current directory.</p>
+<p>In your own m-file functions, you can also (optionally) supply the first derivatives that will be used to compute Taylor expansions when the model is being solved, and the second derivatives that will be used when the function occurs in a loss function.</p>
+<p>When asked for the derivatives, the function is called with two extra input arguments on top of that function's regular input arguments. The first extra input argument is a text string <code>'diff'</code> (indicating the call to the function is supposed to return a derivative). The second extra input argument is a number or a vector of two numbers; it determines with respect to which input argument or arguments the first derivative or the second derivative is requested.</p>
+<p>For instance, your function takes three input arguments, <code>myfunc(x,y,z)</code>. To be able to supply derivates avoiding thus numerical differentiation, the function must be written so that the following three calls</p>
+<pre><code>myfunc(x,y,z,&#39;diff&#39;,1)
+myfunc(x,y,z,&#39;diff&#39;,2)
+myfunc(x,y,z,&#39;diff&#39;,3)</code></pre>
+<p>return the first derivative wrt to the first, second, and third input argument, respectively, while</p>
+<pre><code>myfunc(x,y,z,&#39;diff&#39;,[1,2])</code></pre>
+<p>returns the second derivative wrt to the first and second input arguments. Note that second derivatives are only needed for functions that occur in an equation defining optimal policy objective, <a href="../modellang/min.html">min</a>.</p>
+<p>If any of these calls fail, the respective derivative will be simply evaluated numerically.</p>
+<h4 id="basic-rules-iris-model-files">Basic rules IRIS model files</h4>
+<ul>
+<li><p>There can be four types of equations in IRIS models: transition equations which are simply the endogenous dynamic equations, measurement equations which link the model to observables, deterministic trend equations which can be added at the top of measurement equations, and dynamic links which can be used to link some parameters or steady-state values to each other.</p></li>
+<li><p>There can be two types of variables and two types of shocks in IRIS models: transition variables and shocks, and measurement variables and shocks.</p></li>
+<li><p>Each model must have at least one transition (aka endogenous) variable and one transition equation.</p></li>
+<li><p>Each variable, shock, or parameter must be declared in the appropriate declaration section.</p></li>
+<li><p>The declaration sections and equations sections can be written in any order.</p></li>
+<li><p>You can have as many declaration sections or equations sections of the same kind as you wish in one model file; they all get combined together at the time the model is being loaded.</p></li>
+<li><p>Transition variables can occur with lags and leads in transition equations. Transition variables cannot, though, have leads in measurement equations.</p></li>
+<li><p>Measurement variables and the shocks cannot have any lags or leads.</p></li>
+<li><p>Transition shocks cannot occur in measurement equations, and the measurement shocks cannot occur in transition equations.</p></li>
+<li><p>Exogenous variables can only occur in dtrends (deterministic trend equations), and must be always supplied in the input database to commands like <code>model/simulate</code>, <code>model/jforecast</code>, <code>model/filter</code>, <code>model/estimate</code>, etc. They are not returned in the output databases.</p></li>
+<li><p>You can choose between linearisation and log-linearisation for each individual transition and measurement variable. Shocks are always linearised. Exogenous variables must be always introduced so that their effect on the respective measurement variable is linear.</p></li>
+</ul>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

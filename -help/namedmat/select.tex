@@ -1,0 +1,44 @@
+
+
+    \filetitle{select}{Select submatrix by referring to row names and column names}{namedmat/select}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+[X,Pos] = select(This,RowSelect,ColSelect)
+[X,Pos] = select(X,Select)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} namedmat {]} - Matrix or array with named rows and
+  columns.
+\item
+  \texttt{RowSelect} {[} char \textbar{} cellstr {]} - Selection of row
+  names.
+\item
+  \texttt{ColSelect} {[} char \textbar{} cellstr {]} - Selection of
+  column names.
+\item
+  \texttt{Select} {[} char \textbar{} cellstr {]} - Selection of names
+  that will be applied to both rows and columns.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} namedmat {]} - Submatrix with named rows and columns.
+\item
+  \texttt{Pos} {[} cell {]} - \texttt{Pos\{1\}} is the vector of rows
+  included in the submatrix \texttt{X}, \texttt{Pos\{2\}} is the vector
+  of columns included in the submatrix \texttt{X}.
+\end{itemize}
+
+\paragraph{Description}
+
+\paragraph{Example}
+
+

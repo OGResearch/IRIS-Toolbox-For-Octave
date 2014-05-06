@@ -1,0 +1,148 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/bwf">bwf</h2>
+<div class="headline">Butterworth filter with tunes</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[T,C,CutOff,Lambda] = bwf(X,Order)
+[T,C,CutOff,Lambda] = bwf(X,Order,Range,...)</code></pre>
+<h4 id="syntax-with-output-arguments-swapped">Syntax with output arguments swapped</h4>
+<pre><code>[T,C,CutOff,Lambda] = bwf2(X,Order)
+[T,C,CutOff,Lambda] = bwf2(X,Order,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input tseries object that will be filtered.</p></li>
+<li><p><code>Order</code> [ numeric ] - Order of the Butterworth filter; note that <code>Order=2</code> reproduces the Hodrick-Prescott filter (<code>hpf</code>) and <code>Order=1</code> reproduces the local linear filter (<code>llf</code>).</p></li>
+<li><p><code>Range</code> [ numeric ] - Date Range on which the input data will be filtered; <code>Range</code> can be <code>Inf</code>, <code>[startdata,Inf]</code>, or <code>[-Inf,enddate]</code>; if not specifired, <code>Inf</code> (i.e. the entire available Range of the input series) is used.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>T</code> [ tseries ] - Lower-frequency (trend) component.</p></li>
+<li><p><code>C</code> [ tseries ] - Higher-frequency (cyclical) component.</p></li>
+<li><p><code>CutOff</code> [ numeric ] - Cut-off periodicity; periodicities above the cut-off are attributed to trends, periodicities below the cut-off are attributed to gaps.</p></li>
+<li><p><code>Lambda</code> [ numeric ] - Smoothing parameter actually used; this output argument is useful when the option <code>'CutOff='</code> is used instead of <code>'Lambda='</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'CutOff='</code> [ numeric | <em>empty</em> ] - Cut-off periodicity in periods (depending on the time series frequency); this option can be specified instead of <code>'Lambda='</code>; the smoothing parameter will be then determined based on the cut-off periodicity.</p></li>
+<li><p><code>'CutOffYear='</code> [ numeric | <em>empty</em> ] - Cut-off periodicity in years; this option can be specified instead of <code>'Lambda='</code>; the smoothing parameter will be then determined based on the cut-off periodicity.</p></li>
+</ul>
+<p><code>'infoSet='</code> [ <code>1</code> | <em><code>2</code></em> ] - Information set assumption used in the filter: <code>1</code> runs a one-sided filter, <code>2</code> runs a two-sided filter.</p>
+<ul>
+<li><p><code>'Lambda='</code> [ numeric | <em><code>(10 freq)^Order</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency.</p></li>
+<li><p><code>'level='</code> [ tseries ] - Time series with soft and hard tunes on the level of the trend.</p></li>
+<li><p><code>'change='</code> [ tseries ] - Time series with soft and hard tunes on the change in the trend.</p></li>
+<li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the data before filtering, de-logarithmise afterwards.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

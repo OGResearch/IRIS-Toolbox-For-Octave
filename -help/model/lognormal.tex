@@ -1,0 +1,59 @@
+
+
+    \filetitle{lognormal}{Characteristics of log-normal distributions returned by filter of forecast}{model/lognormal}
+
+	\paragraph{Syntax}
+
+\begin{verbatim}
+D = lognormal(M,D,...)
+\end{verbatim}
+
+\paragraph{Input arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model on which the \texttt{filter} or
+  \texttt{forecast} function has been run.
+\item
+  \texttt{D} {[} struct {]} - Struct or database returned from the
+  \texttt{filter} or \texttt{forecast} function.
+\end{itemize}
+
+\paragraph{Output arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Struct including new sub-databases with
+  requested log-normal statistics.
+\end{itemize}
+
+\paragraph{Options}
+
+\begin{itemize}
+\item
+  \texttt{'fresh='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Output structure will include only the newly computed databases.
+\item
+  \texttt{'mean='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Compute the mean of the log-normal distributions.
+\item
+  \texttt{'median='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Compute the median of the log-normal distributions.
+\item
+  \texttt{'mode='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Compute the mode of the log-normal distributions.
+\item
+  \texttt{'prctile='} {[} numeric \textbar{} \emph{{[}5,95{]}} {]} -
+  Compute the selected percentiles of the log-normal distributions.
+\item
+  \texttt{'prefix='} {[} char \textbar{} \emph{`lognormal'} {]} - Prefix
+  used in the names of the newly created databases.
+\item
+  \texttt{'std='} {[} \emph{\texttt{true}} \textbar{} \texttt{false} {]}
+  - Compute the std deviations of the log-normal distributions.
+\end{itemize}
+
+\paragraph{Description}
+
+

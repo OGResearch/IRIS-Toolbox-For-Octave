@@ -1,0 +1,134 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/substitutions">!substitutions</h2>
+<div class="headline">Define text substitutions</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>!substitutions
+    SubsName := TextString;
+    SubsName := TextString;
+    ...</code></pre>
+<h4 id="description">Description</h4>
+<p>The <code>!substitutions</code> starts a block with substitution definitions. The definition of each substitution must begin with the name of the substitution, followed by a colon-equal sign, <code>:=</code>, and a text string ended with a semi-colon. The semi-colon is not part of the substitution.</p>
+<p>The substitutions can be used in any of the model equations, i.e. in <a href="../modellang/transitionequations.html">transition equations</a>, <a href="../modellang/measurementequations.html">measurement equations</a>, <a href="../modellang/dtrends.html">deterministic trend equations</a>, and <a href="../modellang/links.html">dynamic links</a>. Each occurence of the name of a substitution enclosed in dollar signs, i.e. <code>$substitution_name$</code>, in model equations will be replaced with the text string from the substitution's definition.</p>
+<p>Substitutions can also refer to other substitutions; make sure, though, that they are not recursive. Also, remember to parenthesise the definitions of the substitutions (or the references to them) in the equations properly so that the resulting mathematical expressions are evaluated properly.</p>
+<h4 id="example">Example</h4>
+<pre><code>!substitution
+    a := ((omega1+omega2)/(omega1+omega2+omega3));
+
+!transition_equations
+    X = $a$^2*Y + (1-$a$^2)*Z;</code></pre>
+<p>In this example, we assume that <code>omega1</code>, <code>omega2</code>, and <code>omega3</code> are declared as parameters. The equation will expand to</p>
+<pre><code>    X = ((omega1+omega2)/(omega1+omega2+omega3))^2*Y + ...
+      (1-((omega1+omega2)/(omega1+omega2+omega3))^2)*Z;</code></pre>
+<p>Note that if had not used the outermost parentheses in the definition of the substitution, the resulting expression would not have given us what we meant: The square operator would have only applied to the denominator.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>

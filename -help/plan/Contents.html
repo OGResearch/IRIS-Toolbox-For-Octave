@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="plan/Contents">Simulation plans</h1>
+
+
+<p>Simulation plans complement the use of the <a href="../model/simulate.html"><code>model/simulate</code></a> or <a href="../model/jforecast.html"><code>model/jforecast</code></a> functions.</p>
+<p>You need to use a simulation plan object to set up the following types of more complex simulations or forecasts (or a combination of these):</p>
+<h4 id="simulations-or-forecasts-with-some-of-the-model-variables-temporarily">simulations or forecasts with some of the model variables temporarily</h4>
+<p>exogenised;</p>
+<h4 id="simulations-with-some-of-the-non-linear-equations-solved-in-an-exact">simulations with some of the non-linear equations solved in an exact</h4>
+<p>non-linear mode;</p>
+<h4 id="forecasts-conditioned-upon-some-variables">forecasts conditioned upon some variables;</h4>
+<p>The plan object is passed to the <a href="../model/simulate.html"><code>model/simulate</code></a> or <a href="../model/jforecast.html"><code>model/jforecast</code></a> functions through the <code>'plan='</code> option.</p>
+<p>Plan methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../plan/plan.html"><code>plan</code></a> - Create new, empty simulation plan object.</li>
+</ul>
+<h4 id="getting-information-about-simulation-plans">Getting information about simulation plans</h4>
+<ul>
+<li><a href="../plan/detail.html"><code>detail</code></a> - Display details of a simulation plan.</li>
+<li><a href="../plan/get.html"><code>get</code></a> - Query to plan object.</li>
+<li><a href="../plan/nnzcond.html"><code>nnzcond</code></a> - Number of conditioning data points.</li>
+<li><a href="../plan/nnzendog.html"><code>nnzendog</code></a> - Number of endogenised data points.</li>
+<li><a href="../plan/nnzexog.html"><code>nnzexog</code></a> - Number of exogenised data points.</li>
+<li><a href="../plan/nnznonlin.html"><code>nnznonlin</code></a> - Number of non-linearised data points.</li>
+</ul>
+<h4 id="setting-up-simulation-plans">Setting up simulation plans</h4>
+<ul>
+<li><a href="../plan/autoexogenise.html"><code>autoexogenise</code></a> - Exogenise variables and automatically endogenise corresponding shocks.</li>
+<li><a href="../plan/condition.html"><code>condition</code></a> - Condition forecast upon the specified variables at the specified dates.</li>
+<li><a href="../plan/endogenise.html"><code>endogenise</code></a> - Endogenise shocks or re-endogenise variables at the specified dates.</li>
+<li><a href="../plan/exogenise.html"><code>exogenise</code></a> - Exogenise variables or re-exogenise shocks at the specified dates.</li>
+<li><a href="../plan/nonlinearise.html"><code>nonlinearise</code></a> - Select equations for simulation in an exact non-linear mode.</li>
+</ul>
+<h4 id="referencing-plan-objects">Referencing plan objects</h4>
+<ul>
+<li><a href="../plan/subsref.html"><code>subsref</code></a> - Subscripted reference for plan objects.</li>
+</ul>
+<h4 id="getting-on-line-help-on-simulation-plans">Getting on-line help on simulation plans</h4>
+<pre><code>help plan
+help plan/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+</html>
