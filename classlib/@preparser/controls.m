@@ -312,8 +312,8 @@ if ~isempty(plist)
 end
 
 % Expand `[ ... ]` in the `!for` body.
-replaceFunc = @doExpandSqb; %#ok<NASGU>
 if ismatlab
+    replaceFunc = @doExpandSqb; %#ok<NASGU>
     forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
 else
     forBody = myregexprep(forBody,'\[[^\]]*\]','${doExpandSqb($0)}');

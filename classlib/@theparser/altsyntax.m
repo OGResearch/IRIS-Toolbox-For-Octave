@@ -19,7 +19,9 @@ nBlkWarn = size(This.altBlkNameWarn,1);
 reportInx = false(nBlkWarn,1);
 
 % Nested functions are not visible from within `regexprep`, use a handle.
-replaceFunc = @doReplace; %#ok<NASGU>
+if ismatlab
+    replaceFunc = @doReplace; %#ok<NASGU>
+end
 for iBlk = 1 : nBlkWarn
     if ismatlab
         This.code = regexprep(This.code, ...

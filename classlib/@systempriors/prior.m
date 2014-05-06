@@ -298,11 +298,11 @@ function Def = xxParseNames(This,Def)
 % xxParseNames  Parse references to parameters and steady-state values of variables.
 
 invalid = {};
-replaceFunc = @doReplaceFunc; %#ok<NASGU>
 
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
 if ismatlab
+    replaceFunc = @doReplaceFunc; %#ok<NASGU>
     Def = regexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))','${replaceFunc($1)}');
 else
     Def = myregexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))','${doReplaceFunc($1)}');

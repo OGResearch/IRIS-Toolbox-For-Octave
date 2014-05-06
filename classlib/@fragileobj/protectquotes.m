@@ -11,8 +11,8 @@ function [C,This] = protectquotes(C,This)
 %--------------------------------------------------------------------------
 
 pattern = '([''"])([^\n]*?)\1';
-replaceFunc = @doReplace; %#ok<NASGU>
 if ismatlab
+    replaceFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,pattern,'${replaceFunc($1,$2)}');
 else
     C = myregexprep(C,pattern,'${doReplace($1,$2)}');

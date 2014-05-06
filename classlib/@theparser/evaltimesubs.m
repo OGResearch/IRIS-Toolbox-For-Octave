@@ -28,7 +28,9 @@ Eqtn = regexprep(Eqtn,'\{([+\-]\d+)\}','{@$1}');
 
 % Find non-standard time subscripts, try to evaluate them and replace with
 % a standard string.
-replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
+if ismatlab
+    replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
+end
 ptn = '\{[^@].*?\}';
 s = regexp([Eqtn{:}],ptn,'once');
 if ~isempty(s)

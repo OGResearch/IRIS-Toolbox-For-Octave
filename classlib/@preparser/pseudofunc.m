@@ -153,8 +153,8 @@ end % xxMovAvg()
 
 function C = xxShift(C,K)
 
-replaceFunc = @doOneShift; %#ok<NASGU>
 if ismatlab
+    replaceFunc = @doOneShift; %#ok<NASGU>
     C = regexprep(C, ...
         '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()', ...
         '${replaceFunc($1,$2)}');

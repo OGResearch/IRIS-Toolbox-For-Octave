@@ -85,7 +85,9 @@ doNonlinEqtn();
         This.eqtnN = cell(size(This.eqtnF));
         This.eqtnN(:) = {''};
         
-        replacefunc = @doReplace; %#ok<NASGU>
+        if ismatlab
+            replacefunc = @doReplace; %#ok<NASGU>
+        end
         for ii = find(This.nonlin)
             eqtn = This.eqtnF{ii};
             

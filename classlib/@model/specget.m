@@ -340,9 +340,9 @@ end
         for iieq = find(select)
             u = mychar(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
-            replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
-            replaceZero = @doReplaceZero; %#ok<NASGU>
             if ismatlab
+                replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
+                replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
                     '${replacePlusMinus($1,$2)}');
                 u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...

@@ -13,8 +13,8 @@ if Shift == 0
     return
 end
 
-replaceFn = @doReplace; %#ok<NASGU>
 if ismatlab
+    replaceFn = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()','x${replaceFn($1,$2)}');
 else
     Eqtn = myregexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()','x${doReplace($1,$2)}');

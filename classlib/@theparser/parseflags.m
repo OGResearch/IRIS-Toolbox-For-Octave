@@ -16,8 +16,8 @@ allFlags = default(ones(size(allnames)));
 
 % Replace regular expressions \<...\> or {...} with the list of matched
 % names.
-replacefunc = @doexpand; %#ok<NASGU>
 if ismatlab
+    replacefunc = @doexpand; %#ok<NASGU>
     Blk = regexprep(Blk,'\\?<(.*?)\\?>','${replacefunc($1)}');
 else
     Blk = myregexprep(Blk,'\\?<(.*?)\\?>','${doexpand($1)}');

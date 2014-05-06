@@ -62,8 +62,10 @@ C = strrep(C,['\verb',esc,esc],'');
 %**************************************************************************
     function C = doOneLine(C)
         
-        keywordsFunc = @doKeywords; %#ok<NASGU>
-        paramValFunc = @doParamVal; %#ok<NASGU>
+        if ismatlab
+            keywordsFunc = @doKeywords; %#ok<NASGU>
+            paramValFunc = @doParamVal; %#ok<NASGU>
+        end
         
         [C,lab] = xxProtectLabels(C,offset);
         

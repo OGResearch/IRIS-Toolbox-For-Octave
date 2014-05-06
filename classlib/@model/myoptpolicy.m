@@ -136,8 +136,8 @@ for eq = first : LossPos
         end
          
         % Create human equations.
-        replFunc = @doReplaceNames; %#ok<NASGU>
         if ismatlab
+            replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
             dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
         else

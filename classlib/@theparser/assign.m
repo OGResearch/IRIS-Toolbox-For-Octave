@@ -23,7 +23,9 @@ asgn = This.assign;
     end % doReplaceNameValue()
 
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-rplFunc = @doReplaceNameValue; %#ok<NASGU>
+if ismatlab
+    rplFunc = @doReplaceNameValue; %#ok<NASGU>
+end
 stdcorrDecld = {};
 
 for iBlk = blkpos(This,This.assignBlkOrd)

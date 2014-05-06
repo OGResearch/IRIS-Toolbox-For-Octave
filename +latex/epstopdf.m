@@ -107,8 +107,8 @@ function OldFileCont = xxEnlargeBox(File,Enlarge)
 
 c = file2char(File);
 OldFileCont = c;
-replaceFunc = @doEnlargeBox; %#ok<NASGU>
 if ismatlab
+    replaceFunc = @doEnlargeBox; %#ok<NASGU>
     c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
         '${replaceFunc($0,$1,$2,$3,$4)}');
 else

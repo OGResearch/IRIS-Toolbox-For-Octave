@@ -59,8 +59,8 @@ end
 
 % Combine and process input blocks.
 inputblock = '';
-replace = @replaceInput_; %#ok<NASGU>
 if ismatlab
+    replace = @replaceInput_; %#ok<NASGU>
     code = regexprep(code,'!input.*?(?=!equations|$)','${replace($0)}');
 else
     code = myregexprep(code,'!input.*?(?=!equations|$)','${replaceInput_($0)}');
@@ -263,7 +263,9 @@ end
     end
 % @ replacetime().
 
-replacetimefunc = @replacetime; %#ok<NASGU>
+if ismatlab
+    replacetimefunc = @replacetime; %#ok<NASGU>
+end
 invalidtime = {};
 for i = 1 : nBlock
     % s.growth{i} = {};
