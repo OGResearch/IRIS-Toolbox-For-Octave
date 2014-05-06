@@ -33,6 +33,7 @@ for cx = 1 : nStr
           funcStr = repTok{ix};
           funcStr = strrep(funcStr,'$0',['''' mtch{mx} '''']);
           for jx = 1:numel(tok{mx})
+            tok{mx}{jx} = regexprep(tok{mx}{jx},'((?<!''))['']((?!''))','$1''''$2');
             funcStr = strrep(funcStr,['$' int2str(jx)],['''' tok{mx}{jx} '''']);
           end
           funcRes = evalin('caller',funcStr);
