@@ -9,7 +9,7 @@ function [This,S] = assign(This,S)
 
 %--------------------------------------------------------------------------
 
-asgn = This.assign;
+asgn = This.Assign;
 
 % Evaluate values assigned in the model code and/or in the `assign`
 % database. Go backward to evaluate parameters first so that they are
@@ -93,6 +93,6 @@ if ~isempty(stdcorrDecld)
     end
 end
 
-This.assign = asgn;
+This.Assign = asgn;
 
 end

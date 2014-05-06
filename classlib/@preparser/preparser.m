@@ -11,7 +11,7 @@ classdef preparser < userdataobj
         fname = '';
         code = '';
         labels = fragileobj();
-        assign = struct();
+        Assign = struct();
         Export = {};
         subs = struct();
     end
@@ -54,7 +54,7 @@ classdef preparser < userdataobj
                     opt.assign.(varargin{i}) = varargin{i+1};
                 end
             end
-            This.assign = opt.assign;
+            This.Assign = opt.assign;
             % Read the code files and resolve preparser commands.
             [This.code,This.labels,This.Export,This.subs,This.Comment] = ...
                 preparser.readcode(inpFiles, ...

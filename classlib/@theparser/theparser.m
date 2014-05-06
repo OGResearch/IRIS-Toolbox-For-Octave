@@ -12,7 +12,7 @@ classdef theparser
         code = '';
         caller = '';
         labels = fragileobj();
-        assign = struct();
+        Assign = struct();
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
@@ -69,7 +69,7 @@ classdef theparser
                 This.fname = Pre.fname;
                 This.code = Pre.code;
                 This.labels = Pre.labels;
-                This.assign = Pre.assign;
+                This.Assign = Pre.Assign;
             end
         end
     end
