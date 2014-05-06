@@ -18,8 +18,12 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-rplFunc = @doReplace; %#ok<NASGU>
-C = regexprep(C,ptn,'${rplFunc($0)}');
+if ismatlab
+  rplFunc = @doReplace; %#ok<NASGU>
+  C = regexprep(C,ptn,'${rplFunc($0)}');
+else
+  C = myregexprep(C,ptn,'${doReplace($0)}');
+end
 
 
 % Nested functions...

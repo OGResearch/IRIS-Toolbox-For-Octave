@@ -42,7 +42,13 @@ if isRhs
     doOpenRhsAxes();
 end
 
-doHoldAll();
+if ismatlab
+    doHoldAll();
+else
+    for iAx = Ax(:).'
+        hold(iAx,'all');
+    end
+end
 doPlot();
 
 if isRhs
@@ -68,6 +74,11 @@ for i = find(annotateInx)
     plot(This.children{i},Ax(end));
 end
 
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'on');
+end
+
 % Find children tagged `'background'` and move them to background.
 ch = get(Ax(end),'children');
 bg = findobj(ch,'flat','tag','background');
@@ -76,6 +87,11 @@ for ibg = bg(:).'
 end
 ch = [ch;bg];
 set(Ax(end),'children',ch);
+
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'off');
+end
 
 % Add legend.
 lg = [];
@@ -91,7 +107,6 @@ if isequal(This.options.legend,true) ...
     else
         lg = legend(Ax(1),legendEntries{:}, ...
             'location',This.options.legendlocation);
-        
     end
     set(lg,'color','white');
 end
@@ -121,6 +136,10 @@ if ~isempty(This.options.style)
     % Apply styles to the axes object and its children.
     qstyle(This.options.style,Ax,'warning',false);
     if ~isempty(lg)
+        % refresh legend since in Octave it is not refreshed automatically
+        if ~ismatlab
+            lg = legend;
+        end
         % Apply styles to the legend axes.
         qstyle(This.options.style,lg,'warning',false);
     end
@@ -195,7 +214,7 @@ end
             if isfield(ch.options,'yaxis') ...
                     && strcmpi(ch.options.yaxis,'right');
                 rhsInx(ii) = true;
-            elseif isa(ch,'report.annotateobj')
+            elseif myisa(ch,'report.annotateobj')
                 annotateInx(ii) = true;
             else
                 lhsInx(ii) = true;
@@ -210,9 +229,14 @@ end
         invalid = {};
         for ii = find(lhsInx | rhsInx)
             ch = This.children{ii};
-            if ~any(strcmpi(char(ch.options.plotfunc), ...
+            if is.func(options.plotfunc)
+                chPF = func2str(options.plotfunc);
+            else
+                chPF = char(options.plotfunc);
+            end
+            if ~any(strcmpi(chPF, ...
                     {'plot','bar','stem','area'}))
-                invalid{end+1} = char(ch.options.plotfunc); %#ok<AGROW>
+                invalid{end+1} = chPF; %#ok<AGROW>
             end
         end
         if ~isempty(invalid)

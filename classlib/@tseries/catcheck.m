@@ -11,7 +11,7 @@ function [Outp,IxTseries] = catcheck(varargin)
 
 % Non-tseries inputs.
 try
-   IxTseries = cellfun(@is.tseries,varargin);
+   IxTseries = cellfun(@(isArg)is.tseries(isArg),varargin);
    ixNumeric = cellfun(@isnumeric,varargin);
 catch
    IxTseries = cellfun('isclass',varargin,'tseries');

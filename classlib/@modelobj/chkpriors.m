@@ -37,9 +37,15 @@ function [Flag,BoundList,PriorList,NotFoundList] = chkpriors(M,E)
 
 % Validate input arguments
 pp = inputParser() ;
-pp.addRequired('M',@is.model) ;
+if ismatlab
+pp.addRequired('M',@(isArg)is.model(isArg)) ;
 pp.addRequired('E',@(x) isstruct(x)) ;
 pp.parse(M,E) ;
+else
+pp = pp.addRequired('M',@(isArg)is.model(isArg)) ;
+pp = pp.addRequired('E',@(x) isstruct(x)) ;
+pp = pp.parse(M,E) ;
+end
 
 % Check consistency by looping over parameters
 pnames = fields(E) ;
@@ -100,7 +106,5 @@ BoundList = pnames(~validBound) ;
 NotFoundList = pnames(~found) ;
 
 end
-
-
 
 

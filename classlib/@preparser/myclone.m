@@ -18,6 +18,10 @@ end
 
 pattern = '(?<!!)\<([A-Za-z]\w*)\>(?!\()';
 replace = '${strrep(Clone,''?'',$0)}';
-C = regexprep(C,pattern,replace);
+if ismatlab
+    C = regexprep(C,pattern,replace);
+else
+    C = myregexprep(C,pattern,replace);
+end
 
 end

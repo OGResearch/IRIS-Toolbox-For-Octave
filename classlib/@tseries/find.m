@@ -40,9 +40,15 @@ catch
 end
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('X',@(x) isa(x,'tseries'));
 pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
 pp.parse(X,Func);
+else
+pp = pp.addRequired('X',@(x) isa(x,'tseries'));
+pp = pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
+pp = pp.parse(X,Func);
+end
 
 %--------------------------------------------------------------------------
 

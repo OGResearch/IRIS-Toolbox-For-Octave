@@ -204,7 +204,11 @@ if ~isempty(y)
     inputCode = strfun.removetrails(inputCode);
     [~,n] = xxOriginalCode(inputCode);
     replace = @xxBookmarks; %#ok<NASGU>
-    inputCode = regexprep(inputCode,'%\?(\w+)\?','`${replace($1)}`');
+    if ismatlab
+        inputCode = regexprep(inputCode,'%\?(\w+)\?','`${replace($1)}`');
+    else
+        inputCode = myregexprep(inputCode,'%\?(\w+)\?','`${xxBookmarks($1)}`');
+    end
     C = [C,br, ...
         '\begin{inputcode}',br, ...
         '\lstset{firstnumber=',sprintf('%g',n),'}',br, ...

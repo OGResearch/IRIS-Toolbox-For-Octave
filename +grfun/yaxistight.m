@@ -43,12 +43,23 @@ for iAx = Ax
 %             set(iAx,'yLimSpec','tight');
 %         end
     else
-        lim = objbounds(iAx);
+        % Temporary show excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(iAx,'on');
+        end
+        lim = grfun.myobjbounds(iAx);
         if isempty(lim)
             yLim = get(iAx,'yLim');
         else
             yLim = lim(3:4);
         end
+    
+        % Hide back excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(iAx,'off');
+        end
+    
+    
         if any(~isinf(yLim)) && yLim(1) < yLim(2)
             set(iAx,'yLim',yLim,'yLimMode','manual');
         end

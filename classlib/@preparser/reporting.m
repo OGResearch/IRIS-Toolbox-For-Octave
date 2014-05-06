@@ -42,7 +42,11 @@ This.rhs = regexprep(This.rhs, ...
     '(?<!!)(\<[a-zA-Z]\w*\>(\{.*?\})?)(?![\(\.])','$1#');
 
 % Add prefix d. to all names consisting potentially of \w and \. not followed by opening bracket.
-This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
+if ismatlab
+    This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
+else
+    This.rhs = myregexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','${[''?'',$0]}');
+end
 
 This.rhs = strrep(This.rhs,'#','(t,:)');
 This.rhs = strrep(This.rhs,'?','d.');

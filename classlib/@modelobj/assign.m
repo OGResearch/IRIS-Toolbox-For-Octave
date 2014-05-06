@@ -38,7 +38,11 @@ Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
 if isempty(varargin)
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     Assigned = cell(1,0);
     return
     
@@ -122,7 +126,11 @@ elseif n <= 2 && iscellstr(varargin{1})
         stdcorr(STDCORRPOS) = true;
         This.stdcorr(1,STDCORRPOS,:) = value(1,STDCORRRHS,:);
     end
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     
 elseif n <= 2 && isstruct(varargin{1})
     % m = assign(m,struct), or
@@ -180,7 +188,11 @@ elseif n <= 2 && isstruct(varargin{1})
         stdcorr(stdcorrPos(i)) = true;
     end
     doChkValid();
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     if nargout == 1
         return
     end
@@ -232,7 +244,11 @@ elseif iscellstr(varargin(1:2:end))
         end
     end
     doChkValid();
-    doReset();
+    if ismatlab
+        doReset();
+    else
+        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
+    end
     
 else
     % Throw an invalid assignment error.
@@ -248,8 +264,13 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    Assigned = [Assigned, ...
-        regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    if ismatlab
+        Assigned = [Assigned, ...
+            regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    else
+        Assigned = [Assigned, ...
+            strcat('std_',eList(stdcorr(1:ne)))];
+    end
     pos = find(tril(ones(ne),-1) == 1);
     temp = zeros(ne);
     temp(pos(stdcorr(ne+1:end))) = 1;
@@ -277,6 +298,17 @@ end
 %**************************************************************************
 
 
+    function [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct()
+        ASSIGNPOS = [];
+        ASSIGNRHS = [];
+        STDCORRPOS = [];
+        STDCORRRHS = [];
+    end % doReset4Oct
+
+
+%**************************************************************************
+
+
     function doChkValid()
         if any(~ixValidLen)
             utils.error('modelobj:assign', ...
@@ -290,6 +322,5 @@ end
                 allName{~ixValidImag});
         end
     end % doChkValid()
-
 
 end

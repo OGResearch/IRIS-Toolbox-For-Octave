@@ -15,9 +15,15 @@ end
 
 % Parse inputarguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
 pp.parse(List,CmdArgs);
+else
+pp = pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
+pp = pp.parse(List,CmdArgs); %#ok<NASGU>
+end
 
 % Parse options.
 opt = passvalopt('latex.epstopdf',varargin{:});
@@ -29,7 +35,7 @@ if ischar(List)
     List = strtrim(List);
 end
 
-thisDir = cd();
+thisDir = pwd();
 epstopdf = irisget('epstopdfpath');
 if isempty(epstopdf)
     error('iris:latex',...
@@ -102,8 +108,13 @@ function OldFileCont = xxEnlargeBox(File,Enlarge)
 c = file2char(File);
 OldFileCont = c;
 replaceFunc = @doEnlargeBox; %#ok<NASGU>
-c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
-    '${replaceFunc($0,$1,$2,$3,$4)}');
+if ismatlab
+    c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
+        '${replaceFunc($0,$1,$2,$3,$4)}');
+else
+   c = myregexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
+       '${doEnlargeBox($0,$1,$2,$3,$4)}');
+end
 char2file(c,File);
 
     function S = doEnlargeBox(S0,S1,S2,S3,S4)

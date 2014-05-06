@@ -9,11 +9,16 @@ function excludefromlegend(h)
 
 %--------------------------------------------------------------------------
 
-for i = h(:)'
-   try %#ok<TRYNC>
-      set(get(get(i,'Annotation'),'LegendInformation'),...
-         'IconDisplayStyle','off');
-   end
+if ismatlab
+    for i = h(:)'
+      try %#ok<TRYNC>
+          set(get(get(i,'Annotation'),'LegendInformation'),...
+            'IconDisplayStyle','off');
+      end
+    end
+else
+    set(h,{'handlevisibility'},{'off'});
+    setappdata(h,'notInLegend',true);
 end
 
 end

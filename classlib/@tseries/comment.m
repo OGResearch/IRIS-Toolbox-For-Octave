@@ -72,9 +72,15 @@ function This = comment(This,varargin)
 
 if ~isempty(varargin)
     pp = inputParser();
-    pp.addRequired('x',@is.tseries);
+if ismatlab
+    pp.addRequired('x',@(isArg)is.tseries(isArg));
     pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
     pp.parse(This,varargin{1});
+else
+    pp = pp.addRequired('x',@(isArg)is.tseries(isArg));
+    pp = pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
+    pp = pp.parse(This,varargin{1});
+end
 end
 
 %--------------------------------------------------------------------------

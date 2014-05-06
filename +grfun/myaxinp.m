@@ -20,7 +20,7 @@ if length(varargin) > 1 && ~ischar(varargin{2})
     end
     % Find axes objects (but not legends) amongst `Ax` and their immediate
     % children; this allows for figure handles.
-    Ax = findobj(Ax,'type','axes','-depth',1,'-not','tag','legend');
+    Ax = findobj(Ax,'-depth',1,'type','axes','-not','tag','legend');
 else
     Ax = gca();
 end

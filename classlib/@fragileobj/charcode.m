@@ -1,5 +1,5 @@
 function C = charcode(This)
-% charcode  [Not a public function] Get replacement code for last entry in storage.
+% charcode  [Not a public function] Get the current replacement code.
 %
 % Backend IRIS function.
 % No help provided.

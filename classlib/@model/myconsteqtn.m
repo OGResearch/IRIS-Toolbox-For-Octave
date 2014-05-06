@@ -13,7 +13,11 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % * all non-log variables with 0;
 % * all log variables with 1.
 replaceFunc = @doReplace; %#ok<NASGU>
-Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${replaceFunc($0,$1)}');
+if ismatlab
+    Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${replaceFunc($0,$1)}');
+else
+    Eqtn = myregexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${doReplace($0,$1)}');
+end
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
 Eqtn = sydney(Eqtn,{});

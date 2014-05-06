@@ -64,10 +64,17 @@ if nAx > 1
 end
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
     && all(strcmp(get(x,'type'),'axes')));
 pp.addRequired('YPos',@isnumeric);
 pp.parse(Ax,Loc);
+else
+pp = pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+    && all(strcmp(get(x,'type'),'axes')));
+pp = pp.addRequired('YPos',@isnumeric);
+pp = pp.parse(Ax,Loc);
+end
 
 [opt,lineOpt] = passvalopt('grfun.hline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
@@ -76,7 +83,11 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 
 yLim = get(Ax,'yLim');
 
-xLim = realmax()*[-1,1];
+if ismatlab
+    xLim = realmax()*[-1,1]; % such a limits may cause OpenGL tesselation error in Octave
+else
+    xLim = get(Ax,'xLim');
+end
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
@@ -84,11 +95,26 @@ for iLoc = Loc
     if yLim(1) < iLoc && yLim(2) > iLoc
         ln = plot(Ax,xLim,[iLoc,iLoc],'xLimInclude','off');
         Ln = [Ln,ln]; %#ok<AGROW>
+    
+        % Temporary show excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(Ax,'on');
+        end
         
         % Move zero line to background right below the last line.
         ch = get(Ax,'children');
         if length(ch) > 1
             set(Ax,'children',ch([2:end,1]));
+        end
+        
+        if ~ismatlab % keep old behaviour for Octave
+            % Update hline x-data whenever the parent axes x-lims change.
+            grfun.listener(Ax,ln,'hline');
+        end
+    
+        % Hide back excluded from legend (for Octave's way of excluding)
+        if ~ismatlab
+            grfun.mytrigexcludedfromlegend(Ax,'off');
         end
         
         cp = [];

@@ -52,9 +52,15 @@ function varargout = get(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 P = inputParser();
-P.addRequired('x',@is.tseries);
+if ismatlab
+P.addRequired('x',@(isArg)is.tseries(isArg));
 P.addRequired('name',@iscellstr);
 P.parse(This,varargin);
+else
+P = P.addRequired('x',@(isArg)is.tseries(isArg));
+P = P.addRequired('name',@iscellstr);
+P = P.parse(This,varargin);
+end
 
 %--------------------------------------------------------------------------
 

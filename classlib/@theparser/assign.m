@@ -42,7 +42,11 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         if isempty(value)
             continue
         end
-        value = regexprep(value,ptn,'${rplFunc($0)}');
+        if ismatlab
+            value = regexprep(value,ptn,'${rplFunc($0)}');
+        else
+            value = myregexprep(value,ptn,'${doReplaceNameValue($0)}');
+        end
         
         try
             x = eval(value);

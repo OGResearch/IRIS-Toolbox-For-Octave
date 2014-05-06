@@ -128,7 +128,7 @@ comprise = timeRhs([1,end]);
 dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);
 dataRhsPlot = grfun.myreplacenancols(dataRhs,Inf);
 [Ax,hLhs,hRhs] = plotyy(timeLhs,dataLhsPlot,timeRhs,dataRhsPlot, ...
-    char(opt.lhsplotfunc),char(opt.rhsplotfunc));
+    mychar(opt.lhsplotfunc),mychar(opt.rhsplotfunc));
 
 % Apply line properties passed in by the user as optional arguments. Do
 % it separately for `hl` and `hr` because they each can be different types.
@@ -151,8 +151,8 @@ setappdata(Ax(2),'freq',freqRhs);
 setappdata(Ax(2),'range',RangeRhs);
 setappdata(Ax(2),'datePosition',opt.dateposition);
 
-if isequal(char(opt.lhsplotfunc),'bar') ...
-        || isequal(char(opt.rhsplotfunc),'bar')
+if isequal(mychar(opt.lhsplotfunc),'bar') ...
+        || isequal(mychar(opt.rhsplotfunc),'bar')
     setappdata(Ax(1),'xLimAdjust',true);
     setappdata(Ax(2),'xLimAdjust',true);
 end
@@ -205,7 +205,9 @@ end
 % Use IRIS datatip cursor function in this figure; in
 % `utils.datacursor', we also handle cases where the current figure
 % includes both tseries and non-tseries graphs.
+if ismatlab % datacursormode is not yet implemented in Octave
 obj = datacursormode(gcf());
 set(obj,'updateFcn',@utils.datacursor);
+end
 
 end

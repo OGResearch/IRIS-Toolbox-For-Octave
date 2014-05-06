@@ -37,12 +37,18 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@is.tseries);
-pp.addRequired('Q',@is.numericscalar);
+if ismatlab
+pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp.addRequired('Q',@(isArg)is.numericscalar(isArg));
 pp.parse(X,Q);
+else
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp = pp.addRequired('Q',@(isArg)is.numericscalar(isArg));
+pp = pp.parse(X,Q);
+end
 
 %--------------------------------------------------------------------------
 
-X = unop(@tseries.mypct,X,0,-1,Q);
+X = unop(@(varargin)tseries.mypct(varargin{:}),X,0,-1,Q);
 
 end

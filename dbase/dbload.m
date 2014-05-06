@@ -179,9 +179,15 @@ fName = varargin{1};
 varargin(1) = [];
 
 P = inputParser();
+if ismatlab
 P.addRequired('d',@isstruct);
 P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
 P.parse(D,fName);
+else
+P = P.addRequired('d',@isstruct);
+P = P.addRequired('fname',@(x) ischar(x) || iscellstr(x));
+P = P.parse(D,fName);
+end
 
 % Loop over all input databases subcontracting `dbload` and merging the
 % resulting databases in one.
@@ -342,6 +348,9 @@ doPopulateDatabase();
             end
             tokens = regexp(line, ...
                 '([^",]*),|([^",]*)$|"(.*?)",|"(.*?)"$','tokens');
+            if ~ismatlab && isempty(tokens{1}) % workaround for Octave's bug #38149 (regexp doesn't return empty tokens for matches at the beginning of a pattern)
+                tokens{1} = {''};
+            end
             tokens = [tokens{:}];
             if isempty(tokens) || all(cellfun(@isempty,tokens))
                 ident = '%';
@@ -500,7 +509,7 @@ doPopulateDatabase();
         % Read numeric data; empty cells will be treated either as `NaN` or
         % `NaN+NaNi` depending on the presence or absence of complex
         % numbers in the rest of that particular row.
-        data = textscan(file,'',-1, ...
+        data = mytextscan(file,'',-1, ...
             'delimiter',',','whiteSpace',whiteSpace, ...
             'headerLines',0,'headerColumns',1,'emptyValue',-Inf, ...
             'commentStyle','matlab','collectOutput',true);
@@ -516,7 +525,7 @@ doPopulateDatabase();
         % values represented by `NaN` this time to pin down missing values.
         isMaybeMissing = real(data) == -Inf;
         if any(isMaybeMissing(:))
-            data1 = textscan(file,'',-1, ...
+            data1 = mytextscan(file,'',-1, ...
                 'delimiter',',','whiteSpace',whiteSpace, ...
                 'headerLines',0,'headerColumns',1,'emptyValue',NaN, ...
                 'commentStyle','matlab','collectOutput',true);

@@ -9,9 +9,15 @@ function [S,Range,Select] = myrf(This,Time,Func,Select,Opt)
 
 % Parse required input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('M',@(x) isa(This,'model'));
 pp.addRequired('TIME',@isnumeric);
 pp.parse(This,Time);
+else
+pp = pp.addRequired('M',@(x) isa(This,'model'));
+pp = pp.addRequired('TIME',@isnumeric);
+pp = pp.parse(This,Time); %#ok<NASGU>
+end
 
 % Tell whether time is nper or range.
 if length(Time) == 1 && round(Time) == Time && Time > 0
@@ -74,7 +80,11 @@ for i = find(This.nametype == 1)
         y = exp(y);
     end
     name = This.name{i};
-    c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    if ismatlab
+        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    else
+        c = strcat(name,{' <-- '},comment);
+    end
     S.(name) = replace(template,y,Range(1)-1,c);
 end
 
@@ -87,7 +97,11 @@ for i = find(This.nametype == 2)
         x = exp(x);
     end
     name = This.name{i};
-    c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    if ismatlab
+        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    else
+        c = strcat(name,{' <-- '},comment);
+    end
     S.(name) = replace(template,x,Range(1)-1-maxLag,c);
 end
 
@@ -95,7 +109,11 @@ end
 e = zeros(nPer,nRun,nAlt);
 for i = find(This.nametype == 3)
     name = This.name{i};    
-    c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    if ismatlab
+        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
+    else
+        c = strcat(name,{' <-- '},comment);
+    end
     S.(name) = replace(template,e,Range(1),c);
 end
 

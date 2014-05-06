@@ -280,12 +280,18 @@ end
             'EE|E|WW|W|', ...
             'DD|D', ...
             ')'];
-        
-        replaceFunc = @doReplace; %#ok<NASGU>
+            
+        if ismatlab
+            replaceFunc = @doReplace; %#ok<NASGU>
+        end
         
         while true
             found = false;
-            fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
+            if ismatlab
+                fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
+            else
+                fmt = myregexprep(fmt,ptn,'${doReplace($1)}','once');
+            end
             if ~found
                 break
             end

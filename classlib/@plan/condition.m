@@ -35,10 +35,17 @@ function This = condition(This,List,Dates)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('p',@is.plan);
+if ismatlab
+pp.addRequired('p',@(isArg)is.plan(isArg));
 pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('dates',@isnumeric);
 pp.parse(This,List,Dates);
+else
+pp = pp.addRequired('p',@(isArg)is.plan(isArg));
+pp = pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('dates',@isnumeric);
+pp = pp.parse(This,List,Dates);
+end
 
 % Convert char list to cell of str.
 if ischar(List)

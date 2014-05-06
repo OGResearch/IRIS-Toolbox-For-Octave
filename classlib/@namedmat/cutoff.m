@@ -51,18 +51,18 @@ catch
 end
 
 nFreq = length(Freq);
-if size(F,3) ~= nFreq
+if size(F.Value,3) ~= nFreq
     utils.error('namedmat', ...
         ['Size of the frequency response matrix in 3rd dimension (%g) is not ', ...
         'consistent with the length of the vector of frequencies (%g).'], ...
-        size(F,3),nFreq);
+        size(F.Value,3),nFreq);
 end
 
 %--------------------------------------------------------------------------
 
-nx = size(F,1);
-ny = size(F,2);
-nAlt = size(F,4);
+nx = size(F.Value,1);
+ny = size(F.Value,2);
+nAlt = size(F.Value,4);
 
 row = rownames(F);
 col = colnames(F);

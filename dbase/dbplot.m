@@ -61,10 +61,17 @@ if isnumeric(List) && iscellstr(Range)
 end
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('D',@(x) isstruct(x));
 pp.addRequired('List',@(x) iscellstr(x));
 pp.addRequired('Range',@(x) isnumeric(x));
 pp.parse(D,List,Range);
+else
+pp = pp.addRequired('D',@(x) isstruct(x));
+pp = pp.addRequired('List',@(x) iscellstr(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x));
+pp = pp.parse(D,List,Range);
+end
 
 %--------------------------------------------------------------------------
 

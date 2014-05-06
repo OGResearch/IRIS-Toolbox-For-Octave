@@ -37,6 +37,7 @@ function This = user(UserY0,UserK0,UserY1,UserG1)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('Y0',@(x) isnumeric(x) && ismatrix(x));
 pp.addRequired('K1',@(x) isnumeric(x) && ismatrix(x) ...
     && size(x,2) == size(UserY0,2));
@@ -45,6 +46,16 @@ pp.addRequired('Y1',@(x) isnumeric(x) && ismatrix(x) ...
 pp.addRequired('G1',@(x) isnumeric(x) && ismatrix(x) ...
     && size(x,2) == size(UserY0,2));
 pp.parse(UserY0,UserK0,UserY1,UserG1);
+else
+pp = pp.addRequired('Y0',@(x) isnumeric(x) && ismatrix(x));
+pp = pp.addRequired('K1',@(x) isnumeric(x) && ismatrix(x) ...
+    && size(x,2) == size(UserY0,2));
+pp = pp.addRequired('Y1',@(x) isnumeric(x) && ismatrix(x) ...
+    && size(x,2) == size(UserY0,2));
+pp = pp.addRequired('G1',@(x) isnumeric(x) && ismatrix(x) ...
+    && size(x,2) == size(UserY0,2));
+pp = pp.parse(UserY0,UserK0,UserY1,UserG1);
+end
 
 %--------------------------------------------------------------------------
 

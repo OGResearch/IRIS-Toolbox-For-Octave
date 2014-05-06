@@ -62,6 +62,10 @@ yaxis = ~isempty(strfind(option,'y'));
 ax2 = getappdata(ax,'axisOnEitherSide');
 if isempty(ax2)
    keepTheOther = false;
+   % Temporary show excluded from legend (for Octave's way of excluding)
+   if ~ismatlab
+       grfun.mytrigexcludedfromlegend(ax,'on');
+   end
    pa = get(ax,'parent');
    ax2 = copyobj(ax,pa);
    % Swap the two axes in the list of children to make sure the one with
@@ -72,6 +76,11 @@ if isempty(ax2)
    [ch(index1),ch(index2)] = deal(ch(index2),ch(index1));
    set(pa,'children',ch);
    setappdata(ax,'axisOnEitherSide',ax2);
+   % Hide back excluded from legend (for Octave's way of excluding)
+   if ~ismatlab
+       grfun.mytrigexcludedfromlegend(ax,'off');
+       grfun.mytrigexcludedfromlegend(ax2,'off');
+   end
 else
    keepTheOther = true;
 end
@@ -96,6 +105,20 @@ elseif ~keepTheOther
 end
 
 ax = [ax;ax2];
-linkaxes(ax,option);
+if ismatlab % not implemented in Octave
+    linkaxes(ax,option);
+else
+    switch option
+        case 'x'
+            set(ax,'XLimMode','manual');
+            hlink = linkprop(ax,'XLim');
+        case 'y'
+            set(ax,'YLimMode','manual');
+            hlink = linkprop(ax,'YLim');
+        case 'xy'
+            set(ax,'XLimMode','manual','YLimMode','manual');
+            hlink = linkprop(ax,{'XLim','YLim'});
+    end
+end
 
 end

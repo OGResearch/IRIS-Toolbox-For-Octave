@@ -192,14 +192,29 @@ for i = 1 : length(list)
                 % Execture style processor.
                 value = grfun.mystyleprocessor(H(j),value);
             end
+            if ~ismatlab
+                ch = get(gcf,'children');
+                ch = ch(ch~=H(j));
+                pos = get(ch,'position');
+            end
             set(H(j),name,value);
+            if ~ismatlab
+                set(ch,{'position'},pos);
+            end
         catch Error
             flag = xxExceptions(H(j),name,value);
             if ~flag && Opt.warning
-                warning('iris:qreport',...
-                    ['Error setting %s property ''%s''.\n', ...
-                    '\tMatlab says: %s'],...
-                    Field,name,Error.message);
+                if ismatlab
+                    warning('iris:qreport',...
+                        ['Error setting %s property ''%s''.\n', ...
+                        '\tMatlab says: %s'],...
+                        Field,name,Error.message);
+                else
+                    warning('iris:qreport',...
+                        ['Error setting %s property ''%s''.\n', ...
+                        '\tOctave says: %s'],...
+                        Field,name,Error.message);
+                end
             end
         end
     end
@@ -240,6 +255,12 @@ end
 % cascade through the legend axes.
 lg = findobj(H,'flat','Tag','legend');
 xxApplyTo(lg,D,'legend',Opt);
+
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(H,'on');
+end
+
 % Find the remaining regular axes. Cascade through them if requested by
 % the user.
 H = findobj(H,'flat','-not','Tag','legend');
@@ -253,7 +274,7 @@ rhsPeer = [];
 for iH = H
     % Check if this axes has a plotyy peer.
     iPeer = getappdata(iH,'graphicsPlotyyPeer');
-    if ~isempty(iPeer) && strcmp(get(iH,'yAxisLocation'),'right')
+    if (~isempty(iPeer) || ~ismatlab) && strcmp(get(iH,'yAxisLocation'),'right')
         % The current `iH` is an RHS peer. It will be styled first together with
         % its LHS peer, and then separately by using an `rhsaxes` field if it
         % exist.
@@ -349,6 +370,11 @@ end
 for iPeer = rhsPeer
     xxApplyTo(iPeer,D,'rhsaxes',Opt);
 end
+    
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(H,'off');
+end
 
 end % xxAxes().
 
@@ -377,10 +403,18 @@ switch get(H,'type')
             case 'yaxislocation'
                 if strcmpi(Value,'either')
                     grfun.axisoneitherside(H,'y');
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'xaxislocation'
                 if strcmpi(Value,'either')
                     grfun.axisoneitherside(H,'x');
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'yticklabelformat'
                 yTick = get(H,'yTick');
@@ -398,10 +432,18 @@ switch get(H,'type')
                     if ~isequal(isTseries,true)
                         grfun.xaxistight(H);
                     end
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             case 'clicktocopy'
                 if isequal(Value,true)
                     grfun.clicktocopy(H);
+                    % show back since on prevline all the handles of excluded from legend were hidden
+                    if ~ismatlab
+                        grfun.mytrigexcludedfromlegend(H,'on');
+                    end
                 end
             otherwise
                 Flag = false;

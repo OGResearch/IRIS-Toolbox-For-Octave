@@ -69,6 +69,6 @@ if ~isequal(Range,Inf)
     This = resize(This,Range);
 end
 
-This = unop(@tseries.mymoving,This,0,opt.window,opt.function);
+This = unop(@(varargin) tseries.mymoving(varargin{:}),This,0,opt.window,opt.function);
 
 end

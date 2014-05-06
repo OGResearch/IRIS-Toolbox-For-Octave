@@ -55,13 +55,23 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@is.plan);
+if ismatlab
+pp.addRequired('P',@(isArg)is.plan(isArg));
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('Weight', ...
     @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
     && real(x) >= 0 && imag(x) >= 0);
 pp.parse(This,List,Dates,Weight);
+else
+pp = pp.addRequired('P',@(isArg)is.plan(isArg));
+pp = pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp = pp.addRequired('Dates',@isnumeric);
+pp = pp.addRequired('Weight', ...
+    @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
+    && real(x) >= 0 && imag(x) >= 0);
+pp = pp.parse(This,List,Dates,Weight);
+end
 
 % Convert char list to cell of str.
 if ischar(List)

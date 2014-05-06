@@ -101,10 +101,17 @@ function [hfig,hax,hline,htit,plotdb] = qplot(cdfname,data,range,varargin)
 
 % Parse required input arguments.
 p = inputParser();
+if ismatlab
 p.addRequired('filename',@(x) ischar(x) || is.func(x));
 p.addRequired('dbase',@(x) isstruct(x));
 p.addRequired('range',@isnumeric);
 p.parse(cdfname,data,range);
+else
+p = p.addRequired('filename',@(x) ischar(x) || is.func(x));
+p = p.addRequired('dbase',@(x) isstruct(x));
+p = p.addRequired('range',@isnumeric);
+p = p.parse(cdfname,data,range);
+end
 
 % Parse options.
 [options,varargin] = passvalopt('qreport.qplot',varargin{:});
@@ -211,9 +218,15 @@ for i = 1 : length(gd)
                     plot_(hax{end}(end),range,x,gd(i).tag,Legend, ...
                     options,varargin{:});
             catch me
-                warning('iris:qplot',...
-                    'Error plotting %s.\n\tMatlab says: %s',...
-                    gd(i).body,me.message);
+                if ismatlab
+                    warning('iris:qplot',...
+                        'Error plotting %s.\n\tMatlab says: %s',...
+                        gd(i).body,me.message);
+                else
+                    warning('iris:qplot',...
+                        'Error plotting %s.\n\tOctave says: %s',...
+                        gd(i).body,me.message);
+                end
             end
             tmptitle = '';
             if ~isempty(gd(i).title)
@@ -357,6 +370,10 @@ end
 
 if ~isempty(options.vline)
     grfun.vline(hax,options.vline);
+end
+
+end
+% $ plot_().    grfun.vline(hax,options.vline);
 end
 
 end

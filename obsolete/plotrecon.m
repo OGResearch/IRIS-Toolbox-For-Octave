@@ -35,7 +35,7 @@ function [ax,chksum] = plotrecon(d,plotrng,varargin)
     % evaluate all series
     n = length(expr);
     [x{1:n}] = dbeval(d,expr{:});
-    x(~cellfun(@is.tseries,x)) = {tseries()};
+    x(~cellfun(@(isArg)is.tseries(isArg),x)) = {tseries()};
     
     % compute remainder (*) if requested
     starindex = find(strcmp('*',expr));

@@ -41,12 +41,18 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@is.tseries);
-pp.addRequired('K',@is.numericscalar);
+if ismatlab
+pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp.addRequired('K',@(isArg)is.numericscalar(isArg));
 pp.parse(X,K);
+else
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp = pp.addRequired('K',@(isArg)is.numericscalar(isArg));
+pp = pp.parse(X,K);
+end
 
 %--------------------------------------------------------------------------
 
-X = unop(@tseries.mydiff,X,0,K);
+X = unop(@(varargin)tseries.mydiff(varargin{:}),X,0,K);
 
 end

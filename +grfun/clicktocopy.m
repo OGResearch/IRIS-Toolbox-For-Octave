@@ -24,8 +24,13 @@ function clicktocopy(ax)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('h',@(x) all(ishghandle(x)) ...
-   && all(strcmp(get(x,'type'),'axes')));
+if ismatlab
+    pp.addRequired('h',@(x) all(ishghandle(x)) ...
+       && all(strcmp(get(x,'type'),'axes')));
+else
+    pp = pp.addRequired('h',@(x) all(ishghandle(x)) ...
+       && all(strcmp(get(x,'type'),'axes')));
+end   
 
 %--------------------------------------------------------------------------
 
@@ -39,13 +44,22 @@ end
 
 %**************************************************************************
 function xxCopyAxes(h,varargin)
-   if ~isequal(get(h,'type'),'axes')
+    if ~isequal(get(h,'type'),'axes')
       h = get(h,'parent');
-   end
-   new = copyobj(h,figure());
-   set(new, ...
+    end
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(h,'on');
+    end
+    new = copyobj(h,figure());
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(h,'off');
+        grfun.mytrigexcludedfromlegend(new,'off');
+    end
+    set(new, ...
       'position',[0.1300,0.1100,0.7750,0.8150], ...
       'units','normalized', ...
       'buttonDownFcn','');
-end
-% xxCopyAxes().
+    end
+    % xxCopyAxes().

@@ -33,7 +33,11 @@ ptn = '\{[^@].*?\}';
 s = regexp([Eqtn{:}],ptn,'once');
 if ~isempty(s)
     for iEq = 1 : nEqtn
-        Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
+        if ismatlab
+            Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
+        else
+            Eqtn{iEq} = myregexprep(Eqtn{iEq},ptn,'${doNonstandardTimeSubs($0)}');
+        end
     end
     if any(~ValidSubs)
         return
