@@ -56,7 +56,13 @@ Code = strfun.converteols(Code);
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
 %tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
-match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
+if ismatlab % lookbehind operators of variable length are not allowed in Octave
+    match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
+else
+    tmpstr = regexprep(Code, '^\s*(%%.*$)','$1');
+    match = regexp(tmpstr,'(?<=^%%)[^\n]+','match','once');
+    clear tmpstr;
+end
 Comment = strtrim(match);
 
 % Characters beyond char(highcharcode) not allowed except comments.
