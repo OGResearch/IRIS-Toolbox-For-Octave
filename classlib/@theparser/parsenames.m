@@ -30,11 +30,20 @@ ptn = ['(?<label>',regexppattern(This.labels),')?\s*', ...
     '(?<value>=[^;,\n]+[;,\n])?']; 
 
 x = regexp(Blk,ptn,'names');
-Name = {x(:).name};
-Label = {x(:).label};
+if ismatlab
+    Name = {x(:).name};
+    Label = {x(:).label};
+else
+    Name = x.name;
+    Label = x.label;
+end
 Value = {};
 if nargout > 2
-    Value = {x(:).value};
+    if ismatlab
+        Value = {x(:).value};
+    else
+        Value = x.value;
+    end
     Value = strrep(Value,'=','');
     Value = strrep(Value,'!','');
     % Restore protected brackets.
