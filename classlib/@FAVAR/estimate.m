@@ -100,7 +100,7 @@ y0 = y;
 [This,y] = standardise(This,y);
 
 % Estimate static factors using principal components.
-[FF,This.C,U,This.Sigma,This.singval,sample,CTF] = ...
+[FF,This.C,U,This.Sigma,This.SingVal,sample,CTF] = ...
     FAVAR.pc(y,crit,opt.method);
 
 % Estimate VAR(p,q) on factors.

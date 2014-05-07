@@ -39,14 +39,14 @@ classdef FAVAR < varobj
     properties
         Mean = []; % Vector of estimated means used to standardise the input data.
         Std = []; % Vector of estimated stdevs used to standardise the input data.
-        singval = []; % Singular values of the principal components.
+        SingVal = []; % Singular values of the principal components.
         B = []; % Coefficient matrix at orthonormalised shocks in factor VAR.
         C = []; % Measurement matrix.
         
         T = []; % Schur decomposition of the transition matrix.
         U = []; % Schur transformation of the factors.
         Sigma = []; % Cov of idiosyncratic residuals.
-        cross = NaN;
+        Cross = NaN;
     end
     
     methods

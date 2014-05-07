@@ -30,7 +30,7 @@ nAlt = size(V.A,3);
 % Create an empty SVAR object.
 This = SVAR();
 This.B = nan(ny,ny,nAlt);
-This.std = nan(1,nAlt);
+This.Std = nan(1,nAlt);
 
 % Populate the superclass VAR properties.
 list = utils.ndprop('VAR');

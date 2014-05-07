@@ -18,7 +18,7 @@ classdef varobj < userdataobj & getsetobj
         Omega = zeros(0); % Covariance matrix of reduced-form residuals.
         EigVal = zeros(1,0); % Eigenvalues.
 
-        Fange = zeros(1,0); % Estimation range.
+        Range = zeros(1,0); % Estimation range.
         Fitted = false(1,0); % Index of periods actually fitted.
     end
     

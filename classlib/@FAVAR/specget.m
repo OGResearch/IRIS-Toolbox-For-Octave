@@ -41,7 +41,7 @@ switch Query
     case 'var'
         X = VAR(This);
     case {'singval','sing','singvalues'}
-        X = This.singval;
+        X = This.SingVal;
     case {'ny'}
         X = size(This.C,1);
     case {'nx','nfactor','nfactors'}
