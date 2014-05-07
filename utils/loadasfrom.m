@@ -6,7 +6,7 @@ function varargout = loadasfrom(FileName,varargin)
 %
 %     [Var1,Var2,...] = loadasfrom(FileName,'OldName1','OldName2',...)
 %
-% Short-cut syntax for MAT files with one variable only
+% Abbreviated syntax (MAT files with one variable only)
 % ======================================================
 %
 %     [Var1,...] = loadasfrom(FileName)

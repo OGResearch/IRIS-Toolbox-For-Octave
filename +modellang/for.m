@@ -1,7 +1,7 @@
 % !for...!do...!end  For loop for automated creation of model code.
 % 
-% Short-cut syntax
-% =================
+% Abbreviated syntax (cannot be nested)
+% ======================================
 % 
 %     !for
 %         ListOfTokens
@@ -40,11 +40,11 @@
 %
 % * all occurrences in the template of `?.ControlName`  are
 % replaced with the currently processed string converted to lower case;
-% this option is NOT available with the short-cut syntax;
+% this option is NOT available with the abbreviated syntax;
 %
 % * all occurrences in the template of `?:ControlName`  are
 % replaced with the currently processed string converted to upper case;
-% this option is NOT available with the short-cut syntax;
+% this option is NOT available with the abbreviated syntax;
 %
 % The list of tokens can be based on Matlab expressions. Use the
 % [pseudosubstitution](modellang/pseudosubs) syntax to this end: Enclose an

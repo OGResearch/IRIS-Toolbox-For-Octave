@@ -7,8 +7,8 @@
 %         VariableName, VariableName, ...
 %         ...
 %
-% Short-cut syntax
-% =================
+% Abbreviated syntax
+% ===================
 %
 %     !variables
 %         VariableName, VariableName, ...

@@ -5,10 +5,6 @@ function [HPos,HNeg,HNaNInf,HMax] = plotmat(X,varargin)
 % =======
 %
 %     [HPos,HNeg,HNanInf,HMax] = grfun.plotmat(X,...)
-%
-% Short-cut syntax
-% =================
-%
 %     [HPos,HNeg,HNanInf,HMax] = plotmat(X,...)
 %
 % Input arguments

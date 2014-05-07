@@ -8,8 +8,9 @@
 %         Equation2;
 %         Equation2;
 %         ...
-% Short-cut syntax
-% =================
+%
+% Abbreviated syntax
+% ===================
 %
 %     !equations
 %         Equation1;

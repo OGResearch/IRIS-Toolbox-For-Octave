@@ -40,7 +40,7 @@ end
 reportList = This.altBlkNameWarn(reportInx,:).';
 reportList = reportList(:).';
 
-% Alternative or short-cut syntax, do not report.
+% Alternative or abbreviated syntax, do not report.
 nAltBlk = size(This.altBlkName,1);
 for iBlk = 1 : nAltBlk
     This.code = regexprep(This.code, ...

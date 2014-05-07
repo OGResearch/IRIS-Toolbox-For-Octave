@@ -7,8 +7,8 @@
 %         ShockName, ShockName, ...
 %         ...
 %
-% Short-cut syntax
-% =================
+% Abbreviated syntax
+% ===================
 %
 %     !shocks
 %         ShockName, ShockName, ...
