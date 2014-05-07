@@ -35,3 +35,16 @@ actCode = preparser.myclone(c,'US_?');
 assertEqual(This,actCode,expCode);
 
 end % testClone()
+
+
+%**************************************************************************
+
+
+function testPseudosubs(This)
+
+p = preparser('testPseudosubs.model');
+actCode = p.code;
+expCode = file2char('testPseudosubs_preparsed.model');
+assertEqual(This,actCode,expCode);
+
+end % testPseudosubs()
