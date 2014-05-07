@@ -63,7 +63,7 @@ if This.linear
         nPth = 1;
     end
     if isstruct(Opt.sstate)
-        This = mysstatelinear(This);
+        This = mysstatelinear(This,Opt);
         if Opt.refresh && ~isempty(This.Refresh)
             This = refresh(This);
         end

@@ -57,6 +57,8 @@ doRefresh();
 
 
 %**************************************************************************
+
+    
     function doRefresh()
         if ~isempty(This.Refresh) && Opt.refresh
             This = refresh(This);
@@ -65,6 +67,8 @@ doRefresh();
 
 
 %**************************************************************************
+    
+    
     function doOneSstate()
         T = This.solution{1}(:,:,iAlt);
         K = This.solution{3}(:,:,iAlt);
@@ -121,5 +125,6 @@ doRefresh();
             This.Assign(1,This.nametype == 1,iAlt) = y(:).' + 1i*dy(:).';
         end
     end % doOneSstate()
+
 
 end
