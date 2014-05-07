@@ -278,7 +278,7 @@ end % xxParseExport()
 
 
 function [Replace,Labels,Err,Warn] ...
-    = xxReplaceFor(S,D,Labels,ErrorParsing) %#ok<DEFNU>
+    = xxReplaceFor(S,D,Labels,ErrParsing) %#ok<DEFNU>
 
 Replace = '';
 Err = '';
@@ -290,7 +290,7 @@ doBody = S.DoBody;
 if ~isempty(strfind(forBody,'!'))
     % We allow for `!if` commands inside the `!for` body, and hence need to
     % pre-parse the body first.
-    forBody = preparser.controls(forBody,D,ErrorParsing,Labels);
+    forBody = preparser.controls(forBody,D,ErrParsing,Labels);
 end
 
 % Read the name of the control variable.
@@ -311,11 +311,23 @@ if ~isempty(plist)
     plist = ['\<(',plist,')\>'];
 end
 
-% Expand `[ ... ]` in the `!for` body.
-% ##### MOSW:
-% replaceFunc = @doExpandSqb; %#ok<NASGU>
-% forBody = regexprep(forBody,'\[[^\]]*\]','${replaceFunc($0)}');
-forBody = mosw.dregexprep(forBody,'\[[^\]]*\]',@doExpandSqb,0);
+% Expand `$[ ... ]$` and `[...]` (the latter for bkw compatibility) in the
+% `!for` body.
+
+% TODO: Use pseudosubstitutions to evaluate $[...]$ in the body of !for
+% loops.
+
+% ##### MOSW: replaceFunc = @doExpandSqb; %#ok<NASGU> forBody =
+% regexprep(forBody,'(\$?)(\[[^\]]*\])\1','${replaceFunc($1,$2)}');
+obsolete = {};
+forBody = mosw.dregexprep(forBody,'(\$?)(\[[^\]]*\])\1',@doExpandSqb,[1,2]);
+if ~isempty(obsolete)
+    % ##### May 2014 OBSOLETE and scheduled for removal.
+    utils.warning('preparser:controls', [ErrParsing, ...
+        'This is obsolete syntax, and will be removed from a future ', ...
+        'version of IRIS. Use pseudosubstitution syntax $[...]$ instead.'], ...
+        obsolete{:});
+end
 
 if ~isempty(Err)
     return
@@ -327,16 +339,16 @@ forBody = regexprep(forBody,[control,'\s*=\s*'],'');
 % Itemize the RHS of the `!for` body.
 list = regexp(forBody,'[^\s,;]+','match');
 
-    function C1 = doExpandSqb(C)
+    function C = doExpandSqb(C1,C2)
         % doexpandsqb  Expand Matlab expressions in square brackets.
-        C1 = '';
+        C = '';
         try
             if ~isempty(plist)
                 % Replace references to fieldnames of `'D'` with `'D.fieldname'`.
-                C = regexprep(C,plist,'D.$1');
+                C2 = regexprep(C2,plist,'D.$1');
             end
             % Create an anonymous function handle and evaluate it on D.
-            f = str2func(['@(D) ',C]);
+            f = str2func(['@(D) ',C2]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.
@@ -346,14 +358,17 @@ list = regexp(forBody,'[^\s,;]+','match');
             nx = length(x);
             for ii = 1 : nx
                 if isnumeric(x{ii}) || islogical(x{ii})
-                    C1 = [C1,sprintf('%g,',x{ii})]; %#ok<AGROW>
+                    C = [C,sprintf('%g,',x{ii})]; %#ok<AGROW>
                 elseif ischar(x{ii})
-                    C1 = [C1,x{ii},',']; %#ok<AGROW>
+                    C = [C,x{ii},',']; %#ok<AGROW>
                 end
             end
         catch %#ok<CTCH>
             Err = ['!for ',forBody];
-        end        
+        end
+        if isempty(C1)
+            obsolete{end+1} = C2;
+        end
     end
 
 lowerList = lower(list);

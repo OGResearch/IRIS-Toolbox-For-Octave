@@ -46,10 +46,12 @@
 % replaced with the currently processed string converted to upper case;
 % this option is NOT available with the short-cut syntax;
 %
-% The list of tokens can be based on Matlab expressions. The expressions
-% must be enclosed in square brackets, and must evaluate into either a
-% numeric vector, a char vector, or a cell array of numerics and/or
-% strings.
+% The list of tokens can be based on Matlab expressions. Use the
+% [pseudosubstitution](modellang/pseudosubs) syntax to this end: Enclose an
+% expression in dollar-square brackets, `$[...]$`. The expression must
+% evaluate to either a numeric vector, a char vector, or a cell array of
+% numerics and/or strings; the value will be then converted to a
+% comma-separted list.
 % 
 % Example
 % ========
@@ -170,7 +172,7 @@
 % can be simplified as follow:
 %
 %     !for
-%         [ 1 : 7 ]
+%         $[ 1 : 7 ]$
 %     !do
 %         a? = a?{-1} + res_a?;
 %     !end
