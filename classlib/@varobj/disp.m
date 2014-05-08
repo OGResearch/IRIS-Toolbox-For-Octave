@@ -34,14 +34,14 @@ if ~isempty(This.YNames)
 else
     yNames = 'empty';
 end
-fprintf('\tvariable names: %s',yNames);
+fprintf('\tvariables: %s',yNames);
 fprintf('\n');
 
 specdisp(This);
 
 % Group names for panel objects.
 if ispanel(This)
-    fprintf('\tgroup names: %s',strfun.displist(This.GroupNames));
+    fprintf('\tgroups: %s',strfun.displist(This.GroupNames));
     fprintf('\n');
 end
 
