@@ -110,13 +110,25 @@ end
 
 % Include pre-sample.
 [outpFmt,xRange,y,e] = mydatarequest(This,Inp,xRange,opt);
-e(isnan(e)) = 0;
-
-nPer = length(Range);
-nXPer = length(xRange);
+e = e(:,p+1:end,:);
 
 % Get tunes on VAR variables and instruments; do not include pre-sample.
-[~,~,jy,~,ji] = mydatarequest(This,JData,Range);
+[~,~,jy,je,ji] = mydatarequest(This,JData,Range);
+
+% Changes in residual means can be either in `e` or `je` (but not both).
+e(isnan(e)) = 0;
+je(isnan(je)) = 0;
+if any(je(:) ~= 0)
+    if any(e(:) ~= 0)
+        utils.error('VAR:forecast', ...
+            ['Changes in residual means can be entered either ', ...
+            'in the input database or in the conditioning database, ', ...
+            'but not in both.']);
+    else
+        e = je;
+    end
+end
+
 if backcast
     y = y(:,end:-1:1,:,:);
     e = e(:,end:-1:1,:,:);
@@ -124,10 +136,9 @@ if backcast
     ji = ji(:,end:-1:1,:,:);
 end
 
-x0 = y(:,1:p,:);
-e = e(:,p+1:end,:);
-
-nData = size(x0,3);
+nPer = length(Range);
+nXPer = length(xRange);
+nData = size(y,3);
 nCond = size(jy,3);
 nInst = size(ji,3);
 nOmg = size(opt.omega,3);
@@ -138,6 +149,7 @@ retInstruments = ni > 0 && opt.returninstruments;
 retResiduals = opt.returnresiduals;
 
 % Stack initial conditions.
+x0 = y(:,1:p,:);
 x0 = x0(:,p:-1:1,:);
 x0 = reshape(x0(:),ny*p,size(x0,3));
 
