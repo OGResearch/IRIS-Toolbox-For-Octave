@@ -2,7 +2,8 @@
 
     \filetitle{!for...!do...!end}{For loop for automated creation of model code}{modellang/for}
 
-	\paragraph{Short-cut syntax}
+	\paragraph{Abbreviated syntax (cannot be
+nested)}
 
 \begin{verbatim}
 !for
@@ -46,17 +47,19 @@ those. In each iteration,
 \item
   all occurrences in the template of \texttt{?.ControlName} are replaced
   with the currently processed string converted to lower case; this
-  option is NOT available with the short-cut syntax;
+  option is NOT available with the abbreviated syntax;
 \item
   all occurrences in the template of \texttt{?:ControlName} are replaced
   with the currently processed string converted to upper case; this
-  option is NOT available with the short-cut syntax;
+  option is NOT available with the abbreviated syntax;
 \end{itemize}
 
-The list of tokens can be based on Matlab expressions. The expressions
-must be enclosed in square brackets, and must evaluate into either a
-numeric vector, a char vector, or a cell array of numerics and/or
-strings.
+The list of tokens can be based on Matlab expressions. Use the
+\href{modellang/pseudosubs}{pseudosubstitution} syntax to this end:
+Enclose an expression in dollar-square brackets, \texttt{\${[}...{]}\$}.
+The expression must evaluate to either a numeric vector, a char vector,
+or a cell array of numerics and/or strings; the value will be then
+converted to a comma-separted list.
 
 \paragraph{Example}
 
@@ -191,7 +194,7 @@ can be simplified as follow:
 
 \begin{verbatim}
 !for
-    [ 1 : 7 ]
+    $[ 1 : 7 ]$
 !do
     a? = a?{-1} + res_a?;
 !end

@@ -25,7 +25,12 @@ sect{2} = file2char(fullfile(irisroot(),'+latex','howtorun.m'));
 fileList = {};
 for i = 3 : nSect-1
     s = sect{i};
-    s = strfun.removecomments(s,'%',{'%{','%}'});
+    
+    % Keep everything after the first % ... unchanged.
+    [keep,pos] = regexp(s,'% \.\.\..*','match','start','once');
+    s(pos:end) = '';
+    
+    s = preparser.removecomments(s,'%',{'%{','%}'});
     
     file = regexp(s,'edit (\w+)\.model','once','tokens');
     if ~isempty(file)
@@ -58,6 +63,9 @@ for i = 3 : nSect-1
     sect{i} = [intro,br,br,cmtout,'edit ',file,ext,';'];
     if isequal(ext,'.m')
         sect{i} = [sect{i},br,file,';'];
+    end
+    if ~isempty(keep)
+        sect{i} = [sect{i},br,br,keep];
     end
     fileList{end+1} = [file,ext]; %#ok<AGROW>
 end

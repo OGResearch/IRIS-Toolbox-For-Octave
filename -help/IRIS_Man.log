@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  30 APR 2014 15:45
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  8 MAY 2014 15:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1058,9 +1058,9 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 138.
  ) 
 Here is how much of TeX's memory you used:
- 13585 strings out of 493315
- 190409 string characters out of 6137904
- 229419 words of memory out of 5000000
+ 13584 strings out of 493315
+ 190396 string characters out of 6137904
+ 230419 words of memory out of 5000000
  11659 multiletter control sequences out of 15000+600000
  24029 words of font info for 56 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -1094,10 +1094,10 @@ mf-dist/fonts/type1/public/cm-super/sform5.pfb></usr/local/texlive/2013/texmf-d
 ist/fonts/type1/public/cm-super/sform7.pfb></usr/local/texlive/2013/texmf-dist/
 fonts/type1/public/cm-super/sform8.pfb></usr/local/texlive/2013/texmf-dist/font
 s/type1/public/cm-super/sfoti10.pfb>
-Output written on IRIS_Man.pdf (453 pages, 1139926 bytes).
+Output written on IRIS_Man.pdf (453 pages, 1140275 bytes).
 PDF statistics:
  8542 PDF objects out of 8907 (max. 8388607)
  7925 compressed objects within 80 object streams
- 4024 named destinations out of 4296 (max. 500000)
+ 4023 named destinations out of 4296 (max. 500000)
  3513 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -73,7 +73,7 @@
         <tocitem target="model/data4lhsmrhs.html" image="HelpIcon.FUNCTION">data4lhsmrhs &#8212; Prepare data array for running `lhsmrhs`</tocitem>
         <tocitem target="model/diffloglik.html" image="HelpIcon.FUNCTION">diffloglik &#8212; Approximate gradient and hessian of log-likelihood function</tocitem>
         <tocitem target="model/diffsrf.html" image="HelpIcon.FUNCTION">diffsrf &#8212; Differentiate shock response functions w.r.t. specified parameters</tocitem>
-        <tocitem target="model/eig.html" image="HelpIcon.FUNCTION">eig &#8212; Eigenvalues of the model transition matrix</tocitem>
+        <tocitem target="model/eig.html" image="HelpIcon.FUNCTION">eig &#8212; Eigenvalues of the transition matrix</tocitem>
         <tocitem target="model/emptydb.html" image="HelpIcon.FUNCTION">emptydb &#8212; Create model-specific database with variables, shocks, and parameters</tocitem>
         <tocitem target="model/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate model parameters by optimising selected objective function</tocitem>
         <tocitem target="model/evalsystempriors.html" image="HelpIcon.FUNCTION">evalsystempriors &#8212; Evaluate minus log of system prior density</tocitem>

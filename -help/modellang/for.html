@@ -109,7 +109,7 @@ code.LaTeX {
 <h2 id="modellang/for">!for...!do...!end</h2>
 <div class="headline">For loop for automated creation of model code</div>
 
-<h4 id="short-cut-syntax">Short-cut syntax</h4>
+<h4 id="abbreviated-syntax-cannot-be-nested">Abbreviated syntax (cannot be nested)</h4>
 <pre><code>!for
     ListOfTokens
 !do
@@ -126,10 +126,10 @@ code.LaTeX {
 <p>The tokens (text strings) in the list must be separated by commas, blank spaces, or line breaks and they themselves must not contain any of those. In each iteration,</p>
 <ul>
 <li><p>all occurrences of the control variable in the template are replaced with the currently processed string;</p></li>
-<li><p>all occurrences in the template of <code>?.ControlName</code> are replaced with the currently processed string converted to lower case; this option is NOT available with the short-cut syntax;</p></li>
-<li><p>all occurrences in the template of <code>?:ControlName</code> are replaced with the currently processed string converted to upper case; this option is NOT available with the short-cut syntax;</p></li>
+<li><p>all occurrences in the template of <code>?.ControlName</code> are replaced with the currently processed string converted to lower case; this option is NOT available with the abbreviated syntax;</p></li>
+<li><p>all occurrences in the template of <code>?:ControlName</code> are replaced with the currently processed string converted to upper case; this option is NOT available with the abbreviated syntax;</p></li>
 </ul>
-<p>The list of tokens can be based on Matlab expressions. The expressions must be enclosed in square brackets, and must evaluate into either a numeric vector, a char vector, or a cell array of numerics and/or strings.</p>
+<p>The list of tokens can be based on Matlab expressions. Use the <a href="../modellang/pseudosubs.html">pseudosubstitution</a> syntax to this end: Enclose an expression in dollar-square brackets, <code>$[...]$</code>. The expression must evaluate to either a numeric vector, a char vector, or a cell array of numerics and/or strings; the value will be then converted to a comma-separted list.</p>
 <h4 id="example">Example</h4>
 <p>In a model code file, instead of writing a number of definitions of growth rates like the following ones</p>
 <pre><code>dP = P/P{-1} - 1;
@@ -209,7 +209,7 @@ C2 = rhoc2*C2{-1} + ec2;</code></pre>
 !end</code></pre>
 <p>can be simplified as follow:</p>
 <pre><code>!for
-    [ 1 : 7 ]
+    $[ 1 : 7 ]$
 !do
     a? = a?{-1} + res_a?;
 !end</code></pre>

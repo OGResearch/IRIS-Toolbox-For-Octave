@@ -25,16 +25,21 @@
 % commands for typesetting the table caption and subcaption; you can use
 % Inf for either to indicate the default format.
 %
+% * `'colFootnote='` [ cell | *empty* ] - Footnotes for individual dates in
+% the headings of the columns, of column names in user-defined tables; the
+% option must be a cell array with date-footnote pairs.
+%
+% * `'colHighlight='` [ numeric | *empty* ] - Dates for which the entire
+% corresponding columns will be highlighted; because of a bug in the LaTex
+% package `colortbl`, this option cannot be combined with the option
+% `'rowHighlight='` in [`report/series`](report/series).
+%
 % * `'colStruct='` [ struct | *empty* ] - User-defined structure of the
 % table columns; use of this option disables `'range='`.
 %
 % * `'colWidth='` [ numeric | *`NaN`* ] - (Inheritable from parent objects)
 % Width, or a vector of widhts, of the table columns in `em `units; `NaN`
 % means the width of the column will adjust automatically.
-%
-% * `'colFootnote='` [ cell | *empty* ] - Footnotes for individual dates in
-% the headings of the columns, of column names in user-defined tables; the
-% option must be a cell array with date-footnote pairs.
 %
 % * `'headlineJust='` [ *`'c'`* | `'l'` | `'r'` ] - Horizontal
 % justification of the headline entries (individual dates or user-defined
@@ -45,11 +50,6 @@
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the table title; only
 % shows if the title is non-empty.
-%
-% * `'highlight='` [ numeric | *empty* ] - Dates for which the entire
-% columns will be highlighted; because of a bug in the LaTex package
-% `colortbl`, this option cannot be combined with the option
-% `'rowHighlight='` in [`report/series`](report/series).
 %
 % * `'long='` [ true | *`false`* ] - (Inheritable from parent objects) If
 % true, the table may stretch over more than one page.

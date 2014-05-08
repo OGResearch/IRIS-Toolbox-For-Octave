@@ -208,7 +208,7 @@ for iLoop = 1 : nLoop
         Cii = zeros(0,1);
         Zii = zeros(0,ny*p);
     end
-    
+
     if ~isempty(jii)
         Z = [eye(ny,ny*p);Zii];
         D = [zeros(ny,1);Cii];

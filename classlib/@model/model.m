@@ -21,7 +21,7 @@ classdef model < modelobj & estimateobj
     % * [`autocaption`](model/autocaption) - Create captions for graphs of model variables or parameters.
     % * [`autoexogenise`](model/autoexogenise) - Get or set variable/shock pairs for use in autoexogenised simulation plans.
     % * [`comment`](model/comment) - Get or set user comments in an IRIS object.
-    % * [`eig`](model/eig) - Eigenvalues of the model transition matrix.
+    % * [`eig`](model/eig) - Eigenvalues of the transition matrix.
     % * [`findeqtn`](model/findeqtn) - Find equations by the labels.
     % * [`findname`](model/findname) - Find names of variables, shocks, or parameters by their descriptors.
     % * [`get`](model/get) - Query model object properties.
