@@ -7,8 +7,10 @@ actDbase(isnan(actDbase)) = 0 ;
 if ismatlab
     expDbase = csvread('testDailyCsv.csv', 1, 1) ;
 else
-    expDbase = csvread('testDailyCsv.csv') ;
-    expDbase = real(reshape(expDbase(6:end),4,[]))';
+    expDbase = mytextscan(strfun.converteols(file2char('testDailyCsv.csv')),'',-1, ...
+            'delimiter',',','whiteSpace',' ', ...
+            'headerLines',1,'headerColumns',1,'emptyValue',0, ...
+            'commentStyle','matlab','collectOutput',true){1};
 end
 
 myassert(actDbase, expDbase) ;
