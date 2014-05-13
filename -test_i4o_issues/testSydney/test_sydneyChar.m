@@ -29,5 +29,4 @@ for i = 1 : nFunc
 end
 
 absTol = eps()^(2/3);
-%myassert(actValue, expValue, absTol);
-assert(actValue, expValue, absTol);
+myassert(actValue, expValue, absTol);
