@@ -8,22 +8,24 @@ else
     end
     bix = 2 + isnumeric(varargin{2});
     hlx = bix + find(strcmpi(varargin(bix:2:end),'headerlines'))*2 - 2;
-    if ~isempty(hlx) && varargin{hlx+1} == 0
+    numHL = 0;
+    if ~isempty(hlx)
+        numHL = varargin{hlx+1};
         varargin(hlx:hlx+1) = [];
     end
     numHC = 0;
     hcx = bix + find(strcmpi(varargin(bix:2:end),'headercolumns'))*2 - 2;
     if ~isempty(hcx)
-        numHC = varargin{hlx+1};
+        numHC = varargin{hcx+1};
         varargin(hcx:hcx+1) = [];
     end
     cox = bix + find(strcmpi(varargin(bix:2:end),'collectoutput'))*2 - 2;
     data = textscan(fid,varargin{:});
     if numHC > 0
         if varargin{cox+1}
-            data = {data{1}(:,1+numHC:end)};
+            data = {data{1}(1+numHL:end,1+numHC:end)};
         else
-            data = data(:,1+numHC:end);
+            data = data(1+numHL:end,1+numHC:end);
         end
     end
 end
