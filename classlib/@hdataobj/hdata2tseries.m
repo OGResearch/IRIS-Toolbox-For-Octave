@@ -59,6 +59,8 @@ for i = 1 : length(solId)
         D.(jName) = template;
         D.(jName).start = xStart;
         D.(jName).data = This.data.(jName);
+        s = size(D.(jName).data);
+        D.(jName).Comment = repmat({''},[1,s(2:end)]);
         D.(jName) = mytrim(D.(jName));
         if isempty(This.Contrib)
             D.(jName) = comment(D.(jName),nameLabel{pos});
@@ -82,6 +84,8 @@ end
 
 
 %**************************************************************************
+
+
     function doThrowInternal()
         utils.error('hdataobj:hdata2tseries','#Internal');
     end % doThrowInternal()

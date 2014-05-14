@@ -475,6 +475,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkNanExog()
         % Check for NaNs in exogenised variables.
         inx1 = [use.yAnchors;use.xAnchors];
@@ -492,6 +494,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkDetermined()
         if nnzexog(opt.plan) ~= nnzendog(opt.plan)
             utils.warning('model', ...
@@ -503,6 +507,8 @@ end
 
 
 %**************************************************************************
+
+
     function doAssignOutput()
         n = size(use.w,3);
         xf = [nan(nf,1,n),use.w(1:nf,:,:)];
@@ -530,6 +536,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkConflicts()
         % The option `'contributions='` option cannot be used with the
         % `'plan='` option or with multiple parameterisations.
@@ -547,6 +555,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkNonlinConflicts()
         if lastEndogU > 0 && lastEndogA > 0
             utils.error('model', ...
@@ -557,6 +567,8 @@ end
 
 
 %**************************************************************************
+
+
     function doGetData()        
         % Get current initial condition for the transformed state vector,
         % and current shocks.
