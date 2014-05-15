@@ -9,3 +9,4 @@ octave-workspace
 -test_i4o_issues/testReport/oct-*
 -test_i4o_issues/testClassdef/testClassdef_anotherCase.zip
 -test_i4o_issues/testClassdef/testClassdef_20140307.zip
+*.c~
