@@ -16,6 +16,15 @@ t_balance_job balance_job = none;
 
 /*ordering criteria*/
 int
+order_eigs1 (const double* alphar, const double* alphai, const double* beta)
+
+{
+  return ((*alphar * *alphar + *alphai * *alphai < (1.0+toler) * *beta * *beta)
+          && (*alphar * *alphar + *alphai * *alphai > (1.0-toler) * *beta * *beta)) ;
+
+}
+
+int
 order_eigs (const double* alphar, const double* alphai, const double* beta)
 
 {
@@ -24,7 +33,8 @@ order_eigs (const double* alphar, const double* alphai, const double* beta)
 
 /*wrapper for the DGGES.F and DGGBAL.F functions*/
 void
-mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n, int *info)
+mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n,
+        DGGESCRIT crit, int *info)
 
 {
   // call dggbal to balance AA and BB
@@ -60,14 +70,14 @@ mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n, int *info)
   beta = mxCalloc(ld, sizeof(double));
   bwork = mxCalloc(ld, sizeof(int));
 
-  LAPACK_dgges("V", "V", "S", order_eigs, &ld, AA, &ld, BB, &ld,
+  LAPACK_dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
 	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       &work_query, &lwork, bwork, info);
 
   lwork = (int)work_query;
   work = mxCalloc(lwork, sizeof(double));
 
-  LAPACK_dgges("V", "V", "S", order_eigs, &ld, AA, &ld, BB, &ld,
+  LAPACK_dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
 	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       work, &lwork, bwork, info);
 }
@@ -91,7 +101,7 @@ mexFunction (int nlhs, mxArray *plhs[],
   /*INPUTS*/
   double *AA, *BB;
   /*OUTPUTS*/
-  double *SS, *TT, *QQ, *ZZ;
+  double *SS, *TT, *QQ, *ZZ, *QQ0, *ZZ0, *tmp;
   
   /*check number of inputs and outputs*/
   if ((nlhs > 4) || (nlhs == 0) || (nrhs < 2) || (nrhs > 3))
@@ -127,6 +137,9 @@ mexFunction (int nlhs, mxArray *plhs[],
   TT = mxGetPr (plhs[1]);
   QQ = mxGetPr (plhs[2]);
   ZZ = mxGetPr (plhs[3]);
+  QQ0 = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
+  ZZ0 = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
+  tmp = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
 
   /*copy AA and BB to SS and TT*/
   memcpy (SS, AA, sizeof(double)*m1*m1);
@@ -134,7 +147,21 @@ mexFunction (int nlhs, mxArray *plhs[],
 
   ndim = m1;
 
-  mydgges (SS, TT, QQ, ZZ, &ndim, &info);
+  mydgges (SS, TT, QQ0, ZZ0, &ndim, order_eigs, &info);
+
+  /*error?*/
+  if (info != 0 && info != (ndim + 3))
+    mexErrMsgIdAndTxt ("mydgges:BadInfo","There was an error in DGGES!");
+
+  /*reordering failed?*/
+  if (info == ndim + 3)
+    mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
+
+  /*copy QQ0 and ZZ0 to QQ and ZZ*/
+  memcpy (QQ, QQ0, sizeof(double)*m1*m1);
+  memcpy (ZZ, ZZ0, sizeof(double)*m1*m1);
+
+  mydgges (SS, TT, QQ, ZZ, &ndim, order_eigs1, &info);
   
   /*error?*/
   if (info != 0 && info != (ndim + 3))
@@ -143,6 +170,28 @@ mexFunction (int nlhs, mxArray *plhs[],
   /*reordering failed?*/
   if (info == ndim + 3)
     mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
+
+  /*multiply QQ and QQ0*/
+  memcpy (tmp, QQ, sizeof(double)*m1*m1);
+  for (n1 = 0 ; n1 < m1 ; n1++ ) {
+    for (n2 = 0 ; n2 < m1 ; n2++ ) {
+      QQ[m1*n1+n2] = 0;
+      for (m2 = 0 ; m2 < m1 ; m2++ ) {
+        QQ[m1*n1+n2] += tmp[m1*n1+m2] * QQ0[m1*m2+n2];
+      }
+    }
+  }
+
+  /*multiply ZZ and ZZ0*/
+  memcpy (tmp, ZZ, sizeof(double)*m1*m1);
+  for (n1 = 0 ; n1 < m1 ; n1++ ) {
+    for (n2 = 0 ; n2 < m1 ; n2++ ) {
+      ZZ[m1*n1+n2] = 0;
+      for (m2 = 0 ; m2 < m1 ; m2++ ) {
+        ZZ[m1*n1+n2] += tmp[m1*n1+m2] * ZZ0[m1*m2+n2];
+      }
+    }
+  }
   
   /*transpose QQ*/
   for (n1 = 0 ; n1 < m1 ; n1++ ) {
