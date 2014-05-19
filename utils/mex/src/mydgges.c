@@ -8,8 +8,9 @@
 // interface between C and FORTRAN
 //////////////////////////////////
 
-/*tolerance for the ordering criteria*/
+/*default tolerance for the ordering criteria*/
 double toler = 1e-8;
+
 /*balancing jobs*/
 typedef enum {none, permute_only, scale_only, permute_and_scale} t_balance_job;
 t_balance_job balance_job = none;
@@ -21,7 +22,6 @@ order_eigs1 (const double* alphar, const double* alphai, const double* beta)
 {
   return ((*alphar * *alphar + *alphai * *alphai < (1.0+toler) * *beta * *beta)
           && (*alphar * *alphar + *alphai * *alphai > (1.0-toler) * *beta * *beta)) ;
-
 }
 
 int
@@ -147,6 +147,7 @@ mexFunction (int nlhs, mxArray *plhs[],
 
   ndim = m1;
 
+  /*first call to DGGES -- leading block has |eigVals| >= 1 + tol*/
   mydgges (SS, TT, QQ0, ZZ0, &ndim, order_eigs, &info);
 
   /*error?*/
@@ -161,6 +162,7 @@ mexFunction (int nlhs, mxArray *plhs[],
   memcpy (QQ, QQ0, sizeof(double)*m1*m1);
   memcpy (ZZ, ZZ0, sizeof(double)*m1*m1);
 
+  /*second call to DGGES -- leading block has ||eigVals|-1| < tol*/
   mydgges (SS, TT, QQ, ZZ, &ndim, order_eigs1, &info);
   
   /*error?*/

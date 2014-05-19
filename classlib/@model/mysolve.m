@@ -191,7 +191,7 @@ end
                 eigVal = -ordeig(SS,TT);
             else
                 lastwarn('');
-                [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol); % leading block has all |lambda|>=1+eigValTol
+                [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol); % leading block has all ||lambda|-1|<eigValTol
                 isEmptyWarn = isempty(lastwarn());
                 % Non-ordered inverse eigvals.
                 eigVal = -eig(SS,TT);
