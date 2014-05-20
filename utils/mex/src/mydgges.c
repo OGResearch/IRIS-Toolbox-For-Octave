@@ -1,7 +1,11 @@
 /* [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol) */
 
+#if !defined(_WIN32)
+#define dgemm dgemm_
+#define dgges dgges_
+#endif
+
 #include "mex.h"
-#include "cpplapack.h"
 #include "math.h"
 #include "string.h"
 
@@ -11,9 +15,11 @@
 /*default tolerance for the ordering criteria*/
 double toler = 1e-8;
 
+/*type definition needed for DGGES criteria*/
+typedef int (*DGGESCRIT)(const double*, const double*, const double*);
+
 /*balancing jobs*/
-typedef enum {none, permute_only, scale_only, permute_and_scale} t_balance_job;
-t_balance_job balance_job = none;
+//typedef enum {none, permute_only, scale_only, permute_and_scale} t_balance_job;
 
 /*ordering criteria*/
 int
@@ -33,23 +39,23 @@ order_eigs (const double* alphar, const double* alphai, const double* beta)
 
 /*wrapper for the DGGES.F and DGGBAL.F functions*/
 void
-mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n,
+mydgges(double *AA, double *BB, double *QQ, double *ZZ, int n,
         DGGESCRIT crit, int *info)
 
 {
+  /*balancing is gonna be added later, i hope :) */
+  /*
   // call dggbal to balance AA and BB
   const char* job =
-    (balance_job == none)? "N" :
-    (balance_job == permute_only)? "P" :
-    (balance_job == scale_only)? "S" : "B";
+    (bal_job == none)? "N" :
+    (bal_job == permute_only)? "P" :
+    (bal_job == scale_only)? "S" : "B";
   int ilo;
   int ihi;
   double *lscale;
   double *rscale;
   double *ggbalwork;
-  int ld;
 
-  ld = (int)*n;
   lscale = mxCalloc(ld, sizeof(double));
   rscale = mxCalloc(ld, sizeof(double));
   ggbalwork = mxCalloc(ld*6, sizeof(double));
@@ -57,11 +63,13 @@ mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n,
   LAPACK_dggbal(job, &ld, AA, &ld, BB, &ld, &ilo, &ihi,
 		lscale, rscale, ggbalwork, info);
 
-  
+  mxFree(ggbalwork);
+  */
+
   double *alphar, *alphai, *beta;
   double work_query;
   int sdim;
-  double *work;
+  int ld = n;
   int *bwork;
   int lwork = -1;
 
@@ -70,22 +78,27 @@ mydgges(double *AA, double *BB, double *QQ, double *ZZ, double *n,
   beta = mxCalloc(ld, sizeof(double));
   bwork = mxCalloc(ld, sizeof(int));
 
-  LAPACK_dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
+  dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
 	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       &work_query, &lwork, bwork, info);
 
   lwork = (int)work_query;
+  double *work;
   work = mxCalloc(lwork, sizeof(double));
 
-  LAPACK_dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
+  dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
 	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       work, &lwork, bwork, info);
+
+  mxFree(work);
+  mxFree(alphar);
+  mxFree(alphai);
+  mxFree(beta);
+  mxFree(bwork);
 }
 
 // interface between Octave and C
 /////////////////////////////////
-
-mxArray* mxTranspose(const mxArray *, int);
 
 void
 mexFunction (int nlhs, mxArray *plhs[],
@@ -93,9 +106,9 @@ mexFunction (int nlhs, mxArray *plhs[],
 
 {
   /*dimensions of input matrices*/
-  unsigned int m1, n1, m2, n2;
+  size_t m1, n1, m2, n2;
   /*dimension var for DGGES*/
-  double ndim;
+  int ndim;
   /*DGGES information*/
   int info;
   /*INPUTS*/
@@ -107,7 +120,7 @@ mexFunction (int nlhs, mxArray *plhs[],
   if ((nlhs > 4) || (nlhs == 0) || (nrhs < 2) || (nrhs > 3))
     mexErrMsgTxt ("Number of inputs or outputs is wrong! Must be 2 or 3 inputs\
   and not more than 4 outputs.");
-  
+
   /*check dimensions of input matrices*/
   m1 = mxGetM (prhs[0]);
   n1 = mxGetN (prhs[0]);
@@ -137,18 +150,20 @@ mexFunction (int nlhs, mxArray *plhs[],
   TT = mxGetPr (plhs[1]);
   QQ = mxGetPr (plhs[2]);
   ZZ = mxGetPr (plhs[3]);
-  QQ0 = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
-  ZZ0 = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
-  tmp = mxGetPr (mxCreateDoubleMatrix (m1, m1, mxREAL));
+  QQ0 = mxCalloc (m1*m1,sizeof(double));
+  ZZ0 = mxCalloc (m1*m1,sizeof(double));
+  tmp = mxCalloc (m1*m1,sizeof(double));
 
   /*copy AA and BB to SS and TT*/
   memcpy (SS, AA, sizeof(double)*m1*m1);
   memcpy (TT, BB, sizeof(double)*m1*m1);
 
-  ndim = m1;
+  /*cast the dimension as int*/
+  ndim = (int)m1;
 
   /*first call to DGGES -- leading block has |eigVals| >= 1 + tol*/
-  mydgges (SS, TT, QQ0, ZZ0, &ndim, order_eigs, &info);
+  /*AA = QQ0*SS*ZZ0', BB = QQ0*TT*ZZ0'*/
+  mydgges (SS, TT, QQ0, ZZ0, ndim, order_eigs, &info);
 
   /*error?*/
   if (info != 0 && info != (ndim + 3))
@@ -157,13 +172,10 @@ mexFunction (int nlhs, mxArray *plhs[],
   /*reordering failed?*/
   if (info == ndim + 3)
     mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
-
-  /*copy QQ0 and ZZ0 to QQ and ZZ*/
-  memcpy (QQ, QQ0, sizeof(double)*m1*m1);
-  memcpy (ZZ, ZZ0, sizeof(double)*m1*m1);
 
   /*second call to DGGES -- leading block has ||eigVals|-1| < tol*/
-  mydgges (SS, TT, QQ, ZZ, &ndim, order_eigs1, &info);
+  /*AA = QQ0*QQ*SS*ZZT*ZZ0T, BB = QQ0*QQ*TT*ZZT*ZZ0T*/
+  mydgges (SS, TT, QQ, ZZ, ndim, order_eigs1, &info);
   
   /*error?*/
   if (info != 0 && info != (ndim + 3))
@@ -172,35 +184,22 @@ mexFunction (int nlhs, mxArray *plhs[],
   /*reordering failed?*/
   if (info == ndim + 3)
     mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
-
-  /*multiply QQ and QQ0*/
-  memcpy (tmp, QQ, sizeof(double)*m1*m1);
-  for (n1 = 0 ; n1 < m1 ; n1++ ) {
-    for (n2 = 0 ; n2 < m1 ; n2++ ) {
-      QQ[m1*n1+n2] = 0;
-      for (m2 = 0 ; m2 < m1 ; m2++ ) {
-        QQ[m1*n1+n2] += tmp[m1*n1+m2] * QQ0[m1*m2+n2];
-      }
-    }
-  }
-
-  /*multiply ZZ and ZZ0*/
-  memcpy (tmp, ZZ, sizeof(double)*m1*m1);
-  for (n1 = 0 ; n1 < m1 ; n1++ ) {
-    for (n2 = 0 ; n2 < m1 ; n2++ ) {
-      ZZ[m1*n1+n2] = 0;
-      for (m2 = 0 ; m2 < m1 ; m2++ ) {
-        ZZ[m1*n1+n2] += tmp[m1*n1+m2] * ZZ0[m1*m2+n2];
-      }
-    }
-  }
   
-  /*transpose QQ*/
-  for (n1 = 0 ; n1 < m1 ; n1++ ) {
-    for (n2 = 0 ; n2 < n1 ; n2++ ) {
-      ndim = QQ[(m1*n1) + n2];
-      QQ[(m1*n1) + n2] = QQ[(m1*n2) + n1];
-      QQ[(m1*n2) + n1] = ndim;
-    }
-  }
+  /*in Matlab/Octave's notation Q*AA*Z = SS, which means that*/
+  /*Q = QQT*QQ0T and Z = ZZ0*ZZ*/
+
+  /*multiply QQT and QQ0T*/
+  double alpha = 1.0, beta = 0.0;
+  memcpy (tmp, QQ, sizeof(double)*ndim*ndim);
+  dgemm("T","T",&ndim,&ndim,&ndim,&alpha,tmp,&ndim,QQ0,&ndim,&beta,QQ,&ndim);
+  
+  /*multiply ZZ0 and ZZ*/
+  memcpy (tmp, ZZ, sizeof(double)*ndim*ndim);
+  dgemm("N","N",&ndim,&ndim,&ndim,&alpha,ZZ0,&ndim,tmp,&ndim,&beta,ZZ,&ndim);
+
+  /*deallocate memory*/
+  mxFree(tmp);
+  mxFree(QQ0);
+  mxFree(ZZ0);
+
 }
