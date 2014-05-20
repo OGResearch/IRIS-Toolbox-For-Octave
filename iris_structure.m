@@ -55,13 +55,24 @@ scriptIx = ~dirIx & ~cellfun(@isempty,regexp({fldrLst.name},'\.m$','once'));
 if iscls
     clsName = regexp(fullFldr,'\w+$','match','once');
     clsName = [fromPkg, clsName];
+    hasFileOnly = false;
+    % for built-in classes we need to record only those methods which are overloaded/implemented in Iris
+    if any(strcmp(clsName,{'cell','struct'}))
+        hasFileOnly = true;
+    end
     metaObj = meta.class.fromName(clsName);
     metLst = {metaObj.MethodList.Name};
+    metIx = cellfun(@(x)strcmp(x.Name,clsName),{metaObj.MethodList.DefiningClass});
+    metLst = metLst(metIx);
+    fIx = 1;
     for ix = 1 : numel(metLst)
-        fStruct.fldrStruct.files(ix).name = metLst{ix};
-        fStruct.fldrStruct.files(ix).isMeth = true;
-        [fStruct.fldrStruct.files(ix).hasFile,ix2del] = ...
-            ismember([metLst{ix},'.m'],{fldrLst(scriptIx).name});
+        [hasFile,ix2del] = ismember([metLst{ix},'.m'],{fldrLst(scriptIx).name});
+        if (hasFileOnly && hasFile) || ~hasFileOnly
+            fStruct.fldrStruct.files(fIx).name = metLst{ix};
+            fStruct.fldrStruct.files(fIx).isMeth = true;
+            fStruct.fldrStruct.files(fIx).hasFile = hasFile;
+            fIx = fIx + 1;
+        end
         if ix2del > 0
             ixs = find(scriptIx);
             scriptIx(ixs(ix2del)) = false;
