@@ -96,13 +96,18 @@ if isequal(This.options.legend,true) ...
     set(lg,'color','white');
 end
 
-if ~isempty(This.caption)
+% Add title and/or subtitle to the graph. If the legend is located
+% NorthOutside, create the title in the legend axes object.
+titleCell = {This.title,This.subtitle};
+ixEmpty = cellfun(@isempty,titleCell);
+titleCell(ixEmpty) = [];
+if ~isempty(titleCell)
     if ~isempty(lg) && strcmpi(get(lg,'Location'),'northOutside')
         tt = get(lg,'title');
-        set(tt,'string',This.caption,'interpreter','none', ...
+        set(tt,'string',titleCell,'interpreter','none', ...
             'visible','on');
     else
-        title(This.caption,'interpreter','none');
+        title(titleCell,'interpreter','none');
     end
 end
 
@@ -145,6 +150,8 @@ end
 
 
 %**************************************************************************
+
+
     function doOpenRhsAxes()
         Ax = plotyy(Ax,NaN,NaN,NaN,NaN);
         delete(get(Ax(1),'children'));
@@ -153,6 +160,8 @@ end
 
 
 %**************************************************************************
+
+
     function doHoldAll()
         % This is `hold all`.
         for iAx = Ax(:).'
@@ -175,6 +184,8 @@ end
 
 
 %**************************************************************************
+
+
     function doPlot()
         for ii = 1 : nChild
             if lhsInx(ii)
@@ -189,6 +200,8 @@ end
 
 
 %**************************************************************************
+
+
     function doIsLhsOrRhsOrAnnotate()        
         for ii = 1 : nChild
             ch = This.children{ii};
@@ -206,6 +219,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkPlotFunc()
         invalid = {};
         for ii = find(lhsInx | rhsInx)
@@ -225,6 +240,8 @@ end
 
 
 %**************************************************************************
+
+
     function doLegendLocation()
         if strcmpi(This.options.legendlocation,'best')
             This.options.legendlocation = 'South';

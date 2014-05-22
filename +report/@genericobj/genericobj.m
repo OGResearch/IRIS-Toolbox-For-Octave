@@ -148,21 +148,57 @@ classdef genericobj < handle
         
         
         function Title = get.title(This)
-            if ischar(This.caption)
-                Title = This.caption;
-            elseif iscellstr(This.caption) && ~isempty(This.caption)
-                Title = This.caption{1};
-            else
+            % This.caption can be one of the following:
+            % * 'title'
+            % * @auto
+            % * {'title','subtitle'}
+            % * {@auto,'subtitle'}
+            Title = This.caption;
+            if ischar(Title)
+                return
+            end
+            % {Title,Subtitle}
+            if iscell(Title)
+                try
+                    Title = Title{1};
+                catch
+                    Title = '';
+                    return
+                end
+            end
+            % @auto or {@auto,Subtitle}
+            if isequal(Title,@auto)
+                try
+                    if is.tseries(This.data{1})
+                        x = comment(This.data{1});
+                        Title = x{1};
+                    end
+                catch
+                    try
+                        ch = This.children{1};
+                        if is.tseries(ch.data{1})
+                            x = comment(ch.data{1});
+                            Title = x{1};
+                        end
+                    catch
+                        Title = '';
+                        return
+                    end
+                end
+            end
+            % Return empty string if everything else fails.
+            if ~ischar(Title)
                 Title = '';
             end
         end % get.title()
         
         
-        function Subtitle = get.subtitle(This)
-            if iscellstr(This.caption) && length(This.caption) > 1
-                Subtitle = This.caption{2};
-            else
-                Subtitle = '';
+        function Sub = get.subtitle(This)
+            Sub = '';
+            if iscell(This.caption) ...
+                    && length(This.caption) > 1 ...
+                    && ischar(This.caption{2})
+                Sub = This.caption{2};
             end
         end % get.subtitle()
         
