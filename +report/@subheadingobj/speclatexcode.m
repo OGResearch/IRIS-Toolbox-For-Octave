@@ -12,16 +12,11 @@ function C = speclatexcode(This)
 % TODO: Check if `'justify='` `'centre'` works.
 
 par = This.parent;
-range = par.options.range;
 totalNCol = par.nlead + length(par.options.range);
-vLine = par.options.vline;
-vLine(vLine < range(1)-1 | vLine > range(end)) = [];
-vLine = min(vLine);
-isVLine = ~isempty(vLine);
 
 if This.options.stretch
-    if strncmpi(This.options.justify,'l',1) && isVLine
-        nCol = par.nlead + round(vLine - range(1));
+    if strncmpi(This.options.justify,'l',1) && ~isempty(par.vline)
+        nCol = par.nlead + min(par.vline);
     else
         nCol = totalNCol;
     end

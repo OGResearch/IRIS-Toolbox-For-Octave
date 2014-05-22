@@ -21,13 +21,9 @@ if Level > 0
 end
 
 fprintf('%s',shortclass(This));
-if ~isempty(This.caption)
-    if iscell(This.caption)
-        cap = This.caption{1};
-    else
-        cap = This.caption;
-    end
-    fprintf(' ''%s''',cap);
+title = This.title;
+if ~isempty(title)
+    fprintf(' ''%s''',title);
 end
 fprintf('\n');
 

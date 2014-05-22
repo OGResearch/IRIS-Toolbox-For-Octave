@@ -117,8 +117,8 @@ for i = 1 : nPer
     if any(This.vline == i)
         col = [col,'|']; %#ok<AGROW>
     end    
-    
-    % Second (main) line.
+
+    % Second=Main line.
     s = ['&\multicolumn{1}{',col,'}{', ...
         report.tableobj.makebox(s,'',colW,This.options.headlinejust,''), ...
         '}'];
