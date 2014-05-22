@@ -57,8 +57,9 @@ function varargout = bwf(X,Order,varargin)
 % `'infoSet='` [ `1` | *`2`* ] - Information set assumption used in the
 % filter: `1` runs a one-sided filter, `2` runs a two-sided filter.
 %
-% * `'Lambda='` [ numeric | *`(10 freq)^Order`* ] - Smoothing parameter;
+% * `'Lambda='` [ numeric | *`@auto`* ] - Smoothing parameter;
 % needs to be specified for tseries objects with indeterminate frequency.
+% See Description for default values.
 %
 % * `'level='` [ tseries ] - Time series with soft and hard tunes on the
 % level of the trend.
@@ -71,6 +72,17 @@ function varargout = bwf(X,Order,varargin)
 %
 % Description
 % ============
+%
+% Default smoothing parameters
+% ------------------------------
+%
+% If the user does not specify the smoothing parameter using the
+% `'lambda='` option (or reassigns the default `@auto`), a default value is
+% used. The default value is based on common practice and can be calculated
+% using the date frequency of the input time series as $\lambda = (10 \cdot
+% f)^n$, where $f$ is the frequency (yearly=1, half-yearly=2, quarterly=4,
+% bi-monthly=6, monthly=12), and $n$ is the order of the filter, determined
+% by the input parameter `Order`.
 %
 % Example
 % ========
@@ -99,7 +111,7 @@ if isempty(Range)
     return
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = myfilter(X,Range,Order,varargin{:});
 

@@ -59,8 +59,9 @@ function varargout = hpf(X,varargin)
 % `'infoSet='` [ `1` | *`2`* ] - Information set assumption used in the
 % filter: `1` runs a one-sided filter, `2` runs a two-sided filter.
 %
-% * `'lambda='` [ numeric | *`100 freq^2`* ] - Smoothing parameter; needs
-% to be specified for tseries objects with indeterminate frequency.
+% * `'lambda='` [ numeric | *`@auto`* ] - Smoothing parameter; needs
+% to be specified for tseries objects with indeterminate frequency. See
+% Description for default values.
 %
 % * `'level='` [ tseries ] - Time series with hard tunes and soft tunes on
 % the level of the trend.
@@ -159,11 +160,11 @@ function varargout = hpf(X,varargin)
 % ------------------------------
 %
 % If the user does not specify the smoothing parameter using the
-% `'lambda='` option, a default value is used. The default value is based
-% on common practice and can be calculated using the date frequency of the
-% input time series as $\lambda = 100 \cdot f^2$, where $f$ is the
-% frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6,
-% monthly=12). This gives the following default values:
+% `'lambda='` option (or reassigns the default `@auto`), a default value is
+% used. The default value is based on common practice and can be calculated
+% using the date frequency of the input time series as $\lambda = 100 \cdot
+% f^2$, where $f$ is the frequency (yearly=1, half-yearly=2, quarterly=4,
+% bi-monthly=6, monthly=12). This gives the following default values:
 %
 % * 100 for yearly time series (cut-off periodicity of 19.79 years);
 % * 400 for half-yearly time series (cut-off periodicity of 14.02 years);
