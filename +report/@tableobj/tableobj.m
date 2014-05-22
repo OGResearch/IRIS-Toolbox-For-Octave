@@ -1,8 +1,8 @@
 classdef tableobj < report.tabularobj
     
-    properties (Dependent)
-        range
-    end
+    %properties (Dependent)
+    %    range
+    %end
     
     methods
         
@@ -17,7 +17,7 @@ classdef tableobj < report.tabularobj
                 'datejustify',[], ...
                 @(x) isempty(x) || (ischar(x) && any(strncmpi(x,{'c','l','r'},1))), ...
                 true, ...
-                'colfootnote,columnfootnote',{},@(x) isempty(x) ...
+                'colfootnote',{},@(x) isempty(x) ...
                 || (iscell(x) && all(cellfun(@is.numericscalar,x(1:2:end))) && iscellstr(x(2:2:end))), ...
                 true, ...
                 'dateformat',irisget('dateformat'), ...
@@ -29,7 +29,8 @@ classdef tableobj < report.tabularobj
                 'range',[],@isnumeric,true, ...
                 'separator','\medskip\par',@ischar,true, ...
                 'typeface','',@ischar,false, ...
-                'vline',[],@isnumeric,true, ...
+                'vlineafter,vline',[],@isnumeric,true, ...
+                'vlinebefore',[],@isnumeric,true, ...
                 }];
             This.nlead = 3;
         end % table()
@@ -44,13 +45,30 @@ classdef tableobj < report.tabularobj
                     ['In table(), either ''range='' or ''colstruct='' ', ...
                     'must be specified.']);
             end
+            
+            % The option `'range='` can include dates with imag parts: `+1i` means a
+            % vertical line drawn after the date, `-1i` means a vertical line drawn
+            % before the date.
+            rng = This.options.range(:).';
+            inxBefore = imag(rng) < 0;
+            inxAfter = imag(rng) > 0;
+            rng = real(rng);
+            This.options.vlinebefore = ...
+                [This.options.vlinebefore(:).', ...
+                rng(inxBefore)];
+            This.options.vlineafter = ...
+                [This.options.vlineafter(:).', ...
+                rng(inxAfter)];
+            This.options.range = rng;
+            
             isDates = isempty(This.options.colstruct);
             if ~isDates
-                ncol = length(This.options.colstruct);
-                This.options.range = 1 : ncol;
-                for i = 1 : ncol
+                nCol = length(This.options.colstruct);
+                This.options.range = 1 : nCol;
+                for i = 1 : nCol
                     if ischar(This.options.colstruct(i).name)
-                        This.options.colstruct(i).name = {NaN, ...
+                        This.options.colstruct(i).name = ...
+                            {NaN, ...
                             This.options.colstruct(i).name};
                     end
                 end
@@ -65,10 +83,16 @@ classdef tableobj < report.tabularobj
             
             % Find positions of vertical lines.
             This.vline = zeros(1,0);
-            for i = This.options.vline(:).'
+            for i = This.options.vlineafter(:).'
                 inx = datcmp(i,tmpRange);
                 if any(inx)
                     This.vline(1,end+1) = find(inx) - 1;
+                end
+            end
+            for i = This.options.vlinebefore(:).'
+                inx = datcmp(i,tmpRange);
+                if any(inx)
+                    This.vline(1,end+1) = find(inx) - 2;
                 end
             end
             
@@ -104,7 +128,7 @@ classdef tableobj < report.tabularobj
             elseif iscell(This.options.dateformat) ...
                     && length(This.options.dateformat) == 1
                 This.options.dateformat = [{NaN},This.options.dateformat];
-            end    
+            end
         end % setoptions()
         
         
