@@ -60,9 +60,9 @@ classdef reportobj < report.genericobj
             This = add(This,newObj,varargin{2:end});
         end
         
-        function This = table(This,varargin)
-            newObj = report.tableobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = table(This,varargin)
+            NewObj = report.tableobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
         function This = matrix(This,varargin)

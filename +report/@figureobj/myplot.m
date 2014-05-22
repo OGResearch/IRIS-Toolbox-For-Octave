@@ -20,8 +20,7 @@ This = myplot@report.basefigureobj(This);
 % Open new figure window
 %------------------------
 This.handle = figure('visible',visibleFlag);
-% Apply user-supplied figure options one by one so that we can capture the
-% erroneous ones.
+% Apply user-supplied figure options one by one so that we catch errors.
 if ~isempty(This.options.figureoptions)
     for i = 1 : 2 : length(This.options.figureoptions)
         try %#ok<TRYNC>

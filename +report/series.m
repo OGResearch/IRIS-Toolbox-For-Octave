@@ -11,8 +11,10 @@
 % * `P` [ struct ] - Report object created by the
 % [`report.new`](report/new) function.
 %
-% * `Cap` [ char ] - Caption used as a default legend entry in a graph,
-% or in the leading column in a table.
+% * `Cap` [ char | cellstr | `@auto` ] - Caption used as a default legend
+% entry in a graph, or in the leading column in a table; `@auto` means that
+% the first comment from the input tseries object, `X`, will be used for
+% the title.
 %
 % * `X` [ tseries ] - Input data that will be added to the current table or
 % graph.
@@ -82,10 +84,10 @@
 % Options for graph series
 % =========================
 %
-% * `'legend='` [ char | cellstr | `NaN` | *`Inf`* ] - Legend entries used
-% instead of the series caption and marks; Inf means the caption and marks
-% will be used to construct legend entries; NaN means the series will be
-% exluded from legend.
+% * `'legendEntry='` [ char | cellstr | `NaN` | *`@auto`* ] - Legend
+% entries used instead of the series caption and marks; `@auto` means the
+% caption and marks will be used to construct legend entries; `NaN` means
+% the series will be exluded from legend.
 %
 % * `'plotFunc='` [ `@area` | `@bar` | `@barcon` | *`@plot`* | `@plotcmp` |
 % `@plotpred` | `@stem` ] - (Inheritable from parent objects) Plot function
@@ -105,7 +107,7 @@
 % Description
 % ============
 %
-% Using the `'nan='`, `'inf='`, `'pureZero='` and `'printedZero='` options
+% Using the options `'nan='`, `'inf='`, `'pureZero='` and `'printedZero='`
 % -------------------------------------------------------------------------
 %
 % When specifying the LaTeX string for these options, bear in mind that the
@@ -114,7 +116,7 @@
 % formatting command allowed within a math mode. Most frequently, it would
 % be `'\textnormal{...}'`.
 %
-% Using the `'plotFunc='` option
+% Using the option `'plotFunc='`
 % -------------------------------
 %
 % When you set the option to `'plotpred'`, the input data `X` (second input

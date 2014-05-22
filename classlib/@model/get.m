@@ -292,6 +292,11 @@ function varargout = get(This,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+P = inputParser();
+P.addRequired('M',@is.model);
+P.addRequired('Query',@iscellstr);
+P.parse(This,varargin);
+
 %--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = get@getsetobj(This,varargin{:});

@@ -16,7 +16,7 @@ function saveasto(FileName,varargin)
 % under which they will save to the MAT file; in MAT files with just one
 % single variable stored in them, the name can be omitted.
 %
-% * `Var1`, `Var2` [ * ] - variables saved to the MAT file.
+% * `Var1`, `Var2` - Variables saved to the MAT file.
 %
 % Description
 % ============

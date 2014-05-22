@@ -3,7 +3,7 @@
 % Syntax
 % =======
 %
-%     P.graph(Caption,...)
+%     P.graph(Cap,...)
 %
 % Input arguments
 % ================
@@ -11,8 +11,10 @@
 % * `P` [ struct ] - Report object created by the
 % [`report.new`](report/new) function.
 %
-% * `Caption` [ char | cellstr ] - Title, or cell array with title and
-% subtitle, displayed at the top of the graph.
+% * `Cap` [ char | cellstr | `@auto` ] - Title, or cell array with title
+% and subtitle, displayed at the top of the graph; `@auto` means that the
+% first comment from the first child `series` object will be used for the
+% title.
 %
 % Options
 % ========

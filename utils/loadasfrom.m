@@ -9,7 +9,7 @@ function varargout = loadasfrom(FileName,varargin)
 % Abbreviated syntax (MAT files with one variable only)
 % ======================================================
 %
-%     [Var1,...] = loadasfrom(FileName)
+%     Var = loadasfrom(FileName)
 %
 % Input arguments
 % ================
@@ -25,7 +25,7 @@ function varargout = loadasfrom(FileName,varargin)
 % Output arguments
 % =================
 %
-% * `Var1`, `Var2` [ * ] - New variables assigned from the MAT file.
+% * `Var`, `Var1`, `Var2` - New variables assigned from the MAT file.
 %
 % Description
 % ============

@@ -17,9 +17,13 @@ flag = true(1,nArg);
 for iArg = 1 : nArg
     func = [];
     query = strtrim(lower(varargin{iArg}));
+
+    % Remove equal signs.
     if ~isempty(query) && query(end) == '='
         query(end) = '';
     end
+    
+    % Capture function calls inside queries.
     tokens = regexp(query,'^(\w+)\((\w+)\)$','once','tokens');
     if ~isempty(tokens) && ~isempty(tokens{1})
         func = tokens{1};
@@ -29,7 +33,7 @@ for iArg = 1 : nArg
     % Replace alternate names with the standard ones.
     query = This.myalias(query);
     
-    % Remove black spaces.
+    % Remove blank spaces.
     query = regexprep(query,'\s+','');
     
     % Call class specific get methods, `specget`.

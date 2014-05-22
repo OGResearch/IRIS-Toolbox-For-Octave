@@ -138,9 +138,11 @@ for i = 1 : length(List0)
         D.(List{i}) = value;
         msg = lastwarn();
         if ~isempty(msg)
-            fprintf(1,[ ...
-                '\n*** The above warning occurred when DBBATCH ', ...
-                'attempted to evaluate ''%s''.\n'],msg);
+            disp(' ');
+            utils.warning('dbase:dbbatch',[ ...
+                'The above warning occurred when dbbatch() ', ...
+                'attempted to evaluate ''%s''.'], ...
+                expr{i});
         end
     catch Error
         errorlist(end+(1:2)) = {expr{i},Error.message}; %#ok<AGROW>
@@ -149,27 +151,31 @@ end
 
 if ~isempty(errorlist)
     Flag = false;
-    utils.warning('data',[ ...
+    utils.warning('dbase:dbbatch',[ ...
         '\n*** Error evaluating DBBATCH expression ', ...
         '''%s''.\n\t Matlab says: %s'], ...
         errorlist{:});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doOptions()
         % Bkw compatibility.
         % Deprecated options 'merge' and 'append'.
         if ~isempty(opt.merge)
             opt.fresh = ~opt.merge;
-            utils.warning('dbase', ...
+            utils.warning('dbase:dbbatch', ...
                 ['The option ''merge='' is deprecated and ', ...
                 'will be removed from IRIS in a future version. ', ...
                 'Use ''fresh='' instead.']);
         elseif ~isempty(opt.append)
             opt.fresh = ~opt.append;
-            utils.warning('dbase', ...
+            utils.warning('dbase:dbbatch', ...
                 ['The option ''append='' is obsolete and ', ...
                 'will be removed from IRIS in a future version. ', ...
                 'Use ''fresh='' instead.']);
@@ -186,13 +192,17 @@ end
         if ischar(opt.classlist)
             opt.classlist = regexp(opt.classlist,'\w+','match');
         end
-    end % doOptions().
+    end % doOptions()
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function [List0,Tokens] = xxQuery(D,Opt)
 
 classl = Opt.classlist;
@@ -248,9 +258,12 @@ if ~isequal(freqf,Inf)
     Tokens = Tokens(index);
 end
 
-end % xxQuery().
+end % xxQuery()
+
 
 %**************************************************************************
+
+
 function [List1,Expr] = xxParse(NamePatt,ExprPatt,List0,Tokens)
 
 % Create new names from the pattern.
@@ -275,9 +288,12 @@ else
     Expr(1:length(List0)) = {''};
 end
 
-end % xxParse().
+end % xxParse()
+
 
 %**************************************************************************
+
+
 function C = xxParseOne(C,varargin)
 
 for i = 1 : length(varargin)
@@ -289,4 +305,4 @@ for i = 1 : length(varargin)
 end
 C = regexprep(C,'\$\d*','');
 
-end % xxParseOne().
+end % xxParseOne()

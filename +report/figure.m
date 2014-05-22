@@ -38,7 +38,7 @@
 % objects) LaTeX commands that will be inserted after the figure.
 %
 % * `'figureOptions='` [ cell | *empty* ] - Figure options that will be
-% applied to the figure handle after all graphs are drawn.
+% applied to the figure handle at opening.
 %
 % * `'figureScale='` [ numeric | *`0.85`* ] - (Inheritable from parent objects)
 % Scale of the figure in the LaTeX document.

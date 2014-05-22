@@ -227,14 +227,14 @@ end
 
 
 try
-    Doc = strrep(Doc,'$papersize$',opt.papersize);
+    Doc = strrep(Doc,'$papersize$',lower(opt.papersize));
 catch %#ok<*CTCH>
     Doc = strrep(Doc,'$papersize$','');
 end
 
 
 try
-    Doc = strrep(Doc,'$orientation$',opt.orientation);
+    Doc = strrep(Doc,'$orientation$',lower(opt.orientation));
 catch
     Doc = strrep(Doc,'$orientation$','');
 end
@@ -251,7 +251,13 @@ end
 
 
 try
-    Doc = strrep(Doc,'$textscale$',sprintf('%g',opt.textscale));
+    x = opt.textscale;
+    if length(x) == 1
+        s = sprintf('%g',x);
+    else
+        s = sprintf('{%g,%g}',x(1),x(2));
+    end
+    Doc = strrep(Doc,'$textscale$',s);
 catch
     Doc = strrep(Doc,'$textscale$','0.75');
 end

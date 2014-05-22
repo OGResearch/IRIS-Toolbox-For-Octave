@@ -9,6 +9,8 @@ function C = speclatexcode(This)
 
 %--------------------------------------------------------------------------
 
+C = '';
+
 % Create a figure window, and update the property `This.handle`.
 This = myplot(This);
 

@@ -70,9 +70,9 @@
 % * `'timeStamp='` [ char | *`'datestr(now())'`* ] - String printed in the
 % top-left corner of each page.
 %
-% * `'tempDir='` [ char | *`tempname(cd())`* ] - Directory for
-% storing temporary files; the directory is deleted at the end of the
-% execution if it's empty.
+% * `'tempDir='` [ char | function_handle | *`tempname(cd())`* ] -
+% Directory for storing temporary files; the directory is deleted at the
+% end of the execution if it's empty.
 %
 % * `'maxRerun='` [ numeric | *`5`* ] - Maximum number of times the \LaTeX\
 % compiler will be run to resolve cross-references, etc.
@@ -81,7 +81,9 @@
 % compiler will be run to resolve cross-references, etc.
 %
 % * `'textScale='` [ numeric | *`0.8`* ] - Percentage of the total page
-% area that will be used.
+% area that will be used; the value can be either a scalar (the same
+% percentage for the height and the width) or a 1-by-2 vector (the height
+% and the width).
 %
 % Description
 % ============

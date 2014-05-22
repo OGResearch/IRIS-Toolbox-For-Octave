@@ -4,7 +4,7 @@ function X = arf(X,A,Z,Range,varargin)
 % Syntax
 % =======
 %
-%     X = arf(X,A,Z,RANGE,...)
+%     X = arf(X,A,Z,Range,...)
 %
 % Input arguments
 % ================
@@ -15,10 +15,10 @@ function X = arf(X,A,Z,Range,varargin)
 % * `A` [ numeric ] - Vector of coefficients of the autoregressive
 % polynomial.
 %
-% * `Z` [ numeric | tseries ] - Exogenous input or constantn in the
+% * `Z` [ numeric | tseries ] - Exogenous input series or constant in the
 % autoregressive process.
 %
-% * `RANGE` [ numeric | Inf ] - Date range on which the new time series
+% * `Range` [ numeric | Inf ] - Date range on which the new time series
 % observations will be computed; `RANGE` does not include pre-sample
 % initial condition. `Inf` means the entire possible range will be used
 % (taking into account the length of pre-sample initial condition needed).
@@ -34,17 +34,17 @@ function X = arf(X,A,Z,Range,varargin)
 %
 % The autoregressive process has one of the following forms:
 %
-%     a1*x + a2*x(-1) + ... + an*x(-n) = z,
+%     A1*x + A2*x(-1) + ... + An*x(-n) = z,
 %
 % or
 %
-%     a1*x + a2*x(+1) + ... + an*x(+n) = z,
+%     A1*x + A2*x(+1) + ... + An*x(+n) = z,
 %
 % depending on whether the range is increasing (running forward in time),
-% or decreasing (running backward in time). The coefficients `a1`,...`an`
-% are gathered in the `A` vector,
+% or decreasing (running backward in time). The coefficients `A1`,...`An`
+% are gathered in the input vector `A`,
 %
-%     A = [a1,a2,...,an].
+%     A = [A1,A2,...,An].
 %
 % Example
 % ========
