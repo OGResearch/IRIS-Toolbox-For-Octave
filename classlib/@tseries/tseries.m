@@ -1,5 +1,5 @@
 classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
-        tseries < userdataobj
+        tseries < getsetobj & userdataobj 
     
     % tseries  Time series objects and functions.
     %
@@ -399,6 +399,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
         varargout = rangedata(varargin)
         varargout = replace(varargin)
         varargout = saveobj(varargin)
+        varargout = specget(varargin)
         varargout = stdize(varargin)
     end
     
