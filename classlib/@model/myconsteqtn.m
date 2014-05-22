@@ -16,7 +16,7 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % ##### MOSW:
 % replaceFunc = @doReplace; %#ok<NASGU>
 % Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${replaceFunc($0,$1)}');
-Eqtn = mosw.dregexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)',@doReplace,[0,1]);
+Eqtn = mosw.dregexprep(Eqtn,'\<x\(:,(\d+),t[^\)]*\)',@doReplace,[0,1]);
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
 Eqtn = sydney(Eqtn,{});

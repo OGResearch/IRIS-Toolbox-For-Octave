@@ -95,13 +95,13 @@ doNonlinEqtn();
             % Replace variables, shocks, and parameters.
             % ##### MOSW:
             % eqtn = regexprep(eqtn, ...
-            %     'x\(:,(\d+),t([\+\-]\d+)?\)','${replaceFunc($1,$2)}');
-            eqtn = mosw.dregexprep(eqtn,'x\(:,(\d+),t([\+\-]\d+)?\)', ...
+            %     '\<x\(:,(\d+),t([\+\-]\d+)?\)','${replaceFunc($1,$2)}');
+            eqtn = mosw.dregexprep(eqtn,'\<x\(:,(\d+),t([\+\-]\d+)?\)', ...
                 @doReplace,[1,2]);
             
             % Replace references to steady states.
             eqtn = regexprep(eqtn, ...
-                'L\(:,(\d+),t([\+\-]\d+)?\)','L(:,$1)');
+                '\<L\(:,(\d+),t([\+\-]\d+)?\)','L(:,$1)');
             
             eqtn = strtrim(eqtn);
             if isempty(eqtn)

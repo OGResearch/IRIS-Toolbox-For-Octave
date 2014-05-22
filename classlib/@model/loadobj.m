@@ -136,7 +136,7 @@ for i = 1 : length(This.eqtnF)
     if isFunc
         eqtn = func2str(eqtn);
     end
-    eqtn = regexprep(eqtn,'L\((\d+)\)','L(:,$1)');
+    eqtn = regexprep(eqtn,'\<L\((\d+)\)','L(:,$1)');
     This.eqtnF{i} = eqtn;
 end
 

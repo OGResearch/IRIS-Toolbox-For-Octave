@@ -28,11 +28,11 @@ if ~This.linear
     
     % Look for x(10).
     nameCurr(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'x\((\d+)\)','tokens');
+        regexp(This.eqtnS(EqtnList),'\<x\((\d+)\)','tokens');
     
     % Loog for g(10).
     nameExog(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'g\((\d+)\)','tokens');
+        regexp(This.eqtnS(EqtnList),'\<g\((\d+)\)','tokens');
     
     for iEq = EqtnList
         if isempty(This.eqtnS{iEq}) ...
@@ -68,11 +68,11 @@ nameExog = cell(size(This.eqtn));
 
 % Look for x(:,10,t+2) and x(10,t).
 nameTime(EqtnList) = ...
-    regexp(This.eqtnF(EqtnList),'x\(:,(\d+),t([+\-]\d+)\)','tokens');
+    regexp(This.eqtnF(EqtnList),'\<x\(:,(\d+),t([+\-]\d+)\)','tokens');
 nameCurr(EqtnList) = ...
-    regexp(This.eqtnF(EqtnList),'x\(:,(\d+),t\)','tokens');
+    regexp(This.eqtnF(EqtnList),'\<x\(:,(\d+),t\)','tokens');
 nameExog(EqtnList) = ...
-    regexp(This.eqtnF(EqtnList),'g\((\d+),:\)','tokens');
+    regexp(This.eqtnF(EqtnList),'\<g\((\d+),:\)','tokens');
 
 for iEq = EqtnList
     if isempty(This.eqtnF{iEq})
