@@ -55,6 +55,10 @@ if freq ~= 4 && freq ~= 12
     return
 end
 
+tempDir = Opt.tempdir;
+isNewTempDir = false;
+doTempDir();
+
 is3YearsWarn = false;
 is70YearsWarn = false;
 is15YearsBcastWarn = false;
@@ -65,7 +69,7 @@ Outp = cell(1,nx);
 Err = cell(1,nx);
 Y = nan(nPer+kb+kf,nx);
 for i = 1 : nx
-    [~,tmpTitle] = fileparts(tempname(pwd()));
+    tmpTitle = tempname(tempDir);
     first = find(~isnan(X(:,i)),1);
     last = find(~isnan(X(:,i)),1,'last');
     data = X(first:last,i);
@@ -109,13 +113,10 @@ for i = 1 : nx
             doSaveAs();
         end
         if Opt.cleanup
-            stat = warning();
-            warning('off'); %#ok<WNOFF>
             delete([tmpTitle,'.*']);
             if ismac() && exist('fort.6','file')
                 delete('fort.6');
             end
-            warning(stat);
         end
         if ~ok
             utils.warning('x12', ...
@@ -137,11 +138,18 @@ varargout{nOutp+1} = Outp;
 varargout{nOutp+2} = Err;
 varargout{nOutp+3} = Mdl;
 
+% Clean up newly created directory.
+if isNewTempDir && Opt.cleanup
+    rmdir(tempDir,'s');
+end
+
 
 % Nested functions...
 
 
 %**************************************************************************
+
+
     function doWarn()
         if is3YearsWarn
             utils.warning('x12', ...
@@ -165,6 +173,8 @@ varargout{nOutp+3} = Mdl;
 
 
 %**************************************************************************
+
+
     function doSaveAs()
         [fPath,fTitle] = fileparts(Opt.saveas);
         list = dir([tmpTitle,'.*']);
@@ -175,12 +185,33 @@ varargout{nOutp+3} = Mdl;
     end % doSaveAs()
 
 
+%**************************************************************************
+
+
+    function doTempDir()
+        if is.func(tempDir)
+            tempDir = tempDir();
+        end
+        isNewTempDir = exist(tempDir,'dir') == 0;
+        if isNewTempDir
+            mkdir(tempDir);
+        end
+        returnDir = pwd();
+        cd(tempDir);
+        tempDir = pwd();
+        cd(returnDir);
+    end % doTempDir()
+
+
 end
 
-% Subfunctions.
+
+% Subfunctions...
 
 
 %**************************************************************************
+
+
 function [Data,Fcast,Bcast,Ok] = ...
     xxRunX12(ThisDir,TempTitle,Data,StartDate,Dummy,Opt)
 
@@ -278,6 +309,8 @@ end % xxRunX12()
 
 
 %**************************************************************************
+
+
 function xxSpecFile(TempTitle,Data,StartDate,Dummy,Opt)
 % xxSpecFile  Create and save SPC file based on a template.
 
@@ -374,6 +407,8 @@ end % xxSpecFile()
 
 
 %**************************************************************************
+
+
 function [Data,Flag] = xxGetOutputData(TempTitle,NPer,Outp,NCol)
 
 if ischar(Outp)
@@ -406,6 +441,8 @@ end % xxGetOutputData()
 
 
 %**************************************************************************
+
+
 function C = xxReadOutputFile(FName)
 C = file2char(FName);
 C = strfun.converteols(C);
@@ -415,6 +452,8 @@ end % xxReadOutputFile()
 
 
 %**************************************************************************
+
+
 function Mdl = xxReadModel(FName,OuputFile)
 
 C = file2char(FName);

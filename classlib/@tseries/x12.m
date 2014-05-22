@@ -4,7 +4,7 @@ function varargout = x12(x,varargin)
 % Syntax with a single type of output requested
 % ==============================================
 %
-%     [Y,OutpFile,ErrFile,Model,X] = x12(X)
+%     [Y,OutpFile,ErrFile,Model,X] = x12(X,...)
 %     [Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
 %
 % Syntax with mutliple types of output requested
@@ -116,8 +116,13 @@ function varargout = x12(x,varargin)
 % * `'tdays='` [ `true` | *`false`* ] - Correct for the number of trading
 % days. See help on the `x11regression` specs in the X13-ARIMA-SEATS manual.
 %
+% * `'tempDir='` [ char | function_handle | `'.'` ] - Directory in which
+% X13-ARIMA-SEATS temporary files will be created; if the directory does
+% not exist, it will be created at the beginning and deleted at the end of
+% the execution (unless `'cleanup=' false`).
+%
 % * `'tolerance='` [ numeric | *`1e-5`* ] - Convergence tolerance for the
-% X12 estimation procedure. See help on the `estimation` specs in the
+% X13 estimation procedure. See help on the `estimation` specs in the
 % X13-ARIMA-SEATS manual.
 %
 % Description
@@ -310,10 +315,12 @@ if nargout >= nOutp+3
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
+
+
     function doOutput()
         subs = struct();
         subs.d10 = 'sf|seasonals|seasonal|seasfactors|seasfact';
@@ -338,6 +345,8 @@ end
 
 
 %**************************************************************************
+
+
     function doChkDummy()
         dummyIn = dummy(opt.backcast+1:end-opt.forecast,:);
         dummyFcast = dummy(end-opt.forecast+1:end,:);
