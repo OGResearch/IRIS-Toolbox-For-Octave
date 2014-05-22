@@ -68,6 +68,7 @@ classdef model < modelobj & estimateobj
     % Solution, simulation and forecasting
     % =====================================
     %
+    % * [`chkmissing`](model/chkmissing) - 
     % * [`diffsrf`](model/diffsrf) - Differentiate shock response functions w.r.t. specified parameters.
     % * [`expand`](model/expand) - Compute forward expansion of model solution for anticipated shocks.
     % * [`jforecast`](model/jforecast) - Forecast with judgmental adjustments (conditional forecasts).
