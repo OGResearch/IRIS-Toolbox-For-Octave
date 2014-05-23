@@ -41,12 +41,12 @@ This.userRHS = regexprep(This.rhs,'(.)$','$1;');
 This.rhs = regexprep(This.rhs, ...
     '(?<!!)(\<[a-zA-Z]\w*\>(\{.*?\})?)(?![\(\.])','$1#');
 
-% Add prefix d. to all names consisting potentially of \w and \. not followed by opening bracket.
+% Add prefix ? to all names consisting potentially of \w and \. not
+% followed by opening bracket.
 This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
 
 This.rhs = strrep(This.rhs,'#','(t,:)');
 This.rhs = strrep(This.rhs,'?','d.');
-
 This.rhs = strrep(This.rhs,'!','');
 
 % Vectorise *, /, \, ^ operators.

@@ -19,8 +19,10 @@ switch lower(Query)
     
     case {'omg','omega','cove','covresiduals'}
         X = This.Omega;
+        
     case {'eig','eigval','roots'}
         X = This.EigVal;
+        
     case {'stableroots','explosiveroots','unstableroots','unitroots'}
         switch Query
             case 'stableroots'
@@ -37,26 +39,39 @@ switch lower(Query)
         end
         inx = all(isnan(X),3);
         X(:,inx,:) = [];
+        
     case {'nper','nobs'}
         X = permute(sum(This.Fitted,2),[2,3,1]);
+        
     case {'sample','fitted'}
         X = cell(1,nAlt);
         for ialt = 1 : nAlt
             X{ialt} = This.Range(This.Fitted(1,:,ialt));
         end
+        
     case {'range'}
         X = This.Range;
+        
     case 'comment'
         % Bkw compatibility only; use comment(this) directly.
         X = comment(This);
+        
     case {'ynames','ylist'}
         X = This.YNames;
+        
     case {'enames','elist'}
         X = This.ENames;
+        
+    case {'gnames','glist'}
+        X = This.GNames;
+        
     case {'names','list'}
-        X = [This.YNames,This.ENames];
+        X = [This.YNames,This.ENames,This.GNames];
+        
+        
     case {'nalt'}
         X = nAlt;
+        
     case {'groupnames','grouplist'}
         X = This.GroupNames;
         

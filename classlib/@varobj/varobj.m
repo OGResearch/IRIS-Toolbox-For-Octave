@@ -11,7 +11,7 @@ classdef varobj < userdataobj & getsetobj
     properties
         YNames = {}; % Endogenous variables.
         ENames = {}; % Residuals.
-        Qnames = {}; % Exogenous variables.
+        GNames = {}; % Exogenous variables.
         GroupNames = {}; % Panel groups.
         
         A = []; % Transition matrix.
