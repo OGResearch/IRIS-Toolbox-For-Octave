@@ -117,6 +117,7 @@ classdef tabularobj < report.genericobj
         function C = beginsideways(This)
             C = '';
             if This.options.sideways
+                This.hInfo.package.rotating = true;
                 br = sprintf('\n');
                 C = [C,br,'\begin{sideways}'];
             end

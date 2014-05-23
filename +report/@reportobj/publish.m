@@ -86,12 +86,14 @@ Info = outpstruct(This.hInfo);
         if ischar(pkg)
             pkg = regexp(pkg,'\w+','match');
         end
-        if This.hInfo.package.longtable
-            pkg{end+1} = 'longtable';
+        list = fieldnames(This.hInfo.package);
+        for i = 1 : length(list)
+            name = list{i};
+            if This.hInfo.package.(name)
+                pkg{end+1} = name; %#ok<AGROW>
+            end
         end
-        if This.hInfo.package.colortbl
-            pkg{end+1} = 'colortbl';
-        end
+        
     end % doExtraPkg()
 
 
