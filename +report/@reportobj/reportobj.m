@@ -55,9 +55,9 @@ classdef reportobj < report.genericobj
         % Level 1 objects
         %-----------------
         
-        function This = section(This,varargin)
-            newObj = report.sectionobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = section(This,varargin)
+            NewObj = report.sectionobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
         function [This,NewObj] = table(This,varargin)
@@ -65,20 +65,20 @@ classdef reportobj < report.genericobj
             This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = matrix(This,varargin)
-            newObj = report.matrixobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = matrix(This,varargin)
+            NewObj = report.matrixobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = array(This,varargin)
-            newObj = report.arrayobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = array(This,varargin)
+            NewObj = report.arrayobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = figure(This,varargin)
+        function [This,NewObj] = figure(This,varargin)
             if length(varargin) == 1 || ischar(varargin{2})
-                newObj = report.figureobj(varargin{:});
-                This = add(This,newObj,varargin{2:end});
+                NewObj = report.figureobj(varargin{:});
+                This = add(This,NewObj,varargin{2:end});
             else
                 % For bkw compatibility.
                 % ##### Nov 2013 OBSOLETE and scheduled for removal.
@@ -91,90 +91,90 @@ classdef reportobj < report.genericobj
             end
         end
         
-        function This = userfigure(This,varargin)
-            newObj = report.userfigureobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = userfigure(This,varargin)
+            NewObj = report.userfigureobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = tex(This,varargin)
-            newObj = report.texobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = tex(This,varargin)
+            NewObj = report.texobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = texcommand(This,varargin)
-            newObj = report.texcommandobj(varargin{1});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = texcommand(This,varargin)
+            NewObj = report.texcommandobj(varargin{1});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = text(This,varargin)
+        function [This,NewObj] = text(This,varargin)
             This = tex(This,varargin{:});
         end
         
-        function This = include(This,varargin)
-            newObj = report.includeobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = include(This,varargin)
+            NewObj = report.includeobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = modelfile(This,varargin)
-            newObj = report.modelfileobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = modelfile(This,varargin)
+            NewObj = report.modelfileobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = pagebreak(This,varargin)
-            newObj = report.pagebreakobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = pagebreak(This,varargin)
+            NewObj = report.pagebreakobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = clearpage(This,varargin)
+        function [This,NewObj] = clearpage(This,varargin)
             This = pagebreak(This,varargin{:});
         end
         
-        function This = align(This,varargin)
-            newObj = report.alignobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = align(This,varargin)
+            NewObj = report.alignobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = empty(This,varargin)
-            newObj = report.emptyobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = empty(This,varargin)
+            NewObj = report.emptyobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
         % Level 2 and 3 objects
         %-----------------------
         
-        function This = graph(This,varargin)
-            newObj = report.graphobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = graph(This,varargin)
+            NewObj = report.graphobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = series(This,varargin)
-            newObj = report.seriesobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = series(This,varargin)
+            NewObj = report.seriesobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = band(This,varargin)
-            newObj = report.bandobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = band(This,varargin)
+            NewObj = report.bandobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = fanchart(This,varargin)
-            newObj = report.fanchartobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = fanchart(This,varargin)
+            NewObj = report.fanchartobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = vline(This,varargin)
-            newObj = report.vlineobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = vline(This,varargin)
+            NewObj = report.vlineobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = highlight(This,varargin)
-            newObj = report.highlightobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = highlight(This,varargin)
+            NewObj = report.highlightobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
-        function This = subheading(This,varargin)
-            newObj = report.subheadingobj(varargin{:});
-            This = add(This,newObj,varargin{2:end});
+        function [This,NewObj] = subheading(This,varargin)
+            NewObj = report.subheadingobj(varargin{:});
+            This = add(This,NewObj,varargin{2:end});
         end
         
     end

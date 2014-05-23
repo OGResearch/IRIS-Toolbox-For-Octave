@@ -169,6 +169,12 @@ function Doc = xxDocument(This,Doc,Pkg)
 
 opt = This.options;
 
+timeStamp = opt.timestamp;
+if isa(timeStamp,'function_handle')
+    timeStamp = timeStamp();
+end
+timeStamp = interpret(This,timeStamp);
+
 if nargin < 3
     Pkg = {};
 end
@@ -204,8 +210,6 @@ end
 
 
 try
-    tempHead = strrep(tempHead,'\\',' / ');
-    tempHead = interpret(This,tempHead);
     Doc = strrep(Doc,'$headertitle$',tempHead);
 catch
     Doc = strrep(Doc,'$headertitle$','');
@@ -241,10 +245,7 @@ end
 
 
 try
-    if isa(opt.timestamp,'function_handle')
-        opt.timestamp = opt.timestamp();
-    end
-    Doc = strrep(Doc,'$headertimestamp$',opt.timestamp);
+    Doc = strrep(Doc,'$headertimestamp$',timeStamp);
 catch
     Doc = strrep(Doc,'$headertimestamp$','');
 end
@@ -313,7 +314,9 @@ end
 
 try
     if opt.maketitle
-        repl = '\maketitle\thispagestyle{empty}';
+        repl = ['\date{',timeStamp,'}', ...
+            '\maketitle', ...
+            '\thispagestyle{empty}'];
     else
         repl = '';
     end
