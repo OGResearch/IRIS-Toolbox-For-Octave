@@ -53,26 +53,40 @@ if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function Y0 = y0(Ny,~,~,~)
         Y0 = eye(Ny)*Mu;
-    end % y0().
+    end % y0()
+
 
 %**************************************************************************
+
+
     function K0 = k0(Ny,~,~,Nk)
         K0 = zeros(Nk,Ny);
-    end % k0().
+    end % k0()
+
 
 %**************************************************************************
+    
+
     function Y1 = y1(Ny,P,~,~)
         Y1 = repmat(Mu*eye(Ny),[P,1]);
-    end % y1().
+    end % y1()
+
 
 %**************************************************************************
+
+    
     function G1 = g1(~,~,Ng,~)
         G1 = zeros(Ng,Ny);
-    end % g1().
+    end % g1()
+
 
 end
