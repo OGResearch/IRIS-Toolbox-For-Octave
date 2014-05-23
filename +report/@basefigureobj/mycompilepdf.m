@@ -43,12 +43,17 @@ if strcmpi(This.options.figurescale,'auto')
     end
 end
 
+trim = This.options.figuretrim;
+if length(trim) == 1
+    trim = trim*[1,1,1,1];
+end
+
 InclGraph = [ ...
     '\raisebox{',sprintf('%gpt',raise),'}{', ...
-    '\includegraphics[', ...
-    sprintf('scale=%g,angle=%g]{%s}', ...
-    This.options.figurescale,angle,graphicsTitle),'}'];
-
+    '\includegraphics', ...
+    sprintf('[scale=%g,angle=%g,trim=%gpt %gpt %gpt %gpt]{%s}', ...
+    This.options.figurescale,angle,trim,graphicsTitle), ...
+    '}'];
 
 % Nested functions...
 
@@ -69,9 +74,10 @@ InclGraph = [ ...
         end
         % Try to print figure window to EPSC.
         try
+            doAspectRatio();
             %print(This.handle,'-painters','-depsc',graphicsName);
             grfun.printpdf(This.handle,graphicsName);
-            addtempfile(This,[graphicsName,'.eps']);         
+            addtempfile(This,[graphicsName,'.eps']);
         catch Error
             utils.error('report', ...
                 ['Cannot print figure #%g to EPS file: ''%s''.\n', ...
@@ -108,7 +114,28 @@ InclGraph = [ ...
                     fullfile(saveAsPath,[graphicsTitle,'.pdf']));
             end
         end
-    end % doPrintFigure().
+    end % doPrintFigure()
+
+
+%**************************************************************************
+
+
+    function doAspectRatio()
+        if isequal(This.options.aspectratio,@auto)
+            return
+        end
+        ch = get(This.handle,'children');
+        for i = ch(:).'
+            if isequal(get(i,'tag'),'legend') ...
+                    || ~isequal(get(i,'type'),'axes')
+                continue
+            end
+            try %#ok<TRYNC>
+                set(i,'PlotBoxAspectRatio', ...
+                    [This.options.aspectratio(:).',1]);
+            end
+        end
+    end % doAspectRatio()
 
 
 end

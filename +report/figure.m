@@ -27,6 +27,10 @@
 % Options
 % ========
 %
+% * `'aspectRatio='` [ `@auto` | numeric ] - Plot box aspect ratio for all
+% graphs in the figure; must be a 1-by-2 vector describing the 
+% horizontal-to-vertical ratio.
+%
 % * `'captionTypeface='` [ cellstr | char | *`'\large\bfseries'`* ] - LaTeX
 % format commands for typesetting the figure caption; the subcaption format
 % can be entered as the second cell in a cell array.
@@ -42,6 +46,10 @@
 %
 % * `'figureScale='` [ numeric | *`0.85`* ] - (Inheritable from parent objects)
 % Scale of the figure in the LaTeX document.
+%
+% * `'figureTrim='` [ numeric | *`0`* ] - Trim figure when it is inserted
+% into the report by the specified amount of points; must be either a
+% scalar or a 1-by-4 vector (points removed from left, bottom, right, top).
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the figure title; only
 % shows if the title is non-empty.

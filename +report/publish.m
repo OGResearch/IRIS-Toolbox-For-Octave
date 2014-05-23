@@ -82,8 +82,8 @@
 %
 % * `'textScale='` [ numeric | *`0.8`* ] - Percentage of the total page
 % area that will be used; the value can be either a scalar (the same
-% percentage for the height and the width) or a 1-by-2 vector (the height
-% and the width).
+% percentage for the width and the height) or a 1-by-2 vector (the width
+% and the height).
 %
 % Description
 % ============
