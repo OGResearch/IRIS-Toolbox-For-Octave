@@ -1,4 +1,4 @@
-function C = speclatexcode(This,varargin)
+function C = speclatexcode(This,IChild,NChild)
 % speclatexcode  [Not a public function] Produce LaTeX code for subheading objects.
 %
 % Backend IRIS function.
@@ -27,6 +27,17 @@ end
 C = ['\multicolumn{$ncol$}', ...
     '{$just$}{$typeface$ $title$$footnotemark$}', ...
     ' $empty$ \\'];
+
+if This.options.rowhighlight
+      C = ['\rowcolor{highlightcolor}',C];
+      This.options.justify = ['>{\columncolor{highlightcolor}}', ...
+        This.options.justify];
+      This.hInfo.package.colortbl = true;
+      if IChild < NChild
+          C = [C,'\rowcolor{white}'];
+      end
+end
+
 C = strrep(C,'$just$',This.options.justify);
 C = strrep(C,'$ncol$',sprintf('%g',nCol));
 C = strrep(C,'$empty$',repmat('& ',1,totalNCol-nCol));

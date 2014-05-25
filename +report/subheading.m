@@ -20,6 +20,10 @@
 % * `'justify='` [ `'c'` | *`'l'`* | `'r'` ] - (Inheritable from parent objects)
 % Horizontal alignment of the subheading (centre, left, right).
 %
+% * `'rowHighlight='` [ `true` | *`false`* ] - Highlight the entire row;
+% because of a bug in the LaTex package `colortbl`, this option cannot be
+% combined with the option `'highlight='` in [`report/table`](report/table).
+%
 % * `'separator='` [ char | *empty* ] - (Not inheritable from parent
 % objects) LaTeX commands that will be inserted immediately after the end
 % of the table row, i.e. appended to \\, within a tabular mode.
