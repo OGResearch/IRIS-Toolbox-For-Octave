@@ -134,7 +134,7 @@ for eq = first : LossPos
         if ~This.linear
             dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
-         
+
         % Create human equations.
         % ##### MOSW:
         % replFunc = @doReplaceNames; %#ok<NASGU>

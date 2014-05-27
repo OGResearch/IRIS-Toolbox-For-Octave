@@ -18,13 +18,13 @@ end
 % Eqtn = regexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()', ...
 %     'x${replaceFn($1,$2)}');
 Eqtn = mosw.dregexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()', ...
-    @doReplace,[1,2]);
+    @doReplace,[0,1,2]);
 
 
-    function C = doReplace(C1,C2)
+    function C = doReplace(C0,C1,C2)
         n = sscanf(C1,'%g',1);
         if ~ApplyTo(n)
-            C = [C1,C2];
+            C = C0;
             return
         end
         if isempty(C2)
