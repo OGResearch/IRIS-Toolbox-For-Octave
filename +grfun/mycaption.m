@@ -1,4 +1,4 @@
-function h = mycaption(ax,location,caption,vPosition,hPosition)
+function H = mycaption(Ax,Loc,Cap,VPos,HPos)
 % mycaption  [Not a public function] Place text caption at the edge of an annotating object.
 %
 % Backend IRIS function.
@@ -10,31 +10,31 @@ function h = mycaption(ax,location,caption,vPosition,hPosition)
 %--------------------------------------------------------------------------
 
 % Horizontal position and alignment.
-inside = length(location) > 1;
-switch lower(hPosition)
+inside = length(Loc) > 1;
+switch lower(HPos)
    case 'left'
       if inside
          hAlign = 'left';
       else
          hAlign = 'right';
       end
-      x = location(1);
+      x = Loc(1);
    case 'right'
       if inside
          hAlign = 'right';
       else
          hAlign = 'left';
       end
-      x = location(end);
+      x = Loc(end);
    otherwise
       hAlign = 'center';
-      x = (location(1) + location(end))/2;
+      x = (Loc(1) + Loc(end))/2;
 end
 
 % Vertical position and alignment.
-ylim = get(ax,'yLim');
+ylim = get(Ax,'yLim');
 yspan = ylim(end) - ylim(1);
-switch lower(vPosition)
+switch lower(VPos)
    case 'top'
       y = 0.98;
       vAlign = 'top';
@@ -45,17 +45,17 @@ switch lower(vPosition)
       y = 0.5;
       vAlign = 'middle';
    otherwise
-      y = vPosition;
+      y = VPos;
       vAlign = 'middle';
 end
 
-h = text(x,ylim(1)+y*yspan,caption, ...
-   'parent',ax, ...
+H = text(x,ylim(1)+y*yspan,Cap, ...
+   'parent',Ax, ...
    'color',[0,0,0], ...
    'verticalAlignment',vAlign, ...
    'horizontalAlignment',hAlign);
 
 % Update caption y-position whenever the parent y-lims change.
-grfun.listener(ax,h,'caption',y);
+grfun.listener(Ax,H,'caption',y);
 
 end

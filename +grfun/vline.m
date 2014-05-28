@@ -136,7 +136,7 @@ for i = 1 : nLoc
     if ~isempty(opt.caption)
         c = grfun.mycaption(Ax,x(i), ...
             opt.caption,opt.vposition,opt.hposition);
-        Cp = [Cp,c(:).']; %#ok<AGROW>
+        Cp = [Cp,c]; %#ok<AGROW>
     end
 end
 

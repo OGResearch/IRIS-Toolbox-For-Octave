@@ -69,9 +69,9 @@ Cp = []; % Handles to caption objects.
 % Multiple separate ranges.
 if iscell(range)
     for i = 1 : numel(range)
-        [pt,cp] = highlight(Ax,range{i},varargin{:});
+        [pt,c] = highlight(Ax,range{i},varargin{:});
         Pp = [Pp,pt(:).'];
-        Cp = [Cp,cp(:).'];
+        Cp = [Cp,c(:).'];
     end
     return
 end
@@ -132,10 +132,10 @@ for iAx = Ax(:).'
        'yLimInclude','off');
     
     % Add caption to the highlight.
-    cp = [];
     if ~isempty(opt.caption)
-        cp = grfun.mycaption(h,timeScale([1,end]), ...
+        c = grfun.mycaption(h,timeScale([1,end]), ...
             opt.caption,opt.vposition,opt.hposition);
+        Cp = [Cp,c];
     end
     
     % Move the highlight patch object to the background.
@@ -148,7 +148,6 @@ for iAx = Ax(:).'
     set(fg,'children',fgch);
     
     Pp = [Pp,pt];
-    Cp = [Cp,cp];
 end
 
 % Tag the highlights and captions for `qstyle`.
