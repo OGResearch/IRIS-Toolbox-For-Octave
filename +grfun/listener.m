@@ -18,8 +18,7 @@ else
 end
 
 % Convert graphics handle to graphics object.
-% leaderObj = handle(Leader);
-leaderObj = Leader;
+leaderObj = handle(Leader);
 
 switch lower(Name)
     
@@ -86,6 +85,8 @@ end
 % 
 
 %**************************************************************************
+
+
 function xxCaption(Obj,Evd,Ax,Cp,K) %#ok<INUSL>
     yLim = get(Ax,'yLim');
     ySpan = yLim(end) - yLim(1);

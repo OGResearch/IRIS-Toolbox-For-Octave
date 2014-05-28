@@ -70,9 +70,9 @@ end
 nAx = length(Ax);
 if nAx > 1
     for i = 1 : nAx
-        [ln,cp] = grfun.vline(Ax(i),Loc,varargin{:});
-        Ln = [Ln,ln]; %#ok<AGROW>
-        Cp = [Cp,cp]; %#ok<AGROW>
+        [h,c] = grfun.vline(Ax(i),Loc,varargin{:});
+        Ln = [Ln,h]; %#ok<AGROW>
+        Cp = [Cp,c]; %#ok<AGROW>
     end
     return
 end
@@ -110,30 +110,33 @@ if isequal(getappdata(Ax,'tseries'),true)
 end
 
 yLim = realmax()*[-1,1];
+
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
 nLoc = numel(Loc);
 for i = 1 : nLoc
 
-    ln = plot(Ax,x([i,i]),yLim,'yLimInclude','off');
-    ln = ln(:).';
+    % Draw vlines as patch objects. Lines do not work with realmax in older
+    % Matlab releases with HG1.
+    % h = plot(Ax,x([i,i]),yLim,'yLimInclude','off');
+    h = patch(x([i,i]),yLim([1,2]),[0,0,0], ...
+       'parent',Ax,'edgeColor',[0,0,0],'faceColor','none', ...
+       'yLimInclude','off');
     
     ch = get(Ax,'children');
-    for j = ln
-        % Move the vline object to the background.
-        ch(ch == j) = [];
-        ch(end+1) = j; %#ok<AGROW>
-    end
+    % Move the vline object to the background.
+    ch(ch == h) = [];
+    ch(end+1) = h; %#ok<AGROW>
     set(Ax,'children',ch);
     
-    Ln = [Ln,ln]; %#ok<AGROW>
+    Ln = [Ln,h]; %#ok<AGROW>
     
     % Add annotation.
     if ~isempty(opt.caption)
-        cp = grfun.mycaption(Ax,x(i), ...
+        c = grfun.mycaption(Ax,x(i), ...
             opt.caption,opt.vposition,opt.hposition);
-        Cp = [Cp,cp(:).']; %#ok<AGROW>
+        Cp = [Cp,c(:).']; %#ok<AGROW>
     end
 end
 
@@ -144,8 +147,7 @@ if isempty(Ln)
     return
 end
 
-if ~isempty(lineOpt)
-    set(Ln,'color',[0,0,0]);
+if ~isempty(lineOpt)  
     set(Ln,lineOpt{:});
 end
 
