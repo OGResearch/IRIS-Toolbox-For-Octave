@@ -149,9 +149,9 @@ end
                     Validated = false;
                 end
                 
-            case 'torigin'
+            case {'baseyear','torigin'}
                 if is.numericscalar(Value) && Value == round(Value)
-                    This.torigin = Value;
+                    This.BaseYear = Value;
                 else
                     Validated = false;
                 end

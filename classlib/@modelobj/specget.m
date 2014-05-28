@@ -93,7 +93,7 @@ switch Query
         X = This.nametype;
                 
     case {'torigin','baseyear'}
-        X = This.torigin;
+        X = This.BaseYear;
         if isempty(X)
             X = irisget('baseYear');
         end

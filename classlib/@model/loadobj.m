@@ -21,6 +21,10 @@ elseif isempty(This.nonlin)
     This.nonlin = false(size(This.eqtn));
 end
 
+if isfield(This,'torigin')
+    This.BaseYear = This.torigin;
+end
+
 if isstruct(This)
     This = model(This);
 end

@@ -14,6 +14,8 @@ classdef userdataobj
         Comment = '';
         % User captions used to title graphs.
         Caption = '';
+        % Base year for time trends.
+        BaseYear = [];
     end
     
     methods

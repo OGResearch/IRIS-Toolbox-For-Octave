@@ -21,7 +21,7 @@ if ~isempty(Opt.epsilon)
 end
 
 % Time origin (base year) for deterministic trends.
-This.torigin = Opt.torigin;
+This.BaseYear = Opt.baseyear;
 
 % Create model-specific meta data.
 if any(This.nonlin)
