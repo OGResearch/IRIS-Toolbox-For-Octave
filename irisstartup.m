@@ -76,14 +76,16 @@ end
 try %#ok<TRYNC>
     munlock('irisconfigmaster');
 end
-clear('functions');
-passvalopt();
-passvalopt();
 
 % Reset the configuration file.
-rehash();
-irisreset();
+munlock irisconfigmaster;
+clear functions;
+irisreset(varargin{:});
 config = irisget();
+
+munlock passvalopt;
+clear functions;
+passvalopt();
 
 version = irisget('version');
 if isIdChk

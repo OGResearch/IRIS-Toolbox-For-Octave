@@ -1,5 +1,5 @@
-function [Opt,Config] = datdefaults(Opt,IsPlot)
-% datdefaults  [Not a public function] Set up defaults for date-related opt if they are 'config'.
+function [Opt,IConfig] = datdefaults(Opt,IsPlot)
+% datdefaults  [Not a public function] Set up defaults for date-related opt if they are `@config`.
 %
 % Backend IRIS function.
 % No help provided.
@@ -15,26 +15,26 @@ end
 
 %--------------------------------------------------------------------------
 
-Config = irisget();
+IConfig = irisget();
 
-if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,'config')
+if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,@config)
     if ~IsPlot
-        Opt.dateformat = Config.dateformat;
+        Opt.dateformat = IConfig.dateformat;
     else
-        Opt.dateformat = Config.plotdateformat;
+        Opt.dateformat = IConfig.plotdateformat;
     end
 end
 
-if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,'config')
-    Opt.freqletters = Config.freqletters;
+if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,@config)
+    Opt.freqletters = IConfig.freqletters;
 end
 
-if ~isfield(Opt,'months') || isequal(Opt.months,'config')
-    Opt.months = Config.months;
+if ~isfield(Opt,'months') || isequal(Opt.months,@config)
+    Opt.months = IConfig.months;
 end
 
-if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,'config')
-    Opt.standinmonth = Config.standinmonth;
+if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,@config)
+    Opt.standinmonth = IConfig.standinmonth;
 end
 
 end

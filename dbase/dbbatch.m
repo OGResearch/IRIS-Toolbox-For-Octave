@@ -130,6 +130,16 @@ if opt.fresh
     D = struct();
 end
 
+% When called from within a function, the output database is "under
+% construction" and cannot be evaluated from within dbbatch. Create a new
+% database in the caller workspace and rename all references to the old
+% database in the expressions.
+inpDbName = inputname(1);
+tempDbName = tempname('.');
+tempDbName(1:2) = '';
+assignin('caller',tempDbName,D);
+expr = regexprep(expr,['\<',inpDbName,'\>'],tempDbName);
+
 errorlist = {};
 for i = 1 : length(List0)
     try

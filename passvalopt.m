@@ -35,7 +35,6 @@ if (nargin == 0 && nargout == 0) || isempty(DEF)
     DEF.optim = irisopt.optim();
     DEF.poster = irisopt.poster();
     DEF.preparser = irisopt.preparser();
-    DEF.PVAR = irisopt.PVAR();
     DEF.qreport = irisopt.qreport();
     DEF.report = irisopt.report();
     DEF.sstate = irisopt.sstate();

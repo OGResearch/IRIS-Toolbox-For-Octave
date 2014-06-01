@@ -48,15 +48,15 @@ opt = passvalopt('dates.str2dat',varargin{:});
 
 % If the following options are empty numerics, the default setting from
 % irisconfig is used.
-config = irisget();
-if isequal(opt.dateformat,'config')
-    opt.dateformat = config.dateformat;
+iConfig = irisget();
+if isequal(opt.dateformat,@config)
+    opt.dateformat = iConfig.dateformat;
 end
-if isequal(opt.freqletters,'config')
-    opt.freqletters = config.freqletters;
+if isequal(opt.freqletters,@config)
+    opt.freqletters = iConfig.freqletters;
 end
-if isequal(opt.months,'config')
-    opt.months = config.months;
+if isequal(opt.months,@config)
+    opt.months = iConfig.months;
 end
 
 %--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ shortMonthList = regexp(opt.months,'\w{1,3}','match','once');
 shortMonthList = sprintf('%s|',shortMonthList{:});
 shortMonthList(end) = '';
 romanList = 'xii|xi|x|ix|viii|vii|vi|v|iv|iii|ii|i|iv|v|x';
-offset = config.highcharcode;
+offset = iConfig.highcharcode;
 
 if ischar(String)
     String = {String};

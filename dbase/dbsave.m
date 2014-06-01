@@ -155,7 +155,7 @@ pp.parse(D,FName,Dates);
 opt = passvalopt('dbase.dbsave',varargin{:});
 
 % Run Dates/datdefaults to substitute the default (irisget) date format
-% options for 'config'.
+% options for `@config`.
 opt = datdefaults(opt);
 
 % Remove double quotes from the date format string. This is because the

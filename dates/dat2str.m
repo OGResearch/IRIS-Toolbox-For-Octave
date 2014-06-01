@@ -143,7 +143,7 @@ else
     % Parse options.
     opt = passvalopt('dates.dat2str',varargin{1:end});
     % Run dates/datdefaults to substitute the default (irisget) date
-    % format options for the string `'config'`.
+    % format options for `@config`.
     opt = datdefaults(opt);
 end
 
