@@ -1,4 +1,4 @@
-function hdataassign(This,Obj,varargin)
+function hdataassign(This,varargin)
 % hdataassign  [Not a public function] Assign currently processed data to hdataobj.
 %
 % Backend IRIS function.
@@ -7,17 +7,16 @@ function hdataassign(This,Obj,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% hdataassign(HData,Obj,Col,...,Y,X,E,...)
+% hdataassign(HData,Col,...,Y,X,E,...)
 
 %--------------------------------------------------------------------------
 
-[solId,name] = hdatareq(Obj);
-nSolId = length(solId);
-Data = varargin(end-nSolId+1:end);
-varargin(end-nSolId+1:end) = [];
+nPack = length(This.Id);
+Data = varargin(end-nPack+1:end);
+varargin(end-nPack+1:end) = [];
 Pos = varargin;
 
-for i = 1 : length(solId)
+for i = 1 : nPack
     
     if isempty(Data{i})
         continue
@@ -26,31 +25,31 @@ for i = 1 : length(solId)
     X = Data{i};
     nPer = size(X,2);
     
-    if This.IsStd
+    if This.IsVar2Std
         X = xxVar2Std(X);
     end
     
-    realId = real(solId{i});
-    imagId = imag(solId{i});
+    realId = real(This.Id{i});
+    imagId = imag(This.Id{i});
     maxLag = -min(imagId);
     % Each variable has been allocated an (nPer+maxLag)-by-nCol array. Get
     % pre-sample data from auxiliary lags.
-    if This.IsPreSample && maxLag > 0
+    if This.IncludeLag && maxLag > 0
         for j = find(imagId < 0)
             jLag = -imagId(j);
-            jName = name{realId(j)};
-            This.data.(jName)(maxLag+1-jLag,Pos{:}) = ...
+            jName = This.Name{realId(j)};
+            This.Data.(jName)(maxLag+1-jLag,Pos{:}) = ...
                 permute(X(j,1,:),[2,3,1]);
         end
     end
     % Current-dated assignments.
     t = maxLag + (1 : nPer);
     for j = find(imagId == 0)
-        jName = name{realId(j)};
-        jData = This.data.(jName);
+        jName = This.Name{realId(j)};
+        jData = This.Data.(jName);
         jx = X(j,:,:);
         jData(t,Pos{:}) = permute(jx,[2,3,1]);
-        This.data.(jName) = jData;
+        This.Data.(jName) = jData;
     end
     
 end

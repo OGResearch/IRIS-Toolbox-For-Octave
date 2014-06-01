@@ -1,4 +1,4 @@
-function D = hdatafinal(Y,This,Range)
+function D = hdatafinal(Y)
 % hdatafinal  [Not a public function] Finalise output struct.
 %
 % Backend IRIS function.
@@ -11,16 +11,16 @@ function D = hdatafinal(Y,This,Range)
 
 D = struct();
 
-if isfield(Y,'predmean') && ~isequal(Y.predmean,[])
-    doOneOutputArea('pred');
+if isfield(Y,'M0') && ~isequal(Y.M0,[])
+    doOneOutputArea('0');
 end
 
-if isfield(Y,'filtermean') && ~isequal(Y.filtermean,[])
-    doOneOutputArea('filter');
+if isfield(Y,'M1') && ~isequal(Y.M1,[])
+    doOneOutputArea('1');
 end
 
-if isfield(Y,'smoothmean') && ~isequal(Y.smoothmean,[])
-    doOneOutputArea('smooth');
+if isfield(Y,'M2') && ~isequal(Y.M2,[])
+    doOneOutputArea('2');
 end
 
 f = fieldnames(D);
@@ -31,35 +31,43 @@ end
 % Nested functions.
 
 %**************************************************************************
-    function doOneOutputArea(Name)
-        D.(Name) = struct();
-        meanField = [Name,'mean'];
-        stdField = [Name,'std'];
-        contField = [Name,'cont'];
-        mseField = [Name,'mse'];
+    function doOneOutputArea(X)
+        switch X
+            case '0'
+                outpName = 'pred';
+            case '1'
+                outpName = 'filter';
+            case '2'
+                outpName = 'smooth';
+        end
+        D.(outpName) = struct();
+        meanField = ['M',X];
+        stdField = ['S',X];
+        contField = ['C',X];
+        mseField = ['Mse',X];
         if isfield(Y,stdField) || isfield(Y,contField) ...
                 || isfield(Y,mseField)
-            D.(Name).mean = hdata2tseries(Y.(meanField),This,Range);
+            D.(outpName).mean = hdata2tseries(Y.(meanField));
             if isfield(Y,stdField)
-                D.(Name).std = hdata2tseries(Y.(stdField),This,Range);
+                D.(outpName).std = hdata2tseries(Y.(stdField));
             end
             if isfield(Y,contField)
-                D.(Name).cont = hdata2tseries(Y.(contField),This,Range);
+                D.(outpName).cont = hdata2tseries(Y.(contField));
             end
             if isfield(Y,mseField)
-                Y.(mseField) = permute(Y.(mseField),[3,1,2,4]);
-                D.(Name).mse = tseries();
-                D.(Name).mse.start = Range(1);
-                D.(Name).mse.data = Y.(mseField);
-                D.(Name).mse.Comment = cell(1, ...
-                    size(Y.(mseField),2), ...
-                    size(Y.(mseField),3), ...
-                    size(Y.(mseField),4));
-                D.(Name).mse.Comment(:) = {''};
-                D.(Name).mse = mytrim(D.(Name).mse);
+                Y.(mseField).Data = permute(Y.(mseField).Data,[3,1,2,4]);
+                D.(outpName).mse = tseries();
+                D.(outpName).mse.start = Y.(mseField).Range(1);
+                D.(outpName).mse.data = Y.(mseField).Data;
+                D.(outpName).mse.Comment = cell(1, ...
+                    size(Y.(mseField).Data,2), ...
+                    size(Y.(mseField).Data,3), ...
+                    size(Y.(mseField).Data,4));
+                D.(outpName).mse.Comment(:) = {''};
+                D.(outpName).mse = mytrim(D.(outpName).mse);
             end
         else
-            D.(Name) = hdata2tseries(Y.(meanField),This,Range);
+            D.(outpName) = hdata2tseries(Y.(meanField));
         end
     end % doOneOutputArea().
 

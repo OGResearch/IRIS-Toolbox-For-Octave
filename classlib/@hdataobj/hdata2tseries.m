@@ -1,4 +1,4 @@
-function D = hdata2tseries(This,Obj,Range)
+function D = hdata2tseries(This)
 % hdata2tseries  [Not a public function] Convert hdataobj data to a tseries database.
 %
 % Backend IRIS function.
@@ -9,74 +9,64 @@ function D = hdata2tseries(This,Obj,Range)
 
 %--------------------------------------------------------------------------
 
-[solId,name,ixLog,nameLabel,contEList,contYList] = hdatareq(Obj);
-
-switch This.Contrib
-    case 'E'
-        contList = contEList;
-    case 'Y'
-        contList = contYList;
-    otherwise
-        contList = {};
-end
-
-Range = Range(1) : Range(end);
-
 template = tseries();
 
 D = struct();
 
-for i = 1 : length(solId)
+for i = 1 : length(This.Id)
 
-    if isempty(solId{i})
+    if isempty(This.Id{i})
         continue
     end
     
-    iRealId = real(solId{i});
-    iImagId = imag(solId{i});
+    iRealId = real(This.Id{i});
+    iImagId = imag(This.Id{i});
     maxLag = -min(iImagId);
 
-    xRange = Range(1)-maxLag : Range(end);
+    xRange = This.Range(1)-maxLag : This.Range(end);
     xStart = xRange(1);
     nXPer = length(xRange);
     
     for j = find(iImagId == 0)
         
         pos = iRealId(j);
-        jName = name{pos};
-        if ~isfield(This.data,jName)
+        jName = This.Name{pos};
+        if ~isfield(This.Data,jName)
             continue
         end
-        sn = size(This.data.(jName));
+        sn = size(This.Data.(jName));
         if sn(1) ~= nXPer
             doThrowInternal();
         end
-        if ixLog(pos)
-            This.data.(jName) = exp(This.data.(jName));
+        if This.Log(pos)
+            This.Data.(jName) = exp(This.Data.(jName));
         end
         
         % Create a new database entry.
         D.(jName) = template;
         D.(jName).start = xStart;
-        D.(jName).data = This.data.(jName);
+        D.(jName).data = This.Data.(jName);
         s = size(D.(jName).data);
         D.(jName).Comment = repmat({''},[1,s(2:end)]);
         D.(jName) = mytrim(D.(jName));
         if isempty(This.Contrib)
-            D.(jName) = comment(D.(jName),nameLabel{pos});
+            D.(jName) = comment(D.(jName),This.Label{pos});
         else
             D.(jName) = comment(D.(jName), ...
-                utils.concomment(jName,contList,ixLog(pos)));
+                utils.concomment(jName,This.Contrib,This.Log(pos)));
         end
         
         % Free memory.
-        This.data.(jName) = [];
+        This.Data.(jName) = [];
     end
     
 end
 
-if This.IsParam
-    D = addparam(Obj,D);
+if This.IncludeParam
+    list = fieldnames(This.ParamDb);
+    for i = 1 : length(list)
+    	D.(list{i}) = This.ParamDb.(list{i});
+    end
 end
 
 
