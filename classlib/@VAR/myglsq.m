@@ -9,20 +9,20 @@ function S = myglsq(S,Opt)
 
 y0 = S.y0;
 k0 = S.k0;
+x0 = S.x0;
 y1 = S.y1;
 g1 = S.g1; % Lagged level variables entering the co-integrating vector.
-ci = S.ci; % Coefficients of the co-integrating vector.
 Rr = S.Rr;
 w = S.w;
-
-bvar = Opt.bvar;
+Prior = Opt.bvar;
 
 %--------------------------------------------------------------------------
 
 ny = size(y0,1);
 nk = size(k0,1);
+nx = size(x0,1);
 ng = size(g1,1);
-isBvar = isa(bvar,'BVAR.bvarobj') && ~isempty(bvar);
+isPrior = isa(Prior,'BVAR.bvarobj') && ~isempty(Prior);
 
 % Number of lags included in regression; needs to be decreased by one for
 % difference VARs or VECs.
@@ -33,19 +33,21 @@ end
 
 % BVAR prior dummies.
 nb = 0;
-if isBvar
-    bvarY0 = bvar.y0(ny,p,ng,nk);
-    bvarK0 = bvar.k0(ny,p,ng,nk);
-    bvarY1 = bvar.y1(ny,p,ng,nk);
-    bvarG1 = bvar.g1(ny,p,ng,nk);
+if isPrior
+    bvarY0 = Prior.y0(ny,p,ng,nk);
+    bvarK0 = Prior.k0(ny,p,ng,nk);
+    bvarY1 = Prior.y1(ny,p,ng,nk);
+    bvarG1 = Prior.g1(ny,p,ng,nk);
     nb = size(bvarY0,2);
+    bvarX0 = zeros(nx,nb);
 end
 
 % Find effective estimation range and exclude NaNs.
-fitted = all(~isnan([y0;k0;y1;g1;w]),1);
+fitted = all(~isnan([y0;k0;x0;y1;g1;w]),1);
 nFitted = sum(double(fitted));
 y0 = y0(:,fitted);
 k0 = k0(:,fitted);
+x0 = x0(:,fitted);
 y1 = y1(:,fitted);
 g1 = g1(:,fitted);
 
@@ -56,7 +58,7 @@ if ~isempty(Opt.mean)
 end
 
 % RHS observation matrix.
-X = [k0;y1;g1];
+X = [k0;x0;y1;g1];
 
 % Weighted observations.
 if ~isempty(w)
@@ -65,23 +67,24 @@ if ~isempty(w)
     sqrtw = sqrt(w);
     y0w = y0 .* sqrtw(ones(1,ny),:);
     k0w = k0 .* sqrtw(ones(1,nk),:);
-    Xw = X .* sqrtw(ones(nk+ny*p+ng,1),:);
+    x0w = x0 .* sqrtw(ones(1,nx),:);
+    Xw = X .* sqrtw(ones(nk+nx+ny*p+ng,1),:);
 else
     y0w = y0;
     k0w = k0;
+    x0w = x0;
     Xw = X;
 end
 
-if Opt.stdize && isBvar
+if Opt.stdize && isPrior
     % Create a matrix of observations (that will be possibly demeaned)
     % including pre-sample initial condition.
     yd = y0w;
-    if nk > 0
-        % Demean the observations if the constant is included in the regression;
-        % using regression works also in panel estimation with fixed effects (i.e.
-        % nk > 1).
-        m = yd / k0w;
-        yd = yd - m*k0w;
+    if nk > 0 || nx > 0
+        % Demean the observations using a simple regression if the constant and/or
+        % exogenous inputs ar included in the model.
+        m = yd / [k0w;x0w];
+        yd = yd - m*[k0w;x0w];
     end
     % Calculate the std dev on the demeaned observations, and adjust the
     % prior dummy observations. This is equivalent to standardizing the
@@ -92,10 +95,10 @@ if Opt.stdize && isBvar
 end
 
 % Add prior dummy observations to the LHS and RHS data matrices.
-if isBvar
+if isPrior
     y0 = [bvarY0,y0];
     y0w = [bvarY0,y0w];
-    bvarX = [bvarK0;bvarY1;bvarG1];
+    bvarX = [bvarK0;bvarX0;bvarY1;bvarG1];
     X = [bvarX,X];
     Xw = [bvarX,Xw];
 end
@@ -118,10 +121,10 @@ if ~isempty(R) && Opt.eqtnbyeqtn
     % cross-equation restrictions is though performed; this is all the user's
     % responsibility.
     pos = (1:ny).';
-    pos = pos(:,ones(1,nk+ny*p+ng));
+    pos = pos(:,ones(1,nk+nx+ny*p+ng));
     pos = pos(:);
     Mw = Xw * Xw.';
-    beta = nan(ny*(nk+ny*p+ng),1);
+    beta = nan(ny*(nk+nx+ny*p+ng),1);
     realSmall = getrealsmall();
     for i = 1 : ny
         % Get restrictions for equation i.
@@ -135,7 +138,7 @@ if ~isempty(R) && Opt.eqtnbyeqtn
         iGamma = (iR.'*Mw*iR) \ (iR.'*Xw*c);
         beta(betaInx) = iR*iGamma + ir;
     end
-    beta = reshape(beta,[ny,ny*p+nk+ng]);
+    beta = reshape(beta,[ny,ny*p+nk+nx+ng]);
     ew = y0w - beta*Xw;
     ew = ew(:,nb+1:end);
     Omg = ew * ew.' / nFitted;
@@ -165,7 +168,7 @@ else
             % Estimate free hyperparameters.
             gamma = (R.'*kron(Mw,OmgInv)*R) \ (R.'*kron(Xw,OmgInv)*c);
             % Compute parameters.
-            beta = reshape(R*gamma + r,[ny,ny*p+nk+ng]);
+            beta = reshape(R*gamma + r,[ny,ny*p+nk+nx+ng]);
             ew = y0w - beta*Xw;
             ew = ew(:,nb+1:end);
             Omg = ew * ew.' / nFitted;
@@ -186,39 +189,24 @@ if Opt.covparameters && ~Opt.diff
     doSigma();
 end
 
-% Constant vector.
-if nk > 0
-    K = beta(:,1:nk);
-    beta(:,1:nk) = [];
-else
-    K = zeros(ny,1);
-end
+% Coefficients of exogenous inputs including constant.
+K = beta(:,1:nk);
+beta(:,1:nk) = [];
+
+J = beta(:,1:nx);
+beta(:,1:nx) = [];
 
 % Transition matrices.
 A = beta(:,1:ny*p);
 beta(:,1:ny*p) = [];
 
-% Convert VEC to co-integrated VAR.
-if Opt.diff
-    % Coefficients on co-integrating vectors.
-    G = beta(:,1:ng);
-    K = K + G*ci(:,1);
-    A = reshape(A,ny,ny,p);
-    A = poly.polyprod(A,cat(3,eye(ny),-eye(ny)));
-    A = poly.polysum(A,eye(ny)+G*ci(:,2:end));
-    p = p + 1;
-    A = reshape(A,ny,ny*p);
-else
-    G = zeros(ny,0);
-end
-
-% Add mean to the VAR process.
-if ~isempty(Opt.mean)
-    K = K + (eye(ny) - sum(reshape(A,ny,ny,p),3))*yMean;
-end
+% Coefficients of the co-integrating vector.
+G = beta(:,1:ng);
+beta(:,1:ng) = []; %#ok<NASGU>
 
 S.A = A;
 S.K = K;
+S.J = J;
 S.G = G;
 S.Omg = Omg;
 S.Sgm = Sgm;
@@ -226,9 +214,13 @@ S.resid = nan(size(S.y0));
 S.resid(:,fitted) = e;
 S.count = count;
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doSigma()
         % Asymptotic covariance of parameters is based on the covariance matrix of
         % residuals from a non-restricted non-bayesian VAR. The risk exists that we
@@ -261,6 +253,7 @@ S.count = count;
                 Sgm = nan(size(Xw,1)*ny);
             end
         end
-    end % doSigma().
+    end % doSigma()
+
 
 end

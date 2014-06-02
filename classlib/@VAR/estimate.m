@@ -39,11 +39,14 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % * `'C='` [ numeric | *empty* ] - Restrictions on the individual values in
 % the constant vector, `C`.
 %
+% * `'J='` [ numeric | *empty* ] - Restrictions on the individual values in
+% the coefficient matrix in front of exogenous inputs, `J`.
+%
 % * `'diff='` [ `true` | *`false`* ] - Difference the series before
 % estimating the VAR; integrate the series back afterwards.
 %
 % * `'G='` [ numeric | *empty* ] - Restrictions on the individual values in
-% the matrix at the co-integrating vector, `G`.
+% the coefficient matrix in front of the co-integrating vector, `G`.
 %
 % * `'cointeg='` [ numeric | *empty* ] - Co-integrating vectors (in rows)
 % that will be imposed on the estimated VAR.
@@ -92,7 +95,7 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % Options for panel VAR
 % ======================
 %
-% * `'fixedEffect='` [ `true` | *`false`* ] - Include constant dummies for
+% * `'fixedEff='` [ `true` | *`false`* ] - Include constant dummies for
 % fixed effect in panel estimation; applies only if `'constant=' true`.
 %
 % * `'groupWeights='` [ numeric | *empty* ] - A 1-by-NGrp vector of weights
@@ -132,10 +135,10 @@ pp.parse(This,Inp);
 
 % Get input data; the user range is supposed to **include** the pre-sample
 % initial condition.
-[y,xRange,Ynames,inpFmt,varargin] = myinpdata(This,Inp,varargin{:});
+[y,x,xRange,yNames,inpFmt,varargin] = myinpdata(This,Inp,varargin{:});
 
 % Pass and validate options.
-opt = passvalopt([class(This),'.estimate'],varargin{:});
+opt = passvalopt('VAR.estimate',varargin{:});
 
 if strcmpi(opt.output,'auto')
     outpFmt = inpFmt;
@@ -150,7 +153,7 @@ end
 % Create components of the LHS and RHS data. Panel VARs create data by
 % concatenting individual groups next to each other separated by a total of
 % p NaNs.
-[y0,k0,y1,g1,ci] = mystackdata(This,y,opt);
+[y0,k0,x0,y1,g1,ci] = mystackdata(This,y,x,opt);
 
 %--------------------------------------------------------------------------
 
@@ -160,6 +163,7 @@ nXPer = length(xRange);
 ng = size(g1,1);
 nk = size(k0,1);
 ny = size(y0,1);
+nx = size(x0,1);
 nObs = size(y0,2);
 p = opt.order;
 nData = size(y0,3);
@@ -186,17 +190,17 @@ end
 % They are organised as follows:
 % * Rr = [R,r],
 % * beta = R*gamma + r.
-This.Rr = VAR.restrict(ny,nk,ng,opt);
+This.Rr = VAR.restrict(ny,nk,nx,ng,opt);
 
 % Get the number of hyperparameters.
 if isempty(This.Rr)
     % Unrestricted VAR.
     if ~opt.diff
         % Level VAR.
-        This.NHyper = ny*(nk+p*ny+ng);
+        This.NHyper = ny*(nk+nx+p*ny+ng);
     else
         % Difference VAR or VEC.
-        This.NHyper = ny*(nk+(p-1)*ny+ng);
+        This.NHyper = ny*(nk+nx+(p-1)*ny+ng);
     end
 else
     % Parameter restrictions in the hyperparameter form:
@@ -216,7 +220,7 @@ DatFitted = cell(1,nLoop);
 Count = zeros(1,nLoop);
 
 % Pre-allocate VAR matrices.
-This = myprealloc(This,ny,p,nXPer,nLoop,nGrp,ng);
+This = myprealloc(This,ny,p,nXPer,nLoop,ng);
 
 % Create command-window progress bar.
 if opt.progress
@@ -225,44 +229,33 @@ end
 
 % Main loop
 %-----------
-ss = struct();
-ss.Rr = This.Rr;
-ss.k0 = k0;
-ss.ci = ci;
-% Weighted GLSQ; the function is different for VARs and PVARs, becuase
-% PVARS possibly combine weights on time periods and weights on groups.
-ss.w = myglsqweights(This,opt);
+s = struct();
+s.Rr = This.Rr;
+s.ci = ci;
+s.order = p;
+% Weighted GLSQ; the function is different for VARs and panel VARs, becuase
+% Panel VARs possibly combine weights on time periods and weights on groups.
+s.w = myglsqweights(This,opt);
 
 for iLoop = 1 : nLoop
-    ss.y0 = y0(:,:,min(iLoop,end));
-    ss.y1 = y1(:,:,min(iLoop,end));
-    ss.g1 = g1(:,:,min(iLoop,end));
+    s.y0 = y0(:,:,min(iLoop,end));
+    s.y1 = y1(:,:,min(iLoop,end));
+    s.k0 = k0(:,:,min(iLoop,end));
+    s.x0 = x0(:,:,min(iLoop,end));
+    s.g1 = g1(:,:,min(iLoop,end));
     
-    % Run generalised least squares. Assign the individual properties computed
-    % within `VAR.myglsq()` in a separate set of assignments to help trace down
-    % run-time errors.
-    ss = VAR.myglsq(ss,opt);
-    
-    This.A(:,:,iLoop) = ss.A;
-    This.G(:,:,iLoop) = ss.G;
-    This.Omega(:,:,iLoop) = ss.Omg;
-    This.Sigma(:,:,iLoop) = ss.Sgm;
-    resid(:,:,iLoop) = ss.resid;
+    % Run generalised least squares.
+    s = VAR.myglsq(s,opt);
 
-    if size(ss.K,2) == size(This.K,2)
-        This.K(:,:,iLoop) = ss.K;
-    else
-        This.K(:,:,iLoop) = ss.K(:,ones(1,size(This.K,2)));
-    end
+    % Assign estimated coefficient matrices to the VAR object.
+    [This,DatFitted{iLoop}] = myassignest(This,s,iLoop,opt);
     
-    [This,fitted,DatFitted{iLoop}] = myfitted(This,ss.resid);
-    This.Fitted(:,:,iLoop) = fitted;
-    Count(iLoop) = ss.count;
+    resid(:,:,iLoop) = s.resid;
+    Count(iLoop) = s.count;
 
     if opt.progress
         update(progress,iLoop/nLoop);
-    end
-    
+    end 
 end
 
 % Calculate triangular representation.
@@ -274,9 +267,12 @@ end
 This = infocrit(This);
 
 % Expand the output data to match the size of residuals if necessary.
-n = size(y,3);
+n = size(y0,3);
 if n < nLoop
-    y0(:,:,end+1:nLoop) = y0(:,:,end*ones(1,n));
+    y0(:,:,end+1:nLoop) = y0(:,:,end*ones(1,n-nLoop));
+    if nx > 0
+        x0(:,:,end+1:nLoop) = x0(:,:,end*ones(1,n-nLoop));
+    end
 end
 
 % Report observations that could not be fitted.
@@ -322,7 +318,7 @@ end
 
 
     function doNames()
-        if isempty(Ynames)
+        if isempty(yNames)
             if length(opt.ynames) == ny
                 % ##### Nov 2013 OBSOLETE and scheduled for removal.
                 utils.warning('obsolete', ...
@@ -331,19 +327,14 @@ end
                     'Specify variable names at the time of creating ', ...
                     '%s objects instead.'], ...
                     class(This));
-                Ynames = opt.ynames;
+                yNames = opt.ynames;
             else
-                Ynames = This.YNames;
+                yNames = This.YNames;
             end
         end
-        if ~isempty(opt.enames)
-            % ##### Nov 2013 OBSOLETE and scheduled for removal.
-            Enames = opt.enames;
-        else
-            Enames = This.ENames;
-        end
-        This = myynames(This,Ynames);
-        This = myenames(This,Enames);
+        eNames = This.ENames;
+        This = myynames(This,yNames);
+        This = myenames(This,eNames);
     end % doNames()
 
 
@@ -351,25 +342,22 @@ end
 
 
     function doOutpData()
+        yxeNames = [This.YNames,This.XNames,This.ENames];
+        yxe = [y0;x0;resid];
         if ispanel(This)
             % Panel VAR.
             nGrp = length(This.GroupNames);
             Outp = struct();
             for iiGrp = 1 : nGrp
                 name = This.GroupNames{iiGrp};
-                iY0 = y0(:,1:nXPer,:);
-                iResid = resid(:,1:nXPer,:);
                 Outp.(name) = myoutpdata(This,'dbase',This.Range, ...
-                    [iY0;iResid],[],[This.YNames,This.ENames]);
-                y0(:,1:nXPer+p,:) = [];
-                resid(:,1:nXPer+p,:) = [];
+                    yxe(:,1:nXPer,:),[],yxeNames);
+                yxe(:,1:nXPer+p,:) = [];
             end
         else
             % Non-panel VAR.
-            y0 = y0(:,1:nXPer);
-            resid = resid(:,1:nXPer);
             Outp = myoutpdata(This,outpFmt,This.Range, ...
-                [y0;resid],[],[This.YNames,This.ENames]);
+                yxe(:,1:nXPer,:),[],yxeNames);
         end
     end % doOutpData()
 

@@ -22,28 +22,18 @@ else
     end
     fprintf('%s(%g) object: ',class(This),p);
     fprintf('[%g] parameterisation(s)',nAlt);
-    if ispanel(This)
-        nGrp = length(This.GroupNames);
-        fprintf(' * %g group(s)',nGrp);
-    end
 end
 fprintf('\n');
 
+fprintf('\tvariables: ');
 if ~isempty(This.YNames)
-    yNames = strfun.displist(This.YNames);
+    fprintf('[%g] %s',length(This.YNames),strfun.displist(This.YNames));
 else
-    yNames = 'empty';
+    fprintf('none');
 end
-fprintf('\tvariables: %s',yNames);
 fprintf('\n');
 
 specdisp(This);
-
-% Group names for panel objects.
-if ispanel(This)
-    fprintf('\tgroups: %s',strfun.displist(This.GroupNames));
-    fprintf('\n');
-end
 
 disp@userdataobj(This);
 disp(' ');

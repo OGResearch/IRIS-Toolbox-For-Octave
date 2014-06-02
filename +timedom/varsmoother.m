@@ -75,7 +75,7 @@ end
 isKEmpty = isempty(K);
 isDEmpty = isempty(D);
 
-isSgm = any(any(Sgm ~= 0));
+isSgm = ~isempty(Sgm) && any(any(Sgm ~= 0));
 if allObs
     PP = BOmgBt;
     FF = Z*PP*Z';
@@ -95,7 +95,7 @@ nonZero = any(A ~= 0,1);
 X2(1:nx,1) = A(:,nonZero)*x0(nonZero) + Be(:,1);
 X2(nx+1:end,1) = x0(1:end-nx);
 if ~isKEmpty
-    X2(1:nx,1) = X2(1:nx,1) + K;
+    X2(1:nx,1) = X2(1:nx,1) + K(:,1);
 end
 if all(P0 == 0)
     Px2(1:nx,1:nx,1) = BOmgBt;
@@ -164,7 +164,7 @@ for t = 1 : nPer
     if t < nPer
         X2(1:nx,t+1) = A(:,nonZero)*X2(nonZero,t) + Be(:,t+1);
         if ~isKEmpty
-            X2(1:nx,t+1) = X2(1:nx,t+1) + K;
+            X2(1:nx,t+1) = X2(1:nx,t+1) + K(:,min(t+1,end));
         end
         X2(nx+1:end,t+1) = X2(1:end-nx,t);
         if any(jy)
@@ -268,7 +268,7 @@ end
         for kk = 2 : min(ahead,nPer-t+1)
             x(1:nx,kk) = A(:,nonZero)*x(nonZero,kk-1);
             if ~isKEmpty
-                x(1:nx,kk) = x(1:nx,kk) + K;
+                x(1:nx,kk) = x(1:nx,kk) + K(:,min(kk,end));
             end
             x(nx+1:end,kk) = x(1:end-nx,kk-1);
             y0 = Z*x(1:nz2,kk);

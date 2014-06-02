@@ -55,15 +55,16 @@ end
 
 % Warning structure for `db2array`.
 warn = struct();
-warn.notFound = false;
-warn.sizeMismatch = true;
-warn.freqMismatch = true;
-warn.nonTseries = true;
+warn.NotFound = false;
+warn.SizeMismatch = true;
+warn.FreqMismatch = true;
+warn.NonTseries = true;
+warn.NoRangeFound = true;
 % Starred requests throw a warning if one or more series is not found in
 % the input database.
 try %#ok<TRYNC>
     if isequal(Req(end),'*')
-        warn.notFound = true;
+        warn.NotFound = true;
         Req(end) = '';
     end
 end
@@ -152,8 +153,11 @@ end
         if ~isempty(dMean)
             realId = real(This.solutionid{2}(nf+1:end));
             imagId = imag(This.solutionid{2}(nf+1:end));
-            XbInitMean = db2array(dMean,This.name(realId),Range(1)-1, ...
-                imagId,This.log(realId),warn);
+            sw = struct();
+            sw.LagOrLead = imagId;
+            sw.Log = This.log(realId);
+            sw.Warn = warn;
+            XbInitMean = db2array(dMean,This.name(realId),Range(1)-1,sw);
             XbInitMean = permute(XbInitMean,[2,1,3]);
         end
         % Xf MSE.
@@ -241,17 +245,24 @@ end
     function Y = doData2Y()
         if ~isempty(dMean)
             inx = This.nametype == 1;
-            Y = db2array(dMean,This.name(inx),Range, ...
-                [],This.log(inx),warn);
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.Log = This.log(inx);
+            sw.Warn = warn;
+            Y = db2array(dMean,This.name(inx),Range,sw);
             Y = permute(Y,[2,1,3]);
         end
-    end % doData2Y().
+    end % doData2Y()
 
 %**************************************************************************
     function E = doData2E()
         if ~isempty(dMean)
             inx = This.nametype == 3;
-            E = db2array(dMean,This.name(inx),Range,[],[],warn);
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.Log = [];
+            sw.Warn = warn;
+            E = db2array(dMean,This.name(inx),Range,sw);
             E = permute(E,[2,1,3]);
         end
         eReal = real(E);
@@ -266,8 +277,11 @@ end
         ng = sum(This.nametype == 5);
         if ng > 0 && ~isempty(dMean)
             name = This.name(This.nametype == 5);
-            G = db2array(dMean,name,Range, ...
-                zeros(size(name)),false(size(name)),warn);
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.Log = [];
+            sw.Warn = warn;
+            G = db2array(dMean,name,Range,sw);
             G = permute(G,[2,1,3]);
         else
             G = nan(ng,nPer);
@@ -284,9 +298,11 @@ end
         if ~isempty(dMean)
             realId = realId(currentInx);
             imagId = imagId(currentInx);
-            tmpLog = This.log(realId);
-            x = db2array(dMean,This.name(realId),Range, ...
-                imagId,tmpLog,warn);
+            sw = struct();
+            sw.LagOrLead = imagId;
+            sw.Log = This.log(realId);
+            sw.Warn = warn;
+            x = db2array(dMean,This.name(realId),Range,sw);
             x = permute(x,[2,1,3]);
             %X = nan(length(inx),size(x,2),size(x,3));
             X = nan(nxx,size(x,2),size(x,3));
@@ -301,8 +317,11 @@ end
             imagId = imag(This.solutionid{2});
             realId = realId(nf+1:end);
             imagId = imagId(nf+1:end);
-            A = db2array(dMean,This.name(realId),Range, ...
-                imagId,This.log(realId),warn);
+            sw = struct();
+            sw.LagOrLead = imagId;
+            sw.Log = This.log(realId);
+            sw.Warn = warn;
+            A = db2array(dMean,This.name(realId),Range,sw);
             A = permute(A,[2,1,3]);
         end
         nData = size(A,3);

@@ -1,4 +1,4 @@
-function [X,Flag] = specget(This,Query)
+function [Ans,Flag] = specget(This,Query)
 % specget  [Not a public function] Implement GET method for varobj objects.
 %
 % Backend IRIS function.
@@ -9,7 +9,7 @@ function [X,Flag] = specget(This,Query)
 
 %--------------------------------------------------------------------------
 
-X = [];
+Ans = [];
 Flag = true;
 
 nAlt = size(This.A,3);
@@ -18,10 +18,10 @@ realSmall = getrealsmall();
 switch lower(Query)
     
     case {'omg','omega','cove','covresiduals'}
-        X = This.Omega;
+        Ans = This.Omega;
         
     case {'eig','eigval','roots'}
-        X = This.EigVal;
+        Ans = This.EigVal;
         
     case {'stableroots','explosiveroots','unstableroots','unitroots'}
         switch Query
@@ -32,48 +32,47 @@ switch lower(Query)
             case 'unitroots'
                 test = @(x) abs(abs(x) - 1) <= realSmall;
         end
-        X = nan(size(This.EigVal));
+        Ans = nan(size(This.EigVal));
         for ialt = 1 : nAlt
             inx = test(This.EigVal(1,:,ialt));
-            X(1,1:sum(inx),ialt) = This.EigVal(1,inx,ialt);
+            Ans(1,1:sum(inx),ialt) = This.EigVal(1,inx,ialt);
         end
-        inx = all(isnan(X),3);
-        X(:,inx,:) = [];
+        inx = all(isnan(Ans),3);
+        Ans(:,inx,:) = [];
         
     case {'nper','nobs'}
-        X = permute(sum(This.Fitted,2),[2,3,1]);
+        Ans = permute(sum(This.Fitted,2),[2,3,1]);
         
     case {'sample','fitted'}
-        X = cell(1,nAlt);
+        Ans = cell(1,nAlt);
         for ialt = 1 : nAlt
-            X{ialt} = This.Range(This.Fitted(1,:,ialt));
+            Ans{ialt} = This.Range(This.Fitted(1,:,ialt));
         end
         
     case {'range'}
-        X = This.Range;
+        Ans = This.Range;
         
     case 'comment'
         % Bkw compatibility only; use comment(this) directly.
-        X = comment(This);
+        Ans = comment(This);
         
     case {'ynames','ylist'}
-        X = This.YNames;
+        Ans = This.YNames;
         
     case {'enames','elist'}
-        X = This.ENames;
+        Ans = This.ENames;
         
-    case {'gnames','glist'}
-        X = This.GNames;
+    case {'xnames','xlist'}
+        Ans = This.XNames;
         
     case {'names','list'}
-        X = [This.YNames,This.ENames,This.GNames];
-        
+        Ans = [This.YNames,This.ENames,This.XNames];
         
     case {'nalt'}
-        X = nAlt;
+        Ans = nAlt;
         
-    case {'groupnames','grouplist'}
-        X = This.GroupNames;
+    case {'baseyear'}
+        Ans = This.BaseYear;
         
     otherwise
         Flag = false;

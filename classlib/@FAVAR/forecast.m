@@ -77,8 +77,8 @@ end
 if is.tseries(Inp)
    % Only mean tseries supplied; no uncertainty in initial condition.
    reqRange = Range(1)-pp : Range(1)-1;
-   [~,~,x0] = mydatarequest(This,Inp,reqRange);
-   x0 = x0(:,end:-1:1,:,:);
+   req = datarequest('y*',This,Inp,reqRange);
+   x0 = req.Y(:,end:-1:1,:,:);
    x0 = x0(:);
    P0 = 0;
 else
@@ -99,7 +99,10 @@ if ~isempty(J)
    if isstruct(J) && isfield(J,'mean')
       J = J.mean;
    end
-   [outpFmt,Range,y] = mydatarequest(This,J,Range,opt);
+   req = datarequest('y*',This,J,Range,opt);
+   outpFmt = req.Format;
+   Range = req.Range;
+   y = req.Y;
    [This,y] = standardise(This,y);
 else
    y = nan(ny,nPer,nData);

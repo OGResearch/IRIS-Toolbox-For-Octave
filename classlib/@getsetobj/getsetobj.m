@@ -19,6 +19,10 @@ classdef getsetobj
         varargout = get(varargin)
     end
     
+    methods (Access=protected,Hidden)
+        varargout = mystruct2obj(varargin)
+    end
+    
     methods (Static,Hidden)
         function Query = myalias(Query)
         end

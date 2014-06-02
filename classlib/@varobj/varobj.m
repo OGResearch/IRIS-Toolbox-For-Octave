@@ -9,10 +9,8 @@ classdef varobj < userdataobj & getsetobj
 
     
     properties
-        YNames = {}; % Endogenous variables.
-        ENames = {}; % Residuals.
-        GNames = {}; % Exogenous variables.
-        GroupNames = {}; % Panel groups.
+        YNames = cell(1,0); % Endogenous variables.
+        ENames = cell(1,0); % Residuals.
         
         A = []; % Transition matrix.
         Omega = zeros(0); % Covariance matrix of reduced-form residuals.
@@ -21,22 +19,19 @@ classdef varobj < userdataobj & getsetobj
         Range = zeros(1,0); % Estimation range.
         Fitted = false(1,0); % Index of periods actually fitted.
     end
-    
+        
     
     methods
         varargout = assign(varargin)
-        varargout = group(varargin)
+        varargout = datarequest(varargin)
         varargout = horzcat(varargin)
         varargout = isempty(varargin)
-        varargout = ispanel(varargin)
         varargout = nfitted(varargin)
     end
     
     
     methods (Hidden)
         disp(varargin)
-        varargout = mydatarequest(varargin)
-        varargout = myinpdata(varargin)
         varargout = myoutpdata(varargin)
         varargout = myselect(varargin)        
         varargout = specget(varargin)
@@ -47,12 +42,12 @@ classdef varobj < userdataobj & getsetobj
     methods (Access=protected,Hidden)
         varargout = mycompatible(varargin)
         varargout = myenames(varargin)
-        varargout = mygroupnames(varargin)
+        varargout = myinpdata(varargin)
         varargout = myny(varargin)       
         varargout = myprealloc(varargin)
         varargout = mysubsalt(varargin)
         varargout = myynames(varargin)
-        specdisp(varargin)
+        varargout = specdisp(varargin)
     end
     
     
@@ -75,22 +70,16 @@ classdef varobj < userdataobj & getsetobj
             end
             
             % Assign endogenous variable names, and create residual names.
-            if iscellstr(varargin{1}) || ischar(varargin{1})
+            if ~isempty(varargin) ...
+                    && ( iscellstr(varargin{1}) || ischar(varargin{1}) )
                 This = myynames(This,varargin{1});
                 varargin(1) = [];
                 This = myenames(This,[]);
             end
-            
-            % Assign group names.
-            if ~isempty(varargin) ...
-                    && (iscellstr(varargin{1}) || ischar(varargin{1}))
-                This = mygroupnames(This,varargin{1});
-                varargin(1) = [];
-            end
 
             % Options and userdata.
             if ~isempty(varargin) && iscellstr(varargin(1:2:end))
-                opt = passvalopt('varobj.varobj',varargin{:});
+                [opt,~] = passvalopt('varobj.varobj',varargin{:});
                 if ~isempty(opt.userdata)
                     This = userdata(This,opt.userdata);
                 end

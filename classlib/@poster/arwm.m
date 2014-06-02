@@ -110,10 +110,10 @@ function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
 % References
 % ===========
 %
-% 1. Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation
+% # Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation
 % by Pre-Fetching," CMU Statistics Dept. Tech. Report 802.
 %
-% 2. Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
+% # Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
 % algorithms using a prefetching approach," SSE/EFI Working Paper Series in
 % Economics and Finance No. 706.
 %

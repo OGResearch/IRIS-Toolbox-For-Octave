@@ -32,12 +32,8 @@ This = SVAR();
 This.B = nan(ny,ny,nAlt);
 This.Std = nan(1,nAlt);
 
-% Populate the superclass VAR properties.
-list = utils.ndprop('VAR');
-nList = length(list);
-for i = 1 : nList
-   This.(list{i}) = V.(list{i});
-end
+% Populate properties inherited from superclass VAR.
+This = mystruct2obj(This,V);
 
 % Identify the B matrix.
 [This,Data,B,Count] = myidentify(This,Data,opt);

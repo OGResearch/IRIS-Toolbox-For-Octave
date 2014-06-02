@@ -301,13 +301,10 @@ end
 
 % Initialise handle to output data.
 xRange = Range(1)-1 : Range(end);
-nXPer = length(xRange);
-if opt.contributions
-    hData = hdataobj(This, ...
-        struct('Contrib','E'), ...
-        nXPer,ne+2);
+if ~opt.contributions
+    hData = hdataobj(This,xRange,nLoop);
 else
-    hData = hdataobj(This,[],nXPer,nLoop);
+    hData = hdataobj(This,xRange,ne+2,'Contrib=',@E);
 end
 
 % Maximum expansion needed.
@@ -457,10 +454,7 @@ end
 
 % Convert hdataobj to struct. The comments assigned to the output series
 % depend on whether this is a `'contributions=' true` simulation or not.
-Outp = hdata2tseries(hData,This,xRange);
-
-% Add parameters to output database.
-Outp = addparam(This,Outp);
+Outp = hdata2tseries(hData);
 
 % Overlay the input (or user-supplied) database with the simulation
 % database.
@@ -528,7 +522,7 @@ end
             xb = [use.x0,xb];
         end
         % Add current results to output data.
-        hdataassign(hData,This,pos, ...
+        hdataassign(hData,pos, ...
             [nan(ny,1,n),use.y], ...
             [xf;xb], ...
             [nan(ne,1,n),use.e]);

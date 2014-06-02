@@ -311,19 +311,24 @@ for i = 1 : length(Q)
         if isempty(ch.caption)
             k = i*j;
             if iscellstr(Opt.caption) ...
-                    && length(Opt.caption) >= k && ~isempty(Opt.caption{k})
+                    && length(Opt.caption) >= k ...
+                    && ~isempty(Opt.caption{k})
                 ch.caption = Opt.caption{k};
             elseif isa(Opt.caption,'function_handle')
                 ch.caption = Opt.caption;
             else
-                ch.caption = [sprintf('%s & ',ch.eval{1:end-1}),ch.eval{end}];
+                ch.caption = [ ...
+                    sprintf('%s & ',ch.eval{1:end-1}), ...
+                    ch.eval{end}];
                 if ch.isTransform
                     func = '';
                     if is.numericscalar(Opt.deviationfrom)
-                        func = [', Dev from ',dat2char(Opt.deviationfrom)];
+                        func = [ ...
+                            ', Dev from ', ...
+                            dat2char(Opt.deviationfrom)];
                     end
                     if isa(Opt.transform,'function_handle')
-                        c = func2str(ch.transform);
+                        c = func2str(Opt.transform);
                         func = [func,', ', ...
                             regexprep(c,'^@\(.*?\)','','once')]; %#ok<AGROW>
                     end

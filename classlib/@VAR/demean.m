@@ -1,5 +1,5 @@
 function This = demean(This)
-% demean  Remove constant from VAR object.
+% demean  Remove constant and the effect of exogenous inputs from VAR object.
 %
 % Syntax
 % =======
@@ -9,13 +9,13 @@ function This = demean(This)
 % Input arguments
 % ================
 %
-% * `V` [ VAR ] - VAR object in which the constant vector will be reset to
-% zero.
+% * `V` [ VAR ] - VAR object.
 %
 % Output arguments
 % =================
 %
-% * `V` [ VAR ] - VAR object with the constant vector reset to zero.
+% * `V` [ VAR ] - VAR object with the constant vector, `K`, and the
+% asymptotic assumptions for exogenous inputs, `X0`, reset to zero.
 %
 % Description
 % ============
@@ -30,5 +30,6 @@ function This = demean(This)
 %--------------------------------------------------------------------------
 
 This.K(:,:,:) = 0;
+This.X0(:,:,:) = 0;
 
 end

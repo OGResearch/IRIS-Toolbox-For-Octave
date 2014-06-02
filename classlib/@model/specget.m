@@ -1,4 +1,4 @@
-function [X,Flag,Query] = specget(This,Query)
+function [Ans,Flag,Query] = specget(This,Query)
 % specget  [Not a public function] Implement GET method for model objects.
 %
 % Backend IRIS function.
@@ -10,14 +10,14 @@ function [X,Flag,Query] = specget(This,Query)
 %--------------------------------------------------------------------------
 
 % Call superclass `specget` first.
-[X,Flag,Query] = specget@modelobj(This,Query);
+[Ans,Flag,Query] = specget@modelobj(This,Query);
 
 % Call to superclass successful.
 if Flag
     return
 end
 
-X = [];
+Ans = [];
 Flag = true;
 
 ssLevel = [];
@@ -56,101 +56,101 @@ addParams = false;
 switch Query
     
     case 'ss'
-        X = cell2DbaseFunc(ssLevel+1i*ssGrowth);
+        Ans = cell2DbaseFunc(ssLevel+1i*ssGrowth);
         % addParams = true;
         
     case 'sslevel'
-        X = cell2DbaseFunc(ssLevel);
+        Ans = cell2DbaseFunc(ssLevel);
         addParams = true;
         
     case 'ssgrowth'
-        X = cell2DbaseFunc(ssGrowth);
+        Ans = cell2DbaseFunc(ssGrowth);
         addParams = true;
         
     case 'dt'
-        X = cell2DbaseFunc(dtLevel+1i*dtGrowth);
+        Ans = cell2DbaseFunc(dtLevel+1i*dtGrowth);
         addParams = true;
         
     case 'dtlevel'
-        X = cell2DbaseFunc(dtLevel);
+        Ans = cell2DbaseFunc(dtLevel);
         addParams = true;
         
     case 'dtgrowth'
         inx = This.nametype == 1;
-        X = cell2DbaseFunc(dtGrowth);
+        Ans = cell2DbaseFunc(dtGrowth);
         addParams = true;
         
     case 'ss+dt'
-        X = cell2DbaseFunc(level+1i*growth);
+        Ans = cell2DbaseFunc(level+1i*growth);
         addParams = true;
         
     case 'sslevel+dtlevel'
-        X = cell2DbaseFunc(level);
+        Ans = cell2DbaseFunc(level);
         addParams = true;
         
     case 'ssgrowth+dtgrowth'
-        X = cell2DbaseFunc(growth);
+        Ans = cell2DbaseFunc(growth);
         addParams = true;
         
     case {'eig','eigval','roots'}
-        X = eig(This);
+        Ans = eig(This);
         
     case 'rlist'
-        X = {This.outside.lhs{:}};
+        Ans = {This.outside.lhs{:}};
         
     case {'deqtn'}
-        X = This.eqtn(This.eqtntype == 3);
-        X(cellfun(@isempty,X)) = [];
+        Ans = This.eqtn(This.eqtntype == 3);
+        Ans(cellfun(@isempty,Ans)) = [];
         
     case {'leqtn'}
-        X = This.eqtn(This.eqtntype == 4);
+        Ans = This.eqtn(This.eqtntype == 4);
         
     case 'reqtn'
         n = length(This.outside.rhs);
-        X = cell([1,n]);
+        Ans = cell([1,n]);
         for i = 1 : n
-            X{i} = sprintf('%s=%s;', ...
+            Ans{i} = sprintf('%s=%s;', ...
                 This.outside.lhs{i},This.outside.rhs{i});
         end
         % Remove references to database d from reporting equations.
-        X = regexprep(X,'d\.([a-zA-Z])','$1');
+        Ans = regexprep(Ans,'d\.([a-zA-Z])','$1');
         
     case {'neqtn','nonlineqtn'}
-        X = This.eqtn(This.nonlin);
+        Ans = This.eqtn(This.nonlin);
         
     case {'nlabel','nonlinlabel'}
-        X = This.eqtnlabel(This.nonlin);
+        Ans = This.eqtnlabel(This.nonlin);
         
     case 'rlabel'
-        X = This.outside.label;
+        Ans = This.outside.label;
         
     case 'yvector'
-        X = This.solutionvector{1};
+        Ans = This.solutionvector{1};
         
     case 'xvector'
-        X = This.solutionvector{2};
+        Ans = This.solutionvector{2};
         
     case 'xfvector'
-        X = This.solutionvector{2}(1:nf);
+        Ans = This.solutionvector{2}(1:nf);
         
     case 'xbvector'
-        X = This.solutionvector{2}(nf+1:end);
+        Ans = This.solutionvector{2}(nf+1:end);
         
     case 'evector'
-        X = This.solutionvector{3};
+        Ans = This.solutionvector{3};
         
     case {'ylog','xlog','elog'}
         inx = find(Query(1) == 'yxe');
-        X = This.log(This.nametype == inx);
+        Ans = This.log(This.nametype == inx);
         
     case 'yid'
-        X = This.solutionid{1};
+        Ans = This.solutionid{1};
         
     case 'xid'
-        X = This.solutionid{2};
+        Ans = This.solutionid{2};
         
     case 'eid'
-        X = This.solutionid{3};
+        Ans = This.solutionid{3};
         
     case {'eylist','exlist'}
         t = This.tzero;
@@ -162,9 +162,9 @@ switch Query
         exindex = any(exoccur,1);        
         elist = This.name(This.nametype == 3);
         if Query(2) == 'y'
-            X = elist(eyindex);
+            Ans = elist(eyindex);
         else
-            X = elist(exindex);
+            Ans = elist(exindex);
         end
 
     case {'derivatives','xderivatives','yderivatives'}
@@ -175,14 +175,14 @@ switch Query
         
     case {'dlabel','llabel'}
         type = find(Query(1) == 'xydl');
-        X = This.eqtnlabel(This.eqtntype == type);
+        Ans = This.eqtnlabel(This.eqtntype == type);
 
     case {'deqtnalias','leqtnalias'}
         type = find(Query(1) == 'xydl');
-        X = This.eqtnalias(This.eqtntype == type);
+        Ans = This.eqtnalias(This.eqtntype == type);
         
     case 'link'
-        X = cell2struct(This.eqtn(This.eqtntype == 4), ...
+        Ans = cell2struct(This.eqtn(This.eqtntype == 4), ...
             This.name(This.Refresh),2);
         
     case {'diffuse','nonstationary','stationary', ...
@@ -190,21 +190,21 @@ switch Query
         doStationary();
         
     case 'maxlag'
-        X = min(imag(This.systemid{2}));
+        Ans = min(imag(This.systemid{2}));
         
     case 'maxlead'
-        X = max(imag(This.systemid{2})) + 1;
+        Ans = max(imag(This.systemid{2})) + 1;
         
     case {'icond','initcond','required'}
         % List of intial conditions required at least for one parameterisation.
         id = This.solutionid{2}(nf+1:end);
         inx = any(This.icondix,3);
         id = id(inx) - 1i;
-        X = myvector(This,id);
+        Ans = myvector(This,id);
         
     case {'forward'}
         ne = sum(This.nametype == 3);
-        X = size(This.solution{2},2)/ne - 1;
+        Ans = size(This.solution{2},2)/ne - 1;
         chkSolution = true;
         
     case {'stableroots','unitroots','unstableroots'}
@@ -216,25 +216,25 @@ switch Query
             case 'unitroots'
                 inx = abs(abs(This.eigval) - 1) <= eigValTol;
         end
-        X = nan(size(This.eigval));
+        Ans = nan(size(This.eigval));
         for iAlt = 1 : nAlt
             n = sum(inx(1,:,iAlt));
-            X(1,1:n,iAlt) = This.eigval(1,inx(1,:,iAlt),iAlt);
+            Ans(1,1:n,iAlt) = This.eigval(1,inx(1,:,iAlt),iAlt);
         end
-        X(:,all(isnan(X),3),:) = [];
+        Ans(:,all(isnan(Ans),3),:) = [];
         
     case 'epsilon'
-        X = This.epsilon;
+        Ans = This.epsilon;
         
     case 'userdata'
-        X = userdata(This);
+        Ans = userdata(This);
         
     % Database of autoexogenise definitions d.variable = 'shock';
     case {'autoexogenise','autoexogenised','autoexogenize','autoexogenized'}
-        X = autoexogenise(This);
+        Ans = autoexogenise(This);
         
     case {'activeshocks','inactiveshocks'}
-        X = cell([1,nAlt]);
+        Ans = cell([1,nAlt]);
         for iAlt = 1 : nAlt
             list = This.name(This.nametype == 3);
             stdvec = This.Assign(1, ...
@@ -244,22 +244,22 @@ switch Query
             else
                 list(stdvec ~= 0) = [];
             end
-            X{iAlt} = list;
+            Ans{iAlt} = list;
         end
         
     case 'nx'
-        X = length(This.solutionid{2});
+        Ans = length(This.solutionid{2});
     case 'nb'
-        X = size(This.solution{7},1);
+        Ans = size(This.solution{7},1);
     case 'nf'
-        X = length(This.solutionid{2}) - size(This.solution{7},1);
+        Ans = length(This.solutionid{2}) - size(This.solution{7},1);
     case 'ny'
-        X = length(This.solutionid{1});
+        Ans = length(This.solutionid{1});
     case 'ne'
-        X = length(This.solutionid{3});
+        Ans = length(This.solutionid{3});
         
     case 'lastsyst'
-        X = This.lastSyst;
+        Ans = This.lastSyst;
         
     otherwise
         Flag = false;
@@ -278,7 +278,7 @@ end
 
 % Add parameters, std devs and non-zero cross-corrs.
 if addParams
-    X = addparam(This,X);
+    Ans = addparam(This,Ans);
 end
 
 
@@ -315,18 +315,18 @@ end
         if ~isempty(strfind(Query,'list'))
             % List.
             if nAlt == 1
-                X = name(status == true | status == 1);
-                X = X(:)';
+                Ans = name(status == true | status == 1);
+                Ans = Ans(:)';
             else
-                X = cell([1,nAlt]);
+                Ans = cell([1,nAlt]);
                 for ii = 1 : nAlt
-                    X{ii} = name(status(:,ii) == true | status(:,ii) == 1);
-                    X{ii} = X{ii}(:)';
+                    Ans{ii} = name(status(:,ii) == true | status(:,ii) == 1);
+                    Ans{ii} = Ans{ii}(:)';
                 end
             end
         else
             % Database.
-            X = cell2struct(num2cell(status,2),name(:),1);
+            Ans = cell2struct(num2cell(status,2),name(:),1);
         end
     end % doStationary()
 
@@ -343,7 +343,7 @@ end
             select = This.eqtntype <= 2;
         end
         nEqtn = sum(select);
-        X = cell(1,nEqtn);
+        Ans = cell(1,nEqtn);
         for iieq = find(select)
             u = char(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
@@ -362,7 +362,7 @@ end
             u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
                 @doReplaceZero,1);
             
-            X{iieq} = u;
+            Ans{iieq} = u;
         end
         
         function c = doReplacePlusMinus(c1,c2)
@@ -390,12 +390,12 @@ end
             select = This.eqtntype <= 2;
         end        
         neqtn = sum(select);
-        X = cell(1,neqtn);
+        Ans = cell(1,neqtn);
         for iieq = find(select)
             [tmocc,nmocc] = myfindoccur(This,iieq,'variables_shocks');
             tmocc = tmocc - This.tzero;
             nocc = length(tmocc);
-            X{iieq} = cell(1,nocc);
+            Ans{iieq} = cell(1,nocc);
             for iiocc = 1 : nocc
                 c = This.name{nmocc(iiocc)};
                 if tmocc(iiocc) ~= 0
@@ -404,7 +404,7 @@ end
                 if This.log(nmocc(iiocc))
                     c = ['log(',c,')']; %#ok<AGROW>
                 end
-                X{iieq}{iiocc} = c;
+                Ans{iieq}{iiocc} = c;
             end
         end
     end % doWrt()

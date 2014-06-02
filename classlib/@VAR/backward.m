@@ -38,21 +38,25 @@ for iAlt = 1 : nAlt
         [T,R,~,~,~,~,U,Omg] = sspace(This,iAlt);
         % 0th and 1st order autocovariance matrices of stacked y vector.
         C = covfun.acovf(T,R,[],[],[],[],U,Omg,This.EigVal(1,:,iAlt),1);
-        A = transpose(C(:,:,2)) / C(:,:,1);
-        Q = A*C(:,:,2);
-        Omg = C(:,:,1) + A*C(:,:,1)*transpose(A) - Q - transpose(Q);
-        A = A(end-ny+1:end,:);
-        A = reshape(A,[ny,ny,p]);
-        A = A(:,:,end:-1:1);
-        This.A(:,:,iAlt) = A(:,:);
+        AOld = This.A(:,:,iAlt);
+        ANew = transpose(C(:,:,2)) / C(:,:,1);
+        Q = ANew*C(:,:,2);
+        Omg = C(:,:,1) + ANew*C(:,:,1)*transpose(ANew) - Q - transpose(Q);
+        ANew = ANew(end-ny+1:end,:);
+        ANew = reshape(ANew,[ny,ny,p]);
+        ANew = ANew(:,:,end:-1:1);
+        ANew = ANew(:,:);
+        This.A(:,:,iAlt) = ANew;
         This.Omega(:,:,iAlt) = Omg(end-ny+1:end,end-ny+1:end);
-        This.K(:,:,iAlt) = ...
-            sum(poly.var2poly(This.A(:,:,iAlt)),3)*mean(This,iAlt);
+        R = sum(poly.var2poly(ANew),3) / sum(poly.var2poly(AOld),3);
+        This.K(:,:,iAlt) = R * This.K(:,:,iAlt);
+        This.J(:,:,iAlt) = R * This.J(:,:,iAlt);
     else
         % Non-stationary parameterisations.
         This.A(:,:,iAlt) = NaN;
         This.Omega(:,:,iAlt) = NaN;
         This.K(:,:,iAlt) = NaN;
+        This.J(:,:,iAlt) = NaN;
     end
 end
 
@@ -63,6 +67,6 @@ if any(~isStat)
         preparser.alt2str(~isStat));
 end
 
-[This.T,This.U,This.EigVal] = schur(This.A);
+This = schur(This);
 
 end

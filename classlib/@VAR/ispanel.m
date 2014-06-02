@@ -1,20 +1,21 @@
-function Flag = VAR(X)
-% VAR  True if variable is a VAR object.
+function Flag = ispanel(This)
+% ispanel  True for panel VAR objects.
 %
-% Syntax 
+% Syntax
 % =======
 %
-%     Flag = is.VAR(X)
+%     Flag = ispanel(X)
 %
 % Input arguments
 % ================
 %
-% * `X` [ numeric ] - Variable that will be tested.
+% * `X` [ VAR | SVAR ]  - VAR object.
 %
 % Output arguments
+% =================
 %
-% * `Flag` [ `true` | `false` ] - True if the input variable `X` is a VAR
-% object.
+% * `Flag` [ `true` | `false` ] - True if the VAR object, `X`, is based on
+% a panel of data.
 %
 % Description
 % ============
@@ -27,7 +28,7 @@ function Flag = VAR(X)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-Flag = isa(X,'VAR');
+ 
+Flag = ~isempty(This.GroupNames);
 
 end

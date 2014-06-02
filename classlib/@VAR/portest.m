@@ -67,7 +67,8 @@ if H <= p
 end
 
 % Request residuals.
-[~,~,~,e] = mydatarequest(This,Inp,This.Range);
+req = datarequest('e*',This,Inp,This.Range);
+e = req.E;
 nData = size(e,3);
 if nData ~= nAlt
     utils.error('VAR', ...

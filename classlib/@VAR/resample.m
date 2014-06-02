@@ -32,7 +32,7 @@ function Outp = resample(This,Inp,Range,NDraw,varargin)
 % be used in resampling; required in VAR objects with multiple groups when
 % `'deviation=' false`.
 %
-% * `'method='` [ 'bootstrap' | *'montecarlo'* | function_handle ] -
+% * `'method='` [ `'bootstrap'` | *`'montecarlo'`* | function_handle ] -
 % Bootstrap from estimated residuals, resample from normal distribution, or
 % use user-supplied sampler.
 %
@@ -71,8 +71,9 @@ elseif ischar(NDraw)
 end
 
 if throwWarn
-    warning('iris:VAR', ...
-        ['Calling VAR.resample with three input arguments is obsolete, ', ...
+    % ##### Nov 2013 OBSOLETE.
+    utils.warning('obsolete', ...
+        ['Calling VAR/resample(...) with three input arguments is obsolete, ', ...
         'and will not be supported in future versions of IRIS.\n']);
 end
 
@@ -100,8 +101,11 @@ end
 %--------------------------------------------------------------------------
 
 ny = size(This.A,1);
+nx = length(This.XNames);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+isConst = ~opt.deviation;
+isX = nx > 0;
 
 % Check for multiple parameterisations.
 doChkMultipleParams();
@@ -115,10 +119,14 @@ nXPer = numel(xRange);
 
 % Input data
 %------------
-[outpFmt,~,y,e] = mydatarequest(This,Inp,xRange,opt);
+req = datarequest('y*,x,e',This,Inp,xRange,opt);
+outpFmt = req.Format;
+y = req.Y;
+x = req.X;
+e = req.E;
 nData = size(y,3);
 if nData > 1
-    utils.error('VAR', ...
+    utils.error('VAR:resample', ...
         'Cannot resample from multiple data sets.')
 end
 
@@ -130,13 +138,17 @@ if opt.deviation
 else
     if isempty(Inp)
         % Asymptotic initial condition.
-        [~,x] = mean(This);
-        Y(:,1:p) = x;
+        [~,init] = mean(This);
+        Y(:,1:p) = init;
+        x = This.X0;
+        x = x(:,ones(1,nXPer));
+        x(:,1:p) = NaN;
     else
         % Initial condition from pre-sample data.
         Y(:,1:p) = y(:,1:p);
     end
 end
+
 if NDraw > 1
     Y = Y(:,:,ones(1,NDraw));
 end
@@ -150,19 +162,33 @@ end
 
 % System matrices
 %-----------------
-[A,B,K] = mysystem(This);
+[A,~,K,J] = mysystem(This);
+[B,isIdentified] = mybmatrix(This);
+
+% Collect all deterministic terms (constant and exogenous inputs).
+KJ = zeros(ny,nXPer);
+if isConst
+    KJ = KJ + K(:,ones(1,nXPer));
+end
+if isX
+    KJ = KJ + J*x;
+end
 
 % Back out reduced-form residuals if needed. The B matrix is then
 % discarded, and only the covariance matrix of reduced-form residuals is
 % used.
-Be = B*e;
+if isIdentified
+    Be = B*e;
+end
 
 if ~isequal(opt.method,'bootstrap')
     % Safely factorise (chol/svd) the covariance matrix of reduced-form
-    % residuals so that we can draw from multivariate normal.
+    % residuals so that we can draw from uncorrelated multivariate normal.
     F = covfun.factorise(This.Omega);
     if isa(opt.method,'function_handle')
         allSampleE = opt.method(ny*(nXPer-p),NDraw);
+    else
+        allSampleE = randn(ny*(nXPer-p),NDraw);
     end
 end
 
@@ -175,24 +201,27 @@ end
 %----------
 nanInit = false(1,NDraw);
 nanResid = false(1,NDraw);
+E = nan(ny,nXPer,NDraw);
 for iDraw = 1 : NDraw
     iBe = zeros(ny,nXPer);
     iBe(:,p+1:end) = doDrawResiduals();
-    Yi = Y(:,:,iDraw);
-    if any(any(isnan(Yi(:,1:p))))
+    iY = Y(:,:,iDraw);
+    if any(any(isnan(iY(:,1:p))))
         nanInit(iDraw) = true;
     end
     if any(isnan(iBe(:)))
         nanResid(iDraw) = true;
     end
     for t = p+1 : nXPer
-        Yilags = Yi(:,t-(1:p));
-        Yi(:,t) = A*Yilags(:) + iBe(:,t);
-        if ~opt.deviation
-            Yi(:,t) = Yi(:,t) + K;
-        end
+        iYInit = iY(:,t-(1:p));
+        iY(:,t) = A*iYInit(:) + KJ(:,t) + iBe(:,t);
     end
-    Y(:,:,iDraw) = Yi;
+    Y(:,:,iDraw) = iY;
+    iE = iBe;
+    if isIdentified
+        iE = B\iE;
+    end
+    E(:,p+1:end,iDraw) = iE(:,p+1:end);
     % Update the progress bar.
     if opt.progress
         update(progress,iDraw/NDraw);
@@ -201,35 +230,44 @@ end
 
 % Report NaNs in initial conditions.
 if any(nanInit)
-    utils.warning('VAR', ...
+    utils.warning('VAR:resample', ...
         'Some of the initial conditions for resampling are NaN %s.', ...
         preparser.alt2str(nanInit));
 end
 
 % Report NaNs in resampled residuals.
 if any(nanResid)
-    utils.warning('VAR', ...
+    utils.warning('VAR:resample', ...
         'Some of the resampled residuals are NaN %s.', ...
         preparser.alt2str(nanResid));
 end
 
 % Return only endogenous variables, not shocks.
-Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.YNames);
+names = [This.YNames,This.XNames,This.ENames];
+data = [Y;x(:,:,ones(1,NDraw));E];
+Outp = myoutpdata(This,outpFmt,xRange,data,[],names);
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doChkMultipleParams()
         
         % Works only with single parameterisation and single group.
         if nAlt > 1
-            utils.error('VAR', ...
+            utils.error('VAR:resample', ...
                 ['Cannot resample from VAR objects ', ...
                 'with multiple parameterisations.']);
         end
-    end % doChkMultipleParams().
+    end % doChkMultipleParams()
+
 
 %**************************************************************************
+
+    
     function X = doDrawResiduals()
         if isequal(opt.method,'bootstrap')
             if opt.wild
@@ -245,15 +283,12 @@ Outp = myoutpdata(This,outpFmt,xRange,Y,[],This.YNames);
                 X = Be(:,p+draw);
             end
         else
-            if isa(opt.method,'function_handle')
-                thisSampleE = allSampleE(:,iDraw);
-                thisSampleE = reshape(thisSampleE,[ny,nXPer-p]);
-            else
-                thisSampleE = randn(ny,nXPer-p);
-            end
-            X = F*thisSampleE;
+            u = allSampleE(:,iDraw);
+            u = reshape(u,[ny,nXPer-p]);
+            X = F*u;
         end
-    end % doDrawResiduals().
+    end % doDrawResiduals()
+
 
 end
 

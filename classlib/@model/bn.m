@@ -77,7 +77,7 @@ G = datarequest('g',This,Inp,Range);
 nLoop = max([nData,nAlt]);
 
 % Pre-allocate hdataobj for output data.
-hd = hdataobj(This,struct('IsPreSample',false),nPer,nLoop);
+hd = hdataobj(This,Range,nLoop,'IncludeLag=',false);
 
 repeat = ones(1,nPer);
 isSol = true(1,nAlt);
@@ -154,7 +154,7 @@ for iLoop = 1 : nLoop
     % Store output data #iloop.
     x = [xf;xb];
     e = zeros(ne,nPer);
-    hdataassign(hd,This,iLoop,y,x,e);
+    hdataassign(hd,iLoop,y,x,e);
     
 end
 
@@ -174,6 +174,6 @@ if any(~isDiffStat)
 end
 
 % Create output database from hdataobj.
-Outp = hdata2tseries(hd,This,Range);
+Outp = hdata2tseries(hd);
 
 end

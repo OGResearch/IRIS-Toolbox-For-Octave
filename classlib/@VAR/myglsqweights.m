@@ -1,5 +1,5 @@
 function W = myglsqweights(This,Opt)
-% myglsqweights  [Not a public function] Vector of period weights for PVAR estimation.
+% myglsqweights  [Not a public function] Vector of period weights for VAR estimation.
 %
 % Backend IRIS function.
 % No help provided.
@@ -54,16 +54,20 @@ if all(isnan(W(:)))
     W = [];
 end
    
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+    
+    
     function doChkGrpweights()
         if length(Wg) ~= nGrp
-            utils.error('PVAR', ...
+            utils.error('VAR:myglsqweights', ...
                 ['The length of the vector of group weights (%g) must ', ...
-                'match the number of groups in the PVAR object (%g).'], ...
+                'match the number of groups in the panel VAR object (%g).'], ...
                 length(Wg),nGrp);
         end
-    end % doChkGrpWeights().
+    end % doChkGrpWeights()
 
 end

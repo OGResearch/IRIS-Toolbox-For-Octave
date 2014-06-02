@@ -19,7 +19,11 @@ ny = size(This.A,1);
 nAlt = size(This.A,3);
 
 % Input data.
-[outpFmt,range,y,e] = mydatarequest(This,Inp,Inf,Opt);
+req = datarequest('y*,e',This,Inp,Inf,Opt);
+outpFmt = req.Format;
+range = req.Range;
+y = req.Y;
+e = req.E;
 
 if size(e,3) == 1 && nAlt > 1
     e = e(:,:,ones(1,nAlt));

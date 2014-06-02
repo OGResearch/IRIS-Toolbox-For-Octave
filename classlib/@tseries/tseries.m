@@ -409,7 +409,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
         varargout = mygetdata(varargin)
         varargout = myinit(varargin)
         varargout = mylagorlead(varargin)
-        varargout = mystruct2obj(varargin)
         varargout = binop(varargin)
         varargout = unop(varargin)
         varargout = catcheck(varargin)

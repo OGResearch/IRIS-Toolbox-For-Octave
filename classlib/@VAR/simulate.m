@@ -72,6 +72,8 @@ opt = passvalopt('VAR.simulate',varargin{1:end});
 ny = size(This.A,1);
 pp = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+nx = length(This.XNames);
+isX = nx > 0;
 
 if isempty(Range)
     return
@@ -85,18 +87,26 @@ else
     Range = Range(1)-pp : Range(end);
 end
 
-[outpFmt,Range,x,e] = mydatarequest(This,Inp,Range,opt);
+req = datarequest('y*,x*,e',This,Inp,Range,opt);
+outpFmt = req.Format;
+Range = req.Range;
+y = req.Y;
+x = req.X;
+e = req.E;
 e(isnan(e)) = 0;
 
 if isBackcast
-    x = x(:,end:-1:1,:,:);
-    e = e(:,end:-1:1,:,:);
+    y = flip(y,2);
+    e = flip(e,2);
+    x = flip(x,2);
 end
 
 e(:,1:pp,:) = NaN;
 nPer = length(Range);
-nData = size(x,3);
-nLoop = max(nAlt,nData);
+nDataY = size(y,3);
+nDataX = size(x,3);
+nDataE = size(e,3);
+nLoop = max([nAlt,nDataY,nDataX,nDataE]);
 
 if opt.contributions
     if nLoop > 1
@@ -108,58 +118,79 @@ if opt.contributions
     end
 end
 
-if nData < nLoop
-    expand = ones(1,nLoop-nData);
-    x = cat(3,x,x(:,:,end*expand));
-    e = cat(3,e,e(:,:,end*expand));
+% Expand Y, E, X data in 3rd dimension to match nLoop.
+if nDataY < nLoop
+    y = cat(3,y,y(:,:,end*ones(1,nLoop-nDataY)));
+end
+if nDataE < nLoop
+    e = cat(3,e,e(:,:,end*ones(1,nLoop-nDataE)));
+end
+if isX && nDataX < nLoop
+    x = cat(3,x,x(:,:,end*ones(1,nLoop-nDataX)));
+elseif ~isX
+    x = zeros(nx,nPer,nLoop);
 end
 
 for iLoop = 1 : nLoop
     if iLoop <= nAlt
-        [iA,iB,iK] = mysystem(This,iLoop);
+        [iA,iB,iK,iJ] = mysystem(This,iLoop);
     end
+
     isConst = ~opt.deviation;
     if opt.contributions
         if iLoop <= ny
             inx = true(1,ny);
             inx(iLoop) = false;
             e(inx,:,iLoop) = 0;
-            x(:,1:pp,iLoop) = 0;
+            y(:,1:pp,iLoop) = 0;
             isConst = false;
         else
             e(:,:,iLoop) = 0;
         end
     end
+    
     if isempty(iB)
         iBe = e(:,:,iLoop);
     else
         iBe = iB*e(:,:,iLoop);
     end
-    iX = x(:,:,iLoop);
-    for t = pp + 1 : nPer
-        iXLags = iX(:,t-(1:pp));
-        iX(:,t) = iA*iXLags(:) + iBe(:,t);
-        if isConst
-            iX(:,t) = iX(:,t) + iK;
-        end
+    
+    iY = y(:,:,iLoop);
+    if isX
+        iX = x(:,:,iLoop);
     end
-    x(:,:,iLoop) = iX;
+
+    % Collect deterministic terms (constant, exogenous inputs).
+    iKJ = zeros(ny,nPer);
+    if isConst
+        iKJ = iKJ + iK(:,ones(1,nPer));
+    end
+    if isX
+        iKJ = iKJ + iJ*iX;
+    end
+    
+    for t = pp + 1 : nPer
+        iXLags = iY(:,t-(1:pp));
+        iY(:,t) = iA*iXLags(:) + iKJ(:,t) + iBe(:,t);
+    end
+    y(:,:,iLoop) = iY;
 end
 
 if isBackcast
-    x = x(:,end:-1:1,:,:);
-    e = e(:,end:-1:1,:,:);
+    y = flip(y,2);
+    e = flip(e,2);
+    x = flip(x,2);
 end
 
-names = This.YNames;
+names = [This.YNames,This.XNames];
+data = [y;x];
 if opt.returnresiduals
     names = [names,This.ENames];
-else
-    e = [];
+    data = [data;e];
 end
 
 % Output data.
-Outp = myoutpdata(This,outpFmt,Range,[x;e],[],names);
+Outp = myoutpdata(This,outpFmt,Range,data,[],names);
 
 % Contributions comments.
 if opt.contributions && strcmp(outpFmt,'dbase')

@@ -1,4 +1,4 @@
-function [A,B,K,Cov] = mysystem(This,Alt)
+function [A,B,K,J,Cov] = mysystem(This,Alt)
 % mysystem  [Not a public function] VAR system matrices.
 %
 % Backend IRIS function.
@@ -18,6 +18,7 @@ end
 A = This.A(:,:,Alt);
 B = mybmatrix(This,Alt);
 K = This.K(:,:,Alt);
+J = This.J(:,:,Alt);
 Cov = mycovmatrix(This,Alt);
 
 end

@@ -17,12 +17,21 @@ end
 ny = size(This.A,1);
 if ispanel(This)
     % Panel VAR; only dbase inputs are accepted.
-    Flag = isstruct(Inp);
+    isStruct = isstruct(Inp);
     nGrp = length(This.GroupNames);
-    for iGrp = 1 : nGrp
-        name = This.GroupNames{iGrp};
-        Flag = Flag && isfield(Inp,name) && isstruct(Inp.(name));
+    isGrpStruct = false(1,nGrp);
+    if isStruct
+        for iGrp = 1 : nGrp
+            name = This.GroupNames{iGrp};
+            isGrpStruct(iGrp) = isfield(Inp,name) && isstruct(Inp.(name));
+        end
     end
+    if any(~isGrpStruct)
+        utils.warning('VAR:myisvalidinpdata', ...
+            'This group is missing from input database: ''%s''.', ...
+            This.GroupNames{~isGrpStruct});
+    end
+    Flag = isStruct && all(isGrpStruct);
 else
     % Non-panel VAR; both dbase and tseries inputs are accepted for bkw
     % compatibility.

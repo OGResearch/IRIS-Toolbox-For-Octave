@@ -7,7 +7,7 @@ classdef modelobj < getsetobj & userdataobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-    properties (Hidden)
+    properties (GetAccess=public,SetAccess=protected,Hidden)
         % Linear or non-linear model.
         linear = false;
         % Model function name from which the modelobj was created.

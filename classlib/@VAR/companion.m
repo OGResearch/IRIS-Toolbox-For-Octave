@@ -1,10 +1,10 @@
-function [A,B,K] = companion(This,varargin)
+function [A,B,K,J] = companion(This,varargin)
 % companion  Matrices of first-order companion VAR.
 %
 % Syntax
 % =======
 %
-%     [A,B,K] = companion(V)
+%     [A,B,K,J] = companion(V)
 %
 % Input arguments
 % ================
@@ -17,7 +17,7 @@ function [A,B,K] = companion(This,varargin)
 %
 % * `A` [ numeric ] - First-order companion transition matrix.
 %
-% * `B` [ numeric ] - First-order companion coefficient matrix at
+% * `B` [ numeric ] - First-order companion coefficient matrix in front of
 % reduced-form residuals.
 %
 % * `K` [ numeric ] - First-order compnaion constant vector.
@@ -54,7 +54,12 @@ end
 
 if nargout > 2
     K = This.K;
-    K(end+1:end+ny*(p-1),:,:) = 0;
+    K(end+(1:ny*(p-1)),:,:) = 0;
+end
+
+if nargout > 3
+    J = This.J;
+    J(end+(1:ny*(p-1)),:,:) = 0;
 end
 
 end

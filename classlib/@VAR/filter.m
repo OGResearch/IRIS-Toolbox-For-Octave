@@ -76,28 +76,34 @@ isFilter = false; % ~isempty(strfind(opt.output,'filter'));
 ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+nx = length(This.XNames);
+isX = nx > 0;
+isConst = ~opt.deviation;
 
 Range = Range(1) : Range(end);
 xRange = Range(1)-p : Range(end);
 
 % Include pre-sample.
-[~,xRange,y] = mydatarequest(This,Inp,xRange,opt);
-% e(isnan(e)) = 0;
+req = datarequest('y*,x*',This,Inp,xRange,opt);
+xRange = req.Range;
+y = req.Y;
+x = req.X;
 
 nPer = length(Range);
-nXPer = length(xRange);
-xInit = y(:,1:p,:);
+yInit = y(:,1:p,:);
 y = y(:,p+1:end,:);
+x = x(:,p+1:end,:);
 
-nData = size(xInit,3);
+nDataY = size(yInit,3);
+nDataX = size(x,3);
 nOmg = size(opt.omega,3);
 
-nLoop = max([nAlt,nData,nOmg]);
+nLoop = max([nAlt,nDataY,nDataX,nOmg]);
 doChkOptions();
 
 % Stack initial conditions.
-xInit = xInit(:,p:-1:1,:);
-xInit = reshape(xInit(:),ny*p,nLoop);
+yInit = yInit(:,p:-1:1,:);
+yInit = reshape(yInit(:),ny*p,nLoop);
 
 YY = [];
 doRequestOutp();
@@ -112,17 +118,13 @@ s.ahead = opt.ahead;
 Z = eye(ny);
 for iLoop = 1 : nLoop
     
-    [iA,iB,iK,iOmg] = mysystem(This,iLoop);
+    [iA,iB,iK,iJ,iOmg] = mysystem(This,iLoop);
     
     % User-supplied covariance matrix.
     if ~isempty(opt.omega)
         iOmg(:,:) = opt.omega(:,:,min(iLoop,end));
     end
     
-    % Remove the constant vector if this is a deviation simulation.
-    if opt.deviation
-        iK = [];
-    end
     % Reduce or zero off-diagonal elements in the cov matrix of residuals
     % if requested. This only matters in VARs, not SVARs.
     if double(opt.cross) < 1
@@ -135,11 +137,21 @@ for iLoop = 1 : nLoop
     s.allObs = rank(iOmg) == ny;
     
     iY = y(:,:,min(iLoop,end));
-    iXInit = xInit(:,:,min(iLoop,end));
+    iX = x(:,:,min(iLoop,end));
+    iYInit = yInit(:,:,min(iLoop,end));
+    
+    % Collect all deterministic terms (constant and exogenous inputs).
+    iKJ = zeros(ny,nPer);
+    if isConst
+        iKJ = iKJ + iK(:,ones(1,nPer));
+    end    
+    if isX
+        iKJ = iKJ + iJ*iX;
+    end
     
     % Run Kalman filter and smoother.
     [~,~,iE2,~,iY2,iPy2,~,iY0,iPy0,iY1,iPy1] = timedom.varsmoother( ...
-        iA,iB,iK,Z,[],iOmg,[],iY,[],iXInit,0,s);
+        iA,iB,iKJ,Z,[],iOmg,[],iY,[],iYInit,0,s);
     
     % Add pre-sample periods and assign hdata.
     doAssignOutp();
@@ -147,11 +159,15 @@ for iLoop = 1 : nLoop
 end
 
 % Final output database.
-Outp = hdataobj.hdatafinal(YY,This,xRange);
+Outp = hdataobj.hdatafinal(YY);
 
-% Nested fuctions.
+
+% Nested fuctions...
+
 
 %**************************************************************************
+
+    
     function doChkOptions()
         if nLoop > 1 && opt.ahead > 1
             utils.error('VAR', ...
@@ -161,74 +177,81 @@ Outp = hdataobj.hdatafinal(YY,This,xRange);
         if ~isPred
             opt.ahead = 1;
         end
-    end % doChkOptions().
+    end % doChkOptions()
+
 
 %**************************************************************************
+
+    
     function doRequestOutp()
         if isSmooth
-            YY.smoothmean = hdataobj(This,[],nXPer,nLoop);
+            YY.M2 = hdataobj(This,xRange,nLoop);
             if ~opt.meanonly
-                YY.smoothstd = hdataobj(This,struct('IsStd',true), ...
-                    nXPer,nLoop);
+                YY.S2 = hdataobj(This,xRange,nLoop, ...
+                    'IsVar2Std=',true);
             end
         end
         if isPred
-            YY.predmean = hdataobj(This,[],nXPer,nLoop);
+            nPred = max(nLoop,opt.ahead);
+            YY.M0 = hdataobj(This,xRange,nPred);
             if ~opt.meanonly
-                YY.predstd = hdataobj(This,struct('IsStd',true), ...
-                    nXPer,nLoop);
+                YY.S0 = hdataobj(This,xRange,nPred, ...
+                    'IsVar2Std=',true);
             end
         end
         if isFilter
-            YY.filtermean = hdataobj(This,[],nXPer,nLoop);
+            YY.M1 = hdataobj(This,xRange,nLoop);
             if ~opt.meanonly
-                YY.filterstd = hdataobj(This,struct('IsStd',true), ...
-                    nXPer,nLoop);
+                YY.S1 = hdataobj(This,xRange,nLoop, ...
+                    'IsVar2Std=',true);
             end
         end
-    end % doRequestOutp().
+    end % doRequestOutp()
+
 
 %**************************************************************************
+
+
     function doAssignOutp()
         if isSmooth
             iY2 = [nan(ny,p),iY2];
-            iY2(:,p:-1:1) = reshape(iXInit,ny,p);
+            iY2(:,p:-1:1) = reshape(iYInit,ny,p);
+            iX2 = [nan(nx,p),iX];
             iE2 = [nan(ny,p),iE2];
-            hdataassign(YY.smoothmean,This,iLoop, ...
-                iY2,[],iE2);
+            hdataassign(YY.M2,iLoop,iY2,iX2,iE2,[]);
             if ~opt.meanonly
                 iD2 = covfun.cov2var(iPy2);
                 iD2 = [zeros(ny,p),iD2];
-                hdataassign(YY.smoothstd,This,iLoop,iD2,[],nan(ny,nXPer));
+                hdataassign(YY.S2,iLoop,iD2,[],[],[]);
             end
         end
         if isPred
-            iY0 = [nan(ny,p,s.ahead),iY0];
+            iY0 = [nan(ny,p,s.ahead),iYInit];
             iE0 = [nan(ny,p,s.ahead),zeros(ny,nPer,s.ahead)];
             if s.ahead > 1
                 pos = 1 : s.ahead;
             else
                 pos = iLoop;
             end
-            hdataassign(YY.predmean,This,pos, ...
-                iY0,[],iE0);
+            hdataassign(YY.M0,pos,iY0,[],iE0,[]);
             if ~opt.meanonly
                 iD0 = covfun.cov2var(iPy0);
                 iD0 = [zeros(ny,p),iD0];
-                hdataassign(YY.predstd,This,iLoop,iD0,[],[]);
+                hdataassign(YY.S0,iLoop,iD0,[],[],[]);
             end
         end
         if isFilter
-            iY1 = [nan(ny,p,s.ahead),iY1];
-            iE1 = [nan(ny,p,s.ahead),zeros(ny,nPer,s.ahead)];
-            hdataassign(YY.filtermean,This,pos, ...
-                iY1,[],iE1);
+            iY1 = [nan(ny,p),iY1];
+            iX1 = [nan(nx,p),iX];
+            iE1 = [nan(ny,p),zeros(ny,nPer)];
+            hdataassign(YY.M1,pos,iY1,iX1,iE1,[]);
             if ~opt.meanonly
                 iD1 = covfun.cov2var(iPy1);
                 iD1 = [zeros(ny,p),iD1];
-                hdataassign(YY.filterstd,This,iLoop,iD1,[],[]);
+                hdataassign(YY.S1,iLoop,iD1,[],[],[]);
             end
         end
-    end % doAssignOutp().
+    end % doAssignOutp()
+
 
 end

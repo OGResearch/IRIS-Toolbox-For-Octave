@@ -107,7 +107,7 @@ classdef reportobj < report.genericobj
         end
         
         function [This,NewObj] = text(This,varargin)
-            This = tex(This,varargin{:});
+            [This,NewObj] = tex(This,varargin{:});
         end
         
         function [This,NewObj] = include(This,varargin)

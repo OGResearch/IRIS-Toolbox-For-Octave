@@ -1,4 +1,4 @@
-function [Rr,Qq] = restrict(Ny,Nk,Ng,Opt)
+function [Rr,Qq] = restrict(Ny,Nk,Nx,Ng,Opt)
 % restrict  [Not a public function] Convert parameter restrictions to hyperparameter matrix form.
 %
 % Backend IRIS function.
@@ -14,6 +14,7 @@ function [Rr,Qq] = restrict(Ny,Nk,Ng,Opt)
 if isempty(Opt.constraints) ...
         && isempty(Opt.a) ...
         && isempty(Opt.c) ...
+        && isempty(Opt.j) ...
         && isempty(Opt.g)
     Rr = [];
     Qq = [];
@@ -32,12 +33,13 @@ if Opt.diff
     nLag = nLag - 1;
 end
 
-nBeta = Ny*(Nk+Ny*nLag+Ng);
+nBeta = Ny*(Nk+Nx+Ny*nLag+Ng);
 Q = zeros(0,nBeta);
 q = zeros(0);
 
 isPlain = ~isempty(Opt.a) ...
     || ~isempty(Opt.c) ...
+    || ~isempty(Opt.j) ...
     || ~isempty(Opt.g);
 
 % General constraints.
@@ -77,13 +79,13 @@ end
 if ~isempty(rest)
     % General constraints exist. Set up (Q,q) first for general and plain
     % constraints, then convert them to (R,r).
-    restFn = eval(['@(c,a,g) ',rest,';']);
-    [Q1,q1] = xxGeneralRest(restFn,Ny,Nk,Ng,nLag);
+    restFn = eval(['@(c,j,a,g) ',rest,';']);
+    [Q1,q1] = xxGeneral(restFn,Ny,Nk,Nx,Ng,nLag);
     Q = [Q;Q1];
     q = [q;q1];
     % Plain constraints.
     if isPlain
-        [Q2,q2] = xxPlainRest1(Opt,Ny,Nk,Ng,nLag);
+        [Q2,q2] = xxPlainQq(Opt,Ny,Nk,Nx,Ng,nLag);
         Q = [Q;Q2];
         q = [q;q2];
     end
@@ -96,7 +98,7 @@ if ~isempty(rest)
         Qq = sparse([Q,q]);
     end
 elseif isPlain
-    [R,r] = xxPlainRest2(Opt,Ny,Nk,Ng,nLag);
+    [R,r] = xxPlainRr(Opt,Ny,Nk,Nx,Ng,nLag);
     Rr = sparse([R,r]);
     if nargout > 1
         Qq = xxRr2Qq(Rr);
@@ -105,24 +107,30 @@ end
 
 end
 
+
 % Subfunctions...
 
 
 %**************************************************************************
-function [Q,q] = xxGeneralRest(RestFn,Ny,Nk,Ng,NLag)
+
+
+function [Q,q] = xxGeneral(RestFn,Ny,Nk,Nx,Ng,NLag)
 % Q*beta = q
-aux = reshape(transpose(1:Ny*(Nk+Ny*NLag+Ng)),[Ny,Nk+Ny*NLag+Ng]);
-cInx = aux(:,1:Nk);
+aux = reshape(transpose(1:Ny*(Nk+Nx+Ny*NLag+Ng)),[Ny,Nk+Nx+Ny*NLag+Ng]);
+cPos = aux(:,1:Nk);
 aux(:,1:Nk) = [];
-aInx = reshape(aux(:,1:Ny*NLag),[Ny,Ny,NLag]);
+dPos = aux(:,1:Nx);
+aux(:,1:Nx) = [];
+aPos = reshape(aux(:,1:Ny*NLag),[Ny,Ny,NLag]);
 aux(:,1:Ny*NLag) = [];
-gInx = aux;
-c = zeros(size(cInx)); % Constant.
-a = zeros(size(aInx)); % Transition matrix.
-g = zeros(size(gInx)); % Cointegrating vector.
+gPos = aux;
+c = zeros(size(cPos)); % Constant.
+j = zeros(size(dPos)); % Exogenous inputs.
+a = zeros(size(aPos)); % Transition matrix.
+g = zeros(size(gPos)); % Cointegrating vector.
 % Q*beta + q = 0.
 try
-    q = RestFn(c,a,g);
+    q = RestFn(c,j,a,g);
 catch Error
     utils.error('VAR', ...
         ['Error evaluating parameter restrictions.\n', ...
@@ -130,35 +138,42 @@ catch Error
         Error.message);
 end
 nRest = size(q,1);
-Q = zeros(nRest,Ny*(Nk+Ny*NLag+Ng));
+Q = zeros(nRest,Ny*(Nk+Nx+Ny*NLag+Ng));
 for i = 1 : numel(c)
     c(i) = 1;
-    Q(:,cInx(i)) = RestFn(c,a,g) - q;
+    Q(:,cPos(i)) = RestFn(c,j,a,g) - q;
     c(i) = 0;
+end
+for i = 1 : numel(j)
+    j(i) = 1;
+    Q(:,dPos(i)) = RestFn(c,j,a,g) - q;
+    j(i) = 0;
 end
 for i = 1 : numel(a)
     a(i) = 1;
-    Q(:,aInx(i)) = RestFn(c,a,g) - q;
+    Q(:,aPos(i)) = RestFn(c,j,a,g) - q;
     a(i) = 0;
 end
 for i = 1 : numel(g)
     g(i) = 1;
-    Q(:,gInx(i)) = RestFn(c,a,g) - q;
+    Q(:,gPos(i)) = RestFn(c,j,a,g) - q;
     g(i) = 0;
 end
 end % xxGeneralRest()
 
 
 %**************************************************************************
-function [Q,q] = xxPlainRest1(Opt,Ny,Nk,Ng,NLag)
-[A,C,G] = xxAssignPlainRest(Opt,Ny,Nk,Ng,NLag);
-nBeta = Ny*(Nk+Ny*NLag+Ng);
+
+
+function [Q,q] = xxPlainQq(Opt,Ny,Nk,Nx,Ng,NLag)
+[A,C,J,G] = xxAssignPlain(Opt,Ny,Nk,Nx,Ng,NLag);
+nBeta = Ny*(Nk+Nx+Ny*NLag+Ng);
 % Construct parameter restrictions first,
 % Q*beta + q = 0,
 % splice them with the general restrictions
 % and only then convert these to hyperparameter form.
 Q = eye(nBeta);
-q = -[C,A(:,:),G];
+q = -[C,J,A(:,:),G];
 q = q(:);
 inx = ~isnan(q);
 Q = Q(inx,:);
@@ -167,13 +182,15 @@ end % xxPlainRest1()
 
 
 %**************************************************************************
-function [R,r] = xxPlainRest2(Opt,Ny,Nk,Ng,NLag)
-[A,C,G] = xxAssignPlainRest(Opt,Ny,Nk,Ng,NLag);
-nbeta = Ny*(Nk+Ny*NLag+Ng);
+
+
+function [R,r] = xxPlainRr(Opt,Ny,Nk,Nx,Ng,NLag)
+[A,C,J,G] = xxAssignPlain(Opt,Ny,Nk,Nx,Ng,NLag);
+nbeta = Ny*(Nk+Nx+Ny*NLag+Ng);
 % Construct directly hyperparameter form:
 % beta = R*gamma + r.
 R = eye(nbeta);
-r = [C,A(:,:),G];
+r = [C,J,A(:,:),G];
 r = r(:);
 inx = ~isnan(r);
 R(:,inx) = [];
@@ -182,9 +199,10 @@ end % xxPlainRest2()
 
 
 %**************************************************************************
-function [A,C,G] = xxAssignPlainRest(Opt,Ny,Nk,Ng,NLag)
+function [A,C,J,G] = xxAssignPlain(Opt,Ny,Nk,Nx,Ng,NLag)
 A = nan(Ny,Ny,NLag);
 C = nan(Ny,Nk);
+J = nan(Ny,Nx);
 G = nan(Ny,Ng);
 if ~isempty(Opt.a)
     try
@@ -206,6 +224,16 @@ if ~isempty(Opt.c)
             sprintf('%g-by-%g',Ny,Nk));
     end
 end
+if ~isempty(Opt.j)
+    try
+        J(:,:) = Opt.j;
+    catch
+        utils.error('VAR', ...
+            ['Error setting up VAR restrictions for matrix J. ',...
+            'Size of the matrix must be %s.'], ...
+            sprintf('%g-by-%g',Ny,Nx));
+    end
+end
 if ~isempty(Opt.g)
     try
         G(:,:) = Opt.g;
@@ -220,12 +248,16 @@ end % xxAssignPlainRest()
 
 
 %**************************************************************************
+
+
 function X = xxVec(X) %#ok<DEFNU>
 X = X(:);
 end % xxVec()
 
 
 %**************************************************************************
+
+
 function RR = xxQq2Rr(QQ)
 % xxRr2Qq  Convert Q-restrictions to R-restrictions.
 Q = QQ(:,1:end-1);
@@ -237,6 +269,8 @@ end % xxQq2Rr()
 
 
 %**************************************************************************
+
+
 function QQ = xxRr2Qq(RR)
 % xxRr2Qq  Convert R-restrictions to Q-restrictions when they are unknown.
 R = RR(:,1:end-1);

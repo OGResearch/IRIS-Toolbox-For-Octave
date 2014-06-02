@@ -395,17 +395,17 @@ end
 
 
     function doRequestOutp()
-        s.retPredMean = isfield(HData,'predmean');
-        s.retPredMse = isfield(HData,'predmse');
-        s.retPredStd = isfield(HData,'predstd');
+        s.retPredMean = isfield(HData,'M0');
+        s.retPredMse = isfield(HData,'Mse0');
+        s.retPredStd = isfield(HData,'S0');
         s.retPredCont = isfield(HData,'predcont');
-        s.retFilterMean = isfield(HData,'filtermean');
+        s.retFilterMean = isfield(HData,'M1');
         s.retFilterMse = isfield(HData,'filertmse');
-        s.retFilterStd = isfield(HData,'filterstd');
+        s.retFilterStd = isfield(HData,'S1');
         s.retFilterCont = isfield(HData,'filtercont');
-        s.retSmoothMean = isfield(HData,'smoothmean');
-        s.retSmoothMse = isfield(HData,'smoothmse');
-        s.retSmoothStd = isfield(HData,'smoothstd');
+        s.retSmoothMean = isfield(HData,'M2');
+        s.retSmoothMse = isfield(HData,'Mse2');
+        s.retSmoothStd = isfield(HData,'S2');
         s.retSmoothCont = isfield(HData,'smoothcont');
         s.retPred = s.retPredMean || s.retPredStd || s.retPredMse;
         s.retFilter = s.retFilterMean || s.retFilterStd || s.retFilterMse;
@@ -451,13 +451,13 @@ end
                 ee = bsxfun(@plus,ee,s.tune);
             end
             % Do not use lags in the prediction output data.
-            hdataassign(HData.predmean,This,predCols,yy,xx,ee);
+            hdataassign(HData.M0,predCols,yy,xx,ee);
         end
         
         % Return pred std.
         if s.retPredStd
             % Do not use lags in the prediction output data.
-            hdataassign(HData.predstd,This,iLoop, ...
+            hdataassign(HData.S0,iLoop, ...
                 s.Dy0*s.V, ...
                 [s.Df0;s.Db0]*s.V, ...
                 s.De0*s.V);
@@ -465,7 +465,7 @@ end
         
         % Return prediction MSE for xb.
         if s.retPredMse
-            HData.predmse(:,:,:,iLoop) = s.Pb0*s.V;
+            HData.Mse0.Data(:,:,:,iLoop) = s.Pb0*s.V;
         end
 
         % Return PE contributions to prediction step.
@@ -477,7 +477,7 @@ end
             xx(:,1,:) = NaN;
             ee = s.ec0;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.predcont,This,':',yy,xx,ee);
+            hdataassign(HData.predcont,':',yy,xx,ee);
         end
 
     end % doRetPred()
@@ -501,7 +501,7 @@ end
                 ee = ee + s.tune;
             end
             % Do not use lags in the filter output data.
-            hdataassign(HData.filtermean,This,iLoop,yy,xx,ee);
+            hdataassign(HData.M1,iLoop,yy,xx,ee);
         end
         
         % Return PE contributions to filter step.
@@ -512,19 +512,19 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec1;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.filtercont,This,':',yy,xx,ee);
+            hdataassign(HData.filtercont,':',yy,xx,ee);
         end
         
         % Return filter std.
         if s.retFilterStd
-            hdataassign(HData.filterstd,This,iLoop, ...
-                s.Dy1*s.V,[s.Df1;s.Db1]*s.V,[]);
+            hdataassign(HData.S1,iLoop, ...
+                s.Dy1*s.V, [s.Df1;s.Db1]*s.V, [] );
         end
         
         % Return filtered MSE for `xb`.
         if s.retFilterMse
             %s.Pb1(:,:,1) = NaN;
-            HData.smoothmse(:,:,:,iLoop) = s.Pb2*s.V;
+            HData.Mse2.Data(:,:,:,iLoop) = s.Pb2*s.V;
         end
         
     end % doRetFilter()
@@ -551,7 +551,7 @@ end
             if s.istune
                 ee = ee + s.tune;
             end
-            hdataassign(HData.smoothmean,This,iLoop,yy,xx,ee);
+            hdataassign(HData.M2,iLoop,yy,xx,ee);
         end
         
         % Return smooth std.
@@ -559,8 +559,8 @@ end
             s.Dy2(:,1:s.lastSmooth) = NaN;
             s.Df2(:,1:s.lastSmooth) = NaN;
             s.Db2(:,1:s.lastSmooth-1) = NaN;
-            hdataassign(HData.smoothstd,This,iLoop, ...
-                s.Dy2*s.V,[s.Df2;s.Db2]*s.V,[]);
+            hdataassign(HData.S2,iLoop, ...
+                s.Dy2*s.V, [s.Df2;s.Db2]*s.V, [] );
         end
         
         % Return PE contributions to smooth step.
@@ -571,7 +571,7 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec2;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.smoothcont,This,':',yy,xx,ee);
+            hdataassign(HData.C2,':',yy,xx,ee);
         end
         
         objRange = s.objrange & any(s.yindex,1);
@@ -580,7 +580,7 @@ end
         % Return smooth MSE for `xb`.
         if s.retSmoothMse
             s.Pb2(:,:,1:s.lastSmooth-1) = NaN;
-            HData.smoothmse(:,:,:,iLoop) = s.Pb2*s.V;
+            HData.Mse2.Data(:,:,:,iLoop) = s.Pb2*s.V;
         end
         
     end % doRetSmooth()

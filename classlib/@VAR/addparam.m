@@ -23,8 +23,9 @@ function D = addparam(This,D)
 % ============
 %
 % The newly created database entries are named `A_` (transition matrix),
-% `K_` (constant terms), `B_` (matrix of instantaneous whock effects), and
-% `Cov_` (covariance matrix of shocks). Be aware that all existing database
+% `K_` (constant terms), `J_` (coefficient matrix in front of exogenous
+% inputs), `B_` (matrix of instantaneous whock effects), and `Cov_`
+% (covariance matrix of shocks). Be aware that all existing database
 % entries in `D` named `A_`, `K_`, `B_`, or `Omg_` will be overwritten.
 %
 % Example
@@ -48,6 +49,7 @@ end
 D.A_ = This.A;
 D.B_ = mybmatrix(This);
 D.K_ = This.K;
+D.J_ = This.J;
 D.Cov_ = mycovmatrix(This);
 
 end

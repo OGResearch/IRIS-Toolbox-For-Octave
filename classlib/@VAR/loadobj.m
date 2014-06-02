@@ -10,7 +10,7 @@ function This = loadobj(This)
 %--------------------------------------------------------------------------
 
 if isstruct(This)
-    This = VAR(This);
+    This = mystruct2obj(This);
 end
 
 end

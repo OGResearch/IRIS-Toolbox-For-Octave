@@ -96,7 +96,7 @@ nAlt = size(This.A,3);
 % Handle residuals.
 if isData
     % Get data.
-    [outpFmt,rng,~,e] = mydatarequest(This,Data,Inf,opt);
+    [outpFmt,rng,~,e] = datarequest(This,Data,Inf,opt);
     nData = size(e,3);
     if nData ~= nAlt
         utils.error('SVAR', ...

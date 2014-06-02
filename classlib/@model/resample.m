@@ -132,9 +132,8 @@ end
 %--------------------------------------------------------------------------
 
 Range = Range(1) : Range(end);
-XRange = Range(1)-1 : Range(end);
+xRange = Range(1)-1 : Range(end);
 nPer = length(Range);
-nXPer = length(XRange);
 realSmall = getrealsmall();
 nAlt = size(This.Assign,3);
 
@@ -154,14 +153,14 @@ ne = sum(This.nametype == 3);
 [T,R,K,Z,H,D,U,Omg] = mysspace(This,1,false);
 
 % Pre-allocate output data.
-hData = hdataobj(This,[],nXPer,NDraw);
+hData = hdataobj(This,xRange,NDraw);
 
 % Return immediately if solution is not available.
 if any(isnan(T(:)))
     utils.warning('model', ...
         'Solution(s) not available: #1.');
     % Convert emptpy hdataobj to tseries database.
-    Outp = hdata2tseries(hData,This,XRange);
+    Outp = hdata2tseries(hData);
     return
 end
 
@@ -336,7 +335,7 @@ for iDraw = 1 : NDraw
 end
 
 % Convert hdataobj to tseries database.
-Outp = hdata2tseries(hData,This,XRange);
+Outp = hdata2tseries(hData);
 
 % Nested functions.
 
@@ -443,7 +442,7 @@ Outp = hdata2tseries(hData,This,XRange);
         end
         xf = [nan(nf,1),w(1:nf,nInit+1:end)];
         xb = U*[init,w(nf+1:end,nInit+1:end)];
-        hdataassign(hData,This,iDraw, ...
+        hdataassign(hData,iDraw, ...
             [nan(ny,1),y], ...
             [xf;xb], ...
             [nan(ne,1),e(:,nInit+1:end)]);

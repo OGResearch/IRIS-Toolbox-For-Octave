@@ -48,6 +48,9 @@ function varargout = get(This,varargin)
 % * `'K'`, `'const'` - Returns [ numeric ] the constant vector or matrix
 % (the latter for panel VARs).
 %
+% * `'J'` - Returns [ numeric ] the coefficient matrix in front of
+% exogenous inputs.
+%
 % * `'Omg'`, `'Omega'` - Returns [ numeric ] the covariance matrix of
 % one-step-ahead forecast errors, i.e. reduced-form residuals. Note that
 % this query returns the same matrix also for structural VAR (SVAR)

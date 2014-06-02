@@ -441,6 +441,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function doChkPriors()
         [flag,invalidBound,invalidPrior] = chkpriors(This,E);
         if ~flag
@@ -461,6 +463,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doPopulatePosterObj()
         % Make sure that draws that fail to solve do not cause an error
         % and hence do not interupt the posterior simulator.

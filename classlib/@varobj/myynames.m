@@ -1,5 +1,5 @@
 function varargout = myynames(This,YNames)
-% myynames [Not a public function] Get or set names of varobj variables.
+% myynames [Not a public function] Get or set endogenous names in varobj variables.
 %
 % Backend IRIS function.
 % No help provided.
@@ -10,8 +10,6 @@ function varargout = myynames(This,YNames)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-%--------------------------------------------------------------------------
-
 try
     YNames; 
 catch
@@ -19,16 +17,20 @@ catch
     return
 end
 
+pp = inputParser();
+pp.addRequired('V',@(x) isa(x,'varobj'));
+pp.addRequired('YNames',@(x) isempty(YNames) ...
+    || ischar(YNames) || iscellstr(YNames) || is.func(YNames));
+pp.parse(This,YNames);
+
+%--------------------------------------------------------------------------
+
 ny = myny(This);
 
 if isempty(YNames)
     YNames = @(n) sprintf('y%g',n);
 elseif ischar(YNames)
     YNames = regexp(YNames,'\w+','match');
-elseif ~iscellstr(YNames) ...
-        && (~isa(YNames,'function_handle') || ny == 0)
-    utils.error('VAR', ...
-        'Invalid type of input for variable names.');
 end
 
 if ny > 0 && iscellstr(YNames) && ny ~= length(YNames)
@@ -38,16 +40,16 @@ end
 
 if iscellstr(YNames)
     This.YNames = YNames(:).';
-elseif isa(YNames,'function_handle') && ny > 0
+elseif is.func(YNames) && ny > 0
     This.YNames = cell(1,ny);
     for i = 1 : ny
         This.YNames{i} = YNames(i);
     end
 end
 
-if unique(length(This.YNames)) ~= length(This.YNames)
+if length(unique(This.YNames)) ~= length(This.YNames)
     utils.error('VAR', ...
-        'Variable names must be unique.');
+        'Names of variables must be unique.');
 end
 
 varargout{1} = This;

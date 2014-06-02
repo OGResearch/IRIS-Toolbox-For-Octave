@@ -1,4 +1,4 @@
-function [X,Flag] = specget(This,Query)
+function [Ans,Flag] = specget(This,Query)
 % specget  [Not a public function] Implement GET method for VAR objects.
 %
 % Backend IRIS function.
@@ -9,12 +9,12 @@ function [X,Flag] = specget(This,Query)
 
 %--------------------------------------------------------------------------
 
-[X,Flag] = specget@varobj(This,Query);
+[Ans,Flag] = specget@varobj(This,Query);
 if Flag
     return
 end
 
-X = [];
+Ans = [];
 Flag = true;
 
 ny = size(This.A,1);
@@ -24,8 +24,8 @@ nAlt = size(This.A,3);
 Query = lower(Query);
 switch Query
     
-    % Transition matrix.
     case {'a','a#'}
+    % Transition matrix.
         if isequal(Query,'a')
             % ##### Feb 2014 OBSOLETE and scheduled for removal.
             utils.warning('VAR:specget', ...
@@ -34,95 +34,112 @@ switch Query
                 'Use ''A#'' instead.']);
         end
         if ~all(size(This.A) == 0)
-            X = poly.var2poly(This.A);
+            Ans = poly.var2poly(This.A);
         end
         
     case 'a*'
         if ~all(size(This.A) == 0)
-            X = poly.var2poly(This.A);
-            X = -X(:,:,2:end,:);
+            Ans = poly.var2poly(This.A);
+            Ans = -Ans(:,:,2:end,:);
         end
         
     case 'a$'
-        X = This.A;
-    
-    % Constant vector or matrix (for panel VARs).
+        Ans = This.A;
+        
     case {'const','c','k'}
-        X = This.K;
+        % Constant vector or matrix (for panel VARs).
+        Ans = This.K;
         
-    % Estimated coefficients on user-specified cointegration terms.
+    case 'f'
+        % Coefficient matrix in front exogenous inputs.
+        Ans = This.J;
+        
     case 'g'
-        X = This.G;
+        % Estimated coefficients on user-specified cointegration terms.
+        Ans = This.G;
         
-    % Schur decomposition.
     case 't'
-        X = This.T;
+        % Schur decomposition.
+        Ans = This.T;
         
     case 'u'
-        X = This.U;
+        Ans = This.U;
         
-    % Cov matrix of forecast errors (reduced form residuals); remains the
-    % same in SVAR objects.
     case {'omega','omg'}
-        X = This.Omega;
-    
-    % Cov matrix of reduced form residuals in VARs or structural shocks in
-    % SVARs.
+        % Cov matrix of forecast errors (reduced form residuals); remains the
+        % same in SVAR objects.
+        Ans = This.Omega;
+        
     case {'cov'}
-        X = This.Omega;
+        % Cov matrix of reduced form residuals in VARs or structural shocks in
+        % SVARs.
+        Ans = This.Omega;
         
-    % Cov matrix of parameter estimates.
     case {'sgm','sigma','covp','covparameters'}
-        X = This.Sigma;
-    
-    % Akaike info criterion.
+        % Cov matrix of parameter estimates.
+        Ans = This.Sigma;
+        
+    case {'xasymptote','x0'}
+        Ans = This.X0;
+        
     case 'aic'
-        X = This.Aic;
+        % Akaike info criterion.
+        Ans = This.Aic;
         
-    % Schwarz bayesian criterion.
     case 'sbc'
-        X = This.Sbc;
+        % Schwarz bayesian criterion.
+        Ans = This.Sbc;
         
-    % Number of freely estimated (hyper-) parameters.
     case {'nfree','nhyper'}
-        X = This.NHyper;
-      
-    % Order of VAR.
-    case {'order','p'}
-        X = p;
+        % Number of freely estimated (hyper-) parameters.
+        Ans = This.NHyper;
         
-    % Matrix of long-run cumulative responses.
+    case {'order','p'}
+        % Order of VAR.
+        Ans = p;
+        
     case {'cumlong','cumlongrun'}
+        % Matrix of long-run cumulative responses.
         C = sum(poly.var2poly(This.A),3);
-        X = nan(ny,ny,nAlt);
+        Ans = nan(ny,ny,nAlt);
         for iAlt = 1 : nAlt
             if rank(C(:,:,1,iAlt)) == ny
-                X(:,:,iAlt) = inv(C(:,:,1,iAlt));
+                Ans(:,:,iAlt) = inv(C(:,:,1,iAlt));
             else
-                X(:,:,iAlt) = pinv(C(:,:,1,iAlt));
+                Ans(:,:,iAlt) = pinv(C(:,:,1,iAlt));
             end
         end
         
-    % Parameter constraints imposed in estimation.
     case {'constraints','restrictions','constraint','restrict'}
-        X = This.Rr;
-
+        % Parameter constraints imposed in estimation.
+        Ans = This.Rr;
+        
     case {'inames','ilist'}
-        X = This.INames;
+        Ans = This.INames;
+        
+    case {'groupnames','grouplist'}
+        Ans = This.GroupNames;
+        
     case {'ieqtn'}
-        X = This.IEqtn;
+        Ans = This.IEqtn;
+        
     case {'zi'}
         % The constant term comes first in Zi, but comes last in user
         % inputs/outputs.
-        X = [This.Zi(:,2:end),This.Zi(:,1)];
+        Ans = [This.Zi(:,2:end),This.Zi(:,1)];
+        
     case 'ny'
-        X = size(This.A,1);
+        Ans = size(This.A,1);
+        
     case 'ne'
-        X = size(This.Omega,2);
+        Ans = size(This.Omega,2);
+        
     case 'ni'
-        X = size(This.Zi,1);
+        Ans = size(This.Zi,1);
+        
     otherwise
         Flag = false;
+        
 end
 
 end

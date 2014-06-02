@@ -15,7 +15,7 @@ classdef userdataobj
         % User captions used to title graphs.
         Caption = '';
         % Base year for time trends.
-        BaseYear = [];
+        BaseYear = @config;
     end
     
     methods

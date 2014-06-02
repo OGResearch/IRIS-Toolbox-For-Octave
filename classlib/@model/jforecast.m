@@ -252,14 +252,14 @@ end
 % Index of parameterisation with solutions not available.
 [~,nanSol] = isnan(This,'solution');
 
-% Initialise output data.
+% Create and initialise output hdataobj.
 hData = struct();
-hData.mean = hdataobj(This,struct('Precision',opt.precision), ...
-    nXPer,nLoop);
+hData.mean = hdataobj(This,xRange,nLoop, ...
+    'Precision=',opt.precision);
 if ~opt.meanonly
-    hData.std = hdataobj(This, ...
-        struct('IsStd',true,'Precision',opt.precision), ...
-        nXPer,nLoop);
+    hData.std = hdataobj(This,xRange,nLoop, ...
+        'IsVar2Std=',true, ...
+        'Precision=',opt.precision);
 end
 
 % Main loop
@@ -713,7 +713,7 @@ doRetOutp();
             outpE = [nan(ne,1)*(1+1i),complex(realOutpE,imagOutpE)];
         end
         
-        hdataassign(hData.mean,This,iLoop,outpY,outpX,outpE);
+        hdataassign(hData.mean,iLoop,outpY,outpX,outpE);
         
         % Final std forecast.
         if ~opt.meanonly
@@ -724,7 +724,7 @@ doRetOutp();
             else
                 Deu = complex(Du,De);
             end
-            hdataassign(hData.std,This,iLoop, ...
+            hdataassign(hData.std,iLoop, ...
                 [nan(ny,1),Dy], ...
                 [[nan(nf,1);Dxinit],Dx], ...
                 [nan(ne,1),Deu]);
@@ -735,10 +735,10 @@ doRetOutp();
     function doRetOutp()
         Outp = struct();
         if opt.meanonly
-            Outp = hdata2tseries(hData.mean,This,xRange);
+            Outp = hdata2tseries(hData.mean);
         else
-            Outp.mean = hdata2tseries(hData.mean,This,xRange);
-            Outp.std = hdata2tseries(hData.std,This,xRange);
+            Outp.mean = hdata2tseries(hData.mean);
+            Outp.std = hdata2tseries(hData.std);
         end
     end % doRetOutp().
 
