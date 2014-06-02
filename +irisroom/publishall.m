@@ -57,14 +57,8 @@ for k = nChapter : -1 : 1
         texContents = [texContents,br,'    \clearpage']; %#ok<AGROW>
         texContents = [texContents,br,'    \input{',ref,'}']; %#ok<AGROW>
         helpToc = [helpToc,br, ...
-            sprintf('    <tocitem target="%s.html" image="HelpIcon.USER_GUIDE">%s', ...
+            sprintf('    <tocitem target="%s.html" image="HelpIcon.FUNCTION">%s', ...
             ref,fo.DESCRIPT)]; %#ok<AGROW>
-        
-        if isempty(strfind(folder{i},'lang'))
-            icon = 'FUNCTION';
-        else
-            icon = 'BLOCK';
-        end
         
         [file,nFile] = irisroom.branchnames(fo,'sort');
 
@@ -80,8 +74,8 @@ for k = nChapter : -1 : 1
             syntax = strrep(syntax,'>','&gt;');
             
             helpToc = [helpToc,br, ...
-                sprintf('        <tocitem target="%s.html" image="HelpIcon.%s">%s &#8212; %s</tocitem>', ...
-                ref,icon,syntax,fi.DESCRIPT)]; %#ok<AGROW>
+                sprintf('        <tocitem target="%s.html">%s &#8212; %s</tocitem>', ...
+                ref,syntax,fi.DESCRIPT)]; %#ok<AGROW>
         end
         
         helpToc = [helpToc,br,'    </tocitem>']; %#ok<AGROW>

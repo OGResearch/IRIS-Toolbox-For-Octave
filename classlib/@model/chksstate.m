@@ -1,5 +1,5 @@
 function [Flag,varargout] = chksstate(This,varargin)
-% chksstate  Check if equations hold for currently assigned steady0state values.
+% chksstate  Check if equations hold for currently assigned steady-state values.
 %
 % Syntax
 % =======

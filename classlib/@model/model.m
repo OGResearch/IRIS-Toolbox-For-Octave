@@ -61,7 +61,7 @@ classdef model < modelobj & estimateobj
     % Steady state
     % =============
     %
-    % * [`chksstate`](model/chksstate) - Check if equations hold for currently assigned steady0state values.
+    % * [`chksstate`](model/chksstate) - Check if equations hold for currently assigned steady-state values.
     % * [`sstate`](model/sstate) - Compute steady state or balance-growth path of the model.
     % * [`sstatefile`](model/sstatefile) - Create a steady-state file based on the model object's steady-state equations.
     %
