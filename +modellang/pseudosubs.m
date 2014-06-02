@@ -40,7 +40,7 @@
 % The following [`!for`](modellang/for) loop
 %
 %     !for
-%         [ 2 : 4 ]
+%         $[ 2 : 4 ]$
 %     !do
 %         x? = x$[?-1]${-1};
 %     !end
