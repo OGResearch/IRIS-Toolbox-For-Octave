@@ -49,7 +49,11 @@ varargout{nOutp+1}(1:nx) = {''};
 varargout{nOutp+2}(1:nx) = {''};
 
 freq = datfreq(StartDate);
-if freq ~= 4 && freq ~= 12
+if isnan(freq)
+    utils.warning('x12', ...
+        'Input tseries is empty, cannot run X12.');    
+    return
+elseif freq ~= 4 && freq ~= 12
     utils.warning('x12', ...
         'X12 runs only on quarterly or monthly data.');
     return
