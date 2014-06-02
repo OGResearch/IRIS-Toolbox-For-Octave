@@ -16,7 +16,7 @@ totalNCol = par.nlead + length(par.options.range);
 
 if This.options.stretch
     if strncmpi(This.options.justify,'l',1) && ~isempty(par.vline)
-        nCol = par.nlead + min(par.vline);
+        nCol = par.nlead + min(par.vline) - 1;
     else
         nCol = totalNCol;
     end
