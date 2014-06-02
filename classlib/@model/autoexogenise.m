@@ -70,17 +70,11 @@ end
         xyList = fieldnames(varargin{1});
         eList = struct2cell(varargin{1});
         % `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
-        [This,invalid,nonUnique] = myautoexogenise(This,xyList,eList);
+        [This,invalid] = myautoexogenise(This,xyList,eList);
         if any(invalid)
             utils.error('model', ...
                 'Cannot autoexogenise the following name: ''%s''.', ...
                 xyList{invalid});
-        end
-        if ~isempty(nonUnique)
-            utils.error('model', ...
-                ['This shock is included in more than one ', ...
-                'autoexogenise definitions: ''%s''.'], ...
-                nonUnique{:});
         end
     end % doSetAutoExogenise().
 
