@@ -163,11 +163,17 @@ end
 % Read autoexogenise definitions (variable/shock pairs)
 %-------------------------------------------------------
 s = S( blkpos(the,'!autoexogenise') );
-[This,ixValid] = myautoexogenise(This,s.eqtnlhs,s.eqtnrhs);
+[This,ixValid,multiple] = myautoexogenise(This,s.eqtnlhs,s.eqtnrhs);
 if any(~ixValid)
     utils.error('model',[ep, ...
         'Invalid autoexogenise definition: ''%s''.'], ...
         s.eqtn{~ixValid});
+end
+if ~isempty(multiple)
+    utils.warning('model:myautoexogenise',[ep, ...
+        'This shock is included in more than one ', ...
+        'autoexogenise definitions: ''%s''.'], ...
+        multiple{:});
 end
 
 % Process equations

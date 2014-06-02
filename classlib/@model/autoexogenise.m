@@ -51,9 +51,13 @@ else
     varargout{1} = This;
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function A = doGetAutoExogenise()
         inx = ~isnan(This.Autoexogenise);
         if any(inx)
@@ -63,19 +67,29 @@ end
         else
             A = struct();
         end
-    end % doGetAutoexogenise().
+    end % doGetAutoexogenise()
+
 
 %**************************************************************************
+
+    
     function doSetAutoExogenise()
         xyList = fieldnames(varargin{1});
         eList = struct2cell(varargin{1});
         % `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
-        [This,invalid] = myautoexogenise(This,xyList,eList);
+        [This,invalid,multiple] = myautoexogenise(This,xyList,eList);
         if any(invalid)
             utils.error('model', ...
                 'Cannot autoexogenise the following name: ''%s''.', ...
                 xyList{invalid});
         end
-    end % doSetAutoExogenise().
+        if ~isempty(multiple)
+            utils.warning('model:myautoexogenise', ...
+                ['This shock is included in more than one ', ...
+                'autoexogenise definitions: ''%s''.'], ...
+                multiple{:});
+        end
+    end % doSetAutoExogenise()
+
 
 end

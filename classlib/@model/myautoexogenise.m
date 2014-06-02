@@ -1,4 +1,4 @@
-function [This,IxValid] = myautoexogenise(This,Lhs,Rhs)
+function [This,IxValid,Multiple] = myautoexogenise(This,Lhs,Rhs)
 % myautoexogenise  [Not a public function] Define variable/shock pairs for
 % autoexogenise.
 %
@@ -17,13 +17,7 @@ This.Autoexogenise = nan(size(This.name));
 n = length(Lhs);
 IxValid = true(1,n);
 
-multiple = strfun.nonunique(Rhs);
-if ~isempty(multliple)
-    utils.warning('model:myautoexogenise',[ep, ...
-        'This shock is included in more than one ', ...
-        'autoexogenise definitions: ''%s''.'], ...
-        multiple{:});
-end
+Multiple = strfun.nonunique(Rhs);
 
 % Permissible names on the LHS (measurement or transition variables).
 lhsName = This.name;
