@@ -1,5 +1,5 @@
 classdef FAVAR < varobj
-    % FAVAR  Factor-augmented vector autoregressions: FAVAR objects and functions.
+    % FAVAR  Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions.
     %
     % Constructor
     % ============

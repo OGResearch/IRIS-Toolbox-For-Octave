@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.6.2)  2 JUN 2014 11:22
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.6.2)  2 JUN 2014 17:09
 entering extended mode
 **IRIS_Man
 (C:\IRIS_Tbx\-help\IRIS_Man.tex
@@ -1208,7 +1208,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 141.
 Here is how much of TeX's memory you used:
  13569 strings out of 493921
  202525 string characters out of 3154504
- 224370 words of memory out of 3000000
+ 224391 words of memory out of 3000000
  11531 multiletter control sequences out of 15000+200000
  24612 words of font info for 58 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
@@ -1250,9 +1250,9 @@ Data\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi720\eorm10.pk> <C:\Users\Ho
 me\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi1244\eorm10.pk><C:/Mi
 KTeX/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb><C:/MiKTeX/fonts/type1
 /public/inconsolata/Inconsolata-zi4r.pfb>
-Output written on IRIS_Man.pdf (454 pages, 1892316 bytes).
+Output written on IRIS_Man.pdf (454 pages, 1899944 bytes).
 PDF statistics:
- 8994 PDF objects out of 10688 (max. 8388607)
+ 9004 PDF objects out of 10688 (max. 8388607)
  3968 named destinations out of 4296 (max. 500000)
  3433 words of extra memory for PDF output out of 10000 (max. 10000000)
 

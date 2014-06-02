@@ -3,9 +3,7 @@ function [TEX,HTML] = pandoc(LEVEL,X,REF)
 c = X.HELPTEXT;
 c = strfun.converteols(c);
 
-if exist('pandoc_temporary_input.txt','file')
-    delete('pandoc_temporary_input.txt');
-end
+tempFile = [tempname(),'.txt'];
 
 pandoc = [ ...
     '"C:\Program Files (x86)\Pandoc\bin\pandoc" ', ...
@@ -18,7 +16,7 @@ pandoc = [ ...
     '--variable=REF:"$REF$" ', ...
     '--template=C:\IRIS\Man\helptemplate ', ...
     '--latexmathml ', ... 
-    'pandoc_temporary_input.txt'];
+    '"',tempFile,'"'];
 
 % Create pandoc variables.
 pandoc = strrep(pandoc,'$LEVEL$',upper(LEVEL));
@@ -36,11 +34,11 @@ pandochtml = strrep(pandochtml,'$SYNTAX$',X.SYNTAX);
 c = xxPreformat(c,REF);
 
 ctex = xxPreformatTex(c);
-char2file(ctex,'pandoc_temporary_input.txt');
+char2file(ctex,tempFile);
 [~,TEX] = system(pandoctex);
 
 chtml = xxPreformatHtml(c);
-char2file(chtml,'pandoc_temporary_input.txt');
+char2file(chtml,tempFile);
 [~,HTML] = system(pandochtml);
 
 TEX = strfun.converteols(TEX);
@@ -51,6 +49,8 @@ htmlfile = fullfile(irisroot(),'-help',[REF,'.html']);
 
 char2file(TEX,texfile);
 char2file(HTML,htmlfile);
+
+delete(tempFile);
 
 end
 

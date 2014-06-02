@@ -1,10 +1,10 @@
-% sessions  IRIS sessions.
+% sessions  IRIS Sessions.
 %
 % * [setup](setup/Contents) - Installing IRIS.
 %
 % * [config](config/Contents) - Starting, quitting, and configuring IRIS.
 %
-% * [gettinghelp](gettinghelp/Contents) - Getting on-line help.
+% * [gettinghelp](gettinghelp/Contents) - Getting Online Help.
 %
 
 % -IRIS Toolbox.

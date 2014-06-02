@@ -1,4 +1,4 @@
-% qreportlang  Quick-report file language.
+% qreportlang  Quick-Report File Language.
 %
 % Figures
 % ========

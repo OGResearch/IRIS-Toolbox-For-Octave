@@ -1,5 +1,5 @@
 classdef grouping < userdataobj & getsetobj
-    % grouping  Grouping objects for aggregation of contributions.
+    % grouping  Grouping Objects for Aggregation of Contributions.
     %
     % Grouping objects can be used for aggregating the contributions of shocks
     % in model simulations, [`model/simulate`](model/simulate), or aggregating

@@ -1,5 +1,5 @@
 classdef VAR < varobj
-    % VAR  Vector autoregressions (VAR) objects and functions.
+    % VAR  Vector Autoregressions (VAR) Objects and Functions.
     %
     % VAR objects can be constructed as plain VARs or simple panel VARs (with
     % fixed effect), and estimated without or with prior dummy observations

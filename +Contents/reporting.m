@@ -1,12 +1,12 @@
-% reporting  Reporting and publishing.
+% reporting  Reporting and Publishing.
 %
-% * [report](report/Contents) - Report functions.
+% * [report](report/Contents) - Report Functions.
 %
-% * [qreportlang](qreportlang/Contents) - Quick-report file language.
+% * [qreportlang](qreportlang/Contents) - Quick-Report File Language.
 %
-% * [qreport](qreport/Contents) - Quick-report functions.
+% * [qreport](qreport/Contents) - Quick-Report Functions.
 %
-% * [grfun](grfun/Contents) - Graphics functions.
+% * [grfun](grfun/Contents) - Graphics Functions.
 %
 
 % -IRIS Toolbox.

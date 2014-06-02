@@ -1,5 +1,5 @@
 classdef namedmat < double
-    % namedmat  Matrices with named rows and columns.
+    % namedmat  Matrices with Named Rows and Columns.
     %
     % Matrices with named rows and columns are returned by several IRIS
     % functions, such as [model/acf](model/acf), [model/xsf](model/xsf),

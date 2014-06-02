@@ -1,5 +1,5 @@
 classdef plan < userdataobj & getsetobj
-    % plan  Simulation plans.
+    % plan  Simulation Plans.
     %
     % Simulation plans complement the use of the
     % [`model/simulate`](model/simulate) or

@@ -243,8 +243,12 @@ if any(nanResid)
 end
 
 % Return only endogenous variables, not shocks.
-names = [This.YNames,This.XNames,This.ENames];
-data = [Y;x(:,:,ones(1,NDraw));E];
+names = [This.YNames,This.ENames];
+data = [Y;E];
+if nx > 0
+    names = [names,This.XNames];
+    data = [data;x(:,:,ones(1,NDraw))];
+end
 Outp = myoutpdata(This,outpFmt,xRange,data,[],names);
 
 

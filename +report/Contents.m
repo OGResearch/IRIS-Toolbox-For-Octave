@@ -1,4 +1,4 @@
-% report  Report functions.
+% report  Report Functions.
 %
 % New report
 % ===========

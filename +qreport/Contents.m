@@ -1,4 +1,4 @@
-% qreport  Quick-report functions.
+% qreport  Quick-Report Functions.
 %
 % Quick-report functions
 % =======================

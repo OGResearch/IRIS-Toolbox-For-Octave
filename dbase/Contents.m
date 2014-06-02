@@ -1,4 +1,4 @@
-% dbase  Basic database management.
+% dbase  Basic Database Management.
 %
 % Loading and saving databases
 % =============================

@@ -38,6 +38,7 @@ if anycolname(This)
             c1 = [c1, ...
                 report.tabularobj.turnbox(c2, ...
                 This.options.rotatecolnames)]; %#ok<AGROW>
+            This.hInfo.package.rotating = true;
         else
             c1 = [c1,c2]; %#ok<AGROW>
         end

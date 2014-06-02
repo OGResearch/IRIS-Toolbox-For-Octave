@@ -1,4 +1,4 @@
-% grfun  Graphics functions.
+% grfun  Graphics Functions.
 %
 % Graphics functions
 % ===================

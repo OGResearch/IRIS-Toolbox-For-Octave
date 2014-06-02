@@ -1,5 +1,5 @@
 classdef poster
-% poster  Posterior objects and functions.
+% poster  Posterior Simulator Objects and Functions.
 %
 % Posterior objects, `poster`, are used to evaluate the behaviour of the
 % posterior dsitribution, and to draw model parameters from the posterior

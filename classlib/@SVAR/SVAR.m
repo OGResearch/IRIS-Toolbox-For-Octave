@@ -1,5 +1,5 @@
 classdef SVAR < VAR & svarobj
-    % SVAR  Structural vector autoregressions: SVAR objects and functions.
+    % SVAR  Structural Vector Autoregressions: SVAR Objects and Functions.
     %
     % SVAR methods:
     %

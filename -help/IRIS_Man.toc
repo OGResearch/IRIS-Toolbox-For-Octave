@@ -1,4 +1,4 @@
-\contentsline {part}{Part\nobreakspace {}I\ ---\ \hspace {1em}IRIS sessions}{6}{part.1}
+\contentsline {part}{Part\nobreakspace {}I\ ---\ \hspace {1em}IRIS Sessions}{6}{part.1}
 \contentsline {section}{\numberline {1}Installing IRIS}{7}{section.1}
 \contentsline {paragraph}{Requirements}{7}{section*.4}
 \contentsline {paragraph}{Optional components}{7}{section*.5}
@@ -53,9 +53,9 @@
 \contentsline {paragraph}{Syntax}{17}{section*.63}
 \contentsline {paragraph}{Output arguments}{17}{section*.64}
 \contentsline {paragraph}{Description}{17}{section*.65}
-\contentsline {section}{\numberline {3}Getting on-line help}{18}{section.3}
-\contentsline {part}{Part\nobreakspace {}II\ ---\ \hspace {1em}Model development and operation}{20}{part.2}
-\contentsline {section}{\numberline {4}Model file language}{21}{section.4}
+\contentsline {section}{\numberline {3}Getting Online Help}{18}{section.3}
+\contentsline {part}{Part\nobreakspace {}II\ ---\ \hspace {1em}Model Development and Operation}{20}{part.2}
+\contentsline {section}{\numberline {4}Model File Language}{21}{section.4}
 \contentsline {paragraph}{Variables, parameters, substitutions and functions}{21}{section*.66}
 \contentsline {paragraph}{Equations}{21}{section*.67}
 \contentsline {paragraph}{Linearised and log-linearised variables}{22}{section*.68}
@@ -204,7 +204,7 @@
 \contentsline {paragraph}{Syntax}{62}{section*.247}
 \contentsline {paragraph}{Description}{62}{section*.248}
 \contentsline {paragraph}{Example}{62}{section*.249}
-\contentsline {section}{\numberline {5}Model objects and functions}{63}{section.5}
+\contentsline {section}{\numberline {5}Model Objects and Functions}{63}{section.5}
 \contentsline {paragraph}{Constructor}{63}{section*.250}
 \contentsline {paragraph}{Getting information about models}{63}{section*.251}
 \contentsline {paragraph}{Referencing model objects}{64}{section*.252}
@@ -647,7 +647,7 @@
 \contentsline {paragraph}{Output arguments}{153}{section*.760}
 \contentsline {paragraph}{Description}{153}{section*.761}
 \contentsline {paragraph}{Example}{153}{section*.762}
-\contentsline {section}{\numberline {6}Simulation plans}{154}{section.6}
+\contentsline {section}{\numberline {6}Simulation Plans}{154}{section.6}
 \contentsline {paragraph}{simulations or forecasts with some of the model variables temporarily}{154}{section*.763}
 \contentsline {paragraph}{simulations with some of the non-linear equations solved in an exact}{154}{section*.764}
 \contentsline {paragraph}{forecasts conditioned upon some variables;}{154}{section*.765}
@@ -724,7 +724,7 @@
 \contentsline {paragraph}{Output aguments}{164}{section*.849}
 \contentsline {paragraph}{Description}{164}{section*.850}
 \contentsline {paragraph}{Example}{164}{section*.851}
-\contentsline {section}{\numberline {7}Grouping objects for aggregation of contributions}{165}{section.7}
+\contentsline {section}{\numberline {7}Grouping Objects for Aggregation of Contributions}{165}{section.7}
 \contentsline {paragraph}{Constructor}{165}{section*.852}
 \contentsline {paragraph}{Getting information about groups}{165}{section*.853}
 \contentsline {paragraph}{Setting up and using groups}{165}{section*.854}
@@ -754,7 +754,7 @@
 \contentsline {paragraph}{Output arguments}{168}{section*.883}
 \contentsline {paragraph}{Description}{169}{section*.884}
 \contentsline {paragraph}{Example}{169}{section*.885}
-\contentsline {section}{\numberline {8}System priors}{170}{section.8}
+\contentsline {section}{\numberline {8}System Priors Objects and Functions}{170}{section.8}
 \contentsline {paragraph}{Constructor}{170}{section*.886}
 \contentsline {paragraph}{Setting up priors}{170}{section*.887}
 \contentsline {paragraph}{Getting information about system priors}{170}{section*.888}
@@ -785,7 +785,7 @@
 \contentsline {paragraph}{Output arguments}{174}{section*.918}
 \contentsline {paragraph}{Description}{174}{section*.919}
 \contentsline {paragraph}{Example}{174}{section*.920}
-\contentsline {section}{\numberline {9}Posterior objects and functions}{175}{section.9}
+\contentsline {section}{\numberline {9}Posterior Simulator Objects and Functions}{175}{section.9}
 \contentsline {paragraph}{Constructor}{175}{section*.921}
 \contentsline {paragraph}{Evaluating posterior density}{175}{section*.922}
 \contentsline {paragraph}{Chain statistics}{175}{section*.923}
@@ -821,7 +821,7 @@
 \contentsline {paragraph}{Options to include/exclude output statistics}{181}{section*.958}
 \contentsline {paragraph}{Description}{182}{section*.959}
 \contentsline {paragraph}{Example}{182}{section*.960}
-\contentsline {section}{\numberline {10}Probability distribution package}{183}{section.10}
+\contentsline {section}{\numberline {10}Probability Distribution Package}{183}{section.10}
 \contentsline {paragraph}{Getting function handles for univariate distributions}{183}{section*.961}
 \contentsline {paragraph}{Calling the logdist function handles}{183}{section*.962}
 \contentsline {paragraph}{Getting on-line help on logdist functions}{184}{section*.963}
@@ -860,7 +860,7 @@
 \contentsline {paragraph}{Output arguments}{189}{section*.1003}
 \contentsline {paragraph}{Description}{189}{section*.1004}
 \contentsline {paragraph}{Example}{189}{section*.1005}
-\contentsline {section}{\numberline {11}Matrices with named rows and columns}{190}{section.11}
+\contentsline {section}{\numberline {11}Matrices with Named Rows and Columns}{190}{section.11}
 \contentsline {paragraph}{Constructor}{190}{section*.1006}
 \contentsline {paragraph}{Manipulating named matrices}{190}{section*.1007}
 \contentsline {paragraph}{Getting row and column names}{190}{section*.1008}
@@ -890,8 +890,8 @@
 \contentsline {paragraph}{Output arguments}{194}{section*.1037}
 \contentsline {paragraph}{Description}{194}{section*.1038}
 \contentsline {paragraph}{Example}{194}{section*.1039}
-\contentsline {part}{Part\nobreakspace {}III\ ---\ \hspace {1em}Multivariate time series analysis}{195}{part.3}
-\contentsline {section}{\numberline {12}Vector autoregressions (VAR) objects and functions}{196}{section.12}
+\contentsline {part}{Part\nobreakspace {}III\ ---\ \hspace {1em}Multivariate Time Series Analysis}{195}{part.3}
+\contentsline {section}{\numberline {12}Vector Autoregressions (VAR) Objects and Functions}{196}{section.12}
 \contentsline {paragraph}{Constructor}{196}{section*.1040}
 \contentsline {paragraph}{Getting information about VAR objects}{196}{section*.1041}
 \contentsline {paragraph}{Referencing VAR objects}{197}{section*.1042}
@@ -1131,7 +1131,7 @@
 \contentsline {paragraph}{Options}{233}{section*.1318}
 \contentsline {paragraph}{Description}{233}{section*.1319}
 \contentsline {paragraph}{Example}{233}{section*.1320}
-\contentsline {section}{\numberline {13}Structural vector autoregressions: SVAR objects and functions}{234}{section.13}
+\contentsline {section}{\numberline {13}Structural Vector Autoregressions: SVAR Objects and Functions}{234}{section.13}
 \contentsline {paragraph}{Constructor}{234}{section*.1321}
 \contentsline {paragraph}{Getting information about SVAR objects}{234}{section*.1322}
 \contentsline {paragraph}{Simulation}{234}{section*.1323}
@@ -1170,7 +1170,7 @@
 \contentsline {paragraph}{Description}{241}{section*.1361}
 \contentsline {subparagraph}{Identification random Householder transformations}{241}{section*.1362}
 \contentsline {paragraph}{Example}{241}{section*.1363}
-\contentsline {section}{\numberline {14}Bayesian VAR prior dummies: BVAR package}{242}{section.14}
+\contentsline {section}{\numberline {14}Bayesian VAR Package}{242}{section.14}
 \contentsline {paragraph}{Constructing dummy observations}{242}{section*.1364}
 \contentsline {paragraph}{Weights on prior dummy observations}{242}{section*.1365}
 \contentsline {paragraph}{Getting help on BVAR functions}{242}{section*.1366}
@@ -1199,7 +1199,7 @@
 \contentsline {paragraph}{Output arguments}{246}{section*.1394}
 \contentsline {paragraph}{Description}{246}{section*.1395}
 \contentsline {paragraph}{Example}{246}{section*.1396}
-\contentsline {section}{\numberline {15}Factor-augmented vector autoregressions: FAVAR objects and functions}{247}{section.15}
+\contentsline {section}{\numberline {15}Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions}{247}{section.15}
 \contentsline {paragraph}{Constructor}{247}{section*.1397}
 \contentsline {paragraph}{Getting information about FAVAR objects}{247}{section*.1398}
 \contentsline {paragraph}{Estimation}{247}{section*.1399}
@@ -1260,8 +1260,8 @@
 \contentsline {paragraph}{Output arguments}{256}{section*.1463}
 \contentsline {paragraph}{Description}{256}{section*.1464}
 \contentsline {paragraph}{Example}{256}{section*.1465}
-\contentsline {part}{Part\nobreakspace {}IV\ ---\ \hspace {1em}Time series and database management}{257}{part.4}
-\contentsline {section}{\numberline {16}Dates and date ranges}{258}{section.16}
+\contentsline {part}{Part\nobreakspace {}IV\ ---\ \hspace {1em}Time Series and Database Management}{257}{part.4}
+\contentsline {section}{\numberline {16}Dates and Date Ranges}{258}{section.16}
 \contentsline {paragraph}{Creating IRIS serial date numbers}{258}{section*.1466}
 \contentsline {paragraph}{Computing special dates (daily dates only)}{258}{section*.1467}
 \contentsline {paragraph}{Creating date ranges}{258}{section*.1468}
@@ -1460,7 +1460,7 @@
 \contentsline {paragraph}{Output arguments}{288}{section*.1699}
 \contentsline {paragraph}{Description}{288}{section*.1700}
 \contentsline {paragraph}{Example}{288}{section*.1701}
-\contentsline {section}{\numberline {17}Time series objects and functions}{289}{section.17}
+\contentsline {section}{\numberline {17}Time Series (Tseries) Objects and Functions}{289}{section.17}
 \contentsline {paragraph}{Constructor}{289}{section*.1702}
 \contentsline {paragraph}{Getting information about tseries objects}{289}{section*.1703}
 \contentsline {paragraph}{Referencing tseries objects}{289}{section*.1704}
@@ -1833,7 +1833,7 @@
 \contentsline {paragraph}{Input arguments}{358}{section*.2137}
 \contentsline {paragraph}{Description}{358}{section*.2138}
 \contentsline {paragraph}{Example}{358}{section*.2139}
-\contentsline {section}{\numberline {18}Basic database management}{359}{section.18}
+\contentsline {section}{\numberline {18}Basic Database Management}{359}{section.18}
 \contentsline {paragraph}{Loading and saving databases}{359}{section*.2140}
 \contentsline {paragraph}{Getting information about databases}{359}{section*.2141}
 \contentsline {paragraph}{Converting databases}{359}{section*.2142}
@@ -1978,8 +1978,8 @@
 \contentsline {paragraph}{Example}{388}{section*.2306}
 \contentsline {paragraph}{Example}{388}{section*.2307}
 \contentsline {paragraph}{Example}{388}{section*.2308}
-\contentsline {part}{Part\nobreakspace {}V\ ---\ \hspace {1em}Reporting and publishing}{389}{part.5}
-\contentsline {section}{\numberline {19}Report functions}{390}{section.19}
+\contentsline {part}{Part\nobreakspace {}V\ ---\ \hspace {1em}Reporting and Publishing}{389}{part.5}
+\contentsline {section}{\numberline {19}Report Functions}{390}{section.19}
 \contentsline {paragraph}{New report}{390}{section*.2309}
 \contentsline {paragraph}{Compiling PDF report}{390}{section*.2310}
 \contentsline {paragraph}{Top-level objects}{390}{section*.2311}
@@ -2150,7 +2150,7 @@
 \contentsline {paragraph}{Generic options}{430}{section*.2502}
 \contentsline {paragraph}{Description}{430}{section*.2503}
 \contentsline {paragraph}{Example}{430}{section*.2504}
-\contentsline {section}{\numberline {20}Quick-report file language}{431}{section.20}
+\contentsline {section}{\numberline {20}Quick-Report File Language}{431}{section.20}
 \contentsline {paragraph}{Figures}{431}{section*.2505}
 \contentsline {paragraph}{Graphs}{431}{section*.2506}
 \contentsline {paragraph}{Formatting graph titles}{431}{section*.2507}
@@ -2187,7 +2187,7 @@
 \contentsline {paragraph}{Syntax}{435}{section*.2548}
 \contentsline {paragraph}{Description}{435}{section*.2549}
 \contentsline {paragraph}{Example}{435}{section*.2550}
-\contentsline {section}{\numberline {21}Quick-report functions}{436}{section.21}
+\contentsline {section}{\numberline {21}Quick-Report Functions}{436}{section.21}
 \contentsline {paragraph}{Quick-report functions}{436}{section*.2551}
 \contentsline {paragraph}{Getting on-line help on qreport functions}{436}{section*.2552}
 \contentsline {paragraph}{Syntax}{436}{section*.2554}
@@ -2203,7 +2203,7 @@
 \contentsline {subparagraph}{Special object names}{439}{section*.2565}
 \contentsline {subparagraph}{Setting font size}{440}{section*.2566}
 \contentsline {paragraph}{Example}{440}{section*.2567}
-\contentsline {section}{\numberline {22}Graphics functions}{441}{section.22}
+\contentsline {section}{\numberline {22}Graphics Functions}{441}{section.22}
 \contentsline {paragraph}{Graphics functions}{441}{section*.2568}
 \contentsline {paragraph}{Getting on-line help on qreport functions}{441}{section*.2569}
 \contentsline {paragraph}{Syntax}{441}{section*.2571}

@@ -1,4 +1,4 @@
-% dates  Dates and date ranges.
+% dates  Dates and Date Ranges.
 %
 % Creating IRIS serial date numbers
 % ==================================

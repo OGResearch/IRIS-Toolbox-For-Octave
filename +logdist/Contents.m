@@ -1,4 +1,4 @@
-% logdist  Probability distribution package.
+% logdist  Probability Distribution Package.
 %
 % This package gives quick access to basic univariate distributions. Its
 % primary use is setting up priors in the

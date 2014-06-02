@@ -1,4 +1,4 @@
-% modellang  Model file language.
+% modellang  Model File Language.
 % 
 % Model file language is used to write model files. The model files are
 % plain text files (saved under any filename with any extension) that

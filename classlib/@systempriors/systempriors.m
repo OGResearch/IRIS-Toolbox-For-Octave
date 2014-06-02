@@ -1,5 +1,5 @@
 classdef systempriors < userdataobj
-    % systempriors  System priors.
+    % systempriors  System Priors Objects and Functions.
     %
     % System priors are priors imposed on the system properties of the model as
     % whole, such as shock response functions, frequency response functions,

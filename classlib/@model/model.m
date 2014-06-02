@@ -1,5 +1,5 @@
 classdef model < modelobj & estimateobj
-    % model  Model objects and functions.
+    % model  Model Objects and Functions.
     %
     % Model objects are created by loading a [model file](modellang/Contents).
     % Once a model object exists, you can use model functions and standard
