@@ -1,5 +1,5 @@
 function Outp = mygroupmethod(Func,This,Inp,varargin)
-% mygroupmethod  [Not a public function] Implement VAR methods requiring input data for panel VARs.
+% mygroupmethod  [Not a public function] Implement varobj methods requiring input data for panel VARs.
 %
 % Backend IRIS function.
 % No help provided.

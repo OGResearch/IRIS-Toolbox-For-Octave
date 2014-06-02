@@ -48,7 +48,7 @@ elseif nargin == 4 && mycompatible(This,Obj)
         This.Sbc(:,Lhs) = Obj.Sbc(:,Rhs);
         This.T(:,:,Lhs) = Obj.T(:,:,Rhs);
         This.U(:,:,Lhs) = Obj.U(:,:,Rhs);
-        This.X0(:,:,Lhs) = Obj.X0(:,:,Lhs);
+        This.X0(:,:,Lhs) = Obj.X0(:,:,Rhs);
         if ~isempty(This.Sigma) && ~isempty(Obj.Sigma)
             This.Sigma(:,:,Lhs) = Obj.Sigma(:,:,Rhs);
         end

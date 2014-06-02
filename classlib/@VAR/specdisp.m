@@ -23,14 +23,4 @@ if ~isempty(This.INames)
 end
 fprintf('\n');
 
-% Group names for panel objects.
-fprintf('\tgroups: ');
-if isempty(This.GroupNames)
-    fprintf('implicit');
-else
-    fprintf('[%g] %s',length(This.GroupNames), ...
-        strfun.displist(This.GroupNames));
-end
-fprintf('\n');
-
 end

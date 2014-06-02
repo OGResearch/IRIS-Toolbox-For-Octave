@@ -117,9 +117,6 @@ switch Query
     case {'inames','ilist'}
         Ans = This.INames;
         
-    case {'groupnames','grouplist'}
-        Ans = This.GroupNames;
-        
     case {'ieqtn'}
         Ans = This.IEqtn;
         

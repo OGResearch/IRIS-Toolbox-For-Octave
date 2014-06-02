@@ -74,6 +74,9 @@ switch lower(Query)
     case {'baseyear'}
         Ans = This.BaseYear;
         
+    case {'groupnames','grouplist'}
+        Ans = This.GroupNames;
+        
     otherwise
         Flag = false;
         

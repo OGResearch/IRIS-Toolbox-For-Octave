@@ -18,6 +18,8 @@ classdef varobj < userdataobj & getsetobj
 
         Range = zeros(1,0); % Estimation range.
         Fitted = false(1,0); % Index of periods actually fitted.
+
+        GroupNames = cell(1,0); % Groups in panel objects.
     end
         
     
@@ -26,6 +28,7 @@ classdef varobj < userdataobj & getsetobj
         varargout = datarequest(varargin)
         varargout = horzcat(varargin)
         varargout = isempty(varargin)
+        varargout = ispanel(varargin)
         varargout = nfitted(varargin)
     end
     
@@ -42,6 +45,8 @@ classdef varobj < userdataobj & getsetobj
     methods (Access=protected,Hidden)
         varargout = mycompatible(varargin)
         varargout = myenames(varargin)
+        varargout = mygroupmethod(varargin)
+        varargout = mygroupnames(varargin)
         varargout = myinpdata(varargin)
         varargout = myny(varargin)       
         varargout = myprealloc(varargin)
@@ -77,11 +82,24 @@ classdef varobj < userdataobj & getsetobj
                 This = myenames(This,[]);
             end
 
+            % Bkw compatibility:
+            % VAR(YNames,GroupNames)
+            if length(varargin) == 1 ...
+                    && ( ischar(varargin{1}) || iscellstr(varargin{1}) )
+                This = mygroupnames(This,varargin{1});
+                return
+            end
+            
+            % Standard call:
+            % VAR(YNames,...)
             % Options and userdata.
             if ~isempty(varargin) && iscellstr(varargin(1:2:end))
                 [opt,~] = passvalopt('varobj.varobj',varargin{:});
                 if ~isempty(opt.userdata)
                     This = userdata(This,opt.userdata);
+                end
+                if ~isempty(opt.groups)
+                    This = mygroupnames(This,opt.groups);
                 end
             end
         end

@@ -100,9 +100,6 @@ classdef VAR < varobj
         Rr = []; % Parameter restrictions.
         NHyper = NaN; % Number of estimated hyperparameters.
         
-        % Groups in panel VARs.
-        GroupNames = cell(1,0);
-        
         % Exogenous inputs in VARXs.
         XNames = cell(1,0); % Names of exogenous inputs.
         X0 = []; % Asymptotic mean assumption for exogenous inputs.
@@ -135,7 +132,6 @@ classdef VAR < varobj
         varargout = integrate(varargin)
         varargout = iscompatible(varargin)
         varargout = isexplosive(varargin)
-        varargout = ispanel(varargin)
         varargout = isstationary(varargin)
         varargout = length(varargin)
         varargout = lrtest(varargin)
@@ -167,7 +163,6 @@ classdef VAR < varobj
         varargout = myassignest(varargin)
         varargout = mycompatible(varargin)
         varargout = myglsqweights(varargin)
-        varargout = mygroupnames(varargin)
         varargout = myinpdata(varargin)
         varargout = myisvalidinpdata(varargin)
         varargout = myny(varargin)
@@ -228,10 +223,10 @@ classdef VAR < varobj
             % Options
             % ========
             %
-            % * `'exogenous='` [ cellstr | *empty* ] - Names of exogenous inputs;
-            % one of the names can be `!ttrend`, a linear time trend, which will
-            % created automatically each time input data are required, and then
-            % included in the output database under the name `ttrend`.
+            % * `'exogenous='` [ cellstr | *empty* ] - Names of exogenous inputs; one
+            % of the names can be `!ttrend`, a linear time trend, which will be created
+            % automatically each time input data are required, and then included in the
+            % output database under the name `ttrend`.
             %
             % * `'groups='` [ cellstr | *empty* ] - Names of groups for panel VAR
             % estimation.
@@ -271,15 +266,12 @@ classdef VAR < varobj
                     && isstruct(varargin{1})
                 This = mystruct2obj(This,varargin{1});
                 return
-            elseif nargin >= 1 ...
-                    && ( ischar(varargin{1}) || iscellstr(varargin{1}) )
+            elseif nargin >= 3
+                % VAR(YNames,...)
                 varargin(1) = [];
                 [opt,~] = passvalopt('VAR.VAR',varargin{:});
                 if ~isempty(opt.exogenous)
                     This = myxnames(This,opt.exogenous);
-                end
-                if ~isempty(opt.groups)
-                    This = mygroupnames(This,opt.groups);
                 end
             end
         end
