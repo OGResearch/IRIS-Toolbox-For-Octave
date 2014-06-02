@@ -14,10 +14,6 @@
 %
 % * [poster](logdist/Contents) - Probability distribution package.
 %
-% * [sstatelang](sstatelang/Contents) - Steady-state file language.
-%
-% * [sstate](sstate/Contents) - Steady-state objects and functions.
-%
 % * [namedmat](namedmat/Contents) - Matrices with named rows and columns.
 %
 
