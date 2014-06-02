@@ -9,6 +9,8 @@ function zip(Archive,Suffix)
 
 %--------------------------------------------------------------------------
 
+Archive; %#ok<VUNUS>
+
 try
     Suffix; %#ok<VUNUS>
 catch

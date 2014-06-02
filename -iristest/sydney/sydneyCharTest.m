@@ -1,12 +1,13 @@
 function Tests = sydneyCharTest()
 
+%#ok<*DEFNU>
 Tests = functiontests(localfunctions) ;
 
 end
 
 
 %**************************************************************************
-function setupOnce(This) %#ok<*DEFNU>
+function setupOnce(This)
 
 This.TestData.absTol = eps()^(2/3);
 
