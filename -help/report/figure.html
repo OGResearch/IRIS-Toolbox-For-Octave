@@ -122,11 +122,13 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
+<li><p><code>'aspectRatio='</code> [ <code>@auto</code> | numeric ] - Plot box aspect ratio for all graphs in the figure; must be a 1-by-2 vector describing the horizontal-to-vertical ratio.</p></li>
 <li><p><code>'captionTypeface='</code> [ cellstr | char | <em><code>'\large\bfseries'</code></em> ] - LaTeX format commands for typesetting the figure caption; the subcaption format can be entered as the second cell in a cell array.</p></li>
 <li><p><code>'close='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) Close the underlying figure window when finished; see Description.</p></li>
 <li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inheritable from parent objects) LaTeX commands that will be inserted after the figure.</p></li>
-<li><p><code>'figureOptions='</code> [ cell | <em>empty</em> ] - Figure options that will be applied to the figure handle after all graphs are drawn.</p></li>
+<li><p><code>'figureOptions='</code> [ cell | <em>empty</em> ] - Figure options that will be applied to the figure handle at opening.</p></li>
 <li><p><code>'figureScale='</code> [ numeric | <em><code>0.85</code></em> ] - (Inheritable from parent objects) Scale of the figure in the LaTeX document.</p></li>
+<li><p><code>'figureTrim='</code> [ numeric | <em><code>0</code></em> ] - Trim figure when it is inserted into the report by the specified amount of points; must be either a scalar or a 1-by-4 vector (points removed from left, bottom, right, top).</p></li>
 <li><p><code>'footnote='</code> [ char | <em>empty</em> ] - Footnote at the figure title; only shows if the title is non-empty.</p></li>
 <li><p><code>'sideways='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inheritable from parent objects) Print the table rotated by 90 degrees.</p></li>
 <li><p><code>'style='</code> [ struct | <em>empty</em> ] - Apply this cascading style structure to the figure; see <a href="../qreport/qstyle.html"><code>qstyle</code></a>.</p></li>
@@ -150,5 +152,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

@@ -2,288 +2,272 @@
     \foldertitle{tseries}{Time series objects and functions}{tseries/Contents}
 
 	Tseries methods:
-
-\paragraph{Constructor}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/tseries}{\texttt{tseries}} - Create new time series
-  (tseries) object.
-\end{itemize}
-
-\paragraph{Getting information about tseries
-objects}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/daily}{\texttt{daily}} - Calendar view of a daily
-  tseries object.
-\item
-  \href{tseries/enddate}{\texttt{enddate}} - Date of the last available
-  observation in a tseries object.
-\item
-  \href{tseries/freq}{\texttt{freq}} - Frequency of a tseries object.
-\item
-  \href{tseries/get}{\texttt{get}} - Query tseries object property.
-\item
-  \href{tseries/isequal}{\texttt{isequal}} - {[}Not a public function{]}
-  Compare two tseries objects.
-\item
-  \href{tseries/length}{\texttt{length}} - Length of tseries object.
-\item
-  \href{tseries/ndims}{\texttt{ndims}} - Number of dimensions in tseries
-  object data.
-\item
-  \href{tseries/size}{\texttt{size}} - Size of tseries object data.
-\item
-  \href{tseries/startdate}{\texttt{startdate}} - Date of the first
-  available observation in a tseries object.
-\item
-  \href{tseries/yearly}{\texttt{yearly}} - Display tseries object one
-  full year per row.
-\end{itemize}
-
-\paragraph{Referencing tseries
-objects}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/subsasgn}{\texttt{subsasgn}} - Subscripted assignment
-  for tseries objects.
-\item
-  \href{tseries/subsref}{\texttt{subsref}} - Subscripted reference
-  function for tseries objects.
-\end{itemize}
-
-\paragraph{Maths and statistics functions and
-operators}
-
-Some of the following functions require the Statistics Toolbox.
-
-\texttt{+}, \texttt{-}, \texttt{*}, \texttt{\textbackslash{}},
-\texttt{/}, \texttt{\^{}}, \texttt{\&}, \texttt{\textbar{}},
-\texttt{\textasciitilde{}}, \texttt{==}, \texttt{\textasciitilde{}=},
-\texttt{\textgreater{}=}, \texttt{\textgreater{}}, \texttt{\textless{}},
-\texttt{\textless{}=}, \texttt{abs}, \texttt{acos}, \texttt{asin},
-\texttt{atan}, \texttt{atan2}, \texttt{ceil}, \texttt{cos},
-\texttt{exp}, \texttt{fix}, \texttt{floor},\texttt{imag},
-\texttt{isinf}, \texttt{isnan}, \texttt{log}, \texttt{log10},
-\texttt{real}, \texttt{round}, \texttt{sin}, \texttt{sqrt},
-\texttt{tan}, \texttt{normpdf}, \texttt{normcdf}, \texttt{prctile},
-\texttt{lognpdf}, \texttt{logncdf}
-
-The behaviour of the following functions depend on the dimension along
-which they are performed.
-
-Some of the following functions require the Statistics Toolbox.
-
-\texttt{all}, \texttt{any}, \texttt{cumprod}, \texttt{cumsum},
-\texttt{find}, \texttt{geomean}, \texttt{max}, \texttt{mean},
-\texttt{median}, \texttt{min}, \texttt{mode}, \texttt{nanmean},
-\texttt{nanstd}, \texttt{nansum}, \texttt{nanvar}, \texttt{prod},
-\texttt{std}, \texttt{sum}, \texttt{var}
-
-\paragraph{Filters}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/arf}{\texttt{arf}} - Run autoregressive function on a
-  tseries object.
-\item
-  \href{tseries/bpass}{\texttt{bpass}} - Band-pass filter.
-\item
-  \href{tseries/bwf}{\texttt{bwf}} - Butterworth filter with tunes.
-\item
-  \href{tseries/bwf2}{\texttt{bwf2}} - Swap output arguments of the
-  Butterworth filter with tunes.
-\item
-  \href{tseries/detrend}{\texttt{detrend}} - Remove a linear time trend.
-\item
-  \href{tseries/expsmooth}{\texttt{expsmooth}} - Exponential smoothing.
-\item
-  \href{tseries/hpf}{\texttt{hpf}} - Hodrick-Prescott filter with tunes
-  (aka LRX filter).
-\item
-  \href{tseries/hpf2}{\texttt{hpf2}} - Swap output arguments of the
-  Hodrick-Prescott filter with tunes.
-\item
-  \href{tseries/fft}{\texttt{fft}} - Discrete Fourier transform of
-  tseries object.
-\item
-  \href{tseries/llf}{\texttt{llf}} - Local level filter (aka random walk
-  plus white noise) with tunes.
-\item
-  \href{tseries/llf2}{\texttt{llf2}} - Swap output arguments of the
-  local linear trend filter with tunes.
-\item
-  \href{tseries/moving}{\texttt{moving}} - Apply function to moving
-  window of observations.
-\item
-  \href{tseries/trend}{\texttt{trend}} - Estimate a time trend.
-\item
-  \href{tseries/x12}{\texttt{x12}} - Access to X13-ARIMA-SEATS seasonal
-  adjustment program.
-\end{itemize}
-
-\paragraph{Estimation and sample
-characteristics}
-
-Note that most of the sample characteristics are listed above in the
-Maths and statistics functions and operators section.
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/acf}{\texttt{acf}} - Sample autocovariance and
-  autocorrelation functions.
-\item
-  \href{tseries/hpdi}{\texttt{hpdi}} - Highest probability density
-  interval.
-\item
-  \href{tseries/chowlin}{\texttt{chowlin}} - Chow-Lin distribution of
-  low-frequency observations over higher-frequency periods.
-\item
-  \href{tseries/regress}{\texttt{regress}} - Ordinary or weighted
-  least-square regression.
-\end{itemize}
-
-\paragraph{Visualising tseries
-objects}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/area}{\texttt{area}} - Area graph for tseries objects.
-\item
-  \href{tseries/bar}{\texttt{bar}} - Bar graph for tseries objects.
-\item
-  \href{tseries/barcon}{\texttt{barcon}} - Contribution bar graph for
-  tseries objects.
-\item
-  \href{tseries/errorbar}{\texttt{errorbar}} - Line plot with error
-  bars.
-\item
-  \href{tseries/plot}{\texttt{plot}} - Line graph for tseries objects.
-\item
-  \href{tseries/plotcmp}{\texttt{plotcmp}} - Comparison graph for two
-  time series.
-\item
-  \href{tseries/plotpred}{\texttt{plotpred}} - Plot Kalman filter
-  predictions.
-\item
-  \href{tseries/plotyy}{\texttt{plotyy}} - Line plot function with LHS
-  and RHS axes for time series.
-\item
-  \href{tseries/scatter}{\texttt{scatter}} - Scatter graph for tseries
-  objects.
-\item
-  \href{tseries/spy}{\texttt{spy}} - Visualise tseries observations that
-  pass a test.
-\item
-  \href{tseries/stem}{\texttt{stem}} - Plot tseries as discrete sequence
-  data.
-\end{itemize}
-
-\paragraph{Manipulating tseries
-objects}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/empty}{\texttt{empty}} - Empty tseries object preserving
-  its size in 2nd and higher dimensions.
-\item
-  \href{tseries/permute}{\texttt{permute}} - Permute dimensions of a
-  tseries object.
-\item
-  \href{tseries/redate}{\texttt{redate}} - Change time dimension of a
-  tseries object.
-\item
-  \href{tseries/reshape}{\texttt{reshape}} - Reshape size of time series
-  in 2nd and higher dimensions.
-\item
-  \href{tseries/resize}{\texttt{resize}} - Clip tseries object down to a
-  specified date range.
-\item
-  \href{tseries/sort}{\texttt{sort}} - Sort tseries columns by specified
-  criterion.
-\end{itemize}
-
-\paragraph{Converting tseries objects}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/convert}{\texttt{convert}} - Convert tseries object to a
-  different frequency.
-\item
-  \href{tseries/double}{\texttt{double}} - Return tseries observations
-  as double-precision numeric array.
-\item
-  \href{tseries/doubledata}{\texttt{doubledata}} - Convert tseries
-  observations to double precision.
-\item
-  \href{tseries/single}{\texttt{single}} - Return tseries observations
-  as single-precision numeric array.
-\item
-  \href{tseries/singledata}{\texttt{singledata}} - Convert tseries
-  observations to single precision.
-\end{itemize}
-
-\paragraph{Other tseries functions}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{tseries/apct}{\texttt{apct}} - Annualised percent rate of
-  change.
-\item
-  \href{tseries/bsxfun}{\texttt{bsxfun}} - Standard BSXFUN implemented
-  for tseries objects.
-\item
-  \href{tseries/cumsumk}{\texttt{cumsumk}} - Cumulative sum with a
-  k-period leap.
-\item
-  \href{tseries/destdise}{\texttt{destdise}} - Destandardise tseries
-  object by applying specified standard deviation and mean to it.
-\item
-  \href{tseries/diff}{\texttt{diff}} - First difference.
-\item
-  \href{tseries/interp}{\texttt{interp}} - Interpolate missing
-  observations.
-\item
-  \href{tseries/normalise}{\texttt{normalise}} - Normalise (or rebase)
-  data to particular date.
-\item
-  \href{tseries/pct}{\texttt{pct}} - Percent rate of change.
-\item
-  \href{tseries/round}{\texttt{round}} - Round tseries data to specified
-  number of decimals.
-\item
-  \href{tseries/rmse}{\texttt{rmse}} - Compute RMSE for given
-  observations and predictions.
-\item
-  \href{tseries/stdise}{\texttt{stdise}} - Standardise tseries data by
-  subtracting mean and dividing by std deviation.
-\item
-  \href{tseries/windex}{\texttt{windex}} - Simple weighted or Divisia
-  index.
-\item
-  \href{tseries/wmean}{\texttt{wmean}} - Weighted average of time series
-  observations.
-\end{itemize}
-
-\paragraph{Getting on-line help on tseries
-functions}
-
-\begin{verbatim}
-help tseries
-help tseries/function_name
-\end{verbatim}
+ 
+ \paragraph{Constructor}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/tseries}{\texttt{tseries}} - Create new time series
+   (tseries) object.
+ \end{itemize}
+ 
+ \paragraph{Getting information about tseries objects}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/daily}{\texttt{daily}} - Calendar view of a daily
+   tseries object.
+ \item
+   \href{tseries/enddate}{\texttt{enddate}} - Date of the last available
+   observation in a tseries object.
+ \item
+   \href{tseries/freq}{\texttt{freq}} - Frequency of a tseries object.
+ \item
+   \href{tseries/get}{\texttt{get}} - Query tseries object property.
+ \item
+   \href{tseries/isequal}{\texttt{isequal}} - {[}Not a public function{]}
+   Compare two tseries objects.
+ \item
+   \href{tseries/length}{\texttt{length}} - Length of tseries object.
+ \item
+   \href{tseries/ndims}{\texttt{ndims}} - Number of dimensions in tseries
+   object data.
+ \item
+   \href{tseries/size}{\texttt{size}} - Size of tseries object data.
+ \item
+   \href{tseries/startdate}{\texttt{startdate}} - Date of the first
+   available observation in a tseries object.
+ \item
+   \href{tseries/yearly}{\texttt{yearly}} - Display tseries object one
+   full year per row.
+ \end{itemize}
+ 
+ \paragraph{Referencing tseries objects}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/subsasgn}{\texttt{subsasgn}} - Subscripted assignment
+   for tseries objects.
+ \item
+   \href{tseries/subsref}{\texttt{subsref}} - Subscripted reference
+   function for tseries objects.
+ \end{itemize}
+ 
+ \paragraph{Maths and statistics functions and operators}
+ 
+ Some of the following functions require the Statistics Toolbox.
+ 
+ \texttt{+}, \texttt{-}, \texttt{*}, \texttt{\textbackslash{}},
+ \texttt{/}, \texttt{\^{}}, \texttt{\&}, \texttt{\textbar{}},
+ \texttt{\textasciitilde{}}, \texttt{==}, \texttt{\textasciitilde{}=},
+ \texttt{\textgreater{}=}, \texttt{\textgreater{}}, \texttt{\textless{}},
+ \texttt{\textless{}=}, \texttt{abs}, \texttt{acos}, \texttt{asin},
+ \texttt{atan}, \texttt{atan2}, \texttt{ceil}, \texttt{cos},
+ \texttt{exp}, \texttt{fix}, \texttt{floor},\texttt{imag},
+ \texttt{isinf}, \texttt{isnan}, \texttt{log}, \texttt{log10},
+ \texttt{real}, \texttt{round}, \texttt{sin}, \texttt{sqrt},
+ \texttt{tan}, \texttt{normpdf}, \texttt{normcdf}, \texttt{prctile},
+ \texttt{lognpdf}, \texttt{logncdf}
+ 
+ The behaviour of the following functions depend on the dimension along
+ which they are performed.
+ 
+ Some of the following functions require the Statistics Toolbox.
+ 
+ \texttt{all}, \texttt{any}, \texttt{cumprod}, \texttt{cumsum},
+ \texttt{find}, \texttt{geomean}, \texttt{max}, \texttt{mean},
+ \texttt{median}, \texttt{min}, \texttt{mode}, \texttt{nanmean},
+ \texttt{nanstd}, \texttt{nansum}, \texttt{nanvar}, \texttt{prod},
+ \texttt{std}, \texttt{sum}, \texttt{var}
+ 
+ \paragraph{Filters}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/arf}{\texttt{arf}} - Run autoregressive function on a
+   tseries object.
+ \item
+   \href{tseries/bpass}{\texttt{bpass}} - Band-pass filter.
+ \item
+   \href{tseries/bwf}{\texttt{bwf}} - Butterworth filter with tunes.
+ \item
+   \href{tseries/bwf2}{\texttt{bwf2}} - Swap output arguments of the
+   Butterworth filter with tunes.
+ \item
+   \href{tseries/detrend}{\texttt{detrend}} - Remove a linear time trend.
+ \item
+   \href{tseries/expsmooth}{\texttt{expsmooth}} - Exponential smoothing.
+ \item
+   \href{tseries/hpf}{\texttt{hpf}} - Hodrick-Prescott filter with tunes
+   (aka LRX filter).
+ \item
+   \href{tseries/hpf2}{\texttt{hpf2}} - Swap output arguments of the
+   Hodrick-Prescott filter with tunes.
+ \item
+   \href{tseries/fft}{\texttt{fft}} - Discrete Fourier transform of
+   tseries object.
+ \item
+   \href{tseries/llf}{\texttt{llf}} - Local level filter (aka random walk
+   plus white noise) with tunes.
+ \item
+   \href{tseries/llf2}{\texttt{llf2}} - Swap output arguments of the
+   local linear trend filter with tunes.
+ \item
+   \href{tseries/moving}{\texttt{moving}} - Apply function to moving
+   window of observations.
+ \item
+   \href{tseries/trend}{\texttt{trend}} - Estimate a time trend.
+ \item
+   \href{tseries/x12}{\texttt{x12}} - Access to X13-ARIMA-SEATS seasonal
+   adjustment program.
+ \end{itemize}
+ 
+ \paragraph{Estimation and sample characteristics}
+ 
+ Note that most of the sample characteristics are listed above in the
+ Maths and statistics functions and operators section.
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/acf}{\texttt{acf}} - Sample autocovariance and
+   autocorrelation functions.
+ \item
+   \href{tseries/hpdi}{\texttt{hpdi}} - Highest probability density
+   interval.
+ \item
+   \href{tseries/chowlin}{\texttt{chowlin}} - Chow-Lin distribution of
+   low-frequency observations over higher-frequency periods.
+ \item
+   \href{tseries/regress}{\texttt{regress}} - Ordinary or weighted
+   least-square regression.
+ \end{itemize}
+ 
+ \paragraph{Visualising tseries objects}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/area}{\texttt{area}} - Area graph for tseries objects.
+ \item
+   \href{tseries/bar}{\texttt{bar}} - Bar graph for tseries objects.
+ \item
+   \href{tseries/barcon}{\texttt{barcon}} - Contribution bar graph for
+   tseries objects.
+ \item
+   \href{tseries/errorbar}{\texttt{errorbar}} - Line plot with error
+   bars.
+ \item
+   \href{tseries/plot}{\texttt{plot}} - Line graph for tseries objects.
+ \item
+   \href{tseries/plotcmp}{\texttt{plotcmp}} - Comparison graph for two
+   time series.
+ \item
+   \href{tseries/plotpred}{\texttt{plotpred}} - Plot Kalman filter
+   predictions.
+ \item
+   \href{tseries/plotyy}{\texttt{plotyy}} - Line plot function with LHS
+   and RHS axes for time series.
+ \item
+   \href{tseries/scatter}{\texttt{scatter}} - Scatter graph for tseries
+   objects.
+ \item
+   \href{tseries/spy}{\texttt{spy}} - Visualise tseries observations that
+   pass a test.
+ \item
+   \href{tseries/stem}{\texttt{stem}} - Plot tseries as discrete sequence
+   data.
+ \end{itemize}
+ 
+ \paragraph{Manipulating tseries objects}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/empty}{\texttt{empty}} - Empty tseries object preserving
+   its size in 2nd and higher dimensions.
+ \item
+   \href{tseries/permute}{\texttt{permute}} - Permute dimensions of a
+   tseries object.
+ \item
+   \href{tseries/redate}{\texttt{redate}} - Change time dimension of a
+   tseries object.
+ \item
+   \href{tseries/reshape}{\texttt{reshape}} - Reshape size of time series
+   in 2nd and higher dimensions.
+ \item
+   \href{tseries/resize}{\texttt{resize}} - Clip tseries object down to a
+   specified date range.
+ \item
+   \href{tseries/sort}{\texttt{sort}} - Sort tseries columns by specified
+   criterion.
+ \end{itemize}
+ 
+ \paragraph{Converting tseries objects}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/convert}{\texttt{convert}} - Convert tseries object to a
+   different frequency.
+ \item
+   \href{tseries/double}{\texttt{double}} - Return tseries observations
+   as double-precision numeric array.
+ \item
+   \href{tseries/doubledata}{\texttt{doubledata}} - Convert tseries
+   observations to double precision.
+ \item
+   \href{tseries/single}{\texttt{single}} - Return tseries observations
+   as single-precision numeric array.
+ \item
+   \href{tseries/singledata}{\texttt{singledata}} - Convert tseries
+   observations to single precision.
+ \end{itemize}
+ 
+ \paragraph{Other tseries functions}
+ 
+ \begin{itemize}
+ \item
+   \href{tseries/apct}{\texttt{apct}} - Annualised percent rate of
+   change.
+ \item
+   \href{tseries/bsxfun}{\texttt{bsxfun}} - Standard BSXFUN implemented
+   for tseries objects.
+ \item
+   \href{tseries/cumsumk}{\texttt{cumsumk}} - Cumulative sum with a
+   k-period leap.
+ \item
+   \href{tseries/destdise}{\texttt{destdise}} - Destandardise tseries
+   object by applying specified standard deviation and mean to it.
+ \item
+   \href{tseries/diff}{\texttt{diff}} - First difference.
+ \item
+   \href{tseries/interp}{\texttt{interp}} - Interpolate missing
+   observations.
+ \item
+   \href{tseries/normalise}{\texttt{normalise}} - Normalise (or rebase)
+   data to particular date.
+ \item
+   \href{tseries/pct}{\texttt{pct}} - Percent rate of change.
+ \item
+   \href{tseries/round}{\texttt{round}} - Round tseries data to specified
+   number of decimals.
+ \item
+   \href{tseries/rmse}{\texttt{rmse}} - Compute RMSE for given
+   observations and predictions.
+ \item
+   \href{tseries/stdise}{\texttt{stdise}} - Standardise tseries data by
+   subtracting mean and dividing by std deviation.
+ \item
+   \href{tseries/windex}{\texttt{windex}} - Simple weighted or Divisia
+   index.
+ \item
+   \href{tseries/wmean}{\texttt{wmean}} - Weighted average of time series
+   observations.
+ \end{itemize}
+ 
+ \paragraph{Getting on-line help on tseries functions}
+ 
+ \begin{verbatim}
+ help tseries
+ help tseries/function_name
+ \end{verbatim}
 
 
 

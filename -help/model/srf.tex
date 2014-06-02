@@ -3,52 +3,51 @@
     \filetitle{srf}{Shock response functions}{model/srf}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-S = srf(M,NPer,...)
-S = srf(M,Range,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{M} {[} model {]} - Model object whose shock responses will be
-  simulated.
-\item
-  \texttt{Range} {[} numeric {]} - Simulation date range with the first
-  date being the shock date.
-\item
-  \texttt{NPer} {[} numeric {]} - Number of simulation periods.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{S} {[} struct {]} - Database with shock response time series.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'delog='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - Delogarithmise the responses for variables declared as
-  \texttt{!variables:log}.
-\item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Run the shock response function for a selection of shocks only;
-  \texttt{Inf} means all shocks are simulated.
-\item
-  \texttt{'size='} {[} \emph{`std'} \textbar{} numeric {]} - Size of the
-  shocks that will be simulated; `std' means that each shock will be set
-  to its std dev currently assigned in the model object \texttt{m}.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ S = srf(M,NPer,...)
+ S = srf(M,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object whose shock responses will be
+   simulated.
+ \item
+   \texttt{Range} {[} numeric {]} - Simulation date range with the first
+   date being the shock date.
+ \item
+   \texttt{NPer} {[} numeric {]} - Number of simulation periods.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} struct {]} - Database with shock response time series.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'delog='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Delogarithmise the responses for variables declared as
+   \texttt{!variables:log}.
+ \item
+   \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
+   Run the shock response function for a selection of shocks only;
+   \texttt{Inf} means all shocks are simulated.
+ \item
+   \texttt{'size='} {[} \emph{`std'} \textbar{} numeric {]} - Size of the
+   shocks that will be simulated; `std' means that each shock will be set
+   to its std dev currently assigned in the model object \texttt{m}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

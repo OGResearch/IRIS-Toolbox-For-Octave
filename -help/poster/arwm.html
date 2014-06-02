@@ -146,12 +146,12 @@ code.LaTeX {
 <p>Set <code>'nStep='</code> greater than <code>1</code>, and <code>'firstPrefetch='</code> smaller than <code>NDraw</code> to start a pre-fetching parallelised algorithm (pre-fetched will be all draws starting from <code>'firstPrefetch='</code>); to that end, a pool of parallel workers (using e.g. <code>matlabpool</code> from the Parallel Computing Toolbox) must be opened before calling <code>arwm</code>.</p>
 <p>With pre-fetching, all possible paths <code>'nStep='</code> steps ahead (i.e. all possible combinations of reject/accept) are pre-evaluated in parallel, and then the resulting path is selected. Adapation then occurs only every <code>'nStep='</code> steps, and hence the results will always somewhat differ from a serial run. Identical results can be obtained by turning down adaptation before pre-fetching starts, i.e. by setting <code>'lastAdapt='</code> smaller than <code>'firstPrefetch='</code> (and, obviously, by re-setting the random number generator).</p>
 <h4 id="references">References</h4>
-<ol style="list-style-type: decimal">
-<li><p>Brockwell, A.E., 2005. &quot;Parallel Markov Chain Monte Carlo Simulation by Pre-Fetching,&quot; CMU Statistics Dept. Tech. Report 802.</p></li>
-<li><p>Strid, I., 2009. &quot;Efficient parallelisation of Metropolis-Hastings algorithms using a prefetching approach,&quot; SSE/EFI Working Paper Series in Economics and Finance No. 706.</p></li>
-</ol>
+<h4 id="brockwell-a.e.-2005.-parallel-markov-chain-monte-carlo-simulation">Brockwell, A.E., 2005. &quot;Parallel Markov Chain Monte Carlo Simulation</h4>
+<p>by Pre-Fetching,&quot; CMU Statistics Dept. Tech. Report 802.</p>
+<h4 id="strid-i.-2009.-efficient-parallelisation-of-metropolis-hastings">Strid, I., 2009. &quot;Efficient parallelisation of Metropolis-Hastings</h4>
+<p>algorithms using a prefetching approach,&quot; SSE/EFI Working Paper Series in Economics and Finance No. 706.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

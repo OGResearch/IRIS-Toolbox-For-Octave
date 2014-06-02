@@ -110,20 +110,21 @@ code.LaTeX {
 <div class="headline">Mean of VAR process</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>X = mean(V)</code></pre>
+<pre><code>M = mean(V)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><code>V</code> [ VAR ] - VAR object.</li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>X</code> [ numeric ] - Asymptotic mean of the VAR variables.</li>
+<li><code>M</code> [ numeric ] - Asymptotic mean of the VAR variables.</li>
 </ul>
 <h4 id="description">Description</h4>
 <p>For plain VAR objects, the output argument <code>X</code> is a column vector where the k-th number is the asymptotic mean of the k-th variable, or <code>NaN</code> if the k-th variable is non-stationary (contains a unit root).</p>
 <p>In panel VAR objects (with a total of Ng groups) and/or VAR objects with multiple alternative parameterisations (with a total of Na parameterisations), <code>X</code> is an Ny-by-Ng-by-Na matrix in which the column <code>X(:,g,a)</code> is the asyptotic mean of the VAR variables in the g-th group and the a-th parameterisation.</p>
+<p>In VAR objects with exogenous inputs, the mean will be computed based on the asymptotic assumptions of exogenous inputs assigned by the function <a href="../VAR/xasymptote.html"><code>xasymptote</code></a>.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

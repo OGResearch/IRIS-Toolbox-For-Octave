@@ -3,126 +3,125 @@
     \filetitle{plotpp}{Plot prior and/or posterior distributions and/or posterior mode}{grfun/plotpp}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[PrG,PoG,H] = grfun.plotpp(E,[],[],...)
-[PrG,PoG,H] = grfun.plotpp(E,Est,[],...)
-[PrG,PoG,H] = grfun.plotpp(E,[],Theta,...)
-[PrG,PoG,H] = grfun.plotpp(E,[],Stats,...)
-[PrG,PoG,H] = grfun.plotpp(E,Est,Theta,...)
-[PrG,PoG,H] = grfun.plotpp(E,Est,Stats,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{E} {[} struct {]} - Estimation input struct, see
-  \href{model/estimate}{\texttt{estimate}}, with prior function handles
-  from the \href{logdist/Contents}{logdist} package.
-\item
-  \texttt{Est} {[} struct \textbar{} empty {]} - Output struct returned
-  by the \href{model/estimate}{\texttt{model/estimate}} function;
-  \texttt{Est} will be used to plot the maximised posterior modes.
-\item
-  \texttt{Theta} {[} numeric \textbar{} empty {]} - Array with the chain
-  of draws from the posterior simulator
-  \href{poster/arwm}{\texttt{arwm}}.
-\item
-  \texttt{Stats} {[} struct \textbar{} empty {]} - Output struct
-  returned by the posterior simulator statistics function
-  \href{poster/stats}{\texttt{stats}}.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{PrG} {[} struct {]} - Struct with x- and y-axis coordinates to
-  plot the prior distribution for each parameter.
-\item
-  \texttt{PoG} {[} struct {]} - Struct with x- and y-axis coordinates to
-  plot the posterior distribution for each parameter.
-\item
-  \texttt{H} {[} struct {]} - Struct with handles to the graphics
-  objects plotted by \texttt{plotpp}; the struct has the following
-  fields with vectors of handles: \texttt{figure}, \texttt{axes},
-  \texttt{prior}, \texttt{poster}, \texttt{bounds}, \texttt{init},
-  \texttt{mode}, \texttt{title}.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'caption='} {[} \emph{empty} \textbar{} cellstr {]} -
-  User-supplied graph titles; if empty, default captions will be
-  automatically created.
-\item
-  \texttt{'describe='} {[} \emph{`auto'} \textbar{} true \textbar{}
-  false {]} - Include information on prior distributions, starting
-  values, and maximised posterior modes in the graph titles;
-  \texttt{'auto'} means the descriptions will be shown only if
-  \texttt{'plotPrior='} is true.
-\item
-  \texttt{'ksdensity='} {[} numeric \textbar{} \emph{empty} {]} - Number
-  of points over which the density will be calculated; if empty, default
-  number will be used depending on the backend function available.
-\item
-  \texttt{'plotInit='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} \textbar{} cell {]} - Plot starting values (initial
-  consition used in posterior mode maximisation) as vertical stems.
-\item
-  \texttt{'plotPrior='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} \textbar{} cell {]} - Plot prior distributions.
-\item
-  \texttt{'plotMode='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} \textbar{} cell {]} - Plot maximised posterior modes as
-  vertical stems; the modes are taken from \texttt{Est} (and not from
-  \texttt{Stats} or \texttt{Theta}).
-\item
-  \texttt{'plotPoster='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} \textbar{} cell {]} - Plot posterior distributions.
-\item
-  \texttt{'plotBounds='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} \textbar{} cell {]} - Plot lower and/or upper bounds as
-  vertical lines; if \texttt{false}, the bounds will be plotted only
-  added if within the graph x-limits.
-\item
-  \texttt{'sigma='} {[} numeric \textbar{} \emph{3} {]} - Number of std
-  devs from the mean or the mode (whichever covers a larger area) to the
-  left and to right that will be plotted unless running out of bounds.
-\item
-  \texttt{'tight='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - Make graph axes tight.
-\item
-  \texttt{'title=}' {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  \textbar{} cell {]} - Display graph titles, and specify graphics
-  options for the titles.
-\item
-  \texttt{'xLims='} {[} struct \textbar{} \emph{empty} {]} - Control the
-  x-limits of the prior and posterior graphs.
-\end{itemize}
-
-\paragraph{Description}
-
-The options that control what will be plotted in the graphs (i.e.
-\texttt{'plotInit='}, \texttt{'plotPrior='}, \texttt{'plotMode='},
-\texttt{'plotPoster='}, \texttt{'plotBounds='},\texttt{'title='}) can be
-set to one of the following three values:
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{true},
-\item
-  \texttt{false},
-\item
-  a cell array with sub-options to control the appearance of the
-  respetive line; these will be passed into the respective plotting
-  function.
-\end{itemize}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [PrG,PoG,H] = grfun.plotpp(E,[],[],...)
+ [PrG,PoG,H] = grfun.plotpp(E,Est,[],...)
+ [PrG,PoG,H] = grfun.plotpp(E,[],Theta,...)
+ [PrG,PoG,H] = grfun.plotpp(E,[],Stats,...)
+ [PrG,PoG,H] = grfun.plotpp(E,Est,Theta,...)
+ [PrG,PoG,H] = grfun.plotpp(E,Est,Stats,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{E} {[} struct {]} - Estimation input struct, see
+   \href{model/estimate}{\texttt{estimate}}, with prior function handles
+   from the \href{logdist/Contents}{logdist} package.
+ \item
+   \texttt{Est} {[} struct \textbar{} empty {]} - Output struct returned
+   by the \url{model/estimate} function; \texttt{Est} will be used to
+   plot the maximised posterior modes.
+ \item
+   \texttt{Theta} {[} numeric \textbar{} empty {]} - Array with the chain
+   of draws from the posterior simulator
+   \href{poster/arwm}{\texttt{arwm}}.
+ \item
+   \texttt{Stats} {[} struct \textbar{} empty {]} - Output struct
+   returned by the posterior simulator statistics function
+   \href{poster/stats}{\texttt{stats}}.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{PrG} {[} struct {]} - Struct with x- and y-axis coordinates to
+   plot the prior distribution for each parameter.
+ \item
+   \texttt{PoG} {[} struct {]} - Struct with x- and y-axis coordinates to
+   plot the posterior distribution for each parameter.
+ \item
+   \texttt{H} {[} struct {]} - Struct with handles to the graphics
+   objects plotted by \texttt{plotpp}; the struct has the following
+   fields with vectors of handles: \texttt{figure}, \texttt{axes},
+   \texttt{prior}, \texttt{poster}, \texttt{bounds}, \texttt{init},
+   \texttt{mode}, \texttt{title}.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'caption='} {[} \emph{empty} \textbar{} cellstr {]} -
+   User-supplied graph titles; if empty, default captions will be
+   automatically created.
+ \item
+   \texttt{'describe='} {[} \emph{`auto'} \textbar{} true \textbar{}
+   false {]} - Include information on prior distributions, starting
+   values, and maximised posterior modes in the graph titles;
+   \texttt{'auto'} means the descriptions will be shown only if
+   \texttt{'plotPrior='} is true.
+ \item
+   \texttt{'ksdensity='} {[} numeric \textbar{} \emph{empty} {]} - Number
+   of points over which the density will be calculated; if empty, default
+   number will be used depending on the backend function available.
+ \item
+   \texttt{'plotInit='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} \textbar{} cell {]} - Plot starting values (initial
+   consition used in posterior mode maximisation) as vertical stems.
+ \item
+   \texttt{'plotPrior='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} \textbar{} cell {]} - Plot prior distributions.
+ \item
+   \texttt{'plotMode='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} \textbar{} cell {]} - Plot maximised posterior modes as
+   vertical stems; the modes are taken from \texttt{Est} (and not from
+   \texttt{Stats} or \texttt{Theta}).
+ \item
+   \texttt{'plotPoster='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} \textbar{} cell {]} - Plot posterior distributions.
+ \item
+   \texttt{'plotBounds='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} \textbar{} cell {]} - Plot lower and/or upper bounds as
+   vertical lines; if \texttt{false}, the bounds will be plotted only
+   added if within the graph x-limits.
+ \item
+   \texttt{'sigma='} {[} numeric \textbar{} \emph{3} {]} - Number of std
+   devs from the mean or the mode (whichever covers a larger area) to the
+   left and to right that will be plotted unless running out of bounds.
+ \item
+   \texttt{'tight='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Make graph axes tight.
+ \item
+   \texttt{'title=}' {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   \textbar{} cell {]} - Display graph titles, and specify graphics
+   options for the titles.
+ \item
+   \texttt{'xLims='} {[} struct \textbar{} \emph{empty} {]} - Control the
+   x-limits of the prior and posterior graphs.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The options that control what will be plotted in the graphs (i.e.
+ \texttt{'plotInit='}, \texttt{'plotPrior='}, \texttt{'plotMode='},
+ \texttt{'plotPoster='}, \texttt{'plotBounds='},\texttt{'title='}) can be
+ set to one of the following three values:
+ 
+ \begin{itemize}
+ \item
+   \texttt{true},
+ \item
+   \texttt{false},
+ \item
+   a cell array with sub-options to control the appearance of the
+   respetive line; these will be passed into the respective plotting
+   function.
+ \end{itemize}
+ 
+ \paragraph{Example}
 
 

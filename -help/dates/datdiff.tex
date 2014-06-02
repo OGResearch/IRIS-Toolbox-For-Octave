@@ -3,51 +3,49 @@
     \filetitle{datdiff}{Number of periods between two dates with check for date frequency}{dates/datdiff}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-D = datdiff(D1,D2)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{D1}, \texttt{D2} {[} numeric {]} - IRIS dates of vectors of
-  IRIS dates.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{D} {[} numeric {]} - Number of periods between \texttt{D1} and
-  \texttt{D2}, positive for \texttt{D1} greater than \texttt{D2},
-  negative for \texttt{D1} smaller than \texttt{D2}, or NaN for dates of
-  different frequencies.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
-
-\begin{verbatim}
-d1 = mm(2010,12);
-d2 = mm(2011,12);
-
-datdiff(d1,d2)
-ans =
-   -12
-
-datdiff(d2,d1)
-ans =
-    12
-
-d3 = yy(2011);
-datdiff(d1,d3)
-ans =
-   NaN
-\end{verbatim}
+ 
+ \begin{verbatim}
+ D = datdiff(D1,D2)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D1}, \texttt{D2} {[} numeric {]} - IRIS dates of vectors of
+   IRIS dates.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{D} {[} numeric {]} - Number of periods between \texttt{D1} and
+   \texttt{D2}, positive for \texttt{D1} greater than \texttt{D2},
+   negative for \texttt{D1} smaller than \texttt{D2}, or NaN for dates of
+   different frequencies.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ \begin{verbatim}
+ d1 = mm(2010,12);
+ d2 = mm(2011,12);
+ 
+ datdiff(d1,d2)
+ ans =
+    -12
+ 
+ datdiff(d2,d1)
+ ans =
+     12
+ 
+ d3 = yy(2011);
+ datdiff(d1,d3)
+ ans =
+    NaN
+ \end{verbatim}
 
 

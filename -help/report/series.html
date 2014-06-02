@@ -114,7 +114,7 @@ code.LaTeX {
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
-<li><p><code>Cap</code> [ char ] - Caption used as a default legend entry in a graph, or in the leading column in a table.</p></li>
+<li><p><code>Cap</code> [ char | cellstr | <code>@auto</code> ] - Caption used as a default legend entry in a graph, or in the leading column in a table; <code>@auto</code> means that the first comment from the input tseries object, <code>X</code>, will be used for the title.</p></li>
 <li><p><code>X</code> [ tseries ] - Input data that will be added to the current table or graph.</p></li>
 </ul>
 <h4 id="options-for-both-table-series-and-graph-series">Options for both table series and graph series</h4>
@@ -140,7 +140,7 @@ code.LaTeX {
 </ul>
 <h4 id="options-for-graph-series">Options for graph series</h4>
 <ul>
-<li><p><code>'legend='</code> [ char | cellstr | <code>NaN</code> | <em><code>Inf</code></em> ] - Legend entries used instead of the series caption and marks; Inf means the caption and marks will be used to construct legend entries; NaN means the series will be exluded from legend.</p></li>
+<li><p><code>'legendEntry='</code> [ char | cellstr | <code>NaN</code> | <em><code>@auto</code></em> ] - Legend entries used instead of the series caption and marks; <code>@auto</code> means the caption and marks will be used to construct legend entries; <code>NaN</code> means the series will be exluded from legend.</p></li>
 <li><p><code>'plotFunc='</code> [ <code>@area</code> | <code>@bar</code> | <code>@barcon</code> | <em><code>@plot</code></em> | <code>@plotcmp</code> | <code>@plotpred</code> | <code>@stem</code> ] - (Inheritable from parent objects) Plot function that will be used to create graphs.</p></li>
 <li><p><code>'plotOptions='</code> [ cell | <em>empty</em> ] - Options passed as the last input arguments to the plot function.</p></li>
 <li><p><code>yAxis='</code> [ <em><code>'left'</code></em> | *<code>'right'</code> ] - Choose the LHS or RHS axis to plot this series; see also comments on LHS-RHS plots in Description.</p></li>
@@ -148,9 +148,9 @@ code.LaTeX {
 <h4 id="generic-options">Generic options</h4>
 <p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
 <h4 id="description">Description</h4>
-<h5 id="using-the-nan-inf-purezero-and-printedzero-options">Using the <code>'nan='</code>, <code>'inf='</code>, <code>'pureZero='</code> and <code>'printedZero='</code> options</h5>
+<h5 id="using-the-options-nan-inf-purezero-and-printedzero">Using the options <code>'nan='</code>, <code>'inf='</code>, <code>'pureZero='</code> and <code>'printedZero='</code></h5>
 <p>When specifying the LaTeX string for these options, bear in mind that the table entries are printed in the math model. This means that whenever you wish to print a normal text, you need to use an appropriate text formatting command allowed within a math mode. Most frequently, it would be <code>'\textnormal{...}'</code>.</p>
-<h5 id="using-the-plotfunc-option">Using the <code>'plotFunc='</code> option</h5>
+<h5 id="using-the-option-plotfunc">Using the option <code>'plotFunc='</code></h5>
 <p>When you set the option to <code>'plotpred'</code>, the input data <code>X</code> (second input argument) must be a multicolumn tseries object where the first column is the time series observations, and the second and further columns are its Kalman filter predictions as returned by the <code>filter</code> function.</p>
 <h5 id="conditional-formatting">Conditional formatting</h5>
 <p>The conditional format struct (or an array of structs) specified through the <code>'condFormat='</code> option must have two fields, <code>.test</code> and <code>.format</code>.</p>
@@ -191,5 +191,5 @@ cf(2).test = &#39;date &lt; qq(2010,1)&#39;;
 cf(2).format = &#39;\color{blue}&#39;;</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

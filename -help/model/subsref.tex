@@ -3,47 +3,46 @@
     \filetitle{subsref}{Subscripted reference for model and systemfit objects}{model/subsref}
 
 	\paragraph{Syntax for retrieving object with subset of
-parameterisations}
-
-\begin{verbatim}
-M(Inx)
-\end{verbatim}
-
-\paragraph{Syntax for retrieving parameters or steady-state
-values}
-
-\begin{verbatim}
-M.Name
-\end{verbatim}
-
-\paragraph{Syntax to retrieve a std deviation or a cross-correlation of
-shocks}
-
-\begin{verbatim}
-M.std_ShockName
-M.corr_ShockName1__ShockName2
-\end{verbatim}
-
-Note that a double underscore is used to separate the names of shocks in
-correlation coefficients.
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{M} {[} model \textbar{} systemfit {]} - Model or systemfit
-  object.
-\item
-  \texttt{Inx} {[} numeric \textbar{} logical {]} - Inx of requested
-  parameterisations.
-\item
-  \texttt{Name} - Name of a variable, shock, or parameter.
-\item
-  \texttt{ShockName1}, \texttt{ShockName2} - Name of a shock.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ parameterisations}
+ 
+ \begin{verbatim}
+ M(Inx)
+ \end{verbatim}
+ 
+ \paragraph{Syntax for retrieving parameters or steady-state values}
+ 
+ \begin{verbatim}
+ M.Name
+ \end{verbatim}
+ 
+ \paragraph{Syntax to retrieve a std deviation or a cross-correlation of
+ shocks}
+ 
+ \begin{verbatim}
+ M.std_ShockName
+ M.corr_ShockName1__ShockName2
+ \end{verbatim}
+ 
+ Note that a double underscore is used to separate the names of shocks in
+ correlation coefficients.
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model \textbar{} systemfit {]} - Model or systemfit
+   object.
+ \item
+   \texttt{Inx} {[} numeric \textbar{} logical {]} - Inx of requested
+   parameterisations.
+ \item
+   \texttt{Name} - Name of a variable, shock, or parameter.
+ \item
+   \texttt{ShockName1}, \texttt{ShockName2} - Name of a shock.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

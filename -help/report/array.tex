@@ -3,183 +3,183 @@
     \filetitle{array}{Insert array with user data}{report/array}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-P.array(Caption,Data)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{P} {[} struct {]} - Report object created by the
-  \href{report/new}{\texttt{report.new}} function.
-\item
-  \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
-  array with title and subtitle displayed at the top of the array; see
-  Description for splitting the title or subtitle into multiple lines.
-\item
-  \texttt{Data} {[} cell {]} - Cell array with input data; numeric and
-  text entries are allowed.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'arrayStretch='} {[} numeric \textbar{} \emph{\texttt{1.15}}
-  {]} - (Inherited) Stretch between lines in the array (in pts).
-\item
-  \texttt{'captionTypeface='} {[} cellstr \textbar{} char \textbar{}
-  \emph{\texttt{'\textbackslash{}large\textbackslash{}bfseries'}} {]} -
-  (Inherited) \LaTeX~format commands for typesetting the array caption;
-  the subcaption format can be entered as the second cell in a cell
-  array.
-\item
-  \texttt{'colWidth='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
-  (Inheritable from parent objects) Width, or a vector of widhts, of the
-  array columns in \texttt{em}units; \texttt{NaN} means the width of the
-  column will adjust automatically.
-\item
-  \texttt{'format='} {[} char \textbar{} \emph{\texttt{'\%.2f'}} {]} -
-  (Inherited) Numeric format string; see help on the built-in
-  \texttt{sprintf} function.
-\item
-  \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} -
-  (Inherited) Footnote at the array title; only shows if the title is
-  non-empty.
-\item
-  \texttt{'heading='} {[} char \textbar{} cellstr \textbar{}
-  \emph{empty} {]} - (Inherited) User-supplied heading, i.e.~an extra
-  row or rows at the top of the array. The heading can be either a
-  \LaTeX~code, or a cell array whose size is consistent with
-  \texttt{Data}. The heading is repeated at the top of each new page
-  when used with \texttt{'long=' true}.
-\item
-  \texttt{'inf='} {[} char \textbar{}
-  \emph{\texttt{'\$\textbackslash{}infty\$'}} {]} - (Inherited)
-  \LaTeX~string that will be used to typeset \texttt{Inf}s.
-\item
-  \texttt{'long='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-  {]} - (Inherited) If \texttt{true}, the array may stretch over more
-  than one page.
-\item
-  \texttt{'longFoot='} {[} char \textbar{} \emph{empty} {]} -
-  (Inherited) Footnote that appears at the bottom of the array (if it is
-  longer than one page) on each page except the last one; works only
-  with \texttt{'long='} \texttt{true}.
-\item
-  \texttt{'longFootPosition='} {[} \texttt{'centre'} \textbar{}
-  \emph{\texttt{'left'}} \textbar{} \texttt{'right'} {]} - (Inherited)
-  Horizontal alignment of the footnote in long arrays; works only with
-  \texttt{'long='} \texttt{true}.
-\item
-  \texttt{'nan='} {[} char \textbar{}
-  \emph{\texttt{'\$\textbackslash{}cdots\$'}} {]} - (Inherited)
-  \LaTeX~string that will be used to typeset \texttt{NaN}s.
-\item
-  \texttt{'pureZero='} {[} char \textbar{} \emph{empty} {]} -
-  (Inherited) \LaTeX~string that will be used to typeset pure zero
-  entries; if empty the zeros will be printed using the current numeric
-  format.
-\item
-  \texttt{'printedZero='} {[} char \textbar{} \emph{empty} {]} -
-  (Inherited) \LaTeX~string that will be used to typeset the entries
-  that would appear as zero under the current numeric format used; if
-  empty these numbers will be printed using the current numeric format.
-\item
-  \texttt{'separator='} {[} char \textbar{}
-  \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
-  (Inherited) \LaTeX\\commands that will be inserted after the array.
-\item
-  \texttt{'sideways='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - (Inherited) Print the array rotated by 90
-  degrees.
-\item
-  \texttt{'tabcolsep='} {[} \texttt{NaN} \textbar{} numeric {]} -
-  (Inherited) Space between columns in the array, measured in em units;
-  \texttt{NaN} means the \LaTeX~default.
-\item
-  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
-  inherited) \LaTeX~code specifying the typeface for the array as a
-  whole; it must use the declarative forms (such as
-  \texttt{\textbackslash{}itshape}) and not the command forms (such as
-  \texttt{\textbackslash{}textit\{...\}}).
-\end{itemize}
-
-\paragraph{Generic options}
-
-See help on \href{report/Contents}{generic options} in report objects.
-
-\paragraph{Description}
-
-The input cell array \texttt{Data} can contain either strings or numeric
-values, or horizontal rules. Numeric values are printed using the
-standard \texttt{sprintf} function and formatted using the
-\texttt{'format='} option. Horizontal rules must be entered as a string
-of five (or more) dashes, \texttt{'-{}-{}-{}-{}-'}, in the first cell of
-the respective row, with all other cells empty in that row. If you wish
-to include a \LaTeX~command or a piece of \LaTeX~code, you must enclose
-it in curly brackets.
-
-\subparagraph{Titles and subtitles}
-
-The input argument \texttt{Caption} can be either a text string, or a
-1-by-2 cell array of strings. In the latter case, the first cell will be
-printed as a title, and the second cell will be printed as a subtitle.
-
-To split the title or subtitle into multiple lines, use the following
-LaTeX commands wrapped in curly brackets:
-\texttt{\{\textbackslash{}\textbackslash{}\}} or
-\texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
-is the width of an extra vertical space (in points) added between the
-respective lines.
-
-\paragraph{Example}
-
-These commands create a table with two rows separated by a horizontal
-rule, and three columns in each of them. The middle columns will have
-Greek letters printed in \LaTeX~math mode.
-
-\begin{verbatim}
-x = report.new();
-
-A = { ...
-    'First row','{\$\textbackslash alpha\$}',10000; ...
-    '-----','',''; ...
-    'Second row','{\$\textbackslash beta\$}',20000; ...
-};
-
-x.array('My Table',A);
-
-x.publish('test1.pdf');
-
-open test1.pdf;
-\end{verbatim}
-
-\paragraph{Example}
-
-Use the option \texttt{'inputFormat='} to change the way the input
-strings are interpreted. Compare the two tables in the resulting PDF.
-
-\begin{verbatim}
-x = report.new();
-
-A = { ...
-    1,2,3; ...
-    '$\alpha$','b','c', ...
-    };
-
-x.array('Table with Plain Input Format (Default)',A, ...
-    'heading=',{'A','B','$\Gamma$';'-----','',''});
-
-x.array('Table with LaTeX Input Format',A, ...
-    'heading=',{'A','B','$\Gamma$';'-----','',''}, ...
-    'inputFormat=','latex');
-
-x.publish('test2.pdf');
-
-open test2.pdf;
-\end{verbatim}
+ 
+ \begin{verbatim}
+ P.array(Caption,Data)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} struct {]} - Report object created by the
+   \href{report/new}{\texttt{report.new}} function.
+ \item
+   \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
+   array with title and subtitle displayed at the top of the array; see
+   Description for splitting the title or subtitle into multiple lines.
+ \item
+   \texttt{Data} {[} cell {]} - Cell array with input data; numeric and
+   text entries are allowed.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'arrayStretch='} {[} numeric \textbar{} \emph{\texttt{1.15}}
+   {]} - (Inherited) Stretch between lines in the array (in pts).
+ \item
+   \texttt{'captionTypeface='} {[} cellstr \textbar{} char \textbar{}
+   \emph{\texttt{'\textbackslash{}large\textbackslash{}bfseries'}} {]} -
+   (Inherited) \LaTeX~format commands for typesetting the array caption;
+   the subcaption format can be entered as the second cell in a cell
+   array.
+ \item
+   \texttt{'colWidth='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
+   (Inheritable from parent objects) Width, or a vector of widhts, of the
+   array columns in \texttt{em}units; \texttt{NaN} means the width of the
+   column will adjust automatically.
+ \item
+   \texttt{'format='} {[} char \textbar{} \emph{\texttt{'\%.2f'}} {]} -
+   (Inherited) Numeric format string; see help on the built-in
+   \texttt{sprintf} function.
+ \item
+   \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} -
+   (Inherited) Footnote at the array title; only shows if the title is
+   non-empty.
+ \item
+   \texttt{'heading='} {[} char \textbar{} cellstr \textbar{}
+   \emph{empty} {]} - (Inherited) User-supplied heading, i.e.~an extra
+   row or rows at the top of the array. The heading can be either a
+   \LaTeX~code, or a cell array whose size is consistent with
+   \texttt{Data}. The heading is repeated at the top of each new page
+   when used with \texttt{'long=' true}.
+ \item
+   \texttt{'inf='} {[} char \textbar{}
+   \emph{\texttt{'\$\textbackslash{}infty\$'}} {]} - (Inherited)
+   \LaTeX~string that will be used to typeset \texttt{Inf}s.
+ \item
+   \texttt{'long='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - (Inherited) If \texttt{true}, the array may stretch over more
+   than one page.
+ \item
+   \texttt{'longFoot='} {[} char \textbar{} \emph{empty} {]} -
+   (Inherited) Footnote that appears at the bottom of the array (if it is
+   longer than one page) on each page except the last one; works only
+   with \texttt{'long='} \texttt{true}.
+ \item
+   \texttt{'longFootPosition='} {[} \texttt{'centre'} \textbar{}
+   \emph{\texttt{'left'}} \textbar{} \texttt{'right'} {]} - (Inherited)
+   Horizontal alignment of the footnote in long arrays; works only with
+   \texttt{'long='} \texttt{true}.
+ \item
+   \texttt{'nan='} {[} char \textbar{}
+   \emph{\texttt{'\$\textbackslash{}cdots\$'}} {]} - (Inherited)
+   \LaTeX~string that will be used to typeset \texttt{NaN}s.
+ \item
+   \texttt{'pureZero='} {[} char \textbar{} \emph{empty} {]} -
+   (Inherited) \LaTeX~string that will be used to typeset pure zero
+   entries; if empty the zeros will be printed using the current numeric
+   format.
+ \item
+   \texttt{'printedZero='} {[} char \textbar{} \emph{empty} {]} -
+   (Inherited) \LaTeX~string that will be used to typeset the entries
+   that would appear as zero under the current numeric format used; if
+   empty these numbers will be printed using the current numeric format.
+ \item
+   \texttt{'separator='} {[} char \textbar{}
+   \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
+   (Inherited) \LaTeX\\commands that will be inserted after the array.
+ \item
+   \texttt{'sideways='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - (Inherited) Print the array rotated by 90
+   degrees.
+ \item
+   \texttt{'tabcolsep='} {[} \texttt{NaN} \textbar{} numeric {]} -
+   (Inherited) Space between columns in the array, measured in em units;
+   \texttt{NaN} means the \LaTeX~default.
+ \item
+   \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
+   inherited) \LaTeX~code specifying the typeface for the array as a
+   whole; it must use the declarative forms (such as
+   \texttt{\textbackslash{}itshape}) and not the command forms (such as
+   \texttt{\textbackslash{}textit\{...\}}).
+ \end{itemize}
+ 
+ \paragraph{Generic options}
+ 
+ See help on \href{report/Contents}{generic options} in report objects.
+ 
+ \paragraph{Description}
+ 
+ The input cell array \texttt{Data} can contain either strings or numeric
+ values, or horizontal rules. Numeric values are printed using the
+ standard \texttt{sprintf} function and formatted using the
+ \texttt{'format='} option. Horizontal rules must be entered as a string
+ of five (or more) dashes, \texttt{'-{}-{}-{}-{}-'}, in the first cell of
+ the respective row, with all other cells empty in that row. If you wish
+ to include a \LaTeX~command or a piece of \LaTeX~code, you must enclose
+ it in curly brackets.
+ 
+ \subparagraph{Titles and subtitles}
+ 
+ The input argument \texttt{Caption} can be either a text string, or a
+ 1-by-2 cell array of strings. In the latter case, the first cell will be
+ printed as a title, and the second cell will be printed as a subtitle.
+ 
+ To split the title or subtitle into multiple lines, use the following
+ LaTeX commands wrapped in curly brackets:
+ \texttt{\{\textbackslash{}\textbackslash{}\}} or
+ \texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
+ is the width of an extra vertical space (in points) added between the
+ respective lines.
+ 
+ \paragraph{Example}
+ 
+ These commands create a table with two rows separated by a horizontal
+ rule, and three columns in each of them. The middle columns will have
+ Greek letters printed in \LaTeX~math mode.
+ 
+ \begin{verbatim}
+ x = report.new();
+ 
+ A = { ...
+     'First row','{\$\textbackslash alpha\$}',10000; ...
+     '-----','',''; ...
+     'Second row','{\$\textbackslash beta\$}',20000; ...
+ };
+ 
+ x.array('My Table',A);
+ 
+ x.publish('test1.pdf');
+ 
+ open test1.pdf;
+ \end{verbatim}
+ 
+ \paragraph{Example}
+ 
+ Use the option \texttt{'inputFormat='} to change the way the input
+ strings are interpreted. Compare the two tables in the resulting PDF.
+ 
+ \begin{verbatim}
+ x = report.new();
+ 
+ A = { ...
+     1,2,3; ...
+     '$\alpha$','b','c', ...
+     };
+ 
+ x.array('Table with Plain Input Format (Default)',A, ...
+     'heading=',{'A','B','$\Gamma$';'-----','',''});
+ 
+ x.array('Table with LaTeX Input Format',A, ...
+     'heading=',{'A','B','$\Gamma$';'-----','',''}, ...
+     'inputFormat=','latex');
+ 
+ x.publish('test2.pdf');
+ 
+ open test2.pdf;
+ \end{verbatim}
 
 

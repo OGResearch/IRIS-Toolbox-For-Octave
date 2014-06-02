@@ -3,147 +3,144 @@
     \filetitle{arwm}{Adaptive random-walk Metropolis posterior simulator}{poster/arwm}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{Pos} {[} poster {]} - Initialised posterior simulator object.
-\item
-  \texttt{NDraw} {[} numeric {]} - Length of the chain not including
-  burn-in.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{Theta} {[} numeric {]} - MCMC chain with individual parameters
-  in rows.
-\item
-  \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
-  to a constant) in each draw.
-\item
-  \texttt{AccRat} {[} numeric {]} - Vector of cumulative acceptance
-  ratios.
-\item
-  \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
-  each draw.
-\item
-  \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
-  the final covariance matrix of the random walk step is
-  Scale(end)\^{}2*FinalCov.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'adaptProposalCov='} {[} numeric \textbar{}
-  \emph{\texttt{0.5}} {]} - Speed of adaptation of the Cholesky factor
-  of the proposal covariance matrix towards the target acceptanace
-  ratio, \texttt{targetAR}; zero means no adaptation.
-\item
-  \texttt{'adaptScale='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
-  Speed of adaptation of the scale factor to deviations of acceptance
-  ratios from the target ratio, \texttt{targetAR}.
-\item
-  \texttt{'burnin='} {[} numeric \textbar{} \emph{\texttt{0.10}} {]} -
-  Number of burn-in draws entered either as a percentage of total draws
-  (between 0 and 1) or directly as a number (integer greater that one).
-  Burn-in draws will be added to the requested number of draws
-  \texttt{ndraw} and discarded after the posterior simulation.
-\item
-  \texttt{'estTime='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-  {]} - Display and update the estimated time to go in the command
-  window.
-\item
-  \texttt{'firstPrefetch='} {[} numeric \textbar{} \emph{\texttt{Inf}}
-  {]} - First draw where parallelised pre-fetching will be used;
-  \texttt{Inf} means no pre-fetching.
-\item
-  \texttt{'gamma='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} - The
-  rate of decay at which the scale and/or the proposal covariance will
-  be adapted with each new draw.
-\item
-  \texttt{'initScale='} {[} numeric \textbar{} \texttt{1/3} {]} -
-  Initial scale factor by which the initial proposal covariance will be
-  multiplied; the initial value will be adapted to achieve the target
-  acceptance ratio.
-\item
-  \texttt{'lastAdapt='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Last point at which the proposal covariance will be adapted;
-  \texttt{Inf} means adaptation will continue until the last draw. Can
-  also be entered as a percentage of total draws (a number strictly
-  between 0 and 1).
-\item
-  \texttt{'nStep='} {[} numeric \textbar{} *\texttt{1} {]} - Number of
-  pre-fetched steps computed in parallel; only works with
-  \texttt{firstPrefetch=} smaller than \texttt{NDraw}.
-\item
-  \texttt{'progress='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - Display progress bar in the command
-  window.
-\item
-  \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - File name
-  where results will be saved when the option \texttt{'saveEvery='} is
-  used.
-\item
-  \texttt{'saveEvery='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Every N draws will be saved to an HDF5 file, and removed from
-  workspace immediately; no values will be returned in the output
-  arguments \texttt{Theta}, \texttt{LogPost}, \texttt{AR},
-  \texttt{Scale}; the option \texttt{'saveAs='} must be used to specify
-  the file name; \texttt{Inf} means a normal run with no saving.
-\item
-  \texttt{'targetAR='} {[} numeric \textbar{} \emph{\texttt{0.234}} {]}
-  - Target acceptance ratio.
-\end{itemize}
-
-\paragraph{Description}
-
-The function \texttt{poster/arwm} returns the simulated chain of
-parameters and the corresponding value of the log posterior density. To
-obtain simulated sample statistics for each parameter (such as posterior
-mean, median, percentiles, etc.) use the function
-\href{poster/stats}{\texttt{poster/stats}} to process the simulated
-chain and calculate the statistics.
-
-\subparagraph{Parallelised ARWM}
-
-Set \texttt{'nStep='} greater than \texttt{1}, and
-\texttt{'firstPrefetch='} smaller than \texttt{NDraw} to start a
-pre-fetching parallelised algorithm (pre-fetched will be all draws
-starting from \texttt{'firstPrefetch='}); to that end, a pool of
-parallel workers (using e.g. \texttt{matlabpool} from the Parallel
-Computing Toolbox) must be opened before calling \texttt{arwm}.
-
-With pre-fetching, all possible paths \texttt{'nStep='} steps ahead
-(i.e.~all possible combinations of reject/accept) are pre-evaluated in
-parallel, and then the resulting path is selected. Adapation then occurs
-only every \texttt{'nStep='} steps, and hence the results will always
-somewhat differ from a serial run. Identical results can be obtained by
-turning down adaptation before pre-fetching starts, i.e.~by setting
-\texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
-obviously, by re-setting the random number generator).
-
-\paragraph{References}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo Simulation
-  by Pre-Fetching,'' CMU Statistics Dept. Tech. Report 802.
-\item
-  Strid, I., 2009. ``Efficient parallelisation of Metropolis-Hastings
-  algorithms using a prefetching approach,'' SSE/EFI Working Paper
-  Series in Economics and Finance No. 706.
-\end{enumerate}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Pos} {[} poster {]} - Initialised posterior simulator object.
+ \item
+   \texttt{NDraw} {[} numeric {]} - Length of the chain not including
+   burn-in.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Theta} {[} numeric {]} - MCMC chain with individual parameters
+   in rows.
+ \item
+   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
+   to a constant) in each draw.
+ \item
+   \texttt{AccRat} {[} numeric {]} - Vector of cumulative acceptance
+   ratios.
+ \item
+   \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+   each draw.
+ \item
+   \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
+   the final covariance matrix of the random walk step is
+   Scale(end)\^{}2*FinalCov.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'adaptProposalCov='} {[} numeric \textbar{}
+   \emph{\texttt{0.5}} {]} - Speed of adaptation of the Cholesky factor
+   of the proposal covariance matrix towards the target acceptanace
+   ratio, \texttt{targetAR}; zero means no adaptation.
+ \item
+   \texttt{'adaptScale='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+   Speed of adaptation of the scale factor to deviations of acceptance
+   ratios from the target ratio, \texttt{targetAR}.
+ \item
+   \texttt{'burnin='} {[} numeric \textbar{} \emph{\texttt{0.10}} {]} -
+   Number of burn-in draws entered either as a percentage of total draws
+   (between 0 and 1) or directly as a number (integer greater that one).
+   Burn-in draws will be added to the requested number of draws
+   \texttt{ndraw} and discarded after the posterior simulation.
+ \item
+   \texttt{'estTime='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Display and update the estimated time to go in the command
+   window.
+ \item
+   \texttt{'firstPrefetch='} {[} numeric \textbar{} \emph{\texttt{Inf}}
+   {]} - First draw where parallelised pre-fetching will be used;
+   \texttt{Inf} means no pre-fetching.
+ \item
+   \texttt{'gamma='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} - The
+   rate of decay at which the scale and/or the proposal covariance will
+   be adapted with each new draw.
+ \item
+   \texttt{'initScale='} {[} numeric \textbar{} \texttt{1/3} {]} -
+   Initial scale factor by which the initial proposal covariance will be
+   multiplied; the initial value will be adapted to achieve the target
+   acceptance ratio.
+ \item
+   \texttt{'lastAdapt='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Last point at which the proposal covariance will be adapted;
+   \texttt{Inf} means adaptation will continue until the last draw. Can
+   also be entered as a percentage of total draws (a number strictly
+   between 0 and 1).
+ \item
+   \texttt{'nStep='} {[} numeric \textbar{} *\texttt{1} {]} - Number of
+   pre-fetched steps computed in parallel; only works with
+   \texttt{firstPrefetch=} smaller than \texttt{NDraw}.
+ \item
+   \texttt{'progress='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Display progress bar in the command
+   window.
+ \item
+   \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - File name
+   where results will be saved when the option \texttt{'saveEvery='} is
+   used.
+ \item
+   \texttt{'saveEvery='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Every N draws will be saved to an HDF5 file, and removed from
+   workspace immediately; no values will be returned in the output
+   arguments \texttt{Theta}, \texttt{LogPost}, \texttt{AR},
+   \texttt{Scale}; the option \texttt{'saveAs='} must be used to specify
+   the file name; \texttt{Inf} means a normal run with no saving.
+ \item
+   \texttt{'targetAR='} {[} numeric \textbar{} \emph{\texttt{0.234}} {]}
+   - Target acceptance ratio.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The function \texttt{poster/arwm} returns the simulated chain of
+ parameters and the corresponding value of the log posterior density. To
+ obtain simulated sample statistics for each parameter (such as posterior
+ mean, median, percentiles, etc.) use the function \url{poster/stats} to
+ process the simulated chain and calculate the statistics.
+ 
+ \subparagraph{Parallelised ARWM}
+ 
+ Set \texttt{'nStep='} greater than \texttt{1}, and
+ \texttt{'firstPrefetch='} smaller than \texttt{NDraw} to start a
+ pre-fetching parallelised algorithm (pre-fetched will be all draws
+ starting from \texttt{'firstPrefetch='}); to that end, a pool of
+ parallel workers (using e.g. \texttt{matlabpool} from the Parallel
+ Computing Toolbox) must be opened before calling \texttt{arwm}.
+ 
+ With pre-fetching, all possible paths \texttt{'nStep='} steps ahead
+ (i.e.~all possible combinations of reject/accept) are pre-evaluated in
+ parallel, and then the resulting path is selected. Adapation then occurs
+ only every \texttt{'nStep='} steps, and hence the results will always
+ somewhat differ from a serial run. Identical results can be obtained by
+ turning down adaptation before pre-fetching starts, i.e.~by setting
+ \texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
+ obviously, by re-setting the random number generator).
+ 
+ \paragraph{References}
+ 
+ \paragraph{Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo
+ Simulation by Pre-Fetching,'' CMU Statistics Dept. Tech. Report 802.}
+ 
+ \paragraph{Strid, I., 2009. ``Efficient parallelisation of
+ Metropolis-Hastings algorithms using a prefetching approach,'' SSE/EFI
+ Working Paper Series in}
+ 
+ Economics and Finance No. 706.
+ 
+ \paragraph{Example}
 
 

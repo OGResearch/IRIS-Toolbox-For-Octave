@@ -3,35 +3,34 @@
     \filetitle{nnzendog}{Number of endogenised data points}{plan/nnzendog}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[N,NREAL,NIMAG] = nnzendog(P)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{P} {[} plan {]} - Simulation plan.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{N} {[} numeric {]} - Total number of endogenised data points;
-  each shock at each time counts as one data point.
-\item
-  \texttt{NREAL} {[} numeric {]} - Number of endogenised data points
-  with anticipation mode 1.
-\item
-  \texttt{NIMAG} {[} numeric {]} - Number of endogenised data points
-  with anticipation mode 1i.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [N,NREAL,NIMAG] = nnzendog(P)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} plan {]} - Simulation plan.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{N} {[} numeric {]} - Total number of endogenised data points;
+   each shock at each time counts as one data point.
+ \item
+   \texttt{NREAL} {[} numeric {]} - Number of endogenised data points
+   with anticipation mode 1.
+ \item
+   \texttt{NIMAG} {[} numeric {]} - Number of endogenised data points
+   with anticipation mode 1i.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

@@ -3,33 +3,32 @@
     \filetitle{irisrequired}{Throw error if the installed version of IRIS fails to comply with the required minimum}{config/irisrequired}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-irisrequired(V)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{V} {[} char {]} - Text string describing the oldest acceptable
-  distribution of IRIS.
-\end{itemize}
-
-\paragraph{Description}
-
-If the version of IRIS present on the computer does not comply with the
-minimum requirement \texttt{v}, an error is thrown.
-
-\paragraph{Example}
-
-All of the three calls are valid:
-
-\begin{verbatim}
-irisrequired(20111222);
-irisrequired('20111222');
-irisrequired 20111222;
-\end{verbatim}
+ 
+ \begin{verbatim}
+ irisrequired(V)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} char {]} - Text string describing the oldest acceptable
+   distribution of IRIS.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ If the version of IRIS present on the computer does not comply with the
+ minimum requirement \texttt{v}, an error is thrown.
+ 
+ \paragraph{Example}
+ 
+ All of the three calls are valid:
+ 
+ \begin{verbatim}
+ irisrequired(20111222);
+ irisrequired('20111222');
+ irisrequired 20111222;
+ \end{verbatim}
 
 

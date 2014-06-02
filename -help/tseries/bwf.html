@@ -135,14 +135,16 @@ code.LaTeX {
 </ul>
 <p><code>'infoSet='</code> [ <code>1</code> | <em><code>2</code></em> ] - Information set assumption used in the filter: <code>1</code> runs a one-sided filter, <code>2</code> runs a two-sided filter.</p>
 <ul>
-<li><p><code>'Lambda='</code> [ numeric | <em><code>(10 freq)^Order</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency.</p></li>
+<li><p><code>'Lambda='</code> [ numeric | <em><code>@auto</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency. See Description for default values.</p></li>
 <li><p><code>'level='</code> [ tseries ] - Time series with soft and hard tunes on the level of the trend.</p></li>
 <li><p><code>'change='</code> [ tseries ] - Time series with soft and hard tunes on the change in the trend.</p></li>
 <li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the data before filtering, de-logarithmise afterwards.</p></li>
 </ul>
 <h4 id="description">Description</h4>
+<h5 id="default-smoothing-parameters">Default smoothing parameters</h5>
+<p>If the user does not specify the smoothing parameter using the <code>'lambda='</code> option (or reassigns the default <code>@auto</code>), a default value is used. The default value is based on common practice and can be calculated using the date frequency of the input time series as <span class="LaTeX">$\lambda = (10 \cdot f)^n$</span>, where <span class="LaTeX">$f$</span> is the frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6, monthly=12), and <span class="LaTeX">$n$</span> is the order of the filter, determined by the input parameter <code>Order</code>.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

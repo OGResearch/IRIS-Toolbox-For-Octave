@@ -3,39 +3,38 @@
     \filetitle{litterman}{Litterman's prior dummy observations for BVARs}{BVAR/litterman}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-O = BVAR.litterman(Rho,Mu,Lmb)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{Rho} {[} numeric {]} - White-noise priors (\texttt{Rho = 0})
-  or random-walk priors (\texttt{Rho = 1}).
-\item
-  \texttt{Mu} {[} numeric {]} - Weight on the dummy observations.
-\item
-  \texttt{Lmb} {[} numeric {]} - Exponential increase in weight
-  depending on the lag; \texttt{Lmb = 0} means all lags are weighted
-  equally.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
-  \href{VAR/estimate}{\texttt{VAR/estimate}} function.
-\end{itemize}
-
-\paragraph{Description}
-
-See the section explaining the \href{BVAR/Contents}{weights on prior
-dummies}, i.e.~the input argument \texttt{Mu}.
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ O = BVAR.litterman(Rho,Mu,Lmb)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Rho} {[} numeric {]} - White-noise priors (\texttt{Rho = 0})
+   or random-walk priors (\texttt{Rho = 1}).
+ \item
+   \texttt{Mu} {[} numeric {]} - Weight on the dummy observations.
+ \item
+   \texttt{Lmb} {[} numeric {]} - Exponential increase in weight
+   depending on the lag; \texttt{Lmb = 0} means all lags are weighted
+   equally.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
+   \url{VAR/estimate} function.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ See the section explaining the \href{BVAR/Contents}{weights on prior
+ dummies}, i.e.~the input argument \texttt{Mu}.
+ 
+ \paragraph{Example}
 
 

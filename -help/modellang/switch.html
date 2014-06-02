@@ -142,7 +142,7 @@ code.LaTeX {
 
     !case &#39;Constant_money_growth&#39;
         m-m{-1} = m{-1}-m{-2} + epsilon;
-   
+
 !end</code></pre>
 <p>When reading the model file in, create a parameter database, include at least a field named <code>policy_regime</code> in it, and use the option <code>'assign='</code> to pass the database in. Note that you do not need to declare <code>policy_regime</code> as a parameter in the model file.</p>
 <pre><code>P = struct();
@@ -152,5 +152,5 @@ m = model(&#39;my.model&#39;,&#39;assign&#39;,P);</code></pre>
 <p>In this case, the managed exchange rate policy rule, <code>s = s{-1} + epsilon;</code> is read in and the rest of the <code>!switch</code> command is discarded. To use another branch of the <code>!switch</code> command you need to re-read the model file again with a different value assigned to the <code>policy_regime</code> field of the input database.</p>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

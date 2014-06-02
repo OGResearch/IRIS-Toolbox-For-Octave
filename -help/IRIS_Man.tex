@@ -13,7 +13,8 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.5\baselineskip}
 
-\definecolor{codecolor}{rgb}{0.30,0.30,0.30}
+\definecolor{codecolor}{rgb}{0.2,0.2,0.4}
+\definecolor{coderulecolor}{rgb}{0.5,0.5,0.6}
 \definecolor{sectioncolor}{rgb}{0.80,0,0}
 \definecolor{warningcolor}{rgb}{0.90,0,0}
 
@@ -91,14 +92,16 @@
 
 \renewcommand{\emph}[1]{\underline{#1}}
 
-\newcommand{\irisversion}{20140508}
+\newcommand{\irisversion}{20140602}
 \newcommand{\matlabversion}{R2010a}
 \newcommand{\tsum}{{\textstyle{\sum}\,}}
 \newcommand{\dollar}{\$}
 
 \RecustomVerbatimEnvironment
   {verbatim}{Verbatim}
-  {frame=leftline,framerule=0.2em,framesep=0.5em,formatcom=\color{codecolor},xleftmargin=1em}
+  {frame=leftline,framerule=0.4em,framesep=0.5em,
+   rulecolor=\color{coderulecolor},
+   formatcom=\color{codecolor},xleftmargin=1em}
 
 \setcounter{secnumdepth}{1}	
 	

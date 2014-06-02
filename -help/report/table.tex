@@ -3,194 +3,192 @@
     \filetitle{table}{Start new table}{report/table}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-P.table(Caption,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{P} {[} report {]} - Report object created by the
-  \href{report/new}{\texttt{report.new}} function.
-\item
-  \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
-  array with title and subtitle displayed at the top of the table; see
-  Description for splitting the title or subtitle into multiple lines.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'arrayStretch='} {[} numeric \textbar{} \emph{\texttt{1.15}}
-  {]} - (Inheritable from parent objects) Stretch between lines in the
-  table (in pts).
-\item
-  \texttt{'captionTypeface='} {[} cell \textbar{}
-  \emph{\texttt{'\textbackslash{}large\textbackslash{}bfseries'}} {]} -
-  LaTeX format commands for typesetting the table caption and
-  subcaption; you can use Inf for either to indicate the default format.
-\item
-  \texttt{'colFootnote='} {[} cell \textbar{} \emph{empty} {]} -
-  Footnotes for individual dates in the headings of the columns, of
-  column names in user-defined tables; the option must be a cell array
-  with date-footnote pairs.
-\item
-  \texttt{'colHighlight='} {[} numeric \textbar{} \emph{empty} {]} -
-  Dates for which the entire corresponding columns will be highlighted;
-  because of a bug in the LaTex package \texttt{colortbl}, this option
-  cannot be combined with the option \texttt{'rowHighlight='} in
-  \href{report/series}{\texttt{report/series}}.
-\item
-  \texttt{'colStruct='} {[} struct \textbar{} \emph{empty} {]} -
-  User-defined structure of the table columns; use of this option
-  disables \texttt{'range='}.
-\item
-  \texttt{'colWidth='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
-  (Inheritable from parent objects) Width, or a vector of widhts, of the
-  table columns in \texttt{em}units; \texttt{NaN} means the width of the
-  column will adjust automatically.
-\item
-  \texttt{'headlineJust='} {[} \emph{\texttt{'c'}} \textbar{}
-  \texttt{'l'} \textbar{} \texttt{'r'} {]} - Horizontal justification of
-  the headline entries (individual dates or user-defined text): centre,
-  left, right.
-\item
-  \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
-  \emph{\texttt{irisget('dateformat')}} {]} - (Inheritable from parent
-  objects) Format string for the date row.
-\item
-  \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
-  at the table title; only shows if the title is non-empty.
-\item
-  \texttt{'long='} {[} true \textbar{} \emph{\texttt{false}} {]} -
-  (Inheritable from parent objects) If true, the table may stretch over
-  more than one page.
-\item
-  \texttt{'longFoot='} {[} char \textbar{} \emph{empty} {]} -
-  (Inheritable from parent objects) Works only with
-  \texttt{'long='}=true: Footnote that appears at the bottom of the
-  table (if it is longer than one page) on each page except the last
-  one.
-\item
-  \texttt{'longFootPosition='} {[} \texttt{'centre'} \textbar{}
-  \emph{\texttt{'left'}} \textbar{} \texttt{'right'} {]} - (Inheritable
-  from parent objects) Works only with \texttt{'long='} \texttt{true}:
-  Horizontal alignment of the footnote in long tables.
-\item
-  \texttt{'range='} {[} numeric \textbar{} \emph{empty} {]} -
-  (Inheritable from parent objects) Date range or vector of dates that
-  will appear as columns of the table.
-\item
-  \texttt{'separator='} {[} char \textbar{}
-  \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
-  (Inheritable from parent objects) \LaTeX~commands that will be
-  inserted after the table.
-\item
-  \texttt{'sideways='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - (Inheritable from parent objects) Print
-  the table rotated by 90 degrees.
-\item
-  \texttt{'tabcolsep='} {[} \texttt{NaN} \textbar{} numeric {]} -
-  (Inheritable from parent objects) Space between columns in the table,
-  measured in em units; NaN means the \LaTeX~default.
-\item
-  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} -
-  \LaTeX~code specifying the typeface for the table as a whole; it must
-  use the declarative forms (such as \texttt{\textbackslash{}itshape})
-  and not the command forms (such as
-  \texttt{\textbackslash{}textit\{...\}}).
-\item
-  \texttt{'vline='} {[} numeric \textbar{} \emph{empty} {]} -
-  (Inheritable from parent objects) Vector of dates after which a
-  vertical line (divider) will be placed.
-\end{itemize}
-
-\paragraph{Generic options}
-
-See help on \href{report/Contents}{generic options} in report objects.
-
-\paragraph{Description}
-
-Tables are top-level report objects and cannot be nested within other
-report objects, except \href{report/align}{\texttt{align}}. Table
-objects can have the following children:
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{report/series}{\texttt{series}};
-\item
-  \href{report/subheading}{\texttt{subheading}}.
-\end{itemize}
-
-By default, the date row is printed as a leading row with dates formated
-using the option \texttt{'dateFormat='}. Alternatively, you can specify
-this option as a cell array of two strings. In that case, the dates will
-be printed in two rows. The first row will have a date string displayed
-and centred for every year, and the first cell of the
-\texttt{'dateFormat='} option will be used for formatting. The second
-row will have a date displayed for every period (i.e.~every column), and
-the second cell of the \texttt{'dateFormat='} option will be used for
-formatting.
-
-\subparagraph{User-defined structure of the table
-columns}
-
-Use the option \texttt{'colStruct='} to define your own table columns.
-This gives you more flexibility than when using the \texttt{'range='}
-option in defining the content of the table.
-
-The option \texttt{'colStruct='} must be a 1-by-N struct, where N is the
-number of columns you want in the table, with the following fields:
-
-\begin{itemize}
-\item
-  \texttt{'name='} - specifies the descriptor of the column that will be
-  displayed in the headline;
-\item
-  \texttt{'func='} - specifies a function that will be applied to the
-  input series; if \texttt{'func='} is empty, no function will be
-  applied. The function must evaluate to a tseries or a numeric scalar.
-\item
-  \texttt{'date='} - specifies the date at which a number will be taken
-  from the series unless the function \texttt{'func='} applied before
-  resulted in a numeric scalar.
-\end{itemize}
-
-\subparagraph{Titles and subtitles}
-
-The input argument \texttt{Caption} can be either a text string, or a
-1-by-2 cell array of strings. In the latter case, the first cell will be
-printed as a title, and the second cell will be printed as a subtitle.
-
-To split the title or subtitle into multiple lines, use the following
-LaTeX commands wrapped in curly brackets:
-\texttt{\{\textbackslash{}\textbackslash{}\}} or
-\texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
-is the width of an extra vertical space (in points) added between the
-respective lines.
-
-\paragraph{Example}
-
-Compare the headers of these two tables:
-
-\begin{verbatim}
-x = report.new();
-
-x.table('First table', ...
-    'range',qq(2010,1):qq(2012,4), ...
-    'dateformat','YYYYFP');
-% You can add series or subheadings here.
-
-x.table('Second table', ...
-    'range,qq(2010,1):qq(2012,4), ...
-    'dateformat',{'YYYY','FP'});
-% You can add series or subheadings here.
-
-x.publish('myreport.pdf');
-\end{verbatim}
+ 
+ \begin{verbatim}
+ P.table(Caption,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{P} {[} report {]} - Report object created by the
+   \href{report/new}{\texttt{report.new}} function.
+ \item
+   \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
+   array with title and subtitle displayed at the top of the table; see
+   Description for splitting the title or subtitle into multiple lines.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'arrayStretch='} {[} numeric \textbar{} \emph{\texttt{1.15}}
+   {]} - (Inheritable from parent objects) Stretch between lines in the
+   table (in pts).
+ \item
+   \texttt{'captionTypeface='} {[} cell \textbar{}
+   \emph{\texttt{'\textbackslash{}large\textbackslash{}bfseries'}} {]} -
+   LaTeX format commands for typesetting the table caption and
+   subcaption; you can use Inf for either to indicate the default format.
+ \item
+   \texttt{'colFootnote='} {[} cell \textbar{} \emph{empty} {]} -
+   Footnotes for individual dates in the headings of the columns, of
+   column names in user-defined tables; the option must be a cell array
+   with date-footnote pairs.
+ \item
+   \texttt{'colHighlight='} {[} numeric \textbar{} \emph{empty} {]} -
+   Dates for which the entire corresponding columns will be highlighted;
+   because of a bug in the LaTex package \texttt{colortbl}, this option
+   cannot be combined with the option \texttt{'rowHighlight='} in
+   \url{report/series}.
+ \item
+   \texttt{'colStruct='} {[} struct \textbar{} \emph{empty} {]} -
+   User-defined structure of the table columns; use of this option
+   disables \texttt{'range='}.
+ \item
+   \texttt{'colWidth='} {[} numeric \textbar{} \emph{\texttt{NaN}} {]} -
+   (Inheritable from parent objects) Width, or a vector of widhts, of the
+   table columns in \texttt{em}units; \texttt{NaN} means the width of the
+   column will adjust automatically.
+ \item
+   \texttt{'headlineJust='} {[} \emph{\texttt{'c'}} \textbar{}
+   \texttt{'l'} \textbar{} \texttt{'r'} {]} - Horizontal justification of
+   the headline entries (individual dates or user-defined text): centre,
+   left, right.
+ \item
+   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+   \emph{\texttt{irisget('dateformat')}} {]} - (Inheritable from parent
+   objects) Format string for the date row.
+ \item
+   \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
+   at the table title; only shows if the title is non-empty.
+ \item
+   \texttt{'long='} {[} true \textbar{} \emph{\texttt{false}} {]} -
+   (Inheritable from parent objects) If true, the table may stretch over
+   more than one page.
+ \item
+   \texttt{'longFoot='} {[} char \textbar{} \emph{empty} {]} -
+   (Inheritable from parent objects) Works only with
+   \texttt{'long='}=true: Footnote that appears at the bottom of the
+   table (if it is longer than one page) on each page except the last
+   one.
+ \item
+   \texttt{'longFootPosition='} {[} \texttt{'centre'} \textbar{}
+   \emph{\texttt{'left'}} \textbar{} \texttt{'right'} {]} - (Inheritable
+   from parent objects) Works only with \texttt{'long='} \texttt{true}:
+   Horizontal alignment of the footnote in long tables.
+ \item
+   \texttt{'range='} {[} numeric \textbar{} \emph{empty} {]} -
+   (Inheritable from parent objects) Date range or vector of dates that
+   will appear as columns of the table.
+ \item
+   \texttt{'separator='} {[} char \textbar{}
+   \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
+   (Inheritable from parent objects) \LaTeX~commands that will be
+   inserted after the table.
+ \item
+   \texttt{'sideways='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - (Inheritable from parent objects) Print
+   the table rotated by 90 degrees.
+ \item
+   \texttt{'tabcolsep='} {[} \texttt{NaN} \textbar{} numeric {]} -
+   (Inheritable from parent objects) Space between columns in the table,
+   measured in em units; NaN means the \LaTeX~default.
+ \item
+   \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} -
+   \LaTeX~code specifying the typeface for the table as a whole; it must
+   use the declarative forms (such as \texttt{\textbackslash{}itshape})
+   and not the command forms (such as
+   \texttt{\textbackslash{}textit\{...\}}).
+ \item
+   \texttt{'vline='} {[} numeric \textbar{} \emph{empty} {]} -
+   (Inheritable from parent objects) Vector of dates after which a
+   vertical line (divider) will be placed.
+ \end{itemize}
+ 
+ \paragraph{Generic options}
+ 
+ See help on \href{report/Contents}{generic options} in report objects.
+ 
+ \paragraph{Description}
+ 
+ Tables are top-level report objects and cannot be nested within other
+ report objects, except \href{report/align}{\texttt{align}}. Table
+ objects can have the following children:
+ 
+ \begin{itemize}
+ \item
+   \href{report/series}{\texttt{series}};
+ \item
+   \href{report/subheading}{\texttt{subheading}}.
+ \end{itemize}
+ 
+ By default, the date row is printed as a leading row with dates formated
+ using the option \texttt{'dateFormat='}. Alternatively, you can specify
+ this option as a cell array of two strings. In that case, the dates will
+ be printed in two rows. The first row will have a date string displayed
+ and centred for every year, and the first cell of the
+ \texttt{'dateFormat='} option will be used for formatting. The second
+ row will have a date displayed for every period (i.e.~every column), and
+ the second cell of the \texttt{'dateFormat='} option will be used for
+ formatting.
+ 
+ \subparagraph{User-defined structure of the table columns}
+ 
+ Use the option \texttt{'colStruct='} to define your own table columns.
+ This gives you more flexibility than when using the \texttt{'range='}
+ option in defining the content of the table.
+ 
+ The option \texttt{'colStruct='} must be a 1-by-N struct, where N is the
+ number of columns you want in the table, with the following fields:
+ 
+ \begin{itemize}
+ \item
+   \texttt{'name='} - specifies the descriptor of the column that will be
+   displayed in the headline;
+ \item
+   \texttt{'func='} - specifies a function that will be applied to the
+   input series; if \texttt{'func='} is empty, no function will be
+   applied. The function must evaluate to a tseries or a numeric scalar.
+ \item
+   \texttt{'date='} - specifies the date at which a number will be taken
+   from the series unless the function \texttt{'func='} applied before
+   resulted in a numeric scalar.
+ \end{itemize}
+ 
+ \subparagraph{Titles and subtitles}
+ 
+ The input argument \texttt{Caption} can be either a text string, or a
+ 1-by-2 cell array of strings. In the latter case, the first cell will be
+ printed as a title, and the second cell will be printed as a subtitle.
+ 
+ To split the title or subtitle into multiple lines, use the following
+ LaTeX commands wrapped in curly brackets:
+ \texttt{\{\textbackslash{}\textbackslash{}\}} or
+ \texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
+ is the width of an extra vertical space (in points) added between the
+ respective lines.
+ 
+ \paragraph{Example}
+ 
+ Compare the headers of these two tables:
+ 
+ \begin{verbatim}
+ x = report.new();
+ 
+ x.table('First table', ...
+     'range',qq(2010,1):qq(2012,4), ...
+     'dateformat','YYYYFP');
+ % You can add series or subheadings here.
+ 
+ x.table('Second table', ...
+     'range,qq(2010,1):qq(2012,4), ...
+     'dateformat',{'YYYY','FP'});
+ % You can add series or subheadings here.
+ 
+ x.publish('myreport.pdf');
+ \end{verbatim}
 
 

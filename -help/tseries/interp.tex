@@ -3,41 +3,39 @@
     \filetitle{interp}{Interpolate missing observations}{tseries/interp}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-X = interp(X,Range,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{X} {[} tseries {]} - Input time series.
-\item
-  \texttt{Range} {[} tseries {]} - Date range on which any missing,
-  i.e.~NaN, observations will be interpolated.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{x} {[} tseries {]} - Tseries object with the missing
-  observations interpolated.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{'method='} {[} char \textbar{} \emph{\texttt{'cubic'}} {]} -
-  Any valid method accepted by the built-in \texttt{interp1} function.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ X = interp(X,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input time series.
+ \item
+   \texttt{Range} {[} tseries {]} - Date range on which any missing,
+   i.e.~NaN, observations will be interpolated.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Tseries object with the missing
+   observations interpolated.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'method='} {[} char \textbar{} \emph{\texttt{'cubic'}} {]} -
+   Any valid method accepted by the built-in \texttt{interp1} function.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

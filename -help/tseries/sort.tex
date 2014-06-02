@@ -3,36 +3,36 @@
     \filetitle{sort}{Sort tseries columns by specified criterion}{tseries/sort}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[Y,INDEX] = sort(X,CRIT)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
-  be sorted in order determined by the criterion \texttt{crit}.
-\item
-  \texttt{CRIT} {[} `sumsq' \textbar{} `sumabs' \textbar{} `max'
-  \textbar{} `maxabs' \textbar{} `min' \textbar{} `minabs' {]} -
-  Criterion used to sort the input tseries object columns.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{Y} {[} tseries {]} - Output tseries object with columns sorted
-  in order determined by the input criterion, \texttt{CRIT}.
-\item
-  \texttt{INDEX} {[} numeric {]} - Vector of indices,
-  \texttt{y = x\{:,index\}}.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [Y,INDEX] = sort(X,CRIT)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+   be sorted in order determined by the criterion \texttt{crit}.
+ \item
+   \texttt{CRIT} {[} `sumsq' \textbar{} `sumabs' \textbar{} `max'
+   \textbar{} `maxabs' \textbar{} `min' \textbar{} `minabs' {]} -
+   Criterion used to sort the input tseries object columns.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Y} {[} tseries {]} - Output tseries object with columns sorted
+   in order determined by the input criterion, \texttt{CRIT}.
+ \item
+   \texttt{INDEX} {[} numeric {]} - Vector of indices,
+   \texttt{y = x\{:,index\}}.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

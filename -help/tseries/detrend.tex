@@ -3,37 +3,36 @@
     \filetitle{detrend}{Remove a linear time trend}{tseries/detrend}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-X = detrend(X)
-X = detrend(X,Range)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{X} {[} tseries {]} - Input time series.
-\item
-  \texttt{Range} {[} numeric \textbar{} \texttt{Inf} {]} - The date
-  range on which the trend will be computed; \texttt{Inf} means the
-  entire range available will be used.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{x} {[} tseries {]} - Output time series with a trend removed.
-\end{itemize}
-
-\paragraph{Options}
-
-See \href{tseries/trend}{\texttt{tseries/trend}} for options available.
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ X = detrend(X)
+ X = detrend(X,Range)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input time series.
+ \item
+   \texttt{Range} {[} numeric \textbar{} \texttt{Inf} {]} - The date
+   range on which the trend will be computed; \texttt{Inf} means the
+   entire range available will be used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Output time series with a trend removed.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ See \url{tseries/trend} for options available.
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

@@ -110,18 +110,18 @@ code.LaTeX {
 <div class="headline">Query tseries object property</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>Value = get(x,Query)
-[Value,Value,...] = get(x,Query,Query,...)</code></pre>
+<pre><code>Ans = get(X,Query)
+[Ans,Ans,...] = get(X,Query,Query,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>x</code> [ model ] - Tseries object.</p></li>
-<li><p><code>Query</code> [ char ] - Name of the queried property.</p></li>
+<li><p><code>X</code> [ model ] - Tseries object.</p></li>
+<li><p><code>Query</code> [ char ] - Query to the tseries object.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>Value</code> [ ... ] - Value of the queried property.</li>
+<li><code>Ans</code> [ ... ] - Answer to the query.</li>
 </ul>
-<h4 id="valid-queries-on-tseries-objects">Valid queries on tseries objects</h4>
+<h4 id="valid-queries-to-tseries-objects">Valid queries to tseries objects</h4>
 <ul>
 <li><p><code>'end='</code> Returns [ numeric ] the date of the last observation.</p></li>
 <li><p><code>'freq='</code> Returns [ numeric ] the frequency (periodicity) of the time series.</p></li>
@@ -134,5 +134,5 @@ code.LaTeX {
 <h4 id="description">Description</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

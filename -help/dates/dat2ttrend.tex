@@ -3,51 +3,56 @@
     \filetitle{dat2ttrend}{Construct linear time trend from date range}{dates/dat2ttrend}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[TTrend,BaseDate] = dat2ttrend(Range)
-[TTrend,BaseDate] = dat2ttrend(Range,Obj)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{Range} {[} numeric {]} - Date range from which an integer
-  linear time trend will be constructed.
-\item
-  \texttt{Obj} {[} model \textbar{} VAR {]} - Model or VAR object whose
-  base year will be used to construct the time trend; if omitted, the
-  base year from \texttt{irisget('baseYear')} will be used.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{TTrend} {[} numeric {]} - Integer linear time trend, unique to
-  the input date range \texttt{Range} and the base year.
-\item
-  \texttt{BaseDate} {[} numeric {]} - Base date used to normalize the
-  input date range; see Description.
-\end{itemize}
-
-\paragraph{Description}
-
-For regular date frequencies, the time trend is constructed the
-following way. First, a base date is created first period in the base
-year of a given frequency. For instance, for a quarterly input range,
-\texttt{BaseDate = qq(baseYear,1)}, for a monthly input range,
-\texttt{BaseDate == mm(baseYear,1)}, etc. Then, the output trend is an
-integer vector normalized to the base date,
-
-\begin{verbatim}
-TTrend = floor(Range - BaseDate);
-\end{verbatim}
-
-For indeterminate date frequencies, \texttt{BaseDate = 0}, and the
-output time trend is simply the input date range.
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [TTrend,BaseDate] = dat2ttrend(Range)
+ [TTrend,BaseDate] = dat2ttrend(Range,BaseYear)
+ [TTrend,BaseDate] = dat2ttrend(Range,Obj)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Range} {[} numeric {]} - Date range from which an integer
+   linear time trend will be constructed.
+ \item
+   \texttt{BaseYear} {[} model \textbar{} VAR {]} - Base year that will
+   be used to construct the time trend.
+ \item
+   \texttt{Obj} {[} model \textbar{} VAR {]} - Model or VAR object whose
+   base year will be used to construct the time trend; if both
+   \texttt{BaseYear} and \texttt{Obj} are omitted, the base year from
+   \texttt{irisget('baseYear')} will be used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{TTrend} {[} numeric {]} - Integer linear time trend, unique to
+   the input date range \texttt{Range} and the base year.
+ \item
+   \texttt{BaseDate} {[} numeric {]} - Base date used to normalize the
+   input date range; see Description.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ For regular date frequencies, the time trend is constructed the
+ following way. First, a base date is created first period in the base
+ year of a given frequency. For instance, for a quarterly input range,
+ \texttt{BaseDate = qq(baseYear,1)}, for a monthly input range,
+ \texttt{BaseDate == mm(baseYear,1)}, etc. Then, the output trend is an
+ integer vector normalized to the base date,
+ 
+ \begin{verbatim}
+ TTrend = floor(Range - BaseDate);
+ \end{verbatim}
+ 
+ For indeterminate date frequencies, \texttt{BaseDate = 0}, and the
+ output time trend is simply the input date range.
+ 
+ \paragraph{Example}
 
 

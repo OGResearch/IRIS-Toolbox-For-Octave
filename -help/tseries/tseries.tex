@@ -3,42 +3,41 @@
     \filetitle{tseries}{Create new time series (tseries) object}{tseries/tseries}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-X = tseries()
-X = tseries(Dates,Values)
-X = tseries(Dates,Values,Comment)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{Dates} {[} numeric {]} - Dates for which observations will be
-  supplied; \texttt{dates} do not have to be sorted in ascending order.
-  If \texttt{dates} is scalar and \texttt{values} have multiple rows,
-  then the date in \texttt{dates} is interpreted as a startdate for the
-  time series.
-\item
-  \texttt{Values} {[} numeric \textbar{} function\_handle {]} -
-  Numerical values (observations) arranged columnwise, or a function
-  that will be used to create an N-by-1 array of values, where N is the
-  number of \texttt{dates}.
-\item
-  \texttt{Comment} {[} char \textbar{} cellstr {]} - Comment or comments
-  attached to each column of observations.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{X} {[} tseries {]} - New tseries object.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ X = tseries()
+ X = tseries(Dates,Values)
+ X = tseries(Dates,Values,Comment)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Dates} {[} numeric {]} - Dates for which observations will be
+   supplied; \texttt{dates} do not have to be sorted in ascending order.
+   If \texttt{dates} is scalar and \texttt{values} have multiple rows,
+   then the date in \texttt{dates} is interpreted as a startdate for the
+   time series.
+ \item
+   \texttt{Values} {[} numeric \textbar{} function\_handle {]} -
+   Numerical values (observations) arranged columnwise, or a function
+   that will be used to create an N-by-1 array of values, where N is the
+   number of \texttt{dates}.
+ \item
+   \texttt{Comment} {[} char \textbar{} cellstr {]} - Comment or comments
+   attached to each column of observations.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - New tseries object.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

@@ -3,75 +3,75 @@
     \filetitle{xsf}{Power spectrum and spectral density of model variables}{model/xsf}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[S,D,List] = xsf(M,Freq,...)
-[S,D,List,Freq] = xsf(M,NFreq,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{M} {[} model {]} - Model object.
-\item
-  \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
-  XSFs will be evaluated.
-\item
-  \texttt{NFreq} {[} numeric {]} - Total number of requested
-  frequencies; the frequencies will be evenly spread between 0 and
-  \texttt{pi}.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{S} {[} namedmat \textbar{} numeric {]} - Power spectrum
-  matrices.
-\item
-  \texttt{D} {[} namedmat \textbar{} numeric {]} - Spectral density
-  matrices.
-\item
-  \texttt{List} {[} cellstr {]} - List of variable in order of
-  appearance in rows and columns of \texttt{S} and \texttt{D}.
-\item
-  \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
-  XSFs has been evaluated.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'applyTo='} {[} cellstr \textbar{} char \textbar{}
-  \emph{\texttt{Inf}} {]} - List of variables to which the option
-  \texttt{'filter='} will be applied; \texttt{Inf} means all variables.
-\item
-  \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
-  filter that is applied to variables specified by `applyto'.
-\item
-  \texttt{'nFreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
-  Number of equally spaced frequencies over which the `filter' is
-  numerically integrated.
-\item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrices \texttt{S} and \texttt{F}
-  will be either namedmat objects or plain numeric arrays; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always a namedmat
-  object.
-\item
-  \texttt{'progress='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - Display progress bar on in the command
-  window.
-\item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return XSF for selected variables only; \texttt{Inf} means all
-  variables.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [S,D,List] = xsf(M,Freq,...)
+ [S,D,List,Freq] = xsf(M,NFreq,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object.
+ \item
+   \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
+   XSFs will be evaluated.
+ \item
+   \texttt{NFreq} {[} numeric {]} - Total number of requested
+   frequencies; the frequencies will be evenly spread between 0 and
+   \texttt{pi}.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{S} {[} namedmat \textbar{} numeric {]} - Power spectrum
+   matrices.
+ \item
+   \texttt{D} {[} namedmat \textbar{} numeric {]} - Spectral density
+   matrices.
+ \item
+   \texttt{List} {[} cellstr {]} - List of variable in order of
+   appearance in rows and columns of \texttt{S} and \texttt{D}.
+ \item
+   \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
+   XSFs has been evaluated.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'applyTo='} {[} cellstr \textbar{} char \textbar{}
+   \emph{\texttt{Inf}} {]} - List of variables to which the option
+   \texttt{'filter='} will be applied; \texttt{Inf} means all variables.
+ \item
+   \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
+   filter that is applied to variables specified by `applyto'.
+ \item
+   \texttt{'nFreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
+   Number of equally spaced frequencies over which the `filter' is
+   numerically integrated.
+ \item
+   \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+   \texttt{'numeric'} {]} - Output matrices \texttt{S} and \texttt{F}
+   will be either namedmat objects or plain numeric arrays; if the option
+   \texttt{'select='} is used, \texttt{'output='} is always a namedmat
+   object.
+ \item
+   \texttt{'progress='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Display progress bar on in the command
+   window.
+ \item
+   \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
+   Return XSF for selected variables only; \texttt{Inf} means all
+   variables.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

@@ -3,62 +3,62 @@
     \filetitle{vline}{Add vertical line with text caption at the specified position}{grfun/vline}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[Ln,Cp] = grfun.vline(Xpos,...)
-[Ln,Cp] = grfun.vline(H,XPos,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{'XPos}' {[} numeric {]} - Horizontal position or vector of
-  positions at which the vertical line or lines will be drawn.
-\item
-  \texttt{H} {[} numeric {]} - Handle to an axes object (graph) or to a
-  figure window in which the the line will be added; if not specified
-  the line will be added to the current axes.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{Ln} {[} numeric {]} - Handle to the vline(s) plotted (line
-  objects).
-\item
-  \texttt{Cp} {[} numeric {]} - Handle to the caption(s) created (text
-  objects).
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'caption='} {[} char {]} - Annotate vline with a text string.
-\item
-  \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
-  \texttt{false} {]} - Exclude vline from legend.
-\item
-  \texttt{'hPosition='} {[} \texttt{'center'} \textbar{} \texttt{'left'}
-  \textbar{} \emph{\texttt{'right'}} {]} - Horizontal position of the
-  caption.
-\item
-  \texttt{'vPosition='} {[} \texttt{'bottom'} \textbar{}
-  \texttt{'middle'} \textbar{} \emph{\texttt{'top'}} \textbar{} numeric
-  {]} - Vertical position of the caption.
-\item
-  \texttt{'timePosition='} {[} \texttt{'after'} \textbar{}
-  \texttt{'before'} \textbar{} \emph{\texttt{'middle'}} {]} - Placement
-  of the vertical line on the time axis: in the middle of the specified
-  period, immediately before it (between the specified period and the
-  previous one), or immediately after it (between the specified period
-  and the next one).
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [Ln,Cp] = grfun.vline(Xpos,...)
+ [Ln,Cp] = grfun.vline(Ax,XPos,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'XPos}' {[} numeric {]} - Horizontal position or vector of
+   positions at which the vertical line or lines will be drawn.
+ \item
+   \texttt{Ax} {[} numeric {]} - Handle to an axes object (graph) or to a
+   figure window in which the the line will be added; if not specified
+   the line will be added to the current axes.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Ln} {[} numeric {]} - Handle to the vline(s) plotted (line
+   objects).
+ \item
+   \texttt{Cp} {[} numeric {]} - Handle to the caption(s) created (text
+   objects).
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'caption='} {[} char {]} - Annotate vline with a text string.
+ \item
+   \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Exclude vline from legend.
+ \item
+   \texttt{'hPosition='} {[} \texttt{'center'} \textbar{} \texttt{'left'}
+   \textbar{} \emph{\texttt{'right'}} {]} - Horizontal position of the
+   caption.
+ \item
+   \texttt{'vPosition='} {[} \texttt{'bottom'} \textbar{}
+   \texttt{'middle'} \textbar{} \emph{\texttt{'top'}} \textbar{} numeric
+   {]} - Vertical position of the caption.
+ \item
+   \texttt{'timePosition='} {[} \texttt{'after'} \textbar{}
+   \texttt{'before'} \textbar{} \emph{\texttt{'middle'}} {]} - Placement
+   of the vertical line on the time axis: in the middle of the specified
+   period, immediately before it (between the specified period and the
+   previous one), or immediately after it (between the specified period
+   and the next one).
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

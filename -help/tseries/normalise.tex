@@ -3,45 +3,43 @@
     \filetitle{normalise}{Normalise (or rebase) data to particular date}{tseries/normalise}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-X = normalise(X)
-X = normalise(X,NormDate,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{x} {[} tseries {]} - Input time series that will be
-  normalised.
-\item
-  \texttt{NormDate} {[} numeric \textbar{} \texttt{'start'} \textbar{}
-  \texttt{'end'} \textbar{} \texttt{'nanStart'} \textbar{}
-  \texttt{'nanEnd'} {]} - Date relative to which the input data will be
-  normalised; if not specified, \texttt{'nanStart'} (the first date for
-  which all columns have an observation) will be used.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{X} {[} tseries {]} - Normalised time series.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{'mode='} {[} \texttt{'add'} \textbar{} \emph{\texttt{'mult'}}
-  {]} - Additive or multiplicative normalisation.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ X = normalise(X)
+ X = normalise(X,NormDate,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{x} {[} tseries {]} - Input time series that will be
+   normalised.
+ \item
+   \texttt{NormDate} {[} numeric \textbar{} \texttt{'start'} \textbar{}
+   \texttt{'end'} \textbar{} \texttt{'nanStart'} \textbar{}
+   \texttt{'nanEnd'} {]} - Date relative to which the input data will be
+   normalised; if not specified, \texttt{'nanStart'} (the first date for
+   which all columns have an observation) will be used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Normalised time series.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'mode='} {[} \texttt{'add'} \textbar{} \emph{\texttt{'mult'}}
+   {]} - Additive or multiplicative normalisation.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

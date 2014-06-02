@@ -2,53 +2,50 @@
 
     \filetitle{subsasgn}{Subscripted assignment for VAR objects}{VAR/subsasgn}
 
-	\paragraph{Syntax to assign parameterisations from other VAR
-object}
-
-\begin{verbatim}
-V(inx) = W
-\end{verbatim}
-
-\paragraph{Syntax to delete specified
-parameterisations}
-
-\begin{verbatim}
-V(Inx) = []
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{V} {[} VAR {]} - VAR object.
-\item
-  \texttt{inx} {[} numeric {]} - Index of parameterisations that will be
-  assigned or deleted.
-\item
-  \texttt{W} {[} VAR {]} - VAR object compatible with \texttt{V} whose
-  parameterisations will be assigned (copied) into \texttt{V}.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \texttt{V} {[} model {]} - VAR object with newly assigned or deleted
-  parameterisations,
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
-
-Expand the number of parameterisations in a VAR object that has
-initially just one parameterisation:
-
-\begin{verbatim}
-V(1:10) = V;
-\end{verbatim}
-
-The parameterisation is simply copied ten times within the VAR object.
+	\paragraph{Syntax to assign parameterisations from other VAR object}
+ 
+ \begin{verbatim}
+ V(inx) = W
+ \end{verbatim}
+ 
+ \paragraph{Syntax to delete specified parameterisations}
+ 
+ \begin{verbatim}
+ V(Inx) = []
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object.
+ \item
+   \texttt{inx} {[} numeric {]} - Index of parameterisations that will be
+   assigned or deleted.
+ \item
+   \texttt{W} {[} VAR {]} - VAR object compatible with \texttt{V} whose
+   parameterisations will be assigned (copied) into \texttt{V}.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} model {]} - VAR object with newly assigned or deleted
+   parameterisations,
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+ 
+ Expand the number of parameterisations in a VAR object that has
+ initially just one parameterisation:
+ 
+ \begin{verbatim}
+ V(1:10) = V;
+ \end{verbatim}
+ 
+ The parameterisation is simply copied ten times within the VAR object.
 
 

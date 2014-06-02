@@ -3,55 +3,55 @@
     \filetitle{spy}{Visualise tseries observations that pass a test}{tseries/spy}
 
 	\paragraph{Syntax}
-
-\begin{verbatim}
-[AA,LL] = spy(X,...)
-[AA,LL] = spy(RANGE,X,...)
-\end{verbatim}
-
-\paragraph{Input arguments}
-
-\begin{itemize}
-\item
-  \texttt{X} {[} tseries {]} - Input tseries object whose non-NaN
-  observations will be plotted as markers.
-\item
-  \texttt{RANGE} {[} tseries {]} - Date range on which the tseries
-  observations will be visualised; if not specified the entire available
-  range will be used.
-\end{itemize}
-
-\paragraph{Output arguments}
-
-\begin{itemize}
-\item
-  \texttt{AA} {[} tseries {]} - Handle to the axes created.
-\item
-  \texttt{LL} {[} tseries {]} - Handle to the marks plotted.
-\end{itemize}
-
-\paragraph{Options}
-
-\begin{itemize}
-\item
-  \texttt{'dateformat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
-\item
-  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
-\item
-  \texttt{'names='} {[} cellstr {]} - Names that will be used to
-  annotate individual columns of the input tseries object.
-\item
-  \texttt{'test='} {[} function\_handle \textbar{}
-  \emph{@(x)\textasciitilde{}isnan(x)} {]} - Test applied to each
-  observations; only the values returning a true will be displayed.
-\end{itemize}
-
-\paragraph{Description}
-
-\paragraph{Example}
+ 
+ \begin{verbatim}
+ [AA,LL] = spy(X,...)
+ [AA,LL] = spy(RANGE,X,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{X} {[} tseries {]} - Input tseries object whose non-NaN
+   observations will be plotted as markers.
+ \item
+   \texttt{RANGE} {[} tseries {]} - Date range on which the tseries
+   observations will be visualised; if not specified the entire available
+   range will be used.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{AA} {[} tseries {]} - Handle to the axes created.
+ \item
+   \texttt{LL} {[} tseries {]} - Handle to the marks plotted.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateformat='} {[} char \textbar{}
+   \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
+   on the x-axis.
+ \item
+   \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Vector of dates locating tick marks on the x-axis; Inf means they will
+   be created automatically.
+ \item
+   \texttt{'names='} {[} cellstr {]} - Names that will be used to
+   annotate individual columns of the input tseries object.
+ \item
+   \texttt{'test='} {[} function\_handle \textbar{}
+   \emph{@(x)\textasciitilde{}isnan(x)} {]} - Test applied to each
+   observations; only the values returning a true will be displayed.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
 
 

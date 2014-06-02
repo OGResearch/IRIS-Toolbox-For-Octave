@@ -111,11 +111,13 @@ code.LaTeX {
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>[TTrend,BaseDate] = dat2ttrend(Range)
+[TTrend,BaseDate] = dat2ttrend(Range,BaseYear)
 [TTrend,BaseDate] = dat2ttrend(Range,Obj)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>Range</code> [ numeric ] - Date range from which an integer linear time trend will be constructed.</p></li>
-<li><p><code>Obj</code> [ model | VAR ] - Model or VAR object whose base year will be used to construct the time trend; if omitted, the base year from <code>irisget('baseYear')</code> will be used.</p></li>
+<li><p><code>BaseYear</code> [ model | VAR ] - Base year that will be used to construct the time trend.</p></li>
+<li><p><code>Obj</code> [ model | VAR ] - Model or VAR object whose base year will be used to construct the time trend; if both <code>BaseYear</code> and <code>Obj</code> are omitted, the base year from <code>irisget('baseYear')</code> will be used.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
@@ -129,5 +131,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

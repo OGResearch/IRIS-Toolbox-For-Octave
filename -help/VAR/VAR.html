@@ -109,18 +109,26 @@ code.LaTeX {
 <h2 id="VAR/VAR">VAR</h2>
 <div class="headline">Create new, empty reduced-form VAR object</div>
 
-<h4 id="syntax-for-plain-var">Syntax for plain VAR</h4>
-<pre><code>V = VAR(YNames)</code></pre>
-<h4 id="syntax-for-panel-var">Syntax for panel VAR</h4>
-<pre><code>V = VAR(YNames,GroupNames)</code></pre>
+<h4 id="syntax-for-plain-var-and-varx">Syntax for plain VAR and VARX</h4>
+<pre><code>V = VAR(YNames)
+V = VAR(YNames,&#39;exogenous=&#39;,XNames)</code></pre>
+<h4 id="syntax-for-panel-var-and-varx">Syntax for panel VAR and VARX</h4>
+<pre><code>V = VAR(YNames,&#39;groups=&#39;,GroupNames)
+V = VAR(YNames,&#39;exogenous=&#39;,XNames,&#39;groups=&#39;,GroupNames)</code></pre>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><p><code>V</code> [ VAR ] - New empty VAR object.</p></li>
-<li><p><code>YNames</code> [ cellstr | char | function_handle ] - Names of VAR variables.</p></li>
-<li><p><code>GroupNames</code> [ cellstr | char | function_handle ] - Names of groups of data for panel estimation.</p></li>
+<li><p><code>YNames</code> [ cellstr | char | function_handle ] - Names of endogenous variables.</p></li>
+<li><p><code>XNames</code> [ cellstr | char | function_handle ] - Names of exogenous inputs.</p></li>
+<li><p><code>GroupNames</code> [ cellstr | char | function_handle ] - Names of groups for panel VAR estimation.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'exogenous='</code> [ cellstr | <em>empty</em> ] - Names of exogenous inputs; one of the names can be <code>!ttrend</code>, a linear time trend, which will created automatically each time input data are required, and then included in the output database under the name <code>ttrend</code>.</p></li>
+<li><p><code>'groups='</code> [ cellstr | <em>empty</em> ] - Names of groups for panel VAR estimation.</p></li>
 </ul>
 <h4 id="description">Description</h4>
-<p>This function creates a new empty VAR object. It is usually followed by the <a href="../VAR/estimate.html"><code>estimate</code></a> function to estimate the VAR parameters on data.</p>
+<p>This function creates a new empty VAR object. It is usually followed by an <a href="../VAR/estimate.html"><code>estimate</code></a> command to estimate the VAR parameters on the data.</p>
 <h4 id="example">Example</h4>
 <p>To estimate a VAR, you first need to create an empty VAR object specifying the variable names, and then run the <a href="../VAR/estimate.html">VAR/estimate</a> function on it, e.g.</p>
 <pre><code>v = VAR({&#39;x&#39;,&#39;y&#39;,&#39;z&#39;});
@@ -128,5 +136,5 @@ code.LaTeX {
 <p>where the input database <code>d</code> ought to contain time series <code>d.x</code>, <code>d.y</code>, <code>d.z</code>.</p>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

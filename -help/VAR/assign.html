@@ -110,15 +110,14 @@ code.LaTeX {
 <div class="headline">Manually assign system matrices to VAR object</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>V = assign(V,A,K,Omg)
-V = assign(V,A,[],Omg)
-V = assign(V,A,K,Omg,Dates)
-V = assign(V,A,[],Omg,Dates)</code></pre>
+<pre><code>V = assign(V,A,K,J,Omg)
+V = assign(V,A,K,J,Omg,Dates)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>V</code> [ VAR ] - VAR object with variable names.</p></li>
 <li><p><code>A</code> [ numeric ] - Transition matrices; see Description.</p></li>
-<li><p><code>K</code> [ numeric | empty ] - Constant vector or matrix; if omitted, the constant vector will be set to zeros, and will not be included in the number of free parameters.</p></li>
+<li><p><code>K</code> [ numeric | empty ] - Constant vector or matrix; if empty, the constant vector will be set to zeros, and will not be included in the number of free parameters.</p></li>
+<li><p><code>J</code> [ numeric | empty ] - Coefficient matrix in front exogenous inputs; if empty the matrix will be set to zeros.</p></li>
 <li><p><code>Omg</code> [ numeric ] - Covariance matrix of forecast errors (reduced-form residuals).</p></li>
 <li><p><code>Dates</code> [ numeric ] - Vector of dates of (hypothetical) fitted observations; may be omitted.</p></li>
 </ul>
@@ -133,5 +132,5 @@ V = assign(V,A,[],Omg,Dates)</code></pre>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>

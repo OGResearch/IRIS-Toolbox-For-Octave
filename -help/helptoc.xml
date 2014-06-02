@@ -68,6 +68,7 @@
         <tocitem target="model/autocaption.html" image="HelpIcon.FUNCTION">autocaption &#8212; Create captions for graphs of model variables or parameters</tocitem>
         <tocitem target="model/autoexogenise.html" image="HelpIcon.FUNCTION">autoexogenise &#8212; Get or set variable/shock pairs for use in autoexogenised simulation plans</tocitem>
         <tocitem target="model/bn.html" image="HelpIcon.FUNCTION">bn &#8212; Beveridge-Nelson trends</tocitem>
+        <tocitem target="model/chkmissing.html" image="HelpIcon.FUNCTION">chkmissing &#8212; Check for missing initial values in simulation database</tocitem>
         <tocitem target="model/chksstate.html" image="HelpIcon.FUNCTION">chksstate &#8212; Check if equations hold for currently assigned steady0state values</tocitem>
         <tocitem target="model/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
         <tocitem target="model/data4lhsmrhs.html" image="HelpIcon.FUNCTION">data4lhsmrhs &#8212; Prepare data array for running `lhsmrhs`</tocitem>
@@ -177,20 +178,6 @@
         <tocitem target="logdist/normal.html" image="HelpIcon.FUNCTION">normal &#8212; Create function proportional to log of Normal or Student distribution</tocitem>
         <tocitem target="logdist/uniform.html" image="HelpIcon.FUNCTION">uniform &#8212; Create function proportional to log of uniform distribution</tocitem>
     </tocitem>
-    <tocitem target="sstatelang/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state file language
-        <tocitem target="sstatelang/allbut.html" image="HelpIcon.BLOCK">!all_but &#8212; Inverse list of variables with positive steady states</tocitem>
-        <tocitem target="sstatelang/equations.html" image="HelpIcon.BLOCK">!equations &#8212; Block of equations or assignments</tocitem>
-        <tocitem target="sstatelang/growthnames.html" image="HelpIcon.BLOCK">!growthnames &#8212; Pattern for creating growth names</tocitem>
-        <tocitem target="sstatelang/input.html" image="HelpIcon.BLOCK">!input &#8212; List of input parameters or variables</tocitem>
-        <tocitem target="sstatelang/logvariables.html" image="HelpIcon.BLOCK">!log_variables &#8212; Restrict the steady state of some of the variables to be positive</tocitem>
-        <tocitem target="sstatelang/solvefor.html" image="HelpIcon.BLOCK">!solvefor &#8212; List of variables for which the current equations block will be solved</tocitem>
-        <tocitem target="sstatelang/symbolic.html" image="HelpIcon.BLOCK">!symbolic &#8212; Attempt to solve the current equations block symbolically using the Symbolic Maths Toolbox</tocitem>
-    </tocitem>
-    <tocitem target="sstate/Contents.html" image="HelpIcon.USER_GUIDE">Steady-state objects and functions
-        <tocitem target="sstate/compile.html" image="HelpIcon.FUNCTION">compile &#8212; Compile an m-file function based on a steady-state file</tocitem>
-        <tocitem target="sstate/sstate.html" image="HelpIcon.FUNCTION">sstate &#8212; Create new steady-state object based on sstate file</tocitem>
-        <tocitem target="sstate/standalonemfile.html" image="HelpIcon.FUNCTION">standalonemfile &#8212; Run a compiled stand-alone sstate m-file function</tocitem>
-    </tocitem>
     <tocitem target="namedmat/Contents.html" image="HelpIcon.USER_GUIDE">Matrices with named rows and columns
         <tocitem target="namedmat/colnames.html" image="HelpIcon.FUNCTION">colnames &#8212; Names of columns in namedmat object</tocitem>
         <tocitem target="namedmat/namedmat.html" image="HelpIcon.FUNCTION">namedmat &#8212; Create a new matrix with named rows and columns</tocitem>
@@ -208,7 +195,7 @@
         <tocitem target="VAR/backward.html" image="HelpIcon.FUNCTION">backward &#8212; Backward VAR process</tocitem>
         <tocitem target="VAR/comment.html" image="HelpIcon.FUNCTION">comment &#8212; Get or set user comments in an IRIS object</tocitem>
         <tocitem target="VAR/companion.html" image="HelpIcon.FUNCTION">companion &#8212; Matrices of first-order companion VAR</tocitem>
-        <tocitem target="VAR/demean.html" image="HelpIcon.FUNCTION">demean &#8212; Remove constant from VAR object</tocitem>
+        <tocitem target="VAR/demean.html" image="HelpIcon.FUNCTION">demean &#8212; Remove constant and the effect of exogenous inputs from VAR object</tocitem>
         <tocitem target="VAR/eig.html" image="HelpIcon.FUNCTION">eig &#8212; Eigenvalues of a VAR process</tocitem>
         <tocitem target="VAR/estimate.html" image="HelpIcon.FUNCTION">estimate &#8212; Estimate a reduced-form VAR or BVAR</tocitem>
         <tocitem target="VAR/ferf.html" image="HelpIcon.FUNCTION">ferf &#8212; Forecast error response function</tocitem>
@@ -224,7 +211,7 @@
         <tocitem target="VAR/integrate.html" image="HelpIcon.FUNCTION">integrate &#8212; Integrate VAR process and data associated with it</tocitem>
         <tocitem target="VAR/iscompatible.html" image="HelpIcon.FUNCTION">iscompatible &#8212; True if two VAR objects can occur together on the LHS and RHS in an assignment</tocitem>
         <tocitem target="VAR/isexplosive.html" image="HelpIcon.FUNCTION">isexplosive &#8212; True if any eigenvalue is outside unit circle</tocitem>
-        <tocitem target="VAR/ispanel.html" image="HelpIcon.FUNCTION">ispanel &#8212; True for panel VAR based objects</tocitem>
+        <tocitem target="VAR/ispanel.html" image="HelpIcon.FUNCTION">ispanel &#8212; True for panel VAR objects</tocitem>
         <tocitem target="VAR/isstationary.html" image="HelpIcon.FUNCTION">isstationary &#8212; True if all eigenvalues are within unit circle</tocitem>
         <tocitem target="VAR/length.html" image="HelpIcon.FUNCTION">length &#8212; Number of alternative parameterisations in VAR object</tocitem>
         <tocitem target="VAR/lrtest.html" image="HelpIcon.FUNCTION">lrtest &#8212; Likelihood ratio test for VAR models</tocitem>
@@ -386,6 +373,7 @@
         <tocitem target="dbase/dbbatch.html" image="HelpIcon.FUNCTION">dbbatch &#8212; Run a batch job to create new database fields</tocitem>
         <tocitem target="dbase/dbclip.html" image="HelpIcon.FUNCTION">dbclip &#8212; Clip all tseries entries in database down to specified date range</tocitem>
         <tocitem target="dbase/dbcol.html" image="HelpIcon.FUNCTION">dbcol &#8212; Retrieve the specified column or columns from database entries</tocitem>
+        <tocitem target="dbase/dbcomment.html" image="HelpIcon.FUNCTION">dbcomment &#8212; Create model-based comments for database tseries entries</tocitem>
         <tocitem target="dbase/dbextend.html" image="HelpIcon.FUNCTION">dbextend &#8212; Combine tseries observations from two or more databases</tocitem>
         <tocitem target="dbase/dbfun.html" image="HelpIcon.FUNCTION">dbfun &#8212; Apply a function to database fields</tocitem>
         <tocitem target="dbase/dbload.html" image="HelpIcon.FUNCTION">dbload &#8212; Create database by loading CSV file</tocitem>

@@ -110,13 +110,13 @@ code.LaTeX {
 <div class="headline">Run autoregressive function on a tseries object</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>X = arf(X,A,Z,RANGE,...)</code></pre>
+<pre><code>X = arf(X,A,Z,Range,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ tseries ] - Input data from which initial condition will be taken.</p></li>
 <li><p><code>A</code> [ numeric ] - Vector of coefficients of the autoregressive polynomial.</p></li>
-<li><p><code>Z</code> [ numeric | tseries ] - Exogenous input or constantn in the autoregressive process.</p></li>
-<li><p><code>RANGE</code> [ numeric | Inf ] - Date range on which the new time series observations will be computed; <code>RANGE</code> does not include pre-sample initial condition. <code>Inf</code> means the entire possible range will be used (taking into account the length of pre-sample initial condition needed).</p></li>
+<li><p><code>Z</code> [ numeric | tseries ] - Exogenous input series or constant in the autoregressive process.</p></li>
+<li><p><code>Range</code> [ numeric | Inf ] - Date range on which the new time series observations will be computed; <code>RANGE</code> does not include pre-sample initial condition. <code>Inf</code> means the entire possible range will be used (taking into account the length of pre-sample initial condition needed).</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
@@ -124,11 +124,11 @@ code.LaTeX {
 </ul>
 <h4 id="description">Description</h4>
 <p>The autoregressive process has one of the following forms:</p>
-<pre><code>a1*x + a2*x(-1) + ... + an*x(-n) = z,</code></pre>
+<pre><code>A1*x + A2*x(-1) + ... + An*x(-n) = z,</code></pre>
 <p>or</p>
-<pre><code>a1*x + a2*x(+1) + ... + an*x(+n) = z,</code></pre>
-<p>depending on whether the range is increasing (running forward in time), or decreasing (running backward in time). The coefficients <code>a1</code>,...<code>an</code> are gathered in the <code>A</code> vector,</p>
-<pre><code>A = [a1,a2,...,an].</code></pre>
+<pre><code>A1*x + A2*x(+1) + ... + An*x(+n) = z,</code></pre>
+<p>depending on whether the range is increasing (running forward in time), or decreasing (running backward in time). The coefficients <code>A1</code>,...<code>An</code> are gathered in the input vector <code>A</code>,</p>
+<pre><code>A = [A1,A2,...,An].</code></pre>
 <h4 id="example">Example</h4>
 <p>The following two lines create an autoregressive process constructed from normally distributed residuals,</p>
 <p><span class="LaTeX">$$ x_t = \rho x_{t-1} + \epsilon_t $$</span></p>
@@ -137,5 +137,5 @@ X = tseries(1:20,@randn);
 X = arf(X,[1,-rho],X,2:20);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2012 Jaromir Benes.</div>
 </html>
