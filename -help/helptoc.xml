@@ -10,6 +10,7 @@
         <tocitem target="config/iriscleanup.html">iriscleanup &#8212; Remove IRIS from Matlab and clean up</tocitem>
         <tocitem target="config/irisfinish.html">irisfinish &#8212; Close the current IRIS session</tocitem>
         <tocitem target="config/irisget.html">irisget &#8212; Query current IRIS config options</tocitem>
+        <tocitem target="config/irisman.html">irisman &#8212; Open IRIS Reference Manual PDF</tocitem>
         <tocitem target="config/irisrequired.html">irisrequired &#8212; Throw error if the installed version of IRIS fails to comply with the required minimum</tocitem>
         <tocitem target="config/irisreset.html">irisreset &#8212; Reset IRIS configuration options to start-up values</tocitem>
         <tocitem target="config/irisroot.html">irisroot &#8212; Current IRIS root folder</tocitem>

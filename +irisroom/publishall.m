@@ -106,10 +106,13 @@ c = regexprep(c,'\\newcommand\{\\irisversion\}\{.*?\}', ...
 char2file(c,manfile);
 
 % Publish manual to PDF and make a copy in the IRIS_Archive folder.
-delete('IRIS_Man.aux');
-delete('IRIS_Man.log');
 latex.compilepdf(manfile);
 manPdf = strrep(manfile,'.tex','.pdf');
 copyfile(manPdf,['C:\IRIS\Archive\IRIS_Man_',version,'.pdf']);
+
+% Delete auxiliary files.
+delete(fullfile(helpDir,'IRIS_Man.aux'));
+delete(fullfile(helpDir,'IRIS_Man.log'));
+delete(fullfile(helpDir,'IRIS_Man.synctex.gz'));
 
 end
