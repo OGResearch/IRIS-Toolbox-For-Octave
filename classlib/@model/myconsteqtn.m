@@ -13,10 +13,13 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % * all non-log variables with 0;
 % * all log variables with 1.
 
-% ##### MOSW:
-% replaceFunc = @doReplace; %#ok<NASGU>
-% Eqtn = regexprep(Eqtn,'x\(:,(\d+),t[^\)]*\)','${replaceFunc($0,$1)}');
-Eqtn = mosw.dregexprep(Eqtn,'\<x\(:,(\d+),t[^\)]*\)',@doReplace,[0,1]);
+ptn = '\<x\(:,(\d+),t[^\)]*\)';
+if true % ##### MOSW
+    replaceFunc = @doReplace; %#ok<NASGU>
+    Eqtn = regexprep(Eqtn,ptn,'${replaceFunc($0,$1)}');
+else
+    Eqtn = mosw.dregexprep(Eqtn,ptn,@doReplace,[0,1]); %#ok<UNRCH>
+end
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
 Eqtn = sydney(Eqtn,{});

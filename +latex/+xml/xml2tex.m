@@ -204,11 +204,14 @@ if ~isempty(y)
     inpCode = strfun.removetrails(inpCode);
     [~,n] = xxOriginalCode(inpCode);
     
-    % ##### MOSW:
-    % replace = @xxBookmarks; %#ok<NASGU>
-    % inpCode = regexprep(inpCode,'%\?(\w+)\?','`${replace($1)}`');
-    inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
-        @(C1) ['`',xxBookmarks(C1),'`'],1);
+    if true % ##### MOSW
+        replace = @xxBookmarks; %#ok<NASGU>
+        inpCode = regexprep(inpCode,'%\?(\w+)\?', ...
+            '`${replace($1)}`');
+    else
+        inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
+            @(C1) ['`',xxBookmarks(C1),'`'],1); %#ok<UNRCH>
+    end
     
     C = [C,br, ...
         '\begin{inputcode}',br, ...

@@ -136,16 +136,21 @@ for eq = first : LossPos
         end
 
         % Create human equations.
-        % ##### MOSW:
-        % replFunc = @doReplaceNames; %#ok<NASGU>
-        % dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
-        dEqtn = mosw.dregexprep(dEqtn,'x(\d+)([pm]\d+)?', ...
-            @doReplaceNames,[1,2]);
+        ptn = 'x(\d+)([pm]\d+)?';
+        if true % ##### MOSW
+            replFunc = @doReplaceNames; %#ok<NASGU>
+            dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2)}');
+        else
+            dEqtn = mosw.dregexprep(dEqtn,ptn,@doReplaceNames,[1,2]); %#ok<UNRCH>
+        end
         
-        % ##### MOSW:
-        % dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
-        dEqtn = mosw.dregexprep(dEqtn,'L(\d+)', ...
-            @(C1) ['&',name{sscanf(C1,'%g')}],1);
+        ptn = 'L(\d+)';
+        if true % ##### MOSW
+            dEqtn = regexprep(dEqtn,ptn,'&${name{sscanf($1,''%g'')}}');
+        else
+            dEqtn = mosw.dregexprep(dEqtn,ptn, ...
+                @(C1) ['&',name{sscanf(C1,'%g')}],1); %#ok<UNRCH>
+        end
         
         % Put together the derivative of the Lagrangian wrt to variable
         % #neweq.

@@ -23,7 +23,7 @@ asgn = This.assign;
     end % doReplaceNameValue()
 
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-% rplFunc = @doReplaceNameValue; %#ok<NASGU>
+rplFunc = @doReplaceNameValue; %#ok<NASGU>
 stdcorrDecld = {};
 
 for iBlk = blkpos(This,This.assignBlkOrd)
@@ -42,9 +42,11 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         if isempty(value)
             continue
         end
-        % ##### MOSW:
-        % value = regexprep(value,ptn,'${rplFunc($0)}');
-        value = mosw.dregexprep(value,ptn,@doReplaceNameValue,0);
+        if true % ##### MOSW
+            value = regexprep(value,ptn,'${rplFunc($0)}');
+        else
+            value = mosw.dregexprep(value,ptn,@doReplaceNameValue,0); %#ok<UNRCH>
+        end
         
         try
             x = eval(value);

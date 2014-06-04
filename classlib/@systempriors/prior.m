@@ -297,12 +297,13 @@ invalid = {};
 
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
-% ##### MOSW:
-% replaceFunc = @doReplace; %#ok<NASGU>
-% Def = regexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))', ...
-%     '${replaceFunc($1)}');
-Def = mosw.dregexprep(Def,'\.(\<[a-zA-Z]\w*\>(?![\[\(]))', ...
-    @doReplace,1);
+ptn = '\.(\<[a-zA-Z]\w*\>(?![\[\(]))';
+if true % ##### MOSW
+    replaceFunc = @doReplace; %#ok<NASGU>
+    Def = regexprep(Def,ptn,'${replaceFunc($1)}');
+else
+    Def = mosw.dregexprep(Def,ptn,@doReplace,1); %#ok<UNRCH>
+end
 
 if ~isempty(invalid)
     utils.error('systempriors', ...

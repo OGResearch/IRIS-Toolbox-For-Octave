@@ -284,10 +284,12 @@ end
         
         while true
             found = false;
-            % ##### MOSW:
-            % replaceFunc = @doReplace; %#ok<NASGU>
-            % fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
-            fmt = mosw.dregexprep(fmt,ptn,@doReplace,1,'once');
+            if true % ##### MOSW
+                replaceFunc = @doReplace; %#ok<NASGU>
+                fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
+            else
+                fmt = mosw.dregexprep(fmt,ptn,@doReplace,1,'once'); %#ok<UNRCH>
+            end
             if ~found
                 break
             end

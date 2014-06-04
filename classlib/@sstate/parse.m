@@ -59,11 +59,13 @@ end
 
 % Combine and process input blocks.
 inputblock = '';
-% ##### MOSW:
-% replaceFunc = @doReplaceInp; %#ok<NASGU>
-% code = regexprep(code,'!input.*?(?=!equations|$)','${replaceFunc($0)}');
-code = mosw.dregexprep(code,'!input.*?(?=!equations|$)', ...
-    doReplaceInp,0);
+ptn = '!input.*?(?=!equations|$)';
+if true % ##### MOSW
+    replaceFunc = @doReplaceInp; %#ok<NASGU>
+    code = regexprep(code,ptn,'${replaceFunc($0)}');
+else
+    code = mosw.dregexprep(code,ptn,doReplaceInp,0); %#ok<UNRCH>
+end
 
 % Throw away variable annotations.
 inputblock = cleanup(inputblock,p.labels);
@@ -263,14 +265,15 @@ end
 % @ replacetime().
 
 invalidtime = {};
+ptn = '(\<[a-zA-Z]\w*\>)\{(.*?)\}';
 for i = 1 : nBlock
     % s.growth{i} = {};
-    % ##### MOSW:
-%     replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
-%     s.eqtn{i} = regexprep(s.eqtn{i}, ...
-%         '(\<[a-zA-Z]\w*\>)\{(.*?)\}','${replaceTimeFunc($1,$2)}');
-    s.eqtn{i} = mosw.dregexprep(s.eqtn{i},'(\<[a-zA-Z]\w*\>)\{(.*?)\}', ...
-        @doReplaceTime,[1,2]);
+    if true % ##### MOSW
+        replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
+        s.eqtn{i} = regexprep(s.eqtn{i},ptn,'${replaceTimeFunc($1,$2)}');
+    else
+        s.eqtn{i} = mosw.dregexprep(s.eqtn{i},ptn,@doReplaceTime,[1,2]); %#ok<UNRCH>
+    end
 end
 
 if ~isempty(invalidtime)

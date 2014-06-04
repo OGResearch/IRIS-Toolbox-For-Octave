@@ -17,9 +17,11 @@ if ~preparser.mychkclonestring(Clone)
 end
 
 ptn = '(?<!!)\<([A-Za-z]\w*)\>(?!\()';
-% ##### MOSW:
-% rpl = '${strrep(Clone,''?'',$0)}';
-% C = regexprep(C,ptn,rpl);
-C = mosw.dregexprep(C,ptn,@(C0) strrep(Clone,'?',C0),0);
+if true % ##### MOSW
+    rpl = '${strrep(Clone,''?'',$0)}';
+    C = regexprep(C,ptn,rpl);
+else
+    C = mosw.dregexprep(C,ptn,@(C0) strrep(Clone,'?',C0),0); %#ok<UNRCH>
+end
 
 end

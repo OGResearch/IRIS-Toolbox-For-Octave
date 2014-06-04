@@ -19,14 +19,13 @@ nBlkWarn = size(This.altBlkNameWarn,1);
 reportInx = false(nBlkWarn,1);
 
 for iBlk = 1 : nBlkWarn
-    % ##### MOSW:
-    % replaceFunc = @doReplace; %#ok<NASGU>
-    % This.code = regexprep(This.code, ...
-    %     ['\<',This.altBlkNameWarn{iBlk,1},'\>'], ...
-    %     '${replaceFunc()}');
-    This.code = mosw.dregexprep(This.code, ...
-        ['\<',This.altBlkNameWarn{iBlk,1},'\>'], ...
-        @doReplace,[]);
+    ptn = ['\<',This.altBlkNameWarn{iBlk,1},'\>'];
+    if true % ##### MOSW
+        replaceFunc = @doReplace; %#ok<NASGU>
+        This.code = regexprep(This.code,ptn,'${replaceFunc()}');
+    else
+        This.code = mosw.dregexprep(This.code,ptn,@doReplace,[]); %#ok<UNRCH>
+    end
 end
 
 

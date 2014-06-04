@@ -93,11 +93,13 @@ doNonlinEqtn();
             doFunc2Char();
             
             % Replace variables, shocks, and parameters.
-            % ##### MOSW:
-            % eqtn = regexprep(eqtn, ...
-            %     '\<x\(:,(\d+),t([\+\-]\d+)?\)','${replaceFunc($1,$2)}');
-            eqtn = mosw.dregexprep(eqtn,'\<x\(:,(\d+),t([\+\-]\d+)?\)', ...
-                @doReplace,[1,2]);
+            ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
+            if true % ##### MOSW
+                replaceFunc = @doReplace; %#ok<NASGU>
+                eqtn = regexprep(eqtn,ptn,'${replaceFunc($1,$2)}');
+            else
+                eqtn = mosw.dregexprep(eqtn,ptn,@doReplace,[1,2]); %#ok<UNRCH>
+            end
             
             % Replace references to steady states.
             eqtn = regexprep(eqtn, ...

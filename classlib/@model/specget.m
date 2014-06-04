@@ -348,19 +348,21 @@ end
             u = char(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
             
-            % ##### MOSW:
-            % replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
-            % u = regexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
-            %     '${replacePlusMinus($1,$2)}');
-            u = mosw.dregexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
-                @doReplacePlusMinus,[1,2]);
+            ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
+            if true % ##### MOSW
+                replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
+                u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
+            else
+                u = mosw.dregexprep(u,ptn,@doReplacePlusMinus,[1,2]); %#ok<UNRCH>
+            end
             
-            % ##### MOSW:
-            % replaceZero = @doReplaceZero; %#ok<NASGU>
-            % u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
-            %     '${replaceZero($1)}');
-            u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
-                @doReplaceZero,1);
+            ptn = '\<x\>\(:,(\d+),t\)';
+            if true % ##### MOSW
+                replaceZero = @doReplaceZero; %#ok<NASGU>
+                u = regexprep(u,ptn,'${replaceZero($1)}');
+            else
+                u = regexprep(u,ptn,@doReplaceZero,1); %#ok<UNRCH>
+            end
             
             Ans{iieq} = u;
         end

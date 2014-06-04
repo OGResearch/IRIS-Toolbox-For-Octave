@@ -153,14 +153,13 @@ end % xxMovAvg()
 
 function C = xxShift(C,K)
 
-% #### MOSW:
-% replaceFunc = @doOneShift; %#ok<NASGU>
-% C = regexprep(C, ...
-%     '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()', ...
-%     '${replaceFunc($1,$2)}');
-C = mosw.dregexprep(C, ...
-    '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()', ...
-    @doOneShift,[1,2]);
+ptn = '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()';
+if true % ##### MOSW
+    replaceFunc = @doOneShift; %#ok<NASGU>
+    C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
+else
+    C = mosw.dregexprep(C,ptn,@doOneShift,[1,2]); %#ok<UNRCH>
+end
 
 
     function X = doOneShift(Name,Shift)

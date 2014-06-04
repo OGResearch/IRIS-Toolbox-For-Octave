@@ -13,12 +13,13 @@ if Shift == 0
     return
 end
 
-% #### MOSW:
-% replaceFn = @doReplace; %#ok<NASGU>
-% Eqtn = regexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()', ...
-%     'x${replaceFn($1,$2)}');
-Eqtn = mosw.dregexprep(Eqtn,'\<x(\d+)([pm]\d+)?\>(?!\()', ...
-    @doReplace,[0,1,2]);
+ptn = '\<x(\d+)([pm]\d+)?\>(?!\()';
+if true % ##### MOSW
+    replaceFn = @doReplace; %#ok<NASGU>
+    Eqtn = regexprep(Eqtn,ptn,'${replaceFn($0,$1,$2)}');
+else
+    Eqtn = mosw.dregexprep(Eqtn,ptn,@doReplace,[0,1,2]); %#ok<UNRCH>
+end
 
 
     function C = doReplace(C0,C1,C2)

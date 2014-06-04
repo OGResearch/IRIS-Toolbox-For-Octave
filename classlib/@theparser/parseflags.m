@@ -23,12 +23,14 @@ end
 allnames = [S(:).name];
 allFlags = default(ones(size(allnames)));
 
-% Replace regular expressions \<...\> or {...} with the list of matched
-% names.
-% ##### MOSW:
-% replaceFunc = @doExpand; %#ok<NASGU>
-% Blk = regexprep(Blk,'\\?<(.*?)\\?>','${replaceFunc($1)}');
-Blk = mosw.dregexprep(Blk,'\\?<(.*?)\\?>',@doExpand,1);
+% Replace regular expressions \<...\> with the list of matched names.
+ptn = '\\?<(.*?)\\?>';
+if true % ##### MOSW
+    replaceFunc = @doExpand; %#ok<NASGU>
+    Blk = regexprep(Blk,ptn,'${replaceFunc($1)}');
+else
+    Blk = mosw.dregexprep(Blk,ptn,@doExpand,1); %#ok<UNRCH>
+end
 
 
     function c = doExpand(c0)

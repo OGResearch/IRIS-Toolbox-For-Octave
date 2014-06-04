@@ -317,10 +317,14 @@ end
 % TODO: Use pseudosubstitutions to evaluate $[...]$ in the body of !for
 % loops.
 
-% ##### MOSW: replaceFunc = @doExpandSqb; %#ok<NASGU> forBody =
-% regexprep(forBody,'(\$?)(\[[^\]]*\])\1','${replaceFunc($1,$2)}');
 obsolete = {};
-forBody = mosw.dregexprep(forBody,'(\$?)(\[[^\]]*\])\1',@doExpandSqb,[1,2]);
+ptn = '(\$?)(\[[^\]]*\])\1';
+if true % ##### MOSW
+    replaceFunc = @doExpandSqb; %#ok<NASGU>
+    forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
+else
+    forBody = mosw.dregexprep(forBody,ptn,@doExpandSqb,[1,2]); %#ok<UNRCH>
+end
 if ~isempty(obsolete)
     % ##### May 2014 OBSOLETE and scheduled for removal.
     utils.warning('preparser:controls', [ErrParsing, ...
@@ -410,8 +414,8 @@ for i = 1 : nList
             % Copy the `pos`-th entry to the end of storage.
             [Labels,newPos,newCode] = copytoend(Labels,pos);
             % Substitute inside the comment string.
-            Labels.Storage{newPos} ...
-                = doSubsForControl(Labels.Storage{newPos},control,list{i});
+            Labels.Store{newPos} ...
+                = doSubsForControl(Labels.Store{newPos},control,list{i});
             C = strrep(C,jCode,newCode);
         end
     end

@@ -59,14 +59,6 @@ Code = strfun.converteols(Code);
 match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
 Comment = strtrim(match);
 
-% Characters beyond char(highcharcode) not allowed except comments.
-% Default is 1999.
-charCap = irisget('highcharcode');
-if any(Code > char(charCap))
-    utils.error('preparser:readcode',[ep, ...
-        'The file contains characters beyond char(%g).'],charCap);
-end
-
 % Read quoted strings 'xxx' and "xxx" and replace them with charcodes.
 % The quoted strings must not stretch across mutliple lines.
 if isnan(Labels)
