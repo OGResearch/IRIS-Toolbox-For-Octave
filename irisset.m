@@ -31,14 +31,14 @@ function irisset(varargin)
 % `'irisset='` settings.
 %
 % * `'freqLetters='` [ char | *`'YHQBMW'`* ] - Six letters used to
-% represent the six possible frequencies of the IRIS dates: yearly,
-% half-yearly, quarterly, bi-monthly, monthly, and weekly, such as the
-% `'Q'` in `'2010Q1'` denoting a quarter.
+% represent the six possible frequencies of IRIS dates, in this order:
+% yearly, half-yearly, quarterly, bi-monthly, monthly, and weekly (such as
+% the `'Q'` in `'2010Q1'`).
 %
 % * `'months='` [ cellstr | *`{'January',...,'December'}`* ] - Twelve
 % strings representing the names of the twelve months; this option can be
 % used whenever you want to replace the default English names with your
-% local language. .
+% local language.
 %
 % * `'plotDateFormat='` [ char |
 % *`struct('yy','Y','hh','Y:P','qq','Y:P','bb','Y:P','mm','Y:P','ww','Y:P')`*
@@ -57,10 +57,9 @@ function irisset(varargin)
 % spaces printed between individual columns of a multivariate tseries
 % object on the screen.
 %
-% * `'standinMonth='` [ *`'first'`* | `'last'` | numeric ] - This option
-% specifies which month will be used to represent lower-frequency periods
-% (such as a quarters) when a month-displaying format is used in
-% `'dateformat='`.
+% * `'standinMonth='` [ numeric | `'last'` | `*1*` ] - Month that will
+% represent a lower-than-monthly-frequency date if the month is part of the
+% date format string.
 %
 % External tools used by IRIS
 % -----------------------------

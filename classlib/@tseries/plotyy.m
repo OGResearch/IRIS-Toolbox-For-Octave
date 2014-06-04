@@ -37,16 +37,6 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % * `'conincident='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
 % grids coincident.
 %
-% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
-% for the tick marks on the x-axis.
-%
-% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
-% marks on the x-axis; Inf means they will be created automatically.
-%
-% * `'freqLetters='` [ char | *`'YHQBM'`* ] - Five letters to represent the
-% five date frequencies (yearly, half-yearly, quarterly, bi-monthly, and
-% monthly).
-%
 % * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the LHS data.
 %
@@ -56,6 +46,9 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % that will be used to plot the RHS data.
 %
 % * `'rhsTight='` [ `true` | *`false`* ] - Make the RHS y-axis tight.
+%
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `plotyy` for all options available.
 %
 % Description
 % ============

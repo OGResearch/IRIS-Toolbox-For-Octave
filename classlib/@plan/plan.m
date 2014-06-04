@@ -64,10 +64,10 @@ classdef plan < userdataobj & getsetobj
     properties
         startDate = NaN;
         endDate = NaN;
-        xList = {};
-        nList = {};
+        xList = {}; % List of names that can be exogenized.
+        nList = {}; % List of names that can be endogenized.
         qList = {};
-        cList = {};
+        cList = {}; % List of names upon which it can be conditioned.
         xAnchors = []; % Exogenised.
         nAnchorsReal = []; % Endogenised real.
         nAnchorsImag = []; % Endogenised imag.
@@ -108,11 +108,12 @@ classdef plan < userdataobj & getsetobj
             % You need to use a simulation plan object to set up the following types of
             % more complex simulations or forecats:
             %
-            % # simulations or forecasts with some of the model variables temporarily exogenised;
+            % * simulations or forecasts with some of the model variables temporarily
+            % exogenised;
             %
-            % # simulations with some of the non-linear equations solved exactly.
+            % * simulations with some of the non-linear equations solved exactly.
             %
-            % # forecasts conditioned upon some variables;
+            % * forecasts conditioned upon some variables;
             %
             % The plan object is passed to the [simulate](model/simulate) or
             % [`jforecast`](model/jforecast) functions through the option `'plan='`.

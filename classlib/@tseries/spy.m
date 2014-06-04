@@ -26,17 +26,14 @@ function [Ax,Li] = spy(varargin)
 % Options
 % ========
 %
-% * `'dateformat='` [ char | *irisget('plotdateformat')* ] - Date format for
-% the tick marks on the x-axis.
-%
-% * `'datetick='` [ numeric | *`Inf`* ] - Vector of dates locating tick marks
-% on the x-axis; Inf means they will be created automatically.
-%
 % * `'names='` [ cellstr ] - Names that will be used to annotate individual
 % columns of the input tseries object.
 %
 % * `'test='` [ function_handle | *@(x)~isnan(x)* ] - Test applied to each
 % observations; only the values returning a true will be displayed.
+%
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `spy` for all options available.
 %
 % Description
 % ============

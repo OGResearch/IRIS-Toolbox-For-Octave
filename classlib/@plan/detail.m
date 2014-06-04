@@ -130,9 +130,13 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function [Det,NNan] = xxDetail(Anchors,List,Range,W,D)
 
 isData = ~isempty(D) && isstruct(D);
@@ -171,4 +175,4 @@ for irow = find(any(Anchors,2)).'
     Det = [Det,List(irow),{row}]; %#ok<*AGROW>
 end
 
-end % xxDetail().
+end % xxDetail()

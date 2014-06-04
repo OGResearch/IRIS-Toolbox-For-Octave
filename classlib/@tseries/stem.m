@@ -30,15 +30,8 @@ function varargout = stem(varargin)
 % Options
 % ========
 %
-% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
-% for the tick marks on the x-axis.
-%
-% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
-% marks on the x-axis; Inf means they will be created automatically.
-%
-% * `'tight='` [ `true` | *`false`* ] - Make the y-axis tight.
-%
-% See help on built-in `stem` function for other options available.
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `stem` for all options available.
 %
 % Description
 % ============

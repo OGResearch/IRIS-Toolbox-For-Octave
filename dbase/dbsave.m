@@ -36,7 +36,7 @@ function Saved = dbsave(D,FName,varargin)
 % * `'decimal='` [ numeric | *empty* ] - Number of decimals up to which the
 % data will be saved; if empty the `'format'` option is used.
 %
-% * `'format='` [ char | *`'%.8e'`* ] Numeric format that will be used to
+% * `'format='` [ char | *`'%.8e'`* ] - Numeric format that will be used to
 % represent the data, see `sprintf` for details on formatting, The format
 % must start with a `'%'`, and must not include identifiers specifying
 % order of processing, i.e. the `'$'` signs, or left-justify flags, the

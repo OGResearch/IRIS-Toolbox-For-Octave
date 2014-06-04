@@ -20,6 +20,7 @@ C = [C,begintypeface(This)];
 nChild = length(This.children);
 
 for i = 1 : nChild
+
     ch = This.children{i};
     
     % Add a comment before each of the first-level objects.
@@ -31,6 +32,7 @@ for i = 1 : nChild
     
     % Generate command-specific latex code.
     c1 = latexcode(ch);
+
     C = [C,c1,'%']; %#ok<AGROW>
     
     C = [C, br, endtypeface(ch)]; %#ok<AGROW>

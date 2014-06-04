@@ -148,16 +148,13 @@ if ~isempty(varargin)
         end
         validFunc = validate.(name{i});
         if ~isempty(validFunc)
-            value = Opt.(name{i});
             if isequal(validFunc,@config)
                 if isempty(CONFIG)
                     CONFIG = irisconfigmaster('get');
                 end
-                success = feval(CONFIG.validate.(name{i}),value);
-            else
-                success = feval(validFunc,value);
+                validFunc = CONFIG.validate.(name{i});
             end
-            if ~success
+            if ~feval(validFunc,Opt.(name{i}))
                 invalid{end+1} = changed.(name{i}); %#ok<AGROW>
                 invalid{end+1} = func2str(validate.(name{i})); %#ok<AGROW>
             end
