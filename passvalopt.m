@@ -10,7 +10,7 @@ function [Opt,varargout] = passvalopt(Spec,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-persistent DEF;
+persistent DEF CONFIG;
 
 if (nargin == 0 && nargout == 0) || isempty(DEF)
     % Initialise default options, and store them as a persistent struct.
@@ -146,8 +146,18 @@ if ~isempty(varargin)
         if isempty(changed.(name{i}))
             continue
         end
-        if ~isempty(validate.(name{i}))
-            if ~feval(validate.(name{i}),Opt.(name{i}))
+        validFunc = validate.(name{i});
+        if ~isempty(validFunc)
+            value = Opt.(name{i});
+            if isequal(validFunc,@config)
+                if isempty(CONFIG)
+                    CONFIG = irisconfigmaster('get');
+                end
+                success = feval(CONFIG.validate.(name{i}),value);
+            else
+                success = feval(validFunc,value);
+            end
+            if ~success
                 invalid{end+1} = changed.(name{i}); %#ok<AGROW>
                 invalid{end+1} = func2str(validate.(name{i})); %#ok<AGROW>
             end

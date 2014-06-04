@@ -52,10 +52,6 @@ Config.epstopdfpath = xxLocateFile('epstopdf',folder);
 Config.ps2pdfpath = xxLocateFile('ps2pdf',folder);
 Config.pdflatexpath = xxLocateFile('pdflatex',folder);
 
-% Model code preferences.
-% Highest character allowed in model codes.
-Config.highcharcode = 1999;
-
 % Empty user data.
 Config.userdata = [];
 

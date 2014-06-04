@@ -22,8 +22,9 @@ function [S,field] = dat2str(Dat,varargin)
 % * `'dateFormat='` [ char | cellstr | *'YYYYFP'* ] - Date format string,
 % or array of format strings (possibly different for each date).
 %
-% * `'freqLetters='` [ char | *'YHQBM'* ] - Letters representing the five
-% possible frequencies (annual,semi-annual,quarterly,bimontly,monthly).
+% * `'freqLetters='` [ char | *'YHQBM'* ] - Letters representing the six
+% possible frequencies (in this order: yearly, half-yearly, quarterly,
+% bimontly, monthly, weekly).
 %
 % * `'months='` [ cellstr | *English names of months* ] - Cell array of
 % twelve strings representing the names of months.
@@ -376,7 +377,7 @@ end
                     Subs(2:end) = lower(Subs(2:end));
                 end
                 if length(field{j}) == 3
-                    Subs = Subs(1:3);
+                    Subs = Subs(1:min(3,end));
                 end
             case 'MM'
                 Subs = sprintf('%02g',M);

@@ -1,4 +1,4 @@
-function [Opt,IConfig] = datdefaults(Opt,IsPlot)
+function Opt = datdefaults(Opt,IsPlot)
 % datdefaults  [Not a public function] Set up defaults for date-related opt if they are `@config`.
 %
 % Backend IRIS function.
@@ -6,6 +6,8 @@ function [Opt,IConfig] = datdefaults(Opt,IsPlot)
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+persistent CONFIG;
 
 try
     IsPlot; %#ok<VUNUS>
@@ -15,26 +17,28 @@ end
 
 %--------------------------------------------------------------------------
 
-IConfig = irisget();
+if isempty(CONFIG)
+    CONFIG = irisconfigmaster('get');
+end
 
 if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,@config)
     if ~IsPlot
-        Opt.dateformat = IConfig.dateformat;
+        Opt.dateformat = CONFIG.dateformat;
     else
-        Opt.dateformat = IConfig.plotdateformat;
+        Opt.dateformat = CONFIG.plotdateformat;
     end
 end
 
 if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,@config)
-    Opt.freqletters = IConfig.freqletters;
+    Opt.freqletters = CONFIG.freqletters;
 end
 
 if ~isfield(Opt,'months') || isequal(Opt.months,@config)
-    Opt.months = IConfig.months;
+    Opt.months = CONFIG.months;
 end
 
 if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,@config)
-    Opt.standinmonth = IConfig.standinmonth;
+    Opt.standinmonth = CONFIG.standinmonth;
 end
 
 end
