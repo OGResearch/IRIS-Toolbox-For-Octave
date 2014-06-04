@@ -9,6 +9,6 @@ function Flag = length(This)
 
 %--------------------------------------------------------------------------
 
-Flag = length(This.Storage);
+Flag = length(This.Store);
 
 end

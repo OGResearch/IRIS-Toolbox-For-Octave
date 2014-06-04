@@ -2,7 +2,7 @@ classdef fragileobj
    
     properties
         Offset = NaN;
-        Storage = cell(1,0);
+        Store = cell(1,0);
         Open = cell(1,0);
         Close = cell(1,0);
     end

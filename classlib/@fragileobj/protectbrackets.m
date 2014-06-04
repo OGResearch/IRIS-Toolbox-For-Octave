@@ -19,7 +19,7 @@ while true
     % Find the matching closing bracket.
     close = strfun.matchbrk(C,open);
     % Store the content.
-    This.Storage{end+1} = C(open+1:close-1);
+    This.Store{end+1} = C(open+1:close-1);
     This.Open{end+1} = C(open);
     This.Close{end+1} = C(close);
     % Replace the brackets with the current replacement charcode.

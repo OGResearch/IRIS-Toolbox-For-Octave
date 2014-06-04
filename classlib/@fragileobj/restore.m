@@ -18,17 +18,19 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-% ##### MOSW:
-% rplFunc = @doReplace; %#ok<NASGU>
-% C = regexprep(C,ptn,'${rplFunc($0)}');
-C = mosw.dregexprep(C,ptn,@doReplace,0);
+if true % ##### MOSW
+    rplFunc = @doReplace; %#ok<NASGU>
+    C = regexprep(C,ptn,'${rplFunc($0)}');
+else
+    C = mosw.dregexprep(C,ptn,@doReplace,0); %#ok<UNRCH>
+end
 
 
     function C = doReplace(C0)
         K = fragileobj.char2dec(C0) - This.Offset;
-        C = This.Storage{K};
+        C = This.Store{K};
         if opt.delimiter
-            C = [This.Open{K}(1),C,This.Close{K}(end)];
+            C = [This.Open{K},C,This.Close{K}];
         end
     end % doReplace()
 

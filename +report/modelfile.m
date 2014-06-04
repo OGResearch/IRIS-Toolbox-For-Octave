@@ -24,7 +24,7 @@
 % Options
 % ========
 %
-% * `'latexAlias'` [ `true` | *`false`* ] - Treat alias in labels as LaTeX
+% * `'latexAlias='` [ `true` | *`false`* ] - Treat alias in labels as LaTeX
 % code and typeset it that way.
 %
 % * `'lines='` [ numeric | *`Inf`* ] - Print only selected lines of the model

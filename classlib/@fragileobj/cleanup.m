@@ -10,7 +10,7 @@ function C = cleanup(C,This)
 
 %--------------------------------------------------------------------------
 
-if isnan(This.Offset) || isempty(This.Storage)
+if isnan(This.Offset) || isempty(This.Store)
     return
 end
 
