@@ -58,10 +58,6 @@
    the headline entries (individual dates or user-defined text): centre,
    left, right.
  \item
-   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
-   \emph{\texttt{irisget('dateformat')}} {]} - (Inheritable from parent
-   objects) Format string for the date row.
- \item
    \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
    at the table title; only shows if the title is non-empty.
  \item
@@ -106,6 +102,32 @@
    \texttt{'vline='} {[} numeric \textbar{} \emph{empty} {]} -
    (Inheritable from parent objects) Vector of dates after which a
    vertical line (divider) will be placed.
+ \end{itemize}
+ 
+ \paragraph{Date format options}
+ 
+ See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
+ options.
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+   \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+   strings (possibly different for each date).
+ \item
+   \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+   {]} - Six letters used to represent the six possible frequencies of
+   IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+   monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
+ \item
+   \texttt{'months='} {[} cellstr \textbar{}
+   \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+   representing the names of the twelve months.
+ \item
+   \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+   \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+   lower-than-monthly-frequency date if the month is part of the date
+   format string.
  \end{itemize}
  
  \paragraph{Generic options}

@@ -6,12 +6,9 @@
  
  \begin{verbatim}
  &VariableName
- \end{verbatim}
- 
- \paragraph{Alternative syntax}
- 
- \begin{verbatim}
  $VariableName
+ &VariableName{K}
+ $VariableName{K}
  \end{verbatim}
  
  \paragraph{Description}
@@ -19,13 +16,18 @@
  Use either a \texttt{\&} or \texttt{\$} sign in front of a variable name
  to create a reference to that variable's steady-state level in
  transition or measurement equations. The two signs, \texttt{\&} and
- \texttt{\$}, are interchangeable.
+ \texttt{\$}, are interchangeable. Steady-state references may only be
+ used in nonlinear models.
+ 
+ The steady-state reference can include a time shift (a lag or a lead),
+ \texttt{K}. In that case, the steady-state value will be adjusted for
+ steady-state growth backward or forward accordingly.
  
  The steady-state reference will be replaced
  
  \begin{itemize}
  \item
-   with the variable itself at the time model's steady state is being
+   with the variable itself at the time the model's steady state is being
    calculated, i.e.~when calling the function
    \href{model/sstate}{\texttt{sstate}};
  \item
