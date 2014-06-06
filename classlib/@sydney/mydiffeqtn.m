@@ -15,8 +15,6 @@ if isempty(Log)
     Log = false(1,max(NmOcc));
 end
 
-isBsx = any(strcmp(varargin,'bsx'));
-
 %--------------------------------------------------------------------------
 
 % Remove anonymous function preamble.
@@ -53,18 +51,10 @@ switch Mode
         % Multiply derivatives wrt log(X) by X.
         if any(Log(NmOcc))
             c = unknown;
-            if ~isBsx
-                c(~Log(NmOcc)) = {'1'};
-            else
-                c(~Log(NmOcc)) = {'ones(1,1,length(t))'};
-            end
+            c(~Log(NmOcc)) = {'1'};
             c = sprintf('%s;',c{:});
             c(end) = '';
-            if ~isBsx
-                DEqtn = ['(',DEqtn,').*[',c,']'];
-            else
-                DEqtn = ['bsxfun(@times,',DEqtn,',[',c,'])'];
-            end
+            DEqtn = ['(',DEqtn,').*[',c,']'];
         end
     case 'separate'
         % Derivatives wrt individual names are computed and stored separately.
