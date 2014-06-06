@@ -229,8 +229,8 @@ tZero = 1 - minT;
 This.tzero = tZero;
 nt = maxT - minT + 1;
 
-% Replace variables names with code names
-%-----------------------------------------
+% Replace variables names with codes
+%------------------------------------
 
 % Check for sstate references occuring in wrong places. Also replace
 % the old syntax & with $.
@@ -275,11 +275,7 @@ end
 
 This.eqtnF = regexprep(This.eqtnF,namePatt,nameReplF);
 
-% Steady-state references.
-% Replace &%(:,!10,@) with &(:,@10).
-This.eqtnF = regexprep(This.eqtnF,'&%\(:,!(\d+),@\)','&(:,!$1)');
-
-% Replace %(:,!10,@){@+2} with %(:,!10,@+2).
+% Replace %(:,!10,@){@+2} with %(:,!10,@+2) to complete time subscripts.
 This.eqtnF = strrep(This.eqtnF,'@){@','@');
 This.eqtnF = strrep(This.eqtnF,'}',')');
 
@@ -289,15 +285,20 @@ This.eqtnF = strrep(This.eqtnF,'}',')');
 % and corr names which have not been substituted for.
 doChkUndeclared();
 
-% Replace control characters in steady-state equations.
+% Replace control codes in steady-state equations.
 This.eqtnS = strrep(This.eqtnS,'%%','dx');
 This.eqtnS = strrep(This.eqtnS,'%','x');
 This.eqtnS = strrep(This.eqtnS,'!','');
 
-% Replace control characters in full equations.
-This.eqtnF = strrep(This.eqtnF,'&(:,!','L(:,');
+% Replace control codes in full equations.
+% * Exogenous variables `?(!15,:)` -> `g(!15,:)`.
+% * Variables, parameters, shocks `%(:,!15,@+5)` -> `x(:,!15,@+5)`.
+% * Steady-state references `&x(:,!15,@+5)` -> `L(:,!15,@+5)`.
+% * Time subscripts `@+5` -> `t+5`.
+% * Remove `!` from name positions.
 This.eqtnF = strrep(This.eqtnF,'?(!','g(');
 This.eqtnF = strrep(This.eqtnF,'%','x');
+This.eqtnF = strrep(This.eqtnF,'&x','L');
 This.eqtnF = strrep(This.eqtnF,'@','t');
 This.eqtnF = strrep(This.eqtnF,'!','');
 
@@ -396,6 +397,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doChkTimeSsref()
         % Check for { in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
@@ -419,6 +422,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doDeclareParameters()
         
         % All declared names except parameters.
@@ -458,6 +463,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doChkUndeclared()
         % Undeclared names have not been substituted for by the name codes, except
         % std and corr names in dynamic links (std and corr names cannot be used in
@@ -519,6 +526,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doChkSstateRef()
         % Check for sstate references in wrong places.
         func = @(c) ~cellfun(@(x) isempty(strfind(x,'&')),c);
@@ -554,6 +563,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doLossPlaceHolders()
         % Add new variables, i.e. the Lagrange multipliers associated with
         % all of the existing transition equations except the loss
@@ -610,6 +621,8 @@ This.nametype = floor(This.nametype);
 
 
 %**************************************************************************
+
+
     function doChkEmptyEqtn()
         % dochkemptyeqtn  Check for empty full equations.
         emptyInx = cellfun(@isempty,This.eqtnF);
@@ -624,10 +637,12 @@ This.nametype = floor(This.nametype);
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
+
+
 function [Eqtn,EqtnF,EqtnS,EqtnLabel,EqtnAlias, ...
     EqtnNonlin,IsLoss,MultipleLoss] = xxReadEqtns(S)
 % xxReadEqtns  Read measurement or transition equations.
@@ -711,6 +726,8 @@ end % xxReadEqtns()
 
 
 %**************************************************************************
+
+
 function [This,LogMissing,Invalid,Multiple] = xxReadDtrends(This,S)
 
 n = sum(This.nametype == 1);
@@ -769,6 +786,8 @@ end % xxReadDtrends()
 
 
 %**************************************************************************
+
+
 function [This,Invalid] = xxReadLinks(This,S)
 
 nName = length(This.name);
@@ -809,6 +828,8 @@ end % xxReadLinks()
 
 
 %**************************************************************************
+
+
 function [ErrMsg,ErrList] = xxChkStructure1(This)
 
 nEqtn = length(This.eqtn);
@@ -954,6 +975,8 @@ end % xxChkStructure1()
 
 
 %**************************************************************************
+
+
 function [ErrMsg,ErrList] = xxChkStructure2(This)
 
 nEqtn = length(This.eqtn);

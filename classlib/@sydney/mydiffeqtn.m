@@ -80,8 +80,8 @@ switch Mode
             'Invalid output mode');
 end
 
-% Replace xN, xNpK, or xNmK back with x(:,N,t+/-K).
-% Replace Ln back with L(:,n).
+% Replace xN, xNpK, xNmK back with x(:,N,t+/-K).
+% Replace LN, LNpK, LNmK back with L(:,n,t+/-K).
 DEqtn = sydney.mysymb2eqtn(DEqtn);
 
 end

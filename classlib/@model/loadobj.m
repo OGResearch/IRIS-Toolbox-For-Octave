@@ -130,7 +130,7 @@ if isempty(This.Autoexogenise)
     This.Autoexogenise = nan(size(This.name));
 end
 
-% Replace L(N) with L(:,N) in full equations, `This.eqtnF`.
+% Replace `L(N)` and `L(:,N)` with `L(:,N,t)` in full equations.
 for i = 1 : length(This.eqtnF)
     eqtn = This.eqtnF{i};
     if isempty(eqtn)
@@ -140,7 +140,8 @@ for i = 1 : length(This.eqtnF)
     if isFunc
         eqtn = func2str(eqtn);
     end
-    eqtn = regexprep(eqtn,'\<L\((\d+)\)','L(:,$1)');
+    eqtn = regexprep(eqtn,'\<L\((\d+)\)','L(:,$1,t)');
+    eqtn = regexprep(eqtn,'\<L\(:,(\d+)\)','L(:,$1,t)');
     This.eqtnF{i} = eqtn;
 end
 

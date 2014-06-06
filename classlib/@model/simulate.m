@@ -99,7 +99,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % -------------
 %
 % Time series in the output database, `S`, are are defined on the
-% simulation range, `RANGE`, plus include all necessary initial conditions,
+% simulation range, `Range`, plus include all necessary initial conditions,
 % i.e. lags of variables that occur in the model code. You can use the
 % option `'dboverlay='` to combine the output database with the input
 % database (i.e. to include a longer history of data in the simulated
@@ -355,8 +355,9 @@ for iLoop = 1 : nLoop
         if opt.deviation && opt.addsstate
             % Get steady state lines that will be added to simulated paths to evaluate
             % non-linear equations.
-            use.nonlinxbar = mytrendarray(This, ...
-                This.solutionid{2},0:use.npernonlin,false,iLoop);
+            isDelog = false;
+            use.nonlinxbar = mytrendarray(This,iLoop,isDelog, ...
+                This.solutionid{2},0:use.npernonlin);
         end
     end
     
@@ -376,7 +377,7 @@ for iLoop = 1 : nLoop
         if opt.contributions
             usecon = simulate.contributions(use,nPer,opt);
         end
-        use = simulate.findsegments(use);
+        use = simulate.findsegments(use);          
         [use,exitFlag,discr,addFact] = simulate.nonlinear(use,opt);
         if opt.contributions
             usecon.w(:,:,ne+2) = use.w - sum(usecon.w,3);

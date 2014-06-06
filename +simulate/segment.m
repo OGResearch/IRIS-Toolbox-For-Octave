@@ -114,7 +114,7 @@ end
 %**************************************************************************
     function doDiscrepancy()
         tt = 1 : S.npernonlin;
-        LL = real(S.Assign);
+        LL = S.TrendArray; 
         % Set up the vector of [xf;xb] and include initial condition.
         xx = [[nan(nf,1);S.a0],S.w(:,tt)];
         xx(nf+1:end,:) = S.U*xx(nf+1:end,:);

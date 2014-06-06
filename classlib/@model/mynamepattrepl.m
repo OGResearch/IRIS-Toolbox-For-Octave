@@ -35,17 +35,17 @@ end
 % % ... variables, shocks, parameters
 % @ ... time subscript
 % ? ... exogenous variables
-% ! ... variable id
+% ! ... name position
 
 % Replacements in full equations.
 for i = inx
     switch flNameType(i)
         case {1,2,3,4}
-            % %(:,@15,!).
+            % %(:,@+15,!5).
             ic = sprintf('%g',i);
             repl = ['%(:,!',ic,',@)'];
         case 5 % Exogenous variables.
-            % ?(@15,:).
+            % ?(!15,:).
             ic = sprintf('%g',i-offsetG);
             repl = ['?(!',ic,',:)'];
         otherwise

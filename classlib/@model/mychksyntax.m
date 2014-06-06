@@ -15,8 +15,8 @@ nt = size(This.occur,2)/nName;
 ne = sum(This.nametype == 3);
 
 x = rand(1,nName,nt);
-L = x(1,:,t);
 dx = zeros(1,nName,nt);
+L = x;
 ttrend = 0;
 g = zeros(sum(This.nametype == 5),1);
 

@@ -99,7 +99,8 @@ for iLoop = 1 : nLoop
         isSstate = false;
         if ~LikOpt.deviation
             id = find(This.nametype == 1);
-            S = mytrendarray(This,id,1:nPer,false,iLoop);
+            isDelog = false;
+            S = mytrendarray(This,iLoop,isDelog,id,1:nPer);
             isSstate = any(S(:) ~= 0);
             if isSstate
                 S = S.';

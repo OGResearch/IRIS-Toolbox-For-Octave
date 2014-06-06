@@ -1,4 +1,4 @@
-function X = mytrendarray(This,Id,TVec,Delog,iAlt)
+function X = mytrendarray(This,ILoop,IsDelog,Id,TVec)
 % mytrendarray  [Not a public function] Create array with steady state paths for all variables.
 %
 % Backend IRIS function.
@@ -7,12 +7,32 @@ function X = mytrendarray(This,Id,TVec,Delog,iAlt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-
-% Note that `iAlt` is allowed to be greater that `nAlt`.
 try
-    iAlt;
-catch %#ok<CTCH>
-    iAlt = Inf;
+    ILoop;
+catch
+    ILoop = Inf;
+end
+
+try
+    IsDelog;
+catch
+    IsDelog = true;
+end
+
+try
+    Id; %#ok<VUNUS>
+catch
+    Id = 1 : length(This.name);
+end
+
+try
+    TVec; %#ok<VUNUS>
+catch
+    nt = size(This.occur,2) / length(This.name);
+    t = This.tzero;
+    minT = 1 - t;
+    maxT = nt - t;
+    TVec = minT : maxT;
 end
 
 %--------------------------------------------------------------------------
@@ -29,11 +49,11 @@ shift = imagid(:);
 shift = shift(:,repeat);
 shift = shift + TVec(ones(1,nId),:);
 
-if isequal(iAlt,Inf)
+if isequal(ILoop,Inf)
     X = zeros(nId,nPer,nAlt);
-    for iAlt = 1 : nAlt
+    for ILoop = 1 : nAlt
         Xi = doOneTrendArray();
-        X(:,:,iAlt) = Xi;
+        X(:,:,ILoop) = Xi;
     end
 else
     X = doOneTrendArray();
@@ -44,10 +64,11 @@ end
 
 
 %**************************************************************************
+
+
     function X = doOneTrendArray()
-        
-            level = real(This.Assign(1,realid,min(iAlt,end)));
-            growth = imag(This.Assign(1,realid,min(iAlt,end)));
+            level = real(This.Assign(1,realid,min(ILoop,end)));
+            growth = imag(This.Assign(1,realid,min(ILoop,end)));
             
             % No imaginary part means zero growth for log variables.
             growth(logInx & growth == 0) = 1;
@@ -60,10 +81,10 @@ end
             growth = growth.';
             
             X = level(:,repeat) + shift.*growth(:,repeat);
-            if Delog
+            if IsDelog
                 X(logInx,:) = exp(X(logInx,:));
             end
-        
-    end % doOneTrendArray().
+    end % doOneTrendArray()
+
 
 end

@@ -87,7 +87,7 @@ doNonlinEqtn();
         
         % replaceFunc = @doReplace; %#ok<NASGU>
         for ii = find(This.nonlin)
-            eqtn = This.eqtnF{ii};
+            eqtnN = This.eqtnF{ii};
             
             % Convert fuction handle to char.
             doFunc2Char();
@@ -96,24 +96,24 @@ doNonlinEqtn();
             ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
             if true % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
-                eqtn = regexprep(eqtn,ptn,'${replaceFunc($1,$2)}');
+                eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else
                 eqtn = mosw.dregexprep(eqtn,ptn,@doReplace,[1,2]); %#ok<UNRCH>
             end
             
-            % Replace references to steady states.
-            eqtn = regexprep(eqtn, ...
-                '\<L\(:,(\d+),t([\+\-]\d+)?\)','L(:,$1)');
+            % Replace references to steady states, `L(:,15,t+5)` -> `L(15,t+5)`.
+            eqtnN = regexprep(eqtnN, ...
+                '\<L\(:,(\d+),t([\+\-]\d+)?\)','L($1,t$2)');
             
-            eqtn = strtrim(eqtn);
-            if isempty(eqtn)
+            eqtnN = strtrim(eqtnN);
+            if isempty(eqtnN)
                 continue
             end
             
             % Convert char to function handle.
-            eqtn = str2func(['@(y,xx,e,p,t,L) ',eqtn]);
+            eqtnN = str2func(['@(y,xx,e,p,t,L) ',eqtnN]);
             
-            This.eqtnN{ii} = eqtn;
+            This.eqtnN{ii} = eqtnN;
         end
         
         
@@ -154,12 +154,12 @@ doNonlinEqtn();
         
         function doFunc2Char()
             % Make sure `eqtn` is a text string, and remove function handle header.
-            if isa(eqtn,'function_handle')
-                eqtn = char(eqtn);
+            if isa(eqtnN,'function_handle')
+                eqtnN = char(eqtnN);
             end
-            eqtn = strtrim(eqtn);
-            if eqtn(1) == '@'
-                eqtn = regexprep(eqtn,'@\(.*?\)','');
+            eqtnN = strtrim(eqtnN);
+            if eqtnN(1) == '@'
+                eqtnN = regexprep(eqtnN,'@\(.*?\)','');
             end
         end % doFunc2Char
         

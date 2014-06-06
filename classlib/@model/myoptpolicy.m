@@ -135,21 +135,13 @@ for eq = first : LossPos
             dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
 
-        % Create human equations.
-        ptn = 'x(\d+)([pm]\d+)?';
+        % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
+        ptn = '([xL])(\d+)([pm]\d+)?';
         if true % ##### MOSW
             replFunc = @doReplaceNames; %#ok<NASGU>
-            dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2)}');
+            dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
         else
-            dEqtn = mosw.dregexprep(dEqtn,ptn,@doReplaceNames,[1,2]); %#ok<UNRCH>
-        end
-        
-        ptn = 'L(\d+)';
-        if true % ##### MOSW
-            dEqtn = regexprep(dEqtn,ptn,'&${name{sscanf($1,''%g'')}}');
-        else
-            dEqtn = mosw.dregexprep(dEqtn,ptn, ...
-                @(C1) ['&',name{sscanf(C1,'%g')}],1); %#ok<UNRCH>
+            dEqtn = mosw.dregexprep(dEqtn,ptn,@doReplaceNames,[1,2,3]); %#ok<UNRCH>
         end
         
         % Put together the derivative of the Lagrangian wrt to variable
@@ -192,15 +184,20 @@ end
 % Nested functions...
 
 
-        function C = doReplaceNames(C1,C2)
-            C = name{sscanf(C1,'%g')};
-            if isempty(C2)
+        function C = doReplaceNames(C1,C2,C3)
+            C = name{sscanf(C2,'%g')};
+            if strcmp(C1,'L')
+                % C1 is either 'x' or 'L'. 'L' means a sstate reference; add an '&' in
+                % front of the variable name.
+                C = ['&',C];
+            end
+            if isempty(C3)
                 return
             end
-            if C2(1) == 'p'
-                C = [C,'{+',C2(2:end),'}'];
-            elseif C2(1) == 'm'
-                C = [C,'{-',C2(2:end),'}'];
+            if C3(1) == 'p'
+                C = [C,'{+',C3(2:end),'}'];
+            elseif C3(1) == 'm'
+                C = [C,'{-',C3(2:end),'}'];
             end
         end
 

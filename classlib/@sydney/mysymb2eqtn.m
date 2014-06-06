@@ -23,19 +23,24 @@ end
 
 switch Mode
     case 'full'
-        Eqtn = regexprep(Eqtn,'\<x(\d+)p(\d+)\>(?!\()','x(:,$1,t+$2)');
-        Eqtn = regexprep(Eqtn,'\<x(\d+)m(\d+)\>(?!\()','x(:,$1,t-$2)');
-        Eqtn = regexprep(Eqtn,'\<x(\d+)\>(?!\()','x(:,$1,t)');
-        Eqtn = regexprep(Eqtn,'\<L(\d+)\>(?!\()','L(:,$1)');
-        Eqtn = regexprep(Eqtn,'\<g(\d+)\>(?!\()','g($1,:)');
+        Eqtn = regexprep(Eqtn, ...
+            '\<([xL])(\d+)p(\d+)\>(?!\()', '$1(:,$2,t+$3)' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<([xL])(\d+)m(\d+)\>(?!\()', '$1(:,$2,t-$3)' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<([xL])(\d+)\>(?!\()', '$1(:,$2,t)' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<g(\d+)\>(?!\()', 'g($1,:)' );
     case 'sstate'
         Eqtn = regexprep(Eqtn, ...
-            '\<x(\d+)p(\d+)\>(?!\()','(%($1)+$2*dx($1))');
+            '\<[xL](\d+)p(\d+)\>(?!\()', '(%($1)+$2*dx($1))' );
         Eqtn = regexprep(Eqtn, ...
-            '\<x(\d+)m(\d+)\>(?!\()','(%($1)-$2*dx($1))');
-        Eqtn = regexprep(Eqtn,'\<x(\d+)\>(?!\()','(%($1))');
-        Eqtn = regexprep(Eqtn,'\<L(\d+)\>(?!\()','(%($1))');
-        Eqtn = regexprep(Eqtn,'\<g(\d+)\>(?!\()','NaN');
+            '\<[xL](\d+)m(\d+)\>(?!\()', '(%($1)-$2*dx($1))' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<[xL](\d+)\>(?!\()', '(%($1))' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<g(\d+)\>(?!\()', 'NaN' );
+        
         for i = find(IsLog(:).')
             ptn = ['(%(',sprintf('%g',i)];
             rpl = ['exp(%(',sprintf('%g',i)];

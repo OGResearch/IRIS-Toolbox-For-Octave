@@ -53,6 +53,7 @@ S.U = This.solution{7}(:,:,IAlt);
 S.Y = []; 
 if S.isNonlin
     S.Y = This.solution{8}(:,:,IAlt);
+    S.TrendArray = mytrendarray(This,IAlt);
 end
 
 % Solution expansion matrices.

@@ -109,12 +109,13 @@ for iAlt = SelAlt
         if ~Opt.linear
             % Steady-state levels needed in doTransition() and
             % doMeasurement().
-            ssY = mytrendarray(This, ...
-                find(This.nametype == 1),0,false,iAlt);
-            ssXf = mytrendarray(This, ...
-                This.solutionid{2}(1:nfKeep),[-1,0],false,iAlt);
-            ssXb = mytrendarray(This, ...
-                This.solutionid{2}(nfKeep+1:end),[-1,0],false,iAlt);
+            isDelog = false;
+            ssY = mytrendarray(This,iAlt,isDelog, ...
+                find(This.nametype == 1),0);
+            ssXf = mytrendarray(This,iAlt,isDelog, ...
+                This.solutionid{2}(1:nfKeep),[-1,0]);
+            ssXb = mytrendarray(This,iAlt,isDelog, ...
+                This.solutionid{2}(nfKeep+1:end),[-1,0]);
         end
         
         % Solution matrices

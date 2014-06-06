@@ -25,7 +25,7 @@ end
 ny = sum(This.nametype == 1);
 nx = length(This.solutionid{2});
 nPer = length(Range);
-nEqtn = length(This.eqtnN);
+nEqtn = length(This.eqtn);
 
 % Anchors for exogenised measurement variables, and conditioning measurement
 % variables.

@@ -58,12 +58,12 @@ end
         end
         postSample = nT - This.tzero;
         nameYXEPos = find(This.nametype < 4);
-        delog = true;
+        isDelog = true;
         iiAlt = Inf;
         for t = 1 : 2
             tVec = t + (-preSample : postSample);
-            X = mytrendarray(This,nameYXEPos,tVec,delog,iiAlt);
-            L = X(:,preSample+1,:);
+            X = mytrendarray(This,iiAlt,isDelog,nameYXEPos,tVec);
+            L = X;
             Discr(:,t,:) = lhsmrhs(This,X,L);
         end
     end % doFullEqtn()

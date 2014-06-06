@@ -91,7 +91,8 @@ end
             init = init(1,:,ones(1,nt));
             h = ones(1,nName,nt);
         else
-            init = mytrendarray(This,1:nName,tVec,false,IAlt);
+            isDelog = false;
+            init = mytrendarray(This,IAlt,isDelog,1:nName,tVec);
             init = shiftdim(init,-1);
             h = abs(This.epsilon(1))*max([init;ones(1,nName,nt)],[],1);
         end
@@ -174,15 +175,12 @@ end
             end
             x(1,This.nametype == 4) = real(assign(This.nametype == 4));
             x = x(1,:,ones(1,nt));
-            % References to steady-state levels and growth rates.
+            % References to steady-state levels.
             L = [];
         else
-            minT = 1 - t;
-            maxT = nt - t;
-            tVec = minT : maxT;
-            x = mytrendarray(This,1:nName,tVec,true,IAlt);
+            x = mytrendarray(This,IAlt);
             x = shiftdim(x,-1);
-            % References to steady-state levels and growth rates.
+            % References to steady-state levels.
             L = x;
         end
    
@@ -203,7 +201,7 @@ end
             
             % Evaluate all derivatives of the equation at once.
             value = This.deqtnF{iiEq}(x,t,L);
-            
+
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
             D.f(iiEq,inx) = value;
