@@ -1,0 +1,203 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbload">dbload</h2>
+<div class="headline">Create database by loading CSV file</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>D = dbload(FName, ...)
+D = dbload(D,FName, ...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>FName</code> [ char | cellstr ] - Name of the Input CSV data file or a cell array of CSV file names that will be combined.</p></li>
+<li><p><code>D</code> [ struct ] - An existing database (struct) to which the new entries from the input CSV data file entries will be added.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>D</code> [ struct ] - Database created from the input CSV file(s).</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'case='</code> [ <code>'lower'</code> | <code>'upper'</code> | <em>empty</em> ] - Change case of variable names.</p></li>
+<li><p><code>'commentRow='</code> [ char | cellstr | <em><code>{'comment','comments'}</code></em> ] - Label at the start of row that will be used to create tseries object comments.</p></li>
+<li><p><code>'convert='</code> [ numeric | cellstr | <em>empty</em> ] - If non-empty, frequency conversion will be run on all time series loaded; specify the target frequency (numeric) or a cell array of input arguments and options in a call to the function <code>convert</code>.</p></li>
+<li><p><code>'dateFormat='</code> [ char | <em><code>'YYYYFP'</code></em> ] - Format of dates in first column.</p></li>
+<li><p><code>'delimiter='</code> [ char | <em><code>','</code></em> ] - Delimiter separating the individual values (cells) in the CSV file; if different from a comma, all occurences of the delimiter will replaced with commas -- note that this will also affect text in comments.</p></li>
+<li><p><code>'firstDateOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Read and parse only the first date string, and fill in the remaining dates assuming a range of consecutive dates.</p></li>
+<li><p><code>'freq='</code> [ <code>0</code> | <code>1</code> | <code>2</code> | <code>4</code> | <code>6</code> | <code>12</code> | <code>365</code> | <code>'daily'</code> | <em>empty</em> ] - Advise frequency of dates; if empty, frequency will be automatically recognised.</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBM'</code></em> ] - Letters representing frequency of dates in date column.</p></li>
+<li><p><code>'inputFormat='</code> [ <em><code>'auto'</code></em> | <code>'csv'</code> | <code>'xls'</code> ] - Format of input data file; <code>'auto'</code> means the format will be determined by the file extension.</p></li>
+<li><p><code>'nameRow='</code> [ char | numeric | <em><code>{'','Variables'}</code></em> ] - String, or cell array of possible strings, that is found at the beginning (in the first cell) of the row with variable names, or the line number at which the row with variable names appears (first row is numbered 1).</p></li>
+<li><p><code>'nameFunc='</code> [ cell | function_handle | <em>empty</em> ] - Function used to change or transform the variable names. If a cell array of function handles, each function will be applied in the given order.</p></li>
+<li><p><code>'nan='</code> [ char | <em><code>NaN</code></em> ] - String representing missing observations (case insensitive).</p></li>
+<li><p><code>'preProcess='</code> [ function_handle | cell | empty ] - Apply this function, or cell array of functions, to the raw text file before parsing the data.</p></li>
+<li><p><code>'skipRows='</code> [ char | cellstr | numeric | <em>empty</em> ] - Skip rows whose first cell matches the string or strings (regular expressions); or, skip a vector of row numbers.</p></li>
+<li><p><code>'userData='</code> [ char | <em><code>Inf</code></em> ] - Field name under which the database userdata loaded from the CSV file (if they exist) will be stored in the output database; <code>Inf</code> means the field name will be read from the CSV file (and will be thus identical to the originally saved database).</p></li>
+<li><p><code>'userDataField='</code> [ char | <em><code>'.'</code></em> ] - A leading character denoting userdata fields for individual time series; if empty, no userdata fields will be read in and created.</p></li>
+<li><p><code>'userDataFieldList='</code> [ cellstr | numeric | empty ] - List of row headers, or vector of row numbers, that will be included as user data in each time series.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Use the <code>'freq='</code> option whenever there is ambiguity in intepreting the date strings, and IRIS is not able to determine the frequency correctly (see Example).</p>
+<h5 id="structure-of-csv-database-files">Structure of CSV database files</h5>
+<p>The minimalist structure of a CSV database file has a leading row with variables names, a leading column with dates in the basic IRIS format, and individual columns with numeric data:</p>
+<pre><code>+---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |</code></pre>
+<p>You can add a comment row (must be placed before the data part, and start with a label 'Comment' in the first cell) that will also be read in and assigned as comments to the individual tseries objects created in the output database.</p>
+<pre><code>+---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+| Comment |  Output |  Prices |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |</code></pre>
+<p>You can use a different label in the first cell to denote a comment row; in that case you need to set the option <code>'commentRow='</code> accordingly.</p>
+<p>All CSV rows whose names start with a character specified in the option <code>'userdataField='</code> (a dot by default) will be added to output tseries objects as fields of their userdata.</p>
+<pre><code>+---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+| Comment |  Output |  Prices |
++---------+---------+---------+--
+| .Source |   Stat  |  IMFIFS |
++---------+---------+---------+--
+| .Update | 17Feb11 | 01Feb11 |
++---------+---------+---------+--
+| .Units  | Bil USD |  2010=1 |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |</code></pre>
+<h4 id="example">Example</h4>
+<p>Typical example of using the <code>'freq='</code> option is a quarterly database with dates represented by the corresponding months, such as a sequence 2000-01-01, 2000-04-01, 2000-07-01, 2000-10-01, etc. In this case, you can use the following options:</p>
+<pre><code>d = dbload(&#39;filename.csv&#39;,&#39;dateFormat&#39;,&#39;YYYY-MM-01&#39;,&#39;freq&#39;,4);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

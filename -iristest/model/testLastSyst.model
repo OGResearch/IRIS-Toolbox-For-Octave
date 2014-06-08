@@ -1,0 +1,13 @@
+!variables
+
+    x, y, z
+   
+!parameters
+
+    a, b, c
+    
+!equations
+
+    a*x = 0;
+    b*y = 0;
+    c*z = 0;

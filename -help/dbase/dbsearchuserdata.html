@@ -1,0 +1,153 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbsearchuserdata">dbsearchuserdata</h2>
+<div class="headline">Search database to find tseries by matching the content of their userdata fields</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[List,SubD] = dbsearchuserdata(D,Field1,Regexp1,Field2,Regexp2,...)
+[List,SubD] = dbsearchuserdata(D,Flag,Field1,Regexp1,Field2,Regexp2,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Input database whose tseries fields will be searched.</p></li>
+<li><p><code>Flag</code> [ <code>'-all'</code> | <code>'-any'</code> ] - Specifies if all conditions or any condition must be met for the series to pass the test; if not specified, <code>'-all'</code> is assumed.</p></li>
+<li><p><code>Field1</code>, <code>Field2</code>, ... [ char ] - Names of fields in the userdata struct.</p></li>
+<li><p><code>Regexp1</code>, <code>Regexp2</code>, ... [ char ] - Regular expressions against which the respective userdata fields will be matched.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>List</code> [ cellstr ] - Names of tseries that pass the test.</p></li>
+<li><p><code>Subd</code> [ struct ] - Sub-database with only those tseries that pass the test.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>For a successful match, the userdata must be a struct, and the tested fields must be text strings.</p>
+<p>Use an equal sign, <code>=</code>, after the name of the userdata fields in <code>Field1</code>, <code>Field2</code>, etc. to request a case-insensitive match, and an equal-shart sign, <code>=#</code>, to indiciate a case-sensitive match.</p>
+<h4 id="example">Example</h4>
+<pre><code>[list,dd] = dbsearchuserdata(d,&#39;.DESC=&#39;,&#39;Exchange rate&#39;,&#39;.SOURCE=#&#39;,&#39;IMF&#39;);</code></pre>
+<p>Each individual tseries object in the database <code>D</code> will be tested for two conditions:</p>
+<ul>
+<li><p>whether its user data is a struct including a field named <code>DESC</code>, and the field contains a string <code>'Exchange rate'</code> in it (case insensitive, e.g. <code>'eXcHaNgE rAtE'</code> will also be matched);</p></li>
+<li><p>whether its user data is a struct including a field named <code>SOURCE</code>, and the field contains a string <code>'IMF'</code> in it (case sensitive, e.g. <code>'Imf'</code> will not be matched).</p></li>
+</ul>
+<p>All tseries object that pass both of these conditions are returned in the <code>List</code> and the output database <code>D</code>.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,69 @@
+
+
+    \filetitle{VAR}{Create new, empty reduced-form VAR object}{VAR/VAR}
+
+	\paragraph{Syntax for plain VAR and VARX}
+ 
+ \begin{verbatim}
+ V = VAR(YNames)
+ V = VAR(YNames,'exogenous=',XNames)
+ \end{verbatim}
+ 
+ \paragraph{Syntax for panel VAR and VARX}
+ 
+ \begin{verbatim}
+ V = VAR(YNames,'groups=',GroupNames)
+ V = VAR(YNames,'exogenous=',XNames,'groups=',GroupNames)
+ \end{verbatim}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - New empty VAR object.
+ \item
+   \texttt{YNames} {[} cellstr \textbar{} char \textbar{}
+   function\_handle {]} - Names of endogenous variables.
+ \item
+   \texttt{XNames} {[} cellstr \textbar{} char \textbar{}
+   function\_handle {]} - Names of exogenous inputs.
+ \item
+   \texttt{GroupNames} {[} cellstr \textbar{} char \textbar{}
+   function\_handle {]} - Names of groups for panel VAR estimation.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'exogenous='} {[} cellstr \textbar{} \emph{empty} {]} - Names
+   of exogenous inputs; one of the names can be \texttt{!ttrend}, a
+   linear time trend, which will be created automatically each time input
+   data are required, and then included in the output database under the
+   name \texttt{ttrend}.
+ \item
+   \texttt{'groups='} {[} cellstr \textbar{} \emph{empty} {]} - Names of
+   groups for panel VAR estimation.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ This function creates a new empty VAR object. It is usually followed by
+ an \href{VAR/estimate}{\texttt{estimate}} command to estimate the VAR
+ parameters on the data.
+ 
+ \paragraph{Example}
+ 
+ To estimate a VAR, you first need to create an empty VAR object
+ specifying the variable names, and then run the
+ \href{VAR/estimate}{VAR/estimate} function on it, e.g.
+ 
+ \begin{verbatim}
+ v = VAR({'x','y','z'});
+ [v,d] = estimate(v,d,range);
+ \end{verbatim}
+ 
+ where the input database \texttt{d} ought to contain time series
+ \texttt{d.x}, \texttt{d.y}, \texttt{d.z}.
+
+

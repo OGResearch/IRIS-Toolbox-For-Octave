@@ -1,0 +1,60 @@
+
+
+    \filetitle{chksstate}{Check if equations hold for currently assigned steady-state values}{model/chksstate}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Flag,List] = chksstate(M,...)
+ [Flag,Discr,List] = chksstate(M,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+   if discrepancy between LHS and RHS is smaller than
+   \texttt{'tolerance='} in each equation.
+ \item
+   \texttt{Discr} {[} numeric {]} - Discrancy between LHS and RHS
+   evaluated for each equation at two consecutive times.
+ \item
+   \texttt{List} {[} cellstr {]} - List of equations in which the
+   discrepancy between LHS and RHS is greater than \texttt{'tolerance='}.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'error='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Throw an error if one or more equations do not hold.
+ \item
+   \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Refresh dynamic links before evaluating the equations.
+ \item
+   \texttt{'sstateEqtn='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - If \texttt{false}, the dynamic model
+   equations will be checked; if \texttt{true}, the steady-state versions
+   of the equations (wherever available) will be checked.
+ \item
+   \texttt{'tolerance='} {[} numeric \textbar{} \texttt{getrealsmall()}
+   {]} - Tolerance.
+ \item
+   \texttt{'warning='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   {]} - Display warnings produced by this function.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

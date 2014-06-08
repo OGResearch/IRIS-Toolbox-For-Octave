@@ -1,0 +1,181 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/graph">graph</h2>
+<div class="headline">Add graph to figure</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.graph(Cap,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Cap</code> [ char | cellstr | <code>@auto</code> ] - Title, or cell array with title and subtitle, displayed at the top of the graph; <code>@auto</code> means that the first comment from the first child <code>series</code> object will be used for the title.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'axesOptions='</code> [ cell | <em>empty</em> ] - (Inheritable) Options executed by calling <code>set</code> on the axes handle before running <code>'postProcess='</code>.</p></li>
+<li><p><code>'dateFormat='</code> [ char | <em><code>'YYYY:P'</code></em> ] - (Inheritable) Date format string, see help on <a href="../dates/dat2str.html"><code>dat2str</code></a>.</p></li>
+<li><p><code>'dateTick='</code> [ numeric | <em><code>Inf</code></em> ] - (Inheritable) Date tick spacing.</p></li>
+<li><p><code>'legend='</code> [ <em><code>false</code></em> | <code>true</code> ] - (Inheritable) Add legend to the graph.</p></li>
+<li><p><code>'legendLocation='</code> [ char | <em><code>'best'</code></em> | <code>'bottom'</code>] - (Inheritable) Location of the legend box; see help on <code>legend</code> for values available.</p></li>
+<li><p><code>'postProcess='</code> [ char | <em>empty</em> ] - (Inheritable) String with Matlab commands executed after the graph has been drawn and styled; see Description.</p></li>
+<li><p><code>'preProcess='</code> [ char | <em>empty</em> ] - (Inheritable) String with Matlab commands executed before the graph has been drawn and styled; see Description.</p></li>
+<li><p><code>'range='</code> [ numeric | <em><code>Inf</code></em> ] - (Inheritable) Graph range.</p></li>
+<li><p><code>'rhsAxesOptions='</code> [ cell | <em>empty</em> ] - (Inheritable) Options executed by calling <code>set</code> on the RHS axes handle before running <code>'postProcess='</code>.</p></li>
+<li><p><code>'style='</code> [ struct | <em>empty</em> ] - (Inheritable) Apply this style structure to the graph and its children; see help on <a href="../qreport/qstyle.html"><code>qstyle</code></a>.</p></li>
+<li><p><code>'tight='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable) Set the y-axis limits to the minimum and maximum of displayed data.</p></li>
+<li><p><code>'xLabel='</code> [ char | <em>empty</em> ] - Label the x-axis.</p></li>
+<li><p><code>'yLabel='</code> [ char | <em>empty</em> ] - Label the y-axis.</p></li>
+<li><p><code>'zeroLine='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inheritable) Add a horizontal zero line if zero is included on the y-axis.</p></li>
+</ul>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<p>The options <code>'preProcess='</code> and <code>'postProcess='</code> give you additional flexibility in customising the graphics style of the axes object. The values assigned to these options are expected to be strings with an executable Matlab command, or commands separated with semi-colons (as if typed on one line in the command window). The command can refer to the following variables:</p>
+<ul>
+<li><code>H</code> - a handle to the currently processed axes object.</li>
+<li><code>L</code> - a handle to the corresponding legend object; if no legend object exists for the axes <code>H</code>, <code>L</code> will be <code>NaN</code>.</li>
+</ul>
+<h4 id="example">Example</h4>
+<p>Create a one-page report with a chart in on the LHS and the legend moved to the RHS. Use the function <code>grfun.movetosubplot</code> in the option <code>'postProcess='</code>, referring to <code>L</code> (handle to the legend object associated with the respective axes object) to move the legend around.</p>
+<pre><code>% Create random data series.
+A = tseries(1:10,@rand);
+B = tseries(1:10,@rand);
+
+% Open a new report.
+x = report.new();
+
+% Open a new figure in the report with a 1-by-2 layout.
+x.figure(&#39;My Figure&#39;,&#39;subplot=&#39;,[1,2]);
+
+    % The graph will be placed in the LHS space.
+    % Use `grfun.movetosubplot` to move the legend to the RHS space.
+    x.graph(&#39;My Graph&#39;,&#39;legend=&#39;,true, ...
+        &#39;postProcess=&#39;,&#39;grfun.movetosubplot(L,1,2,2)&#39;);
+
+        x.series(&#39;Series A&#39;,A);
+        x.series(&#39;Series B&#39;,B);
+
+x.publish(&#39;test.pdf&#39;);
+open test.pdf;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

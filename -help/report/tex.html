@@ -1,0 +1,153 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/tex">tex</h2>
+<div class="headline">Include \LaTeX\ code or verbatim input in report</div>
+
+<h4 id="syntax-with-input-specified-in-comment-block">Syntax with input specified in comment block</h4>
+<pre><code>P.tex(Cap,...)
+
+%{
+Write text or \LaTeX\ code as a block comment
+right after the P.tex(...) command.
+%}</code></pre>
+<h4 id="syntax-with-input-specified-as-char-argument">Syntax with input specified as char argument</h4>
+<pre><code>P.tex(Cap,Code,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Cap</code> [ char ] - Caption displayed at the top of the text.</p></li>
+<li><p><code>Code</code> [ char ] -  code or text input that will be included in the report.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'centering='</code> [ <code>true</code> | <em><code>false</code></em> ] - (Inheritable from parent objects) Centre the  code or text input on the page.</p></li>
+<li><p><code>'footnote='</code> [ char | <em>empty</em> ] - Footnote at the tex block title; only shows if the title is non-empty.</p></li>
+<li><p><code>'separator='</code> [ char | <em><code>'\medskip\par'</code></em> ] - (Inheritable from parent objects) LaTeX commands that will be inserted after the text.</p></li>
+<li><p><code>'verbatim='</code> [ <code>true</code> | <em><code>false</code></em> ] - If true the text will be typeset verbatim in monospaced font; if false the text will be treated as <br />code included in the report.</p></li>
+</ul>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

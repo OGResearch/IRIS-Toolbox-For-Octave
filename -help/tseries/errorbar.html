@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/errorbar">errorbar</h2>
+<div class="headline">Line plot with error bars</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[LL,EE,Range] = errorbar(X,B,...)
+[LL,EE,Range] = errorbar(Range,X,B,...)
+[LL,EE,Range] = errorbar(AA,Range,X,B,...)
+[LL,EE,Range] = errorbar(X,Lo,Hi,...)
+[LL,EE,Range] = errorbar(Range,X,Lo,Hi,...)
+[LL,EE,Range] = errorbar(AA,Range,X,Lo,Hi,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>AA</code> [ numeric ] - Handle to axes in which the graph will be plotted; if not specified, the current axes will used.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range; if not specified the entire range of the input tseries object will be plotted.</p></li>
+<li><p><code>X</code> [ tseries ] - Tseries object whose data will be plotted as a line graph.</p></li>
+<li><p><code>B</code> [ tseries ] - Width of the bands that will be plotted around the lines.</p></li>
+<li><p><code>Lo</code> [ tseries ] - Width of the band below the line.</p></li>
+<li><p><code>Hi</code> [ tseries ] - Width of the band above the line.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>LL</code> [ numeric ] - Handles to lines plotted.</p></li>
+<li><p><code>EE</code> [ numeric ] - Handles to error bars plotted.</p></li>
+<li><p><code>Range</code> [ numeric ] - Actually plotted date range.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'dateformat='</code> [ char | <em>irisget('plotdateformat')</em> ] - Date format for the tick marks on the x-axis.</p></li>
+<li><p><code>'datetick='</code> [ numeric | <em><code>Inf</code></em> ] - Vector of dates locating tick marks on the x-axis; Inf means they will be created automatically.</p></li>
+<li><p><code>'relative='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>true</code>, the data for the lower and upper bounds are relative to the centre, i.e. the bounds will be added to the centre (in this case, <code>Lo</code> must be negative numbers and <code>Hi</code> must be positive numbers). If <code>false</code>, the bounds are absolute data (in this case <code>Lo</code> must be lower than <code>X</code>, and <code>Hi</code> must be higher than <code>X</code>).</p></li>
+</ul>
+<p>See help on built-in <code>plot</code> function for other options available.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

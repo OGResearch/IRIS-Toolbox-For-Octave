@@ -1,0 +1,55 @@
+
+
+    \filetitle{assign}{Manually assign system matrices to VAR object}{VAR/assign}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ V = assign(V,A,K,J,Omg)
+ V = assign(V,A,K,J,Omg,Dates)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object with variable names.
+ \item
+   \texttt{A} {[} numeric {]} - Transition matrices; see Description.
+ \item
+   \texttt{K} {[} numeric \textbar{} empty {]} - Constant vector or
+   matrix; if empty, the constant vector will be set to zeros, and will
+   not be included in the number of free parameters.
+ \item
+   \texttt{J} {[} numeric \textbar{} empty {]} - Coefficient matrix in
+   front exogenous inputs; if empty the matrix will be set to zeros.
+ \item
+   \texttt{Omg} {[} numeric {]} - Covariance matrix of forecast errors
+   (reduced-form residuals).
+ \item
+   \texttt{Dates} {[} numeric {]} - Vector of dates of (hypothetical)
+   fitted observations; may be omitted.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object with system matrices assigned.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ To assign matrices for a p-th order VAR, stack the transition matrices
+ for individual lags horizontally,
+ 
+ \begin{verbatim}
+ A = [A1,...,Ap]
+ \end{verbatim}
+ 
+ where \texttt{A1} is the coefficient matrix on the first lag, and
+ \texttt{Ap} is the coefficient matrix on the last, p-th, lag.
+ 
+ \paragraph{Example}
+
+

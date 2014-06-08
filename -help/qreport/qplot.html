@@ -1,0 +1,167 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="qreport/qplot">qplot</h2>
+<div class="headline">Quick report</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[FF,AA,PDb] = qplot(QFile,D,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>QFile</code> [ char ] - Name of the q-file that defines the contents of the individual graphs.</p></li>
+<li><p><code>D</code> [ struct ] - Database with input data.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>FF</code> [ numeric ] - Handles to figures created by <code>qplot</code>.</p></li>
+<li><p><code>AA</code> [ cell ] - Handles to axes created by <code>qplot</code>.</p></li>
+<li><p><code>PDb</code> [ struct ] - Database with actually plotted series.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'addClick='</code> [ <em><code>true</code></em> | <code>false</code> ] - Make axes expand in a new graphics figure upon mouse click.</p></li>
+<li><p><code>'caption='</code> [ cellstr | @comment | <em>empty</em> ] - Strings that will be used for titles in the graphs that have no title in the q-file.</p></li>
+<li><p><code>'clear='</code> [ numeric | <em>empty</em> ] - Serial numbers of graphs (axes objects) that will not be displayed.</p></li>
+<li><p><code>'dbsave='</code> [ cellstr | <em>empty</em> ] - Options passed to <code>dbsave</code> when <code>'saveAs='</code> is used.</p></li>
+<li><p><code>'drawNow='</code> [ <code>true</code> | <em><code>false</code></em> ] - Call Matlab <code>drawnow</code> function upon completion of all figures.</p></li>
+<li><p><code>'grid='</code> [ <em><code>true</code></em> | <code>false</code> ] - Add grid lines to all graphs.</p></li>
+<li><p><code>'highlight='</code> [ numeric | cell | <em>empty</em> ] - Date range or ranges that will be highlighted.</p></li>
+<li><p><code>'interpreter='</code> [ <em><code>'latex'</code></em> | 'none' ] - Interpreter used in graph titles.</p></li>
+<li><p><code>'mark='</code> [ cellstr | <em>empty</em> ] - Marks that will be added to each legend entry to distinguish individual columns of multivariated tseries objects plotted.</p></li>
+<li><p><code>'overflow='</code> [ <code>true</code> | <em><code>false</code></em> ] - Open automatically a new figure window if the number of subplots exceeds the available total; <code>'overflow' = false</code> means an error will occur instead.</p></li>
+<li><p><code>'prefix='</code> [ char | <em><code>'P%g_'</code></em> ] - Prefix (a <code>sprintf</code> format string) that will be used to precede the name of each entry in the <code>PDb</code> database.</p></li>
+<li><p><code>'round='</code> [ numeric | <em><code>Inf</code></em> ] - Round the input data to this number of decimals before plotting.</p></li>
+<li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - File name under which the plotted data will be saved either in a CSV data file or a PDF; you can use the <code>'dbsave='</code> option to control the options used when saving CSV.</p></li>
+<li><p><code>'style='</code> [ struct | <em>empty</em> ] - Style structure that will be applied to all figures and their children created by the <code>qplot</code> function.</p></li>
+<li><p><code>'subplot='</code> [ <em>'auto'</em> | numeric ] - Default subplot division of figures, can be modified in the q-file.</p></li>
+<li><p><code>'sstate='</code> [ struct | model | <em>empty</em> ] - Database or model object from which the steady-state values referenced to in the quick-report file will be taken.</p></li>
+<li><p><code>'style='</code> [ struct | <em>empty</em> ] - Style structure that will be applied to all created figures upon completion.</p></li>
+<li><p><code>'transform='</code> [ function_handle | <em>empty</em> ] - Function that will be used to trans</p></li>
+<li><p><code>'tight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Make the y-axis in each graph tight.</p></li>
+<li><p><code>'vLine='</code> [ numeric | <em>empty</em> ] - Dates at which vertical lines will be plotted.</p></li>
+<li><p><code>'zeroLine='</code> [ <code>true</code> | <em><code>false</code></em> ] - Add a horizontal zero line to graphs whose y-axis includes zero.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

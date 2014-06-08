@@ -1,0 +1,60 @@
+
+
+    \filetitle{area}{Area graph for tseries objects}{tseries/area}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [H,Range] = area(X,...)
+ [H,Range] = area(Range,X,...)
+ [H,Range] = area(Ax,Range,X,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Ax} {[} handle \textbar{} numeric {]} - Handle to axes in
+   which the graph will be plotted; if not specified, the current axes
+   will used.
+ \item
+   \texttt{Range} {[} numeric {]} - Date range; if not specified the
+   entire range of the input tseries object will be plotted.
+ \item
+   \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+   be ploted as an area graph.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{H} {[} handle \textbar{} numeric {]} - Handles to areas
+   plotted.
+ \item
+   \texttt{Range} {[} numeric {]} - Actually plotted date range.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateFormat='} {[} char \textbar{}
+   \emph{\texttt{irisget('plotDateFormat')}} {]} - Date format for the
+   tick marks on the x-axis.
+ \item
+   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+   Vector of dates locating tick marks on the x-axis; Inf means they will
+   be created automatically.
+ \item
+   \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Make the y-axis tight.
+ \end{itemize}
+ 
+ See help on built-in \texttt{area} function for other options available.
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

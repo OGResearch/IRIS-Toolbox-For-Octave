@@ -1,0 +1,85 @@
+
+
+    \filetitle{filter}{Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given}{FAVAR/filter}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [A,D,CC,F,U,E] = filter(A,D,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{A} {[} FAVAR {]} - Estimated FAVAR object.
+ \item
+   \texttt{D} {[} struct \textbar{} tseries {]} - Input database or
+   tseries object with the FAVAR observables.
+ \item
+   \texttt{Range} {[} numeric {]} - Filter date range.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{A} {[} FAVAR {]} - FAVAR object.
+ \item
+   \texttt{D} {[} struct {]} - Output database or tseries object with the
+   FAVAR observables.
+ \item
+   \texttt{CC} {[} struct \textbar{} tseries {]} - Re-estimated common
+   components in the observables.
+ \item
+   \texttt{F} {[} tseries {]} - Re-estimated common factors.
+ \item
+   \texttt{U} {[} tseries {]} - Re-estimated idiosyncratic residuals.
+ \item
+   \texttt{E} {[} tseries {]} - Re-estimated structural residuals.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'cross='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+   \textbar{} numeric {]} - Run the filter with the off-diagonal elements
+   in the covariance matrix of idiosyncratic residuals; if false all
+   cross-covariances are reset to zero; if a number between zero and one,
+   all cross-covariances are multiplied by that number.
+ \item
+   \texttt{'invFunc='} {[} \emph{\texttt{'auto'}} \textbar{}
+   function\_handle {]} - Inversion method for the FMSE matrices.
+ \item
+   \texttt{'meanOnly='} {[} \texttt{true} \textbar{}
+   \emph{\texttt{false}} {]} - Return only mean data, i.e.~point
+   estimates.
+ \item
+   \texttt{'persist='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - If \texttt{filter} or \texttt{forecast} is used with
+   \texttt{'persist='} set to true for the first time, the forecast MSE
+   matrices and their inverses will be stored; subsequent calls of the
+   \texttt{filter} or \texttt{forecast} functions will re-use these
+   matrices until \texttt{filter} or \texttt{forecast} is called.
+ \item
+   \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
+   \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
+   data.
+ \item
+   \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+   Numerical tolerance under which two FMSE matrices computed in two
+   consecutive periods will be treated as equal and their inversions will
+   be re-used, not re-computed.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ It is the user's responsibility to make sure that \texttt{filter} and
+ \texttt{forecast} called with \texttt{'persist='} set to true are valid,
+ i.e.~that the previously computed FMSE matrices can be really re-used in
+ the current run.
+ 
+ \paragraph{Example}
+
+

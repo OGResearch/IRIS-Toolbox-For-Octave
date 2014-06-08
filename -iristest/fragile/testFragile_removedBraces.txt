@@ -1,0 +1,10 @@
+abcdefghijklmnopqrstuvwxyz 012345456789 ( (xxx) ) abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 ( [xxx] ) abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 [ [xxx] ] abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 [ (xxx) ] abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 [  ] abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789  abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789  abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789  abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 ' (xxx) ' abcdefghijklmnopqrstuvwxyz 012345456789
+abcdefghijklmnopqrstuvwxyz 012345456789 " %xxx% " abcdefghijklmnopqrstuvwxyz 012345456789

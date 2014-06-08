@@ -1,0 +1,167 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="FAVAR/get">get</h2>
+<div class="headline">Query model object properties</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Ans = get(A,Query)
+[Ans,Ans,...] = get(A,Query,Query,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>A</code> [ FAVAR ] - FAVAR object.</p></li>
+<li><p><code>Query</code> [ char ] - Query to the FAVAR object.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Ans</code> [ ... ] - Answer to the query.</li>
+</ul>
+<h4 id="valid-queries-to-favar-objects">Valid queries to FAVAR objects</h4>
+<h5 id="system-matrices">System matrices</h5>
+<ul>
+<li><p><code>'A*'</code> Returns [ numeric ] the transition matrix of the underlying VAR system on factors.</p></li>
+<li><p><code>'B'</code> Returns [ numeric ] tne matrix mapping the impact of structural residuals on the factors in the underlying VAR.</p></li>
+<li><p><code>'C'</code> Returns [ numeric ] the matrix mapping the factors into the observables.</p></li>
+<li><p><code>'Omega'</code> Returns [ numeric ] the reduced-form covariance matrix of the residuals in the underlying VAR.</p></li>
+<li><p><code>'Sigma'</code> Returns [ numeric ] the covariance matrix of idiosyncratic shocks.</p></li>
+</ul>
+<h5 id="underlying-var">Underlying VAR</h5>
+<ul>
+<li><code>'VAR'</code> Returns [ VAR ] a VAR object describing the factor dynamics.</li>
+</ul>
+<h5 id="eigenvalues-and-singular-values">Eigenvalues and singular values</h5>
+<ul>
+<li><p><code>'eig'</code> Returns [ numeric ] the vector of eigenvalues of the underlying VAR.</p></li>
+<li><p><code>'sing'</code> Returns [ numeric ] the vector of singular values from the principal component estimation step.</p></li>
+</ul>
+<h5 id="observables-and-factors">Observables and factors</h5>
+<ul>
+<li><p><code>'mean'</code> Returns [ numeric ] the estimated mean of the observables used to standardise the input data.</p></li>
+<li><p><code>'std'</code> Returns [ numeric ] the estimated std deviations of the observables used to standardise the input data.</p></li>
+<li><p><code>'ny'</code> Returns [ numeric ] the number of observables.</p></li>
+<li><p><code>'nx'</code> Returns [ numeric ] the number of factors.</p></li>
+<li><p><code>'yList'</code> Returns [ cellstr ] the list of the names of observables.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

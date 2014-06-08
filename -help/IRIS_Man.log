@@ -1,0 +1,3766 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.6.2)  2 JUN 2014 21:03
+entering extended mode
+**IRIS_Man.tex
+(C:\IRIS_Tbx\-help\IRIS_Man.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2013-05-26, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2013-05-26, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
+(C:\MiKTeX\tex\latex\base\article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(C:\MiKTeX\tex\latex\base\fleqn.clo
+File: fleqn.clo 1998/08/17 v1.1c Standard LaTeX option (flush left equations)
+\mathindent=\dimen102
+) (C:\MiKTeX\tex\latex\base\size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen103
+)
+(C:\MiKTeX\tex\latex\base\fontenc.sty
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+ (C:\MiKTeX\tex\latex\base\t1enc.def
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+(C:\MiKTeX\tex\latex\concmath\concmath.sty
+Package: concmath 1999/03/10 v2.0b LaTeX package for Concrete math fonts
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 43.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ccr/m/n on input line 43.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/m/n on input line 43.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 44.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ccm/m/it on input line 44.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ccm/m/it on input line 44.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 45.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ccsy/m/n on input line 45.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ccsy/m/n on input line 45.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 46.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ccex/m/n on input line 46.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ccex/m/n on input line 46.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/ccr/m/n --> OT1/ccr/bx/n on input line 47.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/ccm/m/it --> OML/ccm/b/it on input line 48.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/ccsy/m/n --> OMS/ccsy/b/n on input line 49.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 53.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/bx/n on input line 53.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/bx/n on input line 53.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 54.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ccr/m/it on input line 54.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ccr/m/it on input line 54.
+)
+(C:\MiKTeX\tex\latex\sectsty\sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+)
+(C:\MiKTeX\tex\latex\amsmath\amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(C:\MiKTeX\tex\latex\amsmath\amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(C:\MiKTeX\tex\latex\amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks14
+\ex@=\dimen104
+))
+(C:\MiKTeX\tex\latex\amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen105
+)
+(C:\MiKTeX\tex\latex\amsmath\amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen106
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks15
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks16
+\eqnshift@=\dimen107
+\alignsep@=\dimen108
+\tagshift@=\dimen109
+\tagwidth@=\dimen110
+\totwidth@=\dimen111
+\lineht@=\dimen112
+\@envbody=\toks17
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(C:\MiKTeX\tex\latex\graphics\color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+ (C:\MiKTeX\tex\latex\00miktex\color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+ (C:\MiKTeX\tex\latex\pdftex-def\pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(C:\MiKTeX\tex\generic\oberdiek\infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(C:\MiKTeX\tex\generic\oberdiek\ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count99
+))
+(C:\MiKTeX\tex\latex\geometry\geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(C:\MiKTeX\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(C:\MiKTeX\tex\generic\oberdiek\ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(C:\MiKTeX\tex\generic\oberdiek\ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(C:\MiKTeX\tex\generic\ifxetex\ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count100
+\Gm@cntv=\count101
+\c@Gm@tempcnt=\count102
+\Gm@bindingoffset=\dimen113
+\Gm@wd@mp=\dimen114
+\Gm@odd@mp=\dimen115
+\Gm@even@mp=\dimen116
+\Gm@layoutwidth=\dimen117
+\Gm@layoutheight=\dimen118
+\Gm@layouthoffset=\dimen119
+\Gm@layoutvoffset=\dimen120
+\Gm@dimlist=\toks20
+
+(C:\MiKTeX\tex\latex\geometry\geometry.cfg))
+(C:\MiKTeX\tex\latex\inconsolata\inconsolata.sty
+Package: inconsolata 2013/06/09 zi4a
+
+(C:\MiKTeX\tex\latex\base\textcomp.sty
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
+ (C:\MiKTeX\tex\latex\base\ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 266.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 311.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 312.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 313.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 314.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 315.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 316.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 317.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 318.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 319.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 320.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 321.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 322.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 323.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 324.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 325.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 326.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 327.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 328.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 329.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 330.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 331.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 332.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 333.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 334.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 335.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 336.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 337.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 338.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 339.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
+)
+\zifour@ocount=\count103
+)
+(C:\MiKTeX\tex\latex\hyperref\hyperref.sty
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+
+(C:\MiKTeX\tex\generic\oberdiek\hobsub-hyperref.sty
+Package: hobsub-hyperref 2012/04/25 v1.12 Bundle oberdiek, subset hyperref (HO)
+
+
+(C:\MiKTeX\tex\generic\oberdiek\hobsub-generic.sty
+Package: hobsub-generic 2012/04/25 v1.12 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/04/25 v1.12 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2011/06/24 v1.1 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+(C:\MiKTeX\tex\latex\oberdiek\auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
+(C:\MiKTeX\tex\latex\oberdiek\kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen121
+\Hy@linkcounter=\count104
+\Hy@pagecounter=\count105
+
+(C:\MiKTeX\tex\latex\hyperref\pd1enc.def
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count106
+
+(C:\MiKTeX\tex\latex\00miktex\hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 4319.
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4688.
+\c@Hy@tempcnt=\count107
+ (C:\MiKTeX\tex\latex\url\url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen122
+\Fld@menulength=\count108
+\Field@Width=\dimen123
+\Fld@charsize=\dimen124
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring ON on input line 6313.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
+\Hy@abspage=\count109
+\c@Item=\count110
+\c@Hfootnote=\count111
+)
+
+Package hyperref Message: Driver: hpdftex.
+
+(C:\MiKTeX\tex\latex\hyperref\hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count112
+\c@bookmark@seq@number=\count113
+
+(C:\MiKTeX\tex\latex\oberdiek\rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip46
+)
+(C:\MiKTeX\tex\latex\oberdiek\bookmark.sty
+Package: bookmark 2011/12/02 v1.24 PDF bookmarks (HO)
+
+(C:\MiKTeX\tex\latex\oberdiek\bkm-pdftex.def
+File: bkm-pdftex.def 2011/12/02 v1.24 bookmark driver for pdfTeX (HO)
+\BKM@id=\count114
+))
+(C:\MiKTeX\tex\latex\fancyvrb\fancyvrb.sty
+Package: fancyvrb 2008/02/07
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+\FV@CodeLineNo=\count115
+\FV@InFile=\read1
+\FV@TabBox=\box28
+\c@FancyVerbLine=\count116
+\FV@StepNumber=\count117
+\FV@OutFile=\write3
+) (C:\IRIS_Tbx\-help\IRIS_Man.sty)
+No file IRIS_Man.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 107.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 107.
+
+(C:\MiKTeX\tex\latex\base\ts1cmr.fd
+File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Try loading font information for T1+ccr on input line 107.
+ (C:\MiKTeX\tex\latex\ccfonts\t1ccr.fd
+File: t1ccr.fd 1999/11/22 v1.0a (WaS)
+)
+(C:\MiKTeX\tex\context\base\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count118
+\scratchdimen=\dimen125
+\scratchbox=\box29
+\nofMPsegments=\count119
+\nofMParguments=\count120
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count121
+\MPscratchDim=\dimen126
+\MPnumerator=\count122
+\makeMPintoPDFobject=\count123
+\everyMPtoPDFconversion=\toks22
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: letterpaper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(92.14519pt, 430.00462pt, 92.14519pt)
+* v-part:(T,H,B)=(95.39737pt, 556.47656pt, 143.09605pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=430.00462pt
+* \textheight=556.47656pt
+* \oddsidemargin=19.8752pt
+* \evensidemargin=19.8752pt
+* \topmargin=-13.87262pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(C:\MiKTeX\tex\latex\upquote\upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+\AtBeginShipoutBox=\box30
+Package hyperref Info: Link coloring ON on input line 107.
+
+(C:\MiKTeX\tex\latex\hyperref\nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(C:\MiKTeX\tex\generic\oberdiek\gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count124
+)
+LaTeX Info: Redefining \ref on input line 107.
+LaTeX Info: Redefining \pageref on input line 107.
+LaTeX Info: Redefining \nameref on input line 107.
+LaTeX Font Info:    Try loading font information for OT1+ccr on input line 115.
+
+
+(C:\MiKTeX\tex\latex\concmath\ot1ccr.fd
+File: ot1ccr.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Try loading font information for OML+ccm on input line 115.
+
+
+(C:\MiKTeX\tex\latex\concmath\omlccm.fd
+File: omlccm.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Try loading font information for OMS+ccsy on input line 115
+.
+
+(C:\MiKTeX\tex\latex\concmath\omsccsy.fd
+File: omsccsy.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Try loading font information for OMX+ccex on input line 115
+.
+
+(C:\MiKTeX\tex\latex\concmath\omxccex.fd
+File: omxccex.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <5> on input line 115.
+LaTeX Font Info:    Try loading font information for TS1+ccr on input line 115.
+
+
+(C:\MiKTeX\tex\latex\ccfonts\ts1ccr.fd
+File: ts1ccr.fd 1999/11/22 v1.0a (WaS)
+)
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <12> on input line 115.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <8> on input line 115.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <6> on input line 115.
+ [1
+
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <10> on input line 121.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <7> on input line 121.
+ (C:\IRIS_Tbx\-help\Licence.tex) [2
+
+]
+(C:\IRIS_Tbx\-help\Preface.tex
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 3.
+LaTeX Font Info:    Try loading font information for T1+zi4 on input line 9.
+ (C:\MiKTeX\tex\latex\inconsolata\t1zi4.fd
+File: t1zi4.fd 2013/06/09 T1/zi4 (Inconsolata)
+))
+(C:\IRIS_Tbx\-help\IRIS_Solutions_Team.tex) [3
+
+]
+
+Package hyperref Warning: old toc file detected, not used; run LaTeX again.
+
+\tf@toc=\write4
+[4
+
+] (C:\IRIS_Tbx\-help\Contents.tex (C:\IRIS_Tbx\-help\Contents/sessions.tex
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 1.
+)
+[5
+
+
+
+] (C:\IRIS_Tbx\-help\setup/Contents.tex
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <10> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 4.
+ [6
+
+
+]
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <8> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 62.
+
+
+LaTeX Warning: Reference `config/Contents' on page 7 undefined on input line 62
+.
+
+) [7] (C:\IRIS_Tbx\-help\config/Contents.tex
+
+LaTeX Warning: Reference `config/irisstartup' on page 8 undefined on input line
+ 25.
+
+
+LaTeX Warning: Reference `config/irisfinish' on page 8 undefined on input line 
+28.
+
+
+LaTeX Warning: Reference `config/iriscleanup' on page 8 undefined on input line
+ 31.
+
+
+LaTeX Warning: Reference `config/irisget' on page 8 undefined on input line 39.
+
+
+
+LaTeX Warning: Reference `config/irisman' on page 8 undefined on input line 42.
+
+
+
+LaTeX Warning: Reference `config/irisroot' on page 8 undefined on input line 45
+.
+
+
+LaTeX Warning: Reference `config/irisrequired' on page 8 undefined on input lin
+e 47.
+
+
+LaTeX Warning: Reference `config/irisversion' on page 8 undefined on input line
+ 50.
+
+
+LaTeX Warning: Reference `config/irisset' on page 8 undefined on input line 58.
+
+
+
+LaTeX Warning: Reference `config/irisreset' on page 8 undefined on input line 6
+1.
+
+
+LaTeX Warning: Reference `config/irisuserconfighelp' on page 8 undefined on inp
+ut line 64.
+
+[8
+
+]) (C:\IRIS_Tbx\-help\config/iriscleanup.tex
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 3.
+LaTeX Font Info:    Try loading font information for T1+lcmss on input line 3.
+
+(C:\MiKTeX\tex\latex\base\t1lcmss.fd
+File: t1lcmss.fd 1998/06/12 v2.2e Standard LaTeX slide font definitions
+)
+
+LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <12> not available
+(Font)              size <13.82> substituted on input line 3.
+
+
+LaTeX Font Warning: Font shape `T1/lcmss/bx/n' in size <10> not available
+(Font)              size <13.82> substituted on input line 3.
+
+) (C:\IRIS_Tbx\-help\config/irisfinish.tex)
+(C:\IRIS_Tbx\-help\config/irisget.tex [9]
+
+LaTeX Warning: Reference `config/irisset' on page 10 undefined on input line 34
+.
+
+
+LaTeX Warning: Reference `config/irisstartup' on page 10 undefined on input lin
+e 41.
+
+LaTeX Font Info:    Try loading font information for TS1+zi4 on input line 59.
+(C:\MiKTeX\tex\latex\inconsolata\ts1zi4.fd
+File: ts1zi4.fd 2013/06/07 Fontinst v1.933 font definitions for TS1/zi4.
+) [10])
+(C:\IRIS_Tbx\-help\config/irisman.tex)
+(C:\IRIS_Tbx\-help\config/irisrequired.tex [11])
+(C:\IRIS_Tbx\-help\config/irisreset.tex) (C:\IRIS_Tbx\-help\config/irisroot.tex
+
+LaTeX Warning: Reference `config/irisget' on page 12 undefined on input line 22
+.
+
+[12]) (C:\IRIS_Tbx\-help\config/irisset.tex
+
+LaTeX Warning: Reference `dates/dat2str' on page 13 undefined on input line 34.
+
+
+
+Overfull \hbox (68.02316pt too wide) in paragraph at lines 51--60
+[]\T1/zi4/m/n/10 'plotDateFormat=' \T1/ccr/m/n/10 [ char | $[]$
+ []
+
+[13]) (C:\IRIS_Tbx\-help\config/irisstartup.tex
+
+LaTeX Warning: Reference `config/irisfinish' on page 14 undefined on input line
+ 17.
+
+[14]
+
+LaTeX Warning: Reference `config/irisstartup' on page 15 undefined on input lin
+e 21.
+
+
+LaTeX Warning: Reference `config/irisuserconfighelp' on page 15 undefined on in
+put line 34.
+
+) (C:\IRIS_Tbx\-help\config/irisuserconfighelp.tex
+
+LaTeX Warning: Reference `config/irisset' on page 15 undefined on input line 24
+.
+
+
+LaTeX Warning: Reference `config/irisset' on page 15 undefined on input line 26
+.
+
+
+LaTeX Warning: Reference `config/irisget' on page 15 undefined on input line 27
+.
+
+[15]
+
+LaTeX Warning: Reference `config/irisstartup' on page 16 undefined on input lin
+e 46.
+
+) (C:\IRIS_Tbx\-help\config/irisversion.tex [16]) [17]
+(C:\IRIS_Tbx\-help\gettinghelp/Contents.tex [18
+
+]) [19]
+(C:\IRIS_Tbx\-help\Contents/models.tex) [20
+
+
+]
+(C:\IRIS_Tbx\-help\modellang/Contents.tex
+
+LaTeX Warning: Reference `model/model' on page 21 undefined on input line 10.
+
+
+LaTeX Warning: Reference `setup/Contents' on page 21 undefined on input line 20
+.
+
+
+LaTeX Warning: Reference `modellang/transitionvariables' on page 21 undefined o
+n input line 26.
+
+
+LaTeX Warning: Reference `modellang/transitionshocks' on page 21 undefined on i
+nput line 29.
+
+
+LaTeX Warning: Reference `modellang/measurementvariables' on page 21 undefined 
+on input line 32.
+
+
+LaTeX Warning: Reference `modellang/measurementshocks' on page 21 undefined on 
+input line 35.
+
+
+LaTeX Warning: Reference `modellang/exogenousvariables' on page 21 undefined on
+ input line 38.
+
+
+LaTeX Warning: Reference `modellang/parameters' on page 21 undefined on input l
+ine 41.
+
+
+LaTeX Warning: Reference `modellang/autoexogenise' on page 21 undefined on inpu
+t line 44.
+
+
+LaTeX Warning: Reference `modellang/transitionequations' on page 21 undefined o
+n input line 52.
+
+
+LaTeX Warning: Reference `modellang/measurementequations' on page 21 undefined 
+on input line 55.
+
+
+LaTeX Warning: Reference `modellang/dtrends' on page 21 undefined on input line
+ 58.
+
+
+LaTeX Warning: Reference `modellang/links' on page 21 undefined on input line 6
+1.
+
+
+LaTeX Warning: Reference `modellang/logvariables' on page 21 undefined on input
+ line 68.
+
+
+LaTeX Warning: Reference `modellang/allbut' on page 21 undefined on input line 
+71.
+
+
+LaTeX Warning: Reference `modellang/regexpression' on page 21 undefined on inpu
+t line 74.
+
+[21
+
+
+]
+
+LaTeX Warning: Reference `modellang/sstateversion' on page 22 undefined on inpu
+t line 82.
+
+
+LaTeX Warning: Reference `modellang/ttrend' on page 22 undefined on input line 
+85.
+
+
+LaTeX Warning: Reference `modellang/laglead' on page 22 undefined on input line
+ 88.
+
+
+LaTeX Warning: Reference `modellang/sstateref' on page 22 undefined on input li
+ne 90.
+
+
+LaTeX Warning: Reference `modellang/exactnonlin' on page 22 undefined on input 
+line 93.
+
+
+LaTeX Warning: Reference `modellang/alias' on page 22 undefined on input line 9
+6.
+
+
+LaTeX Warning: Reference `modellang/min' on page 22 undefined on input line 106
+.
+
+
+LaTeX Warning: Reference `modellang/diff' on page 22 undefined on input line 10
+9.
+
+
+LaTeX Warning: Reference `modellang/dot' on page 22 undefined on input line 112
+.
+
+
+LaTeX Warning: Reference `modellang/difflog' on page 22 undefined on input line
+ 115.
+
+
+LaTeX Warning: Reference `modellang/movavg' on page 22 undefined on input line 
+118.
+
+
+LaTeX Warning: Reference `modellang/movprod' on page 22 undefined on input line
+ 121.
+
+
+LaTeX Warning: Reference `modellang/movsum' on page 22 undefined on input line 
+124.
+
+
+LaTeX Warning: Reference `modellang/substitutions' on page 22 undefined on inpu
+t line 131.
+
+
+LaTeX Warning: Reference `modellang/pseudosubs' on page 22 undefined on input l
+ine 134.
+
+
+LaTeX Warning: Reference `modellang/import' on page 22 undefined on input line 
+137.
+
+
+LaTeX Warning: Reference `modellang/export' on page 22 undefined on input line 
+140.
+
+
+LaTeX Warning: Reference `modellang/if' on page 22 undefined on input line 143.
+
+
+
+LaTeX Warning: Reference `modellang/switch' on page 22 undefined on input line 
+146.
+
+[22]
+
+LaTeX Warning: Reference `modellang/for' on page 23 undefined on input line 149
+.
+
+
+LaTeX Warning: Reference `modellang/linecomments' on page 23 undefined on input
+ line 152.
+
+
+LaTeX Warning: Reference `modellang/blockcomments' on page 23 undefined on inpu
+t line 154.
+
+[23]
+
+LaTeX Warning: Reference `modellang/min' on page 24 undefined on input line 210
+.
+
+[24]) (C:\IRIS_Tbx\-help\modellang/sstateversion.tex
+
+LaTeX Warning: Reference `model/sstate' on page 25 undefined on input line 15.
+
+) (C:\IRIS_Tbx\-help\modellang/allbut.tex [25]
+
+LaTeX Warning: Reference `modellang/logvariables' on page 26 undefined on input
+ line 16.
+
+) (C:\IRIS_Tbx\-help\modellang/autoexogenise.tex
+
+LaTeX Warning: Reference `plan/Contents' on page 26 undefined on input line 17.
+
+
+
+LaTeX Warning: Reference `plan/autoexogenise' on page 26 undefined on input lin
+e 18.
+
+) (C:\IRIS_Tbx\-help\modellang/dtrends.tex [26])
+(C:\IRIS_Tbx\-help\modellang/exogenousvariables.tex [27]
+
+LaTeX Warning: Reference `modellang/dtrends' on page 28 undefined on input line
+ 33.
+
+) (C:\IRIS_Tbx\-help\modellang/export.tex [28]
+
+LaTeX Warning: Reference `model/model' on page 29 undefined on input line 21.
+
+
+LaTeX Warning: Reference `model/export' on page 29 undefined on input line 24.
+
+) (C:\IRIS_Tbx\-help\modellang/for.tex [29]
+
+LaTeX Warning: Reference `modellang/pseudosubs' on page 30 undefined on input l
+ine 57.
+
+[30] [31] [32]) (C:\IRIS_Tbx\-help\modellang/if.tex [33]
+
+LaTeX Warning: Reference `model/model' on page 34 undefined on input line 50.
+
+[34]) (C:\IRIS_Tbx\-help\modellang/import.tex [35])
+(C:\IRIS_Tbx\-help\modellang/links.tex
+
+LaTeX Warning: Reference `model/solve' on page 36 undefined on input line 33.
+
+
+LaTeX Warning: Reference `model/sstate' on page 36 undefined on input line 34.
+
+
+LaTeX Warning: Reference `model/chksstate' on page 36 undefined on input line 3
+5.
+
+
+LaTeX Warning: Reference `model/estimate' on page 36 undefined on input line 36
+.
+
+
+LaTeX Warning: Reference `model/refresh' on page 36 undefined on input line 38.
+
+
+
+LaTeX Warning: Reference `modellang/dtrends' on page 36 undefined on input line
+ 41.
+
+
+LaTeX Warning: Reference `model/estimate' on page 36 undefined on input line 43
+.
+
+[36]) (C:\IRIS_Tbx\-help\modellang/logvariables.tex [37] [38])
+(C:\IRIS_Tbx\-help\modellang/measurementequations.tex [39])
+(C:\IRIS_Tbx\-help\modellang/measurementshocks.tex
+Overfull \hbox (6.52327pt too wide) in paragraph at lines 23--29
+\T1/ccr/m/n/10 The \T1/zi4/m/n/10 !measurement_shocks \T1/ccr/m/n/10 key-word s
+tarts a new dec-la-ra-tion block for mea-sure-ment shocks (i.e. shocks
+ []
+
+) (C:\IRIS_Tbx\-help\modellang/measurementvariables.tex [40]
+
+LaTeX Warning: Reference `modellang/logvariables' on page 41 undefined on input
+ line 48.
+
+[41]) (C:\IRIS_Tbx\-help\modellang/parameters.tex [42])
+(C:\IRIS_Tbx\-help\modellang/substitutions.tex
+
+LaTeX Warning: Reference `modellang/transitionequations' on page 43 undefined o
+n input line 23.
+
+
+LaTeX Warning: Reference `modellang/measurementequations' on page 43 undefined 
+on input line 24.
+
+
+LaTeX Warning: Reference `modellang/dtrends' on page 43 undefined on input line
+ 25.
+
+
+LaTeX Warning: Reference `modellang/links' on page 43 undefined on input line 2
+6.
+
+[43]) (C:\IRIS_Tbx\-help\modellang/switch.tex [44]
+
+LaTeX Warning: Reference `model/model' on page 45 undefined on input line 44.
+
+
+LaTeX Warning: Reference `model/model' on page 45 undefined on input line 45.
+
+[45]) (C:\IRIS_Tbx\-help\modellang/transitionequations.tex [46])
+(C:\IRIS_Tbx\-help\modellang/transitionshocks.tex [47])
+(C:\IRIS_Tbx\-help\modellang/transitionvariables.tex [48]
+
+LaTeX Warning: Reference `modellang/logvariables' on page 49 undefined on input
+ line 56.
+
+) (C:\IRIS_Tbx\-help\modellang/ttrend.tex [49])
+(C:\IRIS_Tbx\-help\modellang/pseudosubs.tex
+
+LaTeX Warning: Reference `model' on page 50 undefined on input line 16.
+
+
+LaTeX Warning: Reference `modellang/for' on page 50 undefined on input line 17.
+
+
+
+Overfull \hbox (1.08444pt too wide) in paragraph at lines 13--20
+\T1/ccr/m/n/10 char-ac-ter string. The ex-pres-sion may re-fer to pa-ram-e-ters
+ passed into the func-tion [][]\T1/zi4/m/n/10 model/model[][][]\T1/ccr/m/n/10 ,
+
+ []
+
+[50]
+
+LaTeX Warning: Reference `modellang/for' on page 51 undefined on input line 48.
+
+
+) (C:\IRIS_Tbx\-help\modellang/linecomments.tex)
+(C:\IRIS_Tbx\-help\modellang/blockcomments.tex [51])
+(C:\IRIS_Tbx\-help\modellang/sstateref.tex
+
+LaTeX Warning: Reference `model/sstate' on page 52 undefined on input line 30.
+
+[52]
+
+LaTeX Warning: Reference `model/solve' on page 53 undefined on input line 34.
+
+) (C:\IRIS_Tbx\-help\modellang/alias.tex
+
+LaTeX Warning: Reference `model/get' on page 53 undefined on input line 24.
+
+[53]) (C:\IRIS_Tbx\-help\modellang/regexpression.tex
+
+LaTeX Warning: Reference `modellang/logvariables' on page 54 undefined on input
+ line 14.
+
+) (C:\IRIS_Tbx\-help\modellang/exactnonlin.tex)
+(C:\IRIS_Tbx\-help\modellang/diff.tex [54])
+(C:\IRIS_Tbx\-help\modellang/difflog.tex [55])
+(C:\IRIS_Tbx\-help\modellang/dot.tex [56]) (C:\IRIS_Tbx\-help\modellang/min.tex
+[57]
+
+LaTeX Warning: Reference `model/model' on page 58 undefined on input line 33.
+
+) (C:\IRIS_Tbx\-help\modellang/movavg.tex [58])
+(C:\IRIS_Tbx\-help\modellang/movsum.tex [59])
+(C:\IRIS_Tbx\-help\modellang/movprod.tex [60])
+(C:\IRIS_Tbx\-help\modellang/laglead.tex [61]) [62]
+(C:\IRIS_Tbx\-help\model/Contents.tex
+
+LaTeX Warning: Reference `modellang/Contents' on page 63 undefined on input lin
+e 5.
+
+
+LaTeX Warning: Reference `model/model' on page 63 undefined on input line 17.
+
+
+LaTeX Warning: Reference `model/addparam' on page 63 undefined on input line 25
+.
+
+
+LaTeX Warning: Reference `model/autocaption' on page 63 undefined on input line
+ 28.
+
+
+LaTeX Warning: Reference `model/autoexogenise' on page 63 undefined on input li
+ne 31.
+
+
+LaTeX Warning: Reference `model/comment' on page 63 undefined on input line 34.
+
+
+
+LaTeX Warning: Reference `model/eig' on page 63 undefined on input line 37.
+
+
+LaTeX Warning: Reference `model/findeqtn' on page 63 undefined on input line 39
+.
+
+
+LaTeX Warning: Reference `model/findname' on page 63 undefined on input line 42
+.
+
+
+LaTeX Warning: Reference `model/get' on page 63 undefined on input line 45.
+
+
+LaTeX Warning: Reference `model/iscompatible' on page 63 undefined on input lin
+e 47.
+
+
+LaTeX Warning: Reference `model/islinear' on page 63 undefined on input line 50
+.
+
+
+LaTeX Warning: Reference `model/islog' on page 63 undefined on input line 53.
+
+
+LaTeX Warning: Reference `model/ismissing' on page 63 undefined on input line 5
+6.
+
+
+LaTeX Warning: Reference `model/isnan' on page 63 undefined on input line 59.
+
+
+LaTeX Warning: Reference `model/isname' on page 63 undefined on input line 61.
+
+
+LaTeX Warning: Reference `model/issolved' on page 63 undefined on input line 64
+.
+
+
+LaTeX Warning: Reference `model/isstationary' on page 63 undefined on input lin
+e 67.
+
+
+LaTeX Warning: Reference `model/length' on page 63 undefined on input line 70.
+
+
+LaTeX Warning: Reference `model/omega' on page 63 undefined on input line 73.
+
+[63
+
+]
+
+LaTeX Warning: Reference `model/sspace' on page 64 undefined on input line 76.
+
+
+LaTeX Warning: Reference `model/system' on page 64 undefined on input line 79.
+
+
+LaTeX Warning: Reference `model/userdata' on page 64 undefined on input line 82
+.
+
+
+LaTeX Warning: Reference `model/subsasgn' on page 64 undefined on input line 90
+.
+
+
+LaTeX Warning: Reference `model/subsref' on page 64 undefined on input line 93.
+
+
+
+LaTeX Warning: Reference `model/alter' on page 64 undefined on input line 101.
+
+
+LaTeX Warning: Reference `model/assign' on page 64 undefined on input line 104.
+
+
+
+LaTeX Warning: Reference `model/export' on page 64 undefined on input line 107.
+
+
+
+LaTeX Warning: Reference `model/horzcat' on page 64 undefined on input line 110
+.
+
+
+LaTeX Warning: Reference `model/refresh' on page 64 undefined on input line 113
+.
+
+
+LaTeX Warning: Reference `model/reset' on page 64 undefined on input line 115.
+
+
+LaTeX Warning: Reference `model/stdscale' on page 64 undefined on input line 11
+8.
+
+
+LaTeX Warning: Reference `model/set' on page 64 undefined on input line 121.
+
+
+LaTeX Warning: Reference `model/single' on page 64 undefined on input line 124.
+
+
+
+LaTeX Warning: Reference `model/chksstate' on page 64 undefined on input line 1
+32.
+
+
+LaTeX Warning: Reference `model/sstate' on page 64 undefined on input line 135.
+
+
+
+LaTeX Warning: Reference `model/sstatefile' on page 64 undefined on input line 
+138.
+
+
+LaTeX Warning: Reference `model/chkmissing' on page 64 undefined on input line 
+146.
+
+
+LaTeX Warning: Reference `model/diffsrf' on page 64 undefined on input line 149
+.
+
+[64]
+
+LaTeX Warning: Reference `model/expand' on page 65 undefined on input line 152.
+
+
+
+LaTeX Warning: Reference `model/jforecast' on page 65 undefined on input line 1
+55.
+
+
+LaTeX Warning: Reference `model/icrf' on page 65 undefined on input line 158.
+
+
+LaTeX Warning: Reference `model/lhsmrhs' on page 65 undefined on input line 161
+.
+
+
+LaTeX Warning: Reference `model/resample' on page 65 undefined on input line 16
+4.
+
+
+LaTeX Warning: Reference `model/reporting' on page 65 undefined on input line 1
+67.
+
+
+LaTeX Warning: Reference `model/shockplot' on page 65 undefined on input line 1
+69.
+
+
+LaTeX Warning: Reference `model/simulate' on page 65 undefined on input line 17
+2.
+
+
+LaTeX Warning: Reference `model/solve' on page 65 undefined on input line 174.
+
+
+LaTeX Warning: Reference `model/srf' on page 65 undefined on input line 177.
+
+
+LaTeX Warning: Reference `model/data4lhsmrhs' on page 65 undefined on input lin
+e 184.
+
+
+LaTeX Warning: Reference `model/emptydb' on page 65 undefined on input line 187
+.
+
+
+LaTeX Warning: Reference `model/rollback' on page 65 undefined on input line 19
+0.
+
+
+LaTeX Warning: Reference `model/sstatedb' on page 65 undefined on input line 19
+3.
+
+
+LaTeX Warning: Reference `model/zerodb' on page 65 undefined on input line 196.
+
+
+
+LaTeX Warning: Reference `model/acf' on page 65 undefined on input line 204.
+
+
+LaTeX Warning: Reference `model/ifrf' on page 65 undefined on input line 207.
+
+
+LaTeX Warning: Reference `model/fevd' on page 65 undefined on input line 210.
+
+
+LaTeX Warning: Reference `model/ffrf' on page 65 undefined on input line 213.
+
+
+LaTeX Warning: Reference `model/fmse' on page 65 undefined on input line 216.
+
+
+LaTeX Warning: Reference `model/vma' on page 65 undefined on input line 219.
+
+
+LaTeX Warning: Reference `model/xsf' on page 65 undefined on input line 222.
+
+[65]
+
+LaTeX Warning: Reference `model/bn' on page 66 undefined on input line 230.
+
+
+LaTeX Warning: Reference `model/diffloglik' on page 66 undefined on input line 
+232.
+
+
+LaTeX Warning: Reference `model/estimate' on page 66 undefined on input line 23
+5.
+
+
+LaTeX Warning: Reference `model/evalsystempriors' on page 66 undefined on input
+ line 238.
+
+
+LaTeX Warning: Reference `model/filter' on page 66 undefined on input line 241.
+
+
+
+LaTeX Warning: Reference `model/fisher' on page 66 undefined on input line 244.
+
+
+
+LaTeX Warning: Reference `model/lognormal' on page 66 undefined on input line 2
+47.
+
+
+LaTeX Warning: Reference `model/loglik' on page 66 undefined on input line 250.
+
+
+
+LaTeX Warning: Reference `model/neighbourhood' on page 66 undefined on input li
+ne 253.
+
+
+LaTeX Warning: Reference `model/regress' on page 66 undefined on input line 257
+.
+
+
+LaTeX Warning: Reference `model/VAR' on page 66 undefined on input line 260.
+
+) (C:\IRIS_Tbx\-help\model/acf.tex [66] [67])
+(C:\IRIS_Tbx\-help\model/addparam.tex [68]) (C:\IRIS_Tbx\-help\model/alter.tex
+[69]) (C:\IRIS_Tbx\-help\model/assign.tex [70])
+(C:\IRIS_Tbx\-help\model/autocaption.tex [71]
+
+LaTeX Warning: Reference `poster/Contents' on page 72 undefined on input line 1
+9.
+
+
+Overfull \hbox (8.24547pt too wide) in paragraph at lines 52--57
+\T1/ccr/m/n/10 The func-tion \T1/zi4/m/n/10 autocaption \T1/ccr/m/n/10 can be u
+sed to sup-ply user-created cap-tions to ti-tle graphs in \T1/zi4/m/n/10 grfun/
+plotpp\T1/ccr/m/n/10 ,
+ []
+
+
+Overfull \hbox (26.93994pt too wide) in paragraph at lines 52--57
+\T1/zi4/m/n/10 grfun/plotneigh\T1/ccr/m/n/10 , \T1/zi4/m/n/10 model/shockplot\T
+1/ccr/m/n/10 , \T1/zi4/m/n/10 dbase/dbplot\T1/ccr/m/n/10 , and \T1/zi4/m/n/10 q
+report/qplot\T1/ccr/m/n/10 , through their op-tion \T1/zi4/m/n/10 'caption='\T1
+/ccr/m/n/10 . 
+ []
+
+[72]) (C:\IRIS_Tbx\-help\model/autoexogenise.tex
+
+LaTeX Warning: Reference `plan/Contents' on page 73 undefined on input line 25.
+
+
+
+LaTeX Warning: Reference `plan/autoexogenise' on page 73 undefined on input lin
+e 26.
+
+
+Overfull \hbox (16.49437pt too wide) in paragraph at lines 23--27
+[]\T1/zi4/m/n/10 A \T1/ccr/m/n/10 [ struct | empty ] - Database with each field
+ rep-re-sent-ing a vari-able/shock pair, A.Variable_Name
+ []
+
+[73]) (C:\IRIS_Tbx\-help\model/bn.tex
+
+LaTeX Warning: Reference `modellang/dtrends' on page 74 undefined on input line
+ 43.
+
+) (C:\IRIS_Tbx\-help\model/chkmissing.tex [74])
+(C:\IRIS_Tbx\-help\model/chksstate.tex [75])
+(C:\IRIS_Tbx\-help\model/comment.tex [76])
+(C:\IRIS_Tbx\-help\model/data4lhsmrhs.tex
+
+LaTeX Warning: Reference `model/lhsmrhs' on page 77 undefined on input line 16.
+
+
+
+LaTeX Warning: Reference `model/lhsmrhs' on page 77 undefined on input line 20.
+
+
+[77]
+
+LaTeX Warning: Reference `model/lhsmrhs' on page 78 undefined on input line 23.
+
+
+) (C:\IRIS_Tbx\-help\model/diffloglik.tex [78]
+
+LaTeX Warning: Reference `model/filter' on page 79 undefined on input line 65.
+
+) (C:\IRIS_Tbx\-help\model/diffsrf.tex [79]
+
+LaTeX Warning: Reference `model/srf' on page 80 undefined on input line 38.
+
+) (C:\IRIS_Tbx\-help\model/eig.tex [80]) (C:\IRIS_Tbx\-help\model/emptydb.tex)
+(C:\IRIS_Tbx\-help\model/estimate.tex [81]
+
+LaTeX Warning: Reference `systempriors/Contents' on page 82 undefined on input 
+line 28.
+
+
+LaTeX Warning: Reference `poster/Contents' on page 82 undefined on input line 3
+9.
+
+
+LaTeX Warning: Reference `poster/eval' on page 82 undefined on input line 41.
+
+[82]
+
+LaTeX Warning: Reference `model/loglik' on page 83 undefined on input line 59.
+
+
+LaTeX Warning: Reference `model/filter' on page 83 undefined on input line 91.
+
+[83]
+Overfull \hbox (1.43996pt too wide) in paragraph at lines 157--159
+\T1/ccr/m/n/10 The fol-low-ing op-tions can be spec-i-fied through the main op-
+tion \T1/zi4/m/n/10 'optimset=' \T1/ccr/m/n/10 when \T1/zi4/m/n/10 'optimiser=p
+so'\T1/ccr/m/n/10 . 
+ []
+
+[84] [85]
+
+LaTeX Warning: Reference `logdist/Contents' on page 86 undefined on input line 
+301.
+
+
+Overfull \hbox (5.85667pt too wide) in paragraph at lines 312--317
+[]\T1/ccr/m/n/10 You can sup-ply a func-tion han-dle to your own min-imi-sa-tio
+n rou-tine through the op-tion \T1/zi4/m/n/10 'optimiser='\T1/ccr/m/n/10 .
+ []
+
+[86] [87]) (C:\IRIS_Tbx\-help\model/evalsystempriors.tex)
+(C:\IRIS_Tbx\-help\model/expand.tex [88]) (C:\IRIS_Tbx\-help\model/export.tex
+
+LaTeX Warning: Reference `modellang/export' on page 89 undefined on input line 
+22.
+
+[89]) (C:\IRIS_Tbx\-help\model/fevd.tex [90]) (C:\IRIS_Tbx\-help\model/ffrf.tex
+[91]) (C:\IRIS_Tbx\-help\model/filter.tex [92] [93]
+
+LaTeX Warning: Reference `model/simulate' on page 94 undefined on input line 14
+6.
+
+[94]
+
+LaTeX Warning: Reference `model/get' on page 95 undefined on input line 179.
+
+) (C:\IRIS_Tbx\-help\model/findeqtn.tex [95])
+(C:\IRIS_Tbx\-help\model/findname.tex) (C:\IRIS_Tbx\-help\model/fisher.tex
+[96] [97]) (C:\IRIS_Tbx\-help\model/fmse.tex [98])
+(C:\IRIS_Tbx\-help\model/get.tex [99] [100] [101] [102]
+
+LaTeX Warning: Reference `model/sspace' on page 103 undefined on input line 269
+.
+
+
+LaTeX Warning: Reference `model/sspace' on page 103 undefined on input line 274
+.
+
+
+LaTeX Warning: Reference `model/sspace' on page 103 undefined on input line 279
+.
+
+
+LaTeX Warning: Reference `model/sspace' on page 103 undefined on input line 285
+.
+
+
+LaTeX Warning: Reference `model/sspace' on page 103 undefined on input line 290
+.
+
+[103]) (C:\IRIS_Tbx\-help\model/horzcat.tex [104])
+(C:\IRIS_Tbx\-help\model/icrf.tex
+Overfull \hbox (11.38434pt too wide) in paragraph at lines 37--41
+[]\T1/zi4/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/zi4/m/n/10 false \T1/ccr/
+m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1/z
+i4/m/n/10 !variables:log\T1/ccr/m/n/10 . 
+ []
+
+[105]) (C:\IRIS_Tbx\-help\model/ifrf.tex)
+(C:\IRIS_Tbx\-help\model/iscompatible.tex [106])
+(C:\IRIS_Tbx\-help\model/islinear.tex [107]
+
+LaTeX Warning: Reference `model/model' on page 108 undefined on input line 30.
+
+) (C:\IRIS_Tbx\-help\model/islog.tex [108])
+(C:\IRIS_Tbx\-help\model/ismissing.tex [109])
+(C:\IRIS_Tbx\-help\model/isname.tex) (C:\IRIS_Tbx\-help\model/isnan.tex
+[110]) (C:\IRIS_Tbx\-help\model/issolved.tex [111])
+(C:\IRIS_Tbx\-help\model/isstationary.tex)
+(C:\IRIS_Tbx\-help\model/jforecast.tex [112] [113])
+(C:\IRIS_Tbx\-help\model/length.tex) (C:\IRIS_Tbx\-help\model/lhsmrhs.tex
+[114]
+
+LaTeX Warning: Reference `model/data4lhsmrhs' on page 115 undefined on input li
+ne 24.
+
+
+Overfull \hbox (23.67583pt too wide) in paragraph at lines 22--27
+[]\T1/zi4/m/n/10 YXE \T1/ccr/m/n/10 [ nu-meric ] - Nu-meric ar-ray cre-ated fro
+m an in-put database by call-ing the func-tion [][]\T1/zi4/m/n/10 data4lhsmrhs[
+][][]\T1/ccr/m/n/10 ;
+ []
+
+
+LaTeX Warning: Reference `modellang/sstateref' on page 115 undefined on input l
+ine 49.
+
+
+LaTeX Warning: Reference `model/data4lhsmrhs' on page 115 undefined on input li
+ne 52.
+
+
+LaTeX Warning: Reference `model/data4lhsmrhs' on page 115 undefined on input li
+ne 60.
+
+[115]) (C:\IRIS_Tbx\-help\model/loglik.tex [116]
+
+LaTeX Warning: Reference `model/filter' on page 117 undefined on input line 90.
+
+
+[117]
+
+LaTeX Warning: Reference `model/filter' on page 118 undefined on input line 100
+.
+
+
+LaTeX Warning: Reference `model/solve' on page 118 undefined on input line 115.
+
+
+
+LaTeX Warning: Reference `modellang/links' on page 118 undefined on input line 
+118.
+
+
+LaTeX Warning: Reference `model/sstate' on page 118 undefined on input line 120
+.
+
+
+LaTeX Warning: Reference `model/solve' on page 118 undefined on input line 121.
+
+
+
+LaTeX Warning: Reference `model/solve' on page 118 undefined on input line 126.
+
+
+
+LaTeX Warning: Reference `model/sstate' on page 118 undefined on input line 130
+.
+
+
+LaTeX Warning: Reference `model/solve' on page 118 undefined on input line 131.
+
+
+) (C:\IRIS_Tbx\-help\model/lognormal.tex [118])
+(C:\IRIS_Tbx\-help\model/model.tex [119]
+
+LaTeX Warning: Reference `modellang/min' on page 120 undefined on input line 62
+.
+
+
+LaTeX Warning: Reference `modellang/Contents' on page 120 undefined on input li
+ne 86.
+
+
+LaTeX Warning: Reference `model/Contents' on page 120 undefined on input line 8
+9.
+
+[120]
+
+LaTeX Warning: Reference `modellang/if' on page 121 undefined on input line 127
+.
+
+
+LaTeX Warning: Reference `modellang/switch' on page 121 undefined on input line
+ 128.
+
+) (C:\IRIS_Tbx\-help\model/neighbourhood.tex [121]
+
+LaTeX Warning: Reference `model/estimate' on page 122 undefined on input line 1
+9.
+
+
+LaTeX Warning: Reference `grfun/plotneigh' on page 122 undefined on input line 
+61.
+
+[122]
+
+LaTeX Warning: Reference `grfun/plotneigh' on page 123 undefined on input line 
+71.
+
+
+LaTeX Warning: Reference `model/estimate' on page 123 undefined on input line 8
+0.
+
+) (C:\IRIS_Tbx\-help\model/omega.tex [123])
+(C:\IRIS_Tbx\-help\model/refresh.tex [124])
+(C:\IRIS_Tbx\-help\model/regress.tex [125])
+(C:\IRIS_Tbx\-help\model/reporting.tex) (C:\IRIS_Tbx\-help\model/resample.tex
+[126] [127]) (C:\IRIS_Tbx\-help\model/reset.tex [128])
+(C:\IRIS_Tbx\-help\model/rollback.tex [129]
+
+LaTeX Warning: Reference `model/filter' on page 130 undefined on input line 40.
+
+
+) (C:\IRIS_Tbx\-help\model/set.tex [130] [131])
+(C:\IRIS_Tbx\-help\model/shockplot.tex
+
+LaTeX Warning: Reference `dbase/dbplot' on page 132 undefined on input line 24.
+
+
+
+LaTeX Warning: Reference `model/simulate' on page 132 undefined on input line 4
+4.
+
+[132]
+
+LaTeX Warning: Reference `model/simulate' on page 133 undefined on input line 4
+8.
+
+
+LaTeX Warning: Reference `dbase/dbplot' on page 133 undefined on input line 57.
+
+
+) (C:\IRIS_Tbx\-help\model/simulate.tex [133] [134])
+(C:\IRIS_Tbx\-help\model/single.tex [135]) (C:\IRIS_Tbx\-help\model/solve.tex
+[136]) (C:\IRIS_Tbx\-help\model/srf.tex [137]
+Overfull \hbox (11.38434pt too wide) in paragraph at lines 36--40
+[]\T1/zi4/m/n/10 'delog=' \T1/ccr/m/n/10 [ $[]$ | \T1/zi4/m/n/10 false \T1/ccr/
+m/n/10 ] - De-l-og-a-rith-mise the re-sponses for vari-ables de-clared as \T1/z
+i4/m/n/10 !variables:log\T1/ccr/m/n/10 . 
+ []
+
+) (C:\IRIS_Tbx\-help\model/sspace.tex [138] [139])
+(C:\IRIS_Tbx\-help\model/sstate.tex [140] [141])
+(C:\IRIS_Tbx\-help\model/sstatedb.tex [142]
+
+LaTeX Warning: Reference `model/simulate' on page 143 undefined on input line 3
+9.
+
+) (C:\IRIS_Tbx\-help\model/sstatefile.tex [143])
+(C:\IRIS_Tbx\-help\model/stdscale.tex) (C:\IRIS_Tbx\-help\model/subsasgn.tex
+[144] [145]) (C:\IRIS_Tbx\-help\model/subsref.tex [146])
+(C:\IRIS_Tbx\-help\model/system.tex [147])
+(C:\IRIS_Tbx\-help\model/userdata.tex [148]) (C:\IRIS_Tbx\-help\model/VAR.tex
+[149]) (C:\IRIS_Tbx\-help\model/vma.tex [150]) (C:\IRIS_Tbx\-help\model/xsf.tex
+[151]) (C:\IRIS_Tbx\-help\model/zerodb.tex [152]
+
+LaTeX Warning: Reference `model/simulate' on page 153 undefined on input line 3
+9.
+
+) [153] (C:\IRIS_Tbx\-help\plan/Contents.tex
+
+LaTeX Warning: Reference `model/simulate' on page 154 undefined on input line 4
+.
+
+
+LaTeX Warning: Reference `model/jforecast' on page 154 undefined on input line 
+5.
+
+
+LaTeX Warning: Reference `model/simulate' on page 154 undefined on input line 2
+2.
+
+
+LaTeX Warning: Reference `model/jforecast' on page 154 undefined on input line 
+23.
+
+
+LaTeX Warning: Reference `plan/plan' on page 154 undefined on input line 31.
+
+
+LaTeX Warning: Reference `plan/detail' on page 154 undefined on input line 39.
+
+
+LaTeX Warning: Reference `plan/get' on page 154 undefined on input line 42.
+
+
+LaTeX Warning: Reference `plan/nnzcond' on page 154 undefined on input line 44.
+
+
+
+LaTeX Warning: Reference `plan/nnzendog' on page 154 undefined on input line 47
+.
+
+
+LaTeX Warning: Reference `plan/nnzexog' on page 154 undefined on input line 50.
+
+
+
+LaTeX Warning: Reference `plan/nnznonlin' on page 154 undefined on input line 5
+3.
+
+
+LaTeX Warning: Reference `plan/autoexogenise' on page 154 undefined on input li
+ne 61.
+
+
+Overfull \hbox (1.12148pt too wide) in paragraph at lines 61--64
+[][][]\T1/zi4/m/n/10 autoexogenise[][][] \T1/ccr/m/n/10 - Ex-o-genise vari-able
+s and au-to-mat-i-cally en-do-genise cor-re-spond-ing shocks. 
+ []
+
+[154
+
+]
+
+LaTeX Warning: Reference `plan/condition' on page 155 undefined on input line 6
+4.
+
+
+LaTeX Warning: Reference `plan/endogenise' on page 155 undefined on input line 
+67.
+
+
+LaTeX Warning: Reference `plan/exogenise' on page 155 undefined on input line 7
+0.
+
+
+LaTeX Warning: Reference `plan/nonlinearise' on page 155 undefined on input lin
+e 73.
+
+
+LaTeX Warning: Reference `plan/subsref' on page 155 undefined on input line 81.
+
+
+) (C:\IRIS_Tbx\-help\plan/autoexogenise.tex
+
+LaTeX Warning: Reference `modellang/autoexogenise' on page 155 undefined on inp
+ut line 21.
+
+[155]) (C:\IRIS_Tbx\-help\plan/condition.tex)
+(C:\IRIS_Tbx\-help\plan/detail.tex [156])
+(C:\IRIS_Tbx\-help\plan/endogenise.tex [157])
+(C:\IRIS_Tbx\-help\plan/exogenise.tex) (C:\IRIS_Tbx\-help\plan/get.tex [158])
+(C:\IRIS_Tbx\-help\plan/nnzcond.tex [159]) (C:\IRIS_Tbx\-help\plan/nnzendog.tex
+[160]) (C:\IRIS_Tbx\-help\plan/nnzexog.tex)
+(C:\IRIS_Tbx\-help\plan/nnznonlin.tex [161])
+(C:\IRIS_Tbx\-help\plan/nonlinearise.tex
+
+LaTeX Warning: Reference `modellang/exactnonlin' on page 162 undefined on input
+ line 21.
+
+[162]) (C:\IRIS_Tbx\-help\plan/plan.tex
+
+LaTeX Warning: Reference `model/simulate' on page 163 undefined on input line 4
+2.
+
+
+LaTeX Warning: Reference `model/jforecast' on page 163 undefined on input line 
+43.
+
+[163]) (C:\IRIS_Tbx\-help\plan/subsref.tex) [164]
+(C:\IRIS_Tbx\-help\grouping/Contents.tex
+
+LaTeX Warning: Reference `model/simulate' on page 165 undefined on input line 5
+.
+
+
+LaTeX Warning: Reference `model/filter' on page 165 undefined on input line 7.
+
+
+LaTeX Warning: Reference `grouping/grouping' on page 165 undefined on input lin
+e 15.
+
+
+LaTeX Warning: Reference `grouping/detail' on page 165 undefined on input line 
+23.
+
+
+LaTeX Warning: Reference `grouping/isempty' on page 165 undefined on input line
+ 26.
+
+
+LaTeX Warning: Reference `grouping/addgroup' on page 165 undefined on input lin
+e 34.
+
+
+LaTeX Warning: Reference `grouping/eval' on page 165 undefined on input line 37
+.
+
+) (C:\IRIS_Tbx\-help\grouping/addgroup.tex [165
+
+])
+(C:\IRIS_Tbx\-help\grouping/detail.tex) (C:\IRIS_Tbx\-help\grouping/eval.tex
+[166]) (C:\IRIS_Tbx\-help\grouping/grouping.tex [167])
+(C:\IRIS_Tbx\-help\grouping/isempty.tex [168]) [169]
+(C:\IRIS_Tbx\-help\systempriors/Contents.tex
+
+LaTeX Warning: Reference `systempriors/systempriors' on page 170 undefined on i
+nput line 16.
+
+
+LaTeX Warning: Reference `systempriors/prior' on page 170 undefined on input li
+ne 24.
+
+
+LaTeX Warning: Reference `systempriors/detail' on page 170 undefined on input l
+ine 32.
+
+
+LaTeX Warning: Reference `systempriors/isempty' on page 170 undefined on input 
+line 35.
+
+
+LaTeX Warning: Reference `systempriors/length' on page 170 undefined on input l
+ine 38.
+
+) (C:\IRIS_Tbx\-help\systempriors/detail.tex
+
+LaTeX Warning: Reference `systempriors/Contents' on page 170 undefined on input
+ line 16.
+
+) (C:\IRIS_Tbx\-help\systempriors/isempty.tex [170
+
+]
+
+LaTeX Warning: Reference `systempriors/Contents' on page 171 undefined on input
+ line 16.
+
+) (C:\IRIS_Tbx\-help\systempriors/length.tex
+
+LaTeX Warning: Reference `systempriors/Contents' on page 171 undefined on input
+ line 16.
+
+[171]) (C:\IRIS_Tbx\-help\systempriors/prior.tex [172]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 48.
+
+
+Overfull \hbox (4.55093pt too wide) in paragraph at lines 61--65
+[]\T1/zi4/m/n/10 corr[VarName1,VarName2,Lag] \T1/ccr/m/n/10 - Cor-re-la-tion be
+-tween vari-able \T1/zi4/m/n/10 VarName1 \T1/ccr/m/n/10 and vari-ables \T1/zi4/
+m/n/10 VarName2
+ []
+
+
+LaTeX Warning: Reference `modellang/logvariables' on page 173 undefined on inpu
+t line 71.
+
+[173]) (C:\IRIS_Tbx\-help\systempriors/systempriors.tex) [174]
+(C:\IRIS_Tbx\-help\poster/Contents.tex
+
+LaTeX Warning: Reference `model/estimate' on page 175 undefined on input line 8
+.
+
+
+LaTeX Warning: Reference `poster/poster' on page 175 undefined on input line 20
+.
+
+
+LaTeX Warning: Reference `poster/arwm' on page 175 undefined on input line 28.
+
+
+LaTeX Warning: Reference `poster/eval' on page 175 undefined on input line 31.
+
+
+LaTeX Warning: Reference `poster/regen' on page 175 undefined on input line 34.
+
+
+
+LaTeX Warning: Reference `poster/stats' on page 175 undefined on input line 42.
+
+
+) (C:\IRIS_Tbx\-help\poster/arwm.tex [175
+
+] [176]
+Overfull \hbox (4.21759pt too wide) in paragraph at lines 92--96
+[]\T1/zi4/m/n/10 'saveAs=' \T1/ccr/m/n/10 [ char | $[]$ ] - File name where re-
+sults will be saved when the op-tion \T1/zi4/m/n/10 'saveEvery='
+ []
+
+
+LaTeX Warning: Reference `poster/stats' on page 177 undefined on input line 112
+.
+
+[177]) (C:\IRIS_Tbx\-help\poster/eval.tex
+
+LaTeX Warning: Reference `model/estimate' on page 178 undefined on input line 1
+7.
+
+[178]) (C:\IRIS_Tbx\-help\poster/poster.tex
+
+LaTeX Warning: Reference `model/estimate' on page 179 undefined on input line 1
+6.
+
+) (C:\IRIS_Tbx\-help\poster/regen.tex [179])
+(C:\IRIS_Tbx\-help\poster/stats.tex
+
+LaTeX Warning: Reference `poster/arwm' on page 180 undefined on input line 21.
+
+
+LaTeX Warning: Reference `poster/arwm' on page 180 undefined on input line 29.
+
+[180]) [181] [182] (C:\IRIS_Tbx\-help\logdist/Contents.tex
+
+LaTeX Warning: Reference `model/estimate' on page 183 undefined on input line 5
+.
+
+
+LaTeX Warning: Reference `poster/arwm' on page 183 undefined on input line 6.
+
+
+LaTeX Warning: Reference `logdist/chisquare' on page 183 undefined on input lin
+e 22.
+
+
+LaTeX Warning: Reference `logdist/normal' on page 183 undefined on input line 2
+5.
+
+
+LaTeX Warning: Reference `logdist/lognormal' on page 183 undefined on input lin
+e 28.
+
+
+LaTeX Warning: Reference `logdist/beta' on page 183 undefined on input line 31.
+
+
+
+LaTeX Warning: Reference `logdist/gamma' on page 183 undefined on input line 34
+.
+
+
+LaTeX Warning: Reference `logdist/invgamma' on page 183 undefined on input line
+ 37.
+
+
+LaTeX Warning: Reference `logdist/uniform' on page 183 undefined on input line 
+43.
+
+
+LaTeX Warning: Reference `poster/Contents' on page 183 undefined on input line 
+56.
+
+[183
+
+]) (C:\IRIS_Tbx\-help\logdist/beta.tex
+
+LaTeX Warning: Reference `logdist/Contents' on page 184 undefined on input line
+ 30.
+
+[184]) (C:\IRIS_Tbx\-help\logdist/gamma.tex
+
+LaTeX Warning: Reference `logdist/Contents' on page 185 undefined on input line
+ 30.
+
+) (C:\IRIS_Tbx\-help\logdist/chisquare.tex [185]
+
+LaTeX Warning: Reference `logdist/Contents' on page 186 undefined on input line
+ 29.
+
+) (C:\IRIS_Tbx\-help\logdist/invgamma.tex
+
+LaTeX Warning: Reference `logdist/Contents' on page 186 undefined on input line
+ 30.
+
+[186]) (C:\IRIS_Tbx\-help\logdist/lognormal.tex
+
+LaTeX Warning: Reference `logdist/Contents' on page 187 undefined on input line
+ 30.
+
+) (C:\IRIS_Tbx\-help\logdist/normal.tex [187]
+
+LaTeX Warning: Reference `logdist/Contents' on page 188 undefined on input line
+ 40.
+
+) (C:\IRIS_Tbx\-help\logdist/uniform.tex [188]
+
+LaTeX Warning: Reference `logdist/Contents' on page 189 undefined on input line
+ 30.
+
+) [189] (C:\IRIS_Tbx\-help\namedmat/Contents.tex
+
+LaTeX Warning: Reference `model/acf' on page 190 undefined on input line 5.
+
+
+LaTeX Warning: Reference `model/xsf' on page 190 undefined on input line 6.
+
+
+LaTeX Warning: Reference `model/fmse' on page 190 undefined on input line 6.
+
+
+Overfull \hbox (10.98146pt too wide) in paragraph at lines 4--9
+\T1/ccr/m/n/10 Matrices with named rows and columns are re-turned by sev-eral I
+RIS func-tions, such as [][]model/acf[][][],
+ []
+
+
+LaTeX Warning: Reference `namedmat/namedmat' on page 190 undefined on input lin
+e 16.
+
+
+LaTeX Warning: Reference `namedmat/select' on page 190 undefined on input line 
+24.
+
+
+LaTeX Warning: Reference `namedmat/transpose' on page 190 undefined on input li
+ne 27.
+
+
+LaTeX Warning: Reference `namedmat/rownames' on page 190 undefined on input lin
+e 35.
+
+
+LaTeX Warning: Reference `namedmat/colnames' on page 190 undefined on input lin
+e 38.
+
+) (C:\IRIS_Tbx\-help\namedmat/colnames.tex [190
+
+])
+(C:\IRIS_Tbx\-help\namedmat/namedmat.tex [191]
+
+LaTeX Warning: Reference `namedmat/select' on page 192 undefined on input line 
+52.
+
+) (C:\IRIS_Tbx\-help\namedmat/rownames.tex)
+(C:\IRIS_Tbx\-help\namedmat/select.tex [192])
+(C:\IRIS_Tbx\-help\namedmat/transpose.tex [193]) [194]
+(C:\IRIS_Tbx\-help\Contents/VARs.tex) [195
+
+
+] (C:\IRIS_Tbx\-help\VAR/Contents.tex
+
+LaTeX Warning: Reference `SVAR/Contents' on page 196 undefined on input line 8.
+
+
+
+LaTeX Warning: Reference `VAR/VAR' on page 196 undefined on input line 16.
+
+
+LaTeX Warning: Reference `VAR/addparam' on page 196 undefined on input line 24.
+
+
+
+LaTeX Warning: Reference `VAR/comment' on page 196 undefined on input line 27.
+
+
+LaTeX Warning: Reference `VAR/companion' on page 196 undefined on input line 30
+.
+
+
+LaTeX Warning: Reference `VAR/eig' on page 196 undefined on input line 33.
+
+
+LaTeX Warning: Reference `VAR/fprintf' on page 196 undefined on input line 35.
+
+
+LaTeX Warning: Reference `VAR/get' on page 196 undefined on input line 38.
+
+
+LaTeX Warning: Reference `VAR/iscompatible' on page 196 undefined on input line
+ 40.
+
+
+LaTeX Warning: Reference `VAR/isexplosive' on page 196 undefined on input line 
+43.
+
+
+LaTeX Warning: Reference `VAR/ispanel' on page 196 undefined on input line 46.
+
+
+LaTeX Warning: Reference `VAR/isstationary' on page 196 undefined on input line
+ 48.
+
+
+LaTeX Warning: Reference `VAR/length' on page 196 undefined on input line 51.
+
+
+LaTeX Warning: Reference `VAR/mean' on page 196 undefined on input line 54.
+
+
+LaTeX Warning: Reference `VAR/nfitted' on page 196 undefined on input line 56.
+
+
+LaTeX Warning: Reference `VAR/rngcmp' on page 196 undefined on input line 59.
+
+
+LaTeX Warning: Reference `VAR/sprintf' on page 196 undefined on input line 62.
+
+
+LaTeX Warning: Reference `VAR/sspace' on page 196 undefined on input line 65.
+
+
+LaTeX Warning: Reference `VAR/userdata' on page 196 undefined on input line 68.
+
+
+
+LaTeX Warning: Reference `VAR/group' on page 196 undefined on input line 76.
+
+[196
+
+
+]
+
+LaTeX Warning: Reference `VAR/subsasgn' on page 197 undefined on input line 79.
+
+
+
+LaTeX Warning: Reference `VAR/subsref' on page 197 undefined on input line 82.
+
+
+LaTeX Warning: Reference `VAR/ferf' on page 197 undefined on input line 90.
+
+
+LaTeX Warning: Reference `VAR/filter' on page 197 undefined on input line 92.
+
+
+LaTeX Warning: Reference `VAR/forecast' on page 197 undefined on input line 94.
+
+
+
+LaTeX Warning: Reference `VAR/instrument' on page 197 undefined on input line 9
+7.
+
+
+LaTeX Warning: Reference `VAR/resample' on page 197 undefined on input line 100
+.
+
+
+LaTeX Warning: Reference `VAR/simulate' on page 197 undefined on input line 102
+.
+
+
+LaTeX Warning: Reference `VAR/assign' on page 197 undefined on input line 109.
+
+
+LaTeX Warning: Reference `VAR/alter' on page 197 undefined on input line 112.
+
+
+LaTeX Warning: Reference `VAR/backward' on page 197 undefined on input line 115
+.
+
+
+LaTeX Warning: Reference `VAR/demean' on page 197 undefined on input line 117.
+
+
+LaTeX Warning: Reference `VAR/horzcat' on page 197 undefined on input line 120.
+
+
+
+LaTeX Warning: Reference `VAR/integrate' on page 197 undefined on input line 12
+3.
+
+
+LaTeX Warning: Reference `VAR/acf' on page 197 undefined on input line 131.
+
+
+LaTeX Warning: Reference `VAR/fmse' on page 197 undefined on input line 134.
+
+
+LaTeX Warning: Reference `VAR/vma' on page 197 undefined on input line 136.
+
+
+LaTeX Warning: Reference `VAR/xsf' on page 197 undefined on input line 139.
+
+
+LaTeX Warning: Reference `VAR/estimate' on page 197 undefined on input line 147
+.
+
+[197]
+
+LaTeX Warning: Reference `VAR/infocrit' on page 198 undefined on input line 150
+.
+
+
+LaTeX Warning: Reference `VAR/lrtest' on page 198 undefined on input line 153.
+
+
+LaTeX Warning: Reference `VAR/portest' on page 198 undefined on input line 156.
+
+
+
+LaTeX Warning: Reference `VAR/schur' on page 198 undefined on input line 159.
+
+) (C:\IRIS_Tbx\-help\VAR/acf.tex [198]) (C:\IRIS_Tbx\-help\VAR/addparam.tex
+[199]) (C:\IRIS_Tbx\-help\VAR/alter.tex) (C:\IRIS_Tbx\-help\VAR/assign.tex
+[200]) (C:\IRIS_Tbx\-help\VAR/backward.tex [201])
+(C:\IRIS_Tbx\-help\VAR/comment.tex [202]) (C:\IRIS_Tbx\-help\VAR/companion.tex)
+(C:\IRIS_Tbx\-help\VAR/demean.tex [203]) (C:\IRIS_Tbx\-help\VAR/eig.tex
+[204]) (C:\IRIS_Tbx\-help\VAR/estimate.tex [205] [206]
+
+LaTeX Warning: Reference `VAR/VAR' on page 207 undefined on input line 136.
+
+) (C:\IRIS_Tbx\-help\VAR/ferf.tex [207]) (C:\IRIS_Tbx\-help\VAR/filter.tex
+[208]) (C:\IRIS_Tbx\-help\VAR/fmse.tex [209])
+(C:\IRIS_Tbx\-help\VAR/forecast.tex [210]) (C:\IRIS_Tbx\-help\VAR/fprintf.tex
+
+LaTeX Warning: Reference `VAR/sprintf' on page 211 undefined on input line 33.
+
+[211]) (C:\IRIS_Tbx\-help\VAR/get.tex [212] [213])
+(C:\IRIS_Tbx\-help\VAR/group.tex
+
+LaTeX Warning: Reference `VAR/VAR' on page 214 undefined on input line 20.
+
+) (C:\IRIS_Tbx\-help\VAR/horzcat.tex [214]) (C:\IRIS_Tbx\-help\VAR/infocrit.tex
+[215]) (C:\IRIS_Tbx\-help\VAR/instrument.tex)
+(C:\IRIS_Tbx\-help\VAR/integrate.tex [216])
+(C:\IRIS_Tbx\-help\VAR/iscompatible.tex [217])
+(C:\IRIS_Tbx\-help\VAR/isexplosive.tex) (C:\IRIS_Tbx\-help\VAR/ispanel.tex
+[218]) (C:\IRIS_Tbx\-help\VAR/isstationary.tex [219])
+(C:\IRIS_Tbx\-help\VAR/length.tex) (C:\IRIS_Tbx\-help\VAR/lrtest.tex [220]
+Overfull \hbox (0.94917pt too wide) in paragraph at lines 19--21
+[]\T1/zi4/m/n/10 Level \T1/ccr/m/n/10 [ nu-meric ] - Sig-nif-i-cance level; if 
+not spec-i-fied, 5 per-cent sig-nif-i-cance is used, \T1/zi4/m/n/10 Level=0.05\
+T1/ccr/m/n/10 . 
+ []
+
+) (C:\IRIS_Tbx\-help\VAR/mean.tex [221]
+
+LaTeX Warning: Reference `VAR/xasymptote' on page 222 undefined on input line 4
+0.
+
+) (C:\IRIS_Tbx\-help\VAR/nfitted.tex) (C:\IRIS_Tbx\-help\VAR/portest.tex
+[222]) (C:\IRIS_Tbx\-help\VAR/resample.tex [223])
+(C:\IRIS_Tbx\-help\VAR/rngcmp.tex [224]) (C:\IRIS_Tbx\-help\VAR/schur.tex)
+(C:\IRIS_Tbx\-help\VAR/simulate.tex [225]
+
+LaTeX Warning: Reference `VAR/backward' on page 226 undefined on input line 55.
+
+
+) (C:\IRIS_Tbx\-help\VAR/sprintf.tex [226]) (C:\IRIS_Tbx\-help\VAR/sspace.tex
+[227]) (C:\IRIS_Tbx\-help\VAR/subsasgn.tex [228])
+(C:\IRIS_Tbx\-help\VAR/subsref.tex [229]) (C:\IRIS_Tbx\-help\VAR/userdata.tex)
+(C:\IRIS_Tbx\-help\VAR/VAR.tex [230]
+
+LaTeX Warning: Reference `VAR/estimate' on page 231 undefined on input line 52.
+
+
+[231]
+
+LaTeX Warning: Reference `VAR/estimate' on page 232 undefined on input line 59.
+
+
+) (C:\IRIS_Tbx\-help\VAR/vma.tex) (C:\IRIS_Tbx\-help\VAR/xsf.tex [232])
+[233] (C:\IRIS_Tbx\-help\SVAR/Contents.tex
+
+LaTeX Warning: Reference `SVAR/SVAR' on page 234 undefined on input line 10.
+
+
+LaTeX Warning: Reference `VAR/Contents' on page 234 undefined on input line 14.
+
+
+
+LaTeX Warning: Reference `SVAR/get' on page 234 undefined on input line 21.
+
+
+LaTeX Warning: Reference `SVAR/srf' on page 234 undefined on input line 28.
+
+
+LaTeX Warning: Reference `SVAR/fevd' on page 234 undefined on input line 35.
+
+
+LaTeX Warning: Reference `SVAR/sort' on page 234 undefined on input line 43.
+
+
+LaTeX Warning: Reference `VAR/Contents' on page 234 undefined on input line 47.
+
+
+) (C:\IRIS_Tbx\-help\SVAR/fevd.tex [234
+
+]) (C:\IRIS_Tbx\-help\SVAR/get.tex
+[235]
+
+LaTeX Warning: Reference `VAR/get' on page 236 undefined on input line 30.
+
+) (C:\IRIS_Tbx\-help\SVAR/sort.tex [236] [237]) (C:\IRIS_Tbx\-help\SVAR/srf.tex
+[238]) (C:\IRIS_Tbx\-help\SVAR/SVAR.tex [239]
+Overfull \hbox (7.70845pt too wide) in paragraph at lines 52--58
+\T1/ccr/m/n/10 and bring the vari-ables back in orig-i-nal or-der af-ter-wards.
+ Use the op-tion '\T1/zi4/m/n/10 backorderResiduals='
+ []
+
+[240]) [241] (C:\IRIS_Tbx\-help\BVAR/Contents.tex
+
+LaTeX Warning: Reference `VAR/estimate' on page 242 undefined on input line 6.
+
+
+LaTeX Warning: Reference `BVAR/covmat' on page 242 undefined on input line 13.
+
+
+LaTeX Warning: Reference `BVAR/litterman' on page 242 undefined on input line 1
+6.
+
+
+LaTeX Warning: Reference `BVAR/sumofcoeff' on page 242 undefined on input line 
+19.
+
+
+LaTeX Warning: Reference `BVAR/uncmean' on page 242 undefined on input line 22.
+
+
+
+LaTeX Warning: Reference `BVAR/user' on page 242 undefined on input line 25.
+
+
+LaTeX Warning: Reference `BVAR/litterman' on page 242 undefined on input line 3
+1.
+
+
+LaTeX Warning: Reference `BVAR/uncmean' on page 242 undefined on input line 32.
+
+
+
+LaTeX Warning: Reference `BVAR/sumofcoeff' on page 242 undefined on input line 
+33.
+
+) (C:\IRIS_Tbx\-help\BVAR/covmat.tex [242
+
+]
+
+LaTeX Warning: Reference `VAR/estimate' on page 243 undefined on input line 27.
+
+
+) (C:\IRIS_Tbx\-help\BVAR/litterman.tex
+
+LaTeX Warning: Reference `VAR/estimate' on page 243 undefined on input line 30.
+
+
+
+LaTeX Warning: Reference `BVAR/Contents' on page 243 undefined on input line 36
+.
+
+) (C:\IRIS_Tbx\-help\BVAR/sumofcoeff.tex [243]
+
+LaTeX Warning: Reference `VAR/estimate' on page 244 undefined on input line 23.
+
+
+
+LaTeX Warning: Reference `BVAR/Contents' on page 244 undefined on input line 29
+.
+
+) (C:\IRIS_Tbx\-help\BVAR/uncmean.tex [244]
+
+LaTeX Warning: Reference `VAR/estimate' on page 245 undefined on input line 26.
+
+
+
+LaTeX Warning: Reference `VAR/estimate' on page 245 undefined on input line 30.
+
+
+
+LaTeX Warning: Reference `BVAR/Contents' on page 245 undefined on input line 36
+.
+
+) (C:\IRIS_Tbx\-help\BVAR/user.tex
+
+LaTeX Warning: Reference `VAR/estimate' on page 245 undefined on input line 33.
+
+
+[245]) [246] (C:\IRIS_Tbx\-help\FAVAR/Contents.tex
+
+LaTeX Warning: Reference `FAVAR/FAVAR' on page 247 undefined on input line 8.
+
+
+LaTeX Warning: Reference `FAVAR/comment' on page 247 undefined on input line 15
+.
+
+
+LaTeX Warning: Reference `FAVAR/get' on page 247 undefined on input line 18.
+
+
+LaTeX Warning: Reference `FAVAR/isempty' on page 247 undefined on input line 20
+.
+
+
+LaTeX Warning: Reference `FAVAR/userdata' on page 247 undefined on input line 2
+3.
+
+
+LaTeX Warning: Reference `FAVAR/VAR' on page 247 undefined on input line 26.
+
+
+LaTeX Warning: Reference `FAVAR/estimate' on page 247 undefined on input line 3
+4.
+
+
+LaTeX Warning: Reference `FAVAR/filter' on page 247 undefined on input line 42.
+
+
+
+LaTeX Warning: Reference `FAVAR/forecast' on page 247 undefined on input line 4
+5.
+
+) (C:\IRIS_Tbx\-help\FAVAR/comment.tex [247
+
+])
+(C:\IRIS_Tbx\-help\FAVAR/estimate.tex [248]) (C:\IRIS_Tbx\-help\FAVAR/FAVAR.tex
+[249]
+
+LaTeX Warning: Reference `FAVAR/estimate' on page 250 undefined on input line 2
+9.
+
+
+LaTeX Warning: Reference `FAVAR/estimate' on page 250 undefined on input line 3
+5.
+
+) (C:\IRIS_Tbx\-help\FAVAR/filter.tex [250])
+(C:\IRIS_Tbx\-help\FAVAR/forecast.tex [251]
+
+LaTeX Warning: Reference `FAVAR/filter' on page 252 undefined on input line 45.
+
+
+) (C:\IRIS_Tbx\-help\FAVAR/get.tex [252] [253])
+(C:\IRIS_Tbx\-help\FAVAR/isempty.tex [254])
+(C:\IRIS_Tbx\-help\FAVAR/userdata.tex) (C:\IRIS_Tbx\-help\FAVAR/VAR.tex
+[255]) [256] (C:\IRIS_Tbx\-help\Contents/data.tex) [257
+
+
+]
+(C:\IRIS_Tbx\-help\dates/Contents.tex
+
+LaTeX Warning: Reference `dates/bb' on page 258 undefined on input line 8.
+
+
+LaTeX Warning: Reference `dates/bbtoday' on page 258 undefined on input line 11
+.
+
+
+LaTeX Warning: Reference `dates/hh' on page 258 undefined on input line 14.
+
+
+LaTeX Warning: Reference `dates/hhtoday' on page 258 undefined on input line 17
+.
+
+
+LaTeX Warning: Reference `dates/mm' on page 258 undefined on input line 20.
+
+
+LaTeX Warning: Reference `dates/mmtoday' on page 258 undefined on input line 23
+.
+
+
+LaTeX Warning: Reference `dates/qq' on page 258 undefined on input line 26.
+
+
+LaTeX Warning: Reference `dates/qqtoday' on page 258 undefined on input line 29
+.
+
+
+LaTeX Warning: Reference `dates/ww' on page 258 undefined on input line 32.
+
+
+LaTeX Warning: Reference `dates/wwtoday' on page 258 undefined on input line 35
+.
+
+
+LaTeX Warning: Reference `dates/yy' on page 258 undefined on input line 38.
+
+
+LaTeX Warning: Reference `dates/yytoday' on page 258 undefined on input line 41
+.
+
+
+LaTeX Warning: Reference `dates/datbom' on page 258 undefined on input line 49.
+
+
+
+LaTeX Warning: Reference `dates/datboq' on page 258 undefined on input line 52.
+
+
+
+LaTeX Warning: Reference `dates/datboy' on page 258 undefined on input line 55.
+
+
+
+LaTeX Warning: Reference `dates/dateom' on page 258 undefined on input line 58.
+
+
+
+LaTeX Warning: Reference `dates/dateoq' on page 258 undefined on input line 61.
+
+
+
+LaTeX Warning: Reference `dates/dateoy' on page 258 undefined on input line 64.
+
+
+
+LaTeX Warning: Reference `dates/datrange' on page 258 undefined on input line 7
+2.
+
+
+LaTeX Warning: Reference `dates/dat2ttrend' on page 258 undefined on input line
+ 75.
+
+
+LaTeX Warning: Reference `dates/datxtick' on page 258 undefined on input line 7
+8.
+
+
+LaTeX Warning: Reference `dates/clp2dat' on page 258 undefined on input line 86
+.
+
+[258
+
+
+]
+
+LaTeX Warning: Reference `dates/dat2char' on page 259 undefined on input line 8
+9.
+
+
+LaTeX Warning: Reference `dates/dat2charlist' on page 259 undefined on input li
+ne 92.
+
+
+LaTeX Warning: Reference `dates/dat2clp' on page 259 undefined on input line 95
+.
+
+
+LaTeX Warning: Reference `dates/dat2dec' on page 259 undefined on input line 98
+.
+
+
+LaTeX Warning: Reference `dates/dat2str' on page 259 undefined on input line 10
+1.
+
+
+LaTeX Warning: Reference `dates/dat2ypf' on page 259 undefined on input line 10
+4.
+
+
+LaTeX Warning: Reference `dates/dec2dat' on page 259 undefined on input line 10
+7.
+
+
+LaTeX Warning: Reference `dates/str2dat' on page 259 undefined on input line 11
+0.
+
+
+LaTeX Warning: Reference `dates/datcmp' on page 259 undefined on input line 118
+.
+
+
+LaTeX Warning: Reference `dates/datdiff' on page 259 undefined on input line 12
+1.
+
+
+LaTeX Warning: Reference `dates/rngcmp' on page 259 undefined on input line 124
+.
+
+
+LaTeX Warning: Reference `dates/daysinyear' on page 259 undefined on input line
+ 131.
+
+
+LaTeX Warning: Reference `dates/dd' on page 259 undefined on input line 133.
+
+
+LaTeX Warning: Reference `dates/ddtoday' on page 259 undefined on input line 13
+6.
+
+
+LaTeX Warning: Reference `dates/ww2day' on page 259 undefined on input line 139
+.
+
+
+LaTeX Warning: Reference `dates/weeksinyear' on page 259 undefined on input lin
+e 142.
+
+) (C:\IRIS_Tbx\-help\dates/bb.tex [259]) (C:\IRIS_Tbx\-help\dates/bbtoday.tex)
+(C:\IRIS_Tbx\-help\dates/clp2dat.tex [260]
+
+LaTeX Warning: Reference `dates/str2dat' on page 261 undefined on input line 17
+.
+
+
+LaTeX Warning: Reference `dates/str2dat' on page 261 undefined on input line 22
+.
+
+) (C:\IRIS_Tbx\-help\dates/dat2char.tex [261]
+
+LaTeX Warning: Reference `dates/dat2str' on page 262 undefined on input line 29
+.
+
+) (C:\IRIS_Tbx\-help\dates/dat2charlist.tex [262]
+
+LaTeX Warning: Reference `dates/dat2str' on page 263 undefined on input line 29
+.
+
+) (C:\IRIS_Tbx\-help\dates/dat2clp.tex
+
+LaTeX Warning: Reference `dates/dat2str' on page 263 undefined on input line 30
+.
+
+) (C:\IRIS_Tbx\-help\dates/dat2dec.tex [263]
+Overfull \hbox (15.74548pt too wide) in paragraph at lines 28--30
+[]\T1/zi4/m/n/10 Dec \T1/ccr/m/n/10 [ nu-meric ] - Dec-i-mal num-ber rep-re-sen
+t-ing the in-put dates, com-puted as \T1/zi4/m/n/10 year + (per-1)/freq\T1/ccr/
+m/n/10 . 
+ []
+
+) (C:\IRIS_Tbx\-help\dates/dat2str.tex [264] [265] [266])
+(C:\IRIS_Tbx\-help\dates/dat2ttrend.tex [267])
+(C:\IRIS_Tbx\-help\dates/dat2ypf.tex) (C:\IRIS_Tbx\-help\dates/datbom.tex
+[268]) (C:\IRIS_Tbx\-help\dates/datboq.tex) (C:\IRIS_Tbx\-help\dates/datboy.tex
+[269]) (C:\IRIS_Tbx\-help\dates/datcmp.tex [270])
+(C:\IRIS_Tbx\-help\dates/datdiff.tex [271]) (C:\IRIS_Tbx\-help\dates/dateom.tex
+[272]) (C:\IRIS_Tbx\-help\dates/dateoq.tex) (C:\IRIS_Tbx\-help\dates/dateoy.tex
+[273]) (C:\IRIS_Tbx\-help\dates/datrange.tex [274])
+(C:\IRIS_Tbx\-help\dates/datxtick.tex [275]
+
+LaTeX Warning: Reference `dates/dat2str' on page 276 undefined on input line 38
+.
+
+) (C:\IRIS_Tbx\-help\dates/daysinyear.tex [276])
+(C:\IRIS_Tbx\-help\dates/dd.tex) (C:\IRIS_Tbx\-help\dates/ddtoday.tex [277])
+(C:\IRIS_Tbx\-help\dates/dec2dat.tex [278]) (C:\IRIS_Tbx\-help\dates/hh.tex)
+(C:\IRIS_Tbx\-help\dates/hhtoday.tex [279]) (C:\IRIS_Tbx\-help\dates/mm.tex)
+(C:\IRIS_Tbx\-help\dates/mmtoday.tex [280]) (C:\IRIS_Tbx\-help\dates/qq.tex)
+(C:\IRIS_Tbx\-help\dates/qqtoday.tex [281]) (C:\IRIS_Tbx\-help\dates/rngcmp.tex
+[282]) (C:\IRIS_Tbx\-help\dates/str2dat.tex [283]
+
+LaTeX Warning: Reference `dates/dat2str' on page 284 undefined on input line 36
+.
+
+) (C:\IRIS_Tbx\-help\dates/weeksinyear.tex [284])
+(C:\IRIS_Tbx\-help\dates/ww.tex [285]) (C:\IRIS_Tbx\-help\dates/ww2day.tex
+[286]) (C:\IRIS_Tbx\-help\dates/wwtoday.tex) (C:\IRIS_Tbx\-help\dates/yy.tex
+[287]) (C:\IRIS_Tbx\-help\dates/yytoday.tex) [288]
+(C:\IRIS_Tbx\-help\tseries/Contents.tex
+
+LaTeX Warning: Reference `tseries/tseries' on page 289 undefined on input line 
+10.
+
+
+LaTeX Warning: Reference `tseries/daily' on page 289 undefined on input line 18
+.
+
+
+LaTeX Warning: Reference `tseries/enddate' on page 289 undefined on input line 
+21.
+
+
+LaTeX Warning: Reference `tseries/freq' on page 289 undefined on input line 24.
+
+
+
+LaTeX Warning: Reference `tseries/get' on page 289 undefined on input line 26.
+
+
+LaTeX Warning: Reference `tseries/isequal' on page 289 undefined on input line 
+28.
+
+
+LaTeX Warning: Reference `tseries/length' on page 289 undefined on input line 3
+1.
+
+
+LaTeX Warning: Reference `tseries/ndims' on page 289 undefined on input line 33
+.
+
+
+LaTeX Warning: Reference `tseries/size' on page 289 undefined on input line 36.
+
+
+
+LaTeX Warning: Reference `tseries/startdate' on page 289 undefined on input lin
+e 38.
+
+
+LaTeX Warning: Reference `tseries/yearly' on page 289 undefined on input line 4
+1.
+
+
+LaTeX Warning: Reference `tseries/subsasgn' on page 289 undefined on input line
+ 49.
+
+
+LaTeX Warning: Reference `tseries/subsref' on page 289 undefined on input line 
+52.
+
+[289
+
+]
+
+LaTeX Warning: Reference `tseries/arf' on page 290 undefined on input line 87.
+
+
+LaTeX Warning: Reference `tseries/bpass' on page 290 undefined on input line 90
+.
+
+
+LaTeX Warning: Reference `tseries/bwf' on page 290 undefined on input line 92.
+
+
+LaTeX Warning: Reference `tseries/bwf2' on page 290 undefined on input line 94.
+
+
+
+LaTeX Warning: Reference `tseries/detrend' on page 290 undefined on input line 
+97.
+
+
+LaTeX Warning: Reference `tseries/expsmooth' on page 290 undefined on input lin
+e 99.
+
+
+LaTeX Warning: Reference `tseries/hpf' on page 290 undefined on input line 101.
+
+
+
+LaTeX Warning: Reference `tseries/hpf2' on page 290 undefined on input line 104
+.
+
+
+LaTeX Warning: Reference `tseries/fft' on page 290 undefined on input line 107.
+
+
+
+LaTeX Warning: Reference `tseries/llf' on page 290 undefined on input line 110.
+
+
+
+LaTeX Warning: Reference `tseries/llf2' on page 290 undefined on input line 113
+.
+
+
+LaTeX Warning: Reference `tseries/moving' on page 290 undefined on input line 1
+16.
+
+
+LaTeX Warning: Reference `tseries/trend' on page 290 undefined on input line 11
+9.
+
+
+LaTeX Warning: Reference `tseries/x12' on page 290 undefined on input line 121.
+
+
+
+LaTeX Warning: Reference `tseries/acf' on page 290 undefined on input line 132.
+
+
+
+LaTeX Warning: Reference `tseries/hpdi' on page 290 undefined on input line 135
+.
+
+
+LaTeX Warning: Reference `tseries/chowlin' on page 290 undefined on input line 
+138.
+
+
+LaTeX Warning: Reference `tseries/regress' on page 290 undefined on input line 
+141.
+
+
+LaTeX Warning: Reference `tseries/area' on page 290 undefined on input line 149
+.
+
+[290]
+
+LaTeX Warning: Reference `tseries/bar' on page 291 undefined on input line 151.
+
+
+
+LaTeX Warning: Reference `tseries/barcon' on page 291 undefined on input line 1
+53.
+
+
+LaTeX Warning: Reference `tseries/errorbar' on page 291 undefined on input line
+ 156.
+
+
+LaTeX Warning: Reference `tseries/plot' on page 291 undefined on input line 159
+.
+
+
+LaTeX Warning: Reference `tseries/plotcmp' on page 291 undefined on input line 
+161.
+
+
+LaTeX Warning: Reference `tseries/plotpred' on page 291 undefined on input line
+ 164.
+
+
+LaTeX Warning: Reference `tseries/plotyy' on page 291 undefined on input line 1
+67.
+
+
+LaTeX Warning: Reference `tseries/scatter' on page 291 undefined on input line 
+170.
+
+
+LaTeX Warning: Reference `tseries/spy' on page 291 undefined on input line 173.
+
+
+
+LaTeX Warning: Reference `tseries/stem' on page 291 undefined on input line 176
+.
+
+
+LaTeX Warning: Reference `tseries/empty' on page 291 undefined on input line 18
+4.
+
+
+LaTeX Warning: Reference `tseries/permute' on page 291 undefined on input line 
+187.
+
+
+LaTeX Warning: Reference `tseries/redate' on page 291 undefined on input line 1
+90.
+
+
+LaTeX Warning: Reference `tseries/reshape' on page 291 undefined on input line 
+193.
+
+
+LaTeX Warning: Reference `tseries/resize' on page 291 undefined on input line 1
+96.
+
+
+LaTeX Warning: Reference `tseries/sort' on page 291 undefined on input line 199
+.
+
+
+LaTeX Warning: Reference `tseries/convert' on page 291 undefined on input line 
+207.
+
+
+LaTeX Warning: Reference `tseries/double' on page 291 undefined on input line 2
+10.
+
+
+LaTeX Warning: Reference `tseries/doubledata' on page 291 undefined on input li
+ne 213.
+
+
+LaTeX Warning: Reference `tseries/single' on page 291 undefined on input line 2
+16.
+
+
+LaTeX Warning: Reference `tseries/singledata' on page 291 undefined on input li
+ne 219.
+
+
+LaTeX Warning: Reference `tseries/apct' on page 291 undefined on input line 227
+.
+
+[291]
+
+LaTeX Warning: Reference `tseries/bsxfun' on page 292 undefined on input line 2
+30.
+
+
+LaTeX Warning: Reference `tseries/cumsumk' on page 292 undefined on input line 
+233.
+
+
+LaTeX Warning: Reference `tseries/destdise' on page 292 undefined on input line
+ 236.
+
+
+LaTeX Warning: Reference `tseries/diff' on page 292 undefined on input line 239
+.
+
+
+LaTeX Warning: Reference `tseries/interp' on page 292 undefined on input line 2
+41.
+
+
+LaTeX Warning: Reference `tseries/normalise' on page 292 undefined on input lin
+e 244.
+
+
+LaTeX Warning: Reference `tseries/pct' on page 292 undefined on input line 247.
+
+
+
+LaTeX Warning: Reference `tseries/round' on page 292 undefined on input line 24
+9.
+
+
+LaTeX Warning: Reference `tseries/rmse' on page 292 undefined on input line 252
+.
+
+
+LaTeX Warning: Reference `tseries/stdise' on page 292 undefined on input line 2
+55.
+
+
+LaTeX Warning: Reference `tseries/windex' on page 292 undefined on input line 2
+58.
+
+
+LaTeX Warning: Reference `tseries/wmean' on page 292 undefined on input line 26
+1.
+
+) (C:\IRIS_Tbx\-help\tseries/acf.tex [292]) (C:\IRIS_Tbx\-help\tseries/apct.tex
+) (C:\IRIS_Tbx\-help\tseries/area.tex [293]) (C:\IRIS_Tbx\-help\tseries/arf.tex
+[294] [295]) (C:\IRIS_Tbx\-help\tseries/bar.tex [296])
+(C:\IRIS_Tbx\-help\tseries/barcon.tex [297])
+(C:\IRIS_Tbx\-help\tseries/bpass.tex [298]
+
+LaTeX Warning: Reference `tseries/trend' on page 299 undefined on input line 56
+.
+
+) (C:\IRIS_Tbx\-help\tseries/bsxfun.tex [299])
+(C:\IRIS_Tbx\-help\tseries/bwf2.tex
+
+LaTeX Warning: Reference `tseries/bwf' on page 300 undefined on input line 5.
+
+) (C:\IRIS_Tbx\-help\tseries/bwf.tex [300] [301])
+(C:\IRIS_Tbx\-help\tseries/chowlin.tex [302] [303])
+(C:\IRIS_Tbx\-help\tseries/convert.tex [304])
+(C:\IRIS_Tbx\-help\tseries/cumsumk.tex [305] [306])
+(C:\IRIS_Tbx\-help\tseries/daily.tex) (C:\IRIS_Tbx\-help\tseries/destdise.tex
+[307]) (C:\IRIS_Tbx\-help\tseries/detrend.tex [308]
+
+LaTeX Warning: Reference `tseries/trend' on page 309 undefined on input line 32
+.
+
+) (C:\IRIS_Tbx\-help\tseries/diff.tex [309])
+(C:\IRIS_Tbx\-help\tseries/double.tex)
+(C:\IRIS_Tbx\-help\tseries/doubledata.tex [310])
+(C:\IRIS_Tbx\-help\tseries/empty.tex) (C:\IRIS_Tbx\-help\tseries/enddate.tex
+[311]) (C:\IRIS_Tbx\-help\tseries/errorbar.tex [312])
+(C:\IRIS_Tbx\-help\tseries/expsmooth.tex [313])
+(C:\IRIS_Tbx\-help\tseries/fft.tex [314]) (C:\IRIS_Tbx\-help\tseries/freq.tex
+[315]) (C:\IRIS_Tbx\-help\tseries/get.tex [316])
+(C:\IRIS_Tbx\-help\tseries/hpdi.tex) (C:\IRIS_Tbx\-help\tseries/hpf.tex
+[317] [318] [319] [320]) (C:\IRIS_Tbx\-help\tseries/hpf2.tex
+
+LaTeX Warning: Reference `tseries/hpf' on page 321 undefined on input line 5.
+
+) (C:\IRIS_Tbx\-help\tseries/interp.tex [321])
+(C:\IRIS_Tbx\-help\tseries/isequal.tex [322])
+(C:\IRIS_Tbx\-help\tseries/length.tex) (C:\IRIS_Tbx\-help\tseries/llf.tex
+[323] [324] [325] [326]) (C:\IRIS_Tbx\-help\tseries/llf2.tex
+
+LaTeX Warning: Reference `tseries/llf' on page 327 undefined on input line 5.
+
+) (C:\IRIS_Tbx\-help\tseries/moving.tex [327])
+(C:\IRIS_Tbx\-help\tseries/ndims.tex) (C:\IRIS_Tbx\-help\tseries/normalise.tex
+[328]) (C:\IRIS_Tbx\-help\tseries/pct.tex [329])
+(C:\IRIS_Tbx\-help\tseries/permute.tex [330])
+(C:\IRIS_Tbx\-help\tseries/plot.tex [331])
+(C:\IRIS_Tbx\-help\tseries/plotcmp.tex [332]
+
+LaTeX Warning: Reference `tseries/plotyy' on page 333 undefined on input line 5
+7.
+
+) (C:\IRIS_Tbx\-help\tseries/plotpred.tex [333]
+
+LaTeX Warning: Reference `tseries/plot' on page 334 undefined on input line 61.
+
+
+) (C:\IRIS_Tbx\-help\tseries/plotyy.tex [334] [335])
+(C:\IRIS_Tbx\-help\tseries/redate.tex) (C:\IRIS_Tbx\-help\tseries/regress.tex
+[336] [337]) (C:\IRIS_Tbx\-help\tseries/reshape.tex)
+(C:\IRIS_Tbx\-help\tseries/resize.tex [338])
+(C:\IRIS_Tbx\-help\tseries/rmse.tex [339]
+
+LaTeX Warning: Reference `model/filter' on page 340 undefined on input line 20.
+
+
+
+LaTeX Warning: Reference `VAR/filter' on page 340 undefined on input line 21.
+
+) (C:\IRIS_Tbx\-help\tseries/round.tex [340])
+(C:\IRIS_Tbx\-help\tseries/scatter.tex [341])
+(C:\IRIS_Tbx\-help\tseries/single.tex)
+(C:\IRIS_Tbx\-help\tseries/singledata.tex [342])
+(C:\IRIS_Tbx\-help\tseries/size.tex [343]) (C:\IRIS_Tbx\-help\tseries/sort.tex)
+(C:\IRIS_Tbx\-help\tseries/spy.tex [344])
+(C:\IRIS_Tbx\-help\tseries/startdate.tex [345])
+(C:\IRIS_Tbx\-help\tseries/stdise.tex [346])
+(C:\IRIS_Tbx\-help\tseries/stem.tex [347])
+(C:\IRIS_Tbx\-help\tseries/subsasgn.tex [348])
+(C:\IRIS_Tbx\-help\tseries/subsref.tex) (C:\IRIS_Tbx\-help\tseries/trend.tex
+[349]) (C:\IRIS_Tbx\-help\tseries/tseries.tex [350])
+(C:\IRIS_Tbx\-help\tseries/windex.tex [351])
+(C:\IRIS_Tbx\-help\tseries/wmean.tex [352]) (C:\IRIS_Tbx\-help\tseries/x12.tex
+[353] [354] [355] [356]) (C:\IRIS_Tbx\-help\tseries/yearly.tex [357]) [358]
+(C:\IRIS_Tbx\-help\dbase/Contents.tex
+
+LaTeX Warning: Reference `dbase/dbload' on page 359 undefined on input line 8.
+
+
+LaTeX Warning: Reference `dbase/dbsave' on page 359 undefined on input line 11.
+
+
+
+LaTeX Warning: Reference `dbase/xls2csv' on page 359 undefined on input line 13
+.
+
+
+LaTeX Warning: Reference `dbase/dbnames' on page 359 undefined on input line 20
+.
+
+
+LaTeX Warning: Reference `dbase/dbprintuserdata' on page 359 undefined on input
+ line 23.
+
+
+LaTeX Warning: Reference `dbase/dbrange' on page 359 undefined on input line 26
+.
+
+
+LaTeX Warning: Reference `dbase/dbsearchuserdata' on page 359 undefined on inpu
+t line 29.
+
+
+LaTeX Warning: Reference `dbase/dbuserdatalov' on page 359 undefined on input l
+ine 33.
+
+
+LaTeX Warning: Reference `dbase/array2db' on page 359 undefined on input line 4
+1.
+
+
+LaTeX Warning: Reference `dbase/db2array' on page 359 undefined on input line 4
+4.
+
+
+LaTeX Warning: Reference `dbase/db2tseries' on page 359 undefined on input line
+ 47.
+
+
+LaTeX Warning: Reference `dbase/dbbatch' on page 359 undefined on input line 55
+.
+
+
+LaTeX Warning: Reference `dbase/dbclip' on page 359 undefined on input line 58.
+
+
+
+LaTeX Warning: Reference `dbase/dbcol' on page 359 undefined on input line 61.
+
+
+LaTeX Warning: Reference `dbase/dbcomment' on page 359 undefined on input line 
+64.
+
+
+LaTeX Warning: Reference `dbase/dbfun' on page 359 undefined on input line 67.
+
+
+LaTeX Warning: Reference `dbase/dbplot' on page 359 undefined on input line 70.
+
+
+
+LaTeX Warning: Reference `dbase/dbredate' on page 359 undefined on input line 7
+2.
+
+
+LaTeX Warning: Reference `dbase/dbextend' on page 359 undefined on input line 8
+0.
+
+[359
+
+]
+
+LaTeX Warning: Reference `dbase/dbmerge' on page 360 undefined on input line 83
+.
+
+
+LaTeX Warning: Reference `dbase/dbminuscontrol' on page 360 undefined on input 
+line 85.
+
+
+LaTeX Warning: Reference `dbase/dbsplit' on page 360 undefined on input line 88
+.
+
+
+LaTeX Warning: Reference `dbase/dbminus' on page 360 undefined on input line 96
+.
+
+
+LaTeX Warning: Reference `dbase/dbmtimes' on page 360 undefined on input line 9
+8.
+
+
+LaTeX Warning: Reference `dbase/dbplus' on page 360 undefined on input line 101
+.
+
+) (C:\IRIS_Tbx\-help\dbase/array2db.tex) (C:\IRIS_Tbx\-help\dbase/db2array.tex
+[360] [361]) (C:\IRIS_Tbx\-help\dbase/db2tseries.tex)
+(C:\IRIS_Tbx\-help\dbase/dbbatch.tex [362]
+
+LaTeX Warning: Reference `dbase/dbfun' on page 363 undefined on input line 77.
+
+[363]) (C:\IRIS_Tbx\-help\dbase/dbclip.tex [364]
+Overfull \hbox (13.43991pt too wide) in paragraph at lines 43--48
+[]\T1/ccr/m/n/10 Multiple ranges can be spec-i-fied in \T1/zi4/m/n/10 Range \T1
+/ccr/m/n/10 (as a cell ar-ray), each for a dif-fer-ent date fre-quency/periodic
+ity
+ []
+
+) (C:\IRIS_Tbx\-help\dbase/dbcol.tex [365])
+(C:\IRIS_Tbx\-help\dbase/dbcomment.tex [366])
+(C:\IRIS_Tbx\-help\dbase/dbextend.tex [367]) (C:\IRIS_Tbx\-help\dbase/dbfun.tex
+[368]) (C:\IRIS_Tbx\-help\dbase/dbload.tex [369] [370] [371])
+(C:\IRIS_Tbx\-help\dbase/dbmerge.tex [372])
+(C:\IRIS_Tbx\-help\dbase/dbminuscontrol.tex [373])
+(C:\IRIS_Tbx\-help\dbase/dbnames.tex [374]) (C:\IRIS_Tbx\-help\dbase/dbplot.tex
+[375]
+
+LaTeX Warning: Reference `qreport/qplot' on page 376 undefined on input line 45
+.
+
+) (C:\IRIS_Tbx\-help\dbase/dbprintuserdata.tex [376])
+(C:\IRIS_Tbx\-help\dbase/dbrange.tex [377])
+(C:\IRIS_Tbx\-help\dbase/dbredate.tex [378])
+(C:\IRIS_Tbx\-help\dbase/dbsave.tex [379] [380])
+(C:\IRIS_Tbx\-help\dbase/dbsearchuserdata.tex [381] [382])
+(C:\IRIS_Tbx\-help\dbase/dbsplit.tex [383])
+(C:\IRIS_Tbx\-help\dbase/dbuserdatalov.tex [384])
+(C:\IRIS_Tbx\-help\dbase/dbminus.tex) (C:\IRIS_Tbx\-help\dbase/dbmtimes.tex
+[385]) (C:\IRIS_Tbx\-help\dbase/dbplus.tex [386])
+(C:\IRIS_Tbx\-help\dbase/xls2csv.tex [387]) [388]
+(C:\IRIS_Tbx\-help\Contents/reporting.tex) [389
+
+
+]
+(C:\IRIS_Tbx\-help\report/Contents.tex
+
+LaTeX Warning: Reference `report/new' on page 390 undefined on input line 8.
+
+
+LaTeX Warning: Reference `report/copy' on page 390 undefined on input line 10.
+
+
+LaTeX Warning: Reference `report/publish' on page 390 undefined on input line 1
+7.
+
+
+LaTeX Warning: Reference `report/table' on page 390 undefined on input line 25.
+
+
+
+LaTeX Warning: Reference `report/figure' on page 390 undefined on input line 27
+.
+
+
+LaTeX Warning: Reference `report/userfigure' on page 390 undefined on input lin
+e 29.
+
+
+LaTeX Warning: Reference `report/matrix' on page 390 undefined on input line 32
+.
+
+
+LaTeX Warning: Reference `report/modelfile' on page 390 undefined on input line
+ 35.
+
+
+LaTeX Warning: Reference `report/array' on page 390 undefined on input line 38.
+
+
+
+LaTeX Warning: Reference `report/tex' on page 390 undefined on input line 40.
+
+
+LaTeX Warning: Reference `report/disp' on page 390 undefined on input line 48.
+
+
+LaTeX Warning: Reference `report/display' on page 390 undefined on input line 5
+1.
+
+
+LaTeX Warning: Reference `report/findall' on page 390 undefined on input line 5
+4.
+
+
+LaTeX Warning: Reference `report/graph' on page 390 undefined on input line 62.
+
+
+
+LaTeX Warning: Reference `report/band' on page 390 undefined on input line 69.
+
+
+LaTeX Warning: Reference `report/fanchart' on page 390 undefined on input line 
+72.
+
+
+LaTeX Warning: Reference `report/series' on page 390 undefined on input line 74
+.
+
+
+LaTeX Warning: Reference `report/subheading' on page 390 undefined on input lin
+e 77.
+
+[390
+
+
+]
+
+LaTeX Warning: Reference `report/vline' on page 391 undefined on input line 80.
+
+
+
+LaTeX Warning: Reference `report/highlight' on page 391 undefined on input line
+ 82.
+
+
+LaTeX Warning: Reference `report/align' on page 391 undefined on input line 90.
+
+
+
+LaTeX Warning: Reference `report/empty' on page 391 undefined on input line 93.
+
+
+
+LaTeX Warning: Reference `report/include' on page 391 undefined on input line 9
+5.
+
+
+LaTeX Warning: Reference `report/merge' on page 391 undefined on input line 98.
+
+
+
+LaTeX Warning: Reference `report/pagebreak' on page 391 undefined on input line
+ 101.
+
+
+LaTeX Warning: Reference `report/section' on page 391 undefined on input line 1
+03.
+
+) (C:\IRIS_Tbx\-help\report/align.tex [391]
+
+LaTeX Warning: Reference `report/new' on page 392 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/figure' on page 392 undefined on input line 62
+.
+
+
+LaTeX Warning: Reference `report/table' on page 392 undefined on input line 64.
+
+
+
+LaTeX Warning: Reference `report/matrix' on page 392 undefined on input line 66
+.
+
+
+LaTeX Warning: Reference `report/array' on page 392 undefined on input line 68.
+
+
+[392]
+
+LaTeX Warning: Reference `report/empty' on page 393 undefined on input line 77.
+
+
+
+LaTeX Warning: Reference `report/empty' on page 393 undefined on input line 79.
+
+
+) (C:\IRIS_Tbx\-help\report/array.tex
+
+LaTeX Warning: Reference `report/new' on page 393 undefined on input line 16.
+
+[393]
+
+LaTeX Warning: Reference `report/Contents' on page 394 undefined on input line 
+112.
+
+[394] [395]) (C:\IRIS_Tbx\-help\report/band.tex
+
+LaTeX Warning: Reference `report/new' on page 396 undefined on input line 16.
+
+[396]
+
+LaTeX Warning: Reference `report/series' on page 397 undefined on input line 79
+.
+
+
+LaTeX Warning: Reference `report/Contents' on page 397 undefined on input line 
+83.
+
+) (C:\IRIS_Tbx\-help\report/copy.tex [397])
+(C:\IRIS_Tbx\-help\report/display.tex) (C:\IRIS_Tbx\-help\report/disp.tex
+[398]) (C:\IRIS_Tbx\-help\report/empty.tex
+
+LaTeX Warning: Reference `report/new' on page 399 undefined on input line 17.
+
+[399]
+
+LaTeX Warning: Reference `report/Contents' on page 400 undefined on input line 
+25.
+
+
+LaTeX Warning: Reference `report/align' on page 400 undefined on input line 30.
+
+
+
+LaTeX Warning: Reference `report/figure' on page 400 undefined on input line 31
+.
+
+) (C:\IRIS_Tbx\-help\report/fanchart.tex
+
+LaTeX Warning: Reference `report/new' on page 400 undefined on input line 16.
+
+[400]
+
+LaTeX Warning: Reference `report/series' on page 401 undefined on input line 53
+.
+
+) (C:\IRIS_Tbx\-help\report/figure.tex
+
+LaTeX Warning: Reference `report/userfigure' on page 401 undefined on input lin
+e 14.
+
+
+Overfull \hbox (25.99992pt too wide) in paragraph at lines 13--15
+\T1/ccr/m/n/10 This is an ob-so-lete syn-tax, and will be re-moved from IRIS in
+ a fu-ture re-lease. Use [][]\T1/zi4/m/n/10 report/userfigure[][][]
+ []
+
+
+LaTeX Warning: Reference `report/new' on page 401 undefined on input line 25.
+
+[401]
+
+LaTeX Warning: Reference `report/userfigure' on page 402 undefined on input lin
+e 31.
+
+
+LaTeX Warning: Reference `qreport/qstyle' on page 402 undefined on input line 7
+7.
+
+[402]
+
+LaTeX Warning: Reference `report/Contents' on page 403 undefined on input line 
+95.
+
+
+LaTeX Warning: Reference `report/align' on page 403 undefined on input line 100
+.
+
+
+LaTeX Warning: Reference `report/graph' on page 403 undefined on input line 105
+.
+
+
+LaTeX Warning: Reference `report/empty' on page 403 undefined on input line 107
+.
+
+
+LaTeX Warning: Reference `report/publish' on page 403 undefined on input line 1
+29.
+
+) (C:\IRIS_Tbx\-help\report/findall.tex [403])
+(C:\IRIS_Tbx\-help\report/graph.tex
+
+LaTeX Warning: Reference `report/new' on page 404 undefined on input line 16.
+
+
+LaTeX Warning: Reference `dates/dat2str' on page 404 undefined on input line 34
+.
+
+[404]
+
+LaTeX Warning: Reference `qreport/qstyle' on page 405 undefined on input line 6
+3.
+
+
+LaTeX Warning: Reference `report/Contents' on page 405 undefined on input line 
+82.
+
+[405]) (C:\IRIS_Tbx\-help\report/highlight.tex [406]
+
+LaTeX Warning: Reference `report/new' on page 407 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/Contents' on page 407 undefined on input line 
+41.
+
+) (C:\IRIS_Tbx\-help\report/include.tex [407]
+
+LaTeX Warning: Reference `report/new' on page 408 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/Contents' on page 408 undefined on input line 
+49.
+
+) (C:\IRIS_Tbx\-help\report/matrix.tex [408]
+
+LaTeX Warning: Reference `report/new' on page 409 undefined on input line 16.
+
+LaTeX Font Info:    Font shape `TS1/ccr/bx/n' in size <12> not available
+(Font)              Font shape `TS1/cmr/bx/n' tried instead on input line 38.
+LaTeX Font Info:    Font shape `T1/zi4/bx/n' in size <12> not available
+(Font)              Font shape `T1/zi4/b/n' tried instead on input line 38.
+
+Overfull \hbox (17.8495pt too wide) in paragraph at lines 62--66
+[]\T1/zi4/b/n/12 'inf=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble from
+ par-ent ob-jects) L[]T[]X string
+ []
+
+[409]
+Overfull \hbox (17.8495pt too wide) in paragraph at lines 80--85
+[]\T1/zi4/b/n/12 'nan=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble from
+ par-ent ob-jects) L[]T[]X string
+ []
+
+
+Overfull \hbox (24.7502pt too wide) in paragraph at lines 85--90
+[]\T1/zi4/b/n/12 'pureZero=' \T1/cmr/bx/n/12 [ char | $[]$ ] - (In-her-i-ta-ble
+ from par-ent ob-jects) L[]T[]X string
+ []
+
+[410]
+
+LaTeX Warning: Reference `report/Contents' on page 411 undefined on input line 
+127.
+
+[411]) (C:\IRIS_Tbx\-help\report/merge.tex
+
+LaTeX Warning: Reference `report/new' on page 412 undefined on input line 16.
+
+) (C:\IRIS_Tbx\-help\report/modelfile.tex [412]
+
+LaTeX Warning: Reference `report/new' on page 413 undefined on input line 17.
+
+[413]) (C:\IRIS_Tbx\-help\report/new.tex
+
+LaTeX Warning: Reference `report/tex' on page 414 undefined on input line 29.
+
+) (C:\IRIS_Tbx\-help\report/pagebreak.tex [414]
+
+LaTeX Warning: Reference `report/new' on page 415 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/Contents' on page 415 undefined on input line 
+24.
+
+) (C:\IRIS_Tbx\-help\report/publish.tex [415] [416] [417])
+(C:\IRIS_Tbx\-help\report/section.tex
+
+LaTeX Warning: Reference `report/new' on page 418 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/Contents' on page 418 undefined on input line 
+34.
+
+) (C:\IRIS_Tbx\-help\report/series.tex [418]
+
+LaTeX Warning: Reference `report/new' on page 419 undefined on input line 16.
+
+[419]
+
+LaTeX Warning: Reference `report/table' on page 420 undefined on input line 95.
+
+
+
+LaTeX Warning: Reference `report/Contents' on page 420 undefined on input line 
+132.
+
+[420]
+
+LaTeX Warning: Reference `report/table' on page 421 undefined on input line 189
+.
+
+[421]
+
+LaTeX Warning: Reference `report/graph' on page 422 undefined on input line 240
+.
+
+) (C:\IRIS_Tbx\-help\report/subheading.tex [422]
+
+LaTeX Warning: Reference `report/new' on page 423 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/Contents' on page 423 undefined on input line 
+50.
+
+) (C:\IRIS_Tbx\-help\report/table.tex [423]
+
+LaTeX Warning: Reference `report/new' on page 424 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/series' on page 424 undefined on input line 45
+.
+
+
+Overfull \hbox (2.88443pt too wide) in paragraph at lines 72--78
+[]\T1/zi4/m/it/10 'longFoot=' \T1/ccr/m/n/10 [ char | $[]$ ] - (In-her-i-ta-ble
+ from par-ent ob-jects) Works only with \T1/zi4/m/it/10 'long='\T1/ccr/m/n/10 =
+true:
+ []
+
+[424]
+
+LaTeX Warning: Reference `report/Contents' on page 425 undefined on input line 
+113.
+
+
+LaTeX Warning: Reference `report/align' on page 425 undefined on input line 118
+.
+
+
+LaTeX Warning: Reference `report/series' on page 425 undefined on input line 12
+3.
+
+
+LaTeX Warning: Reference `report/subheading' on page 425 undefined on input lin
+e 125.
+
+
+Overfull \hbox (15.68993pt too wide) in paragraph at lines 128--137
+[]\T1/ccr/m/n/10 By de-fault, the date row is printed as a lead-ing row with da
+tes for-mated us-ing the op-tion \T1/zi4/m/it/10 'dateFormat='\T1/ccr/m/n/10 .
+ []
+
+[425]) (C:\IRIS_Tbx\-help\report/tex.tex [426]
+
+LaTeX Warning: Reference `report/new' on page 427 undefined on input line 27.
+
+
+LaTeX Warning: Reference `report/Contents' on page 427 undefined on input line 
+59.
+
+[427]) (C:\IRIS_Tbx\-help\report/userfigure.tex
+
+LaTeX Warning: Reference `report/new' on page 428 undefined on input line 16.
+
+
+LaTeX Warning: Reference `report/figure' on page 428 undefined on input line 28
+.
+
+
+LaTeX Warning: Reference `report/Contents' on page 428 undefined on input line 
+32.
+
+[428]
+
+LaTeX Warning: Reference `report/graph' on page 429 undefined on input line 47.
+
+
+
+LaTeX Warning: Reference `report/publish' on page 429 undefined on input line 7
+3.
+
+) (C:\IRIS_Tbx\-help\report/vline.tex
+
+LaTeX Warning: Reference `report/new' on page 429 undefined on input line 16.
+
+[429]
+
+LaTeX Warning: Reference `report/Contents' on page 430 undefined on input line 
+47.
+
+) [430] (C:\IRIS_Tbx\-help\qreportlang/Contents.tex
+
+LaTeX Warning: Reference `qreportlang/figure' on page 431 undefined on input li
+ne 8.
+
+
+LaTeX Warning: Reference `qreportlang/subplot' on page 431 undefined on input l
+ine 10.
+
+
+LaTeX Warning: Reference `qreportlang/linegraph' on page 431 undefined on input
+ line 18.
+
+
+LaTeX Warning: Reference `qreportlang/bargraph' on page 431 undefined on input 
+line 20.
+
+
+LaTeX Warning: Reference `qreportlang/stemgraph' on page 431 undefined on input
+ line 22.
+
+
+LaTeX Warning: Reference `qreportlang/errorbargraph' on page 431 undefined on i
+nput line 24.
+
+
+LaTeX Warning: Reference `qreportlang/histgraph' on page 431 undefined on input
+ line 27.
+
+
+LaTeX Warning: Reference `qreportlang/blank' on page 431 undefined on input lin
+e 30.
+
+
+LaTeX Warning: Reference `qreportlang/linebreak' on page 431 undefined on input
+ line 38.
+
+
+LaTeX Warning: Reference `qreportlang/subtitle' on page 431 undefined on input 
+line 40.
+
+) (C:\IRIS_Tbx\-help\qreportlang/figure.tex)
+(C:\IRIS_Tbx\-help\qreportlang/linegraph.tex [431
+
+])
+(C:\IRIS_Tbx\-help\qreportlang/blank.tex)
+(C:\IRIS_Tbx\-help\qreportlang/bargraph.tex [432])
+(C:\IRIS_Tbx\-help\qreportlang/histgraph.tex)
+(C:\IRIS_Tbx\-help\qreportlang/errorbargraph.tex)
+(C:\IRIS_Tbx\-help\qreportlang/stemgraph.tex [433])
+(C:\IRIS_Tbx\-help\qreportlang/subplot.tex [434])
+(C:\IRIS_Tbx\-help\qreportlang/linebreak.tex)
+(C:\IRIS_Tbx\-help\qreportlang/subtitle.tex) [435]
+(C:\IRIS_Tbx\-help\qreport/Contents.tex
+
+LaTeX Warning: Reference `qreport/qplot' on page 436 undefined on input line 8.
+
+
+
+LaTeX Warning: Reference `qreport/qstyle' on page 436 undefined on input line 1
+0.
+
+) (C:\IRIS_Tbx\-help\qreport/qplot.tex [436
+
+] [437])
+(C:\IRIS_Tbx\-help\qreport/qstyle.tex [438] [439]) [440]
+(C:\IRIS_Tbx\-help\grfun/Contents.tex
+
+LaTeX Warning: Reference `grfun/bottomlegend' on page 441 undefined on input li
+ne 8.
+
+
+LaTeX Warning: Reference `grfun/ftitle' on page 441 undefined on input line 11.
+
+
+
+LaTeX Warning: Reference `grfun/highlight' on page 441 undefined on input line 
+13.
+
+
+LaTeX Warning: Reference `grfun/hline' on page 441 undefined on input line 16.
+
+
+LaTeX Warning: Reference `grfun/maxfigure' on page 441 undefined on input line 
+19.
+
+
+LaTeX Warning: Reference `grfun/movetobkg' on page 441 undefined on input line 
+21.
+
+
+LaTeX Warning: Reference `grfun/movetosubplot' on page 441 undefined on input l
+ine 24.
+
+
+LaTeX Warning: Reference `grfun/plotcircle' on page 441 undefined on input line
+ 27.
+
+
+LaTeX Warning: Reference `grfun/plotpp' on page 441 undefined on input line 29.
+
+
+
+LaTeX Warning: Reference `grfun/plotmat' on page 441 undefined on input line 32
+.
+
+
+LaTeX Warning: Reference `grfun/plotneigh' on page 441 undefined on input line 
+34.
+
+
+LaTeX Warning: Reference `grfun/printpdf' on page 441 undefined on input line 3
+7.
+
+
+LaTeX Warning: Reference `grfun/vline' on page 441 undefined on input line 40.
+
+
+LaTeX Warning: Reference `grfun/zeroline' on page 441 undefined on input line 4
+3.
+
+) (C:\IRIS_Tbx\-help\grfun/bottomlegend.tex [441
+
+])
+(C:\IRIS_Tbx\-help\grfun/ftitle.tex) (C:\IRIS_Tbx\-help\grfun/highlight.tex
+[442]) (C:\IRIS_Tbx\-help\grfun/hline.tex [443])
+(C:\IRIS_Tbx\-help\grfun/maxfigure.tex [444])
+(C:\IRIS_Tbx\-help\grfun/movetobkg.tex [445])
+(C:\IRIS_Tbx\-help\grfun/movetosubplot.tex)
+(C:\IRIS_Tbx\-help\grfun/plotcircle.tex [446])
+(C:\IRIS_Tbx\-help\grfun/plotmat.tex [447])
+(C:\IRIS_Tbx\-help\grfun/plotneigh.tex [448]
+
+LaTeX Warning: Reference `model/neighbourhood' on page 449 undefined on input l
+ine 17.
+
+) (C:\IRIS_Tbx\-help\grfun/plotpp.tex [449]
+
+LaTeX Warning: Reference `model/estimate' on page 450 undefined on input line 2
+1.
+
+
+LaTeX Warning: Reference `logdist/Contents' on page 450 undefined on input line
+ 22.
+
+
+LaTeX Warning: Reference `model/estimate' on page 450 undefined on input line 2
+5.
+
+
+LaTeX Warning: Reference `poster/arwm' on page 450 undefined on input line 30.
+
+
+LaTeX Warning: Reference `poster/stats' on page 450 undefined on input line 34.
+
+
+[450] [451]) (C:\IRIS_Tbx\-help\grfun/printpdf.tex [452])
+(C:\IRIS_Tbx\-help\grfun/vline.tex [453]) (C:\IRIS_Tbx\-help\grfun/zeroline.tex
+))
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 140.
+ [454]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 140.
+ (C:\IRIS_Tbx\-help\IRIS_Man.aux
+(C:\IRIS_Tbx\-help\Contents/sessions.aux)
+(C:\IRIS_Tbx\-help\Contents/models.aux) (C:\IRIS_Tbx\-help\Contents/VARs.aux)
+(C:\IRIS_Tbx\-help\Contents/data.aux) (C:\IRIS_Tbx\-help\Contents/reporting.aux
+))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 140.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 140.
+
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 3.82pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 140.
+ ) 
+Here is how much of TeX's memory you used:
+ 13560 strings out of 493921
+ 202117 string characters out of 3154504
+ 198528 words of memory out of 3000000
+ 11529 multiletter control sequences out of 15000+200000
+ 25787 words of font info for 59 fonts, out of 3000000 for 9000
+ 841 hyphenation exceptions out of 8191
+ 29i,12n,33p,787b,494s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{VAR/xasymptote} has been referenced but does not 
+exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{model} has been referenced but does not exist, repl
+aced by a fixed one
+
+{C:/MiKTeX/fonts/enc/dvips/inconsolata/i4-t1-0.enc} <C:\Users\Home\AppData\Loca
+l\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\tcbx1200.pk> <C:\Users\Home\App
+Data\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users
+\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eorm7.pk> <C:\
+Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccm
+i5.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\
+dpi600\xccsy10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\publ
+ic\concmath\dpi600\xccex10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk
+\ljfour\public\concrete\dpi600\ccr5.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9
+\fonts\pk\ljfour\public\concmath\dpi600\xccmi7.pk> <C:\Users\Home\AppData\Local
+\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi600\xccsy7.pk> <C:\Users\Home\Ap
+pData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi600\ccr7.pk> <C:\User
+s\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concrete\dpi600\ccr10.pk
+> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\concmath\dpi60
+0\xccmi10.pk>{C:/MiKTeX/fonts/enc/dvips/inconsolata/i4-ts1.enc} <C:\Users\Home\
+AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi1037\eclb8.pk> <C:\User
+s\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx0800.pk>
+ <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecb
+x1000.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\d
+pi600\ecbx2074.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\publ
+ic\ecc\dpi600\eoti10.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfou
+r\jknappen\ec\dpi600\ecbx1440.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\fonts
+\pk\ljfour\public\ecc\dpi600\torm8.pk> <C:\Users\Home\AppData\Local\MiKTeX\2.9\
+fonts\pk\ljfour\public\ecc\dpi600\eorm8.pk> <C:\Users\Home\AppData\Local\MiKTeX
+\2.9\fonts\pk\ljfour\public\ecc\dpi600\torm10.pk> <C:\Users\Home\AppData\Local\
+MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\eorm10.pk> <C:\Users\Home\AppData\
+Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi720\eoti10.pk> <C:\Users\Home\Ap
+pData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi600\torm5.pk> <C:\Users\Ho
+me\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi720\eorm10.pk> <C:\Us
+ers\Home\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\ecc\dpi1493\eorm10.pk>
+<C:/MiKTeX/fonts/type1/public/inconsolata/Inconsolata-zi4b.pfb><C:/MiKTeX/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb>
+Output written on IRIS_Man.pdf (454 pages, 1890852 bytes).
+PDF statistics:
+ 8963 PDF objects out of 10688 (max. 8388607)
+ 3972 named destinations out of 4296 (max. 500000)
+ 3441 words of extra memory for PDF output out of 10000 (max. 10000000)
+

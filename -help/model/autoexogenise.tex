@@ -1,0 +1,46 @@
+
+
+    \filetitle{autoexogenise}{Get or set variable/shock pairs for use in autoexogenised simulation plans}{model/autoexogenise}
+
+	\paragraph{Syntax fo getting autoexogenised variable/shock pairs}
+ 
+ \begin{verbatim}
+ A = autoexogenise(M)
+ \end{verbatim}
+ 
+ \paragraph{Syntax fo setting autoexogenised variable/shock pairs}
+ 
+ \begin{verbatim}
+ M = autoexogenise(M,A)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object.
+ \item
+   \texttt{A} {[} struct \textbar{} empty {]} - Database with each field
+   representing a variable/shock pair, A.Variable\_Name = `Shock\_Name',
+   that can be used in building \href{plan/Contents}{simulation plans} by
+   the plan function \href{plan/autoexogenise}{\texttt{autoexogenise}}.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object with updated definitions of
+   autoexogenised variable/shock pairs.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ Whenever you set the autoexogenised variable/shock pairs, the previously
+ assigned pairs are removed, and replaced with the new ones in
+ \texttt{A}. In other words, the new pairs are not added to the existing
+ ones, the replace them.
+ 
+ \paragraph{Example}
+
+

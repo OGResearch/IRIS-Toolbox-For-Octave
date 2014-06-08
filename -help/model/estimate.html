@@ -1,0 +1,242 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/estimate">estimate</h2>
+<div class="headline">Estimate model parameters by optimising selected objective function</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
+[PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>D</code> [ struct | cell ] - Input database or datapack from which the measurement variables will be taken.</p></li>
+<li><p><code>Range</code> [ struct ] - Date range.</p></li>
+<li><p><code>Est</code> [ struct ] - Database with the list of paremeters that will be estimated, and the parameter prior specifications (see below).</p></li>
+<li><p><code>SPr</code> [ empty | systempriors ] - System priors object, <a href="../systempriors/Contents.html"><code>systempriors</code></a>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>PEst</code> [ struct ] - Database with point estimates of requested parameters.</p></li>
+<li><p><code>Pos</code> [ poster ] - Posterior, <a href="../poster/Contents.html"><code>poster</code></a>, object; this object also gives you access to the value of the objective function at optimum or at any point in the parameter space, see the <a href="../poster/eval.html"><code>poster/eval</code></a> function.</p></li>
+<li><p><code>Cov</code> [ numeric ] - Approximate covariance matrix for the estimates of parameters with slack bounds based on the asymptotic Fisher information matrix (not on the Hessian returned from the optimisation routine).</p></li>
+<li><p><code>Hess</code> [ cell ] - <code>Hess{1}</code> is the total hessian of the objective function; <code>Hess{2}</code> is the contributions of the priors to the hessian.</p></li>
+<li><p><code>M</code> [ model ] - Model object solved with the estimated parameters (including out-of-likelihood parameters and common variance factor).</p></li>
+</ul>
+<p>The remaining three output arguments, <code>V</code>, <code>Delta</code>, <code>PDelta</code>, are the same as the <a href="../model/loglik.html"><code>model/loglik</code></a> output arguments of the same names.</p>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'chkSstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - Check steady state in each iteration; works only in non-linear models.</p></li>
+<li><p><code>'evalFrfPriors='</code> [ <em><code>true</code></em> | <code>false</code> ] - In each iteration, evaluate frequency response function prior density, and include it to the overall objective function to be optimised.</p></li>
+<li><p><code>'evalLik='</code> [ <em><code>true</code></em> | <code>false</code> ] - In each iteration, evaluate likelihood (or another data based criterion), and include it to the overall objective function to be optimised.</p></li>
+<li><p><code>'evalPPriors='</code> [ <em><code>true</code></em> | <code>false</code> ] - In each iteration, evaluate parameter prior density, and include it to the overall objective function to be optimised.</p></li>
+<li><p><code>'evalSPriors='</code> [ <em><code>true</code></em> | <code>false</code> ] - In each iteration, evaluate system prior density, and include it to the overall objective function to be optimised.</p></li>
+<li><p><code>'filter='</code> [ cell | <em>empty</em> ] - Cell array of options that will be passed on to the Kalman filter including the type of objective function; see help on <a href="../model/filter.html"><code>model/filter</code></a> for the options available.</p></li>
+<li><p><code>'initVal='</code> [ <code>model</code> | <em><code>struct</code></em> | struct ] - If <code>struct</code> use the values in the input struct <code>Est</code> to start the iteration; if <code>model</code> use the currently assigned parameter values in the input model, <code>M</code>.</p></li>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>500</code></em> ] - Maximum number of iterations allowed.</p></li>
+<li><p><code>'maxFunEvals='</code> [ numeric | <em><code>2000</code></em> ] - Maximum number of objective function calls allowed.</p></li>
+<li><p><code>'noSolution='</code> [ <em><code>'error'</code></em> | <code>'penalty'</code> ] - Specifies what happens if solution or steady state fails to solve in an iteration: <code>'error='</code> stops the execution with an error message, <code>'penalty='</code> returns an extremely low value of the likelihood.</p></li>
+<li><p><code>'optimSet='</code> [ cell | <em>empty</em> ] - Cell array used to create the Optimization Toolbox options structure; works only with the option <code>'optimiser='</code> <code>'default'</code>.</p></li>
+<li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links in each iteration.</p></li>
+<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> | cellstr ] - Re-compute solution in each iteration; you can specify a cell array with options for the <code>solve</code> function.</p></li>
+<li><p><code>'optimiser='</code> [ <em><code>'default'</code></em> | <code>'pso'</code> | cell | function_handle ] - Minimisation procedure.</p>
+<ul>
+<li><p><code>'default'</code>: The Optimization Toolbox function <code>fminunc</code> or <code>fmincon</code> will be called depending on the presence or absence of lower and/or upper bounds.</p></li>
+<li><p><code>'pso'</code>: The Particle Swarm Optimizer will be called; use the option <code>'pso='</code> to specify further options to control the optimizer (see Options for Particle Swarm Optimizer below).</p></li>
+<li><p>function_handle or cell: Enter a function handle to your own optimisation procedure, or a cell array with a function handle and additional input arguments (see below).</p></li>
+</ul></li>
+<li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell | function_handle ] - Re-compute steady state in each iteration; you can specify a cell array with options for the <code>sstate</code> function, or a function handle whose behaviour is described below.</p></li>
+<li><p><code>'tolFun='</code> [ numeric | <em><code>1e-6</code></em> ] - Termination tolerance on the objective function.</p></li>
+<li><p><code>'tolX='</code> [ numeric | <em><code>1e-6</code></em> ] - Termination tolerance on the estimated parameters.</p></li>
+</ul>
+<h4 id="options-for-particle-swarm-optimizer">Options for Particle Swarm Optimizer</h4>
+<p>The following options can be specified through the main option <code>'optimset='</code> when <code>'optimiser=pso'</code>.</p>
+<ul>
+<li><p><code>'cognitiveAttraction='</code> [ numeric | <em><code>0.5</code></em> ] - Scalar between <code>0</code> and <code>1</code> to control the relative attraction to the best location a particle can remember.</p></li>
+<li><p><code>'constrBoundary='</code> [ <code>absorb</code> | <em><code>reflect</code></em> | <code>soft</code> ] - Controls the way imposed constraints are handled when violated.</p>
+<ul>
+<li><p><code>'soft'</code>: Particles are allowed to travel outside the bounds but get bad fitness function (likelihood) values when they do;</p></li>
+<li><p><code>'reflect'</code>: Particle velocity is changed such that when the particle encounters the bound its velocity is changed to effectively make it bounce off of the boundary;</p></li>
+<li><p><code>'absorb'</code>: Particles hit the bound and stay at the bound until attracted elsewhere because its velocity is set to zero.</p></li>
+</ul></li>
+<li><p><code>'display='</code> [ <code>'off'</code> | <code>'final'</code> | <em><code>'iter'</code></em> ] - Level of display in order of increasing verbosity; <code>'iter'</code> will only produce output at most <code>'updateInterval='</code> seconds.</p></li>
+<li><p><code>'fitnessLimit='</code> [ numeric | <em><code>-Inf</code></em> ] - Algorithm will terminate when a function value this low is encountered.</p></li>
+<li><p><code>'generations='</code> [ numeric | <em><code>1000</code></em> ] - Positive integer describing the maximum length of swarm evolution.</p></li>
+<li><p><code>'hybridFcn='</code> [ <code>true</code> | <em><code>false</code></em> | <code>'fmincon'</code> | <code>'fminunc'</code> | cell ] - Run a second stage optimization after PSO (only available with the Optimization Tbx installed):</p>
+<ul>
+<li><p><code>false</code>: No second stage optimization, run the particle swarm only.</p></li>
+<li><p><code>true</code>: After PSO, run either <code>fminunc</code> or <code>fmincon</code>, the Optimization Toolbox routines, depending on the presence or absence of lower and upper bounds on estimated parameters.</p></li>
+<li><p><code>'fminunc'</code>, <code>'fmincon'</code>: After PSO, run the specified Optimization Toolbox routine.</p></li>
+<li><p>cell: A cell array in which the first argument specifies the function as previously and the second argument contains the options structure for that function; for instance <code>{@fmincon,optimset('Display','iter')}</code>.</p></li>
+</ul></li>
+<li><p><code>'includeInitialValue='</code> [ <em><code>true</code></em> | <code>false</code> ] - Include the initial vector of parameters in the initial population.</p></li>
+<li><p><code>'initialPopulation=</code>' [ numeric | <em>empty</em> ] - An NPar-by-NPop array containing the initial distribution of particles, where NPar is the number of estimated parameters, and NPop is the size of population. If empty, a population will be created containing the initial parameter vector and the rest of the particles will be randomly generated according to <code>'popInitRange='</code>. Use the option <code>'includeInitialValue=' false</code> oo exclude the initial value from the initial population so that the entire population is randomly generated.</p></li>
+<li><p><code>'socialAttraction='</code> [ numeric | <em><code>1.25</code></em> ] - Positive scalar to control the relative attraction of each particle to the best location they have heard about from other particles.</p></li>
+<li><p><code>'plotFcns='</code> [ cell | <em>empty</em> ] - Cell array of function handles to functions which accept <code>(options,state,flag)</code> values as input arguments. The only built-in general-purpose plotting function is <code>@optim.scoreDiversity</code>.</p></li>
+<li><p><code>'populationSize='</code> [ numeric | <em><code>40</code></em> ] - Positive integer which determines the number of particles in the swarm.</p></li>
+<li><p><code>'popInitRange='</code> [ numeric | <em>empty</em> ] - A 2-by-NPar array which sets the range over which the initial population will be distributed, where NPar is the number of estimated parameters, or a 2-by-1 array with the range for all parameters. If empty and <code>'PopInitRange='</code> is not set, the upper and lower bounds will be used if both are finite. If either of the bounds are infinite, the range will be <code>[0;1]</code>.</p></li>
+<li><p><code>'stallGenLimit='</code> [ numeric | <em><code>100</code></em> ] - Maximum number of swarm iterations which result in no improvement in the fitness function (likelihood) value before the algorithm terminates.</p></li>
+<li><p><code>'timeLimit='</code> [ numeric | <em><code>Inf</code></em> ] - Maximum running time in seconds.</p></li>
+<li><p><code>'tolCon='</code> [ numeric | <em><code>1e-6</code></em> ] - Largest tolerated constraint violation.</p></li>
+<li><p><code>'tolFun='</code> [ numeric | <em><code>1e-6</code></em> ] - Function tolerance; when the change in the best fitness function value (likelihood) improvement per generation falls below this value the algorithm will terminate.</p></li>
+<li><p><code>'velocityLimit='</code> [ numeric | <em><code>Inf</code></em> ] - Positive scalar to bound particle intertia from above.</p></li>
+<li><p><code>'updateInterval='</code>* [ numeric | <code>5</code> ] - Minimum length of time in seconds which must pass before new command window output will be produced.</p></li>
+<li><p><code>'useParallel='</code> [ <code>true</code> | <em><code>false</code></em> ] - Use a <code>parfor</code> loop which requires you already have a <code>matlabpool</code> open. Overhead is slightly higher for constrained problems than unconstrained problems.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>In the input parameter database, <code>E</code>, you can provide the following four specifications for each parameter:</p>
+<pre><code>E.parameter_name = {start,lower,upper,logprior}</code></pre>
+<p>where <code>start</code> is the value from which the numerical optimisation will start, <code>lower</code> is the lower bound, <code>upper</code> is the upper bound, and <code>logprior</code> is a function handle expected to return the log of the prior density. You can use the <a href="../logdist/Contents.html"><code>logdist</code></a> package to create function handles for some of the basic prior distributions.</p>
+<p>You can use <code>NaN</code> for <code>start</code> if you wish to use the value currently assigned in the model object. You can use <code>-Inf</code> and <code>Inf</code> for the bounds, or leave the bounds empty or not specify them at all. You can leave the prior distribution empty or not specify it at all.</p>
+<h5 id="user-supplied-optimisation-minimisation-routine">User-supplied optimisation (minimisation) routine</h5>
+<p>You can supply a function handle to your own minimisation routine through the option <code>'optimiser='</code>. This routine will be used instead of the Optim Tbx's <code>fminunc</code> or <code>fmincon</code> functions. The user-supplied function is expected to take at least five input arguments and return three output arguments:</p>
+<pre><code>[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,OptimSet)</code></pre>
+<p>with the following input arguments:</p>
+<ul>
+<li><code>F</code> is a function handle to the function minimised;</li>
+<li><code>P0</code> is a 1-by-N vector of initial parameter values;</li>
+<li><code>PLow</code> is a 1-by-N vector of lower bounds (with <code>-Inf</code> indicating no lower bound);</li>
+<li><code>PHigh</code> is a 1-by-N vector of upper bounds (with <code>Inf</code> indicating no upper bounds);</li>
+<li><code>OptimSet</code> is a cell array with name-value pairs entered by the user through the option <code>'optimSet='</code>. This option can be used to modify various settings related to the optimisation routine, such as tolerance, number of iterations, etc. Of course, you may simply ignore it and leave this input argument unused;</li>
+</ul>
+<p>and the following output arguments:</p>
+<ul>
+<li><code>PEst</code> is a 1-by-N vector of estimated parameters;</li>
+<li><code>ObjEst</code> is the value of the objective function at optimum;</li>
+<li><code>Hess</code> is a N-by-N approximate Hessian matrix at optimum.</li>
+</ul>
+<p>If you need to use extra input arguments in your minimisation function, enter a cell array instead of a plain function handle:</p>
+<pre><code>{@yourminfunc,Arg1,Arg2,...}</code></pre>
+<p>In that case, the optimiser will be called the following way:</p>
+<pre><code>[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt,Arg1,Arg2,...)</code></pre>
+<h5 id="user-supplied-steady-state-solver">User-supplied steady-state solver</h5>
+<p>You can supply a function handle to your own steady-state solver (i.e. a function that finds the steady state for given parameters) through the <code>'sstate='</code> option.</p>
+<p>The function is expected to take one input argument, the model object with newly assigned parameters, and return at least two output arguments, the model object with a new steady state (or balanced-growth path) and a success flag. The flag is <code>true</code> if the steady state has been successfully computed, and <code>false</code> if not:</p>
+<pre><code>[M,Success] = mysstatesolver(M)</code></pre>
+<p>It is your responsibility to add the growth characteristics if some of the model variables drift over time. In other words, you need to take care of the imaginary parts of the steady state values in the model object returned by the solver.</p>
+<p>Alternatively, you can also run the steady-state solver with extra input arguments (with the model object still being the first input argument). In that case, you need to set the option <code>'sstate='</code> to a cell array with the function handle in the first cell, and the other input arguments afterwards, e.g.</p>
+<pre><code>&#39;sstate=&#39;,{@mysstatesolver,1,&#39;a&#39;,X}</code></pre>
+<p>The actual function call will have the following form:</p>
+<pre><code>[M,Success] = mysstatesolver(M,1,&#39;a&#39;,X)</code></pre>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

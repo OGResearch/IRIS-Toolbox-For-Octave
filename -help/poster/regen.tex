@@ -1,0 +1,52 @@
+
+
+    \filetitle{regen}{Regeneration time MCMC Metropolis posterior simulator}{poster/regen}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Theta,LogPost,AR,Scale,FinalCov] = regen(Pos,NDraw,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Pos} {[} poster {]} - Initialised posterior simulator object.
+ \item
+   \texttt{NDraw} {[} numeric {]} - Length of the chain not including
+   burn-in.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Theta} {[} numeric {]} - MCMC chain with individual parameters
+   in rows.
+ \item
+   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
+   to a constant) in each draw.
+ \item
+   \texttt{AR} {[} numeric {]} - Vector of cumulative acceptance ratios
+   in each draw.
+ \item
+   \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+   each draw.
+ \item
+   \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
+   the final covariance matrix of the random walk step is
+   \texttt{Scale(end)\^{}2*FinalCov}.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \paragraph{References}
+ 
+ \paragraph{Brockwell, A.E., and Kadane, J.B., 2004. ``Identification of
+ Regeneration Times in MCMC Simulation, with Application to Adaptive
+ Schemes,'' mimeo, Carnegie Mellon University.}
+ 
+ \paragraph{Example}
+
+

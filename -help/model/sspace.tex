@@ -1,0 +1,88 @@
+
+
+    \filetitle{sspace}{State-space matrices describing the model solution}{model/sspace}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [T,R,K,Z,H,D,U,Omg] = sspace(m,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{m} {[} model {]} - Solved model object.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{T} {[} numeric {]} - Transition matrix.
+ \item
+   \texttt{R} {[} numeric {]} - Matrix at the shock vector in transition
+   equations.
+ \item
+   \texttt{K} {[} numeric {]} - Constant vector in transition equations.
+ \item
+   \texttt{Z} {[} numeric {]} - Matrix mapping transition variables to
+   measurement variables.
+ \item
+   \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
+   equations.
+ \item
+   \texttt{D} {[} numeric {]} - Constant vector in measurement equations.
+ \item
+   \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
+   variables.
+ \item
+   \texttt{Omg} {[} numeric {]} - Covariance matrix of shocks.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'triangular='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - If true, the state-space form returned has the
+   transition matrix \texttt{T} quasi triangular and the vector of
+   predetermined variables transformed accordingly; this is the form used
+   in IRIS calculations. If false, the state-space system refers to the
+   original vector of transition variables.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ The state-space representation has the following form:
+ 
+ \begin{verbatim}
+ [xf;alpha] = T*alpha(-1) + K + R*e
+ 
+ y = Z*alpha + D + H*e
+ 
+ xb = U*alpha
+ 
+ Cov[e] = Omg
+ \end{verbatim}
+ 
+ where \texttt{xb} is an nb-by-1 vector of predetermined
+ (backward-looking) transition variables and their auxiliary lags,
+ \texttt{xf} is an nf-by-1 vector of non-predetermined (forward-looking)
+ variables and their auxiliary leads, \texttt{alpha} is a transformation
+ of \texttt{xb}, \texttt{e} is an ne-by-1 vector of shocks, and
+ \texttt{y} is an ny-by-1 vector of measurement variables. Furthermore,
+ we denote the total number of transition variables, and their auxiliary
+ lags and leads, nx = nb + nf.
+ 
+ The transition matrix, \texttt{T}, is, in general, rectangular nx-by-nb.
+ Furthremore, the transformed state vector alpha is chosen so that the
+ lower nb-by-nb part of \texttt{T} is quasi upper triangular.
+ 
+ You can use the \texttt{get(m,'xVector')} function to learn about the
+ order of appearance of transition variables and their auxiliary lags and
+ leads in the vectors \texttt{xb} and \texttt{xf}. The first nf names are
+ the vector \texttt{xf}, the remaining nb names are the vector
+ \texttt{xb}.
+
+

@@ -1,0 +1,189 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbsave">dbsave</h2>
+<div class="headline">Save database as CSV file</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>List = dbsave(D,FName)
+List = dbsave(D,FName,Dates,...)</code></pre>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>List</code> [ cellstr ] - - List of actually saved database entries.</li>
+</ul>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Database whose tseries and numeric entries will be saved.</p></li>
+<li><p><code>FName</code> [ char ] - Filename under which the CSV will be saved, including its extension.</p></li>
+<li><p><code>Dates</code> [ numeric | <em><code>Inf</code></em> ] Dates or date range on which the tseries objects will be saved.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'class='</code> [ <em><code>true</code></em> | false ] - Include a row with class and size specifications.</p></li>
+<li><p><code>'comment='</code> [ <em><code>true</code></em> | <code>false</code> ] - Include a row with comments for tseries objects.</p></li>
+<li><p><code>'decimal='</code> [ numeric | <em>empty</em> ] - Number of decimals up to which the data will be saved; if empty the <code>'format'</code> option is used.</p></li>
+<li><p><code>'format='</code> [ char | <em><code>'%.8e'</code></em> ] Numeric format that will be used to represent the data, see <code>sprintf</code> for details on formatting, The format must start with a <code>'%'</code>, and must not include identifiers specifying order of processing, i.e. the <code>'$'</code> signs, or left-justify flags, the <code>'-'</code> signs.</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBM'</code></em> ] - Five letters to represent the five possible date frequencies (annual, semi-annual, quarterly, bimonthly, monthly).</p></li>
+<li><p><code>'nan='</code> [ char | <em><code>'NaN'</code></em> ] - String that will be used to represent NaNs.</p></li>
+<li><p><code>'saveSubdb='</code> [ <code>true</code> | <em><code>false</code></em> ] - Save sub-databases (structs found within the struct <code>D</code>); the sub-databases will be saved to separate CSF files.</p></li>
+<li><p><code>'userData='</code> [ char | <em>'userdata'</em> ] - Field name from which any kind of userdata will be read and saved in the CSV file.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The data saved include also imaginary parts of complex numbers.</p>
+<h5 id="saving-user-data-with-the-database">Saving user data with the database</h5>
+<p>If your database contains field named <code>'userdata='</code>, this will be saved in the CSV file on a separate row. The <code>'userdata='</code> field can be any combination of numeric, char, and cell arrays and 1-by-1 structs.</p>
+<p>You can use the <code>'userdata='</code> field to describe the database or preserve any sort of metadata. To change the name of the field that is treated as user data, use the <code>'userData='</code> option.</p>
+<h4 id="example">Example</h4>
+<p>Create a simple database with two time series.</p>
+<pre><code>d = struct();
+d.x = tseries(qq(2010,1):qq(2010,4),@rand);
+d.y = tseries(qq(2010,1):qq(2010,4),@rand);</code></pre>
+<p>Add your own description of the database, e.g.</p>
+<pre><code>d.userdata = {&#39;My database&#39;,datestr(now())};</code></pre>
+<p>Save the database as CSV using <code>dbsave</code>,</p>
+<pre><code>dbsave(d,&#39;mydatabase.csv&#39;);</code></pre>
+<p>When you later load the database,</p>
+<pre><code>d = dbload(&#39;mydatabase.csv&#39;)
+
+d = 
+
+   userdata: {&#39;My database&#39;  &#39;23-Sep-2011 14:10:17&#39;}
+          x: [4x1 tseries]
+          y: [4x1 tseries]</code></pre>
+<p>the database will preserve the <code>'userdata='</code> field.</p>
+<h4 id="example-1">Example</h4>
+<p>To change the field name under which you store your own user data, use the <code>'userdata='</code> option when running <code>dbsave</code>,</p>
+<pre><code>d = struct();
+d.x = tseries(qq(2010,1):qq(2010,4),@rand);
+d.y = tseries(qq(2010,1):qq(2010,4),@rand);
+d.MYUSERDATA = {&#39;My database&#39;,datestr(now())};
+dbsave(d,&#39;mydatabase.csv&#39;,Inf,&#39;userData=&#39;,&#39;MYUSERDATA&#39;);</code></pre>
+<p>The name of the user data field is also kept in the CSV file so that <code>dbload</code> works fine in this case, too, and returns a database identical to the saved one,</p>
+<pre><code>d = dbload(&#39;mydatabase.csv&#39;)
+
+d = 
+
+   MYUSERDATA: {&#39;My database&#39;  &#39;23-Sep-2011 14:10:17&#39;}
+            x: [4x1 tseries]
+            y: [4x1 tseries]</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

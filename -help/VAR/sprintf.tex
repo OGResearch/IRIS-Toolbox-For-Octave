@@ -1,0 +1,67 @@
+
+
+    \filetitle{sprintf}{Print VAR model as formatted model code}{VAR/sprintf}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [C,D] = sprintf(V,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{V} {[} VAR {]} - VAR object that will be printed as a
+   formatted model code.
+ \item
+   Output arguments
+ \item
+   \texttt{C} {[} cellstr {]} - Text string with the model code for each
+   parameterisation.
+ \item
+   \texttt{D} {[} cell {]} - Parameter database for each
+   parameterisation; if \texttt{'hardParameters='} is true, the databases
+   will be empty.
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'decimal='} {[} numeric \textbar{} \emph{empty} {]} -
+   Precision (number of decimals) at which the coefficients will be
+   written if \texttt{'hardParameters='} is true; if empty, the
+   \texttt{'format='} options is used.
+ \item
+   \texttt{'declare='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+   {]} - Add declaration blocks and keywords for VAR variables, shocks,
+   and equations.
+ \item
+   \texttt{'eNames='} {[} cellstr \textbar{} char \textbar{} \emph{empty}
+   {]} - Names that will be given to the VAR residuals; if empty, the
+   names from the VAR object will be used.
+ \item
+   \texttt{'format='} {[} char \textbar{} \emph{`\%+.16g'} {]} - Numeric
+   format for parameter values; it will be used only if
+   \texttt{'decimal='} is empty.
+ \item
+   \texttt{'hardParameters='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Print coefficients as hard numbers; otherwise,
+   create parameter names and return a parameter database.
+ \item
+   \texttt{'yNames='} {[} cellstr \textbar{} char \textbar{} \emph{empty}
+   {]} - Names that will be given to the variables; if empty, the names
+   from the VAR object will be used.
+ \item
+   \texttt{'tolerance='} {[} numeric \textbar{} \emph{getrealsmall()} {]}
+   - Treat VAR coefficients smaller than \texttt{'tolerance='} in
+   absolute value as zeros; zero coefficients will be dropped from the
+   model code.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

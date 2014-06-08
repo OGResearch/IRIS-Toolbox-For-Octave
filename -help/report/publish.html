@@ -1,0 +1,178 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/publish">publish</h2>
+<div class="headline">Compile PDF from report object</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[OutpFile,Info] = P.publish(InpFile,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <code>report.new</code> function.</p></li>
+<li><p><code>InpFile</code> [ char ] - File name under which the compiled PDF will be saved.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>OutpFile</code> [ char ] - Name of the resulting PDF.</p></li>
+<li><p><code>Info</code> [ struct ] - Information struct with details of building the PDF report; see Description.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'abstract='</code> [ char | <em>empty</em> ] - Abstract that will displayed on the title page.</p></li>
+<li><p><code>'abstractWidth='</code> [ numeric | <em><code>1</code></em> ] - Width of the abstract on the page as a percentage of the full default width (between <code>0</code> and <code>1</code>).</p></li>
+<li><p><code>'author='</code> [ char | <em>empty</em> ] - List of authors on the title page separated with <code>\and</code> or <code>\\</code>.</p></li>
+<li><p><code>'cleanup='</code> [ <em><code>true</code></em> | <code>false</code> ] - Delete all temporary files created when compiling the report.</p></li>
+<li><p><code>'compile='</code> [ <em><code>true</code></em> | <code>false</code> ] - Compile the source files to an actual PDF; if <code>false</code> only the source files are created.</p></li>
+<li><p><code>'date='</code> [ char | <em><code>'\today'</code></em> ] - Date on the title page.</p></li>
+<li><p><code>'display='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display the compiler report on the final iteration.</p></li>
+<li><p><code>'echo='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>true</code>, the optional flag <code>'-echo'</code> will be used in the Matlab function <code>system</code> when compiling the PDF; this causes the screen output and all prompts to be displayed for each run of the compiler.</p></li>
+<li><p><code>'epsToPdf='</code> [ char | <em><code>Inf</code></em> ] - Command line arguments for EPSTOPDF; <code>Inf</code> means OS-specific arguments are used.</p></li>
+<li><p><code>'fontEnc='</code> [ char | <em><code>'T1'</code></em> ] -  font encoding.</p></li>
+<li><p><code>'makeTitle='</code> [ <code>true</code> | <em><code>false</code></em> ] - Produce title page (with title, author, date, and abstract).</p></li>
+<li><p><code>'package='</code> [ char | cellstr | <em>empty</em> ] - Package or list of packages that will be imported in the preamble of the LaTeX file.</p></li>
+<li><p><code>'paperSize='</code> [ <code>'a4paper'</code> | <em><code>'letterpaper'</code></em> ] - Paper size.</p></li>
+<li><p><code>'orientation='</code> [ <em><code>'landscape'</code></em> | <code>'portrait'</code> ] - Paper orientation.</p></li>
+<li><p><code>'preamble='</code> [ char | <em>empty</em> ] -  commands that will be placed in the  file preamble.</p></li>
+<li><p><code>'timeStamp='</code> [ char | <em><code>'datestr(now())'</code></em> ] - String printed in the top-left corner of each page.</p></li>
+<li><p><code>'tempDir='</code> [ char | function_handle | <em><code>tempname(cd())</code></em> ] - Directory for storing temporary files; the directory is deleted at the end of the execution if it's empty.</p></li>
+<li><p><code>'maxRerun='</code> [ numeric | <em><code>5</code></em> ] - Maximum number of times the <br />compiler will be run to resolve cross-references, etc.</p></li>
+<li><p><code>'minRerun='</code> [ numeric | <em><code>1</code></em> ] - Minimum number of times the <br />compiler will be run to resolve cross-references, etc.</p></li>
+<li><p><code>'textScale='</code> [ numeric | <em><code>0.8</code></em> ] - Percentage of the total page area that will be used; the value can be either a scalar (the same percentage for the width and the height) or a 1-by-2 vector (the width and the height).</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="difference-between-display-and-echo">Difference between <code>'display='</code> and <code>'echo='</code></h5>
+<p>There are two differences between these otherwise similar options:</p>
+<ul>
+<li><p>When publishing the final PDF, the PDFLaTeX compiler may be called more than once to resolve cross-references, the table of contents, and so on. Setting <code>'display=' true</code> only displays the screen output from the final iteration only, while <code>'echo=' true</code> displays the screen outputs from all iterations.</p></li>
+<li><p>In the case of a compiler error unrelated to the  code, the compiler may stop and prompt the user to respond. The prompt only appears on the screen when <code>'echo=' true</code>. Otherwise, Matlab may remain in a busy state with no on-screen information, and <code>Ctrl+C</code> may be needed to regain control.</p></li>
+</ul>
+<h5 id="information-struct">Information struct</h5>
+<p>The second output argument, <code>Info</code>, is a struct with details of building the PDF report. It contains the following fields:</p>
+<ul>
+<li><p><code>.latexRun</code> -- the total number of LaTeX compiler runs needed to resolve cross-references and other dependencies;</p></li>
+<li><p><code>.figureHandle</code> -- a vector of figure window handles created during the report production process, and not closed (i.e. still existing in the Matlab workspace); to keep figure windows open, use the figure object option <code>'close=' false</code>. If all <code>figure</code> and <code>userfigure</code> objects inside a report have <code>'close=' true</code> then <code>Info.figureHandle</code> will be empty.</p></li>
+<li><p><code>.tempDir</code> -- empty unless <code>publish</code> is called with <code>'cleanup=' false</code>; in that case, this is the name of a temporary directory in which all files are saved necessary to build the output PDF are saved.</p></li>
+<li><p><code>.tempFile</code> -- empty unless <code>publish</code> is called with <code>'cleanup=' false</code>; in that case, this is the list of all files (saved in the temporary directory) necessary to build the output PDF.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

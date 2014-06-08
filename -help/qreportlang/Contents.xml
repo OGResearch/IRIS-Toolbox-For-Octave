@@ -1,0 +1,32 @@
+<folder>
+
+<foldername>qreport_lang</foldername><filename>Contents</filename>
+
+<h1 id="qreport_lang/Contents">Quick-report file language</h1>
+
+<h3>Figures</h3>
+
+<ul><li><link id="qreport_lang/figure"><tt>!++</tt></link>&nbsp;&ndash;&nbsp;Create new figure window.</li>
+<li><link id="qreport_lang/subplot"><tt>#MxN</tt></link>&nbsp;&ndash;&nbsp;Specify the subplot division of the figure windows.
+figure windows.</li></ul>
+
+<h3>Graphs</h3>
+
+<ul><li><link id="qreport_lang/line_graph"><tt>!--</tt></link>&nbsp;&ndash;&nbsp;Create new line graph.</li>
+<li><link id="qreport_lang/bar_graph"><tt>!::</tt></link>&nbsp;&ndash;&nbsp;Create new bar graph.</li>
+<li><link id="qreport_lang/stem_graph"><tt>!ii</tt></link>&nbsp;&ndash;&nbsp;Create new stem graph.</li>
+<li><link id="qreport_lang/errorbar_graph"><tt>!II</tt></link>&nbsp;&ndash;&nbsp;Create new stem graph.</li>
+<li><link id="qreport_lang/hist_graph"><tt>!^^</tt></link>&nbsp;&ndash;&nbsp;Create new histogram.</li>
+<li><link id="qreport_lang/blank"><tt>!..</tt></link>&nbsp;&ndash;&nbsp;Skip the current subplot position leaving it blank.</li></ul>
+
+<h3>Formatting graph titles</h3>
+
+<ul><li><link id="qreport_lang/linebreak"><tt>//</tt></link>&nbsp;&ndash;&nbsp;Line break in graph title.</li>
+<li><link id="qreport_lang/subtitle"><tt>__</tt></link>&nbsp;&ndash;&nbsp;Subtitle in graph title.</li></ul>
+
+<h3>Getting on-line help on qreport file language</h3>
+<pre>   help qreport_lang
+   help qreport_lang/keyword
+</pre>
+
+</folder>

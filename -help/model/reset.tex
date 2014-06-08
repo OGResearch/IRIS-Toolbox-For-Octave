@@ -1,0 +1,55 @@
+
+
+    \filetitle{reset}{Reset specific values within model object}{model/reset}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ M = reset(M)
+ M = reset(M,Req1,Req2,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object in which the requested type(s)
+   of values will be reset.
+ \item
+   \texttt{Req1}, \texttt{Req2}, \ldots{} {[} \texttt{'corr'} \textbar{}
+   \texttt{'parameters'} \textbar{} \texttt{'sstate'} \textbar{}
+   \texttt{'std'} \textbar{} \texttt{'stdcorr'} {]} - Requested type(s)
+   of values that will be reset; if omitted, everything will be reset.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object with the requested values
+   reset.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'corr'} - All cross-correlation coefficients will be reset to
+   \texttt{0}.
+ \item
+   \texttt{'parameters'} - All parameters will be reset to \texttt{NaN}.
+ \item
+   \texttt{'sstate'} - All steady state values will be reset to
+   \texttt{NaN}.
+ \item
+   \texttt{'std'} - All std deviations will be reset to \texttt{1} (in
+   linear models) or \texttt{log(1.01)} (in non-linear models).
+ \item
+   \texttt{'stdcorr'} - Equivalent to \texttt{'std'} and \texttt{'corr'}.
+ \end{itemize}
+ 
+ \paragraph{Example}
+ 
+ -IRIS Toolbox. -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+

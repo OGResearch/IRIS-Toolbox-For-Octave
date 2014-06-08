@@ -1,0 +1,58 @@
+
+
+    \filetitle{highlight}{Highlight specified range or date range in a graph}{grfun/highlight}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Pt,Cp] = highlight(Range,...)
+ [Pt,Cp] = highlight(Ax,Range,...)
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Range} {[} numeric {]} - X-axis range or date range that will
+   be highlighted.
+ \item
+   \texttt{Ax} {[} numeric {]} - Handle(s) to axes object(s) in which the
+   highlight will be made.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Pt} {[} numeric {]} - Handle to the highlighted area (patch
+   object).
+ \item
+   \texttt{Cp} {[} numeric {]} - Handle to the caption (text object).
+ \end{itemize}
+ 
+ \paragraph{Options}
+ 
+ \begin{itemize}
+ \item
+   \texttt{'caption='} {[} char {]} - Annotate the highlighted area with
+   a text string.
+ \item
+   \texttt{'color='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} - An
+   RGB color code, a Matlab color name, or a scalar shade of gray.
+ \item
+   \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
+   \texttt{false} {]} - Exclude the highlighted area from legend.
+ \item
+   \texttt{'hPosition='} {[} `center' \textbar{} `left' \textbar{}
+   \emph{`right'} {]} - Horizontal position of the caption.
+ \item
+   \texttt{'vPosition='} {[} `bottom' \textbar{} `middle' \textbar{}
+   \emph{`top'} \textbar{} numeric {]} - Vertical position of the
+   caption.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

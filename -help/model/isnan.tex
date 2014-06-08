@@ -1,0 +1,39 @@
+
+
+    \filetitle{isnan}{Check for NaNs in model object}{model/isnan}
+
+	\paragraph{Syntax}
+ 
+ \begin{verbatim}
+ [Flag,List] = isnan(M,'parameters')
+ [Flag,List] = isnan(M,'sstate')
+ [Flag,List] = isnan(M,'derivatives')
+ [Flag,List] = isnan(M,'solution')
+ \end{verbatim}
+ 
+ \paragraph{Input arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{M} {[} model {]} - Model object.
+ \end{itemize}
+ 
+ \paragraph{Output arguments}
+ 
+ \begin{itemize}
+ \item
+   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+   if at least one \texttt{NaN} value exists in the queried category.
+ \item
+   \texttt{List} {[} cellstr {]} - List of parameters (if called with
+   \texttt{'parameters'}) or variables (if called with \texttt{'sstate'})
+   that are assigned NaN in at least one parameterisation, or equations
+   (if called with \texttt{'derivatives'}) that produce an NaN derivative
+   in at least one parameterisation.
+ \end{itemize}
+ 
+ \paragraph{Description}
+ 
+ \paragraph{Example}
+
+

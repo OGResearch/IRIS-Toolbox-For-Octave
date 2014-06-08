@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/align">align</h2>
+<div class="headline">Vertically align the following K objects</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.align(Caption,K,NCol,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Caption</code> [ char ] - Caption displayed only when describing the structure of the report on the screen, but not in the actual PDF report.</p></li>
+<li><p><code>K</code> [ numeric ] - Number of objects following this <code>align</code> that will be vertically aligned.</p></li>
+<li><p><code>NCol</code> [ numeric ] - Number of columns in which the objects will vertically aligned.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'hspace='</code> [ numeric | <em><code>2</code></em> ] - Horizontal space (in em units) inserted between two neighbouring objects.</p></li>
+<li><p><code>'separator='</code> [ char | <em><code>'\medskip\par</code></em> ] - (Inheritable from parent objects)  commands that will be inserted after the aligned objects.</p></li>
+<li><p><code>'shareCaption='</code> [ <em><code>'auto'</code></em> | true | false ] - (Inheritable from parent objects) Place a shared caption (title and subtitle) over each row of objects; the title of the first object in each row is used; <code>'auto'</code> means that the caption will be shared if they are identical for all objects in a row.</p></li>
+<li><p><code>'typeface='</code> [ char | <em>empty</em> ] - (Not inheritable from parent objects)  code specifying the typeface for the align element as a whole; it must use the declarative forms (such as <code>\itshape</code>) and not the command forms (such as <code>\textit{...}</code>).</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Vertically aligned can be the following types of objects:</p>
+<ul>
+<li><a href="../report/figure.html"><code>figure</code></a></li>
+<li><a href="../report/table.html"><code>table</code></a></li>
+<li><a href="../report/matrix.html"><code>matrix</code></a></li>
+<li><a href="../report/array.html"><code>array</code></a></li>
+</ul>
+<p>Note that the <code>align</code> object itself has no caption (even if you specify one it will not be used). Only the objects within <code>align</code> will be given captions. If the objects aligned on one row have identical captions (i.e. both titles and subtitles), only one caption will be displayed centred above the objects.</p>
+<p>Because <a href="../report/empty.html"><code>empty</code></a> objects count in the total number of objects inluded in <code>align</code>, you can use <a href="../report/empty.html"><code>empty</code></a> in to create blank space in a particular position.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,185 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="dates/Contents">Dates and Date Ranges</h1>
+
+
+<h4 id="creating-iris-serial-date-numbers">Creating IRIS serial date numbers</h4>
+<ul>
+<li><a href="../dates/bb.html"><code>bb</code></a> - IRIS serial date number for bimonthly date.</li>
+<li><a href="../dates/bbtoday.html"><code>bbtoday</code></a> - IRIS serial date number for current bi-month.</li>
+<li><a href="../dates/hh.html"><code>hh</code></a> - IRIS serial date number for half-yearly date.</li>
+<li><a href="../dates/hhtoday.html"><code>hhtoday</code></a> - IRIS serial date number for current half-year.</li>
+<li><a href="../dates/mm.html"><code>mm</code></a> - IRIS serial date number for monthly date.</li>
+<li><a href="../dates/mmtoday.html"><code>mmtoday</code></a> - IRIS serial date number for current month.</li>
+<li><a href="../dates/qq.html"><code>qq</code></a> - IRIS serial date number for quarterly date.</li>
+<li><a href="../dates/qqtoday.html"><code>qqtoday</code></a> - IRIS serial date number for current quarter.</li>
+<li><a href="../dates/ww.html"><code>ww</code></a> - IRIS serial date number for weekly date.</li>
+<li><a href="../dates/wwtoday.html"><code>wwtoday</code></a> - IRIS serial date number for current week.</li>
+<li><a href="../dates/yy.html"><code>yy</code></a> - IRIS serial date number for yearly date.</li>
+<li><a href="../dates/yytoday.html"><code>yytoday</code></a> - IRIS serial date number for current year.</li>
+</ul>
+<h4 id="computing-special-dates-daily-dates-only">Computing special dates (daily dates only)</h4>
+<ul>
+<li><a href="../dates/datbom.html"><code>datbom</code></a> - Beginning of month for the specified daily date.</li>
+<li><a href="../dates/datboq.html"><code>datboq</code></a> - Beginning of quarter for the specified daily date.</li>
+<li><a href="../dates/datboy.html"><code>datboy</code></a> - Beginning of year for the specified daily date.</li>
+<li><a href="../dates/dateom.html"><code>dateom</code></a> - End of month for the specified daily date.</li>
+<li><a href="../dates/dateoq.html"><code>dateoq</code></a> - End of quarter for the specified daily date.</li>
+<li><a href="../dates/dateoy.html"><code>dateoy</code></a> - End of year for the specified daily date.</li>
+</ul>
+<h4 id="creating-date-ranges">Creating date ranges</h4>
+<ul>
+<li><a href="../dates/datrange.html"><code>datrange</code></a> - Numerically safe way to create a date range.</li>
+<li><a href="../dates/dat2ttrend.html"><code>dat2ttrend</code></a> - Construct linear time trend from date range.</li>
+<li><a href="../dates/datxtick.html"><code>datxtick</code></a> - Change ticks, labels and/or date frequency on x-axis in existing tseries graphs.</li>
+</ul>
+<h4 id="converting-dates">Converting dates</h4>
+<ul>
+<li><a href="../dates/clp2dat.html"><code>clp2dat</code></a> - Convert text in system clipboard to dates.</li>
+<li><a href="../dates/dat2char.html"><code>dat2char</code></a> - Convert dates to character array.</li>
+<li><a href="../dates/dat2charlist.html"><code>dat2charlist</code></a> - Convert dates to a comma-separated list.</li>
+<li><a href="../dates/dat2clp.html"><code>dat2clp</code></a> - Convert dates to text and paste to system clipboard.</li>
+<li><a href="../dates/dat2dec.html"><code>dat2dec</code></a> - Convert dates to their decimal representations.</li>
+<li><a href="../dates/dat2str.html"><code>dat2str</code></a> - Convert IRIS dates to cell array of strings.</li>
+<li><a href="../dates/dat2ypf.html"><code>dat2ypf</code></a> - Convert IRIS serial date number to year, period and frequency.</li>
+<li><a href="../dates/dec2dat.html"><code>dec2dat</code></a> - Convert decimal representation of date to IRIS serial date number.</li>
+<li><a href="../dates/str2dat.html"><code>str2dat</code></a> - Convert strings to IRIS serial date numbers.</li>
+</ul>
+<h4 id="date-comparison">Date comparison</h4>
+<ul>
+<li><a href="../dates/datcmp.html"><code>datcmp</code></a> - Compare two IRIS serial date numbers.</li>
+<li><a href="../dates/datdiff.html"><code>datdiff</code></a> - Number of periods between two dates with check for date frequency.</li>
+<li><a href="../dates/rngcmp.html"><code>rngcmp</code></a> - Compare two IRIS date ranges.</li>
+</ul>
+<h4 id="daily-and-weekly-dates">Daily and weekly dates</h4>
+<ul>
+<li><a href="../dates/daysinyear.html"><code>daysinyear</code></a> - Number of days in year.</li>
+<li><a href="../dates/dd.html"><code>dd</code></a> - Matlab serial date numbers that can be used to construct daily tseries objects.</li>
+<li><a href="../dates/ddtoday.html"><code>ddtoday</code></a> - Matlab serial date number for today's date.</li>
+<li><a href="../dates/ww2day.html"><code>ww2day</code></a> - Convert weekly IRIS serial date number to Matlab serial date number.</li>
+<li><a href="../dates/weeksinyear.html"><code>weeksinyear</code></a> - Number of weeks in year.</li>
+</ul>
+<h4 id="getting-on-line-help-on-date-functions">Getting on-line help on date functions</h4>
+<pre><code>help dates
+help dates/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

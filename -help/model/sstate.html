@@ -1,0 +1,169 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/sstate">sstate</h2>
+<div class="headline">Compute steady state or balance-growth path of the model</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>M = sstate(M,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Parameterised model object.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Model object with newly computed steady state assigned.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'linear='</code> [ <em><code>'auto'</code></em> | <code>true</code> | <code>false</code> ] - Solve for steady state using a linear approach, i.e. based on the first-order solution matrices and the vector of constants.</p></li>
+<li><p><code>'warning='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display IRIS warning produced by this function.</p></li>
+</ul>
+<h5 id="options-for-non-linear-models">Options for non-linear models</h5>
+<ul>
+<li><p><code>'blocks='</code> [ <code>true</code> | <em><code>false</code></em> ] - Re-arrarnge steady-state equations in recursive blocks before computing steady state.</p></li>
+<li><p><code>'display='</code> [ <em><code>'iter'</code></em> | <code>'final'</code> | <code>'notify'</code> | <code>'off'</code> ] - Level of screen output, see Optim Tbx.</p></li>
+<li><p><code>'endogenise='</code> [ cellstr | char | <em>empty</em> ] - List of parameters that will be endogenised when computing the steady state; the number of endogenised parameters must match the number of transtion variables exogenised in the <code>'exogenised='</code> option.</p></li>
+<li><p><code>'exogenise='</code> [ cellstr | char | <em>empty</em> ] - List of transition variables that will be exogenised when computing the steady state; the number of exogenised variables must match the number of parameters exogenised in the <code>'exogenise='</code> option.</p></li>
+<li><p><code>'fix='</code> [ cellstr | <em>empty</em> ] - List of variables whose steady state will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'fixAllBut='</code> [ cellstr | <em>empty</em> ] - Inverse list of variables whose steady state will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'fixGrowth='</code> [ cellstr | <em>empty</em> ] - List of variables whose steady-state growth will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'fixGrowthAllBut='</code> [ cellstr | <em>empty</em> ] - Inverse list of variables whose steady-state growth will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'fixLevel='</code> [ cellstr | <em>empty</em> ] - List of variables whose steady-state levels will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'fixLevelAllBut='</code> [ cellstr | <em>empty</em> ] - Inverse list of variables whose steady-state levels will not be computed and kept fixed to the currently assigned values.</p></li>
+<li><p><code>'growth='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>true</code>, both the steady-state levels and growth rates will be computed; if <code>false</code>, only the levels will be computed assuming that the model is either stationary or that the correct steady-state growth rates are already assigned in the model object.</p></li>
+<li><p><code>'optimSet='</code> [ cell | <em>empty</em> ] - Name-value pairs with Optim Tbx settings; see <code>help optimset</code> for details on these settings.</p></li>
+<li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links after steady state is computed.</p></li>
+<li><p><code>'reuse='</code> [ <code>true</code> | <em><code>false</code></em> ] - Reuse the steady-state values calculated for a parameterisation to initialise the next parameterisation.</p></li>
+<li><p><code>'solver='</code> [ <code>'fsolve'</code> | <em><code>'lsqnonlin'</code></em> ] - Solver function used to solve for the steady state of non-linear models; it can be either of the two Optimization Tbx functions, or a user-supplied solver.</p></li>
+<li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - If <code>true</code> or a cell array, the steady state is re-computed in each iteration; the cell array can be used to modify the default options with which the <code>sstate</code> function is called.</p></li>
+</ul>
+<h5 id="options-for-linear-models">Options for linear models</h5>
+<ul>
+<li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links before steady state is computed.</p></li>
+<li><p><code>'solve='</code> [ <code>true</code> | <em><code>false</code></em> ] - Solve model before computing steady state.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Note that for backward compatibility, the option <code>'growth='</code> is set to <code>false</code> by default so that either the model is assumed stationary or the steady-state growth rates have been already pre-assigned to the model object. To use the <code>sstate</code> function for computing both the steady-state levels and steady-state growth rates in a balanced-growth model, you need to set the option <code>'growth=' true</code>.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>
