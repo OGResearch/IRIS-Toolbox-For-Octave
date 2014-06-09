@@ -28,21 +28,22 @@
  \begin{itemize}
  \item
    \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
-   \emph{`YYYYFP'} {]} - Date format string, or array of format strings
-   (possibly different for each date).
+   \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+   strings (possibly different for each date).
  \item
-   \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} -
-   Letters representing the five possible frequencies
-   (annual,semi-annual,quarterly,bimontly,monthly).
+   \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+   {]} - Six letters used to represent the six possible frequencies of
+   IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+   monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
  \item
-   \texttt{'months='} {[} cellstr \textbar{} \emph{English names of
-   months} {]} - Cell array of twelve strings representing the names of
-   months.
+   \texttt{'months='} {[} cellstr \textbar{}
+   \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+   representing the names of the twelve months.
  \item
    \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
-   \textbar{} \texttt{*1*} {]} - Which month will represent a
-   lower-than-monthly-frequency date if month is part of the date format
-   string.
+   \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+   lower-than-monthly-frequency date if the month is part of the date
+   format string.
  \end{itemize}
  
  \paragraph{Description}
@@ -91,7 +92,7 @@
    \texttt{'Q'} - Upper-case roman numeral for the month or stand-in
    month.
  \item
-   \texttt{'r'} - Lower-case roman numeral for the month or stand-in
+   \texttt{'q'} - Lower-case roman numeral for the month or stand-in
    month.
  \item
    \texttt{'F'} - Upper-case letter representing the date frequency.

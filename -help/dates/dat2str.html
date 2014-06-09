@@ -133,10 +133,10 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'dateFormat='</code> [ char | cellstr | <em>'YYYYFP'</em> ] - Date format string, or array of format strings (possibly different for each date).</p></li>
-<li><p><code>'freqLetters='</code> [ char | <em>'YHQBM'</em> ] - Letters representing the five possible frequencies (annual,semi-annual,quarterly,bimontly,monthly).</p></li>
-<li><p><code>'months='</code> [ cellstr | <em>English names of months</em> ] - Cell array of twelve strings representing the names of months.</p></li>
-<li><p><code>'standinMonth='</code> [ numeric | <code>'last'</code> | <code>*1*</code> ] - Which month will represent a lower-than-monthly-frequency date if month is part of the date format string.</p></li>
+<li><p><code>'dateFormat='</code> [ char | cellstr | <em><code>'YYYYFP'</code></em> ] - Date format string, or array of format strings (possibly different for each date).</p></li>
+<li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBMW'</code></em> ] - Six letters used to represent the six possible frequencies of IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly, monthly, and weekly (such as the <code>'Q'</code> in <code>'2010Q1'</code>).</p></li>
+<li><p><code>'months='</code> [ cellstr | <em><code>{'January',...,'December'}</code></em> ] - Twelve strings representing the names of the twelve months.</p></li>
+<li><p><code>'standinMonth='</code> [ numeric | <code>'last'</code> | <em><code>1</code></em> ] - Month that will represent a lower-than-monthly-frequency date if the month is part of the date format string.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <p>There are two types of date strings in IRIS: year-period strings and calendar date strings. The year-period strings can be printed for dates with yearly, half-yearly, quarterly, bimonthly, monthly, weekly, and indeterminate frequencies. The calendar date strings can be printed for dates with weekly and daily frequencies. Date formats for calendar date strings must start with a dollar sign, <code>$</code>.</p>
@@ -155,7 +155,7 @@ code.LaTeX {
 <li><p><code>'MMMM'</code>, <code>'Mmmm'</code>, <code>'mmmm'</code> - Case-sensitive name of month.</p></li>
 <li><p><code>'MMM'</code>, <code>'Mmm'</code>, <code>'mmm'</code> - Case-sensitive three-letter abbreviation of month.</p></li>
 <li><p><code>'Q'</code> - Upper-case roman numeral for the month or stand-in month.</p></li>
-<li><p><code>'r'</code> - Lower-case roman numeral for the month or stand-in month.</p></li>
+<li><p><code>'q'</code> - Lower-case roman numeral for the month or stand-in month.</p></li>
 <li><p><code>'F'</code> - Upper-case letter representing the date frequency.</p></li>
 <li><p><code>'f'</code> - Lower-case letter representing the date frequency.</p></li>
 <li><p><code>'EE'</code> - Two-digit end-of-month day; stand-in month used for non-monthly dates.</p></li>

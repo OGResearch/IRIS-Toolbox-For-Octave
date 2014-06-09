@@ -40,16 +40,6 @@ for i = 1 : ny
         for j = 1 : nPOut
             inx = parametersInThisDTrend == PInx(j);
             if any(inx)
-                % Evaluate derivatives of dtrends equation w.r.t.
-                % out-of-likelihood parameters. size of d is nocc-by-nper.
-                if isempty(dEqtnF{i}) || isempty(dEqtnF{i}{inx})  ...
-                        || ~isa(dEqtnF{i}{inx},'function_handle')
-                    utils.error('model', ....
-                        ['This model object has been loaded from a disk file ', ...
-                        'created in an older version of IRIS, and is not ', ...
-                        'compatible. You must re-create the model object from ', ...
-                        'from the original model file.']);
-                end
                 X(i,j,:) = dEqtnF{i}{inx}(x,1,TTrend,G);
             end
         end

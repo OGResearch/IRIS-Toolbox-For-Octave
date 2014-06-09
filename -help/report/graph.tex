@@ -29,10 +29,6 @@
    (Inheritable) Options executed by calling \texttt{set} on the axes
    handle before running \texttt{'postProcess='}.
  \item
-   \texttt{'dateFormat='} {[} char \textbar{} \emph{\texttt{'YYYY:P'}}
-   {]} - (Inheritable) Date format string, see help on
-   \href{dates/dat2str}{\texttt{dat2str}}.
- \item
    \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
    (Inheritable) Date tick spacing.
  \item
@@ -75,6 +71,32 @@
    \texttt{'zeroLine='} {[} \texttt{true} \textbar{}
    \emph{\texttt{false}} {]} - (Inheritable) Add a horizontal zero line
    if zero is included on the y-axis.
+ \end{itemize}
+ 
+ \paragraph{Date format options}
+ 
+ See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
+ options.
+ 
+ \begin{itemize}
+ \item
+   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+   \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+   strings (possibly different for each date).
+ \item
+   \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+   {]} - Six letters used to represent the six possible frequencies of
+   IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+   monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
+ \item
+   \texttt{'months='} {[} cellstr \textbar{}
+   \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+   representing the names of the twelve months.
+ \item
+   \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+   \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+   lower-than-monthly-frequency date if the month is part of the date
+   format string.
  \end{itemize}
  
  \paragraph{Generic options}

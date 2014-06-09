@@ -38,15 +38,14 @@
  \item
    \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
    {]} - Six letters used to represent the six possible frequencies of
-   the IRIS dates: yearly, half-yearly, quarterly, bi-monthly, monthly,
-   and weekly, such as the \texttt{'Q'} in \texttt{'2010Q1'} denoting a
-   quarter.
+   IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+   monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
  \item
    \texttt{'months='} {[} cellstr \textbar{}
    \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
    representing the names of the twelve months; this option can be used
    whenever you want to replace the default English names with your local
-   language. .
+   language.
  \item
    \texttt{'plotDateFormat='} {[} char \textbar{}
    \emph{\texttt{struct('yy','Y','hh','Y:P','qq','Y:P','bb','Y:P','mm','Y:P','ww','Y:P')}}
@@ -67,11 +66,10 @@
    {]} - Maximum number of white spaces printed between individual
    columns of a multivariate tseries object on the screen.
  \item
-   \texttt{'standinMonth='} {[} \emph{\texttt{'first'}} \textbar{}
-   \texttt{'last'} \textbar{} numeric {]} - This option specifies which
-   month will be used to represent lower-frequency periods (such as a
-   quarters) when a month-displaying format is used in
-   \texttt{'dateformat='}.
+   \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+   \textbar{} \texttt{*1*} {]} - Month that will represent a
+   lower-than-monthly-frequency date if the month is part of the date
+   format string.
  \end{itemize}
  
  \subparagraph{External tools used by IRIS}

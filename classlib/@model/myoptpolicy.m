@@ -122,7 +122,7 @@ for eq = first : LossPos
             diffz{j} = diffz{j}*mult;
         end
 
-        dEqtn = char(reduce(diffz{j}),'human');
+        dEqtn = char(reduce(diffz{j}));
         
         % Shift lags and leads of variables (but not parameters) in the
         % derivative by -sh if sh ~= 0.
