@@ -61,6 +61,7 @@ classdef model < modelobj & estimateobj
     % Steady state
     % =============
     %
+    % * [`blazer`](model/blazer) - 
     % * [`chksstate`](model/chksstate) - Check if equations hold for currently assigned steady-state values.
     % * [`sstate`](model/sstate) - Compute steady state or balance-growth path of the model.
     % * [`sstatefile`](model/sstatefile) - Create a steady-state file based on the model object's steady-state equations.
@@ -147,9 +148,9 @@ classdef model < modelobj & estimateobj
         % A 1-by-nEqtn logical index of equations marked as non-linear.
         nonlin = false(1,0);
         % Block-recursive structure for variable names.
-        nameblk = cell(1,0);
+        NameBlk = cell(1,0);
         % Block recursive structure for steady-state equations.
-        eqtnblk = cell(1,0);
+        EqtnBlk = cell(1,0);
         % Anonymous function handles to derivatives.
         deqtnF = cell(1,0);
         % Function handles to constant terms in linear models.
@@ -209,6 +210,7 @@ classdef model < modelobj & estimateobj
         varargout = alter(varargin)
         varargout = assign(varargin)
         varargout = autoexogenise(varargin)
+        varargout = blazer(varargin)        
         varargout = bn(varargin)
         varargout = chksstate(varargin)
         varargout = data4lhsmrhs(varargin)
@@ -286,7 +288,6 @@ classdef model < modelobj & estimateobj
         varargout = myalpha2xb(varargin)
         varargout = myanchors(varargin)
         varargout = myautoexogenise(varargin)
-        varargout = myblazer(varargin)
         varargout = mychksstate(varargin)
         varargout = mychksstateopt(varargin)
         varargout = mychksyntax(varargin)
@@ -384,6 +385,11 @@ classdef model < modelobj & estimateobj
             %
             % * `'baseYear='` [ numeric | *2000* ] - Base year for constructing
             % deterministic time trends.
+            %
+            % * `'blazer='` [ *`true`* | `false` ] - Perform
+            % block-recursive analysis of steady-state equations at the
+            % time the model object is being created; the option works only
+            % in nonlinear models.
             %
             % * `'comment='` [ char | *empty* ] - Text comment attached to the model
             % object.

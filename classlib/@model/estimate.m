@@ -351,7 +351,7 @@ pp.parse(This,Data,Range,E,SP);
 estOpt = passvalopt('model.estimate',varargin{:});
 
 % Initialise and pre-process sstate and chksstate options.
-estOpt.sstate = mysstateopt(This,'silent',estOpt.sstate);
+[estOpt.sstate,This] = mysstateopt(This,'silent',estOpt.sstate);
 estOpt.chksstate = mychksstateopt(This,'silent',estOpt.chksstate);
 estOpt.solve = mysolveopt(This,'silent',estOpt.solve);
 

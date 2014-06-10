@@ -1,4 +1,4 @@
-function sstatefile(this,file,varargin)
+function sstatefile(This,File,varargin)
 % sstatefile  Create a steady-state file based on the model object's steady-state equations.
 %
 % Syntax
@@ -45,23 +45,26 @@ function sstatefile(this,file,varargin)
 
 options = passvalopt('model.sstatefile',varargin{:});
 
-%**********************************************************************
+%--------------------------------------------------------------------------
 
 if ~isempty(options.endogenise) || ~isempty(options.exogenise)
     % Extract the subsstate object and swap user-requested parameters and
     % transition variables.
     % this = subsstate(this);
-    this = mysstateswap(this,options.endogenise,options.exogenise);
-    this = myblazer(this);
+    This = mysstateswap(This,options.endogenise,options.exogenise);
+    [nameBlk,eqtnBlk] = blazer(This);
 else
-    if isempty(this.nameblk) || isempty(this.eqtnblk)
-        this = myblazer(this);
+    if ~isempty(This.NameBlk) && ~isempty(This.EqtnBlk)
+        nameBlk = This.NameBlk;
+        eqtnBlk = This.EqtnBlk;
+    else
+        [nameBlk,eqtnBlk] = blazer(This);
     end
 end
 
 % Occurences of parameters in steady-state equations.
-occur4 = any(this.occurS(this.eqtntype <= 2,:),1);
-occur4(this.nametype ~= 4) = false;
+occur4 = any(This.occurS(This.eqtntype <= 2,:),1);
+occur4(This.nametype ~= 4) = false;
 
 nl = sprintf('\n');
 
@@ -74,10 +77,10 @@ c = [c,'!growthnames := ',options.growthnames,';',nl,nl];
 % List of input parameters.
 c = [c, ...
     '!input',nl, ...
-    strfun.cslist(this.name(occur4),'wrap',75,'lead','   '),nl, ...
+    strfun.cslist(This.name(occur4),'wrap',75,'lead','   '),nl, ...
     ];
 
-eqtn = this.eqtn;
+eqtn = This.eqtn;
 % Use steady-state versions.
 eqtn = regexprep(eqtn,'^.*?!!','');
 % Remove non-linear earmarks.
@@ -90,40 +93,40 @@ if ~options.time
 end
 
 % Remove residuals.
-elist = this.name(this.nametype == 3);
+elist = This.name(This.nametype == 3);
 for i = 1 : length(elist)
     eqtn = regexprep(eqtn,['\<',elist{i},'\>'],'0');
 end
 
-nblk = length(this.eqtnblk);
+nblk = length(eqtnBlk);
 wasAssign = false;
 for iblk = 1 : nblk
-    neqtn = length(this.eqtnblk{iblk});
-    ieqtn = this.eqtnblk{iblk}(1);
-    iname = this.nameblk{iblk}(1);
-    if neqtn == 1 && sub_isassign(eqtn{ieqtn},this.name{iname})
+    neqtn = length(eqtnBlk{iblk});
+    ieqtn = eqtnBlk{iblk}(1);
+    iname = nameBlk{iblk}(1);
+    if neqtn == 1 && xxIsAssign(eqtn{ieqtn},This.name{iname})
         % Assignments.
         if ~wasAssign
-            c = [c,nl,'!equations',nl];
+            c = [c,nl,'!equations',nl]; %#ok<AGROW>
         end
-        c = [c,'   ',eqtn{ieqtn},nl];
+        c = [c,'   ',eqtn{ieqtn},nl]; %#ok<AGROW>
         wasAssign = true;
     else
         % Equations to be solved.
-        c = [c,nl,'!equations',nl];
+        c = [c,nl,'!equations',nl]; %#ok<AGROW>
         for j = 1 : neqtn
-            ieq = this.eqtnblk{iblk}(j);
-            c = [c,'   ',eqtn{ieq},nl];
+            ieq = eqtnBlk{iblk}(j);
+            c = [c,'   ',eqtn{ieq},nl]; %#ok<AGROW>
         end
-        c = [c,'   !solvefor',nl];
-        thisName = this.name(this.nameblk{iblk});
-        c = [c,strfun.cslist(thisName,'wrap',75,'lead','   '),nl];
+        c = [c,'   !solvefor',nl]; %#ok<AGROW>
+        thisName = This.name(nameBlk{iblk});
+        c = [c,strfun.cslist(thisName,'wrap',75,'lead','   '),nl]; %#ok<AGROW>
         % Log list.
-        isLog = this.log(this.nameblk{iblk});
+        isLog = This.log(nameBlk{iblk});
         if any(isLog)
             logList = thisName(isLog);
-            c = [c,'   !variables:log',nl];
-            c = [c,strfun.cslist(logList,'wrap',75,'lead','   '),nl];
+            c = [c,'   !log_variables',nl]; %#ok<AGROW>
+            c = [c,strfun.cslist(logList,'wrap',75,'lead','   '),nl]; %#ok<AGROW>
         end
         wasAssign = false;
     end
@@ -133,14 +136,19 @@ end
 % because of shocks being set to zero.
 c = strrep(c,'exp(0)','1');
 
-char2file(c,file);
+char2file(c,File);
 
 end
 
 
+% Subfunctions...
+
+
 %**************************************************************************
+
+
+function flag = xxIsAssign(eqtn,name)
 % True if this equation can be cast as an assignment.
-function flag = sub_isassign(eqtn,name)
 tokens = regexp(eqtn,'([^=]*)(.*)','tokens','once');
 lhs = tokens{1};
 rhs = tokens{2};
@@ -149,5 +157,4 @@ if ~isempty(rhs)
 end
 flag = strcmp(lhs,name) ...
     & isempty(regexp(rhs,['\<',name,'\>'],'once'));
-end
-% sub_isassign().
+end % xxIsAssign()

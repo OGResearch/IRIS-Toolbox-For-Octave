@@ -1,5 +1,5 @@
 function Opt = mysolveopt(This,Mode,Opt)
-% mysstateopt  [Not a public function] Prepare steady-state solver options.
+% mysolveopt  [Not a public function] Prepare options for model solution.
 %
 % Backend IRIS function.
 % No help provided.

@@ -1,4 +1,4 @@
-function Opt = mysstateopt(This,Mode,varargin)
+function [Opt,This] = mysstateopt(This,Mode,varargin)
 % mysstateopt  [Not a public function] Prepare steady-state solver options.
 %
 % Backend IRIS function.
@@ -53,7 +53,7 @@ else
     
     % Non-linear sstate solver
     %--------------------------
-    Opt = xxBlocks(This,Opt);
+    [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
     Opt = xxOptimOpt(This,Opt);
     
@@ -66,6 +66,8 @@ end
 
 
 %**************************************************************************
+
+
 function Opt = xxDisplayOpt(This,Opt) %#ok<INUSL>
 if islogical(Opt.display)
     if Opt.display
@@ -78,6 +80,8 @@ end % xxDisplayOpt()
 
 
 %**************************************************************************
+
+
 function Opt = xxOptimOpt(This,Opt) %#ok<INUSL>
 % Use Levenberg-Marquardt because it can handle underdetermined systems.
 oo = Opt.optimset;
@@ -96,7 +100,9 @@ end % xxOptimOpt()
 
 
 %**************************************************************************
-function Opt = xxBlocks(This,Opt)
+
+
+function [Opt,This] = xxBlocks(This,Opt)
 
 % Process fix options first.
 fixL = [];
@@ -111,15 +117,23 @@ end
 
 % Run BLAZER if it has not been run yet or if user requested
 % exogenise/endogenise.
-if Opt.blocks && (isempty(This.nameblk) || isempty(This.eqtnblk) || isSwap)
-    This = myblazer(This);
-end
-
-% Prepare blocks of equations/names.
 if Opt.blocks
-    nameBlkL = This.nameblk;
-    nameBlkG = This.nameblk;
-    eqtnBlk = This.eqtnblk;
+    if isempty(This.NameBlk) || isempty(This.EqtnBlk) || isSwap
+        % Need to rerun blazer.
+        [nameBlkL,eqtnBlk] = blazer(This);
+        nameBlkG = nameBlkL;
+        % Update blocks in the current model object only if no swap is
+        % requested.
+        if ~isSwap
+            This.NameBlk = nameBlkL;
+            This.EqtnBlk = eqtnBlk;
+        end
+    else
+        % Use blocks from the current model object.
+        nameBlkL = This.NameBlk;
+        nameBlkG = This.NameBlk;
+        eqtnBlk = This.EqtnBlk;
+    end
 else
     % If `'blocks=' false`, prepare two blocks:
     % # transition equations;

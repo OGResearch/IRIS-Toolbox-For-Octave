@@ -261,6 +261,20 @@ switch Query
     case 'lastsyst'
         Ans = This.lastSyst;
         
+    case 'eqtnblk'
+        nBlk = length(This.EqtnBlk);
+        Ans = cell(1,nBlk);
+        for i = 1 : nBlk
+            Ans{i} = This.eqtn(This.EqtnBlk{i});
+        end
+        
+    case 'nameblk'
+        nBlk = length(This.NameBlk);
+        Ans = cell(1,nBlk);
+        for i = 1 : nBlk
+            Ans{i} = This.name(This.NameBlk{i});
+        end
+        
     otherwise
         Flag = false;
         

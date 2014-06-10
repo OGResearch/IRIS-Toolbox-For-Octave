@@ -80,6 +80,11 @@ end
 % Recreate transient properties.
 This = mytransient(This);
 
+% Run Blazer.
+if Opt.blazer
+    [This.NameBlk,This.EqtnBlk] = blazer(This);
+end
+
 
 % Nested functions...
 

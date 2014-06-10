@@ -133,8 +133,9 @@ end
 
 %--------------------------------------------------------------------------
 
-% Pre-process options passed to `mysstatenonlin`.
-sstateOpt = mysstateopt(This,'verbose',varargin{:});
+% Pre-process options passed to `mysstatenonlin`. Update the model object
+% with the new block-recursive structure.
+[sstateOpt,This] = mysstateopt(This,'verbose',varargin{:});
 opt.solve = mysolveopt(This,'verbose',opt.solve);
 
 if ~This.linear
