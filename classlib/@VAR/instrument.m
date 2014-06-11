@@ -55,9 +55,10 @@ function This = instrument(This,varargin)
 % is a constant term (set to zero if no value supplied).
 %
 % The conditioning instruments must be a linear combination (possibly with
-% a constant) of the existing endogenous variables. The names of the
-% conditioning instruments must be obviously unique (i.e. distinct from the
-% names of the exisiting endogenous variables, and from other instruments).
+% a constant) of the existing endogenous variables and their lags up to p-1
+% where p is the order of the VAR. The names of the conditioning
+% instruments must be unique (i.e. distinct from the names of endogenous
+% variables, residuals, exogenous variables, and existing instruments).
 %
 % Example
 % ========
@@ -100,13 +101,19 @@ end
 %--------------------------------------------------------------------------
 
 if isempty(This.YNames)
-    utils.error('VAR', ...
-        ['Cannot create conditioning instruments in VAR ', ...
+    utils.error('VAR:instrument', ...
+        ['Cannot create instruments in VAR objects ', ...
         'without named variables.']);
 end
 
 ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
+
+if p == 0
+    utils.error('VAR:instrument', ...
+        ['Cannot create instruments in empty or 0-th order ', ...
+        'VAR objects.']);
+end
 
 if iscellstr(varargin) ...
         && all(cellfun(@(x) ~isempty(strfind(x,':=')),varargin))
@@ -125,7 +132,7 @@ elseif iscellstr(varargin(1:2:end))
     List = cell(1,nName);
     List(:) = {''}; % TODO
 else
-    utils.error('VAR', ...
+    utils.error('VAR:instrument', ...
         'Invalid definition(s) of VAR instrument(s).');
 end
 
@@ -141,7 +148,13 @@ charInx = cellfun(@ischar,Exprn);
 
 % Convert RHS expression strings to vectors, and include them in the `Z`
 % matrix.
-[Zi,Ci] = preparser.lincomb2vec(Exprn(charInx),xVector);
+[Zi,Ci,isValid] = preparser.lincomb2vec(Exprn(charInx),xVector);
+if any(~isValid)
+    utils.error('VAR:instrument', ...
+        ['This is not a valid definition string', ...
+        'for conditioning instruments: ''%s''.'], ...
+        List{~isValid});
+end
 Z(charInx,:) = Zi;
 C(charInx,:) = Ci;
 
@@ -157,7 +170,7 @@ for i = find(~charInx)
         Z(i,1:p*ny) = e(1:p*ny);
         C(i,:) = e(p*ny+1);
     else
-        utils.error('VAR', ...
+        utils.error('VAR:instrument', ...
             ['Incorrect size of the vector of coefficients ', ...
             'for this instrument: ''%s''.'], ...
             Name{i});
@@ -177,6 +190,8 @@ This.Zi = [This.Zi;[C,Z]];
 
 
 %**************************************************************************
+
+    
     function doParseNameExprn()
         List = regexprep(List,'\s+','');
         List = regexprep(List,';$','','once');
@@ -195,18 +210,20 @@ This.Zi = [This.Zi;[C,Z]];
             end
         end
         if any(~validDef)
-            utils.error('VAR', ...
+            utils.error('VAR:instrument', ...
                 ['This is not a valid definition string', ...
                 'for conditioning instruments: ''%s''.'], ...
-                List{~valid});
+                List{~validDef});
         end
     end % doParseNameExprn()
 
 
 %**************************************************************************
+
+
     function doXVector()
         xVector = This.YNames;
-        for ii = 2 : p
+        for ii = 1 : p-1
             time = sprintf('{-%g}',ii);
             temp = regexprep(This.YNames,'.*',['$0',time]);
             xVector = [xVector,temp]; %#ok<AGROW>
@@ -215,22 +232,25 @@ This.Zi = [This.Zi;[C,Z]];
 
 
 %**************************************************************************
+
+    
     function doChkNames()
         isUnique = true(1,nName);
         isValid = true(1,nName);
-        chkList = [This.YNames,This.INames];
+        chkList = [This.YNames,This.XNames,This.ENames,This.INames];
         for ii = 1 : nName
             isUnique(ii) = ~any(strcmp(Name{ii},chkList));
             isValid(ii) = isvarname(Name{ii});
+            chkList = [chkList,Name{ii}]; %#ok<AGROW>
         end
         if any(~isUnique)
-            utils.error('VAR', ...
+            utils.error('VAR:instrument', ...
                 ['This name already exists ', ...
                 'in the ',class(This),' object: ''%s''. '], ...
                 Name{~isUnique});            
         end
         if any(~isValid)
-            utils.error('VAR', ...
+            utils.error('VAR:instrument', ...
                 ['This is not a valid name ', ...
                 'for conditioning instruments: ''%s''.'], ...
                 Name{~isValid});
@@ -239,10 +259,12 @@ This.Zi = [This.Zi;[C,Z]];
 
 
 %**************************************************************************
+ 
+    
     function doChkExprn()
         validexprsn = all(~isnan([C,Z]),2);
         if any(~validexprsn)
-            utils.error('VAR', ...
+            utils.error('VAR:instrument', ...
                 ['Defition of this conditioning instrument ', ...
                 'is invalid: ''%s''.'], ...
                 Name{~validexprs});
