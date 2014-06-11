@@ -2,55 +2,56 @@
 
     \filetitle{fevd}{Forecast error variance decomposition for SVAR variables}{SVAR/fevd}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [X,Y,XX,YY] = fevd(V,NPer)
- [X,Y,XX,YY] = fevd(V,Range)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - Structural VAR model.
- \item
-   \texttt{NPer} {[} numeric {]} - Number of periods.
- \item
-   \texttt{Range} {[} numeric {]} - Date range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} numeric {]} - Forecast error variance decomposition
-   into absolute contributions of residuals; absolute contributions sum
-   up to the total variance.
- \item
-   \texttt{Y} {[} numeric {]} - Forecast error variance decomposition
-   into relative contributions of residuals; relative contributions sum
-   up to \texttt{1}.
- \item
-   \texttt{XX} {[} tseries {]} - Database with a tseries with absolute
-   contributions in columns for each VAR variable.
- \item
-   \texttt{YY} {[} tseries {]} - Database with a tseries with relative
-   contributions in columns for each VAR variable.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-   \texttt{'numeric'} {]} - Return matrices \texttt{X} and \texttt{Y} as
-   either namedmat objects (matrices with named rows and columns) or
-   plain numeric arrays.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[X,Y,XX,YY] = fevd(V,NPer)
+[X,Y,XX,YY] = fevd(V,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Structural VAR model.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} numeric {]} - Forecast error variance decomposition
+  into absolute contributions of residuals; absolute contributions sum
+  up to the total variance.
+\item
+  \texttt{Y} {[} numeric {]} - Forecast error variance decomposition
+  into relative contributions of residuals; relative contributions sum
+  up to \texttt{1}.
+\item
+  \texttt{XX} {[} tseries {]} - Database with a tseries with absolute
+  contributions in columns for each VAR variable.
+\item
+  \texttt{YY} {[} tseries {]} - Database with a tseries with relative
+  contributions in columns for each VAR variable.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Return matrices \texttt{X} and \texttt{Y} as
+  either namedmat objects (matrices with named rows and columns) or
+  plain numeric arrays.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

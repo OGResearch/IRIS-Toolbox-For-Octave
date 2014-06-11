@@ -2,120 +2,122 @@
 
     \filetitle{prior}{Add new prior to system priors object}{systempriors/prior}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- S = prior(S,Expr,PriorFunc,...)
- S = prior(S,Expr,[],...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{S} {[} systempriors {]} - System priors object.
- \item
-   \texttt{Expr} {[} char {]} - Expression that defines a value for which
-   a prior density will be defined; see Description for system properties
-   that can be referred to in the expression.
- \item
-   \texttt{PriorFunc} {[} function\_handle \textbar{} empty {]} -
-   Function handle returning the log of prior density; empty prior
-   function, \texttt{{[}{]}}, means a uniform prior.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{S} {[} systempriors {]} - The system priors object with the
-   new prior added.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'lowerBound='} {[} numeric \textbar{} \emph{\texttt{-Inf}} {]}
-   - Lower bound for the prior.
- \item
-   \texttt{'upperBound='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]}
-   - Upper bound for the prior.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \subparagraph{System properties that can be used in \texttt{Expr}}
- 
- \begin{itemize}
- \item
-   \texttt{srf{[}VarName,ShockName,T{]}} - Plain shock response function
-   of variables \texttt{VarName} to shock \texttt{ShockName} in period
-   \texttt{T}. Mind the square brackets.
- \item
-   \texttt{ffrf{[}VarName,MVarName,Freq{]}} - Filter frequency response
-   function of transition variables \texttt{TVarName} to measurement
-   variable \texttt{MVarName} at frequency \texttt{Freq}. Mind the square
-   brackets.
- \item
-   \texttt{corr{[}VarName1,VarName2,Lag{]}} - Correlation between
-   variable \texttt{VarName1} and variables \texttt{VarName2} lagged by
-   \texttt{Lag} periods.
- \item
-   \texttt{spd{[}VarName1,VarName2,Freq{]}} - Spectral density between
-   variables \texttt{VarName1} and \texttt{VarName2} at frequency
-   \texttt{Freq}.
- \end{itemize}
- 
- If a variable is declared as a
- \href{modellang/logvariables}{\texttt{log-variable}}, it must be
- referred to as \texttt{log(VarName)} in the above expressions, and the
- log of that variables is returned, e.g.
- \texttt{srf{[}log(VarName),ShockName,T{]}}. or
- \texttt{ffrf{[}log(TVarName),MVarName,T{]}}.
- 
- \subparagraph{Expressions involving combinations or functions of
- parameters}
- 
- Model parameter names can be referred to in \texttt{Expr} preceded by a
- dot (period), e.g. \texttt{.alpha\^{}2 + .beta\^{}2} defines a prior on
- the sum of squares of the two parameters (\texttt{alpha} and
- \texttt{beta}).
- 
- \paragraph{Example}
- 
- Create a new, empty systemprios object based on an existing model.
- 
- \begin{verbatim}
- s = systempriors(m);
- \end{verbatim}
- 
- Add a prior on minus the shock response function of variable
- \texttt{ygap} to shock \texttt{eps\_pie} in period 4. The prior density
- is lognormal with mean 0.3 and std deviation 0.05;
- 
- \begin{verbatim}
- s = prior(s,'-srf[ygap,eps_pie,4]',logdist.lognormal(0.3,0.05));
- \end{verbatim}
- 
- Add a prior on the gain of the frequency response function of transition
- variable \texttt{ygap} to measurement variable `y' at frequency
- \texttt{2*pi/40}. The prior density is normal with mean 0.5 and std
- deviation 0.01. This prior says that we wish to keep the cut-off
- periodicity for trend-cycle decomposition close to 40 periods.
- 
- \begin{verbatim}
- s = prior(s,'abs(ffrf[ygap,y,2*pi/40])',logdist.normal(0.5,0.01));
- \end{verbatim}
- 
- Add a prior on the sum of parameters \texttt{alpha1} and
- \texttt{alpha2}. The prior is normal with mean 0.9 and std deviation
- 0.1, but the sum is forced to be between 0 and 1 by imposing lower and
- upper bounds.
- 
- \begin{verbatim}
- s = prior(s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
-     'lowerBound=',0,'upperBound=',1);
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+S = prior(S,Expr,PriorFunc,...)
+S = prior(S,Expr,[],...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} systempriors {]} - System priors object.
+\item
+  \texttt{Expr} {[} char {]} - Expression that defines a value for which
+  a prior density will be defined; see Description for system properties
+  that can be referred to in the expression.
+\item
+  \texttt{PriorFunc} {[} function\_handle \textbar{} empty {]} -
+  Function handle returning the log of prior density; empty prior
+  function, \texttt{{[}{]}}, means a uniform prior.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{S} {[} systempriors {]} - The system priors object with the
+  new prior added.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'lowerBound='} {[} numeric \textbar{} \emph{\texttt{-Inf}} {]}
+  - Lower bound for the prior.
+\item
+  \texttt{'upperBound='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]}
+  - Upper bound for the prior.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{System properties that can be used in
+\texttt{Expr}}\label{system-properties-that-can-be-used-in-expr}
+
+\begin{itemize}
+\item
+  \texttt{srf{[}VarName,ShockName,T{]}} - Plain shock response function
+  of variables \texttt{VarName} to shock \texttt{ShockName} in period
+  \texttt{T}. Mind the square brackets.
+\item
+  \texttt{ffrf{[}VarName,MVarName,Freq{]}} - Filter frequency response
+  function of transition variables \texttt{TVarName} to measurement
+  variable \texttt{MVarName} at frequency \texttt{Freq}. Mind the square
+  brackets.
+\item
+  \texttt{corr{[}VarName1,VarName2,Lag{]}} - Correlation between
+  variable \texttt{VarName1} and variables \texttt{VarName2} lagged by
+  \texttt{Lag} periods.
+\item
+  \texttt{spd{[}VarName1,VarName2,Freq{]}} - Spectral density between
+  variables \texttt{VarName1} and \texttt{VarName2} at frequency
+  \texttt{Freq}.
+\end{itemize}
+
+If a variable is declared as a
+\href{modellang/logvariables}{\texttt{log-variable}}, it must be
+referred to as \texttt{log(VarName)} in the above expressions, and the
+log of that variables is returned, e.g.
+\texttt{srf{[}log(VarName),ShockName,T{]}}. or
+\texttt{ffrf{[}log(TVarName),MVarName,T{]}}.
+
+\subparagraph{Expressions involving combinations or functions of
+parameters}\label{expressions-involving-combinations-or-functions-of-parameters}
+
+Model parameter names can be referred to in \texttt{Expr} preceded by a
+dot (period), e.g. \texttt{.alpha\^{}2 + .beta\^{}2} defines a prior on
+the sum of squares of the two parameters (\texttt{alpha} and
+\texttt{beta}).
+
+\paragraph{Example}\label{example}
+
+Create a new, empty systemprios object based on an existing model.
+
+\begin{verbatim}
+s = systempriors(m);
+\end{verbatim}
+
+Add a prior on minus the shock response function of variable
+\texttt{ygap} to shock \texttt{eps\_pie} in period 4. The prior density
+is lognormal with mean 0.3 and std deviation 0.05;
+
+\begin{verbatim}
+s = prior(s,'-srf[ygap,eps_pie,4]',logdist.lognormal(0.3,0.05));
+\end{verbatim}
+
+Add a prior on the gain of the frequency response function of transition
+variable \texttt{ygap} to measurement variable `y' at frequency
+\texttt{2*pi/40}. The prior density is normal with mean 0.5 and std
+deviation 0.01. This prior says that we wish to keep the cut-off
+periodicity for trend-cycle decomposition close to 40 periods.
+
+\begin{verbatim}
+s = prior(s,'abs(ffrf[ygap,y,2*pi/40])',logdist.normal(0.5,0.01));
+\end{verbatim}
+
+Add a prior on the sum of parameters \texttt{alpha1} and
+\texttt{alpha2}. The prior is normal with mean 0.9 and std deviation
+0.1, but the sum is forced to be between 0 and 1 by imposing lower and
+upper bounds.
+
+\begin{verbatim}
+s = prior(s,'alpha1+alpha2',logdist.normal(0.9,0.1), ...
+    'lowerBound=',0,'upperBound=',1);
+\end{verbatim}
 
 

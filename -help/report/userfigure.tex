@@ -2,76 +2,79 @@
 
     \filetitle{userfigure}{Insert existing figure window}{report/userfigure}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- P.userfigure(Caption,H,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{P} {[} struct {]} - Report object created by the
-   \href{report/new}{\texttt{report.new}} function.
- \item
-   \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
-   array with title and subtitle displayed at the top of the figure; see
-   Description for splitting the title or subtitle into multiple lines.
- \item
-   \texttt{H} {[} numeric {]} - Handle to a graphics figure created by
-   the user that will be captured and inserted in the report.
- \end{itemize}
- 
- \paragraph{Options}
- 
- See help on \url{report/figure} for options available.
- 
- \paragraph{Generic options}
- 
- See help on \href{report/Contents}{generic options} in report objects.
- 
- \paragraph{Description}
- 
- The function \texttt{report/userfigure} inserts an existing figure
- window (created by the user by standard Matlab commands, and referenced
- by its handle, \texttt{H}) into a report:
- 
- \begin{itemize}
- \item
-   The figure and the graphs in it must be created \emph{before} you call
-   \texttt{report/figure}: any changes or additions to the figure or its
-   graphs made after you call the function will not show in the report.
- \item
-   The userfigure cannot have any children; in other words, you cannot
-   call \url{report/graph} after a call to \texttt{report/userfigure}.
- \end{itemize}
- 
- \subparagraph{Titles and subtitles}
- 
- The input argument \texttt{Caption} can be either a text string, or a
- 1-by-2 cell array of strings. In the latter case, the first cell will be
- printed as a title, and the second cell will be printed as a subtitle.
- 
- To split the title or subtitle into multiple lines, use the following
- LaTeX commands wrapped in curly brackets:
- \texttt{\{\textbackslash{}\textbackslash{}\}} or
- \texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
- is the width of an extra vertical space (in points) added between the
- respective lines.
- 
- \subparagraph{Figure window and figure handle}
- 
- The figure \texttt{H} is saved to a \texttt{fig} file and stored within
- the report object. At the time of publishing the report, the figure is
- re-created again in a new separate window.
- 
- If the option \texttt{'close='} is set to \texttt{false} this new figure
- window will remain open after the report is published. The handle to
- this figure window will be included in the field \texttt{.figureHandle}
- of the information struct \texttt{Info} returned by
- \url{report/publish}.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P.userfigure(Caption,H,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
+  array with title and subtitle displayed at the top of the figure; see
+  Description for splitting the title or subtitle into multiple lines.
+\item
+  \texttt{H} {[} numeric {]} - Handle to a graphics figure created by
+  the user that will be captured and inserted in the report.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on \href{report/figure}{\texttt{report/figure}} for options
+available.
+
+\paragraph{Generic options}\label{generic-options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}\label{description}
+
+The function \texttt{report/userfigure} inserts an existing figure
+window (created by the user by standard Matlab commands, and referenced
+by its handle, \texttt{H}) into a report:
+
+\begin{itemize}
+\item
+  The figure and the graphs in it must be created \emph{before} you call
+  \texttt{report/figure}: any changes or additions to the figure or its
+  graphs made after you call the function will not show in the report.
+\item
+  The userfigure cannot have any children; in other words, you cannot
+  call \href{report/graph}{\texttt{report/graph}} after a call to
+  \texttt{report/userfigure}.
+\end{itemize}
+
+\subparagraph{Titles and subtitles}\label{titles-and-subtitles}
+
+The input argument \texttt{Caption} can be either a text string, or a
+1-by-2 cell array of strings. In the latter case, the first cell will be
+printed as a title, and the second cell will be printed as a subtitle.
+
+To split the title or subtitle into multiple lines, use the following
+LaTeX commands wrapped in curly brackets:
+\texttt{\{\textbackslash{}\textbackslash{}\}} or
+\texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
+is the width of an extra vertical space (in points) added between the
+respective lines.
+
+\subparagraph{Figure window and figure
+handle}\label{figure-window-and-figure-handle}
+
+The figure \texttt{H} is saved to a \texttt{fig} file and stored within
+the report object. At the time of publishing the report, the figure is
+re-created again in a new separate window.
+
+If the option \texttt{'close='} is set to \texttt{false} this new figure
+window will remain open after the report is published. The handle to
+this figure window will be included in the field \texttt{.figureHandle}
+of the information struct \texttt{Info} returned by
+\href{report/publish}{\texttt{report/publish}}.
+
+\paragraph{Example}\label{example}
 
 

@@ -2,44 +2,44 @@
 
     \filetitle{scatter}{Scatter graph for tseries objects}{tseries/scatter}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [H,Range] = scatter([X,Y],...)
- [H,Range] = scatter(Range,[X,Y],...)
- [H,Range] = scatter(Ax,Range,[X,Y],...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{ax} {[} numeric {]} - Handle to axes in which the graph will
-   be plotted; if not specified, the current axes will used.
- \item
-   \texttt{Range} {[} numeric {]} - Date range; if not specified the
-   entire range of the input tseries object will be plotted.
- \item
-   \texttt{X}, \texttt{Y} {[} tseries {]} - Two scalar tseries objects
-   plotted on the x-axis and the y-axis, respectively.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{H} {[} numeric {]} - Handles to the lines plotted.
- \item
-   \texttt{Range} {[} numeric {]} - Actually plotted date range.
- \end{itemize}
- 
- \paragraph{Options}
- 
- See help on \url{tseries/plot} and the built-in function
- \texttt{scatter} for all options available.
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[H,Range] = scatter([X,Y],...)
+[H,Range] = scatter(Range,[X,Y],...)
+[H,Range] = scatter(Ax,Range,[X,Y],...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X}, \texttt{Y} {[} tseries {]} - Two scalar tseries objects
+  plotted on the x-axis and the y-axis, respectively.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handles to the lines plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on \href{tseries/plot}{\texttt{tseries/plot}} and the built-in
+function \texttt{scatter} for all options available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

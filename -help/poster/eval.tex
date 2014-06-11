@@ -2,55 +2,55 @@
 
     \filetitle{eval}{Evaluate posterior density at specified points}{poster/eval}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [X,L,PP,SrfP,FrfP] = eval(Pos)
- [X,L,PP,SrfP,FrfP] = eval(Pos,P)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Pos} {[} poster {]} - Posterior object returned by the
-   \url{model/estimate} function.
- \item
-   \texttt{P} {[} struct {]} - Struct with parameter values at which the
-   posterior density will be evaluated; if \texttt{P} is not specified,
-   the posterior density is evaluated at the point of the estimated mode.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} numeric {]} - The value of log posterior density
-   evaluated at \texttt{P}; N.B. the returned value is log posterior, and
-   not minus log posterior.
- \item
-   \texttt{L} {[} numeric {]} - Contribution of data likelihood to log
-   posterior.
- \item
-   \texttt{PP} {[} numeric {]} - Contribution of parameter priors to log
-   posterior.
- \item
-   \texttt{SrfP} {[} numeric {]} - Contribution of shock response
-   function priors to log posterior.
- \item
-   \texttt{FrfP} {[} numeric {]} - Contribution of frequency response
-   function priors to log posterior.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The total log posterior consists, in general, of the four contributions
- listed above:
- 
- \begin{verbatim}
- X = L + PP + SrfP + FrfP.
- \end{verbatim}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[X,L,PP,SrfP,FrfP] = eval(Pos)
+[X,L,PP,SrfP,FrfP] = eval(Pos,P)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Pos} {[} poster {]} - Posterior object returned by the
+  \href{model/estimate}{\texttt{model/estimate}} function.
+\item
+  \texttt{P} {[} struct {]} - Struct with parameter values at which the
+  posterior density will be evaluated; if \texttt{P} is not specified,
+  the posterior density is evaluated at the point of the estimated mode.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} numeric {]} - The value of log posterior density
+  evaluated at \texttt{P}; N.B. the returned value is log posterior, and
+  not minus log posterior.
+\item
+  \texttt{L} {[} numeric {]} - Contribution of data likelihood to log
+  posterior.
+\item
+  \texttt{PP} {[} numeric {]} - Contribution of parameter priors to log
+  posterior.
+\item
+  \texttt{SrfP} {[} numeric {]} - Contribution of shock response
+  function priors to log posterior.
+\item
+  \texttt{FrfP} {[} numeric {]} - Contribution of frequency response
+  function priors to log posterior.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The total log posterior consists, in general, of the four contributions
+listed above:
+
+\begin{verbatim}
+X = L + PP + SrfP + FrfP.
+\end{verbatim}
+
+\paragraph{Example}\label{example}
 
 

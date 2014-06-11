@@ -2,35 +2,37 @@
 
     \filetitle{iscompatible}{True if two VAR objects can occur together on the LHS and RHS in an assignment}{VAR/iscompatible}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Flag = iscompatible(V1,V2)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V1}, \texttt{V2} {[} model {]} - Two VAR objects that will be
-   tested for compatibility.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
-   if \texttt{V1} and \texttt{V2} can occur in an assignment,
-   \texttt{V1(...) = V2(...)}, or horizonatl concatenation,
-   \texttt{{[}V1,V2{]}}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The function compares the names of all variables, shocks, and
- parameters, and the composition of the state-space vectors and matrices.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Flag = iscompatible(V1,V2)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V1}, \texttt{V2} {[} model {]} - Two VAR objects that will be
+  tested for compatibility.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if \texttt{V1} and \texttt{V2} can occur in an assignment,
+  \texttt{V1(...) = V2(...)}, or horizonatl concatenation,
+  \texttt{{[}V1,V2{]}}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The function compares the names of all variables, shocks, and
+parameters, and the composition of the state-space vectors and matrices.
+
+\paragraph{Example}\label{example}
 
 

@@ -2,37 +2,38 @@
 
     \filetitle{dbredate}{Redate all tseries objects in a database}{dbase/dbredate}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- D = redate(D,OldDate,NewDate)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Input database with tseries objects.
- \item
-   \texttt{OldDate} {[} numeric {]} - Base date that will be converted to
-   a new date in all tseries objects.
- \item
-   \texttt{NewDate} {[} numeric {]} - A new date to which the base date
-   \texttt{OldDate} will be changed in all tseries objects;
-   \texttt{newDate} need not be the same frequency as \texttt{OldDate}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{d} {[} struct {]} - Output database where all tseries objects
-   have identical data as in the input database, but with their time
-   dimension changed.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = redate(D,OldDate,NewDate)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database with tseries objects.
+\item
+  \texttt{OldDate} {[} numeric {]} - Base date that will be converted to
+  a new date in all tseries objects.
+\item
+  \texttt{NewDate} {[} numeric {]} - A new date to which the base date
+  \texttt{OldDate} will be changed in all tseries objects;
+  \texttt{newDate} need not be the same frequency as \texttt{OldDate}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{d} {[} struct {]} - Output database where all tseries objects
+  have identical data as in the input database, but with their time
+  dimension changed.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

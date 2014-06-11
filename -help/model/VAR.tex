@@ -2,47 +2,48 @@
 
     \filetitle{VAR}{Population VAR for selected model variables}{model/VAR}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- V = VAR(M,Select,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Solved model object.
- \item
-   \texttt{Select} {[} cellstr \textbar{} char {]} - List of variables
-   selected for the VAR.
- \item
-   \texttt{Range} {[} numeric {]} - Hypothetical range, including
-   pre-sample initial condition, on which the VAR would be estimated.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - Asymptotic reduced-form VAR for selected
-   model variables.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'order='} {[} numeric \textbar{} \emph{1} {]} - Order of the
-   VAR.
- \item
-   \texttt{'constant='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Include in the VAR a constant vector derived from
-   the steady state of the selected variables.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+V = VAR(M,Select,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Solved model object.
+\item
+  \texttt{Select} {[} cellstr \textbar{} char {]} - List of variables
+  selected for the VAR.
+\item
+  \texttt{Range} {[} numeric {]} - Hypothetical range, including
+  pre-sample initial condition, on which the VAR would be estimated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - Asymptotic reduced-form VAR for selected
+  model variables.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{1} {]} - Order of the
+  VAR.
+\item
+  \texttt{'constant='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Include in the VAR a constant vector derived from
+  the steady state of the selected variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

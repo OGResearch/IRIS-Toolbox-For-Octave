@@ -2,83 +2,83 @@
 
     \filetitle{plot}{Line graph for tseries objects}{tseries/plot}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [H,Range] = plot(X,...)
- [H,Range] = plot(Range,X,...)
- [H,Range] = plot(Ax,Range,X,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
-   be plotted; if not specified, the current axes will used.
- \item
-   \texttt{Range} {[} numeric {]} - Date range; if not specified the
-   entire range of the input tseries object will be plotted.
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object whose columns will
-   be ploted as a line graph.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{H} {[} numeric {]} - Handles to lines plotted.
- \item
-   \texttt{Range} {[} numeric {]} - Actually plotted date range.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'datePosition='} {[} \emph{\texttt{'centre'}} \textbar{}
-   \texttt{'end'} \textbar{} \texttt{'start'} {]} - Position of each date
-   point within a given period span.
- \item
-   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Vector of dates locating tick marks on the X-axis; Inf means they will
-   be created automatically.
- \item
-   \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Make the y-axis tight.
- \end{itemize}
- 
- See help on built-in \texttt{plot} function for other options available.
- 
- \paragraph{Date format options}
- 
- See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
- options.
- 
- \begin{itemize}
- \item
-   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
-   \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
-   strings (possibly different for each date).
- \item
-   \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
-   {]} - Six letters used to represent the six possible frequencies of
-   IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
-   monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
- \item
-   \texttt{'months='} {[} cellstr \textbar{}
-   \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
-   representing the names of the twelve months.
- \item
-   \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
-   \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
-   lower-than-monthly-frequency date if the month is part of the date
-   format string.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[H,Range] = plot(X,...)
+[H,Range] = plot(Range,X,...)
+[H,Range] = plot(Ax,Range,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to axes in which the graph will
+  be plotted; if not specified, the current axes will used.
+\item
+  \texttt{Range} {[} numeric {]} - Date range; if not specified the
+  entire range of the input tseries object will be plotted.
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose columns will
+  be ploted as a line graph.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handles to lines plotted.
+\item
+  \texttt{Range} {[} numeric {]} - Actually plotted date range.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'datePosition='} {[} \emph{\texttt{'centre'}} \textbar{}
+  \texttt{'end'} \textbar{} \texttt{'start'} {]} - Position of each date
+  point within a given period span.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Vector of dates locating tick marks on the X-axis; Inf means they will
+  be created automatically.
+\item
+  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Make the y-axis tight.
+\end{itemize}
+
+See help on built-in \texttt{plot} function for other options available.
+
+\paragraph{Date format options}\label{date-format-options}
+
+See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
+options.
+
+\begin{itemize}
+\item
+  \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+  \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+  strings (possibly different for each date).
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+  {]} - Six letters used to represent the six possible frequencies of
+  IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+  monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
+\item
+  \texttt{'months='} {[} cellstr \textbar{}
+  \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+  representing the names of the twelve months.
+\item
+  \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+  \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+  lower-than-monthly-frequency date if the month is part of the date
+  format string.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

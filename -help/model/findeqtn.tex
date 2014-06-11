@@ -2,40 +2,40 @@
 
     \filetitle{findeqtn}{Find equations by the labels}{model/findeqtn}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [Eqtn,Eqtn,...] = findeqtn(M,Label,Label,...)
- [List,List,...] = findeqtn(M,'-rexp',Rexp,Rexp,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object in which the equations will be
-   searched for.
- \item
-   \texttt{Label} {[} char {]} - Equation label that will be searched
-   for.
- \item
-   \texttt{Rexp} {[} char {]} - Regular expressions that will be matched
-   against equation labels.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Eqtn} {[} char {]} - First equation found with the label
-   \texttt{Label}.
- \item
-   \texttt{List} {[} cellstr {]} - List of equations whose labels match
-   the regular expression \texttt{Rexp}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Eqtn,Eqtn,...] = findeqtn(M,Label,Label,...)
+[List,List,...] = findeqtn(M,'-rexp',Rexp,Rexp,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object in which the equations will be
+  searched for.
+\item
+  \texttt{Label} {[} char {]} - Equation label that will be searched
+  for.
+\item
+  \texttt{Rexp} {[} char {]} - Regular expressions that will be matched
+  against equation labels.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Eqtn} {[} char {]} - First equation found with the label
+  \texttt{Label}.
+\item
+  \texttt{List} {[} cellstr {]} - List of equations whose labels match
+  the regular expression \texttt{Rexp}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,35 +2,38 @@
 
     \filetitle{isstationary}{True if all eigenvalues are within unit circle}{VAR/isstationary}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Flag = isstationary(V)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object whose eigenvalues will be tested
-   for stationarity.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
-   if all eigenvalues are within unit circle.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'tolerance='} {[} numeric \textbar{}
-   \emph{\texttt{getrealsmall()}} {]} - Tolerance for the eigenvalue
-   test.
- \end{itemize}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Flag = isstationary(V)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object whose eigenvalues will be tested
+  for stationarity.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if all eigenvalues are within unit circle.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'tolerance='} {[} numeric \textbar{}
+  \emph{\texttt{getrealsmall()}} {]} - Tolerance for the eigenvalue
+  test.
+\end{itemize}
 
 

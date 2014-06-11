@@ -2,47 +2,48 @@
 
     \filetitle{bsxfunc}{Standard BSXFUN implemented for tseries objects}{tseries/bsxfun}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Z = bsxfun(Func,X,Y)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Func} {[} function\_handle {]} - Function that will be applied
-   to the input series, \texttt{FUN(X,Y)}.
- \item
-   \texttt{X} {[} tseries \textbar{} numeric {]} - Input time series or
-   numeric array.
- \item
-   \texttt{Y} {[} tseries \textbar{} numeric {]} - Input time series or
-   numeric array.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Z} {[} tseries {]} - Result of \texttt{Func(X,Y)} with
-   \texttt{X} and/or \texttt{Y} expanded properly in singleton
-   dimensions.
- \end{itemize}
- 
- \paragraph{Description}
- 
- See help on built-in \texttt{bsxfun} for more help.
- 
- \paragraph{Example}
- 
- We create a multivariate time series and subtract mean from its
- individual columns.
- 
- \begin{verbatim}
- x = tseries(1:10,rand(10,4));
- xx = bsxfun(@minus,x,mean(x));
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Z = bsxfun(Func,X,Y)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Func} {[} function\_handle {]} - Function that will be applied
+  to the input series, \texttt{FUN(X,Y)}.
+\item
+  \texttt{X} {[} tseries \textbar{} numeric {]} - Input time series or
+  numeric array.
+\item
+  \texttt{Y} {[} tseries \textbar{} numeric {]} - Input time series or
+  numeric array.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Z} {[} tseries {]} - Result of \texttt{Func(X,Y)} with
+  \texttt{X} and/or \texttt{Y} expanded properly in singleton
+  dimensions.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+See help on built-in \texttt{bsxfun} for more help.
+
+\paragraph{Example}\label{example}
+
+We create a multivariate time series and subtract mean from its
+individual columns.
+
+\begin{verbatim}
+x = tseries(1:10,rand(10,4));
+xx = bsxfun(@minus,x,mean(x));
+\end{verbatim}
 
 

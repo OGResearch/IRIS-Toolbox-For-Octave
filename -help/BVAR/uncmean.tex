@@ -2,39 +2,39 @@
 
     \filetitle{uncmean}{Unconditional-mean dummy (or Sims' initial dummy) observations for BVARs}{BVAR/uncmean}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- O = BVAR.uncmean(YBar,Mu)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{YBar} {[} numeric {]} - Vector of unconditional means imposed
-   as priors.
- \item
-   \texttt{Mu} {[} numeric {]} - Weight on the dummy observations.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} numeric {]} - Array with prior dummy observations that
-   can be used in the \texttt{'BVAR='} option of the \url{VAR/estimate}
-   function.
- \item
-   \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
-   \url{VAR/estimate} function.
- \end{itemize}
- 
- \paragraph{Description}
- 
- See \href{BVAR/Contents}{the section explaining the weights on prior
- dummies}, i.e.~the input argument \texttt{Mu}.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+O = BVAR.uncmean(YBar,Mu)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{YBar} {[} numeric {]} - Vector of unconditional means imposed
+  as priors.
+\item
+  \texttt{Mu} {[} numeric {]} - Weight on the dummy observations.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} numeric {]} - Array with prior dummy observations that
+  can be used in the \texttt{'BVAR='} option of the
+  \href{VAR/estimate}{\texttt{VAR/estimate}} function.
+\item
+  \texttt{O} {[} bvarobj {]} - BVAR object that can be passed into the
+  \href{VAR/estimate}{\texttt{VAR/estimate}} function.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+See \href{BVAR/Contents}{the section explaining the weights on prior
+dummies}, i.e.~the input argument \texttt{Mu}.
+
+\paragraph{Example}\label{example}
 
 

@@ -2,118 +2,118 @@
 
     \filetitle{qplot}{Quick report}{qreport/qplot}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [FF,AA,PDb] = qplot(QFile,D,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{QFile} {[} char {]} - Name of the q-file that defines the
-   contents of the individual graphs.
- \item
-   \texttt{D} {[} struct {]} - Database with input data.
- \item
-   \texttt{Range} {[} numeric {]} - Date range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{FF} {[} numeric {]} - Handles to figures created by
-   \texttt{qplot}.
- \item
-   \texttt{AA} {[} cell {]} - Handles to axes created by \texttt{qplot}.
- \item
-   \texttt{PDb} {[} struct {]} - Database with actually plotted series.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'addClick='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Make axes expand in a new graphics figure upon
-   mouse click.
- \item
-   \texttt{'caption='} {[} cellstr \textbar{} @comment \textbar{}
-   \emph{empty} {]} - Strings that will be used for titles in the graphs
-   that have no title in the q-file.
- \item
-   \texttt{'clear='} {[} numeric \textbar{} \emph{empty} {]} - Serial
-   numbers of graphs (axes objects) that will not be displayed.
- \item
-   \texttt{'dbsave='} {[} cellstr \textbar{} \emph{empty} {]} - Options
-   passed to \texttt{dbsave} when \texttt{'saveAs='} is used.
- \item
-   \texttt{'drawNow='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Call Matlab \texttt{drawnow} function upon completion of all
-   figures.
- \item
-   \texttt{'grid='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Add grid lines to all graphs.
- \item
-   \texttt{'highlight='} {[} numeric \textbar{} cell \textbar{}
-   \emph{empty} {]} - Date range or ranges that will be highlighted.
- \item
-   \texttt{'interpreter='} {[} \emph{\texttt{'latex'}} \textbar{} `none'
-   {]} - Interpreter used in graph titles.
- \item
-   \texttt{'mark='} {[} cellstr \textbar{} \emph{empty} {]} - Marks that
-   will be added to each legend entry to distinguish individual columns
-   of multivariated tseries objects plotted.
- \item
-   \texttt{'overflow='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Open automatically a new figure window if
-   the number of subplots exceeds the available total;
-   \texttt{'overflow' = false} means an error will occur instead.
- \item
-   \texttt{'prefix='} {[} char \textbar{} \emph{\texttt{'P\%g\_'}} {]} -
-   Prefix (a \texttt{sprintf} format string) that will be used to precede
-   the name of each entry in the \texttt{PDb} database.
- \item
-   \texttt{'round='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Round the input data to this number of decimals before plotting.
- \item
-   \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - File name
-   under which the plotted data will be saved either in a CSV data file
-   or a PDF; you can use the \texttt{'dbsave='} option to control the
-   options used when saving CSV.
- \item
-   \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} - Style
-   structure that will be applied to all figures and their children
-   created by the \texttt{qplot} function.
- \item
-   \texttt{'subplot='} {[} \emph{`auto'} \textbar{} numeric {]} - Default
-   subplot division of figures, can be modified in the q-file.
- \item
-   \texttt{'sstate='} {[} struct \textbar{} model \textbar{} \emph{empty}
-   {]} - Database or model object from which the steady-state values
-   referenced to in the quick-report file will be taken.
- \item
-   \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} - Style
-   structure that will be applied to all created figures upon completion.
- \item
-   \texttt{'transform='} {[} function\_handle \textbar{} \emph{empty} {]}
-   - Function that will be used to trans
- \item
-   \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Make the y-axis in each graph tight.
- \item
-   \texttt{'vLine='} {[} numeric \textbar{} \emph{empty} {]} - Dates at
-   which vertical lines will be plotted.
- \item
-   \texttt{'zeroLine='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Add a horizontal zero line to graphs whose
-   y-axis includes zero.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[FF,AA,PDb] = qplot(QFile,D,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{QFile} {[} char {]} - Name of the q-file that defines the
+  contents of the individual graphs.
+\item
+  \texttt{D} {[} struct {]} - Database with input data.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{FF} {[} numeric {]} - Handles to figures created by
+  \texttt{qplot}.
+\item
+  \texttt{AA} {[} cell {]} - Handles to axes created by \texttt{qplot}.
+\item
+  \texttt{PDb} {[} struct {]} - Database with actually plotted series.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'addClick='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Make axes expand in a new graphics figure upon
+  mouse click.
+\item
+  \texttt{'caption='} {[} cellstr \textbar{} @comment \textbar{} *empty*
+  {]} - Strings that will be used for titles in the graphs that have no
+  title in the q-file.
+\item
+  \texttt{'clear='} {[} numeric \textbar{} \emph{empty} {]} - Serial
+  numbers of graphs (axes objects) that will not be displayed.
+\item
+  \texttt{'dbsave='} {[} cellstr \textbar{} \emph{empty} {]} - Options
+  passed to \texttt{dbsave} when \texttt{'saveAs='} is used.
+\item
+  \texttt{'drawNow='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Call Matlab \texttt{drawnow} function upon completion of all
+  figures.
+\item
+  \texttt{'grid='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Add grid lines to all graphs.
+\item
+  \texttt{'highlight='} {[} numeric \textbar{} cell \textbar{}
+  \emph{empty} {]} - Date range or ranges that will be highlighted.
+\item
+  \texttt{'interpreter='} {[} \emph{\texttt{'latex'}} \textbar{} `none'
+  {]} - Interpreter used in graph titles.
+\item
+  \texttt{'mark='} {[} cellstr \textbar{} \emph{empty} {]} - Marks that
+  will be added to each legend entry to distinguish individual columns
+  of multivariated tseries objects plotted.
+\item
+  \texttt{'overflow='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Open automatically a new figure window if
+  the number of subplots exceeds the available total;
+  \texttt{'overflow' = false} means an error will occur instead.
+\item
+  \texttt{'prefix='} {[} char \textbar{} \emph{\texttt{'P\%g\_'}} {]} -
+  Prefix (a \texttt{sprintf} format string) that will be used to precede
+  the name of each entry in the \texttt{PDb} database.
+\item
+  \texttt{'round='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Round the input data to this number of decimals before plotting.
+\item
+  \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - File name
+  under which the plotted data will be saved either in a CSV data file
+  or a PDF; you can use the \texttt{'dbsave='} option to control the
+  options used when saving CSV.
+\item
+  \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} - Style
+  structure that will be applied to all figures and their children
+  created by the \texttt{qplot} function.
+\item
+  \texttt{'subplot='} {[} \emph{`auto'} \textbar{} numeric {]} - Default
+  subplot division of figures, can be modified in the q-file.
+\item
+  \texttt{'sstate='} {[} struct \textbar{} model \textbar{} \emph{empty}
+  {]} - Database or model object from which the steady-state values
+  referenced to in the quick-report file will be taken.
+\item
+  \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} - Style
+  structure that will be applied to all created figures upon completion.
+\item
+  \texttt{'transform='} {[} function\_handle \textbar{} \emph{empty} {]}
+  - Function that will be used to trans
+\item
+  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Make the y-axis in each graph tight.
+\item
+  \texttt{'vLine='} {[} numeric \textbar{} \emph{empty} {]} - Dates at
+  which vertical lines will be plotted.
+\item
+  \texttt{'zeroLine='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Add a horizontal zero line to graphs whose
+  y-axis includes zero.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

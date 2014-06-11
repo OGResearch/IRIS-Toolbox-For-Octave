@@ -2,39 +2,42 @@
 
     \filetitle{isexplosive}{True if any eigenvalue is outside unit circle}{VAR/isexplosive}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Flag = isexplosive(V)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object whose eigenvalues will be tested
-   for explosiveness.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
-   if at least one eigenvalue is outside unit circle.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'tolerance='} {[} numeric \textbar{}
-   \emph{\texttt{getrealsmall()}} {]} - Tolerance for the eigenvalue
-   test.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Flag = isexplosive(V)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object whose eigenvalues will be tested
+  for explosiveness.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if at least one eigenvalue is outside unit circle.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'tolerance='} {[} numeric \textbar{}
+  \emph{\texttt{getrealsmall()}} {]} - Tolerance for the eigenvalue
+  test.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,38 +2,39 @@
 
     \filetitle{movetosubplot}{Move an existing axes object or legend to specified subplot position}{grfun/movetosubplot}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Ax = grfun.movetosubplot(Ax,M,N,P)
- Ax = grfun.movetosubplot(Ax,'bottom')
- Ax = grfun.movetosubplot(Ax,'top')
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Ax} {[} numeric {]} - Handle to an existing axes object or
-   legend.
- \item
-   \texttt{M}, \texttt{N}, \texttt{P} {[} numeric {]} - Specification of
-   the new position; see help on standard \texttt{subplot}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{AX} {[} numeric {]} - Handle to the axes or legend moved to
-   the new position.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The syntax with \texttt{'bottom'} and \texttt{'top'} places the axes
- centered at, respectively, the bottom or top of the figure window.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Ax = grfun.movetosubplot(Ax,M,N,P)
+Ax = grfun.movetosubplot(Ax,'bottom')
+Ax = grfun.movetosubplot(Ax,'top')
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to an existing axes object or
+  legend.
+\item
+  \texttt{M}, \texttt{N}, \texttt{P} {[} numeric {]} - Specification of
+  the new position; see help on standard \texttt{subplot}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{AX} {[} numeric {]} - Handle to the axes or legend moved to
+  the new position.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The syntax with \texttt{'bottom'} and \texttt{'top'} places the axes
+centered at, respectively, the bottom or top of the figure window.
+
+\paragraph{Example}\label{example}
 
 

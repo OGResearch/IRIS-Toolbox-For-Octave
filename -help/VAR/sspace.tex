@@ -2,48 +2,49 @@
 
     \filetitle{sspace}{Quasi-triangular state-space representation of VAR}{VAR/sspace}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [T,R,K,Z,H,D,Cov] = sspace(V,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{V} {[} VAR {]} - VAR object.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{T} {[} numeric {]} - Transition matrix.
- \item
-   \texttt{R} {[} numeric {]} - Matrix of instantaneous effect of
-   residuals (forecast errors).
- \item
-   \texttt{K} {[} numeric {]} - Constant vector in transition equations.
- \item
-   \texttt{Z} {[} numeric {]} - Matrix mapping transition variables to
-   measurement variables.
- \item
-   \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
-   equations (all zeros in VAR objects).
- \item
-   \texttt{D} {[} numeric {]} - Constant vector in measurement equations
-   (all zeros in VAR objects).
- \item
-   \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
-   variables.
- \item
-   \texttt{Cov} {[} numeric {]} - Covariance matrix of residuals
-   (forecast errors).
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[T,R,K,Z,H,D,Cov] = sspace(V,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{V} {[} VAR {]} - VAR object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{T} {[} numeric {]} - Transition matrix.
+\item
+  \texttt{R} {[} numeric {]} - Matrix of instantaneous effect of
+  residuals (forecast errors).
+\item
+  \texttt{K} {[} numeric {]} - Constant vector in transition equations.
+\item
+  \texttt{Z} {[} numeric {]} - Matrix mapping transition variables to
+  measurement variables.
+\item
+  \texttt{H} {[} numeric {]} - Matrix at the shock vector in measurement
+  equations (all zeros in VAR objects).
+\item
+  \texttt{D} {[} numeric {]} - Constant vector in measurement equations
+  (all zeros in VAR objects).
+\item
+  \texttt{U} {[} numeric {]} - Transformation matrix for predetermined
+  variables.
+\item
+  \texttt{Cov} {[} numeric {]} - Covariance matrix of residuals
+  (forecast errors).
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

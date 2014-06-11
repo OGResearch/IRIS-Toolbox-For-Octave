@@ -59,7 +59,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % * [`bwf2`](tseries/bwf2) - Swap output arguments of the Butterworth filter with tunes.
     % * [`detrend`](tseries/detrend) - Remove a linear time trend.
     % * [`expsmooth`](tseries/expsmooth) - Exponential smoothing.
-    % * [`evalr`](utils/evalr) - 
+    % * [`evalr`](utils/evalr) - Evaluate tseries expression recursively.
     % * [`hpf`](tseries/hpf) - Hodrick-Prescott filter with tunes (aka LRX filter).
     % * [`hpf2`](tseries/hpf2) - Swap output arguments of the Hodrick-Prescott filter with tunes.
     % * [`fft`](tseries/fft) - Discrete Fourier transform of tseries object.

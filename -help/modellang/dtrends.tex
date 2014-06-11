@@ -2,40 +2,43 @@
 
     \filetitle{!dtrends}{Block of deterministic trend equations}{modellang/dtrends}
 
-	\paragraph{Syntax for linearised measurement variables}
- 
- \begin{verbatim}
- !dtrends
-     VariableName += Expression;
-     VariableName += Expression;
-     ...
- \end{verbatim}
- 
- \paragraph{Syntax for log-linearised measurement variables}
- 
- \begin{verbatim}
- !dtrends
-     log(VariableName) += Expression;
-     log(VariableName) += Expression;
-     ...
- \end{verbatim}
- 
- \paragraph{Syntax with equation labels}
- 
- \begin{verbatim}
- !dtrends
-     'Equation label' VariableName += Expression;
-     'Equation label' LOG(VariableName) += Expression;
- \end{verbatim}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- !dtrends
-     Infl += pi_;
-     Rate += rho_ + pi_;
- \end{verbatim}
+	\paragraph{Syntax for linearised measurement
+variables}\label{syntax-for-linearised-measurement-variables}
+
+\begin{verbatim}
+!dtrends
+    VariableName += Expression;
+    VariableName += Expression;
+    ...
+\end{verbatim}
+
+\paragraph{Syntax for log-linearised measurement
+variables}\label{syntax-for-log-linearised-measurement-variables}
+
+\begin{verbatim}
+!dtrends
+    log(VariableName) += Expression;
+    log(VariableName) += Expression;
+    ...
+\end{verbatim}
+
+\paragraph{Syntax with equation
+labels}\label{syntax-with-equation-labels}
+
+\begin{verbatim}
+!dtrends
+    'Equation label' VariableName += Expression;
+    'Equation label' LOG(VariableName) += Expression;
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!dtrends
+    Infl += pi_;
+    Rate += rho_ + pi_;
+\end{verbatim}
 
 

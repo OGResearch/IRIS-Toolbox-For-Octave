@@ -2,73 +2,74 @@
 
     \filetitle{system}{System matrices for unsolved model}{model/system}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [A,B,C,D,F,G,H,J,List,Nf] = system(M)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object whose system matrices will be
-   returned.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{A}, \texttt{B}, \texttt{C}, \texttt{D}, \texttt{F},
-   \texttt{G}, \texttt{H} ,\texttt{J} {[} numeric {]} - Matrices
-   describing the unsolved system, see Description.
- \item
-   \texttt{List} {[} cell {]} - Lists of measurement variables,
-   transition variables includint their auxiliary lags and leads, and
-   shocks as they appear in the rows and columns of the system matrices.
- \item
-   \texttt{Nf} {[} numeric {]} - Number of non-predetermined
-   (forward-looking) transition variables (multiplied by the first
-   \texttt{Nf} columns of matrices \texttt{A} and \texttt{B}).
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
-   \textbar{} \texttt{false} {]} - Compute the model using a linear
-   approach, i.e.~differentiating around zero and not the currently
-   assigned steady state.
- \item
-   \texttt{'select='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   {]} - Automatically detect which equations need to be
-   re-differentiated based on parameter changes from the last time the
-   system matrices were calculated.
- \item
-   \texttt{'sparse='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Return matrices \texttt{A}, \texttt{B}, \texttt{D}, \texttt{F},
-   \texttt{G}, and \texttt{J} as sparse matrices; can be set to
-   \texttt{true} only in models with one parameterization.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The system before the model is solved has the following form:
- 
- \begin{verbatim}
- A E[xf;xb] + B [xf(-1);xb(-1)] + C + D e = 0
- 
- F y + G xb + H + J e = 0
- \end{verbatim}
- 
- where \texttt{E} is a conditional expectations operator, \texttt{xf} is
- a vector of non-predetermined (forward-looking) transition variables,
- \texttt{xb} is a vector of predetermined (backward-looking) transition
- variables, \texttt{y} is a vector of measurement variables, and
- \texttt{e} is a vector of transition and measurement shocks.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[A,B,C,D,F,G,H,J,List,Nf] = system(M)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Model object whose system matrices will be
+  returned.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{A}, \texttt{B}, \texttt{C}, \texttt{D}, \texttt{F},
+  \texttt{G}, \texttt{H} ,\texttt{J} {[} numeric {]} - Matrices
+  describing the unsolved system, see Description.
+\item
+  \texttt{List} {[} cell {]} - Lists of measurement variables,
+  transition variables includint their auxiliary lags and leads, and
+  shocks as they appear in the rows and columns of the system matrices.
+\item
+  \texttt{Nf} {[} numeric {]} - Number of non-predetermined
+  (forward-looking) transition variables (multiplied by the first
+  \texttt{Nf} columns of matrices \texttt{A} and \texttt{B}).
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Compute the model using a linear
+  approach, i.e.~differentiating around zero and not the currently
+  assigned steady state.
+\item
+  \texttt{'select='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Automatically detect which equations need to be
+  re-differentiated based on parameter changes from the last time the
+  system matrices were calculated.
+\item
+  \texttt{'sparse='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Return matrices \texttt{A}, \texttt{B}, \texttt{D}, \texttt{F},
+  \texttt{G}, and \texttt{J} as sparse matrices; can be set to
+  \texttt{true} only in models with one parameterization.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The system before the model is solved has the following form:
+
+\begin{verbatim}
+A E[xf;xb] + B [xf(-1);xb(-1)] + C + D e = 0
+
+F y + G xb + H + J e = 0
+\end{verbatim}
+
+where \texttt{E} is a conditional expectations operator, \texttt{xf} is
+a vector of non-predetermined (forward-looking) transition variables,
+\texttt{xb} is a vector of predetermined (backward-looking) transition
+variables, \texttt{y} is a vector of measurement variables, and
+\texttt{e} is a vector of transition and measurement shocks.
+
+\paragraph{Example}\label{example}
 
 

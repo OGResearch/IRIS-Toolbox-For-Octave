@@ -2,24 +2,24 @@
 
     \filetitle{\{...\}}{Lag or lead}{modellang/laglead}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- VariableName{-lag}
- VariableName{lead}
- VariableName{+lead}
- \end{verbatim}
- 
- \paragraph{Description}
- 
- To create a lag or a lead of a variable, use a pair of curly brackets.
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- !transition_equations
-     x = rho*x{-1} + epsilon_x;
-     pi = 1/2*pie{-1} + 1/2*pie{1} + gamma*y + epsilon_pi;
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+VariableName{-lag}
+VariableName{lead}
+VariableName{+lead}
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+To create a lag or a lead of a variable, use a pair of curly brackets.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!transition_equations
+    x = rho*x{-1} + epsilon_x;
+    pi = 1/2*pie{-1} + 1/2*pie{1} + gamma*y + epsilon_pi;
+\end{verbatim}
 
 

@@ -2,99 +2,102 @@
 
     \filetitle{convert}{Convert tseries object to a different frequency}{tseries/convert}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Y = convert(X,NewFreq,...)
- Y = convert(X,NewFreq,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object that will be
-   converted to a new frequency, \texttt{freq}, aggregating or
-   intrapolating the data.
- \item
-   \texttt{NewFreq} {[} numeric \textbar{} char {]} - New frequency to
-   which the input data will be converted: \texttt{1} or \texttt{'A'} for
-   yearly, \texttt{2} or \texttt{'H'} for half-yearly, \texttt{4} or
-   \texttt{'Q'} for quarterly, \texttt{6} or \texttt{'B'} for bi-monthly,
-   and \texttt{12} or \texttt{'M'} for monthly.
- \item
-   \texttt{Range} {[} numeric {]} - Date range on which the input data
-   will be converted.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Y} {[} tseries {]} - Output tseries created by converting
-   \texttt{X} to the new frequency.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'ignoreNaN='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Exclude NaNs from agreggation.
- \item
-   \texttt{'missing='} {[} numeric \textbar{} \emph{\texttt{NaN}}
-   \textbar{} \texttt{'last'} {]} - Replace missing observations with
-   this value.
- \end{itemize}
- 
- \paragraph{Options for high- to low-frequency conversion (aggregation)}
- 
- \begin{itemize}
- \item
-   \texttt{'method='} {[} function\_handle \textbar{} \texttt{'first'}
-   \textbar{} \texttt{'last'} \textbar{} \emph{\texttt{@mean}} {]} -
-   Method that will be used to aggregate the high frequency data.
- \item
-   \texttt{'select='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-   Select only these high-frequency observations within each
-   low-frequency period; Inf means all observations will be used.
- \end{itemize}
- 
- \paragraph{Options for low- to high-frequency conversion
- (interpolation)}
- 
- \begin{itemize}
- \item
-   \texttt{'method='} {[} char \textbar{} \emph{\texttt{'cubic'}}
-   \textbar{} \texttt{'quadsum'} \textbar{} \texttt{'quadavg'} {]} -
-   Interpolation method; any option available in the built-in
-   \texttt{interp1} function can be used.
- \item
-   \texttt{'position='} {[} \emph{\texttt{'centre'}} \textbar{}
-   \texttt{'start'} \textbar{} \texttt{'end'} {]} - Position of the
-   low-frequency date grid.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The function handle that you pass in through the `method' option when
- you aggregate the data (convert higher frequency to lower frequency)
- should behave like the built-in functions \texttt{mean}, \texttt{sum}
- etc. In other words, it is expected to accept two input arguments:
- 
- \begin{itemize}
- \item
-   the data to be aggregated,
- \item
-   the dimension along which the aggregation is calculated.
- \end{itemize}
- 
- The function will be called with the second input argument set to 1, as
- the data are processed en block columnwise. If this call fails,
- \texttt{convert} will attempt to call the function with just one input
- argument, the data, but this is not a safe option under some
- circumstances since dimension mismatch may occur.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Y = convert(X,NewFreq,...)
+Y = convert(X,NewFreq,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object that will be
+  converted to a new frequency, \texttt{freq}, aggregating or
+  intrapolating the data.
+\item
+  \texttt{NewFreq} {[} numeric \textbar{} char {]} - New frequency to
+  which the input data will be converted: \texttt{1} or \texttt{'A'} for
+  yearly, \texttt{2} or \texttt{'H'} for half-yearly, \texttt{4} or
+  \texttt{'Q'} for quarterly, \texttt{6} or \texttt{'B'} for bi-monthly,
+  and \texttt{12} or \texttt{'M'} for monthly.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the input data
+  will be converted.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Y} {[} tseries {]} - Output tseries created by converting
+  \texttt{X} to the new frequency.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'ignoreNaN='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Exclude NaNs from agreggation.
+\item
+  \texttt{'missing='} {[} numeric \textbar{} \emph{\texttt{NaN}}
+  \textbar{} \texttt{'last'} {]} - Replace missing observations with
+  this value.
+\end{itemize}
+
+\paragraph{Options for high- to low-frequency conversion
+(aggregation)}\label{options-for-high--to-low-frequency-conversion-aggregation}
+
+\begin{itemize}
+\item
+  \texttt{'method='} {[} function\_handle \textbar{} \texttt{'first'}
+  \textbar{} \texttt{'last'} \textbar{} \emph{\texttt{@mean}} {]} -
+  Method that will be used to aggregate the high frequency data.
+\item
+  \texttt{'select='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Select only these high-frequency observations within each
+  low-frequency period; Inf means all observations will be used.
+\end{itemize}
+
+\paragraph{Options for low- to high-frequency conversion
+(interpolation)}\label{options-for-low--to-high-frequency-conversion-interpolation}
+
+\begin{itemize}
+\item
+  \texttt{'method='} {[} char \textbar{} \emph{\texttt{'cubic'}}
+  \textbar{} \texttt{'quadsum'} \textbar{} \texttt{'quadavg'} {]} -
+  Interpolation method; any option available in the built-in
+  \texttt{interp1} function can be used.
+\item
+  \texttt{'position='} {[} \emph{\texttt{'centre'}} \textbar{}
+  \texttt{'start'} \textbar{} \texttt{'end'} {]} - Position of the
+  low-frequency date grid.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The function handle that you pass in through the `method' option when
+you aggregate the data (convert higher frequency to lower frequency)
+should behave like the built-in functions \texttt{mean}, \texttt{sum}
+etc. In other words, it is expected to accept two input arguments:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  the data to be aggregated,
+\item
+  the dimension along which the aggregation is calculated.
+\end{itemize}
+
+The function will be called with the second input argument set to 1, as
+the data are processed en block columnwise. If this call fails,
+\texttt{convert} will attempt to call the function with just one input
+argument, the data, but this is not a safe option under some
+circumstances since dimension mismatch may occur.
+
+\paragraph{Example}\label{example}
 
 

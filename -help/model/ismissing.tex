@@ -2,45 +2,45 @@
 
     \filetitle{ismissing}{True if some initical conditions are missing from input database}{model/ismissing}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [Flag,List] = ismissing(M,Inp,Range)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object.
- \item
-   \texttt{Inp} {[} struct {]} - Input database from which initical
-   conditions are obtained.
- \item
-   \texttt{Range} {[} numeric {]} - Simulation range.\%
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
-   if one or more initial conditions required for simulation of the model
-   \texttt{M} are missing from the database \texttt{Inp}.
- \item
-   \texttt{List} {[} cellstr {]} - List of initial conditions missing
-   from the database \texttt{Inp}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- The complete list of initial conditions required for simulating the
- model \texttt{M} can be obtained by
- 
- \begin{verbatim}
- get(M,'required')
- \end{verbatim}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Flag,List] = ismissing(M,Inp,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{Inp} {[} struct {]} - Input database from which initical
+  conditions are obtained.
+\item
+  \texttt{Range} {[} numeric {]} - Simulation range.\%
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Flag} {[} \texttt{true} \textbar{} \texttt{false} {]} - True
+  if one or more initial conditions required for simulation of the model
+  \texttt{M} are missing from the database \texttt{Inp}.
+\item
+  \texttt{List} {[} cellstr {]} - List of initial conditions missing
+  from the database \texttt{Inp}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The complete list of initial conditions required for simulating the
+model \texttt{M} can be obtained by
+
+\begin{verbatim}
+get(M,'required')
+\end{verbatim}
+
+\paragraph{Example}\label{example}
 
 

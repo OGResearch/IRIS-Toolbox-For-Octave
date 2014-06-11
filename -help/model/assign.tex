@@ -2,77 +2,79 @@
 
     \filetitle{assign}{Assign parameters, steady states, std deviations or cross-correlations}{model/assign}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [M,Assigned] = assign(M,P)
- [M,Assigned] = assign(M,Name,Value,Name,Value,...)
- [M,Assigned] = assign(M,List,Values)
- \end{verbatim}
- 
- \paragraph{Syntax for fast assign}
- 
- \begin{verbatim}
- % Initialise
- assign(M,List);
- 
- % Fast assign
- M = assign(M,Values);
- ...
- M = assign(M,Values);
- ...
- \end{verbatim}
- 
- \paragraph{Syntax for assigning only steady-state levels}
- 
- \begin{verbatim}
- M = assign(M,'-level',...)
- \end{verbatim}
- 
- \paragraph{Syntax for assignin only steady-state growth rates}
- 
- \begin{verbatim}
- M = assign(M,'-growth',...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object.
- \item
-   \texttt{P} {[} struct \textbar{} model {]} - Database whose fields
-   refer to parameter names, variable names, std deviations, or
-   cross-correlations; or another model object.
- \item
-   \texttt{Name} {[} char {]} - A parameter name, variable name, std
-   deviation, cross-correlation, or a regular expression that will be
-   matched against model names.
- \item
-   \texttt{Value} {[} numeric {]} - A value (or a vector of values in
-   case of multiple parameterisations) that will be assigned.
- \item
-   \texttt{List} {[} cellstr {]} - A list of parameter names, variable
-   names, std deviations, or cross-correlations.
- \item
-   \texttt{Values} {[} numeric {]} - A vector of values.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object with newly assigned parameters
-   and/or steady states.
- \item
-   \texttt{Assigned} {[} cellstr \textbar{} \texttt{Inf} {]} - List of
-   actually assigned parameter names, variables names (steady states),
-   std deviations, and cross-correlations; \texttt{Inf} indicates that
-   all values has been assigned from another model object.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[M,Assigned] = assign(M,P)
+[M,Assigned] = assign(M,Name,Value,Name,Value,...)
+[M,Assigned] = assign(M,List,Values)
+\end{verbatim}
+
+\paragraph{Syntax for fast assign}\label{syntax-for-fast-assign}
+
+\begin{verbatim}
+% Initialise
+assign(M,List);
+
+% Fast assign
+M = assign(M,Values);
+...
+M = assign(M,Values);
+...
+\end{verbatim}
+
+\paragraph{Syntax for assigning only steady-state
+levels}\label{syntax-for-assigning-only-steady-state-levels}
+
+\begin{verbatim}
+M = assign(M,'-level',...)
+\end{verbatim}
+
+\paragraph{Syntax for assignin only steady-state growth
+rates}\label{syntax-for-assignin-only-steady-state-growth-rates}
+
+\begin{verbatim}
+M = assign(M,'-growth',...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{P} {[} struct \textbar{} model {]} - Database whose fields
+  refer to parameter names, variable names, std deviations, or
+  cross-correlations; or another model object.
+\item
+  \texttt{Name} {[} char {]} - A parameter name, variable name, std
+  deviation, cross-correlation, or a regular expression that will be
+  matched against model names.
+\item
+  \texttt{Value} {[} numeric {]} - A value (or a vector of values in
+  case of multiple parameterisations) that will be assigned.
+\item
+  \texttt{List} {[} cellstr {]} - A list of parameter names, variable
+  names, std deviations, or cross-correlations.
+\item
+  \texttt{Values} {[} numeric {]} - A vector of values.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object with newly assigned parameters
+  and/or steady states.
+\item
+  \texttt{Assigned} {[} cellstr \textbar{} \texttt{Inf} {]} - List of
+  actually assigned parameter names, variables names (steady states),
+  std deviations, and cross-correlations; \texttt{Inf} indicates that
+  all values has been assigned from another model object.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,34 +2,35 @@
 
     \filetitle{diff}{First difference}{tseries/diff}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- X = diff(X)
- X = diff(X,K)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object.
- \item
-   \texttt{K} {[} numeric {]} - Number of periods over which the first
-   difference will be computed; \texttt{Y = X - X\{K\}}. Note that
-   \texttt{K} must be a negative number for the usual backward
-   differencing. If not specified, \texttt{K} will be set to \texttt{-1}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - First difference of the input data.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = diff(X)
+X = diff(X,K)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object.
+\item
+  \texttt{K} {[} numeric {]} - Number of periods over which the first
+  difference will be computed; \texttt{Y = X - X\{K\}}. Note that
+  \texttt{K} must be a negative number for the usual backward
+  differencing. If not specified, \texttt{K} will be set to \texttt{-1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - First difference of the input data.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

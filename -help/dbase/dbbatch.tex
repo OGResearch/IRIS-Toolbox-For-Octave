@@ -2,119 +2,119 @@
 
     \filetitle{dbbatch}{Run a batch job to create new database fields}{dbase/dbbatch}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [D,Processed,Added] = dbbatch(D,NewName,Expr,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Input database.
- \item
-   \texttt{NewName} {[} char {]} - Pattern that will be used to create
-   names for new database fields based on the existing ones; use
-   \texttt{'\$0'} to refer to the name of the currently processed
-   database field; use \texttt{'\$1'}, \texttt{'\$2'}, etc. to refer to
-   tokens captured in regular expression specified in the
-   \texttt{'namefilter='} option.
- \item
-   \texttt{Expr} {[} char {]} - Expression that will be evaluated on a
-   selection of existing database entries to create new database entries;
-   the expression can include \texttt{'\$0'}, \texttt{'\$1'}, etc.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{D} {[} struct {]} - Output database.
- \item
-   \texttt{Processed} {[} cellstr {]} - List of database fields that have
-   been used to create new fields.
- \item
-   \texttt{Added} {[} cellstr {]} - List of new database fields created
-   by evaluating \texttt{Expr} on the corresponding field in
-   \texttt{Processed}.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'classFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
-   From the existing database entries, select only those that are objects
-   of the specified class or classes, and evaluate the expression
-   \texttt{Expr} on these.
- \item
-   \texttt{'fresh='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - If true, the output database will only contain the newly created
-   entries; if false the output database will also include all the
-   entries from the input database.
- \item
-   \texttt{'nameFilter='} {[} char \textbar{} \emph{empty} {]} - From the
-   existing database entries, select only those that match this regular
-   expression, and evaluate the expression \texttt{Expr} on these.
- \item
-   \texttt{'nameList='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-   Evaluate the \texttt{COMMAND} on this list of existing database
-   entries.
- \item
-   \texttt{'stringList='} {[} cellstr \textbar{} \emph{empty} {]} -
-   Evaluate the expression \texttt{Expr} on this list of strings; the
-   strings do not need to be names existing in the database; this options
-   can be comined with \texttt{'nameFilter='}, \texttt{'nameList='},
-   and/or \texttt{'classFilter='} to narrow the selection.
- \end{itemize}
- 
- \paragraph{Description}
- 
- This function is primarily meant to create new database fields, each
- based on an existing one. If you, on the otherhand, only wish to modify
- a number of existing fields without adding any new ones, use
- \href{dbase/dbfun}{\texttt{dbfun}} instead.
- 
- The expression \texttt{Expr} is evaluated in the caller workspace, and
- hence may refer to any variables existing in the workspace, not only to
- the database and its fields.
- 
- To convert the strings \texttt{\$0}, \texttt{\$1}, \texttt{\$2}, etc. to
- lower case or upper case, use the dot or colon syntax: \texttt{\$.0},
- \texttt{\$.1}, \texttt{\$.2} for ower case, and \texttt{\$:0},
- \texttt{\$:1}, \texttt{\$:2} for upper case.
- 
- \paragraph{Example}
- 
- For each field (all assumed to be tseries) create a first difference,
- and name the new series \texttt{DX} where \texttt{X} is the name of the
- original series.
- 
- \begin{verbatim}
- d = dbbatch(d,'D$0','diff(d.$0)');
- \end{verbatim}
- 
- Note that the original series will be presered in the database, together
- with the newly created ones.
- 
- \paragraph{Example}
- 
- Suppose that in database \texttt{D} you want to seasonally adjust all
- time series whose names end with \texttt{\_u}, and give these seasonally
- adjusted series names without the \_u.
- 
- \begin{verbatim}
- d = dbbatch(d,'$1','x12(d.$0)','nameFilter','(.*)u');
- \end{verbatim}
- 
- or, if you want to make sure only tseries objects will be selected (in
- case there are database entries ending with a \texttt{u} other than
- tseries objects)
- 
- \begin{verbatim}
- d = dbbatch(d,'$1','x12(d.$0)', ...
-     'nameFilter=','(.*)u','classFilter=','tseries');
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[D,Processed,Added] = dbbatch(D,NewName,Expr,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Input database.
+\item
+  \texttt{NewName} {[} char {]} - Pattern that will be used to create
+  names for new database fields based on the existing ones; use
+  \texttt{'\$0'} to refer to the name of the currently processed
+  database field; use \texttt{'\$1'}, \texttt{'\$2'}, etc. to refer to
+  tokens captured in regular expression specified in the
+  \texttt{'namefilter='} option.
+\item
+  \texttt{Expr} {[} char {]} - Expression that will be evaluated on a
+  selection of existing database entries to create new database entries;
+  the expression can include \texttt{'\$0'}, \texttt{'\$1'}, etc.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Output database.
+\item
+  \texttt{Processed} {[} cellstr {]} - List of database fields that have
+  been used to create new fields.
+\item
+  \texttt{Added} {[} cellstr {]} - List of new database fields created
+  by evaluating \texttt{Expr} on the corresponding field in
+  \texttt{Processed}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'classFilter='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
+  From the existing database entries, select only those that are objects
+  of the specified class or classes, and evaluate the expression
+  \texttt{Expr} on these.
+\item
+  \texttt{'fresh='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - If true, the output database will only contain the newly created
+  entries; if false the output database will also include all the
+  entries from the input database.
+\item
+  \texttt{'nameFilter='} {[} char \textbar{} \emph{empty} {]} - From the
+  existing database entries, select only those that match this regular
+  expression, and evaluate the expression \texttt{Expr} on these.
+\item
+  \texttt{'nameList='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
+  Evaluate the \texttt{COMMAND} on this list of existing database
+  entries.
+\item
+  \texttt{'stringList='} {[} cellstr \textbar{} \emph{empty} {]} -
+  Evaluate the expression \texttt{Expr} on this list of strings; the
+  strings do not need to be names existing in the database; this options
+  can be comined with \texttt{'nameFilter='}, \texttt{'nameList='},
+  and/or \texttt{'classFilter='} to narrow the selection.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+This function is primarily meant to create new database fields, each
+based on an existing one. If you, on the otherhand, only wish to modify
+a number of existing fields without adding any new ones, use
+\href{dbase/dbfun}{\texttt{dbfun}} instead.
+
+The expression \texttt{Expr} is evaluated in the caller workspace, and
+hence may refer to any variables existing in the workspace, not only to
+the database and its fields.
+
+To convert the strings \texttt{\$0}, \texttt{\$1}, \texttt{\$2}, etc. to
+lower case or upper case, use the dot or colon syntax: \texttt{\$.0},
+\texttt{\$.1}, \texttt{\$.2} for ower case, and \texttt{\$:0},
+\texttt{\$:1}, \texttt{\$:2} for upper case.
+
+\paragraph{Example}\label{example}
+
+For each field (all assumed to be tseries) create a first difference,
+and name the new series \texttt{DX} where \texttt{X} is the name of the
+original series.
+
+\begin{verbatim}
+d = dbbatch(d,'D$0','diff(d.$0)');
+\end{verbatim}
+
+Note that the original series will be presered in the database, together
+with the newly created ones.
+
+\paragraph{Example}\label{example-1}
+
+Suppose that in database \texttt{D} you want to seasonally adjust all
+time series whose names end with \texttt{\_u}, and give these seasonally
+adjusted series names without the \_u.
+
+\begin{verbatim}
+d = dbbatch(d,'$1','x12(d.$0)','nameFilter','(.*)u');
+\end{verbatim}
+
+or, if you want to make sure only tseries objects will be selected (in
+case there are database entries ending with a \texttt{u} other than
+tseries objects)
+
+\begin{verbatim}
+d = dbbatch(d,'$1','x12(d.$0)', ...
+    'nameFilter=','(.*)u','classFilter=','tseries');
+\end{verbatim}
 
 

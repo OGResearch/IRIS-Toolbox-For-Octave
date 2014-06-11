@@ -68,6 +68,7 @@
         <tocitem target="model/assign.html">assign &#8212; Assign parameters, steady states, std deviations or cross-correlations</tocitem>
         <tocitem target="model/autocaption.html">autocaption &#8212; Create captions for graphs of model variables or parameters</tocitem>
         <tocitem target="model/autoexogenise.html">autoexogenise &#8212; Get or set variable/shock pairs for use in autoexogenised simulation plans</tocitem>
+        <tocitem target="model/blazer.html">blazer &#8212; Reorder steady-state equations into block-recursive structure</tocitem>
         <tocitem target="model/bn.html">bn &#8212; Beveridge-Nelson trends</tocitem>
         <tocitem target="model/chkmissing.html">chkmissing &#8212; Check for missing initial values in simulation database</tocitem>
         <tocitem target="model/chksstate.html">chksstate &#8212; Check if equations hold for currently assigned steady-state values</tocitem>
@@ -322,6 +323,7 @@
         <tocitem target="tseries/empty.html">empty &#8212; Empty tseries object preserving its size in 2nd and higher dimensions</tocitem>
         <tocitem target="tseries/enddate.html">enddate &#8212; Date of the last available observation in a tseries object</tocitem>
         <tocitem target="tseries/errorbar.html">errorbar &#8212; Line plot with error bars</tocitem>
+        <tocitem target="tseries/evalr.html">evalr &#8212; Evaluate tseries expression recursively</tocitem>
         <tocitem target="tseries/expsmooth.html">ews &#8212; Exponential smoothing</tocitem>
         <tocitem target="tseries/fft.html">fft &#8212; Discrete Fourier transform of tseries object</tocitem>
         <tocitem target="tseries/freq.html">freq &#8212; Frequency of a tseries object</tocitem>

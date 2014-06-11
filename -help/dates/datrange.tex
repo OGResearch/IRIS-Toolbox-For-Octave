@@ -2,66 +2,67 @@
 
     \filetitle{datrange}{Numerically safe way to create a date range}{dates/datrange}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Rng = datrange(Start,End)
- Rng = datrange(Start,End,Step)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Start} {[} numeric {]} - Start date of the range.
- \item
-   \texttt{End} {[} numeric {]} - End date of the range.
- \item
-   \texttt{Step} {[} numeric {]} - Step size in the number of base
-   periods; if omitted, \texttt{Step = 1}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Rng} {[} numeric {]} - Date vector
-   \texttt{Start : Step : End}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- Most of the time, using a colon operator to create a date range works
- fine,
- 
- \begin{verbatim}
- Start : Step : End
- \end{verbatim}
- 
- Under some rare circumstances, the colon operator may bump into round
- error difficulties as IRIS serial date numbers are non-integer values.
- In that case, the function \texttt{datrange} provides a safe workaround:
- 
- \begin{verbatim}
- datrange(Start,End,Step)
- \end{verbatim}
- 
- is equivalent (but numerically safer) to
- 
- \begin{verbatim}
- Start : Step : End
- \end{verbatim}
- 
- \paragraph{Example}
- 
- The date ranges created in this example are identical, and no numerical
- inaccuracies exist:
- 
- \begin{verbatim}
- r1 = qq(2000,1) : qq(2010,4);
- r2 = datrange(qq(2000,1),qq(2010,4));
- format long
- r1 - r2
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Rng = datrange(Start,End)
+Rng = datrange(Start,End,Step)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Start} {[} numeric {]} - Start date of the range.
+\item
+  \texttt{End} {[} numeric {]} - End date of the range.
+\item
+  \texttt{Step} {[} numeric {]} - Step size in the number of base
+  periods; if omitted, \texttt{Step = 1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Rng} {[} numeric {]} - Date vector
+  \texttt{Start : Step : End}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Most of the time, using a colon operator to create a date range works
+fine,
+
+\begin{verbatim}
+Start : Step : End
+\end{verbatim}
+
+Under some rare circumstances, the colon operator may bump into round
+error difficulties as IRIS serial date numbers are non-integer values.
+In that case, the function \texttt{datrange} provides a safe workaround:
+
+\begin{verbatim}
+datrange(Start,End,Step)
+\end{verbatim}
+
+is equivalent (but numerically safer) to
+
+\begin{verbatim}
+Start : Step : End
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+The date ranges created in this example are identical, and no numerical
+inaccuracies exist:
+
+\begin{verbatim}
+r1 = qq(2000,1) : qq(2010,4);
+r2 = datrange(qq(2000,1),qq(2010,4));
+format long
+r1 - r2
+\end{verbatim}
 
 

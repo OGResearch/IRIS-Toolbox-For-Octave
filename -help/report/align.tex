@@ -2,83 +2,84 @@
 
     \filetitle{align}{Vertically align the following K objects}{report/align}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- P.align(Caption,K,NCol,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{P} {[} struct {]} - Report object created by the
-   \href{report/new}{\texttt{report.new}} function.
- \item
-   \texttt{Caption} {[} char {]} - Caption displayed only when describing
-   the structure of the report on the screen, but not in the actual PDF
-   report.
- \item
-   \texttt{K} {[} numeric {]} - Number of objects following this
-   \texttt{align} that will be vertically aligned.
- \item
-   \texttt{NCol} {[} numeric {]} - Number of columns in which the objects
-   will vertically aligned.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'hspace='} {[} numeric \textbar{} \emph{\texttt{2}} {]} -
-   Horizontal space (in em units) inserted between two neighbouring
-   objects.
- \item
-   \texttt{'separator='} {[} char \textbar{}
-   \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par}} {]} -
-   (Inheritable from parent objects) \LaTeX~commands that will be
-   inserted after the aligned objects.
- \item
-   \texttt{'shareCaption='} {[} \emph{\texttt{'auto'}} \textbar{} true
-   \textbar{} false {]} - (Inheritable from parent objects) Place a
-   shared caption (title and subtitle) over each row of objects; the
-   title of the first object in each row is used; \texttt{'auto'} means
-   that the caption will be shared if they are identical for all objects
-   in a row.
- \item
-   \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
-   inheritable from parent objects) \LaTeX~code specifying the typeface
-   for the align element as a whole; it must use the declarative forms
-   (such as \texttt{\textbackslash{}itshape}) and not the command forms
-   (such as \texttt{\textbackslash{}textit\{...\}}).
- \end{itemize}
- 
- \paragraph{Description}
- 
- Vertically aligned can be the following types of objects:
- 
- \begin{itemize}
- \item
-   \href{report/figure}{\texttt{figure}}
- \item
-   \href{report/table}{\texttt{table}}
- \item
-   \href{report/matrix}{\texttt{matrix}}
- \item
-   \href{report/array}{\texttt{array}}
- \end{itemize}
- 
- Note that the \texttt{align} object itself has no caption (even if you
- specify one it will not be used). Only the objects within \texttt{align}
- will be given captions. If the objects aligned on one row have identical
- captions (i.e.~both titles and subtitles), only one caption will be
- displayed centred above the objects.
- 
- Because \href{report/empty}{\texttt{empty}} objects count in the total
- number of objects inluded in \texttt{align}, you can use
- \href{report/empty}{\texttt{empty}} in to create blank space in a
- particular position.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P.align(Caption,K,NCol,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Caption} {[} char {]} - Caption displayed only when describing
+  the structure of the report on the screen, but not in the actual PDF
+  report.
+\item
+  \texttt{K} {[} numeric {]} - Number of objects following this
+  \texttt{align} that will be vertically aligned.
+\item
+  \texttt{NCol} {[} numeric {]} - Number of columns in which the objects
+  will vertically aligned.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'hspace='} {[} numeric \textbar{} \emph{\texttt{2}} {]} -
+  Horizontal space (in em units) inserted between two neighbouring
+  objects.
+\item
+  \texttt{'separator='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par}} {]} -
+  (Inheritable from parent objects) \LaTeX~commands that will be
+  inserted after the aligned objects.
+\item
+  \texttt{'shareCaption='} {[} \emph{\texttt{'auto'}} \textbar{} true
+  \textbar{} false {]} - (Inheritable from parent objects) Place a
+  shared caption (title and subtitle) over each row of objects; the
+  title of the first object in each row is used; \texttt{'auto'} means
+  that the caption will be shared if they are identical for all objects
+  in a row.
+\item
+  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
+  inheritable from parent objects) \LaTeX~code specifying the typeface
+  for the align element as a whole; it must use the declarative forms
+  (such as \texttt{\textbackslash{}itshape}) and not the command forms
+  (such as \texttt{\textbackslash{}textit\{...\}}).
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Vertically aligned can be the following types of objects:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/figure}{\texttt{figure}}
+\item
+  \href{report/table}{\texttt{table}}
+\item
+  \href{report/matrix}{\texttt{matrix}}
+\item
+  \href{report/array}{\texttt{array}}
+\end{itemize}
+
+Note that the \texttt{align} object itself has no caption (even if you
+specify one it will not be used). Only the objects within \texttt{align}
+will be given captions. If the objects aligned on one row have identical
+captions (i.e.~both titles and subtitles), only one caption will be
+displayed centred above the objects.
+
+Because \href{report/empty}{\texttt{empty}} objects count in the total
+number of objects inluded in \texttt{align}, you can use
+\href{report/empty}{\texttt{empty}} in to create blank space in a
+particular position.
+
+\paragraph{Example}\label{example}
 
 

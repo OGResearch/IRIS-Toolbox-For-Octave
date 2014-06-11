@@ -2,52 +2,53 @@
 
     \filetitle{!links}{Define dynamic links}{modellang/links}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- !links
-    ParameterName := Expression;
-    VariableName := Expression;
- \end{verbatim}
- 
- \paragraph{Syntax with equation labels}
- 
- \begin{verbatim}
- !links
-    'Equation label' ParameterName := Expression;
-    'Equation label' VariableName := Expression;
- \end{verbatim}
- 
- \paragraph{Description}
- 
- The dynamic links relate a particular parameter (or steady-state value)
- on the LHS to a function of other parameters or steady-state values on
- the RHS. \texttt{Expression} can be any expression involving parameter
- names, variables names, Matlab functions and constants, or your own
- m-file functions on the path; it must not refer to any lags or leads.
- \texttt{Expression} must evaluate to a single number. It is the user's
- responsibility to properly handle the imaginary (i.e.~growth) part of
- the steady-state values.
- 
- The links are automatically refreshed in
- \href{model/solve}{\texttt{solve}},
- \href{model/sstate}{\texttt{sstate}}, and
- \href{model/chksstate}{\texttt{chksstate}} functions, and also in each
- iteration within the \href{model/estimate}{\texttt{estimate}} function.
- They can also be refreshed manually by calling
- \href{model/refresh}{\texttt{refresh}}.
- 
- The links must not involve parameters occuring in
- \href{modellang/dtrends}{\texttt{!dtrends}} equations that will be
- estimated using the \texttt{'outoflik='} option of the
- \href{model/estimate}{\texttt{estimate}} function.
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- !links
-    R := 1/beta;
-    alphak := 1 - alphan - alpham;
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+!links
+   ParameterName := Expression;
+   VariableName := Expression;
+\end{verbatim}
+
+\paragraph{Syntax with equation
+labels}\label{syntax-with-equation-labels}
+
+\begin{verbatim}
+!links
+   'Equation label' ParameterName := Expression;
+   'Equation label' VariableName := Expression;
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+The dynamic links relate a particular parameter (or steady-state value)
+on the LHS to a function of other parameters or steady-state values on
+the RHS. \texttt{Expression} can be any expression involving parameter
+names, variables names, Matlab functions and constants, or your own
+m-file functions on the path; it must not refer to any lags or leads.
+\texttt{Expression} must evaluate to a single number. It is the user's
+responsibility to properly handle the imaginary (i.e.~growth) part of
+the steady-state values.
+
+The links are automatically refreshed in
+\href{model/solve}{\texttt{solve}},
+\href{model/sstate}{\texttt{sstate}}, and
+\href{model/chksstate}{\texttt{chksstate}} functions, and also in each
+iteration within the \href{model/estimate}{\texttt{estimate}} function.
+They can also be refreshed manually by calling
+\href{model/refresh}{\texttt{refresh}}.
+
+The links must not involve parameters occuring in
+\href{modellang/dtrends}{\texttt{!dtrends}} equations that will be
+estimated using the \texttt{'outoflik='} option of the
+\href{model/estimate}{\texttt{estimate}} function.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!links
+   R := 1/beta;
+   alphak := 1 - alphan - alpham;
+\end{verbatim}
 
 

@@ -19,7 +19,7 @@ function [NameBlk,EqtnBlk] = blazer(This,varargin)
 %
 % * `NameBlk` [ cell ] - Cell of cellstr with variable names in each block.
 %
-% * `EqtnBlk` [ cell ] - Cell of cellstr with equations in each blocks.
+% * `EqtnBlk` [ cell ] - Cell of cellstr with equations in each block.
 %
 % Description
 % ============

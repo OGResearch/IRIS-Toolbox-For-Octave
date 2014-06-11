@@ -2,39 +2,40 @@
 
     \filetitle{wmean}{Weighted average of time series observations}{tseries/wmean}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Y = wmean(X,RANGE,BETA)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{X} {[} tseries {]} - Input tseries object whose data will be
-   averaged column by column.
- \item
-   \texttt{RANGE} {[} numeric {]} - Date range on which the weighted
-   average will be computed.
- \item
-   \texttt{BETA} {[} numeric {]} - Discount factor; the last observation
-   gets a weight of of 1, the N-minus-1st observation gets a weight of
-   \texttt{BETA}, the N-minus-2nd gets a weight of \texttt{BETA\^{}2},
-   and so on.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Y} {[} numeric {]} - Array with weighted average of individual
-   columns; the sizes of \texttt{Y} are identical to those of the input
-   tseries object in 2nd and higher dimensions.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Y = wmean(X,RANGE,BETA)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose data will be
+  averaged column by column.
+\item
+  \texttt{RANGE} {[} numeric {]} - Date range on which the weighted
+  average will be computed.
+\item
+  \texttt{BETA} {[} numeric {]} - Discount factor; the last observation
+  gets a weight of of 1, the N-minus-1st observation gets a weight of
+  \texttt{BETA}, the N-minus-2nd gets a weight of \texttt{BETA\^{}2},
+  and so on.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Y} {[} numeric {]} - Array with weighted average of individual
+  columns; the sizes of \texttt{Y} are identical to those of the input
+  tseries object in 2nd and higher dimensions.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

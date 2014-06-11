@@ -2,44 +2,44 @@
 
     \filetitle{\&}{Reference to the steady-state level of a variable}{modellang/sstateref}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- &VariableName
- $VariableName
- &VariableName{K}
- $VariableName{K}
- \end{verbatim}
- 
- \paragraph{Description}
- 
- Use either a \texttt{\&} or \texttt{\$} sign in front of a variable name
- to create a reference to that variable's steady-state level in
- transition or measurement equations. The two signs, \texttt{\&} and
- \texttt{\$}, are interchangeable. Steady-state references may only be
- used in nonlinear models.
- 
- The steady-state reference can include a time shift (a lag or a lead),
- \texttt{K}. In that case, the steady-state value will be adjusted for
- steady-state growth backward or forward accordingly.
- 
- The steady-state reference will be replaced
- 
- \begin{itemize}
- \item
-   with the variable itself at the time the model's steady state is being
-   calculated, i.e.~when calling the function
-   \href{model/sstate}{\texttt{sstate}};
- \item
-   with the actually assigned steady-state value at the time the model is
-   being solved, i.e.~when calling the function
-   \href{model/solve}{`solve'}'.
- \end{itemize}
- 
- \paragraph{Example}
- 
- \begin{verbatim}
- x = rho*x{-1} + (1-rho)*&x + epsilon_x !! x = 1;
- \end{verbatim}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+&VariableName
+$VariableName
+&VariableName{K}
+$VariableName{K}
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+Use either a \texttt{\&} or \texttt{\$} sign in front of a variable name
+to create a reference to that variable's steady-state level in
+transition or measurement equations. The two signs, \texttt{\&} and
+\texttt{\$}, are interchangeable. Steady-state references may only be
+used in nonlinear models.
+
+The steady-state reference can include a time shift (a lag or a lead),
+\texttt{K}. In that case, the steady-state value will be adjusted for
+steady-state growth backward or forward accordingly.
+
+The steady-state reference will be replaced
+
+\begin{itemize}
+\item
+  with the variable itself at the time the model's steady state is being
+  calculated, i.e.~when calling the function
+  \href{model/sstate}{\texttt{sstate}};
+\item
+  with the actually assigned steady-state value at the time the model is
+  being solved, i.e.~when calling the function
+  \href{model/solve}{`solve'}'.
+\end{itemize}
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+x = rho*x{-1} + (1-rho)*&x + epsilon_x !! x = 1;
+\end{verbatim}
 
 

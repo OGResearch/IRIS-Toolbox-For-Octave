@@ -2,160 +2,164 @@
 
     \filetitle{simulate}{Simulate model}{model/simulate}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- S = simulate(M,D,Range,...)
- [S,Flag,AddF,Discrep] = simulate(M,D,Range,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Solved model object.
- \item
-   \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
-   from which the initial conditions and shocks from within the
-   simulation range will be read.
- \item
-   \texttt{Range} {[} numeric {]} - Simulation range.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{S} {[} struct \textbar{} cell {]} - Database with simulation
-   results.
- \end{itemize}
- 
- \paragraph{Output arguments in non-linear simulations}
- 
- \begin{itemize}
- \item
-   \texttt{Flag} {[} cell \textbar{} empty {]} - Cell array with exit
-   flags for non-linearised simulations.
- \item
-   \texttt{AddF} {[} cell \textbar{} empty {]} - Cell array of tseries
-   with final add-factors added to first-order approximate equations to
-   make non-linear equations hold.
- \item
-   \texttt{Discrep} {[} cell \textbar{} empty {]} - Cell array of tseries
-   with final discrepancies between LHS and RHS in equations marked for
-   non-linear simulations by a double-equal sign.
- \end{itemize}
- 
- \paragraph{Options}
- 
- \begin{itemize}
- \item
-   \texttt{'anticipate='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - If \texttt{true}, real future shocks are
-   anticipated, imaginary are unanticipated; vice versa if
-   \texttt{false}.
- \item
-   \texttt{'contributions='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Decompose the simulated paths into
-   contributions of individual shocks.
- \item
-   \texttt{'deviation='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Treat input and output data as deviations
-   from balanced-growth path.
- \item
-   \texttt{'dbOverlay='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} \textbar{} struct {]} - Use the function
-   \texttt{dboverlay} to combine the simulated output data with the input
-   database, or with another database, at the end.
- \item
-   \texttt{'dTrends='} {[} \emph{`auto'} \textbar{} \texttt{true}
-   \textbar{} \texttt{false} {]} - Add deterministic trends to
-   measurement variables.
- \item
-   \texttt{'ignoreShocks='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Read only initial conditions from input
-   data, and ignore any shocks within the simulation range.
- \item
-   \texttt{'plan='} {[} plan {]} - Specify a simulation plan to swap
-   endogeneity and exogeneity of some variables and shocks temporarily,
-   and/or to simulate some of the non-linear equations accurately.
- \item
-   \texttt{'progress='} {[} \texttt{true} \textbar{}
-   \emph{\texttt{false}} {]} - Display progress bar in the command
-   window.
- \end{itemize}
- 
- \paragraph{Options in non-linear simualations}
- 
- \begin{itemize}
- \item
-   \texttt{'addSstate='} {[} \emph{\texttt{true}} \textbar{}
-   \texttt{false} {]} - Add steady state levels to simulated paths before
-   evaluating non-linear equations; this option is used only if
-   \texttt{'deviation=' true}.
- \item
-   \texttt{'display='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-   \textbar{} numeric \textbar{} Inf {]} - Report iterations on the
-   screen; if \texttt{'display=' N}, report every \texttt{N} iterations;
-   if \texttt{'display=' Inf}, report only final iteration.
- \item
-   \texttt{'error='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-   {]} - Throw an error whenever a non-linear simulation fails converge;
-   if \texttt{false}, only an warning will display.
- \item
-   \texttt{'lambda='} {[} numeric \textbar{} \emph{\texttt{1}} {]} - Step
-   size (between \texttt{0} and \texttt{1}) for add factors added to
-   non-linearised equations in every iteration.
- \item
-   \texttt{'reduceLambda='} {[} numeric \textbar{} \emph{\texttt{0.5}}
-   {]} - Factor (between \texttt{0} and \texttt{1}) by which
-   \texttt{lambda} will be multiplied if the non-linear simulation gets
-   on an divergence path.
- \item
-   \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{100}} {]} -
-   Maximum number of iterations.
- \item
-   \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
-   - Convergence tolerance.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \subparagraph{Output range}
- 
- Time series in the output database, \texttt{S}, are are defined on the
- simulation range, \texttt{Range}, plus include all necessary initial
- conditions, i.e.~lags of variables that occur in the model code. You can
- use the option \texttt{'dboverlay='} to combine the output database with
- the input database (i.e.~to include a longer history of data in the
- simulated series).
- 
- \subparagraph{Simulations with multilple parameterisations and/or
- multiple data sets}
- 
- If you simulate a model with \texttt{N} parameterisations and the input
- database contains \texttt{K} data sets (i.e.~each variable is a time
- series with \texttt{K} columns), then the following happens:
- 
- \begin{itemize}
- \item
-   The model will be simulated a total of \texttt{P = max(N,K)} number of
-   times. This means that each variables in the output database will have
-   \texttt{P} columns.
- \item
-   The 1st parameterisation will be simulated using the 1st data set, the
-   2nd parameterisation will be simulated using the 2nd data set, etc.
-   until you reach either the last parameterisation or the last data set,
-   i.e. \texttt{min(N,K)}. From that point on, the last parameterisation
-   or the last data set will be simply repeated (re-used) in the
-   remaining simulations.
- \item
-   Put formally, the \texttt{I}-th column in the output database, where
-   \texttt{I = 1, ..., P}, is a simulation of the \texttt{min(I,N)}-th
-   model parameterisation using the \texttt{min(I,K)}-th input data set
-   number.
- \end{itemize}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+S = simulate(M,D,Range,...)
+[S,Flag,AddF,Discrep] = simulate(M,D,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Solved model object.
+\item
+  \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
+  from which the initial conditions and shocks from within the
+  simulation range will be read.
+\item
+  \texttt{Range} {[} numeric {]} - Simulation range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{S} {[} struct \textbar{} cell {]} - Database with simulation
+  results.
+\end{itemize}
+
+\paragraph{Output arguments in non-linear
+simulations}\label{output-arguments-in-non-linear-simulations}
+
+\begin{itemize}
+\item
+  \texttt{Flag} {[} cell \textbar{} empty {]} - Cell array with exit
+  flags for non-linearised simulations.
+\item
+  \texttt{AddF} {[} cell \textbar{} empty {]} - Cell array of tseries
+  with final add-factors added to first-order approximate equations to
+  make non-linear equations hold.
+\item
+  \texttt{Discrep} {[} cell \textbar{} empty {]} - Cell array of tseries
+  with final discrepancies between LHS and RHS in equations marked for
+  non-linear simulations by a double-equal sign.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'anticipate='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - If \texttt{true}, real future shocks are
+  anticipated, imaginary are unanticipated; vice versa if
+  \texttt{false}.
+\item
+  \texttt{'contributions='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Decompose the simulated paths into
+  contributions of individual shocks.
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Treat input and output data as deviations
+  from balanced-growth path.
+\item
+  \texttt{'dbOverlay='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} \textbar{} struct {]} - Use the function
+  \texttt{dboverlay} to combine the simulated output data with the input
+  database, or with another database, at the end.
+\item
+  \texttt{'dTrends='} {[} \emph{`auto'} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Add deterministic trends to
+  measurement variables.
+\item
+  \texttt{'ignoreShocks='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Read only initial conditions from input
+  data, and ignore any shocks within the simulation range.
+\item
+  \texttt{'plan='} {[} plan {]} - Specify a simulation plan to swap
+  endogeneity and exogeneity of some variables and shocks temporarily,
+  and/or to simulate some of the non-linear equations accurately.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\end{itemize}
+
+\paragraph{Options in non-linear
+simualations}\label{options-in-non-linear-simualations}
+
+\begin{itemize}
+\item
+  \texttt{'addSstate='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Add steady state levels to simulated paths before
+  evaluating non-linear equations; this option is used only if
+  \texttt{'deviation=' true}.
+\item
+  \texttt{'display='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  \textbar{} numeric \textbar{} Inf {]} - Report iterations on the
+  screen; if \texttt{'display=' N}, report every \texttt{N} iterations;
+  if \texttt{'display=' Inf}, report only final iteration.
+\item
+  \texttt{'error='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Throw an error whenever a non-linear simulation fails converge;
+  if \texttt{false}, only an warning will display.
+\item
+  \texttt{'lambda='} {[} numeric \textbar{} \emph{\texttt{1}} {]} - Step
+  size (between \texttt{0} and \texttt{1}) for add factors added to
+  non-linearised equations in every iteration.
+\item
+  \texttt{'reduceLambda='} {[} numeric \textbar{} \emph{\texttt{0.5}}
+  {]} - Factor (between \texttt{0} and \texttt{1}) by which
+  \texttt{lambda} will be multiplied if the non-linear simulation gets
+  on an divergence path.
+\item
+  \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{100}} {]} -
+  Maximum number of iterations.
+\item
+  \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
+  - Convergence tolerance.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Output range}\label{output-range}
+
+Time series in the output database, \texttt{S}, are are defined on the
+simulation range, \texttt{Range}, plus include all necessary initial
+conditions, i.e.~lags of variables that occur in the model code. You can
+use the option \texttt{'dboverlay='} to combine the output database with
+the input database (i.e.~to include a longer history of data in the
+simulated series).
+
+\subparagraph{Simulations with multilple parameterisations and/or
+multiple data
+sets}\label{simulations-with-multilple-parameterisations-andor-multiple-data-sets}
+
+If you simulate a model with \texttt{N} parameterisations and the input
+database contains \texttt{K} data sets (i.e.~each variable is a time
+series with \texttt{K} columns), then the following happens:
+
+\begin{itemize}
+\item
+  The model will be simulated a total of \texttt{P = max(N,K)} number of
+  times. This means that each variables in the output database will have
+  \texttt{P} columns.
+\item
+  The 1st parameterisation will be simulated using the 1st data set, the
+  2nd parameterisation will be simulated using the 2nd data set, etc.
+  until you reach either the last parameterisation or the last data set,
+  i.e. \texttt{min(N,K)}. From that point on, the last parameterisation
+  or the last data set will be simply repeated (re-used) in the
+  remaining simulations.
+\item
+  Put formally, the \texttt{I}-th column in the output database, where
+  \texttt{I = 1, ..., P}, is a simulation of the \texttt{min(I,N)}-th
+  model parameterisation using the \texttt{min(I,K)}-th input data set
+  number.
+\end{itemize}
+
+\paragraph{Example}\label{example}
 
 

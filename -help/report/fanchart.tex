@@ -2,62 +2,63 @@
 
     \filetitle{fanchart}{Add fanchart to graph}{report/fanchart}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- P.fanchart(Cap,X,Std,Prob,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{P} {[} struct {]} - Report object created by the
-   \href{report/new}{\texttt{report.new}} function.
- \item
-   \texttt{Cap} {[} char {]} - Caption used as a legend entry for the
-   line (mean of fanchart)
- \item
-   \texttt{X} {[} tseries {]} - Tseries object with input data to be
-   displayed.
- \item
-   \texttt{Std} {[} tseries {]} - Tseries object with standard deviations
-   of input data.
- \item
-   \texttt{Prob} {[} numeric {]} - Confidence porbabilities of intervals
-   to be displayed.
- \end{itemize}
- 
- \paragraph{Options for fancharts}
- 
- \begin{itemize}
- \item
-   \texttt{'asym='} {[} numeric \textbar{} tseries \textbar{}
-   \emph{\texttt{1}} {]} - Ratio of asymmetry (area of upper part to one
-   of lower part).
- \item
-   \texttt{'exclude='} {[} numeric \textbar{} true \textbar{}
-   \emph{\texttt{false}} {]} - Exclude some of the confidence intervals.
- \item
-   \texttt{'factor='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
-   factor to increase or decrease input standard deviations
- \item
-   \texttt{'fanLegend='} {[} cell \textbar{} \texttt{NaN} \textbar{}
-   \emph{\texttt{Inf}} {]} - Legend entries used instead of confidence
-   interval values; Inf means all confidence intervals values will be
-   used to construct legend entries; NaN means the intervals will be
-   exluded from legend; \texttt{NaN} in cellstr means the intervals of
-   respective fancharts will be exluded from legend.
- \end{itemize}
- 
- See help on \url{report/series} for other options available.
- 
- \paragraph{Description}
- 
- The confidence intervals are based on normal distributions with standard
- deviations supplied by the user. Optionally, the user can also specify
- assumptions about asymmetry and/or common correction factors.
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P.fanchart(Cap,X,Std,Prob,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Cap} {[} char {]} - Caption used as a legend entry for the
+  line (mean of fanchart)
+\item
+  \texttt{X} {[} tseries {]} - Tseries object with input data to be
+  displayed.
+\item
+  \texttt{Std} {[} tseries {]} - Tseries object with standard deviations
+  of input data.
+\item
+  \texttt{Prob} {[} numeric {]} - Confidence porbabilities of intervals
+  to be displayed.
+\end{itemize}
+
+\paragraph{Options for fancharts}\label{options-for-fancharts}
+
+\begin{itemize}
+\item
+  \texttt{'asym='} {[} numeric \textbar{} tseries \textbar{}
+  \emph{\texttt{1}} {]} - Ratio of asymmetry (area of upper part to one
+  of lower part).
+\item
+  \texttt{'exclude='} {[} numeric \textbar{} true \textbar{}
+  \emph{\texttt{false}} {]} - Exclude some of the confidence intervals.
+\item
+  \texttt{'factor='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+  factor to increase or decrease input standard deviations
+\item
+  \texttt{'fanLegend='} {[} cell \textbar{} \texttt{NaN} \textbar{}
+  \emph{\texttt{Inf}} {]} - Legend entries used instead of confidence
+  interval values; Inf means all confidence intervals values will be
+  used to construct legend entries; NaN means the intervals will be
+  exluded from legend; \texttt{NaN} in cellstr means the intervals of
+  respective fancharts will be exluded from legend.
+\end{itemize}
+
+See help on \href{report/series}{\texttt{report/series}} for other
+options available.
+
+\paragraph{Description}\label{description}
+
+The confidence intervals are based on normal distributions with standard
+deviations supplied by the user. Optionally, the user can also specify
+assumptions about asymmetry and/or common correction factors.
+
+\paragraph{Example}\label{example}
 
 

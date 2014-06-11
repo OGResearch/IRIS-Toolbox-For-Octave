@@ -138,6 +138,7 @@ m = model(m,...)</code></pre>
 <li><p><code>'multiple='</code> [ true | <em>false</em> ] - Allow each variable, shock, or parameter name to be declared (and assigned) more than once in the model file.</p></li>
 <li><p><code>'assign='</code> [ struct | <em>empty</em> ] - Assign model parameters and/or steady states from this database at the time the model objects is being created.</p></li>
 <li><p><code>'baseYear='</code> [ numeric | <em>2000</em> ] - Base year for constructing deterministic time trends.</p></li>
+<li><p><code>'blazer='</code> [ <em><code>true</code></em> | <code>false</code> ] - Perform block-recursive analysis of steady-state equations at the time the model object is being created; the option works only in nonlinear models.</p></li>
 <li><p><code>'comment='</code> [ char | <em>empty</em> ] - Text comment attached to the model object.</p></li>
 <li><p><code>'declareParameters='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>false</code>, skip parameter declaration in the model file, and determine the list of parameters automatically as names found in equations but not declared.</p></li>
 <li><p><code>'epsilon='</code> [ numeric | <em>eps^(1/4)</em> ] - The minimum relative step size for numerical differentiation.</p></li>

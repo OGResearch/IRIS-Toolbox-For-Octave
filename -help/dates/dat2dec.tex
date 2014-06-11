@@ -2,35 +2,36 @@
 
     \filetitle{dat2dec}{Convert dates to their decimal representations}{dates/dat2dec}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- Dec = dat2dec(Dat)
- Dec = dat2dec(Dat,Pos)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Dat} {[} numeric {]} - IRIS serial date number.
- \item
-   \texttt{Pos} {[} \emph{\texttt{'start'}} \textbar{} \texttt{'centre'}
-   \textbar{} \texttt{'end'} {]} - Point within the period that will
-   represent the date; if omitted, \texttt{Pos} is set to
-   \texttt{'start'}.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Dec} {[} numeric {]} - Decimal number representing the input
-   dates, computed as \texttt{year + (per-1)/freq}.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Dec = dat2dec(Dat)
+Dec = dat2dec(Dat,Pos)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Dat} {[} numeric {]} - IRIS serial date number.
+\item
+  \texttt{Pos} {[} \emph{\texttt{'start'}} \textbar{} \texttt{'centre'}
+  \textbar{} \texttt{'end'} {]} - Point within the period that will
+  represent the date; if omitted, \texttt{Pos} is set to
+  \texttt{'start'}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Dec} {[} numeric {]} - Decimal number representing the input
+  dates, computed as \texttt{year + (per-1)/freq}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

@@ -2,51 +2,51 @@
 
     \filetitle{vma}{Vector moving average representation of the model}{model/vma}
 
-	\paragraph{Syntax}
- 
- \begin{verbatim}
- [Phi,List] = vma(M,P,...)
- \end{verbatim}
- 
- \paragraph{Input arguments}
- 
- \begin{itemize}
- \item
-   \texttt{M} {[} model {]} - Model object for which the VMA
-   representation will be computed.
- \item
-   \texttt{P} {[} numeric {]} - Order up to which the VMA will be
-   evaluated.
- \end{itemize}
- 
- \paragraph{Output arguments}
- 
- \begin{itemize}
- \item
-   \texttt{Phi} {[} namedmat \textbar{} numeric {]} - VMA matrices.
- \item
-   \texttt{List} {[} cell {]} - List of measurement and transition
-   variables in the rows of the \texttt{Phi} matrix, and list of shocks
-   in the columns of the \texttt{Phi} matrix.
- \end{itemize}
- 
- \paragraph{Option}
- 
- \begin{itemize}
- \item
-   \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-   \texttt{'numeric'} {]} - Output matrix \texttt{Phi} will be either a
-   namedmat object or a plain numeric array; if the option
-   \texttt{'select='} is used, \texttt{'output='} is always
-   \texttt{'namedmat'}.
- \item
-   \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-   Return the VMA matrices for selected variabes and/or shocks only;
-   \texttt{Inf} means all variables.
- \end{itemize}
- 
- \paragraph{Description}
- 
- \paragraph{Example}
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Phi,List] = vma(M,P,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object for which the VMA
+  representation will be computed.
+\item
+  \texttt{P} {[} numeric {]} - Order up to which the VMA will be
+  evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Phi} {[} namedmat \textbar{} numeric {]} - VMA matrices.
+\item
+  \texttt{List} {[} cell {]} - List of measurement and transition
+  variables in the rows of the \texttt{Phi} matrix, and list of shocks
+  in the columns of the \texttt{Phi} matrix.
+\end{itemize}
+
+\paragraph{Option}\label{option}
+
+\begin{itemize}
+\item
+  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'numeric'} {]} - Output matrix \texttt{Phi} will be either a
+  namedmat object or a plain numeric array; if the option
+  \texttt{'select='} is used, \texttt{'output='} is always
+  \texttt{'namedmat'}.
+\item
+  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
+  Return the VMA matrices for selected variabes and/or shocks only;
+  \texttt{Inf} means all variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 
