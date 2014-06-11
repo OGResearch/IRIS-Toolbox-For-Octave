@@ -86,7 +86,7 @@ classdef model < modelobj & estimateobj
     % ===========
     %
     % * [`data4lhsmrhs`](model/data4lhsmrhs) - Prepare data array for running `lhsmrhs`.
-    % * [`emptydb`](model/emptydb) - Create model-specific database with variables, shocks, and parameters.
+    % * [`emptydb`](model/emptydb) - Create model-specific database with empty tseries for all variables and shocks.
     % * [`rollback`](model/rollback) - Prepare database for a rollback run of Kalman filter.
     % * [`sstatedb`](model/sstatedb) - Create model-specific steady-state or balanced-growth-path database.
     % * [`zerodb`](model/zerodb) - Create model-specific zero-deviation database.

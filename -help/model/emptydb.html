@@ -119,7 +119,7 @@ code.LaTeX {
 
 
 <h2 id="model/emptydb">emptydb</h2>
-<div class="headline">Create model-specific database with variables, shocks, and parameters</div>
+<div class="headline">Create model-specific database with empty tseries for all variables and shocks</div>
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>D = emptydb(M)</code></pre>
@@ -129,7 +129,7 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>D</code> [ struct ] - Database with an empty tseries object for each variable and each shock, and an empty array for each parameter.</li>
+<li><code>D</code> [ struct ] - Database with an empty tseries object for each variable and each shock, and a vector of currently assigned values for each parameter.</li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>

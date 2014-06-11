@@ -39,13 +39,12 @@
   \texttt{'error='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
   {]} - Throw an error if one or more equations do not hold.
 \item
+  \texttt{'eqtn='} {[} \emph{\texttt{'full'}} \textbar{}
+  \texttt{'sstate'} {]} - Evaluate either full or steady-state equations
+  on steady-state values.
+\item
   \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
   {]} - Refresh dynamic links before evaluating the equations.
-\item
-  \texttt{'sstateEqtn='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - If \texttt{false}, the dynamic model
-  equations will be checked; if \texttt{true}, the steady-state versions
-  of the equations (wherever available) will be checked.
 \item
   \texttt{'tolerance='} {[} numeric \textbar{} \texttt{getrealsmall()}
   {]} - Tolerance.

@@ -77,7 +77,7 @@
         <tocitem target="model/diffloglik.html">diffloglik &#8212; Approximate gradient and hessian of log-likelihood function</tocitem>
         <tocitem target="model/diffsrf.html">diffsrf &#8212; Differentiate shock response functions w.r.t. specified parameters</tocitem>
         <tocitem target="model/eig.html">eig &#8212; Eigenvalues of the transition matrix</tocitem>
-        <tocitem target="model/emptydb.html">emptydb &#8212; Create model-specific database with variables, shocks, and parameters</tocitem>
+        <tocitem target="model/emptydb.html">emptydb &#8212; Create model-specific database with empty tseries for all variables and shocks</tocitem>
         <tocitem target="model/estimate.html">estimate &#8212; Estimate model parameters by optimising selected objective function</tocitem>
         <tocitem target="model/evalsystempriors.html">evalsystempriors &#8212; Evaluate minus log of system prior density</tocitem>
         <tocitem target="model/expand.html">expand &#8212; Compute forward expansion of model solution for anticipated shocks</tocitem>

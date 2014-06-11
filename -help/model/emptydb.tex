@@ -1,6 +1,6 @@
 
 
-    \filetitle{emptydb}{Create model-specific database with variables, shocks, and parameters}{model/emptydb}
+    \filetitle{emptydb}{Create model-specific database with empty tseries for all variables and shocks}{model/emptydb}
 
 	\paragraph{Syntax}\label{syntax}
 
@@ -23,7 +23,8 @@ D = emptydb(M)
 \itemsep1pt\parskip0pt\parsep0pt
 \item
   \texttt{D} {[} struct {]} - Database with an empty tseries object for
-  each variable and each shock, and an empty array for each parameter.
+  each variable and each shock, and a vector of currently assigned
+  values for each parameter.
 \end{itemize}
 
 \paragraph{Description}\label{description}
