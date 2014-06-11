@@ -59,7 +59,6 @@ else
     X = doOneTrendArray();
 end
 
-
 % Nested functions...
 
 

@@ -42,7 +42,7 @@ end
 if ~This.linear
     inx = ~isLink;
     try
-        e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnS{inx},']']);
+        e = str2func(['@(x,dx,L,t,ttrend,g) [',This.EqtnS{inx},']']);
         e(x,dx,L,t,ttrend,g);
     catch
         doLookUp('s',inx);
@@ -59,14 +59,13 @@ catch
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
 
 
     function doLookUp(Type,Inx)
-        
         errUndeclared = {};
         errSyntax = {};
         
@@ -75,7 +74,7 @@ end
             if Type == 'f'
                 e = This.eqtnF{iiEq};
             else
-                e = This.eqtnS{iiEq};
+                e = This.EqtnS{iiEq};
             end
             
             if isempty(e)
@@ -95,11 +94,12 @@ end
                 end
                 
                 if This.linear ...
-                        || This.eqtntype(iiEq) > 2 || isempty(This.eqtnS{iiEq})
+                        || This.eqtntype(iiEq) > 2 ...
+                        || isempty(This.EqtnS{iiEq})
                     continue
                 end
                 
-                e = This.eqtnS{iiEq};
+                e = This.EqtnS{iiEq};
                 e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
                 e(x,dx,L,t,ttrend,g);               
             catch E
@@ -136,8 +136,7 @@ end
                 '\tMatlab says: %s'], ...
                 errSyntax{:});
         end
-        
-    end
+    end % doLookUp().
 
 
 end

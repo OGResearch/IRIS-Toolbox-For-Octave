@@ -9,7 +9,7 @@ function [Flag,Discr,MaxAbsDiscr,List] = mychksstate(This,Opt)
 
 % The input struct Opt is expected to include
 %
-% * `.sstateeqtn` -- switch between evaluating full dynamic versus
+% * `.eqtn` -- switch between evaluating full dynamic versus
 % steady-state equations;
 % * `.tolerance` -- tolerance level.
 
@@ -17,6 +17,21 @@ try
     Opt; %#ok<VUNUS>
 catch
     Opt = passvalopt('model.mychksstate');
+end
+
+% Bkw compatibility.
+if islogical(Opt.eqtn)
+    % ##### June 2014 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['Option ''sstateEqtn='' is obsolete, and will be removed ', ...
+        'from IRIS in a future release. ', ...
+        'Use the option ''eqtn='' instead with values ', ...
+        '''full'' or ''sstate''.']);
+    if Opt.eqtn
+        Opt.eqtn = 'sstate';
+    else
+        Opt.eqtn = 'full';
+    end
 end
 
 %--------------------------------------------------------------------------
@@ -27,7 +42,7 @@ nAlt = size(This.Assign,3);
 Flag = false(1,nAlt);
 List = cell(1,nAlt);
 
-if ~Opt.sstateeqtn
+if strcmpi(Opt.eqtn,'full')
     doFullEqtn();
 else
     doSstateEqtn();
@@ -46,6 +61,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function doFullEqtn()
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
@@ -70,9 +87,11 @@ end
 
 
 %**************************************************************************
+
+    
     function doSstateEqtn()
-        Discr = nan(nEqtnXY,1,nAlt);
-        eqtn = This.eqtnS(This.eqtntype <= 2);
+        Discr = nan(nEqtnXY,2,nAlt);
+        eqtn = This.EqtnS(This.eqtntype <= 2);
         % Create anonymous funtions for sstate equations.
         for ii = 1 : length(eqtn)
             eqtn{ii} = str2func(['@(x,dx) ',eqtn{ii}]);
@@ -81,12 +100,12 @@ end
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
             dx(This.log & dx == 0) = 1;
-            % Steady-state equations are expressed in logs of log-variables; take log
-            % of log-variables before evaluating the equations.
-            x(This.log) = log(x(This.log));
-            dx(This.log) = log(dx(This.log));
             % Evaluate discrepancies btw LHS and RHS of steady-state equations.
-            Discr(:,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtn)).';
+            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtn)).';
+            xk = x;
+            xk(~This.log) = x(~This.log) + dx(~This.log);
+            xk(This.log) = x(This.log) .* dx(This.log);
+            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtn)).';
         end
     end % doSstateEqtn()
 

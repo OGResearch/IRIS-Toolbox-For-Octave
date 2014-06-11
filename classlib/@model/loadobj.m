@@ -54,7 +54,7 @@ end
 % Add empty dtrend equations if missing.
 if ny > 0 && sum(This.eqtntype == 3) == 0
     This.eqtn(end+(1:ny)) = {''};
-    This.eqtnS(end+(1:ny)) = {''};
+    This.EqtnS(end+(1:ny)) = {''};
     This.eqtnF(end+(1:ny)) = {@(x,t,ttrend)0};
     This.eqtnlabel(end+(1:ny)) = {''};
     This.eqtntype(end+(1:ny)) = 3;
@@ -145,6 +145,12 @@ for i = 1 : length(This.eqtnF)
     This.eqtnF{i} = eqtn;
 end
 
+% Rewrite log-variables in sstate equations for builds < 20140611.
+build = sscanf(This.build,'%g',1);
+if build < 20140610 && ~This.linear
+    doLogSstateEqtn();
+end
+
 % Convert equation strings to anonymous functions.
 try
     This = myeqtn2afcn(This);
@@ -186,6 +192,33 @@ This = mytransient(This);
         This.namelabel(:,end-ne+1:end) = [];
         This.log(:,end-ne+1:end) = [];
     end % doStdcorr()
+
+
+%**************************************************************************
+
+
+    function doLogSstateEqtn()
+        % For each log variable:
+        % * replace `exp(x(10)-2*dx(10))` with `(x(10)/dx(10)^2)`;
+        % * replace `exp(x(10)+2*dx(10))` with `(x(10)*dx(10)^2)`;
+        % * replace `exp(x(10))` with `x(10)`;
+        % * replace `((x(10)))` with `(x(10))`.
+        for ii = find(This.log)
+            iic = sprintf('%g',ii);
+            This.EqtnS = regexprep(This.EqtnS, ...
+                ['exp\(x\(',iic,'\)\-(\d+)\*dx\(',iic,'\)\)'], ...
+                ['\(x\(',iic,'\)/dx\(',iic,'\)^$1\)']);
+            This.EqtnS = regexprep(This.EqtnS, ...
+                ['exp\(x\(',iic,'\)\+(\d+)\*dx\(',iic,'\)\)'], ...
+                ['\(x\(',iic,'\)*dx\(',iic,'\)^$1\)']);
+            This.EqtnS = regexprep(This.EqtnS, ...
+                ['exp\(x\(',iic,'\)\)'], ...
+                ['x\(',iic,'\)']);
+        end
+        This.EqtnS = regexprep(This.EqtnS, ...
+            '\(\(x\((\d+)\)\)\)', ...
+            '(x($1))');
+    end % doLogSstateEqtn()
 
 
 end

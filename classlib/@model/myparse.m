@@ -83,9 +83,9 @@ n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
 if ~This.linear
-    This.eqtnS(end+(1:n)) = eqtnS;
+    This.EqtnS(end+(1:n)) = eqtnS;
 else
-    This.eqtnS(end+(1:n)) = {''};
+    This.EqtnS(end+(1:n)) = {''};
 end
 This.eqtnlabel(end+(1:n)) = eqtnLabel;
 This.eqtnalias(end+(1:n)) = eqtnAlias;
@@ -105,9 +105,9 @@ n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
 if ~This.linear
-    This.eqtnS(end+(1:n)) = eqtnS;
+    This.EqtnS(end+(1:n)) = eqtnS;
 else
-    This.eqtnS(end+(1:n)) = {''};
+    This.EqtnS(end+(1:n)) = {''};
 end
 This.eqtnlabel(end+(1:n)) = eqtnLabel;
 This.eqtnalias(end+(1:n)) = eqtnAlias;
@@ -189,14 +189,14 @@ This.eqtn = cleanup(This.eqtn,P.labels);
 % This is for bkw compatibility only.
 This.eqtnF = strrep(This.eqtnF,'!','');
 if ~This.linear
-    This.eqtnS = strrep(This.eqtnS,'!','');
+    This.EqtnS = strrep(This.EqtnS,'!','');
 end
 
 % Remove blank spaces.
 This.eqtn = regexprep(This.eqtn,{'\s+','".*?"'},{'',''});
 This.eqtnF = regexprep(This.eqtnF,'\s+','');
 if ~This.linear
-    This.eqtnS = regexprep(This.eqtnS,'\s+','');
+    This.EqtnS = regexprep(This.EqtnS,'\s+','');
 end
 
 % Make sure all equations end with semicolons.
@@ -207,8 +207,8 @@ for iEq = 1 : length(This.eqtn)
     if ~isempty(This.eqtnF{iEq}) && This.eqtnF{iEq}(end) ~= ';'
         This.eqtnF{iEq}(end+1) = ';';
     end
-    if ~isempty(This.eqtnS{iEq}) && This.eqtnS{iEq}(end) ~= ';'
-        This.eqtnS{iEq}(end+1) = ';';
+    if ~isempty(This.EqtnS{iEq}) && This.EqtnS{iEq}(end) ~= ';'
+        This.EqtnS{iEq}(end+1) = ';';
     end
 end
 
@@ -241,33 +241,45 @@ This.occurS = false(nEqtn,nName);
 
 [namePatt,nameReplF,nameReplS] = mynamepattrepl(This);
 
+% Steady-state equations
+%------------------------
+
 if ~This.linear
     % If no steady-state version exists, copy the full equation.
-    isEmptySstate = cellfun(@isempty,This.eqtnS) & This.eqtntype <= 2;
-    This.eqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
-    This.eqtnS(This.eqtntype > 2) = {''};
+    isEmptySstate = cellfun(@isempty,This.EqtnS) & This.eqtntype <= 2;
+    This.EqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
+    This.EqtnS(This.eqtntype > 2) = {''};
     if isLoss
         % Do not copy the loss function to steady state equations.
-        This.eqtnS{lossPos} = '';
+        This.EqtnS{lossPos} = '';
     end
     
-    This.eqtnS = regexprep(This.eqtnS,namePatt,nameReplS);
+    This.EqtnS = regexprep(This.EqtnS,namePatt,nameReplS);
     
     % Remove steady-state references from steady-state equations; they are
     % treated as the respective variables.
-    This.eqtnS = strrep(This.eqtnS,'&(%','(%');
-    This.eqtnS = strrep(This.eqtnS,'&exp(%','exp(%');
+    This.EqtnS = strrep(This.EqtnS,'&%','%');
+    This.EqtnS = strrep(This.EqtnS,'&#','#');
     
-    % Replace (%(!10)){@-2} with (%(!10)-2*%%(!10)).
-    This.eqtnS = regexprep(This.eqtnS, ...
-        '\(%\(!(\d+)\)\)\{@([+\-]\d+)\}', ...
-        '(%(!$1)$2*%%(!$1))');
+    % Replace
+    % * `%(!10){@-2}` with `(%(!10)-2*d%(!10))`;
+    % * `#(!10){@+2}` with `(#(!10)*d#(!10)^2)`;
+    % * `#(!10){@-2}` with `(#(!10)/d#(!10)^2)`;
+    This.EqtnS = regexprep(This.EqtnS, ...
+        '%\(!(\d+)\)\{@([\+\-]\d+)\}', ...
+        '(%(!$1)$2*d%(!$1))');
+    This.EqtnS = regexprep(This.EqtnS, ...
+        '#\(!(\d+)\)\{@\+?(\d+)\}', ...
+        '(#(!$1)*d#(!$1)^$2)');
+    This.EqtnS = regexprep(This.EqtnS, ...
+        '#\(!(\d+)\)\{@\-(\d+)\}', ...
+        '(#(!$1)/d#(!$1)^$2)');
     
     % Replace ?(!10) with g(10).
-    This.eqtnS = strrep(This.eqtnS,'?(!','g(');
+    This.EqtnS = strrep(This.EqtnS,'?(!','g(');
     
 else
-    This.eqtnS(:) = {''};
+    This.EqtnS(:) = {''};
 end
 
 % Full equations
@@ -286,9 +298,9 @@ This.eqtnF = strrep(This.eqtnF,'}',')');
 doChkUndeclared();
 
 % Replace control codes in steady-state equations.
-This.eqtnS = strrep(This.eqtnS,'%%','dx');
-This.eqtnS = strrep(This.eqtnS,'%','x');
-This.eqtnS = strrep(This.eqtnS,'!','');
+This.EqtnS = strrep(This.EqtnS,'%','x');
+This.EqtnS = strrep(This.EqtnS,'#','x');
+This.EqtnS = strrep(This.EqtnS,'!','');
 
 % Replace control codes in full equations.
 % * Exogenous variables `?(!15,:)` -> `g(!15,:)`.
@@ -359,7 +371,7 @@ if isLoss
         % Add sstate equations. Note that we must at least replace the old equation
         % in `lossPos` position (which was the objective function) with the new
         % equation (which is a derivative wrt to the first variables).
-        This.eqtnS(lossPos:last) = newEqtnS(lossPos:last);
+        This.EqtnS(lossPos:last) = newEqtnS(lossPos:last);
         % Update the nonlinear equation flags.
         This.nonlin(lossPos:last) = NewNonlin(lossPos:last);
     end
@@ -402,7 +414,7 @@ This.nametype = floor(This.nametype);
     function doChkTimeSsref()
         % Check for { in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
-            | ~cellfun(@isempty,strfind(This.eqtnS,'{'));
+            | ~cellfun(@isempty,strfind(This.EqtnS,'{'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid time subscript ', ...
@@ -411,7 +423,7 @@ This.nametype = floor(This.nametype);
         end
         % Check for & and $ in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'&')) ...
-            | ~cellfun(@isempty,strfind(This.eqtnS,'&'));
+            | ~cellfun(@isempty,strfind(This.EqtnS,'&'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid steady-state reference ', ...
@@ -542,7 +554,7 @@ This.nametype = floor(This.nametype);
             end
             return
         end
-        inx = inx | func(This.eqtnS);
+        inx = inx | func(This.EqtnS);
         % Not allowed in deterministic trends.
         temp = inx & This.eqtntype == 3;
         if any(temp)
@@ -604,7 +616,7 @@ This.nametype = floor(This.nametype);
         % we need to create only `nAddEqtn-1` placeholders.
         This.eqtn(end+(1:nAddEqtn)) = {''};
         This.eqtnF(end+(1:nAddEqtn)) = {''};
-        This.eqtnS(end+(1:nAddEqtn)) = {''};
+        This.EqtnS(end+(1:nAddEqtn)) = {''};
         This.eqtnlabel(end+(1:nAddEqtn)) = {''};
         This.eqtnalias(end+(1:nAddEqtn)) = {''};
         This.nonlin(end+(1:nAddEqtn)) = false;
@@ -776,7 +788,7 @@ end
 
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
-This.eqtnS(end+(1:n)) = {''};
+This.EqtnS(end+(1:n)) = {''};
 This.eqtnlabel(end+(1:n)) = eqtnlabel;
 This.eqtnalias(end+(1:n)) = eqtnalias;
 This.eqtntype(end+(1:n)) = 3;
@@ -817,7 +829,7 @@ end
 Invalid = S.eqtn(~valid);
 This.eqtn(end+(1:nEqtn)) = S.eqtn;
 This.eqtnF(end+(1:nEqtn)) = S.eqtnrhs;
-This.eqtnS(end+(1:nEqtn)) = {''};
+This.EqtnS(end+(1:nEqtn)) = {''};
 This.eqtnlabel(end+(1:nEqtn)) = S.eqtnlabel;
 This.eqtnalias(end+(1:nEqtn)) = S.eqtnalias;
 This.eqtntype(end+(1:nEqtn)) = 4;

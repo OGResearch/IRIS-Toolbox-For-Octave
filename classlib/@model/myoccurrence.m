@@ -28,14 +28,14 @@ if ~This.linear
     
     % Look for x(10).
     nameCurr(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'\<x\((\d+)\)','tokens');
+        regexp(This.EqtnS(EqtnList),'\<x\((\d+)\)','tokens');
     
     % Loog for g(10).
     nameExog(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'\<g\((\d+)\)','tokens');
+        regexp(This.EqtnS(EqtnList),'\<g\((\d+)\)','tokens');
     
     for iEq = EqtnList
-        if isempty(This.eqtnS{iEq}) ...
+        if isempty(This.EqtnS{iEq}) ...
                 || (isempty(nameCurr{iEq}) && isempty(nameExog{iEq}))
             continue
         end

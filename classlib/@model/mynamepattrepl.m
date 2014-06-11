@@ -32,10 +32,11 @@ for i = inx
     end
 end
 
-% % ... variables, shocks, parameters
-% @ ... time subscript
-% ? ... exogenous variables
-% ! ... name position
+% `%` ... variables, shocks, parameters
+% `#` ... log variables in sstate equations.
+% `@` ... time subscript
+% `?` ... exogenous variables
+% `!` ... name position
 
 % Replacements in full equations.
 for i = inx
@@ -60,15 +61,16 @@ if ~This.linear
         ic = sprintf('%g',i);
         switch flNameType(i)
             case {1,2} % Measurement and transition variables.
-                % (%(@15)) or exp(%(@15)).
-                repl = ['(%(!',ic,'))'];
+                % %(!15) or #(!15) for log variables
                 if This.log(i)
-                    repl = ['exp',repl]; %#ok<AGROW>
+                    repl = ['#(!',ic,')'];
+                else
+                    repl = ['%(!',ic,')'];
                 end
             case 3 % Shocks.
                 repl = '0';
             case 4 % Parameters.
-                % %(@15).
+                % %(!15).
                 repl = ['%(!',ic,')'];
             case 5 % Exogenous variables.
                 ic = sprintf('%g',i-offsetG);

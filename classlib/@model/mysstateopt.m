@@ -112,6 +112,7 @@ doFixOpt();
 % Swap nametype of exogenised variables and endogenised parameters.
 isSwap = ~isempty(Opt.endogenise) || ~isempty(Opt.exogenise);
 if isSwap
+    nameType = This.nametype;
     This = mysstateswap(This,Opt);
 end
 
@@ -154,6 +155,7 @@ end
 
 nBlk = length(nameBlkL);
 blkFunc = cell(1,nBlk);
+ixAssign = false(1,nBlk);
 % Remove variables fixed by the user.
 % Prepare function handles to evaluate individual equation blocks.
 for ii = 1 : nBlk
@@ -166,13 +168,27 @@ for ii = 1 : nBlk
     if isempty(nameBlkL{ii}) && isempty(nameBlkG{ii})
         continue
     end
+    nameLPos = nameBlkL{ii};
+    nameGPos = nameBlkG{ii};
+    eqtnPos = eqtnBlk{ii};
+    eqtn = This.EqtnS(eqtnPos);
+    
+    % Check if this is a plain, single-equation assignment. If it is an
+    % assignment, remove the LHS from `eqtn{1}`, and create a function
+    % handle the same way as in other blocks.
+    doTestAssign();
+    
     % Create an anonymous function handle for each block.
-    eqtn = This.eqtnS(eqtnBlk{ii});
     % Replace log(exp(x(...))) with x(...). This helps a lot.
     eqtn = regexprep(eqtn,'log\(exp\(x\((\d+)\)\)\)','x($1)');
+    
     % Create a function handle used to evaluate each block of
-    % equations.
+    % equations or assignments.
     blkFunc{ii} = str2func(['@(x,dx) [',eqtn{:},']']);
+end
+
+if isSwap
+    This.nametype = nameType;
 end
 
 % Index of level and growth variables endogenous in sstate calculation.
@@ -184,20 +200,24 @@ endogGInx([nameBlkG{:}]) = true;
 % Index of level variables that will be always set to zero.
 zeroLInx = false(size(This.name));
 zeroLInx(This.nametype == 3) = true;
-zeroGInx = false(size(This.name));
-zeroGInx(This.nametype == 3) = true;
+if Opt.growth
+    zeroGInx = false(size(This.name));
+    zeroGInx(This.nametype >= 3) = true;
+else
+    zeroGInx = true(size(This.name));
+end
 
 Opt.fixL = fixL;
 Opt.fixG = fixG;
 Opt.nameBlkL = nameBlkL;
 Opt.nameBlkG = nameBlkG;
 Opt.eqtnBlk = eqtnBlk;
+Opt.ixAssign = ixAssign;
 Opt.blkFunc = blkFunc;
 Opt.endogLInx = endogLInx;
 Opt.endogGInx = endogGInx;
 Opt.zeroLInx = zeroLInx;
 Opt.zeroGInx = zeroGInx;
-
 
     function doFixOpt()
         % Process the fix, fixallbut, fixlevel, fixlevelallbut, fixgrowth,
@@ -234,7 +254,7 @@ Opt.zeroGInx = zeroGInx;
                         | This.nametype(fixpos) == 4;
                 end
                 if any(~validate)
-                    utils.error('model', ...
+                    utils.error('model:mysstateopt', ...
                         'Cannot fix this name: ''%s''.', ...
                         Opt.(fix){~validate});
                 end
@@ -243,21 +263,50 @@ Opt.zeroGInx = zeroGInx;
                 Opt.(fix) = [];
             end
         end
-        
-        % Add the positions of optimal policy multipliers to the list of fixed
-        % variables. The level and growth of multipliers will be set to zero in the
-        % main loop.
-        if Opt.zeromultipliers
-            Opt.fix = union(Opt.fix,find(This.multiplier));
-        end
-        
-        fixL = union(Opt.fix,Opt.fixlevel);
+                
+        fixL = false(1,length(This.name));
+        fixL(Opt.fix) = true;
+        fixL(Opt.fixlevel) = true;
+        fixG = false(1,length(This.name));
+        fixG(This.nametype >= 3) = true;
         if Opt.growth
-            fixG = union(Opt.fix,Opt.fixgrowth);
+            fixG(Opt.fix) = true;
+            fixG(Opt.fixgrowth) = true;
         else
-            fixG = find(canBeFixed);
+            fixG(:) = true;
         end
+        % Fix optimal policy multipliers. The level and growth of
+        % multipliers will be set to zero in the main loop.
+        if Opt.zeromultipliers
+            fixL = fixL | This.multiplier;
+            fixG = fixG | This.multiplier;
+        end
+        fixL = find(fixL);
+        fixG = find(fixG);
     end % doFixOpt()
+
+
+    function doTestAssign()
+        % Test for plain assignment: One equation with one variable solved
+        % for on the LHS.
+        if length(eqtn) > 1 || length(nameLPos) > 1 || length(nameGPos) > 1
+            return
+        end
+        namePos = nameLPos;
+        if isempty(namePos)
+            namePos = nameGPos;
+        end
+        xn = sprintf('x(%g)',namePos);
+        lhs = sprintf('-(x(%g))',namePos);
+        nLhs = length(lhs);
+        % The variables that is this block solved for is the only thing on
+        % the LHS but does not occur on the RHS.
+        ixAssign(ii) = strncmp(eqtn{1},lhs,nLhs) ...
+            && isempty(strfind(eqtn{1}(nLhs+1:end),xn));
+        if ixAssign(ii)
+            eqtn{1}(1:nLhs) = '';
+        end
+    end % doTestAssing()
 
 
 end % xxBlocks()

@@ -144,7 +144,7 @@ classdef model < modelobj & estimateobj
         % Anonymous function handles to streamlined full dynamic equations.
         eqtnF = cell(1,0);
         % Anonymous function handles to streamlined steady-state equations.
-        eqtnS = cell(1,0);
+        EqtnS = cell(1,0);
         % A 1-by-nEqtn logical index of equations marked as non-linear.
         nonlin = false(1,0);
         % Block-recursive structure for variable names.
