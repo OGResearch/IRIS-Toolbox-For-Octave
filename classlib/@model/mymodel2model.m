@@ -82,7 +82,7 @@ This = mytransient(This);
 
 % Run Blazer.
 if Opt.blazer
-    [This.NameBlk,This.EqtnBlk] = blazer(This);
+    [This.NameBlk,This.EqtnBlk] = blazer(This,false);
 end
 
 

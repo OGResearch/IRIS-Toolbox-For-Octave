@@ -1,10 +1,10 @@
-function [XNameBlk,XEqtnBlk,NameBlk,EqtnBlk] = blazer(This)
+function [NameBlk,EqtnBlk] = blazer(This,varargin)
 % blazer  Reorder steady-state equations into block-recursive structure.
 %
 % Syntax
 % =======
 %
-%     [~,~,NameBlk,EqtnBlk] = blazer(M)
+%     [NameBlk,EqtnBlk] = blazer(M,...)
 %
 % Input arguments
 % ================
@@ -24,8 +24,6 @@ function [XNameBlk,XEqtnBlk,NameBlk,EqtnBlk] = blazer(This)
 % Description
 % ============
 % 
-% The first two argument are reserved for internal use.
-%
 % The reordering algorithm first identifies equations with a single
 % variable in each, and variables occurring in a single equation each, and
 % then uses a combination of column and row approximate minimum degree
@@ -43,10 +41,10 @@ function [XNameBlk,XEqtnBlk,NameBlk,EqtnBlk] = blazer(This)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+Human = isempty(varargin) || ~isequal(varargin{1},false);
+
 %--------------------------------------------------------------------------
 
-XNameBlk = cell(1,0);
-XEqtnBlk = cell(1,0);
 NameBlk = cell(1,0);
 EqtnBlk = cell(1,0);
 
@@ -92,21 +90,14 @@ for i = type
         eqtnBlkAdd{j} = eqtnThisType(eqtnBlkAdd{j});
     end
     
-    XNameBlk = [XNameBlk,nameBlkAdd]; %#ok<AGROW>
-    XEqtnBlk = [XEqtnBlk,eqtnBlkAdd]; %#ok<AGROW>
+    NameBlk = [NameBlk,nameBlkAdd]; %#ok<AGROW>
+    EqtnBlk = [EqtnBlk,eqtnBlkAdd]; %#ok<AGROW>
 end
 
-if nargout == 1
-    return
-end
-
-% Return human-readable variable names and equations.
-nBlk = length(XNameBlk);
-NameBlk = cell(1,nBlk);
-EqtnBlk = cell(1,nBlk);
-for i = 1 : nBlk
-    NameBlk{i} = This.name(XNameBlk{i});
-    EqtnBlk{i} = This.eqtn(XEqtnBlk{i});
+if Human
+    % Return human-readable variable names and equations.
+    NameBlk = blazer.human(This.name,NameBlk);
+    EqtnBlk = blazer.human(This.eqtn,EqtnBlk);
 end
 
 end

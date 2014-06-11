@@ -52,13 +52,13 @@ if ~isempty(options.endogenise) || ~isempty(options.exogenise)
     % transition variables.
     % this = subsstate(this);
     This = mysstateswap(This,options.endogenise,options.exogenise);
-    [nameBlk,eqtnBlk] = blazer(This);
+    [nameBlk,eqtnBlk] = blazer(This,false);
 else
     if ~isempty(This.NameBlk) && ~isempty(This.EqtnBlk)
         nameBlk = This.NameBlk;
         eqtnBlk = This.EqtnBlk;
     else
-        [nameBlk,eqtnBlk] = blazer(This);
+        [nameBlk,eqtnBlk] = blazer(This,false);
     end
 end
 

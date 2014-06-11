@@ -119,9 +119,10 @@ end
 % exogenise/endogenise.
 if Opt.blocks
     if isempty(This.NameBlk) || isempty(This.EqtnBlk) || isSwap
-        % Need to rerun blazer.
-        [nameBlkL,eqtnBlk] = blazer(This);
-        nameBlkG = nameBlkL;
+        % Need to run or re-run Blazer.
+        [nameBlk,eqtnBlk] = blazer(This,false);
+        nameBlkL = nameBlk;
+        nameBlkG = nameBlk;
         % Update blocks in the current model object only if no swap is
         % requested.
         if ~isSwap
