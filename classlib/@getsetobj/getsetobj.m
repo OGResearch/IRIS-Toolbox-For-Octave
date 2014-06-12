@@ -24,6 +24,7 @@ classdef getsetobj
     end
     
     methods (Static,Hidden)
+        varargout = proplist(varargin)
         function Query = myalias(Query)
         end
     end

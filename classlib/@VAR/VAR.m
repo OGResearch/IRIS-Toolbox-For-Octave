@@ -169,7 +169,6 @@ classdef VAR < varobj
         varargout = myprealloc(varargin)
         varargout = myrngcmp(varargin);
         varargout = mystackdata(varargin)
-        varargout = mystruct2obj(varargin)
         varargout = mysubsalt(varargin)
         varargout = myxnames(varargin)
         varargout = size(varargin)
