@@ -16,7 +16,8 @@ Ver = datestr(now(),'yyyymmdd');
 
 name = fullfile(Archive,[name,'_',Ver,'.zip']);
 
-list = zip(name,'*.*');
+list = zip(name, ...
+    {'*.model','*.m','*.mat','*.csv','*.xls','*.pdf','*.q','*.tex'});
 disp(char(list));
 disp(' ');
 disp(name);

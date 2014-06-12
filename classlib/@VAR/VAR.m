@@ -257,12 +257,10 @@ classdef VAR < varobj
             
             if nargin == 0
                 return
-            elseif nargin == 1 ...
-                    && isa(varargin{1},'VAR')
+            elseif nargin == 1 && is.VAR(varargin{1})
                 This = varargin{1};
                 return
-            elseif nargin == 1 ...
-                    && isstruct(varargin{1})
+            elseif nargin == 1 && isstruct(varargin{1})
                 This = mystruct2obj(This,varargin{1});
                 return
             elseif nargin >= 3
