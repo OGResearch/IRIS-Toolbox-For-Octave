@@ -475,21 +475,21 @@ end
                 'posterior simulation object.']);
         end
         
-        Pos.paramList = pri.plist;
-        Pos.minusLogPostFunc = @objfunc;
-        Pos.minusLogPostFuncArgs = {This,Data,pri,estOpt,likOpt};
-        Pos.initLogPost = -objStar;
-        Pos.initParam = pStar;
+        Pos.ParamList = pri.plist;
+        Pos.MinusLogPostFunc = @objfunc;
+        Pos.MinusLogPostFuncArgs = {This,Data,pri,estOpt,likOpt};
+        Pos.InitLogPost = -objStar;
+        Pos.InitParam = pStar;
         try
-            Pos.initProposalCov = PCov;
+            Pos.InitProposalCov = PCov;
         catch Error
             utils.warning('model', ...
                 ['Posterior simulator object cannot be initialised.', ...
                 '\nThe following error occurs:\n\n%s'], ...
                 Error.message);
         end
-        Pos.lowerBounds = pri.pl;
-        Pos.upperBounds = pri.pu;
+        Pos.LowerBounds = pri.pl;
+        Pos.UpperBounds = pri.pu;
     end % doPopulatePosterObj()
 
 

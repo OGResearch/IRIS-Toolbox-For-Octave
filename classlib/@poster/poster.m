@@ -1,4 +1,4 @@
-classdef poster
+classdef poster < getsetobj
 % poster  Posterior Simulator Objects and Functions.
 %
 % Posterior objects, `poster`, are used to evaluate the behaviour of the
@@ -41,17 +41,39 @@ classdef poster
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
     properties
-        paramList = {};
-        minusLogPostFunc = [];
-        minusLogPostFuncArgs = {};
-        minusLogLikFunc = [];
-        minusLogLikFuncArgs = {};
-        logPriorFunc = {};
-        initLogPost = NaN;
-        initParam = [];
-        initProposalCov = [];
-        lowerBounds = [];
-        upperBounds = [];
+        % Names of parameters.
+        ParamList = {};
+        
+        % Objective function.
+        MinusLogPostFunc = [];
+        MinusLogPostFuncArgs = {};
+        MinusLogLikFunc = [];
+        MinusLogLikFuncArgs = {};
+        LogPriorFunc = {};
+        
+        % Log posterior density at initial vector.
+        InitLogPost = NaN;
+        
+        % Initial vector of parameters.
+        InitParam = [];
+        
+        % Initial proposal cov matrix; will be multiplied by squared
+        % `.InitScale`.
+        InitProposalCov = [];
+        
+        % Cholesky factor of initial proposal cov matrix; if empty,
+        % chol(...) is performed on `.InitProposalCov`.
+        InitProposalChol = [];
+        
+        % Initial sqrt of factor by which cov matrix will be multiplied.
+        InitScale = 1/3;
+        
+        % Initial counts of draws, acceptances, and burn-ins.
+        InitCount = [0,0,0]; 
+        
+        % Lower and upper bounds on individual parameters.
+        LowerBounds = [];
+        UpperBounds = [];
     end
     
     methods
@@ -78,8 +100,10 @@ classdef poster
                         
             if isempty(varargin)
                 return
-            elseif length(varargin) == 1 && isa(varargin{1},'poster')
+            elseif length(varargin) == 1 && is.poster(varargin{1})
                 This = varargin{1};
+            elseif length(varargin) == 1 && isstruct(varargin{1})
+                This = mystruct2obj(This,varargin{1});
             end
         end
         
@@ -87,92 +111,92 @@ classdef poster
         varargout = eval(varargin)
         varargout = stats(varargin)
         
-        function This = set.paramList(This,List)
+        function This = set.ParamList(This,List)
             if ischar(List) || iscellstr(List)
                 if ischar(List)
                     List = regexp(List,'\w+','match');
                 end
-                This.paramList = List(:).';
-                if length(This.paramList) ~= length(unique(This.paramList))
-                    utils.error('poster', ...
+                This.ParamList = List(:).';
+                if length(This.ParamList) ~= length(unique(This.ParamList))
+                    utils.error('poster:set:ParamList', ...
                         'Parameter names must be unique.');
                 end
-                n = length(This.paramList);
-                This.logPriorFunc = cell([1,n]); %#ok<MCSUP>
-                This.lowerBounds = -inf([1,n]); %#ok<MCSUP>
-                This.upperBounds = inf([1,n]); %#ok<MCSUP>
+                n = length(This.ParamList);
+                This.LogPriorFunc = cell(1,n); %#ok<MCSUP>
+                This.LowerBounds = -inf(1,n); %#ok<MCSUP>
+                This.UpperBounds = inf(1,n); %#ok<MCSUP>
             elseif is.numericscalar(List)
                 n = List;
-                This.paramList = cell([1,n]);
+                This.ParamList = cell(1,n);
                 for i = 1 : n
-                    This.paramList{i} = sprintf('p%g',i);
+                    This.ParamList{i} = sprintf('p%g',i);
                 end
             else
-                utils.error('poster', ...
+                utils.error('poster:set:ParamList', ...
                     'Invalid assignment to poster.paramList.');
             end
         end
         
-        function This = set.initParam(This,Init)
-            n = length(This.paramList); %#ok<MCSUP>
+        function This = set.InitParam(This,Init)
+            n = length(This.ParamList); %#ok<MCSUP>
             if isnumeric(Init)
                 Init = Init(:).';
                 if length(Init) == n
-                    This.initParam = Init;
+                    This.InitParam = Init;
                     chkbounds(This);
                 else
-                    utils.error('poster', ...
+                    utils.error('poster:set:InitParam', ...
                         ['Length of the initial parameter vector ', ...
                         'must match the number of parameters.']);
                 end
             else
-                utils.error('poster', ...
-                    'Invalid assignment to poster.initParam.');
+                utils.error('poster:set:InitParam', ...
+                    'Invalid assignment to poster.InitParam.');
             end
         end
         
-        function This = set.lowerBounds(This,X)
-            n = length(This.paramList); %#ok<MCSUP>
+        function This = set.LowerBounds(This,X)
+            n = length(This.ParamList); %#ok<MCSUP>
             if numel(X) == n
-                This.lowerBounds = -inf([1,n]);
-                This.lowerBounds(:) = X(:);
+                This.LowerBounds = -inf(1,n);
+                This.LowerBounds(:) = X(:);
                 chkbounds(This);
             else
-                utils.error('poster', ...
+                utils.error('poster:set:LowerBounds', ...
                     ['Length of lower bounds vector must match ', ...
                     'the number of parameters.']);
             end
         end
         
-        function This = set.upperBounds(This,X)
-            n = length(This.paramList); %#ok<MCSUP>
+        function This = set.UpperBounds(This,X)
+            n = length(This.ParamList); %#ok<MCSUP>
             if numel(X) == n
-                This.upperBounds = -inf([1,n]);
-                This.upperBounds(:) = X(:);
+                This.UpperBounds = -inf(1,n);
+                This.UpperBounds(:) = X(:);
                 chkbounds(This);
             else
-                utils.error('poster', ...
+                utils.error('poster:set:UpperBounds', ...
                     ['Length of upper bounds vector must match ', ...
                     'the number of parameters.']);
             end
         end
         
-        function This = set.initProposalCov(This,C)
+        function This = set.InitProposalCov(This,C)
             if ~isnumeric(C)
-                utils.error('poster', ...
-                    'Invalid assignment to poster.initProposalCov.');
+                utils.error('poster:set:InitProposalCov', ...
+                    'Invalid assignment to poster.InitProposalCov.');
             end
-            n = length(This.paramList); %#ok<MCSUP>
+            n = length(This.ParamList); %#ok<MCSUP>
             C = C(:,:);
             if any(size(C) ~= n)
-                utils.error('poster', ...
+                utils.error('poster:set:InitProposalCov', ...
                     ['Size of the initial proposal covariance matrix ', ...
                     'must match the number of parameters.']);
             end
             C = (C+C.')/2;
             CDiag = diag(C);
             if ~all(CDiag > 0)
-                utils.error('poster', ...
+                utils.error('poster:set:InitProposalCov', ...
                     ['Diagonal elements of the initial proposal ', ...
                     'cov matrix must be positive.']);
             end
@@ -193,15 +217,15 @@ classdef poster
                 end
             end
             if ~ok
-                utils.error('poster', ...
+                utils.error('poster:set:InitProposalCov', ...
                     ['Cannot make the initial proposal cov matrix ', ...
                     'positive definite.']);
             elseif adjusted
-                utils.warning('poster', ...
+                utils.warning('poster:set:InitProposalCov', ...
                     ['The initial proposal cov matrix ', ...
                     'adjusted to be numerically positive definite.']);
             end
-            This.initProposalCov = C;
+            This.InitProposalCov = C;
         end
         
     end
@@ -219,9 +243,9 @@ classdef poster
         function This = setbounds(This,LowerUpper,varargin)
             if length(varargin) == 1 && isnumeric(varargin{1})
                 if LowerUpper(1) == 'l'
-                    This.lowerBounds = varargin{1};
+                    This.LowerBounds = varargin{1};
                 else
-                    This.upperBounds = varargin{1};
+                    This.UpperBounds = varargin{1};
                 end
             elseif length(varargin) == 2 ...
                     && (ischar(varargin{1}) || iscellstr(varargin{1})) ...
@@ -233,32 +257,32 @@ classdef poster
                 userList = userList(:).';
                 pos = nan(size(userList));
                 for i = 1 : length(userList)
-                    temp = find(strcmp(This.paramList,userList{i}));
+                    temp = find(strcmp(This.ParamList,userList{i}));
                     if ~isempty(temp)
                         pos(i) = temp;
                     end
                 end
                 if any(isnan(pos))
-                    utils.error('poster', ...
+                    utils.error('poster:setbounds', ...
                         'This is not a valid parameter name: ''%s''.', ...
                         userList{isnan(pos)});
                 end
                 if LowerUpper(1) == 'l'
-                    This.lowerBounds(pos) = varargin{2}(:).';
+                    This.LowerBounds(pos) = varargin{2}(:).';
                 else
-                    This.upperBounds(pos) = varargin{2}(:).';
+                    This.UpperBounds(pos) = varargin{2}(:).';
                 end
             end
             chkbounds(This);
         end
         
         function This = setprior(This,Name,Func)
-            if ischar(Name) && isa(Func,'function_handle')
-                pos = strcmp(This.paramList,Name);
+            if ischar(Name) && is.func(Func)
+                pos = strcmp(This.ParamList,Name);
                 if any(pos)
-                    This.logPriorFunc{pos} = Func;
+                    This.LogPriorFunc{pos} = Func;
                 else
-                    utils.error('poster', ...
+                    utils.error('poster:setprior', ...
                         'This is not a valid parameter name: ''%s''.', ...
                         Name);
                 end
@@ -266,23 +290,23 @@ classdef poster
         end
         
         function chkbounds(This)
-            n = length(This.paramList);
-            if isempty(This.initParam)
+            n = length(This.ParamList);
+            if isempty(This.InitParam)
                 return
             end
-            if isempty(This.lowerBounds)
-                This.lowerBounds = -inf([1,n]);
+            if isempty(This.LowerBounds)
+                This.LowerBounds = -inf(1,n);
             end
-            if isempty(This.upperBounds)
-                This.upperBounds = inf([1,n]);
+            if isempty(This.UpperBounds)
+                This.UpperBounds = inf(1,n);
             end
-            inx = This.initParam < This.lowerBounds ...
-                | This.initParam > This.upperBounds;
+            inx = This.InitParam < This.LowerBounds ...
+                | This.InitParam > This.UpperBounds;
             if any(inx)
-                utils.error('poster', ...
+                utils.error('poster:chkbounds', ...
                     ['The initial value for this parameter is ', ...
                     'out of bounds: ''%s''.'], ...
-                    This.paramList{inx});
+                    This.ParamList{inx});
             end
         end
         
@@ -294,6 +318,7 @@ classdef poster
     end
     
     methods (Static,Hidden)
+        varargout = loadobj(varargin)
         varargout = myksdensity(varargin)
     end
     

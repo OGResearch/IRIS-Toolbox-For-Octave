@@ -96,8 +96,8 @@ EstH = [];
 BH = [];
 
 d = struct();
-pList = POS.paramList;
-pStar = POS.initParam;
+pList = POS.ParamList;
+pStar = POS.InitParam;
 np = numel(pList);
 nPct = numel(Pct);
 man = opt.neighbourhood;
@@ -135,8 +135,8 @@ for i = 1 : np
     [x{2}(:,1),x{2}(:,2)] = eval(POS,pp{:}); %#ok<EVLC>
     x{2} = -x{2};
     % `x{3}` is a vector of auxiliary information.
-    x{3} = [POS.initParam(i),-POS.initLogPost, ...
-        POS.lowerBounds(i),POS.upperBounds(i)];
+    x{3} = [POS.InitParam(i),-POS.InitLogPost, ...
+        POS.LowerBounds(i),POS.UpperBounds(i)];
     d.(pList{i}) = x;
     if opt.progress
         update(progress,i/np);

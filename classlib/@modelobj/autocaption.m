@@ -79,7 +79,7 @@ opt = passvalopt('modelobj.autocaption',varargin{:});
 %--------------------------------------------------------------------------
 
 if isa(X,'poster')
-    List = X.paramList;
+    List = X.ParamList;
 elseif isstruct(X)
     List = fieldnames(X);
 elseif iscellstr(X)

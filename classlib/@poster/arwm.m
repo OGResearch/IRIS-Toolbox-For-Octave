@@ -1,10 +1,11 @@
-function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
+function [Theta,LogPost,ArVec,This,SgmVec,FinalCov] = arwm(This,NDraw,varargin)
 % arwm  Adaptive random-walk Metropolis posterior simulator.
 %
 % Syntax
 % =======
 %
-%     [Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
+%     [Theta,LogPost,ArVec,PosUpd] = arwm(Pos,NDraw,...)
+%     [Theta,LogPost,ArVec,PosUpd,SgmVec,FinalCov] = arwm(Pos,NDraw,...)
 %
 % Input arguments
 % ================
@@ -21,9 +22,12 @@ function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
 % * `LogPost` [ numeric ] - Vector of log posterior density (up to a
 % constant) in each draw.
 %
-% * `AccRat` [ numeric ] - Vector of cumulative acceptance ratios.
+% * `ArVec` [ numeric ] - Vector of cumulative acceptance ratios.
 %
-% * `Scale` [ numeric ] - Vector of proposal scale factors in each draw.
+% * `PosUpd` [ poster ] - Posterior simulator object with its properties
+% updated so to capture the final state of the simulation.
+%
+% * `SgmVec` [ numeric ] - Vector of proposal scale factors in each draw.
 %
 % * `FinalCov` [ numeric ] - Final proposal covariance matrix; the final
 % covariance matrix of the random walk step is Scale(end)^2*FinalCov.
@@ -89,6 +93,11 @@ function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
 % percentiles, etc.) use the function [`poster/stats`](poster/stats) to
 % process the simulated chain and calculate the statistics.
 %
+% The properties of the posterior object returned as the 4th output
+% argument are updated so that they capture the final state of the
+% posterior simulations. This can be used to initialize a next simulation
+% at the point where the previous ended.
+%
 % Parallelised ARWM
 % ------------------
 %
@@ -110,10 +119,10 @@ function [Theta,LogPost,AccRat,Sgm,FinalCov] = arwm(This,NDraw,varargin)
 % References
 % ===========
 %
-% # Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation
+% * Brockwell, A.E., 2005. "Parallel Markov Chain Monte Carlo Simulation
 % by Pre-Fetching," CMU Statistics Dept. Tech. Report 802.
 %
-% # Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
+% * Strid, I., 2009. "Efficient parallelisation of Metropolis-Hastings
 % algorithms using a prefetching approach," SSE/EFI Working Paper Series in
 % Economics and Finance No. 706.
 %
@@ -137,12 +146,13 @@ opt = passvalopt('poster.arwm',varargin{:});
 
 Theta = [];
 LogPost = [];
-AccRat = [];
-Sgm = [];
+ArVec = [];
+SgmVec = [];
 FinalCov = []; %#ok<NASGU>
+realSmall = getrealsmall();
 
 % Number of estimated parameters.
-nPar = length(This.paramList);
+nPar = length(This.ParamList);
 
 % Adaptive random walk Metropolis simulator.
 nAlloc = min(NDraw,opt.saveevery);
@@ -151,7 +161,6 @@ if isSave
     doPrepSave();
 end
 
-sgm = opt.initscale;
 if opt.burnin < 1
     % Burn-in is a percentage.
     burnin = round(opt.burnin*NDraw);
@@ -160,16 +169,18 @@ else
     burnin = opt.burnin;
 end
 
-if opt.lastAdapt<1
-    % lastAdapt is a percentage.
-    opt.lastAdapt = round(opt.lastAdapt*NDraw) ;
+if opt.lastadapt<1
+    % lastadapt is a percentage.
+    opt.lastadapt = round(opt.lastadapt*NDraw) ;
 end
 
 nDrawTotal = NDraw + burnin;
+
+% Adaptation parameters.
 gamma = opt.gamma;
 k1 = opt.adaptscale;
 k2 = opt.adaptproposalcov;
-targetAR = opt.targetar;
+targetAr = opt.targetar;
 
 doChkParallel();
 
@@ -177,18 +188,24 @@ isAdaptiveScale = isfinite(gamma) && k1 > 0;
 isAdaptiveShape = isfinite(gamma) && k2 > 0;
 isAdaptive = isAdaptiveScale || isAdaptiveShape;
 
-theta = This.initParam(:);
-P = chol(This.initProposalCov).';
-logPost = mylogpost(This,theta);
+% Initialize proposal distribution.
+theta = [];
+logPost = [];
+sgm = [];
+P = [];
+j0 = 0;
+nAcc0 = 0;
+burnin0 = 0;
+doInit();
 
 % Pre-allocate output data.
 Theta = zeros(nPar,nAlloc);
 LogPost = zeros(1,nAlloc);
-AccRat = zeros(1,nAlloc);
+ArVec = zeros(1,nAlloc);
 if isAdaptiveScale
-    Sgm = zeros(1,nAlloc);
+    SgmVec = zeros(1,nAlloc);
 else
-    Sgm = sgm;
+    SgmVec = sgm;
 end
 
 if opt.progress
@@ -199,9 +216,6 @@ end
 
 % Main loop
 %-----------
-nAcc = 0;
-count = 0;
-SaveCount = 0;
 
 if opt.nstep>1
     % Minimize communication overhead:
@@ -210,8 +224,10 @@ if opt.nstep>1
 end
 
 j = 1;
+nAcc = 0;
+count = 0;
+SaveCount = 0;
 while j <= nDrawTotal
-    
     if j >= opt.firstPrefetch
         nStep = min(opt.nstep,1+nDrawTotal-j);
         nPath = 2^nStep;
@@ -273,9 +289,63 @@ end
 
 FinalCov = P*P.';
 
-% Nested functions.
+% Update the poster object.
+This.InitLogPost = logPost;
+This.InitParam = theta(:).';
+This.InitProposalCov = FinalCov;
+This.InitProposalChol = P;
+This.InitScale = sgm;
+This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
+
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
+    function doInit()
+        % Initial vector.
+        theta = This.InitParam(:);
+        
+        % Evaluate initial log posterior density.
+        logPost = mylogpost(This,theta);
+        if ~isempty(This.InitLogPost) && isfinite(This.InitLogPost) ...
+                && maxabs(logPost - This.InitLogPost) > realSmall
+            utils.warning('poster:arwm', ...
+                ['Log posterior density at .InitParam differs from ', ...
+                '.InitLogPost by a margin larger than rounding error.']);
+        end
+        
+        % Initial proposal cov matrix and its Cholesky factor.
+        if isequal(opt.initscale,@auto)
+            sgm = This.InitScale;
+        else
+            sgm = opt.initscale;
+        end
+        if ~isempty(This.InitProposalChol)
+            P = This.InitProposalChol;
+            if ~isempty(This.InitProposalCov) ...
+                    && maxabs(P*P.' - This.InitProposalCov) > realSmall
+                utils.warning('poster:arwm', ...
+                    ['Initial proposal cov matrix and its Cholesky factor ', ...
+                    'differ by a margin larger than rounding error.']);
+            end
+        else
+            P = chol(This.InitProposalCov).';
+        end
+
+        % Initialize counters in incremental runs.
+        j0 = This.InitCount(1); % Cumulative count of previous draws in incremental runs.
+        nAcc0 = This.InitCount(2); % Cumulative count of previous acceptance in incremental runs.
+        burnin0 = This.InitCount(3); % Cumulative count of previous burn-ins.
+        
+    end % doInit()
+
+
+%**************************************************************************
+    
+    
     function IsAccepted = doAcceptStore()
         % doAcceptStore  Accept or reject the current proposal, and store this
         % step.
@@ -293,7 +363,7 @@ FinalCov = P*P.';
             theta = newTheta;
         end
         
-        isAdaptive = isAdaptive && j - burnin <= opt.lastAdapt;
+        isAdaptive = isAdaptive && j - burnin <= opt.lastadapt;
         
         % Adapt the scale and/or proposal covariance.
         if isAdaptive
@@ -309,10 +379,10 @@ FinalCov = P*P.';
             % Value of log posterior at the current draw.
             LogPost(count) = logPost;
             % Acceptance ratio so far.
-            AccRat(count) = nAcc / (j-burnin);
+            ArVec(count) = (nAcc0+nAcc) / (j-burnin+j0-burnin0);
             % Adaptive scale factor.
             if isAdaptiveScale
-                Sgm(count) = sgm;
+                SgmVec(count) = sgm;
             end
             % Save and reset.
             if count == opt.saveevery || (isSave && j == nDrawTotal)
@@ -328,6 +398,7 @@ FinalCov = P*P.';
             update(eta,j/nDrawTotal);
         end
         
+        
         function doSave()
             h5write(opt.saveas, ...
                 '/theta',Theta,[1,SaveCount+1],size(Theta));
@@ -338,21 +409,22 @@ FinalCov = P*P.';
             if n == 0
                 Theta = [];
                 LogPost = [];
-                AccRat = [];
-                Sgm = [];
+                ArVec = [];
+                SgmVec = [];
             elseif n < nAlloc
                 Theta = Theta(:,1:n);
                 LogPost = LogPost(1:n);
-                AccRat = AccRat(1:n);
+                ArVec = ArVec(1:n);
                 if isAdaptiveScale
-                    Sgm = Sgm(:,1:n);
+                    SgmVec = SgmVec(:,1:n);
                 end
             end
         end % doSave().
         
+        
         function doAdapt()
-            nu = j^(-gamma);
-            phi = nu*(alpha - targetAR);
+            nu = (j+j0)^(-gamma);
+            phi = nu*(alpha - targetAr);
             if isAdaptiveScale
                 phi1 = k1*phi;
                 sgm = exp(log(sgm) + phi1);
@@ -361,13 +433,18 @@ FinalCov = P*P.';
                 phi2 = k2*phi;
                 unorm2 = u.'*u;
                 z = sqrt(phi2/unorm2)*u;
+                P0 = P;
                 P = cholupdate(P.',P*z).';
             end
-        end % doAdapt();
+        end % doAdapt()
         
-    end % doAcceptStore().
+        
+    end % doAcceptStore()
+
 
 %**************************************************************************
+
+    
     function doPrepSave()
         if isempty(opt.saveas)
             utils.error('poster', ...
@@ -377,12 +454,15 @@ FinalCov = P*P.';
         h5create(opt.saveas,'/theta',[nPar,NDraw],'fillValue',NaN);
         h5create(opt.saveas,'/logPost',[1,NDraw],'fillValue',NaN);
         h5writeatt(opt.saveas,'/', ...
-            'paramList',sprintf('%s ',This.paramList{:}));
+            'paramList',sprintf('%s ',This.ParamList{:}));
         h5writeatt(opt.saveas,'/','nDraw',NDraw);
         h5writeatt(opt.saveas,'/','saveEvery',opt.saveevery');
-    end % doPrepSave().
+    end % doPrepSave()
+
 
 %**************************************************************************
+
+    
     function [ThetaPf,LogPostPf,RandAccPf,uPf] = doPrefetch()
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %  The wisdom behing the indexing in the prefetching array
@@ -467,9 +547,12 @@ FinalCov = P*P.';
             end
         end
         
-    end % doPrefetch().
+    end % doPrefetch()
+
 
 %**************************************************************************
+
+    
     function doChkParallel()
         if opt.firstPrefetch < nDrawTotal && opt.nstep > 1
             isPCT = license('test','distrib_computing_toolbox');
@@ -490,6 +573,7 @@ FinalCov = P*P.';
                     'Prefetching without parallelism is pointless.');
             end
         end
-    end % doChkParallel().
+    end % doChkParallel()
+
 
 end

@@ -21,20 +21,20 @@ SP = 0;
 IsDiscarded = false;
 
 % Check lower/upper bounds first.
-lowerInx = isfinite(This.lowerBounds);
-upperInx = isfinite(This.upperBounds);
+lowerInx = isfinite(This.LowerBounds);
+upperInx = isfinite(This.UpperBounds);
 if any(lowerInx) || any(upperInx)
-    % `P` is a column vector; `This.lowerBounds` and `This.upperBounds` are row
+    % `P` is a column vector; `This.LowerBounds` and `This.UpperBounds` are row
     % vectors and need to be tranposed.
-    IsDiscarded = any(P(lowerInx) < This.lowerBounds(lowerInx).') ...
-        || any(P(upperInx) > This.upperBounds(upperInx).');
+    IsDiscarded = any(P(lowerInx) < This.LowerBounds(lowerInx).') ...
+        || any(P(upperInx) > This.UpperBounds(upperInx).');
 end
 
 if ~IsDiscarded
-    if isa(This.minusLogPostFunc,'function_handle')
+    if isa(This.MinusLogPostFunc,'function_handle')
         % Evaluate log posterior.
         [Obj,L,PP,SP] = ...
-            This.minusLogPostFunc(P,This.minusLogPostFuncArgs{:});
+            This.MinusLogPostFunc(P,This.MinusLogPostFuncArgs{:});
         % Discard draws that amount to an ill-defined value of the objective
         % function. Run the test *before* letting `Obj = -Obj` because the
         % assignment does not preserve complex numbers with zero imaginary part.
@@ -45,18 +45,18 @@ if ~IsDiscarded
         SP = -SP;
     else
         % Evaluate parameter priors.
-        priorInx = cellfun(@is.func,This.logPriorFunc);        
+        priorInx = cellfun(@is.func,This.LogPriorFunc);        
         for k = find(priorInx)
-            PP = PP + This.logPriorFunc{k}(P(k));
+            PP = PP + This.LogPriorFunc{k}(P(k));
             if isinf(PP)
                 Obj = Inf;
                 return
             end
         end
         Obj = Obj + PP;
-        if isa(This.minusLogLikFunc,'function_handle')
+        if isa(This.MinusLogLikFunc,'function_handle')
             % Evaluate minus log likelihood.
-            L = This.minusLogLikFunc(P,This.minusLogLikFuncArgs{:});
+            L = This.MinusLogLikFunc(P,This.MinusLogLikFuncArgs{:});
             L = -L;
             Obj = Obj + L;
         end
