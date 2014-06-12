@@ -185,6 +185,7 @@ classdef VAR < varobj
         % Methods sealed in extension classes svarobj or varxobj.
         varargout = mybmatrix(varargin)
         varargout = mycovmatrix(varargin)
+        varargout = mystruct2obj(varargin)
     end
     
     

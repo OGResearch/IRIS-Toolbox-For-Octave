@@ -177,6 +177,7 @@ classdef SVAR < VAR & svarobj
     
     methods (Access=protected,Hidden)
         varargout = mycompatible(varargin)
+        varargout = mystruct2obj(varargin)
         varargout = mysubsalt(varargin)
         specdisp(varaargin)
     end

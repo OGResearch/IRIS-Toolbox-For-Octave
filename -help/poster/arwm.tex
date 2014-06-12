@@ -5,7 +5,8 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
+[Theta,LogPost,ArVec,PosUpd] = arwm(Pos,NDraw,...)
+[Theta,LogPost,ArVec,PosUpd,SgmVec,FinalCov] = arwm(Pos,NDraw,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -28,10 +29,13 @@
   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
   to a constant) in each draw.
 \item
-  \texttt{AccRat} {[} numeric {]} - Vector of cumulative acceptance
+  \texttt{ArVec} {[} numeric {]} - Vector of cumulative acceptance
   ratios.
 \item
-  \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+  \texttt{PosUpd} {[} poster {]} - Posterior simulator object with its
+  properties updated so to capture the final state of the simulation.
+\item
+  \texttt{SgmVec} {[} numeric {]} - Vector of proposal scale factors in
   each draw.
 \item
   \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
@@ -113,6 +117,11 @@ mean, median, percentiles, etc.) use the function
 \href{poster/stats}{\texttt{poster/stats}} to process the simulated
 chain and calculate the statistics.
 
+The properties of the posterior object returned as the 4th output
+argument are updated so that they capture the final state of the
+posterior simulations. This can be used to initialize a next simulation
+at the point where the previous ended.
+
 \subparagraph{Parallelised ARWM}\label{parallelised-arwm}
 
 Set \texttt{'nStep='} greater than \texttt{1}, and
@@ -133,16 +142,15 @@ obviously, by re-setting the random number generator).
 
 \paragraph{References}\label{references}
 
-\paragraph{Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo
-Simulation by Pre-Fetching,'' CMU Statistics Dept. Tech. Report
-802.}\label{brockwell-a.e.-2005.-parallel-markov-chain-monte-carlo-simulation-by-pre-fetching-cmu-statistics-dept.-tech.-report-802.}
-
-\paragraph{Strid, I., 2009. ``Efficient parallelisation of
-Metropolis-Hastings algorithms using a prefetching approach,'' SSE/EFI
-Working Paper Series
-in}\label{strid-i.-2009.-efficient-parallelisation-of-metropolis-hastings-algorithms-using-a-prefetching-approach-sseefi-working-paper-series-in}
-
-Economics and Finance No. 706.
+\begin{itemize}
+\item
+  Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo Simulation
+  by Pre-Fetching,'' CMU Statistics Dept. Tech. Report 802.
+\item
+  Strid, I., 2009. ``Efficient parallelisation of Metropolis-Hastings
+  algorithms using a prefetching approach,'' SSE/EFI Working Paper
+  Series in Economics and Finance No. 706.
+\end{itemize}
 
 \paragraph{Example}\label{example}
 

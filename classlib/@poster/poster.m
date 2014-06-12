@@ -313,8 +313,9 @@ classdef poster < getsetobj
     end
     
     methods (Access=protected, Hidden)
-        varargout = mysimulate(varargin)
         varargout = mylogpost(varargin)
+        varargout = mysimulate(varargin)
+        varargout = mystruct2obj(varargin)
     end
     
     methods (Static,Hidden)
