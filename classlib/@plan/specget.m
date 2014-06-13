@@ -17,37 +17,37 @@ switch Query
         isOnly = strncmp(Query,'only',4);
         X = struct();
         templ = tseries();
-        for i = 1 : length(This.xList)
-            if isOnly && ~any(This.xAnchors(i,:))
+        for i = 1 : length(This.XList)
+            if isOnly && ~any(This.XAnch(i,:))
                 continue
             end
-            X.(This.xList{i}) = replace(templ,+This.xAnchors(i,:).', ...
-                This.startDate, ...
-                [This.xList{i},' Exogenised points']);
+            X.(This.XList{i}) = replace(templ,+This.XAnch(i,:).', ...
+                This.Start, ...
+                [This.XList{i},' Exogenised points']);
         end
     case {'endogenised','endogenized','onlyendogenised','onlyendogenized'}
         isOnly = strncmp(Query,'only',4);
         X = struct();
         templ = tseries();
-        for i = 1 : length(This.nList)
+        for i = 1 : length(This.NList)
             if isOnly ...
-                    && ~any(This.nAnchorsReal(i,:)) ...
-                    && ~any(This.nAnchorsImag(i,:))
+                    && ~any(This.NAnchReal(i,:)) ...
+                    && ~any(This.NAnchImag(i,:))
                 continue
             end
-            X.(This.nList{i}) = replace(templ, ...
-                +This.nAnchorsReal(i,:).' + 1i*(+This.nAnchorsImag(i,:).'), ...
-                This.startDate, ...
-                [This.nList{i},' Endogenised points']);
+            X.(This.NList{i}) = replace(templ, ...
+                +This.NAnchReal(i,:).' + 1i*(+This.NAnchImag(i,:).'), ...
+                This.Start, ...
+                [This.NList{i},' Endogenised points']);
         end
     case 'range'
-        X = This.startDate : This.endDate;
+        X = This.Start : This.End;
         
     case {'start','startdate'}
-        X = This.startDate;
+        X = This.Start;
         
     case {'end','enddate'}
-        X = This.endDate;
+        X = This.End;
         
     otherwise
         Flag = false;

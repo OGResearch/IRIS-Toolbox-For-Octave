@@ -8,15 +8,15 @@ function [YA,XA,EaReal,EaImag,YC,XC,QA,WReal,WImag] = myanchors(This,P,Range)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Check date frequencies.
-if datfreq(P.startDate) ~= datfreq(Range(1)) ...
-        || datfreq(P.endDate) ~= datfreq(Range(end))
+if datfreq(P.Start) ~= datfreq(Range(1)) ...
+        || datfreq(P.End) ~= datfreq(Range(end))
     utils.error('model', ...
         'Simulation range and plan range must be the same frequency.');
 end
 
 % Adjust plan range to simulation range if not equal.
-if ~datcmp(P.startDate,Range(1)) ...
-        || ~datcmp(P.endDate,Range(end))
+if ~datcmp(P.Start,Range(1)) ...
+        || ~datcmp(P.End,Range(end))
     P = P(Range);
 end
 
@@ -29,8 +29,8 @@ nEqtn = length(This.eqtn);
 
 % Anchors for exogenised measurement variables, and conditioning measurement
 % variables.
-YA = P.xAnchors(1:ny,:);
-YC = P.cAnchors(1:ny,:);
+YA = P.XAnch(1:ny,:);
+YC = P.CAnch(1:ny,:);
 
 % Anchors for exogenised transition variables, and conditioning transition
 % variables.
@@ -40,19 +40,19 @@ XA = false(nx,nPer);
 XC = false(nx,nPer);
 for j = find(This.nametype == 2)
     inx = realId == j & imagId == 0;
-    XA(inx,:) = P.xAnchors(j,:);
-    XC(inx,:) = P.cAnchors(j,:);
+    XA(inx,:) = P.XAnch(j,:);
+    XC(inx,:) = P.CAnch(j,:);
 end
 
 % Anchors for endogenised shocks.
-EaReal = P.nAnchorsReal;
-EaImag = P.nAnchorsImag;
+EaReal = P.NAnchReal;
+EaImag = P.NAnchImag;
 
 % Anchors for non-linear equations.
 QA = false(nEqtn,nPer);
-QA(This.nonlin,:) = P.qAnchors;
+QA(This.nonlin,:) = P.QAnch;
 
-WReal = P.nWeightsReal;
-WImag = P.nWeightsImag;
+WReal = P.NWghtReal;
+WImag = P.NWghtImag;
 
 end

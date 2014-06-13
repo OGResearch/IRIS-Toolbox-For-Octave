@@ -88,28 +88,28 @@ valid = true(1,nList);
 
 for i = 1 : nList
     % Try to endogenise a shock.
-    inx = strcmp(This.nList,List{i});
+    inx = strcmp(This.NList,List{i});
     if any(inx)
         if Weight == 0
             % Re-exogenise the shock again.
-            This.nAnchorsReal(inx,Dates) = false;
-            This.nAnchorsImag(inx,Dates) = false;
-            This.nWeightsReal(inx,Dates) = 0;
-            This.nWeightsImag(inx,Dates) = 0;            
+            This.NAnchReal(inx,Dates) = false;
+            This.NAnchImag(inx,Dates) = false;
+            This.NWghtReal(inx,Dates) = 0;
+            This.NWghtImag(inx,Dates) = 0;            
         elseif real(Weight) > 0
             % Real endogenised shocks.
-            This.nAnchorsReal(inx,Dates) = true;
-            This.nWeightsReal(inx,Dates) = Weight;
+            This.NAnchReal(inx,Dates) = true;
+            This.NWghtReal(inx,Dates) = Weight;
         elseif imag(Weight) > 0
             % Imaginary endogenised shocks.
-            This.nAnchorsImag(inx,Dates) = true;
-            This.nWeightsImag(inx,Dates) = Weight;
+            This.NAnchImag(inx,Dates) = true;
+            This.NWghtImag(inx,Dates) = Weight;
         end
     else
         % Try to re-endogenise an endogenous variable.
-        inx = strcmp(This.xList,List{i});
+        inx = strcmp(This.XList,List{i});
         if any(inx)
-            This.xAnchors(inx,Dates) = false;
+            This.XAnch(inx,Dates) = false;
         else
             % Neither worked.
             valid(i) = false;

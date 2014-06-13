@@ -63,9 +63,9 @@ nList = numel(List);
 valid = true(1,nList);
 
 for i = 1 : nList
-    index = strcmp(This.cList,List{i});
+    index = strcmp(This.CList,List{i});
     if any(index)
-        This.cAnchors(index,Dates) = true;
+        This.CAnch(index,Dates) = true;
     else
         valid(i) = false;
     end

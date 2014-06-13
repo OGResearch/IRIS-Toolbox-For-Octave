@@ -62,20 +62,20 @@ classdef plan < userdataobj & getsetobj
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        startDate = NaN;
-        endDate = NaN;
-        xList = {}; % List of names that can be exogenized.
-        nList = {}; % List of names that can be endogenized.
-        qList = {};
-        cList = {}; % List of names upon which it can be conditioned.
-        xAnchors = []; % Exogenised.
-        nAnchorsReal = []; % Endogenised real.
-        nAnchorsImag = []; % Endogenised imag.
-        nWeightsReal = []; % Weights for endogenised real.
-        nWeightsImag = []; % Weights for endogenised imag.
-        cAnchors = []; % Conditioned.
-        qAnchors = []; % Non-linearised.
-        AutoExogenise = [];
+        Start = NaN;
+        End = NaN;
+        XList = {}; % List of names that can be exogenized.
+        NList = {}; % List of names that can be endogenized.
+        QList = {};
+        CList = {}; % List of names upon which it can be conditioned.
+        XAnch = []; % Exogenised.
+        NAnchReal = []; % Endogenised real.
+        NAnchImag = []; % Endogenised imag.
+        NWghtReal = []; % Weights for endogenised real.
+        NWghtImag = []; % Weights for endogenised imag.
+        CAnch = []; % Conditioned.
+        QAnch = []; % Non-linearised.
+        AutoEx = [];
     end
     
     methods
@@ -136,35 +136,35 @@ classdef plan < userdataobj & getsetobj
                 pp.parse(varargin{1:2});
                 
                 % Range.
-                This.startDate = varargin{2}(1);
-                This.endDate = varargin{2}(end);
-                nPer = round(This.endDate - This.startDate + 1);
+                This.Start = varargin{2}(1);
+                This.End = varargin{2}(end);
+                nPer = round(This.End - This.Start + 1);
                 % Exogenising.
-                This.xList = myget(varargin{1},'canbeexogenised');
-                This.xAnchors = false(length(This.xList),nPer);
+                This.XList = myget(varargin{1},'canbeexogenised');
+                This.XAnch = false(length(This.XList),nPer);
                 % Endogenising.
-                This.nList = myget(varargin{1},'canbeendogenised');
-                This.nAnchorsReal = false(length(This.nList),nPer);
-                This.nAnchorsImag = false(length(This.nList),nPer);
-                This.nWeightsReal = zeros(length(This.nList),nPer);
-                This.nWeightsImag = zeros(length(This.nList),nPer);
+                This.NList = myget(varargin{1},'canbeendogenised');
+                This.NAnchReal = false(length(This.NList),nPer);
+                This.NAnchImag = false(length(This.NList),nPer);
+                This.NWghtReal = zeros(length(This.NList),nPer);
+                This.NWghtImag = zeros(length(This.NList),nPer);
                 % Non-linearising.
-                This.qList = myget(varargin{1},'canbenonlinearised');
-                This.qAnchors = false(length(This.qList),nPer);
+                This.QList = myget(varargin{1},'canbenonlinearised');
+                This.QAnch = false(length(This.QList),nPer);
                 % Conditioning.
-                This.cList = This.xList;
-                This.cAnchors = This.xAnchors;
+                This.CList = This.XList;
+                This.CAnch = This.XAnch;
                 % Autoexogenise.
-                This.AutoExogenise = nan(size(This.xList));
+                This.AutoEx = nan(size(This.XList));
                 try %#ok<TRYNC>
-                    a = autoexogenise(varargin{1});
-                    xList = fieldnames(a); %#ok<PROP>
-                    nList = struct2cell(a); %#ok<PROP>
-                    na = length(xList); %#ok<PROP>
+                    auto = autoexogenise(varargin{1});
+                    XList = fieldnames(auto); %#ok<PROP>
+                    NList = struct2cell(auto); %#ok<PROP>
+                    na = length(XList); %#ok<PROP>
                     for ia = 1 : na
-                        xInx = strcmp(This.xList,xList{ia}); %#ok<PROP>
-                        nInx = strcmp(This.nList,nList{ia}); %#ok<PROP>
-                        This.AutoExogenise(xInx) = find(nInx);
+                        xInx = strcmp(This.XList,XList{ia}); %#ok<PROP>
+                        nInx = strcmp(This.NList,NList{ia}); %#ok<PROP>
+                        This.AutoEx(xInx) = find(nInx);
                     end
                 end
             end

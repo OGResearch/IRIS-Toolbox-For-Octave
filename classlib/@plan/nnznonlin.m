@@ -28,6 +28,6 @@ function N = nnznonlin(This)
 
 %--------------------------------------------------------------------------
 
-N = nnz(This.qAnchors);
+N = nnz(This.QAnch);
 
 end

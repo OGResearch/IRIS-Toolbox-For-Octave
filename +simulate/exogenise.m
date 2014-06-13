@@ -1,6 +1,5 @@
-function S = exogenise(S)
-% exogenise  [Not a public function] Compute add-factors to endogenised
-% shocks.
+function [AddEa,AddEu] = exogenise(S)
+% exogenise  [Not a public function] Compute add-factors to endogenised shocks.
 %
 % Backed IRIS function.
 % No help provided.
@@ -22,10 +21,10 @@ x(nf+1:end,:) = S.U*x(nf+1:end,:);
 % Compute prediction errors.
 % pe : = [ype(1);xpe(1);ype(2);xpe(2);...].
 pe = [];
-for t = 1 : S.lastexog
+for t = 1 : S.LastExg
     pe = [pe; ...
-        S.ytune(S.yAnchors(:,t),t)-S.y(S.yAnchors(:,t),t); ...
-        S.xtune(S.xAnchors(:,t),t)-x(S.xAnchors(:,t),t); ...
+        S.YTune(S.YAnch(:,t),t)-S.y(S.YAnch(:,t),t); ...
+        S.XTune(S.XAnch(:,t),t)-x(S.XAnch(:,t),t); ...
         ]; %#ok<AGROW>
 end
 
@@ -41,8 +40,8 @@ else
     % Underdetermined system (larger number of shocks)
     %--------------------------------------------------
     d = [ ...
-        S.weightsA(S.eaanchors); ...
-        S.weightsU(S.euanchors) ...
+        S.WghtA(S.EaAnch); ...
+        S.WghtU(S.EuAnch) ...
         ].^2;
     nd = length(d);
     P = spdiags(d,0,nd,nd);
@@ -50,14 +49,15 @@ else
     
 end
 
-nnzea = nnz(S.eaanchors(:,1:S.lastendoga));
-eInxA = S.eaanchors(:,1:S.lastendoga);
+nnzea = nnz(S.EaAnch(:,1:S.LastEndgA));
+eInxA = S.EaAnch(:,1:S.LastEndgA);
 eInxA = eInxA(:);
-eInxU = S.euanchors(:,1:S.lastendogu);
+eInxU = S.EuAnch(:,1:S.LastEndgU);
 eInxU = eInxU(:);
-S.addea = zeros(ne,S.lastendoga);
-S.addeu = zeros(ne,S.lastendogu);
-S.addea(eInxA) = upd(1:nnzea);
-S.addeu(eInxU) = upd(nnzea+1:end);
+
+AddEa = zeros(ne,S.LastEndgA);
+AddEu = zeros(ne,S.LastEndgU);
+AddEa(eInxA) = upd(1:nnzea);
+AddEu(eInxU) = upd(nnzea+1:end);
 
 end

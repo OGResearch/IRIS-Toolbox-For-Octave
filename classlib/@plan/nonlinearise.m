@@ -42,7 +42,7 @@ function This = nonlinearise(This,varargin)
 
 if isempty(varargin)
     list = Inf;
-    dat = This.startDate : This.endDate;
+    dat = This.Start : This.End;
 else
     % List of equations or Inf for all.
     if isequal(varargin{1},Inf) || ischar(varargin{1}) || iscellstr(varargin{1})
@@ -60,20 +60,20 @@ pp = inputParser();
 pp.addRequired('P',@(x) isa(x,'plan'));
 pp.addRequired('LIST',@(x) isequal(x,Inf) || ischar(x) || iscellstr(x));
 pp.addRequired('DAT', ...
-    @(x) isnumeric(x) && all(datfreq(x) == datfreq(This.startDate)));
+    @(x) isnumeric(x) && all(datfreq(x) == datfreq(This.Start)));
 pp.parse(This,list,dat);
 
 %--------------------------------------------------------------------------
 
-nper = round(This.endDate - This.startDate + 1);
-datindex = round(dat - This.startDate + 1);
+nper = round(This.End - This.Start + 1);
+datindex = round(dat - This.Start + 1);
 if any(datindex < 1 | datindex > nper)
     utils.error('plan', ...
         'Some of the non-linearised dates are out of plan range.');
 end
 
 if isequal(list,Inf)
-    This.qAnchors(:,datindex) = true;
+    This.QAnch(:,datindex) = true;
     return
 end
 
@@ -87,12 +87,12 @@ for i = 1 : nlist
     usrlabel = list{i};
     nusrlabel = length(usrlabel);
     if nusrlabel > 3 && strcmp(usrlabel(end-2:end),'...')
-        eqtnindex = strncmp(This.qList,usrlabel,nusrlabel-3);
+        eqtnindex = strncmp(This.QList,usrlabel,nusrlabel-3);
     else
-        eqtnindex = strcmp(This.qList,usrlabel);
+        eqtnindex = strcmp(This.QList,usrlabel);
     end
     if any(eqtnindex)
-        This.qAnchors(eqtnindex,datindex) = true;
+        This.QAnch(eqtnindex,datindex) = true;
     else
         found(i) = false;
     end

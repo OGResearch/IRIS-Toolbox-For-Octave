@@ -28,29 +28,29 @@ eu = S.unantFunc(S.e);
 lastEA = utils.findlast(ea);
 S.e = [];
 
-nPerMax = max([nPer,S.segment(end)+S.npernonlin-1]);
+nPerMax = max([nPer,S.segment(end)+S.NPerNonlin-1]);
 
 % Store all anchors outside S and remove them from S; they will be supplied
 % in S for a segment specific range in each step.
-yAnchors = S.yAnchors;
-xAnchors = S.xAnchors;
-eAAnchors = S.eaanchors;
-eUAnchors = S.euanchors;
-weightsA = S.weightsA;
-weightsU = S.weightsU;
-yTune = S.ytune;
-xTune = S.xtune;
-isAAnchors = any(eAAnchors(:) ~= 0);
-isUAnchors = any(eUAnchors(:) ~= 0);
+yAnch = S.YAnch;
+xAnch = S.XAnch;
+eAAnch = S.EaAnch;
+eUAnch = S.EuAnch;
+weightsA = S.WghtA;
+weightsU = S.WghtU;
+yTune = S.YTune;
+xTune = S.XTune;
+isAAnch = any(eAAnch(:) ~= 0);
+isUAnch = any(eUAnch(:) ~= 0);
 
-S.yAnchors = [];
-S.xAnchors = [];
-S.eaanchors = [];
-S.euanchors = [];
-S.weightsA = [];
-S.weightsU = [];
-S.ytune = [];
-S.xtune = [];
+S.YAnch = [];
+S.XAnch = [];
+S.EaAnch = [];
+S.EuAnch = [];
+S.WghtA = [];
+S.WghtU = [];
+S.YTune = [];
+S.XTune = [];
 
 % If the last simulated period in the last segment goes beyond nper, we
 % expand the below arrays accordingly, so that it is easier to set up their
@@ -58,11 +58,11 @@ S.xtune = [];
 if nPer < nPerMax
     ea(:,end+1:nPerMax) = 0;
     eu(:,end+1:nPerMax) = 0;
-    if isAAnchors || isUAnchors
-        yAnchors(:,end+1:nPerMax) = false;
-        xAnchors(:,end+1:nPerMax) = false;
-        eAAnchors(:,end+1:nPerMax) = false;
-        eUAnchors(:,end+1:nPerMax) = false;
+    if isAAnch || isUAnch
+        yAnch(:,end+1:nPerMax) = false;
+        xAnch(:,end+1:nPerMax) = false;
+        eAAnch(:,end+1:nPerMax) = false;
+        eUAnch(:,end+1:nPerMax) = false;
         weightsA(:,end+1:nPerMax) = 0;
         weightsU(:,end+1:nPerMax) = 0;
         yTune(:,end+1:nPerMax) = NaN;
@@ -93,14 +93,14 @@ for iSegment = 1 : nSegment
         lastRep = nPer;
     end
     % Last period simulated in a non-linear mode.
-    lastNonlin = first + S.npernonlin - 1;
+    lastNonlin = first + S.NPerNonlin - 1;
     % Last period simulated.
     lastSim = max([lastRep,lastNonlin,lastEA]);
     % Number of periods reported in the final output data.
     nPerRep = lastRep - first + 1;
     % Number of periods simulated.
     nPerSim = lastSim - first + 1;
-    nPerChopOff = min(nPerRep,S.npernonlin);
+    nPerChopOff = min(nPerRep,S.NPerNonlin);
     
     % Prepare shocks: Combine anticipated shocks on the whole segment with
     % unanticipated shocks in the initial period.
@@ -111,40 +111,40 @@ for iSegment = 1 : nSegment
     % Prepare anchors: Anticipated and unanticipated endogenised shocks cannot
     % be combined in non-linear simulations. If there is no anchors, we can
     % leave the fields empty.
-    if isAAnchors
-        S.yAnchors = yAnchors(:,first:lastSim);
-        S.xAnchors = xAnchors(:,first:lastSim);
-        S.eaanchors = eAAnchors(:,first:lastSim);
-        S.euanchors = false(size(S.eaanchors));
-        S.weightsA = weightsA(:,first:lastSim);
-        S.weightsU = zeros(size(S.weightsA));
-        S.ytune = yTune(:,first:lastSim);
-        S.xtune = xTune(:,first:lastSim);
-    elseif isUAnchors
-        S.yAnchors = [yAnchors(:,first),false(ny,nPerSim-1)];
-        S.xAnchors = [xAnchors(:,first),false(nx,nPerSim-1)];
-        S.euanchors = [eUAnchors(:,first),false(ne,nPerSim-1)];
-        S.eaanchors = false(size(S.euanchors));
-        S.weightsU = [weightsU(:,first),zeros(ne,nPerSim-1)];
-        S.weightsA = zeros(size(S.weightsU));
-        S.ytune = [yTune(:,first),nan(ny,nPerSim-1)];
-        S.xtune = [xTune(:,first),nan(nx,nPerSim-1)];
+    if isAAnch
+        S.YAnch = yAnch(:,first:lastSim);
+        S.XAnch = xAnch(:,first:lastSim);
+        S.EaAnch = eAAnch(:,first:lastSim);
+        S.EuAnch = false(size(S.EaAnch));
+        S.WghtA = weightsA(:,first:lastSim);
+        S.WghtU = zeros(size(S.WghtA));
+        S.YTune = yTune(:,first:lastSim);
+        S.XTune = xTune(:,first:lastSim);
+    elseif isUAnch
+        S.YAnch = [yAnch(:,first),false(ny,nPerSim-1)];
+        S.XAnch = [xAnch(:,first),false(nx,nPerSim-1)];
+        S.EuAnch = [eUAnch(:,first),false(ne,nPerSim-1)];
+        S.EaAnch = false(size(S.EuAnch));
+        S.WghtU = [weightsU(:,first),zeros(ne,nPerSim-1)];
+        S.WghtA = zeros(size(S.WghtU));
+        S.YTune = [yTune(:,first),nan(ny,nPerSim-1)];
+        S.XTune = [xTune(:,first),nan(nx,nPerSim-1)];
     end
     
     % Reset counters and flags.
-    S.count = 0;
+    S.Count = 0;
     S.stop = 0;
     S.lambda = lambda0;
     
     % Re-use addfactors from the previous segment.
-    S.u(:,end+1:S.npernonlin) = 0;
+    S.u(:,end+1:S.NPerNonlin) = 0;
     
     % Create segment string.
     s = sprintf('%g:%g[%g]#%g',...
         S.zerothSegment+first, ...
         S.zerothSegment+lastRep, ...
         S.zerothSegment+lastSim, ...
-        S.npernonlin);
+        S.NPerNonlin);
     S.segmentString = sprintf('%16s',s);
     
     % Simulate this segment
@@ -173,7 +173,7 @@ for iSegment = 1 : nSegment
     % Update progress bar.
     if ~isempty(S.progress)
         update(S.progress, ...
-            ((S.iLoop-1)*nSegment+iSegment)/(S.nLoop*nSegment));
+            ((S.iLoop-1)*nSegment+iSegment)/(S.NLoop*nSegment));
     end
 end
 
@@ -183,13 +183,13 @@ S.y = y;
 S.w = w;
 
 % Restore fields temporarily deleted.
-S.yAnchors = S0.yAnchors;
-S.xAnchors = S0.xAnchors;
-S.eaanchors = S0.eaanchors;
-S.euanchors = S0.euanchors;
-S.weightsA = S0.weightsA;
-S.weightsU = S0.weightsU;
-S.ytune = S0.ytune;
-S.xtune = S0.xtune;
+S.YAnch = S0.YAnch;
+S.XAnch = S0.XAnch;
+S.EaAnch = S0.EaAnch;
+S.EuAnch = S0.EuAnch;
+S.WghtA = S0.WghtA;
+S.WghtU = S0.WghtU;
+S.YTune = S0.YTune;
+S.XTune = S0.XTune;
 
 end

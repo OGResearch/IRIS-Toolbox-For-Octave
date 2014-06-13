@@ -21,19 +21,19 @@ S.histMinU = [];
 S.histMinCount = NaN;
 
 while true
-    S = simulate.linear(S,S.npernonlin,Opt);
+    S = simulate.linear(S,S.NPerNonlin,Opt);
     doDiscrepancy();
 
     if S.maxDiscrep < S.histMinDiscrep
         S.histMinDiscrep = S.maxDiscrep;
         S.histMinAddFactor = S.maxAddFactor;
         S.histMinU = S.u;
-        S.histMinCount = S.count;
+        S.histMinCount = S.Count;
     end
     
     % Report discrepancies in this iteration if requested or if
     % this is the final iteration.
-    if Opt.display > 0 && mod(S.count,Opt.display) == 0
+    if Opt.display > 0 && mod(S.Count,Opt.display) == 0
         doReport();
     end
     
@@ -41,14 +41,14 @@ while true
         S.stop = -2;
     elseif S.maxDiscrep <= Opt.tolerance
         S.stop = 1;
-    elseif S.count >= Opt.maxiter;
+    elseif S.Count >= Opt.maxiter;
         S.stop = -1;
     end
     
     if S.stop ~= 0
         if S.maxDiscrep > S.histMinDiscrep
             S.u = S.histMinU;
-            S = simulate.linear(S,S.npernonlin,Opt);
+            S = simulate.linear(S,S.NPerNonlin,Opt);
             if Opt.display > 0
                 doReportReverse();
                 doDiscrepancy();
@@ -82,7 +82,7 @@ while true
             doReportLambdaReduction();
         end
     end
-    S.count = S.count + 1;
+    S.Count = S.Count + 1;
 end
 
 % Failed to converge
@@ -109,20 +109,24 @@ if S.stop < 0
     end
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doDiscrepancy()
-        tt = 1 : S.npernonlin;
+        tt = 1 : S.NPerNonlin;
         LL = S.TrendArray; 
         % Set up the vector of [xf;xb] and include initial condition.
         xx = [[nan(nf,1);S.a0],S.w(:,tt)];
         xx(nf+1:end,:) = S.U*xx(nf+1:end,:);
         if Opt.deviation && Opt.addsstate
-            xx = xx + S.nonlinxbar;
+            xx = xx + S.XBar;
         end
         % Delogarithmise log-variables.
-        xx(S.xxlog,:) = exp(xx(S.xxlog,:));
+        xx(S.XLog,:) = exp(xx(S.XLog,:));
         % Set up the vector of shocks including initial condition.
         ee = real(S.e(:,tt)) + imag(S.e(:,tt));
         ee = [zeros(ne,1),ee];
@@ -130,11 +134,11 @@ end
         yy = [];
         % Get the current parameter values.
         pp = S.Assign(1,S.nametype == 4);
-        d = zeros(nEqtn,1+S.npernonlin);
+        d = zeros(nEqtn,1+S.NPerNonlin);
         nanInx = false(1,nEqtn);
         errorMsg = {};
         for j = find(S.nonlin)   
-            evalInx = [false,S.qAnchors(j,:)];
+            evalInx = [false,S.QAnch(j,:)];
             if ~any(evalInx)
                 continue
             end
@@ -165,16 +169,19 @@ end
         S.maxDiscrep = max(S.maxDiscrep2);
         S.maxAddFactor2 = max(abs(S.u),[],2);
         S.maxAddFactor = max(S.maxAddFactor2);
-    end % doDiscrepancy().
+    end % doDiscrepancy()
+
 
 %**************************************************************************
+ 
+    
     function doReport()
         % doReport  Report one nonlin simulation iteration.
         maxDiscrepEqtn = ...
             findnaninf(S.maxDiscrep2,S.maxDiscrep,1,'first');
         maxAddFactorEqtn = ....
             findnaninf(S.maxAddFactor2,S.maxAddFactor,1,'first');
-        if S.count == 0 && S.stop == 0
+        if S.Count == 0 && S.stop == 0
             % This is the very first report line printed. Print the
             % header first.
             fprintf(...
@@ -183,7 +190,7 @@ end
                 'Max.addfact','Equation' ...
                 );
         end
-        count = sprintf(' %5g',S.count);
+        count = sprintf(' %5g',S.Count);
         if S.stop ~= 0
             count = strrep(count,' ','=');
         end
@@ -201,18 +208,25 @@ end
             maxDiscrep,maxDiscrepLabel,lambda, ...
             maxAddFactor,maxAddFactorLabel ...
             );
-    end % doReport().
+    end % doReport()
+
 
 %**************************************************************************
+
+    
     function doReportReverse()
         fprintf('  Reversing to iteration %g.\n', ...
             S.histMinCount);
-    end % doReportReverse().
+    end % doReportReverse()
+
 
 %**************************************************************************
+
+    
     function doReportLambdaReduction()
-        fprintf('  Lambda reduced to %g.\n', ...
+        fprintf('  Reducing lambda to %g.\n', ...
             S.lambda);
-    end % doReportLambdaReduction().
+    end % doReportLambdaReduction()
+
 
 end

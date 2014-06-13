@@ -15,7 +15,7 @@ nx = nnzexog(This);
 nc = nnzcond(This);
 nq = nnznonlin(This);
 fprintf('\trange: %s to %s\n', ...
-    dat2char(This.startDate),dat2char(This.endDate));
+    dat2char(This.Start),dat2char(This.End));
 fprintf('\texogenised data points: %g\n',nx);
 fprintf('\tendogenised data points [real imag]: [%g %g]\n', ...
     nnReal,nnImag);

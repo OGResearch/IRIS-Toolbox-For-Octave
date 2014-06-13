@@ -11,15 +11,15 @@ function This = mychngrange(This,NewRange)
 
 doChkFreq();
 doChngRange();
-This.startDate = NewRange(1);
-This.endDate = NewRange(end);
+This.Start = NewRange(1);
+This.End = NewRange(end);
 
 % Nested functions.
 
 %**************************************************************************
     function doChkFreq()
-        if ~freqcmp(This.startDate,NewRange(1)) ...
-                || ~freqcmp(This.endDate,NewRange(end))
+        if ~freqcmp(This.Start,NewRange(1)) ...
+                || ~freqcmp(This.End,NewRange(end))
             utils.error('plan', ...
                 ['Invalid date frequency of the new range ', ...
                 'in subscripted reference to plan object.']);
@@ -28,53 +28,53 @@ This.endDate = NewRange(end);
 
 %**************************************************************************
     function doChngRange()
-        nx = size(This.xAnchors,1);
-        nNReal = size(This.nAnchorsReal,1);
-        nNImag = size(This.nAnchorsImag,1);
-        nc = size(This.cAnchors,1);
-        nq = size(This.qAnchors,1);
+        nx = size(This.XAnch,1);
+        nNReal = size(This.NAnchReal,1);
+        nNImag = size(This.NAnchImag,1);
+        nc = size(This.CAnch,1);
+        nq = size(This.QAnch,1);
         
         if ~isinf(NewRange(1))
-            if NewRange(1) < This.startDate
-                nPre = round(This.startDate - NewRange(1));
-                This.xAnchors = [false(nx,nPre),This.xAnchors];
-                This.nAnchorsReal = [false(nNReal,nPre),This.nAnchorsReal];
-                This.nAnchorsImag = [false(nNImag,nPre),This.nAnchorsImag];
-                This.nWeightsReal = [zeros(nNReal,nPre),This.nWeightsReal];
-                This.nWeightsImag = [zeros(nNImag,nPre),This.nWeightsImag];
-                This.cAnchors = [false(nc,nPre),This.cAnchors];
-                This.qAnchors = [false(nq,nPre),This.qAnchors];
-            elseif NewRange(1) > This.startDate
-                nPre = round(NewRange(1) - This.startDate);
-                This.xAnchors = This.xAnchors(:,nPre+1:end);
-                This.nAnchorsReal = This.nAnchorsReal(:,nPre+1:end);
-                This.nAnchorsImag = This.nAnchorsImag(:,nPre+1:end);
-                This.nWeightsReal = This.nWeightsReal(:,nPre+1:end);
-                This.nWeightsImag = This.nWeightsImag(:,nPre+1:end);
-                This.cAnchors = This.cAnchors(:,nPre+1:end);
-                This.qAnchors = This.qAnchors(:,nPre+1:end);
+            if NewRange(1) < This.Start
+                nPre = round(This.Start - NewRange(1));
+                This.XAnch = [false(nx,nPre),This.XAnch];
+                This.NAnchReal = [false(nNReal,nPre),This.NAnchReal];
+                This.NAnchImag = [false(nNImag,nPre),This.NAnchImag];
+                This.NWghtReal = [zeros(nNReal,nPre),This.NWghtReal];
+                This.NWghtImag = [zeros(nNImag,nPre),This.NWghtImag];
+                This.CAnch = [false(nc,nPre),This.CAnch];
+                This.QAnch = [false(nq,nPre),This.QAnch];
+            elseif NewRange(1) > This.Start
+                nPre = round(NewRange(1) - This.Start);
+                This.XAnch = This.XAnch(:,nPre+1:end);
+                This.NAnchReal = This.NAnchReal(:,nPre+1:end);
+                This.NAnchImag = This.NAnchImag(:,nPre+1:end);
+                This.NWghtReal = This.NWghtReal(:,nPre+1:end);
+                This.NWghtImag = This.NWghtImag(:,nPre+1:end);
+                This.CAnch = This.CAnch(:,nPre+1:end);
+                This.QAnch = This.QAnch(:,nPre+1:end);
             end
         end
         
         if ~isinf(NewRange(end))
-            if NewRange(end) > This.endDate
-                nPost = round(NewRange(end) - This.endDate);
-                This.xAnchors = [This.xAnchors,false(nx,nPost)];
-                This.nAnchorsReal = [This.nAnchorsReal,false(nNReal,nPost)];
-                This.nAnchorsImag = [This.nAnchorsImag,false(nNImag,nPost)];
-                This.nWeightsReal = [This.nWeightsReal,false(nNReal,nPost)];
-                This.nWeightsImag = [This.nWeightsImag,false(nNImag,nPost)];
-                This.cAnchors = [This.cAnchors,false(nc,nPost)];
-                This.qAnchors = [This.qAnchors,false(nq,nPost)];
-            elseif NewRange(end) < This.endDate
-                nPost = round(This.endDate - NewRange(end));
-                This.xAnchors = This.xAnchors(:,1:end-nPost);
-                This.nAnchorsReal = This.nAnchorsReal(:,1:end-nPost);
-                This.nAnchorsImag = This.nAnchorsImag(:,1:end-nPost);
-                This.nWeightsReal = This.nWeightsReal(:,1:end-nPost);
-                This.nWeightsImag = This.nWeightsImag(:,1:end-nPost);
-                This.cAnchors = This.cAnchors(:,1:end-nPost);
-                This.qAnchors = This.qAnchors(:,1:end-nPost);
+            if NewRange(end) > This.End
+                nPost = round(NewRange(end) - This.End);
+                This.XAnch = [This.XAnch,false(nx,nPost)];
+                This.NAnchReal = [This.NAnchReal,false(nNReal,nPost)];
+                This.NAnchImag = [This.NAnchImag,false(nNImag,nPost)];
+                This.NWghtReal = [This.NWghtReal,false(nNReal,nPost)];
+                This.NWghtImag = [This.NWghtImag,false(nNImag,nPost)];
+                This.CAnch = [This.CAnch,false(nc,nPost)];
+                This.QAnch = [This.QAnch,false(nq,nPost)];
+            elseif NewRange(end) < This.End
+                nPost = round(This.End - NewRange(end));
+                This.XAnch = This.XAnch(:,1:end-nPost);
+                This.NAnchReal = This.NAnchReal(:,1:end-nPost);
+                This.NAnchImag = This.NAnchImag(:,1:end-nPost);
+                This.NWghtReal = This.NWghtReal(:,1:end-nPost);
+                This.NWghtImag = This.NWghtImag(:,1:end-nPost);
+                This.CAnch = This.CAnch(:,1:end-nPost);
+                This.QAnch = This.QAnch(:,1:end-nPost);
             end
         end
         

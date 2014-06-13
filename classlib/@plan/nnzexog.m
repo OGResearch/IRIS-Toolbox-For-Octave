@@ -28,6 +28,6 @@ function n = nnzexog(this)
 
 %**************************************************************************
 
-n = nnz(this.xAnchors);
+n = nnz(this.XAnch);
 
 end

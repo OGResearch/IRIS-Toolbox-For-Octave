@@ -74,14 +74,14 @@ nList = numel(List);
 valid = true(1,nList);
 
 for i = 1 : nList
-    xInx = strcmp(This.xList,List{i});
-    nPos = This.AutoExogenise(xInx);
+    xInx = strcmp(This.XList,List{i});
+    nPos = This.AutoEx(xInx);
     if ~any(xInx) || isnan(nPos)
         valid(i) = false;
         continue
     end
-    This = exogenise(This,This.xList{xInx},Dates);    
-    This = endogenise(This,This.nList{nPos},Dates,Weight);
+    This = exogenise(This,This.XList{xInx},Dates);    
+    This = endogenise(This,This.NList{nPos},Dates,Weight);
 end
 
 if any(~valid)

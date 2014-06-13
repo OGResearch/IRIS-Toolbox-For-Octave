@@ -35,8 +35,8 @@ function [n,nreal,nimag] = nnzendog(this)
 
 %**************************************************************************
 
-nreal = nnz(this.nAnchorsReal);
-nimag = nnz(this.nAnchorsImag); 
+nreal = nnz(this.NAnchReal);
+nimag = nnz(this.NAnchImag); 
 n = nreal + nimag;
 
 end

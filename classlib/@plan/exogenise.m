@@ -86,19 +86,19 @@ valid = true(1,nList);
 
 for i = 1 : nList
     % Try to exogenise an endogenous variable.
-    index = strcmp(This.xList,List{i});
+    index = strcmp(This.XList,List{i});
     if any(index)
-        This.xAnchors(index,Dates) = true;
+        This.XAnch(index,Dates) = true;
     else
         % Try to re-exogenise a shock.
-        index = strcmp(This.nList,List{i});
+        index = strcmp(This.NList,List{i});
         if any(index)
             if real(Flag) > 0
-                This.nAnchorsReal(index,Dates) = false;
-                This.nWeightsReal(index,Dates) = 0;
+                This.NAnchReal(index,Dates) = false;
+                This.NWghtReal(index,Dates) = 0;
             elseif imag(Flag) > 0
-                This.nAnchorsImag(index,Dates) = false;
-                This.nWeightsImag(index,Dates) = 0;
+                This.NAnchImag(index,Dates) = false;
+                This.NWghtImag(index,Dates) = 0;
             end
         else
             % Neither worked.
