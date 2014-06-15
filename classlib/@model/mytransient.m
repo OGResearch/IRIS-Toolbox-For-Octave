@@ -113,7 +113,6 @@ doNonlinEqtn();
             if isempty(eqtn)
                 continue
             end
-            
             % Convert char to function handle.
             eqtn = s2fH(['@(y,xx,e,p,t,L) ',eqtn]);
             
@@ -165,6 +164,7 @@ doNonlinEqtn();
             if eqtn(1) == '@'
                 eqtn = regexprep(eqtn,'@\(.*?\)','');
             end
+            eqtn = strrep(eqtn,' ','');
         end % doFunc2Char
         
         
