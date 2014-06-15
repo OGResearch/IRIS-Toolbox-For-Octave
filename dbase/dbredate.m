@@ -52,7 +52,7 @@ end
 
 list = fieldnames(D);
 tseriesInx = structfun(@(isArg)is.tseries(isArg),D);
-structInx = structfun(@isstruct,D);
+structInx = structfun(@(xArg)isa(xArg,'struct'),D);
 
 % Cycle over all tseries objects.
 for i = find(tseriesInx.')

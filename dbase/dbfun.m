@@ -100,7 +100,7 @@ Flag = true;
 ErrList = {};
 WarnList = {};
 for i = 1 : length(list)
-    if isstruct(D.(list{i}))
+    if isa(D.(list{i}),'struct')
         % Process subdatabases
         %----------------------
         if ~opt.cascade
@@ -113,7 +113,7 @@ for i = 1 : length(list)
             continue
         end
         argList = doGetArgList();
-        if all(cellfun(@isstruct,argList))
+        if all(cellfun(@(xArg)isa(xArg,'struct'),argList))
             X.(list{i}) = dbfun(Func,argList{:}, ...
                 'classlist=',opt.classlist, ...
                 'fresh=',opt.fresh);
