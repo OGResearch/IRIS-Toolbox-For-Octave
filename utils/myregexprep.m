@@ -32,8 +32,15 @@ for cx = 1 : nStr
           funcRes = '';
           funcStr = repTok{ix};
           funcStr = strrep(funcStr,'$0',['''' mtch{mx} '''']);
-          for jx = 1:numel(tok{mx})
-            tok{mx}{jx} = regexprep(tok{mx}{jx},'((?<!''))['']((?!''))','$1''''$2');
+          inputs = regexp(repTok{ix},'\$(\d+)','tokens');
+          inputs = [inputs{:}];
+          nInp = max(str2num(sprintf('%5s',inputs{:})));
+          for jx = 1 : nInp
+            if jx <= numel(tok{mx})
+              tok{mx}{jx} = regexprep(tok{mx}{jx},'((?<!''))['']((?!''))','$1''''$2');
+            else
+              tok{mx}{jx} = '';
+            end
             funcStr = strrep(funcStr,['$' int2str(jx)],['''' tok{mx}{jx} '''']);
           end
           funcRes = evalin('caller',funcStr);
