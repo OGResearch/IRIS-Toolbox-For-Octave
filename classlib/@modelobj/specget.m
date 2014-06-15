@@ -176,7 +176,11 @@ function [List,Values,X] = xxGetCorr(This,Query)
 
 ne = sum(This.nametype == 3);
 nAlt = size(This.Assign,3);
-pos = tril(ones(ne),-1) == 1;
+if ne > 0
+  pos = tril(ones(ne),-1) == 1;
+else
+  pos = [];  
+end
 R = zeros(ne,ne,nAlt);
 for ialt = 1 : nAlt
     temp = zeros(ne);
