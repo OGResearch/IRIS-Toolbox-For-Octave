@@ -1,5 +1,5 @@
-classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
-        tseries < getsetobj & userdataobj 
+classdef ... (InferiorClasses={?matlab.graphics.axis.Axes}) ...
+        tseries < getsetobj & userdataobj
     
     % tseries  Time Series (Tseries) Objects and Functions.
     %
@@ -235,11 +235,19 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             
             % Parse required input arguments.
             pp = inputParser();
+if ismatlab
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
                 isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
+else
+            pp = pp.addRequired('Dates',@isnumeric);
+            pp = pp.addRequired('Data',@(x) ...
+                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
+            pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
+            pp = pp.parse(usrDates,usrData,usrComment);
+end
             
             %--------------------------------------------------------------
             
@@ -744,7 +752,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 dim = 1;
             end
-            x = unop(@tseries.myprctile,x,dim,p,dim);
+            x = unop(@(varargin)tseries.myprctile(varargin{:}),x,dim,p,dim);
         end
         % Alias for prctile.
         function varargout = pctile(varargin)

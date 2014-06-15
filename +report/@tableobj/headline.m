@@ -10,6 +10,7 @@ function C = headline(This)
 %--------------------------------------------------------------------------
 
 try
+    isequaln(0,0);
     isequalnFunc = @isequaln;
 catch
     isequalnFunc = @isequalwithequalnans;

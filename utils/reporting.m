@@ -88,10 +88,15 @@ for i = 1 : length(This.lhs)
 end
 
 if opt.dynamic
+    if ismatlab
+        s2fH = @str2func;
+    else
+        s2fH = @mystr2func;
+    end
     % Evaluate equations recursively period by period.
     fn = cell(size(This.rhs));
     for iRhs = 1 : length(This.rhs)
-        fn{iRhs} = str2func(['@(D,t)',This.rhs{iRhs}]);
+        fn{iRhs} = s2fH(['@(D,t)',This.rhs{iRhs}]);
     end
     Range = Range(:).';
     for t = Range

@@ -63,9 +63,15 @@ function [X,Flag,ErrList,WarnList] = dbfun(Func,D,varargin)
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('Func',@(x) is.func(x) || ischar(x));
 pp.addRequired('D',@isstruct);
 pp.parse(Func,D);
+else
+pp = pp.addRequired('Func',@(x) is.func(x) || ischar(x));
+pp = pp.addRequired('D',@isstruct);
+pp = pp.parse(Func,D);
+end
 
 % Find last database in varargin
 last = find(cellfun(@isstruct,varargin),1,'last') ;
@@ -94,7 +100,7 @@ Flag = true;
 ErrList = {};
 WarnList = {};
 for i = 1 : length(list)
-    if isstruct(D.(list{i}))
+    if isa(D.(list{i}),'struct')
         % Process subdatabases
         %----------------------
         if ~opt.cascade
@@ -107,7 +113,7 @@ for i = 1 : length(list)
             continue
         end
         argList = doGetArgList();
-        if all(cellfun(@isstruct,argList))
+        if all(cellfun(@(xArg)isa(xArg,'struct'),argList))
             X.(list{i}) = dbfun(Func,argList{:}, ...
                 'classlist=',opt.classlist, ...
                 'fresh=',opt.fresh);

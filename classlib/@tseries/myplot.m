@@ -116,6 +116,15 @@ if isempty(Func)
     return
 end
 
+% make char representation of Func
+chFunc = Func;
+if is.func(chFunc)
+    chFunc = func2str(chFunc);
+else
+    chFunc = char(chFunc);
+end
+  
+
 % Do the actual plot.
 set(Ax,'xTickMode','auto','xTickLabelMode','auto');
 H = [];
@@ -124,7 +133,7 @@ doPlot();
 if isequal(opt.xlimmargin,true) ...
         || (ischar(opt.xlimmargin) ...
         && strcmpi(opt.xlimmargin,'auto') ...
-        && any(strcmp(char(Func),{'bar','barcon'})))
+        && any(strcmp(chFunc,{'bar','barcon'})))
     setappdata(Ax,'xLimAdjust',true);
     peer = getappdata(Ax,'graphicsPlotyyPeer');
     if ~isempty(peer)
@@ -137,7 +146,7 @@ try
     isTimeNan = isequaln(Time,NaN);
 catch %#ok<CTCH>
     % Old syntax.
-    isTimeNan = isequalwithequalnans(Time,NaN); %#ok<FPARK>
+    isTimeNan = isequaln(Time,NaN); %#ok<FPARK>
 end
 
 % Set up the x-axis with proper dates. Do not do this if `time` is NaN,
@@ -171,9 +180,14 @@ end
 % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
 % we also handle cases where the current figure includes both tseries and
 % non-tseries graphs.
-obj = datacursormode(gcf());
-set(obj,'UpdateFcn',@utils.datacursor);
-
+try
+    obj = datacursormode(gcf());
+    set(obj,'UpdateFcn',@utils.datacursor);
+catch err
+    if ismatlab
+        rethrow(err);
+    end
+end
 
 % Nested functions...
 
@@ -196,7 +210,7 @@ set(obj,'UpdateFcn',@utils.datacursor);
 
 %**************************************************************************
     function doPlot()
-        switch char(Func)
+        switch chFunc
             case {'scatter'}
                 if nx ~= 2
                     utils.error('tseries', ...

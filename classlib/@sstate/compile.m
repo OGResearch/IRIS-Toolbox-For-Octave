@@ -274,6 +274,12 @@ function [code,errormsg] = ...
    code = '';
    errormsg = '';
    lastwarn('','');
+   
+   if ismatlab
+       mlOrOct = 'Matlab';
+   else
+       mlOrOct = 'Octave';
+   end
 
    nsolvefor = numel(solvefor);
    [~,ftitle] = fileparts(options.outputfile);
@@ -301,7 +307,7 @@ function [code,errormsg] = ...
       end
    catch Error
       errormsg = strtrim(strrep(Error.message,char(10),' '));
-      errormsg = sprintf('Matlab says: %s',errormsg);
+      errormsg = sprintf('%s says: %s',mlOrOct,errormsg);
    end
    if options.deletesymbolicmfiles
       delete([fname,'.m']);
@@ -312,7 +318,7 @@ function [code,errormsg] = ...
    lastWarning = lastwarn();
    if ~isempty(lastWarning)
       errormsg = strtrim(strrep(lastWarning,char(10),' '));
-      errormsg = sprintf('Matlab says: %s',errormsg);
+      errormsg = sprintf('%s says: %s',mlOrOct,errormsg);
       return
    end
 

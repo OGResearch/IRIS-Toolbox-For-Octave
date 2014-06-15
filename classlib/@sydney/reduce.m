@@ -14,6 +14,12 @@ end
 
 %--------------------------------------------------------------------------
 
+if ismatlab
+    inp4nested = [];
+else
+    inp4nested = SYDNEY;
+end
+
 % This.lookahead = [];
 nArg = length(This.args);
 
@@ -67,7 +73,7 @@ end
 %{
 % Reduce a/(x*a), a/(a*x) to 1/x, (x*a)/a, (a*x)/a to x.
 if strcmp(This.func,'rdivide')
-    doCancelRdivide();
+    doCancelRdivide(inp4nested);
 end
 %}
 
@@ -120,9 +126,9 @@ switch This.func
     case 'minus'
         doMinus();
     case 'times'
-        doTimes();
+        doTimes(inp4nested);
     case 'rdivide'
-        doRdivide();
+        doRdivide(inp4nested);
     case 'power'
         doPower();
 end
@@ -191,7 +197,10 @@ end
     end % doMinus()
 
 
-    function doTimes()
+    function doTimes(varargin)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         isWrap = isUminusWrapper();
         if isequal(This.args{1}.args,0) || isequal(This.args{2}.args,0)
             % 0*x or x*0
@@ -215,12 +224,19 @@ end
             This.args = This.args(1);
         end
         if isWrap
-            doWrapInUminus();
+            if ismatlab
+                doWrapInUminus();
+            else
+                doWrapInUminus(SYDNEY);
+            end
         end
     end % doTimes()
 
 
-    function doRdivide()
+    function doRdivide(varargin)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         isWrap = isUminusWrapper();
         if isequal(This.args{1}.args,0)
             % 0/x.
@@ -232,7 +248,11 @@ end
             This = This.args{1};
         end
         if isWrap
-            doWrapInUminus();
+            if ismatlab
+                doWrapInUminus();
+            else
+                doWrapInUminus(SYDNEY);
+            end
         end
     end % doRdivide()
 
@@ -280,7 +300,10 @@ end
     end % isUminusWrapper.
 
 
-    function doWrapInUminus()
+    function doWrapInUminus(varargin)
+        if ~ismatlab && ~isempty(varargin)
+            SYDNEY = varargin{1};
+        end
         x = This;
         This = SYDNEY;
         This.func = 'uminus';
@@ -303,7 +326,10 @@ end
     end % doCancelTimes()
 
 
-    function doCancelRdivide()
+    function doCancelRdivide(varargin)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         if isequal(This.args{2}.func,'times')
             if isequal(This.args{1},This.args{2}.args{1})
                 % Reduce a/(a*x) to 1/x.

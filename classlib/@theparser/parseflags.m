@@ -25,7 +25,7 @@ allFlags = default(ones(size(allnames)));
 
 % Replace regular expressions \<...\> with the list of matched names.
 ptn = '\\?<(.*?)\\?>';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doExpand; %#ok<NASGU>
     Blk = regexprep(Blk,ptn,'${replaceFunc($1)}');
 else

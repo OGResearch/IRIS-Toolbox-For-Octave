@@ -78,10 +78,17 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Inp,Range);
+else
+pp = pp.addRequired('M',@(varargin)is.model(varargin{:}));
+pp = pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('Range',@isnumeric);
+pp = pp.parse(This,Inp,Range);
+end
 Range = Range(1) : Range(end);
 
 if ~isempty(varargin) && ~ischar(varargin{1})

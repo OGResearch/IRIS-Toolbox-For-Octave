@@ -68,6 +68,6 @@ if ~isempty(opt.outputfreq)
     Q = inpFreq / opt.outputfreq / abs(S);
 end
 
-X = unop(@tseries.mypct,X,0,S,Q);
+X = unop(@(varargin)tseries.mypct(varargin{:}),X,0,S,Q);
 
 end

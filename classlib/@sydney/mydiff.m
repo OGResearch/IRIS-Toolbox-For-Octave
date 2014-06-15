@@ -8,6 +8,12 @@ end
 
 %--------------------------------------------------------------------------
 
+if ismatlab
+    inp4nested = [];
+else
+    inp4nested = SYDNEY;
+end
+
 nWrt = length(Wrt);
 
 % This.lookahead = [];
@@ -114,12 +120,12 @@ switch This.func
     case 'rdivide'
         % mydiff(x1/x2)
         if zeroDiff(1)
-            This = doRdivide1();
+            This = doRdivide1(inp4nested);
         elseif zeroDiff(2)
-            This = doRdivide2();
+            This = doRdivide2(inp4nested);
         else
-            Z1 = doRdivide1();
-            Z2 = doRdivide2();
+            Z1 = doRdivide1(inp4nested);
+            Z2 = doRdivide2(inp4nested);
             This.func = 'plus';
             This.args = {Z1,Z2};
         end
@@ -135,14 +141,14 @@ switch This.func
         if zeroDiff(1)
             % mydiff(x1^x2) with mydiff(x1) = 0
             % mydiff(x1^x2) = x1^x2 * log(x1) * mydiff(x2)
-            This = doPower1();
+            This = doPower1(inp4nested);
         elseif zeroDiff(2)
             % mydiff(x1^x2) with mydiff(x2) = 0
             % mydiff(x1^x2) = x2*x1^(x2-1)*mydiff(x1)
-            This = doPower2();
+            This = doPower2(inp4nested);
         else
-            Z1 = doPower1();
-            Z2 = doPower2();
+            Z1 = doPower1(inp4nested);
+            Z2 = doPower2(inp4nested);
             This.func = 'plus';
             This.args = {Z1,Z2};
         end
@@ -178,7 +184,7 @@ switch This.func
         % diff(f(x1,x2,...)) = diff(f,1)*diff(x1) + diff(f,2)*diff(x2) + ...
         pos = find(~zeroDiff);
         % diff(f,i)*diff(xi)
-        Z = doExternalWrtK(pos(1));
+        Z = doExternalWrtK(pos(1),inp4nested);
         for i = pos(2:end)
             Z1 = Z;
             Z.func = 'plus';
@@ -193,7 +199,7 @@ end
 
 
 %**************************************************************************
-    function z = doRdivide1()
+    function z = doRdivide1(varargin)
         % Compute mydiff(x1/x2) with mydiff(x1) = 0
         % mydiff(x1/x2) = -x1/x2^2 * mydiff(x2)
         % z1 := -x1
@@ -201,6 +207,9 @@ end
         % z3 := x2^z2
         % z4 :=  z1/z3
         % z := z4*mydiff(x2)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         z1 = SYDNEY;
         z1.func = 'uminus';
         z1.args = This.args(1);
@@ -220,9 +229,12 @@ end
 
 
 %**************************************************************************
-    function z = doRdivide2()
+    function z = doRdivide2(varargin)
         % Compute mydiff(x1/x2) with mydiff(x2) = 0
         % diff(x1/x2) = diff(x1)/x2
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         z = SYDNEY;
         z.func = 'rdivide';
         z.args = {mydiff(This.args{1},Wrt),This.args{2}};
@@ -230,12 +242,15 @@ end
 
 
 %**************************************************************************
-    function z = doPower1()
+    function z = doPower1(varargin)
         % Compute diff(x1^x2) with diff(x1) = 0
         % diff(x1^x2) = x1^x2 * log(x1) * diff(x2)
         % z1 := log(x1)
         % z2 := this*z1
         % z := z2*diff(x2)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         z1 = SYDNEY;
         z1.func = 'log';
         z1.args = This.args(1);
@@ -249,7 +264,7 @@ end
 
 
 %**************************************************************************
-    function z = doPower2()
+    function z = doPower2(varargin)
         % Compute diff(x1^x2) with diff(x2) = 0
         % diff(x1^x2) = x2*x1^(x2-1)*diff(x1)
         % z1 := 1
@@ -257,6 +272,9 @@ end
         % z3 := f(x1)^z2
         % z4 := x2*z3
         % z := z4*diff(f(x1))
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         z1 = SYDNEY;
         z1.func = '';
         z1.args = -1;
@@ -276,7 +294,10 @@ end
 
 
 %**************************************************************************
-    function Z = doExternalWrtK(K)
+    function Z = doExternalWrtK(K,varargin)
+        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
+            SYDNEY = varargin{1};
+        end
         if strcmp(This.func,'sydney.d')
             z1 = This;
             z1.numd.wrt = [z1.numd.wrt,K];

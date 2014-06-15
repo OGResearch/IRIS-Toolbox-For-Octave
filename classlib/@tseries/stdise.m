@@ -41,9 +41,15 @@ if nargin < 2
 end
 
 pp = inputParser();
-pp.addRequired('X',@is.tseries);
+if ismatlab
+pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('Flag',@(x) isequal(x,0) || isequal(x,1) );
 pp.parse(This,Flag);
+else
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp = pp.addRequired('Flag',@(x) isequal(x,0) || isequal(x,1) );
+pp = pp.parse(This,Flag);
+end
 
 %--------------------------------------------------------------------------
 

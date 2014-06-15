@@ -96,10 +96,17 @@ function This = prior(This,Def,PriorFunc,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
 pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
 pp.parse(This,Def,PriorFunc);
+else
+pp = pp.addRequired('S',@(x) isa(x,'systempriors'));
+pp = pp.addRequired('Def',@ischar);
+pp = pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
+pp = pp.parse(This,Def,PriorFunc); %#ok<NASGU>
+end
 
 opt = passvalopt('systempriors.prior',varargin{:});
 
@@ -114,8 +121,13 @@ Def0 = Def;
 Def = xxParseNames(This,Def);
 
 try
+    if ismatlab
+        s2fH = @str2func;
+    else
+        s2fH = @mystr2func;
+    end
     This.eval{end+1} ...
-        = str2func(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
+        = s2fH(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
 catch %#ok<CTCH>
     xxThrowError(Def0);
 end
@@ -298,7 +310,7 @@ invalid = {};
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
 ptn = '\.(\<[a-zA-Z]\w*\>(?![\[\(]))';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Def = regexprep(Def,ptn,'${replaceFunc($1)}');
 else

@@ -73,7 +73,7 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            if true % ##### MOSW
+            if false % ##### MOSW
                 keywordsFunc = @doKeywords; %#ok<NASGU>
                 C = regexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
@@ -97,7 +97,7 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            if true % ##### MOSW
+            if false % ##### MOSW
                 paramValFunc = @doParamVal; %#ok<NASGU>
                 C = regexprep(C, ...
                     '(?<!!)\<\w+\>', ...
@@ -201,7 +201,7 @@ for i = 1 : length(Labels.Store)
     Labels.Close{i} = close;
 end
 
-end % xxLabelsBack()
+end % xxLabelSyntax()
 
 
 %**************************************************************************

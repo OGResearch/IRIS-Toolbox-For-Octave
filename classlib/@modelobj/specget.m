@@ -55,14 +55,22 @@ switch Query
         
     case 'stdlist'
         elist = This.name(This.nametype == 3);
-        X = regexprep(elist,'^.','std_$0','once');
+        if ismatlab
+            X = regexprep(elist,'^.','std_$0','once');
+        else
+            X = strcat('std_',elist);
+        end
         
     case 'corrlist'
         X = mycorrnames(This);
         
     case 'stdcorrlist'
         elist = This.name(This.nametype == 3);
-        X = regexprep(elist,'^.','std_$0','once');
+        if ismatlab
+            X = regexprep(elist,'^.','std_$0','once');
+        else
+            X = strcat('std_',elist);
+        end
         X = [X,mycorrnames(This)];
         
     case {'log','islog'}
@@ -151,7 +159,11 @@ function [List,Values,X] = xxGetStd(This)
 ne = sum(This.nametype == 3);
 Values = This.stdcorr(1,1:ne,:);
 List = This.name(This.nametype == 3);
-List = regexprep(List,'^.','std_$0','once');
+if ismatlab
+    List = regexprep(List,'^.','std_$0','once');
+else
+    List = strcat('std_',List);
+end
 if nargout > 2
     X = xxNum2Struct(Values,List);
 end
@@ -164,7 +176,11 @@ function [List,Values,X] = xxGetCorr(This,Query)
 
 ne = sum(This.nametype == 3);
 nAlt = size(This.Assign,3);
-pos = tril(ones(ne),-1) == 1;
+if ne > 0
+  pos = tril(ones(ne),-1) == 1;
+else
+  pos = [];  
+end
 R = zeros(ne,ne,nAlt);
 for ialt = 1 : nAlt
     temp = zeros(ne);

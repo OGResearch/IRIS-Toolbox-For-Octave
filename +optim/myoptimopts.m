@@ -11,9 +11,13 @@ solverName = '';
 if ischar(EstOpt.solver)
     solverName = EstOpt.solver;
 elseif isa(EstOpt.solver,'function_handle')
-    solverName = char(EstOpt.solver);
+    solverName = func2str(EstOpt.solver);
 elseif iscell(EstOpt.solver)
-    solverName = char(EstOpt.solver{1});
+    if is.func(EstOpt.solver{1})
+        solverName = func2str(EstOpt.solver{1});
+    else
+        solverName = char(EstOpt.solver{1});
+    end
 end
 switch lower(solverName)
     case 'pso'

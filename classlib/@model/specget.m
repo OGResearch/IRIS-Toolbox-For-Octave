@@ -351,11 +351,11 @@ end
         nEqtn = sum(select);
         Ans = cell(1,nEqtn);
         for iieq = find(select)
-            u = char(This.deqtnF{iieq});
+            u = mychar(This.deqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
             
             ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
-            if true % ##### MOSW
+            if false % ##### MOSW
                 replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
             else
@@ -363,11 +363,11 @@ end
             end
             
             ptn = '\<x\>\(:,(\d+),t\)';
-            if true % ##### MOSW
+            if false % ##### MOSW
                 replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replaceZero($1)}');
             else
-                u = regexprep(u,ptn,@doReplaceZero,1); %#ok<UNRCH>
+                u = mosw.dregexprep(u,ptn,@doReplaceZero,1); %#ok<UNRCH>
             end
             
             Ans{iieq} = u;

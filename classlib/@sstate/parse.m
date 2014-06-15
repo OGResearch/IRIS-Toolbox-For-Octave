@@ -40,10 +40,16 @@ else
     s.growthnames = 'd?';
 end
 
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
+
 % Create a function handle for Matlab expressions.
 if s.growthnames(1) == '[' && s.growthnames(end) == ']'
     s.growthnames = strrep(s.growthnames,'?','x');
-    s.growthnames = str2func(['@(x) ',s.growthnames]);
+    s.growthnames = s2fH(['@(x) ',s.growthnames]);
 end
 
 % Read-in log declarations and remove them from `code`. They are considered
@@ -60,7 +66,7 @@ end
 % Combine and process input blocks.
 inputblock = '';
 ptn = '!input.*?(?=!equations|$)';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doReplaceInp; %#ok<NASGU>
     code = regexprep(code,ptn,'${replaceFunc($0)}');
 else
@@ -268,7 +274,7 @@ invalidtime = {};
 ptn = '(\<[a-zA-Z]\w*\>)\{(.*?)\}';
 for i = 1 : nBlock
     % s.growth{i} = {};
-    if true % ##### MOSW
+    if false % ##### MOSW
         replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
         s.eqtn{i} = regexprep(s.eqtn{i},ptn,'${replaceTimeFunc($1,$2)}');
     else

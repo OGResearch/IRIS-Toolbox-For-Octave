@@ -918,6 +918,8 @@ function [xOpt,fval] = psorunhybridfcn(fitnessfcn,xOpt,...
 if iscell(options.HybridFcn)
     if ischar(options.HybridFcn{1})
         HybridFcn = options.HybridFcn{1};
+    elseif is.func(options.HybridFcn{1})
+        HybridFcn = func2str(options.HybridFcn{1}) ;
     else
         HybridFcn = char(options.HybridFcn{1}) ;
     end

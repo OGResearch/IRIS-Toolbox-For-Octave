@@ -42,7 +42,13 @@ if isRhs
     doOpenRhsAxes();
 end
 
-doHoldAll();
+if ismatlab
+    doHoldAll();
+else
+    for iAx = Ax(:).'
+        hold(iAx,'all');
+    end
+end
 doPlot();
 
 if isRhs
@@ -72,6 +78,11 @@ for i = find(annotateInx)
     plot(This.children{i},Ax(end));
 end
 
+% Temporary show excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'on');
+end
+
 % Find children tagged `'background'` and move them to background.
 ch = get(Ax(end),'children');
 bg = findobj(ch,'flat','tag','background');
@@ -80,6 +91,11 @@ for ibg = bg(:).'
 end
 ch = [ch;bg];
 set(Ax(end),'children',ch);
+
+% Hide back excluded from legend (for Octave's way of excluding)
+if ~ismatlab
+    grfun.mytrigexcludedfromlegend(Ax(end),'off');
+end
 
 % Add legend.
 lg = [];
@@ -132,6 +148,10 @@ if ~isempty(This.options.style)
     % Apply styles to the axes object and its children.
     qstyle(This.options.style,Ax,'warning',false);
     if ~isempty(lg)
+        % refresh legend since in Octave it is not refreshed automatically
+        if ~ismatlab
+            lg = legend;
+        end
         % Apply styles to the legend axes.
         qstyle(This.options.style,lg,'warning',false);
     end
@@ -214,7 +234,7 @@ end
             if isfield(ch.options,'yaxis') ...
                     && strcmpi(ch.options.yaxis,'right');
                 rhsInx(ii) = true;
-            elseif isa(ch,'report.annotateobj')
+            elseif myisa(ch,'report.annotateobj')
                 annotateInx(ii) = true;
             else
                 lhsInx(ii) = true;
@@ -231,9 +251,9 @@ end
         invalid = {};
         for ii = find(lhsInx | rhsInx)
             ch = This.children{ii};
-            if ~any(strcmpi(char(ch.options.plotfunc), ...
+            if ~any(strcmpi(mychar(ch.options.plotfunc), ...
                     {'plot','bar','stem','area'}))
-                invalid{end+1} = char(ch.options.plotfunc); %#ok<AGROW>
+                invalid{end+1} = mychar(ch.options.plotfunc); %#ok<AGROW>
             end
         end
         if ~isempty(invalid)

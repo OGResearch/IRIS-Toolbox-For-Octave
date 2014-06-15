@@ -122,7 +122,7 @@ end
 % Collect in-file assignments, evaluate them, add to the Asgn database, and
 % remove all references to stdcorr names in name blocks.
 [This,S] = assign(This,S);
-Asgn = This.assign;
+Asgn = This.Assign;
 
 % Verify naming rules.
 doChkNamingRules();

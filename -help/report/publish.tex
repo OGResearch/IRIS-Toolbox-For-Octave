@@ -2,13 +2,13 @@
 
     \filetitle{publish}{Compile PDF from report object}{report/publish}
 
-	\paragraph{Syntax}\label{syntax}
+	\paragraph{Syntax}
 
 \begin{verbatim}
 [OutpFile,Info] = P.publish(InpFile,...)
 \end{verbatim}
 
-\paragraph{Input arguments}\label{input-arguments}
+\paragraph{Input arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@
   will be saved.
 \end{itemize}
 
-\paragraph{Output arguments}\label{output-arguments}
+\paragraph{Output arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@
   building the PDF report; see Description.
 \end{itemize}
 
-\paragraph{Options}\label{options}
+\paragraph{Options}
 
 \begin{itemize}
 \item
@@ -92,7 +92,7 @@
   corner of each page.
 \item
   \texttt{'tempDir='} {[} char \textbar{} function\_handle \textbar{}
-  \emph{\texttt{tempname(cd())}} {]} - Directory for storing temporary
+  \emph{\texttt{tempname(pwd())}} {]} - Directory for storing temporary
   files; the directory is deleted at the end of the execution if it's
   empty.
 \item

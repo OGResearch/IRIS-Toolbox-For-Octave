@@ -14,7 +14,7 @@ if ischar(list)
    list = strtrim(list);
 end
 
-thisdir = cd();
+thisdir = pwd();
 ps2pdf = irisget('ps2pdfpath');
 if isempty(ps2pdf)
    error('iris:latex',...

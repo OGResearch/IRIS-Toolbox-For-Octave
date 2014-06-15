@@ -10,6 +10,7 @@ function [LegendEntry,Exclude] = mylegend(This,NData)
 %--------------------------------------------------------------------------
 
 try
+    isequaln(0,0);
     isequalnFunc = @isequaln;
 catch
     isequalnFunc = @isequalwithequalnans;

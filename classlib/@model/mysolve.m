@@ -186,24 +186,34 @@ end
         while true
             AA = fA(eqOrd,:);
             BB = fB(eqOrd,:);
-            [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
-            % Ordered inverse eigvals.
-            eigVal = -ordeig(SS,TT);
+            if ismatlab
+                [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
+                % Ordered inverse eigvals.
+                eigVal = -ordeig(SS,TT);
+            else
+                lastwarn('');
+                [SS,TT,QQ,ZZ,eigVal] = myordqz(AA,BB,eigValTol); % leading block has ||eigVals|-1|<eigValTol; next block has |eigVal| >= 1 + eigValTol
+                isEmptyWarn = isempty(lastwarn());
+                % Ordered inverse eigvals.
+                eigVal = -eigVal;
+            end
             eigVal = eigVal(:).';
             isSevn2 = doSevn2Patch();
             stable = abs(eigVal) >= 1 + eigValTol;
             unit = abs(abs(eigVal)-1) < eigValTol;
-            % Clusters of unit, stable, and unstable eigenvalues.
-            clusters = zeros(size(eigVal));
-            % Unit roots first.
-            clusters(unit) = 2;
-            % Stable roots second.
-            clusters(stable) = 1;
-            % Unstable roots last.
-            % Re-order by the clusters.
-            lastwarn('');
-            [SS,TT,QQ,ZZ] = ordqz(SS,TT,QQ,ZZ,clusters);
-            isEmptyWarn = isempty(lastwarn());
+            if ismatlab
+                % Clusters of unit, stable, and unstable eigenvalues.
+                clusters = zeros(size(eigVal));
+                % Unit roots first.
+                clusters(unit) = 2;
+                % Stable roots second.
+                clusters(stable) = 1;
+                % Unstable roots last.
+                % Re-order by the clusters.
+                lastwarn('');
+                [SS,TT,QQ,ZZ] = ordqz(SS,TT,QQ,ZZ,clusters);
+                isEmptyWarn = isempty(lastwarn());
+            end
             % If the first equations is ordered second, it indicates the
             % next cycle would bring the equations to their original order.
             % We stop and throw an error.
@@ -228,9 +238,11 @@ end
         end
         
         % Re-order the inverse eigvals.
-        eigVal = -ordeig(SS,TT);
-        eigVal = eigVal(:).';
-        isSevn2 = doSevn2Patch() | isSevn2;
+        if ismatlab
+            eigVal = -ordeig(SS,TT);
+            eigVal = eigVal(:).';
+            isSevn2 = doSevn2Patch() | isSevn2;
+        end
         if Opt.warning && isSevn2
             utils.warning('model', ...
                 ['Numerical instability in QZ decomposition. ', ...

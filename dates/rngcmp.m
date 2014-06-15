@@ -43,9 +43,15 @@ function Flag = rngcmp(R1,R2)
 
 % Parse required input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('R1',@isnumeric);
 pp.addRequired('R2',@isnumeric);
 pp.parse(R1,R2);
+else
+pp = pp.addRequired('R1',@isnumeric);
+pp = pp.addRequired('R2',@isnumeric);
+pp = pp.parse(R1,R2);
+end
 
 %--------------------------------------------------------------------------
 

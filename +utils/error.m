@@ -9,6 +9,10 @@ function varargout = error(Mnemonic,Body,varargin)
 
 %--------------------------------------------------------------------------
 
+if ~ismatlab
+    Body = regexprep(Body,'matlab','Octave','ignorecase');
+end
+
 if ~isempty(Body) && Body(1) == '#'
     cls = regexp(Mnemonic,'[^:]+','once','match');
     Body = xxFrequents(Body,cls);

@@ -7,7 +7,7 @@ try
         return
     else
         selectLines = ~isequal(Lines,Inf);
-    end    
+    end
 catch %#ok<CTCH>
     Lines = Inf;
     selectLines = false;
@@ -19,6 +19,10 @@ try
     end
 catch %#ok<CTCH>
     Type = 'char';
+end
+
+if ~ismatlab && strcmpi(Type,'char')
+    Type = 'uchar';
 end
 
 %--------------------------------------------------------------------------

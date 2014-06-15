@@ -47,9 +47,15 @@ function [S,L] = eval(This,S,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('S',@isstruct);
 pp.addRequired('G',@(x) isa(x,'grouping'));
 pp.parse(S,This);
+else
+pp = pp.addRequired('S',@isstruct);
+pp = pp.addRequired('G',@(x) isa(x,'grouping'));
+pp = pp.parse(S,This);
+end
 
 opt = passvalopt('grouping.eval',varargin{:});
 

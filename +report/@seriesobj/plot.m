@@ -21,7 +21,7 @@ dateOptions = {
 
 if size(This.data{1}(:,:),2) > 0
     
-    switch char(This.options.plotfunc)
+    switch mychar(This.options.plotfunc)
         case 'plotcmp'
             % axes(ax);
             [~,H,rr,lhsRange,lhsData,lhsGrid, ...

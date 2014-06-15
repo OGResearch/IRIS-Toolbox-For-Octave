@@ -1,0 +1,16 @@
+d = dbload('testDailyCsv.csv', ...
+    'dateFormat=', '$M/D/YYYY', ...
+    'freq=', 365) ;
+actDbase = db2array(d, {'A', 'B', 'C', 'D'}) ;
+actDbase(isnan(actDbase)) = 0 ;
+
+if ismatlab
+    expDbase = csvread('testDailyCsv.csv', 1, 1) ;
+else
+    expDbase = mytextscan(strfun.converteols(file2char('testDailyCsv.csv')),'',-1, ...
+            'delimiter',',','whiteSpace',' ', ...
+            'headerLines',1,'headerColumns',1,'emptyValue',0, ...
+            'commentStyle','matlab','collectOutput',true){1};
+end
+
+myassert(actDbase, expDbase) ;

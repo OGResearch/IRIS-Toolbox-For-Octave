@@ -131,9 +131,15 @@ classdef plan < userdataobj & getsetobj
             if length(varargin) > 1
                 
                 pp = inputParser();
+if ismatlab
                 pp.addRequired('M',@(x) isa(x,'modelobj'));
                 pp.addRequired('Range',@isnumeric);
                 pp.parse(varargin{1:2});
+else
+                pp = pp.addRequired('M',@(x) myisa(x,'modelobj'));
+                pp = pp.addRequired('Range',@isnumeric);
+                pp = pp.parse(varargin{1:2});
+end
                 
                 % Range.
                 This.Start = varargin{2}(1);

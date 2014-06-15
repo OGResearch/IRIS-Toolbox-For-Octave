@@ -1,4 +1,4 @@
-classdef namedmat < double
+classdef namedmat% < double
     % namedmat  Matrices with Named Rows and Columns.
     %
     % Matrices with named rows and columns are returned by several IRIS
@@ -39,6 +39,7 @@ classdef namedmat < double
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (SetAccess = protected)
+        Value = [];
         Rownames = {};
         Colnames = {};
     end
@@ -102,7 +103,8 @@ classdef namedmat < double
             if nargin == 0
                 X = [];
             end
-            This = This@double(X);
+%             This = This@double(X);
+            This.Value = double(X);
             if ~isempty(varargin)
                 This.Rownames = varargin{1};
                 varargin(1) = [];
@@ -125,7 +127,7 @@ classdef namedmat < double
         end
         
         function disp(this)
-            disp(double(this));
+            disp(this.Value);
             addspace = false;
             if ~isempty(this.Rownames)
                 disp(['   Rows:',sprintf(' %s',this.Rownames{:})]);
@@ -150,6 +152,7 @@ classdef namedmat < double
         varargout = subsref(varargin)
         varargout = transpose(varargin)
         varargout = vertcat(varargin)
+        varargout = double(varargin)
         
     end
     

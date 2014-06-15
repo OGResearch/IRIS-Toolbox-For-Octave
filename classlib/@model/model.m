@@ -489,7 +489,7 @@ classdef model < modelobj & estimateobj
                 if ischar(varargin{1}) || iscellstr(varargin{1})
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
-                    doOptions();
+                    opt = doOptions();
                     This.linear = opt.linear;
                     [This,asgn] = myfile2model(This,fileName,opt);
                     This = mymodel2model(This,asgn,opt);
@@ -504,28 +504,26 @@ classdef model < modelobj & estimateobj
                     'Incorrect number or type of input argument(s).');
             end
             
-            
-            function doOptions()
-                [opt,varargin] = passvalopt('model.model',varargin{:});
-                if isempty(opt.tolerance)
+            function Opt = doOptions()
+                [Opt,varargin] = passvalopt('model.model',varargin{:});
+                if isempty(Opt.tolerance)
                     This.Tolerance(1) = getrealsmall();
                 else
-                    This.Tolerance(1) = opt.tolerance(1);
+                    This.Tolerance(1) = Opt.tolerance(1);
                     utils.warning('model', ...
                         ['You should NEVER reset the eigenvalue tolerance unless you are ', ...
                         'absolutely sure you know what you are doing!']);
                 end
-                if ~isstruct(opt.assign)
+                if ~isstruct(Opt.assign)
                     % Default for `'assign='` is an empty array.
-                    opt.assign = struct();
+                    Opt.assign = struct();
                 end
-                opt.assign.sstateOnly = opt.sstateonly;
-                opt.assign.linear = opt.linear;
+                Opt.assign.sstateOnly = Opt.sstateonly;
+                Opt.assign.linear = Opt.linear;
                 for iArg = 1 : 2 : length(varargin)
-                    opt.assign.(varargin{iArg}) = varargin{iArg+1};
+                    Opt.assign.(varargin{iArg}) = varargin{iArg+1};
                 end
-            end % doOptions()
-            
+            end % doOptions().
             
         end
         

@@ -12,7 +12,7 @@ classdef theparser
         code = '';
         caller = '';
         labels = fragileobj();
-        assign = struct();
+        Assign = struct();
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
@@ -36,12 +36,12 @@ classdef theparser
                 return
             end
             
-            if length(varargin) == 1 && isa(varargin{1},'theparser')
+            if length(varargin) == 1 && myisa(varargin{1},'theparser')
                 This = varargin{1};
                 return
             end
             
-            if length(varargin) == 1 && isa(varargin{1},'preparser')
+            if length(varargin) == 1 && myisa(varargin{1},'preparser')
                 doCopyPreparser(varargin{1});
                 return
             end
@@ -59,7 +59,7 @@ classdef theparser
                 end
                 
                 % Copy info from preparser.
-                if length(varargin) >= 2 && isa(varargin{2},'preparser')
+                if length(varargin) >= 2 && myisa(varargin{2},'preparser')
                     doCopyPreparser(varargin{2});
                 end
                 
@@ -69,7 +69,7 @@ classdef theparser
                 This.fname = Pre.fname;
                 This.code = Pre.code;
                 This.labels = Pre.labels;
-                This.assign = Pre.assign;
+                This.Assign = Pre.Assign;
             end
         end
     end

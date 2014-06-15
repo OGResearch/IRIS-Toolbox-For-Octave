@@ -321,7 +321,7 @@ end
 
 obsolete = {};
 ptn = '(\$?)(\[[^\]]*\])\1';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doExpandSqb; %#ok<NASGU>
     forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
 else
@@ -341,7 +341,7 @@ if ~isempty(Err)
 end
 
 % Remove `'name='` from `forbody` to get the RHS.
-forBody = regexprep(forBody,[control,'\s*=\s*'],'');
+forBody = regexprep(forBody,['\', control,'\s*=\s*'],'');
 
 % Itemize the RHS of the `!for` body.
 list = regexp(forBody,'[^\s,;]+','match');
@@ -354,8 +354,13 @@ list = regexp(forBody,'[^\s,;]+','match');
                 % Replace references to fieldnames of `'D'` with `'D.fieldname'`.
                 C2 = regexprep(C2,plist,'D.$1');
             end
+            if ismatlab
+                s2fH = @str2func;
+            else
+                s2fH = @mystr2func;
+            end
             % Create an anonymous function handle and evaluate it on D.
-            f = str2func(['@(D) ',C2]);
+            f = s2fH(['@(D) ',C2]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.

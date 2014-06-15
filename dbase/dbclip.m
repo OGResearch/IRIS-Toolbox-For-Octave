@@ -59,10 +59,17 @@ function D = dbclip(D,Range)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('D',@isstruct);
 pp.addRequired('Range', ...
     @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
 pp.parse(D,Range);
+else
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('Range', ...
+    @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
+pp = pp.parse(D,Range);
+end
 
 if isnumeric(Range)
     Range = {Range};
@@ -85,7 +92,7 @@ for i = 1 : nList
             continue
         end
         D.(name) = resize(D.(name),Range{pos});
-    elseif isstruct(D.(name))
+    elseif isa(D.(name),'struct')
         % Clip a sub-database.
         D.(name) = dbclip(D.(name),Range);
     end

@@ -129,9 +129,15 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.parse(This,Inp);
+else
+pp = pp.addRequired('V',@(x) isa(x,'VAR'));
+pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp = pp.parse(This,Inp);
+end
 
 % Get input data; the user range is supposed to **include** the pre-sample
 % initial condition.

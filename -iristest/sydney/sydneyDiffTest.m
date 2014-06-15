@@ -103,17 +103,23 @@ wrtCharList = sprintf('%s,',wrtList{:});
 wrtCharList(end) = '';
 z = sydney(Eqtn,wrtList);
 
+if ismatlab
+    s2fH = @str2func;
+else
+    s2fH = @mystr2func;
+end
+
 % En-bloc derivatives.
 dz1 = diff(z,'enbloc',wrtList);
 dz1 = char(dz1);
-actFunc1 = str2func(['@(',wrtCharList,') ',char(dz1)]);
+actFunc1 = s2fH(['@(',wrtCharList,') ',char(dz1)]);
 
 % Separate derivatives.
 dz2 = diff(z,'separate',wrtList);
 for i = 1 : nWrt
     dz2{i} = char(dz2{i});
 end
-actFunc2 = str2func(['@(',wrtCharList,') [',sprintf('%s;',dz2{:}),']']);
+actFunc2 = s2fH(['@(',wrtCharList,') [',sprintf('%s;',dz2{:}),']']);
 
 ActValue1 = nan(nWrt,N);
 ActValue2 = nan(nWrt,N);

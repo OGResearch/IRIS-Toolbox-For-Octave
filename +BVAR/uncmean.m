@@ -36,9 +36,15 @@ function [This,Y0,K0,Y1,G1] = uncmean(YBar,Mu,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('YBar',@isnumeric);
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@(varargin)is.numericscalar(varargin{:}));
 pp.parse(YBar,Mu);
+else
+pp = pp.addRequired('YBar',@isnumeric);
+pp = pp.addRequired('Mu',@(varargin)is.numericscalar(varargin{:}));
+pp = pp.parse(YBar,Mu);
+end
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...

@@ -64,11 +64,19 @@ end
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
 pp.addRequired('Cond',@(x) isempty(x) || isstruct(x));
 pp.parse(This,Inp,Range,Cond);
+else
+pp = pp.addRequired('V',@(isArg)is.VAR(isArg));
+pp = pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp.addRequired('Cond',@(x) isempty(x) || isstruct(x));
+pp.parse(This,Inp,Range,Cond);
+end
 
 % Panel VAR.
 if ispanel(This)

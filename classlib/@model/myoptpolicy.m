@@ -137,7 +137,7 @@ for eq = first : LossPos
 
         % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
         ptn = '([xL])(\d+)([pm]\d+)?';
-        if true % ##### MOSW
+        if false % ##### MOSW
             replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
         else

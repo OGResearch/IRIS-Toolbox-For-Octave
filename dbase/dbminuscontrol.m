@@ -64,10 +64,17 @@ catch
 end
 
 pp = inputParser();
+if ismatlab
 pp.addRequired('M',@(x) isa(x,'modelobj'));
 pp.addRequired('D',@isstruct);
 pp.addRequired('C',@(x) isstruct(x) || isempty(x));
 pp.parse(This,D,C);
+else
+pp = pp.addRequired('M',@(x) myisa(x,'modelobj'));
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('C',@(x) isstruct(x) || isempty(x));
+pp = pp.parse(This,D,C);
+end
 
 %--------------------------------------------------------------------------
 

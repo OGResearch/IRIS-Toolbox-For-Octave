@@ -20,7 +20,7 @@ reportInx = false(nBlkWarn,1);
 
 for iBlk = 1 : nBlkWarn
     ptn = ['\<',This.altBlkNameWarn{iBlk,1},'\>'];
-    if true % ##### MOSW
+    if false % ##### MOSW
         replaceFunc = @doReplace; %#ok<NASGU>
         This.code = regexprep(This.code,ptn,'${replaceFunc()}');
     else

@@ -341,12 +341,21 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('M',@is.model);
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
 pp.parse(This,Data,Range,E,SP);
+else
+pp = pp.addRequired('M',@(varargin)is.model(varargin{:}));
+pp = pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
+pp = pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
+pp = pp.parse(This,Data,Range,E,SP);
+end
 
 estOpt = passvalopt('model.estimate',varargin{:});
 

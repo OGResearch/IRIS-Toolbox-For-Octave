@@ -57,11 +57,19 @@ end
 
 % Parse input arguments.
 pp = inputParser();
+if ismatlab
 pp.addRequired('P',@(x) isa(x,'plan'));
 pp.addRequired('LIST',@(x) isequal(x,Inf) || ischar(x) || iscellstr(x));
 pp.addRequired('DAT', ...
     @(x) isnumeric(x) && all(datfreq(x) == datfreq(This.Start)));
 pp.parse(This,list,dat);
+else
+pp = pp.addRequired('P',@(x) isa(x,'plan'));
+pp = pp.addRequired('LIST',@(x) isequal(x,Inf) || ischar(x) || iscellstr(x));
+pp = pp.addRequired('DAT', ...
+    @(x) isnumeric(x) && all(datfreq(x) == datfreq(This.Start)));
+pp = pp.parse(This,list,dat);
+end
 
 %--------------------------------------------------------------------------
 

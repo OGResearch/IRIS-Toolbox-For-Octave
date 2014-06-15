@@ -52,9 +52,15 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('X',@is.tseries);
+if ismatlab
+pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('Range',@isnumeric);
 pp.parse(This,Range);
+else
+pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
+pp = pp.addRequired('Range',@isnumeric);
+pp = pp.parse(This,Range);
+end
 
 % Parse options.
 opt = passvalopt('tseries.trend',varargin{:});

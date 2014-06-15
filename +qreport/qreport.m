@@ -502,7 +502,7 @@ isYGrid = Opt.grid;
 Data = [];
 Ok = true;
 
-switch char(Func)
+switch mychar(Func)
     case {'plot','bar','barcon','stem'}
         Data = [X{:}];
         if is.tseries(Data)

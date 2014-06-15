@@ -92,9 +92,14 @@ end
     function doSstateEqtn()
         Discr = nan(nEqtnXY,2,nAlt);
         eqtn = This.EqtnS(This.eqtntype <= 2);
+        if ismatlab
+            s2fH = @str2func;
+        else
+            s2fH = @mystr2func;
+        end
         % Create anonymous funtions for sstate equations.
         for ii = 1 : length(eqtn)
-            eqtn{ii} = str2func(['@(x,dx) ',eqtn{ii}]);
+            eqtn{ii} = s2fH(['@(x,dx) ',eqtn{ii}]);
         end
         for iiAlt = 1 : nAlt
             x = real(This.Assign(1,:,iiAlt));

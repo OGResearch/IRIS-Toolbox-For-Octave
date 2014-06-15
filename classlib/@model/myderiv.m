@@ -204,7 +204,7 @@ end
 
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
-            D.f(iiEq,inx) = value;
+            D.f(iiEq,inx) = value(:)'; 
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))

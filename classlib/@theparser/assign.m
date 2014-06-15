@@ -9,7 +9,7 @@ function [This,S] = assign(This,S)
 
 %--------------------------------------------------------------------------
 
-asgn = This.assign;
+asgn = This.Assign;
 
 % Evaluate values assigned in the model code and/or in the `assign`
 % database. Go backward to evaluate parameters first so that they are
@@ -23,7 +23,9 @@ asgn = This.assign;
     end % doReplaceNameValue()
 
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-rplFunc = @doReplaceNameValue; %#ok<NASGU>
+if ismatlab
+    rplFunc = @doReplaceNameValue; %#ok<NASGU>
+end
 stdcorrDecld = {};
 
 for iBlk = blkpos(This,This.assignBlkOrd)
@@ -42,7 +44,7 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         if isempty(value)
             continue
         end
-        if true % ##### MOSW
+        if false % ##### MOSW
             value = regexprep(value,ptn,'${rplFunc($0)}');
         else
             value = mosw.dregexprep(value,ptn,@doReplaceNameValue,0); %#ok<UNRCH>
@@ -91,6 +93,6 @@ if ~isempty(stdcorrDecld)
     end
 end
 
-This.assign = asgn;
+This.Assign = asgn;
 
 end

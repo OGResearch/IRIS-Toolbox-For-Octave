@@ -86,6 +86,11 @@ doNonlinEqtn();
         This.eqtnN(:) = {''};
         
         % replaceFunc = @doReplace; %#ok<NASGU>
+        if ismatlab
+            s2fH = @str2func;
+        else
+            s2fH = @mystr2func;
+        end
         for ii = find(This.nonlin)
             eqtnN = This.eqtnF{ii};
             
@@ -94,7 +99,7 @@ doNonlinEqtn();
             
             % Replace variables, shocks, and parameters.
             ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
-            if true % ##### MOSW
+            if false % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else
@@ -111,7 +116,7 @@ doNonlinEqtn();
             end
             
             % Convert char to function handle.
-            eqtnN = str2func(['@(y,xx,e,p,t,L) ',eqtnN]);
+            eqtnN = s2fH(['@(y,xx,e,p,t,L) ',eqtnN]);
             
             This.eqtnN{ii} = eqtnN;
         end
@@ -155,12 +160,13 @@ doNonlinEqtn();
         function doFunc2Char()
             % Make sure `eqtn` is a text string, and remove function handle header.
             if isa(eqtnN,'function_handle')
-                eqtnN = char(eqtnN);
+                eqtn = func2str(eqtn);
             end
             eqtnN = strtrim(eqtnN);
             if eqtnN(1) == '@'
                 eqtnN = regexprep(eqtnN,'@\(.*?\)','');
             end
+            eqtn = strrep(eqtn,' ','');
         end % doFunc2Char
         
         

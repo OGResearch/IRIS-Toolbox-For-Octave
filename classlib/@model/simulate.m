@@ -135,10 +135,17 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 
 % Parse required inputs.
 pp = inputParser();
+if ismatlab
 pp.addRequired('m',@is.model);
 pp.addRequired('data',@(x) isstruct(x) || iscell(x));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Inp,Range);
+else
+pp = pp.addRequired('m',@(varargin)is.model(varargin{:}));
+pp = pp.addRequired('data',@(x) isstruct(x) || iscell(x));
+pp = pp.addRequired('range',@isnumeric);
+pp = pp.parse(This,Inp,Range);
+end
 
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});

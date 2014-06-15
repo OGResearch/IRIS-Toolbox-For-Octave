@@ -90,7 +90,11 @@ classdef sydney
                         % names found in the equation.
                         preamble = sprintf('%s,',varList{:});
                         preamble = ['@(',preamble(1:end-1),')'];
-                        tempFunc = str2func([preamble,expr]);
+                        if ismatlab
+                            tempFunc = str2func([preamble,expr]);
+                        else
+                            tempFunc = mystr2func([preamble,expr]);
+                        end
                         
                         % Evaluate the equation's function handle on the
                         % sydney objects.
@@ -198,7 +202,7 @@ classdef sydney
             % class.
             for i = 1 : length(funcList)
                 funcname = funcList{i}(1:end-1);
-                Expr = regexprep(Expr,['\<',funcname,'\>('], ...
+                Expr = regexprep(Expr,['\<',funcname,'\>\('], ...
                     ['sydney.parse(''',funcname,''',']);
             end
         end
