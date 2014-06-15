@@ -191,10 +191,10 @@ end
                 eigVal = -ordeig(SS,TT);
             else
                 lastwarn('');
-                [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol); % leading block has all ||lambda|-1|<eigValTol
+                [SS,TT,QQ,ZZ,eigVal] = myordqz(AA,BB,eigValTol); % leading block has ||eigVals|-1|<eigValTol; next block has |eigVal| >= 1 + eigValTol
                 isEmptyWarn = isempty(lastwarn());
-                % Non-ordered inverse eigvals.
-                eigVal = -eig(SS,TT);
+                % Ordered inverse eigvals.
+                eigVal = -eigVal;
             end
             eigVal = eigVal(:).';
             isSevn2 = doSevn2Patch();
