@@ -4,7 +4,11 @@ function varargout = request(action,varargin)
 mlock();
 persistent X;
 if isempty(X)
-   clear_();
+    if ismatlab
+        clear_();
+    else
+        X = clear4oct_();
+    end
 end
 
 %**************************************************************************
