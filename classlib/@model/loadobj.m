@@ -84,7 +84,7 @@ if any(isEmptyLink)
 end
 
 % Occurence of names in steady-state equations.
-if isempty(This.occurS) && ~This.linear
+if isempty(This.occurS) && ~This.IsLinear
     This.occurS = any(This.occur,3);
 end
 
@@ -146,8 +146,8 @@ for i = 1 : length(This.eqtnF)
 end
 
 % Rewrite log-variables in sstate equations for builds < 20140611.
-build = sscanf(This.build,'%g',1);
-if build < 20140610 && ~This.linear
+build = sscanf(This.Build,'%g',1);
+if build < 20140610 && ~This.IsLinear
     doLogSstateEqtn();
 end
 

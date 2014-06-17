@@ -313,17 +313,17 @@ for iloop = 1 : nloop
     % Furthest anticipated shock needed.
     if use.anticipate
         use.last = max([use.lastshock,use.lastcond]);
-        use.tplusk = use.last;
+        use.TPlusK = use.last;
     else
         use.last = 0;
-        use.tplusk = max([0,find(any(imag(use.shock) ~= 0),1,'last')]);
+        use.TPlusK = max([0,find(any(imag(use.shock) ~= 0),1,'last')]);
     end
     
     if ne > 0
         % Expansion available up to t+k0.
-        if use.tplusk > size(use.R,2)/ne
+        if use.TPlusK > size(use.R,2)/ne
             [use.R,ans,use.Expand{5}] = ...
-                model.myexpand(use.R,[],use.tplusk-1,use.Expand{1:5},[]); %#ok<NOANS,ASGLU>
+                model.myexpand(use.R,[],use.TPlusK-1,use.Expand{1:5},[]); %#ok<NOANS,ASGLU>
         end
     end
     

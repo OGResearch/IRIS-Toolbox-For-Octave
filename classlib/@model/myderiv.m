@@ -10,7 +10,7 @@ function [D,NanDerv] = myderiv(This,EqSelect,IAlt,Opt)
 isNanDeriv = nargout > 2;
 
 if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
-    Opt.linear = This.linear;
+    Opt.linear = This.IsLinear;
 end
 
 %--------------------------------------------------------------------------

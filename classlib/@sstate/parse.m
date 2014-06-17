@@ -11,7 +11,7 @@ function s = parse(s,p)
 
 errorParsing = sprintf( ...
     'Error parsing file(s) <a href="matlab: edit %s">%s</a>. ', ...
-    strrep(s.fname,' & ',' '),s.fname);
+    strrep(s.FName,' & ',' '),s.FName);
 
 % Steady-state code file keywords:
 % * !parameters or !input

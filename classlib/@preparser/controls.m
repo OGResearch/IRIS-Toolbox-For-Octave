@@ -25,7 +25,7 @@ end
 try
     Export;
 catch
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 %--------------------------------------------------------------------------
@@ -553,8 +553,8 @@ end
 
 S.ExportBody = restore(S.ExportBody,Labels);
 
-Export(end+1).filename = S.ExportName;
-Export(end).content = S.ExportBody;
+Export(end+1).FName = S.ExportName;
+Export(end).Content = S.ExportBody;
 
 end % xxExport()
 

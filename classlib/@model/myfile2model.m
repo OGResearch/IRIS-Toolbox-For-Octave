@@ -16,7 +16,7 @@ p = preparser(FName, ...
 
 % Get and save carry-on files. They must be available before we run `parse`
 % because we check for syntax error by evaluating the equations.
-This.fname = p.fname;
+This.FName = p.FName;
 This.Export = p.Export;
 export(This);
 
@@ -25,6 +25,6 @@ export(This);
 This.Comment = p.Comment;
 
 % Mark the build.
-This.build = irisversion();
+This.Build = irisversion();
 
 end

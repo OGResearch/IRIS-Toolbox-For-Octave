@@ -8,7 +8,7 @@ classdef theparser
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        fname = '';
+        FName = '';
         code = '';
         caller = '';
         labels = fragileobj();
@@ -66,7 +66,7 @@ classdef theparser
             end
              
             function doCopyPreparser(Pre)
-                This.fname = Pre.fname;
+                This.FName = Pre.FName;
                 This.code = Pre.code;
                 This.labels = Pre.labels;
                 This.assign = Pre.assign;

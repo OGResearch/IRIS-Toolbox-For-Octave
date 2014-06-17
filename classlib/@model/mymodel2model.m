@@ -36,7 +36,7 @@ This = myd2s(This,Opt);
 % Assign default stddevs.
 if ~isnan(Opt.std) && ~isempty(Opt.std)
     defaultStd = Opt.std;
-elseif This.linear
+elseif This.IsLinear
     defaultStd = 1;
 else
     defaultStd = log(1.01);

@@ -64,12 +64,12 @@ end
 
 % Auto name for the output file.
 if isempty(outputfile)
-   [temppath,temptitle] = fileparts(s.fname);
+   [temppath,temptitle] = fileparts(s.FName);
    outputfile = fullfile(temppath,[temptitle,'.m']);
 end
 
 opt.outputfile = outputfile;
-opt.inputfile = s.fname;
+opt.inputfile = s.FName;
 clear('functions');
 
 %--------------------------------------------------------------------------
@@ -182,7 +182,7 @@ end
 c = strfun.grabtext('=== START OF PRIMARY FUNCTION TEMPLATE ===', ...
    '=== END OF PRIMARY FUNCTION TEMPLATE ===');
 
-[~,tempfname] = fileparts(s.fname);
+[~,tempfname] = fileparts(s.FName);
 c = strrep(c,'#fileName',tempfname);
 c = strrep(c,'#FILENAME',upper(tempfname));
 c = strrep(c,'#date',datestr(now()));

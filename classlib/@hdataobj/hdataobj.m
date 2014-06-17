@@ -14,7 +14,7 @@ classdef hdataobj < handle
         IncludeLag = true; % Include lags of variables in output tseries.
         IncludeParam = true; % Include parameter database.
         IsVar2Std = false; % Convert variance to std dev.
-        Contrib = []; % If non-empty, contains labels for contributions.
+        Contributions = []; % If non-empty, contains labels for contributions.
         ParamDb = struct();
     end
     

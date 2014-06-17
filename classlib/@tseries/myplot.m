@@ -68,7 +68,7 @@ if ~isempty(plotSpecs)
 end
 
 if ~flag
-    error('Incorrect type of input argument(s).');
+    utils.error('tseries:myplot','Incorrect type of input argument(s).');
 end
 
 %--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ Range = specrange(X,Range);
 
 H = [];
 if isempty(Range)
-    warning('iris:tseries', ...
+    utils.warning('tseries:myplot', ...
         'No graph displayed because date range is empty.');
     return
 end
@@ -179,6 +179,8 @@ set(obj,'UpdateFcn',@utils.datacursor);
 
 
 %**************************************************************************
+
+
     function Range = doMergeRange(Range,Comprise)
         first = dec2dat(Comprise(1),Freq,opt.dateposition);
         % Make sure ranges with different frequencies are merged
@@ -195,12 +197,15 @@ set(obj,'UpdateFcn',@utils.datacursor);
 
 
 %**************************************************************************
+
+
     function doPlot()
         switch char(Func)
             case {'scatter'}
                 if nx ~= 2
-                    utils.error('tseries', ...
-                        'Scatter plot input data must have exactly two columns.');
+                    utils.error('tseries:myplot', ...
+                        ['Scatter plot input data must have ', ...
+                        'exactly two columns.']);
                 end
                 H = scatter(Ax,Data(:,1),Data(:,2),plotSpecs{:});
                 if ~isempty(varargin)

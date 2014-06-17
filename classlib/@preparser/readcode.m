@@ -13,7 +13,7 @@ if isempty(Asgn)
 end
 
 if isempty(Export)
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 if isempty(ParentFile)

@@ -28,9 +28,13 @@ if length(f) == 1
     D = D.(f{1});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
     function doOneOutputArea(X)
         switch X
             case '0'
@@ -69,6 +73,7 @@ end
         else
             D.(outpName) = hdata2tseries(Y.(meanField));
         end
-    end % doOneOutputArea().
+    end % doOneOutputArea()
+
 
 end

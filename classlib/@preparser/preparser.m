@@ -8,7 +8,7 @@ classdef preparser < userdataobj
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
     properties
-        fname = '';
+        FName = '';
         code = '';
         labels = fragileobj();
         assign = struct();
@@ -43,8 +43,8 @@ classdef preparser < userdataobj
             if ischar(inpFiles)
                 inpFiles = {inpFiles};
             end
-            This.fname = [This.fname,sprintf(' & %s',inpFiles{:})];
-            This.fname(1:3) = '';
+            This.FName = [This.FName,sprintf(' & %s',inpFiles{:})];
+            This.FName(1:3) = '';
             % Parse options.
             if ~isempty(varargin) && isstruct(varargin{1})
                 opt = varargin{1};
@@ -76,7 +76,7 @@ classdef preparser < userdataobj
         
         function disp(This)
             fprintf('\tpreparser object <a href="matlab:edit %s">%s</a>\n', ...
-                This.fname,This.fname);
+                This.FName,This.FName);
             disp@userdataobj(This);
             disp(' ');
         end

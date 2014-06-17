@@ -15,7 +15,7 @@ Flag = true;
 switch Query
     
     case 'file'
-        X = This.fname;
+        X = This.FName;
         
     otherwise
         Flag = false;

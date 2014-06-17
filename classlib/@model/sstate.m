@@ -124,10 +124,10 @@ function [This,Flag,NPath,EigVal] = sstate(This,varargin)
 if ischar(opt.linear) && strcmpi(opt.linear,'auto')
     changeLinear = false;
 else
-    changeLinear = This.linear ~= opt.linear;
+    changeLinear = This.IsLinear ~= opt.linear;
     if changeLinear
-        wasLinear = This.linear;
-        This.linear = opt.linear;
+        wasLinear = This.IsLinear;
+        This.IsLinear = opt.linear;
     end
 end
 
@@ -138,7 +138,7 @@ end
 [sstateOpt,This] = mysstateopt(This,'verbose',varargin{:});
 opt.solve = mysolveopt(This,'verbose',opt.solve);
 
-if ~This.linear
+if ~This.IsLinear
     
     % Non-linear models
     %-------------------
@@ -159,7 +159,7 @@ else
 end
 
 if changeLinear
-    This.linear = wasLinear;
+    This.IsLinear = wasLinear;
 end
 
 end

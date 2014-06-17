@@ -303,11 +303,11 @@ xRange = Range(1)-1 : Range(end);
 if ~opt.contributions
     hData = hdataobj(This,xRange,nLoop);
 else
-    hData = hdataobj(This,xRange,ne+2,'Contrib=',@E);
+    hData = hdataobj(This,xRange,ne+2,'Contributions=',@E);
 end
 
 % Maximum expansion needed.
-s.tplusk = max([1,lastEa,lastEndgA,s.NPerNonlin]) - 1;
+s.TPlusK = max([1,lastEa,lastEndgA,s.NPerNonlin]) - 1;
 
 % Create anonymous functions for retrieving anticipated and unanticipated
 % values, and for combining anticipated and unanticipated values.
@@ -318,7 +318,7 @@ s = simulate.antunantfunc(s,opt.anticipate);
 
 isSol = true(1,nLoop);
 
-if opt.progress && (This.linear || opt.display == 0)
+if opt.progress && (This.IsLinear || opt.display == 0)
     s.progress = progressbar('IRIS model.simulate progress');
 else
     s.progress = [];

@@ -56,7 +56,7 @@ for i = inx
 end
 
 % Replacements in steady-state equations.
-if ~This.linear 
+if ~This.IsLinear 
     for i = inx
         ic = sprintf('%g',i);
         switch flNameType(i)

@@ -18,7 +18,7 @@ ne = sum(This.nametype == 3);
 switch Query
     
     case 'file'
-        X = This.fname;
+        X = This.FName;
         
     case {'carryon','carryaround','export'}
         X = This.Export;
@@ -99,7 +99,7 @@ switch Query
         end
         
     case 'build'
-        X = This.build;
+        X = This.Build;
 
     % Equations
     %-----------

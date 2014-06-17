@@ -10,7 +10,7 @@ function S = myprepsimulate(This,S,IAlt)
 % The input struct `S` must include the followin fields:
 %
 % * `.isnonlin` - true if a non-linear simulate is requested;
-% * `.tplusk` - farthest expansion needed;
+% * `.TPlusK` - farthest expansion needed;
 %
 % The output struct `S` returns the following new fields:
 %
@@ -63,14 +63,14 @@ for ii = 1 : numel(S.Expand)
 end
 
 % Expand solution forward up to t+k if needed.
-if S.tplusk > 0
+if S.TPlusK > 0
     if S.isNonlin && (ne > 0 || nn > 0)
         % Expand solution forward to t+k for both shocks and non-linear
         % add-factors.
-        [S.R,S.Y] = model.myexpand(S.R,S.Y,S.tplusk,S.Expand{1:6});
+        [S.R,S.Y] = model.myexpand(S.R,S.Y,S.TPlusK,S.Expand{1:6});
     elseif ne > 0
         % Expand solution forward to t+k for shocks only.
-        S.R = model.myexpand(S.R,[],S.tplusk,S.Expand{1:5},[]);
+        S.R = model.myexpand(S.R,[],S.TPlusK,S.Expand{1:5},[]);
     end
 end
 

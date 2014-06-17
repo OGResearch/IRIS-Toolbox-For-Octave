@@ -131,7 +131,7 @@ for eq = first : LossPos
         end
         
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
-        if ~This.linear
+        if ~This.IsLinear
             dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
         end
 
@@ -149,7 +149,7 @@ for eq = first : LossPos
         if isempty(NewEqtn{newEq})
             NewEqtn{newEq} = '=0;';
             NewEqtnF{newEq} = ';';
-            if ~This.linear
+            if ~This.IsLinear
                 NewEqtnS{newEq} = ';';
             end
         end
@@ -162,7 +162,7 @@ for eq = first : LossPos
         end
         NewEqtn{newEq} = [dEqtn,sign,NewEqtn{newEq}];
         NewEqtnF{newEq} = [dEqtnF,sign,NewEqtnF{newEq}];
-        if ~This.linear
+        if ~This.IsLinear
             NewEqtnS{newEq} = [dEqtnS,sign,NewEqtnS{newEq}];
             % Earmark the derivative for non-linear simulation if at least one equation
             % in it is non-linear and the derivative is non-zero. The derivative of the
@@ -175,7 +175,7 @@ for eq = first : LossPos
     end
 end
 
-if ~This.linear
+if ~This.IsLinear
     % Replace = with #= in non-linear human equations.
     NewEqtn(NewNonlin) = strrep(NewEqtn(NewNonlin),'=0;','=#0;');
 end

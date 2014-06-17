@@ -131,7 +131,7 @@ for iAlt = SelAlt
             flagTrans = doTrans();
         end
         if ~flagTrans || ~flagMeas
-            if ~This.linear && ~mychksstate(This)
+            if ~This.IsLinear && ~mychksstate(This)
                 NPath(iAlt) = -4;
                 continue;
             else

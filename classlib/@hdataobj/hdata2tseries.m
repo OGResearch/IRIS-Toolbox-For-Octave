@@ -49,11 +49,11 @@ for i = 1 : length(This.Id)
         s = size(D.(jName).data);
         D.(jName).Comment = repmat({''},[1,s(2:end)]);
         D.(jName) = mytrim(D.(jName));
-        if isempty(This.Contrib)
+        if isempty(This.Contributions)
             D.(jName) = comment(D.(jName),This.Label{pos});
         else
             D.(jName) = comment(D.(jName), ...
-                utils.concomment(jName,This.Contrib,This.Log(pos)));
+                utils.concomment(jName,This.Contributions,This.Log(pos)));
         end
         
         % Free memory.

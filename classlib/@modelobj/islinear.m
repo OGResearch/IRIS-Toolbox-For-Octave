@@ -39,6 +39,6 @@ function Flag = islinear(This)
 
 %**************************************************************************
 
-Flag = This.linear;
+Flag = This.IsLinear;
 
 end

@@ -43,7 +43,7 @@ Opt = passvalopt(['model.mysstate',Mode],varargin{:});
 
 %--------------------------------------------------------------------------
 
-if This.linear
+if This.IsLinear
     
     % Linear sstate solver
     %----------------------

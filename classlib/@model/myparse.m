@@ -26,7 +26,7 @@ if ~isempty(strfind(P.code,'!linear'))
         'and this feature will be removed from a future version of IRIS. ', ...
         'Use the option ''linear='' in the function model() instead.']);
 
-    This.linear = true;
+    This.IsLinear = true;
 end
 
 % Run the parser
@@ -82,7 +82,7 @@ This.outside = reporting(p1);
 n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS(end+(1:n)) = eqtnS;
 else
     This.EqtnS(end+(1:n)) = {''};
@@ -104,7 +104,7 @@ end
 n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS(end+(1:n)) = eqtnS;
 else
     This.EqtnS(end+(1:n)) = {''};
@@ -188,14 +188,14 @@ This.eqtn = cleanup(This.eqtn,P.labels);
 % Remove ! from math functions.
 % This is for bkw compatibility only.
 This.eqtnF = strrep(This.eqtnF,'!','');
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS = strrep(This.EqtnS,'!','');
 end
 
 % Remove blank spaces.
 This.eqtn = regexprep(This.eqtn,{'\s+','".*?"'},{'',''});
 This.eqtnF = regexprep(This.eqtnF,'\s+','');
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS = regexprep(This.EqtnS,'\s+','');
 end
 
@@ -244,7 +244,7 @@ This.occurS = false(nEqtn,nName);
 % Steady-state equations
 %------------------------
 
-if ~This.linear
+if ~This.IsLinear
     % If no steady-state version exists, copy the full equation.
     isEmptySstate = cellfun(@isempty,This.EqtnS) & This.eqtntype <= 2;
     This.EqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
@@ -367,7 +367,7 @@ if isLoss
     This.eqtn(lossPos:last) = newEqtn(lossPos:last);
     This.eqtnF(lossPos:last) = newEqtnF(lossPos:last);
     
-    if ~This.linear
+    if ~This.IsLinear
         % Add sstate equations. Note that we must at least replace the old equation
         % in `lossPos` position (which was the objective function) with the new
         % equation (which is a derivative wrt to the first variables).
@@ -545,7 +545,7 @@ This.nametype = floor(This.nametype);
         func = @(c) ~cellfun(@(x) isempty(strfind(x,'&')),c);
         inx = func(This.eqtnF);
         % Not allowed in linear models.
-        if This.linear
+        if This.IsLinear
             if any(inx)
                 utils.error('model',[ep, ...
                     'Steady-state references not allowed ', ...

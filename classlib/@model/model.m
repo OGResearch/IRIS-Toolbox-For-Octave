@@ -128,14 +128,6 @@ classdef model < modelobj & estimateobj
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
-        % Name of the original model file.
-        %fname = '';
-        % Carry-on packages.
-        %Export = '';
-        % Linear or non-linear model.
-        % linear = false;
-        % List of functions with user derivatives.
-        % userdifflist = cell(1,0);
         % Vector [1-by-nname] of positions of shocks assigned to variables for
         % `autoexogenise`.
         Autoexogenise = nan(1,0);
@@ -490,7 +482,7 @@ classdef model < modelobj & estimateobj
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
                     doOptions();
-                    This.linear = opt.linear;
+                    This.IsLinear = opt.linear;
                     [This,asgn] = myfile2model(This,fileName,opt);
                     This = mymodel2model(This,asgn,opt);
                 elseif isa(varargin{1},'model')

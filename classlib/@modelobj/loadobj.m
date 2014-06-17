@@ -20,6 +20,7 @@ catch
     This.namealias(:) = {''};
 end
 
+
 % Create empty aliases for equatios if missing.
 try
     if isempty(This.eqtnalias)
@@ -31,15 +32,25 @@ catch
     This.eqtnalias(:) = {''};
 end
 
+
 % Handle carry-around functions.
 try %#ok<TRYNC>
     if iscell(This.Export)
-        Export = struct('filename',{},'content',{});
+        Export = struct('FName',{},'Content',{});
         for i = 1 : 2 : length(This.Export)
-            Export(end+1).filename = This.Export{i}; %#ok<AGROW>
-            Export(end).content = This.Export{i+1};
+            Export(end+1).FName = This.Export{i}; %#ok<AGROW>
+            Export(end).Content = This.Export{i+1};
         end
         This.Export = Export;
+    elseif isstruct(This.Export)
+        if isfield(This.Export,'filename')
+            This.Export.FName = This.Export.filename;
+            This.Export = rmfield(This.Export,'filename');
+        end
+        if isfield(This.Export,'content')
+            This.Export.Content = This.Export.content;
+            This.Export = rmfield(This.Export,'content');
+        end
     end
 end
 
@@ -52,11 +63,18 @@ try
 catch
     This.LogSign = double(This.log);
 end
-    
+
+
 
 % Create and save carry-around files.
 try %#ok<TRYNC>
     export(This);
 end
+
+
+try %#ok<TRYNC>
+    This.IsLinear = This.linear;
+end
+
 
 end

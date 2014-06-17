@@ -8,7 +8,7 @@ function Affected = myaffectedeqtn(This,iAlt,Opt)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
-    Opt.linear = This.linear;
+    Opt.linear = This.IsLinear;
 end
 
 %--------------------------------------------------------------------------

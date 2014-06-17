@@ -18,11 +18,11 @@ ixEmpty = cellfun(@isempty,label);
 label(ixEmpty) = This.name(ixEmpty);
 H.Label = label;
 
-if isequal(H.Contrib,@E)
-    H.Contrib = [ This.name(This.nametype == 3), ...
+if isequal(H.Contributions,@E)
+    H.Contributions = [ This.name(This.nametype == 3), ...
         {'Init+Const'}, {'Nonlinear'} ];
-elseif isequal(H.Contrib,@Y)
-    H.Contrib = This.name(This.nametype == 1);
+elseif isequal(H.Contributions,@Y)
+    H.Contributions = This.name(This.nametype == 1);
 end
 
 end

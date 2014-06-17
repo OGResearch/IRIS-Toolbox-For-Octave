@@ -65,7 +65,7 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 opt = passvalopt('model.system',varargin{:});
 
 if ischar(opt.linear) && strcmpi(opt.linear,'auto')
-    opt.linear = This.linear;
+    opt.linear = This.IsLinear;
 end
 
 %--------------------------------------------------------------------------

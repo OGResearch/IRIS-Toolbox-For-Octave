@@ -602,7 +602,7 @@ end
         s2.WghtA = [];
         s2.WghtU = [];
         s2.NPerNonlin = Opt.nonlinear;
-        s2.tplusk = s2.NPerNonlin - 1;
+        s2.TPlusK = s2.NPerNonlin - 1;
         s2.progress = [];
         s2.a0 = [];
         s2.e = zeros(ne,1);

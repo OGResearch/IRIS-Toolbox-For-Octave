@@ -23,7 +23,7 @@ offsetG = sum(This.nametype < 5);
 % Steady-state equations
 %------------------------
 
-if ~This.linear
+if ~This.IsLinear
     nameCurr = cell(size(This.eqtn));
     
     % Look for x(10).

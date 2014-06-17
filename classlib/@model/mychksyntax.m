@@ -22,7 +22,7 @@ g = zeros(sum(This.nametype == 5),1);
 
 % Create a random vector `x` for dynamic links. In dynamic links, we allow
 % std and corr names to occurs, and append them to the assign vector.
-std = double(This.linear)*1 + double(~This.linear)*log(1.01);
+std = double(This.IsLinear)*1 + double(~This.IsLinear)*log(1.01);
 if any(This.eqtntype == 4)
     xs = [rand(1,nName,1),std*ones(1,ne),zeros(1,ne*(ne-1)/2)];
 end
@@ -39,7 +39,7 @@ catch
 end
 
 % Steady-state equations.
-if ~This.linear
+if ~This.IsLinear
     inx = ~isLink;
     try
         e = str2func(['@(x,dx,L,t,ttrend,g) [',This.EqtnS{inx},']']);
@@ -93,7 +93,7 @@ end
                     e(xs,[],[],1,[],g);
                 end
                 
-                if This.linear ...
+                if This.IsLinear ...
                         || This.eqtntype(iiEq) > 2 ...
                         || isempty(This.EqtnS{iiEq})
                     continue
