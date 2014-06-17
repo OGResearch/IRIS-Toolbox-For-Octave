@@ -35,7 +35,6 @@ switch lower(Req)
             end
             varargout{1}{end+1} = root;
         end
-        clear functions;
         rehash();
     case 'addroot'
         % Add the specified root to the temporary search paths.
@@ -72,17 +71,24 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function xxRmPath(varargin)
 status = warning('query','all');
 warning('off','MATLAB:rmpath:DirNotFound');
 rmpath([varargin{:}]);
 warning(status);
-end % xxRmPath().
+end % xxRmPath()
+
 
 %**************************************************************************
+
+
 function [Root,P] = xxGenPathCell(Root,Exclude)
 % Use `genpath` to generate path string and remove paths that include
 % patterns specified in `exclude`.
@@ -129,4 +135,4 @@ if nargin > 1 && ~isempty(Exclude) && ~isempty(P)
     end
     P = P(keep);
 end
-end % xxGenPathCell().
+end % xxGenPathCell()

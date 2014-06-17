@@ -79,12 +79,11 @@ end
 
 % Reset the configuration file.
 munlock irisconfigmaster;
-clear functions;
+irisconfigmaster();
 irisreset(varargin{:});
 config = irisget();
 
 munlock passvalopt;
-clear functions;
 passvalopt();
 
 version = irisget('version');
