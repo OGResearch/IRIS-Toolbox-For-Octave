@@ -164,8 +164,6 @@ nOmg = size(opt.omega,3);
 
 nLoop = max([nAlt,nDataY,nDataX,nDataE,nCond,nInst,nOmg]);
 
-retResiduals = opt.returnresiduals;
-
 % Stack initial conditions.
 y0 = y(:,1:p,:);
 y0 = y0(:,p:-1:1,:);

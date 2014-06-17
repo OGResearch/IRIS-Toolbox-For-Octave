@@ -19,10 +19,10 @@ H.Name = [ This.YNames, This.XNames, This.ENames, This.INames ];
 H.Log = false(size(H.Name));
 H.Label = [ This.YNames, This.XNames, This.ENames, This.INames ];
 
-if isequal(H.Contrib,@E)
-    H.Contrib = [ This.ENames, {'Init+Const'} ];
-elseif isequal(H.Contrib,@Y)
-    H.Contrib = This.YNames;
+if isequal(H.Contributions,@E)
+    H.Contributions = [ This.ENames, {'Init+Const'}, {'Exog'} ];
+elseif isequal(H.Contributions,@Y)
+    H.Contributions = This.YNames;
 end
 
 end

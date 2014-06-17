@@ -50,7 +50,7 @@ switch Query
         % Constant vector or matrix (for panel VARs).
         Ans = This.K;
         
-    case 'f'
+    case 'j'
         % Coefficient matrix in front exogenous inputs.
         Ans = This.J;
         
