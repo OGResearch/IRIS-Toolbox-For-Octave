@@ -59,14 +59,14 @@ elseif strcmpi(opt.ordering,'preserve')
     opt.ordering = 1 : nData;
 end
 
-for i = 1 : nPer
-    if all(isnan(Y(i,:)))
+for t = 1 : nPer
+    if all(isnan(Y(t,:)))
         continue
     end
     if isnumeric(opt.ordering)
         % User-spec ordering of same-sign contributions.
         sortInx = opt.ordering;
-        ySort = Y(i,sortInx);
+        ySort = Y(t,sortInx);
         isNegative = ySort < 0;
         ySort = [ ...
             sum(ySort(isNegative)); ...
@@ -77,7 +77,7 @@ for i = 1 : nPer
             [fliplr(sortInx(isNegative)),sortInx(~isNegative)];
     elseif ischar(opt.ordering)
         % Use `sort` with 'ascend' or 'descend'.
-        [ySort,sortInx] = sort(Y(i,:),2,opt.ordering);
+        [ySort,sortInx] = sort(Y(t,:),2,opt.ordering);
         isNegative = ySort < 0;
         ySort = [ ...
             sum(ySort(isNegative)); ...
@@ -91,9 +91,9 @@ for i = 1 : nPer
     % run `fill` on all periods at once.
     for j = 1 : nData
         pos = find(sortInx == j);
-        yy(:,i,j) = cySort([pos,pos,pos+1,pos+1],1);
+        yy(:,t,j) = cySort([pos,pos,pos+1,pos+1],1);
     end
-    xx(:,i) = X(i)+[-1;1;1;-1]*d;
+    xx(:,t) = X(t)+[-1;1;1;-1]*d;
 end
 
 % Plot bars for one series and all periods at once.
@@ -105,8 +105,13 @@ for j = 1 : nData
     H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
 end
 
-% Make all bar clusters invisible except the first one.
-grfun.excludefromlegend(H(2:end,:));
+% Make all bar clusters invisible except the first period with all non-zero
+% entries, or the one with the most non-zero entries.
+nnzY = sum(isfinite(Y) & (Y ~= 0),2);
+[~,pos] = sort(nnzY,'descend');
+ixExclude = true(1,nPer);
+ixExclude(pos(1)) = false;
+grfun.excludefromlegend(H(ixExclude,:));
 
 % Reset `nextPlot` to its original status.
 set(Ax,'nextPlot',nextPlot);
