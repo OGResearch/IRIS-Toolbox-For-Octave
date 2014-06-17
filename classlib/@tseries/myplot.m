@@ -146,7 +146,7 @@ try
     isTimeNan = isequaln(Time,NaN);
 catch %#ok<CTCH>
     % Old syntax.
-    isTimeNan = isequaln(Time,NaN); %#ok<FPARK>
+    isTimeNan = isequalwithequalnans(Time,NaN); %#ok<FPARK>
 end
 
 % Set up the x-axis with proper dates. Do not do this if `time` is NaN,

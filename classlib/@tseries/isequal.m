@@ -33,8 +33,15 @@ function Flag = isequal(This,That)
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 Flag = isequal@userdataobj(This,That) ...
-    && isequaln(This.start,That.start) ...
-    && isequaln(This.data,That.data);
+    && isequalnFunc(This.start,That.start) ...
+    && isequalnFunc(This.data,That.data);
 
 end

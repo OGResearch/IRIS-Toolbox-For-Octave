@@ -28,6 +28,13 @@ function Flag = cellstrwithnans(X)
 
 %--------------------------------------------------------------------------
 
-Flag = all(cellfun(@(x) ischar(x) || isequaln(x,NaN),X(:)));
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
+Flag = all(cellfun(@(x) ischar(x) || isequalnFunc(x,NaN),X(:)));
 
 end

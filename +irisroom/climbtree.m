@@ -3,6 +3,13 @@ function Tree = climbtree()
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 [~,inDescript,inFile,inHelpText] = xxHeadline('Contents/index');
 
 Tree = struct();
@@ -39,7 +46,7 @@ for i = 1 : nChapter
             xxPopulateFile(foFileName{j});
         nFile = length(fiFileName);
         for k = 1 : nFile
-            if ~isempty(fiFileName{k}) && ~isequaln(fiFileName{k},NaN)
+            if ~isempty(fiFileName{k}) && ~isequalnFunc(fiFileName{k},NaN)
                 [~,thisFiField] = fileparts(fiFileName{k});
             else
                 thisFiField = fiSyntax{k};

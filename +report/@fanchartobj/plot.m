@@ -9,6 +9,13 @@ function Leg = plot(This,Ax)
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 % Create the line plot first using the parent's method.
 [Leg,h,time,cData,grid] = plot@report.seriesobj(This,Ax);
 grid = grid(:);
@@ -77,7 +84,7 @@ for i = 1 : nint
     end
 end
 
-if isequaln(This.options.fanlegend,NaN)
+if isequalnFunc(This.options.fanlegend,NaN)
     grfun.excludefromlegend(pt(:));
     Leg(1:nint) = [];
 end

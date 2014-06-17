@@ -43,7 +43,15 @@ function varargout = nextplot(x,varargin)
 
 %--------------------------------------------------------------------------
 
-none = nargin > 0 && isequaln(x,NaN);
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
+
+none = nargin > 0 && isequalnFunc(x,NaN);
 
 % Open a new figure and initialise subplot data.
 if nargin > 0 && ~none
