@@ -173,12 +173,19 @@ for iLoop = 1 : nLoop
     isConst = ~opt.deviation;
     if opt.contributions
         if iLoop <= ny
+            % Contributions of shocks.
             inx = true(1,ny);
             inx(iLoop) = false;
             e(inx,:,iLoop) = 0;
             isConst = false;
-        else
+        elseif iLoop == ny+1
+            % Contributions of init and const.
             e(:,:,iLoop) = 0;
+            isConst = true;
+        elseif iLoop == ny+2
+            % Contributions of exogenous inputs.
+            e(:,:,iLoop) = 0;
+            isConst = false;
         end
     end
     
