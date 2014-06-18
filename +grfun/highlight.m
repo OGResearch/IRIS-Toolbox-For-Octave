@@ -95,13 +95,6 @@ for iAx = Ax(:).'
     % Move grid to the foreground for the grid to be visible.
     set(h,'layer','top');
     
-    % Change grid style in HG2 back to black dotted line for the grid lines
-    % not to interfere so much with the plotted data.
-    if is.hg2()
-        set(h,'gridLineStyle',':', ...
-            'gridColor',0.7*[1,1,1]);
-    end
-    
     % NOTE: Instead of moving the grid to the foreground, we could use
     % transparent color for the highligh object (faceAlpha). This is
     % however not supported by the Painters renderer.
@@ -125,7 +118,8 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    yData = realmax*[-1,-1,1,1];
+    %yData = realmax*[-1,-1,1,1];
+    yData = 1e10*[-1,-1,1,1];
     xData = timeScale([1,2,2,1]);
     pt = patch(xData,yData,opt.color, ...
        'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...

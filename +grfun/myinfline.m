@@ -64,7 +64,8 @@ if isVertical
     end
 end
 
-infLim = realmax()*[-1,1];
+%infLim = realmax()*[-1,1];
+infLim = 1e10*[-1,1];
 
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
