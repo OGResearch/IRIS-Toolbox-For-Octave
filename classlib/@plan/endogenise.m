@@ -1,4 +1,4 @@
-function This = endogenise(This,List,Dates,Weight)
+function This = endogenise(This,List,Dates,Sigma)
 % endogenise  Endogenise shocks or re-endogenise variables at the specified dates.
 %
 % Syntax
@@ -20,9 +20,9 @@ function This = endogenise(This,List,Dates,Weight)
 % * `Dates` [ numeric ] - Dates at which the shocks or variables will be
 % endogenised.
 %
-% * `Sigma` [ numeric ] - Select the anticipation mode, and assign a weight
-% to the shock in the case of underdetermined simulation plans; if omitted,
-% `Sigma = 1`.
+% * `Sigma` [ numeric ] - Anticipation mode (real or imaginary) for the
+% endogenized shocks, and their numerical weight (used in underdetermined
+% simulation plans); if omitted, `Sigma = 1`.
 %
 % Output arguments
 % =================

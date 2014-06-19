@@ -44,7 +44,7 @@ classdef plan < userdataobj & getsetobj
     % * [`condition`](plan/condition) - Condition forecast upon the specified variables at the specified dates.
     % * [`endogenise`](plan/endogenise) - Endogenise shocks or re-endogenise variables at the specified dates.
     % * [`exogenise`](plan/exogenise) - Exogenise variables or re-exogenise shocks at the specified dates.
-    % * [`nonlinearise`](plan/nonlinearise) - Select equations for simulation in an exact non-linear mode.
+    % * [`swap`](plan/swap) - 
     %
     % Referencing plan objects
     % ==========================
