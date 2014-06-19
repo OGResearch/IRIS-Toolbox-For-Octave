@@ -131,7 +131,7 @@ P = endogenise(P,Dates,List,Sigma)</code></pre>
 <li><p><code>P</code> [ plan ] - Simulation plan.</p></li>
 <li><p><code>List</code> [ cellstr | char ] - List of shocks that will be endogenised, or list of variables that will be re-endogenise.</p></li>
 <li><p><code>Dates</code> [ numeric ] - Dates at which the shocks or variables will be endogenised.</p></li>
-<li><p><code>Sigma</code> [ numeric ] - Select the anticipation mode, and assign a weight to the shock in the case of underdetermined simulation plans; if omitted, <code>Sigma = 1</code>.</p></li>
+<li><p><code>Sigma</code> [ numeric ] - Anticipation mode (real or imaginary) for the endogenized shocks, and their numerical weight (used in underdetermined simulation plans); if omitted, <code>Sigma = 1</code>.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>

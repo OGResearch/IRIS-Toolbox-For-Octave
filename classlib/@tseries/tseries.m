@@ -125,7 +125,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % * [`interp`](tseries/interp) - Interpolate missing observations.
     % * [`normalise`](tseries/normalise) - Normalise (or rebase) data to particular date.
     % * [`pct`](tseries/pct) - Percent rate of change.
-    % * [`round`](tseries/round) - Round tseries data to specified number of decimals.
+    % * [`round`](tseries/round) - Round tseries values to specified number of decimals.
     % * [`rmse`](tseries/rmse) - Compute RMSE for given observations and predictions.
     % * [`stdise`](tseries/stdise) - Standardise tseries data by subtracting mean and dividing by std deviation.
     % * [`windex`](tseries/windex) - Simple weighted or Divisia index.

@@ -1,5 +1,5 @@
 classdef plan < userdataobj & getsetobj
-    % plan  Simulation Plans.
+    % plan  Model Simulation Plans.
     %
     % Simulation plans complement the use of the
     % [`model/simulate`](model/simulate) or
@@ -44,7 +44,7 @@ classdef plan < userdataobj & getsetobj
     % * [`condition`](plan/condition) - Condition forecast upon the specified variables at the specified dates.
     % * [`endogenise`](plan/endogenise) - Endogenise shocks or re-endogenise variables at the specified dates.
     % * [`exogenise`](plan/exogenise) - Exogenise variables or re-exogenise shocks at the specified dates.
-    % * [`swap`](plan/swap) - 
+    % * [`swap`](plan/swap) - Swap endogeneity and exogeneity of variables and shocks.
     %
     % Referencing plan objects
     % ==========================

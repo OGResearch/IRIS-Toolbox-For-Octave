@@ -118,24 +118,32 @@ code.LaTeX {
 
 
 
-<h2 id="plan/nonlinearise">nonlinearise</h2>
-<div class="headline">Select equations for simulation in an exact non-linear mode</div>
+<h2 id="plan/swap">swap</h2>
+<div class="headline">Swap endogeneity and exogeneity of variables and shocks</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>P = nonlinearise(P)
-P = nonlinearise(P,Range)
-P = nonlinearise(P,List,Range)</code></pre>
+<pre><code>P = swap(P,ExogList,EndogList,Dates)
+P = swap(P,ExogList,EndogList,Dates,Sigma)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>P</code> [ plan ] - Simulation plan object.</p></li>
-<li><p><code>List</code> [ cellstr ] - List of labels for equations that will be simulated in an exact non-linear mode; all selected equations must be marked by an <a href="../modellang/exactnonlin.html"><code>=#</code></a> mark in the model file. If <code>List</code> is not specified, all equations marked in the model file will be simulated in a non-linear mode.</p></li>
-<li><p><code>Range</code> [ numeric ] - Date range on which the equations will be simulated in an exact non-linear mode; currently, the range must start at the start of the plan range. If <code>Range</code> is not specified, the equations are non-linearised over the whole simulation range.</p></li>
+<li><p><code>P</code> [ plan ] - Simulation plan.</p></li>
+<li><p><code>ExogList</code> [ cellstr | char ] - List of variables that will be exogenized.</p></li>
+<li><p><code>EndogList</code> [ cellstr | char ] - List of shocks that will be endogenized.</p></li>
+<li><p><code>Dates</code> [ numeric ] - Dates at which the variables and shocks will be exogenized/endogenized.</p></li>
+<li><p><code>Sigma</code> [ numeric ] - Anticipation mode (real or imaginary) for the endogenized shocks, and their numerical weight (used in underdetermined simulation plans); if omitted, <code>Sigma = 1</code>.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>P</code> [ plan ] - Simulation plan with information on exact non-linear simulation included.</li>
+<li><code>P</code> [ plan ] - Simulation plan with new information on exogenized variables and endogenized shocks included.</li>
 </ul>
 <h4 id="description">Description</h4>
+<p>The function <code>swap</code> is equivalent to the following separate calls to functions <code>exogenize</code> and <code>endogenize</code>:</p>
+<pre><code>p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates);</code></pre>
+<p>or</p>
+<pre><code>p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates,Sigma);</code></pre>
+<p>if the input argument <code>Sigma</code> is provided.</p>
 <h4 id="example">Example</h4>
 
 </body>

@@ -135,7 +135,7 @@
         <tocitem target="model/xsf.html">xsf &#8212; Power spectrum and spectral density of model variables</tocitem>
         <tocitem target="model/zerodb.html">zerodb &#8212; Create model-specific zero-deviation database</tocitem>
     </tocitem>
-    <tocitem target="plan/Contents.html" image="HelpIcon.FUNCTION">Simulation Plans
+    <tocitem target="plan/Contents.html" image="HelpIcon.FUNCTION">Model Simulation Plans
         <tocitem target="plan/autoexogenise.html">autoexogenise &#8212; Exogenise variables and automatically endogenise corresponding shocks</tocitem>
         <tocitem target="plan/condition.html">condition &#8212; Condition forecast upon the specified variables at the specified dates</tocitem>
         <tocitem target="plan/detail.html">detail &#8212; Display details of a simulation plan</tocitem>
@@ -146,9 +146,9 @@
         <tocitem target="plan/nnzendog.html">nnzendog &#8212; Number of endogenised data points</tocitem>
         <tocitem target="plan/nnzexog.html">nnzexog &#8212; Number of exogenised data points</tocitem>
         <tocitem target="plan/nnznonlin.html">nnznonlin &#8212; Number of non-linearised data points</tocitem>
-        <tocitem target="plan/nonlinearise.html">nonlinearise &#8212; Select equations for simulation in an exact non-linear mode</tocitem>
         <tocitem target="plan/plan.html">plan &#8212; Create new, empty simulation plan object</tocitem>
         <tocitem target="plan/subsref.html">subsref &#8212; Subscripted reference for plan objects</tocitem>
+        <tocitem target="plan/swap.html">swap &#8212; Swap endogeneity and exogeneity of variables and shocks</tocitem>
     </tocitem>
     <tocitem target="grouping/Contents.html" image="HelpIcon.FUNCTION">Grouping Objects for Aggregation of Contributions
         <tocitem target="grouping/addgroup.html">addgroup &#8212; Add measurement variable group or shock group to grouping object</tocitem>
@@ -350,7 +350,7 @@
         <tocitem target="tseries/reshape.html">reshape &#8212; Reshape size of time series in 2nd and higher dimensions</tocitem>
         <tocitem target="tseries/resize.html">resize &#8212; Clip tseries object down to a specified date range</tocitem>
         <tocitem target="tseries/rmse.html">rmse &#8212; Compute RMSE for given observations and predictions</tocitem>
-        <tocitem target="tseries/round.html">round &#8212; Round tseries data to specified number of decimals</tocitem>
+        <tocitem target="tseries/round.html">round &#8212; Round tseries values to specified number of decimals</tocitem>
         <tocitem target="tseries/scatter.html">scatter &#8212; Scatter graph for tseries objects</tocitem>
         <tocitem target="tseries/single.html">single &#8212; Return tseries observations as single-precision numeric array</tocitem>
         <tocitem target="tseries/singledata.html">singledata &#8212; Convert tseries observations to single precision</tocitem>
