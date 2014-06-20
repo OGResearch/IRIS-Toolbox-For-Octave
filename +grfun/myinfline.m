@@ -28,12 +28,21 @@ if nAx > 1
     return
 end
 
+
 pp = inputParser();
-pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
-    && all(strcmp(get(x,'type'),'axes')));
-pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
-pp.addRequired('Pos',@isnumeric);
-pp.parse(Ax,Dir,Loc);
+if is.matlab % ##### MOSW
+    pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+        && all(strcmp(get(x,'type'),'axes')));
+    pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
+    pp.addRequired('Pos',@isnumeric);
+    pp.parse(Ax,Dir,Loc);
+else
+    pp = pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+        && all(strcmp(get(x,'type'),'axes')));
+    pp = pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
+    pp = pp.addRequired('Pos',@isnumeric);
+    pp = pp.parse(Ax,Dir,Loc);
+end
 
 [opt,lineOpt] = passvalopt('grfun.infline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
@@ -76,20 +85,45 @@ for i = 1 : nLoc
     % Matlab releases with HG1.
     if isVertical
         xCoor = Loc([i,i]);
-        yCoor = infLim;
+        if is.matlab % ##### MOSW
+            yCoor = infLim;% such a limits may cause OpenGL tesselation error in Octave
+        else
+            yCoor = get(Ax,'yLim');
+        end
     else
-        xCoor = infLim;
+        if is.matlab % ##### MOSW
+            xCoor = infLim;% such a limits may cause OpenGL tesselation error in Octave
+        else
+            xCoor = get(Ax,'xLim');
+        end
         yCoor = Loc([i,i]);
     end
     h = patch(xCoor,yCoor,[0,0,0], ...
        'parent',Ax,'edgeColor',[0,0,0],'faceColor','none', ...
        'yLimInclude','off','xLimInclude','off');
+   
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~is.matlab % ##### MOSW
+        grfun.mytrigexcludedfromlegend(Ax,'on');
+    end
     
     ch = get(Ax,'children');
-    % Move the vline object to the background
+    % Move the object to the background
     ch(ch == h) = [];
     ch(end+1) = h; %#ok<AGROW>
     set(Ax,'children',ch);
+    
+    % keep old behaviour for Octave
+    if ~is.matlab % ##### MOSW
+        xy = 'xy';
+        % Update infline x_OR_y-data whenever the parent axes x_OR_y-lims change.
+        grfun.listener(Ax,ln,'infline',xy(isVertical+1));
+    end
+    
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~is.matlab % ##### MOSW
+        grfun.mytrigexcludedfromlegend(Ax,'off');
+    end
     
     Ln = [Ln,h]; %#ok<AGROW>
     
