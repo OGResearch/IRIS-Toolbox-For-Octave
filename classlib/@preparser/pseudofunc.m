@@ -154,11 +154,11 @@ end % xxMovAvg()
 function C = xxShift(C,K)
 
 ptn = '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFunc = @doOneShift; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else
-    C = mosw.dregexprep(C,ptn,@doOneShift,[1,2]); %#ok<UNRCH>
+    C = octfun.dregexprep(C,ptn,'doOneShift',[1,2]); %#ok<UNRCH>
 end
 
 

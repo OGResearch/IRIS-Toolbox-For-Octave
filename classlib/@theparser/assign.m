@@ -44,10 +44,10 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         if isempty(value)
             continue
         end
-        if false % ##### MOSW
+        if is.matlab % ##### MOSW
             value = regexprep(value,ptn,'${rplFunc($0)}');
         else
-            value = mosw.dregexprep(value,ptn,@doReplaceNameValue,0); %#ok<UNRCH>
+            value = octfun.dregexprep(value,ptn,'doReplaceNameValue',0); %#ok<UNRCH>
         end
         
         try

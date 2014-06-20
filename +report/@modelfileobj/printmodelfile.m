@@ -73,15 +73,15 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            if false % ##### MOSW
+            if is.matlab % ##### MOSW
                 keywordsFunc = @doKeywords; %#ok<NASGU>
                 C = regexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
                     '${keywordsFunc($0)}');
             else
-                C = mosw.dregexprep(C, ...
+                C = octfun.dregexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-                    @doKeywords,0);
+                    'doKeywords',0);
             end
             % Line comments.
             if ~isempty(lineComment)
@@ -97,15 +97,15 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            if false % ##### MOSW
+            if is.matlab % ##### MOSW
                 paramValFunc = @doParamVal; %#ok<NASGU>
                 C = regexprep(C, ...
                     '(?<!!)\<\w+\>', ...
                     '${paramValFunc($0)}');
             else
-                C = mosw.dregexprep(C, ...
+                C = octfun.dregexprep(C, ...
                     '(?<!!)\<\w+\>', ...
-                    @doParamVal,0); %#ok<UNRCH>
+                    'doParamVal',0); %#ok<UNRCH>
             end
         end
         

@@ -43,10 +43,12 @@ This.rhs = regexprep(This.rhs, ...
 
 % Add prefix ? to all names consisting potentially of \w and \. not
 % followed by opening bracket.
-if ismatlab
+if is.matlab % ##### MOSW
     This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
 else
-    This.rhs = myregexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','${[''?'',$0]}');
+    repFun = @(c) strcat('?',c);
+    This.rhs = octfun.dregexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()', ...
+        'repFun',0);
 end
 
 This.rhs = strrep(This.rhs,'#','(t,:)');

@@ -66,11 +66,11 @@ end
 % Combine and process input blocks.
 inputblock = '';
 ptn = '!input.*?(?=!equations|$)';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFunc = @doReplaceInp; %#ok<NASGU>
     code = regexprep(code,ptn,'${replaceFunc($0)}');
 else
-    code = mosw.dregexprep(code,ptn,doReplaceInp,0); %#ok<UNRCH>
+    code = octfun.dregexprep(code,ptn,'doReplaceInp',0); %#ok<UNRCH>
 end
 
 % Throw away variable annotations.
@@ -274,11 +274,11 @@ invalidtime = {};
 ptn = '(\<[a-zA-Z]\w*\>)\{(.*?)\}';
 for i = 1 : nBlock
     % s.growth{i} = {};
-    if false % ##### MOSW
+    if is.matlab % ##### MOSW
         replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
         s.eqtn{i} = regexprep(s.eqtn{i},ptn,'${replaceTimeFunc($1,$2)}');
     else
-        s.eqtn{i} = mosw.dregexprep(s.eqtn{i},ptn,@doReplaceTime,[1,2]); %#ok<UNRCH>
+        s.eqtn{i} = octfun.dregexprep(s.eqtn{i},ptn,'doReplaceTime',[1,2]); %#ok<UNRCH>
     end
 end
 

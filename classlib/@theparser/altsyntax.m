@@ -20,11 +20,11 @@ reportInx = false(nBlkWarn,1);
 
 for iBlk = 1 : nBlkWarn
     ptn = ['\<',This.altBlkNameWarn{iBlk,1},'\>'];
-    if false % ##### MOSW
+    if is.matlab % ##### MOSW
         replaceFunc = @doReplace; %#ok<NASGU>
         This.code = regexprep(This.code,ptn,'${replaceFunc()}');
     else
-        This.code = mosw.dregexprep(This.code,ptn,@doReplace,[]); %#ok<UNRCH>
+        This.code = octfun.dregexprep(This.code,ptn,'doReplace',[]); %#ok<UNRCH>
     end
 end
 

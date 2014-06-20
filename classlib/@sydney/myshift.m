@@ -14,11 +14,11 @@ if Shift == 0
 end
 
 ptn = '\<x(\d+)([pm]\d+)?\>(?!\()';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFn = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFn($0,$1,$2)}');
 else
-    Eqtn = mosw.dregexprep(Eqtn,ptn,@doReplace,[0,1,2]); %#ok<UNRCH>
+    Eqtn = octfun.dregexprep(Eqtn,ptn,'doReplace',[0,1,2]); %#ok<UNRCH>
 end
 
 

@@ -14,11 +14,11 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % * all log variables with 1.
 
 ptn = '\<x\(:,(\d+),t[^\)]*\)';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFunc($0,$1)}');
 else
-    Eqtn = mosw.dregexprep(Eqtn,ptn,@doReplace,[0,1]); %#ok<UNRCH>
+    Eqtn = octfun.dregexprep(Eqtn,ptn,'doReplace',[0,1]); %#ok<UNRCH>
 end
 
 Eqtn = sydney.myeqtn2symb(Eqtn);

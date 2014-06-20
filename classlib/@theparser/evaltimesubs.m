@@ -40,12 +40,12 @@ ptn = '\{[^@].*?\}';
 s = regexp([Eqtn{:}],ptn,'once');
 if ~isempty(s)
     for iEq = 1 : nEqtn
-        if false % ##### MOSW
+        if is.matlab % ##### MOSW
             replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
             Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
         else
-            Eqtn{iEq} = mosw.dregexprep(Eqtn{iEq},ptn, ...
-                @doNonstandardTimeSubs,0); %#ok<UNRCH>
+            Eqtn{iEq} = octfun.dregexprep(Eqtn{iEq},ptn, ...
+                'doNonstandardTimeSubs',0); %#ok<UNRCH>
         end
     end
     if any(~ValidSubs)

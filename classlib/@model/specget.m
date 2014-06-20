@@ -355,19 +355,19 @@ end
             u = regexprep(u,'^@\(.*?\)','','once');
             
             ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
-            if false % ##### MOSW
+            if is.matlab % ##### MOSW
                 replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
             else
-                u = mosw.dregexprep(u,ptn,@doReplacePlusMinus,[1,2]); %#ok<UNRCH>
+                u = octfun.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
             end
             
             ptn = '\<x\>\(:,(\d+),t\)';
-            if false % ##### MOSW
+            if is.matlab % ##### MOSW
                 replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replaceZero($1)}');
             else
-                u = mosw.dregexprep(u,ptn,@doReplaceZero,1); %#ok<UNRCH>
+                u = octfun.dregexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
             end
             
             Ans{iieq} = u;

@@ -108,13 +108,13 @@ function OldFileCont = xxEnlargeBox(File,Enlarge)
 c = file2char(File);
 OldFileCont = c;
 
-if false % ##### MOSW 
+if is.matlab % ##### MOSW 
     replaceFunc = @doEnlargeBox; %#ok<NASGU>
     c = regexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
         '${replaceFunc($0,$1,$2,$3,$4)}');
 else
-    c = mosw.dregexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
-        @doEnlargeBox,[0,1,2,3,4]); %#ok<UNRCH>
+    c = octfun.dregexprep(c,'BoundingBox:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)', ...
+        'doEnlargeBox',[0,1,2,3,4]); %#ok<UNRCH>
 end
 
 char2file(c,File);

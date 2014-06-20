@@ -99,11 +99,11 @@ doNonlinEqtn();
             
             % Replace variables, shocks, and parameters.
             ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
-            if false % ##### MOSW
+            if is.matlab % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else
-                eqtn = mosw.dregexprep(eqtn,ptn,@doReplace,[1,2]); %#ok<UNRCH>
+                eqtn = octfun.dregexprep(eqtn,ptn,'doReplace',[1,2]); %#ok<UNRCH>
             end
             
             % Replace references to steady states, `L(:,15,t+5)` -> `L(15,t+5)`.

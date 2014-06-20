@@ -11,11 +11,11 @@ function [C,This] = protectquotes(C,This)
 %--------------------------------------------------------------------------
 
 ptn = '([''"])([^\n]*?)\1';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else
-    C = mosw.dregexprep(C,ptn,@doReplace,[1,2]); %#ok<UNRCH>
+    C = octfun.dregexprep(C,ptn,'doReplace',[1,2]); %#ok<UNRCH>
 end
 
 % Nested functions...

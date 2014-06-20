@@ -137,11 +137,11 @@ for eq = first : LossPos
 
         % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
         ptn = '([xL])(\d+)([pm]\d+)?';
-        if false % ##### MOSW
+        if is.matlab % ##### MOSW
             replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
         else
-            dEqtn = mosw.dregexprep(dEqtn,ptn,@doReplaceNames,[1,2,3]); %#ok<UNRCH>
+            dEqtn = octfun.dregexprep(dEqtn,ptn,'doReplaceNames',[1,2,3]); %#ok<UNRCH>
         end
         
         % Put together the derivative of the Lagrangian wrt to variable

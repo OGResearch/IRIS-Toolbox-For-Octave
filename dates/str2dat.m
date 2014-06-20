@@ -103,10 +103,11 @@ end
     
     function x = doPattern()
         x = upper(opt.dateformat);
-        if ismatlab
+        if is.matlab % ##### MOSW
             x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
         else
-            x = myregexprep(x,'[\.\+\{\}\(\)]','${[''\'',$0]}');
+            repFun = @(c) strcat('\',c);
+            x = myregexprep(x,'[\.\+\{\}\(\)]','repFun',0);
         end
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');

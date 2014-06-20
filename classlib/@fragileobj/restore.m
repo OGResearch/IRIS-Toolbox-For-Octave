@@ -18,11 +18,11 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     rplFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${rplFunc($0)}');
 else
-    C = mosw.dregexprep(C,ptn,@doReplace,0); %#ok<UNRCH>
+    C = octfun.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
 end
 
 

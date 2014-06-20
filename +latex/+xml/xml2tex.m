@@ -204,13 +204,13 @@ if ~isempty(y)
     inpCode = strfun.removetrails(inpCode);
     [~,n] = xxOriginalCode(inpCode);
     
-    if false % ##### MOSW
+    if is.matlab % ##### MOSW
         replace = @xxBookmarks; %#ok<NASGU>
         inpCode = regexprep(inpCode,'%\?(\w+)\?', ...
             '`${replace($1)}`');
     else
-        inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
-            @(C1) ['`',xxBookmarks(C1),'`'],1); %#ok<UNRCH>
+        inpCode = octfun.dregexprep(inpCode,'%\?(\w+)\?', ...
+            'xxBookmarks',1); %#ok<UNRCH>
     end
     
     C = [C,br, ...

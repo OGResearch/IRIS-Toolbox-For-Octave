@@ -25,11 +25,11 @@ allFlags = default(ones(size(allnames)));
 
 % Replace regular expressions \<...\> with the list of matched names.
 ptn = '\\?<(.*?)\\?>';
-if false % ##### MOSW
+if is.matlab % ##### MOSW
     replaceFunc = @doExpand; %#ok<NASGU>
     Blk = regexprep(Blk,ptn,'${replaceFunc($1)}');
 else
-    Blk = mosw.dregexprep(Blk,ptn,@doExpand,1); %#ok<UNRCH>
+    Blk = octfun.dregexprep(Blk,ptn,'doExpand',1); %#ok<UNRCH>
 end
 
 
