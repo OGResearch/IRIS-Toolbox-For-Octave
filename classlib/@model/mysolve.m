@@ -192,7 +192,7 @@ end
                 eigVal = -ordeig(SS,TT);
             else
                 lastwarn('');
-                [SS,TT,QQ,ZZ,eigVal] = myordqz(AA,BB,eigValTol); % leading block has ||eigVals|-1|<eigValTol; next block has |eigVal| >= 1 + eigValTol
+                [SS,TT,QQ,ZZ,eigVal] = octfun.myordqz(AA,BB,eigValTol); % leading block has ||eigVals|-1|<eigValTol; next block has |eigVal| >= 1 + eigValTol
                 isEmptyWarn = isempty(lastwarn());
                 % Ordered inverse eigvals.
                 eigVal = -eigVal;
