@@ -72,12 +72,13 @@ end
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
-function [Lhs,Rhs,Sign] = xxEqualSign(List)
 
+
+function [Lhs,Rhs,Sign] = xxEqualSign(List)
 nList = length(List);
 Lhs = strfun.emptycellstr(1,nList);
 Rhs = strfun.emptycellstr(1,nList);
@@ -92,5 +93,4 @@ for i = 1 : nList
         Rhs{i} = List{i};
     end
 end
-
 end % xxEqualSign()

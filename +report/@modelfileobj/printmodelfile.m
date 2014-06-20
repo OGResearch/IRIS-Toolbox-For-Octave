@@ -81,7 +81,7 @@ C = strrep(C,['\verb',esc,esc],'');
             else
                 C = mosw.dregexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-                    @doKeywords,0);
+                    @doKeywords,0); %#ok<UNRCH>
             end
             % Line comments.
             if ~isempty(lineComment)

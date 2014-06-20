@@ -135,6 +135,8 @@ doChkMultiple();
 
 
 %**************************************************************************
+
+    
     function doChkNamingRules()
         % Names must not start with 0-9 or _.
         iinx = This.nameBlk;
@@ -169,6 +171,8 @@ doChkMultiple();
 
 
 %**************************************************************************
+   
+    
     function doClearMultiple()
         % Take the last defined/assigned name in each name block.
         for iiBlk = find(This.nameBlk)
@@ -186,6 +190,8 @@ doChkMultiple();
 
 
 %**************************************************************************
+   
+    
     function doChkMultiple()
         % Check for multiple names unless `'multiple=' true`.
         iinx = This.nameBlk;
@@ -200,6 +206,8 @@ doChkMultiple();
 
 
 %**************************************************************************
+   
+    
     function doChkInvalid()
         ep = utils.errorparsing(This);
         
@@ -272,9 +280,10 @@ end
 
 
 %**************************************************************************
+
+
 function [Label,Alias] = xxGetAlias(Label)
 % xxGetAlias  Extract alias from raw label.
-
 if isempty(Label)
     Alias = Label;
     return
@@ -292,15 +301,15 @@ for i = 1 : length(Label)
 end
 Alias = strtrim(Alias);
 Label = strtrim(Label);
-
 end % xxGetAlias()
 
 
 %**************************************************************************
+
+
 function S = xxSstateOnly(S)
 % sstateonly  Replace full equations with steady-state equatoins when
 % present.
-
 for i = 1 : length(S)
     if isempty(S(i).eqtn)
         continue
@@ -322,5 +331,4 @@ for i = 1 : length(S)
         end
     end
 end
-
 end %% xxSstateOnly()
