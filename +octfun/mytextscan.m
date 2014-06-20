@@ -1,8 +1,14 @@
 function data = mytextscan(fid,varargin)
 
-if ismatlab
-    data = textscan(fid,varargin{:});
+if is.matlab()
+    
+    % Matlab
+    %--------
+    error('iris:octfun', 'This function must not be used in Matlab!');
 else
+    
+    % Octave
+    %--------
     if isnumeric(varargin{2}) && (varargin{2} == -1)
         varargin(2) = [];
     end
