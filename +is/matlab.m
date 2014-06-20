@@ -9,12 +9,6 @@ function Flag = matlab()
 
 %--------------------------------------------------------------------------
 
-Flag = false;
-try %#ok<TRYNC>
-    x = ver('Matlab');
-    if isstruct(x) && length(x) >= 1
-        Flag = true;
-    end
-end
+Flag = ~exist('OCTAVE_VERSION','builtin');
 
 end
