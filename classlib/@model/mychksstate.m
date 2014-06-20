@@ -91,21 +91,23 @@ end
     
     function doSstateEqtn()
         Discr = nan(nEqtnXY,2,nAlt);
-        eqtn = This.EqtnS(This.eqtntype <= 2);
+        isGrowth = true;
+        eqtnS = myfinaleqtns(This,isGrowth);
+        eqtnS = eqtnS(This.eqtntype <= 2);
         % Create anonymous funtions for sstate equations.
-        for ii = 1 : length(eqtn)
-            eqtn{ii} = str2func(['@(x,dx) ',eqtn{ii}]);
+        for ii = 1 : length(eqtnS)
+            eqtnS{ii} = str2func(['@(x,dx) ',eqtnS{ii}]);
         end
         for iiAlt = 1 : nAlt
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
             dx(This.log & dx == 0) = 1;
             % Evaluate discrepancies btw LHS and RHS of steady-state equations.
-            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtn)).';
+            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtnS)).';
             xk = x;
             xk(~This.log) = x(~This.log) + dx(~This.log);
             xk(This.log) = x(This.log) .* dx(This.log);
-            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtn)).';
+            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtnS)).';
         end
     end % doSstateEqtn()
 

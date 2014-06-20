@@ -42,11 +42,11 @@ end
 for i = inx
     switch flNameType(i)
         case {1,2,3,4}
-            % %(:,@+15,!5).
+            % `%(:,@+15,!5)`.
             ic = sprintf('%g',i);
             repl = ['%(:,!',ic,',@)'];
         case 5 % Exogenous variables.
-            % ?(!15,:).
+            % `?(!15,:)`.
             ic = sprintf('%g',i-offsetG);
             repl = ['?(!',ic,',:)'];
         otherwise
@@ -61,18 +61,15 @@ if ~This.IsLinear
         ic = sprintf('%g',i);
         switch flNameType(i)
             case {1,2} % Measurement and transition variables.
-                % %(!15) or #(!15) for log variables
-                if This.log(i)
-                    repl = ['#(!',ic,')'];
-                else
-                    repl = ['%(!',ic,')'];
-                end
+                % `%(!15)`.
+                repl = ['%(!',ic,')'];
             case 3 % Shocks.
                 repl = '0';
             case 4 % Parameters.
-                % %(!15).
+                % `%(!15)`.
                 repl = ['%(!',ic,')'];
             case 5 % Exogenous variables.
+                % `?(!15)`.
                 ic = sprintf('%g',i-offsetG);
                 repl = ['?(!',ic,')'];
             otherwise

@@ -291,7 +291,7 @@ classdef model < modelobj & estimateobj
         varargout = mydtrends4lik(varargin)
         varargout = myeqtn2afcn(varargin)
         varargout = myfile2model(varargin)
-        varargout = myfinaleqtn(varargin)
+        varargout = myfinaleqtns(varargin)
         varargout = myfind(varargin)
         varargout = myfindoccur(varargin)
         varargout = myforecastswap(varargin)

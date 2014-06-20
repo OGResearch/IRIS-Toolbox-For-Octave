@@ -14,6 +14,10 @@ t = This.tzero;
 nt = size(This.occur,2)/nName;
 ne = sum(This.nametype == 3);
 
+% Finalize sstate equations.
+isGrowth = false;
+eqtnS = myfinaleqtns(This,isGrowth);
+
 x = rand(1,nName,nt);
 dx = zeros(1,nName,nt);
 L = x;
@@ -42,7 +46,7 @@ end
 if ~This.IsLinear
     inx = ~isLink;
     try
-        e = str2func(['@(x,dx,L,t,ttrend,g) [',This.EqtnS{inx},']']);
+        e = str2func(['@(x,dx,L,t,ttrend,g) [',eqtnS{inx},']']);
         e(x,dx,L,t,ttrend,g);
     catch
         doLookUp('s',inx);
@@ -74,7 +78,7 @@ end
             if Type == 'f'
                 e = This.eqtnF{iiEq};
             else
-                e = This.EqtnS{iiEq};
+                e = eqtnS{iiEq};
             end
             
             if isempty(e)
@@ -95,11 +99,11 @@ end
                 
                 if This.IsLinear ...
                         || This.eqtntype(iiEq) > 2 ...
-                        || isempty(This.EqtnS{iiEq})
+                        || isempty(eqtnS{iiEq})
                     continue
                 end
                 
-                e = This.EqtnS{iiEq};
+                e = eqtnS{iiEq};
                 e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
                 e(x,dx,L,t,ttrend,g);               
             catch E

@@ -261,22 +261,26 @@ if ~This.IsLinear
     This.EqtnS = strrep(This.EqtnS,'&%','%');
     This.EqtnS = strrep(This.EqtnS,'&#','#');
     
-    % Replace
-    % * `%(!10){@-2}` with `(%(!10)-2*d%(!10))`;
-    % * `#(!10){@+2}` with `(#(!10)*d#(!10)^2)`;
-    % * `#(!10){@-2}` with `(#(!10)/d#(!10)^2)`;
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '%\(!(\d+)\)\{@([\+\-]\d+)\}', ...
-        '(%(!$1)$2*d%(!$1))');
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '#\(!(\d+)\)\{@\+?(\d+)\}', ...
-        '(#(!$1)*d#(!$1)^$2)');
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '#\(!(\d+)\)\{@\-(\d+)\}', ...
-        '(#(!$1)/d#(!$1)^$2)');
-    
     % Replace ?(!10) with g(10).
     This.EqtnS = strrep(This.EqtnS,'?(!','g(');
+
+    % Remove control codes from steady-state equations.
+    This.EqtnS = strrep(This.EqtnS,'%(','x(');
+    This.EqtnS = strrep(This.EqtnS,'(!','(');
+    This.EqtnS = strrep(This.EqtnS,'{@','{');
+    
+    % Replace
+    % * `log(exp(x(...)))` with `x(...)`;
+    % * `log(exp(x(...){-2}))` with `x(...){-2}`;
+    % This helps a lot.
+%     This.EqtnS = regexprep(This.EqtnS, ...
+%         'log\(exp\((x\(\d+\)(\{[\+\-]\d+\})?)\)\)', ...
+%         '$1');
+    
+    % Leave lags and leads in sstate equations *semifinished*, e.g.
+    % `x(15){-1}`. They are finalized immediately before evaluation since
+    % the final form of the equations depend on the log status of each
+    % variable.
     
 else
     This.EqtnS(:) = {''};
@@ -297,11 +301,6 @@ This.eqtnF = strrep(This.eqtnF,'}',')');
 % and corr names which have not been substituted for.
 doChkUndeclared();
 
-% Replace control codes in steady-state equations.
-This.EqtnS = strrep(This.EqtnS,'%','x');
-This.EqtnS = strrep(This.EqtnS,'#','x');
-This.EqtnS = strrep(This.EqtnS,'!','');
-
 % Replace control codes in full equations.
 % * Exogenous variables `?(!15,:)` -> `g(!15,:)`.
 % * Variables, parameters, shocks `%(:,!15,@+5)` -> `x(:,!15,@+5)`.
@@ -309,10 +308,10 @@ This.EqtnS = strrep(This.EqtnS,'!','');
 % * Time subscripts `@+5` -> `t+5`.
 % * Remove `!` from name positions.
 This.eqtnF = strrep(This.eqtnF,'?(!','g(');
-This.eqtnF = strrep(This.eqtnF,'%','x');
-This.eqtnF = strrep(This.eqtnF,'&x','L');
-This.eqtnF = strrep(This.eqtnF,'@','t');
-This.eqtnF = strrep(This.eqtnF,'!','');
+This.eqtnF = strrep(This.eqtnF,'%(','x(');
+This.eqtnF = strrep(This.eqtnF,'&x(','L(');
+This.eqtnF = strrep(This.eqtnF,',@',',t');
+This.eqtnF = strrep(This.eqtnF,'(:,!','(:,');
 
 % Check for orphan { and & after we have substituted for the valid
 % references.
@@ -413,8 +412,10 @@ This.nametype = floor(This.nametype);
 
     function doChkTimeSsref()
         % Check for { in full and steady-state equations.
+        isGrowth = false;
+        eqtnS = myfinaleqtns(This,isGrowth);
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
-            | ~cellfun(@isempty,strfind(This.EqtnS,'{'));
+            | ~cellfun(@isempty,strfind(eqtnS,'{'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid time subscript ', ...
@@ -423,7 +424,7 @@ This.nametype = floor(This.nametype);
         end
         % Check for & and $ in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'&')) ...
-            | ~cellfun(@isempty,strfind(This.EqtnS,'&'));
+            | ~cellfun(@isempty,strfind(eqtnS,'&'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid steady-state reference ', ...

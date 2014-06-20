@@ -153,6 +153,10 @@ else
     eqtnBlk{2} = find(This.eqtntype == 1);
 end
 
+% Finalize sstate equations.
+isGrowth = Opt.growth;
+eqtnS = myfinaleqtns(This,isGrowth);
+
 nBlk = length(nameBlkL);
 blkFunc = cell(1,nBlk);
 ixAssign = false(1,nBlk);
@@ -171,20 +175,16 @@ for ii = 1 : nBlk
     nameLPos = nameBlkL{ii};
     nameGPos = nameBlkG{ii};
     eqtnPos = eqtnBlk{ii};
-    eqtn = This.EqtnS(eqtnPos);
+    iiBlkEqtn = eqtnS(eqtnPos);
     
     % Check if this is a plain, single-equation assignment. If it is an
     % assignment, remove the LHS from `eqtn{1}`, and create a function
     % handle the same way as in other blocks.
     doTestAssign();
-    
-    % Create an anonymous function handle for each block.
-    % Replace log(exp(x(...))) with x(...). This helps a lot.
-    eqtn = regexprep(eqtn,'log\(exp\(x\((\d+)\)\)\)','x($1)');
-    
+        
     % Create a function handle used to evaluate each block of
     % equations or assignments.
-    blkFunc{ii} = str2func(['@(x,dx) [',eqtn{:},']']);
+    blkFunc{ii} = str2func(['@(x,dx) [',iiBlkEqtn{:},']']);
 end
 
 if isSwap
@@ -289,7 +289,7 @@ Opt.zeroGInx = zeroGInx;
     function doTestAssign()
         % Test for plain assignment: One equation with one variable solved
         % for on the LHS.
-        if length(eqtn) > 1 || length(nameLPos) > 1 || length(nameGPos) > 1
+        if length(iiBlkEqtn) > 1 || length(nameLPos) > 1 || length(nameGPos) > 1
             return
         end
         namePos = nameLPos;
@@ -301,10 +301,10 @@ Opt.zeroGInx = zeroGInx;
         nLhs = length(lhs);
         % The variables that is this block solved for is the only thing on
         % the LHS but does not occur on the RHS.
-        ixAssign(ii) = strncmp(eqtn{1},lhs,nLhs) ...
-            && isempty(strfind(eqtn{1}(nLhs+1:end),xn));
+        ixAssign(ii) = strncmp(iiBlkEqtn{1},lhs,nLhs) ...
+            && isempty(strfind(iiBlkEqtn{1}(nLhs+1:end),xn));
         if ixAssign(ii)
-            eqtn{1}(1:nLhs) = '';
+            iiBlkEqtn{1}(1:nLhs) = '';
         end
     end % doTestAssing()
 
