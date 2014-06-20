@@ -12,7 +12,7 @@ Cp = zeros(1,0);
 
 % Look for non-legend axes objects one level deep; this allows figure
 % handles to be entered instead of axes objects.
-Ax = findobj(Ax,'type','axes','-depth',1,'-not','tag','legend');
+Ax = findobj(Ax,'-depth',1,'type','axes','-not','tag','legend');
 
 if isempty(Ax) || isempty(Dir) || isempty(Loc)
     return
