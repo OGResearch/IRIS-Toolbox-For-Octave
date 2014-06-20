@@ -89,7 +89,7 @@ function X = xxSspacePosLag(This,UsrName,SspacePos)
 X = SspacePos;
 solutionId = [This.solutionid{1:2}];
 logName = This.name;
-if ismatlab
+if is.matlab % ##### MOSW
     logName(This.log) = regexprep(logName(This.log),'.*','log($0)');
 else
     logName(This.log) = strcat('log(',logName(This.log),')');

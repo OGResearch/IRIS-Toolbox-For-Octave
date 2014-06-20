@@ -195,7 +195,7 @@ This.Zi = [This.Zi;[C,Z]];
     function doParseNameExprn()
         List = regexprep(List,'\s+','');
         List = regexprep(List,';$','','once');
-        if ismatlab
+        if is.matlab % ##### MOSW
             List = regexprep(List,'.*','$0;','once');
         else
             List = strcat(List,';');
@@ -229,7 +229,7 @@ This.Zi = [This.Zi;[C,Z]];
         xVector = This.YNames;
         for ii = 1 : p-1
             time = sprintf('{-%g}',ii);
-            if ismatlab
+            if is.matlab % ##### MOSW
                 temp = regexprep(This.YNames,'.*',['$0',time]);
             else
                 temp = strcat(This.YNames,time);

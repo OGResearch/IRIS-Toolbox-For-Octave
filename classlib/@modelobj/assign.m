@@ -264,7 +264,7 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    if ismatlab
+    if is.matlab % ##### MOSW
         Assigned = [Assigned, ...
             regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
     else

@@ -24,7 +24,7 @@ if length(Name) >= 5 && strncmp(Name,'std_',4)
     
     % Position of a std deviation.
     
-    if ismatlab
+    if is.matlab % ##### MOSW
         stdList = regexprep(ListE,'.*','std_$0');
     else
         stdList = strcat('std_',ListE);

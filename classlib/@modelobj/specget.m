@@ -55,7 +55,7 @@ switch Query
         
     case 'stdlist'
         elist = This.name(This.nametype == 3);
-        if ismatlab
+        if is.matlab % ##### MOSW
             X = regexprep(elist,'^.','std_$0','once');
         else
             X = strcat('std_',elist);
@@ -66,7 +66,7 @@ switch Query
         
     case 'stdcorrlist'
         elist = This.name(This.nametype == 3);
-        if ismatlab
+        if is.matlab % ##### MOSW
             X = regexprep(elist,'^.','std_$0','once');
         else
             X = strcat('std_',elist);
@@ -159,7 +159,7 @@ function [List,Values,X] = xxGetStd(This)
 ne = sum(This.nametype == 3);
 Values = This.stdcorr(1,1:ne,:);
 List = This.name(This.nametype == 3);
-if ismatlab
+if is.matlab % ##### MOSW
     List = regexprep(List,'^.','std_$0','once');
 else
     List = strcat('std_',List);

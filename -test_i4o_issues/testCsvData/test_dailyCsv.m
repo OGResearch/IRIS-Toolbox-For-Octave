@@ -4,7 +4,7 @@ d = dbload('testDailyCsv.csv', ...
 actDbase = db2array(d, {'A', 'B', 'C', 'D'}) ;
 actDbase(isnan(actDbase)) = 0 ;
 
-if ismatlab
+if is.matlab
     expDbase = csvread('testDailyCsv.csv', 1, 1) ;
 else
     expDbase = mytextscan(strfun.converteols(file2char('testDailyCsv.csv')),'',-1, ...

@@ -71,7 +71,7 @@ if ~isempty(rest)
     % Convert restrictions to implicit forms: `A=B` to `A-B`.
     rest = regexprep(rest,'=(.*)','-\($1\)');
     % Vectorise and vertically concatenate all general restrictions.
-    if ismatlab
+    if is.matlab % ##### MOSW
         rest = regexprep(rest,'.*','xxVec($0);');
     else
         rest = strcat('xxVec(',rest,');');

@@ -134,7 +134,7 @@ if nargout > 3
     XX = struct();
     YY = struct();
     for i = find(imag(id) == 0)
-        if ismatlab
+        if is.matlab % ##### MOSW
             c = regexprep(eEame,'.*',[List{1}{i},' <-- $0']);
         else
             c = strcat(List{1}{i},{' <-- '},eEame);

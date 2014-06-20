@@ -1,6 +1,6 @@
 function myassert(observ, expect, varargin)
 
-if ~ismatlab
+if ~is.matlab
   assert(observ, expect, varargin{:})
 else
   if nargin > 2

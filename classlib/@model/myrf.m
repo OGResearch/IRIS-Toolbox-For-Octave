@@ -80,7 +80,7 @@ for i = find(This.nametype == 1)
         y = exp(y);
     end
     name = This.name{i};
-    if ismatlab
+    if is.matlab % ##### MOSW
         c = regexprep(comment,'.*',[name,' <-- $0'],'once');
     else
         c = strcat(name,{' <-- '},comment);
@@ -97,7 +97,7 @@ for i = find(This.nametype == 2)
         x = exp(x);
     end
     name = This.name{i};
-    if ismatlab
+    if is.matlab % ##### MOSW
         c = regexprep(comment,'.*',[name,' <-- $0'],'once');
     else
         c = strcat(name,{' <-- '},comment);
@@ -109,7 +109,7 @@ end
 e = zeros(nPer,nRun,nAlt);
 for i = find(This.nametype == 3)
     name = This.name{i};    
-    if ismatlab
+    if is.matlab % ##### MOSW
         c = regexprep(comment,'.*',[name,' <-- $0'],'once');
     else
         c = strcat(name,{' <-- '},comment);
