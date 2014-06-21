@@ -30,7 +30,7 @@ end
 
 occur = This.occur(This.eqtntype == 3,(This.tzero-1)*nName+(1:nName));
 eqtnF = This.eqtnF(This.eqtntype == 3);
-dEqtnF = This.deqtnF(This.eqtntype == 3);
+dEqtnF = This.DEqtnF(This.eqtntype == 3);
 
 for i = 1 : ny
     % Evaluate the deterministic trends with out-of-lik parameters zero.

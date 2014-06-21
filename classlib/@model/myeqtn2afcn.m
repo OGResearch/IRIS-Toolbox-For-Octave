@@ -66,37 +66,37 @@ This.eqtnF = eqtnF;
 % Derivatives and constant terms
 %--------------------------------
 
-deqtnF = This.deqtnF;
-ceqtnF = This.ceqtnF;
+dEqtnF = This.DEqtnF;
+cEqtnF = This.CEqtnF;
 
 % Non-empty derivatives.
-isDeqtnF = ~cellfun(@isempty,This.deqtnF);
+isDEqtnF = ~cellfun(@isempty,This.DEqtnF);
 
 % Derivatives of transition and measurement equations wrt variables and
 % shocks.
-inx = This.eqtntype <= 2 & isDeqtnF;
+inx = This.eqtntype <= 2 & isDEqtnF;
 for i = find(inx)
-    deqtnF{i} = removeFunc(deqtnF{i});
-    deqtnF{i} = str2func(['@(x,t,L) ',deqtnF{i}]);
-    if ischar(ceqtnF{i})
-        ceqtnF{i} = removeFunc(ceqtnF{i});
-        ceqtnF{i} = str2func(['@(x,t,L) ',ceqtnF{i}]);
+    dEqtnF{i} = removeFunc(dEqtnF{i});
+    dEqtnF{i} = str2func(['@(x,t,L) ',dEqtnF{i}]);
+    if ischar(cEqtnF{i})
+        cEqtnF{i} = removeFunc(cEqtnF{i});
+        cEqtnF{i} = str2func(['@(x,t,L) ',cEqtnF{i}]);
     end
 end
 
 % Derivatives of dtrend equations wrt parameters.
-inx = This.eqtntype == 3 & isDeqtnF;
+inx = This.eqtntype == 3 & isDEqtnF;
 for i = find(inx)
-    if isempty(deqtnF{i})
+    if isempty(dEqtnF{i})
         continue
     end
-    for j = 1 : length(deqtnF{i})
-        deqtnF{i}{j} = removeFunc(deqtnF{i}{j});
-        deqtnF{i}{j} = str2func(['@(x,t,ttrend,g) ',deqtnF{i}{j}]);
+    for j = 1 : length(dEqtnF{i})
+        dEqtnF{i}{j} = removeFunc(dEqtnF{i}{j});
+        dEqtnF{i}{j} = str2func(['@(x,t,ttrend,g) ',dEqtnF{i}{j}]);
     end
 end
 
-This.deqtnF = deqtnF;
-This.ceqtnF = ceqtnF;
+This.DEqtnF = dEqtnF;
+This.CEqtnF = cEqtnF;
 
 end

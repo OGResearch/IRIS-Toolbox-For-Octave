@@ -151,6 +151,11 @@ if build < 20140610 && ~This.IsLinear
     doLogSstateEqtn();
 end
 
+% Remove multiplication by x from derivatives wrt to log variables.
+if build < 20140620
+    doLogDeqtnF();
+end
+
 % Convert equation strings to anonymous functions.
 try
     This = myeqtn2afcn(This);
@@ -219,6 +224,26 @@ This = mytransient(This);
             '\(\(x\((\d+)\)\)\)', ...
             '(x($1))');
     end % doLogSstateEqtn()
+
+
+%**************************************************************************
+
+
+    function doLogDeqtnF()
+        % Remove `.*[...]` from the end of each transition and measurement
+        % equation.
+        for ii = find(This.eqtntype <= 2)
+            eqtn = This.DEqtnF{ii};
+            if is.func(eqtn)
+                eqtn = func2str(eqtn);
+            end
+            if isempty(eqtn)
+                continue
+            end
+            eqtn = regexprep(eqtn,'\.\*\[[^\[]+\]$','');
+            This.DEqtnF{ii} = str2func(eqtn);
+        end
+    end % doLogDeqtnF()
 
 
 end

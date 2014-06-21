@@ -38,7 +38,7 @@ if any(EqSelect)
     nVar = sum(This.nametype <= 3);
     t = This.tzero;
     if Opt.symbolic
-        symbSelect = ~cellfun(@isempty,This.deqtnF);
+        symbSelect = ~cellfun(@isempty,This.DEqtnF);
     else
         symbSelect = false(1,nEqtn);
     end
@@ -188,19 +188,33 @@ end
             % Get occurences of variables in this equation.
             [tmOcc,nmOcc] = find(occur(:,:,iiEq));
             
+            % Log derivatives need to be multiplied by x.
+            ixLog = This.log(nmOcc);
+            if any(ixLog)
+                logMult = ones(size(nmOcc));
+                for iiOcc = find(ixLog)
+                    logMult(iiOcc) = x(1,nmOcc(iiOcc),tmOcc(iiOcc));
+                end
+            end
+            
             % Constant in linear models. Becuase all variables are set to
             % zero, evaluating the equations gives the constant.
             if Opt.linear
-                if isnumeric(This.ceqtnF{iiEq})
-                    c = This.ceqtnF{iiEq};
+                if isnumeric(This.CEqtnF{iiEq})
+                    c = This.CEqtnF{iiEq};
                 else
-                    c = This.ceqtnF{iiEq}(x,t,L);
+                    c = This.CEqtnF{iiEq}(x,t,L);
                 end
                 D.c(iiEq) = c;
             end
             
             % Evaluate all derivatives of the equation at once.
-            value = This.deqtnF{iiEq}(x,t,L);
+            value = This.DEqtnF{iiEq}(x,t,L);
+            
+            % Multiply derivatives wrt to log variables by x.
+            if any(ixLog)
+                value = value .* logMult;
+            end
 
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;

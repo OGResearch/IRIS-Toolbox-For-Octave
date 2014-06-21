@@ -132,7 +132,7 @@ for eq = first : LossPos
         
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
         if ~This.IsLinear
-            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
+            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate');
         end
 
         % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.

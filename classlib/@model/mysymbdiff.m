@@ -18,8 +18,8 @@ end
 % No derivatives computed for dynamic links.
 
 nEqtn = length(This.eqtn);
-This.deqtnF = cell(1,nEqtn);
-This.ceqtnF = cell(1,nEqtn);
+This.DEqtnF = cell(1,nEqtn);
+This.CEqtnF = cell(1,nEqtn);
 tZero = This.tzero;
 
 % Deterministic trends
@@ -30,8 +30,8 @@ for iEq = find(This.eqtntype == 3)
     [~,nmOcc] = myfindoccur(This,iEq,'parameters');
     tmOcc = zeros(size(nmOcc));
     eqtn = This.eqtnF{iEq};
-    d = sydney.mydiffeqtn(eqtn,'separate',nmOcc,tmOcc,This.log);
-    This.deqtnF{iEq} = d;
+    d = sydney.mydiffeqtn(eqtn,'separate',nmOcc,tmOcc);
+    This.DEqtnF{iEq} = d;
 end
 
 % Return now if user requested symbDiff=false.
@@ -54,16 +54,16 @@ for iEq = find(This.eqtntype <= 2)
     % (`mode`==Inf).
     eqtn = This.eqtnF{iEq};
 
-    d = sydney.mydiffeqtn(eqtn,'enbloc',nmOcc,tmOcc,This.log);
+    d = sydney.mydiffeqtn(eqtn,'enbloc',nmOcc,tmOcc);
     
     % Store strings; the strings are converted to anonymous functions later.
-    This.deqtnF{iEq} = d;
+    This.DEqtnF{iEq} = d;
     
     % Create function for evaluating the constant term in each equation in
     % linear models. Do this also in non-linear models because `solve` can be
     % now called with `'linear=' true`.
     cEqtn = myconsteqtn(This,This.eqtnF{iEq});
-    This.ceqtnF{iEq} = cEqtn;
+    This.CEqtnF{iEq} = cEqtn;
 
 end
 

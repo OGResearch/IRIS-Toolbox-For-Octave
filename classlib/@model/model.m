@@ -144,9 +144,9 @@ classdef model < modelobj & estimateobj
         % Block recursive structure for steady-state equations.
         EqtnBlk = cell(1,0);
         % Anonymous function handles to derivatives.
-        deqtnF = cell(1,0);
+        DEqtnF = cell(1,0);
         % Function handles to constant terms in linear models.
-        ceqtnF = cell(1,0);
+        CEqtnF = cell(1,0);
         % Struct describing reporting equations.
         outside = struct();
         % Order of execution of dynamic links.

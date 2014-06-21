@@ -1,4 +1,4 @@
-function Eqtn = mysymb2eqtn(Eqtn,Mode,IsLog)
+function Eqtn = mysymb2eqtn(Eqtn,Mode)
 % mysymb2eqtn  [Not a public function] Replace sydney representation of variables back with a variable array.
 %
 % Backend IRIS function.

@@ -351,7 +351,7 @@ end
         nEqtn = sum(select);
         Ans = cell(1,nEqtn);
         for iieq = find(select)
-            u = char(This.deqtnF{iieq});
+            u = char(This.DEqtnF{iieq});
             u = regexprep(u,'^@\(.*?\)','','once');
             
             ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
