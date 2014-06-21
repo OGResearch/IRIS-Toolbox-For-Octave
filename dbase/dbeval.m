@@ -107,8 +107,8 @@ end
 expr = strtrim(expr);
 list = fieldnames(D).';
 list2 = fieldnames(SS).';
-prefix = [char(0),'.'];
-prefix2 = [char(1),'.'];
+prefix = [char(1),'.'];
+prefix2 = [char(2),'.'];
 for i = 1 : length(list2)
     expr = regexprep(expr,['&\<',list2{i},'\>'],[prefix2,list2{i}]);
 end
