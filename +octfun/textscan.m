@@ -1,4 +1,14 @@
-function data = mytextscan(fid,varargin)
+function data = textscan(fid,varargin)
+% textscan  [Not a public function] Implementation of textscan function
+% with options missing in Octave
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
 
 if is.matlab()
     
