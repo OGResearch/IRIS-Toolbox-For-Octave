@@ -41,6 +41,7 @@ else
             end
             args = {};
             if ~isempty(InpTokens)
+                tokens = regexprep(tokens,'((?<!''))['']((?!''))','$1''''$2');
                 args = [{match},tokens(:)'];
                 args = args(InpTokens+1);
             end
