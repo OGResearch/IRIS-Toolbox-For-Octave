@@ -596,7 +596,7 @@ doPopulateDatabase();
                 continue
             end
             tokens = regexp(class{count+1}, ...
-                '^(\w+)(\[.*\])?','tokens','once');
+                '^(\w+)((\[.*\])?)','tokens','once');
             if isempty(tokens)
                 iClass = '';
                 tmpSize = [];

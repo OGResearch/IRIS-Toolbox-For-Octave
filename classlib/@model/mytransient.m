@@ -98,7 +98,7 @@ doNonlinEqtn();
             doFunc2Char();
             
             % Replace variables, shocks, and parameters.
-            ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
+            ptn = '\<x\(:,(\d+),t(([\+\-]\d+)?)\)';
             if is.matlab % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');

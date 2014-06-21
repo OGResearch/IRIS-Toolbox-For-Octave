@@ -13,7 +13,7 @@ if Shift == 0
     return
 end
 
-ptn = '\<x(\d+)([pm]\d+)?\>(?!\()';
+ptn = '\<x(\d+)(([pm]\d+)?)\>(?!\()';
 if is.matlab % ##### MOSW
     replaceFn = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFn($0,$1,$2)}');

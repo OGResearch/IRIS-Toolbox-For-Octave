@@ -136,7 +136,7 @@ for eq = first : LossPos
         end
 
         % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
-        ptn = '([xL])(\d+)([pm]\d+)?';
+        ptn = '([xL])(\d+)(([pm]\d+)?)';
         if is.matlab % ##### MOSW
             replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
