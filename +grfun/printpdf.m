@@ -71,7 +71,11 @@ end
 
 [fpath,ftit] = fileparts(File);
 epsFile = fullfile(fpath,[ftit,'.eps']);
-print(Fig,'-depsc','-painters',epsFile);
+if is.matlab % ##### MOSW
+    print(Fig,'-depsc','-painters',epsFile);
+else
+    print(Fig,'-depsc','-tight',epsFile);
+end
 latex.epstopdf(epsFile);
 
 if isRevert

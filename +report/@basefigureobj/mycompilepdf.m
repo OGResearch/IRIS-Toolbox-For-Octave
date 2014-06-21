@@ -16,7 +16,7 @@ if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
         || (isequal(Opt.orientation,'portrait') && This.options.sideways)
     orient(This.handle,'landscape');
     angle = is.hg2(0,-90);
-    if ~ismatlab
+    if ~is.matlab % ##### MOSW
         angle = 0;
     end
     raise = 10;
@@ -79,12 +79,7 @@ InclGraph = [ ...
         % Try to print figure window to EPSC.
         try
             doAspectRatio();
-            if ismatlab
-                %print(This.handle,'-painters','-depsc',graphicsName);
-                grfun.printpdf(This.handle,graphicsName);
-            else
-                print(This.handle,'-depsc','-tight',graphicsName);
-            end
+            grfun.printpdf(This.handle,graphicsName);
             addtempfile(This,[graphicsName,'.eps']);            
         catch Error
             utils.error('report', ...
