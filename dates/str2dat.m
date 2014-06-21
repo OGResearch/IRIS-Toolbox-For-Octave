@@ -107,7 +107,7 @@ end
             x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
         else
             repFun = @(c) strcat('\',c);
-            x = myregexprep(x,'[\.\+\{\}\(\)]','repFun',0);
+            x = octfun.dregexprep(x,'[\.\+\{\}\(\)]','repFun',0);
         end
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');
