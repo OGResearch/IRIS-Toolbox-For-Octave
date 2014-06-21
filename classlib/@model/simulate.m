@@ -310,7 +310,7 @@ xRange = Range(1)-1 : Range(end);
 if ~opt.contributions
     hData = hdataobj(This,xRange,nLoop);
 else
-    hData = hdataobj(This,xRange,ne+2,'Contrib=',@E);
+    hData = hdataobj(This,xRange,ne+2,'Contrib=','E');
 end
 
 % Maximum expansion needed.
