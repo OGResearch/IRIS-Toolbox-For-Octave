@@ -18,13 +18,14 @@ if is.matlab % ##### MOSW
         listenerFcn = @(h,prop,pEvent,fun) handle.listener(h,findprop(h,prop),pEvent,fun);
         postSetStr = 'PropertyPostSet';
     end
+    % Convert graphics handle to graphics object.
+    leaderObj = handle(Leader);
 else
     listenerFcn = @(h,prop,dummy,fun) addlistener(h,prop,fun);
     postSetStr = '';
+    % handle function is not yet implemented in Octave
+    leaderObj = Leader;
 end
-
-% Convert graphics handle to graphics object.
-leaderObj = handle(Leader);
 
 switch lower(Name)
     
