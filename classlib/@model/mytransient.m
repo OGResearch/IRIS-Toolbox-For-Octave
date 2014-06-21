@@ -103,7 +103,7 @@ doNonlinEqtn();
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else
-                eqtn = octfun.dregexprep(eqtn,ptn,'doReplace',[1,2]); %#ok<UNRCH>
+                eqtnN = octfun.dregexprep(eqtnN,ptn,'doReplace',[1,2]); %#ok<UNRCH>
             end
             
             % Replace references to steady states, `L(:,15,t+5)` -> `L(15,t+5)`.
@@ -158,15 +158,15 @@ doNonlinEqtn();
         
         
         function doFunc2Char()
-            % Make sure `eqtn` is a text string, and remove function handle header.
+            % Make sure `eqtnN` is a text string, and remove function handle header.
             if isa(eqtnN,'function_handle')
-                eqtn = func2str(eqtn);
+                eqtnN = func2str(eqtnN);
             end
             eqtnN = strtrim(eqtnN);
             if eqtnN(1) == '@'
                 eqtnN = regexprep(eqtnN,'@\(.*?\)','');
             end
-            eqtn = strrep(eqtn,' ','');
+            eqtnN = strrep(eqtnN,' ','');
         end % doFunc2Char
         
         
