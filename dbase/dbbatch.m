@@ -136,7 +136,7 @@ end
 % database in the expressions.
 inpDbName = inputname(1);
 tempDbName = tempname('.');
-tempDbName(1:2) = '';
+tempDbName = strrep(tempDbName(3:end),'-',''); % in Octave temporary name contains 'oct-'
 assignin('caller',tempDbName,D);
 expr = regexprep(expr,['\<',inpDbName,'\>'],tempDbName);
 
