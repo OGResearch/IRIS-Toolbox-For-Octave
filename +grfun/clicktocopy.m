@@ -35,9 +35,9 @@ end
 %--------------------------------------------------------------------------
 
 set(ax,'buttonDownFcn',@xxCopyAxes);
-h = findobj(ax,'tag','highlight');
+h = findobj(ax(:),'tag','highlight');
 set(h,'buttonDownFcn',@xxCopyAxes);
-h = findobj(ax,'tag','vline');
+h = findobj(ax(:),'tag','vline');
 set(h,'buttonDownFcn',@xxCopyAxes);
 
 end
