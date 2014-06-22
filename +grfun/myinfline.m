@@ -117,7 +117,7 @@ for i = 1 : nLoc
     if ~is.matlab % ##### MOSW
         xy = 'xy';
         % Update infline x_OR_y-data whenever the parent axes x_OR_y-lims change.
-        grfun.listener(Ax,ln,'infline',xy(isVertical+1));
+        grfun.listener(Ax,h,'infline',xy(isVertical+1));
     end
     
     % Hide back excluded from legend (for Octave's way of excluding)
