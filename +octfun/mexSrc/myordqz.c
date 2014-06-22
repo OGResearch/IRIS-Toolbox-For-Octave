@@ -39,8 +39,8 @@ order_eigs (const double* alphar, const double* alphai, const double* beta)
 
 /*wrapper for the DGGES.F and DGGBAL.F functions*/
 void
-mydgges(double *AA, double *BB, double *QQ, double *ZZ, int n,
-        DGGESCRIT crit, int *info, double *alphar, double *alphai, double *beta)
+mydgges(double *AA, double *BB, double *QQ, double *ZZ, int nfull, int nsegm,
+        DGGESCRIT crit, int *info, int *sdim, double *alphar, double *alphai, double *beta)
 
 {
   /*balancing is gonna be added later, i hope :) */
@@ -67,24 +67,25 @@ mydgges(double *AA, double *BB, double *QQ, double *ZZ, int n,
   */
 
   double work_query;
-  int sdim;
-  int ld = n;
+  int ld = nfull;
   int *bwork;
   int lwork = -1;
 
   bwork = mxCalloc(ld, sizeof(int));
 
-  dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
-	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
+  dgges("V", "V", "S", crit, &nsegm, AA, &ld, BB, &ld,
+	       sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       &work_query, &lwork, bwork, info);
 
   lwork = (int)work_query;
   double *work;
   work = mxCalloc(lwork, sizeof(double));
 
-  dgges("V", "V", "S", crit, &ld, AA, &ld, BB, &ld,
-	       &sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
+  dgges("V", "V", "S", crit, &nsegm, AA, &ld, BB, &ld,
+	       sdim, alphar, alphai, beta, QQ, &ld, ZZ, &ld,
 	       work, &lwork, bwork, info);
+
+  //mexPrintf("sdim = %d\n",*sdim);  
 
   mxFree(work);
   mxFree(bwork);
@@ -102,6 +103,8 @@ mexFunction (int nlhs, mxArray *plhs[],
   size_t m1, n1, m2, n2;
   /*dimension var for DGGES*/
   int ndim;
+  /*number of unit and stable roots*/
+  int nUnit, nStable;
   /*DGGES information*/
   int info;
   /*INPUTS*/
@@ -165,73 +168,85 @@ mexFunction (int nlhs, mxArray *plhs[],
   /*cast the dimension as int*/
   ndim = (int)m1;
 
-  /*first call to DGGES -- leading block has |eigVals| >= 1 + tol*/
+  /*first call to DGGES -- leading block has ||eigVals|-1| < tol*/
   /*AA = QQ0*SS*ZZ0', BB = QQ0*TT*ZZ0'*/
-  mydgges (SS, TT, QQ0, ZZ0, ndim, order_eigs, &info, alphar, alphai, beta);
-
+  mydgges (SS, TT, QQ0, ZZ0, ndim, ndim, order_eigs1, &info, &nUnit, alphar, alphai, beta);
+  
+  //mexPrintf("nUnit = %d\n",nUnit);
+  //mexPrintf("info = %d\n",info);
+  
   /*error?*/
   if (info != 0 && info != (ndim + 3)){
-    mexErrMsgIdAndTxt ("mydgges:BadInfo","There was an error in DGGES!");
+    mexErrMsgIdAndTxt ("mydgges:badInfo","There was an error in DGGES!");
   }
   
   /*reordering failed?*/
   if (info == ndim + 3){
     mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
   }
-  
-  /*number of unit roots*/
-  int nUnit = 0;
+
+  /*size of segment for the second reordering*/
+  int nsegm = ndim - nUnit;
+  int offset = nUnit + nUnit*ndim;
+
+  /*upper left corners of QQ and ZZ should be identity matrices*/
   int ix;
-  double lam;
-  for (ix = 0; ix < m1; ix++) {
-    lam = (alphar[ix] * alphar[ix] + alphai[ix] * alphai[ix])/(beta[ix] * beta[ix]);
-    if ((lam < (1 + toler)) && (lam > (1 - toler))){
-      ++nUnit;
-    }
+  for (ix=0; ix < nUnit; ix++){
+    ZZ[ix+ndim*ix] = 1;
+    QQ[ix+ndim*ix] = 1;
   }
 
-  if (nUnit > 0){
-    /*second call to DGGES -- leading block has ||eigVals|-1| < tol*/
-    /*AA = QQ0*QQ*SS*ZZT*ZZ0T, BB = QQ0*QQ*TT*ZZT*ZZ0T*/
-    mydgges (SS, TT, QQ, ZZ, ndim, order_eigs1, &info, alphar, alphai, beta);
-    
-    /*error?*/
-    if (info != 0 && info != (ndim + 3)){
-      mexErrMsgIdAndTxt ("mydgges:BadInfo","There was an error in DGGES!");
-    }
-  
-    /*reordering failed?*/
-    if (info == ndim + 3){
-      mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
-    }
-  
-    /*in Matlab/Octave's notation Q*AA*Z = SS, which means that*/
-    /*Q = QQT*QQ0T and Z = ZZ0*ZZ*/
-  
-    /*multiply QQT and QQ0T*/
-    double alp = 1.0, bet = 0.0;
-    memcpy (tmp, QQ, sizeof(double)*ndim*ndim);
-    dgemm("T","T",&ndim,&ndim,&ndim,&alp,tmp,&ndim,QQ0,&ndim,&bet,QQ,&ndim);
-    
-    /*multiply ZZ0 and ZZ*/
-    memcpy (tmp, ZZ, sizeof(double)*ndim*ndim);
-    dgemm("N","N",&ndim,&ndim,&ndim,&alp,ZZ0,&ndim,tmp,&ndim,&bet,ZZ,&ndim);
-  }
-  else{
-    /*copy ZZ0 to ZZ*/
-    memcpy (ZZ, ZZ0, sizeof(double)*m1*m1);
-    /*transpose QQ0 and store it to QQ*/
-    tmp = mxCalloc (m1*m1, sizeof(double)); // make identity matrix
-    int kx;
-    for (ix = 0; ix < m1; ix++) {
-      for (kx = 0; kx < m1; kx++) {
-        tmp[ix*m1+kx] = ( ix==kx ? 1 : 0 );
-      }
-    }
-    double alp = 1.0, bet = 0.0;
-    dgemm("T","N",&m1,&m1,&m1,&alp,QQ0,&m1,tmp,&m1,&bet,QQ,&m1);
+  /*second call to DGGES -- leading block has |eigVals| > 1 + tol*/
+  /*AA = QQ0*QQ*SS*ZZ'*ZZ0', BB = QQ0*QQ*TT*ZZ'*ZZ0'*/
+  mydgges (SS+offset, TT+offset, QQ+offset, ZZ+offset, ndim, nsegm, order_eigs, &info, &nStable, alphar+nUnit, alphai+nUnit, beta+nUnit);
+
+  //mexPrintf("nStable = %d\n",nStable);
+  //mexPrintf("info = %d\n",info);
+
+  /*error?*/
+  if (info != 0 && info != (ndim + 3)){
+    mexErrMsgIdAndTxt ("mydgges:BadInfo","There was an error in DGGES!");
   }
 
+  /*reordering failed?*/
+  if (info == ndim + 3){
+    mexWarnMsgIdAndTxt ("mydgges:reorderingFailed","Reordering failed in DGGES!");
+  }
+
+  /*transform SS12 and TT12*/
+  /*
+  |q11 q12|   |s11 s12|   |z11 z12|T   |a11 a12|
+  |       | x |       | x |       |  = |       |
+  |q21 q22|   |0   s22|   |z21 z22|    |a21 a22|
+   -------     -------     -------      -------
+     QQ0         SS0         ZZ0'         AA
+  
+  s22 = q0*s0*z0'
+  SS0 = QQ*SS*ZZ'
+  
+  |q11 q12|   |I  0 |   |s11 s12*z0|   |I  0 |T   |z11 z12|T   |a11 a12|
+  |       | x |     | x |    ^^^^^^| x |     |  x |       |  = |       |
+  |q21 q22|   |0  q0|   |0   s0    |   |0  z0|    |z21 z22|    |a21 a22|
+   -------     -----     ----------     -----      -------      -------
+     QQ0        QQ          SS           ZZ'         ZZ0'         AA
+  */
+  double alp = 1.0, bet = 0.0;
+  int offset2 = nUnit*ndim;
+  memcpy (tmp, SS, sizeof(double)*ndim*ndim);
+  dgemm("N","N",&nUnit,&nsegm,&nsegm,&alp,tmp+offset2,&ndim,ZZ+offset,&ndim,&bet,SS+offset2,&ndim);
+  memcpy (tmp, TT, sizeof(double)*ndim*ndim);
+  dgemm("N","N",&nUnit,&nsegm,&nsegm,&alp,tmp+offset2,&ndim,ZZ+offset,&ndim,&bet,TT+offset2,&ndim);
+
+  /*in Matlab/Octave's notation Q*AA*Z = SS, which means that*/
+  /*Q = QQT*QQ0T and Z = ZZ0*ZZ*/
+
+  /*multiply QQT and QQ0T*/
+  memcpy (tmp, QQ, sizeof(double)*ndim*ndim);
+  dgemm("T","T",&ndim,&ndim,&ndim,&alp,tmp,&ndim,QQ0,&ndim,&bet,QQ,&ndim);
+
+  /*multiply ZZ0 and ZZ*/
+  memcpy (tmp, ZZ, sizeof(double)*ndim*ndim);
+  dgemm("N","N",&ndim,&ndim,&ndim,&alp,ZZ0,&ndim,tmp,&ndim,&bet,ZZ,&ndim);
   /*compute eigenvalues*/
   for (ix = 0; ix < m1; ix++) {
     er[ix] = alphar[ix]/beta[ix];
