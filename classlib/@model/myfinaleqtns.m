@@ -50,7 +50,7 @@ if IsGrowth
         % Replace `x(10){-2}` with `(x(10)-2*dx(10))`.
         eqtn = regexprep(eqtn, ...
         ['x\(',c,'\)\{([\+\-]\d+)\}'], ...
-        ['(x(',c,')$1dx(',c,'))']);        
+        ['(x(',c,')$1*dx(',c,'))']);        
     end
 else
     % Equations with no growth
