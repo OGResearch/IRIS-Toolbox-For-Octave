@@ -43,7 +43,7 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 isVertical = strncmpi(Dir,'v',1);
 
 % Check for plotyy peers, and return the background axes object.
-Ax = grfun.mychkforpeers(Ax);
+% Ax = grfun.mychkforpeers(Ax);
 
 % Vertical lines: If this is a time series graph, convert the vline
 % position to a date grid point.
