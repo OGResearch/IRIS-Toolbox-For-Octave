@@ -327,6 +327,10 @@ for iH = H
     barObj = findobj(jH,'-property','barWidth');
     xxApplyTo(barObj(end:-1:1).',D,'bar',Opt);
     
+    % Stem graphs.
+    stemObj = findobj(jH,'type','stem');
+    xxApplyTo(stemObj.',D,'stem',Opt);
+    
     % Find handles to all patches except highlights and fancharts.
     patchObj = findobj(jH,'type','patch', ...
         '-and','-not','tag','highlight', ...
