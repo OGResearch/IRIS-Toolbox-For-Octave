@@ -23,7 +23,7 @@ This.CEqtnF = cell(1,nEqtn);
 tZero = This.tzero;
 
 % Deterministic trends
-%======================
+%----------------------
 % Differentiate dtrends w.r.t. parameters; do this even if the user
 % requested symbDiff=false.
 for iEq = find(This.eqtntype == 3)
@@ -40,7 +40,7 @@ if ~IsSymbDiff
 end
 
 % Measurement and transition equations
-%======================================
+%--------------------------------------
 % Differentiate equations w.r.t.
 % variables and shocks.
 

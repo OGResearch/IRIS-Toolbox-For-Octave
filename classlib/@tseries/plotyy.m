@@ -34,8 +34,8 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % Options
 % ========
 %
-% * `'conincident='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
-% grids coincident.
+% * `'coincide='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
+% grids coincide.
 %
 % * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the LHS data.
@@ -180,7 +180,7 @@ end
 % `plotcmp` graphs.
 grfun.swaplhsrhs(Ax(1),Ax(2));
 
-if ~opt.coincident
+if ~opt.coincide
     set(Ax,'yTickMode','auto');
 end
 

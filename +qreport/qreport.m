@@ -46,10 +46,12 @@ end
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
+
+
 function Q = xxInp2Struct(Inp,Opt)
 
 if isa(Inp,'function_handle')
@@ -121,10 +123,12 @@ end % xxInp2Struct()
 
 
 %**************************************************************************
+
+
 function [Inp,S] = xxGetNext(Inp,Opt)
 
 S = struct();
-S.func = '';
+S.func = {''};
 S.caption = '';
 S.isLogDev = false;
 S.isLinDev = false;
@@ -163,20 +167,27 @@ elseif iscellstr(Inp)
         S.eval = {};
         S.legend = {};
         S.tansform = [];
-        return
     end
 else
+    return
+end
+
+if ~iscell(S.func)
+    S.func = {S.func};
+end
+
+if isequal(S.func{1},'empty')
     return
 end
 
 % Title.
 S.caption = strtrim(S.caption);
 
-if isequal(S.func,'subplot')
+if isequal(S.func{1},'subplot')
     return
 end
 
-if isequal(S.func,'figure')
+if isequal(S.func{1},'figure')
     S.subplot = Opt.subplot;
     S.children = {};
     return
@@ -213,32 +224,34 @@ end % xxGetNext()
 
 
 %**************************************************************************
-function [Eval,Leg] = xxReadBody(C)
 
+
+function [Eval,Leg] = xxReadBody(C)
 C = strtrim(C);
 C = strfun.strrepoutside(C,',',sprintf('\n'),'()','[]','{}');
 C = strfun.strrepoutside(C,' & ',sprintf('\n'),'()','[]','{}');
 lines = regexp(C,'[^\n]*','match');
 [Eval,Leg] = preparser.labeledexpr(lines);
-
 end % xxReadBody()
 
 
 
 %**************************************************************************
-function Q = xxResolveAutoSubplot(Q)
 
+
+function Q = xxResolveAutoSubplot(Q)
 nFig = length(Q);
 for i = 1 : nFig
     if strcmp(Q{i}.subplot,'auto')
         Q{i}.subplot = utils.autosubplot(length(Q{i}.children));
     end
 end
-
 end % xxResolveAutoSubplot()
 
 
 %**************************************************************************
+
+
 function Q = xxEvalExpr(Q,D,Opt)
 
 isRound = ~isinf(Opt.round) && ~isnan(Opt.round);
@@ -247,7 +260,7 @@ invalidBase = {};
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if isequal(ch.func,'empty')
+        if isequal(ch.func{1},'empty')
             continue
         end
         nSeries = length(ch.eval);
@@ -300,12 +313,14 @@ end % xxEvalExpr()
 
 
 %**************************************************************************
+
+
 function Q = xxEmptyTitles(Q,Opt)
 
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if strcmp(ch.func,'empty')
+        if strcmp(ch.func{1},'empty')
             continue
         end
         if isempty(ch.caption)
@@ -344,6 +359,8 @@ end % xxEmptyTitles()
 
 
 %**************************************************************************
+
+
 function [FF,AA,PlotDb,FTit] = xxRender(Q,Range,Opt,varargin)
 
 FF = [];
@@ -375,7 +392,7 @@ for i = 1 : length(Q)
             doNewFigure();
         end
         
-        if isequal(func,'empty')
+        if isequal(func{1},'empty')
             pos = pos + 1;
             continue    
         end
@@ -494,6 +511,8 @@ end % xxRender()
 
 
 %**************************************************************************
+
+
 function [Range,Data,Ok] = xxPlot(Func,AA,Range,X,Leg,Opt,varargin)
 
 isXGrid = Opt.grid;
@@ -502,37 +521,43 @@ isYGrid = Opt.grid;
 Data = [];
 Ok = true;
 
-switch char(Func)
+func = Func{1};
+funcArgs = Func(2:end);
+
+switch char(func)
     case {'plot','bar','barcon','stem'}
         Data = [X{:}];
         if is.tseries(Data)
-            [h,Range,Data] = Func(Range,Data,varargin{:}); %#ok<*ASGLU>
+            [h,Range,Data] = func(Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
             Func(Range,Data,varargin{:});
         else
             % Do nothing.
         end
     case 'errorbar' % Error bar graph.
-        [h1,h2,Range,Data] = errorbar(Range,X{:},varargin{:});
+        [h1,h2,Range,Data] ...
+            = errorbar(Range,X{:},varargin{:},funcArgs{:});
     case 'plotpred' % Prediction plot.
-        [h1,h2,h3,Range,Data] = plotpred(Range,X{:},varargin{:});
+        [h1,h2,h3,Range,Data] ...
+            = plotpred(Range,X{:},varargin{:},funcArgs{:});
     case 'hist' % Histogram.
         Data = [X{:}];
         Data = Data(Range,:);
         [count,pos] = hist(Data);
-        h = bar(pos,count,'barWidth',0.8); %#ok<NASGU>
+        h = bar(pos,count,'barWidth',0.8,funcArgs{:}); %#ok<NASGU>
         isXGrid = false;
     case 'plotcmp' % Plotcmp.
-        [AA,ll,rr,Range,Data] = plotcmp(Range,[X{:}],varargin{:});
+        [AA,ll,rr,Range,Data] ...
+            = plotcmp(Range,[X{:}],varargin{:},funcArgs{:});
     otherwise
         Ok = false;
         return
 end
 
 if Opt.tight
-    isTseries = getappdata(AA,'tseries');
+    isTseries = getappdata(AA(1),'tseries');
     if isequal(isTseries,true)
-        grfun.yaxistight(AA);
+        grfun.yaxistight(AA(1));
     else
         axis(AA,'tight');
     end
@@ -571,6 +596,8 @@ end % xxPlot()
 
 
 %**************************************************************************
+
+
 function xxPostMortem(FF,AA,PlotDb,FTit,Opt) %#ok<INUSL>
 
 if ~isempty(Opt.style)
@@ -614,8 +641,9 @@ end % xxPostMortem()
 
 
 %**************************************************************************
-function xxPageNumber(FF)
 
+
+function xxPageNumber(FF)
 nPage = length(FF);
 count = 0;
 for f = FF(:).'
@@ -623,18 +651,17 @@ for f = FF(:).'
     count = count + 1;
     grfun.ftitle({'','',sprintf('%g/%g',count,nPage)});
 end
-
 end % xxPageNumber()
 
 
 %**************************************************************************
-function xxSaveAs(FF,PLOTDB,Opt)
 
+
+function xxSaveAs(FF,PLOTDB,Opt)
 if strcmpi(Opt.saveasformat,'.csv')
     dbsave(PLOTDB,Opt.saveas,Inf,Opt.dbsave{:});
     return
 end
-
 if any(strcmpi(Opt.saveasformat,{'.pdf'}))
     [fPath,fTit] = fileparts(Opt.saveas);
     psfile = fullfile([fTit,'.ps']);
@@ -649,14 +676,14 @@ if any(strcmpi(Opt.saveasformat,{'.pdf'}))
     latex.ps2pdf(psfile);
     delete(psfile);
 end
-
 end % xxSaveAs()
 
 
 %**************************************************************************
+
+
 function Func = xxTag2PlotFunc(Tag)
 % xxPlotFunc  Convert the `'plotFunc='` option in `dbplot` to the corresponding tag.
-
 switch Tag
     case '#'
         Func = 'subplot';
@@ -681,15 +708,15 @@ switch Tag
     otherwise
         Func = @plot;
 end
-
 end % xxPlotFunc()
 
 
 %**************************************************************************
+
+
 function Tit = xxGetTitle(TitleOpt,X)
 % xxgettitle  Title is either a user-supplied string or a function handle
 % that will be applied to the plotted tseries object.
-
 invalid = '???';
 if isa(TitleOpt,'function_handle')
     try
@@ -709,17 +736,16 @@ elseif ischar(TitleOpt)
 else
     Tit = invalid;
 end
-
 end % xxGetTitle()
 
 
 %**************************************************************************
-function X = xxDeviationFrom(X,T,IsLogDev,IsLinDev,Times)
 
+
+function X = xxDeviationFrom(X,T,IsLogDev,IsLinDev,Times)
 if IsLinDev
     X = Times*(X - X(T));
 elseif IsLogDev
     X = Times*(X./X(T) - 1);
 end
-
 end % xxDeviationFrom()
