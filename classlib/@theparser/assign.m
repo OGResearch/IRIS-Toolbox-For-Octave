@@ -9,7 +9,7 @@ function [This,S] = assign(This,S)
 
 %--------------------------------------------------------------------------
 
-asgn = This.assign;
+asgn = This.Assign;
 
 % Evaluate values assigned in the model code and/or in the `assign`
 % database. Go backward to evaluate parameters first so that they are
@@ -26,7 +26,7 @@ ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
 rplFunc = @doReplaceNameValue; %#ok<NASGU>
 stdcorrDecld = {};
 
-for iBlk = blkpos(This,This.assignBlkOrd)
+for iBlk = blkpos(This,This.AssignBlkOrd)
     
     if isempty(S(iBlk).name)
         continue
@@ -91,6 +91,6 @@ if ~isempty(stdcorrDecld)
     end
 end
 
-This.assign = asgn;
+This.Assign = asgn;
 
 end

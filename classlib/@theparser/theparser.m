@@ -12,7 +12,7 @@ classdef theparser
         code = '';
         caller = '';
         labels = fragileobj();
-        assign = struct();
+        Assign = struct();
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
@@ -25,7 +25,7 @@ classdef theparser
         flaggable = false(1,0);
         essential = false(1,0);
         otherKey = cell(1,0);
-        assignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
+        AssignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
     end
     
     methods
@@ -69,7 +69,7 @@ classdef theparser
                 This.FName = Pre.FName;
                 This.code = Pre.code;
                 This.labels = Pre.labels;
-                This.assign = Pre.assign;
+                This.Assign = Pre.Assign;
             end
         end
     end
