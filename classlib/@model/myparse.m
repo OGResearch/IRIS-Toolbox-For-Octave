@@ -403,6 +403,8 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 % Retype shocks.
 This.nametype = floor(This.nametype);
 
+This.LogSign = double(This.log);
+
 
 % Nested functions...
 
