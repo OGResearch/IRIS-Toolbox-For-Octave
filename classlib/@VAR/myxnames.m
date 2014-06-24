@@ -11,11 +11,17 @@ function varargout = myxnames(This,XNames)
 %#ok<*CTCH>
 
 pp = inputParser();
+if is.matlab % ##### MOSW
 pp.addRequired('V',@is.VAR);
 pp.addRequired('XNames',@(x) isempty(XNames) ...
     || ischar(XNames) || iscellstr(XNames));
 pp.parse(This,XNames);
-
+else
+pp = pp.addRequired('V',@(varargin) is.VAR(varargin{:}));
+pp = pp.addRequired('XNames',@(x) isempty(XNames) ...
+    || ischar(XNames) || iscellstr(XNames));
+pp = pp.parse(This,XNames);
+end
 %--------------------------------------------------------------------------
 
 nx = length(This.XNames);

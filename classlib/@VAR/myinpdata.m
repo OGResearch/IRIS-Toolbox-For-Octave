@@ -7,9 +7,15 @@ function [Y,X,Rng,YNames,InpFmt,varargin] = myinpdata(This,D,Rng,varargin)% myin
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if is.matlab % ##### MOSW
 pp.addRequired('V',@is.VAR);
 pp.addRequired('D',@isstruct);
-pp.addRequired('Range',@isnumeric)
+pp.addRequired('Range',@isnumeric);
+else
+pp = pp.addRequired('V',@(varargin) is.VAR(varargin{:}));
+pp = pp.addRequired('D',@isstruct);
+pp = pp.addRequired('Range',@isnumeric);
+end
 try
     pp.parse(This,D,Rng);
 catch

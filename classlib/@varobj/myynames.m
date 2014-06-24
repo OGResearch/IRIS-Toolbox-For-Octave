@@ -18,11 +18,17 @@ catch
 end
 
 pp = inputParser();
+if is.matlab % ##### MOSW
 pp.addRequired('V',@(x) isa(x,'varobj'));
 pp.addRequired('YNames',@(x) isempty(YNames) ...
     || ischar(YNames) || iscellstr(YNames) || is.func(YNames));
 pp.parse(This,YNames);
-
+else
+pp = pp.addRequired('V',@(x) isa(x,'varobj'));
+pp = pp.addRequired('YNames',@(x) isempty(YNames) ...
+    || ischar(YNames) || iscellstr(YNames) || is.func(YNames));
+pp = pp.parse(This,YNames);
+end
 %--------------------------------------------------------------------------
 
 ny = myny(This);

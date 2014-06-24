@@ -66,11 +66,19 @@ function D = rollback(This,D,Range,Last)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
+if is.matlab % ##### MOSW
 pp.addRequired('M',@(x) is.model(x) && length(x) == 1);
 pp.addRequired('Inp',@(x) isstruct(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) && all(freqcmp(x)));
 pp.addRequired('Back',@(x) is.numericscalar(x) && all(freqcmp(x,Range)));
 pp.parse(This,D,Range,Last);
+else
+pp = pp.addRequired('M',@(x) is.model(x) && length(x) == 1);
+pp = pp.addRequired('Inp',@(x) isstruct(x) || isempty(x));
+pp = pp.addRequired('Range',@(x) isnumeric(x) && all(freqcmp(x)));
+pp = pp.addRequired('Back',@(x) is.numericscalar(x) && all(freqcmp(x,Range)));
+pp = pp.parse(This,D,Range,Last);
+end
 
 %--------------------------------------------------------------------------
 
