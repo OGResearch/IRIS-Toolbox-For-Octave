@@ -756,6 +756,9 @@ end
         end
         % Alias for prctile.
         function varargout = pctile(varargin)
+            if nargout == 0 && ~is.matlab % ##### MOSW
+              nargout = 1;
+            end
             [varargout{1:nargout}] = prctile(varargin{:});
         end
         function x = std(x,flag,dim)
