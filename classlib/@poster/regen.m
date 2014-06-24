@@ -48,15 +48,10 @@ function [sample,lp_Sample,len] ...
 
 % Validate required inputs.
 pp = inputParser();
-if ismatlab
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@is.numericscalar);
+pp.addRequired('NDraw',@(varargin)is.numericscalar(varargin{:}));
 pp.parse(This,NDraw);
-else
-pp = pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp = pp.addRequired('NDraw',@(varargin)is.numericscalar(varargin{:}));
-pp = pp.parse(This,NDraw);
-end
+
 
 % Parse options.
 opt = passvalopt('poster.regen',varargin{:});

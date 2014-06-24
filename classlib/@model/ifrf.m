@@ -46,15 +46,10 @@ function [W,List] = ifrf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('m',@(isArg)is.model(isArg));
 pp.addRequired('freq',@isnumeric);
 pp.parse(This,Freq);
-else
-pp = pp.addRequired('m',@(isArg)is.model(isArg));
-pp = pp.addRequired('freq',@isnumeric);
-pp = pp.parse(This,Freq);
-end
+
 
 % Parse options.
 opt = passvalopt('model.ifrf',varargin{:});

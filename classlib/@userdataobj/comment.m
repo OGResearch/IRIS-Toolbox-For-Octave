@@ -38,13 +38,9 @@ function varargout = comment(This,varargin)
 if ~isempty(varargin)
     Cmt = varargin{1};
     pp = inputParser();
-if ismatlab
     pp.addRequired('Cmt',@ischar);
     pp.parse(Cmt);
-else
-    pp = pp.addRequired('Cmt',@ischar);
-    pp = pp.parse(Cmt);
-end
+
 end
 
 %--------------------------------------------------------------------------

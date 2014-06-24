@@ -49,17 +49,11 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('Text',@ischar);
 pp.addRequired('Open',@(varargin)is.numericscalar(varargin{:}));
 pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
 pp.parse(C,Open,Fill);
-else
-pp = pp.addRequired('Text',@ischar);
-pp = pp.addRequired('Open',@(varargin)is.numericscalar(varargin{:}));
-pp = pp.addRequired('Fill',@(x) ischar(x) && length(x) == 1);
-pp = pp.parse(C,Open,Fill);
-end
+
 
 Close = [];
 Inside = '';

@@ -38,13 +38,9 @@ function varargout = caption(This,varargin)
 if ~isempty(varargin)
     Cpt = varargin{1};
     pp = inputParser();
-if ismatlab
     pp.addRequired('Cpt',@ischar);
     pp.parse(Cpt);
-else
-    pp = pp.addRequired('Cpt',@ischar);
-    pp = pp.parse(Cpt);
-end
+
 end
 
 %--------------------------------------------------------------------------

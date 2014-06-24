@@ -30,19 +30,12 @@ end
 
 
 pp = inputParser();
-if is.matlab % ##### MOSW
     pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
         && all(strcmp(get(x,'type'),'axes')));
     pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
     pp.addRequired('Pos',@isnumeric);
     pp.parse(Ax,Dir,Loc);
-else
-    pp = pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
-        && all(strcmp(get(x,'type'),'axes')));
-    pp = pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
-    pp = pp.addRequired('Pos',@isnumeric);
-    pp = pp.parse(Ax,Dir,Loc);
-end
+
 
 [opt,lineOpt] = passvalopt('grfun.infline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');

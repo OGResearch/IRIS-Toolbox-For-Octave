@@ -24,13 +24,9 @@ function clicktocopy(ax)
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
     pp.addRequired('h',@(x) all(ishghandle(x)) ...
        && all(strcmp(get(x,'type'),'axes')));
-else
-    pp = pp.addRequired('h',@(x) all(ishghandle(x)) ...
-       && all(strcmp(get(x,'type'),'axes')));
-end   
+
 
 %--------------------------------------------------------------------------
 

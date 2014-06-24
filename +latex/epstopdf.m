@@ -15,15 +15,10 @@ end
 
 % Parse inputarguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
-pp.parse(List,CmdArgs);
-else
-pp = pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
-pp = pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
-pp = pp.parse(List,CmdArgs); %#ok<NASGU>
-end
+pp.parse(List,CmdArgs); %#ok<NASGU>
+
 
 % Parse options.
 opt = passvalopt('latex.epstopdf',varargin{:});

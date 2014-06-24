@@ -80,17 +80,11 @@ function [This,Data,Inx,Crit] = sort(This,Data,SortBy,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('A',@(x) isa(x,'SVAR'));
 pp.addRequired('Data',@(x) isempty(x) || isstruct(x));
 pp.addRequired('SortBy',@ischar);
 pp.parse(This,Data,SortBy);
-else
-pp = pp.addRequired('A',@(x) isa(x,'SVAR'));
-pp = pp.addRequired('Data',@(x) isempty(x) || isstruct(x));
-pp = pp.addRequired('SortBy',@ischar);
-pp = pp.parse(This,Data,SortBy);
-end
+
 
 opt = passvalopt('SVAR.sort',varargin{:});
 isData = nargout > 1 && ~isempty(Data);

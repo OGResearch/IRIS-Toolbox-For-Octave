@@ -37,17 +37,11 @@ function [This,Y0,K0,Y1,G1] = litterman(Rho,Mu,Lmb,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('Rho',@(x) isnumeric(x) && all(x >= 0 & x <= 1));
 pp.addRequired('Mu',@(x) isnumeric(x) && all(x >= 0));
 pp.addRequired('Lmb',@(x) is.numericscalar(x) && x >= 0);
 pp.parse(Rho,Mu,Lmb);
-else
-pp = pp.addRequired('Rho',@(x) isnumeric(x) && all(x >= 0 & x <= 1));
-pp = pp.addRequired('Mu',@(x) isnumeric(x) && all(x >= 0));
-pp = pp.addRequired('Lmb',@(x) is.numericscalar(x) && x >= 0);
-pp = pp.parse(Rho,Mu,Lmb);
-end
+
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...

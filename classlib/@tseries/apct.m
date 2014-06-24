@@ -37,15 +37,10 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('Q',@(isArg)is.numericscalar(isArg));
 pp.parse(X,Q);
-else
-pp = pp.addRequired('X',@(isArg)is.tseries(isArg));
-pp = pp.addRequired('Q',@(isArg)is.numericscalar(isArg));
-pp = pp.parse(X,Q);
-end
+
 
 %--------------------------------------------------------------------------
 

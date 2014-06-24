@@ -301,15 +301,10 @@ function varargout = get(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 P = inputParser();
-if is.matlab % ##### MOSW
-P.addRequired('M',@is.model);
+P.addRequired('M',@(varargin)is.model(varargin{:}));
 P.addRequired('Query',@iscellstr);
 P.parse(This,varargin);
-else
-P = P.addRequired('M',@(varargin)is.model(varargin{:}));
-P = P.addRequired('Query',@iscellstr);
-P = P.parse(This,varargin);
-end
+
 %--------------------------------------------------------------------------
 
 [varargout{1:nargout}] = get@getsetobj(This,varargin{:});

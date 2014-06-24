@@ -78,17 +78,11 @@ function [This,D,CC,F,U,E] = filter(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('a',@(x) isa(x,'FAVAR'));
 pp.addRequired('d',@(x) isstruct(x) || isa(x,'tseries'));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Inp,Range);
-else
-pp = pp.addRequired('a',@(x) isa(x,'FAVAR'));
-pp = pp.addRequired('d',@(x) isstruct(x) || isa(x,'tseries'));
-pp = pp.addRequired('range',@isnumeric);
-pp = pp.parse(This,Inp,Range);
-end
+
 
 % Parse options.
 opt = passvalopt('FAVAR.filter',varargin{:});

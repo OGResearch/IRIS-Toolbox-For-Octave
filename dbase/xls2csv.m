@@ -71,15 +71,10 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('InpFile',@ischar);
 pp.addRequired('OutpFile',@(x) ischar(x) || isempty(x));
 pp.parse(InpFile,OutpFile);
-else
-pp = pp.addRequired('InpFile',@ischar);
-pp = pp.addRequired('OutpFile',@(x) ischar(x) || isempty(x));
-pp = pp.parse(InpFile,OutpFile);
-end
+
 
 opt = passvalopt('dbase.xls2csv',varargin{:});
 

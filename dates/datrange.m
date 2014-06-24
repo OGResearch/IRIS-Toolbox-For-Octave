@@ -62,17 +62,11 @@ catch
 end
 
 pp = inputParser();
-if is.matlab % ##### MOSW
-pp.addRequired('Start',@is.numericscalar);
+pp.addRequired('Start',@(varargin) is.numericscalar(varargin{:}));
 pp.addRequired('End',@(x) is.numericscalar(x) && freqcmp(x,Start));
-pp.addRequired('Step',@is.intscalar);
+pp.addRequired('Step',@(varargin) is.intscalar(varargin{:}));
 pp.parse(Start,End,Step);
-else
-pp = pp.addRequired('Start',@(varargin) is.numericscalar(varargin{:}));
-pp = pp.addRequired('End',@(x) is.numericscalar(x) && freqcmp(x,Start));
-pp = pp.addRequired('Step',@(varargin) is.intscalar(varargin{:}));
-pp = pp.parse(Start,End,Step);
-end
+
 %--------------------------------------------------------------------------
 
 flrStart = floor(Start);

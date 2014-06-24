@@ -96,17 +96,11 @@ function This = prior(This,Def,PriorFunc,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
 pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
-pp.parse(This,Def,PriorFunc);
-else
-pp = pp.addRequired('S',@(x) isa(x,'systempriors'));
-pp = pp.addRequired('Def',@ischar);
-pp = pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
-pp = pp.parse(This,Def,PriorFunc); %#ok<NASGU>
-end
+pp.parse(This,Def,PriorFunc); %#ok<NASGU>
+
 
 opt = passvalopt('systempriors.prior',varargin{:});
 

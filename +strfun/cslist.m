@@ -46,13 +46,9 @@ function S = cslist(C,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-if ismatlab
 pp.addRequired('list',@iscellstr);
 pp.parse(C);
-else
-pp = pp.addRequired('list',@iscellstr);
-pp = pp.parse(C);
-end
+
 
 % Parse options.
 opt = passvalopt('strfun.cslist',varargin{:});

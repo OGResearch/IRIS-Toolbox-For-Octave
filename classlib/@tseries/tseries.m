@@ -235,19 +235,12 @@ classdef ... (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             
             % Parse required input arguments.
             pp = inputParser();
-if ismatlab
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
                 isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
-else
-            pp = pp.addRequired('Dates',@isnumeric);
-            pp = pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
-            pp = pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
-            pp = pp.parse(usrDates,usrData,usrComment);
-end
+
             
             %--------------------------------------------------------------
             

@@ -61,15 +61,10 @@ NewRange = varargin{1};
 varargin(1) = [];
 
 pp = inputParser();
-if ismatlab
 pp.addRequired('H',@(x) all(ishandle(x)));
 pp.addRequired('Range',@(x) isnumeric(x) && all(isfinite(x)) && ~isempty(x));
 pp.parse(H,NewRange);
-else
-pp = pp.addRequired('H',@(x) all(ishandle(x)));
-pp = pp.addRequired('Range',@(x) isnumeric(x) && all(isfinite(x)) && ~isempty(x));
-pp = pp.parse(H,NewRange);
-end
+
 
 opt = passvalopt('dates.datxtick',varargin{:});
 

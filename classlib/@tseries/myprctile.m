@@ -14,17 +14,11 @@ catch
 end
 
 pp = inputParser();
-if is.matlab % ##### MOSW
 pp.addRequired('X',@isnumeric);
 pp.addRequired('P',@(x) isnumeric(x) && all(P >= 0) && all(P <= 100));
 pp.addRequired('Dim',@(x) is.intscalar(x) && x > 0);
 pp.parse(X,P,Dim);
-else
-pp = pp.addRequired('X',@isnumeric);
-pp = pp.addRequired('P',@(x) isnumeric(x) && all(P >= 0) && all(P <= 100));
-pp = pp.addRequired('Dim',@(x) is.intscalar(x) && x > 0);
-pp = pp.parse(X,P,Dim);
-end
+
 %--------------------------------------------------------------------------
 
 P = P(:).';
