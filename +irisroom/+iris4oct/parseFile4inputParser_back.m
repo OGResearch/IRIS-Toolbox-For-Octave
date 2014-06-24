@@ -1,6 +1,6 @@
 function parseFile4inputParser_back( filename )
 
-lbr = sprintf('\n');
+lbr = sprintf('\r\n');
 
 fid = fopen(filename,'r');
 tline = '';
@@ -8,24 +8,39 @@ start = '';
 while isempty(strfind(tline,'inputParser('))
   tline = fgetl(fid);
   start = [start,tline,lbr];
+  if feof(fid)
+      return
+  end
 end
 
 vnm = regexprep(strtrim(tline),'\s*=.*','');
-spos = ftell(fid);
 
 tline = '';
+noparse = false;
 while isempty(strfind(tline,[vnm '.parse(']))
   tline = fgetl(fid);
+  if ~isempty(strfind(tline,'else'))
+      noparse = true;
+      warning('There''s no p.parse() in %s',filename);
+      break
+  end
 end
-tline = fgetl(fid);
+if ~noparse
+    tline = fgetl(fid);
+end
 
 tline = '';
 pblk = '';
 while isempty(strfind(tline,[vnm '.parse(']))
   tline = fgetl(fid);
+  if noparse && ~isempty(strfind(tline,'end'))
+      break
+  end
   pblk = [pblk,tline,lbr];
 end
-tline = fgetl(fid);
+if ~noparse
+    tline = fgetl(fid);
+end
 
 tline = '';
 rest = '';
