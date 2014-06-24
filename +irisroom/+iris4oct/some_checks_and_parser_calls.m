@@ -1,4 +1,5 @@
 %% look for @blabla.blabla
+%{
 pattern = '[^\w]@\w+?\.\w+';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
@@ -14,3 +15,15 @@ for ix = 1 : numel(lst)
         files(end).lines = lines;
     end
 end
+%}
+return
+
+%% kick inputParser workaround out of iris_clone
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m'); %#ok<UNRCH>
+
+for ix = 1 : numel(lst)
+    irisroom.iris4oct.parseFile4inputParser_back(lst{ix});
+end
+
+return
