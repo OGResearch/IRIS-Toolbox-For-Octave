@@ -6,7 +6,7 @@ if ~ischar(root) && numel(root) > 1
     error('More than one IRIS is on your path!');
 end
 
-lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','+Contents'}},varargin{:});
+lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','+Contents','+iris4oct'}},varargin{:});
 
 end
 
@@ -54,8 +54,7 @@ end
 lst2check = strcat(path,lst2check);
 
 for ix = 1 : numel(lst2check)
-    lst = [lst; xxGetCurDirSubs(lst2check{ix},'exclude',{{'^\.'}},...
-        'files',files,'fileExt',fileExt)]; %#ok<AGROW>
+    lst = [lst; xxGetCurDirSubs(lst2check{ix},varargin{:})]; %#ok<AGROW>
 end
 
     function doExclude()
