@@ -158,7 +158,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doOneShift; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else
-    C = octfun.dregexprep(C,ptn,'doOneShift',[1,2]); %#ok<UNRCH>
+    C = mosw.octfun.dregexprep(C,ptn,'doOneShift',[1,2]); %#ok<UNRCH>
 end
 
 

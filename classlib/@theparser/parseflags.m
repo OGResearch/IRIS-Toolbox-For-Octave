@@ -29,7 +29,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doExpand; %#ok<NASGU>
     Blk = regexprep(Blk,ptn,'${replaceFunc($1)}');
 else
-    Blk = octfun.dregexprep(Blk,ptn,'doExpand',1); %#ok<UNRCH>
+    Blk = mosw.octfun.dregexprep(Blk,ptn,'doExpand',1); %#ok<UNRCH>
 end
 
 

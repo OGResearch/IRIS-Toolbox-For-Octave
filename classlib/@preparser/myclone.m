@@ -22,7 +22,7 @@ if is.matlab % ##### MOSW
     C = regexprep(C,ptn,rpl);
 else
     rpl = @(C0) strrep(Clone,'?',C0);
-    C = octfun.dregexprep(C,ptn,'rpl',0); %#ok<UNRCH>
+    C = mosw.octfun.dregexprep(C,ptn,'rpl',0); %#ok<UNRCH>
 end
 
 end

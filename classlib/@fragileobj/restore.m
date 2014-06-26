@@ -22,7 +22,7 @@ if is.matlab % ##### MOSW
     rplFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${rplFunc($0)}');
 else
-    C = octfun.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
+    C = mosw.octfun.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
 end
 
 

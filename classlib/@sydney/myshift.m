@@ -18,7 +18,7 @@ if is.matlab % ##### MOSW
     replaceFn = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFn($0,$1,$2)}');
 else
-    Eqtn = octfun.dregexprep(Eqtn,ptn,'doReplace',[0,1,2]); %#ok<UNRCH>
+    Eqtn = mosw.octfun.dregexprep(Eqtn,ptn,'doReplace',[0,1,2]); %#ok<UNRCH>
 end
 
 

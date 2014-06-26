@@ -24,7 +24,7 @@ for iBlk = 1 : nBlkWarn
         replaceFunc = @doReplace; %#ok<NASGU>
         This.code = regexprep(This.code,ptn,'${replaceFunc()}');
     else
-        This.code = octfun.dregexprep(This.code,ptn,'doReplace',[]); %#ok<UNRCH>
+        This.code = mosw.octfun.dregexprep(This.code,ptn,'doReplace',[]); %#ok<UNRCH>
     end
 end
 

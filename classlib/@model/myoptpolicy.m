@@ -141,7 +141,7 @@ for eq = first : LossPos
             replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
         else
-            dEqtn = octfun.dregexprep(dEqtn,ptn,'doReplaceNames',[1,2,3]); %#ok<UNRCH>
+            dEqtn = mosw.octfun.dregexprep(dEqtn,ptn,'doReplaceNames',[1,2,3]); %#ok<UNRCH>
         end
         
         % Put together the derivative of the Lagrangian wrt to variable

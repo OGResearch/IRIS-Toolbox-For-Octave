@@ -103,7 +103,7 @@ doNonlinEqtn();
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else
-                eqtnN = octfun.dregexprep(eqtnN,ptn,'doReplace',[1,2]); %#ok<UNRCH>
+                eqtnN = mosw.octfun.dregexprep(eqtnN,ptn,'doReplace',[1,2]); %#ok<UNRCH>
             end
             
             % Replace references to steady states, `L(:,15,t+5)` -> `L(15,t+5)`.

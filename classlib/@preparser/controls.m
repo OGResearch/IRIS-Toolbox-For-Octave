@@ -325,7 +325,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doExpandSqb; %#ok<NASGU>
     forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
 else
-    forBody = octfun.dregexprep(forBody,ptn,'doExpandSqb',[1,2]); %#ok<UNRCH>
+    forBody = mosw.octfun.dregexprep(forBody,ptn,'doExpandSqb',[1,2]); %#ok<UNRCH>
 end
 if ~isempty(obsolete)
     % ##### May 2014 OBSOLETE and scheduled for removal.

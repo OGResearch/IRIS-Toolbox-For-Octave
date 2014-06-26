@@ -47,7 +47,7 @@ if is.matlab % ##### MOSW
     This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
 else
     repFun = @(c) strcat('?',c);
-    This.rhs = octfun.dregexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()', ...
+    This.rhs = mosw.octfun.dregexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()', ...
         'repFun',0);
 end
 

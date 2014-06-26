@@ -15,7 +15,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else
-    C = octfun.dregexprep(C,ptn,'doReplace',[1,2]); %#ok<UNRCH>
+    C = mosw.octfun.dregexprep(C,ptn,'doReplace',[1,2]); %#ok<UNRCH>
 end
 
 % Nested functions...

@@ -44,7 +44,7 @@ if ~isempty(s)
             replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
             Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
         else
-            Eqtn{iEq} = octfun.dregexprep(Eqtn{iEq},ptn, ...
+            Eqtn{iEq} = mosw.octfun.dregexprep(Eqtn{iEq},ptn, ...
                 'doNonstandardTimeSubs',0); %#ok<UNRCH>
         end
     end

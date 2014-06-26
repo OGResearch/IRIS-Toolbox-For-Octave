@@ -70,7 +70,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doReplaceInp; %#ok<NASGU>
     code = regexprep(code,ptn,'${replaceFunc($0)}');
 else
-    code = octfun.dregexprep(code,ptn,'doReplaceInp',0); %#ok<UNRCH>
+    code = mosw.octfun.dregexprep(code,ptn,'doReplaceInp',0); %#ok<UNRCH>
 end
 
 % Throw away variable annotations.
@@ -278,7 +278,7 @@ for i = 1 : nBlock
         replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
         s.eqtn{i} = regexprep(s.eqtn{i},ptn,'${replaceTimeFunc($1,$2)}');
     else
-        s.eqtn{i} = octfun.dregexprep(s.eqtn{i},ptn,'doReplaceTime',[1,2]); %#ok<UNRCH>
+        s.eqtn{i} = mosw.octfun.dregexprep(s.eqtn{i},ptn,'doReplaceTime',[1,2]); %#ok<UNRCH>
     end
 end
 

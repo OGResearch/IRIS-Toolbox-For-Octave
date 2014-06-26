@@ -359,7 +359,7 @@ end
                 replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
             else
-                u = octfun.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
+                u = mosw.octfun.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
             end
             
             ptn = '\<x\>\(:,(\d+),t\)';
@@ -367,7 +367,7 @@ end
                 replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replaceZero($1)}');
             else
-                u = octfun.dregexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
+                u = mosw.octfun.dregexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
             end
             
             Ans{iieq} = u;

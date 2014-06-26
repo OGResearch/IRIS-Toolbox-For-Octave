@@ -308,7 +308,7 @@ if is.matlab % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Def = regexprep(Def,ptn,'${replaceFunc($1)}');
 else
-    Def = octfun.dregexprep(Def,ptn,'doReplace',1); %#ok<UNRCH>
+    Def = mosw.octfun.dregexprep(Def,ptn,'doReplace',1); %#ok<UNRCH>
 end
 
 if ~isempty(invalid)

@@ -20,7 +20,7 @@ else
     % Octave
     %--------
     varargout = cell(1,nargout);
-    [varargout{:}] = octfun.myordqz(varargin{:});
+    [varargout{:}] = mosw.octfun.myordqz(varargin{:});
 end
 
 end
