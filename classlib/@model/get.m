@@ -307,6 +307,10 @@ P.parse(This,varargin);
 
 %--------------------------------------------------------------------------
 
+if ~is.matlab && nargout == 0
+    nargout = 1;
+end
+
 [varargout{1:nargout}] = get@getsetobj(This,varargin{:});
 
 end
