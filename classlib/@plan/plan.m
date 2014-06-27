@@ -131,7 +131,7 @@ classdef plan < userdataobj & getsetobj
             if length(varargin) > 1
                 
                 pp = inputParser();
-                pp.addRequired('M',@(x) myisa(x,'modelobj'));
+                pp.addRequired('M',@(x) mosw.isa(x,'modelobj'));
                 pp.addRequired('Range',@isnumeric);
                 pp.parse(varargin{1:2});
 

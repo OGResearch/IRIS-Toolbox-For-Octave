@@ -46,7 +46,7 @@ if isempty(varargin)
     Assigned = cell(1,0);
     return
     
-elseif n == 1 && myisa(varargin{1},'modelobj')
+elseif n == 1 && mosw.isa(varargin{1},'modelobj')
     % Assign from another model object. The names, name types, and number of
     % parameterisations must match.
     equalNames = isequal(This.name,varargin{1}.name);

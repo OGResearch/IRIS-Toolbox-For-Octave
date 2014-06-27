@@ -36,12 +36,12 @@ classdef theparser
                 return
             end
             
-            if length(varargin) == 1 && myisa(varargin{1},'theparser')
+            if length(varargin) == 1 && mosw.isa(varargin{1},'theparser')
                 This = varargin{1};
                 return
             end
             
-            if length(varargin) == 1 && myisa(varargin{1},'preparser')
+            if length(varargin) == 1 && mosw.isa(varargin{1},'preparser')
                 doCopyPreparser(varargin{1});
                 return
             end
@@ -59,7 +59,7 @@ classdef theparser
                 end
                 
                 % Copy info from preparser.
-                if length(varargin) >= 2 && myisa(varargin{2},'preparser')
+                if length(varargin) >= 2 && mosw.isa(varargin{2},'preparser')
                     doCopyPreparser(varargin{2});
                 end
                 

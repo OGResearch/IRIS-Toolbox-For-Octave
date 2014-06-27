@@ -72,8 +72,8 @@ function This = subsasgn(This,S,B)
 
 thisClass = class(This);
 
-if ~myisa(This,'modelobj') ...
-        || (~myisa(B,'modelobj') && ~isempty(B) && ~isnumeric(B))
+if ~mosw.isa(This,'modelobj') ...
+        || (~mosw.isa(B,'modelobj') && ~isempty(B) && ~isnumeric(B))
     utils.error(thisClass, ...
         ['Invalid subscripted reference or assignment to ',thisClass, ...
         'object.']);
@@ -116,7 +116,7 @@ S = utils.altersubs(S,nAlt,thisClass);
 
 if any(strcmp(S(1).type,{'()','{}'}))
     
-    if ~myisa(B,'modelobj') && ~isempty(B)
+    if ~mosw.isa(B,'modelobj') && ~isempty(B)
         utils.error(thisClass, ...
             ['Invalid subscripted reference or assignment ', ...
             'to ',thisClass,' object.']);
@@ -124,7 +124,7 @@ if any(strcmp(S(1).type,{'()','{}'}))
     
     % Make sure the LHS and RHS model objects are compatible in yvector,
     % xvector, and evector.
-    if myisa(B,'modelobj') && ~iscompatible(This,B)
+    if mosw.isa(B,'modelobj') && ~iscompatible(This,B)
         utils.error(thisClass, ...
             ['Objects A and B are not compatible in ', ...
             'in subscripted assignment A(...) = B.']);
@@ -139,7 +139,7 @@ if any(strcmp(S(1).type,{'()','{}'}))
     
     nAInx = length(AInx);
 
-    if myisa(B,'modelobj') && ~isempty(B)
+    if mosw.isa(B,'modelobj') && ~isempty(B)
         % `This(Inx) = B`
         % where `B` is a non-empty model whose length is either 1 or the same as
         % the length of `This(Inx)`.
