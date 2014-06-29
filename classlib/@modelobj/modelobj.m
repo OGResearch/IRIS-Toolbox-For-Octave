@@ -32,7 +32,7 @@ classdef modelobj < getsetobj & userdataobj
         % Flags for log-linearised variables.
         log = false(1,0);
         % Signs of log-linearized variables.
-        LogSign = zeros(1,0);
+        LogSign = zeros(1,0,'int8');
         % List of equations in user form.
         eqtn = cell(1,0);
         % Equation labels.

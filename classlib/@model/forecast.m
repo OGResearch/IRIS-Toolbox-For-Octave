@@ -39,8 +39,8 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *'auto'* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'initCond='` [ *'data'* | 'fixed' ] - Use the MSE for the initial
 % conditions if found in the input data or treat the initical conditions as
@@ -91,11 +91,11 @@ end
 % Determine format of input and output data.
 output = 'dbase';
 
-if ischar(opt.dtrends)
+if iequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 ny = size(m.solution{4},1);
 nx = size(m.solution{1},1);
@@ -714,8 +714,12 @@ end
         ylist = this.name(this.nametype == 1);
         for i = 1 : length(realid)
             y = permute(p{1}(i,:,:,:),[2,3,4,1]);
-            if delog && this.log(realid(i))
-                y = exp(y);
+            if delog
+                if this.LogSign(realid(i)) == 1
+                    y = exp(y);
+                elseif this.LogSign(realid(i)) == -1
+                    y = -exp(y);
+                end
             end
             b.(ylist{i}) = replace(template,y,range(1));
         end
@@ -734,8 +738,12 @@ end
         end
         for i = find(imagid == 0)
             x = permute(X(i,:,:,:),[2,3,4,1]);
-            if delog && this.log(realid(i))
-                x = exp(x);
+            if delog 
+                if this.LogSign(realid(i)) == 1
+                    x = exp(x);
+                elseif this.LogSign(realid(i)) == -1
+                    x = -exp(x);
+                end
             end
             b.(this.name{realid(i)}) = replace(template,x,startdate);
         end

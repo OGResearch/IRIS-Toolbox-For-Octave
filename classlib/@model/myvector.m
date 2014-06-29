@@ -16,7 +16,7 @@ if ischar(varargin{1})
             % Vector of measurement variables.
             inx = This.nametype == 1;
             Vec = This.name(inx);
-            Vec = xxWrapInLog(Vec,This.log(inx));
+            Vec = xxWrapInLog(Vec,This.LogSign(inx));
         case 'x'
             % Vector of transition variables.
             pos = real(This.solutionid{2});
@@ -25,7 +25,7 @@ if ischar(varargin{1})
             for i = find(shift ~= 0)
                 Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
             end
-            Vec = xxWrapInLog(Vec,This.log(pos));
+            Vec = xxWrapInLog(Vec,This.LogSign(pos));
         case 'e'
             % Vector of shocks.
             inx = This.nametype == 3;
@@ -38,19 +38,23 @@ else
     for i = find(shift ~= 0)
         Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
     end
-    Vec = xxWrapInLog(Vec,This.log(pos));
+    Vec = xxWrapInLog(Vec,This.LogSign(pos));
 end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function Vec = xxWrapInLog(Vec,Log)
 
-for i = find(Log)
+
+function Vec = xxWrapInLog(Vec,LogSign)
+for i = find(LogSign == 1)
     Vec{i} = sprintf('log(%s)',Vec{i});
 end
-
+for i = find(LogSign == -1)
+    Vec{i} = sprintf('log(-%s)',Vec{i});
 end
-% xxWrapInLog().
+end % xxWrapInLog()

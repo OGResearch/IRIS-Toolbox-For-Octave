@@ -28,8 +28,8 @@ if IsGrowth
     % Lags and leads are guaranteed to have an explicit plus sign at this
     % point.
     
-    % Cycle over log variables.
-    for i = find(This.log & This.nametype <=2)
+    % Cycle over log-plus and log-minus variables.
+    for i = find(This.LogSign ~= 0 & This.nametype <=2)
         c = sprintf('%g',i);
         % Leads of log variables.
         % Replace `x(10){+2}` with `(x(10)*dx(10)^2)`.
@@ -44,7 +44,7 @@ if IsGrowth
     end
     
     % Cycle over non-log variables.
-    for i = find(~This.log & This.nametype <= 2)
+    for i = find(This.LogSign == 0 & This.nametype <= 2)
         c = sprintf('%g',i);
         % Lags and leads of non-log variables.
         % Replace `x(10){-2}` with `(x(10)-2*dx(10))`.

@@ -141,7 +141,7 @@ switch Query
         
     case {'ylog','xlog','elog'}
         inx = find(Query(1) == 'yxe');
-        Ans = This.log(This.nametype == inx);
+        Ans = This.LogSign(This.nametype == inx) ~= 0;
         
     case 'yid'
         Ans = This.solutionid{1};
@@ -409,8 +409,10 @@ end
                 if tmocc(iiocc) ~= 0
                     c = sprintf('%s{%+g}',c,tmocc(iiocc));
                 end
-                if This.log(nmocc(iiocc))
+                if This.LogSign(nmocc(iiocc)) == 1
                     c = ['log(',c,')']; %#ok<AGROW>
+                elseif This.LogSign(nmocc(iiocc)) == -1
+                    c = ['log(-',c,')']; %#ok<AGROW>
                 end
                 Ans{iieq}{iiocc} = c;
             end
@@ -431,7 +433,9 @@ function [ssLevel,ssGrowth,dtLevel,dtGrowth,ssDtLevel,ssDtGrowth] ...
     = xxSstate(This)
 
 Assign = This.Assign;
-isLog = This.log;
+ixLog0 = This.LogSign == 0;
+ixLogP = This.LogSign == 1;
+ixLogM = This.LogSign == -1;
 ny = sum(This.nametype == 1);
 nAlt = size(Assign,3);
 nName = size(This.Assign,2);
@@ -441,7 +445,8 @@ ssLevel = real(Assign);
 ssGrowth = imag(Assign);
 
 % Fix missing (=zero) growth in steady states of log variables.
-ssGrowth(ssGrowth == 0 & isLog(1,:,ones(1,nAlt))) = 1;
+ssGrowth(ssGrowth == 0 & ixLogP(1,:,ones(1,nAlt))) = 1;
+ssGrowth(ssGrowth == 0 & ixLogM(1,:,ones(1,nAlt))) = 1;
 
 % Retrieve dtrends.
 [dtLevel,dtGrowth] = mydtrendsrequest(This,'sstate');
@@ -449,17 +454,23 @@ dtLevel = permute(dtLevel,[3,1,2]);
 dtGrowth = permute(dtGrowth,[3,1,2]);
 dtLevel(:,ny+1:nName,:) = 0;
 dtGrowth(:,ny+1:nName,:) = 0;
-dtLevel(1,~isLog,:) = dtLevel(1,~isLog,:);
-dtLevel(1,isLog,:) = exp(dtLevel(1,isLog,:));
-dtGrowth(1,~isLog,:) = dtGrowth(1,~isLog,:);
-dtGrowth(1,isLog,:) = exp(dtGrowth(1,isLog,:));
+
+dtLevel(1,ixLogP,:) = exp(dtLevel(1,ixLogP,:));
+dtLevel(1,ixLogM,:) = -exp(dtLevel(1,ixLogM,:));
+
+% Log growth rates are positive for both log-plus and log-minus variables.
+dtGrowth(1,ixLogP,:) = exp(dtGrowth(1,ixLogP,:));
+dtGrowth(1,ixLogM,:) = exp(dtGrowth(1,ixLogM,:));
 
 % Steady state plus dtrends.
 ssDtLevel = ssLevel;
-ssDtLevel(1,isLog,:) = ssDtLevel(1,isLog,:) .* dtLevel(1,isLog,:);
-ssDtLevel(1,~isLog,:) = ssDtLevel(1,~isLog,:) + dtLevel(1,~isLog,:);
+ssDtLevel(1,ixLog0,:) = ssDtLevel(1,ixLog0,:) + dtLevel(1,ixLog0,:);
+ssDtLevel(1,ixLogP,:) = ssDtLevel(1,ixLogP,:) .* dtLevel(1,ixLogP,:);
+ssDtLevel(1,ixLogM,:) = ssDtLevel(1,ixLogM,:) .* dtLevel(1,ixLogM,:);
+
 ssDtGrowth = ssGrowth;
-ssDtGrowth(1,isLog,:) = ssDtGrowth(1,isLog,:) .* dtGrowth(1,isLog,:);
-ssDtGrowth(1,~isLog,:) = ssDtGrowth(1,~isLog,:) + dtGrowth(1,~isLog,:);
+ssDtGrowth(1,ixLog0,:) = ssDtGrowth(1,ixLog0,:) + dtGrowth(1,ixLog0,:);
+ssDtGrowth(1,ixLogP,:) = ssDtGrowth(1,ixLogP,:) .* dtGrowth(1,ixLogP,:);
+ssDtGrowth(1,ixLogM,:) = ssDtGrowth(1,ixLogM,:) .* dtGrowth(1,ixLogM,:);
 
 end % xxSstate()

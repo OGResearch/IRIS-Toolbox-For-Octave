@@ -56,7 +56,7 @@ end
         sw.Warn.FreqMismatch = true;
         sw.Warn.NoRangeFound = true;
         sw.LagOrLead = [];
-        sw.Log = [];
+        sw.LogSign = [];
         sw.BaseYear = This.BaseYear;
         
         if retX && ~isempty(This.XNames)

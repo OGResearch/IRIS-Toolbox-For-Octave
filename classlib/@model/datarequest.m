@@ -142,9 +142,13 @@ switch lower(Req)
         varargout{1} = doData2Alpha();
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function [XbInitMean,IxNanInitMean,XbInitMse,IxNanInitMse] ...
             = doData2XbInit()
         XbInitMean = nan(nb,1,nAlt);
@@ -155,7 +159,7 @@ end
             imagId = imag(This.solutionid{2}(nf+1:end));
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.Log = This.log(realId);
+            sw.LogSign = This.LogSign(realId);
             sw.Warn = warn;
             XbInitMean = db2array(dMean,This.name(realId),Range(1)-1,sw);
             XbInitMean = permute(XbInitMean,[2,1,3]);
@@ -192,9 +196,12 @@ end
         else
             IxNanInitMse = {};
         end
-    end % doData2XInit().
+    end % doData2XInit()
+
 
 %**************************************************************************
+
+
 % Get initial conditions for xb and alpha.
 % Those that are not required are set to `NaN` in `xInitMean, and
 % to 0 when computing `aInitMean`.
@@ -239,28 +246,34 @@ end
                 AlpInitMse(:,:,1,iiData) = NaN;
             end
         end
-    end % doXInit2AInit().
+    end % doXInit2AInit()
+
 
 %**************************************************************************
+
+    
     function Y = doData2Y()
         if ~isempty(dMean)
             inx = This.nametype == 1;
             sw = struct();
             sw.LagOrLead = [];
-            sw.Log = This.log(inx);
+            sw.LogSign = This.LogSign(inx);
             sw.Warn = warn;
             Y = db2array(dMean,This.name(inx),Range,sw);
             Y = permute(Y,[2,1,3]);
         end
     end % doData2Y()
 
+
 %**************************************************************************
+
+    
     function E = doData2E()
         if ~isempty(dMean)
             inx = This.nametype == 3;
             sw = struct();
             sw.LagOrLead = [];
-            sw.Log = [];
+            sw.LogSign = [];
             sw.Warn = warn;
             E = db2array(dMean,This.name(inx),Range,sw);
             E = permute(E,[2,1,3]);
@@ -270,25 +283,31 @@ end
         eReal(isnan(eReal)) = 0;
         eImag(isnan(eImag)) = 0;
         E = eReal + 1i*eImag;
-    end % dodata2e().
+    end % dodata2e()
+
 
 %**************************************************************************
+    
+    
     function G = doData2G()
         ng = sum(This.nametype == 5);
         if ng > 0 && ~isempty(dMean)
             name = This.name(This.nametype == 5);
             sw = struct();
             sw.LagOrLead = [];
-            sw.Log = [];
+            sw.LogSign = [];
             sw.Warn = warn;
             G = db2array(dMean,name,Range,sw);
             G = permute(G,[2,1,3]);
         else
             G = nan(ng,nPer);
         end
-    end % doData2G().
+    end % doData2G()
+
 
 %**************************************************************************
+
+
 % Get current dates of transition variables.
 % Set lags and leads to NaN.
     function X = doData2X()
@@ -300,7 +319,7 @@ end
             imagId = imagId(currentInx);
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.Log = This.log(realId);
+            sw.LogSign = This.LogSign(realId);
             sw.Warn = warn;
             x = db2array(dMean,This.name(realId),Range,sw);
             x = permute(x,[2,1,3]);
@@ -308,9 +327,12 @@ end
             X = nan(nxx,size(x,2),size(x,3));
             X(currentInx,:,:) = x;
         end
-    end % doData2X().
+    end % doData2X()
+
 
 %**************************************************************************
+
+    
     function A = doData2Alpha()
         if ~isempty(dMean)
             realId = real(This.solutionid{2});
@@ -319,7 +341,7 @@ end
             imagId = imagId(nf+1:end);
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.Log = This.log(realId);
+            sw.LogSign = This.LogSign(realId);
             sw.Warn = warn;
             A = db2array(dMean,This.name(realId),Range,sw);
             A = permute(A,[2,1,3]);
@@ -337,6 +359,7 @@ end
                 A(:,:,ii) = NaN;
             end
         end
-    end % doData2Alpha().
+    end % doData2Alpha()
+
 
 end

@@ -41,11 +41,12 @@ nAlt = size(This.Assign,3);
 nPer = length(TVec);
 nId = length(Id);
 
-realid = real(Id);
-imagid = imag(Id);
-logInx = This.log(realid);
+realId = real(Id);
+imagId = imag(Id);
+ixLogPlus = This.LogSign(realId) == 1;
+ixLogMinus = This.LogSign(realId) == -1;
 repeat = ones(1,nPer);
-shift = imagid(:);
+shift = imagId(:);
 shift = shift(:,repeat);
 shift = shift + TVec(ones(1,nId),:);
 
@@ -66,22 +67,26 @@ end
 
 
     function X = doOneTrendArray()
-            level = real(This.Assign(1,realid,min(ILoop,end)));
-            growth = imag(This.Assign(1,realid,min(ILoop,end)));
+            level = real(This.Assign(1,realId,min(ILoop,end)));
+            growth = imag(This.Assign(1,realId,min(ILoop,end)));
             
             % No imaginary part means zero growth for log variables.
-            growth(logInx & growth == 0) = 1;
+            growth(ixLogPlus & growth == 0) = 1;
+            growth(ixLogMinus & growth == 0) = 1;
             
             % Use `reallog` to make sure negative numbers throw an error.
-            level(logInx) = reallog(level(logInx));
-            growth(logInx) = reallog(growth(logInx));
+            level(ixLogPlus) = reallog(level(ixLogPlus));
+            growth(ixLogPlus) = reallog(growth(ixLogPlus));
+            level(ixLogMinus) = reallog(-level(ixLogMinus));
+            growth(ixLogMinus) = reallog(growth(ixLogMinus));
             
             level = level.';
             growth = growth.';
             
             X = level(:,repeat) + shift.*growth(:,repeat);
             if IsDelog
-                X(logInx,:) = exp(X(logInx,:));
+                X(ixLogPlus,:) = exp(X(ixLogPlus,:));
+                X(ixLogMinus,:) = -exp(X(ixLogMinus,:));
             end
     end % doOneTrendArray()
 

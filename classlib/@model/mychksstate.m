@@ -98,15 +98,16 @@ end
         for ii = 1 : length(eqtnS)
             eqtnS{ii} = str2func(['@(x,dx) ',eqtnS{ii}]);
         end
+        ixLog = This.LogSign ~= 0;
         for iiAlt = 1 : nAlt
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
-            dx(This.log & dx == 0) = 1;
+            dx(ixLog & dx == 0) = 1;
             % Evaluate discrepancies btw LHS and RHS of steady-state equations.
             Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtnS)).';
             xk = x;
-            xk(~This.log) = x(~This.log) + dx(~This.log);
-            xk(This.log) = x(This.log) .* dx(This.log);
+            xk(~ixLog) = x(~ixLog) + dx(~ixLog);
+            xk(ixLog) = x(ixLog) .* dx(ixLog);
             Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtnS)).';
         end
     end % doSstateEqtn()

@@ -8,7 +8,7 @@ function [SspacePos,NamePos,SSpacePosLag,SspaceInx] ...
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-throwError = any(strcmp(varargin,'-error'));
+throwErr = any(strcmp(varargin,'-error'));
 
 if ischar(List)
     List = regexp(List,'[\w\{\}\(\)\+\-]+','match');
@@ -44,7 +44,7 @@ end
 
 if nargout == 1
     nanPos = isnan(SspacePos);
-    if throwError && any(nanPos)
+    if throwErr && any(nanPos)
         utils.error('model', ...
             'Cannot find this variable in the state-space vectors: ''%s''.', ...
             List{nanPos});
@@ -54,7 +54,7 @@ end
 
 if nargout == 2
     nanPos = isnan(NamePos);
-    if throwError && any(nanPos)
+    if throwErr && any(nanPos)
         utils.error('model', ...
             'Cannot find this variable in the state-space vectors: ''%s''.', ...
             List{nanPos});
@@ -65,7 +65,7 @@ end
 SSpacePosLag = xxSspacePosLag(This,List,SspacePos);
 
 nanPos = isnan(SSpacePosLag);
-if throwError && any(nanPos)
+if throwErr && any(nanPos)
     utils.error('model', ...
         'Cannot find this variable in the state-space vectors: ''%s''.', ...
         List{nanPos});
@@ -78,18 +78,22 @@ SspaceInx(x) = true;
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function X = xxSspacePosLag(This,UsrName,SspacePos)
 % xxsspaceposlag  Return position in the extended solutionid vector for
 % transition variables with a lag larger than the maximum lag present in
 % `solutionid`.
-
 X = SspacePos;
 solutionId = [This.solutionid{1:2}];
-logName = This.name;
-logName(This.log) = regexprep(logName(This.log),'.*','log($0)');
+name = This.name;
+name(This.LogSign == 1) = strcat('log(',name(This.LogSign == 1),')');
+name(This.LogSign == -1) = strcat('log(-',name(This.LogSign == -1),')');
 for i = find(isnan(X))
     usrName = UsrName{i};
     lag  = regexp(usrName,'\{.*?\}','match','once');
@@ -97,7 +101,7 @@ for i = find(isnan(X))
     if isempty(lag)
         continue
     end
-    namePos = strcmp(logName,usrName) & This.nametype == 2;
+    namePos = strcmp(name,usrName) & This.nametype == 2;
     if ~any(namePos)
         continue
     end
@@ -113,5 +117,4 @@ for i = find(isnan(X))
     solutionPos = find(inx,1);
     X(i) = solutionPos + 1i*round(lag - maxLag);
 end
-
-end % xxSspacePosLag().
+end % xxSspacePosLag()

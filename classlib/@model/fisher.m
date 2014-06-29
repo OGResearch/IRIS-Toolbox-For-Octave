@@ -120,8 +120,8 @@ if ny == 0
         'No measurement variables included in computing Fisher matrix.');
 end
 
-yLog = This.log(This.nametype == 1);
-yLog(excl) = [];
+ixYLogSign = This.LogSign(This.nametype == 1);
+ixYLogSign(excl) = [];
 
 [assignPos,stdcorrPos] = mynameposition(This,PList,'error');
 assignNan = isnan(assignPos);
@@ -279,9 +279,10 @@ F = F / 2;
         y = real(y);
         % Adjust for the excluded measurement variables.
         y(excl) = [];
-        % Take log of log-variables; `ylog` has been already adjusted for the
-        % excluded measurement variables.
-        y(yLog) = log(y(yLog));
+        % Take log of log-variables; `ixYLogSign` has been already adjusted
+        % for the excluded measurement variables.
+        y(ixYLogSign == 1) = log(y(ixYLogSign == 1));
+        y(ixYLogSign == -1) = log(-y(ixYLogSign == -1));
     end % doGetSstate().
 
 end 

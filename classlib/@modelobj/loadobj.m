@@ -58,12 +58,11 @@ end
 % Signs of log-linearized variables.
 try
     if isempty(This.LogSign)
-        This.LogSign = double(This.log);
+        This.LogSign = int8(This.log);
     end
 catch
-    This.LogSign = double(This.log);
+    This.LogSign = int8(This.log);
 end
-
 
 
 % Create and save carry-around files.

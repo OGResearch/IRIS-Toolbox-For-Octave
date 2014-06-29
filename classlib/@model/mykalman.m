@@ -611,7 +611,7 @@ end
         s2.W = [];
         s2.zerothSegment = 0;
         s2.NLoop = nLoop;
-        s2.XLog = This.log(real(This.solutionid{2}));
+        s2.XLogSign = This.LogSign(real(This.solutionid{2}));
         s2.segment = 1;
     end % doPrepareNonlin()
 

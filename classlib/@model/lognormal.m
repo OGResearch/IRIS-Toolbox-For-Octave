@@ -60,17 +60,17 @@ pp.parse(This,D);
 
 Opt = passvalopt('model.lognormal',varargin{:});
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 preexist = fieldnames(D);
-logList = This.name(This.log);
 field = @(x) sprintf('%s%s%',Opt.prefix,x);
 
 doInitStruct();
 template = tseries();
 
-for i = 1 : length(logList)
-    name = logList{i};
+for namePos = find(This.LogSign ~= 0)
+    name = This.name(namePos);
+    logSign = This.LogSign(namePos);
     doPopulate();
 end
 
@@ -78,9 +78,13 @@ if ~Opt.fresh
     D = rmfield(D,preexist);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doInitStruct()
         if Opt.median
             D.(field('median')) = struct();
@@ -102,7 +106,10 @@ end
         end
     end
 
+
 %**************************************************************************
+
+    
     function doPopulate()
         [expmu,range] = rangedata(D.mean.(name),Inf);
         if isempty(range)
@@ -115,14 +122,23 @@ end
         start = range(1);
         if Opt.median
             x = xxMedian(expmu,sgm,sgm2);
+            if logSign == -1
+                x = -x;
+            end
             D.(field('median')).(name) = replace(template,x,start,co);
         end
         if Opt.mode
             x = xxMode(expmu,sgm,sgm2);
+            if logSign == -1
+                x = -x;
+            end
             D.(field('mode')).(name) = replace(template,x,start,co);
         end
         if Opt.mean
             x = xxMean(expmu,sgm,sgm2);
+            if logSign == -1
+                x = -x;
+            end
             D.(field('mean')).(name) = replace(template,x,start,co);
         end
         if Opt.std
@@ -134,6 +150,9 @@ end
             for p = Opt.prctile
                 x = [x,xxPrctile(expmu,sgm,sgm2,p/100)]; %#ok<AGROW>
             end
+            if logSign == -1
+                x = -x;
+            end
             co = repmat(co,1,length(Opt.prctile));
             D.(field('pct')).(name) = replace(template,x,start,co);
         end
@@ -141,30 +160,46 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function X = xxMedian(ExpMu,~,~)
 X = ExpMu;
-end % xxMedian().
+end % xxMedian()
+
 
 %**************************************************************************
+
+
 function X = xxMode(ExpMu,~,Sgm2)
 X = ExpMu ./ exp(Sgm2);
-end % xxMode().
+end % xxMode()
+
 
 %**************************************************************************
+
+
 function X = xxMean(ExpMu,~,Sgm2)
 X = ExpMu .* exp(0.5*Sgm2);
-end % xxMean().
+end % xxMean()
+
 
 %**************************************************************************
+
+
 function X = xxStd(ExpMu,Sgm,Sgm2)
 X = xxmean(ExpMu,Sgm,Sgm2) .* sqrt(exp(Sgm2)-1);
-end % xxStd().
+end % xxStd()
+
 
 %**************************************************************************
+
+
 function X = xxPrctile(ExpMu,Sgm,~,P)
 A = -sqrt(2).*erfcinv(2*P);
 X = exp(Sgm.*A) .* ExpMu;
-end % doPrctile().
+end % doPrctile()

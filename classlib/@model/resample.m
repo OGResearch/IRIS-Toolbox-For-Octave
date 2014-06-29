@@ -34,8 +34,8 @@ function Outp = resample(This,Inp,Range,NDraw,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Add deterministic trends to
-% measurement variables.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Add deterministic
+% trends to measurement variables.
 %
 % * `'method='` [ `'bootstrap'` | *`'montecarlo'`* ] - Method of
 % randomising shocks and initial condition.
@@ -101,9 +101,9 @@ pp.parse(This,Inp,Range,NDraw,J);
 % Parse options.
 opt = passvalopt('model.resample',varargin{:});
 
-% If `'dtrends='` option is `'auto'` switch on/off the dtrends according to
+% If `'dtrends='` option is `@auto` switch on/off the dtrends according to
 % `'deviation='`.
-if ischar(opt.dtrends) && strcmpi(opt.dtrends,'auto')
+if isequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 

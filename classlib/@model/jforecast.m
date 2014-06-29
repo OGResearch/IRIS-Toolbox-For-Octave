@@ -33,8 +33,8 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'initCond='` [ *`'data'`* | `'fixed'` ] - Use the MSE for the initial
 % conditions if found in the input data or treat the initical conditions as
@@ -98,7 +98,7 @@ opt = passvalopt('model.jforecast',varargin{:});
 isPlanCond = isa(opt.plan,'plan') && ~isempty(opt.plan,'cond');
 isCond = isCond || isPlanCond;
 
-if isequal(opt.dtrends,'auto')
+if isequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 

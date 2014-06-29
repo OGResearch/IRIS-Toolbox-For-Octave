@@ -44,9 +44,9 @@ end
 Flag = false(size(Name));
 valid = true(size(Name));
 for i = 1 : length(Name)
-    index = strcmp(This.name,Name{i});
-    if any(index)
-        Flag(i) = This.log(index);
+    ix = strcmp(This.name,Name{i});
+    if any(ix)
+        Flag(i) = This.LogSign(ix) ~= 0;
     else
         valid(i) = false;
     end

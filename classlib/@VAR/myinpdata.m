@@ -41,6 +41,7 @@ YNames = This.YNames;
 YXNames = [This.YNames,This.XNames];
 
 sw = struct();
+sw.LogSign = [];
 sw.BaseYear = get(This,'baseYear');
 
 if isempty(This.GroupNames)

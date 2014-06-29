@@ -71,8 +71,10 @@ nk = double(opt.constant);
 
 C = C(sspacePos,sspacePos,:,:);
 zBar = permute(This.Assign(1,namePos,:),[2,3,1]);
-isLog = This.log(1,namePos);
-zBar(isLog) = log(zBar(isLog));
+ixLogP = This.LogSign(1,namePos) == 1;
+ixLogM = This.LogSign(1,namePos) == -1;
+zBar(ixLogP) = log(zBar(ixLogP));
+zBar(ixLogM) = log(-zBar(ixLogM));
 
 % TODO: Calculate Sigma.
 V = VAR();

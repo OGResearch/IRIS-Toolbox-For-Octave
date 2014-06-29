@@ -68,14 +68,14 @@ switch Query
     case {'log','islog'}
         X = struct();
         for iType = find(This.nametype <= 3);
-            X.(This.name{iType}) = This.log(iType);
+            X.(This.name{iType}) = This.LogSign(iType) ~= 0;
         end
         
     case {'loglist'}
-        X = This.name(This.log & This.nametype <= 3);
+        X = This.name(This.LogSign ~= 0 & This.nametype <= 3);
         
     case {'nonloglist'}
-        X = This.name(~This.log & This.nametype <= 3);
+        X = This.name(This.LogSign == 0 & This.nametype <= 3);
         
     case {'covmat','omega'}
         X = omega(This);

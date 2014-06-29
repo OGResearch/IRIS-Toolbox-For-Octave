@@ -1,11 +1,13 @@
 function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % simulate  Simulate model.
 %
+%
 % Syntax
 % =======
 %
 %     S = simulate(M,D,Range,...)
 %     [S,Flag,AddF,Discrep] = simulate(M,D,Range,...)
+%
 %
 % Input arguments
 % ================
@@ -18,10 +20,12 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 % * `Range` [ numeric ] - Simulation range.
 %
+%
 % Output arguments
 % =================
 %
 % * `S` [ struct | cell ] - Database with simulation results.
+%
 %
 % Output arguments in non-linear simulations
 % ===========================================
@@ -36,6 +40,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % * `Discrep` [ cell | empty ] - Cell array of tseries with final
 % discrepancies between LHS and RHS in equations marked for non-linear
 % simulations by a double-equal sign.
+%
 %
 % Options
 % ========
@@ -53,7 +58,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % `dboverlay` to combine the simulated output data with the input database,
 % or with another database, at the end.
 %
-% * `'dTrends='` [ *'auto'* | `true` | `false` ] - Add deterministic trends to
+% * `'dTrends='` [ *`@auto`* | `true` | `false` ] - Add deterministic trends to
 % measurement variables.
 %
 % * `'ignoreShocks='` [ `true` | *`false`* ] - Read only initial conditions from
@@ -65,6 +70,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
 % window.
+%
 %
 % Options in non-linear simualations
 % ===================================
@@ -92,6 +98,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 % * `'tolerance='` [ numeric | *`1e-5`* ] - Convergence tolerance.
 %
+%
 % Description
 % ============
 %
@@ -105,8 +112,76 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % database (i.e. to include a longer history of data in the simulated
 % series).
 %
-% Simulations with multilple parameterisations and/or multiple data sets
-% -----------------------------------------------------------------------
+%
+% Deviations from steady-state and deterministic trends
+% ------------------------------------------------------
+%
+% By default, both the input database, `D`, and the output database, `S`,
+% are in full levels and the simulated paths for measurement variables
+% include the effect of deterministic trends, including possibly exogenous
+% variables. The default behavior can be changed by changing the options
+% `'deviation='` and `'dTrends='`.
+%
+% The default value for `'deviation='` is false. If set to `true`, then the
+% input database is expected to contain data in the form of deviations from
+% their steady state levels or paths. For ordinary variables (i.e.
+% variables whose log status is `false`), it is $x_t-\Bar x_t$, meaning
+% that a 0 indicates that the variable is at its steady state and e.g. 2
+% indicates the variables exceeds its steady state by 2. For log-variables
+% (i.e. variables whose log status is `true`), it is $x_t/\Bar x_t$,
+% meaning that a 1 indicates that the variable is at its steady state and
+% e.g. 1.05 indicates that the variable is 5 per cent above its steady
+% state.
+%
+% The default value for `'dTrends='` is `@auto`. This means that its
+% behavior depends on the option `'deviation='`. If `'deviation=' false`
+% then deterministic trends are added to measurement variables, unless you
+% manually override this behavior by setting `'dTrends=' false`.  On the
+% other hand, if `'deviation=' true` then deterministic trends are not
+% added to measurement variables, unless you manually override this
+% behavior by setting `'dTrends=' true`.
+%
+%
+% Simulating contributions of shocks
+% -----------------------------------
+%
+% Use the option `'contributions=' true` to request the contributions of
+% shocks to the simulated path for each variable; this option cannot be
+% used in models with multiple alternative parameterizations or with
+% multiple input data sets.
+%
+% The output database, `S`, contains Ne+2 columns for each variable, where
+% Ne is the number of shocks in the model:
+%
+% * the first columns 1...Ne are the
+% contributions of the Ne individual shocks to the respective variable;
+%
+% * column Ne+1 is the contribution of initial condition, th econstant, and
+% deterministic trends, including possibly exogenous variables;
+%
+% * column Ne+2 is the contribution of nonlinearities in nonlinear
+% simulations (it is always zero otherwise).
+%
+% The contributions are additive for ordinary variables (i.e. variables
+% whose log status is `false`), and multplicative for log varibles (i.e.
+% variables whose log status is `true`). In other words, if `S` is the
+% output database from a simulation with `'contributions=' true`, `X` is an
+% ordinary variable, and `Z` is a log variable, then
+%
+%     sum(S.X,2)
+%
+% (i.e. the sum of all Ne+2 contributions in each period, i.e. summation
+% goes across 2nd dimension) reproduces the final simulated path for
+% the variable `X`, whereas
+%
+%     prod(S.Z,2)
+%
+% (i.e. the product of all Ne+2 contributions) reproduces the final
+% simulated path for the variable `Z`.
+%
+%
+% Simulations with multiple parameterisations and/or multiple data sets
+% ----------------------------------------------------------------------
 %
 % If you simulate a model with `N` parameterisations and the input database
 % contains `K` data sets (i.e. each variable is a time series with `K`
@@ -126,6 +201,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % ..., P`, is a simulation of the `min(I,N)`-th model parameterisation
 % using the `min(I,K)`-th input data set number.
 %
+%
 % Example
 % ========
 %
@@ -143,7 +219,7 @@ pp.parse(This,Inp,Range);
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});
 
-if ischar(opt.dtrends)
+if isequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 
@@ -172,9 +248,6 @@ isNonlinPlan = any(This.nonlin) ...
 isNonlinOpt = any(This.nonlin) ...
     && ~isempty(opt.nonlinearise) && opt.nonlinearise > 0;
 isNonlin = isNonlinPlan || isNonlinOpt;
-
-% Check for option conflicts.
-doChkConflicts();
 
 % Get initial condition for alpha.
 % alpha is always expanded to match nalt within `datarequest`.
@@ -206,6 +279,9 @@ else
     lastEa = 0;
     nShock = 0;
 end
+
+% Check for option conflicts.
+doChkConflicts();
 
 % Get exogenous variables in dtrend equations.
 if ny > 0 && ng > 0 && opt.dtrends
@@ -289,7 +365,7 @@ if isNonlin
     Discr = cell(1,nLoop);
     doChkNonlinConflicts();
     % Index of log-variables in the `xx` vector.
-    s.XLog = This.log(real(This.solutionid{2}));
+    s.XLogSign = This.LogSign(real(This.solutionid{2}));
 else
     % Output arguments for non-linear simulations.
     s.NPerNonlin = 0;
@@ -534,16 +610,23 @@ end
 
     function doChkConflicts()
         % The option `'contributions='` option cannot be used with the
-        % `'plan='` option or with multiple parameterisations.
+        % `'plan='` option, with multiple parameterisations, or multiple
+        % data sets.
         if opt.contributions
             if isTune
                 utils.error('model:simulate', ...
                     ['Cannot run simulation with ''contributions='' true ', ...
                     'and non-empty ''plan=''.']);
             end
-            if nAlt > 1
+            if nAlt > 1 || nInit > 1 || nShock > 1
                 utils.error('model:simulate', ...
-                    '#Cannot_simulate_contributions');
+                    ['Cannot run simulation with ''contributions='' true ', ...
+                    'in models with multiple alternative parameterizations.']);
+            end
+            if nInit > 1 || nShock > 1
+                utils.error('model:simulate', ...
+                    ['Cannot run simulation with ''contributions='' true ', ...
+                    'and input database with multiple data sets.']);
             end
         end
     end % doChkConflicts()

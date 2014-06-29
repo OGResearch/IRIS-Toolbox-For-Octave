@@ -1,11 +1,11 @@
-function [s,m] = diffsrf(m,time,plist,varargin)
+function [S,This] = diffsrf(This,Time,PList,varargin)
 % diffsrf  Differentiate shock response functions w.r.t. specified parameters.
 %
 % Syntax
 % =======
 %
-%     S = diffsrf(M,RANGE,LIST,...)
-%     S = diffsrf(M,NPER,LIST,...)
+%     S = diffsrf(M,Range,PList,...)
+%     S = diffsrf(M,NPer,PList,...)
 %
 % Input arguments
 % ================
@@ -13,12 +13,12 @@ function [s,m] = diffsrf(m,time,plist,varargin)
 % * `M` [ model ] - Model object whose response functions will be simulated
 % and differentiated.
 %
-% * `RANGE` [ numeric ] - Simulation date range with the first date being
+% * `Range` [ numeric ] - Simulation date range with the first date being
 % the shock date.
 %
-% * `NPER` [ numeric ] - Number of simulation periods.
+% * `NPer` [ numeric ] - Number of simulation periods.
 %
-% * `LIST` [ char | cellstr ] - List of parameters w.r.t. which the
+% * `PList` [ char | cellstr ] - List of parameters w.r.t. which the
 % shock response functions will be differentiated.
 %
 % Output arguments
@@ -46,13 +46,13 @@ function [s,m] = diffsrf(m,time,plist,varargin)
 options = passvalopt('model.srf',varargin{:});
 
 % Convert char list to cellstr.
-if ischar(plist)
-    plist = regexp(plist,'\w+','match');
+if ischar(PList)
+    PList = regexp(PList,'\w+','match');
 end
 
 %**************************************************************************
 
-nalt = size(m.Assign,3);
+nalt = size(This.Assign,3);
 
 if nalt > 1
     utils.error('model', ...
@@ -60,20 +60,20 @@ if nalt > 1
         'single-parameterisation models.']);
 end
 
-index = strfun.findnames(m.name(m.nametype == 4),plist);
+index = strfun.findnames(This.name(This.nametype == 4),PList);
 if any(isnan(index))
-    plist(isnan(index)) = [];
+    PList(isnan(index)) = [];
     index(isnan(index)) = [];
 end
-index = index + sum(m.nametype < 4);
+index = index + sum(This.nametype < 4);
 
 % Find optimal step for two-sided derivatives.
-p = m.Assign(1,index);
+p = This.Assign(1,index);
 n = length(p);
 h = eps^(1/3)*max([p;ones(size(p))],[],1);
 
 % Assign alternative parameterisations p(i)+h(i) and p(i)-h(i).
-m = alter(m,2*n);
+This = alter(This,2*n);
 P = struct();
 twoSteps = nan([1,n]);
 for i = 1 : n
@@ -81,35 +81,37 @@ for i = 1 : n
     pp(i) = p(i) + h(i);
     pm = p(i)*ones([1,n]);
     pm(i) = p(i) - h(i);
-    P.(plist{i}) = [pp,pm];
+    P.(PList{i}) = [pp,pm];
     twoSteps(i) = pp(i) - pm(i);
 end
-m = assign(m,P);
-m = solve(m);
+This = assign(This,P);
+This = solve(This);
 
 % Simulate SRF for all parameterisations. Do not delogarithmise the shock
 % responses in `srf`; this will be done at the end of this file, after
 % differentiation.
 optionslog = options.log;
 options.log = false;
-s = srf(m,time,options);
+S = srf(This,Time,options);
 
 % For each simulation, divide the difference from baseline by the size of
 % the step.
-for i = find(m.nametype <= 3)
-    x = s.(m.name{i}).data;
-    c = s.(m.name{i}).Comment;
+for i = find(This.nametype <= 3)
+    x = S.(This.name{i}).data;
+    c = S.(This.name{i}).Comment;
     dx = nan([size(x,1),size(x,2),n]);
     for j = 1 : n
         dx(:,:,j) = (x(:,:,j) - x(:,:,n+j)) / twoSteps(j);
-        c(1,:,j) = regexprep(c(1,:,j),'.*',['$0/',plist{j}]);
+        c(1,:,j) = regexprep(c(1,:,j),'.*',['$0/',PList{j}]);
     end
-    if optionslog && m.log(i)
-        dx = exp(dx);
+    if optionslog
+        if This.LogSign(i) == 1 || This.LogSing(i) == -1
+            dx = exp(dx);
+        end
     end
-    s.(m.name{i}).data = dx;
-    s.(m.name{i}).Comment = c;
-    s.(m.name{i}) = mytrim(s.(m.name{i}));
+    S.(This.name{i}).data = dx;
+    S.(This.name{i}).Comment = c;
+    S.(This.name{i}) = mytrim(S.(This.name{i}));
 end
 
 end

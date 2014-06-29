@@ -16,7 +16,7 @@ ni = length(This.INames);
 
 H.Id = { 1:ny, ny+(1:nx), ny+nx+(1:ne), ny+nx+ne+(1:ni) };
 H.Name = [ This.YNames, This.XNames, This.ENames, This.INames ];
-H.Log = false(size(H.Name));
+H.LogSign = zeros(size(H.Name),'int8');
 H.Label = [ This.YNames, This.XNames, This.ENames, This.INames ];
 
 if isequal(H.Contributions,@E)

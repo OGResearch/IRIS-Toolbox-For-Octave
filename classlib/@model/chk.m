@@ -1,4 +1,4 @@
-function [Flag,Inx] = chk(This,IAlt,varargin)
+function Flag = chk(This,IAlt,varargin)
 % chk  [Not a public function] Check for missing or inconsistent values assigned within the model object.
 %
 % Backed IRIS function.
@@ -17,15 +17,25 @@ for i = 1 : length(varargin)
     switch varargin{i}
         case 'log'
             realsmall = getrealsmall();
-            Inx = find(This.log);
-            Inx = Inx(any(This.Assign(1,Inx,IAlt) <= realsmall,3));
-            Flag = isempty(Inx);
+            IxPlus = find(This.LogSign == 1);
+            IxPlus = IxPlus(any(This.Assign(1,IxPlus,IAlt) <= realsmall,3));
+            Flag = isempty(IxPlus);
             if ~Flag
                 utils.warning('model',...
-                    ['This log-linear variable ', ...
+                    ['This log-plus variable ', ...
                     'has (numerically) non-positive steady state: ''%s''.'], ...
-                    This.name{Inx});
+                    This.name{IxPlus});
             end
+            IxMinus = find(This.LogSign == -1);
+            IxMinus = IxMinus(any(This.Assign(1,IxPlus,IAlt) >= realsmall,3));
+            Flag = isempty(IxMinus);
+            if ~Flag
+                utils.warning('model',...
+                    ['This log-minus variable ', ...
+                    'has (numerically) non-negative steady state: ''%s''.'], ...
+                    This.name{IxMinus});
+            end
+            
         case 'parameters'
             % Throw warning if some parameters are not assigned.
             [Flag,list] = isnan(This,'parameters',IAlt);

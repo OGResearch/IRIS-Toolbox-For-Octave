@@ -28,7 +28,7 @@ function Outp = bn(This,Inp,Range,varargin)
 % * `'deviations='` [ `true` | *`false`* ] - Input and output data are
 % deviations from balanced-growth paths.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement variables
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement variables
 % in input and output data include deterministic trends specified in
 % [`!dtrends`](modellang/dtrends) equations.
 %
@@ -52,7 +52,7 @@ pp.parse(This,Inp,Range);
 opt = passvalopt('model.bn',varargin{:});
 
 % Auto set the 'dtrends' option.
-if ischar(opt.dtrends) && strcmpi(opt.dtrends,'auto')
+if isequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 

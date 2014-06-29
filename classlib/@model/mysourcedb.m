@@ -21,7 +21,7 @@ if isempty(nCol)
     nCol = opt.ncol;
 end
 
-if strcmp(opt.dtrends,'auto')
+if isequal(opt.dtrends,@auto)
     opt.dtrends = ~opt.deviation;
 end
 
@@ -46,18 +46,18 @@ nPer = length(Range);
 xRange = Range(1)-maxLag : Range(end);
 nXPer = length(xRange);
 
-n1 = sum(This.nametype == 1);
-n2 = sum(This.nametype == 2);
-n3 = sum(This.nametype == 3);
+ny = sum(This.nametype == 1);
+nx = sum(This.nametype == 2);
+ne = sum(This.nametype == 3);
 ng = sum(This.nametype == 5);
 
 if nCol > 1 && nAlt > 1
     utils.error('model', ...
-        ['Input argument NCOL can be used only with ', ...
+        ['Input argument NCol can be used only with ', ...
         'single-parameterisation models.']);
 end
 
-n = n1 + n2 + n3;
+n = ny + nx + ne;
 nLoop = max([nAlt,nCol,nDraw]);
 Outp = struct();
 
@@ -78,10 +78,11 @@ end
 
 if opt.dtrends
     D = mydtrendsrequest(This,'range',xRange,G);
-    X(1:n1,:,:) = X(1:n1,:,:) + D;
+    X(1:ny,:,:) = X(1:ny,:,:) + D;
 end
 
-X(This.log(1:n),:,:) = exp(X(This.log(1:n),:,:));
+X(This.LogSign(1:n) == 1,:,:) = exp(X(This.LogSign(1:n) == 1,:,:));
+X(This.LogSign(1:n) == -1,:,:) = -exp(X(This.LogSign(1:n) == -1,:,:));
 
 if nLoop > 1 && nAlt == 1
     X = X(:,:,ones(1,nLoop));
@@ -99,7 +100,7 @@ end
 if opt.randomshocks
     Outp = xxRandomShocks(This,Outp,nPer,maxLag,nLoop,nDraw);
 elseif ~isempty(opt.residuals)
-    % SOURCEDB not implemented yet for models with cross-correlations.
+    % mysourcedb(...) not implemented yet for models with cross-correlations.
     ne = sum(This.nametype == 3);
     if any(any(This.stdcorr(1,ne+1:end,:) ~= 0))
         utils.error('model', ...
@@ -127,9 +128,13 @@ Outp.ttrend = replace(tmp,timeTnd.',xRange(1),'Time trend');
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function D = xxAddRand(This,D,Func,NPer,NLoop)
 nAlt = size(This.Assign,3);
 ne = sum(This.nametype == 3);
@@ -145,9 +150,12 @@ for ie = 1 : ne
     end
     D.(eList{ie}) = replace(D.(eList{ie}),permute(x,[2,3,1]));
 end
-end % xxAddRand().
+end % xxAddRand()
+
 
 %**************************************************************************
+
+
 function D = xxRandomShocks(This,D,NPer,MaxLag,NLoop,NDraw)
 ne = sum(This.nametype == 3);
 nAlt = size(This.Assign,3);
@@ -167,4 +175,4 @@ for iloop = 1 : NDraw
         end
     end
 end
-end % xxRandomShocks().
+end % xxRandomShocks()

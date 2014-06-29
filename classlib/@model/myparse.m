@@ -403,7 +403,7 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 % Retype shocks.
 This.nametype = floor(This.nametype);
 
-This.LogSign = double(This.log);
+This.LogSign = int8(This.log);
 
 
 % Nested functions...
@@ -754,16 +754,16 @@ eqtnalias = strfun.emptycellstr(1,n);
 % Create list of measurement variable names against which the LHS of
 % dtrends equations will be matched. Add log(...) for log variables.
 list = This.name(This.nametype == 1);
-islog = This.log(This.nametype == 1);
-loglist = list;
-loglist(islog) = regexprep(loglist(islog),'(.*)','log($1)','once');
+ixLog = This.log(This.nametype == 1);
+logList = list;
+logList(ixLog) = strcat('log(',logList(ixLog),')');
 
 neqtn = length(S.eqtn);
 logmissing = false(1,neqtn);
 invalid = false(1,neqtn);
 multiple = false(1,neqtn);
 for iEq = 1 : length(S.eqtn)
-    index = find(strcmp(loglist,S.eqtnlhs{iEq}),1);
+    index = find(strcmp(logList,S.eqtnlhs{iEq}),1);
     if isempty(index)
         if any(strcmp(list,S.eqtnlhs{iEq}))
             logmissing(iEq) = true;

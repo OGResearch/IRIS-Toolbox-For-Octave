@@ -128,8 +128,10 @@ end % xxInp2Struct()
 function [Inp,S] = xxGetNext(Inp,Opt)
 
 S = struct();
-S.func = {''};
+S.func = '';
+S.funcArgs = {};
 S.caption = '';
+S.eval = {};
 S.isLogDev = false;
 S.isLinDev = false;
 S.isTransform = true;
@@ -159,12 +161,14 @@ elseif iscellstr(Inp)
     Inp = Inp(2:end);
     if ~isempty(c)
         S.func = Opt.plotfunc;
+        if iscell(S.func)
+            S.funcArgs = S.func(2:end);
+            S.func = S.func{1};
+        end
         c = doFlags(c);
         [body,S.caption] = preparser.labeledexpr(c);
     else
         S.func = 'empty';
-        S.caption = '';
-        S.eval = {};
         S.legend = {};
         S.tansform = [];
     end
@@ -172,22 +176,18 @@ else
     return
 end
 
-if ~iscell(S.func)
-    S.func = {S.func};
-end
-
-if isequal(S.func{1},'empty')
+if isequal(S.func,'empty')
     return
 end
 
 % Title.
 S.caption = strtrim(S.caption);
 
-if isequal(S.func{1},'subplot')
+if isequal(S.func,'subplot')
     return
 end
 
-if isequal(S.func{1},'figure')
+if isequal(S.func,'figure')
     S.subplot = Opt.subplot;
     S.children = {};
     return
@@ -260,7 +260,9 @@ invalidBase = {};
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if isequal(ch.func{1},'empty')
+        if isequal(ch.func,'empty') ...
+                || isequal(ch.func,'subplot') ...
+                || isequal(ch.func,'figure')
             continue
         end
         nSeries = length(ch.eval);
@@ -320,7 +322,9 @@ function Q = xxEmptyTitles(Q,Opt)
 for i = 1 : length(Q)
     for j = 1 : length(Q{i}.children)
         ch = Q{i}.children{j};
-        if strcmp(ch.func{1},'empty')
+        if isequal(ch.func,'empty') ...
+                || isequal(ch.func,'subplot') ...
+                || isequal(ch.func,'figure')
             continue
         end
         if isempty(ch.caption)
@@ -383,6 +387,7 @@ for i = 1 : length(Q)
     for j = 1 : nchild
         
         func = Q{i}.children{j}.func;
+        funcArgs = Q{i}.children{j}.funcArgs;
         
         % If `'overflow='` is true we automatically open a new figure when the
         % subplot count overflows; this is the default behaviour for `dbplot`.
@@ -392,7 +397,7 @@ for i = 1 : length(Q)
             doNewFigure();
         end
         
-        if isequal(func{1},'empty')
+        if isequal(func,'empty')
             pos = pos + 1;
             continue    
         end
@@ -412,8 +417,8 @@ for i = 1 : length(Q)
         % Create an entry for the current panel in the output database. Do not
         % if plotting the panel fails.
         try
-            [range,data,ok] = ...
-                xxPlot(func,aa,Range,x,finalLegend,Opt,varargin{:});
+            [range,data,ok] = xxPlot(func, ...
+                funcArgs,aa,Range,x,finalLegend,Opt,varargin{:});
             if ~ok
                 unknownList{end+1} = Q{i}.children{j}.caption; %#ok<AGROW>
             end
@@ -513,7 +518,7 @@ end % xxRender()
 %**************************************************************************
 
 
-function [Range,Data,Ok] = xxPlot(Func,AA,Range,X,Leg,Opt,varargin)
+function [Range,Data,Ok] = xxPlot(Func,FuncArgs,AA,Range,X,Leg,Opt,varargin)
 
 isXGrid = Opt.grid;
 isYGrid = Opt.grid;
@@ -521,14 +526,11 @@ isYGrid = Opt.grid;
 Data = [];
 Ok = true;
 
-func = Func{1};
-funcArgs = Func(2:end);
-
-switch char(func)
+switch char(Func)
     case {'plot','bar','barcon','stem'}
         Data = [X{:}];
         if is.tseries(Data)
-            [h,Range,Data] = func(Range,Data,varargin{:}); %#ok<*ASGLU>
+            [h,Range,Data] = Func(Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
             Func(Range,Data,varargin{:});
         else
@@ -536,19 +538,19 @@ switch char(func)
         end
     case 'errorbar' % Error bar graph.
         [h1,h2,Range,Data] ...
-            = errorbar(Range,X{:},varargin{:},funcArgs{:});
+            = errorbar(Range,X{:},varargin{:},FuncArgs{:});
     case 'plotpred' % Prediction plot.
         [h1,h2,h3,Range,Data] ...
-            = plotpred(Range,X{:},varargin{:},funcArgs{:});
+            = plotpred(Range,X{:},varargin{:},FuncArgs{:});
     case 'hist' % Histogram.
         Data = [X{:}];
         Data = Data(Range,:);
         [count,pos] = hist(Data);
-        h = bar(pos,count,'barWidth',0.8,funcArgs{:}); %#ok<NASGU>
+        h = bar(pos,count,'barWidth',0.8,FuncArgs{:}); %#ok<NASGU>
         isXGrid = false;
     case 'plotcmp' % Plotcmp.
         [AA,ll,rr,Range,Data] ...
-            = plotcmp(Range,[X{:}],varargin{:},funcArgs{:});
+            = plotcmp(Range,[X{:}],varargin{:},FuncArgs{:});
     otherwise
         Ok = false;
         return

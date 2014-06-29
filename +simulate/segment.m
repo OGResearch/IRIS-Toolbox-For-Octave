@@ -125,8 +125,11 @@ end
         if Opt.deviation && Opt.addsstate
             xx = xx + S.XBar;
         end
-        % Delogarithmise log-variables.
-        xx(S.XLog,:) = exp(xx(S.XLog,:));
+        
+        % Delogarithmise log-plus and log-minus variables.
+        xx(S.XLogSign == 1,:) = exp(xx(S.XLogSign == 1,:));
+        xx(S.XLogSign == -1,:) = -exp(xx(S.XLogSign == -1,:));
+        
         % Set up the vector of shocks including initial condition.
         ee = real(S.e(:,tt)) + imag(S.e(:,tt));
         ee = [zeros(ne,1),ee];

@@ -101,12 +101,22 @@ end
         xMinus = init - h;
         step = xPlus - xMinus;
         
-        if any(This.log)
-            init(1,This.log,:) = exp(init(1,This.log,:));
-            xPlus(1,This.log,:) = exp(xPlus(1,This.log,:));
-            xMinus(1,This.log,:) = exp(xMinus(1,This.log,:));
+        % Delog log-plus variables.
+        if any(This.LogSign == 1)
+            ixLogPlus = This.LogSign == 1;
+            init(1,ixLogPlus,:) = exp(init(1,ixLogPlus,:));
+            xPlus(1,ixLogPlus,:) = exp(xPlus(1,ixLogPlus,:));
+            xMinus(1,ixLogPlus,:) = exp(xMinus(1,ixLogPlus,:));
         end
         
+        % Delog log-minus variables.
+        if any(This.LogSign == -1)
+            ixLogMinus = This.LogSign == -1;
+            init(1,ixLogMinus,:) = -exp(init(1,ixLogMinus,:));
+            xPlus(1,ixLogMinus,:) = -exp(xPlus(1,ixLogMinus,:));
+            xMinus(1,ixLogMinus,:) = -exp(xMinus(1,ixLogMinus,:));
+        end
+
         % References to steady-state levels and growth rates.
         if ~Opt.linear
             L = init(:,:,t);
@@ -170,15 +180,16 @@ end
 
         if Opt.linear
             x = zeros(1,nName);
-            if any(This.log)
-                x(1,This.log) = 1;
-            end
+            x(1,This.LogSign == 1) = 1;
+            x(1,This.LogSign == -1) = -1;
             x(1,This.nametype == 4) = real(assign(This.nametype == 4));
             x = x(1,:,ones(1,nt));
             % References to steady-state levels.
             L = [];
         else
-            x = mytrendarray(This,IAlt);
+            isDelog = true;
+            x = mytrendarray(This,IAlt,isDelog);
+            x(This.LogSign == -1,:) = -x(This.LogSign == -1,:);
             x = shiftdim(x,-1);
             % References to steady-state levels.
             L = x;
@@ -188,8 +199,12 @@ end
             % Get occurences of variables in this equation.
             [tmOcc,nmOcc] = find(occur(:,:,iiEq));
             
-            % Log derivatives need to be multiplied by x.
-            ixLog = This.log(nmOcc);
+            % Log derivatives need to be multiplied by x. Log-plus and
+            % log-minus variables are treated the same way because
+            % df(x)/dlog(xm) = df(x)/d(x) * d(x)/d(xm) * d(xm)/dlog(xm) 
+            % = df(x)/d(x) * (-1) * xm = df(x)/d(x) * (-1) * (-1)*x
+            % = df(x)/d(x) *x.
+            ixLog = This.LogSign(nmOcc) ~= 0;
             if any(ixLog)
                 logMult = ones(size(nmOcc));
                 for iiOcc = find(ixLog)

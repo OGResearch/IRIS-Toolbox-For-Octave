@@ -83,9 +83,9 @@ catch
 end
 
 try
-    Sw.Log;
+    Sw.LogSign;
 catch
-    Sw.Log = [];
+    Sw.LogSign = [];
 end
 
 try
@@ -270,8 +270,12 @@ end
             nAltXi = nAltX;
         end
         if nAltX == nAltXi
-            if ~isempty(Sw.Log) && Sw.Log(i)
-                Xi = log(Xi);
+            if ~isempty(Sw.LogSign) 
+                if Sw.LogSign(i) == 1
+                    Xi = reallog(Xi);
+                elseif Sw.LogSign(i) == -1
+                    Xi = reallog(-Xi);
+                end
             end
             X(:,i,1:nAltXi) = permute(Xi,[1,3,2]);
             ixIncl(i) = true;

@@ -70,8 +70,12 @@ comment = repmat(Select,[1,1,nAlt]);
 Y = Phi(1:ny,:,:,:);
 for i = find(This.nametype == 1)
     y = permute(Y(i,:,:,:),[2,3,4,1]);
-    if Opt.delog && This.log(i)
-        y = exp(y);
+    if Opt.delog
+        if This.LogSign(i) == 1
+            y = exp(y);
+        elseif This.LogSign(i) == -1
+            y = -exp(y);
+        end
     end
     name = This.name{i};
     c = regexprep(comment,'.*',[name,' <-- $0'],'once');
@@ -83,8 +87,12 @@ X = myreshape(This,Phi(ny+1:end,:,:,:));
 offset = sum(This.nametype == 1);
 for i = find(This.nametype == 2)
     x = permute(X(i-offset,:,:,:),[2,3,4,1]);
-    if Opt.delog && This.log(i)
-        x = exp(x);
+    if Opt.delog
+        if This.LogSign(i) == 1
+            x = exp(x);
+        elseif This.LogSign(i) == -1
+            x = -exp(x);
+        end
     end
     name = This.name{i};
     c = regexprep(comment,'.*',[name,' <-- $0'],'once');

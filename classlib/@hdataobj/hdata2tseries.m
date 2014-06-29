@@ -38,8 +38,14 @@ for i = 1 : length(This.Id)
         if sn(1) ~= nXPer
             doThrowInternal();
         end
-        if This.Log(pos)
+        if This.LogSign(pos) == 1
             This.Data.(jName) = exp(This.Data.(jName));
+        elseif This.LogSign(pos) == -1
+            if ~This.IsVar2Std
+                This.Data.(jName) = -exp(This.Data.(jName));
+            else
+                This.Data.(jName) = exp(This.Data.(jName));
+            end
         end
         
         % Create a new database entry.
@@ -53,7 +59,7 @@ for i = 1 : length(This.Id)
             D.(jName) = comment(D.(jName),This.Label{pos});
         else
             D.(jName) = comment(D.(jName), ...
-                utils.concomment(jName,This.Contributions,This.Log(pos)));
+                utils.concomment(jName,This.Contributions,This.LogSign(pos)));
         end
         
         % Free memory.

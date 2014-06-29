@@ -25,7 +25,7 @@ C = [C,xxPrintNames(This,'!transition_shocks',pos(tshocks),false)];
 pos = find(This.nametype == 4);
 C = [C,xxPrintNames(This,'!parameters',pos)];
 
-pos = find(This.log);
+pos = find(This.LogSign ~= 0);
 C = [C,xxPrintNames(This,'!log_variables',pos,false)];
 
 pos = find(This.eqtntype == 1);

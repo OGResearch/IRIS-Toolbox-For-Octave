@@ -5,7 +5,7 @@ classdef hdataobj < handle
         Data = [];
         Range = zeros(1,0);
         Id = cell(1,0);
-        Log = false(1,0);
+        LogSign = zeros(1,0,'int8');
         
         Name = cell(1,0);
         Label = cell(1,0);

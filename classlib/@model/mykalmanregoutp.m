@@ -24,7 +24,7 @@ if isfield(RegOutp,'Pe')
     for iName = find(This.nametype == 1)
         name = This.name{iName};
         data = permute(RegOutp.Pe(iName,:,:),[2,3,1]);
-        if This.log(iName)
+        if This.LogSign(iName) ~= 0
             data = exp(data);
         end
         Pe.(name) = template;

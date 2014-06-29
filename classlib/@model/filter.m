@@ -59,8 +59,8 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *'auto'* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'data='` [ `'predict'` | *`'smooth'`* | `'predict,smooth'` ] - Return
 % smoother data or prediction data or both.
@@ -190,10 +190,10 @@ if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
 end
 
 pp = inputParser();
-pp.addRequired('model',@is.model);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
+pp.addRequired('M',@is.model);
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x) || isempty(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('Tune',@(x) isempty(x) || isstruct(x) || iscell(x));
 pp.parse(This,Inp,Range,j);
 
 % This FILTER function options.
@@ -252,6 +252,8 @@ Outp = hdataobj.hdatafinal(hData);
 
 
 %**************************************************************************
+
+    
     function doChkConflicts()
         if likOpt.ahead > 1 && (nData > 1 || nAlt > 1)
             utils.error('model', ...
@@ -267,6 +269,8 @@ Outp = hdataobj.hdatafinal(hData);
 
 
 %**************************************************************************
+    
+    
     function doPreallocHData()
         isPred = ~isempty(strfind(opt.data,'pred'));
         isFilter = ~isempty(strfind(opt.data,'filter'));

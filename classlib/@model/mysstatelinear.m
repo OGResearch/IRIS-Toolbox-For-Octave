@@ -43,11 +43,20 @@ if any(~isDiffStat)
         preparser.alt2str(~isDiffStat));
 end
 
+% Delog sstate of log-plus variables.
+if any(This.LogSign == 1)
+    ix = This.LogSign == 1;
+    realAssign = real(This.Assign(1,ix,:));
+    imagAssign = imag(This.Assign(1,ix,:));
+    This.Assign(1,ix,:) = exp(realAssign) + 1i*exp(imagAssign);
+end
 
-if any(This.log)
-    realAssign = real(This.Assign(1,This.log,:));
-    imagAssign = imag(This.Assign(1,This.log,:));
-    This.Assign(1,This.log,:) = exp(realAssign) + 1i*exp(imagAssign);
+% Delog sstate of log-minus variables.
+if any(This.LogSign == -1)
+    ix = This.LogSign == -1;
+    realAssign = real(This.Assign(1,ix,:));
+    imagAssign = imag(This.Assign(1,ix,:));
+    This.Assign(1,ix,:) = -exp(realAssign) + 1i*exp(imagAssign);
 end
 
 doRefresh();

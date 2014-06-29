@@ -11,7 +11,7 @@ function Eqtn = myconsteqtn(This,Eqtn)
 
 % Replace
 % * all non-log variables with 0;
-% * all log variables with 1.
+% * all log-plus and log-minus variables with 1.
 
 ptn = '\<x\(:,(\d+),t[^\)]*\)';
 if true % ##### MOSW
@@ -40,10 +40,10 @@ end
     function c = doReplace(c0,c1)
         c = sscanf(c1,'%g');
         if This.nametype(c) <= 3
-            if This.log(c)
-                c = '1';
-            else
+            if This.LogSign(c) == 0
                 c = '0';
+            else
+                c = '1';
             end
         else
             c = c0;
