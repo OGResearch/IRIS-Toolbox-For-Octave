@@ -1,0 +1,140 @@
+
+    \foldertitle{report}{Report Functions}{report/Contents}
+
+	\paragraph{New report}\label{new-report}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/new}{\texttt{new}} - Create new, empty report object.
+\item
+  \href{report/copy}{\texttt{copy}} - Create a copy of a report object.
+\end{itemize}
+
+\paragraph{Compiling PDF report}\label{compiling-pdf-report}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/publish}{\texttt{publish}} - Compile PDF from report
+  object.
+\end{itemize}
+
+\paragraph{Top-level objects}\label{top-level-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/table}{\texttt{table}} - Start new table.
+\item
+  \href{report/figure}{\texttt{figure}} - Start new figure.
+\item
+  \href{report/userfigure}{\texttt{userfigure}} - Insert existing figure
+  window.
+\item
+  \href{report/matrix}{\texttt{matrix}} - Insert matrix or numeric
+  array.
+\item
+  \href{report/modelfile}{\texttt{modelfile}} - Write formatted model
+  file.
+\item
+  \href{report/array}{\texttt{array}} - Insert array with user data.
+\item
+  \href{report/tex}{\texttt{tex}} - Include \LaTeX~code or verbatim
+  input in report.
+\end{itemize}
+
+\paragraph{Inspecting and maninpulating report
+objects}\label{inspecting-and-maninpulating-report-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/disp}{\texttt{disp}} - Display the structure of report
+  object.
+\item
+  \href{report/display}{\texttt{display}} - Display the structure of
+  report object.
+\item
+  \href{report/findall}{\texttt{findall}} - Find all objects of a given
+  type within report object.
+\end{itemize}
+
+\paragraph{Figure objects}\label{figure-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/graph}{\texttt{graph}} - Add graph to figure.
+\end{itemize}
+
+\paragraph{Table and graph objects}\label{table-and-graph-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/band}{\texttt{band}} - Add new data with lower and upper
+  bounds to graph or table.
+\item
+  \href{report/fanchart}{\texttt{fanchart}} - Add fanchart to graph.
+\item
+  \href{report/series}{\texttt{series}} - Add new data to graph or
+  table.
+\item
+  \href{report/subheading}{\texttt{subheading}} - Enter subheading in
+  table.
+\item
+  \href{report/vline}{\texttt{vline}} - Add vertical line to graph.
+\item
+  \href{report/highlight}{\texttt{highlight}} - Highlight range in
+  graph.
+\end{itemize}
+
+\paragraph{Structuring reports}\label{structuring-reports}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/align}{\texttt{align}} - Vertically align the following K
+  objects.
+\item
+  \href{report/empty}{\texttt{empty}} - Empty report object.
+\item
+  \href{report/include}{\texttt{include}} - Include text or LaTeX input
+  file in the report.
+\item
+  \href{report/merge}{\texttt{merge}} - Merge the content of two or more
+  report objects.
+\item
+  \href{report/pagebreak}{\texttt{pagebreak}} - Force page break.
+\item
+  \href{report/section}{\texttt{section}} - Start new section in report.
+\end{itemize}
+
+\paragraph{Getting on-line help on report
+functions}\label{getting-on-line-help-on-report-functions}
+
+\begin{verbatim}
+help report
+help report/function_name
+\end{verbatim}
+
+\paragraph{Generic options}\label{generic-options}
+
+The following generic options can be used on any of the report objects.
+
+\begin{itemize}
+\item
+  \texttt{'inputFormat='} {[} *\texttt{'plain'} \textbar{}
+  \texttt{'latex'} {]} - Input format for user supplied text strings
+  (such as captions, headings, footnotes, etc); \texttt{'latex'} means
+  they are assumed to be valid \LaTeX strings, and will be inserted
+  straight into the report code with no modification.
+\item
+  \texttt{'saveAs='} {[} char \textbar{} \emph{empty} {]} - (Not
+  inheritable from parent objects) Save the LaTeX code generated for the
+  respective report element in a text file under the specified name.
+\end{itemize}
+
+
+

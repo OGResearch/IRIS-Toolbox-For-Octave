@@ -1,0 +1,81 @@
+
+    \foldertitle{config}{Starting, quitting, and configuring IRIS}{config/Contents}
+
+	This section describes how to start and quit an IRIS session, and how to
+customise some of the IRIS configuration options.
+
+The most common way of starting an IRIS session (after you have
+installed the IRIS files on your disk) is to run the following line in
+the Matlab command window:
+
+\begin{verbatim}
+addpath C:\IRIS_Tbx; irisstartup();
+\end{verbatim}
+
+The first command, \texttt{addpath}, adds the IRIS root folder to the
+Matlab search path. The second command, \texttt{irisstartup},
+initialises IRIS and puts the other necessary IRIS subfolders, classes,
+and internal packages on the search path. \emph{Never} add these other
+subfolders, classes and packages to the search path by yourself.
+
+\paragraph{Starting and quitting IRIS}\label{starting-and-quitting-iris}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{config/irisstartup}{\texttt{irisstartup}} - Start an IRIS
+  session.
+\item
+  \href{config/irisfinish}{\texttt{irisfinish}} - Close the current IRIS
+  session.
+\item
+  \href{config/iriscleanup}{\texttt{iriscleanup}} - Remove IRIS from
+  Matlab and clean up.
+\end{itemize}
+
+\paragraph{Getting information about
+IRIS}\label{getting-information-about-iris}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{config/irisget}{\texttt{irisget}} - Query current IRIS config
+  options.
+\item
+  \href{config/irisman}{\texttt{irisman}} - Open IRIS Reference Manual
+  PDF.
+\item
+  \href{config/irisroot}{\texttt{irisroot}} - Current IRIS root folder.
+\item
+  \href{config/irisrequired}{\texttt{irisrequired}} - Throw error if the
+  installed version of IRIS fails to comply with the required minimum.
+\item
+  \href{config/irisversion}{\texttt{irisversion}} - Current IRIS
+  version.
+\end{itemize}
+
+\paragraph{Changes in configuration}\label{changes-in-configuration}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{config/irisset}{\texttt{irisset}} - Change configurable IRIS
+  options.
+\item
+  \href{config/irisreset}{\texttt{irisreset}} - Reset IRIS configuration
+  options to start-up values.
+\item
+  \href{config/irisuserconfighelp}{\texttt{irisuserconfig}} - User
+  configuration file called at the IRIS start-up.
+\end{itemize}
+
+\paragraph{Getting on-line help on configuration
+functions}\label{getting-on-line-help-on-configuration-functions}
+
+\begin{verbatim}
+help config
+help function_name
+\end{verbatim}
+
+
+

@@ -1,0 +1,193 @@
+
+
+    \filetitle{dbload}{Create database by loading CSV file}{dbase/dbload}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = dbload(FName, ...)
+D = dbload(D,FName, ...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{FName} {[} char \textbar{} cellstr {]} - Name of the Input CSV
+  data file or a cell array of CSV file names that will be combined.
+\item
+  \texttt{D} {[} struct {]} - An existing database (struct) to which the
+  new entries from the input CSV data file entries will be added.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Database created from the input CSV
+  file(s).
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'case='} {[} \texttt{'lower'} \textbar{} \texttt{'upper'}
+  \textbar{} \emph{empty} {]} - Change case of variable names.
+\item
+  \texttt{'commentRow='} {[} char \textbar{} cellstr \textbar{}
+  \emph{\texttt{\{'comment','comments'\}}} {]} - Label at the start of
+  row that will be used to create tseries object comments.
+\item
+  \texttt{'convert='} {[} numeric \textbar{} cellstr \textbar{}
+  \emph{empty} {]} - If non-empty, frequency conversion will be run on
+  all time series loaded; specify the target frequency (numeric) or a
+  cell array of input arguments and options in a call to the function
+  \texttt{convert}.
+\item
+  \texttt{'dateFormat='} {[} char \textbar{} \emph{\texttt{'YYYYFP'}}
+  {]} - Format of dates in first column.
+\item
+  \texttt{'delimiter='} {[} char \textbar{} \emph{\texttt{','}} {]} -
+  Delimiter separating the individual values (cells) in the CSV file; if
+  different from a comma, all occurences of the delimiter will replaced
+  with commas -- note that this will also affect text in comments.
+\item
+  \texttt{'firstDateOnly='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Read and parse only the first date string,
+  and fill in the remaining dates assuming a range of consecutive dates.
+\item
+  \texttt{'freq='} {[} \texttt{0} \textbar{} \texttt{1} \textbar{}
+  \texttt{2} \textbar{} \texttt{4} \textbar{} \texttt{6} \textbar{}
+  \texttt{12} \textbar{} \texttt{365} \textbar{} \texttt{'daily'}
+  \textbar{} \emph{empty} {]} - Advise frequency of dates; if empty,
+  frequency will be automatically recognised.
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBM'}}
+  {]} - Letters representing frequency of dates in date column.
+\item
+  \texttt{'inputFormat='} {[} \emph{\texttt{'auto'}} \textbar{}
+  \texttt{'csv'} \textbar{} \texttt{'xls'} {]} - Format of input data
+  file; \texttt{'auto'} means the format will be determined by the file
+  extension.
+\item
+  \texttt{'nameRow='} {[} char \textbar{} numeric \textbar{}
+  \emph{\texttt{\{'','Variables'\}}} {]} - String, or cell array of
+  possible strings, that is found at the beginning (in the first cell)
+  of the row with variable names, or the line number at which the row
+  with variable names appears (first row is numbered 1).
+\item
+  \texttt{'nameFunc='} {[} cell \textbar{} function\_handle \textbar{}
+  \emph{empty} {]} - Function used to change or transform the variable
+  names. If a cell array of function handles, each function will be
+  applied in the given order.
+\item
+  \texttt{'nan='} {[} char \textbar{} \emph{\texttt{NaN}} {]} - String
+  representing missing observations (case insensitive).
+\item
+  \texttt{'preProcess='} {[} function\_handle \textbar{} cell \textbar{}
+  empty {]} - Apply this function, or cell array of functions, to the
+  raw text file before parsing the data.
+\item
+  \texttt{'skipRows='} {[} char \textbar{} cellstr \textbar{} numeric
+  \textbar{} \emph{empty} {]} - Skip rows whose first cell matches the
+  string or strings (regular expressions); or, skip a vector of row
+  numbers.
+\item
+  \texttt{'userData='} {[} char \textbar{} \emph{\texttt{Inf}} {]} -
+  Field name under which the database userdata loaded from the CSV file
+  (if they exist) will be stored in the output database; \texttt{Inf}
+  means the field name will be read from the CSV file (and will be thus
+  identical to the originally saved database).
+\item
+  \texttt{'userDataField='} {[} char \textbar{} \emph{\texttt{'.'}} {]}
+  - A leading character denoting userdata fields for individual time
+  series; if empty, no userdata fields will be read in and created.
+\item
+  \texttt{'userDataFieldList='} {[} cellstr \textbar{} numeric
+  \textbar{} empty {]} - List of row headers, or vector of row numbers,
+  that will be included as user data in each time series.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Use the \texttt{'freq='} option whenever there is ambiguity in
+intepreting the date strings, and IRIS is not able to determine the
+frequency correctly (see Example).
+
+\subparagraph{Structure of CSV database
+files}\label{structure-of-csv-database-files}
+
+The minimalist structure of a CSV database file has a leading row with
+variables names, a leading column with dates in the basic IRIS format,
+and individual columns with numeric data:
+
+\begin{verbatim}
++---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |
+\end{verbatim}
+
+You can add a comment row (must be placed before the data part, and
+start with a label `Comment' in the first cell) that will also be read
+in and assigned as comments to the individual tseries objects created in
+the output database.
+
+\begin{verbatim}
++---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+| Comment |  Output |  Prices |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |
+\end{verbatim}
+
+You can use a different label in the first cell to denote a comment row;
+in that case you need to set the option \texttt{'commentRow='}
+accordingly.
+
+All CSV rows whose names start with a character specified in the option
+\texttt{'userdataField='} (a dot by default) will be added to output
+tseries objects as fields of their userdata.
+
+\begin{verbatim}
++---------+---------+---------+--
+|         |       Y |       P |
++---------+---------+---------+--
+| Comment |  Output |  Prices |
++---------+---------+---------+--
+| .Source |   Stat  |  IMFIFS |
++---------+---------+---------+--
+| .Update | 17Feb11 | 01Feb11 |
++---------+---------+---------+--
+| .Units  | Bil USD |  2010=1 |
++---------+---------+---------+--
+|  2010Q1 |       1 |      10 |
++---------+---------+---------+--
+|  2010Q2 |       2 |      20 |
++---------+---------+---------+--
+|         |         |         |
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+Typical example of using the \texttt{'freq='} option is a quarterly
+database with dates represented by the corresponding months, such as a
+sequence 2000-01-01, 2000-04-01, 2000-07-01, 2000-10-01, etc. In this
+case, you can use the following options:
+
+\begin{verbatim}
+d = dbload('filename.csv','dateFormat','YYYY-MM-01','freq',4);
+\end{verbatim}
+
+

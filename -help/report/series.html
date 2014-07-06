@@ -1,0 +1,207 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="report/series">series</h2>
+<div class="headline">Add new data to graph or table</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P.series(Cap,X,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ struct ] - Report object created by the <a href="../report/new.html"><code>report.new</code></a> function.</p></li>
+<li><p><code>Cap</code> [ char | cellstr | <code>@auto</code> ] - Caption used as a default legend entry in a graph, or in the leading column in a table; <code>@auto</code> means that the first comment from the input tseries object, <code>X</code>, will be used for the title.</p></li>
+<li><p><code>X</code> [ tseries ] - Input data that will be added to the current table or graph.</p></li>
+</ul>
+<h4 id="options-for-both-table-series-and-graph-series">Options for both table series and graph series</h4>
+<ul>
+<li><p><code>'marks='</code> [ cellstr | <em>empty</em> ] - (Inheritable from parent objects) Marks that will be added to the legend entries in graphs, or printed in a third column in tables, to distinguish the individual columns of possibly multivariate input tseries objects.</p></li>
+<li><p><code>'showMarks='</code> [ <em><code>true</code></em> | <code>false</code> ] - (Inheritable from parent objects) Use the marks defined in the <code>'marks='</code> option to label the individual rows when input data is a multivariate tseries object.</p></li>
+</ul>
+<h4 id="options-for-table-series">Options for table series</h4>
+<ul>
+<li><p><code>'autoData='</code> [ function_handle | cell | <em>empty</em> ] - Function, or a cell array of functions, that will be used to produce new columns in the input tseries object (i.e. new rows of ouput in the report).</p></li>
+<li><p><code>'condFormat='</code> [ struct | <em>empty</em> ] - (Inheritable from parent objects) Structure with .test and .format fields describing conditional formatting of individual table entries.</p></li>
+<li><p><code>'decimal='</code> [ numeric | <em><code>NaN</code></em> ] - (Inheritable from parent objects) Number of decimals that will be displayed; if NaN the <code>'format='</code> option is used instead.</p></li>
+<li><p><code>'format='</code> [ char | <em><code>'%.2f'</code></em> ] - (Inheritable from parent objects) Numeric format string; see help on the built-in <code>sprintf</code> function.</p></li>
+<li><p><code>'footnote='</code> [ char | <em>empty</em> ] - Footnote at the series text.</p></li>
+<li><p><code>'highlight='</code> [ numeric | <em>empty</em> ] - Periods for which the data entries will highlighted.</p></li>
+<li><p><code>'inf='</code> [ char | <em><code>'\ensuremath{\infty}'</code></em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset Inf entries.</p></li>
+<li><p><code>'nan='</code> [ char | <em><code>'\ensuremath{\cdot}'</code></em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset NaN entries.</p></li>
+<li><p><code>'pureZero='</code> [ char | <em>empty</em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset pure zero entries; if empty the zeros will be printed using the current numeric format.</p></li>
+<li><p><code>'printedZero='</code> [ char | <em>empty</em> ] - (Inheritable from parent objects) LaTeX string that will be used to typeset the entries that would appear as zero under the current numeric format used; if empty these numbers will be printed using the current numeric format.</p></li>
+<li><p><code>'rowHighlight='</code> [ <code>true</code> | <em><code>false</code></em> ] - Highlight the entire row, including the text, units and marks at the beginnig; because of a bug in the LaTex package <code>colortbl</code>, this option cannot be combined with the option <code>'highlight='</code> in <a href="../report/table.html"><code>report/table</code></a>.</p></li>
+<li><p><code>'separator='</code> [ char | <em>empty</em> ] - LaTeX commands that will be inserted immediately after the end of the table row, i.e. appended to \, within a tabular mode.</p></li>
+<li><p><code>'units='</code> [ char ] - (Inheritable from parent objects) Description of input data units that will be displayed in the second column of tables.</p></li>
+</ul>
+<h4 id="options-for-graph-series">Options for graph series</h4>
+<ul>
+<li><p><code>'legendEntry='</code> [ char | cellstr | <code>NaN</code> | <em><code>@auto</code></em> ] - Legend entries used instead of the series caption and marks; <code>@auto</code> means the caption and marks will be used to construct legend entries; <code>NaN</code> means the series will be exluded from legend.</p></li>
+<li><p><code>'plotFunc='</code> [ <code>@area</code> | <code>@bar</code> | <code>@barcon</code> | <em><code>@plot</code></em> | <code>@plotcmp</code> | <code>@plotpred</code> | <code>@stem</code> ] - (Inheritable from parent objects) Plot function that will be used to create graphs.</p></li>
+<li><p><code>'plotOptions='</code> [ cell | <em>empty</em> ] - Options passed as the last input arguments to the plot function.</p></li>
+<li><p><code>yAxis='</code> [ <em><code>'left'</code></em> | *<code>'right'</code> ] - Choose the LHS or RHS axis to plot this series; see also comments on LHS-RHS plots in Description.</p></li>
+</ul>
+<h4 id="generic-options">Generic options</h4>
+<p>See help on <a href="../report/Contents.html">generic options</a> in report objects.</p>
+<h4 id="description">Description</h4>
+<h5 id="using-the-options-nan-inf-purezero-and-printedzero">Using the options <code>'nan='</code>, <code>'inf='</code>, <code>'pureZero='</code> and <code>'printedZero='</code></h5>
+<p>When specifying the LaTeX string for these options, bear in mind that the table entries are printed in the math model. This means that whenever you wish to print a normal text, you need to use an appropriate text formatting command allowed within a math mode. Most frequently, it would be <code>'\textnormal{...}'</code>.</p>
+<h5 id="using-the-option-plotfunc">Using the option <code>'plotFunc='</code></h5>
+<p>When you set the option to <code>'plotpred'</code>, the input data <code>X</code> (second input argument) must be a multicolumn tseries object where the first column is the time series observations, and the second and further columns are its Kalman filter predictions as returned by the <code>filter</code> function.</p>
+<h5 id="conditional-formatting">Conditional formatting</h5>
+<p>The conditional format struct (or an array of structs) specified through the <code>'condFormat='</code> option must have two fields, <code>.test</code> and <code>.format</code>.</p>
+<p>The <code>.test</code> field is a text string with a Matlab expression. The expression must evaluate to a scalar true or false, and can refer to the following attributes associated with each entry in the data part of the table:</p>
+<ul>
+<li><code>value</code> - the numerical value of the entry,</li>
+<li><code>date</code> - the date under which the entry appears,</li>
+<li><code>year</code> - the year under which the entry appears,</li>
+<li><code>period</code> - the period within the year (e.g. month or quarter) under which the entry appears,</li>
+<li><code>freq</code> - the frequency of the date under which the entry appears,</li>
+<li><code>text</code> - the text label on the left,</li>
+<li><code>mark</code> - the text mark on the left used to describe the individual rows reported for multivariate series,</li>
+<li><code>row</code> - the row number within a multivariate series.</li>
+<li><code>rowvalues</code> - a row vector of all values on the current row.</li>
+</ul>
+<p>If the table is based on user-defined structure of columns (option <code>'colstruct='</code> in <a href="../report/table.html"><code>table</code></a>), the following additional attributes are available</p>
+<ul>
+<li><code>colname</code> - descriptor of the column (text in the headline).</li>
+</ul>
+<p>You can combine a number of attribues within one test, using the logical operators, e.g.</p>
+<pre><code>&#39;value &gt; 0 &amp;&amp; year &gt; 2010&#39;</code></pre>
+<p>The <code>.format</code> fields of the conditional format structure consist of LaTeX commands that will be use to typeset the corresponding entry. The reference to the entry itself is through a question mark. The entries are typeset in math mode; this for instance meanse that for bold or italic typface, you must use the <code>\mathbf{...}</code> and <code>\mathit{...}</code> commands.</p>
+<p>In addition to standard LaTeX commands, you can use the following IRIS-specific commands in the format strings:</p>
+<ul>
+<li><p><code>\sprintf{FFFF}</code> - to modify the way each numeric entry that passes the test is printed by the <code>sprintf</code> function; <code>FFFF</code> is one of the standard <code>sprintf</code> formatting strings.</p></li>
+<li><p><code>\hide{?}</code> - to hide the actual entry when it is supposed to be replaced with something else.</p></li>
+</ul>
+<p>You can combine multiple tests and their correponding formats in one structure; they will be all applied to each entry in the specified order.</p>
+<h5 id="lhs-rhs-plots">LHS-RHS plots</h5>
+<p>The LHS-RHS report graphs are still an experimental feature.</p>
+<p>When the option <code>'yAxis='</code> is used to plot on both the LHS and the RHS y-axis, the plot functions are restricted to <code>@plot</code>, <code>@bar</code>, <code>@area</code> and <code>@stem</code>. Also, because of a bug in Matlab, always control the color of the lines, bars and areas in all LHS-RHS graphs: use either the option <code>'plotOptions='</code> in this command, or <code>'style='</code> in the respective <a href="../report/graph.html"><code>graph</code></a> command.</p>
+<h4 id="example-conditional-format-structure">Example (Conditional format structure)</h4>
+<p>Typeset negative values in italic, and values in periods before 2010Q1 blue:</p>
+<pre><code>cf = struct();
+cf(1).test = &#39;value &lt; 0&#39;;
+cf(1).format = &#39;\mathit{?}&#39;;
+cf(2).test = &#39;date &lt; qq(2010,1)&#39;;
+cf(2).format = &#39;\color{blue}&#39;;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

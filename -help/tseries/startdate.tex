@@ -1,0 +1,38 @@
+
+
+    \filetitle{startdate}{Date of the first available observation in a tseries object}{tseries/startdate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+D = startdate(X)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Tseries object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} numeric {]} - IRIS serial date number representing the
+  date of the first observation available in the input tseries.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The \texttt{startdate} function is equivalent to calling
+
+\begin{verbatim}
+get(X,'startDate')
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+

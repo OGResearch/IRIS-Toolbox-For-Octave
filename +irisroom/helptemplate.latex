@@ -1,0 +1,17 @@
+$if(CHAPTER)$
+    \chapter{$SYNTAX$}{$DESCRIPT$}{$REF$}
+$endif$
+
+$if(FOLDER)$
+    \foldertitle{$SYNTAX$}{$DESCRIPT$}{$REF$}
+
+	$body$
+$endif$
+
+$if(FILE)$
+    \filetitle{$SYNTAX$}{$DESCRIPT$}{$REF$}
+
+	$body$
+$endif$
+
+

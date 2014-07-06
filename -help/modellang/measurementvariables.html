@@ -1,0 +1,147 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="modellang/measurementvariables">!measurement_variables</h2>
+<div class="headline">List of measurement variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>!measurement_variables
+    VariableName, VariableName, ...
+    ...</code></pre>
+<h4 id="syntax-with-descriptors">Syntax with descriptors</h4>
+<pre><code>!measurement_variables
+    VariableName, VariableName, ...
+    &#39;Description of the variable...&#39; VariableName</code></pre>
+<h4 id="syntax-with-steady-state-values">Syntax with steady-state values</h4>
+<pre><code>!measurement_variables
+    VariableName, VariableName, ...
+    VariableName = Value</code></pre>
+<h4 id="description">Description</h4>
+<p>The <code>!measurement_variables</code> keyword starts a new declaration block for measurement variables (i.e. observables); the names of the variables must be separated by commas, semi-colons, or line breaks. You can have as many declaration blocks as you wish in any order in your model file: They all get combined together when you read the model file in. Each variable must be declared (exactly once).</p>
+<p>You can add descriptors to the variables (enclosed in single or double quotes, preceding the name of the variable); these will be stored in, and accessible from, the model object. You can also assign steady-state values to the variables straight in the model file (following an equal sign after the name of the variable); this is, though, rather rare and unnecessary practice because you can assign and change steady-state values more conveniently in the model object.</p>
+<p>For each individual variable in a non-linear model, you can also decide if it is to be linearised or log-linearised by listing its name in the <a href="../modellang/logvariables.html"><code>!log_variables</code></a> section.</p>
+<h4 id="example">Example</h4>
+<pre><code>!measurement_variables
+    pie, &#39;Real output&#39; Y
+    &#39;Real exchange rate&#39; Z = 1 + 1.05i;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

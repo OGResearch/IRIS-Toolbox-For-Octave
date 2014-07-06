@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbplot">dbplot</h2>
+<div class="headline">Plot from database</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[FF,AA,PDb] = dbplot(D,List,Range,...)
+[FF,AA,PDb] = dbplot(D,Range,List,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Database with input data.</p></li>
+<li><p><code>List</code> [ cellstr ] - List of expressions (or labelled expressions) that will be evaluated and plotted in separate graphs.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>FF</code> [ numeric ] - Handles to figures created by <code>qplot</code>.</p></li>
+<li><p><code>AA</code> [ cell ] - Handles to axes created by <code>qplot</code>.</p></li>
+<li><p><code>PDB</code> [ struct ] - Database with actually plotted series.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'plotFunc='</code> <span class="citation">[ @bar | @hist | *@plot* | @plotpred | @stem ]</span> - Plot function used to create the graphs.</li>
+</ul>
+<p>See help on <a href="../qreport/qplot.html"><code>qreport/qplot</code></a> for other options available.</p>
+<h4 id="description">Description</h4>
+<p>The function <code>dbplot</code> opens a new figure window (as many as needed to accommodate all graphs given the option <code>'subplot='</code>), and creates a graph for each entry in the cell array <code>List</code>.</p>
+<p><code>List</code> can contain the names of the database time series, expression referring to the database fields evaluating to time series. You can also add labels (that will be displayed as graph titles) enclosed in double quotes and preceding the expressions. If you start the expression with a <code>^</code> (hat) symbol, the function specified in the <code>'transform='</code> option will not be applied to that expression.</p>
+<h4 id="example">Example</h4>
+<pre><code>dbplot(d,qq(2010,1):qq(2015,4), ...
+   {&#39;x&#39;,&#39;&quot;Series Y&quot; y&#39;,&#39;^&quot;Series z&quot;&#39;}, ...
+   &#39;transform=&#39;,@(x) 100*(x-1));</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

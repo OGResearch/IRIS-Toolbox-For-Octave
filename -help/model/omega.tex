@@ -1,0 +1,48 @@
+
+
+    \filetitle{omega}{Get or set the covariance matrix of shocks}{model/omega}
+
+	\paragraph{Syntax for getting covariance
+matrix}\label{syntax-for-getting-covariance-matrix}
+
+\begin{verbatim}
+OMG = omega(M)
+\end{verbatim}
+
+\paragraph{Syntax for setting covariance
+matrix}\label{syntax-for-setting-covariance-matrix}
+
+\begin{verbatim}
+M = omega(M,OMG)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model \textbar{} bkwmodel {]} - Model or bkwmodel
+  object.
+\item
+  \texttt{OMG} {[} numeric {]} - Covariance matrix that will be
+  converted to new values for std deviations and cross-corr
+  coefficients.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{OMG} {[} numeric {]} - Covariance matrix of shocks or
+  residuals based on the currently assigned std deviations and
+  cross-correlation coefficients.
+\item
+  \texttt{M} {[} model \textbar{} bkwmodel {]} - Model or bkwmodel
+  object with new values for std deviations and cross-corr coefficients
+  based on the input covariance matrix.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

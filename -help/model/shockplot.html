@@ -1,0 +1,154 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/shockplot">shockplot</h2>
+<div class="headline">Short-cut for running and plotting plain shock simulation</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[S,FF,AA] = shockplot(M,ShockName,SimRange,PlotList,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object that will be simulated.</p></li>
+<li><p><code>ShockName</code> [ char ] - Name of the shock that will be simulated.</p></li>
+<li><p><code>SimRange</code> [ numeric ] - Date range on which the shock will be simulated.</p></li>
+<li><p><code>PlotList</code> [ cellstr ] - List of variables that will be reported; you can use the syntax of <a href="../dbase/dbplot.html"><code>dbase/dbplot</code></a>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>S</code> [ struct ] - Database with simulation results.</p></li>
+<li><p><code>FF</code> [ numeric ] - Handles of figure windows created.</p></li>
+<li><p><code>AA</code> [ numeric ] - Handles of axes objects created.</p></li>
+</ul>
+<h4 id="options-affecting-the-simulation">Options affecting the simulation</h4>
+<ul>
+<li><p><code>'deviation='</code> [ <em><code>true</code></em> | <code>false</code> ] - See the option <code>'deviation='</code> in <a href="../model/simulate.html"><code>model/simulate</code></a>.</p></li>
+<li><p><code>'dtrends='</code> [ <em><code>true</code></em> | <code>false</code> ] - See the option <code>'dtrends='</code> option in <a href="../model/simulate.html"><code>model/simulate</code></a>.</p></li>
+<li><p><code>'shockSize='</code> [ <em><code>'std'</code></em> | numeric ] - Size of the shock that will be simulated; <code>'std'</code> means that one std dev of the shock will be simulated.</p></li>
+</ul>
+<h4 id="options-affecting-the-graphs">Options affecting the graphs</h4>
+<p>See help on <a href="../dbase/dbplot.html"><code>dbase/dbplot</code></a> for other options available.</p>
+<h4 id="description">Description</h4>
+<p>The simulated shock always occurs at time <code>t=1</code>. sStarting the simulation range, <code>SimRange</code>, before <code>t=1</code> allows you to simulate anticipated shocks.</p>
+<p>The graphs automatically include one pre-sample period, i.e. one period prior to the start of the simulation.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

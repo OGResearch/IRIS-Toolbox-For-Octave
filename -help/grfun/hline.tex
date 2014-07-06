@@ -1,0 +1,47 @@
+
+
+    \filetitle{hline}{Add horizontal line with text caption at the specified position}{grfun/hline}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Ln = hline(YPos,...)
+Ln = hline(Ax,YPos,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{'YPos}' {[} numeric {]} - Vertical position or vector of
+  positions at which the horizontal line or lines will be drawn.
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to an axes object (graph) or to a
+  figure window in which the the horizontal line will be added; if not
+  specified the line will be added to the current axes.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Ln} {[} numeric {]} - Handle to the line ploted (line object).
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'excludeFromLegend='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Exclude the line from legend.
+\end{itemize}
+
+Any options valid for the standard \texttt{plot} function.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

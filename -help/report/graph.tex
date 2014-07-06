@@ -1,0 +1,157 @@
+
+
+    \filetitle{graph}{Add graph to figure}{report/graph}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P.graph(Cap,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Cap} {[} char \textbar{} cellstr \textbar{} \texttt{@auto} {]}
+  - Title, or cell array with title and subtitle, displayed at the top
+  of the graph; \texttt{@auto} means that the first comment from the
+  first child \texttt{series} object will be used for the title.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'axesOptions='} {[} cell \textbar{} \emph{empty} {]} -
+  (Inheritable) Options executed by calling \texttt{set} on the axes
+  handle before running \texttt{'postProcess='}.
+\item
+  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  (Inheritable) Date tick spacing.
+\item
+  \texttt{'legend='} {[} \emph{\texttt{false}} \textbar{} \texttt{true}
+  {]} - (Inheritable) Add legend to the graph.
+\item
+  \texttt{'legendLocation='} {[} char \textbar{} \emph{\texttt{'best'}}
+  \textbar{} \texttt{'bottom'}{]} - (Inheritable) Location of the legend
+  box; see help on \texttt{legend} for values available.
+\item
+  \texttt{'postProcess='} {[} char \textbar{} \emph{empty} {]} -
+  (Inheritable) String with Matlab commands executed after the graph has
+  been drawn and styled; see Description.
+\item
+  \texttt{'preProcess='} {[} char \textbar{} \emph{empty} {]} -
+  (Inheritable) String with Matlab commands executed before the graph
+  has been drawn and styled; see Description.
+\item
+  \texttt{'range='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  (Inheritable) Graph range.
+\item
+  \texttt{'rhsAxesOptions='} {[} cell \textbar{} \emph{empty} {]} -
+  (Inheritable) Options executed by calling \texttt{set} on the RHS axes
+  handle before running \texttt{'postProcess='}.
+\item
+  \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} -
+  (Inheritable) Apply this style structure to the graph and its
+  children; see help on \href{qreport/qstyle}{\texttt{qstyle}}.
+\item
+  \texttt{'tight='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - (Inheritable) Set the y-axis limits to the minimum and maximum
+  of displayed data.
+\item
+  \texttt{'xLabel='} {[} char \textbar{} \emph{empty} {]} - Label the
+  x-axis.
+\item
+  \texttt{'yLabel='} {[} char \textbar{} \emph{empty} {]} - Label the
+  y-axis.
+\item
+  \texttt{'zeroLine='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} \textbar{} cell {]} - (Inheritable) Add a
+  horizontal zero line if zero is included on the y-axis; specify
+  zeroline options in a cell array.
+\end{itemize}
+
+\paragraph{Date format options}\label{date-format-options}
+
+See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
+options.
+
+\begin{itemize}
+\item
+  \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+  \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+  strings (possibly different for each date).
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+  {]} - Six letters used to represent the six possible frequencies of
+  IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+  monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
+\item
+  \texttt{'months='} {[} cellstr \textbar{}
+  \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+  representing the names of the twelve months.
+\item
+  \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+  \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+  lower-than-monthly-frequency date if the month is part of the date
+  format string.
+\end{itemize}
+
+\paragraph{Generic options}\label{generic-options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}\label{description}
+
+The options \texttt{'preProcess='} and \texttt{'postProcess='} give you
+additional flexibility in customising the graphics style of the axes
+object. The values assigned to these options are expected to be strings
+with an executable Matlab command, or commands separated with
+semi-colons (as if typed on one line in the command window). The command
+can refer to the following variables:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{H} - a handle to the currently processed axes object.
+\item
+  \texttt{L} - a handle to the corresponding legend object; if no legend
+  object exists for the axes \texttt{H}, \texttt{L} will be
+  \texttt{NaN}.
+\end{itemize}
+
+\paragraph{Example}\label{example}
+
+Create a one-page report with a chart in on the LHS and the legend moved
+to the RHS. Use the function \texttt{grfun.movetosubplot} in the option
+\texttt{'postProcess='}, referring to \texttt{L} (handle to the legend
+object associated with the respective axes object) to move the legend
+around.
+
+\begin{verbatim}
+% Create random data series.
+A = tseries(1:10,@rand);
+B = tseries(1:10,@rand);
+
+% Open a new report.
+x = report.new();
+
+% Open a new figure in the report with a 1-by-2 layout.
+x.figure('My Figure','subplot=',[1,2]);
+
+    % The graph will be placed in the LHS space.
+    % Use `grfun.movetosubplot` to move the legend to the RHS space.
+    x.graph('My Graph','legend=',true, ...
+        'postProcess=','grfun.movetosubplot(L,1,2,2)');
+
+        x.series('Series A',A);
+        x.series('Series B',B);
+
+x.publish('test.pdf');
+open test.pdf;
+\end{verbatim}
+
+

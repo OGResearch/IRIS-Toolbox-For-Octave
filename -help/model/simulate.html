@@ -1,0 +1,178 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/simulate">simulate</h2>
+<div class="headline">Simulate model</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>S = simulate(M,D,Range,...)
+[S,Flag,AddF,Discrep] = simulate(M,D,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Solved model object.</p></li>
+<li><p><code>D</code> [ struct | cell ] - Input database or datapack from which the initial conditions and shocks from within the simulation range will be read.</p></li>
+<li><p><code>Range</code> [ numeric ] - Simulation range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>S</code> [ struct | cell ] - Database with simulation results.</li>
+</ul>
+<h4 id="output-arguments-in-non-linear-simulations">Output arguments in non-linear simulations</h4>
+<ul>
+<li><p><code>Flag</code> [ cell | empty ] - Cell array with exit flags for non-linearised simulations.</p></li>
+<li><p><code>AddF</code> [ cell | empty ] - Cell array of tseries with final add-factors added to first-order approximate equations to make non-linear equations hold.</p></li>
+<li><p><code>Discrep</code> [ cell | empty ] - Cell array of tseries with final discrepancies between LHS and RHS in equations marked for non-linear simulations by a double-equal sign.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'anticipate='</code> [ <em><code>true</code></em> | <code>false</code> ] - If <code>true</code>, real future shocks are anticipated, imaginary are unanticipated; vice versa if <code>false</code>.</p></li>
+<li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the simulated paths into contributions of individual shocks.</p></li>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
+<li><p><code>'dbOverlay='</code> [ <code>true</code> | <em><code>false</code></em> | struct ] - Use the function <code>dboverlay</code> to combine the simulated output data with the input database, or with another database, at the end.</p></li>
+<li><p><code>'dTrends='</code> [ <em>'auto'</em> | <code>true</code> | <code>false</code> ] - Add deterministic trends to measurement variables.</p></li>
+<li><p><code>'ignoreShocks='</code> [ <code>true</code> | <em><code>false</code></em> ] - Read only initial conditions from input data, and ignore any shocks within the simulation range.</p></li>
+<li><p><code>'plan='</code> [ plan ] - Specify a simulation plan to swap endogeneity and exogeneity of some variables and shocks temporarily, and/or to simulate some of the non-linear equations accurately.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
+</ul>
+<h4 id="options-in-non-linear-simualations">Options in non-linear simualations</h4>
+<ul>
+<li><p><code>'addSstate='</code> [ <em><code>true</code></em> | <code>false</code> ] - Add steady state levels to simulated paths before evaluating non-linear equations; this option is used only if <code>'deviation=' true</code>.</p></li>
+<li><p><code>'display='</code> [ <em><code>true</code></em> | <code>false</code> | numeric | Inf ] - Report iterations on the screen; if <code>'display=' N</code>, report every <code>N</code> iterations; if <code>'display=' Inf</code>, report only final iteration.</p></li>
+<li><p><code>'error='</code> [ <code>true</code> | <em><code>false</code></em> ] - Throw an error whenever a non-linear simulation fails converge; if <code>false</code>, only an warning will display.</p></li>
+<li><p><code>'lambda='</code> [ numeric | <em><code>1</code></em> ] - Step size (between <code>0</code> and <code>1</code>) for add factors added to non-linearised equations in every iteration.</p></li>
+<li><p><code>'reduceLambda='</code> [ numeric | <em><code>0.5</code></em> ] - Factor (between <code>0</code> and <code>1</code>) by which <code>lambda</code> will be multiplied if the non-linear simulation gets on an divergence path.</p></li>
+<li><p><code>'maxIter='</code> [ numeric | <em><code>100</code></em> ] - Maximum number of iterations.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="output-range">Output range</h5>
+<p>Time series in the output database, <code>S</code>, are are defined on the simulation range, <code>Range</code>, plus include all necessary initial conditions, i.e. lags of variables that occur in the model code. You can use the option <code>'dboverlay='</code> to combine the output database with the input database (i.e. to include a longer history of data in the simulated series).</p>
+<h5 id="simulations-with-multilple-parameterisations-andor-multiple-data-sets">Simulations with multilple parameterisations and/or multiple data sets</h5>
+<p>If you simulate a model with <code>N</code> parameterisations and the input database contains <code>K</code> data sets (i.e. each variable is a time series with <code>K</code> columns), then the following happens:</p>
+<ul>
+<li><p>The model will be simulated a total of <code>P = max(N,K)</code> number of times. This means that each variables in the output database will have <code>P</code> columns.</p></li>
+<li><p>The 1st parameterisation will be simulated using the 1st data set, the 2nd parameterisation will be simulated using the 2nd data set, etc. until you reach either the last parameterisation or the last data set, i.e. <code>min(N,K)</code>. From that point on, the last parameterisation or the last data set will be simply repeated (re-used) in the remaining simulations.</p></li>
+<li><p>Put formally, the <code>I</code>-th column in the output database, where <code>I = 1, ..., P</code>, is a simulation of the <code>min(I,N)</code>-th model parameterisation using the <code>min(I,K)</code>-th input data set number.</p></li>
+</ul>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

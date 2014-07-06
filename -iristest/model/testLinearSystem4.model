@@ -1,0 +1,8 @@
+!variables
+    x, y
+!parameters
+    a, b, c, d
+!equations
+    x = 4*a*x{-1} + 1 + 4*b + 3;
+    y = y{-1}*c*4 - 3*d*4*2;
+    

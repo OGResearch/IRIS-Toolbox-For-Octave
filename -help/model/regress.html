@@ -1,0 +1,150 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/regress">regress</h2>
+<div class="headline">Centred population regression for selected model variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[B,CovRes,R2] = regress(M,Lhs,Rhs,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model on whose covariance matrices the popolation regression will be based.</p></li>
+<li><p><code>Lhs</code> [ char | cellstr ] - Lhs variables in the regression; each of the variables must be part of the state-space vector.</p></li>
+<li><p><code>Rhs</code> [ char | cellstr ] - Rhs variables in the regression; each of the variables must be part of the state-space vector, or must refer to a larger lag of a transition variable present in the state-space vector.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>B</code> [ namedmat | numeric ] - Population regression coefficients.</p></li>
+<li><p><code>CovRes</code> [ namedmat | numeric ] - Covariance matrix of residuals from the population regression.</p></li>
+<li><p><code>R2</code> [ numeric ] - Coefficient of determination (R-squared).</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrices will be either namedmat objects or plain numeric arrays.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Population regressions calculated by this function are always centred. This means the regressions are always calculated as if estimated on observations with their uncondional means (the steady-state levels) removed from them.</p>
+<p>The Lhs and Rhs variables that are log-variables must include <code>log(...)</code> explicitly in their names. For instance, if <code>X</code> is declared to be a log variable, then you must refer to <code>log(X)</code> or <code>log(X{-1})</code>.</p>
+<h4 id="example">Example</h4>
+<pre><code>[B,C] = regress(&#39;log(R)&#39;,{&#39;log(R{-1})&#39;,&#39;log(dP)&#39;});</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

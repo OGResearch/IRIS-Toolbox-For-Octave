@@ -1,0 +1,147 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="namedmat/Contents">Matrices with Named Rows and Columns</h1>
+
+
+<p>Matrices with named rows and columns are returned by several IRIS functions, such as <a href="../model/acf.html">model/acf</a>, <a href="../model/xsf.html">model/xsf</a>, or <a href="../model/fmse.html">model/fmse</a>, to facilitate easy selection of submatrices by referrring to variable names in rows and columns.</p>
+<p>Namedmat methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../namedmat/namedmat.html"><code>namedmat</code></a> - Create a new matrix with named rows and columns.</li>
+</ul>
+<h4 id="manipulating-named-matrices">Manipulating named matrices</h4>
+<ul>
+<li><a href="../namedmat/select.html"><code>select</code></a> - Select submatrix by referring to row names and column names.</li>
+<li><a href="../namedmat/transpose.html"><code>transpose</code></a> - Transpose each page of matrix with names rows and columns.</li>
+</ul>
+<h4 id="getting-row-and-column-names">Getting row and column names</h4>
+<ul>
+<li><a href="../namedmat/rownames.html"><code>rownames</code></a> - Names of rows in namedmat object.</li>
+<li><a href="../namedmat/colnames.html"><code>colnames</code></a> - Names of columns in namedmat object.</li>
+</ul>
+<h4 id="sample-characteristics">Sample characteristics</h4>
+<ul>
+<li>[<code>cutoff</code>](../namedmat/cutoff] -</li>
+</ul>
+<p>All operators and functions available for standard Matlab matrices and arrays (i.e. double objects.html) are also available for namedmat objects.</p>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>
