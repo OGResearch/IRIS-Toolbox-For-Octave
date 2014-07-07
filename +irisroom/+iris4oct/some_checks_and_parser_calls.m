@@ -108,7 +108,27 @@ end
 return
 
 %% look for )?
+%{
 pattern = '\)\?';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
+return
+
+
+%% look for mosw.isa
+%
+pattern = 'mosw\.isa';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
 
