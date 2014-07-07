@@ -9,10 +9,10 @@ files = struct('name',[],'lines',[]);
 for ix = 1 : numel(lst)
     [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
     if flg
-        fprintf('[file]: %s\n\t[lines]:\n',lst{ix});
-        fprintf('\t%s\n',lines.str{:});
-        files(end+1).name = lst{ix}; %#ok<SAGROW>
-        files(end).lines = lines.str;
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
     end
 end
 %}
@@ -36,7 +36,7 @@ end
 return
 
 %% look for char( in stable iris
-
+%{
 pattern = '\<char\(';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
@@ -44,11 +44,102 @@ lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
 for ix = 1 : numel(lst)
     [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
     if flg
-        fprintf('[file]: %s\n\t[lines]:\n',lst{ix});
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
         for nx = 1 : length(lines.n)
-            fprintf('\t%d. %s\n',lines.n(nx),lines.str{nx});
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
         end
     end
 end
+%}
+return
 
+%% look for $0
+%{
+pattern = '\$0';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
+return
+
+%% look for cd(
+%{
+pattern = 'cd\(\)';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
+return
+
+%% look for char(0)
+%{
+pattern = 'char\(0\)';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
+return
+
+%% look for )?
+%{
+pattern = '\)\?';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
+return
+
+
+%% look for mosw.isa
+%
+pattern = 'mosw\.isa';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern);
+    if flg
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+        end
+    end
+end
+%}
 return
