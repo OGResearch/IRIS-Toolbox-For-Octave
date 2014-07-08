@@ -59,9 +59,9 @@ This.namealias = [S(nameBlkOrd).namealias];
 % Log variables
 %---------------
 
-This.log = false(size(This.name));
-This.log(This.nametype == 1) = S(1).nameflag;
-This.log(This.nametype == 2) = S(2).nameflag;
+This.LogSign = zeros(size(This.name));
+This.LogSign(This.nametype == 1) = S(1).LogSign;
+This.LogSign(This.nametype == 2) = S(2).LogSign;
 
 % Reporting equations
 %---------------------
@@ -403,7 +403,8 @@ This.eqtnF = strfun.vectorise(This.eqtnF);
 % Retype shocks.
 This.nametype = floor(This.nametype);
 
-This.LogSign = int8(This.log);
+% Bkw compatibility.
+This.log = This.LogSign ~= 0;
 
 
 % Nested functions...
@@ -472,7 +473,7 @@ This.LogSign = int8(This.log);
         S(pos).namelabel = tempCell;
         S(pos).namealias = tempCell;
         S(pos).namevalue = tempCell;
-        S(pos).nameflag = false(1,nAdd);
+        S(pos).LogSign = zeros(1,nAdd);
         
     end % doDeclareParameters()
 
@@ -752,10 +753,12 @@ eqtnlabel = strfun.emptycellstr(1,n);
 eqtnalias = strfun.emptycellstr(1,n);
 
 % Create list of measurement variable names against which the LHS of
-% dtrends equations will be matched. Add log(...) for log variables.
+% dtrends equations will be matched. Add log(...) for both log-plus and
+% log-minus variables.
 list = This.name(This.nametype == 1);
-ixLog = This.log(This.nametype == 1);
+logSign = This.LogSign(This.nametype == 1);
 logList = list;
+ixLog = logSign ~= 0;
 logList(ixLog) = strcat('log(',logList(ixLog),')');
 
 neqtn = length(S.eqtn);

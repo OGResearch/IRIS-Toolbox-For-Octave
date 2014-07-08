@@ -24,7 +24,7 @@ S.nametype = zeros(1,0);
 S.namelabel = cell(1,0);
 S.namealias = cell(1,0);
 S.namevalue = cell(1,0);
-S.nameflag = false(1,0);
+S.LogSign = zeros(1,0,'int8');
 
 S.eqtn = cell(1,0);
 S.eqtntype = zeros(1,0);
@@ -46,7 +46,7 @@ invalid = struct();
 invalid.assign = {};
 invalid.key = {};
 invalid.allBut = false;
-invalid.flag = {};
+invalid.log = {};
 invalid.timeSubs = {};
 invalid.emptyEqtn = {};
 invalid.stdcorr = {};
@@ -58,12 +58,12 @@ for iBlk = 1 : nBlk
 end
 
 % Read individual names and assignments within each name block.
-for iBlk = find(This.nameBlk)
+for iBlk = find(This.IxNameBlk)
     [S(iBlk).name,S(iBlk).namelabel, ...
-        S(iBlk).namevalue,S(iBlk).nameflag] ...
+        S(iBlk).namevalue,S(iBlk).LogSign] ...
         = parsenames(This,S(iBlk).blk);
     S(iBlk).nametype = This.nameType(iBlk)*ones(size(S(iBlk).name));
-    if ~This.stdcorrAllowed(iBlk)
+    if ~This.IxStdcorrAllowed(iBlk)
         % Report all names starting with `std_` or `corr_`.
         ixStd = strncmp(S(iBlk).name,'std_',4);
         ixCorr = strncmp(S(iBlk).name,'corr_',5);
@@ -74,16 +74,16 @@ for iBlk = find(This.nameBlk)
     end
 end
 
-% Read names in flag block (only one flag block allowed).
-if any(This.flagBlk)
-    [S(This.flaggable),invalid.flag] ...
-        = parseflags(This,S(This.flagBlk).blk,S(This.flaggable));
+% Read names in log block.
+if any(This.IxLogBlk)
+    [S(This.IxLoggable),invalid.log] ...
+        = parselog(This,S(This.IxLogBlk).blk,S(This.IxLoggable));
 end
 
 % Read individual equations within each equation block; evaluate and
 % validate time subscripts; check for empty equations consisting of labels
 % only.
-for iBlk = find(This.eqtnBlk)
+for iBlk = find(This.IxEqtnBlk)
     [S(iBlk).eqtn,S(iBlk).eqtnlabel, ...
         S(iBlk).eqtnlhs,S(iBlk).eqtnrhs,S(iBlk).eqtnsign, ...
         S(iBlk).sstatelhs,S(iBlk).sstaterhs,S(iBlk).sstatesign, ...
@@ -139,7 +139,7 @@ doChkMultiple();
     
     function doChkNamingRules()
         % Names must not start with 0-9 or _.
-        iinx = This.nameBlk;
+        iinx = This.IxNameBlk;
         list = [S(iinx).name];
         valid = cellfun(@isempty,regexp(list,'^[0-9_]','once'));
         if any(~valid)
@@ -158,7 +158,7 @@ doChkMultiple();
         end
         % Shock names must not contain double scores because of the way
         % cross-correlations are referenced.
-        iinx = This.stdcorrBasis;
+        iinx = This.IxStdcorrBasis;
         list = [S(iinx).name];
         valid = cellfun(@isempty,strfind(list,'__'));
         if any(~valid)
@@ -175,7 +175,7 @@ doChkMultiple();
     
     function doClearMultiple()
         % Take the last defined/assigned name in each name block.
-        for iiBlk = find(This.nameBlk)
+        for iiBlk = find(This.IxNameBlk)
             [~,ixRemove] = strfun.unique(S(iiBlk).name);
             if any(ixRemove)
                 S(iiBlk).name(ixRemove) = [];
@@ -183,7 +183,7 @@ doChkMultiple();
                 S(iiBlk).namelabel(ixRemove) = [];
                 S(iiBlk).namealias(ixRemove) = [];
                 S(iiBlk).namevalue(ixRemove) = [];
-                S(iiBlk).nameflag(ixRemove) = [];
+                S(iiBlk).LogSign(ixRemove) = [];
             end
         end
     end % doClearMultiple()
@@ -194,7 +194,7 @@ doChkMultiple();
     
     function doChkMultiple()
         % Check for multiple names unless `'multiple=' true`.
-        iinx = This.nameBlk;
+        iinx = This.IxNameBlk;
         list = [S(iinx).name];
         [~,~,ixMultiple] = strfun.unique(list);
         if any(ixMultiple)
@@ -211,8 +211,8 @@ doChkMultiple();
     function doChkInvalid()
         ep = utils.errorparsing(This);
         
-        % Blocks marked as essential cannot be empty.
-        for iiBlk = find(This.essential)
+        % Blocks marked as IxEssential cannot be empty.
+        for iiBlk = find(This.IxEssential)
             caller = strtrim(This.caller);
             if ~isempty(caller)
                 caller(end+1) = ' '; %#ok<AGROW>
@@ -240,12 +240,12 @@ doChkMultiple();
         end
         
         % Invalid names on the log-variable list.
-        if ~isempty(invalid.flag)
-            flagBlkname = This.blkName{This.flagBlk};
+        if ~isempty(invalid.log)
+            IxLogBlkname = This.blkName{This.IxLogBlk};
             utils.error('theparser:parse',[ep, ...
                 'This name is not allowed ', ...
-                'in the ''',flagBlkname,''' list: ''%s''.'], ...
-                invalid.flag{:});
+                'in the ''',IxLogBlkname,''' list: ''%s''.'], ...
+                invalid.log{:});
         end
         
         % Invalid time subscripts.

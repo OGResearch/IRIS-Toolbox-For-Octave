@@ -40,7 +40,7 @@ for iBlk = 1 : nBlk
     tokens = [tokens{:}];
     if ~isempty(tokens)
         % !all_but must be in all or none of log declaration blocks.
-        if This.flagBlk(iBlk)
+        if This.IxLogBlk(iBlk)
             InvalidAllBut = InvalidAllBut || xxChkAllBut(tokens);
         end
         Blk{iBlk} = [tokens{:}];

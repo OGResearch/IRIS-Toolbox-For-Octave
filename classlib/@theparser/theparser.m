@@ -16,14 +16,14 @@ classdef theparser
         blkName = cell(1,0);
         altBlkName = cell(0,2);
         altBlkNameWarn = cell(0,2);
-        nameBlk = false(1,0);
+        IxNameBlk = false(1,0);
         nameType = nan(1,0);
-        stdcorrAllowed = false(1,0); % Stdcorr declarations allowed here.
-        stdcorrBasis = false(1,0); % Stdcorr names derived from here.
-        eqtnBlk = false(1,0);
-        flagBlk = false(1,0);
-        flaggable = false(1,0);
-        essential = false(1,0);
+        IxStdcorrAllowed = false(1,0); % Stdcorr declarations allowed here.
+        IxStdcorrBasis = false(1,0); % Stdcorr names derived from these names.
+        IxEqtnBlk = false(1,0);
+        IxLogBlk = false(1,0);
+        IxLoggable = false(1,0);
+        IxEssential = false(1,0);
         otherKey = cell(1,0);
         AssignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
     end
@@ -80,7 +80,7 @@ classdef theparser
         varargout = blkpos(varargin)
         varargout = parse(varargin)
         varargout = parseeqtns(varargin)
-        varargout = parseflags(varargin);
+        varargout = parselog(varargin);
         varargout = parsenames(varargin)
         varargout = readblk(varargin)
         varargout = specget(varargin)

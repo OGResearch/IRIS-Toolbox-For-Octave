@@ -347,23 +347,23 @@ classdef model < modelobj & estimateobj
             % Syntax
             % =======
             %
-            %     m = model(fname,...)
-            %     m = model(m,...)
+            %     M = model(FName,...)
+            %     M = model(M,...)
             %
             % Input arguments
             % ================
             %
-            % * `fname` [ char | cellstr ] - Name(s) of the model file(s) that will
+            % * `FName` [ char | cellstr ] - Name(s) of model file(s) that will be
             % loaded and converted to a new model object.
             %
-            % * `m` [ model ] - Existing model object that will be rebuilt as if from a
+            % * `M` [ model ] - Existing model object that will be rebuilt as if from a
             % model file.
             %
             % Output arguments
             % =================
             %
-            % * `m` [ model ] - New model object based on the input model code
-            % file or files.
+            % * `M` [ model ] - New model object based on the input model code file or
+            % files.
             %
             % Options
             % ========

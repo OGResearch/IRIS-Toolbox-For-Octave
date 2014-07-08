@@ -83,7 +83,7 @@ nList = length(List);
 Lhs = strfun.emptycellstr(1,nList);
 Rhs = strfun.emptycellstr(1,nList);
 Sign = strfun.emptycellstr(1,nList);
-[start,finish] = regexp(List,':=|=#|\+=|=|:','once','start','end');
+[start,finish] = regexp(List,':=|=#|\+=|=','once','start','end');
 for i = 1 : nList
     if ~isempty(start{i})
         Lhs{i} = List{i}(1:start{i}-1);

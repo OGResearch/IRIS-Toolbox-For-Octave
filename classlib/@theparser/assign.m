@@ -69,7 +69,7 @@ for iBlk = blkpos(This,This.AssignBlkOrd)
         S(iBlk).nametype(inx) = [];
         S(iBlk).namelabel(inx) = [];
         S(iBlk).namealias(inx) = [];
-        S(iBlk).nameflag(inx) = [];
+        S(iBlk).LogSign(inx) = [];
     end
     
 end
@@ -78,7 +78,7 @@ end
 if ~isempty(stdcorrDecld)
     nStdcorrDecld = length(stdcorrDecld);
     valid = true(size(stdcorrDecld));
-    listE = [S(This.stdcorrBasis).name];
+    listE = [S(This.IxStdcorrBasis).name];
     for i = 1 : nStdcorrDecld
         stdcorr = stdcorrDecld{i};
         inx = theparser.stdcorrindex(listE,stdcorr);
