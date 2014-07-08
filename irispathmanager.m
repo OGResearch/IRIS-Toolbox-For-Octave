@@ -61,10 +61,7 @@ switch lower(Req)
         if isempty(subs)
             subs = '';
         else
-            subs = [subs{:}];
             rmpath(subs{:});
-            %xxRmPerm(subs);
-            %xxRmTemp(subs);
         end
         varargout{1} = subs;
 end
