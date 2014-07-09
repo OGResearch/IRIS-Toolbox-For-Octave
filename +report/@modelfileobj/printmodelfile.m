@@ -14,7 +14,7 @@ C = '';
 if isempty(This.filename)
     return
 end
-isModel = ~isempty(This.modelobj) && isa(This.modelobj,'modelobj');
+isModel = ~isempty(This.modelobj) && mosw.isa(This.modelobj,'modelobj');
 if isModel
     pList = get(This.modelobj,'pList');
     eList = get(This.modelobj,'eList');
