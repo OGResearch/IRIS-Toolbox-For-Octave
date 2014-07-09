@@ -66,7 +66,7 @@ switch lower(Req)
             subs = '';
         else
             subs = [subs{:}];
-            rmpath(subs{:});
+            rmpath(subs);
             %xxRmPerm(subs);
             %xxRmTemp(subs);
         end
