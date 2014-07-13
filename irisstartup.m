@@ -160,7 +160,7 @@ end
                 fprintf('<a href="matlab: edit %s">%s</a>.', ...
                     config.userconfigpath,config.userconfigpath);
             else
-                fprintf(config.userconfigpath);
+                fprintf('%s',config.userconfigpath);
             end
         end
         fprintf('\n');
@@ -179,7 +179,7 @@ end
             if ismatlab
                 fprintf('<a href="file:///%s">%s</a>.',tmppath,tmppath);
             else
-                fprintf(tmppath);
+                fprintf('%s',tmppath);
             end
         end
         fprintf('\n');

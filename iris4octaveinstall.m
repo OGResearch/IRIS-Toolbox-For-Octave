@@ -15,6 +15,7 @@ if ~isempty(ix) && (nargin > ix)
 else
   path2octPkg = pkg('local_list');
 end
+local_packages = {};
 
 % check iris version
 list = dir(fullfile(path2iris,'iristbx*'));
@@ -34,7 +35,12 @@ else
 end
 
 % load local_packages
-load(path2octPkg);
+if ~exist(path2octPkg,'file')
+  warning('File "%s" doesn''t exist and will be created.',path2octPkg);
+else
+  load(path2octPkg);
+end
+
 if isstruct(local_packages)
   local_packages = {local_packages};
 end
@@ -71,7 +77,7 @@ save(path2octPkg,'local_packages');
       pkgInfo.depends{1} = struct();
         pkgInfo.depends{1}.package = 'octave';
         pkgInfo.depends{1}.operator = '>=';
-        pkgInfo.depends{1}.version = '3.7.7';
+        pkgInfo.depends{1}.version = '4.1.0';
       pkgInfo.depends{2} = struct();
         pkgInfo.depends{2}.package = 'general';
         pkgInfo.depends{2}.operator = '>=';
