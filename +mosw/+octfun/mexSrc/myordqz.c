@@ -1,9 +1,7 @@
 /* [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol) */
 
-#if !defined(_WIN32)
 #define dgemm dgemm_
 #define dgges dgges_
-#endif
 
 #include "mex.h"
 #include "math.h"
