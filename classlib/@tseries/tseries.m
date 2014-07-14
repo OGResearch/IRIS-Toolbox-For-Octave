@@ -749,10 +749,11 @@ classdef ... (InferiorClasses={?matlab.graphics.axis.Axes}) ...
         end
         % Alias for prctile.
         function varargout = pctile(varargin)
-            if nargout == 0 && ~is.matlab % ##### MOSW
-              nargout = 1;
+            narg = nargout;
+            if ~is.matlab && narg == 0 % ##### MOSW
+              narg = 1;
             end
-            [varargout{1:nargout}] = prctile(varargin{:});
+            [varargout{1:narg}] = prctile(varargin{:});
         end
         function x = std(x,flag,dim)
             if nargin < 2
