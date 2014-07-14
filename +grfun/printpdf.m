@@ -74,7 +74,11 @@ epsFile = fullfile(fpath,[ftit,'.eps']);
 if is.matlab % ##### MOSW
     print(Fig,'-depsc','-painters',epsFile);
 else
-    print(Fig,'-depsc','-tight',epsFile);
+    if ispc
+        print(Fig,'-depsc',epsFile);
+    else
+        print(Fig,'-depsc','-tight',epsFile);
+    end
 end
 latex.epstopdf(epsFile);
 
