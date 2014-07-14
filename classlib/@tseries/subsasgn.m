@@ -67,12 +67,12 @@ switch S(1).type
             This.start = This.start + shift;
         end
     otherwise
-        if ~ismatlab && strcmp(S(1).type,'.') % workaround for Octaves' classdef subsasgn() access issue
-            This.(S(1).subs) = Y;
-        else
+%         if ~ismatlab && strcmp(S(1).type,'.') % workaround for Octaves' classdef subsasgn() access issue
+%             This.(S(1).subs) = Y;
+%         else
             % Give standard access to public properties.
             This = builtin('subsasgn',This,S,Y);
-        end
+%         end
 end
 
 end
