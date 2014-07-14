@@ -3,7 +3,7 @@ try
   save('clAobj.mat','cc');
 catch err
   clear cc
-  if ~isempty(strfind(err.message,'map_value(): wrong type argument'))
+  if ~isempty(strfind(err.message,'wrong type argument'))
     error('cannot test saveobj()/loadobj() overloading because of expected error:: failed to save an object of user-defined class');
   else
     rethrow(err);
