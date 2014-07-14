@@ -217,7 +217,7 @@ end
 %--------------
 name = {};
 class = {};
-comment = {};
+comment0 = {};
 start = 1;
 dbUserdata = '';
 dbUserdataFieldName = '';
@@ -231,12 +231,12 @@ if start > 1
 end
 
 class = strtrim(class);
-comment = strtrim(comment);
+comment0 = strtrim(comment0);
 if length(class) < length(name)
     class(length(class)+1:length(name)) = {''};
 end
-if length(comment) < length(name)
-    comment(length(comment)+1:length(name)) = {''};
+if length(comment0) < length(name)
+    comment0(length(comment0)+1:length(name)) = {''};
 end
 
 % Read numeric data from CSV string
@@ -418,7 +418,7 @@ doPopulateDatabase();
                 end
                 action = 'class';
             elseif any(strcmpi(ident,opt.commentrow))
-                comment = tokens(2:end);
+                comment0 = tokens(2:end);
                 action = 'comment';
             elseif ~isempty(strfind(lower(ident),'units'))
                 action = 'do_nothing';
@@ -620,11 +620,11 @@ doPopulateDatabase();
                     iMiss(dateInx,:) = miss(~nanDate,count+(1:nCol));
                     iData(iMiss) = NaN*unit;
                     iData = reshape(iData,nPer,tmpSize(2:end));
-                    iComment = reshape(comment(count+(1:nCol)),1,tmpSize(2:end));
+                    iComment = reshape(comment0(count+(1:nCol)),1,tmpSize(2:end));
                     D.(iName) = template;
                     D.(iName).start = minDate;
                     D.(iName).data = iData;
-                    D.(iName).Comment = iComment;
+                    D.(iName) = comment(D.(iName),iComment);
                     D.(iName) = mytrim(D.(iName));
                 else
                     % Create an empty tseries object with proper 2nd and higher
