@@ -59,11 +59,12 @@ end
                 D.(outpName).mse = tseries();
                 D.(outpName).mse.start = Y.(mseField).Range(1);
                 D.(outpName).mse.data = Y.(mseField).Data;
-                D.(outpName).mse.Comment = cell(1, ...
+                cmnt = cell(1, ...
                     size(Y.(mseField).Data,2), ...
                     size(Y.(mseField).Data,3), ...
                     size(Y.(mseField).Data,4));
-                D.(outpName).mse.Comment(:) = {''};
+                cmnt(:) = {''};
+                D.(outpName).mse = comment(D.(outpName).mse,cmnt);
                 D.(outpName).mse = mytrim(D.(outpName).mse);
             end
         else

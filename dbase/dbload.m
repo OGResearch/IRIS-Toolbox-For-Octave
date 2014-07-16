@@ -632,8 +632,9 @@ doPopulateDatabase();
                     D.(iName) = template;
                     D.(iName).start = NaN;
                     D.(iName).data = zeros(0,tmpSize(2:end));
-                    D.(iName).Comment = cell(1,tmpSize(2:end));
-                    D.(iName).Comment(:) = {''};
+                    cmnt = cell(1,tmpSize(2:end));
+                    cmnt(:) = {''};
+                    D.(iName) = comment(D.(iName),cmnt);
                 end
                 if nSeriesUserdata > 0
                     D.(iName) = userdata(D.(iName),thisUserData);

@@ -47,7 +47,7 @@ for i = 1 : length(This.Id)
         D.(jName).start = xStart;
         D.(jName).data = This.Data.(jName);
         s = size(D.(jName).data);
-        D.(jName).Comment = repmat({''},[1,s(2:end)]);
+        D.(jName) = comment(D.(jName),repmat({''},[1,s(2:end)]));
         D.(jName) = mytrim(D.(jName));
         if isempty(This.Contrib)
             D.(jName) = comment(D.(jName),This.Label{pos});
