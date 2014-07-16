@@ -4,11 +4,12 @@ function This = mtimes(This,List)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+if is.matlab
 pp = inputParser();
 pp.addRequired('D',@isstruct);
 pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
 pp.parse(This,List);
-
+end
 
 %--------------------------------------------------------------------------
 
