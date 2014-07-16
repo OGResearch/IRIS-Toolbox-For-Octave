@@ -125,11 +125,6 @@ Expr = strrep(Expr,'"','''');
 % Parse the new name patterns and the expression patterns.
 [List,expr] = xxParse(NewName,Expr,List0,tokens);
 
-Flag = true;
-if opt.fresh
-    D = struct();
-end
-
 % When called from within a function, the output database is "under
 % construction" and cannot be evaluated from within dbbatch. Create a new
 % database in the caller workspace and rename all references to the old
@@ -139,6 +134,11 @@ tempDbName = tempname('.');
 tempDbName = strrep(tempDbName(3:end),'-',''); % in Octave temporary name contains 'oct-'
 assignin('caller',tempDbName,D);
 expr = regexprep(expr,['\<',inpDbName,'\>'],tempDbName);
+
+Flag = true;
+if opt.fresh
+    D = struct();
+end
 
 errorlist = {};
 for i = 1 : length(List0)
