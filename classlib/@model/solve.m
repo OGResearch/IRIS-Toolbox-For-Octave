@@ -115,12 +115,12 @@ end
     
     function doErrWarn()
         if opt.error
-            func = @utils.error;
+            msgFunc = @(varargin) utils.error(varargin{:});
         else
-            func = @utils.warning;
+            msgFunc = @(varargin) utils.warning(varargin{:});
         end
         [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
-        func('model:solve',body,args{:});
+        msgFunc('model:solve',body,args{:});
     end % doErrWarn()
 
 

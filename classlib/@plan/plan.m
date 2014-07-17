@@ -130,14 +130,8 @@ classdef plan < userdataobj & getsetobj
             
             if length(varargin) > 1
                 
-                if true % ##### MOSW
-                    className = 'modelobj';
-                else
-                    className = 'model'; %#ok<UNRCH>
-                end
-                
                 pp = inputParser();
-                pp.addRequired('M',@(x) isa(x,className));
+                pp.addRequired('M',@ismodel);
                 pp.addRequired('Range',@isnumeric);
                 pp.parse(varargin{1:2});
                 

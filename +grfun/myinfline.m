@@ -74,7 +74,11 @@ else
     infLim = 1e5; %#ok<UNRCH>
 end
 
-bounds = objbounds(Ax);
+if true % ##### MOSW
+    bounds = objbounds(Ax);
+else
+    bounds = [0,0,0,0]; %#ok<UNRCH>
+end
 zPos = -1;
 
 nLoc = numel(Loc);

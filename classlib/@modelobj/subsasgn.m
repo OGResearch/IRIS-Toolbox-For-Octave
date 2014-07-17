@@ -70,14 +70,7 @@ function This = subsasgn(This,S,B)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if true % ##### MOSW
-    className = 'modelobj';
-else
-    className = 'model'; %#ok<UNRCH>
-end
-
-if ~isa(This,className) ...
-        || (~isa(B,className) && ~isempty(B) && ~isnumeric(B))
+if ~ismodel(This) || (~ismodel(B) && ~isempty(B) && ~isnumeric(B))
     utils.error('modelobj:subsasgn', ...
         'Invalid subscripted reference or assignment to model object.');
 end
@@ -118,14 +111,14 @@ S = xxAlterSubs(S,nAlt);
 
 if any(strcmp(S(1).type,{'()','{}'}))
     
-    if ~isa(B,className) && ~isempty(B)
+    if ~ismodel(B) && ~isempty(B)
         utils.error('modelobj:subsasgn', ...
             'Invalid subscripted reference or assignment to model object.');
     end
     
     % Make sure the LHS and RHS model objects are compatible in yvector,
     % xvector, and evector.
-    if isa(B,className) && ~iscompatible(This,B)
+    if ismodel(B) && ~iscompatible(This,B)
         utils.error('modelobj:subsasgn', ...
             ['Objects A and B are not compatible in ', ...
             'in subscripted assignment A( ) = B.']);
@@ -140,7 +133,7 @@ if any(strcmp(S(1).type,{'()','{}'}))
     
     nAInx = length(AInx);
     
-    if isa(B,className) && ~isempty(B)
+    if ismodel(B) && ~isempty(B)
         % `This(Inx) = B`
         % where `B` is a non-empty model whose length is either 1 or the same as
         % the length of `This(Inx)`.

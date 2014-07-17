@@ -562,7 +562,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 2
                 dim = 1;
             end
-            x = unop(@tseries.mynanmean,x,dim,dim);
+            % @@@@@ MOSW
+            x = unop(@(varargin) tseries.mynanmean(varargin{:}), ...
+                x,dim,dim);
         end
         function This = nanstd(This,Flag,Dim)
             if nargin < 2
@@ -571,13 +573,17 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 Dim = 1;
             end
-            This = unop(@tseries.mynanstd,This,Dim,Flag,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynanstd(varargin{:}), ...
+                This,Dim,Flag,Dim);
         end
         function This = nansum(This,Dim)
             if nargin < 2
                 Dim = 1;
             end
-            This = unop(@tseries.mynansum,This,Dim,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynansum(varargin{:}), ...
+                This,Dim,Dim);
         end
         function This = nanvar(This,Flag,Dim)
             if nargin < 2
@@ -586,7 +592,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 Dim = 1;
             end
-            This = unop(@tseries.mynanvar,This,Dim,Flag,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynanvar(varargin{:}), ...
+                This,Dim,Flag,Dim);
         end
         function This = ne(This,Y)
             This = binop(@ne,This,Y);
@@ -745,7 +753,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 dim = 1;
             end
-            x = unop(@tseries.myprctile,x,dim,p,dim);
+            % @@@@@ MOSW
+            x = unop(@(varargin) tseries.myprctile(varargin{:}), ...
+                x,dim,p,dim);
         end
         % Alias for prctile.
         function varargout = pctile(varargin)

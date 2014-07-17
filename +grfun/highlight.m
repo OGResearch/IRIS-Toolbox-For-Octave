@@ -131,7 +131,11 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    bounds = objbounds(iAx);
+    if true % ##### MOSW
+        bounds = objbounds(iAx);
+    else
+        bounds = [0,0,0,0]; %#ok<UNRCH>
+    end
     xData = timeScale([1,2,2,1]);
     yData = infLim*[-1,-1,1,1] + bounds([3,3,4,4]);
     zData = zPos*ones(size(xData));

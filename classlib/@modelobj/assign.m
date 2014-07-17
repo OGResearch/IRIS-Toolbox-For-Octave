@@ -37,18 +37,16 @@ nAlt = size(This.Assign,3);
 Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
-if true % ##### MOSW
-    className = 'modelobj';
-else
-    className = 'model'; %#ok<UNRCH>
-end
-
 if isempty(varargin)
-    doReset();
+    % @@@@@ MOSW
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     Assigned = cell(1,0);
     return
     
-elseif n == 1 && isa(varargin{1},className)
+elseif n == 1 && ismodel(varargin{1})
     % Assign from another model object. The names, name types, and number of
     % parameterisations must match.
     equalNames = isequal(This.name,varargin{1}.name);
@@ -128,7 +126,10 @@ elseif n <= 2 && iscellstr(varargin{1})
         stdcorr(STDCORRPOS) = true;
         This.stdcorr(1,STDCORRPOS,:) = value(1,STDCORRRHS,:);
     end
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 elseif n <= 2 && isstruct(varargin{1})
     % m = assign(m,struct), or
@@ -186,7 +187,10 @@ elseif n <= 2 && isstruct(varargin{1})
         stdcorr(stdcorrPos(i)) = true;
     end
     doChkValid();
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     if nargout == 1
         return
     end
@@ -238,7 +242,10 @@ elseif iscellstr(varargin(1:2:end))
         end
     end
     doChkValid();
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 else
     % Throw an invalid assignment error.
@@ -264,17 +271,6 @@ end
 
 
 % Nested functions...
-
-
-%**************************************************************************
-
-    
-    function doReset()
-        ASSIGNPOS = [];
-        ASSIGNRHS = [];
-        STDCORRPOS = [];
-        STDCORRRHS = [];
-    end % doReset()
 
 
 %**************************************************************************

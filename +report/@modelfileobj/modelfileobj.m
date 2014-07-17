@@ -26,7 +26,7 @@ classdef modelfileobj < report.userinputobj
                 This.filename = varargin{1};
                 varargin(1) = [];
             end
-            if ~isempty(varargin) && isa(varargin{1},'model')
+            if ~isempty(varargin) && ismodel(varargin{1})
                 This.modelobj = varargin{1};
                 varargin(1) = [];
             end

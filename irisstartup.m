@@ -50,7 +50,7 @@ if true % ##### MOSW
             'can only run in Matlab R2010a or higher.']);
     end
 else
-    % Implement an Octave version check.
+    % Do nothing.
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));

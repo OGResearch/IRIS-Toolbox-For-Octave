@@ -12,6 +12,9 @@ if isnumeric(SYDNEY)
     SYDNEY = sydney();
 end
 
+% @@@@@ MOSW
+template = SYDNEY;
+
 %--------------------------------------------------------------------------
 
 % This.lookahead = [];
@@ -286,7 +289,7 @@ end
 
     function doWrapInUminus()
         x = This;
-        This = SYDNEY;
+        This = template;
         This.func = 'uminus';
         This.args = {x};
     end % doWrapInUminus()
@@ -311,21 +314,21 @@ end
         if isequal(This.args{2}.func,'times')
             if isequal(This.args{1},This.args{2}.args{1})
                 % Reduce a/(a*x) to 1/x.
-                z1 = SYDNEY;
+                z1 = template;
                 z1.args = 1;
                 z1.lookahead = false;
                 z2 = This.args{2}.args{2};
-                This = SYDNEY;
+                This = template;
                 This.func = 'rdivide';
                 This.args = {z1,z2};
                 This.lookahead = [false,any(z2.lookahead)];
             elseif isequal(This.args{1},This.args{2}.args{2})
                 % Reduce a/(x*a) to 1/x.
-                z1 = SYDNEY;
+                z1 = template;
                 z1.args = 1;
                 z1.lookahead = false;
                 z2 = This.args{2}.args{1};
-                This = SYDNEY;
+                This = template;
                 This.func = 'rdivide';
                 This.args = {z1,z2};
                 This.lookahead = [false,any(z2.lookahead)];

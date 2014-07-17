@@ -1,4 +1,4 @@
-function F__ = str2func(S__)
+    function F__ = str2func(S__)
 % str2func  [Not a public function] Workaround for Octave's str2func.
 %
 % Backend IRIS function.

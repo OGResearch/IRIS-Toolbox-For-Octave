@@ -24,12 +24,9 @@ function C = char(This)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-persistent PLUSPREC TIMESPREC UMINUSPREC;
-if isempty(PLUSPREC) || isempty(TIMESPREC)
-    PLUSPREC = {'le','lt','ge','gt','eq'};
-    TIMESPREC = [{'rdivide','plus','minus'},PLUSPREC];
-    UMINUSPREC = [{'times'},TIMESPREC];
-end
+precPlus = {'le','lt','ge','gt','eq'};
+precTimes = [{'rdivide','plus','minus'},precPlus];
+precUminus = [{'times'},precTimes];
 
 %--------------------------------------------------------------------------
 
@@ -71,7 +68,7 @@ if nArg == 1
             C = c1;
         case 'uminus'
             if ischar(This.args{1}.func) ...
-                    && any(strcmp(This.args{1}.func,UMINUSPREC))
+                    && any(strcmp(This.args{1}.func,precUminus))
                 c1 = ['(',c1,')'];
             end
             C = ['-',c1];
@@ -138,7 +135,7 @@ end
             if strcmp(a.func,'uminus')
                 c = xxArgs2Char(a.args{1});
                 if ischar(a.args{1}.func) ...
-                        && any(strcmp(a.args{1}.func,UMINUSPREC))
+                        && any(strcmp(a.args{1}.func,precUminus))
                     c = ['(',c,')']; %#ok<AGROW>
                 end
                 sign = '-';
@@ -150,7 +147,7 @@ end
                 sign = '-';
             else
                 c = xxArgs2Char(a);
-                if any(strcmp(a.func,PLUSPREC))
+                if any(strcmp(a.func,precPlus))
                     c = ['(',c,')']; %#ok<AGROW>
                 end
             end
@@ -171,7 +168,7 @@ end
             sign = '*';
             a = This.args{iiArg};
             c = xxArgs2Char(a);
-            if any(strcmp(a.func,TIMESPREC))
+            if any(strcmp(a.func,precTimes))
                 c = ['(',c,')']; %#ok<AGROW>
             end
             C = [C,sign,c]; %#ok<AGROW>

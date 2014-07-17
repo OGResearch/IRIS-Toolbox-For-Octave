@@ -46,6 +46,7 @@ pp.parse(K);
 
 %--------------------------------------------------------------------------
 
-X = unop(@tseries.mydiff,X,0,K);
+% @@@@@ MOSW
+X = unop(@(varargin) tseries.mydiff(varargin{:}),X,0,K);
 
 end

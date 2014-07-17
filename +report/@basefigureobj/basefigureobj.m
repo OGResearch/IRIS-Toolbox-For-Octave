@@ -8,6 +8,11 @@ classdef basefigureobj < report.tabularobj
     
     methods
         function This = basefigureobj(varargin)
+            if true % ##### MOSW
+                IsVisibleDefault = false;
+            else
+                IsVisibleDefault = true; %#ok<UNRCH>
+            end
             This = This@report.tabularobj(varargin{:});
             This.childof = {'report','align'};
             This.default = [This.default,{ ...
@@ -33,7 +38,7 @@ classdef basefigureobj < report.tabularobj
                 'separator','\medskip\par',@ischar,true, ...
                 'style',[],@(x) isempty(x) || isstruct(x),true, ...
                 'typeface','',@ischar,false, ...                
-                'visible',false,@islogical,true, ...
+                'visible',IsVisibleDefault,@islogical,true, ...
                 }];
         end
         

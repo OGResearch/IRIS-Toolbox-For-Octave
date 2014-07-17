@@ -28,6 +28,7 @@ function Flag = ismodel(X)
 
 %--------------------------------------------------------------------------
 
-Flag = isa(X,'model');
+% @@@@@ MOSW
+Flag = isa(X,'model') || isa(X,'modelobj');
 
 end

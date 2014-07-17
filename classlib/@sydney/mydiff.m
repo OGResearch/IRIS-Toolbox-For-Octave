@@ -1,10 +1,20 @@
 function This = mydiff(This,Wrt)
+% mydiff  [Not a public function] Differentiate a sydney expression.
+%
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent SYDNEY;
-
 if isnumeric(SYDNEY)
     SYDNEY = sydney();
 end
+
+% @@@@@ MOSW
+template = SYDNEY;
 
 %--------------------------------------------------------------------------
 
@@ -24,28 +34,28 @@ if isempty(This.func)
             % directly to a number `0` or `1` instead of a logical index. This helps
             % reduce some expressions immediately.
             if strcmp(This.args,Wrt)
-                This = SYDNEY;
+                This = template;
                 This.args = 1;
             else
-                This = SYDNEY;
+                This = template;
                 This.args = 0;
             end
         else
             inx = strcmp(This.args,Wrt);
             if any(inx)
-                This = SYDNEY;
+                This = template;
                 vec = false(nWrt,1);
                 vec(inx) = true;
                 This.args = vec;
             else
-                This = SYDNEY;
+                This = template;
                 This.args = 0;
             end
         end
         
     elseif isnumeric(This.args)
         % `This` is a number.
-        This = SYDNEY;
+        This = template;
         This.args = 0;
     else
         utils.error('sydney:mydiff','#Internal');
@@ -57,7 +67,7 @@ end
 
 % None of the wrt variables occurs in the argument legs of this function.
 if all(zeroDiff)
-    This = SYDNEY;
+    This = template;
     This.args = 0;
     return
 end
@@ -71,7 +81,7 @@ switch This.func
         pos = find(~zeroDiff);
         nPos = length(pos);
         if nPos == 0
-            This = SYDNEY;
+            This = template;
             This.args = 0;
         elseif nPos == 1
             This = mydiff(This.args{pos},Wrt);
@@ -102,10 +112,10 @@ switch This.func
             % Z1 := mydiff(x1)*x2
             % Z2 := x1*mydiff(x2)
             % this := Z1 + Z2
-            Z1 = SYDNEY;
+            Z1 = template;
             Z1.func = 'times';
             Z1.args = {mydiff(This.args{1},Wrt), This.args{2}};
-            Z2 = SYDNEY;
+            Z2 = template;
             Z2.func = 'times';
             Z2.args = {This.args{1}, mydiff(This.args{2},Wrt)};
             This.func = 'plus';
@@ -151,10 +161,10 @@ switch This.func
         % Z1 : = 1/2
         % Z2 = Z1 / sqrt(x1) = Z1 / this
         % this = Z2 * mydiff(x1)
-        Z1 = SYDNEY;
+        Z1 = template;
         Z1.func = '';
         Z1.args = 1/2;
-        Z2 = SYDNEY;
+        Z2 = template;
         Z2.func = 'rdivide';
         Z2.args = {Z1,This};
         This.func = 'times';
@@ -168,7 +178,7 @@ switch This.func
         % mydiff(cos(x1)) = uminus(sin(x)) * mydiff(x1);
         Z1 = This;
         Z1.func = 'sin';
-        Z2 = SYDNEY;
+        Z2 = template;
         Z2.func = 'uminus';
         Z2.args = {Z1};
         This.func = 'times';
@@ -182,7 +192,7 @@ switch This.func
         if nPos == 1
             Z = doExternalWrtK(pos(1));
         else
-            Z = SYDNEY;
+            Z = template;
             Z.func = 'plus';
             for k = pos
                 Z.args{end+1} = doExternalWrtK(k);
@@ -207,19 +217,19 @@ end
         % z3 := x2^z2
         % z4 :=  z1/z3
         % z := z4*mydiff(x2)
-        z1 = SYDNEY;
+        z1 = template;
         z1.func = 'uminus';
         z1.args = This.args(1);
-        z2 = SYDNEY;
+        z2 = template;
         z2.func = '';
         z2.args = 2;
-        z3 = SYDNEY;
+        z3 = template;
         z3.func = 'power';
         z3.args = {This.args{2},z2};
-        z4 = SYDNEY;
+        z4 = template;
         z4.func = 'rdivide';
         z4.args = {z1,z3};
-        z = SYDNEY;
+        z = template;
         z.func = 'times';
         z.args = {z4,mydiff(This.args{2},Wrt)};
     end % doRdivide1()
@@ -231,7 +241,7 @@ end
     function z = doRdivide2()
         % Compute mydiff(x1/x2) with mydiff(x2) = 0
         % diff(x1/x2) = diff(x1)/x2
-        z = SYDNEY;
+        z = template;
         z.func = 'rdivide';
         z.args = {mydiff(This.args{1},Wrt),This.args{2}};
     end % doRdivide2()
@@ -246,13 +256,13 @@ end
         % z1 := log(x1)
         % z2 := this*z1
         % z := z2*diff(x2)
-        z1 = SYDNEY;
+        z1 = template;
         z1.func = 'log';
         z1.args = This.args(1);
-        z2 = SYDNEY;
+        z2 = template;
         z2.func = 'times';
         z2.args = {This,z1};
-        z = SYDNEY;
+        z = template;
         z.func = 'times';
         z.args = {z2,mydiff(This.args{2},Wrt)};
     end % doPower1()
@@ -269,19 +279,19 @@ end
         % z3 := f(x1)^z2
         % z4 := x2*z3
         % z := z4*diff(f(x1))
-        z1 = SYDNEY;
+        z1 = template;
         z1.func = '';
         z1.args = -1;
-        z2 = SYDNEY;
+        z2 = template;
         z2.func = 'plus';
         z2.args = {This.args{2},z1};
-        z3 = SYDNEY;
+        z3 = template;
         z3.func = 'power';
         z3.args = {This.args{1},z2};
-        z4 = SYDNEY;
+        z4 = template;
         z4.func = 'times';
         z4.args = {This.args{2},z3};
-        z = SYDNEY;
+        z = template;
         z.func = 'times';
         z.args = {z4,mydiff(This.args{1},Wrt)};
     end % doPower2()
@@ -295,13 +305,13 @@ end
             z1 = This;
             z1.numd.wrt = [z1.numd.wrt,K];
         else
-            z1 = SYDNEY;
+            z1 = template;
             z1.func = 'sydney.d';
             z1.numd.func = This.func;
             z1.numd.wrt = K;
             z1.args = This.args;
         end
-        Z = SYDNEY;
+        Z = template;
         Z.func = 'times';
         Z.args = {z1,mydiff(This.args{K},Wrt)};
     end % doExternal()

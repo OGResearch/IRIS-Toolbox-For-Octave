@@ -42,6 +42,7 @@ pp.parse(Q);
 
 %--------------------------------------------------------------------------
 
-X = unop(@tseries.mypct,X,0,-1,Q);
+% @@@@@ MOSW
+X = unop(@(varargin) tseries.mypct(varargin{:}),X,0,-1,Q);
 
 end

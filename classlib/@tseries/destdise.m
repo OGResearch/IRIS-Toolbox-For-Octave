@@ -43,17 +43,18 @@ s2 = size(XMean);
 s3 = size(XStd);
 
 if any(s1(2:end) ~= s2(2:end))
-    utils.error('tseries', ...
+    utils.error('tseries:destdise', ...
         ['Size of input data and mean must agree ', ...
         'in 2nd and higher dimensions.']);
 end
 
 if any(s1(2:end) ~= s3(2:end))
-    utils.error('tseries', ...
+    utils.error('tseries:destdise', ...
         ['Size of input data and std devs must agree ', ...
         'in 2nd and higher dimensions.']);
 end
 
-This = unop(@tseries.mydestdize,This,0,XMean,XStd);
+% @@@@@ MOSW
+This = unop(@(varargin) tseries.mydestdize(varargin{:}),This,0,XMean,XStd);
 
 end
