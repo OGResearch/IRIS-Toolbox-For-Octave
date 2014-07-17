@@ -83,9 +83,9 @@ catch
 end
 
 try
-    Sw.LogSign;
+    Sw.IxLog;
 catch
-    Sw.LogSign = [];
+    Sw.IxLog = [];
 end
 
 try
@@ -191,7 +191,7 @@ for i = 1 : nList
             doAddData();
         else
             field = D.(name);
-            if is.tseries(field)
+            if istseries(field)
                 Xi = [];
                 doGetTseriesData();
                 doAddData();
@@ -270,12 +270,8 @@ end
             nAltXi = nAltX;
         end
         if nAltX == nAltXi
-            if ~isempty(Sw.LogSign) 
-                if Sw.LogSign(i) == 1
-                    Xi = reallog(Xi);
-                elseif Sw.LogSign(i) == -1
-                    Xi = reallog(-Xi);
-                end
+            if ~isempty(Sw.IxLog) && Sw.IxLog(i)
+                Xi = log(Xi);
             end
             X(:,i,1:nAltXi) = permute(Xi,[1,3,2]);
             ixIncl(i) = true;

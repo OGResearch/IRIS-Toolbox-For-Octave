@@ -92,8 +92,7 @@ function X = xxSspacePosLag(This,UsrName,SspacePos)
 X = SspacePos;
 solutionId = [This.solutionid{1:2}];
 name = This.name;
-name(This.LogSign == 1) = strcat('log(',name(This.LogSign == 1),')');
-name(This.LogSign == -1) = strcat('log(-',name(This.LogSign == -1),')');
+name(This.IxLog) = strcat('log(',name(This.IxLog),')');
 for i = find(isnan(X))
     usrName = UsrName{i};
     lag  = regexp(usrName,'\{.*?\}','match','once');
@@ -108,7 +107,7 @@ for i = find(isnan(X))
     namePos = find(namePos,1);
     % `lag` is a negative number.
     lag = sscanf(lag,'{%g}');
-    if ~is.numericscalar(lag) || ~isfinite(lag)
+    if ~isnumericscalar(lag) || ~isfinite(lag)
         continue
     end
     % `maxlag` is a negative number.

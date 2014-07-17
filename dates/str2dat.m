@@ -103,7 +103,7 @@ end
     
     function x = doPattern()
         x = upper(opt.dateformat);
-        x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
+        x = regexptranslate('escape',x);
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');
         subs = { ...

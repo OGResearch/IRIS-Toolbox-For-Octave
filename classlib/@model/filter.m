@@ -183,18 +183,17 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 nArgOut = nargout;
 
 % Database with tunes.
-j = [];
+J = [];
 if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
-    j = varargin{1};
+    J = varargin{1};
     varargin(1) = [];
 end
 
 pp = inputParser();
-pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@isnumeric);
 pp.addRequired('Tune',@(x) isempty(x) || isstruct(x) || iscell(x));
-pp.parse(This,Inp,Range,j);
+pp.parse(Inp,Range,J);
 
 % This FILTER function options.
 [opt,varargin] = passvalopt('model.filter',varargin{:});
@@ -202,7 +201,7 @@ pp.parse(This,Inp,Range,j);
 % Process Kalman filter options; `mypreploglik` also expands solution
 % forward if needed for tunes on the mean of shocks.
 Range = Range(1) : Range(end);
-likOpt = mypreploglik(This,Range,'t',j,varargin{:});
+likOpt = mypreploglik(This,Range,'t',J,varargin{:});
 
 % Get measurement and exogenous variables.
 Inp = datarequest('yg*',This,Inp,Range);
@@ -242,7 +241,7 @@ end
 
 % Post-process regular (non-hdata) output arguments; update the std
 % parameters in the model object if `'relative=' true`.
-[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt);
+[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt,opt);
 
 % Post-process hdata output arguments.
 Outp = hdataobj.hdatafinal(hData);
@@ -302,7 +301,7 @@ Outp = hdataobj.hdatafinal(hData);
                     if likOpt.returncont
                         hData.predcont = hdataobj(This,xRange,nCont, ....
                             'IncludeLag=',false, ...
-                            'Contributions=',@Y, ...
+                            'Contributions=',@measurement, ...
                             'Precision',likOpt.precision);
                     end
                 end
@@ -330,7 +329,7 @@ Outp = hdataobj.hdatafinal(hData);
                     if likOpt.returncont
                         hData.filtercont = hdataobj(This,xRange,nCont, ...
                             'IncludeLag=',false, ...
-                            'Contributions=',@Y, ...
+                            'Contributions=',@measurement, ...
                             'Precision=',likOpt.precision);
                     end
                 end
@@ -355,7 +354,7 @@ Outp = hdataobj.hdatafinal(hData);
                     end
                     if likOpt.returncont
                         hData.C2 = hdataobj(This,xRange,nCont, ...
-                            'Contributions=',@Y, ...
+                            'Contributions=',@measurement, ...
                             'Precision=',likOpt.precision);
                     end
                 end

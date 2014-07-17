@@ -1,4 +1,4 @@
-function X = char2dec(C)
+function X = char2dec(This,C)
 % char2dec  [Not a public function] Convert replacement code to numeric.
 %
 %
@@ -10,8 +10,8 @@ function X = char2dec(C)
 
 %--------------------------------------------------------------------------
 
-C = strrep(C,char(2),'');
-C = strrep(C,char(3),'');
+C = strrep(C,This.OpenChar,'');
+C = strrep(C,This.CloseChar,'');
 
 C = strrep(C,char(16),'0');
 C = strrep(C,char(17),'1');

@@ -120,8 +120,16 @@ comprise = timeRhs([1,end]);
 % Plot now.
 dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);
 dataRhsPlot = grfun.myreplacenancols(dataRhs,Inf);
+lhsPlotFuncStr = opt.lhsplotfunc;
+rhsPlotFuncStr = opt.rhsplotfunc;
+if isfunc(lhsPlotFuncStr)
+    lhsPlotFuncStr = func2str(lhsPlotFuncStr);
+end
+if isfunc(rhsPlotFuncStr)
+    rhsPlotFuncStr = func2str(rhsPlotFuncStr);
+end
 [Ax,hLhs,hRhs] = plotyy(timeLhs,dataLhsPlot,timeRhs,dataRhsPlot, ...
-    char(opt.lhsplotfunc),char(opt.rhsplotfunc));
+    lhsPlotFuncStr,rhsPlotFuncStr);
 
 % Apply line properties passed in by the user as optional arguments. Do
 % it separately for `hl` and `hr` because they each can be different types.
@@ -144,8 +152,7 @@ setappdata(Ax(2),'freq',freqRhs);
 setappdata(Ax(2),'range',RangeRhs);
 setappdata(Ax(2),'datePosition',opt.dateposition);
 
-if isequal(char(opt.lhsplotfunc),'bar') ...
-        || isequal(char(opt.rhsplotfunc),'bar')
+if strcmp(lhsPlotFuncStr,'bar') || strcmp(rhsPlotFuncStr,'bar')
     setappdata(Ax(1),'xLimAdjust',true);
     setappdata(Ax(2),'xLimAdjust',true);
 end
@@ -159,6 +166,9 @@ set(Ax(2),'color','none', ...
     'xTickLabel','', ...
     'xTick',[], ...
     'xAxisLocation','top');
+try
+    Ax(2).XRuler.Visible = 'on';
+end
 
 mydatxtick(Ax(1),RangeLhs,timeLhs,freqLhs,userRangeLhs,opt);
 

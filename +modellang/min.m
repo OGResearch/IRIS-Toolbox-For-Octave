@@ -16,7 +16,7 @@
 % The loss function must be types as one of the transition equations. The
 % `Disc` is a parameter or an expression defining the discount factor
 % (applied to future dates), and the expression `Expr` defines the loss
-% fuction.
+% fuction. The `Disc` expression must not contain a comma.
 %
 % If you use the `min#(Disc)` syntax, all equations created by
 % differentiating the lagrangian w.r.t. individual variables will be

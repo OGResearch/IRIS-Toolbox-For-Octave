@@ -120,12 +120,18 @@ if ny == 0
         'No measurement variables included in computing Fisher matrix.');
 end
 
-ixYLogSign = This.LogSign(This.nametype == 1);
-ixYLogSign(excl) = [];
+ixYLog = This.IxLog(This.nametype == 1);
+ixYLog(excl) = [];
 
-[assignPos,stdcorrPos] = mynameposition(This,PList,'error');
-assignNan = isnan(assignPos);
-stdcorrNan = isnan(stdcorrPos);
+[assignPos,stdcorrPos] = mynameposition(This,PList,4);
+ixAssignNan = isnan(assignPos);
+ixStdcorrNan = isnan(stdcorrPos);
+ixValid = ~ixAssignNan | ~ixStdcorrNan;
+if any(~ixValid)
+    utils.error('model:fisher', ...
+        'This is not a valid parameter name: ''%s''.', ...
+        PList{~ixValid});
+end
 
 pri = struct();
 pri.Assign = This.Assign;
@@ -174,8 +180,8 @@ for iAlt = 1 : nAlt
     end
     % Determine differentiation step.
     p0 = nan(1,nPList);
-    p0(~assignNan) = m.Assign(1,assignPos(~assignNan));
-    p0(~stdcorrNan) = m.stdcorr(1,stdcorrPos(~stdcorrNan));
+    p0(~ixAssignNan) = m.Assign(1,assignPos(~ixAssignNan));
+    p0(~ixStdcorrNan) = m.stdcorr(1,stdcorrPos(~ixStdcorrNan));
     Step = max([abs(p0);ones(1,nPList)],[],1)*eps()^opt.epspower;
     
     for i = 1 : nPList
@@ -206,12 +212,12 @@ for iAlt = 1 : nAlt
         % Differentiate SGF and steady state.
         dG(:,:,:,i) = (Gp - Gm) / twoSteps;
         if isSstate
-            dy(:,i) = (yp(:) - ym(:)) / twoSteps;
+            dy(:,i) = real(yp(:) - ym(:)) / twoSteps;
         end
         
         % Reset model parameters to `p0`.
-        m.Assign(1,assignPos(~assignNan)) = p0(1,~assignNan);
-        m.stdcorr(1,stdcorrPos(~stdcorrNan)) = p0(1,~stdcorrNan);
+        m.Assign(1,assignPos(~ixAssignNan)) = p0(1,~ixAssignNan);
+        m.stdcorr(1,stdcorrPos(~ixStdcorrNan)) = p0(1,~ixStdcorrNan);
         
         % Update the progress bar.
         if opt.progress
@@ -279,10 +285,9 @@ F = F / 2;
         y = real(y);
         % Adjust for the excluded measurement variables.
         y(excl) = [];
-        % Take log of log-variables; `ixYLogSign` has been already adjusted
+        % Take log of log-variables; `ixYLog` has been already adjusted
         % for the excluded measurement variables.
-        y(ixYLogSign == 1) = log(y(ixYLogSign == 1));
-        y(ixYLogSign == -1) = log(-y(ixYLogSign == -1));
+        y(ixYLog) = log(y(ixYLog));
     end % doGetSstate().
 
 end 

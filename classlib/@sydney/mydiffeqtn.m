@@ -13,8 +13,11 @@ end
 
 %--------------------------------------------------------------------------
 
-% Remove anonymous function preamble.
-Eqtn = regexprep(char(Eqtn),'^@\(.*?\)','','once');
+% Create string and remove anonymous function preamble.
+if isfunc(Eqtn)
+    Eqtn = func2str(Eqtn);
+end
+Eqtn = regexprep(Eqtn,'^@\(.*?\)','','once');
 
 % Replace x(:,n,t+k) with xN, xNpK, or xNmK.
 Eqtn = sydney.myeqtn2symb(Eqtn);

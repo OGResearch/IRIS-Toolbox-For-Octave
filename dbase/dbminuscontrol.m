@@ -63,8 +63,14 @@ catch
     C = [];
 end
 
+if true % ##### MOSW
+    className = 'modelobj';
+else
+    className = 'model'; %#ok<UNRCH>
+end
+
 pp = inputParser();
-pp.addRequired('M',@(x) isa(x,'modelobj'));
+pp.addRequired('M',@(x) isa(x,className));
 pp.addRequired('D',@isstruct);
 pp.addRequired('C',@(x) isstruct(x) || isempty(x));
 pp.parse(This,D,C);

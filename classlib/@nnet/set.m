@@ -73,63 +73,63 @@ end
         
         switch query
             case 'activation'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('activation',Value) ;
                 else
                     xxLayerNodeIndexLoop('ActivationParams','ActivationIndex',Value) ;
                 end
                 
             case 'activationlb'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('activationLB',Value) ;
                 else
                     xxLayerNodeIndexLoop('ActivationLB','ActivationIndex',Value) ;
                 end
                 
             case 'activationub'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('activationUB',Value) ;
                 else
                     xxLayerNodeIndexLoop('ActivationUB','ActivationIndex',Value) ;
                 end
                 
             case 'output'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('output',Value) ;
                 else
                     xxLayerNodeIndexLoop('OutputParams','OutputIndex',Value) ;
                 end
                 
             case 'outputlb'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('outputLB',Value) ;
                 else
                     xxLayerNodeIndexLoop('OutputLB','OutputIndex',Value) ;
                 end
                 
             case 'outputub'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('outputUB',Value) ;
                 else
                     xxLayerNodeIndexLoop('OutputUB','OutputIndex',Value) ;
                 end
                 
             case 'hyper'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('hyper',Value) ;
                 else
                     xxLayerNodeIndexLoop('HyperParams','HyperIndex',Value) ;
                 end
                 
             case 'hyperlb'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('hyperLB',Value) ;
                 else
                     xxLayerNodeIndexLoop('HyperLB','HyperIndex',Value) ;
                 end
                 
             case 'hyperub'
-                if is.func(Value) || is.numericscalar(Value)
+                if isfunc(Value) || isnumericscalar(Value)
                     xxLayerNodeLoop('hyperUB',Value) ;
                 else
                     xxLayerNodeIndexLoop('HyperUB','HyperIndex',Value) ;

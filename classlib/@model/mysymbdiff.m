@@ -20,7 +20,7 @@ end
 nEqtn = length(This.eqtn);
 This.DEqtnF = cell(1,nEqtn);
 This.CEqtnF = cell(1,nEqtn);
-tZero = This.tzero;
+t0 = find(This.Shift == 0);
 
 % Deterministic trends
 %----------------------
@@ -47,7 +47,7 @@ end
 for iEq = find(This.eqtntype <= 2)
     
     [tmOcc,nmOcc] = myfindoccur(This,iEq,'variables_shocks');
-    tmOcc = tmOcc - tZero;
+    tmOcc = tmOcc - t0;
     
     % Differentiate one equation wrt all names at a time. The result will be
     % one multivariate derivative (`mode`==1) or several separate derivatives

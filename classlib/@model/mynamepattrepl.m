@@ -1,4 +1,4 @@
-function [NamePatt,NameReplF,NameReplS] = mynamepattrepl(This)
+function [NamePtn,NameRplF,NameRplS] = mynamepattrepl(This)
 % mynamepattrepl  [Not a public function] Patterns and replacements for
 % names in equations.
 %
@@ -13,22 +13,22 @@ function [NamePatt,NameReplF,NameReplS] = mynamepattrepl(This)
 nName = length(This.name);
 flNameType = floor(This.nametype);
 
-NamePatt = cell(1,nName);
-NameReplF = cell(1,nName);
-NameReplS = cell(1,nName);
+NamePtn = cell(1,nName);
+NameRplF = cell(1,nName);
+NameRplS = cell(1,nName);
 
-len = cellfun(@length,This.name);
-[~,inx] = sort(len,2,'descend');
+%len = cellfun(@length,This.name);
+%[~,inx] = sort(len,2,'descend');
 offsetG = sum(flNameType < 5);
 
 % Name patterns to search.
-for i = inx
-    NamePatt{i} = ['\<',This.name{i},'\>'];
+for i = 1 : nName
+    NamePtn{i} = ['\<',This.name{i},'\>'];
     if flNameType(i) == 4
         % Replace parameter names including their possible time subscripts
         % and/or steady-state references. Parameter lags and leads are
         % simply ignored.
-        NamePatt{i} = ['&?',NamePatt{i},'(\{[^\}]+\})?'];
+        NamePtn{i} = ['&?',NamePtn{i},'((\{[^\}]+\})?)'];
     end
 end
 
@@ -39,7 +39,7 @@ end
 % `!` ... name position
 
 % Replacements in full equations.
-for i = inx
+for i = 1 : nName
     switch flNameType(i)
         case {1,2,3,4}
             % `%(:,@+15,!5)`.
@@ -52,12 +52,12 @@ for i = inx
         otherwise
             utils.error('model:mynamepattrepl','#Internal');
     end
-    NameReplF{i} = repl;
+    NameRplF{i} = repl;
 end
 
 % Replacements in steady-state equations.
 if ~This.IsLinear 
-    for i = inx
+    for i = 1 : nName
         ic = sprintf('%g',i);
         switch flNameType(i)
             case {1,2} % Measurement and transition variables.
@@ -75,7 +75,7 @@ if ~This.IsLinear
             otherwise
                 utils.error('model:mynamepattrepl','#Internal');
         end
-        NameReplS{i} = repl;
+        NameRplS{i} = repl;
     end
 end
 

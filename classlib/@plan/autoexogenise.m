@@ -51,13 +51,12 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@is.plan);
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('Weight', ...
-    @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
+    @(x) isnumericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
     && real(x) >= 0 && imag(x) >= 0 && x ~= 0);
-pp.parse(This,List,Dates,Weight);
+pp.parse(List,Dates,Weight);
 
 % Convert char list to cell of str.
 if ischar(List)

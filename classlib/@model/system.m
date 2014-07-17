@@ -28,7 +28,7 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 % Options
 % ========
 %
-% * `'linear='` [ *`'auto'`* | `true` | `false` ] - Compute the model using
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Compute the model using
 % a linear approach, i.e. differentiating around zero and not the currently
 % assigned steady state.
 %
@@ -64,7 +64,7 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 
 opt = passvalopt('model.system',varargin{:});
 
-if ischar(opt.linear) && strcmpi(opt.linear,'auto')
+if isequal(opt.linear,@auto)
     opt.linear = This.IsLinear;
 end
 

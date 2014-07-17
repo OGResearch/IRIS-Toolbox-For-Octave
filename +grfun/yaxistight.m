@@ -38,7 +38,7 @@ end
 
 for iAx = Ax
     
-    if false % is.hg2()
+    if false % ishg2()
 %         try %#ok<TRYNC>
 %             set(iAx,'yLimSpec','tight');
 %         end

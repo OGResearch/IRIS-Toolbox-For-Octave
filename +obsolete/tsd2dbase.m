@@ -87,7 +87,8 @@ while ischar(line)
       continue
    end
    d.(name) = template;
-   % Fetch comments from Mmulti-line headers.
+   d.(name) = mystamp(d.(name));
+   % Fetch comments from Multi-line headers.
    comment = strtrim(header{1}(16:end));
    for i = 2 : length(header)-1
       comment = [comment,options.endofline,strtrim(header{i})];

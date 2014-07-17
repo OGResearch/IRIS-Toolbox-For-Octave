@@ -46,16 +46,15 @@ end
 
 %--------------------------------------------------------------------------
 
-% nfind = numel(find);
 nBrk = numel(varargin);
-brks = zeros([nBrk,nStr]);
+brks = zeros(nBrk,nStr);
 for i = 1 : nBrk
     brks(i,strfind(Str,varargin{i}(1))) = 1;
     brks(i,strfind(Str,varargin{i}(2))) = -1;
 end
 ixOutside = all(cumsum(brks,2) == 0,1);
 insideContent = Str(~ixOutside);
-Str(~ixOutside) = char(0);
+Str(~ixOutside) = char(1);
 Str = strrep(Str,Find,Replace);
 Str(~ixOutside) = insideContent;
 

@@ -10,7 +10,7 @@ function warning(Memo,Body,varargin)
 %--------------------------------------------------------------------------
 
 try %#ok<TRYNC>
-    q = warning('query',['iris:',Memo]);
+    q = warning('query',['IRIS:',Memo]);
     if strcmp(q.state,'off')
         return
     end
@@ -18,13 +18,8 @@ end
 
 stack = utils.getstack();
 
-msg = sprintf('<a href="">IRIS Toolbox Warning</a> @ %s.', ...
-    (Memo));
-if isempty(varargin)
-    msg = [msg,sprintf('\n*** '),Body];
-else
-    msg = [msg,sprintf(['\n*** ',Body],varargin{:})];
-end
+msg = mosw.sprintf('<a href="">IRIS Toolbox Warning</a> @ %s.',Memo);
+msg = [msg,mosw.sprintf(['\n*** ',Body],varargin{:})];
 
 msg = [msg,utils.displaystack(stack)];
 state = warning('off','backtrace');
@@ -33,4 +28,4 @@ warning(state);
 
 strfun.loosespace();
 
-end % xxFrequents().
+end

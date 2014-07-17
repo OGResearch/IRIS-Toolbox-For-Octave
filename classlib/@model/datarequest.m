@@ -159,7 +159,7 @@ end
             imagId = imag(This.solutionid{2}(nf+1:end));
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.LogSign = This.LogSign(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
             XbInitMean = db2array(dMean,This.name(realId),Range(1)-1,sw);
             XbInitMean = permute(XbInitMean,[2,1,3]);
@@ -257,7 +257,7 @@ end
             inx = This.nametype == 1;
             sw = struct();
             sw.LagOrLead = [];
-            sw.LogSign = This.LogSign(inx);
+            sw.IxLog = This.IxLog(inx);
             sw.Warn = warn;
             Y = db2array(dMean,This.name(inx),Range,sw);
             Y = permute(Y,[2,1,3]);
@@ -273,7 +273,7 @@ end
             inx = This.nametype == 3;
             sw = struct();
             sw.LagOrLead = [];
-            sw.LogSign = [];
+            sw.IxLog = [];
             sw.Warn = warn;
             E = db2array(dMean,This.name(inx),Range,sw);
             E = permute(E,[2,1,3]);
@@ -295,7 +295,7 @@ end
             name = This.name(This.nametype == 5);
             sw = struct();
             sw.LagOrLead = [];
-            sw.LogSign = [];
+            sw.IxLog = [];
             sw.Warn = warn;
             G = db2array(dMean,name,Range,sw);
             G = permute(G,[2,1,3]);
@@ -319,7 +319,7 @@ end
             imagId = imagId(currentInx);
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.LogSign = This.LogSign(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
             x = db2array(dMean,This.name(realId),Range,sw);
             x = permute(x,[2,1,3]);
@@ -341,7 +341,7 @@ end
             imagId = imagId(nf+1:end);
             sw = struct();
             sw.LagOrLead = imagId;
-            sw.LogSign = This.LogSign(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
             A = db2array(dMean,This.name(realId),Range,sw);
             A = permute(A,[2,1,3]);

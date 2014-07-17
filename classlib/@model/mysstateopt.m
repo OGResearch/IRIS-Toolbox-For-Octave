@@ -56,6 +56,7 @@ else
     [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
     Opt = xxOptimOpt(This,Opt);
+    Opt = xxLogOpt(This,Opt);
     
 end
 
@@ -184,7 +185,7 @@ for ii = 1 : nBlk
         
     % Create a function handle used to evaluate each block of
     % equations or assignments.
-    blkFunc{ii} = str2func(['@(x,dx) [',iiBlkEqtn{:},']']);
+    blkFunc{ii} = mosw.str2func(['@(x,dx) [',iiBlkEqtn{:},']']);
 end
 
 if isSwap
@@ -247,18 +248,14 @@ Opt.zeroGInx = zeroGInx;
             end
             
             if ~isempty(Opt.(fix))
-                fixpos = mynameposition(This,Opt.(fix));
-                validate = ~isnan(fixpos);
-                if all(validate)
-                    validate = This.nametype(fixpos) <= 2 ...
-                        | This.nametype(fixpos) == 4;
-                end
-                if any(~validate)
+                fixPos = mynameposition(This,Opt.(fix),[1,2,4]);
+                ixValid = ~isnan(fixPos);
+                if any(~ixValid)
                     utils.error('model:mysstateopt', ...
                         'Cannot fix this name: ''%s''.', ...
-                        Opt.(fix){~validate});
+                        Opt.(fix){~ixValid});
                 end
-                Opt.(fix) = fixpos;
+                Opt.(fix) = fixPos;
             else
                 Opt.(fix) = [];
             end
@@ -310,3 +307,54 @@ Opt.zeroGInx = zeroGInx;
 
 
 end % xxBlocks()
+
+
+%**************************************************************************
+
+
+function Opt = xxLogOpt(This,Opt)
+% xxLogOpt  Create the list of log-plus and log-minus levels,
+% `Opt.IxLogPlus` and `Opt.IxLogMinus`, based on user options `'Unlog='`
+% and `'LogMinus='`.
+
+unlogList = Opt.Unlog;
+if ischar(unlogList)
+    unlogList = regexp(unlogList,'\w+','match');
+end
+logMinusList = Opt.LogMinus;
+if ischar(logMinusList)
+    logMinusList = regexp(logMinusList,'\w+','match');
+end
+conflict = intersect(unlogList,logMinusList);
+if ~isempty(conflict)
+    utils.error('model:mysstateopt', ...
+        'This name is used in both ''Unlog='' and ''LogMinus='': ''%s''.', ...
+        conflict{:});
+end
+
+% Positions of unlog variables.
+unlogPos = mynameposition(This,unlogList,[1,2]);
+ixValid = ~isnan(unlogPos);
+if any(~ixValid)
+    utils.error('model:mysstateopt', ...
+        'This name cannot be used in ''Unlog='': ''%s''.', ...
+        unlogList{~ixValid});
+end
+
+% Positions of log minus variables.
+logMinusPos = mynameposition(This,logMinusList,[1,2]);
+ixValid = ~isnan(logMinusPos);
+if any(~ixValid)
+    utils.error('model:mysstateopt', ...
+        'This name cannot be used in ''LogMinus='': ''%s''.', ...
+        unlogList{~ixValid});
+end
+
+% Create lists of log-plus and log-minus levels.
+Opt.IxLogPlus = This.IxLog;
+Opt.IxLogMinus = false(size(This.IxLog));
+Opt.IxLogMinus(logMinusPos) = true;
+Opt.IxLogPlus(logMinusPos) = false;
+Opt.IxLogPlus(unlogPos) = false;
+Opt.IxLogMinus(unlogPos) = false;
+end %% xxLogOpt()

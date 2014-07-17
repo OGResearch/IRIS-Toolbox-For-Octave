@@ -15,10 +15,9 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || is.tseries(x) ...
+pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
     || isstruct(x));
-pp.parse(V,Data);
+pp.parse(Data);
 
 opt = passvalopt('SVAR.SVAR',varargin{1:end});
 

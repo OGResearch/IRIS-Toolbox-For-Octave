@@ -35,17 +35,20 @@ function [Rad,Per] = frf2phase(F,varargin)
 
 %--------------------------------------------------------------------------
 
-isNamedmat = isa(F,'namedmat');
-if isNamedmat
-    row = rownames(F);
-    col = colnames(F);
+isNamed = isnamedmat(F);
+
+if isNamed
+    rowNames = rownames(F);
+    colNames = colnames(F);
 end
 
 [Rad,Per] = xsf2phase(F,varargin{:});
 
-if isNamedmat
-    Rad = namedmat(Rad,row,col);
+if isNamed
+    Rad = namedmat(Rad,rowNames,colNames);
     if nargin > 1 && ~isempty(Per)
-        Per = namedmat(Per,row,col);
+        Per = namedmat(Per,rowNames,colNames);
     end
+end
+
 end

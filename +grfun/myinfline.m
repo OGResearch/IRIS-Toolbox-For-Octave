@@ -51,7 +51,7 @@ if isVertical
     if isequal(getappdata(Ax,'tseries'),true)
         Loc = dat2dec(Loc,'centre');
         freq = getappdata(Ax,'freq');
-        if ~isempty(freq) && is.numericscalar(freq) ...
+        if ~isempty(freq) && isnumericscalar(freq) ...
                 && any(freq == [0,1,2,4,6,12,52])
             dx = 0.5 / max(1,freq);
             switch opt.timeposition
@@ -64,33 +64,32 @@ if isVertical
     end
 end
 
-%infLim = realmax()*[-1,1];
-infLim = 1e10*[-1,1];
 
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
+if true % ##### MOSW
+    infLim = 1e10;
+else
+    infLim = 1e5; %#ok<UNRCH>
+end
+
+bounds = objbounds(Ax);
+zPos = -1;
+
 nLoc = numel(Loc);
 for i = 1 : nLoc
 
-    % Draw vlines as patch objects. Lines do not work with realmax in older
-    % Matlab releases with HG1.
     if isVertical
         xCoor = Loc([i,i]);
-        yCoor = infLim;
+        yCoor = infLim*[-1,1] + bounds([3,4]);
     else
-        xCoor = infLim;
+        xCoor = infLim*[-1,1] + bounds([1,2]);
         yCoor = Loc([i,i]);
     end
-    h = patch(xCoor,yCoor,[0,0,0], ...
-       'parent',Ax,'edgeColor',[0,0,0],'faceColor','none', ...
-       'yLimInclude','off','xLimInclude','off');
-    
-    ch = get(Ax,'children');
-    % Move the vline object to the background
-    ch(ch == h) = [];
-    ch(end+1) = h; %#ok<AGROW>
-    set(Ax,'children',ch);
+    zCoor = zPos*ones(size(xCoor));
+    h = line(xCoor,yCoor,zCoor,'color',[0,0,0], ...
+        'yLimInclude','off','xLimInclude','off');
     
     Ln = [Ln,h]; %#ok<AGROW>
     
@@ -104,6 +103,11 @@ end
 
 % Reset `'nextPlot='` to its original value.
 set(Ax,'nextPlot',nextPlot);
+
+% Make sure zLim includes zPos.
+zLim = get(Ax,'zLim');
+zLim(1) = min(zLim(1),zPos);
+set(Ax,'zLim',zLim);
 
 if isempty(Ln)
     return
@@ -121,9 +125,13 @@ else
     set(Ln,'tag','hline');
 end
 
-% Exclude the line object from legend.
-if opt.excludefromlegend
-    grfun.excludefromlegend(Ln);
+if true % ##### MOSW
+    if opt.excludefromlegend
+        % Exclude the line object from legend.
+        grfun.excludefromlegend(Ln);
+    end
+else
+    % Do nothing.
 end
 
 end

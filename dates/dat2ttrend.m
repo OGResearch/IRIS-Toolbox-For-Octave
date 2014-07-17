@@ -53,7 +53,7 @@ function [TTrend,BaseYear] = dat2ttrend(Range,BaseYear)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    if ~is.intscalar(BaseYear)
+    if ~isintscalar(BaseYear)
         BaseYear = get(BaseYear,'baseYear');
     end
 catch
@@ -62,7 +62,7 @@ end
 
 %--------------------------------------------------------------------------
 
-if ~is.intscalar(BaseYear)
+if ~isintscalar(BaseYear)
     BaseYear = irisget('baseYear');
 end
 

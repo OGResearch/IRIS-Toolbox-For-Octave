@@ -43,7 +43,7 @@ end % testClone()
 function testPseudosubs(This)
 
 p = preparser('testPseudosubs.model');
-actCode = p.code;
+actCode = p.Code;
 expCode = file2char('testPseudosubs_preparsed.model');
 assertEqual(This,actCode,expCode);
 

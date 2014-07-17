@@ -1,4 +1,4 @@
-function [LegeEntry,H,Time,Data,Grid] = plot(This,Ax)
+function [LegEnt,H,Time,Data,Grid] = plot(This,Ax)
 % plot  [Not a public function] Draw report/series object.
 %
 % Backend IRIS function.
@@ -21,14 +21,14 @@ dateOptions = {
 
 if size(This.data{1}(:,:),2) > 0
     
-    switch char(This.options.plotfunc)
+    switch func2str(This.options.plotfunc)
         case 'plotcmp'
             % axes(ax);
             [~,H,rr,lhsRange,lhsData,lhsGrid, ...
                 rhsRange,rhsData] = ...
                 plotcmp(par.options.range,This.data{1}, ...
                 dateOptions{:}, ...
-                This.options.plotoptions{:}); %#ok<NASGU,ASGLU>
+                This.options.plotoptions{:}); %#ok<ASGLU>
             Time = lhsRange;
             Data = lhsData;
             Grid = lhsGrid;
@@ -49,8 +49,8 @@ if size(This.data{1}(:,:),2) > 0
     
     % Create legend entries.
     nData = size(Data,2);
-    [LegeEntry,exclude] = mylegend(This,nData);
-    if exclude && ~isempty(H)
+    [LegEnt,isExcluded] = mylegend(This,nData);
+    if isExcluded && ~isempty(H)
         grfun.excludefromlegend(H);
     end
     
@@ -61,7 +61,7 @@ else
     Time = [];
     Data = [];
     Grid = [];
-    LegeEntry = {};
+    LegEnt = {};
     
 end
 

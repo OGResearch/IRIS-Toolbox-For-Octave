@@ -51,10 +51,10 @@ function [D,CC,F,U,E] = forecast(This,Inp,Range,J,varargin)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('A',@is.FAVAR);
-pp.addRequired('D',@(x) is.tseries(x) || isstruct(x));
+pp.addRequired('A',@isFAVAR);
+pp.addRequired('D',@(x) istseries(x) || isstruct(x));
 pp.addRequired('Range',@isnumeric);
-pp.addRequired('J',@(x) isempty(x) || is.tseries(x) || isstruct(x));
+pp.addRequired('J',@(x) isempty(x) || istseries(x) || isstruct(x));
 pp.parse(This,Inp,Range,J);
 
 % Parse options.
@@ -70,11 +70,11 @@ Range = Range(1) : Range(end);
 if isstruct(Inp) ...
       && ~isfield(Inp,'init') ...
       && isfield(Inp,'mean') ...
-      && is.tseries(Inp.mean)
+      && istseries(Inp.mean)
    Inp = Inp.mean;
 end
 
-if is.tseries(Inp)
+if istseries(Inp)
    % Only mean tseries supplied; no uncertainty in initial condition.
    reqRange = Range(1)-pp : Range(1)-1;
    req = datarequest('y*',This,Inp,reqRange);

@@ -122,7 +122,7 @@ for iblk = 1 : nblk
         thisName = This.name(nameBlk{iblk});
         c = [c,strfun.cslist(thisName,'wrap',75,'lead','   '),nl]; %#ok<AGROW>
         % Log list.
-        ixLog = This.LogSign(nameBlk{iblk}) ~= 0;
+        ixLog = This.IxLog(nameBlk{iblk});
         if any(ixLog)
             logList = thisName(ixLog);
             c = [c,'   !log_variables',nl]; %#ok<AGROW>

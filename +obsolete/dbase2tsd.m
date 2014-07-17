@@ -24,8 +24,8 @@ function [saved,range] = dbase2tsd(d,fname,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 default = {...
-  'nan',1e15,@is.numericscalar, ...
-  'inf',realmax(),@is.numericscalar, ...
+  'nan',1e15,@isnumericscalar, ...
+  'inf',realmax(),@isnumericscalar, ...
 };
 opt = passvalopt(default,varargin{:});
 
@@ -46,7 +46,7 @@ saved = {};
 range = [Inf,-Inf];
 for i = 1 : length(list)
   % not a time series
-  if ~is.tseries(d.(list{i}))
+  if ~istseries(d.(list{i}))
     continue
   end
   si = size(d.(list{i}));

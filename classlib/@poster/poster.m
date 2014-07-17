@@ -100,7 +100,7 @@ classdef poster < getsetobj
                         
             if isempty(varargin)
                 return
-            elseif length(varargin) == 1 && is.poster(varargin{1})
+            elseif length(varargin) == 1 && isposter(varargin{1})
                 This = varargin{1};
             elseif length(varargin) == 1 && isstruct(varargin{1})
                 This = mystruct2obj(This,varargin{1});
@@ -125,7 +125,7 @@ classdef poster < getsetobj
                 This.LogPriorFunc = cell(1,n); %#ok<MCSUP>
                 This.LowerBounds = -inf(1,n); %#ok<MCSUP>
                 This.UpperBounds = inf(1,n); %#ok<MCSUP>
-            elseif is.numericscalar(List)
+            elseif isnumericscalar(List)
                 n = List;
                 This.ParamList = cell(1,n);
                 for i = 1 : n
@@ -277,7 +277,7 @@ classdef poster < getsetobj
         end
         
         function This = setprior(This,Name,Func)
-            if ischar(Name) && is.func(Func)
+            if ischar(Name) && isfunc(Func)
                 pos = strcmp(This.ParamList,Name);
                 if any(pos)
                     This.LogPriorFunc{pos} = Func;

@@ -71,7 +71,7 @@ list = fieldnames(D);
 for i = 1 : length(list)
     name = list{i};
     ptn = sprintf('d.%s(t,:)',name);
-    if is.tseries(D.(name)) || any(strcmp(This.lhs,name))
+    if istseries(D.(name)) || any(strcmp(This.lhs,name))
         rpl = sprintf('D.%s(t,:)',name);
     else
         rpl = sprintf('D.%s',name);
@@ -91,7 +91,7 @@ if opt.dynamic
     % Evaluate equations recursively period by period.
     fn = cell(size(This.rhs));
     for iRhs = 1 : length(This.rhs)
-        fn{iRhs} = str2func(['@(D,t)',This.rhs{iRhs}]);
+        fn{iRhs} = mosw.str2func(['@(D,t)',This.rhs{iRhs}]);
     end
     Range = Range(:).';
     for t = Range
@@ -124,7 +124,7 @@ else
             x = NaN;
             utils.warning('reporting',...
                 ['Error evaluating ''%s''.\n', ...
-                '\tMatlab says: %s'],...
+                '\tUncle says: %s'],...
                 This.userRHS{i},Error.message);
         end
         D.(This.lhs{i}) = x;
@@ -134,7 +134,7 @@ end
 % Create comments from labels.
 for i = 1 : length(This.lhs)
     name = This.lhs{i};
-    if is.tseries(D.(name)) && ~isempty(This.label{i})
+    if istseries(D.(name)) && ~isempty(This.label{i})
         D.(name) = comment(D.(name),This.label{i});
     end
 end

@@ -55,27 +55,27 @@ switch Query
         
     case 'stdlist'
         elist = This.name(This.nametype == 3);
-        X = regexprep(elist,'^.','std_$0','once');
+        X = strcat('std_',elist);
         
     case 'corrlist'
         X = mycorrnames(This);
         
     case 'stdcorrlist'
         elist = This.name(This.nametype == 3);
-        X = regexprep(elist,'^.','std_$0','once');
+        X = strcat('std_',elist);
         X = [X,mycorrnames(This)];
         
     case {'log','islog'}
         X = struct();
         for iType = find(This.nametype <= 3);
-            X.(This.name{iType}) = This.LogSign(iType) ~= 0;
+            X.(This.name{iType}) = This.IxLog(iType);
         end
         
     case {'loglist'}
-        X = This.name(This.LogSign ~= 0 & This.nametype <= 3);
+        X = This.name(This.IxLog & This.nametype ~= 4);
         
     case {'nonloglist'}
-        X = This.name(This.LogSign == 0 & This.nametype <= 3);
+        X = This.name(~This.IxLog == 0 & This.nametype ~= 4);
         
     case {'covmat','omega'}
         X = omega(This);
@@ -146,22 +146,23 @@ end
 
 
 %**************************************************************************
-function [List,Values,X] = xxGetStd(This)
 
+
+function [List,Values,X] = xxGetStd(This)
 ne = sum(This.nametype == 3);
 Values = This.stdcorr(1,1:ne,:);
 List = This.name(This.nametype == 3);
-List = regexprep(List,'^.','std_$0','once');
+List = strcat('std_',List);
 if nargout > 2
     X = xxNum2Struct(Values,List);
 end
-
 end % xxGetStd()
 
 
 %**************************************************************************
-function [List,Values,X] = xxGetCorr(This,Query)
 
+
+function [List,Values,X] = xxGetCorr(This,Query)
 ne = sum(This.nametype == 3);
 nAlt = size(This.Assign,3);
 pos = tril(ones(ne),-1) == 1;
@@ -187,27 +188,26 @@ for k = 1 : length(i)
     Values(1,k,:) = R(i(k),j(k),:);
     X.(name) = permute(R(i(k),j(k),:),[2,3,1]);
 end
-
 end % xxGetCorr()
 
 
 %**************************************************************************
-function X = xxGetParam(This)
 
+
+function X = xxGetParam(This)
 assign = This.Assign(1,This.nametype == 4,:);
 assignlist = This.name(This.nametype == 4);
 [stdList,std] = xxGetStd(This);
 [corrList,corr] = xxGetCorr(This,'nonzerocorr');
 X = xxNum2Struct([assign,std,corr],[assignlist,stdList,corrList]);
-
 end % xxGetParam()
 
 
 %**************************************************************************
-function S = xxNum2Struct(X,List)
 
+
+function S = xxNum2Struct(X,List)
 S = cell2struct( ...
     num2cell(permute(X,[2,3,1]),2), ...
     List(:),1);
-
 end % xxNum2Struct()

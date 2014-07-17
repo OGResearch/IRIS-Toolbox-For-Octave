@@ -11,17 +11,17 @@ function hdatainit(This,H)
 
 H.Id = This.solutionid;
 H.Name = This.name;
-H.LogSign = This.LogSign;
+H.IxLog = This.IxLog;
 
 label = This.namelabel;
 ixEmpty = cellfun(@isempty,label);
 label(ixEmpty) = This.name(ixEmpty);
 H.Label = label;
 
-if isequal(H.Contributions,@E)
+if isequal(H.Contributions,@shock)
     H.Contributions = [ This.name(This.nametype == 3), ...
         {'Init+Const+DTrends'}, {'Nonlinear'} ];
-elseif isequal(H.Contributions,@Y)
+elseif isequal(H.Contributions,@measurement)
     H.Contributions = This.name(This.nametype == 1);
 end
 

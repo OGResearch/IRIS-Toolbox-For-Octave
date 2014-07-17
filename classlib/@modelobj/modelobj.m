@@ -29,10 +29,8 @@ classdef modelobj < getsetobj & userdataobj
         Assign = zeros(1,0,0);
         % Std devs and cross-correlations.
         stdcorr = zeros(1,0,0);
-        % Flags for log-linearised variables.
-        log = false(1,0);
-        % Signs of log-linearized variables.
-        LogSign = zeros(1,0,'int8');
+        % Log status of variables.
+        IxLog = false(1,0);
         % List of equations in user form.
         eqtn = cell(1,0);
         % Equation labels.

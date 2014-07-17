@@ -10,8 +10,8 @@ function mychksyntax(This)
 %--------------------------------------------------------------------------
 
 nName = length(This.name);
-t = This.tzero;
-nt = size(This.occur,2)/nName;
+t0 = find(This.Shift == 0);
+nt = length(This.Shift);
 ne = sum(This.nametype == 3);
 
 % Finalize sstate equations.
@@ -36,8 +36,8 @@ isLink = This.eqtntype == 4;
 % Full dynamic equations except links.
 inx = ~isLink;
 try
-    e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
-    e(x,dx,L,t,ttrend,g);
+    e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    feval(e,x,dx,L,t0,ttrend,g);
 catch
     doLookUp('f',inx);
 end
@@ -46,8 +46,8 @@ end
 if ~This.IsLinear
     inx = ~isLink;
     try
-        e = str2func(['@(x,dx,L,t,ttrend,g) [',eqtnS{inx},']']);
-        e(x,dx,L,t,ttrend,g);
+        e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',eqtnS{inx},']']);
+        feval(e,x,dx,L,t0,ttrend,g);
     catch
         doLookUp('s',inx);
     end
@@ -56,8 +56,8 @@ end
 % Links.
 inx = isLink;
 try
-    e = str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
-    e(x,dx,L,t,ttrend,g);
+    e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    feval(e,x,dx,L,t0,ttrend,g);
 catch
     doLookUp('f',inx);
 end
@@ -87,10 +87,10 @@ end
             
             try
                 e = strfun.vectorise(e);
-                e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
+                e = mosw.str2func(['@(x,dx,L,t,ttrend,g)',e]);
                 
                 if This.eqtntype(iiEq) < 4
-                    e(x,dx,L,t,ttrend,g);
+                    feval(e,x,dx,L,t0,ttrend,g);
                 else
                     % Evaluate RHS of dynamic links. They can refer to std or corr names, so we
                     % have to use the `x1` vector.
@@ -104,8 +104,8 @@ end
                 end
                 
                 e = eqtnS{iiEq};
-                e = str2func(['@(x,dx,L,t,ttrend,g)',e]);
-                e(x,dx,L,t,ttrend,g);               
+                e = mosw.str2func(['@(x,dx,L,t,ttrend,g)',e]);
+                feval(e,x,dx,L,t0,ttrend,g);               
             catch E
                 % Undeclared names should have been already caught. But a few exceptions
                 % may still exist.
@@ -137,7 +137,7 @@ end
         if ~isempty(errSyntax)
             utils.error('model',[utils.errorparsing(This), ...
                 'Syntax error in ''%s''.\n', ...
-                '\tMatlab says: %s'], ...
+                '\tUncle says: %s'], ...
                 errSyntax{:});
         end
     end % doLookUp().

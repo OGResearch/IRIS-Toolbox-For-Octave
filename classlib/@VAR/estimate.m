@@ -129,9 +129,8 @@ function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.parse(This,Inp);
+pp.parse(Inp);
 
 % Get input data; the user range is supposed to **include** the pre-sample
 % initial condition.

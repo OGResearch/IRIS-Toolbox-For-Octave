@@ -35,7 +35,7 @@ end
 
 if isempty(This.func)
     % Atomic value.
-    C = xxAtom2Char(This.args);
+    C = myatomchar(This);
     return
 end
 
@@ -144,7 +144,9 @@ end
                 sign = '-';
             elseif isempty(a.func) && isnumeric(a.args) ...
                     && all(a.args < 0)
-                c = xxAtom2Char(-a.args);
+                a1 = a;
+                a1.args = -a1.args;
+                c = myatomchar(a1);
                 sign = '-';
             else
                 c = xxArgs2Char(a);
@@ -192,7 +194,7 @@ end
 function C = xxArgs2Char(X)
 if isa(X,'sydney')
     C = char(X);
-elseif is.func(X)
+elseif isfunc(X)
     C = ['@',func2str(X)];
 elseif ischar(X)
     C = ['''',X,''''];
@@ -201,30 +203,3 @@ else
         'Invalid type of function argument in a sydney expression.');
 end
 end % xxArgs2Char()
-
-
-%**************************************************************************
-
-
-function C = xxAtom2Char(A)
-fmt = '%.15g';
-if ischar(A)
-    % Name of a variable.
-    C = A;
-elseif is.numericscalar(A)
-    % Constant.
-    if A == 0
-        C = '0';
-    else
-        C = sprintf(fmt,A);
-    end
-elseif (isnumeric(A) || islogical(A)) ...
-        && ~isempty(A) && length(size(A)) == 2 && size(A,2) == 1
-    % Column vector.
-    C = sprintf([';',fmt],double(A));
-    C = ['[',C(2:end),']'];
-else
-    utils.error('sydney:char', ...
-        'Unknown type of sydney atom.');
-end
-end % xxAtom2Char()

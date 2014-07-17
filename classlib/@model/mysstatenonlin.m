@@ -45,8 +45,8 @@ for iAlt = 1 : nAlt
     x(zeroLInx) = 0;
     if ~isempty(Opt.resetinit)
         x(:) = real(Opt.resetinit);
-        x(This.LogSign == 1) = exp(x(This.LogSign == 1));
-        x(This.LogSign == -1) = -exp(x(This.LogSign == -1));
+        x(This.IxLog == 1) = exp(x(This.IxLog == 1));
+        x(This.IxLog == -1) = -exp(x(This.IxLog == -1));
     else
         % Assign NaN level initial conditions.
         % First, assign values from the previous iteration (if they exist).
@@ -69,7 +69,7 @@ for iAlt = 1 : nAlt
     if any(~zeroGInx)
         if ~isempty(Opt.resetinit)
             dx(:) = imag(Opt.resetinit);
-            dx(This.LogSign ~= 0) = exp(dx(This.LogSign ~= 0));
+            dx(This.IxLog ~= 0) = exp(dx(This.IxLog ~= 0));
         else
             % Assign NaN growth initial conditions.
             % First, assign values from the previous iteration (if they exist).
@@ -84,7 +84,7 @@ for iAlt = 1 : nAlt
         end
     end
     % Re-assign zero growth for log-variables to 1.
-    dx(dx == 0 & This.LogSign ~= 0) = 1;
+    dx(dx == 0 & This.IxLog ~= 0) = 1;
         
     % Cycle over individual blocks
     %------------------------------
@@ -96,15 +96,14 @@ for iAlt = 1 : nAlt
 
         xi = nameBlkL{iBlk};
         dxi = nameBlkG{iBlk};
-        ixLogPlus = This.LogSign(xi) == 1;
-        ixLogMinus = This.LogSign(xi) == -1;
+        ixLogPlus = Opt.IxLogPlus(xi);
+        ixLogMinus = Opt.IxLogMinus(xi);
         % Log growth rates are always positive.
-        ixDLog = This.LogSign(dxi) ~= 0;
+        ixDLog = This.IxLog(dxi);
         ixLogPlus = [ixLogPlus,ixDLog]; %#ok<AGROW>
         ixLogMinus = [ixLogMinus,false(size(dxi))]; %#ok<AGROW>
         z0 = [x(xi),dx(dxi)];
-        z0(ixLogPlus) = log(z0(ixLogPlus));
-        z0(ixLogMinus) = log(-z0(ixLogMinus));
+        z0(ixLogPlus | ixLogMinus) = log(abs(z0(ixLogPlus | ixLogMinus)));
         
         % Test all equations in this block for NaNs and INfs.
         if Opt.warning
@@ -136,12 +135,12 @@ for iAlt = 1 : nAlt
             end
             if ~isempty(dxi)
                 xk = x;
-                xk(This.LogSign == 0) = ...
-                    x(This.LogSign == 0) + Shift*dx(This.LogSign == 0);
+                xk(This.IxLog == 0) = ...
+                    x(This.IxLog == 0) + Shift*dx(This.IxLog == 0);
                 % Time shifts of log-plus and log-variables are computed
                 % the same way.
-                xk(This.LogSign ~= 0) = ...
-                    x(This.LogSign ~= 0) .* dx(This.LogSign ~= 0).^Shift;
+                xk(This.IxLog ~= 0) = ...
+                    x(This.IxLog ~= 0) .* dx(This.IxLog ~= 0).^Shift;
                 yk = f(xk,dx);
                 if ixDLog
                     z = [z,(yk/y0)^(1/Shift)]; %#ok<AGROW>
@@ -152,7 +151,11 @@ for iAlt = 1 : nAlt
             exitFlag = 1;
 
         else
-            switch lower(char(Opt.solver))
+            solverName = Opt.solver;
+            if isfunc(solverName)
+                solverName = func2str(solverName);
+            end
+            switch lower(solverName)
                 case 'lsqnonlin'
                     [z,~,~,exitFlag] = ...
                         lsqnonlin(@doObjFunc,z0,[],[],Opt.optimset);
@@ -230,12 +233,12 @@ doRefresh();
             % Some growth rates need to be calculated. Evaluate the model equations at
             % time t and t+Shift if at least one growth rate is needed.
             xk = x;
-            xk(This.LogSign == 0) = ...
-                x(This.LogSign == 0) + Shift*dx(This.LogSign == 0);
+            xk(This.IxLog == 0) = ...
+                x(This.IxLog == 0) + Shift*dx(This.IxLog == 0);
             % Time shifts of log-plus and log-variables are computed
             % the same way.
-            xk(This.LogSign ~= 0) = ...
-                x(This.LogSign ~= 0) .* dx(This.LogSign ~= 0).^Shift;
+            xk(This.IxLog ~= 0) = ...
+                x(This.IxLog ~= 0) .* dx(This.IxLog ~= 0).^Shift;
             Y = [Y;f(xk,dx)];
         end
 
@@ -246,7 +249,7 @@ doRefresh();
             This = refresh(This,iAlt);
             x = real(This.Assign(1,:,iAlt));
             dx = imag(This.Assign(1,:,iAlt));
-            dx(dx == 0 & This.LogSign ~= 0) = 1;
+            dx(dx == 0 & This.IxLog ~= 0) = 1;
         end % doRefresh()
         
         

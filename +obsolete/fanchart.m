@@ -8,7 +8,7 @@ xdata = get(h0,'xdata');
 ydata = get(h0,'ydata');
 ndata = length(xdata);
 
-if is.tseries(bands)
+if istseries(bands)
   range = gettimescale(h0);
   bands = bands(range)';
 else

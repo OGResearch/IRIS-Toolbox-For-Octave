@@ -45,15 +45,16 @@ end
 
 % Parse the structure of individual equations.
 ptn = [ ...
-    '(?<label>',regexppattern(This.labels),')?', ...
-    '(?<eqtnOnly>[^!;',This.labels.CharUsed,']*)', ...
-    '(?<sstate>!![^!;',This.labels.CharUsed,']*)?;']; 
-tkn = regexp(tempEqtn,ptn,'names');
+    '((',regexppattern(This.Labels),')?)', ... % Label.
+    '([^!;',This.Labels.CharUsed,']*)', ... % Full eqtn.
+    '((!![^!;',This.Labels.CharUsed,']*)?);', ... % Sstate.
+    ]; 
+tkn = regexp(tempEqtn,ptn,'tokens','once');
 tkn = [tkn{:}];
 
-EqtnLabel = {tkn(:).label};
-eqtnOnly = {tkn(:).eqtnOnly};
-sstate = {tkn(:).sstate};
+EqtnLabel = tkn(1:3:end);
+eqtnOnly = tkn(2:3:end);
+sstate = tkn(3:3:end);
 sstate = strrep(sstate,'!!','');
 
 % Remove equations that consist of labels only; throw a warning later.

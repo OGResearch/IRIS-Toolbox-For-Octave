@@ -25,7 +25,7 @@ if isequal(Mode,'silent')
     Opt.warning = false;
 end
 
-if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
+if isequal(Opt.linear,@auto)
     Opt.linear = This.IsLinear;
 elseif Opt.linear ~= This.IsLinear
     Opt.select = false;

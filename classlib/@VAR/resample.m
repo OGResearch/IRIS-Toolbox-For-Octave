@@ -73,17 +73,16 @@ end
 if throwWarn
     % ##### Nov 2013 OBSOLETE.
     utils.warning('obsolete', ...
-        ['Calling VAR/resample(...) with three input arguments is obsolete, ', ...
+        ['Calling VAR/resample( ) with three input arguments is obsolete, ', ...
         'and will not be supported in future versions of IRIS.\n']);
 end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) isempty(x) || myisvalidinpdata(This,x));
 pp.addRequired('Range',@isnumeric);
-pp.addRequired('NDraw',@(x) is.numericscalar(x) && x == round(x) && x >= 0);
-pp.parse(This,Inp,Range,NDraw);
+pp.addRequired('NDraw',@(x) isintscalar(x) && x >= 0);
+pp.parse(Inp,Range,NDraw);
 
 % Panel VAR.
 if ispanel(This)

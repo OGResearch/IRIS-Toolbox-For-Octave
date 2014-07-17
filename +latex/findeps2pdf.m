@@ -7,7 +7,7 @@ c = file2char(inputfile);
 list = regexpi(c,'(?<=\{)\w+\.eps(?=\})','match');
 
 if ~isempty(list)
-   thisDir = cd();
+   thisDir = pwd();
    inputpath = fileparts(inputfile);
    if ~isempty(inputpath)
       cd(inputpath);

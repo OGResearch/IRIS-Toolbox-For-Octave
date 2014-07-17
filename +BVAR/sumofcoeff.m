@@ -31,11 +31,11 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@isnumericscalar);
 pp.parse(Mu);
 
 if ~isempty(varargin) && nargout == 1
-    utils.warning('BVAR', ...
+    utils.warning('BVAR:sumofcoeff', ...
         ['This is an obsolete syntax to call BVAR.litterman(). ', ...
         'See documentation for valid syntax.']);
 end

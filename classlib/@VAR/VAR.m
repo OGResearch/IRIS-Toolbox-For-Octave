@@ -258,7 +258,7 @@ classdef VAR < varobj
             
             if nargin == 0
                 return
-            elseif nargin == 1 && is.VAR(varargin{1})
+            elseif nargin == 1 && isVAR(varargin{1})
                 This = varargin{1};
                 return
             elseif nargin == 1 && isstruct(varargin{1})

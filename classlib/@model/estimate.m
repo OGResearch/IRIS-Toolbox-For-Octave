@@ -341,12 +341,11 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
-pp.addRequired('M',@is.model);
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
-pp.parse(This,Data,Range,E,SP);
+pp.parse(Data,Range,E,SP);
 
 estOpt = passvalopt('model.estimate',varargin{:});
 
@@ -424,7 +423,7 @@ if estOpt.evallik && (nargout >= 5 || likOpt.relative)
     % in the model object, and refresh if needed.
     xRange = Range(1)-1 : Range(end);
     [~,~,V,Delta,PDelta,~,This] ...
-        = mykalmanregoutp(This,regOutp,xRange,likOpt);
+        = mykalmanregoutp(This,regOutp,xRange,likOpt,estOpt);
 end
 
 % Database with point estimates.
@@ -435,7 +434,6 @@ if nargout > 8
     Delta1 = Delta;
     PDelta1 = PDelta;
 end
-
 
 % Nested functions...
 

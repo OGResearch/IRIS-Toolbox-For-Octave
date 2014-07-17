@@ -68,8 +68,8 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 utils.warning('obsolete', ...
-    ['The function forecast(...) is obsolete, and will be removed from ', ...
-    'a future version of IRIS. Use jforecast(...) instead.']);
+    ['The function forecast( ) is obsolete, and will be removed from ', ...
+    'a future version of IRIS. Use jforecast( ) instead.']);
 
 % Old syntax for conditioning database.
 tune = [];
@@ -90,10 +90,6 @@ end
 
 % Determine format of input and output data.
 output = 'dbase';
-
-if iequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
-end
 
 %--------------------------------------------------------------------------
 
@@ -657,6 +653,7 @@ end
 
 %**************************************************************************
 
+realexp = @(x) real(exp(x));
 template = tseries();
 
 if iscell(d)
@@ -692,7 +689,7 @@ end
         end
         % Add comments to time series.
         for i = find(this.nametype <= 3)
-            if isfield(d,this.name{i}) && is.tseries(d.(this.name{i}))
+            if isfield(d,this.name{i}) && istseries(d.(this.name{i}))
                 if ~isempty(comments)
                     temp = comments;
                     nanIndex = ~cellfun(@ischar,temp);
@@ -714,12 +711,8 @@ end
         ylist = this.name(this.nametype == 1);
         for i = 1 : length(realid)
             y = permute(p{1}(i,:,:,:),[2,3,4,1]);
-            if delog
-                if this.LogSign(realid(i)) == 1
-                    y = exp(y);
-                elseif this.LogSign(realid(i)) == -1
-                    y = -exp(y);
-                end
+            if delog && this.IxLog(realid(i))
+                y = realexp(y);
             end
             b.(ylist{i}) = replace(template,y,range(1));
         end
@@ -738,12 +731,8 @@ end
         end
         for i = find(imagid == 0)
             x = permute(X(i,:,:,:),[2,3,4,1]);
-            if delog 
-                if this.LogSign(realid(i)) == 1
-                    x = exp(x);
-                elseif this.LogSign(realid(i)) == -1
-                    x = -exp(x);
-                end
+            if delog && this.IxLog(realid(i))
+                x = realexp(x);
             end
             b.(this.name{realid(i)}) = replace(template,x,startdate);
         end

@@ -53,10 +53,9 @@ function D = lognormal(This,D,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('this',@is.model);
-pp.addRequired('data', ...
+pp.addRequired('D', ...
     @(x) isstruct(x) && isfield(x,'mean') && isfield(x,'std'));
-pp.parse(This,D);
+pp.parse(D);
 
 Opt = passvalopt('model.lognormal',varargin{:});
 
@@ -68,9 +67,8 @@ field = @(x) sprintf('%s%s%',Opt.prefix,x);
 doInitStruct();
 template = tseries();
 
-for namePos = find(This.LogSign ~= 0)
+for namePos = find(This.IxLog)
     name = This.name(namePos);
-    logSign = This.LogSign(namePos);
     doPopulate();
 end
 
@@ -104,7 +102,7 @@ end
             Opt.prctile(Opt.prctile <= 0 | Opt.prctile >= 100) = [];
             D.(field('pct')) = struct();
         end
-    end
+    end % doInitStruct()
 
 
 %**************************************************************************
@@ -122,23 +120,14 @@ end
         start = range(1);
         if Opt.median
             x = xxMedian(expmu,sgm,sgm2);
-            if logSign == -1
-                x = -x;
-            end
             D.(field('median')).(name) = replace(template,x,start,co);
         end
         if Opt.mode
             x = xxMode(expmu,sgm,sgm2);
-            if logSign == -1
-                x = -x;
-            end
             D.(field('mode')).(name) = replace(template,x,start,co);
         end
         if Opt.mean
             x = xxMean(expmu,sgm,sgm2);
-            if logSign == -1
-                x = -x;
-            end
             D.(field('mean')).(name) = replace(template,x,start,co);
         end
         if Opt.std
@@ -150,13 +139,11 @@ end
             for p = Opt.prctile
                 x = [x,xxPrctile(expmu,sgm,sgm2,p/100)]; %#ok<AGROW>
             end
-            if logSign == -1
-                x = -x;
-            end
             co = repmat(co,1,length(Opt.prctile));
             D.(field('pct')).(name) = replace(template,x,start,co);
         end
-    end
+    end % doPopulate()
+
 
 end
 

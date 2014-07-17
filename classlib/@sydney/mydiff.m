@@ -174,25 +174,31 @@ switch This.func
         This.func = 'times';
         This.args = {Z2,mydiff(This.args{1},Wrt)};
     otherwise
-        % External function.
+        % All other functions -- numerical derivatives.
         % diff(f(x1,x2,...)) = diff(f,1)*diff(x1) + diff(f,2)*diff(x2) + ...
         pos = find(~zeroDiff);
+        nPos = length(pos);
         % diff(f,i)*diff(xi)
-        Z = doExternalWrtK(pos(1));
-        for i = pos(2:end)
-            Z1 = Z;
+        if nPos == 1
+            Z = doExternalWrtK(pos(1));
+        else
+            Z = SYDNEY;
             Z.func = 'plus';
-            Z.args = {Z1,doExternalWrtK(i)};
+            for k = pos
+                Z.args{end+1} = doExternalWrtK(k);
+            end
         end
         This = Z;
         
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
 %**************************************************************************
+    
+    
     function z = doRdivide1()
         % Compute mydiff(x1/x2) with mydiff(x1) = 0
         % mydiff(x1/x2) = -x1/x2^2 * mydiff(x2)
@@ -220,6 +226,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function z = doRdivide2()
         % Compute mydiff(x1/x2) with mydiff(x2) = 0
         % diff(x1/x2) = diff(x1)/x2
@@ -230,6 +238,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function z = doPower1()
         % Compute diff(x1^x2) with diff(x1) = 0
         % diff(x1^x2) = x1^x2 * log(x1) * diff(x2)
@@ -249,6 +259,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function z = doPower2()
         % Compute diff(x1^x2) with diff(x2) = 0
         % diff(x1^x2) = x2*x1^(x2-1)*diff(x1)
@@ -276,6 +288,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function Z = doExternalWrtK(K)
         if strcmp(This.func,'sydney.d')
             z1 = This;

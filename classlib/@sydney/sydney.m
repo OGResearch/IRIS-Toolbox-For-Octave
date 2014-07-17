@@ -14,6 +14,45 @@ classdef sydney
         numd = [];
     end
     
+    
+    % The following functions can be called directly on sydney objects; all
+    % other functions need are replaced with the string
+    % `'sydney.parse(func,...)'` in `callfunc()`.
+    properties (Constant)
+        FuncList = { ...
+            'atan', ...
+            'cos', ...
+            'eq', ...
+            'exp', ...
+            'ge', ...
+            'gt', ...
+            'ldivide', ...
+            'le', ...
+            'log', ...
+            'log10', ...
+            'lt', ...
+            'minus', ...
+            'mldivide', ...
+            'mpower', ...
+            'mrdivide', ...
+            'mtimes', ...
+            'normcdf', ...
+            'normpdf', ...
+            'plus', ...
+            'power', ...
+            'rdivide', ...
+            'reduce', ...
+            'sin', ...
+            'sqrt', ...
+            'sydney', ...
+            'tan', ...
+            'times', ...
+            'uminus', ...
+            'uplus', ...
+            };
+    end
+    
+    
     methods
         function This = sydney(varargin)
             if isempty(varargin)
@@ -28,7 +67,11 @@ classdef sydney
             else
                 
                 expn = varargin{1};
-                wrt = varargin{2};
+                try
+                    wrt = varargin{2};
+                catch
+                    wrt = '';
+                end
                 
                 if isnumeric(expn)
                     
@@ -69,7 +112,7 @@ classdef sydney
                         % Validate function names in the equation. Function
                         % not handled by the sydney class will be evaluated
                         % by a call to sydney.parse().
-                        expr = sydney.callfunc(expr);
+                        expr = callfunc(This,expr);
                         if ~isempty(varList)
                             varList = unique([varList{:}]);
                         end
@@ -90,7 +133,7 @@ classdef sydney
                         % names found in the equation.
                         preamble = sprintf('%s,',varList{:});
                         preamble = ['@(',preamble(1:end-1),')'];
-                        tempFunc = str2func([preamble,expr]);
+                        tempFunc = mosw.str2func([preamble,expr]);
                         
                         % Evaluate the equation's function handle on the
                         % sydney objects.
@@ -120,7 +163,9 @@ classdef sydney
         varargout = power(varargin)
         
         varargout = diff(varargin)
+        varargout = myatomchar(varargin)
         varargout = mydiff(varargin)
+        varargout = myeval(varargin)
         varargout = reduce(varargin)
         varargout = char(varargin)
         
@@ -147,39 +192,110 @@ classdef sydney
         function This = mldivide(A,B)
             This = rdivide(B,A);
         end
-        
         function This = mpower(A,B)
+            % Reduce 10^(log10(x)) to x.
+            if ( (isnumeric(A) && isequal(A,10)) ...
+                    || (isa(A,'sydney') && isnumber(A,10)) ) ...
+                    && strcmp(B.func,'log10')
+                This = B.args{1};
+                return
+            end
             This = power(A,B);
         end
+        function This = normpdf(varargin)
+            This = sydney.parse('normpdf',varargin{:});
+        end
+        function This = normcdf(varargin)
+            This = sydney.parse('normcdf',varargin{:});
+        end
+        function This = exp(X)
+            % Reduce exp(log(x)) to x.
+            if strcmp(X.func,'log')
+                This = X.args{1};
+                return
+            end
+            This = sydney.parse('exp',X);
+        end
+        function This = log(X)
+            % Reduce log(exp(x)) to x.
+            if strcmp(X.func,'exp')
+                This = X.args{1};
+                return
+            end
+            This = sydney.parse('log',X);
+        end
+        function This = log10(X)
+            % Reduce log10(10^x) to x.
+            if strcmp(X.func,'power') && isnumber(X.args{1},10)
+                This = X.args{2};
+                return
+            end
+            This = sydney.parse('log10',X);
+        end
+        function This = sqrt(varargin)
+            This = sydney.parse('sqrt',varargin{:});
+        end
+        function This = atan(varargin)
+            This = sydney.parse('atan',varargin{:});
+        end
+        function This = sin(varargin)
+            This = sydney.parse('sin',varargin{:});
+        end
+        function This = tan(varargin)
+            This = sydney.parse('tan',varargin{:});
+        end
+        function This = cos(varargin)
+            This = sydney.parse('cos',varargin{:});
+        end
+        
         
         function This = gt(varargin)
             This = sydney.parse('gt',varargin{:});
         end
-        
         function This = ge(varargin)
             This = sydney.parse('ge',varargin{:});
         end
-        
         function This = lt(varargin)
             This = sydney.parse('lt',varargin{:});
         end
-        
         function This = le(varargin)
             This = sydney.parse('le',varargin{:});
         end
-        
         function This = eq(varargin)
             This = sydney.parse('eq',varargin{:});
         end
-
-        function Flag = isnumber(Z)
-            Flag = isempty(Z.func) && is.numericscalar(Z.args);
+        function Flag = isnumber(Z,X)
+            Flag = isempty(Z.func) && isnumericscalar(Z.args);
+            try %#ok<TRYNC>
+                Flag = Flag && isequal(Z.args,X);
+            end
         end
         
+        
+        function Expr = callfunc(This,Expr)
+            % Find all function names. Function names may also include dots to allow
+            % for methods and packages. Functions with no input arguments are not
+            % parsed and remain unchanged.
+            funcList = regexp(Expr, ...
+                '(\<[a-zA-Z][\w\.]*\>)\((?!\))','tokens');
+            if isempty(funcList)
+                return
+            end
+            funcList = [funcList{:}];
+            funcList = unique(funcList);
+            % Find function names that are not handled directly within the sydney
+            % class.
+            funcList = setdiff(funcList,This.FuncList);
+            for i = 1 : length(funcList)
+                funcName = funcList{i};
+                Expr = regexprep(Expr,['\<',funcName,'\>\('], ...
+                    ['sydney.parse(''',funcName,''',']);
+            end
+        end
     end
     
-    methods (Static)
-        
+    
+    methods (Static)    
         varargout = d(varargin)
         varargout = mydiffeqtn(varargin)
         varargout = myshift(varargin)
@@ -187,32 +303,14 @@ classdef sydney
         varargout = myeqtn2symb(varargin)
         varargout = parse(varargin)
 
-        function Expr = callfunc(Expr)
-            % Find all function names. Function names may also include dots to allow
-            % for methods and packages. Functions with no input arguments are not
-            % parsed and remain unchanged.
-            funcList = regexp(Expr, ...
-                '\<[a-zA-Z][\w\.]*\>\((?!\))','match');
-            funcList = unique(funcList);
-            % Find function names that are not handled by the sydney
-            % class.
-            for i = 1 : length(funcList)
-                funcname = funcList{i}(1:end-1);
-                Expr = regexprep(Expr,['\<',funcname,'\>('], ...
-                    ['sydney.parse(''',funcname,''',']);
-            end
-        end
         
         % For bkw compatibility.
-        
         function varargout = diffxf(varargin)
             [varargout{1:nargout}] = sydney.d(varargin{:});
         end
-        
         function varargout = numdiff(varargin)
             [varargout{1:nargout}] = sydney.d(varargin{:});
         end
-        
     end
     
 end

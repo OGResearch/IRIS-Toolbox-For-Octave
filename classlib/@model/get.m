@@ -301,9 +301,8 @@ function varargout = get(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 P = inputParser();
-P.addRequired('M',@is.model);
 P.addRequired('Query',@iscellstr);
-P.parse(This,varargin);
+P.parse(varargin);
 
 %--------------------------------------------------------------------------
 

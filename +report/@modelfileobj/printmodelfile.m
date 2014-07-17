@@ -14,14 +14,15 @@ C = '';
 if isempty(This.filename)
     return
 end
-isModel = ~isempty(This.modelobj) && isa(This.modelobj,'modelobj');
+isModel = ~isempty(This.modelobj) && isa(This.modelobj,'model');
 if isModel
     pList = get(This.modelobj,'pList');
     eList = get(This.modelobj,'eList');
 end
 br = sprintf('\n');
 
-file = file2char(This.filename,'cellstrl',This.options.lines);
+% Read the text file into a cellstr with EOLs removed.
+file = file2char(This.filename,'cellstr',This.options.lines);
 
 % Choose escape character.
 escList = '`@?$#~&":|!^[]{}<>';
@@ -46,8 +47,6 @@ C = [C,'\definecolor{myparam}{rgb}{0.90,0,0}',br];
 C = [C,'\definecolor{mykeyword}{rgb}{0,0,0.75}',br];
 C = [C,'\definecolor{mycomment}{rgb}{0,0.50,0}',br];
 
-file = strrep(file,char(10),'');
-file = strrep(file,char(13),'');
 for i = 1 : nLine
     c = doOneLine(file{i});
     C = [C,c,' \\',br]; %#ok<AGROW>
@@ -55,11 +54,14 @@ end
 
 C = strrep(C,['\verb',esc,esc],'');
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function C = doOneLine(C)
 
+    
+    function C = doOneLine(C)
         labels = fragileobj(C);
         [C,labels] = protectquotes(C,labels);
         
@@ -158,8 +160,7 @@ C = strrep(C,['\verb',esc,esc],'');
                 prefix,value,'}\right>$}'];
             C = [C,esc,value,verbEsc];
         end
-        
-    end % doSyntax().
+    end % doOneLine()
 
 end
 

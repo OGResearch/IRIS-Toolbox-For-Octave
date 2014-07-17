@@ -7,13 +7,14 @@ function EstOpt=myoptimopts(EstOpt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-solverName = '';
-if ischar(EstOpt.solver)
-    solverName = EstOpt.solver;
-elseif isa(EstOpt.solver,'function_handle')
-    solverName = char(EstOpt.solver);
-elseif iscell(EstOpt.solver)
-    solverName = char(EstOpt.solver{1});
+%--------------------------------------------------------------------------
+
+solverName = EstOpt.solver;
+if iscell(solverName)
+    solverName = solverName{1};
+end
+if isfunc(solverName)
+    solverName = func2str(solverName);
 end
 switch lower(solverName)
     case 'pso'

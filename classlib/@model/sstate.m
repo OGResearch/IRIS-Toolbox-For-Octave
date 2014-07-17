@@ -19,7 +19,7 @@ function [This,Flag,NPath,EigVal] = sstate(This,varargin)
 % Options
 % ========
 %
-% * `'linear='` [ *`'auto'`* | `true` | `false` ] - Solve for steady state
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Solve for steady state
 % using a linear approach, i.e. based on the first-order solution matrices
 % and the vector of constants.
 % 
@@ -121,7 +121,7 @@ function [This,Flag,NPath,EigVal] = sstate(This,varargin)
 % Parse options.
 [opt,varargin] = passvalopt('model.sstate',varargin{:});
 
-if ischar(opt.linear) && strcmpi(opt.linear,'auto')
+if isequal(opt.linear,@auto)
     changeLinear = false;
 else
     changeLinear = This.IsLinear ~= opt.linear;
@@ -143,7 +143,7 @@ if ~This.IsLinear
     % Non-linear models
     %-------------------
     % Throw a warning if some parameters are NaN.
-    chk(This,Inf,'parameters');
+    mychk(This,Inf,'parameters');
     This = mysstatenonlin(This,sstateOpt);
 
 else

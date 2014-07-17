@@ -72,8 +72,8 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % window.
 %
 %
-% Options in non-linear simualations
-% ===================================
+% Options in nonlinear simualations
+% ==================================
 %
 % * `'addSstate='` [ *`true`* | `false` ] - Add steady state levels to
 % simulated paths before evaluating non-linear equations; this option is
@@ -211,19 +211,17 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 
 % Parse required inputs.
 pp = inputParser();
-pp.addRequired('m',@is.model);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@isnumeric);
-pp.parse(This,Inp,Range);
+pp.addRequired('D',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@isnumeric);
+pp.parse(Inp,Range);
 
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});
 
-if isequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
-end
-
 %--------------------------------------------------------------------------
+
+% Input struct to the backend functions in `+simulate` package.
+s = struct();
 
 ny = sum(This.nametype == 1);
 nx = size(This.solution{1},1);
@@ -232,22 +230,21 @@ nf = nx - nb;
 ne = sum(This.nametype == 3);
 ng = sum(This.nametype == 5);
 nAlt = size(This.Assign,3);
-nEqtn = length(This.eqtn);
 
 Range = Range(1) : Range(end);
 nPer = length(Range);
-
-% Input struct to the backend functions in `+simulate` package.
-s = struct();
+s.NPer = nPer;
 
 % Simulation plan.
 isPlan = isa(opt.plan,'plan');
 isTune = isPlan && nnzendog(opt.plan) > 0 && nnzexog(opt.plan) > 0;
-isNonlinPlan = any(This.nonlin) ...
+isNonlinPlan = any(This.IxNonlin) ...
     && (isPlan && nnznonlin(opt.plan) > 0);
-isNonlinOpt = any(This.nonlin) ...
+isNonlinOpt = any(This.IxNonlin) ...
     && ~isempty(opt.nonlinearise) && opt.nonlinearise > 0;
-isNonlin = isNonlinPlan || isNonlinOpt;
+s.IsNonlin = isNonlinPlan || isNonlinOpt;
+s.IsDeviation = opt.deviation;
+s.IsAddAstate = opt.addsstate;
 
 % Get initial condition for alpha.
 % alpha is always expanded to match nalt within `datarequest`.
@@ -293,22 +290,21 @@ nExog = size(G,3);
 
 % Simulation range and plan range must be identical.
 if isPlan
-    [yAnch,xAnch,eaReal,eaImag,~,~, ...
-        s.QAnch,wReal,wImag] = ...
+    [yAnch,xAnch,eaReal,eaImag,~,~,s.QAnch,wReal,wImag] = ...
         myanchors(This,opt.plan,Range);
 end
 
 % Nonlinearised simulation through the option `'nonlinearise='`.
 if isNonlinOpt
-    if is.numericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
+    if isintscalar(opt.nonlinearise)
         qStart = 1;
         qEnd = opt.nonlinearise;
     else
         qStart = round(opt.nonlinearise(1) - Range(1) + 1);
         qEnd = round(opt.nonlinearise(end) - Range(1) + 1);
     end
-    s.QAnch = false(nEqtn,max(nPer,qEnd));
-    s.QAnch(This.nonlin,qStart:qEnd) = true;
+    s.QAnch = false(1,max(nPer,qEnd));
+    s.QAnch(1,qStart:qEnd) = true;
 end
 
 if isTune
@@ -354,7 +350,7 @@ end
 nLoop = max([1,nAlt,nInit,nShock,nTune,nExog]);
 s.NLoop = nLoop;
 
-if isNonlin
+if s.IsNonlin
     s.NPerNonlin = utils.findlast(s.QAnch);
     % The field `zerothSegment` is used by the Kalman filter to report
     % the correct period.
@@ -365,7 +361,7 @@ if isNonlin
     Discr = cell(1,nLoop);
     doChkNonlinConflicts();
     % Index of log-variables in the `xx` vector.
-    s.XLogSign = This.LogSign(real(This.solutionid{2}));
+    s.IxXLog = This.IxLog(real(This.solutionid{2}));
 else
     % Output arguments for non-linear simulations.
     s.NPerNonlin = 0;
@@ -379,7 +375,7 @@ xRange = Range(1)-1 : Range(end);
 if ~opt.contributions
     hData = hdataobj(This,xRange,nLoop);
 else
-    hData = hdataobj(This,xRange,ne+2,'Contributions=',@E);
+    hData = hdataobj(This,xRange,ne+2,'Contributions=',@shock);
 end
 
 % Maximum expansion needed.
@@ -404,8 +400,8 @@ for iLoop = 1 : nLoop
     s.iLoop = iLoop;
     
     if iLoop <= nAlt
-        % Update solution to be used in this simulation round.
-        s.isNonlin = isNonlin;
+        % Update solution and other data-independent info to be used in this
+        % simulation round.
         s = myprepsimulate(This,s,iLoop);
     end
     
@@ -419,26 +415,16 @@ for iLoop = 1 : nLoop
     % current shocks, and tunes on measurement and transition variables.
     doGetData();
     
-    % Compute deterministic trends if requested. We don't compute the dtrends
+    % Compute deterministic trends if requested. Do not compute the dtrends
     % in the `+simulate` package because they are dealt with differently when
     % called from within the Kalman filter.
     s.W = [];
     if ny > 0 && opt.dtrends
         s.W = mydtrendsrequest(This,'range',Range,s.G,iLoop);
-    end
-    if isNonlin
-        if opt.deviation && opt.addsstate
-            % Get steady state lines that will be added to simulated paths to evaluate
-            % non-linear equations.
-            isDelog = false;
-            s.XBar = mytrendarray(This,iLoop,isDelog, ...
-                This.solutionid{2},0:s.NPerNonlin);
+        if isTune
+            % Subtract deterministic trends from measurement tunes.
+            s.YTune = s.YTune - s.W;
         end
-    end
-    
-    % Subtract deterministic trends from measurement tunes.
-    if ~isempty(s.Z) && isTune && opt.dtrends
-        s.YTune = s.YTune - s.W;
     end
     
     % Call the backend package `simulate`
@@ -448,10 +434,12 @@ for iLoop = 1 : nLoop
     addFact = [];
     s.y = [];
     s.w = [];
-    if isNonlin
+    if s.IsNonlin
+        % Simulate linear contributions of shocks.
         if opt.contributions
             usecon = simulate.contributions(s,nPer,opt);
         end
+        % Simulate contributions of nonlinearities residually.
         s = simulate.findsegments(s);          
         [s,exitFlag,discr,addFact] = simulate.nonlinear(s,opt);
         if opt.contributions
@@ -471,7 +459,7 @@ for iLoop = 1 : nLoop
     end
     
     % Diagnostics output arguments for non-linear simulations.
-    if isNonlin
+    if s.IsNonlin
         ExitFlag{iLoop} = exitFlag;
         Discr{iLoop} = discr;
         AddFact{iLoop} = addFact;
@@ -496,7 +484,7 @@ for iLoop = 1 : nLoop
     doAssignOutput();
     
     % Add equation labels to add-factor and discrepancy series.
-    if isNonlin && nargout > 2
+    if s.IsNonlin && nargout > 2
         label = s.label;
         nSegment = length(s.segment);
         AddFact{iLoop} = tseries(Range(1), ...

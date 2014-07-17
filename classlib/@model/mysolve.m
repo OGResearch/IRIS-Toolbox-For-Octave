@@ -36,7 +36,7 @@ nx = length(This.systemid{2});
 nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 fKeep = ~This.d2s.remove;
 nfKeep = sum(fKeep);
 nxKeep = nfKeep + nb;
@@ -299,7 +299,7 @@ end
     function Flag = doTrans()
         
         Flag = true;
-        isNonlin = any(This.nonlin);
+        isNonlin = any(This.IxNonlin);
         S11 = SS(1:nb,1:nb);
         S12 = SS(1:nb,nb+1:end);
         S22 = SS(nb+1:end,nb+1:end);

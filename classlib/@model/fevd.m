@@ -40,13 +40,13 @@ function [X,Y,List,XX,YY] = fevd(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `X` and
-% `Y` will be either namedmat objects or plain numeric arrays; if the
-% option `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `X`
+% and `Y` as be either [`namedmat`](namedmat/Contents) objects (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
 %
-% * `'select='` [ char | cellstr ] - Return FEVD for selected variables
-% and/or shocks only; `Inf` means all variables. This option does not apply
-% to the output databases, `A` and `B`.
+% * `'select='` [ `@all` | char | cellstr ] - Return FEVD for selected
+% variables and/or shocks only; `@all` means all variables and shocks; this
+% option does not apply to the output databases, `A` and `B`.
 %
 % Description
 % ============
@@ -61,11 +61,7 @@ function [X,Y,List,XX,YY] = fevd(This,Time,varargin)
 % Parse options.
 opt = passvalopt('model.fevd',varargin{:});
 
-if ischar(opt.select)
-    opt.select = regexp(opt.select,'\w+','match');
-end
-
-% Tell whether time is nper or range.
+% Tell whether time is nPer or Range.
 if length(Time) == 1 && round(Time) == Time && Time > 0
     range = 1 : Time;
 else
@@ -73,8 +69,8 @@ else
 end
 nPer = length(range);
 
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -82,8 +78,8 @@ ny = sum(This.nametype == 1);
 nx = length(This.solutionid{2});
 ne = sum(This.nametype == 3);
 nAlt = size(This.Assign,3);
-X = nan([ny+nx,ne,nPer,nAlt]);
-Y = nan([ny+nx,ne,nPer,nAlt]);
+X = nan(ny+nx,ne,nPer,nAlt);
+Y = nan(ny+nx,ne,nPer,nAlt);
 
 isZeroCorr = true(1,nAlt);
 isSol = true(1,nAlt);
@@ -110,54 +106,62 @@ end
 
 % Report NaN solutions.
 if ~all(isSol)
-    utils.warning('model', ...
+    utils.warning('model:fevd', ...
         'Solution(s) not available %s.', ...
         preparser.alt2str(~isSol));
 end
 
 % Report non-zero cross-correlations.
 if ~all(isZeroCorr)
-    utils.warning('model', ...
+    utils.warning('model:fevd', ...
         ['Cannot compute FEVD with ', ...
         'nonzero cross-correlations %s.'], ...
         preparser.alt2str(~isZeroCorr));
 end
 
-List = {[This.solutionvector{1:2}],This.solutionvector{3}};
+rowNames = [This.solutionvector{1:2}];
+colNames = This.solutionvector{3};
 
 % Convert arrays to tseries databases.
 if nargout > 3
     % Select only current dated variables.
     id = [This.solutionid{1:2}];
     name = This.name(real(id));
-    eEame = This.name(This.nametype == 3);
+
     XX = struct();
     YY = struct();
     for i = find(imag(id) == 0)
-        c = regexprep(eEame,'.*',[List{1}{i},' <-- $0']);
+        c = strcat(rowNames{i},' <-- ',colNames);
         XX.(name{i}) = tseries(range,permute(X(i,:,:,:),[3,2,4,1]),c);
         YY.(name{i}) = tseries(range,permute(Y(i,:,:,:),[3,2,4,1]),c);
     end
     % Add parameter database.
-    for j = find(This.nametype == 4)
-        XX.(This.name{j}) = permute(This.Assign(1,j,:),[1,3,2]);
-        YY.(This.name{j}) = XX.(This.name{j});
-    end
+    XX = addparam(This,XX);
+    YY = addparam(This,YY);
 end
 
-% Convert output matrices to namedmat objects.
-if isNamedmat
-    X = namedmat(X,List{1},List{2});
-    Y = namedmat(Y,List{1},List{2});
-end
-
-% Select variables; selection only applies to the matrix outputs, `X`
-% and `Y`, and not to the database outputs, `x` and `y`.
+% Select variables if requested; selection only applies to the matrix
+% outputs, `X` and `Y`, and not to the database outputs, `x` and `y`.
 if isSelect
-    [X,inx] = select(X,opt.select);
+    [X,pos] = select(X,rowNames,colNames,opt.select);
+    rowNames = rowNames(pos{1});
+    colNames = colNames(pos{2});
     if nargout > 1
-        Y = Y(inx{1},inx{2},:,:);
+        Y = Y(pos{1},pos{2},:,:);
     end
+end
+List = {rowNames,colNames};
+
+if true % ##### MOSW
+    % Convert output matrices to namedmat objects if requested.
+    if isNamedMat
+        X = namedmat(X,rowNames,colNames);
+        if nargout > 1
+            Y = namedmat(Y,rowNames,colNames);
+        end
+    end
+else
+    % Do nothing.
 end
 
 end

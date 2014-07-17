@@ -25,6 +25,10 @@
 % * `'dateTick='` [ numeric | *`Inf`* ] - (Inheritable) Date tick
 % spacing.
 %
+% * `'grid='` [ `@auto` | `true` | `false` ] - (Inheritable) Display grid
+% lines; if `@auto`, `'grid='` is `true` unless a right-hand-side
+% axis is plotted.
+%
 % * `'legend='` [ *`false`* | `true` ] - (Inheritable) Add legend to
 % the graph.
 %
@@ -48,8 +52,9 @@
 % structure to the graph and its children; see help on
 % [`qstyle`](qreport/qstyle).
 %
-% * `'tight='` [ *`true`* | `false` ] - (Inheritable) Set the y-axis
-% limits to the minimum and maximum of displayed data.
+% * `'tight='` [ `@auto` | `true` | `false` ] - (Inheritable) Set the
+% y-axis limits to the minimum and maximum of displayed data; if `@auto`,
+% `'tight='` is `true` unless a right-hand-side axis is plotted.
 %
 % * `'xLabel='` [ char | *empty* ] - Label the x-axis.
 %

@@ -214,7 +214,7 @@ end % last().
 
 function This = xxAggreg(This,Range,FromFreq,ToFreq,Opt)
 if ischar(Opt.method)
-    Opt.method = str2func(Opt.method);
+    Opt.method = mosw.str2func(Opt.method);
 end
 
 % Stretch the original range from the beginning of first year until the end

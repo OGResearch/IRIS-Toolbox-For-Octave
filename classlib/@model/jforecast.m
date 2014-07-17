@@ -78,10 +78,10 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('M',@is.model);
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp.addRequired('Range',@isnumeric);
-pp.parse(This,Inp,Range);
+pp.parse(Inp,Range);
+
 Range = Range(1) : Range(end);
 
 if ~isempty(varargin) && ~ischar(varargin{1})
@@ -98,12 +98,8 @@ opt = passvalopt('model.jforecast',varargin{:});
 isPlanCond = isa(opt.plan,'plan') && ~isempty(opt.plan,'cond');
 isCond = isCond || isPlanCond;
 
-if isequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
-end
-
 % Tunes.
-isSwap = is.plan(opt.plan) && ~isempty(opt.plan,'tunes');
+isSwap = isplan(opt.plan) && ~isempty(opt.plan,'tunes');
 
 % Create real and imag `stdcorr` vectors from user-supplied databases.
 [opt.stdcorrreal,opt.stdcorrimag] = mytune2stdcorr(This,Range,cond,opt);

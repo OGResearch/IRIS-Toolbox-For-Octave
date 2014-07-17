@@ -8,7 +8,7 @@ function Outp = mysourcedb(This,Range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 nCol = [];
-if ~isempty(varargin) && is.numericscalar(varargin{1})
+if ~isempty(varargin) && isnumericscalar(varargin{1})
     nCol = varargin{1};
     varargin(1) = [];
 end
@@ -19,10 +19,6 @@ opt = passvalopt('model.sourcedb',varargin{:});
 nDraw = opt.ndraw;
 if isempty(nCol)
     nCol = opt.ncol;
-end
-
-if isequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
 end
 
 if ~isnumeric(Range)
@@ -40,6 +36,7 @@ if (nCol > 1 && nAlt > 1) ...
         'single parameterisation models.']);
 end
 
+realexp = @(x) real(exp(x));
 nf = sum(imag(This.solutionid{2}) > 2);
 maxLag = -(min(imag(This.solutionid{2}(nf+1:end))) - 1);
 nPer = length(Range);
@@ -81,8 +78,7 @@ if opt.dtrends
     X(1:ny,:,:) = X(1:ny,:,:) + D;
 end
 
-X(This.LogSign(1:n) == 1,:,:) = exp(X(This.LogSign(1:n) == 1,:,:));
-X(This.LogSign(1:n) == -1,:,:) = -exp(X(This.LogSign(1:n) == -1,:,:));
+X(This.IxLog(1:n),:,:) = realexp(X(This.IxLog(1:n),:,:));
 
 if nLoop > 1 && nAlt == 1
     X = X(:,:,ones(1,nLoop));
@@ -100,7 +96,7 @@ end
 if opt.randomshocks
     Outp = xxRandomShocks(This,Outp,nPer,maxLag,nLoop,nDraw);
 elseif ~isempty(opt.residuals)
-    % mysourcedb(...) not implemented yet for models with cross-correlations.
+    % mysourcedb( ) not implemented yet for models with cross-correlations.
     ne = sum(This.nametype == 3);
     if any(any(This.stdcorr(1,ne+1:end,:) ~= 0))
         utils.error('model', ...

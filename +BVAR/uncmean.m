@@ -37,7 +37,7 @@ function [This,Y0,K0,Y1,G1] = uncmean(YBar,Mu,varargin)
 
 pp = inputParser();
 pp.addRequired('YBar',@isnumeric);
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@isnumericscalar);
 pp.parse(YBar,Mu);
 
 if ~isempty(varargin) && nargout == 1

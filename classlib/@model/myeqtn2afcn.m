@@ -29,8 +29,7 @@ for i = find(This.eqtntype <= 2)
         eqtnF{i} = @(x,t,L) 0;
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        e = str2func(['@(x,t,L) ',eqtnF{i}]);
-        eqtnF{i} = e;
+        eqtnF{i} = mosw.str2func(['@(x,t,L) ',eqtnF{i}]);
     end
 end
 
@@ -44,7 +43,7 @@ for i = find(This.eqtntype == 3)
         eqtnF{i} = @(x,t,ttrend,g) 0;
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        eqtnF{i} = str2func(['@(x,t,ttrend,g) ',eqtnF{i}]);
+        eqtnF{i} = mosw.str2func(['@(x,t,ttrend,g) ',eqtnF{i}]);
     end
 end
 
@@ -57,7 +56,7 @@ for i = find(This.eqtntype == 4)
         eqtnF{i} = [];
     else
         eqtnF{i} = removeFunc(eqtnF{i});
-        eqtnF{i} = str2func(['@(x,t) ',eqtnF{i}]);
+        eqtnF{i} = mosw.str2func(['@(x,t) ',eqtnF{i}]);
     end
 end
 
@@ -77,10 +76,10 @@ isDEqtnF = ~cellfun(@isempty,This.DEqtnF);
 inx = This.eqtntype <= 2 & isDEqtnF;
 for i = find(inx)
     dEqtnF{i} = removeFunc(dEqtnF{i});
-    dEqtnF{i} = str2func(['@(x,t,L) ',dEqtnF{i}]);
+    dEqtnF{i} = mosw.str2func(['@(x,t,L) ',dEqtnF{i}]);
     if ischar(cEqtnF{i})
         cEqtnF{i} = removeFunc(cEqtnF{i});
-        cEqtnF{i} = str2func(['@(x,t,L) ',cEqtnF{i}]);
+        cEqtnF{i} = mosw.str2func(['@(x,t,L) ',cEqtnF{i}]);
     end
 end
 
@@ -92,7 +91,7 @@ for i = find(inx)
     end
     for j = 1 : length(dEqtnF{i})
         dEqtnF{i}{j} = removeFunc(dEqtnF{i}{j});
-        dEqtnF{i}{j} = str2func(['@(x,t,ttrend,g) ',dEqtnF{i}{j}]);
+        dEqtnF{i}{j} = mosw.str2func(['@(x,t,ttrend,g) ',dEqtnF{i}{j}]);
     end
 end
 

@@ -12,6 +12,7 @@ function [NewEqtn,NewEqtnF,NewEqtnS,NewNonlin] ...
 
 template = sydney();
 flNameType = floor(This.nametype);
+t0 = find(This.Shift == 0);
 
 % Make the model names visible inside dynamic regexps.
 name = This.name;
@@ -66,7 +67,7 @@ for eq = first : LossPos
         % differentiate wrt to current dates or lags of transition
         % variables. Remove leads from the list of variables we will
         % differentiate wrt.
-        inx = inx & tmOcc <= This.tzero;
+        inx = inx & tmOcc <= t0;
     end
     
     tmOcc = tmOcc(inx);
@@ -77,17 +78,17 @@ for eq = first : LossPos
     % differentiate.
     unknown = cell(1,nOcc);
     for j = 1 : nOcc
-        if tmOcc(j) == This.tzero
+        if tmOcc(j) == t0
             % Time index == 0: replace x(1,23,t) with x23.
             unknown{j} = sprintf('x%g',nmOcc(j));
-        elseif tmOcc(j) < This.tzero
+        elseif tmOcc(j) < t0
             % Time index < 0: replace x(1,23,t-1) with x23m1.
             unknown{j} = sprintf('x%gm%g', ...
-                nmOcc(j),round(This.tzero-tmOcc(j)));
-        elseif tmOcc(j) > This.tzero
+                nmOcc(j),round(t0-tmOcc(j)));
+        elseif tmOcc(j) > t0
             % Time index > 0: replace x(1,23,t+1) with x23p1.
             unknown{j} = sprintf('x%gp%g', ...
-                nmOcc(j),round(tmOcc(j)-This.tzero));
+                nmOcc(j),round(tmOcc(j)-t0));
         end
     end
     
@@ -99,7 +100,7 @@ for eq = first : LossPos
   
     for j = 1 : nOcc
 
-        sh = tmOcc(j) - This.tzero;
+        sh = tmOcc(j) - t0;
         newEq = nmOcc(j);
         
         % Multiply derivatives wrt lags and leads by the discount factor.
@@ -136,7 +137,7 @@ for eq = first : LossPos
         end
 
         % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
-        ptn = '([xL])(\d+)([pm]\d+)?';
+        ptn = '([xL])(\d+)(([pm]\d+)?)';
         if true % ##### MOSW
             replFunc = @doReplaceNames; %#ok<NASGU>
             dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
@@ -168,7 +169,7 @@ for eq = first : LossPos
             % in it is non-linear and the derivative is non-zero. The derivative of the
             % loss function is supposed to be treated as non-linear if the loss
             % function itself has been introduced by min#() and not min().
-            isNonlin = This.nonlin(eq) && ~isequal(dEqtn,'0');
+            isNonlin = This.IxNonlin(eq) && ~isequal(dEqtn,'0');
             NewNonlin(newEq) = NewNonlin(newEq) || isNonlin;
         end
         

@@ -44,7 +44,7 @@ for i = 1 : nFileList
     end
 end
 
-fileStr = sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
+fileStr = mosw.sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
 if ~isempty(ParentFile)
     fileStr = [ParentFile,' > ',fileStr];
 end
@@ -55,8 +55,7 @@ Code = strfun.converteols(Code);
 
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
-%tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
-match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
+match = regexp(Code,'(?<=^%%)[^\n]+','match','once');
 Comment = strtrim(match);
 
 % Read quoted strings 'xxx' and "xxx" and replace them with charcodes.

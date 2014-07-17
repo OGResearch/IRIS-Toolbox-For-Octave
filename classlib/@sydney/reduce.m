@@ -57,19 +57,19 @@ if strcmp(This.func,'sydney.d')
     return
 end
 
-%{
+% {
 % Reduce a*(x/a), (x/a)*a to x.
 if strcmp(This.func,'times');
     doCancelTimes();
 end
-%}
+% }
 
-%{
+% {
 % Reduce a/(x*a), a/(a*x) to 1/x, (x*a)/a, (a*x)/a to x.
 if strcmp(This.func,'rdivide')
     doCancelRdivide();
 end
-%}
+% }
 
 % Evaluate the function if all arguments are numeric.
 if ~isempty(This.func) && iscell(This.args) && ~isempty(This.args)
@@ -125,6 +125,10 @@ switch This.func
         doRdivide();
     case 'power'
         doPower();
+    case 'exp'
+        doExpLog();
+    case 'log'
+        doLogExp();
 end
 
 % Convert nested plus to multiple plus.
@@ -142,7 +146,7 @@ if strcmp(This.func,'plus')
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
     function doUplus()
@@ -153,7 +157,7 @@ end
             This.func = '';
             This.args = This.args{1}.args;
         end
-    end %doUplus()
+    end % doUplus()
 
 
     function doUminus()
@@ -336,6 +340,20 @@ end
             end
         end
     end % doCancelTimes()
+
+
+    function doLogExp()
+        if isequal(This.args{1}.func,'exp')
+            This = This.args{1}.args{1};
+        end
+    end % doLogExp()
+
+
+    function doExpLog()
+        if isequal(This.args{1}.func,'log')
+            This = This.args{1}.args{1};
+        end
+    end % doExpLog()
 
 
 end

@@ -57,10 +57,6 @@ function This = swap(This,ExogList,EndogList,Dates,varargin)
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-pp = inputParser();
-pp.addRequired('P',@is.plan);
-pp.parse(This);
-
 %--------------------------------------------------------------------------
 
 This = exogenize(This,ExogList,Dates);

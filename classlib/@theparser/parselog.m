@@ -17,7 +17,7 @@ else
 end
 
 for i = 1 : length(Loggable)
-    Loggable(i).LogSign(:) = default;
+    Loggable(i).IxLog(:) = default;
 end
 
 allNames = [Loggable(:).name];
@@ -59,9 +59,9 @@ if any(invalid)
 end
 
 for is = 1 : length(Loggable)
-    nname = length(Loggable(is).name);
-    Loggable(is).LogSign(:) = int8(allLog(1:nname));
-    allLog(1:nname) = [];
+    nName = length(Loggable(is).name);
+    Loggable(is).IxLog(:) = allLog(1:nName);
+    allLog(1:nName) = [];
 end
 
 end

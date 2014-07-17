@@ -46,7 +46,7 @@ doNonlinEqtn();
         derv.c = zeros(nEqtn12,1);
         derv.f = sparse(zeros(nEqtn12,nDerv));
         tempEye = -eye(nEqtn12);
-        derv.n = tempEye(:,This.nonlin);
+        derv.n = tempEye(:,This.IxNonlin);
         
         % System matrices
         %-----------------
@@ -67,7 +67,7 @@ doNonlinEqtn();
         syst.A{2} = sparse(zeros(nx,nx));
         syst.B{2} = sparse(zeros(nx,nx));
         syst.E{2} = sparse(zeros(nx,ne));
-        syst.N{2} = zeros(nx,sum(This.nonlin));
+        syst.N{2} = zeros(nx,sum(This.IxNonlin));
         
         This.lastSyst.asgn = asgn;
         This.lastSyst.derv = derv;
@@ -86,14 +86,14 @@ doNonlinEqtn();
         This.eqtnN(:) = {''};
         
         % replaceFunc = @doReplace; %#ok<NASGU>
-        for ii = find(This.nonlin)
+        for ii = find(This.IxNonlin)
             eqtnN = This.eqtnF{ii};
             
             % Convert fuction handle to char.
             doFunc2Char();
             
             % Replace variables, shocks, and parameters.
-            ptn = '\<x\(:,(\d+),t([\+\-]\d+)?\)';
+            ptn = '\<x\(:,(\d+),t(([\+\-]\d+)?)\)';
             if true % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
@@ -101,9 +101,9 @@ doNonlinEqtn();
                 eqtn = mosw.dregexprep(eqtn,ptn,@doReplace,[1,2]); %#ok<UNRCH>
             end
             
-            % Replace references to steady states, `L(:,15,t+5)` -> `L(15,t+5)`.
+            % Replace references to steady states, `L(:,15,t+5)` -> `L(15,T+5)`.
             eqtnN = regexprep(eqtnN, ...
-                '\<L\(:,(\d+),t([\+\-]\d+)?\)','L($1,t$2)');
+                '\<L\(:,(\d+),t(([\+\-]\d+)?)\)','L($1,T$2)');
             
             eqtnN = strtrim(eqtnN);
             if isempty(eqtnN)
@@ -111,9 +111,7 @@ doNonlinEqtn();
             end
             
             % Convert char to function handle.
-            eqtnN = str2func(['@(y,xx,e,p,t,L) ',eqtnN]);
-            
-            This.eqtnN{ii} = eqtnN;
+            This.eqtnN{ii} = mosw.str2func(['@(y,xx,e,p,t,L,T) ',eqtnN]);
         end
         
         
@@ -154,8 +152,8 @@ doNonlinEqtn();
         
         function doFunc2Char()
             % Make sure `eqtn` is a text string, and remove function handle header.
-            if isa(eqtnN,'function_handle')
-                eqtnN = char(eqtnN);
+            if isfunc(eqtnN)
+                eqtnN = func2str(eqtnN);
             end
             eqtnN = strtrim(eqtnN);
             if eqtnN(1) == '@'

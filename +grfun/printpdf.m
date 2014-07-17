@@ -23,9 +23,6 @@ function printpdf(varargin)
 % to the final PDF. The Painters renderer is used in the Matlab `print`
 % command.
 %
-% The advantage of printing a PDF via EPS with Painters is to crop the
-% unnecessary white margins around the graphics.
-%
 % Example
 % ========
 %
@@ -50,32 +47,9 @@ File = varargin{1};
 
 %--------------------------------------------------------------------------
 
-isRevert = false;
-if is.hg2()
-    isRevert = true;
-    % Temporary fix for HG2. This should not be necessary in the official
-    % release. Stretch the figure window a little bit to make font sizes
-    % appear smaller in the final PDF.
-    p = get(Fig,'position');
-    switch get(Fig,'paperOrientation')
-        case 'landscape'
-            mult = 1.30;
-        case 'portrait'
-            mult = 1.55;
-        otherwise
-            mult = 1;
-    end
-    s = [p([1,2]),mult*p([3,4])];
-    set(Fig,'position',s);
-end
-
 [fpath,ftit] = fileparts(File);
 epsFile = fullfile(fpath,[ftit,'.eps']);
 print(Fig,'-depsc','-painters',epsFile);
 latex.epstopdf(epsFile);
-
-if isRevert
-    set(Fig,'position',p);
-end
 
 end

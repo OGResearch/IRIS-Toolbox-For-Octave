@@ -32,7 +32,7 @@ function S = mypresimulate(This,S,IAlt)
 %--------------------------------------------------------------------------
 
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 
 % Loop-dependent fields
 %-----------------------
@@ -81,7 +81,7 @@ end
 
 % Loop-independent fields added for non-linear simulations only
 %---------------------------------------------------------------
-S.nonlin = This.nonlin;
+S.IxNonlin = This.IxNonlin;
 S.eqtn = This.eqtn;
 S.eqtnN = This.eqtnN;
 S.nametype = This.nametype;

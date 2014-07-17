@@ -7,7 +7,7 @@ function Affected = myaffectedeqtn(This,iAlt,Opt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
+if isequal(Opt.linear,@auto)
     Opt.linear = This.IsLinear;
 end
 
@@ -35,7 +35,8 @@ end
 
 % Affected equations.
 nname = length(This.name);
-occur0 = This.occur(:,(This.tzero-1)*nname+(1:nname));
+t0 = find(This.Shift == 0);
+occur0 = This.occur(:,(t0-1)*nname+(1:nname));
 Affected = any(occur0(:,changed),2).';
 
 end

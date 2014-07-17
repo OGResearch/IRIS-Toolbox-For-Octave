@@ -187,6 +187,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
+            This = This@getsetobj();
             This.Comment = {''};
             
             % Empty call.
@@ -194,7 +195,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                 return
             end
             % Tseries input.
-            if nargin == 1 && is.tseries(varargin{1})
+            if nargin == 1 && istseries(varargin{1})
                 This = varargin{1};
                 return
             end
@@ -237,7 +238,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             pp = inputParser();
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
+                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
             
@@ -250,15 +251,11 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                 error('All dates must have the same frequency.');
             end
             
-            % Create data from a function handle or function name.
+            % Create data from function handle or function name.
             if ischar(usrData) && strcmpi(usrData,'lintrend')
                 usrData = (1 : nPer).';
-            elseif ischar(usrData) || is.func(usrData)
-                try
-                    usrData = feval(usrData,[nPer,1]);
-                catch %#ok<CTCH>
-                    usrData = feval(char(usrData),[nPer,1]);
-                end
+            elseif ischar(usrData) || isfunc(usrData)
+                usrData = feval(usrData,[nPer,1]);
             elseif isnumeric(usrData) || islogical(usrData)
                 if sum(size(usrData) > 1) == 1 ...
                         && length(usrData) > 1 ...
@@ -298,7 +295,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                     utils.error('model', ...
                         ['Cannot assign comments to the new tseries object. ', ...
                         'Check the size of the comments passed in.\n', ...
-                        '\tMatlab says: %s'], ...
+                        '\tUncle says: %s'], ...
                         Error.message);
                 end
             end
@@ -515,6 +512,10 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             x = binop(@ldivide,a,b);
         end
         function x = le(a,b)
+            if isa(b,'sydney')
+                utils.error('tseries:le', ...
+                    'Invalid left-hand side in recursive expression.');
+            end
             x = binop(@le,a,b);
         end
         function x = log(x)

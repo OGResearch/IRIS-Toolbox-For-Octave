@@ -136,7 +136,7 @@ function [Theta,LogPost,ArVec,This,SgmVec,FinalCov] = arwm(This,NDraw,varargin)
 % Validate required inputs.
 pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@is.numericscalar);
+pp.addRequired('NDraw',@isnumericscalar);
 pp.parse(This,NDraw);
 
 % Parse options.

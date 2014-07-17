@@ -57,11 +57,11 @@ end
 
 % Signs of log-linearized variables.
 try
-    if isempty(This.LogSign)
-        This.LogSign = int8(This.log);
+    if isempty(This.IxLog)
+        This.IxLog = This.log;
     end
 catch
-    This.LogSign = int8(This.log);
+    This.IxLog = This.log;
 end
 
 

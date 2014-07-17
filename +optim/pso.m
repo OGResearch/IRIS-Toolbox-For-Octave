@@ -919,14 +919,14 @@ if iscell(options.HybridFcn)
     if ischar(options.HybridFcn{1})
         HybridFcn = options.HybridFcn{1};
     else
-        HybridFcn = char(options.HybridFcn{1}) ;
+        HybridFcn = func2str(options.HybridFcn{1}) ;
     end
     hybridOptions = options.HybridFcn{2} ;
 else
     if ischar(options.HybridFcn)
         HybridFcn = options.HybridFcn;
     else
-        HybridFcn = char(options.HybridFcn) ;
+        HybridFcn = func2str(options.HybridFcn) ;
     end
     hybridOptions = optimset('Display',options.Display,...
         'LargeScale','off') ;

@@ -14,7 +14,7 @@ if isempty(E) || ~isstruct(E)
 end
 
 n = length(E);
-thisDir = cd();
+thisDir = pwd();
 deleted = false(1,n);
 file = cell(1,n);
 fileName = get(This,'filename');

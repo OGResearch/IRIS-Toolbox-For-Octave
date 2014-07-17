@@ -4,8 +4,8 @@ function [This,Pos] = select(This,RowSelect,ColSelect)
 % Syntax
 % =======
 %
-%     [X,Pos] = select(This,RowSelect,ColSelect)
-%     [X,Pos] = select(X,Select)
+%     [XX,Pos] = select(X,RowSelect,ColSelect)
+%     [XX,Pos] = select(X,Select)
 %
 % Input arguments
 % ================
@@ -22,11 +22,10 @@ function [This,Pos] = select(This,RowSelect,ColSelect)
 % Output arguments
 % =================
 %
-% * `X` [ namedmat ] - Submatrix with named rows and columns.
+% * `XX` [ namedmat ] - Submatrix with named rows and columns.
 %
-% * `Pos` [ cell ] - `Pos{1}` is the vector of rows included in the
-% submatrix `X`, `Pos{2}` is the vector of columns included in the
-% submatrix `X`.
+% * `Pos` [ cell ] - `Pos{1}` is av ector of rows included in the submatrix
+% `XX`, `Pos{2} is a vector of columns included in the submatrix `XX`.
 %
 % Description
 % ============
@@ -38,7 +37,7 @@ function [This,Pos] = select(This,RowSelect,ColSelect)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    ColSelect;
+    ColSelect; %#ok<VUNUS>
 catch %#ok<CTCH>
     if iscell(RowSelect) && length(RowSelect) == 2 ...
             && iscell(RowSelect{1}) && iscell(RowSelect{2})
@@ -49,78 +48,19 @@ catch %#ok<CTCH>
     end
 end
 
-if ischar(RowSelect)
-    RowSelect = regexp(RowSelect,'[\w\{\}\(\)\+\-]+','match');
-end
-
-if ischar(ColSelect)
-    ColSelect = regexp(ColSelect,'[\w\{\}\(\)\+\-]+','match');
-end
+pp = inputParser();
+pp.addRequired('RowSelect',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('ColSelect',@(x) ischar(x) || iscellstr(x));
+pp.parse(RowNames,ColNames);
 
 %--------------------------------------------------------------------------
 
-removeLogFunc = @(x) regexprep(x,'log\((.*?)\)','$1');
-rowSelect = removeLogFunc(RowSelect(:).');
-colSelect = removeLogFunc(ColSelect(:).');
-rowNames = removeLogFunc(This.Rownames);
-colNames = removeLogFunc(This.Colnames);
+rowNames = This.RowNames;
+colNames = This.ColNames;
 
-nRowSelect = length(rowSelect);
-nColSelect = length(colSelect);
+[X,Pos] = namedmat.myselect(double(This), ...
+    RowSelect,ColSelect,rowNames,colNames);
 
-rowPos = nan(1,nRowSelect);
-colPos = nan(1,nColSelect);
-
-for i = 1 : length(rowSelect)
-    pos = find(strcmp(rowNames,rowSelect{i}),1);
-    if ~isempty(pos)
-        rowPos(i) = pos;
-    end
-end
-
-for i = 1 : length(colSelect)
-    pos = find(strcmp(colNames,colSelect{i}),1);
-    if ~isempty(pos)
-        colPos(i) = pos;
-    end
-end
-
-doChkNotFound();
-
-rowNames = This.rownames;
-colNames = This.colnames;
-This = double(This);
-s = size(This);
-This = This(:,:,:);
-This = This(rowPos,colPos,:);
-if length(s) > 2
-    This = reshape(This,[nRowSelect,nColSelect,s(3:end)]);
-end
-This = namedmat(This,rowNames(rowPos),colNames(colPos));
-
-Pos = {rowPos,colPos};
-
-% Nested functions.
-
-%**************************************************************************
-    function doChkNotFound()
-        nanRow = find(isnan(rowPos));
-        nanCol = find(isnan(colPos));
-        if isempty(nanRow) && isempty(nanCol)
-            return
-        end
-        message = {};
-        for ii = nanRow
-            message{end+1} = 'row'; %#ok<AGROW>
-            message{end+1} = RowSelect{ii}; %#ok<AGROW>
-        end
-        for ii = nanCol
-            message{end+1} = 'column'; %#ok<AGROW>
-            message{end+1} = ColSelect{ii}; %#ok<AGROW>
-        end
-        utils.error('namedmat', ...
-            'This is not a valid %s name: ''%s''.', ...
-            message{:});
-    end % doChkNotFound().
+This = namedmat(X,rowNames(Pos{1}),colNames(Pos{2}));
 
 end

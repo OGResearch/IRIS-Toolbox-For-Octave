@@ -19,7 +19,7 @@ if islogical(Opt.season)
 else
     S = Opt.season;
 end
-if is.numericscalar(S) && (~any(S == [2,4,6,12]))
+if isnumericscalar(S) && (~any(S == [2,4,6,12]))
     S = [];
 end
 

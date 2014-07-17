@@ -59,7 +59,7 @@ X = X(:,:);
 
 opt = passvalopt('grfun.plotmat',varargin{:});
 
-if isa(X,'namedmat')
+if isnamedmat(X)
     if ischar(opt.colnames) && strcmpi(opt.colnames,'auto')
         opt.colnames = colnames(X);
     end

@@ -91,21 +91,14 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@is.model);
-pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
+pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || istseries(x));
 pp.addRequired('Range',@(x) isnumeric(x));
-pp.addRequired('NDraw',@(x) is.numericscalar(x));
+pp.addRequired('NDraw',@(x) isnumericscalar(x));
 pp.addRequired('J',@(x) isempty(x) || isstruct(x));
-pp.parse(This,Inp,Range,NDraw,J);
+pp.parse(Inp,Range,NDraw,J);
 
 % Parse options.
 opt = passvalopt('model.resample',varargin{:});
-
-% If `'dtrends='` option is `@auto` switch on/off the dtrends according to
-% `'deviation='`.
-if isequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
-end
 
 % `nInit` is the number of pre-sample periods used to resample the initial
 % condition if user does not wish to factorise the covariance matrix.

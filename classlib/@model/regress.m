@@ -32,8 +32,9 @@ function [B,CovRes,R2] = regress(This,Lhs,Rhs,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices will be
-% either namedmat objects or plain numeric arrays.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `B`
+% and `CovRes` as either [`namedmat`](namedmat/Contents) object (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
 %
 % Description
 % ============
@@ -44,7 +45,7 @@ function [B,CovRes,R2] = regress(This,Lhs,Rhs,varargin)
 % removed from them.
 %
 % The Lhs and Rhs variables that are log-variables must include
-% `log(...)` explicitly in their names. For instance, if `X` is declared
+% `log( )` explicitly in their names. For instance, if `X` is declared
 % to be a log variable, then you must refer to `log(X)` or `log(X{-1})`.
 %
 % Example
@@ -57,7 +58,6 @@ function [B,CovRes,R2] = regress(This,Lhs,Rhs,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.regress',varargin{:});
-isnamedmat = strcmpi(opt.output,'namedmat');
 
 if ischar(Lhs)
     Lhs = regexp(Lhs,'[\w\(\)\{\}\d+\-]+','match');
@@ -66,6 +66,8 @@ end
 if ischar(Rhs)
     Rhs = regexp(Rhs,'[\w\(\)\{\}\d+\-]+','match');
 end
+
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -120,9 +122,13 @@ for ialt = 1 : nAlt
     R2(:,ialt) = 1 - diag(CovRes(:,:,ialt))./diag(YY);
 end
 
-if isnamedmat
-    B = namedmat(B,Lhs,Rhs);
-    CovRes = namedmat(CovRes,Lhs,Lhs);
+if true % ##### MOSW
+    if isNamedMat
+        B = namedmat(B,Lhs,Rhs);
+        CovRes = namedmat(CovRes,Lhs,Lhs);
+    end
+else
+    % Do nothing.
 end
 
 end

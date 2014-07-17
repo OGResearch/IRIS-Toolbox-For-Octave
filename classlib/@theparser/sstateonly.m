@@ -14,16 +14,16 @@ for i = 1 : length(S)
         continue
     end
     for j = 1 : length(S(i).eqtn)
-        if isempty(S(i).sstatelhs{j}) && isempty(S(i).sstaterhs{j}) ...
-                && isempty(S(i).sstatesign{j})
+        if isempty(S(i).SstateLhs{j}) && isempty(S(i).SstateRhs{j}) ...
+                && isempty(S(i).SstateSign{j})
             continue
         end
-        S(i).eqtnlhs{j} = S(i).sstatelhs{j};
-        S(i).eqtnrhs{j} = S(i).sstaterhs{j};
-        S(i).eqtnsign{j} = S(i).sstatesign{j};
-        S(i).sstatelhs{j} = '';
-        S(i).sstaterhs{j} = '';
-        S(i).sstatesign{j} = '';
+        S(i).EqtnLhs{j} = S(i).SstateLhs{j};
+        S(i).EqtnRhs{j} = S(i).SstateRhs{j};
+        S(i).EqtnSign{j} = S(i).SstateSign{j};
+        S(i).SstateLhs{j} = '';
+        S(i).SstateRhs{j} = '';
+        S(i).SstateSign{j} = '';
         pos = strfind(S(i).eqtn{j},'!!');
         if ~isempty(pos)
             S(i).eqtn{j}(1:pos+1) = '';

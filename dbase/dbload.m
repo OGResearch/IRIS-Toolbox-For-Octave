@@ -216,7 +216,7 @@ end
 %--------------
 name = {};
 class = {};
-comment = {};
+cmt = {};
 start = 1;
 dbUserdata = '';
 dbUserdataFieldName = '';
@@ -230,12 +230,12 @@ if start > 1
 end
 
 class = strtrim(class);
-comment = strtrim(comment);
+cmt = strtrim(cmt);
 if length(class) < length(name)
     class(length(class)+1:length(name)) = {''};
 end
-if length(comment) < length(name)
-    comment(length(comment)+1:length(name)) = {''};
+if length(cmt) < length(name)
+    cmt(length(cmt)+1:length(name)) = {''};
 end
 
 % Read numeric data from CSV string
@@ -289,6 +289,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+    
+    
     function doOptions()
         % Headers for rows to be skipped.
         if ischar(opt.skiprows)
@@ -314,13 +316,15 @@ doPopulateDatabase();
         end
         
         % Date frequency conversion.
-        if ~isempty(opt.convert) && is.numericscalar(opt.convert)
+        if ~isempty(opt.convert) && isnumericscalar(opt.convert)
             opt.convert = {opt.convert};
         end
     end % doOptions()
 
 
 %**************************************************************************
+    
+    
     function doReadHeaders()
         strFindFunc = @(x,y) ~isempty(strfind(lower(x),y));
         isDate = false;
@@ -336,13 +340,23 @@ doPopulateDatabase();
             else
                 line = file(start:eol-1);
             end
-            if is.numericscalar(opt.namerow) && rowCount < opt.namerow
+            if isnumericscalar(opt.namerow) && rowCount < opt.namerow
                 doMoveToNextEol();
                 continue
             end
+            
+            % Read individual comma-separated cells on the current line. Capture the
+            % entire match (including separating commas and double quotes), not only
+            % tokens -- this is a workaround for a bug in Octave.
+            % @@@@@ MOSW
             tokens = regexp(line, ...
-                '([^",]*),|([^",]*)$|"(.*?)",|"(.*?)"$','tokens');
-            tokens = [tokens{:}];
+                '[^",]*,|[^",]*$|"[^"]*",|"[^"]*"$','match');
+            % Remove separating commas from the end of cells.
+            tokens = regexprep(tokens,',$','','once');
+            % Remove double quotes from beginning and end of each cell.
+            tokens = regexprep(tokens,'^"','','once');
+            tokens = regexprep(tokens,'"$','','once');
+            
             if isempty(tokens) || all(cellfun(@isempty,tokens))
                 ident = '%';
             else
@@ -414,7 +428,7 @@ doPopulateDatabase();
                 end
                 action = 'class';
             elseif any(strcmpi(ident,opt.commentrow))
-                comment = tokens(2:end);
+                cmt = tokens(2:end);
                 action = 'comment';
             elseif ~isempty(strfind(lower(ident),'units'))
                 action = 'do_nothing';
@@ -456,6 +470,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+    
+    
     function doReadNumericData()
         % Read date column (first column).
         dateCol = regexp(file,'^[^,\n]*','match','lineanchors');
@@ -528,6 +544,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+    
+    
     function doParseDates()
         dateCol = dateCol(1:min(end,size(data,1)));
         if ~isempty(dateCol)
@@ -566,6 +584,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+
+
     function doPopulateDatabase()
         count = 0;
         template = tseries();
@@ -583,7 +603,7 @@ doPopulateDatabase();
                 continue
             end
             tokens = regexp(class{count+1}, ...
-                '^(\w+)(\[.*\])?','tokens','once');
+                '^(\w+)((\[.*\])?)','tokens','once');
             if isempty(tokens)
                 iClass = '';
                 tmpSize = [];
@@ -612,11 +632,11 @@ doPopulateDatabase();
                     iMiss(dateInx,:) = miss(~nanDate,count+(1:nCol));
                     iData(iMiss) = NaN*unit;
                     iData = reshape(iData,nPer,tmpSize(2:end));
-                    iComment = reshape(comment(count+(1:nCol)),1,tmpSize(2:end));
+                    iComment = reshape(cmt(count+(1:nCol)),1,tmpSize(2:end));
                     D.(iName) = template;
                     D.(iName).start = minDate;
                     D.(iName).data = iData;
-                    D.(iName).Comment = iComment;
+                    D.(iName) = comment(D.(iName),iComment);
                     D.(iName) = mytrim(D.(iName));
                 else
                     % Create an empty tseries object with proper 2nd and higher
@@ -627,6 +647,7 @@ doPopulateDatabase();
                     D.(iName).Comment = cell(1,tmpSize(2:end));
                     D.(iName).Comment(:) = {''};
                 end
+                D.(iName) = mystamp(D.(iName));
                 if nSeriesUserdata > 0
                     D.(iName) = userdata(D.(iName),thisUserData);
                 end
@@ -643,7 +664,7 @@ doPopulateDatabase();
                 iMiss = reshape(miss(1:tmpSize(1),count+(1:nCol)),tmpSize);
                 iData(iMiss) = NaN;
                 % Convert to the right numeric class.
-                f = str2func(iClass);
+                f = mosw.str2func(iClass);
                 D.(iName) = f(iData);
             end
             count = count + nCol;
@@ -665,6 +686,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+
+
     function doChgNames()
         % Apply user function(s) to each name.
         if ~isempty(opt.namefunc)
@@ -694,6 +717,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+    
+    
     function doChkNames()
         inx = ~cellfun(@isempty,name);
         % The function `matlab.lang.makeUniqueStrings` guarantees
@@ -709,6 +734,8 @@ doPopulateDatabase();
 
 
 %**************************************************************************
+    
+    
     function doUserdataField()
         if ischar(opt.userdata) || isempty(dbUserdataFieldName)
             dbUserdataFieldName = opt.userdata;
@@ -718,10 +745,11 @@ doPopulateDatabase();
         catch E
             utils.error('data', ...
                 ['DBLOAD failed when reconstructing user data.\n', ...
-                '\tMatlab says ''%s'''], ...
+                '\Uncle says: %s'], ...
                 E.message);
         end
-    end % doUserdataField().
+    end % doUserdataField()
+
 
 end
 
@@ -730,6 +758,8 @@ end
 
 
 %**************************************************************************
+
+
 function File = xxReadFile(FName)
 % xxReadFile  Read the CSV file.
 File = file2char(FName);
@@ -738,6 +768,8 @@ end %% xxReadFile()
 
 
 %**************************************************************************
+
+
 function File = xxPreProcess(File,Opt)
 % xxPreProcess  Apply user function to the raw text.
 func = Opt.preprocess;
@@ -754,6 +786,8 @@ end % xxPreProcess()
 
 
 %**************************************************************************
+
+
 function S = xxGetSize(C)
 % xxGetSize  Read the size string 1-by-1-by-1 etc. as a vector.
 % New style of saving size: [1-by-1-by-1].
@@ -765,6 +799,8 @@ end % xxGetSize()
 
 
 %**************************************************************************
+
+
 function Name = xxGetUserdataFieldName(C)
 Name = regexp(C,'\[([^\]]+)\]','once','tokens');
 if ~isempty(Name)

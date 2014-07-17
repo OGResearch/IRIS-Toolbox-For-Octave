@@ -7,16 +7,16 @@ end
 
 
 %**************************************************************************
+
+
 function setupOnce(This)
-
 This.TestData.absTol = eps()^(2/3);
-
 end % setupOnce()
 
 
 %**************************************************************************
-function testPrecedence(This)
 
+function testPrecedence(This)
 func = { ...
     'x*a*(y-z)*z/b*(-x*z/c/z*(x-c))', ...
     'x*a + b*y - c*z + a*(b*c - z*y)', ...
@@ -46,7 +46,5 @@ for i = 1 : nFunc
     expValue(i) = expFunc(a,b,c,x,y,z);
     actValue(i) = actFunc(a,b,c,x,y,z);
 end
-
 assertEqual(This,actValue,expValue,'absTol',This.TestData.absTol);
-
 end % testPrecedence()

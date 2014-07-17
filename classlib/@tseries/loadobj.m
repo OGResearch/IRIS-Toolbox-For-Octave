@@ -13,4 +13,6 @@ if isstruct(This)
    This = tseries(This);
 end
 
+This = mystamp(This);
+
 end

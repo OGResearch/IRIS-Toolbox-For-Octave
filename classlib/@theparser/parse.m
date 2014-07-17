@@ -9,7 +9,7 @@ function [S,Asgn] = parse(This,Opt)
 
 %--------------------------------------------------------------------------
 
-nBlk = length(This.blkName);
+nBlk = length(This.BlkName);
 
 % Replace alternative block syntax.
 This = altsyntax(This);
@@ -17,25 +17,25 @@ This = altsyntax(This);
 % Output struct.
 S = struct();
 
-S.blk = [];
+S.Blk = [];
 
 S.name = cell(1,0);
 S.nametype = zeros(1,0);
 S.namelabel = cell(1,0);
 S.namealias = cell(1,0);
-S.namevalue = cell(1,0);
-S.LogSign = zeros(1,0,'int8');
+S.NameValue = cell(1,0);
+S.IxLog = false(1,0);
 
 S.eqtn = cell(1,0);
 S.eqtntype = zeros(1,0);
 S.eqtnlabel = cell(1,0);
 S.eqtnalias = cell(1,0);
-S.eqtnlhs = cell(1,0);
-S.eqtnrhs = cell(1,0);
-S.eqtnsign = cell(1,0);
-S.sstatelhs = cell(1,0);
-S.sstaterhs = cell(1,0);
-S.sstatesign = cell(1,0);
+S.EqtnLhs = cell(1,0);
+S.EqtnRhs = cell(1,0);
+S.EqtnSign = cell(1,0);
+S.SstateLhs = cell(1,0);
+S.SstateRhs = cell(1,0);
+S.SstateSign = cell(1,0);
 
 S.maxt = zeros(1,0);
 S.mint = zeros(1,0);
@@ -52,17 +52,18 @@ invalid.emptyEqtn = {};
 invalid.stdcorr = {};
 
 % Read individual blocks and check for unknown keywords.
+
 [blk,invalid.key,invalid.allBut] = readblk(This);
 for iBlk = 1 : nBlk
-    S(iBlk).blk = blk{iBlk};
+    S(iBlk).Blk = blk{iBlk};
 end
 
 % Read individual names and assignments within each name block.
 for iBlk = find(This.IxNameBlk)
     [S(iBlk).name,S(iBlk).namelabel, ...
-        S(iBlk).namevalue,S(iBlk).LogSign] ...
-        = parsenames(This,S(iBlk).blk);
-    S(iBlk).nametype = This.nameType(iBlk)*ones(size(S(iBlk).name));
+        S(iBlk).NameValue,S(iBlk).IxLog] ...
+        = parsenames(This,S(iBlk).Blk);
+    S(iBlk).nametype = This.NameType(iBlk)*ones(size(S(iBlk).name));
     if ~This.IxStdcorrAllowed(iBlk)
         % Report all names starting with `std_` or `corr_`.
         ixStd = strncmp(S(iBlk).name,'std_',4);
@@ -77,7 +78,7 @@ end
 % Read names in log block.
 if any(This.IxLogBlk)
     [S(This.IxLoggable),invalid.log] ...
-        = parselog(This,S(This.IxLogBlk).blk,S(This.IxLoggable));
+        = parselog(This,S(This.IxLogBlk).Blk,S(This.IxLoggable));
 end
 
 % Read individual equations within each equation block; evaluate and
@@ -85,10 +86,10 @@ end
 % only.
 for iBlk = find(This.IxEqtnBlk)
     [S(iBlk).eqtn,S(iBlk).eqtnlabel, ...
-        S(iBlk).eqtnlhs,S(iBlk).eqtnrhs,S(iBlk).eqtnsign, ...
-        S(iBlk).sstatelhs,S(iBlk).sstaterhs,S(iBlk).sstatesign, ...
+        S(iBlk).EqtnLhs,S(iBlk).EqtnRhs,S(iBlk).EqtnSign, ...
+        S(iBlk).SstateLhs,S(iBlk).SstateRhs,S(iBlk).SstateSign, ...
         S(iBlk).maxt,S(iBlk).mint,invalidTimeSubs,emptyEqtn] ...
-        = parseeqtns(This,S(iBlk).blk);
+        = parseeqtns(This,S(iBlk).Blk);
     nEqtn = length(S(iBlk).eqtn);
     S(iBlk).eqtntype = iBlk*ones(1,nEqtn);
     invalid.timeSubs = [invalid.timeSubs,invalidTimeSubs];
@@ -100,9 +101,9 @@ doChkInvalid();
 % Put back labels, and extract alias from each label.
 for iBlk = 1 : nBlk
     S(iBlk).namelabel ...
-        = restore(S(iBlk).namelabel,This.labels,'delimiter=',false);
+        = restore(S(iBlk).namelabel,This.Labels,'delimiter=',false);
     S(iBlk).eqtnlabel ...
-        = restore(S(iBlk).eqtnlabel,This.labels,'delimiter=',false);
+        = restore(S(iBlk).eqtnlabel,This.Labels,'delimiter=',false);
     [S(iBlk).namelabel,S(iBlk).namealias] = xxGetAlias(S(iBlk).namelabel);
     [S(iBlk).eqtnlabel,S(iBlk).eqtnalias] = xxGetAlias(S(iBlk).eqtnlabel);
 end
@@ -182,8 +183,8 @@ doChkMultiple();
                 S(iiBlk).nametype(ixRemove) = [];
                 S(iiBlk).namelabel(ixRemove) = [];
                 S(iiBlk).namealias(ixRemove) = [];
-                S(iiBlk).namevalue(ixRemove) = [];
-                S(iiBlk).LogSign(ixRemove) = [];
+                S(iiBlk).NameValue(ixRemove) = [];
+                S(iiBlk).IxLog(ixRemove) = [];
             end
         end
     end % doClearMultiple()
@@ -213,15 +214,15 @@ doChkMultiple();
         
         % Blocks marked as IxEssential cannot be empty.
         for iiBlk = find(This.IxEssential)
-            caller = strtrim(This.caller);
+            caller = strtrim(This.Caller);
             if ~isempty(caller)
                 caller(end+1) = ' '; %#ok<AGROW>
             end
-            if isempty(S(iiBlk).blk) || all(S(iiBlk).blk <= char(32))
+            if isempty(S(iiBlk).Blk) || all(S(iiBlk).Blk <= char(32))
                 utils.error('theparser:parse',[ep,...
                     'Cannot find a non-empty ''%s'' block. ', ...
                     'This is not a valid ',caller,'file.'], ...
-                    This.blkName{iiBlk});
+                    This.BlkName{iiBlk});
             end
         end
         
@@ -241,7 +242,7 @@ doChkMultiple();
         
         % Invalid names on the log-variable list.
         if ~isempty(invalid.log)
-            IxLogBlkname = This.blkName{This.IxLogBlk};
+            IxLogBlkname = This.BlkName{This.IxLogBlk};
             utils.error('theparser:parse',[ep, ...
                 'This name is not allowed ', ...
                 'in the ''',IxLogBlkname,''' list: ''%s''.'], ...
@@ -250,7 +251,7 @@ doChkMultiple();
         
         % Invalid time subscripts.
         if ~isempty(invalid.timeSubs)
-            invalid.timeSubs = restore(invalid.timeSubs,This.labels);
+            invalid.timeSubs = restore(invalid.timeSubs,This.Labels);
             utils.error('theparser:parse',[ep, ...
                 'Cannot evaluate time index in this equation: ''%s''.'], ...
                 invalid.timeSubs{:});
@@ -258,7 +259,7 @@ doChkMultiple();
         
         % Equations that consist of labels only (throw a warning, not error).
         if ~isempty(invalid.emptyEqtn)
-            invalid.emptyEqtn = restore(invalid.emptyEqtn,This.labels);
+            invalid.emptyEqtn = restore(invalid.emptyEqtn,This.Labels);
             utils.warning('theparser:parse',[ep, ...
                 'This equation is empty, and will be removed: ''%s''.'], ...
                 invalid.emptyEqtn{:});
@@ -315,16 +316,16 @@ for i = 1 : length(S)
         continue
     end
     for j = 1 : length(S(i).eqtn)
-        if isempty(S(i).sstatelhs{j}) && isempty(S(i).sstaterhs{j}) ...
-                && isempty(S(i).sstatesign{j})
+        if isempty(S(i).SstateLhs{j}) && isempty(S(i).SstateRhs{j}) ...
+                && isempty(S(i).SstateSign{j})
             continue
         end
-        S(i).eqtnlhs{j} = S(i).sstatelhs{j};
-        S(i).eqtnrhs{j} = S(i).sstaterhs{j};
-        S(i).eqtnsign{j} = S(i).sstatesign{j};
-        S(i).sstatelhs{j} = '';
-        S(i).sstaterhs{j} = '';
-        S(i).sstatesign{j} = '';
+        S(i).EqtnLhs{j} = S(i).SstateLhs{j};
+        S(i).EqtnRhs{j} = S(i).SstateRhs{j};
+        S(i).EqtnSign{j} = S(i).SstateSign{j};
+        S(i).SstateLhs{j} = '';
+        S(i).SstateRhs{j} = '';
+        S(i).SstateSign{j} = '';
         pos = strfind(S(i).eqtn{j},'!!');
         if ~isempty(pos)
             S(i).eqtn{j}(1:pos+1) = '';

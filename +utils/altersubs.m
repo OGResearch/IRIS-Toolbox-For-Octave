@@ -1,5 +1,5 @@
 function s = altersubs(s,n,obj)
-% ALTERSUBS  [Not a public function] Check and re-organise subscripted reference to objects with mutliple parameterisations.
+% altersubs  [Not a public function] Check and re-organise subscripted reference to objects with mutliple parameterisations.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,7 +7,7 @@ function s = altersubs(s,n,obj)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 % This function accepts the following subscripts
 %     x(index)
@@ -44,7 +44,8 @@ if length(s) == 2 && any(strcmp(s(1).type,{'()','{}'})) ...
 end
 
 if length(s) > 2
-    utils.error(obj,['Invalid reference to ',obj,' object.']);
+    utils.error('utils:altersubs', ...
+        ['Invalid reference to ',obj object.']);
 end
 
 % Convert a(:) or a.name(:) to a(1:n) or a.name(1:n).

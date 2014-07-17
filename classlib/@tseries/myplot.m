@@ -1,5 +1,4 @@
-function [H,Range,Data,Time,UserRange,Freq,varargout] ...
-    = myplot(Func,varargin)
+function [H,Rng,Data,Time,UsrRng,Freq,varargout] = myplot(Func,varargin)
 % myplot  [Not a public function] Master plot function for tseries objects.
 %
 % Backend IRIS function.
@@ -29,25 +28,25 @@ end
 % one.
 if isnumeric(varargin{1})
     comprise = [];
-    Range = varargin{1};
+    Rng = varargin{1};
     varargin(1) = [];
 elseif iscell(varargin{1}) && length(varargin{1}) == 2 ...
         && all(cellfun(@isnumeric,varargin{1}))
     comprise = varargin{1}{2};
-    Range = varargin{1}{1};
+    Rng = varargin{1}{1};
     varargin(1) = [];
 else
     comprise = [];
-    Range = Inf;
+    Rng = Inf;
 end
 
-UserRange = Range;
+UsrRng = Rng;
 
 % Tseries object that will be plotted.
 X = varargin{1};
 varargin(1) = [];
 
-X = resize(X,Range);
+X = resize(X,Rng);
 
 flag = true;
 plotSpecs = {};
@@ -75,21 +74,21 @@ end
 
 X.data = X.data(:,:);
 [~,nx] = size(X.data);
-Range = specrange(X,Range);
+Rng = specrange(X,Rng);
 
 H = [];
-if isempty(Range)
+if isempty(Rng)
     utils.warning('tseries:myplot', ...
         'No graph displayed because date range is empty.');
     return
 end
 
-Freq = datfreq(Range(1));
+Freq = datfreq(Rng(1));
 
 % If hold==on, make sure the new range comprises thes existing dates if
 % the existing graph is a tseries graph.
 if ~isempty(Func) ...
-        && ~isempty(Range) && strcmp(get(Ax,'nextPlot'),'add') ...
+        && ~isempty(Rng) && strcmp(get(Ax,'nextPlot'),'add') ...
         && isequal(getappdata(Ax,'tseries'),true)
     % Original x-axis limits.
     if isequal(getappdata(Ax,'xLimAdjust'),true)
@@ -97,20 +96,20 @@ if ~isempty(Func) ...
     else
         xLim0 = get(Ax,'xLim');
     end
-    Range = doMergeRange(Range([1,end]),xLim0);
+    Rng = doMergeRange(Rng([1,end]),xLim0);
 end
 
 % Make sure the new range and `userrange` both comprise the `comprise`
 % dates; this is used in `plotyy`.
 if ~isempty(comprise)
-    Range = doMergeRange(Range,comprise);
-    if ~isequal(UserRange,Inf)
-        UserRange = doMergeRange(UserRange,comprise);
+    Rng = doMergeRange(Rng,comprise);
+    if ~isequal(UsrRng,Inf)
+        UsrRng = doMergeRange(UsrRng,comprise);
     end
 end
 
-Data = mygetdata(X,Range);
-Time = dat2dec(Range,opt.dateposition);
+Data = mygetdata(X,Rng);
+Time = dat2dec(Rng,opt.dateposition);
 
 if isempty(Func)
     return
@@ -124,7 +123,7 @@ doPlot();
 if isequal(opt.xlimmargin,true) ...
         || (ischar(opt.xlimmargin) ...
         && strcmpi(opt.xlimmargin,'auto') ...
-        && any(strcmp(char(Func),{'bar','barcon'})))
+        && isanyfunc(Func,{'bar','barcon'}))
     setappdata(Ax,'xLimAdjust',true);
     peer = getappdata(Ax,'graphicsPlotyyPeer');
     if ~isempty(peer)
@@ -145,9 +144,9 @@ end
 if isTimeAxis && ~isTimeNan
     setappdata(Ax,'tseries',true);
     setappdata(Ax,'freq',Freq);
-    setappdata(Ax,'range',Range);
+    setappdata(Ax,'range',Rng);
     setappdata(Ax,'datePosition',opt.dateposition);
-    mydatxtick(Ax,Range,Time,Freq,UserRange,opt);
+    mydatxtick(Ax,Rng,Time,Freq,UsrRng,opt);
 end
 
 % Perform user supplied function.
@@ -165,7 +164,7 @@ end
 % Store the dates within each plotted object for later retrieval by
 % datatip cursor.
 for ih = H(:).'
-    setappdata(ih,'dateLine',Range);
+    setappdata(ih,'dateLine',Rng);
 end
 
 % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
@@ -200,7 +199,11 @@ set(obj,'UpdateFcn',@utils.datacursor);
 
 
     function doPlot()
-        switch char(Func)
+        FuncStr = Func;
+        if isfunc(FuncStr)
+            FuncStr = func2str(FuncStr);
+        end
+        switch FuncStr
             case {'scatter'}
                 if nx ~= 2
                     utils.error('tseries:myplot', ...
@@ -219,7 +222,7 @@ set(obj,'UpdateFcn',@utils.datacursor);
                 isTimeAxis = true;
             otherwise
                 DataInf = grfun.myreplacenancols(Data,Inf);
-                H = Func(Ax,Time,DataInf,plotSpecs{:});
+                H = feval(Func,Ax,Time,DataInf,plotSpecs{:});
                 if ~isempty(varargin)
                     set(H,varargin{:});
                 end

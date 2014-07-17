@@ -35,9 +35,9 @@ function [X,Y,XX,YY] = fevd(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `X` and
-% `Y` as either namedmat objects (matrices with named rows and columns) or
-% plain numeric arrays.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `X`
+% and `Y` as be either [`namedmat`](namedmat/Contents) objects (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
 %
 % Description
 % ============
@@ -53,6 +53,8 @@ opt = passvalopt('SVAR.fevd',varargin{:});
 
 % Tell whether time is `NPer` or `Range`.
 [range,nPer] = varobj.mytelltime(Time);
+
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -102,13 +104,16 @@ if nargout > 2 && ~isempty(This.YNames)
     end
 end
 
-% Convert `X` and `Y` to namedmat objects if requested by the user.
-if strcmpi(opt.output,'namedmat') ...
-        && ~isempty(This.YNames) && ~isempty(This.ENames)
-    X = namedmat(X,This.YNames,This.ENames);
-    if nargout > 1
-        Y = namedmat(Y,This.YNames,This.ENames);
+if true % ##### MOSW
+    % Convert output matrices to namedmat objects if requested.
+    if isNamedMat
+        X = namedmat(X,This.YNames,This.ENames);
+        if nargout > 1
+            Y = namedmat(Y,This.YNames,This.ENames);
+        end
     end
+else
+    % Do nothing.
 end
 
 end

@@ -33,7 +33,7 @@ function [This,NPath,EigVal] = solve(This,varargin)
 % * `'error='` [ `true` | *`false`* ] - Throw an error if no unique stable
 % solution exists; if `false`, a warning message only will be displayed.
 %
-% * `'linear='` [ *`'auto'`* | `true` | `false` ] - Solve the model using a
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Solve the model using a
 % linear approach, i.e. differentiating around zero and not the currently
 % assigned steady state.
 %
@@ -91,7 +91,7 @@ end
 
 if opt.warning
     % Warning if some log-lin variables have non-positive steady state.
-    chk(This,Inf,'parameters','log');
+    mychk(This,Inf,'parameters','log');
 end
 
 % Calculate solutions for all parameterisations, and store expansion

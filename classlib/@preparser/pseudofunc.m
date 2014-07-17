@@ -58,7 +58,7 @@ end
 end % pseudofunc()
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
@@ -70,7 +70,7 @@ function [Exprn,Shift] = xxParseFunc(C,DefaultShift)
 %     pseudofunc(expression,k)
 
 Shift = DefaultShift;
-tokens = regexp(C,'^(.*?)(,[\+\-]?\d+)?$','tokens','once');
+tokens = regexp(C,'^(.*?)((,[\+\-]?\d+)?)$','tokens','once');
 if isempty(tokens) || isempty(tokens{1})
     Exprn = '';
     return
@@ -153,7 +153,7 @@ end % xxMovAvg()
 
 function C = xxShift(C,K)
 
-ptn = '(\<[A-Za-z]\w*\>)(\{[\+\-]?\d+\})?(?!\()';
+ptn = '(\<[A-Za-z]\w*\>)((\{[\+\-]?\d+\})?)(?!\()';
 if true % ##### MOSW
     replaceFunc = @doOneShift; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');

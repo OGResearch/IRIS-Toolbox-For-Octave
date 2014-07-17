@@ -31,7 +31,7 @@ end
 %--------------------------------------------------------------------------
 
 Error = struct();
-Error.code = '';
+Error.Code = '';
 Error.exprsn = '';
 Error.leftover = '';
 warnParsing = strrep(ErrParsing,'Error','Warning');
@@ -49,7 +49,7 @@ while ~isempty(pos)
     commandCap = [upper(command(1)),lower(command(2:end))];
     [s,tail,isError] = feval(['xxParse',commandCap],C,pos+len);
     if isError
-        Error.code = C(pos:end);
+        Error.Code = C(pos:end);
         break
     end
     
@@ -98,10 +98,10 @@ doErrors();
 
 
     function doErrors()
-        if ~isempty(Error.code)
+        if ~isempty(Error.Code)
             utils.error('preparser:controls', [ErrParsing, ...
                 'Something wrong with this control command(s) or commands nested inside: ''%s...''.'], ...
-                xxFormatError(Error.code,Labels));
+                xxFormatError(Error.Code,Labels));
         end
         
         if ~isempty(Error.exprsn)
@@ -355,7 +355,7 @@ list = regexp(forBody,'[^\s,;]+','match');
                 C2 = regexprep(C2,plist,'D.$1');
             end
             % Create an anonymous function handle and evaluate it on D.
-            f = str2func(['@(D) ',C2]);
+            f = mosw.str2func(['@(D) ',C2]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.

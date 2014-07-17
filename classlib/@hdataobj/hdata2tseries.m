@@ -10,6 +10,7 @@ function D = hdata2tseries(This)
 %--------------------------------------------------------------------------
 
 template = tseries();
+realexp = @(x) real(exp(x));
 
 D = struct();
 
@@ -19,17 +20,17 @@ for i = 1 : length(This.Id)
         continue
     end
     
-    iRealId = real(This.Id{i});
-    iImagId = imag(This.Id{i});
-    maxLag = -min(iImagId);
+    realId = real(This.Id{i});
+    imagId = imag(This.Id{i});
+    maxLag = -min(imagId);
 
     xRange = This.Range(1)-maxLag : This.Range(end);
     xStart = xRange(1);
     nXPer = length(xRange);
     
-    for j = find(iImagId == 0)
+    for j = find(imagId == 0)
         
-        pos = iRealId(j);
+        pos = realId(j);
         jName = This.Name{pos};
         if ~isfield(This.Data,jName)
             continue
@@ -38,29 +39,25 @@ for i = 1 : length(This.Id)
         if sn(1) ~= nXPer
             doThrowInternal();
         end
-        if This.LogSign(pos) == 1
-            This.Data.(jName) = exp(This.Data.(jName));
-        elseif This.LogSign(pos) == -1
-            if ~This.IsVar2Std
-                This.Data.(jName) = -exp(This.Data.(jName));
-            else
-                This.Data.(jName) = exp(This.Data.(jName));
-            end
+        if This.IxLog(pos)
+            This.Data.(jName) = realexp(This.Data.(jName));
         end
         
         % Create a new database entry.
         D.(jName) = template;
+        D.(jName) = mystamp(D.(jName));
         D.(jName).start = xStart;
         D.(jName).data = This.Data.(jName);
         s = size(D.(jName).data);
         D.(jName).Comment = repmat({''},[1,s(2:end)]);
         D.(jName) = mytrim(D.(jName));
         if isempty(This.Contributions)
-            D.(jName) = comment(D.(jName),This.Label{pos});
+            c = This.Label{pos};
         else
-            D.(jName) = comment(D.(jName), ...
-                utils.concomment(jName,This.Contributions,This.LogSign(pos)));
+            c = utils.concomment(jName, ...
+                This.Contributions,This.IxLog(pos));
         end
+        D.(jName) = comment(D.(jName),c);
         
         % Free memory.
         This.Data.(jName) = [];

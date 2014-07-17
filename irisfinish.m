@@ -22,7 +22,7 @@ function irisfinish(varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 shutup = any(strcmpi(varargin,'-shutup'));
 
@@ -48,8 +48,9 @@ end
 
 % Display report on subfolders removed.
 if ~isempty(removed)
-   fprintf('\n\tThe current IRIS subfolders have been removed from Matlab path:');
-   fprintf('\n\t%s\n\n',removed);
+   fprintf('\n\tThese IRIS subfolders have been removed from Matlab path:');
+   fprintf('\n\t* %s',removed{:});
+   fprintf('\n\n');
 end
 
 end

@@ -43,7 +43,7 @@ end
 
 
 function [Z,C] = xxLinComb2Vec(S,nlist)
-f = str2func(['@(x)',S]);
+f = mosw.str2func(['@(x)',S]);
 x = zeros(1,nlist);
 try
     C = f(x);

@@ -32,7 +32,7 @@ Eqtn = strtrim(Eqtn);
 % make sure that the entire string has been used up, otherwise an
 % expression like 4*x(...) will be incorrectly stored as 4.
 [x,count] = sscanf(Eqtn,'%g');
-if count == length(Eqtn) && is.numericscalar(x) && isfinite(x)
+if count == length(Eqtn) && isnumericscalar(x) && isfinite(x)
     Eqtn = x;
 end
 
@@ -40,10 +40,10 @@ end
     function c = doReplace(c0,c1)
         c = sscanf(c1,'%g');
         if This.nametype(c) <= 3
-            if This.LogSign(c) == 0
-                c = '0';
-            else
+            if This.IxLog(c)
                 c = '1';
+            else
+                c = '0';
             end
         else
             c = c0;

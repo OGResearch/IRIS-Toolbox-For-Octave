@@ -54,9 +54,9 @@ end
 
 function Q = xxInp2Struct(Inp,Opt)
 
-if isa(Inp,'function_handle')
-    % Allow function handles.
-    Inp = char(Inp);
+if isfunc(Inp)
+    % Input file name can be function handle.
+    Inp = func2str(Inp);
 end
 
 if ischar(Inp)
@@ -66,7 +66,7 @@ if ischar(Inp)
         'clone=',Opt.clone);
     
     % Put labels back in the code, including the quotes.
-    c = restore(p.code,p.labels);
+    c = restore(p.Code,p.Labels);
     
     % Replace escaped % signs.
     c = strrep(c,'\%','%');
@@ -112,7 +112,7 @@ end
         % doGetSubPlot  Convert subplot string to vector or 'auto'.
         X = sscanf(C,'%gx%g');
         if isnumeric(X) && length(X) == 2 ...
-                && all(~isnan(X) & X > 0 & X == round(X))
+                && all(~isnan(X) & X > 0 & isround(X))
             X = X(:).';
         else
             X = 'auto';
@@ -271,7 +271,7 @@ for i = 1 : length(Q)
         if ch.isTransform
             for k = 1 : nSeries
                 % First, calculate deviations, then apply a tranformation function.
-                if is.numericscalar(Opt.deviationfrom)
+                if isnumericscalar(Opt.deviationfrom)
                     t = Opt.deviationfrom;
                     if isa(series{k},'tseries')
                         if ~isfinite(series{k}(t))
@@ -341,7 +341,7 @@ for i = 1 : length(Q)
                     ch.eval{end}];
                 if ch.isTransform
                     func = '';
-                    if is.numericscalar(Opt.deviationfrom)
+                    if isnumericscalar(Opt.deviationfrom)
                         func = [ ...
                             ', Dev from ', ...
                             dat2char(Opt.deviationfrom)];
@@ -464,7 +464,8 @@ end
 
 if ~isempty(errorList)
     utils.warning('qreport:qreport',...
-        'Error plotting ''%s''.\n\tMatlab says: %s',...
+        ['Error plotting ''%s''.\n', ...
+        '\tUncle says: %s'],...
         errorList{:});
 end
 
@@ -526,10 +527,10 @@ isYGrid = Opt.grid;
 Data = [];
 Ok = true;
 
-switch char(Func)
+switch func2str(Func)
     case {'plot','bar','barcon','stem'}
         Data = [X{:}];
-        if is.tseries(Data)
+        if istseries(Data)
             [h,Range,Data] = Func(Range,Data,varargin{:}); %#ok<*ASGLU>
         elseif ~isempty(Data)
             Func(Range,Data,varargin{:});

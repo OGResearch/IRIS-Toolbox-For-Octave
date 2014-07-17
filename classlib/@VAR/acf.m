@@ -28,15 +28,15 @@ function [C,Q] = acf(This,varargin)
 % * `'filter='` [ char  | *empty* ] - Linear filter that is applied to
 % variables specified by 'applyto'.
 %
-% * `'nfreq='` [ numeric | *`256`* ] - Number of equally spaced frequencies
-% over which the 'filter' is numerically integrated.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `C`
+% and `R` as either [`namedmat`](namedmat/Contents) objects (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
+%
+% * `'nFreq='` [ numeric | *`256`* ] - Number of equally spaced frequencies
+% over which the `'filter='` is numerically integrated.
 %
 % * `'order='` [ numeric | *`0`* ] - Order up to which ACF will be
 % computed.
-%
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `C` and
-% `R` as either namedmat objects (matrices with named rows and columns) or
-% plain numeric arrays.
 %
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
 % window.
@@ -52,7 +52,9 @@ function [C,Q] = acf(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.acf',varargin{:});
+
 isCorr = nargout > 1;
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -118,15 +120,16 @@ if isCorr
     Q = covfun.cov2corr(C,'acf');
 end
 
-% Convert output to named matrices.
-if strcmp(opt.output,'namedmat')
-    yNames = This.YNames;
-    if length(yNames) == ny
-        C = namedmat(C,yNames,yNames);
-        if isCorr
-            Q = namedmat(Q,yNames,yNames);
+if true % ##### MOSW
+    % Convert double arrays to namedmat objects if requested.
+    if isNamedMat
+        C = namedmat(C,This.YNames,This.YNames);
+        try %#ok<TRYNC>
+            Q = namedmat(Q,This.YNames,This.YNames);
         end
     end
+else
+    % Do nothing.
 end
 
 end
@@ -136,6 +139,8 @@ end
 
 
 %**************************************************************************
+
+
 function C = xxAcovYW(A,C,P)
 
 [ny,pNy] = size(A);

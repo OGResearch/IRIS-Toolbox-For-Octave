@@ -22,7 +22,7 @@ classdef userfigureobj < report.basefigureobj
                         ['The input argument H into a report figure must be ' ...
                         'a valid handle to a figure window.']);
                 end
-                figFile = [tempname(cd()),'.fig'];
+                figFile = [tempname(pwd()),'.fig'];
                 saveas(h,figFile);
                 fid = fopen(figFile);
                 This.savefig = fread(fid);

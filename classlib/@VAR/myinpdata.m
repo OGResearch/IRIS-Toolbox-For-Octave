@@ -7,11 +7,10 @@ function [Y,X,Rng,YNames,InpFmt,varargin] = myinpdata(This,D,Rng,varargin)% myin
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@is.VAR);
 pp.addRequired('D',@isstruct);
 pp.addRequired('Range',@isnumeric)
 try
-    pp.parse(This,D,Rng);
+    pp.parse(D,Rng);
 catch
     % ##### Nov 2013 OBSOLETE and scheduled for removal.
     utils.warning('obsolete', ...
@@ -41,7 +40,7 @@ YNames = This.YNames;
 YXNames = [This.YNames,This.XNames];
 
 sw = struct();
-sw.LogSign = [];
+sw.IxLog = [];
 sw.BaseYear = get(This,'baseYear');
 
 if isempty(This.GroupNames)

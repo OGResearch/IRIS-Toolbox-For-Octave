@@ -17,6 +17,7 @@ end
 
 doRefresh();
 
+realexp = @(x) real(exp(x));
 eigValTol = This.Tolerance(1);
 realSmall = getrealsmall();
 ny = sum(This.nametype == 1);
@@ -31,6 +32,8 @@ if isWarn && Flag
 end
 
 isDiffStat = true(1,nAlt);
+realAssign = nan(size(This.Assign));
+imagAssign = zeros(size(This.Assign));
 for iAlt = find(~isNanSol)
     doOneSstate();
 end
@@ -43,21 +46,12 @@ if any(~isDiffStat)
         preparser.alt2str(~isDiffStat));
 end
 
-% Delog sstate of log-plus variables.
-if any(This.LogSign == 1)
-    ix = This.LogSign == 1;
-    realAssign = real(This.Assign(1,ix,:));
-    imagAssign = imag(This.Assign(1,ix,:));
-    This.Assign(1,ix,:) = exp(realAssign) + 1i*exp(imagAssign);
+% Delog sstate of log variables.
+if any(This.IxLog)
+    realAssign(1,This.IxLog,:) = realexp(realAssign(1,This.IxLog,:));
+    imagAssign(1,This.IxLog,:) = exp(imagAssign(1,This.IxLog,:));
 end
-
-% Delog sstate of log-minus variables.
-if any(This.LogSign == -1)
-    ix = This.LogSign == -1;
-    realAssign = real(This.Assign(1,ix,:));
-    imagAssign = imag(This.Assign(1,ix,:));
-    This.Assign(1,ix,:) = -exp(realAssign) + 1i*exp(imagAssign);
-end
+This.Assign = realAssign + 1i*imagAssign;
 
 doRefresh();
 
@@ -124,14 +118,17 @@ doRefresh();
         realId(~iinx) = [];
         x(~iinx) = [];
         dx(~iinx) = [];
-        This.Assign(1,realId,iAlt) = x(:).' + 1i*dx(:).';
+        realAssign(1,realId,iAlt) = x(:).';
+        imagAssign(1,realId,iAlt) = dx(:).';
         
         % Measurement variables
         %-----------------------
         if ny > 0
             y = Z(:,nUnit+1:end)*a2 + D;
             dy = Z(:,1:nUnit)*da1;
-            This.Assign(1,This.nametype == 1,iAlt) = y(:).' + 1i*dy(:).';
+            realId = real(This.solutionid{1});
+            realAssign(1,realId,iAlt) = y(:).';
+            imagAssign(1,realId,iAlt) = dy(:).';
         end
     end % doOneSstate()
 

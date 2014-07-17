@@ -9,7 +9,7 @@ end
 %--------------------------------------------------------------------------
 
 if isequal(Mode,'enbloc')
-    % Create one sydney that returns an array of derivatives.
+    % Create one sydney that evaluates to array of derivatives.
     This = mydiff(This,Wrt);
     % Handle special case when there is no occurence of any of the `wrt`
     % variables in the expression, and a scalar zero is returned.

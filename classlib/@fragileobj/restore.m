@@ -27,7 +27,7 @@ end
 
 
     function C = doReplace(C0)
-        K = fragileobj.char2dec(C0) - This.Offset;
+        K = char2dec(This,C0) - This.Offset;
         C = This.Store{K};
         if opt.delimiter
             C = [This.Open{K},C,This.Close{K}];

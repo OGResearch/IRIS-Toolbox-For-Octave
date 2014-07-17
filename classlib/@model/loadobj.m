@@ -11,23 +11,46 @@ function This = loadobj(This,varargin)
 
 This = modelobj.loadobj(This);
 
-if ~isa(This,'model')
-    if isfield(This,'eqtnnonlin')
-        This.nonlin = This.eqtnnonlin;
-    elseif ~isfield(This,'nonlin')
-        This.nonlin = false(size(This.eqtn));
-    end
-elseif isempty(This.nonlin)
-    This.nonlin = false(size(This.eqtn));
+if isfield(This,'tzero')
+    t0 = This.tzero;
+    nt = size(This.occur,2) / length(This.name);
+    minT = 1 - t0;
+    maxT = nt - t0;
+    This.Shift = minT : maxT;
+end
+
+if isfield(This,'eqtnnonlin')
+    This.IxNonlin = This.eqtnnonlin;
+elseif isfield(This,'nonlin')
+    This.IxNonlin = This.nonlin;
+else
+    This.IxNonlin = false(size(This.eqtn));
+end
+
+if ~isfield(This,'IxNonlin') || isempty(This.IxNonlin)
+    This.IxNonlin = false(size(This.eqtn));
 end
 
 if isfield(This,'torigin')
     This.BaseYear = This.torigin;
 end
 
+if ~isfield(This,'BaseYear') || isempty(This.BaseYear)
+    This.BaseYear = @config;
+end
+
+
+% Model object
+%--------------
 if isstruct(This)
     This = model(This);
 end
+
+
+build = sscanf(This.Build,'%g',1);
+ny = sum(This.nametype == 1);
+ne = sum(This.nametype == 3);
+nAlt = size(This.Assign,3);
 
 solutionid = This.solutionid;
 if isempty(This.d2s)
@@ -36,15 +59,13 @@ if isempty(This.d2s)
     opt.removeleads = all(imag(This.solutionid{2}) <= 0);
     This = myd2s(This,opt);
 end
+
 if ~isequal(solutionid,This.solutionid)
     disp('Model object failed to be loaded from a disk file.');
     disp('Create the model object again from the model file.');
     This = model();
     return
 end
-
-ny = sum(This.nametype == 1);
-nAlt = size(This.Assign,3);
 
 % Convert array of occurences to sparse matrix.
 if ~issparse(This.occur)
@@ -68,17 +89,17 @@ if any(isEmptyLink)
     occur = This.occur(This.eqtntype == 4,:);
     linkLabel = This.eqtnlabel(This.eqtntype == 4);
     linkF = This.eqtnF(This.eqtntype == 4);
-    linkNonlin = This.nonlin(This.eqtntype == 4);
+    linkNonlin = This.IxNonlin(This.eqtntype == 4);
     This.eqtn(This.eqtntype == 4) = [];
     This.eqtnlabel(This.eqtntype == 4) = [];
     This.eqtnF(This.eqtntype == 4) = [];
-    This.nonlin(This.eqtntype == 4) = [];
+    This.IxNonlin(This.eqtntype == 4) = [];
     This.occur(This.eqtntype == 4,:) = [];
     This.eqtntype(This.eqtntype == 4) = [];
     This.eqtn = [This.eqtn,link(This.Refresh)];
     This.eqtnlabel = [This.eqtnlabel,linkLabel(This.Refresh)];
     This.eqtnF = [This.eqtnF,linkF(This.Refresh)];
-    This.nonlin = [This.nonlin,linkNonlin(This.Refresh)];
+    This.IxNonlin = [This.IxNonlin,linkNonlin(This.Refresh)];
     This.occur = [This.occur;occur(This.Refresh,:)];
     This.eqtntype = [This.eqtntype,4*ones(size(This.Refresh))];
 end
@@ -88,23 +109,17 @@ if isempty(This.occurS) && ~This.IsLinear
     This.occurS = any(This.occur,3);
 end
 
-% Add flags and deriv0.n for equations earmarked for non-linear
-% simulations.
-if isempty(This.nonlin)
-    This.nonlin = false(size(This.eqtn));
-end
-
 if ~isempty(This.Expand) ...
         && (length(This.Expand) < 6 || isempty(This.Expand{6}))
     % The size of Expand{6} in 1st dimension is the number of fwl variables
     % *before* we remove the double occurences from state space. `Expand{6}`
     % can be empty also in nonlinear bkw models; in that case, we need to set
     % the size in second dimension appropriately.
-    nNonlin = sum(This.nonlin);
+    nNonlin = sum(This.IxNonlin);
     This.Expand{6} = nan(size(This.Expand{3},1),nNonlin,nAlt);
 end
 
-if ~isempty(This.Assign) && isempty(This.stdcorr)
+if ~isempty(This.Assign) && ne > 0 && isempty(This.stdcorr)
     % Separate std devs from Assign, and create zero cross corrs.
     doStdcorr();
 end
@@ -146,7 +161,6 @@ for i = 1 : length(This.eqtnF)
 end
 
 % Rewrite log-variables in sstate equations for builds < 20140611.
-build = sscanf(This.Build,'%g',1);
 if build < 20140610 && ~This.IsLinear
     doLogSstateEqtn();
 end
@@ -180,7 +194,6 @@ This = mytransient(This);
 
 
     function doStdcorr()
-        ne = sum(This.nametype == 3);
         nName = length(This.name);
         stdvec = This.Assign(1,end-ne+1:end,:);
         This.stdcorr = stdvec;
@@ -195,7 +208,7 @@ This = mytransient(This);
         This.name(:,end-ne+1:end) = [];
         This.nametype(:,end-ne+1:end) = [];
         This.namelabel(:,end-ne+1:end) = [];
-        This.log(:,end-ne+1:end) = [];
+        This.IxLog(:,end-ne+1:end) = [];
     end % doStdcorr()
 
 
@@ -208,7 +221,7 @@ This = mytransient(This);
         % * replace `exp(x(10)+2*dx(10))` with `(x(10)*dx(10)^2)`;
         % * replace `exp(x(10))` with `x(10)`;
         % * replace `((x(10)))` with `(x(10))`.
-        for ii = find(This.log)
+        for ii = find(This.IxLog)
             iic = sprintf('%g',ii);
             This.EqtnS = regexprep(This.EqtnS, ...
                 ['exp\(x\(',iic,'\)\-(\d+)\*dx\(',iic,'\)\)'], ...
@@ -234,7 +247,7 @@ This = mytransient(This);
         % equation.
         for ii = find(This.eqtntype <= 2)
             eqtn = This.DEqtnF{ii};
-            if is.func(eqtn)
+            if isfunc(eqtn)
                 eqtn = func2str(eqtn);
             end
             if isempty(eqtn)

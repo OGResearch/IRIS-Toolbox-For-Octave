@@ -4,13 +4,13 @@ function [X,D,D1] = fmse(This,Time,varargin)
 % Syntax
 % =======
 %
-%     [M,X] = fmse(V,NPer)
-%     [M,X] = fmse(V,Range)
+%     [F,X] = fmse(V,NPer)
+%     [F,X] = fmse(V,Range)
 %
 % Input arguments
 % ================
 %
-% * `C` [ VAR ] - VAR object for which the forecast MSE matrices will be
+% * `V` [ VAR ] - VAR object for which the forecast MSE matrices will be
 % computed.
 %
 % * `NPer` [ numeric ] - Number of periods.
@@ -20,7 +20,7 @@ function [X,D,D1] = fmse(This,Time,varargin)
 % Output arguments
 % =================
 %
-% * `M` [ numeric ] - Forecast MSE matrices.
+% * `F` [ numeric ] - Forecast MSE matrices.
 %
 % * `X` [ dbase | tseries ] - Database or tseries with the std deviations
 % of individual variables, i.e. the square roots of the corresponding
@@ -29,9 +29,10 @@ function [X,D,D1] = fmse(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrix `M` as
-% either namedmat object (matrix with named rows and columns) or plain
-% numeric array.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrix `F` as
+% either a [`namedmat`](namedmat/Contents) object (i.e. matrix with named
+% rows and columns) or a plain numeric array.
+
 %
 % Description
 % ============
@@ -53,6 +54,8 @@ else
 end
 nPer = length(range);
 
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
+
 %--------------------------------------------------------------------------
 
 ny = size(This.A,1);
@@ -73,11 +76,6 @@ for iAlt = 1 : nAlt
 end
 X = cumsum(X,3);
 
-yNames = get(This,'yNames');
-if ~isempty(yNames) && strcmpi(opt.output,'namedmat')
-    X = namedmat(X,yNames,yNames);
-end
-
 % Return std devs for individual series.
 templ = tseries();
 if nargout > 1
@@ -87,14 +85,11 @@ if nargout > 1
     end
     % ##### Nov 2013 OBSOLETE and scheduled for removal.
     % All VAR output data will be returned as dbase (struct).
-    if ~isempty(yNames)
-        D = struct();
-        for i = 1 : ny
-            tmp = x(:,i,:);
-            D.(yNames{i}) = replace(templ,tmp(:,:),range(1));
-        end
-    else
-        D = replace(templ,x,range(1),yNames(1,:,ones(1,nAlt)));
+    D = struct();
+    for i = 1 : ny
+        name = This.YNames{i};
+        data = x(:,i,:);
+        D.(name) = replace(templ,data(:,:),range(1));
     end
     if nargout > 2
         % ##### Nov 2013 OBSOLETE and scheduled for removal.
@@ -103,6 +98,15 @@ if nargout > 1
             ['Syntax with more than 2 output arguments is obsolete, ', ...
             'and will be removed from IRIS in the future.']);
     end
+end
+
+if true % ##### MOSW
+    % Convert output matrix to namedmat object if requested.
+    if isNamedMat
+        X = namedmat(X,This.YNames,This.YNames);
+    end
+else
+    % Do nothing.
 end
 
 end

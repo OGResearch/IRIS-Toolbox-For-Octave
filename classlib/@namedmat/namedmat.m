@@ -1,10 +1,11 @@
-classdef namedmat < double
+classdef namedmat < double % >>>>> MOSW classdef namedmat
     % namedmat  Matrices with Named Rows and Columns.
     %
-    % Matrices with named rows and columns are returned by several IRIS
-    % functions, such as [model/acf](model/acf), [model/xsf](model/xsf),
-    % or [model/fmse](model/fmse), to facilitate easy selection of
-    % submatrices by referrring to variable names in rows and columns.
+    % Matrices with named rows and columns are returned as output arguments
+    % from several IRIS functions, such as [model/acf](model/acf),
+    % [model/xsf](model/xsf), or [model/fmse](model/fmse), to facilitate easy
+    % selection of submatrices by referrring to variable names in rows and
+    % columns.
     %
     % Namedmat methods:
     %
@@ -38,10 +39,12 @@ classdef namedmat < double
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
+    
     properties (SetAccess = protected)
         Rownames = {};
         Colnames = {};
     end
+    
     
     methods
         function This = namedmat(X,varargin)
@@ -108,7 +111,7 @@ classdef namedmat < double
                 varargin(1) = [];
                 if ~isempty(This.Rownames) ...
                         && length(This.Rownames) ~= size(X,1)
-                    utils.error('namedmat', ...
+                    utils.error('namedmat:namedmat', ...
                         'Number of row names must match number of rows.');
                 end
                 if ~isempty(varargin)
@@ -116,13 +119,14 @@ classdef namedmat < double
                     varargin(1) = []; %#ok<NASGU>
                     if ~isempty(This.Colnames) ...
                             && length(This.Colnames) ~= size(X,2)
-                        utils.error('namedmat', ...
+                        utils.error('namedmat:namedmat', ...
                             ['Number of column names must match ', ...
                             'number of columns.']);
                     end
                 end
             end
         end
+        
         
         function disp(this)
             disp(double(this));
@@ -140,7 +144,9 @@ classdef namedmat < double
             end
         end
 
+        
         varargout = colnames(varargin)
+        varargout = ctranspose(varargin)
         varargout = cutoff(varargin);
         varargout = horzcat(varargin)
         varargout = plot(varargin)
@@ -149,8 +155,13 @@ classdef namedmat < double
         varargout = subsasgn(varargin)
         varargout = subsref(varargin)
         varargout = transpose(varargin)
-        varargout = vertcat(varargin)
-        
+        varargout = vertcat(varargin)    
     end
+    
+    
+    methods (Static,Hidden)
+        varargout = myselect(varargin)
+    end
+    
     
 end

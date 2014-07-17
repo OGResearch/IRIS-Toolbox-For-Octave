@@ -32,7 +32,7 @@ function This = expand(This,K)
 %--------------------------------------------------------------------------
 
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 nAlt = size(This.Assign,3);
 if ne == 0 && nn == 0
     return

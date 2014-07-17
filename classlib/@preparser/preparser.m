@@ -9,11 +9,11 @@ classdef preparser < userdataobj
 
     properties
         FName = '';
-        code = '';
-        labels = fragileobj();
+        Code = '';
+        Labels = fragileobj();
         Assign = struct();
         Export = {};
-        subs = struct();
+        Subs = struct();
     end
         
     methods
@@ -61,12 +61,12 @@ classdef preparser < userdataobj
             end
             This.Assign = opt.assign;
             % Read the code files and resolve preparser commands.
-            [This.code,This.labels,This.Export,This.subs,This.Comment] = ...
+            [This.Code,This.Labels,This.Export,This.Subs,This.Comment] = ...
                 preparser.readcode(inpFiles, ...
-                opt.assign,This.labels,{},'',opt);
+                opt.assign,This.Labels,{},'',opt);
             % Create a clone of the preparsed code.
             if ~isempty(opt.clone)
-                This.code = preparser.myclone(This.code,opt.clone);
+                This.Code = preparser.myclone(This.Code,opt.clone);
             end
             % Save the pre-parsed file if requested by the user.
             if ~isempty(opt.saveas)
@@ -75,7 +75,8 @@ classdef preparser < userdataobj
         end
         
         function disp(This)
-            fprintf('\tpreparser object <a href="matlab:edit %s">%s</a>\n', ...
+            mosw.fprintf( ...
+                '\tpreparser object <a href="matlab:edit %s">%s</a>\n', ...
                 This.FName,This.FName);
             disp@userdataobj(This);
             disp(' ');

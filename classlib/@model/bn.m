@@ -44,17 +44,11 @@ function Outp = bn(This,Inp,Range,varargin)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('m',@is.model);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@(x) isnumeric(x));
-pp.parse(This,Inp,Range);
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@(x) isnumeric(x));
+pp.parse(Inp,Range);
 
 opt = passvalopt('model.bn',varargin{:});
-
-% Auto set the 'dtrends' option.
-if isequal(opt.dtrends,@auto)
-    opt.dtrends = ~opt.deviation;
-end
 
 %--------------------------------------------------------------------------
 
@@ -97,7 +91,7 @@ for iLoop = 1 : nLoop
         end
         
         nUnit = mynunit(This,iLoop);
-        if ~is.eye(Ta(1:nUnit,1:nUnit))
+        if ~iseye(Ta(1:nUnit,1:nUnit))
             isDiffStat(iLoop) = false;
             continue
         end

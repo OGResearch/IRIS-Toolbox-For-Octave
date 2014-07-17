@@ -63,7 +63,7 @@ function [X,Flag,ErrList,WarnList] = dbfun(Func,D,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('Func',@(x) is.func(x) || ischar(x));
+pp.addRequired('Func',@(x) isfunc(x) || ischar(x));
 pp.addRequired('D',@isstruct);
 pp.parse(Func,D);
 

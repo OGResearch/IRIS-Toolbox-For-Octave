@@ -63,14 +63,14 @@ if ~isempty(c)
     MaxT = max([MaxT,x]);
     MinT = min([MinT,x]);
 end
-    
+
 
     function C = doNonstandardTimeSubs(C0)
         C = '';
         try %#ok<TRYNC>
             c = C0(2:end-1); % Strip out the enclosing curly braces.
             xx = xxProtectedEval(c); % Use protected eval to avoid conflict with workspace.
-            if is.numericscalar(xx) && xx == round(xx)
+            if isintscalar(xx)
                 if round(xx) == 0
                     C = '';
                     return

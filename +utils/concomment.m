@@ -1,4 +1,4 @@
-function C = concomment(To,From,LogSign)
+function C = concomment(To,From,IxLog)
 % concomment  [Not a public function] Text string for contributions comments.
 %
 % Backend IRIS function.
@@ -8,9 +8,9 @@ function C = concomment(To,From,LogSign)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    LogSign = int8(LogSign);
+    IxLog; %#ok<VUNUS>
 catch
-    LogSign = 0;
+    IxLog = false;
 end
 
 % Handle cell inputs.
@@ -26,14 +26,16 @@ if iscellstr(To) || iscellstr(From)
     n = max(nTo,nFrom);
     C = cell(1,n);
     for i = 1 : n
-        C{i} = utils.concomment(To{min(i,end)},From{min(i,end)},LogSign);
+        iTo = To{min(i,end)};
+        iFrom = From{min(i,end)};
+        C{i} = utils.concomment(iTo,iFrom,IxLog);
     end
     return
 end
     
 %--------------------------------------------------------------------------
 
-if LogSign == 0
+if ~IxLog
     % Additive contributions.
     sign = '+';
 else

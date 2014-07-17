@@ -67,18 +67,11 @@ end
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
         Discr = nan(nEqtnXY,2,nAlt);
-        preSample = This.tzero - 1;
-        if issparse(This.occur)
-            nT = size(This.occur,2) / length(This.name);
-        else
-            nT = size(This.occur,3);
-        end
-        postSample = nT - This.tzero;
         nameYXEPos = find(This.nametype < 4);
         isDelog = true;
         iiAlt = Inf;
         for t = 1 : 2
-            tVec = t + (-preSample : postSample);
+            tVec = t + This.Shift;
             X = mytrendarray(This,iiAlt,isDelog,nameYXEPos,tVec);
             L = X;
             Discr(:,t,:) = lhsmrhs(This,X,L);
@@ -96,18 +89,17 @@ end
         eqtnS = eqtnS(This.eqtntype <= 2);
         % Create anonymous funtions for sstate equations.
         for ii = 1 : length(eqtnS)
-            eqtnS{ii} = str2func(['@(x,dx) ',eqtnS{ii}]);
+            eqtnS{ii} = mosw.str2func(['@(x,dx) ',eqtnS{ii}]);
         end
-        ixLog = This.LogSign ~= 0;
         for iiAlt = 1 : nAlt
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
-            dx(ixLog & dx == 0) = 1;
+            dx(This.IxLog & dx == 0) = 1;
             % Evaluate discrepancies btw LHS and RHS of steady-state equations.
             Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtnS)).';
             xk = x;
-            xk(~ixLog) = x(~ixLog) + dx(~ixLog);
-            xk(ixLog) = x(ixLog) .* dx(ixLog);
+            xk(~This.IxLog) = x(~This.IxLog) + dx(~This.IxLog);
+            xk(This.IxLog) = x(This.IxLog) .* dx(This.IxLog);
             Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtnS)).';
         end
     end % doSstateEqtn()

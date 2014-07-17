@@ -17,24 +17,29 @@ This.rhs = {};
 This.label = {};
 This.userRHS = {};
 
-P.code = strtrim(P.code);
-if isempty(P.code)
+P.Code = strtrim(P.Code);
+if isempty(P.Code)
     return
 end
 
-ptn = ['(?<label>',regexppattern(P.labels),')?', ...
-    '\s*(?<lhs>\w+)\s*=\s*(?<rhs>.*?)\s*(?<nan>\|.*?)?;',];
-tok = regexp(P.code,ptn,'names');
+ptn = [ ...
+    '((',regexppattern(P.Labels),')?)\s*', ... % Label.
+    '(\w+)\s*=\s*', ... % LHS.
+    '([^\|;]+)', ... % RHS.
+    '((\|[^;]*)?);', ... % Nan.
+    ];
+tok = regexp(P.Code,ptn,'tokens');
+tok = [tok{:}];
 
-This.label = {tok(:).label};
-This.label = restore(This.label,P.labels,'delimiter=',false);
-This.lhs = {tok(:).lhs};
-This.rhs = {tok(:).rhs};
-This.nan = {tok(:).nan};
+This.label = tok(1:4:end);
+This.label = restore(This.label,P.Labels,'delimiter=',false);
+This.lhs = tok(2:4:end);
+This.rhs = strtrim(tok(3:4:end));
+This.nan = strtrim(tok(4:4:end));
 
 % Preserve the original user-supplied RHS expressions.
 % Add a semicolon at the end.
-This.userRHS = regexprep(This.rhs,'(.)$','$1;');
+This.userRHS = strcat(This.rhs,';');
 
 % Add (:,t) to names (or names with curly braces) not followed by opening
 % bracket or dot and not preceded by !
@@ -43,7 +48,7 @@ This.rhs = regexprep(This.rhs, ...
 
 % Add prefix ? to all names consisting potentially of \w and \. not
 % followed by opening bracket.
-This.rhs = regexprep(This.rhs,'\<[a-zA-Z][\w\.]*\>(?!\()','?$0');
+This.rhs = regexprep(This.rhs,'(\<[a-zA-Z][\w\.]*\>)(?!\()','?$1');
 
 This.rhs = strrep(This.rhs,'#','(t,:)');
 This.rhs = strrep(This.rhs,'?','d.');

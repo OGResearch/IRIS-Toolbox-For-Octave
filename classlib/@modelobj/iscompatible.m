@@ -9,8 +9,14 @@ function Flag = iscompatible(M1,M2)
 
 %--------------------------------------------------------------------------
 
+if true % ##### MOSW
+    className = 'modelobj';
+else
+    className = 'model'; %#ok<UNRCH>
+end
+
 try
-    Flag = isa(M1,'modelobj') && isa(M2,'modelobj') ...
+    Flag = isa(M1,className) && isa(M2,className) ...
         && length(M1.name) == length(M2.name) ...
         && all(strcmp(M1.name,M2.name)) ...
         && all(M1.nametype == M2.nametype);

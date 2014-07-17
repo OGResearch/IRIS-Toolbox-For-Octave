@@ -23,7 +23,7 @@ errorParsing = sprintf( ...
 % * !all_but
 % * !symbolic
 
-code = p.code;
+code = p.Code;
 
 % Mutliple, obsolete or auxiliary syntax.
 code = multipleSyntax_(code);
@@ -32,7 +32,7 @@ code = multipleSyntax_(code);
 % The template can be either a simpel string using a ? to refer to the
 % corresponding variable, e.g. d?, or a Matlab expression in square
 % brackets, e.g. ['d',lower(?)].
-tmpCode = restore(p.code,p.labels);
+tmpCode = restore(p.Code,p.Labels);
 tkn = regexp(tmpCode,'!growthname\s*:=\s*([^;]+);','tokens','once');
 if ~isempty(tkn) && ~isempty(tkn{1})
     s.growthnames = strtrim(tkn{1});
@@ -43,7 +43,7 @@ end
 % Create a function handle for Matlab expressions.
 if s.growthnames(1) == '[' && s.growthnames(end) == ']'
     s.growthnames = strrep(s.growthnames,'?','x');
-    s.growthnames = str2func(['@(x) ',s.growthnames]);
+    s.growthnames = mosw.str2func(['@(x) ',s.growthnames]);
 end
 
 % Read-in log declarations and remove them from `code`. They are considered
@@ -68,7 +68,7 @@ else
 end
 
 % Throw away variable annotations.
-inputblock = cleanup(inputblock,p.labels);
+inputblock = cleanup(inputblock,p.Labels);
 input = uniquelist_(inputblock);
 
 % @ *******************************************************************
@@ -82,14 +82,14 @@ input = uniquelist_(inputblock);
 
 % Read equation blocks.
 ptn = ['!equations\s*', ...
-    '(',regexppattern(p.labels),')?', ...
+    '((',regexppattern(p.Labels),')?)', ...
     '\s*(.*?)\s*(?=!equations|$)'];
 tkn = regexp(code,ptn,'tokens');
 
 nBlock = numel(tkn);
 block = cell(1,nBlock);
 for i = 1 : nBlock
-    s.label{i} = restore(tkn{i}{1},p.labels,'delimiter=',false);
+    s.label{i} = restore(tkn{i}{1},p.Labels,'delimiter=',false);
     s.label{i} = strtrim(s.label{i});
     block{i} = tkn{i}{2};
 end

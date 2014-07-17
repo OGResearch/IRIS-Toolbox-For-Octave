@@ -38,7 +38,7 @@ for iBlk = blkpos(This,This.AssignBlkOrd)
             continue
         end
         
-        value = S(iBlk).namevalue{iName};
+        value = S(iBlk).NameValue{iName};
         if isempty(value)
             continue
         end
@@ -50,7 +50,7 @@ for iBlk = blkpos(This,This.AssignBlkOrd)
         
         try
             x = eval(value);
-            if isnumeric(x) % is.numericscalar(x)
+            if isnumeric(x) % isnumericscalar(x)
                 asgn.(name) = x(:).';
             end
         catch %#ok<CTCH>
@@ -69,7 +69,7 @@ for iBlk = blkpos(This,This.AssignBlkOrd)
         S(iBlk).nametype(inx) = [];
         S(iBlk).namelabel(inx) = [];
         S(iBlk).namealias(inx) = [];
-        S(iBlk).LogSign(inx) = [];
+        S(iBlk).IxLog(inx) = [];
     end
     
 end

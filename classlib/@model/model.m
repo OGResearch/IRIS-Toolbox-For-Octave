@@ -138,7 +138,7 @@ classdef model < modelobj & estimateobj
         % Anonymous function handles to streamlined steady-state equations.
         EqtnS = cell(1,0);
         % A 1-by-nEqtn logical index of equations marked as non-linear.
-        nonlin = false(1,0);
+        IxNonlin = false(1,0);
         % Block-recursive structure for variable names.
         NameBlk = cell(1,0);
         % Block recursive structure for steady-state equations.
@@ -156,7 +156,9 @@ classdef model < modelobj & estimateobj
         % Logical arrays with occurences of variables, shocks and parameters in steady-state equations.
         occurS = sparse(false(0));
         % Location of t=0 page in `occur`.
-        tzero = NaN;
+        % tzero = NaN;
+        % Vector minT : maxT (min lag to max lead).
+        Shift = [];
         % Vectors of measurement variables, transition variables, and shocks in columns of unsolved sysmtem matrices.
         systemid = { ...
             cell(1,0), ...
@@ -258,12 +260,12 @@ classdef model < modelobj & estimateobj
     
     methods (Hidden)
         varargout = hdatainit(varargin)
+        varargout = mychk(varargin)
         varargout = myfdlik(varargin)
         varargout = myfindsspacepos(varargin)
         varargout = myget(varargin)
         varargout = mykalman(varargin)
         varargout = myupdatemodel(varargin)
-        varargout = chk(varargin)
         varargout = datarequest(varargin)
         varargout = disp(varargin)
         varargout = end(varargin)

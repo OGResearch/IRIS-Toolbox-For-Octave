@@ -35,6 +35,7 @@ colNames = This.Colnames;
 This = double(This);
 n = ndims(This);
 This = permute(This,[2,1,3:n]);
+
 This = namedmat(This,colNames,rowNames);
 
 end

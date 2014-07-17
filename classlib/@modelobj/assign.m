@@ -37,12 +37,18 @@ nAlt = size(This.Assign,3);
 Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
+if true % ##### MOSW
+    className = 'modelobj';
+else
+    className = 'model'; %#ok<UNRCH>
+end
+
 if isempty(varargin)
     doReset();
     Assigned = cell(1,0);
     return
     
-elseif n == 1 && isa(varargin{1},'modelobj')
+elseif n == 1 && isa(varargin{1},className)
     % Assign from another model object. The names, name types, and number of
     % parameterisations must match.
     equalNames = isequal(This.name,varargin{1}.name);
@@ -248,15 +254,12 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    Assigned = [Assigned, ...
-        regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    Assigned = [Assigned,strcat('std_',eList(stdcorr(1:ne)))];
     pos = find(tril(ones(ne),-1) == 1);
     temp = zeros(ne);
     temp(pos(stdcorr(ne+1:end))) = 1;
     [i,j] = find(temp == 1);
-    for k = 1 : length(i)
-        Assigned{end+1} = ['corr_',eList{i(k)},'_',eList{j(k)}]; %#ok<AGROW>
-    end
+    Assigned = [Assigned,strcat('corr_',eList(i),'__',eList(j))];
 end
 
 

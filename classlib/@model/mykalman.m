@@ -32,14 +32,13 @@ nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = length(This.solutionid{3});
 ng = sum(This.nametype == 5);
-nEqtn = length(This.eqtn);
 nAlt = size(This.Assign,3);
 nData = size(Inp,3);
 
 %--------------------------------------------------------------------------
 
 s = struct();
-s.isnonlin = Opt.nonlinear > 0 && any(This.nonlin);
+s.isnonlin = Opt.nonlinear > 0 && any(This.IxNonlin);
 s.ahead = Opt.ahead;
 s.isObjOnly = nao == 1;
 
@@ -592,15 +591,17 @@ end
     function doPrepareNonlin()
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
         s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
-        s2.isNonlin = true;
-        s2.QAnch = false(nEqtn,Opt.nonlinear);
-        s2.QAnch(This.nonlin,:) = true;
+        s2.IsDeviation = Opt.deviation;
+        s2.IsAddSstate = Opt.addsstate;
+        s2.IsNonlin = true;
+        s2.QAnch = true(1,Opt.nonlinear);
         s2.YAnch = [];
         s2.XAnch = [];
         s2.EaAnch = [];
         s2.EuAnch = [];
         s2.WghtA = [];
         s2.WghtU = [];
+        s2.NPer = 1;
         s2.NPerNonlin = Opt.nonlinear;
         s2.TPlusK = s2.NPerNonlin - 1;
         s2.progress = [];
@@ -611,7 +612,7 @@ end
         s2.W = [];
         s2.zerothSegment = 0;
         s2.NLoop = nLoop;
-        s2.XLogSign = This.LogSign(real(This.solutionid{2}));
+        s2.IxXLog = This.IxLog(real(This.solutionid{2}));
         s2.segment = 1;
     end % doPrepareNonlin()
 
@@ -747,8 +748,13 @@ end
 
 for t = lastObs : -1 : 2
     j = yInx(:,t);
-    [y1,f1,b1,e1] = kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
-        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),0);    
+    d = [];
+    if ~isempty(S.d)
+        d = S.d(:,min(t,end));
+    end
+    [y1,f1,b1,e1] = ...
+        kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
+        S.f0(:,1,t,1),S.ydelta(:,1,t),d,0);    
     S.y1(~j,t) = y1(~j,1);
     if nf > 0
         S.f1(:,t) = f1;
@@ -870,8 +876,13 @@ S.y2(:,lastObs+1:end) = permute(S.y0(:,1,lastObs+1:end,1),[1,3,4,2]);
 r = zeros(nb,1);
 for t = lastObs : -1 : lastSmooth
     j = S.yindex(:,t);
-    [y2,f2,b2,e2,r] = kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
-        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),r);
+    d = [];
+    if ~isempty(S.d)
+        d = S.d(:,min(t,end));
+    end
+    [y2,f2,b2,e2,r] = ...
+        kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
+        S.f0(:,1,t,1),S.ydelta(:,1,t),d,r);
     S.y2(~j,t) = y2(~j,1);
     if nf > 0
         S.f2(:,t) = f2;

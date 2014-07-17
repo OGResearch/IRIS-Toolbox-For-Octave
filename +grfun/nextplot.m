@@ -54,7 +54,7 @@ if nargin > 0 && ~none
         sub = x;
         current = 0;
     elseif length(x) == 1
-        if ~isempty(varargin) && is.numericscalar(varargin{1})
+        if ~isempty(varargin) && isnumericscalar(varargin{1})
             sub = [x,varargin{1}];
             varargin(1) = [];
         else
@@ -80,7 +80,7 @@ sub = getappdata(fg,'nextplot_sub');
 current = getappdata(fg,'nextplot_current');
 
 if ~isnumeric(sub) || length(sub) ~= 2 ...
-        || ~is.numericscalar(current)
+        || ~isnumericscalar(current)
     error('Cannot use NEXTPLOT in this figure.');
 end
 

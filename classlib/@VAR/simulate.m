@@ -67,10 +67,9 @@ function Outp = simulate(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.parse(This,Inp,Range);
+pp.parse(Inp,Range);
 
 % Panel VAR.
 if ispanel(This)
@@ -159,7 +158,7 @@ end
 if ~opt.contributions
     Outp = hdataobj(This,xRange,nLoop);
 else
-    Outp = hdataobj(This,xRange,nLoop,'Contributions=',@E);
+    Outp = hdataobj(This,xRange,nLoop,'Contributions=',@shock);
 end
 
 % Main loop

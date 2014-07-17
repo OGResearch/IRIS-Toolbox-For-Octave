@@ -1,11 +1,12 @@
 classdef basefigureobj < report.tabularobj
     
+    
     properties
         handle = [];
     end
         
+    
     methods
-        
         function This = basefigureobj(varargin)
             This = This@report.tabularobj(varargin{:});
             This.childof = {'report','align'};
@@ -13,14 +14,14 @@ classdef basefigureobj < report.tabularobj
                 'aspectratio',@auto, ...
                 @(x) isequal(x,@auto) || (isnumeric(x) && length(x) == 2 && all(x > 0)), ...
                 true,...
-                'close',true,@is.logicalscalar,true, ...
+                'close',true,@islogicalscalar,true, ...
                 'figureoptions',{}, ...
                 @(x) iscell(x) && iscellstr(x(1:2:end)), ...
                 true, ...
                 'figurescale','auto', ...
-                @(x) is.numericscalar(x) || strcmpi(x,'auto'), ...
+                @(x) isnumericscalar(x) || strcmpi(x,'auto'), ...
                 true, ...
-                'figuretrim',0, ...
+                'figuretrim',[40,20,40,20], ...
                 @(x) isnumeric(x) && (length(x) == 1 || length(x) == 4) && all(x >= 0), ...
                 true, ...
                 'papertype','usletter', ...
@@ -36,24 +37,31 @@ classdef basefigureobj < report.tabularobj
                 }];
         end
         
+        
         % Process class-specific input arguments.
         function [This,varargin] = specargin(This,varargin)
         end
         
+        
         function This = setoptions(This,varargin)
             This = setoptions@report.tabularobj(This,varargin{:});
             This.options.long = false;
+            if true % ##### MOSW
+                % Do nothing.
+            else
+                % Figure windows must be visible for printing in Octave.
+                This.options.visible = true; %#ok<UNRCH>
+            end
         end
-        
     end
 
+    
     methods (Access=protected,Hidden)
-        
         varargout = mycompilepdf(varargin)
         varargout = mysubplot(varargin)
         varargout = myplot(varargin)
         varargout = speclatexcode(varargin)
-        
     end
+    
     
 end

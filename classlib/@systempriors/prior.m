@@ -98,7 +98,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 pp = inputParser();
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
-pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
+pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
 pp.parse(This,Def,PriorFunc);
 
 opt = passvalopt('systempriors.prior',varargin{:});
@@ -114,8 +114,9 @@ Def0 = Def;
 Def = xxParseNames(This,Def);
 
 try
-    This.eval{end+1} ...
-        = str2func(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
+    
+    This.eval{end+1} = mosw.str2func( ...
+        ['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
 catch %#ok<CTCH>
     xxThrowError(Def0);
 end
