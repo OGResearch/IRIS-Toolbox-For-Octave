@@ -70,8 +70,8 @@ s.lastSmooth = Opt.lastsmooth;
 
 % Tunes on shock means; model solution is expanded within `mypreploglik`.
 tune = Opt.tune;
-s.istune = ~isempty(tune) && any(tune(:) ~= 0);
-if s.istune
+s.IsShkTune = ~isempty(tune) && any(tune(:) ~= 0);
+if s.IsShkTune
     % Add pre-sample.
     nTune = size(tune,3);
     tune = [zeros(ne,1,nTune),tune];
@@ -166,7 +166,7 @@ for iLoop = 1 : nLoop
         end
         
         % Store `Expand` matrices only if there are tunes on mean of shocks.
-        if ~s.istune
+        if ~s.IsShkTune
             s.Expand = [];
         else
             s.Expand = cell(size(This.Expand));
@@ -231,7 +231,7 @@ for iLoop = 1 : nLoop
     % The std dev of the tuned shocks remain unchanged and hence the
     % filtered shocks can differ from its tunes (unless the user specifies zero
     % std dev).
-    if s.istune
+    if s.IsShkTune
         s.tune = tune(:,:,min(iLoop,end));
         [s.d,s.ka,s.kf] = xxShockTunes(s,Opt);
     end
@@ -444,7 +444,7 @@ end
                 yy = bsxfun(@plus,yy,s.D);
             end
             % Add shock tunes to shocks.
-            if s.istune
+            if s.IsShkTune
                 % This line is equivalent to the older version:
                 %     ee = ee + s.tune(:,:,ones(1,ahead));
                 ee = bsxfun(@plus,ee,s.tune);
@@ -496,7 +496,7 @@ end
                 yy = yy + s.D;
             end
             % Add shock tunes to shocks.
-            if s.istune
+            if s.IsShkTune
                 ee = ee + s.tune;
             end
             % Do not use lags in the filter output data.
@@ -545,11 +545,17 @@ end
                 yy = yy + s.D;
             end
             ee = s.e2;
-            ee(:,1:s.lastSmooth) = NaN;
-            % Add shock tunes to shocks.
-            if s.istune
+            preNaN = NaN;
+            if s.IsShkTune
+                % Add shock tunes to shocks.
                 ee = ee + s.tune;
+                % If there were anticipated shocks (imag), we need to create NaN+1i*NaN to
+                % fill in the pre-sample values.
+                if ~isreal(s.tune);
+                    preNaN = preNaN*(1+1i);
+                end
             end
+            ee(:,1:s.lastSmooth) = preNaN;
             hdataassign(HData.M2,iLoop,yy,xx,ee);
         end
         
@@ -652,7 +658,7 @@ for k = 2 : min(S.ahead,nPer-1)
     repeat = ones(1,numel(t));
     a0(:,t,k) = S.Ta*a0(:,t-1,k-1);
     if ~isempty(S.ka)
-        if ~S.istune
+        if ~S.IsShkTune
             a0(:,t,k) = a0(:,t,k) + S.ka(:,repeat);
         else
             a0(:,1,t,k) = a0(:,t,k) + S.ka(:,t);
@@ -660,7 +666,7 @@ for k = 2 : min(S.ahead,nPer-1)
     end
     y0(:,t,k) = S.Z*a0(:,t,k);
     if ~isempty(S.d)
-        if ~S.istune
+        if ~S.IsShkTune
             y0(:,t,k) = y0(:,t,k) + S.d(:,repeat);
         else
             y0(:,t,k) = y0(:,t,k) + S.d(:,t);
@@ -669,7 +675,7 @@ for k = 2 : min(S.ahead,nPer-1)
     if S.retPred
         f0(:,t,k) = S.Tf*a0(:,t-1,k-1);
         if ~isempty(S.kf)
-            if ~S.istune
+            if ~S.IsShkTune
                 f0(:,t,k) = f0(:,t,k) + S.kf(:,repeat);
             else
                 f0(:,t,k) = f0(:,t,k) + S.kf(:,t);
@@ -932,13 +938,13 @@ if isempty(last) || last < 2
     return
 end
 
+Rf = S.Rf;
+Ra = S.Ra;
 if lastAnt > 0
-    R = model.myexpand(S.R,[],lastAnt,S.Expand{:});
+    R = [Rf;Ra];
+    R = model.myexpand(R,[],lastAnt,S.Expand{:});
     Rf = R(1:nf,:);
     Ra = R(nf+1:end,:);
-else
-    Rf = S.Rf;
-    Ra = S.Ra;
 end
 H = S.H;
 

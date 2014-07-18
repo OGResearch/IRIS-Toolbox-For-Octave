@@ -148,7 +148,7 @@ for t = 2 : nPer
         a = Ta*a + K0*pe;
         % Adjust the prediction step for the constant vector.
         if ~isempty(ka)
-            if ~S.istune
+            if ~S.IsShkTune
                 a = a + ka;
             else
                 a = a + ka(:,t);
