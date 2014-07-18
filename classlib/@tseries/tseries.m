@@ -384,6 +384,8 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     
     methods (Hidden)
         disp(varargin)
+        varargout = max(varargin)
+        varargout = min(varargin)
         varargout = mytrim(varargin)
         varargout = cat(varargin)
         varargout = cut(varargin)
@@ -410,6 +412,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
         varargout = mystruct2obj(varargin)
         varargout = binop(varargin)
         varargout = unop(varargin)
+        varargout = unopinx(varargin)
         varargout = catcheck(varargin)
         function dispcomment(varargin)
         end
@@ -512,10 +515,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             x = binop(@ldivide,a,b);
         end
         function x = le(a,b)
-            if isa(b,'sydney')
-                utils.error('tseries:le', ...
-                    'Invalid left-hand side in recursive expression.');
-            end
             x = binop(@le,a,b);
         end
         function x = log(x)
@@ -719,12 +718,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             end
             a = unop(@geomean,x,dim,dim);
         end
-        function x = max(x,dim)
-            if nargin < 2
-                dim = 1;
-            end
-            x = unop(@max,x,dim,[],dim);
-        end
         function x = mean(x,dim)
             if nargin  < 2
                 dim = 1;
@@ -736,12 +729,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                 dim = 1;
             end
             x = unop(@median,x,dim,dim);
-        end
-        function x = min(x,dim)
-            if nargin < 2
-                dim = 1;
-            end
-            x = unop(@min,x,dim,[],dim);
         end
         function x = mode(x,dim)
             if nargin  < 2
