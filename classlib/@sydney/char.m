@@ -120,6 +120,13 @@ else
     C = [C,')'];
 end
 
+if true % ##### MOSW
+    % Do nothing.
+else
+    % Replace `++` and `--` with `+`.
+    C = mosw.ppmm(C); %#ok<UNRCH>
+end
+
 
 % Nested functions...
 
