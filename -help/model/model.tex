@@ -5,18 +5,18 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-m = model(fname,...)
-m = model(m,...)
+M = model(FName,...)
+M = model(M,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
-  \texttt{fname} {[} char \textbar{} cellstr {]} - Name(s) of the model
-  file(s) that will loaded and converted to a new model object.
+  \texttt{FName} {[} char \textbar{} cellstr {]} - Name(s) of model
+  file(s) that will be loaded and converted to a new model object.
 \item
-  \texttt{m} {[} model {]} - Existing model object that will be rebuilt
+  \texttt{M} {[} model {]} - Existing model object that will be rebuilt
   as if from a model file.
 \end{itemize}
 
@@ -25,7 +25,7 @@ m = model(m,...)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{m} {[} model {]} - New model object based on the input model
+  \texttt{M} {[} model {]} - New model object based on the input model
   code file or files.
 \end{itemize}
 

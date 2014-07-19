@@ -224,7 +224,7 @@ for iLoop = 1 : nLoop
     end
 
     % Assign current results.
-    hdataassign(Outp,iLoop,iY,iX,iE,[]);
+    hdataassign(Outp,iLoop, { iY,iX,iE,[] } );
     
 end
 

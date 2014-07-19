@@ -122,13 +122,13 @@ code.LaTeX {
 <div class="headline">Approximate gradient and hessian of log-likelihood function</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[MinusLogLik,Grad,Hess,V] = diffloglik(M,D,Range,PList,...)</code></pre>
+<pre><code>[MinusLogLik,Grad,Hess,V] = diffloglik(M,Inp,Range,PList,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>M</code> [ model ] - Model object whose likelihood function will be differentiated.</p></li>
-<li><p><code>D</code> [ cell | struct ] - Input data from which measurement variables will be taken.</p></li>
+<li><p><code>Inp</code> [ cell | struct ] - Input data from which measurement variables will be taken.</p></li>
 <li><p><code>Range</code> [ numeric ] - Date range on which the likelihood function will be evaluated.</p></li>
-<li><p><code>List</code> [ cellstr ] - List of model parameters with respect to which the likelihood function will be differentiated.</p></li>
+<li><p><code>PList</code> [ cellstr ] - List of model parameters with respect to which the likelihood function will be differentiated.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>

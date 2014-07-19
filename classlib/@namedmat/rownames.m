@@ -29,6 +29,6 @@ function RowNames = rownames(This)
 
 %--------------------------------------------------------------------------
 
-RowNames = This.Rownames;
+RowNames = This.RowNames;
 
 end

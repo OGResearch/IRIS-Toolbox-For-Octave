@@ -476,7 +476,7 @@ end
         This.solution{7}(:,:,iAlt) = U;
         if isNonlin
             This.solution{8}(:,1:nn,iAlt) = Y;
-        end        
+        end
         
         % Necessary initial conditions in xb vector.
         if ~Opt.fast

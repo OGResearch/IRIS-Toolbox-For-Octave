@@ -35,6 +35,9 @@ function Outp = bn(This,Inp,Range,varargin)
 % Description
 % ============
 %
+% The BN decomposition is accurate only if the input data have been
+% generated using unanticipated shocks.
+%
 % Example
 % ========
 %
@@ -56,6 +59,7 @@ nx = length(This.solutionid{2});
 nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = length(This.solutionid{3});
+ng = sum(This.nametype == 5);
 nAlt = size(This.Assign,3);
 Range = Range(1) : Range(end);
 nPer = length(Range);
@@ -79,6 +83,8 @@ isDiffStat = true(1,nAlt);
 
 for iLoop = 1 : nLoop
     
+    
+    g = G(:,:,min(iLoop,end));
     if iLoop <= nAlt
         T = This.solution{1}(:,:,iLoop);
         Tf = T(1:nf,:);
@@ -110,7 +116,7 @@ for iLoop = 1 : nLoop
             D = D(:,repeat);
         end
         if opt.dtrends
-            W = mydtrendsrequest(This,'range',Range,G,iLoop);
+            W = mydtrendsrequest(This,'range',Range,g,iLoop);
         end
     end
     
@@ -148,7 +154,7 @@ for iLoop = 1 : nLoop
     % Store output data #iloop.
     x = [xf;xb];
     e = zeros(ne,nPer);
-    hdataassign(hd,iLoop,y,x,e);
+    hdataassign(hd,iLoop, { y,x,e,[],g } );
     
 end
 

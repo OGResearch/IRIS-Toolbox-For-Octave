@@ -1,4 +1,4 @@
-function [S,D,List,Freq] = xsf(This,Freq,varargin)
+function [S,D,YXVec,Freq] = xsf(This,Freq,varargin)
 % xsf  Power spectrum and spectral density of model variables.
 %
 % Syntax
@@ -84,8 +84,8 @@ nx = length(This.solutionid{2});
 nAlt = size(This.Assign,3);
 
 % Pre-process filter options.
-sspaceVec = [This.solutionvector{1:2}];
-[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,sspaceVec);
+YXVec = myvector(This,'yx');
+[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,YXVec);
 
 if opt.progress
     progress = progressbar('IRIS VAR.xsf progress');
@@ -118,9 +118,6 @@ if ~all(isSol)
         preparser.alt2str(~isSol));
 end
 
-% List of variables in rows and columns of `S` and `D`.
-List = [This.solutionvector{1:2}];
-
 % Convert power spectrum to spectral density.
 if isDensity
     C = acf(This);
@@ -129,9 +126,9 @@ end
 
 % Select variables if requested.
 if isSelect
-    [S,pos] = select(S,List,List,opt.select,opt.select);
+    [S,pos] = namedmat.myselect(S,YXVec,YXVec,opt.select,opt.select);
     pos = pos{1};
-    List = List(pos);
+    YXVec = YXVec(pos);
     if isDensity
         D = D(pos,pos,:,:,:);
     end
@@ -140,9 +137,9 @@ end
 if true % ##### MOSW
     % Convert double arrays to namedmat objects if requested.
     if isNamedMat
-        S = namedmat(S,List,List);
+        S = namedmat(S,YXVec,YXVec);
         try %#ok<TRYNC>
-            D = namedmat(D,List,List);
+            D = namedmat(D,YXVec,YXVec);
         end
     end
 else

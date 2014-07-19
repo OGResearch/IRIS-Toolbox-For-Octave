@@ -51,7 +51,7 @@ end
 pp = inputParser();
 pp.addRequired('RowSelect',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('ColSelect',@(x) ischar(x) || iscellstr(x));
-pp.parse(RowNames,ColNames);
+pp.parse(RowSelect,ColSelect);
 
 %--------------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ rowNames = This.RowNames;
 colNames = This.ColNames;
 
 [X,Pos] = namedmat.myselect(double(This), ...
-    RowSelect,ColSelect,rowNames,colNames);
+    rowNames,colNames,RowSelect,ColSelect);
 
 This = namedmat(X,rowNames(Pos{1}),colNames(Pos{2}));
 

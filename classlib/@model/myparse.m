@@ -661,7 +661,7 @@ end
 
 
 function [Eqtn,EqtnF,EqtnS,EqtnLabel,EqtnAlias, ...
-    EqtnNonlin,IsLoss,MultipleLoss] = xxReadEqtns(S)
+    EqtnNonlin,IsLoss,MultiLoss] = xxReadEqtns(S)
 % xxReadEqtns  Read measurement or transition equations.
 
 Eqtn = cell(1,0);
@@ -671,7 +671,7 @@ EqtnF = cell(1,0);
 EqtnS = cell(1,0);
 EqtnNonlin = false(1,0);
 IsLoss = false;
-MultipleLoss = false;
+MultiLoss = false;
 
 if isempty(S.eqtn)
     return
@@ -720,22 +720,22 @@ end
         % starts with `min(` or `min#(`, the equation must not contain an equal
         % sign (i.e. the LHS must be empty), and the parentheses in min(...) must
         % not contain a comma.
-        findMin = regexp(S.EqtnRhs,'^min#?\([^,\)]\)','once');
-        lossInx = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.EqtnLhs);
-        if sum(lossInx) == 1
+        findMin = regexp(S.EqtnRhs,'^min#?\([^,\)]+\)','once');
+        ixLoss = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.EqtnLhs);
+        if sum(ixLoss) == 1
             IsLoss = true;
             % Order the loss function last.
             list = {'eqtn','eqtnlabel','eqtnalias', ...
                 'EqtnLhs','EqtnRhs','EqtnSign', ...
                 'SstateLhs','SstateRhs','SstateSign'};
             for i = 1 : length(list)
-                S.(list{i}) = [S.(list{i})(~lossInx), ...
-                    S.(list{i})(lossInx)];
+                S.(list{i}) = [S.(list{i})(~ixLoss), ...
+                    S.(list{i})(ixLoss)];
             end
             S.EqtnLhs{end} = '';
             S.EqtnRhs{end} = strrep(S.EqtnRhs{end},'#','');
-        elseif sum(lossInx) > 1
-            MultipleLoss = true;
+        elseif sum(ixLoss) > 1
+            MultiLoss = true;
         end
     end % doLossFunc()
 

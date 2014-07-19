@@ -38,13 +38,16 @@ Outp = bn(M,Inp,Range,...)
   \emph{\texttt{false}} {]} - Input and output data are deviations from
   balanced-growth paths.
 \item
-  \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
-  \texttt{true} \textbar{} \texttt{false} {]} - Measurement variables in
-  input and output data include deterministic trends specified in
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Measurement variables in input and
+  output data include deterministic trends specified in
   \href{modellang/dtrends}{\texttt{!dtrends}} equations.
 \end{itemize}
 
 \paragraph{Description}\label{description}
+
+The BN decomposition is accurate only if the input data have been
+generated using unanticipated shocks.
 
 \paragraph{Example}\label{example}
 

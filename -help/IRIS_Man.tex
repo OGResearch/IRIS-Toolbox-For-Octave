@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{concmath}
-\usepackage{sectsty,amsmath,color}
+\usepackage{sectsty,amsmath,color,amssymb}
 \usepackage[scale=0.7]{geometry}
 \usepackage{inconsolata}
 \usepackage[pdftex,colorlinks,linkcolor=blue]{hyperref}
@@ -91,10 +91,11 @@
 
 \renewcommand{\emph}[1]{\underline{#1}}
 
-\newcommand{\irisversion}{20140619}
+\newcommand{\irisversion}{20140719}
 \newcommand{\matlabversion}{R2010a}
 \newcommand{\tsum}{{\textstyle{\sum}\,}}
 \newcommand{\dollar}{\$}
+\newcommand{\attention}{{\color{red}\bigstar\bigstar\bigstar}}
 
 \RecustomVerbatimEnvironment
   {verbatim}{Verbatim}
@@ -103,6 +104,8 @@
    formatcom=\color{codecolor},xleftmargin=1em}
 
 \setcounter{secnumdepth}{1}	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 \begin{document}
 

@@ -1,4 +1,4 @@
-function Vec = myvector(This,varargin)
+function Vec = myvector(This,Type)
 % myvector  [Not a public function] Vectors of variables in the state space.
 %
 % Backed IRIS function.
@@ -9,47 +9,51 @@ function Vec = myvector(This,varargin)
 
 %--------------------------------------------------------------------------
 
-if ischar(varargin{1})
-    type = lower(varargin{1});
-    switch type
-        case 'y'
-            % Vector of measurement variables.
-            inx = This.nametype == 1;
-            Vec = This.name(inx);
-            Vec = xxWrapInLog(Vec,This.IxLog(inx));
-        case 'x'
-            % Vector of transition variables.
-            pos = real(This.solutionid{2});
-            shift = imag(This.solutionid{2});
-            Vec = This.name(pos);
-            for i = find(shift ~= 0)
-                Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
-            end
-            Vec = xxWrapInLog(Vec,This.IxLog(pos));
-        case 'e'
-            % Vector of shocks.
-            inx = This.nametype == 3;
-            Vec = This.name(inx);
+if ischar(Type)
+    Vec = cell(1,0);
+    IxLog = false(1,0);
+    for iType = lower(Type)
+        switch iType
+            case 'y'
+                % Vector of measurement variables.
+                inx = This.nametype == 1;
+                Vec = [Vec,This.name(inx)]; %#ok<AGROW>
+                IxLog = [IxLog,This.IxLog(inx)]; %#ok<AGROW>
+            case 'x'
+                % Vector of transition variables.
+                pos = real(This.solutionid{2});
+                shift = imag(This.solutionid{2});
+                iVec = This.name(pos);
+                for i = find(shift ~= 0)
+                    iVec{i} = sprintf('%s{%g}',iVec{i},shift(i));
+                end
+                Vec = [Vec,iVec]; %#ok<AGROW>
+                IxLog = [IxLog,This.IxLog(pos)]; %#ok<AGROW>
+            case 'e'
+                % Vector of shocks.
+                inx = This.nametype == 3;
+                Vec = [Vec,This.name(inx)]; %#ok<AGROW>
+                IxLog = [IxLog,This.IxLog(inx)]; %#ok<AGROW>
+            case 'g'
+                % Vector of exogenous variables.
+                inx = This.nametype == 5;
+                Vec = [Vec,This.name(inx)]; %#ok<AGROW>
+                IxLog = [IxLog,This.IxLog(inx)]; %#ok<AGROW>
+        end
     end
 else
-    pos = real(varargin{1});
-    shift = imag(varargin{1});
+    pos = real(Type);
+    shift = imag(Type);
     Vec = This.name(pos);
     for i = find(shift ~= 0)
         Vec{i} = sprintf('%s{%g}',Vec{i},shift(i));
     end
-    Vec = xxWrapInLog(Vec,This.IxLog(pos));
+    IxLog = This.IxLog(pos);
+end
+
+% Wrap log-variables in 'log(...)'.
+if any(IxLog)
+    Vec(IxLog) = regexprep(Vec(IxLog),'(.*)','log($1)');
 end
 
 end
-
-
-% Subfunctions...
-
-
-%**************************************************************************
-
-
-function List = xxWrapInLog(List,IxLog)
-List(IxLog) = strcat('log(',List(IxLog),')');
-end % xxWrapInLog()

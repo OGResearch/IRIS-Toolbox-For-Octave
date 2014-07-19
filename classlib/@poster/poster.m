@@ -16,7 +16,7 @@ classdef poster < getsetobj
 % Constructor
 % ============
 %
-% * [`poster`](poster/poster) - Create new, empty posterior simulation (poster) object.
+% * [`poster`](poster/poster) - Create new empty posterior simulation (poster) object.
 %
 % Evaluating posterior density
 % =============================
@@ -79,7 +79,7 @@ classdef poster < getsetobj
     methods
         
         function This = poster(varargin)
-            % poster  Create new, empty posterior simulation (poster) object.
+            % poster  Create new empty posterior simulation (poster) object.
             %
             % Syntax
             % =======

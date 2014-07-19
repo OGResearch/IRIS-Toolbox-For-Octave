@@ -18,8 +18,8 @@ function [W,List] = ifrf(This,Freq,varargin)
 % Output arguments
 % =================
 %
-% * `W` [ numeric ] - Array with frequency responses of transition
-% variables (in rows) to shocks (in columns).
+% * `W` [ namedmat | numeric ] - Array with frequency responses of
+% transition variables (in rows) to shocks (in columns).
 %
 % * `List` [ cell ] - List of transition variables in rows of the `W`
 % matrix, and list of shocks in columns of the `W` matrix.
@@ -88,9 +88,13 @@ if ~all(isSol)
         preparser.alt2str(~isSol));
 end
 
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
+end
+
 % Variables and shocks in rows and columns of `W`.
-rowNames = [This.solutionvector{1:2}];
-colNames = This.solutionvector{3};
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
     
 % Select variables if requested.
 if isSelect

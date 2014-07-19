@@ -5,7 +5,7 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[C,R,List] = acf(M,___)
+[C,R,List] = acf(M,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -54,27 +54,26 @@
   \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
   up to which ACF will be computed.
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Return matrices \texttt{C} and \texttt{R} as
-  either namedmat objects (matrices with named rows and columns) or
-  plain numeric arrays; if the option \texttt{'select='} is used,
-  \texttt{'output='} is always a namedmat object.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{C} and \texttt{R} as
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return ACF for selected variables only; \texttt{Inf} means all
-  variables.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return ACF for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
 \paragraph{Description}\label{description}
 
-\texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-Alt matrices,
+\texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-NAlt matrices,
 where N is the number of measurement and transition variables (including
 auxiliary lags and leads in the state space vector), P is the order up
 to which the ACF is computed (controlled by the option
-\texttt{'order='}), and Alt is the number of alternative
+\texttt{'order='}), and NAlt is the number of alternative
 parameterisations in the input model object, \texttt{M}. If
 \texttt{'contributions=' true}, the size of the two matrices is
-N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and
+N-by-N-by-(P+1)-by-E-NAlt, where E is the number of measurement and
 transition shocks in the model.
 
 \subparagraph{ACF with linear filters}\label{acf-with-linear-filters}

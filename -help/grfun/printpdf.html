@@ -131,7 +131,6 @@ printpdf(Fig,FileName)</code></pre>
 </ul>
 <h4 id="description">Description</h4>
 <p>The function <code>printpdf</code> prints a figure window to a PDF by first creating a color EPS file and then using the <code>epstopdf</code> utility to convert the EPS to the final PDF. The Painters renderer is used in the Matlab <code>print</code> command.</p>
-<p>The advantage of printing a PDF via EPS with Painters is to crop the unnecessary white margins around the graphics.</p>
 <h4 id="example">Example</h4>
 <pre><code>plot(rand(15));
 printpdf(&#39;myfigure&#39;);</code></pre>

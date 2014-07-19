@@ -25,7 +25,7 @@ classdef plan < userdataobj & getsetobj
     % Constructor
     % ============
     %
-    % * [`plan`](plan/plan) - Create new, empty simulation plan object.
+    % * [`plan`](plan/plan) - Create new empty simulation plan object.
     %
     % Getting information about simulation plans
     % ===========================================
@@ -81,7 +81,7 @@ classdef plan < userdataobj & getsetobj
     methods
         
         function This = plan(varargin)
-            % plan  Create new, empty simulation plan object.
+            % plan  Create new empty simulation plan object.
             %
             % Syntax
             % =======
@@ -100,7 +100,7 @@ classdef plan < userdataobj & getsetobj
             % Output arguments
             % =================
             %
-            % * `P` [ plan ] - New, empty simulation plan.
+            % * `P` [ plan ] - New empty simulation plan.
             %
             % Description
             % ============

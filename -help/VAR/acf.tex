@@ -21,9 +21,11 @@
 
 \begin{itemize}
 \item
-  \texttt{C} {[} numeric {]} - Auto/cross-covariance matrices.
+  \texttt{C} {[} namedmat \textbar{} numeric {]} - Auto/cross-covariance
+  matrices.
 \item
-  \texttt{R} {[} numeric {]} - Auto/cross-correlation matrices.
+  \texttt{R} {[} namedmat \textbar{} numeric {]} -
+  Auto/cross-correlation matrices.
 \end{itemize}
 
 \paragraph{Options}\label{options}
@@ -37,17 +39,17 @@
   \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
   filter that is applied to variables specified by `applyto'.
 \item
-  \texttt{'nfreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
-  Number of equally spaced frequencies over which the `filter' is
-  numerically integrated.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{C} and \texttt{R} as
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
+\item
+  \texttt{'nFreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
+  Number of equally spaced frequencies over which the \texttt{'filter='}
+  is numerically integrated.
 \item
   \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
   up to which ACF will be computed.
-\item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Return matrices \texttt{C} and \texttt{R} as
-  either namedmat objects (matrices with named rows and columns) or
-  plain numeric arrays.
 \item
   \texttt{'progress='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Display progress bar in the command

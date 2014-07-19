@@ -24,13 +24,13 @@
 
 \begin{itemize}
 \item
-  \texttt{X} {[} numeric {]} - Forecast error variance decomposition
-  into absolute contributions of residuals; absolute contributions sum
-  up to the total variance.
+  \texttt{X} {[} namedmat \textbar{} numeric {]} - Forecast error
+  variance decomposition into absolute contributions of residuals;
+  absolute contributions sum up to the total variance.
 \item
-  \texttt{Y} {[} numeric {]} - Forecast error variance decomposition
-  into relative contributions of residuals; relative contributions sum
-  up to \texttt{1}.
+  \texttt{Y} {[} namedmat \textbar{} numeric {]} - Forecast error
+  variance decomposition into relative contributions of residuals;
+  relative contributions sum up to \texttt{1}.
 \item
   \texttt{XX} {[} tseries {]} - Database with a tseries with absolute
   contributions in columns for each VAR variable.
@@ -44,13 +44,22 @@
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Return matrices \texttt{X} and \texttt{Y} as
-  either namedmat objects (matrices with named rows and columns) or
-  plain numeric arrays.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{X} and \texttt{Y} as be
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \end{itemize}
 
 \paragraph{Description}\label{description}
+
+The output matrices \texttt{X} and \texttt{Y} are Ny-by-Ny-by-Nt-by-NAlt
+namedmat objects (matrices with named rows and columns), where Ny is the
+number of endogenous variables (and hence also structural residuals), Nt
+is the number of periods, and NAlt is the number of alternative
+parameterizations.
+
+The output databases \texttt{XX} and \texttt{YY} contain
+Nt-by-Ny-by-NAlt tseries objects (one for each endogenous variable).
 
 \paragraph{Example}\label{example}
 

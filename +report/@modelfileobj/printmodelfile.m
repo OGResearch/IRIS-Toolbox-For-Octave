@@ -22,7 +22,13 @@ end
 br = sprintf('\n');
 
 % Read the text file into a cellstr with EOLs removed.
-file = file2char(This.filename,'cellstr',This.options.lines);
+file = file2char(This.filename,'cellstr');
+if isequal(This.options.lines,@all)
+    nLine = length(file);
+    This.options.lines = 1 : nLine;
+else
+    file = file(This.options.lines);
+end
 
 % Choose escape character.
 escList = '`@?$#~&":|!^[]{}<>';
@@ -36,10 +42,6 @@ if isempty(esc)
 end
 verbEsc = ['\verb',esc];
 
-nLine = length(file);
-if isinf(This.options.lines)
-    This.options.lines = 1 : nLine;
-end
 nDigit = ceil(log10(max(This.options.lines)));
 
 C = [C,'\definecolor{mylabel}{rgb}{0.55,0,0.35}',br];

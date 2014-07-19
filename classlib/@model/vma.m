@@ -79,10 +79,14 @@ if ~all(isSol)
         preparser.alt2str(~isSol));
 end
 
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
+end
+
 % List of variables in rows (measurement and transion) and columns (shocks)
 % of matrix `Phi`.
-rowNames = [This.solutionvector{1:2}];
-colNames = This.solutionvector{3};
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
 
 % Select variables if requested.
 if isSelect

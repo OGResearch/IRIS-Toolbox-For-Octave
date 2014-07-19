@@ -1,5 +1,5 @@
 classdef VAR < varobj
-    % VAR  Vector Autoregressions (VAR) Objects and Functions.
+    % VAR  Vector Autoregressions: VAR Objects and Functions.
     %
     % VAR objects can be constructed as plain VARs or simple panel VARs (with
     % fixed effect), and estimated without or with prior dummy observations
@@ -12,7 +12,7 @@ classdef VAR < varobj
     % Constructor
     % ============
     %
-    % * [`VAR`](VAR/VAR) - Create new, empty reduced-form VAR object.
+    % * [`VAR`](VAR/VAR) - Create new empty reduced-form VAR object.
     %
     % Getting information about VAR objects
     % ======================================
@@ -194,7 +194,7 @@ classdef VAR < varobj
     
     methods
         function This = VAR(varargin)
-            % VAR  Create new, empty reduced-form VAR object.
+            % VAR  Create new empty reduced-form VAR object.
             %
             % Syntax for plain VAR and VARX
             % ==============================

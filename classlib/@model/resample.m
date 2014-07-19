@@ -142,6 +142,7 @@ nx = size(This.solution{1},1);
 nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
+ng = sum(This.nametype == 5);
 
 [T,R,K,Z,H,D,U,Omg] = mysspace(This,1,false);
 
@@ -169,16 +170,14 @@ usrStdcorr = mytune2stdcorr(This,Range,J,opt);
 usrStdcorrInx = ~isnan(usrStdcorr);
 
 % Get tunes on the mean of shocks.
-isShockMean = false;
+isShkMean = false;
 if ~isempty(J)
-    shockMean = datarequest('e',This,J,Range);
-    isShockMean = any(shockMean(:) ~= 0);
+    shkMean = datarequest('e',This,J,Range,1);
+    isShkMean = any(shkMean(:) ~= 0);
 end
 
 % Get exogenous variables in dtrend equations.
-if opt.dtrends
-    G = datarequest('g',This,Inp,Range);
-end
+G = datarequest('g',This,Inp,Range);
 
 % Describe the distribution of initial conditions
 %-------------------------------------------------
@@ -188,17 +187,17 @@ elseif isequal(opt.method,'bootstrap')
     % (1) Bootstrap.
     if ~opt.wild
         % (1a) Efron boostrap.
-        sourceAlpha = datarequest('alpha',This,Inp,Range);
+        sourceAlpha = datarequest('alpha',This,Inp,Range,1);
     else
         % (1b) Wild bootstrap.
-        sourceAlpha0 = datarequest('init',This,Inp,Range);
+        sourceAlpha0 = datarequest('init',This,Inp,Range,1);
         Ea = doUncMean();
     end
 else
     % (2) Monte Carlo or user-supplied sampler.
     if ~isempty(Inp)
         % (2a) User-supplied distribution.
-        [Ea,~,~,Pa] = datarequest('init',This,Inp,Range);
+        [Ea,~,~,Pa] = datarequest('init',This,Inp,Range,1);
         Ex = U*Ea;
         if isempty(Pa)
             opt.randominitcond = false;
@@ -238,7 +237,7 @@ end
 %-------------------------------------
 if isequal(opt.method,'bootstrap')
     % (1) Bootstrap.
-    sourceE = datarequest('e',This,Inp,Range);
+    sourceE = datarequest('e',This,Inp,Range,1);
 else
     % (2) Monte Carlo.
     % TODO: Use `mycombinestdcorr` instead.
@@ -281,10 +280,6 @@ end
 RInx = any(abs(R(:,1:ne)) > 0,1);
 HInx = any(abs(H(:,1:ne)) > 0,1);
 
-if opt.dtrends
-    W = mydtrendsrequest(This,'range',Range,G,Inf);
-end
-
 % Create a command-window progress bar.
 if opt.progress
     progress = progressbar('IRIS model.resample progress');
@@ -295,8 +290,8 @@ end
 for iDraw = 1 : NDraw
     e = doDrawShocks();
     % 
-    if isShockMean
-        e = e + shockMean;
+    if isShkMean
+        e = e + shkMean;
     end
     a0 = doDrawInitCond();
     % Transition variables.
@@ -316,8 +311,10 @@ for iDraw = 1 : NDraw
     if ~opt.deviation
         y = y + D(:,ones(1,nPer));
     end
+    g = G(:,:,min(iDraw,end));
     if opt.dtrends
-        y = y + W(:,:,min(iDraw,end));
+        W = mydtrendsrequest(This,'range',Range,g);
+        y = y + W;
     end
     % Store this draw.
     doStoreDraw();
@@ -424,9 +421,12 @@ Outp = hdata2tseries(hData);
                 a0 = Ea;
             end
         end
-    end % doDrawInitCond().
+    end % doDrawInitCond()
+
 
 %**************************************************************************
+    
+    
     function doStoreDraw()
         if nInit == 0
             init = a0;
@@ -436,9 +436,14 @@ Outp = hdata2tseries(hData);
         xf = [nan(nf,1),w(1:nf,nInit+1:end)];
         xb = U*[init,w(nf+1:end,nInit+1:end)];
         hdataassign(hData,iDraw, ...
+            { ...
             [nan(ny,1),y], ...
             [xf;xb], ...
-            [nan(ne,1),e(:,nInit+1:end)]);
-    end % doStoreDraw().
+            [nan(ne,1),e(:,nInit+1:end)], ...
+            [], ...
+            [nan(ng,1),g], ...
+            });
+    end % doStoreDraw()
+
 
 end

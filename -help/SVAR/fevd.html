@@ -132,16 +132,18 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>X</code> [ numeric ] - Forecast error variance decomposition into absolute contributions of residuals; absolute contributions sum up to the total variance.</p></li>
-<li><p><code>Y</code> [ numeric ] - Forecast error variance decomposition into relative contributions of residuals; relative contributions sum up to <code>1</code>.</p></li>
+<li><p><code>X</code> [ namedmat | numeric ] - Forecast error variance decomposition into absolute contributions of residuals; absolute contributions sum up to the total variance.</p></li>
+<li><p><code>Y</code> [ namedmat | numeric ] - Forecast error variance decomposition into relative contributions of residuals; relative contributions sum up to <code>1</code>.</p></li>
 <li><p><code>XX</code> [ tseries ] - Database with a tseries with absolute contributions in columns for each VAR variable.</p></li>
 <li><p><code>YY</code> [ tseries ] - Database with a tseries with relative contributions in columns for each VAR variable.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrices <code>X</code> and <code>Y</code> as either namedmat objects (matrices with named rows and columns) or plain numeric arrays.</li>
+<li><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>X</code> and <code>Y</code> as be either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</li>
 </ul>
 <h4 id="description">Description</h4>
+<p>The output matrices <code>X</code> and <code>Y</code> are Ny-by-Ny-by-Nt-by-NAlt namedmat objects (matrices with named rows and columns), where Ny is the number of endogenous variables (and hence also structural residuals), Nt is the number of periods, and NAlt is the number of alternative parameterizations.</p>
+<p>The output databases <code>XX</code> and <code>YY</code> contain Nt-by-Ny-by-NAlt tseries objects (one for each endogenous variable).</p>
 <h4 id="example">Example</h4>
 
 </body>

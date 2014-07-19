@@ -122,14 +122,14 @@ code.LaTeX {
 <div class="headline">Differentiate shock response functions w.r.t. specified parameters</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>S = diffsrf(M,RANGE,LIST,...)
-S = diffsrf(M,NPER,LIST,...)</code></pre>
+<pre><code>S = diffsrf(M,Range,PList,...)
+S = diffsrf(M,NPer,PList,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>M</code> [ model ] - Model object whose response functions will be simulated and differentiated.</p></li>
-<li><p><code>RANGE</code> [ numeric ] - Simulation date range with the first date being the shock date.</p></li>
-<li><p><code>NPER</code> [ numeric ] - Number of simulation periods.</p></li>
-<li><p><code>LIST</code> [ char | cellstr ] - List of parameters w.r.t. which the shock response functions will be differentiated.</p></li>
+<li><p><code>Range</code> [ numeric ] - Simulation date range with the first date being the shock date.</p></li>
+<li><p><code>NPer</code> [ numeric ] - Number of simulation periods.</p></li>
+<li><p><code>PList</code> [ char | cellstr ] - List of parameters w.r.t. which the shock response functions will be differentiated.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>

@@ -29,8 +29,8 @@ function This = ctranspose(This)
 
 %--------------------------------------------------------------------------
 
-rowNames = This.Rownames;
-colNames = This.Colnames;
+rowNames = This.RowNames;
+colNames = This.ColNames;
 
 This = double(This);
 n = ndims(This);

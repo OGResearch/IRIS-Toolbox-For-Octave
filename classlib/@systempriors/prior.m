@@ -66,7 +66,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 % Example
 % ========
 %
-% Create a new, empty systemprios object based on an existing model.
+% Create a new empty systemprios object based on an existing model.
 %
 %     s = systempriors(m);
 %

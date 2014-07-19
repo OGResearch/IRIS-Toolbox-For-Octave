@@ -54,19 +54,22 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function varargout = xxIsCointegrated(This,varargin)
 
+
+function varargout = xxIsCointegrated(This,varargin)
 [nx,nb,nAlt] = size(This.solution{1});
 realSmall = getrealsmall();
-xVector = This.solutionvector{2};
+xVec = myvector(This,'x');
 
 varargout = cell(1,length(varargin));
 for iArg = 1 : length(varargin)
     exprn = varargin{iArg};
-    w = preparser.lincomb2vec(exprn,xVector);
+    w = preparser.lincomb2vec(exprn,xVec);
     nf = nx - nb;
     flag = false(1,nAlt);
     for iAlt = 1 : nAlt
@@ -78,5 +81,4 @@ for iArg = 1 : length(varargin)
     end
     varargout{iArg} = flag;
 end
-
-end % xxIsCointegrated().
+end % xxIsCointegrated()

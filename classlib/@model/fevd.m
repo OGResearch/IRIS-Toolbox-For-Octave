@@ -119,8 +119,12 @@ if ~all(isZeroCorr)
         preparser.alt2str(~isZeroCorr));
 end
 
-rowNames = [This.solutionvector{1:2}];
-colNames = This.solutionvector{3};
+if nargout <= 2 && ~isSelect && ~isNamedMat
+    return
+end
+
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
 
 % Convert arrays to tseries databases.
 if nargout > 3

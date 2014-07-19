@@ -14,9 +14,9 @@ function [C,Q] = acf(This,varargin)
 % Output arguments
 % =================
 %
-% * `C` [ numeric ] - Auto/cross-covariance matrices.
+% * `C` [ namedmat | numeric ] - Auto/cross-covariance matrices.
 %
-% * `R` [ numeric ] - Auto/cross-correlation matrices.
+% * `R` [ namedmat | numeric ] - Auto/cross-correlation matrices.
 %
 % Options
 % ========

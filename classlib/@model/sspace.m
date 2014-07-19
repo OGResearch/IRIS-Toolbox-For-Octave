@@ -1,4 +1,4 @@
-function [T,R,K,Z,H,D,U,Omg,list] = sspace(m,varargin)
+function [T,R,K,Z,H,D,U,Omg,List] = sspace(m,varargin)
 % sspace  State-space matrices describing the model solution.
 %
 % Syntax
@@ -102,18 +102,23 @@ if ~opt.triangular
     end
 end
 
-list = m.solutionvector;
-
+ixKeep = true(1,ne);
 if opt.removeinactive
-    active = ~diag(all(Omg == 0,3));
+    ixKeep = ~diag(all(Omg == 0,3));
     R = reshape(R,[nx,ne,size(R,2)/ne]);
-    R = R(:,active,:);
+    R = R(:,ixKeep,:);
     R = R(:,:);
-    H = H(:,active);
-    Omg = Omg(active,active);
-    if nargout > 8
-        list{3} = list{3}(active);
-    end
+    H = H(:,ixKeep);
+    Omg = Omg(ixKeep,ixKeep);
+end
+
+if nargout > 8
+    List = { ...
+        myvector(This,'y'), ...
+        myvector(This,'x'), ...
+        myvector(This,'e'), ...
+        };
+    List{3} = List{3}(ixKeep);
 end
 
 end

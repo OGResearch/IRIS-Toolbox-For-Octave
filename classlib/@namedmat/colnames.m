@@ -29,6 +29,6 @@ function ColNames = colnames(This)
 
 %--------------------------------------------------------------------------
 
-ColNames = This.Colnames;
+ColNames = This.ColNames;
 
 end

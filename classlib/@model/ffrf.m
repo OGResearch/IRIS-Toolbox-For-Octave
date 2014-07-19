@@ -18,8 +18,8 @@ function [F,List] = ffrf(This,Freq,varargin)
 % Output arguments
 % =================
 %
-% * `F` [ numeric ] - Array with frequency responses of transition
-% variables (in rows) to measurement variables (in columns).
+% * `F` [ namedmat | numeric ] - Array with frequency responses of
+% transition variables (in rows) to measurement variables (in columns).
 %
 % * `List` [ cell ] - List of transition variables in rows of the `F`
 % matrix, and list of measurement variables in columns of the `F` matrix.
@@ -109,9 +109,13 @@ else
         'No measurement variables included in calculation of FFRF.');
 end
 
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
+end
+
 % List of variables in rows and columns of `F`.
-rowNames = This.solutionvector{2};
-colNames = This.solutionvector{1};
+rowNames = myvector(This,'x');
+colNames = myvector(This,'y');
 
 % Select requested variables if requested.
 if isSelect

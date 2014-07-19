@@ -1,4 +1,4 @@
-function [CC,RR,List] = acf(This,varargin)
+function [CC,RR,YXVec] = acf(This,varargin)
 % acf  Autocovariance and autocorrelation functions for model variables.
 %
 % Syntax
@@ -128,9 +128,8 @@ end
 CC = nan(ny+nx,ny+nx,opt.order+1,nCont,nAlt);
 
 % Pre-process filter options.
-sspaceVec = [This.solutionvector{1:2}];
-[isFilter,filter,freq,applyTo] = freqdom.applyfilteropt(opt,[],sspaceVec);
-
+YXVec = myvector(This,'yx');
+[isFilter,filter,freq,applyTo] = freqdom.applyfilteropt(opt,[],YXVec);
 
 % Call timedom package to compute autocovariance function.
 isContributions = opt.contributions;
@@ -192,14 +191,11 @@ if nargout > 1
     RR = covfun.cov2corr(CC,'acf');
 end
 
-% Names of variables in rows and columns of `CC` and `RR`.
-List = [This.solutionvector{1:2}];
-
 % Select sub-matrices if requested.
 if isSelect
-    [CC,pos] = namedmat.myselect(CC,List,List,opt.select,opt.select);
+    [CC,pos] = namedmat.myselect(CC,YXVec,YXVec,opt.select,opt.select);
     pos = pos{1};
-    List = List(pos);
+    YXVec = YXVec(pos);
     try %#ok<TRYNC>
         RR = RR(pos,pos,:,:,:);
     end
@@ -208,9 +204,9 @@ end
 if true % ##### MOSW
     % Convert double arrays to namedmat objects if requested.
     if isNamedMat
-        CC = namedmat(CC,List,List);
+        CC = namedmat(CC,YXVec,YXVec);
         try %#ok<TRYNC>
-            RR = namedmat(RR,List,List);
+            RR = namedmat(RR,YXVec,YXVec);
         end
     end
 else

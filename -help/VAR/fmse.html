@@ -122,25 +122,23 @@ code.LaTeX {
 <div class="headline">Forecast mean square error matrices</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[M,X] = fmse(V,NPer)
-[M,X] = fmse(V,Range)</code></pre>
+<pre><code>[F,X] = fmse(V,NPer)
+[F,X] = fmse(V,Range)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><p><code>C</code> [ VAR ] - VAR object for which the forecast MSE matrices will be computed.</p></li>
+<li><p><code>V</code> [ VAR ] - VAR object for which the forecast MSE matrices will be computed.</p></li>
 <li><p><code>NPer</code> [ numeric ] - Number of periods.</p></li>
 <li><p><code>Range</code> [ numeric ] - Date range.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>M</code> [ numeric ] - Forecast MSE matrices.</p></li>
+<li><p><code>F</code> [ namedmat | numeric ] - Forecast MSE matrices.</p></li>
 <li><p><code>X</code> [ dbase | tseries ] - Database or tseries with the std deviations of individual variables, i.e. the square roots of the corresponding diagonal elements of <code>M</code>.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrix <code>M</code> as either namedmat object (matrix with named rows and columns) or plain numeric array.</li>
+<li><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrix <code>F</code> as either a <a href="../namedmat/Contents.html"><code>namedmat</code></a> object (i.e. matrix with named rows and columns) or a plain numeric array.</li>
 </ul>
-<h4 id="description">Description</h4>
-<h4 id="example">Example</h4>
 
 </body>
 <div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>

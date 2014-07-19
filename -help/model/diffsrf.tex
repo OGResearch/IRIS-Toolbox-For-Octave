@@ -5,8 +5,8 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-S = diffsrf(M,RANGE,LIST,...)
-S = diffsrf(M,NPER,LIST,...)
+S = diffsrf(M,Range,PList,...)
+S = diffsrf(M,NPer,PList,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -16,12 +16,12 @@ S = diffsrf(M,NPER,LIST,...)
   \texttt{M} {[} model {]} - Model object whose response functions will
   be simulated and differentiated.
 \item
-  \texttt{RANGE} {[} numeric {]} - Simulation date range with the first
+  \texttt{Range} {[} numeric {]} - Simulation date range with the first
   date being the shock date.
 \item
-  \texttt{NPER} {[} numeric {]} - Number of simulation periods.
+  \texttt{NPer} {[} numeric {]} - Number of simulation periods.
 \item
-  \texttt{LIST} {[} char \textbar{} cellstr {]} - List of parameters
+  \texttt{PList} {[} char \textbar{} cellstr {]} - List of parameters
   w.r.t. which the shock response functions will be differentiated.
 \end{itemize}
 

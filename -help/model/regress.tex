@@ -44,9 +44,10 @@
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrices will be either namedmat
-  objects or plain numeric arrays.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{B} and \texttt{CovRes}
+  as either \href{namedmat/Contents}{\texttt{namedmat}} object
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \end{itemize}
 
 \paragraph{Description}\label{description}
@@ -57,7 +58,7 @@ observations with their uncondional means (the steady-state levels)
 removed from them.
 
 The Lhs and Rhs variables that are log-variables must include
-\texttt{log(...)} explicitly in their names. For instance, if \texttt{X}
+\texttt{log( )} explicitly in their names. For instance, if \texttt{X}
 is declared to be a log variable, then you must refer to \texttt{log(X)}
 or \texttt{log(X\{-1\})}.
 

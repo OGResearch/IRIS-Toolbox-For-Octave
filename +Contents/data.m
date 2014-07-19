@@ -4,6 +4,8 @@
 %
 % * [tseries](tseries/Contents) - Time Series (Tseries) Objects and Functions.
 %
+% * [trec](trec/Contents) - Time-Recursive Subscript Objects for Time-Recursive Expressions.
+%
 % * [dbase](dbase/Contents) - Basic Database Management.
 %
 

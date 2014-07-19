@@ -416,6 +416,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doRetPred()
         % Return pred mean.
         % Note that s.y0, s.f0 and s.a0 include k-sted-ahead predictions if
@@ -450,16 +452,19 @@ end
                 ee = bsxfun(@plus,ee,s.tune);
             end
             % Do not use lags in the prediction output data.
-            hdataassign(HData.M0,predCols,yy,xx,ee);
+            hdataassign(HData.M0,predCols, { yy,xx,ee,[],s.g } );
         end
         
         % Return pred std.
         if s.retPredStd
             % Do not use lags in the prediction output data.
             hdataassign(HData.S0,iLoop, ...
-                s.Dy0*s.V, ...
+                {s.Dy0*s.V, ...
                 [s.Df0;s.Db0]*s.V, ...
-                s.De0*s.V);
+                s.De0*s.V, ...
+                [], ...
+                s.Dg0*s.V, ...
+                });
         end
         
         % Return prediction MSE for xb.
@@ -476,7 +481,8 @@ end
             xx(:,1,:) = NaN;
             ee = s.ec0;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.predcont,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.predcont,':', { yy,xx,ee,[],gg } );
         end
 
     end % doRetPred()
@@ -500,7 +506,7 @@ end
                 ee = ee + s.tune;
             end
             % Do not use lags in the filter output data.
-            hdataassign(HData.M1,iLoop,yy,xx,ee);
+            hdataassign(HData.M1,iLoop, { yy,xx,ee,[],s.g } );
         end
         
         % Return PE contributions to filter step.
@@ -511,13 +517,20 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec1;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.filtercont,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.filtercont,':', { yy,xx,ee,[],gg } );
         end
         
         % Return filter std.
         if s.retFilterStd
             hdataassign(HData.S1,iLoop, ...
-                s.Dy1*s.V, [s.Df1;s.Db1]*s.V, [] );
+                { ...
+                s.Dy1*s.V, ...
+                [s.Df1;s.Db1]*s.V, ...
+                [], ...
+                [], ...
+                s.Dg1*s.V, ...
+                });
         end
         
         % Return filtered MSE for `xb`.
@@ -556,7 +569,7 @@ end
                 end
             end
             ee(:,1:s.lastSmooth) = preNaN;
-            hdataassign(HData.M2,iLoop,yy,xx,ee);
+            hdataassign(HData.M2,iLoop, { yy,xx,ee,[],s.g } );
         end
         
         % Return smooth std.
@@ -565,7 +578,13 @@ end
             s.Df2(:,1:s.lastSmooth) = NaN;
             s.Db2(:,1:s.lastSmooth-1) = NaN;
             hdataassign(HData.S2,iLoop, ...
-                s.Dy2*s.V, [s.Df2;s.Db2]*s.V, [] );
+                { ...
+                s.Dy2*s.V, ...
+                [s.Df2;s.Db2]*s.V, ...
+                [], ...
+                [], ...
+                s.Dg2*s.V, ...
+                });
         end
         
         % Return PE contributions to smooth step.
@@ -576,7 +595,8 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec2;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.C2,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.C2,':', { yy,xx,ee,[],gg } );
         end
         
         objRange = s.objrange & any(s.yindex,1);
@@ -596,9 +616,10 @@ end
 
     function doPrepareNonlin()
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
-        s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
         s2.IsDeviation = Opt.deviation;
-        s2.IsAddSstate = Opt.addsstate;
+        s2.IsAddSstate = s2.simulateOpt.addsstate;
+        s2.anticipate = false;
+        s2 = simulate.antunantfunc(s2,s2.anticipate);
         s2.IsNonlin = true;
         s2.QAnch = true(1,Opt.nonlinear);
         s2.YAnch = [];
@@ -781,6 +802,7 @@ function S = xxFilterMse(S)
 ny = size(S.Z,1);
 nf = size(S.Tf,1);
 nb = size(S.Ta,1);
+ng = size(S.g,1);
 nPer = size(S.y1,2);
 lastObs = S.lastObs;
 
@@ -791,6 +813,7 @@ end
 S.Db1 = nan(nb,nPer); % Diagonal of Pb2.
 S.Df1 = nan(nf,nPer); % Diagonal of Pf2.
 S.Dy1 = nan(ny,nPer); % Diagonal of Py2.
+S.Dg1 = [nan(ng,1),zeros(ng,nPer-1)];
 
 if lastObs < nPer
     S.Pb1(:,:,lastObs+1:nPer) = S.Pb0(:,:,lastObs+1:nPer);
@@ -823,6 +846,7 @@ function S = xxSmoothMse(S)
 ny = size(S.Z,1);
 nf = size(S.Tf,1);
 nb = size(S.Ta,1);
+ng = size(S.g,1);
 nPer = size(S.y1,2);
 lastSmooth = S.lastSmooth;
 lastObs = S.lastObs;
@@ -834,6 +858,7 @@ end
 S.Db2 = nan(nb,nPer); % Diagonal of Pb2.
 S.Df2 = nan(nf,nPer); % Diagonal of Pf2.
 S.Dy2 = nan(ny,nPer); % Diagonal of Py2.
+S.Dg2 = [nan(ng,1),zeros(ng,nPer-1)];
 
 if lastObs < nPer
     S.Pb2(:,:,lastObs+1:nPer) = S.Pb0(:,:,lastObs+1:nPer);

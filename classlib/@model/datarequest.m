@@ -95,12 +95,10 @@ switch lower(Req)
     case 'y'
         % Measurement variables; a star
         y = doData2Y();
-        y = y(:,:,IData);
         varargout{1} = y;
     case 'yg'
         % Measurement variables, and exogenous variables for deterministic trends.
         y = doData2Y();
-        y = y(:,:,IData);
         if ~isempty(LoglikOpt) && isstruct(LoglikOpt) ...
                 && isfield(LoglikOpt,'domain') ...
                 && strncmpi(LoglikOpt.domain,'f',1)
@@ -142,6 +140,11 @@ switch lower(Req)
         varargout{1} = doData2Alpha();
 end
 
+if ~isequal(IData,':') && ~isequal(IData,Inf)
+    for i = 1 : length(varargout)
+        varargout{i} = varargout{i}(:,:,IData);
+    end
+end
 
 % Nested functions...
 

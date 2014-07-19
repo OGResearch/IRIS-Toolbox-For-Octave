@@ -11,7 +11,7 @@ classdef grouping < userdataobj & getsetobj
     % Constructor
     % ============
     %
-    % * [`grouping`](grouping/grouping) - Create new, empty grouping object.
+    % * [`grouping`](grouping/grouping) - Create new empty grouping object.
     %
     % Getting information about groups
     % =================================
@@ -56,7 +56,7 @@ classdef grouping < userdataobj & getsetobj
     methods
         
         function This = grouping(varargin)
-            % grouping  Create new, empty grouping object.
+            % grouping  Create new empty grouping object.
             %
             % Syntax
             % =======
@@ -73,7 +73,7 @@ classdef grouping < userdataobj & getsetobj
             % Output arguments
             % =================
             %
-            % * `G` [ grouping ] - New, empty grouping object.
+            % * `G` [ grouping ] - New empty grouping object.
             %
             % Description
             % ============

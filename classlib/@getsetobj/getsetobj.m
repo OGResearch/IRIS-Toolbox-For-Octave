@@ -7,7 +7,7 @@ classdef getsetobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-    properties
+    properties (Hidden)
         Stamp;
     end
     

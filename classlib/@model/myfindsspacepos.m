@@ -21,14 +21,14 @@ List = regexprep(List,'\s+','');
 
 nz = length(List);
 
-% Combine transition and measurement variables.
-sspaceVec = [This.solutionvector{1:2}];
+% Vector of measurement and transition variables.
+yxVec = myvector(This,'yx');
 
 SspacePos = nan(1,nz);
 NamePos = nan(1,nz);
 for i = 1 : nz
     % Position of the requested variable in the state-space vector.
-    index = strcmp(List{i},sspaceVec);
+    index = strcmp(List{i},yxVec);
     if ~any(index)
         continue
     end
@@ -73,7 +73,7 @@ end
 
 x = SspacePos;
 x(isnan(x)) = [];
-SspaceInx = false(1,length(sspaceVec));
+SspaceInx = false(1,length(yxVec));
 SspaceInx(x) = true;
 
 end

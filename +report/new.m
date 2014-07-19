@@ -1,10 +1,10 @@
 function This = new(varargin)
-% new  Create new, empty report object.
+% new  Create new empty report object.
 %
 % Syntax
 % =======
 %
-%     P = report.new(Caption,...)
+%     P = report.new(Cap,...)
 %
 % Output arguments
 % =================
@@ -12,9 +12,9 @@ function This = new(varargin)
 % * `P` [ struct ] - Report object with function handles through wich
 % the individual report elements can be created.
 %
-% * `Caption` [ char ] - Report caption; the caption will also be printed
-% on the title page of the report if published with the option
-% `'makeTitle='` `true`.
+% * `Cap` [ char ] - Report caption; the caption will also be printed on
+% the title page of the report if published with the option `'makeTitle='`
+% `true`.
 %
 % Options
 % ========

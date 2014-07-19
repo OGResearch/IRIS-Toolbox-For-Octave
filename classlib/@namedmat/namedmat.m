@@ -41,8 +41,8 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
     
     
     properties (SetAccess = protected)
-        Rownames = {};
-        Colnames = {};
+        RowNames = {};
+        ColNames = {};
     end
     
     
@@ -107,18 +107,18 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
             end
             This = This@double(X);
             if ~isempty(varargin)
-                This.Rownames = varargin{1};
+                This.RowNames = varargin{1};
                 varargin(1) = [];
-                if ~isempty(This.Rownames) ...
-                        && length(This.Rownames) ~= size(X,1)
+                if ~isempty(This.RowNames) ...
+                        && length(This.RowNames) ~= size(X,1)
                     utils.error('namedmat:namedmat', ...
                         'Number of row names must match number of rows.');
                 end
                 if ~isempty(varargin)
-                    This.Colnames = varargin{1};
+                    This.ColNames = varargin{1};
                     varargin(1) = []; %#ok<NASGU>
-                    if ~isempty(This.Colnames) ...
-                            && length(This.Colnames) ~= size(X,2)
+                    if ~isempty(This.ColNames) ...
+                            && length(This.ColNames) ~= size(X,2)
                         utils.error('namedmat:namedmat', ...
                             ['Number of column names must match ', ...
                             'number of columns.']);
@@ -131,12 +131,12 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
         function disp(this)
             disp(double(this));
             addspace = false;
-            if ~isempty(this.Rownames)
-                disp(['   Rows:',sprintf(' %s',this.Rownames{:})]);
+            if ~isempty(this.RowNames)
+                disp(['   Rows:',sprintf(' %s',this.RowNames{:})]);
                 addspace = true;
             end
-            if ~isempty(this.Colnames)
-                disp(['Columns:',sprintf(' %s',this.Colnames{:})]);
+            if ~isempty(this.ColNames)
+                disp(['Columns:',sprintf(' %s',this.ColNames{:})]);
                 addspace = true;
             end
             if addspace

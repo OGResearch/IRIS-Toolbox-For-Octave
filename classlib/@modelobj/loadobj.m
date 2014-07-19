@@ -56,11 +56,7 @@ end
 
 
 % Signs of log-linearized variables.
-try
-    if isempty(This.IxLog)
-        This.IxLog = This.log;
-    end
-catch
+if isfield(This,'log')
     This.IxLog = This.log;
 end
 
@@ -71,7 +67,7 @@ try %#ok<TRYNC>
 end
 
 
-try %#ok<TRYNC>
+if isfield(This,'linear')
     This.IsLinear = This.linear;
 end
 

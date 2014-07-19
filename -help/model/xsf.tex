@@ -55,19 +55,18 @@
   Number of equally spaced frequencies over which the `filter' is
   numerically integrated.
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrices \texttt{S} and \texttt{F}
-  will be either namedmat objects or plain numeric arrays; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always a namedmat
-  object.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{S} and \texttt{D} as
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \item
   \texttt{'progress='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Display progress bar on in the command
   window.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return XSF for selected variables only; \texttt{Inf} means all
-  variables.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return XSF for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
 \paragraph{Description}\label{description}

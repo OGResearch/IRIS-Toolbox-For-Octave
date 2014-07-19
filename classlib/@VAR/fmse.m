@@ -20,7 +20,7 @@ function [X,D,D1] = fmse(This,Time,varargin)
 % Output arguments
 % =================
 %
-% * `F` [ numeric ] - Forecast MSE matrices.
+% * `F` [ namedmat | numeric ] - Forecast MSE matrices.
 %
 % * `X` [ dbase | tseries ] - Database or tseries with the std deviations
 % of individual variables, i.e. the square roots of the corresponding

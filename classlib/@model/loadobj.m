@@ -9,6 +9,8 @@ function This = loadobj(This,varargin)
 
 %--------------------------------------------------------------------------
 
+isNotField = @(Obj,Field) isstruct(Obj) && ~isfield(Obj,Field);
+
 This = modelobj.loadobj(This);
 
 if isfield(This,'tzero')
@@ -23,11 +25,9 @@ if isfield(This,'eqtnnonlin')
     This.IxNonlin = This.eqtnnonlin;
 elseif isfield(This,'nonlin')
     This.IxNonlin = This.nonlin;
-else
-    This.IxNonlin = false(size(This.eqtn));
 end
 
-if ~isfield(This,'IxNonlin') || isempty(This.IxNonlin)
+if isNotField(This,'IxNonlin') || isempty(This.IxNonlin)
     This.IxNonlin = false(size(This.eqtn));
 end
 
@@ -35,7 +35,7 @@ if isfield(This,'torigin')
     This.BaseYear = This.torigin;
 end
 
-if ~isfield(This,'BaseYear') || isempty(This.BaseYear)
+if isNotField(This,'BaseYear') || isempty(This.BaseYear)
     This.BaseYear = @config;
 end
 
@@ -122,15 +122,6 @@ end
 if ~isempty(This.Assign) && ne > 0 && isempty(This.stdcorr)
     % Separate std devs from Assign, and create zero cross corrs.
     doStdcorr();
-end
-
-if isempty(This.solutionvector) ...
-        || all(cellfun(@isempty,This.solutionvector))
-    This.solutionvector = { ...
-        myvector(This,'y'), ...
-        myvector(This,'x'), ...
-        myvector(This,'e'), ...
-        };
 end
 
 if isempty(This.multiplier)

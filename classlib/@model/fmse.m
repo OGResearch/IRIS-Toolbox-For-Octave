@@ -1,4 +1,4 @@
-function [X,List,D] = fmse(This,Time,varargin)
+function [X,YXVec,D] = fmse(This,Time,varargin)
 % fmse  Forecast mean square error matrices.
 %
 % Syntax
@@ -20,7 +20,7 @@ function [X,List,D] = fmse(This,Time,varargin)
 % Output arguments
 % =================
 %
-% * `F` [ numeric ] - Forecast MSE matrices.
+% * `F` [ namedmat | numeric ] - Forecast MSE matrices.
 %
 % * `List` [ cellstr ] - List of variables in rows and columns of `M`.
 %
@@ -102,19 +102,23 @@ if nargout > 2
     end
 end
 
-List = [This.solutionvector{1:2}];
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
+end
+
+YXVec = myvector(This,'yx');
 
 % Select variables if requested.
 if isSelect
-    [X,pos] = select(X,List,List,opt.select);
+    [X,pos] = select(X,YXVec,YXVec,opt.select);
     pos = pos{1};
-    List = List(pos);
+    YXVec = YXVec(pos);
 end
 
 if true % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
-        X = namedmat(X,List,List);
+        X = namedmat(X,YXVec,YXVec);
     end
 else
     % Do nothing.

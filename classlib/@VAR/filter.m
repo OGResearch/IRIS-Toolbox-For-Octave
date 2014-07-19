@@ -217,11 +217,11 @@ Outp = hdataobj.hdatafinal(YY);
             iY2(:,p:-1:1) = reshape(iYInit,ny,p);
             iX2 = [nan(nx,p),iX];
             iE2 = [nan(ny,p),iE2];
-            hdataassign(YY.M2,iLoop,iY2,iX2,iE2,[]);
+            hdataassign(YY.M2,iLoop, { iY2,iX2,iE2,[] } );
             if ~opt.meanonly
                 iD2 = covfun.cov2var(iPy2);
                 iD2 = [zeros(ny,p),iD2];
-                hdataassign(YY.S2,iLoop,iD2,[],[],[]);
+                hdataassign(YY.S2,iLoop, { iD2,[],[],[] } );
             end
         end
         if isPred
@@ -232,22 +232,22 @@ Outp = hdataobj.hdatafinal(YY);
             else
                 pos = iLoop;
             end
-            hdataassign(YY.M0,pos,iY0,[],iE0,[]);
+            hdataassign(YY.M0,pos, { iY0,[],iE0,[] } );
             if ~opt.meanonly
                 iD0 = covfun.cov2var(iPy0);
                 iD0 = [zeros(ny,p),iD0];
-                hdataassign(YY.S0,iLoop,iD0,[],[],[]);
+                hdataassign(YY.S0,iLoop, { iD0,[],[],[] } );
             end
         end
         if isFilter
             iY1 = [nan(ny,p),iY1];
             iX1 = [nan(nx,p),iX];
             iE1 = [nan(ny,p),zeros(ny,nPer)];
-            hdataassign(YY.M1,pos,iY1,iX1,iE1,[]);
+            hdataassign(YY.M1,pos, { iY1,iX1,iE1,[] } );
             if ~opt.meanonly
                 iD1 = covfun.cov2var(iPy1);
                 iD1 = [zeros(ny,p),iD1];
-                hdataassign(YY.S1,iLoop,iD1,[],[],[]);
+                hdataassign(YY.S1,iLoop, { iD1,[],[],[] } );
             end
         end
     end % doAssignOutp()

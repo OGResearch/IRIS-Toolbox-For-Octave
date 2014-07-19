@@ -280,14 +280,6 @@ end
 % Check for option conflicts.
 doChkConflicts();
 
-% Get exogenous variables in dtrend equations.
-if ny > 0 && ng > 0 && opt.dtrends
-    G = datarequest('g',This,Inp,Range);
-else
-    G = [];
-end
-nExog = size(G,3);
-
 % Simulation range and plan range must be identical.
 if isPlan
     [yAnch,xAnch,eaReal,eaImag,~,~,s.QAnch,wReal,wImag] = ...
@@ -345,6 +337,10 @@ else
     s.WghtA = [];
     s.WghtU = [];
 end
+
+% Get exogenous variables in dtrend equations.
+G = datarequest('g',This,Inp,Range);
+nExog = size(G,3);
 
 % Total number of cycles.
 nLoop = max([1,nAlt,nInit,nShock,nTune,nExog]);
@@ -437,24 +433,23 @@ for iLoop = 1 : nLoop
     if s.IsNonlin
         % Simulate linear contributions of shocks.
         if opt.contributions
-            usecon = simulate.contributions(s,nPer,opt);
+            useCon = simulate.contributions(s,Inf,opt);
         end
         % Simulate contributions of nonlinearities residually.
         s = simulate.findsegments(s);          
         [s,exitFlag,discr,addFact] = simulate.nonlinear(s,opt);
         if opt.contributions
-            usecon.w(:,:,ne+2) = s.w - sum(usecon.w,3);
-            usecon.y(:,:,ne+2) = s.y - sum(usecon.y,3);
-            s = usecon;
+            useCon.w(:,:,ne+2) = s.w - sum(useCon.w,3);
+            useCon.y(:,:,ne+2) = s.y - sum(useCon.y,3);
+            s = useCon;
         end
     else
         s.Count = 0;
         s.u = [];
-        nPer = Inf;
         if opt.contributions
-            s = simulate.contributions(s,nPer,opt);
+            s = simulate.contributions(s,Inf,opt);
         else
-            s = simulate.linear(s,nPer,opt);
+            s = simulate.linear(s,Inf,opt);
         end
     end
     
@@ -481,7 +476,7 @@ for iLoop = 1 : nLoop
     s.x0 = xInit(:,1,min(iLoop,end));
     
     % Assign output data.
-    doAssignOutput();
+    doAssignOutp();
     
     % Add equation labels to add-factor and discrepancy series.
     if s.IsNonlin && nargout > 2
@@ -542,7 +537,7 @@ end
         inx3 = [any(imag(Yy) ~= 0,3);any(imag(Xx) ~= 0,3)];
         inx = any(inx1 & (inx2 | inx3),2);
         if any(inx)
-            list = [This.solutionvector{1:2}];
+            list = myvector(This,'yx');
             utils.error('model:simulate', ...
                 ['This variable is exogenised to NaN, Inf or ', ...
                 'complex number: ''%s''.'], ...
@@ -567,7 +562,7 @@ end
 %**************************************************************************
 
 
-    function doAssignOutput()
+    function doAssignOutp()
         n = size(s.w,3);
         xf = [nan(nf,1,n),s.w(1:nf,:,:)];
         alp = s.w(nf+1:end,:,:);
@@ -577,19 +572,25 @@ end
         end
         % Add initial condition to xb.
         if opt.contributions
-            % Place initial condition to (ne+1)-th simulation.
             pos = 1 : ne+2;
             xb = [zeros(nb,1,ne+2),xb];
             xb(:,1,ne+1) = s.x0;
+            g = zeros(ng,nPer,ne+2);
+            g(:,:,ne+1) = s.G;
         else
             pos = iLoop;
             xb = [s.x0,xb];
+            g = s.G;
         end
         % Add current results to output data.
         hdataassign(hData,pos, ...
+            { ...
             [nan(ny,1,n),s.y], ...
             [xf;xb], ...
-            [nan(ne,1,n),s.e]);
+            [nan(ne,1,n),s.e], ...
+            [], ...
+            [nan(ng,1,n),g], ...
+            });
     end % doAssignOutput()
 
 

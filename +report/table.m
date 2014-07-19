@@ -26,7 +26,7 @@
 % Inf for either to indicate the default format.
 %
 % * `'colFootnote='` [ cell | *empty* ] - Footnotes for individual dates in
-% the headings of the columns, of column names in user-defined tables; the
+% the headings of the columns, or column names in user-defined tables; the
 % option must be a cell array with date-footnote pairs.
 %
 % * `'colHighlight='` [ numeric | *empty* ] - Dates for which the entire
