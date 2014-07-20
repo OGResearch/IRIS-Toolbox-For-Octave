@@ -108,7 +108,7 @@ switch request
         List = false(1,nEqtn);
         Flag = false;
         opt = struct();
-        opt.linear = This.linear;
+        opt.linear = This.IsLinear;
         opt.select = true;
         for iAlt = 1 : nAlt
             [~,~,nanDeriv] = myderiv(This,eqSelect,iAlt,opt);

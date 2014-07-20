@@ -20,7 +20,7 @@ fprintf('\texogenised data points: %g\n',nx);
 fprintf('\tendogenised data points [real imag]: [%g %g]\n', ...
     nnReal,nnImag);
 fprintf('\tconditioning data points: %g\n',nc);
-fprintf('\tnon-linearised data points: %g\n',nq);
+% fprintf('\tnonlinearised data points: %g\n',nq);
 
 disp@userdataobj(This);
 disp(' ');

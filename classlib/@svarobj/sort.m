@@ -85,7 +85,6 @@ pp.addRequired('Data',@(x) isempty(x) || isstruct(x));
 pp.addRequired('SortBy',@ischar);
 pp.parse(This,Data,SortBy);
 
-
 opt = passvalopt('SVAR.sort',varargin{:});
 isData = nargout > 1 && ~isempty(Data);
 
@@ -170,7 +169,7 @@ end
         catch err
             utils.error('svarobj:sort', ...
                 ['Error evaluating the sort string ''%s''.\n', ...
-                '\tMatlab says: %s'], ...
+                '\tUncle says: %s'], ...
                 SortBy,err.message);
         end
     end % doEvalSort()

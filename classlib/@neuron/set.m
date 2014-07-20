@@ -13,7 +13,6 @@ pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
 pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
 
-
 %--------------------------------------------------------------------------
 
 % Body
@@ -49,7 +48,7 @@ end
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
-        if is.func(Value) || is.numericscalar(Value)
+        if isfunc(Value) || isnumericscalar(Value)
             Value = @(x) Value() ;
             switch query
                 case 'activation'

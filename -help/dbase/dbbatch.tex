@@ -85,6 +85,30 @@ lower case or upper case, use the dot or colon syntax: \texttt{\$.0},
 \texttt{\$.1}, \texttt{\$.2} for ower case, and \texttt{\$:0},
 \texttt{\$:1}, \texttt{\$:2} for upper case.
 
+\subparagraph{Failure}\label{failure}
+
+The function \texttt{dbbatch} will \emph{always} fail when called on a
+sub-database from within a function (as opposed to a script). A
+sub-database is a struct within a struct, a struct within a cell array,
+a struct within an array of structs, etc.
+
+\begin{verbatim}
+function ...
+    d.e = dbbatch(d.e,...);
+    ...
+end
+
+function ...
+    d{1} = dbbatch(d{1},...);
+    ...
+end
+
+function ...
+    d(1) = dbbatch(d(1),...);
+    ...
+end
+\end{verbatim}
+
 \paragraph{Example}\label{example}
 
 For each field (all assumed to be tseries) create a first difference,

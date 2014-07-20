@@ -16,13 +16,13 @@ ni = length(This.INames);
 
 H.Id = { 1:ny, ny+(1:nx), ny+nx+(1:ne), ny+nx+ne+(1:ni) };
 H.Name = [ This.YNames, This.XNames, This.ENames, This.INames ];
-H.Log = false(size(H.Name));
+H.IxLog = false(size(H.Name));
 H.Label = [ This.YNames, This.XNames, This.ENames, This.INames ];
 
-if isequal(H.Contrib,'E')
-    H.Contrib = [ This.ENames, {'Init+Const'} ];
-elseif isequal(H.Contrib,'Y')
-    H.Contrib = This.YNames;
+if isequal(H.Contributions,@shock)
+    H.Contributions = [ This.ENames, {'Init+Const'}, {'Exog'} ];
+elseif isequal(H.Contributions,@measurement)
+    H.Contributions = This.YNames;
 end
 
 end

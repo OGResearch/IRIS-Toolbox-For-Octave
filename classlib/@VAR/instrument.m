@@ -194,12 +194,9 @@ This.Zi = [This.Zi;[C,Z]];
     
     function doParseNameExprn()
         List = regexprep(List,'\s+','');
-        List = regexprep(List,';$','','once');
-        if is.matlab % ##### MOSW
-            List = regexprep(List,'.*','$0;','once');
-        else
-            List = strcat(List,';');
-        end
+        % Make sure each equation ends with a semicolon.
+        List = strcat(List,';');
+        List = strrep(List,';;',';');
         List = regexprep(List,'(?<!:)=',':=','once');
         validDef = true(1,nName);
         for ii = 1 : nName
@@ -228,13 +225,8 @@ This.Zi = [This.Zi;[C,Z]];
     function doXVector()
         xVector = This.YNames;
         for ii = 1 : p-1
-            time = sprintf('{-%g}',ii);
-            if is.matlab % ##### MOSW
-                temp = regexprep(This.YNames,'.*',['$0',time]);
-            else
-                temp = strcat(This.YNames,time);
-            end
-            xVector = [xVector,temp]; %#ok<AGROW>
+            sh = sprintf('{-%g}',ii);
+            xVector = [xVector,strcat(This.YNames,sh)]; %#ok<AGROW>
         end
     end % doXVector()
 

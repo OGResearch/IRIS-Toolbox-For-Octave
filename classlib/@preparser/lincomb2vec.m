@@ -43,12 +43,7 @@ end
 
 
 function [Z,C] = xxLinComb2Vec(S,nlist)
-
-if ismatlab
-    f = str2func(['@(x)',S]);
-else
-    f = mystr2func(['@(x)',S]);
-end
+f = mosw.str2func(['@(x)',S]);
 x = zeros(1,nlist);
 try
     C = f(x);

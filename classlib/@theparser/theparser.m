@@ -8,24 +8,24 @@ classdef theparser
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        fname = '';
-        code = '';
-        caller = '';
-        labels = fragileobj();
+        FName = '';
+        Code = '';
+        Caller = '';
+        Labels = fragileobj();
         Assign = struct();
-        blkName = cell(1,0);
-        altBlkName = cell(0,2);
-        altBlkNameWarn = cell(0,2);
-        nameBlk = false(1,0);
-        nameType = nan(1,0);
-        stdcorrAllowed = false(1,0); % Stdcorr declarations allowed here.
-        stdcorrBasis = false(1,0); % Stdcorr names derived from here.
-        eqtnBlk = false(1,0);
-        flagBlk = false(1,0);
-        flaggable = false(1,0);
-        essential = false(1,0);
-        otherKey = cell(1,0);
-        assignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
+        BlkName = cell(1,0);
+        AltBlkName = cell(0,2);
+        AltBlkNameWarn = cell(0,2);
+        IxNameBlk = false(1,0);
+        NameType = nan(1,0);
+        IxStdcorrAllowed = false(1,0); % Stdcorr declarations allowed here.
+        IxStdcorrBasis = false(1,0); % Stdcorr names derived from these names.
+        IxEqtnBlk = false(1,0);
+        IxLogBlk = false(1,0);
+        IxLoggable = false(1,0);
+        IxEssential = false(1,0);
+        OtherKey = cell(1,0);
+        AssignBlkOrd = cell(1,0); % Order in which values assigned to names will be evaluated.
     end
     
     methods
@@ -48,14 +48,14 @@ classdef theparser
             
             if length(varargin) >= 1 && ischar(varargin{1})
                 % Initialise class-specific theta parser.
-                This.caller = varargin{1};
-                switch This.caller
+                This.Caller = varargin{1};
+                switch This.Caller
                     case 'model'
                         This = model(This);
                     otherwise
                         utils.error('theparser:theparser', ...
                             'Invalid caller class ''%s''.', ...
-                            This.caller);
+                            This.Caller);
                 end
                 
                 % Copy info from preparser.
@@ -66,9 +66,9 @@ classdef theparser
             end
              
             function doCopyPreparser(Pre)
-                This.fname = Pre.fname;
-                This.code = Pre.code;
-                This.labels = Pre.labels;
+                This.FName = Pre.FName;
+                This.Code = Pre.Code;
+                This.Labels = Pre.Labels;
                 This.Assign = Pre.Assign;
             end
         end
@@ -80,7 +80,7 @@ classdef theparser
         varargout = blkpos(varargin)
         varargout = parse(varargin)
         varargout = parseeqtns(varargin)
-        varargout = parseflags(varargin);
+        varargout = parselog(varargin);
         varargout = parsenames(varargin)
         varargout = readblk(varargin)
         varargout = specget(varargin)

@@ -1,10 +1,10 @@
 % VARs  Multivariate Time Series Analysis.
 %
-% * [VAR](VAR/Contents) - Vector Autoregressions (VAR) Objects and Functions.
+% * [VAR](VAR/Contents) - Vector Autoregressions: VAR Objects and Functions.
 %
 % * [SVAR](SVAR/Contents) - Structural Vector Autoregressions: SVAR Objects and Functions.
 %
-% * [BVAR](BVAR/Contents) - Bayesian VAR Package.
+% * [BVAR](BVAR/Contents) - Bayesian VAR Priors: BVAR Package.
 %
 % * [FAVAR](FAVAR/Contents) - Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions.
 %

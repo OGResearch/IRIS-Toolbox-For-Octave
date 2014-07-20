@@ -33,8 +33,8 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'initCond='` [ *`'data'`* | `'fixed'` ] - Use the MSE for the initial
 % conditions if found in the input data or treat the initical conditions as
@@ -78,10 +78,9 @@ function Outp = jforecast(This,Inp,Range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('M',@(varargin)is.model(varargin{:}));
 pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
 pp.addRequired('Range',@isnumeric);
-pp.parse(This,Inp,Range);
+pp.parse(Inp,Range);
 
 Range = Range(1) : Range(end);
 
@@ -99,12 +98,8 @@ opt = passvalopt('model.jforecast',varargin{:});
 isPlanCond = isa(opt.plan,'plan') && ~isempty(opt.plan,'cond');
 isCond = isCond || isPlanCond;
 
-if isequal(opt.dtrends,'auto')
-    opt.dtrends = ~opt.deviation;
-end
-
 % Tunes.
-isSwap = is.plan(opt.plan) && ~isempty(opt.plan,'tunes');
+isSwap = isplan(opt.plan) && ~isempty(opt.plan,'tunes');
 
 % Create real and imag `stdcorr` vectors from user-supplied databases.
 [opt.stdcorrreal,opt.stdcorrimag] = mytune2stdcorr(This,Range,cond,opt);
@@ -119,6 +114,7 @@ nx = size(This.solution{1},1);
 nb = size(This.solution{7},1);
 nf = nx - nb;
 ne = size(This.solution{2},2);
+ng = sum(This.nametype == 5);
 nAlt = size(This.Assign,3);
 nPer = length(Range);
 xRange = Range(1)-1 : Range(end);
@@ -151,12 +147,11 @@ nInitMse = size(aInitMse,4);
 nData = size(xInp,3);
 
 % Get exogenous variables in dtrend equations.
-if opt.dtrends
-    G = datarequest('g',This,Inp,Range);
-end
+G = datarequest('g',This,Inp,Range);
+nExog = size(G,3);
 
 % Determine the total number of cycles.
-nLoop = max([nAlt,nInit,nInitMse,nData]);
+nLoop = max([nAlt,nInit,nInitMse,nData,nExog]);
 
 lastOrZeroFunc = @(x) max([0,find(any(x,1),1,'last')]);
 vecFunc = @(x) x(:);
@@ -276,6 +271,12 @@ s = simulate.antunantfunc(s,opt.anticipate);
 
 for iLoop = 1 : nLoop
     
+    % Get exogenous data and compute deterministic trends if requested.
+    g = G(:,:,min(iLoop,end));
+    if opt.dtrends
+        W = mydtrendsrequest(This,'range',Range,g,iLoop);
+    end
+    
     if iLoop <= nAlt
         % Expansion needed to t+k.
         k = max(1,last) - 1;
@@ -292,10 +293,6 @@ for iLoop = 1 : nLoop
         D = This.solution{6}(:,:,iLoop);
         U = This.solution{7}(:,:,iLoop);
         Ut = U.';
-        % Compute deterministic trends if requested.
-        if opt.dtrends
-            W = mydtrendsrequest(This,'range',Range,G,iLoop);
-        end
         % Swapped system.
         if opt.meanonly
             [M,Ma] = myforecastswap(This,iLoop,ixExog,ixEndog,last);
@@ -451,7 +448,7 @@ for iLoop = 1 : nLoop
     end
     
     % Store final results.
-    doAssignSmooth();
+    doAssignOutp();
     
     if opt.progress
         % Update progress bar.
@@ -486,8 +483,8 @@ doRetOutp();
             any(isnan(xInp(ixXCurr,:,:)),3)];
         inx = any(ix1 & ix2,2);
         if any(inx)
-            yVec = This.solutionvector{1};
-            xVec = This.solutionvector{2};
+            yVec = myvector(This,'y');
+            xVec = myvector(This,'x');
             xVec = xVec(ixXCurr);
             yxVec = [yVec,xVec];
             % Some of the variables are exogenised to NaNs.
@@ -693,7 +690,7 @@ doRetOutp();
     end % doStdcorr().
 
 %**************************************************************************
-    function doAssignSmooth()
+    function doAssignOutp()
         % Final point forecast.
         outpY = [nan(ny,1),y];
         
@@ -714,7 +711,10 @@ doRetOutp();
             outpE = [nan(ne,1)*(1+1i),complex(realOutpE,imagOutpE)];
         end
         
-        hdataassign(hData.mean,iLoop,outpY,outpX,outpE);
+        outpG = [nan(ng,1),g];
+        
+        hdataassign(hData.mean,iLoop, ...
+            { outpY,outpX,outpE,[],outpG } );
         
         % Final std forecast.
         if ~opt.meanonly
@@ -725,10 +725,16 @@ doRetOutp();
             else
                 Deu = complex(Du,De);
             end
+            Dg = zeros(size(g));
+            
             hdataassign(hData.std,iLoop, ...
+                { ...
                 [nan(ny,1),Dy], ...
                 [[nan(nf,1);Dxinit],Dx], ...
-                [nan(ne,1),Deu]);
+                [nan(ne,1),Deu], ...
+                [], ...
+                [nan(ng,1),Dg], ...
+                });
         end
     end % doAssignSmooth().
 

@@ -39,8 +39,8 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *'auto'* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'initCond='` [ *'data'* | 'fixed' ] - Use the MSE for the initial
 % conditions if found in the input data or treat the initical conditions as
@@ -68,8 +68,8 @@ function [func,fcon,Pi] = forecast(m,init,range,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 utils.warning('obsolete', ...
-    ['The function forecast(...) is obsolete, and will be removed from ', ...
-    'a future version of IRIS. Use jforecast(...) instead.']);
+    ['The function forecast( ) is obsolete, and will be removed from ', ...
+    'a future version of IRIS. Use jforecast( ) instead.']);
 
 % Old syntax for conditioning database.
 tune = [];
@@ -91,11 +91,7 @@ end
 % Determine format of input and output data.
 output = 'dbase';
 
-if ischar(opt.dtrends)
-    opt.dtrends = ~opt.deviation;
-end
-
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 ny = size(m.solution{4},1);
 nx = size(m.solution{1},1);
@@ -113,7 +109,7 @@ ndtrends = length(opt.dtrends(:));
 % Get init cond (mean, MSE) for alpha vector.
 % Initmse is [] if MSE is not available.
 [ainitmean,xinitmean,naninit,ainitmse,xinitmse] = ...
-    datarequest('init',m,init,range); %#ok<NASGU,ASGLU>
+    datarequest('init',m,init,range); %#ok<ASGLU>
 if ~isempty(naninit)
     utils.error('model', ...
         'This initial condition is not available: ''%s''.', ...
@@ -313,17 +309,17 @@ for iloop = 1 : nloop
     % Furthest anticipated shock needed.
     if use.anticipate
         use.last = max([use.lastshock,use.lastcond]);
-        use.tplusk = use.last;
+        use.TPlusK = use.last;
     else
         use.last = 0;
-        use.tplusk = max([0,find(any(imag(use.shock) ~= 0),1,'last')]);
+        use.TPlusK = max([0,find(any(imag(use.shock) ~= 0),1,'last')]);
     end
     
     if ne > 0
         % Expansion available up to t+k0.
-        if use.tplusk > size(use.R,2)/ne
+        if use.TPlusK > size(use.R,2)/ne
             [use.R,ans,use.Expand{5}] = ...
-                model.myexpand(use.R,[],use.tplusk-1,use.Expand{1:5},[]); %#ok<NOANS,ASGLU>
+                model.myexpand(use.R,[],use.TPlusK-1,use.Expand{1:5},[]); %#ok<NOANS,ASGLU>
         end
     end
     
@@ -657,6 +653,7 @@ end
 
 %**************************************************************************
 
+realexp = @(x) real(exp(x));
 template = tseries();
 
 if iscell(d)
@@ -692,7 +689,7 @@ end
         end
         % Add comments to time series.
         for i = find(this.nametype <= 3)
-            if isfield(d,this.name{i}) && is.tseries(d.(this.name{i}))
+            if isfield(d,this.name{i}) && istseries(d.(this.name{i}))
                 if ~isempty(comments)
                     temp = comments;
                     nanIndex = ~cellfun(@ischar,temp);
@@ -714,8 +711,8 @@ end
         ylist = this.name(this.nametype == 1);
         for i = 1 : length(realid)
             y = permute(p{1}(i,:,:,:),[2,3,4,1]);
-            if delog && this.log(realid(i))
-                y = exp(y);
+            if delog && this.IxLog(realid(i))
+                y = realexp(y);
             end
             b.(ylist{i}) = replace(template,y,range(1));
         end
@@ -734,8 +731,8 @@ end
         end
         for i = find(imagid == 0)
             x = permute(X(i,:,:,:),[2,3,4,1]);
-            if delog && this.log(realid(i))
-                x = exp(x);
+            if delog && this.IxLog(realid(i))
+                x = realexp(x);
             end
             b.(this.name{realid(i)}) = replace(template,x,startdate);
         end

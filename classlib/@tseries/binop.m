@@ -1,5 +1,5 @@
-function [x,varargout] = binop(fn,a,b,varargin)
-% BINOP  [Not a public function] Binary operators and functions on tseries objects.
+function [X,varargout] = binop(Fn,A,B,varargin)
+% binop  [Not a public function] Binary operators and functions on tseries objects.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,90 +7,94 @@ function [x,varargout] = binop(fn,a,b,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-if isa(a,'tseries') && isa(b,'tseries')
-    asize = size(a.data);
-    bsize = size(b.data);
-    a.data = a.data(:,:);
-    b.data = b.data(:,:);
-    [anper,ancol] = size(a.data);
-    [bnper,bncol] = size(b.data);
+if isa(A,'tseries') && isa(B,'tseries')
+    aSize = size(A.data);
+    bSize = size(B.data);
+    A.data = A.data(:,:);
+    B.data = B.data(:,:);
+    [anper,ancol] = size(A.data);
+    [bnper,bncol] = size(B.data);
     if ancol == 1 && bncol ~= 1
         % First input argument is tseries scalar; second tseries with
         % multiple columns. Expand the first tseries to match the size of the
         % second in 2nd and higher dimensions.
-        a.data = a.data(:,ones([1,bncol]));
-        xsize = bsize;
+        A.data = A.data(:,ones([1,bncol]));
+        xSize = bSize;
     elseif ancol ~= 1 && bncol == 1
         % First tseries non-scalar; second tseries scalar.
-        b.data = b.data(:,ones([1,ancol]));
-        xsize = asize;
+        B.data = B.data(:,ones([1,ancol]));
+        xSize = aSize;
     else
-        xsize = asize;
+        xSize = aSize;
     end
-    startdate = min([a.start,b.start]);
-    enddate = max([a.start+anper-1,b.start+bnper-1]);
-    range = startdate : enddate;
-    adata = rangedata(a,range);
-    bdata = rangedata(b,range);
+    startDate = min([A.start,B.start]);
+    endDate = max([A.start+anper-1,B.start+bnper-1]);
+    range = startDate : endDate;
+    aData = rangedata(A,range);
+    bBata = rangedata(B,range);
     % Evaluate the operator.
-    [xdata,varargout{1:nargout-1}] = fn(adata,bdata,varargin{:});    
+    [xData,varargout{1:nargout-1}] = Fn(aData,bBata,varargin{:});    
     % Create the reu
-    x = a;
+    X = A;
     try
-        x.data = reshape(xdata,[size(xdata,1),xsize(2:end)]);
+        X.data = reshape(xData,[size(xData,1),xSize(2:end)]);
     catch %#ok<CTCH>
         error('iris:tseries', ...
             ['The size of the resulting tseries object must match ', ...
             'the size of one of the input tseries objects.']);
     end
-    x.start = range(1);
-    x.Comment = cell([1,xsize(2:end)]);
-    x.Comment(:) = {''};
-    x = mytrim(x);
+    X.start = range(1);
+    X.Comment = cell([1,xSize(2:end)]);
+    X.Comment(:) = {''};
+    X = mytrim(X);
 else
-    bsize = size(b);
-    asize = size(a);
-    if isa(a,'tseries')
-        x = a;
-        a = a.data;
-        if any(strcmp(func2str(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
-                && bsize(1) == 1 && all(bsize(2:end) == asize(2:end))
+    bSize = size(B);
+    aSize = size(A);
+    fnStr = func2str(Fn);
+    if isa(A,'tseries')
+        X = A;
+        A = A.data;
+        
+        if any(strcmp(fnStr, ...
+                {'times','plus','minus','rdivide','mdivide','power'})) ...
+                && bSize(1) == 1 && all(bSize(2:end) == aSize(2:end))
             % Expand non-tseries data in first dimension to match the number
             % of periods of the tseries object for elementwise operators.
-            b = b(ones([1,asize(1)]),:);
-            b = reshape(b,asize);
+            B = B(ones([1,aSize(1)]),:);
+            B = reshape(B,aSize);
         end
     else
-        x = b;
-        b = b.data;
-        if any(strcmp(func2str(fn),{'times','plus','minus','rdivide','mdivide','power'})) ...
-                && asize(1) == 1 && all(asize(2:end) == bsize(2:end))
+        X = B;
+        B = B.data;
+        if any(strcmp(fnStr, ...
+                {'times','plus','minus','rdivide','mdivide','power'})) ...
+                && aSize(1) == 1 && all(aSize(2:end) == bSize(2:end))
             % Expand non-tseries data in first dimension to match the number
             % of periods of the tseries object for elementwise operators.
-            a = a(ones([1,bsize(1)]),:);
-            a = reshape(a,bsize);
+            A = A(ones([1,bSize(1)]),:);
+            A = reshape(A,bSize);
         end
     end
-    [tmp,varargout{1:nargout-1}] = fn(a,b,varargin{:});
-    tmpsize = size(tmp);
-    xsize = size(x.data);
-    if tmpsize(1) == xsize(1)
+    [tmp,varargout{1:nargout-1}] = Fn(A,B,varargin{:});
+    tmpSize = size(tmp);
+    xSize = size(X.data);
+    if tmpSize(1) == xSize(1)
         % Size of the numeric result in 1st dimension matches the size of the
         % input tseries object. Return a tseries object with the original
         % number of periods.
-        x.data = tmp;
-        if length(tmpsize) ~= length(xsize) ...
-                || any(tmpsize(2:end) ~= xsize(2:end))
-            x.Comment = cell([1,tmpsize(2:end)]);
-            x.Comment(:) = {''};
+        X.data = tmp;
+        if length(tmpSize) ~= length(xSize) ...
+                || any(tmpSize(2:end) ~= xSize(2:end))
+            X.Comment = cell([1,tmpSize(2:end)]);
+            X.Comment(:) = {''};
         end
-        x = mytrim(x);
+        X = mytrim(X);
     else
         % Size of the numeric result has changed in 1st dimension from the
         % size of the input tseries object. Return a numeric array.
-        x = tmp;
+        X = tmp;
     end
 end
 

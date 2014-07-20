@@ -7,16 +7,19 @@ classdef getsetobj
     % -IRIS Toolbox.
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-    properties
+    properties (Hidden)
+        Stamp;
     end
     
     methods
         function This = getsetobj(varargin)
+            This = mystamp(This);
         end
     end
     
     methods
         varargout = get(varargin)
+        varargout = mystamp(varargin)
     end
     
     methods (Access=protected,Hidden)

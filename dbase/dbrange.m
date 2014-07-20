@@ -63,7 +63,6 @@ pp.addRequired('D',@isstruct);
 pp.addRequired('List',@(x) iscellstr(x) || isequal(x,Inf));
 pp.parse(D,List);
 
-
 % Validate options.
 opt = passvalopt('dbase.dbrange',varargin{:});
 
@@ -81,7 +80,7 @@ Rng = cell(1,nFreq);
 nList = numel(List);
 
 for i = 1 : nList
-    if isfield(D,List{i}) && is.tseries(D.(List{i}))
+    if isfield(D,List{i}) && istseries(D.(List{i}))
         x = D.(List{i});
         freqInx = freq(x) == FreqList;
         if any(freqInx)

@@ -144,7 +144,7 @@ code.LaTeX {
 <li><p><code>'chkFmse='</code> [ <code>true</code> | <em><code>false</code></em> ] - Check the condition number of the forecast MSE matrix in each step of the Kalman filter, and return immediately if the matrix is ill-conditioned; see also the option <code>'fmseCondTol='</code>.</p></li>
 <li><p><code>'condition='</code> [ char | cellstr | <em>empty</em> ] - List of conditioning measurement variables. Condition time t|t-1 prediction errors (that enter the likelihood function) on time t observations of these measurement variables.</p></li>
 <li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
-<li><p><code>'dtrends='</code> [ <em>'auto'</em> | <code>true</code> | <code>false</code> ] - Measurement data contain deterministic trends.</p></li>
+<li><p><code>'dtrends='</code> [ <em><code>@auto</code></em> | <code>true</code> | <code>false</code> ] - Measurement data contain deterministic trends.</p></li>
 <li><p><code>'data='</code> [ <code>'predict'</code> | <em><code>'smooth'</code></em> | <code>'predict,smooth'</code> ] - Return smoother data or prediction data or both.</p></li>
 <li><p><code>'fmseCondTol='</code> [ <em><code>eps()</code></em> | numeric ] - Tolerance for the FMSE condition number test; not used unless <code>'chkFmse=' true</code>.</p></li>
 <li><p><code>'initCond='</code> [ <code>'fixed'</code> | <code>'optimal'</code> | <em><code>'stochastic'</code></em> | struct ] - Method or data to initialise the Kalman filter; user-supplied initial condition must be a mean database or a mean-MSE struct.</p></li>

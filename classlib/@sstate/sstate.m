@@ -36,7 +36,7 @@ classdef sstate < userdataobj & getsetobj
     % !if..!else..!end and !switch..!case..!end.
     
     properties
-        fname = '';
+        FName = '';
         Export = {};
         type = cell([1,0]);
         input = cell([1,0]);
@@ -97,9 +97,9 @@ classdef sstate < userdataobj & getsetobj
                 return
             end
             opt = passvalopt('sstate.sstate',varargin{:});
-            This.fname = InpFile;
+            This.FName = InpFile;
             % Preparse sstate file.
-            p = preparser(This.fname, ...
+            p = preparser(This.FName, ...
                 'assign',opt.assign,'saveas',opt.saveas);
             % Parse sstate code.
             This = parse(This,p);

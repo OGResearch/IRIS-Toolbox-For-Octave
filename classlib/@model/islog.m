@@ -4,20 +4,19 @@ function Flag = islog(This,Name)
 % Syntax
 % =======
 %
-%     flag = islog(m,name)
+%     Flag = islog(M,Name)
 %
 % Input arguments
 % ================
 %
-% * `m` [ model ] - Model object.
+% * `M` [ model ] - Model object.
 %
-% * `name` [ char | cellstr ] - Name or names of model variable(s).
+% * `Name` [ char | cellstr ] - Name or names of model variable(s).
 %
 % Output arguments
 % =================
 %
-% * `flag` [ `true` | `false` ] - True for variables declared as log-linear in
-% a non-linear model.
+% * `Flag` [ `true` | `false` ] - True for log variables.
 %
 % Description
 % ============
@@ -31,10 +30,8 @@ function Flag = islog(This,Name)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@(isArg)is.model(isArg));
 pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
-pp.parse(This,Name);
-
+pp.parse(Name);
 
 if ischar(Name)
     Name = regexp(Name,'\w+','match');
@@ -45,16 +42,16 @@ end
 Flag = false(size(Name));
 valid = true(size(Name));
 for i = 1 : length(Name)
-    index = strcmp(This.name,Name{i});
-    if any(index)
-        Flag(i) = This.log(index);
+    ix = strcmp(This.name,Name{i});
+    if any(ix)
+        Flag(i) = This.IxLog(ix);
     else
         valid(i) = false;
     end
 end
 
 if any(~valid)
-    utils.error('model', ...
+    utils.error('model:islog', ...
         ['This name does not exist ', ...
         'in the model object: ''%s''.'], ...
         Name{~valid});

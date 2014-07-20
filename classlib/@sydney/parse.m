@@ -19,7 +19,7 @@ This = SYDNEY;
 This.func = Func;
 
 if strcmp(Func,'sydney.d');
-    This.numd.func = char(varargin{1});
+    This.numd.func = func2str(varargin{1});
     This.numd.wrt = varargin{2};
     varargin(1:2) = [];
 end

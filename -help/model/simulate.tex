@@ -70,7 +70,7 @@ simulations}\label{output-arguments-in-non-linear-simulations}
   \texttt{dboverlay} to combine the simulated output data with the input
   database, or with another database, at the end.
 \item
-  \texttt{'dTrends='} {[} \emph{`auto'} \textbar{} \texttt{true}
+  \texttt{'dTrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
   \textbar{} \texttt{false} {]} - Add deterministic trends to
   measurement variables.
 \item
@@ -87,8 +87,8 @@ simulations}\label{output-arguments-in-non-linear-simulations}
   window.
 \end{itemize}
 
-\paragraph{Options in non-linear
-simualations}\label{options-in-non-linear-simualations}
+\paragraph{Options in nonlinear
+simualations}\label{options-in-nonlinear-simualations}
 
 \begin{itemize}
 \item
@@ -133,9 +133,84 @@ use the option \texttt{'dboverlay='} to combine the output database with
 the input database (i.e.~to include a longer history of data in the
 simulated series).
 
-\subparagraph{Simulations with multilple parameterisations and/or
+\subparagraph{Deviations from steady-state and deterministic
+trends}\label{deviations-from-steady-state-and-deterministic-trends}
+
+By default, both the input database, \texttt{D}, and the output
+database, \texttt{S}, are in full levels and the simulated paths for
+measurement variables include the effect of deterministic trends,
+including possibly exogenous variables. The default behavior can be
+changed by changing the options \texttt{'deviation='} and
+\texttt{'dTrends='}.
+
+The default value for \texttt{'deviation='} is false. If set to
+\texttt{true}, then the input database is expected to contain data in
+the form of deviations from their steady state levels or paths. For
+ordinary variables (i.e.~variables whose log status is \texttt{false}),
+it is $x_t-\Bar x_t$, meaning that a 0 indicates that the variable is at
+its steady state and e.g.~2 indicates the variables exceeds its steady
+state by 2. For log-variables (i.e.~variables whose log status is
+\texttt{true}), it is $x_t/\Bar x_t$, meaning that a 1 indicates that
+the variable is at its steady state and e.g.~1.05 indicates that the
+variable is 5 per cent above its steady state.
+
+The default value for \texttt{'dTrends='} is \texttt{@auto}. This means
+that its behavior depends on the option \texttt{'deviation='}. If
+\texttt{'deviation=' false} then deterministic trends are added to
+measurement variables, unless you manually override this behavior by
+setting \texttt{'dTrends=' false}. On the other hand, if
+\texttt{'deviation=' true} then deterministic trends are not added to
+measurement variables, unless you manually override this behavior by
+setting \texttt{'dTrends=' true}.
+
+\subparagraph{Simulating contributions of
+shocks}\label{simulating-contributions-of-shocks}
+
+Use the option \texttt{'contributions=' true} to request the
+contributions of shocks to the simulated path for each variable; this
+option cannot be used in models with multiple alternative
+parameterizations or with multiple input data sets.
+
+The output database, \texttt{S}, contains Ne+2 columns for each
+variable, where Ne is the number of shocks in the model:
+
+\begin{itemize}
+\item
+  the first columns 1\ldots{}Ne are the contributions of the Ne
+  individual shocks to the respective variable;
+\item
+  column Ne+1 is the contribution of initial condition, th econstant,
+  and deterministic trends, including possibly exogenous variables;
+\item
+  column Ne+2 is the contribution of nonlinearities in nonlinear
+  simulations (it is always zero otherwise).
+\end{itemize}
+
+The contributions are additive for ordinary variables (i.e.~variables
+whose log status is \texttt{false}), and multplicative for log varibles
+(i.e.~variables whose log status is \texttt{true}). In other words, if
+\texttt{S} is the output database from a simulation with
+\texttt{'contributions=' true}, \texttt{X} is an ordinary variable, and
+\texttt{Z} is a log variable, then
+
+\begin{verbatim}
+sum(S.X,2)
+\end{verbatim}
+
+(i.e.~the sum of all Ne+2 contributions in each period, i.e.~summation
+goes across 2nd dimension) reproduces the final simulated path for the
+variable \texttt{X}, whereas
+
+\begin{verbatim}
+prod(S.Z,2)
+\end{verbatim}
+
+(i.e.~the product of all Ne+2 contributions) reproduces the final
+simulated path for the variable \texttt{Z}.
+
+\subparagraph{Simulations with multiple parameterisations and/or
 multiple data
-sets}\label{simulations-with-multilple-parameterisations-andor-multiple-data-sets}
+sets}\label{simulations-with-multiple-parameterisations-andor-multiple-data-sets}
 
 If you simulate a model with \texttt{N} parameterisations and the input
 database contains \texttt{K} data sets (i.e.~each variable is a time

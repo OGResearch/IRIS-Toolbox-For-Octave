@@ -55,7 +55,4 @@ H = text(x,ylim(1)+y*yspan,Cap, ...
    'verticalAlignment',vAlign, ...
    'horizontalAlignment',hAlign);
 
-% Update caption y-position whenever the parent y-lims change.
-grfun.listener(Ax,H,'caption',y);
-
 end

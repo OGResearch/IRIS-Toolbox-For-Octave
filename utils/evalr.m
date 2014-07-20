@@ -46,9 +46,9 @@ Name = strtrim(Expr(1:pos-1));
 Expr = strtrim(Expr(pos+1:end));
 
 X = evalin('caller',Name);
-if ~is.tseries(X)
+if ~istseries(X)
     utils.error('utils:evalr', ...
-        'LHS variables in evalr(...) must be tseries object.');
+        'LHS variables in evalr( ) must be tseries object.');
 elseif ~isempty(X) && any(freq(X) ~= datfreq(Range))
     utils.error('utils:evalr', ...
         ['LHS tseries object and all input dates must have ', ...
@@ -68,7 +68,7 @@ for t = Range
             Expr);
     end
     
-    if is.tseries(value)
+    if istseries(value)
         value = value(t);
     end
     if (isnumeric(value) || islogical(value)) ...

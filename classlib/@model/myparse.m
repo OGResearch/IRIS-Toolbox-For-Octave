@@ -17,8 +17,8 @@ ep = utils.errorparsing(This);
 % Linear or non-linear model. First, check for the presence of th keyword
 % `!linear` in the model code. However, if the user have specified the
 % `'linear='` option in the `model` function, use that.
-if ~isempty(strfind(P.code,'!linear'))
-    P.code = strrep(P.code,'!linear','');
+if ~isempty(strfind(P.Code,'!linear'))
+    P.Code = strrep(P.Code,'!linear','');
     
     % ##### Mar 2014 OBSOLETE and scheduled for removal.
     utils.warning('obsolete', ...
@@ -26,7 +26,7 @@ if ~isempty(strfind(P.code,'!linear'))
         'and this feature will be removed from a future version of IRIS. ', ...
         'Use the option ''linear='' in the function model() instead.']);
 
-    This.linear = true;
+    This.IsLinear = true;
 end
 
 % Run the parser
@@ -59,16 +59,17 @@ This.namealias = [S(nameBlkOrd).namealias];
 % Log variables
 %---------------
 
-This.log = false(size(This.name));
-This.log(This.nametype == 1) = S(1).nameflag;
-This.log(This.nametype == 2) = S(2).nameflag;
+This.IxLog = false(size(This.name));
+This.IxLog(This.nametype == 1) = S(1).IxLog;
+This.IxLog(This.nametype == 2) = S(2).IxLog;
 
 % Reporting equations
 %---------------------
 
 % TODO: Use theparser object instead of preparser object.
 p1 = P;
-p1.code = S(8).blk;
+pos = blkpos(the,'!reporting_equations');
+p1.Code = S(pos).Blk;
 This.outside = reporting(p1);
 
 % Read individual equations
@@ -82,7 +83,7 @@ This.outside = reporting(p1);
 n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS(end+(1:n)) = eqtnS;
 else
     This.EqtnS(end+(1:n)) = {''};
@@ -90,7 +91,7 @@ end
 This.eqtnlabel(end+(1:n)) = eqtnLabel;
 This.eqtnalias(end+(1:n)) = eqtnAlias;
 This.eqtntype(end+(1:n)) = 1;
-This.nonlin(end+(1:n)) = false;
+This.IxNonlin(end+(1:n)) = false;
 
 % Read transition equations; loss function is always moved to the end.
 [eqtn,eqtnF,eqtnS,eqtnLabel,eqtnAlias,nonlin,isLoss,multipleLoss] ...
@@ -104,7 +105,7 @@ end
 n = length(eqtn);
 This.eqtn(end+(1:n)) = eqtn;
 This.eqtnF(end+(1:n)) = eqtnF;
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS(end+(1:n)) = eqtnS;
 else
     This.EqtnS(end+(1:n)) = {''};
@@ -112,7 +113,7 @@ end
 This.eqtnlabel(end+(1:n)) = eqtnLabel;
 This.eqtnalias(end+(1:n)) = eqtnAlias;
 This.eqtntype(end+(1:n)) = 2;
-This.nonlin(end+(1:n)) = nonlin;
+This.IxNonlin(end+(1:n)) = nonlin;
 
 % Check for empty dynamic equations. This may occur if the user types a
 % semicolon between the full equations and its steady state version.
@@ -127,8 +128,8 @@ if isLoss
     doLossPlaceHolders();
 end
 
-% Read deterministic trend equaitons.
-
+% Read deterministic trend equations
+%------------------------------------
 [This,logMissing,invalid,multipleLoss] = xxReadDtrends(This,S(7));
 
 if ~isempty(logMissing)
@@ -163,7 +164,7 @@ end
 % Read autoexogenise definitions (variable/shock pairs)
 %-------------------------------------------------------
 s = S( blkpos(the,'!autoexogenise') );
-[This,ixValid,multiple] = myautoexogenise(This,s.eqtnlhs,s.eqtnrhs);
+[This,ixValid,multiple] = myautoexogenise(This,s.EqtnLhs,s.EqtnRhs);
 if any(~ixValid)
     utils.error('model',[ep, ...
         'Invalid autoexogenise definition: ''%s''.'], ...
@@ -178,24 +179,23 @@ end
 
 % Process equations
 %-------------------
-
 nName = length(This.name);
 nEqtn = length(This.eqtn);
 
 % Delete charcode from equations.
-This.eqtn = cleanup(This.eqtn,P.labels);
+This.eqtn = cleanup(This.eqtn,P.Labels);
 
 % Remove ! from math functions.
 % This is for bkw compatibility only.
 This.eqtnF = strrep(This.eqtnF,'!','');
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS = strrep(This.EqtnS,'!','');
 end
 
 % Remove blank spaces.
 This.eqtn = regexprep(This.eqtn,{'\s+','".*?"'},{'',''});
 This.eqtnF = regexprep(This.eqtnF,'\s+','');
-if ~This.linear
+if ~This.IsLinear
     This.EqtnS = regexprep(This.EqtnS,'\s+','');
 end
 
@@ -225,8 +225,7 @@ if isLoss
 end
 maxT = maxT + 1;
 minT = minT - 1;
-tZero = 1 - minT;
-This.tzero = tZero;
+This.Shift = minT : maxT;
 nt = maxT - minT + 1;
 
 % Replace variables names with codes
@@ -239,12 +238,12 @@ doChkSstateRef();
 This.occur = false(nEqtn,nName*nt);
 This.occurS = false(nEqtn,nName);
 
-[namePatt,nameReplF,nameReplS] = mynamepattrepl(This);
+[namePtn,nameRplF,nameRplS] = mynamepattrepl(This);
 
 % Steady-state equations
 %------------------------
 
-if ~This.linear
+if ~This.IsLinear
     % If no steady-state version exists, copy the full equation.
     isEmptySstate = cellfun(@isempty,This.EqtnS) & This.eqtntype <= 2;
     This.EqtnS(isEmptySstate) = This.eqtnF(isEmptySstate);
@@ -254,29 +253,35 @@ if ~This.linear
         This.EqtnS{lossPos} = '';
     end
     
-    This.EqtnS = regexprep(This.EqtnS,namePatt,nameReplS);
+    This.EqtnS = regexprep(This.EqtnS,namePtn,nameRplS);
     
     % Remove steady-state references from steady-state equations; they are
     % treated as the respective variables.
     This.EqtnS = strrep(This.EqtnS,'&%','%');
     This.EqtnS = strrep(This.EqtnS,'&#','#');
-    
-    % Replace
-    % * `%(!10){@-2}` with `(%(!10)-2*d%(!10))`;
-    % * `#(!10){@+2}` with `(#(!10)*d#(!10)^2)`;
-    % * `#(!10){@-2}` with `(#(!10)/d#(!10)^2)`;
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '%\(!(\d+)\)\{@([\+\-]\d+)\}', ...
-        '(%(!$1)$2*d%(!$1))');
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '#\(!(\d+)\)\{@\+?(\d+)\}', ...
-        '(#(!$1)*d#(!$1)^$2)');
-    This.EqtnS = regexprep(This.EqtnS, ...
-        '#\(!(\d+)\)\{@\-(\d+)\}', ...
-        '(#(!$1)/d#(!$1)^$2)');
+    % Handle sstate references to shocks, which have become &0 by now.
+    This.EqtnS = strrep(This.EqtnS,'&0','0');
     
     % Replace ?(!10) with g(10).
     This.EqtnS = strrep(This.EqtnS,'?(!','g(');
+
+    % Remove control codes from steady-state equations.
+    This.EqtnS = strrep(This.EqtnS,'%(','x(');
+    This.EqtnS = strrep(This.EqtnS,'(!','(');
+    This.EqtnS = strrep(This.EqtnS,'{@','{');
+    
+    % Replace
+    % * `log(exp(x(...)))` with `x(...)`;
+    % * `log(exp(x(...){-2}))` with `x(...){-2}`;
+    % This helps a lot.
+%     This.EqtnS = regexprep(This.EqtnS, ...
+%         'log\(exp\((x\(\d+\)((\{[\+\-]\d+\})?))\)\)', ...
+%         '$1');
+    
+    % Leave lags and leads in sstate equations *semifinished*, e.g.
+    % `x(15){-1}`. They are finalized immediately before evaluation since the
+    % final form of the equations depend on the log status of each variable.
+    % The log status can be now altered in the model object by the user.
     
 else
     This.EqtnS(:) = {''};
@@ -285,7 +290,7 @@ end
 % Full equations
 %----------------
 
-This.eqtnF = regexprep(This.eqtnF,namePatt,nameReplF);
+This.eqtnF = regexprep(This.eqtnF,namePtn,nameRplF);
 
 % Replace %(:,!10,@){@+2} with %(:,!10,@+2) to complete time subscripts.
 This.eqtnF = strrep(This.eqtnF,'@){@','@');
@@ -297,11 +302,6 @@ This.eqtnF = strrep(This.eqtnF,'}',')');
 % and corr names which have not been substituted for.
 doChkUndeclared();
 
-% Replace control codes in steady-state equations.
-This.EqtnS = strrep(This.EqtnS,'%','x');
-This.EqtnS = strrep(This.EqtnS,'#','x');
-This.EqtnS = strrep(This.EqtnS,'!','');
-
 % Replace control codes in full equations.
 % * Exogenous variables `?(!15,:)` -> `g(!15,:)`.
 % * Variables, parameters, shocks `%(:,!15,@+5)` -> `x(:,!15,@+5)`.
@@ -309,10 +309,10 @@ This.EqtnS = strrep(This.EqtnS,'!','');
 % * Time subscripts `@+5` -> `t+5`.
 % * Remove `!` from name positions.
 This.eqtnF = strrep(This.eqtnF,'?(!','g(');
-This.eqtnF = strrep(This.eqtnF,'%','x');
-This.eqtnF = strrep(This.eqtnF,'&x','L');
-This.eqtnF = strrep(This.eqtnF,'@','t');
-This.eqtnF = strrep(This.eqtnF,'!','');
+This.eqtnF = strrep(This.eqtnF,'%(','x(');
+This.eqtnF = strrep(This.eqtnF,'&x(','L(');
+This.eqtnF = strrep(This.eqtnF,',@',',t');
+This.eqtnF = strrep(This.eqtnF,'(:,!','(:,');
 
 % Check for orphan { and & after we have substituted for the valid
 % references.
@@ -367,16 +367,16 @@ if isLoss
     This.eqtn(lossPos:last) = newEqtn(lossPos:last);
     This.eqtnF(lossPos:last) = newEqtnF(lossPos:last);
     
-    if ~This.linear
+    if ~This.IsLinear
         % Add sstate equations. Note that we must at least replace the old equation
         % in `lossPos` position (which was the objective function) with the new
         % equation (which is a derivative wrt to the first variables).
         This.EqtnS(lossPos:last) = newEqtnS(lossPos:last);
         % Update the nonlinear equation flags.
-        This.nonlin(lossPos:last) = NewNonlin(lossPos:last);
+        This.IxNonlin(lossPos:last) = NewNonlin(lossPos:last);
     end
     
-    % Update occurence arrays with new equations.
+    % Update occ arrays to include the new equations.
     This = myoccurrence(This,lossPos:last);
 end
 
@@ -413,8 +413,10 @@ This.nametype = floor(This.nametype);
 
     function doChkTimeSsref()
         % Check for { in full and steady-state equations.
+        isGrowth = false;
+        eqtnS = myfinaleqtns(This,isGrowth);
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'{')) ...
-            | ~cellfun(@isempty,strfind(This.EqtnS,'{'));
+            | ~cellfun(@isempty,strfind(eqtnS,'{'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid time subscript ', ...
@@ -423,7 +425,7 @@ This.nametype = floor(This.nametype);
         end
         % Check for & and $ in full and steady-state equations.
         inx = ~cellfun(@isempty,strfind(This.eqtnF,'&')) ...
-            | ~cellfun(@isempty,strfind(This.EqtnS,'&'));
+            | ~cellfun(@isempty,strfind(eqtnS,'&'));
         if any(inx)
             utils.error('model',[ep, ...
                 'Misplaced or invalid steady-state reference ', ...
@@ -468,8 +470,8 @@ This.nametype = floor(This.nametype);
         tempCell(:) = {''};
         S(pos).namelabel = tempCell;
         S(pos).namealias = tempCell;
-        S(pos).namevalue = tempCell;
-        S(pos).nameflag = false(1,nAdd);
+        S(pos).NameValue = tempCell;
+        S(pos).IxLog = false(1,nAdd);
         
     end % doDeclareParameters()
 
@@ -545,7 +547,7 @@ This.nametype = floor(This.nametype);
         func = @(c) ~cellfun(@(x) isempty(strfind(x,'&')),c);
         inx = func(This.eqtnF);
         % Not allowed in linear models.
-        if This.linear
+        if This.IsLinear
             if any(inx)
                 utils.error('model',[ep, ...
                     'Steady-state references not allowed ', ...
@@ -606,7 +608,7 @@ This.nametype = floor(This.nametype);
         doInsert('nametype',2);
         doInsert('namelabel',{''});
         doInsert('namealias',{''});
-        doInsert('log',false);
+        doInsert('IxLog',false);
         doInsert('multiplier',true);
         % Loss function is always ordered last among transition equations.
         lossPos = length(This.eqtn);
@@ -619,15 +621,18 @@ This.nametype = floor(This.nametype);
         This.EqtnS(end+(1:nAddEqtn)) = {''};
         This.eqtnlabel(end+(1:nAddEqtn)) = {''};
         This.eqtnalias(end+(1:nAddEqtn)) = {''};
-        This.nonlin(end+(1:nAddEqtn)) = false;
+        This.IxNonlin(end+(1:nAddEqtn)) = false;
         This.eqtntype(end+(1:nAddEqtn)) = 2;
+        
+        
         function doInsert(Field,New)
             if length(New) == 1 && nAddName > 1
                 New = repmat(New,1,nAddName);
             end
             This.(Field) = [This.(Field)(preInx), ...
                 New,This.(Field)(postInx)];
-        end
+        end % doInsert()
+        
         
     end % doLossPlaceHolders()
 
@@ -656,7 +661,7 @@ end
 
 
 function [Eqtn,EqtnF,EqtnS,EqtnLabel,EqtnAlias, ...
-    EqtnNonlin,IsLoss,MultipleLoss] = xxReadEqtns(S)
+    EqtnNonlin,IsLoss,MultiLoss] = xxReadEqtns(S)
 % xxReadEqtns  Read measurement or transition equations.
 
 Eqtn = cell(1,0);
@@ -666,7 +671,7 @@ EqtnF = cell(1,0);
 EqtnS = cell(1,0);
 EqtnNonlin = false(1,0);
 IsLoss = false;
-MultipleLoss = false;
+MultiLoss = false;
 
 if isempty(S.eqtn)
     return
@@ -681,55 +686,56 @@ end
 Eqtn = S.eqtn;
 EqtnLabel = S.eqtnlabel;
 EqtnAlias = S.eqtnalias;
-EqtnNonlin = strcmp(S.eqtnsign,'=#');
+EqtnNonlin = strcmp(S.EqtnSign,'=#');
 
 neqtn = length(S.eqtn);
 EqtnF = strfun.emptycellstr(1,neqtn);
 EqtnS = strfun.emptycellstr(1,neqtn);
 for iEq = 1 : neqtn
-    if ~isempty(S.eqtnlhs{iEq})
+    if ~isempty(S.EqtnLhs{iEq})
         sign = '+';
-        if any(S.eqtnrhs{iEq}(1) == '+-')
+        if any(S.EqtnRhs{iEq}(1) == '+-')
             sign = '';
         end
-        EqtnF{iEq} = ['-(',S.eqtnlhs{iEq},')',sign,S.eqtnrhs{iEq}];
+        EqtnF{iEq} = ['-(',S.EqtnLhs{iEq},')',sign,S.EqtnRhs{iEq}];
     else
-        EqtnF{iEq} = S.eqtnrhs{iEq};
+        EqtnF{iEq} = S.EqtnRhs{iEq};
     end
-    if ~isempty(S.sstaterhs{iEq})
-        if ~isempty(S.sstatelhs{iEq})
+    if ~isempty(S.SstateRhs{iEq})
+        if ~isempty(S.SstateLhs{iEq})
             sign = '+';
-            if any(S.sstaterhs{iEq}(1) == '+-')
+            if any(S.SstateRhs{iEq}(1) == '+-')
                 sign = '';
             end
-            EqtnS{iEq} = ['-(',S.sstatelhs{iEq},')',sign,S.sstaterhs{iEq}];
+            EqtnS{iEq} = ['-(',S.SstateLhs{iEq},')',sign,S.SstateRhs{iEq}];
         else
-            EqtnS{iEq} = S.sstaterhs{iEq};
+            EqtnS{iEq} = S.SstateRhs{iEq};
         end
     end
 end
 
 
     function doLossFunc()
-        % doLossFunc  Find loss function amongst equations; the loss
-        % function starts with `min(` or `min#(` and the expression must
-        % not have an equal sign, i.e. the LHS must be empty.
-        findMin = regexp(S.eqtnrhs,'^min#?\(','once');
-        lossInx = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.eqtnlhs);
-        if sum(lossInx) == 1
+        % doLossFunc  Find loss function amongst equations. The loss function
+        % starts with `min(` or `min#(`, the equation must not contain an equal
+        % sign (i.e. the LHS must be empty), and the parentheses in min(...) must
+        % not contain a comma.
+        findMin = regexp(S.EqtnRhs,'^min#?\([^,\)]+\)','once');
+        ixLoss = ~cellfun(@isempty,findMin) & cellfun(@isempty,S.EqtnLhs);
+        if sum(ixLoss) == 1
             IsLoss = true;
             % Order the loss function last.
             list = {'eqtn','eqtnlabel','eqtnalias', ...
-                'eqtnlhs','eqtnrhs','eqtnsign', ...
-                'sstatelhs','sstaterhs','sstatesign'};
+                'EqtnLhs','EqtnRhs','EqtnSign', ...
+                'SstateLhs','SstateRhs','SstateSign'};
             for i = 1 : length(list)
-                S.(list{i}) = [S.(list{i})(~lossInx), ...
-                    S.(list{i})(lossInx)];
+                S.(list{i}) = [S.(list{i})(~ixLoss), ...
+                    S.(list{i})(ixLoss)];
             end
-            S.eqtnlhs{end} = '';
-            S.eqtnrhs{end} = strrep(S.eqtnrhs{end},'#','');
-        elseif sum(lossInx) > 1
-            MultipleLoss = true;
+            S.EqtnLhs{end} = '';
+            S.EqtnRhs{end} = strrep(S.EqtnRhs{end},'#','');
+        elseif sum(ixLoss) > 1
+            MultiLoss = true;
         end
     end % doLossFunc()
 
@@ -749,39 +755,40 @@ eqtnlabel = strfun.emptycellstr(1,n);
 eqtnalias = strfun.emptycellstr(1,n);
 
 % Create list of measurement variable names against which the LHS of
-% dtrends equations will be matched. Add log(...) for log variables.
+% dtrends equations will be matched. Add log(...) for both log-plus and
+% log-minus variables.
 list = This.name(This.nametype == 1);
-islog = This.log(This.nametype == 1);
-loglist = list;
-loglist(islog) = regexprep(loglist(islog),'(.*)','log($1)','once');
+ixLog = This.IxLog(This.nametype == 1);
+logList = list;
+logList(ixLog) = strcat('log(',logList(ixLog),')');
 
 neqtn = length(S.eqtn);
 logmissing = false(1,neqtn);
 invalid = false(1,neqtn);
 multiple = false(1,neqtn);
 for iEq = 1 : length(S.eqtn)
-    index = find(strcmp(loglist,S.eqtnlhs{iEq}),1);
-    if isempty(index)
-        if any(strcmp(list,S.eqtnlhs{iEq}))
+    ix = strcmp(logList,S.EqtnLhs{iEq});
+    if ~any(ix)
+        if any(strcmp(list,S.EqtnLhs{iEq}))
             logmissing(iEq) = true;
         else
             invalid(iEq) = true;
         end
         continue
     end
-    if ~isempty(eqtn{index})
+    if ~isempty(eqtn{ix})
         multiple(iEq) = true;
         continue
     end
-    eqtn{index} = S.eqtn{iEq};
-    eqtnF{index} = S.eqtnrhs{iEq};
-    eqtnlabel{index} = S.eqtnlabel{iEq};
-    eqtnalias{index} = S.eqtnalias{iEq};
+    eqtn{ix} = S.eqtn{iEq};
+    eqtnF{ix} = S.EqtnRhs{iEq};
+    eqtnlabel{ix} = S.eqtnlabel{iEq};
+    eqtnalias{ix} = S.eqtnalias{iEq};
 end
 
 LogMissing = S.eqtn(logmissing);
 Invalid = S.eqtn(invalid);
-Multiple = S.eqtnlhs(multiple);
+Multiple = S.EqtnLhs(multiple);
 if any(multiple)
     Multiple = unique(Multiple);
 end
@@ -792,7 +799,7 @@ This.EqtnS(end+(1:n)) = {''};
 This.eqtnlabel(end+(1:n)) = eqtnlabel;
 This.eqtnalias(end+(1:n)) = eqtnalias;
 This.eqtntype(end+(1:n)) = 3;
-This.nonlin(end+(1:n)) = false;
+This.IxNonlin(end+(1:n)) = false;
 
 end % xxReadDtrends()
 
@@ -813,8 +820,8 @@ for iEq = 1 : nEqtn
         continue
     end
     [assignInx,stdcorrInx] = modelobj.mynameindex( ...
-        This.name,This.name(inxE),S.eqtnlhs{iEq});
-    %index = strcmp(This.name,S.eqtnlhs{iEq});
+        This.name,This.name(inxE),S.EqtnLhs{iEq});
+    %index = strcmp(This.name,S.EqtnLhs{iEq});
     if any(assignInx)
         % The LHS name is a variable, shock, or parameter name.
         valid(iEq) = true;
@@ -828,12 +835,12 @@ end
 
 Invalid = S.eqtn(~valid);
 This.eqtn(end+(1:nEqtn)) = S.eqtn;
-This.eqtnF(end+(1:nEqtn)) = S.eqtnrhs;
+This.eqtnF(end+(1:nEqtn)) = S.EqtnRhs;
 This.EqtnS(end+(1:nEqtn)) = {''};
 This.eqtnlabel(end+(1:nEqtn)) = S.eqtnlabel;
 This.eqtnalias(end+(1:nEqtn)) = S.eqtnalias;
 This.eqtntype(end+(1:nEqtn)) = 4;
-This.nonlin(end+(1:nEqtn)) = false;
+This.IxNonlin(end+(1:nEqtn)) = false;
 This.Refresh = refresh;
 
 end % xxReadLinks()
@@ -846,7 +853,7 @@ function [ErrMsg,ErrList] = xxChkStructure1(This)
 
 nEqtn = length(This.eqtn);
 nName = length(This.name);
-tZero = This.tzero;
+t0 = find(This.Shift == 0);
 occurF = This.occur;
 if size(occurF,3) == 1
    nt = size(occurF,2) / nName;
@@ -859,7 +866,7 @@ ErrList = {};
 
 % Lags and leads.
 tt = true(1,size(occurF,3));
-tt(tZero) = false;
+tt(t0) = false;
 
 flNameType = floor(This.nametype);
 
@@ -915,7 +922,7 @@ end
 
 % No leads of transition variables in measurement equations.
 tt = true([1,size(occurF,3)]);
-tt(1:tZero) = false;
+tt(1:t0) = false;
 aux = any(any(occurF(This.eqtntype == 1,This.nametype == 2,tt),3),2);
 if any(aux)
     ErrList = This.eqtn(This.eqtntype == 1);
@@ -927,7 +934,7 @@ end
 
 % Current date of any measurement variable in each measurement
 % equation.
-aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),2);
+aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,t0),2);
 if any(aux)
     ErrList = This.eqtn(This.eqtntype == 1);
     ErrList = ErrList(aux);
@@ -938,7 +945,7 @@ end
 
 if any(flNameType == 3)
     % Find transition shocks in measurement equations.
-    aux = any(occurF(This.eqtntype == 1,This.nametype == 3.2,tZero),1);
+    aux = any(occurF(This.eqtntype == 1,This.nametype == 3.2,t0),1);
     if any(aux)
         ErrList = This.name(This.nametype == 3.2);
         ErrList = ErrList(aux);
@@ -947,7 +954,7 @@ if any(flNameType == 3)
         return
     end
     % Find measurement shocks in transition equations.
-    aux = any(occurF(This.eqtntype == 2,This.nametype == 3.1,tZero),1);
+    aux = any(occurF(This.eqtntype == 2,This.nametype == 3.1,t0),1);
     if any(aux)
         ErrList = This.name(This.nametype == 3.1);
         ErrList = ErrList(aux);
@@ -993,7 +1000,7 @@ function [ErrMsg,ErrList] = xxChkStructure2(This)
 
 nEqtn = length(This.eqtn);
 nName = length(This.name);
-tZero = This.tzero;
+t0 = find(This.Shift == 0);
 occurF = This.occur;
 if size(occurF,3) == 1
    nt = size(occurF,2) / nName;
@@ -1018,7 +1025,7 @@ if ~any(This.eqtntype == 2)
 end
 
 % Current dates of all transition variables.
-aux = ~any(occurF(This.eqtntype == 2,This.nametype == 2,tZero),1);
+aux = ~any(occurF(This.eqtntype == 2,This.nametype == 2,t0),1);
 if any(aux)
     ErrList = This.name(This.nametype == 2);
     ErrList = ErrList(aux);
@@ -1028,8 +1035,8 @@ if any(aux)
 end
 
 % Current dates of all measurement variables.
-if ~isempty(occurF(This.eqtntype == 1,This.nametype == 1,tZero))
-    aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,tZero),1);
+if ~isempty(occurF(This.eqtntype == 1,This.nametype == 1,t0))
+    aux = ~any(occurF(This.eqtntype == 1,This.nametype == 1,t0),1);
     if any(aux)
         ErrList = This.name(This.nametype == 1);
         ErrList = ErrList(aux);

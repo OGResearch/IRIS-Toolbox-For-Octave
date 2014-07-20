@@ -44,7 +44,7 @@ end
 if isstruct(Data)
     doDbase();
     inpFmt = 'dbase';
-elseif is.tseries(Data)
+elseif istseries(Data)
     doTseries();
     inpFmt = 'tseries';
     
@@ -97,7 +97,7 @@ end
         sw.Warn.FreqMismatch = true;
         sw.Warn.NoRangeFound = true;
         sw.LagOrLead = [];
-        sw.Log = [];
+        sw.IxLog = [];
         sw.BaseYear = This.BaseYear;
         
         if retY

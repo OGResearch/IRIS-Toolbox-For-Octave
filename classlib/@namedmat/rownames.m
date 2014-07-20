@@ -1,21 +1,21 @@
-function x = rownames(this)
+function RowNames = rownames(This)
 % rownames  Names of rows in namedmat object.
 %
 % Syntax
 % =======
 %
-%     NAMES = rownames(X)
+%     RowNames = rownames(X)
 %
 % Input arguments
 % ================
 %
-% * `X` [ namedmat ] - A namedmat object (an numeric array with named rows
-% and columns) returned by some of the model functions.
+% * `X` [ namedmat ] - A namedmat object (array with named rows and
+% columns) returned as output argument from some model functions.
 %
 % Output arguments
 % =================
 %
-% * `NAMES` [ cellstr ] - Names of rows in `X`.
+% * `RowNames` [ cellstr ] - Names of rows in `X`.
 %
 % Description
 % ============
@@ -24,12 +24,11 @@ function x = rownames(this)
 % ========
 %
 
-%
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-x = this.Rownames;
+RowNames = This.RowNames;
 
 end

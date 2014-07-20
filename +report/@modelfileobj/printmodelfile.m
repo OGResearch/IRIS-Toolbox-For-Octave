@@ -14,14 +14,21 @@ C = '';
 if isempty(This.filename)
     return
 end
-isModel = ~isempty(This.modelobj) && mosw.isa(This.modelobj,'modelobj');
+isModel = ~isempty(This.modelobj) && isa(This.modelobj,'model');
 if isModel
     pList = get(This.modelobj,'pList');
     eList = get(This.modelobj,'eList');
 end
 br = sprintf('\n');
 
-file = file2char(This.filename,'cellstrl',This.options.lines);
+% Read the text file into a cellstr with EOLs removed.
+file = file2char(This.filename,'cellstr');
+if isequal(This.options.lines,@all)
+    nLine = length(file);
+    This.options.lines = 1 : nLine;
+else
+    file = file(This.options.lines);
+end
 
 % Choose escape character.
 escList = '`@?$#~&":|!^[]{}<>';
@@ -35,10 +42,6 @@ if isempty(esc)
 end
 verbEsc = ['\verb',esc];
 
-nLine = length(file);
-if isinf(This.options.lines)
-    This.options.lines = 1 : nLine;
-end
 nDigit = ceil(log10(max(This.options.lines)));
 
 C = [C,'\definecolor{mylabel}{rgb}{0.55,0,0.35}',br];
@@ -46,8 +49,6 @@ C = [C,'\definecolor{myparam}{rgb}{0.90,0,0}',br];
 C = [C,'\definecolor{mykeyword}{rgb}{0,0,0.75}',br];
 C = [C,'\definecolor{mycomment}{rgb}{0,0.50,0}',br];
 
-file = strrep(file,char(10),'');
-file = strrep(file,char(13),'');
 for i = 1 : nLine
     c = doOneLine(file{i});
     C = [C,c,' \\',br]; %#ok<AGROW>
@@ -55,11 +56,14 @@ end
 
 C = strrep(C,['\verb',esc,esc],'');
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
-    function C = doOneLine(C)
 
+    
+    function C = doOneLine(C)
         labels = fragileobj(C);
         [C,labels] = protectquotes(C,labels);
         
@@ -73,15 +77,15 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 keywordsFunc = @doKeywords; %#ok<NASGU>
                 C = regexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
                     '${keywordsFunc($0)}');
             else
-                C = mosw.octfun.dregexprep(C, ...
+                C = mosw.dregexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-                    'doKeywords',0);
+                    'doKeywords',0); %#ok<UNRCH>
             end
             % Line comments.
             if ~isempty(lineComment)
@@ -97,13 +101,13 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 paramValFunc = @doParamVal; %#ok<NASGU>
                 C = regexprep(C, ...
                     '(?<!!)\<\w+\>', ...
                     '${paramValFunc($0)}');
             else
-                C = mosw.octfun.dregexprep(C, ...
+                C = mosw.dregexprep(C, ...
                     '(?<!!)\<\w+\>', ...
                     'doParamVal',0); %#ok<UNRCH>
             end
@@ -158,8 +162,7 @@ C = strrep(C,['\verb',esc,esc],'');
                 prefix,value,'}\right>$}'];
             C = [C,esc,value,verbEsc];
         end
-        
-    end % doSyntax().
+    end % doOneLine()
 
 end
 

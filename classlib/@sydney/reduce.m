@@ -12,13 +12,10 @@ if isnumeric(SYDNEY)
     SYDNEY = sydney();
 end
 
-%--------------------------------------------------------------------------
+% @@@@@ MOSW
+template = SYDNEY;
 
-if ismatlab
-    inp4nested = [];
-else
-    inp4nested = SYDNEY;
-end
+%--------------------------------------------------------------------------
 
 % This.lookahead = [];
 nArg = length(This.args);
@@ -63,19 +60,19 @@ if strcmp(This.func,'sydney.d')
     return
 end
 
-%{
+% {
 % Reduce a*(x/a), (x/a)*a to x.
 if strcmp(This.func,'times');
     doCancelTimes();
 end
-%}
+% }
 
-%{
+% {
 % Reduce a/(x*a), a/(a*x) to 1/x, (x*a)/a, (a*x)/a to x.
 if strcmp(This.func,'rdivide')
-    doCancelRdivide(inp4nested);
+    doCancelRdivide();
 end
-%}
+% }
 
 % Evaluate the function if all arguments are numeric.
 if ~isempty(This.func) && iscell(This.args) && ~isempty(This.args)
@@ -126,11 +123,15 @@ switch This.func
     case 'minus'
         doMinus();
     case 'times'
-        doTimes(inp4nested);
+        doTimes();
     case 'rdivide'
-        doRdivide(inp4nested);
+        doRdivide();
     case 'power'
         doPower();
+    case 'exp'
+        doExpLog();
+    case 'log'
+        doLogExp();
 end
 
 % Convert nested plus to multiple plus.
@@ -148,7 +149,7 @@ if strcmp(This.func,'plus')
 end
 
 
-% Nested functions.
+% Nested functions...
 
 
     function doUplus()
@@ -159,7 +160,7 @@ end
             This.func = '';
             This.args = This.args{1}.args;
         end
-    end %doUplus()
+    end % doUplus()
 
 
     function doUminus()
@@ -197,10 +198,7 @@ end
     end % doMinus()
 
 
-    function doTimes(varargin)
-        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
-            SYDNEY = varargin{1};
-        end
+    function doTimes()
         isWrap = isUminusWrapper();
         if isequal(This.args{1}.args,0) || isequal(This.args{2}.args,0)
             % 0*x or x*0
@@ -224,19 +222,12 @@ end
             This.args = This.args(1);
         end
         if isWrap
-            if ismatlab
-                doWrapInUminus();
-            else
-                doWrapInUminus(SYDNEY);
-            end
+            doWrapInUminus();
         end
     end % doTimes()
 
 
-    function doRdivide(varargin)
-        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
-            SYDNEY = varargin{1};
-        end
+    function doRdivide()
         isWrap = isUminusWrapper();
         if isequal(This.args{1}.args,0)
             % 0/x.
@@ -248,11 +239,7 @@ end
             This = This.args{1};
         end
         if isWrap
-            if ismatlab
-                doWrapInUminus();
-            else
-                doWrapInUminus(SYDNEY);
-            end
+            doWrapInUminus();
         end
     end % doRdivide()
 
@@ -300,12 +287,9 @@ end
     end % isUminusWrapper.
 
 
-    function doWrapInUminus(varargin)
-        if ~ismatlab && ~isempty(varargin)
-            SYDNEY = varargin{1};
-        end
+    function doWrapInUminus()
         x = This;
-        This = SYDNEY;
+        This = template;
         This.func = 'uminus';
         This.args = {x};
     end % doWrapInUminus()
@@ -326,28 +310,25 @@ end
     end % doCancelTimes()
 
 
-    function doCancelRdivide(varargin)
-        if ~ismatlab && ~isempty(varargin) && ~isempty(varargin{1})
-            SYDNEY = varargin{1};
-        end
+    function doCancelRdivide()
         if isequal(This.args{2}.func,'times')
             if isequal(This.args{1},This.args{2}.args{1})
                 % Reduce a/(a*x) to 1/x.
-                z1 = SYDNEY;
+                z1 = template;
                 z1.args = 1;
                 z1.lookahead = false;
                 z2 = This.args{2}.args{2};
-                This = SYDNEY;
+                This = template;
                 This.func = 'rdivide';
                 This.args = {z1,z2};
                 This.lookahead = [false,any(z2.lookahead)];
             elseif isequal(This.args{1},This.args{2}.args{2})
                 % Reduce a/(x*a) to 1/x.
-                z1 = SYDNEY;
+                z1 = template;
                 z1.args = 1;
                 z1.lookahead = false;
                 z2 = This.args{2}.args{1};
-                This = SYDNEY;
+                This = template;
                 This.func = 'rdivide';
                 This.args = {z1,z2};
                 This.lookahead = [false,any(z2.lookahead)];
@@ -362,6 +343,20 @@ end
             end
         end
     end % doCancelTimes()
+
+
+    function doLogExp()
+        if isequal(This.args{1}.func,'exp')
+            This = This.args{1}.args{1};
+        end
+    end % doLogExp()
+
+
+    function doExpLog()
+        if isequal(This.args{1}.func,'log')
+            This = This.args{1}.args{1};
+        end
+    end % doExpLog()
 
 
 end

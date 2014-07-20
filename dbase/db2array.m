@@ -83,9 +83,9 @@ catch
 end
 
 try
-    Sw.Log;
+    Sw.IxLog;
 catch
-    Sw.Log = [];
+    Sw.IxLog = [];
 end
 
 try
@@ -191,7 +191,7 @@ for i = 1 : nList
             doAddData();
         else
             field = D.(name);
-            if is.tseries(field)
+            if istseries(field)
                 Xi = [];
                 doGetTseriesData();
                 doAddData();
@@ -270,7 +270,7 @@ end
             nAltXi = nAltX;
         end
         if nAltX == nAltXi
-            if ~isempty(Sw.Log) && Sw.Log(i)
+            if ~isempty(Sw.IxLog) && Sw.IxLog(i)
                 Xi = log(Xi);
             end
             X(:,i,1:nAltXi) = permute(Xi,[1,3,2]);

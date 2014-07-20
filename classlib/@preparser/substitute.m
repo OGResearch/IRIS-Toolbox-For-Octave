@@ -54,11 +54,14 @@ S = cell2struct(body,name,2);
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function [C,Blk] = xxReadBlocks(C)
 
+
+function [C,Blk] = xxReadBlocks(C)
 Blk = {};
 % Read the blocks one by one to preserve their order in the
 % model code. Remove the substitution blocks from the code.
@@ -72,12 +75,13 @@ while true
     Blk{end+1} = strtrim(tok{1}); %#ok<AGROW>
     C(start:finish) = '';
 end
+end % xxReadBlocks()
 
-end % xxReadBlocks().
 
 %**************************************************************************
-function [Name,Body,Leftover] = xxReadSubs(B,Name,Body)
 
+
+function [Name,Body,Leftover] = xxReadSubs(B,Name,Body)
 % Read substitution names and bodies. Again, do it one by one to
 % preserve their order.
 while true
@@ -92,12 +96,13 @@ while true
     B(start:finish) = '';
 end
 Leftover = strtrim(B);
+end % xxReadSubs()
 
-end % xxReadSubs().
 
 %**************************************************************************
-function [C,Body] = xxExpand(C,Name,Body)
 
+
+function [C,Body] = xxExpand(C,Name,Body)
 % Expand substitutions in other substitutions first.
 n = length(Name);
 pattern = cell(1,n);
@@ -114,16 +119,16 @@ end
 for i = n : -1 : 1
     C  = strrep(C,pattern{i},Body{i});
 end
+end % xxExpand()
 
-end % xxExpand().
 
 %**************************************************************************
+
+
 function Undef = xxChkUndef(c)
 % xxChkUndef  Check for undefined substitutions.
-
 Undef = regexp(c,'\$\<[A-Za-z]\w*\>\$','match');
 if ~isempty(Undef)
     Undef = unique(Undef);
 end
-
-end % xxChkUndef().
+end % xxChkUndef()

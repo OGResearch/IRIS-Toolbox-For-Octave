@@ -5,7 +5,7 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[MinusLogLik,Grad,Hess,V] = diffloglik(M,D,Range,PList,...)
+[MinusLogLik,Grad,Hess,V] = diffloglik(M,Inp,Range,PList,...)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -15,13 +15,13 @@
   \texttt{M} {[} model {]} - Model object whose likelihood function will
   be differentiated.
 \item
-  \texttt{D} {[} cell \textbar{} struct {]} - Input data from which
+  \texttt{Inp} {[} cell \textbar{} struct {]} - Input data from which
   measurement variables will be taken.
 \item
   \texttt{Range} {[} numeric {]} - Date range on which the likelihood
   function will be evaluated.
 \item
-  \texttt{List} {[} cellstr {]} - List of model parameters with respect
+  \texttt{PList} {[} cellstr {]} - List of model parameters with respect
   to which the likelihood function will be differentiated.
 \end{itemize}
 

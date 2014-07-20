@@ -32,6 +32,11 @@ P.graph(Cap,...)
   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
   (Inheritable) Date tick spacing.
 \item
+  \texttt{'grid='} {[} \texttt{@auto} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - (Inheritable) Display grid lines; if
+  \texttt{@auto}, \texttt{'grid='} is \texttt{true} unless a
+  right-hand-side axis is plotted.
+\item
   \texttt{'legend='} {[} \emph{\texttt{false}} \textbar{} \texttt{true}
   {]} - (Inheritable) Add legend to the graph.
 \item
@@ -58,9 +63,11 @@ P.graph(Cap,...)
   (Inheritable) Apply this style structure to the graph and its
   children; see help on \href{qreport/qstyle}{\texttt{qstyle}}.
 \item
-  \texttt{'tight='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - (Inheritable) Set the y-axis limits to the minimum and maximum
-  of displayed data.
+  \texttt{'tight='} {[} \texttt{@auto} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - (Inheritable) Set the y-axis limits to
+  the minimum and maximum of displayed data; if \texttt{@auto},
+  \texttt{'tight='} is \texttt{true} unless a right-hand-side axis is
+  plotted.
 \item
   \texttt{'xLabel='} {[} char \textbar{} \emph{empty} {]} - Label the
   x-axis.

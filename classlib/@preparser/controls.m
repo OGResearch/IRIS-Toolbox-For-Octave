@@ -25,13 +25,13 @@ end
 try
     Export;
 catch
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 %--------------------------------------------------------------------------
 
 Error = struct();
-Error.code = '';
+Error.Code = '';
 Error.exprsn = '';
 Error.leftover = '';
 warnParsing = strrep(ErrParsing,'Error','Warning');
@@ -49,7 +49,7 @@ while ~isempty(pos)
     commandCap = [upper(command(1)),lower(command(2:end))];
     [s,tail,isError] = feval(['xxParse',commandCap],C,pos+len);
     if isError
-        Error.code = C(pos:end);
+        Error.Code = C(pos:end);
         break
     end
     
@@ -98,10 +98,10 @@ doErrors();
 
 
     function doErrors()
-        if ~isempty(Error.code)
+        if ~isempty(Error.Code)
             utils.error('preparser:controls', [ErrParsing, ...
                 'Something wrong with this control command(s) or commands nested inside: ''%s...''.'], ...
-                xxFormatError(Error.code,Labels));
+                xxFormatError(Error.Code,Labels));
         end
         
         if ~isempty(Error.exprsn)
@@ -321,11 +321,11 @@ end
 
 obsolete = {};
 ptn = '(\$?)(\[[^\]]*\])\1';
-if is.matlab % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doExpandSqb; %#ok<NASGU>
     forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
 else
-    forBody = mosw.octfun.dregexprep(forBody,ptn,'doExpandSqb',[1,2]); %#ok<UNRCH>
+    forBody = mosw.dregexprep(forBody,ptn,'doExpandSqb',[1,2]); %#ok<UNRCH>
 end
 if ~isempty(obsolete)
     % ##### May 2014 OBSOLETE and scheduled for removal.
@@ -341,7 +341,7 @@ if ~isempty(Err)
 end
 
 % Remove `'name='` from `forbody` to get the RHS.
-forBody = regexprep(forBody,['\', control,'\s*=\s*'],'');
+forBody = regexprep(forBody,[control,'\s*=\s*'],'');
 
 % Itemize the RHS of the `!for` body.
 list = regexp(forBody,'[^\s,;]+','match');
@@ -354,13 +354,8 @@ list = regexp(forBody,'[^\s,;]+','match');
                 % Replace references to fieldnames of `'D'` with `'D.fieldname'`.
                 C2 = regexprep(C2,plist,'D.$1');
             end
-            if ismatlab
-                s2fH = @str2func;
-            else
-                s2fH = @mystr2func;
-            end
             % Create an anonymous function handle and evaluate it on D.
-            f = s2fH(['@(D) ',C2]);
+            f = mosw.str2func(['@(D) ',C2]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.
@@ -558,8 +553,8 @@ end
 
 S.ExportBody = restore(S.ExportBody,Labels);
 
-Export(end+1).filename = S.ExportName;
-Export(end).content = S.ExportBody;
+Export(end+1).FName = S.ExportName;
+Export(end).Content = S.ExportBody;
 
 end % xxExport()
 

@@ -4,14 +4,14 @@ function V = VAR(This,Select,Range,varargin)
 % Syntax
 % =======
 %
-%     V = VAR(M,Select,Range,...)
+%     V = VAR(M,List,Range,...)
 %
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Solved model object.
 %
-% * `Select` [ cellstr | char ] - List of variables selected for the VAR.
+% * `List` [ cellstr | char ] - List of variables selected for the VAR.
 %
 % * `Range` [ numeric ] - Hypothetical range, including pre-sample initial
 % condition, on which the VAR would be estimated.
@@ -26,8 +26,8 @@ function V = VAR(This,Select,Range,varargin)
 %
 % * `'order='` [ numeric | *1* ] - Order of the VAR.
 %
-% * `'constant='` [ *`true`* | `false` ] - Include in the VAR a constant vector
-% derived from the steady state of the selected variables.
+% * `'constant='` [ *`true`* | `false` ] - Include in the VAR a constant
+% vector derived from the steady state of the selected variables.
 %
 % Description
 % ============
@@ -41,11 +41,9 @@ function V = VAR(This,Select,Range,varargin)
 
 % Parse required arguments.
 pp = inputParser();
-pp.addRequired('m',@(isArg)is.model(isArg));
-pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('range',@isnumeric);
-pp.parse(This,Select,Range);
-
+pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('Range',@isnumeric);
+pp.parse(List,Range);
 
 % Parse options.
 opt = passvalopt('model.VAR',varargin{:});
@@ -72,8 +70,8 @@ nk = double(opt.constant);
 
 C = C(sspacePos,sspacePos,:,:);
 zBar = permute(This.Assign(1,namePos,:),[2,3,1]);
-isLog = This.log(1,namePos);
-zBar(isLog) = log(zBar(isLog));
+ixLog = This.IxLog(1,namePos);
+zBar(ixLog) = log(zBar(ixLog));
 
 % TODO: Calculate Sigma.
 V = VAR();

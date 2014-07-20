@@ -1,0 +1,200 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="trec/Contents">Time-Recursive Subscript Objects for Time-Recursive Expressions</h1>
+
+
+<p>Time subscript objects enable to create and evaluate time-recursive expressions based on tseries objects. Read below carefully when IRIS fails to evaluate time-recursive expessions correctly.</p>
+<p>Trec methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../trec/trec.html"><code>trec</code></a> - Create new recursive time subscript object.</li>
+</ul>
+<h4 id="creating-lags-and-leads">Creating lags and leads</h4>
+<ul>
+<li><a href="../trec/plus.html"><code>plus</code></a> - Create time-recursive lead of tseries object.</li>
+<li><a href="../trec/minus.html"><code>minus</code></a> - Create time-recursive lag of tseries object.</li>
+</ul>
+<h4 id="using-time-recursive-subscripts">Using Time-Recursive Subscripts</h4>
+<p>Time-recursive expressions are expressions that are evaluated period by period, with each result assigned immediately to the left-hand side tseries variable, and used in subsequent periods evaluated afterwards.</p>
+<p>To construct and evaluate time-recursive expressions, use tseries referenced by a trec object, or a lag or lead created from a trec object. Every tseries object on both the left-hand side (i.e. the variable under construction) and the right-hand side (i.e. the variables in the expression that is being evaluated) must be referenced by a trec object (or possibly a lag or lead). When referencing a tseries object by a trec, you can use either curly braces, <code>{...}</code>, or round brackets, <code>(...)</code>; there is no difference between them in time-recursive expressions.</p>
+<p><span class="LaTeX">$\attention$</span> See the description of circumstances under which IRIS fails to evaluate time-recursive expressions correctly, and how to avoid/fix such situations.</p>
+<h4 id="example">Example</h4>
+<p>Construct an autoregressive sequence starting from 10 with a autoregressive coefficient 0.8:</p>
+<pre><code> T = trec(qq(2010,1):qq(2020,4));
+ X = tseries(qq(2009,4),10);
+ X{T} = 0.8*X{T-1};</code></pre>
+<h4 id="example-1">Example</h4>
+<p>Construct a first-order autoregressive process, <code>x</code>, with normally distributed innovations, <code>e</code>:</p>
+<pre><code>T = trec(qq(2010,1):qq(2020,4));
+x = tseries(qq(2009,4),10);
+e = tseries(qq(2010,1):qq(2020,4),@randn);
+x{T} = 10 + 0.8*x{T-1} + e{T};</code></pre>
+<h4 id="example-2">Example</h4>
+<p>Construct a second-order log-autoregressive process going backward.</p>
+<pre><code>T = trec(yy(2020):-1:yy(2000));
+B = tseries();
+B(yy(2022)) = 1.56;
+B(yy(2021)) = 1.32;
+B{T} = B{T+1}^1.2 * B{T+2}^0.6;</code></pre>
+<h4 id="example-3">Example</h4>
+<p>Construct Fibonacci sequence:</p>
+<pre><code> T = trec(3:20);
+ F = tseries(1:2,1);
+ F{T} = F{T-1} + F{T-2};</code></pre>
+<h4 id="when-iris-fails-to-evaluate-time-recursive-expressions-correctly">When IRIS Fails to Evaluate Time-Recursive Expressions Correctly</h4>
+<p>IRIS fails to evaluate time-recursive expressions correctly (without any indication of an error) when the following two circumstances occur at the same time:</p>
+<ul>
+<li><p>The time series used in the expression are within a database (struct), or a cell array;</p></li>
+<li><p>At least one tseries object on the right-hand side has been created by copying the left-hand side tseries object with no further manipulation.</p></li>
+</ul>
+<p>Under these circumstances, the right-hand side tseries variable will be assigned (updated with) the results calculated in iteration as if it were the tseries variable on the left-hand side.</p>
+<h4 id="example-4">Example</h4>
+<p>Create a database with two tseries. Create one of the tseries by simply copying the other (i.e. plain assignment with no further manipulation).</p>
+<pre><code>d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x;
+
+T = trec(2:10);
+d.x{T} = 0.8*d.y{T-1}; % Fails to evaluate correctly!</code></pre>
+<p>The above time-recursive expression will be incorrectly evaluated as if it were <code>d.x{T} = 0.8*d.x{T-1}</code>.</p>
+<p>Note that when the tseries objects are not stored within a database (struct), the expression will evaluate correctly:</p>
+<pre><code>x = tseries(1:10,1);
+y = x;
+
+T = trec(2:10);
+x{T} = 0.8*y{T-1}; % Evaluates correctly.</code></pre>
+<h4 id="workaround">Workaround</h4>
+<p>To evaluate the expression correctly, simply apply any kind of operator or function to the tseries <code>d.y</code> before it enters the time-recursive expression. Below are examples of some simple manipulations that do the job without changing the tseries <code>d.y</code>:</p>
+<pre><code>d = struct();
+d.x = tseries(1:10,1);
+d.y = 1*d.x;</code></pre>
+<p>or</p>
+<pre><code>d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x{:};</code></pre>
+<p>or</p>
+<pre><code>d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x;
+d.y = d.y + 0;</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

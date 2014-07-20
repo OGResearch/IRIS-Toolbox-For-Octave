@@ -116,32 +116,34 @@ switch Query
         Ans = regexprep(Ans,'d\.([a-zA-Z])','$1');
         
     case {'neqtn','nonlineqtn'}
-        Ans = This.eqtn(This.nonlin);
+        Ans = This.eqtn(This.IxNonlin);
         
     case {'nlabel','nonlinlabel'}
-        Ans = This.eqtnlabel(This.nonlin);
+        Ans = This.eqtnlabel(This.IxNonlin);
         
     case 'rlabel'
         Ans = This.outside.label;
         
     case 'yvector'
-        Ans = This.solutionvector{1};
+        Ans = myvector(This,'y');
         
     case 'xvector'
-        Ans = This.solutionvector{2};
+        Ans = myvector(This,'x');
         
     case 'xfvector'
-        Ans = This.solutionvector{2}(1:nf);
+        Ans = myvector(This,'x');
+        Ans = Ans(1:nf);
         
     case 'xbvector'
-        Ans = This.solutionvector{2}(nf+1:end);
+        Ans = myvector(This,'x');
+        Ans = Ans(nf+1:end);
         
     case 'evector'
-        Ans = This.solutionvector{3};
+        Ans = myvector(This,'e');
         
     case {'ylog','xlog','elog'}
         inx = find(Query(1) == 'yxe');
-        Ans = This.log(This.nametype == inx);
+        Ans = This.IxLog(This.nametype == inx);
         
     case 'yid'
         Ans = This.solutionid{1};
@@ -153,9 +155,9 @@ switch Query
         Ans = This.solutionid{3};
         
     case {'eylist','exlist'}
-        t = This.tzero;
+        t0 = find(This.Shift == 0);
         nname = length(This.name);
-        inx = nname*(t-1) + find(This.nametype == 3);
+        inx = nname*(t0-1) + find(This.nametype == 3);
         eyoccur = This.occur(This.eqtntype == 1,inx);
         exoccur = This.occur(This.eqtntype == 2,inx);
         eyindex = any(eyoccur,1);
@@ -351,23 +353,26 @@ end
         nEqtn = sum(select);
         Ans = cell(1,nEqtn);
         for iieq = find(select)
-            u = mychar(This.deqtnF{iieq});
+            u = This.DEqtnF{iieq};
+            if isfunc(u)
+                u = func2str(u);
+            end
             u = regexprep(u,'^@\(.*?\)','','once');
             
             ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
             else
-                u = mosw.octfun.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
+                u = mosw.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
             end
             
             ptn = '\<x\>\(:,(\d+),t\)';
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replaceZero($1)}');
             else
-                u = mosw.octfun.dregexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
+                u = regexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
             end
             
             Ans{iieq} = u;
@@ -399,20 +404,21 @@ end
         end        
         neqtn = sum(select);
         Ans = cell(1,neqtn);
+        t0 = find(This.Shift == 0);
         for iieq = find(select)
-            [tmocc,nmocc] = myfindoccur(This,iieq,'variables_shocks');
-            tmocc = tmocc - This.tzero;
-            nocc = length(tmocc);
-            Ans{iieq} = cell(1,nocc);
-            for iiocc = 1 : nocc
-                c = This.name{nmocc(iiocc)};
-                if tmocc(iiocc) ~= 0
-                    c = sprintf('%s{%+g}',c,tmocc(iiocc));
+            [tmOcc,nmOcc] = myfindoccur(This,iieq,'variables_shocks');
+            tmOcc = tmOcc - t0;
+            nOcc = length(tmOcc);
+            Ans{iieq} = cell(1,nOcc);
+            for iiOcc = 1 : nOcc
+                c = This.name{nmOcc(iiOcc)};
+                if tmOcc(iiOcc) ~= 0
+                    c = sprintf('%s{%+g}',c,tmOcc(iiOcc));
                 end
-                if This.log(nmocc(iiocc))
+                if This.IxLog(nmOcc(iiOcc))
                     c = ['log(',c,')']; %#ok<AGROW>
                 end
-                Ans{iieq}{iiocc} = c;
+                Ans{iieq}{iiOcc} = c;
             end
         end
     end % doWrt()
@@ -430,8 +436,8 @@ end
 function [ssLevel,ssGrowth,dtLevel,dtGrowth,ssDtLevel,ssDtGrowth] ...
     = xxSstate(This)
 
+realexp = @(x) real(exp(x));
 Assign = This.Assign;
-isLog = This.log;
 ny = sum(This.nametype == 1);
 nAlt = size(Assign,3);
 nName = size(This.Assign,2);
@@ -441,7 +447,7 @@ ssLevel = real(Assign);
 ssGrowth = imag(Assign);
 
 % Fix missing (=zero) growth in steady states of log variables.
-ssGrowth(ssGrowth == 0 & isLog(1,:,ones(1,nAlt))) = 1;
+ssGrowth(ssGrowth == 0 & This.IxLog(1,:,ones(1,nAlt))) = 1;
 
 % Retrieve dtrends.
 [dtLevel,dtGrowth] = mydtrendsrequest(This,'sstate');
@@ -449,17 +455,17 @@ dtLevel = permute(dtLevel,[3,1,2]);
 dtGrowth = permute(dtGrowth,[3,1,2]);
 dtLevel(:,ny+1:nName,:) = 0;
 dtGrowth(:,ny+1:nName,:) = 0;
-dtLevel(1,~isLog,:) = dtLevel(1,~isLog,:);
-dtLevel(1,isLog,:) = exp(dtLevel(1,isLog,:));
-dtGrowth(1,~isLog,:) = dtGrowth(1,~isLog,:);
-dtGrowth(1,isLog,:) = exp(dtGrowth(1,isLog,:));
+
+dtLevel(1,This.IxLog,:) = realexp(dtLevel(1,This.IxLog,:));
+dtGrowth(1,This.IxLog,:) = exp(dtGrowth(1,This.IxLog,:));
 
 % Steady state plus dtrends.
 ssDtLevel = ssLevel;
-ssDtLevel(1,isLog,:) = ssDtLevel(1,isLog,:) .* dtLevel(1,isLog,:);
-ssDtLevel(1,~isLog,:) = ssDtLevel(1,~isLog,:) + dtLevel(1,~isLog,:);
+ssDtLevel(1,~This.IxLog,:) = ssDtLevel(1,~This.IxLog,:) + dtLevel(1,~This.IxLog,:);
+ssDtLevel(1,This.IxLog,:) = ssDtLevel(1,This.IxLog,:) .* dtLevel(1,This.IxLog,:);
+
 ssDtGrowth = ssGrowth;
-ssDtGrowth(1,isLog,:) = ssDtGrowth(1,isLog,:) .* dtGrowth(1,isLog,:);
-ssDtGrowth(1,~isLog,:) = ssDtGrowth(1,~isLog,:) + dtGrowth(1,~isLog,:);
+ssDtGrowth(1,~This.IxLog,:) = ssDtGrowth(1,~This.IxLog,:) + dtGrowth(1,~This.IxLog,:);
+ssDtGrowth(1,This.IxLog,:) = ssDtGrowth(1,This.IxLog,:) .* dtGrowth(1,This.IxLog,:);
 
 end % xxSstate()

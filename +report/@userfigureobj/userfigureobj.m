@@ -23,7 +23,6 @@ classdef userfigureobj < report.basefigureobj
                         'a valid handle to a figure window.']);
                 end
                 figFile = [tempname(pwd()),'.fig'];
-                % find
                 mysavefig(This,h,figFile);
                 fid = fopen(figFile);
                 This.savefig = fread(fid);

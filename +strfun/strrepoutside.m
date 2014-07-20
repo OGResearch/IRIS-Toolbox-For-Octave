@@ -36,26 +36,25 @@ function Str = strrepoutside(Str,Find,Replace,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Handle cellstr on input.
-nstr = numel(Str);
+nStr = numel(Str);
 if iscellstr(Str)
-    for i = 1 : nstr
+    for i = 1 : nStr
         Str{i} = strfun.strrepoutside(Str{i},Find,Replace,varargin{:});
     end
     return
 end
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
-% nfind = numel(find);
 nBrk = numel(varargin);
-brks = zeros([nBrk,nstr]);
+brks = zeros(nBrk,nStr);
 for i = 1 : nBrk
     brks(i,strfind(Str,varargin{i}(1))) = 1;
     brks(i,strfind(Str,varargin{i}(2))) = -1;
 end
 ixOutside = all(cumsum(brks,2) == 0,1);
 insideContent = Str(~ixOutside);
-Str(~ixOutside) = char(0);
+Str(~ixOutside) = char(1);
 Str = strrep(Str,Find,Replace);
 Str(~ixOutside) = insideContent;
 

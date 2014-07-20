@@ -49,9 +49,8 @@ function [sample,lp_Sample,len] ...
 % Validate required inputs.
 pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
-pp.addRequired('NDraw',@(varargin)is.numericscalar(varargin{:}));
+pp.addRequired('NDraw',@isnumericscalar);
 pp.parse(This,NDraw);
-
 
 % Parse options.
 opt = passvalopt('poster.regen',varargin{:});

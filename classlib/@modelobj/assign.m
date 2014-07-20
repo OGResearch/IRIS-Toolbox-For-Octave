@@ -38,15 +38,15 @@ Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
 if isempty(varargin)
-    if ismatlab
-        doReset();
-    else
-        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
-    end
+    % @@@@@ MOSW
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     Assigned = cell(1,0);
     return
     
-elseif n == 1 && mosw.isa(varargin{1},'modelobj')
+elseif n == 1 && ismodel(varargin{1})
     % Assign from another model object. The names, name types, and number of
     % parameterisations must match.
     equalNames = isequal(This.name,varargin{1}.name);
@@ -126,11 +126,10 @@ elseif n <= 2 && iscellstr(varargin{1})
         stdcorr(STDCORRPOS) = true;
         This.stdcorr(1,STDCORRPOS,:) = value(1,STDCORRRHS,:);
     end
-    if ismatlab
-        doReset();
-    else
-        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
-    end
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 elseif n <= 2 && isstruct(varargin{1})
     % m = assign(m,struct), or
@@ -188,11 +187,10 @@ elseif n <= 2 && isstruct(varargin{1})
         stdcorr(stdcorrPos(i)) = true;
     end
     doChkValid();
-    if ismatlab
-        doReset();
-    else
-        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
-    end
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     if nargout == 1
         return
     end
@@ -244,11 +242,10 @@ elseif iscellstr(varargin(1:2:end))
         end
     end
     doChkValid();
-    if ismatlab
-        doReset();
-    else
-        [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct();
-    end
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 else
     % Throw an invalid assignment error.
@@ -264,46 +261,16 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    if is.matlab % ##### MOSW
-        Assigned = [Assigned, ...
-            regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
-    else
-        Assigned = [Assigned, ...
-            strcat('std_',eList(stdcorr(1:ne)))];
-    end
+    Assigned = [Assigned,strcat('std_',eList(stdcorr(1:ne)))];
     pos = find(tril(ones(ne),-1) == 1);
     temp = zeros(ne);
     temp(pos(stdcorr(ne+1:end))) = 1;
     [i,j] = find(temp == 1);
-    for k = 1 : length(i)
-        Assigned{end+1} = ['corr_',eList{i(k)},'_',eList{j(k)}]; %#ok<AGROW>
-    end
+    Assigned = [Assigned,strcat('corr_',eList(i),'__',eList(j))];
 end
 
 
 % Nested functions...
-
-
-%**************************************************************************
-
-    
-    function doReset()
-        ASSIGNPOS = [];
-        ASSIGNRHS = [];
-        STDCORRPOS = [];
-        STDCORRRHS = [];
-    end % doReset()
-
-
-%**************************************************************************
-
-
-    function [ASSIGNPOS,ASSIGNRHS,STDCORRPOS,STDCORRRHS] = doReset4Oct()
-        ASSIGNPOS = [];
-        ASSIGNRHS = [];
-        STDCORRPOS = [];
-        STDCORRRHS = [];
-    end % doReset4Oct
 
 
 %**************************************************************************
@@ -322,5 +289,6 @@ end
                 allName{~ixValidImag});
         end
     end % doChkValid()
+
 
 end

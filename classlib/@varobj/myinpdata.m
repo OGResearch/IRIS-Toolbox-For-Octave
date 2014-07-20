@@ -42,7 +42,7 @@ if isstruct(varargin{1})
     [Y,~,Rng] = db2array(d,This.YNames,Rng);
     Y = permute(Y,[2,1,3]);
     
-elseif is.tseries(varargin{1})
+elseif istseries(varargin{1})
     
     % Time series for plain VAR
     %---------------------------

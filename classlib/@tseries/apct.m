@@ -37,13 +37,12 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@(isArg)is.tseries(isArg));
-pp.addRequired('Q',@(isArg)is.numericscalar(isArg));
-pp.parse(X,Q);
-
+pp.addRequired('Q',@isnumericscalar);
+pp.parse(Q);
 
 %--------------------------------------------------------------------------
 
-X = unop(@(varargin)tseries.mypct(varargin{:}),X,0,-1,Q);
+% @@@@@ MOSW
+X = unop(@(varargin) tseries.mypct(varargin{:}),X,0,-1,Q);
 
 end

@@ -1,4 +1,4 @@
-function DEqtn = mydiffeqtn(Eqtn,Mode,NmOcc,TmOcc,Log,varargin)
+function DEqtn = mydiffeqtn(Eqtn,Mode,NmOcc,TmOcc)
 % mydiffeqtn  [Not a public function] Differentiate one equation wrt to a list of names.
 %
 % Backend IRIS function.
@@ -11,14 +11,13 @@ if isempty(TmOcc)
     TmOcc = zeros(size(NmOcc));
 end
 
-if isempty(Log)
-    Log = false(1,max(NmOcc));
-end
-
 %--------------------------------------------------------------------------
 
-% Remove anonymous function preamble.
-Eqtn = regexprep(char(Eqtn),'^@\(.*?\)','','once');
+% Create string and remove anonymous function preamble.
+if isfunc(Eqtn)
+    Eqtn = func2str(Eqtn);
+end
+Eqtn = regexprep(Eqtn,'^@\(.*?\)','','once');
 
 % Replace x(:,n,t+k) with xN, xNpK, or xNmK.
 Eqtn = sydney.myeqtn2symb(Eqtn);
@@ -47,22 +46,14 @@ switch Mode
         % computes derivatives wrt all variables at once, and returns a vector of
         % numbers.
         Z = diff(Z,'enbloc',unknown);
-        DEqtn = char(Z,varargin{:});
-        % Multiply derivatives wrt log(X) by X.
-        if any(Log(NmOcc))
-            c = unknown;
-            c(~Log(NmOcc)) = {'1'};
-            c = sprintf('%s;',c{:});
-            c(end) = '';
-            DEqtn = ['(',DEqtn,').*[',c,']'];
-        end
+        DEqtn = char(Z);
     case 'separate'
         % Derivatives wrt individual names are computed and stored separately.
         DEqtn = cell(1,nocc);
         if nocc > 0
             Z = diff(Z,'separate',unknown);
             for i = 1 : nocc
-                DEqtn{i} = char(Z{i},varargin{:});
+                DEqtn{i} = char(Z{i});
             end
         end
     otherwise

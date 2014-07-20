@@ -36,7 +36,7 @@ nx = length(This.systemid{2});
 nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 fKeep = ~This.d2s.remove;
 nfKeep = sum(fKeep);
 nxKeep = nfKeep + nb;
@@ -131,7 +131,7 @@ for iAlt = SelAlt
             flagTrans = doTrans();
         end
         if ~flagTrans || ~flagMeas
-            if ~This.linear && ~mychksstate(This)
+            if ~This.IsLinear && ~mychksstate(This)
                 NPath(iAlt) = -4;
                 continue;
             else
@@ -186,7 +186,7 @@ end
         while true
             AA = fA(eqOrd,:);
             BB = fB(eqOrd,:);
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
                 % Ordered inverse eigvals.
                 eigVal = -ordeig(SS,TT);
@@ -201,7 +201,7 @@ end
             isSevn2 = doSevn2Patch();
             stable = abs(eigVal) >= 1 + eigValTol;
             unit = abs(abs(eigVal)-1) < eigValTol;
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 % Clusters of unit, stable, and unstable eigenvalues.
                 clusters = zeros(size(eigVal));
                 % Unit roots first.
@@ -238,7 +238,7 @@ end
         end
         
         % Re-order the inverse eigvals.
-        if is.matlab % ##### MOSW
+        if true % ##### MOSW
             eigVal = -ordeig(SS,TT);
             eigVal = eigVal(:).';
             isSevn2 = doSevn2Patch() | isSevn2;
@@ -311,7 +311,7 @@ end
     function Flag = doTrans()
         
         Flag = true;
-        isNonlin = any(This.nonlin);
+        isNonlin = any(This.IxNonlin);
         S11 = SS(1:nb,1:nb);
         S12 = SS(1:nb,nb+1:end);
         S22 = SS(nb+1:end,nb+1:end);
@@ -488,7 +488,7 @@ end
         This.solution{7}(:,:,iAlt) = U;
         if isNonlin
             This.solution{8}(:,1:nn,iAlt) = Y;
-        end        
+        end
         
         % Necessary initial conditions in xb vector.
         if ~Opt.fast

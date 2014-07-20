@@ -1,5 +1,5 @@
-function s = vectorise(s)
-% vectorise  Replace matrix operators with elementwise operators.
+function S = vectorise(S)
+% vectorise  [Not a public function] Replace matrix operators with elementwise operators.
 %
 % Backend IRIS function.
 % No help provided.
@@ -7,32 +7,26 @@ function s = vectorise(s)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-isCellInp = iscell(s);
+isCellInp = iscell(S);
 if ~isCellInp
-    s = {s};
+    S = {S};
 end
 
 %--------------------------------------------------------------------------
 
-
 func = @(v) regexprep(v,'(?<!\.)(\*|/|\\|\^)','.$1');
 
-valid = true(size(s));
-n = numel(s);
-if ismatlab
-    s2fH = @str2func;
-else
-    s2fH = @mystr2func;
-end
+valid = true(size(S));
+n = numel(S);
 for i = 1 : n
-    if isempty(s{i})
+    if isempty(S{i})
         continue
-    elseif ischar(s{i})
-        s{i} = func(s{i});
-    elseif isa(s{i},'function_handle')
-        c = func2str(s{i});
-        c = func(c);
-        s{i} = s2fH(c);
+    elseif ischar(S{i})
+        S{i} = feval(func,S{i});
+    elseif isfunc(S{i})
+        c = func2str(S{i});
+        c = feval(func,c);
+        S{i} = mosw.str2func(c);
     else
         valid(i) = false;
     end
@@ -45,7 +39,7 @@ if any(~valid)
 end
 
 if ~isCellInp
-    s = s{1};
+    S = S{1};
 end
 
 end

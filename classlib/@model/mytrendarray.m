@@ -28,36 +28,33 @@ end
 try
     TVec; %#ok<VUNUS>
 catch
-    nt = size(This.occur,2) / length(This.name);
-    t = This.tzero;
-    minT = 1 - t;
-    maxT = nt - t;
-    TVec = minT : maxT;
+    TVec = This.Shift;
 end
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
 nAlt = size(This.Assign,3);
 nPer = length(TVec);
 nId = length(Id);
 
-realid = real(Id);
-imagid = imag(Id);
-logInx = This.log(realid);
-repeat = ones(1,nPer);
-shift = imagid(:);
-shift = shift(:,repeat);
-shift = shift + TVec(ones(1,nId),:);
+realId = real(Id);
+imagId = imag(Id);
+ixLog = This.IxLog(realId);
+rep = ones(1,nPer);
+sh = imagId(:);
+sh = sh(:,rep);
+sh = sh + TVec(ones(1,nId),:);
 
 if isequal(ILoop,Inf)
     X = zeros(nId,nPer,nAlt);
     for ILoop = 1 : nAlt
-        Xi = doOneTrendArray();
-        X(:,:,ILoop) = Xi;
+        X(:,:,ILoop) = doOneTrendArray();
     end
 else
     X = doOneTrendArray();
 end
+
 
 % Nested functions...
 
@@ -66,22 +63,31 @@ end
 
 
     function X = doOneTrendArray()
-            level = real(This.Assign(1,realid,min(ILoop,end)));
-            growth = imag(This.Assign(1,realid,min(ILoop,end)));
+            lvl = real(This.Assign(1,realId,min(ILoop,end)));
+            grw = imag(This.Assign(1,realId,min(ILoop,end)));
             
-            % No imaginary part means zero growth for log variables.
-            growth(logInx & growth == 0) = 1;
+            % Zero or no imag means zero growth also for log variables.
+            grw(ixLog & grw == 0) = 1;
             
-            % Use `reallog` to make sure negative numbers throw an error.
-            level(logInx) = reallog(level(logInx));
-            growth(logInx) = reallog(growth(logInx));
+            ixGrw = (~ixLog & grw ~= 0) | (ixLog & grw ~= 1);
             
-            level = level.';
-            growth = growth.';
+            % Level can be negative and log(level) complex for log variables; growth
+            % must be positive for log variables.
+            lvl(ixLog) = log(lvl(ixLog));
+            grw(ixLog) = reallog(grw(ixLog));
             
-            X = level(:,repeat) + shift.*growth(:,repeat);
+            lvl = lvl.';
+            grw = grw.';
+            
+            X = lvl(:,rep);
+            if any(ixGrw)
+                X(ixGrw,:) = X(ixGrw,:) ...
+                    + sh(ixGrw,:).*grw(ixGrw,rep);
+            end
+            
+            % Delog only if requested.
             if IsDelog
-                X(logInx,:) = exp(X(logInx,:));
+                X(ixLog,:) = realexp(X(ixLog,:));
             end
     end % doOneTrendArray()
 

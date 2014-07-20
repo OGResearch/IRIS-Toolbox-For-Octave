@@ -10,10 +10,12 @@ function C = speclatexcode(This)
 %--------------------------------------------------------------------------
 
 % Read in the user file.
-This.userinput = file2char(This.filename,'char',This.options.lines);
-
-% Convert end-of-lines.
-This.userinput = strfun.converteols(This.userinput);
+c = file2char(This.filename,'cellstr');
+if ~isinf(This.options.lines)
+    c = c(This.options.lines);
+end
+c = sprintf('%s\n',c{:});
+This.userinput = c;
 
 C = speclatexcode@report.userinputobj(This);
 

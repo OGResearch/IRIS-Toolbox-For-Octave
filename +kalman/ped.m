@@ -13,6 +13,7 @@ ny = size(S.Z,1);
 nb = size(S.Ta,1);
 nf = size(S.Tf,1);
 ne = size(S.Ra,2);
+ng = size(S.g,1);
 nPer = size(S.y1,2);
 lastOmg = size(S.Omg,3);
 
@@ -108,6 +109,7 @@ if ~S.isObjOnly
         S.Dy0 = nan(ny,nPer);
         S.Df0 = nan(nf,nPer);
         S.Db0 = nan(nb,nPer);
+        S.Dg0 = [nan(ng,1),zeros(ng,nPer)];
     end
     if S.retCont
         S.MtFi = nan(nPOut+nInit,ny,nPer);
@@ -148,7 +150,7 @@ for t = 2 : nPer
         a = Ta*a + K0*pe;
         % Adjust the prediction step for the constant vector.
         if ~isempty(ka)
-            if ~S.istune
+            if ~S.IsShkTune
                 a = a + ka;
             else
                 a = a + ka(:,t);

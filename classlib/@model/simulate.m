@@ -1,11 +1,13 @@
 function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % simulate  Simulate model.
 %
+%
 % Syntax
 % =======
 %
 %     S = simulate(M,D,Range,...)
 %     [S,Flag,AddF,Discrep] = simulate(M,D,Range,...)
+%
 %
 % Input arguments
 % ================
@@ -18,10 +20,12 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 % * `Range` [ numeric ] - Simulation range.
 %
+%
 % Output arguments
 % =================
 %
 % * `S` [ struct | cell ] - Database with simulation results.
+%
 %
 % Output arguments in non-linear simulations
 % ===========================================
@@ -36,6 +40,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % * `Discrep` [ cell | empty ] - Cell array of tseries with final
 % discrepancies between LHS and RHS in equations marked for non-linear
 % simulations by a double-equal sign.
+%
 %
 % Options
 % ========
@@ -53,7 +58,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % `dboverlay` to combine the simulated output data with the input database,
 % or with another database, at the end.
 %
-% * `'dTrends='` [ *'auto'* | `true` | `false` ] - Add deterministic trends to
+% * `'dTrends='` [ *`@auto`* | `true` | `false` ] - Add deterministic trends to
 % measurement variables.
 %
 % * `'ignoreShocks='` [ `true` | *`false`* ] - Read only initial conditions from
@@ -66,8 +71,9 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar in the command
 % window.
 %
-% Options in non-linear simualations
-% ===================================
+%
+% Options in nonlinear simualations
+% ==================================
 %
 % * `'addSstate='` [ *`true`* | `false` ] - Add steady state levels to
 % simulated paths before evaluating non-linear equations; this option is
@@ -92,6 +98,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 %
 % * `'tolerance='` [ numeric | *`1e-5`* ] - Convergence tolerance.
 %
+%
 % Description
 % ============
 %
@@ -105,8 +112,76 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % database (i.e. to include a longer history of data in the simulated
 % series).
 %
-% Simulations with multilple parameterisations and/or multiple data sets
-% -----------------------------------------------------------------------
+%
+% Deviations from steady-state and deterministic trends
+% ------------------------------------------------------
+%
+% By default, both the input database, `D`, and the output database, `S`,
+% are in full levels and the simulated paths for measurement variables
+% include the effect of deterministic trends, including possibly exogenous
+% variables. The default behavior can be changed by changing the options
+% `'deviation='` and `'dTrends='`.
+%
+% The default value for `'deviation='` is false. If set to `true`, then the
+% input database is expected to contain data in the form of deviations from
+% their steady state levels or paths. For ordinary variables (i.e.
+% variables whose log status is `false`), it is $x_t-\Bar x_t$, meaning
+% that a 0 indicates that the variable is at its steady state and e.g. 2
+% indicates the variables exceeds its steady state by 2. For log-variables
+% (i.e. variables whose log status is `true`), it is $x_t/\Bar x_t$,
+% meaning that a 1 indicates that the variable is at its steady state and
+% e.g. 1.05 indicates that the variable is 5 per cent above its steady
+% state.
+%
+% The default value for `'dTrends='` is `@auto`. This means that its
+% behavior depends on the option `'deviation='`. If `'deviation=' false`
+% then deterministic trends are added to measurement variables, unless you
+% manually override this behavior by setting `'dTrends=' false`.  On the
+% other hand, if `'deviation=' true` then deterministic trends are not
+% added to measurement variables, unless you manually override this
+% behavior by setting `'dTrends=' true`.
+%
+%
+% Simulating contributions of shocks
+% -----------------------------------
+%
+% Use the option `'contributions=' true` to request the contributions of
+% shocks to the simulated path for each variable; this option cannot be
+% used in models with multiple alternative parameterizations or with
+% multiple input data sets.
+%
+% The output database, `S`, contains Ne+2 columns for each variable, where
+% Ne is the number of shocks in the model:
+%
+% * the first columns 1...Ne are the
+% contributions of the Ne individual shocks to the respective variable;
+%
+% * column Ne+1 is the contribution of initial condition, th econstant, and
+% deterministic trends, including possibly exogenous variables;
+%
+% * column Ne+2 is the contribution of nonlinearities in nonlinear
+% simulations (it is always zero otherwise).
+%
+% The contributions are additive for ordinary variables (i.e. variables
+% whose log status is `false`), and multplicative for log varibles (i.e.
+% variables whose log status is `true`). In other words, if `S` is the
+% output database from a simulation with `'contributions=' true`, `X` is an
+% ordinary variable, and `Z` is a log variable, then
+%
+%     sum(S.X,2)
+%
+% (i.e. the sum of all Ne+2 contributions in each period, i.e. summation
+% goes across 2nd dimension) reproduces the final simulated path for
+% the variable `X`, whereas
+%
+%     prod(S.Z,2)
+%
+% (i.e. the product of all Ne+2 contributions) reproduces the final
+% simulated path for the variable `Z`.
+%
+%
+% Simulations with multiple parameterisations and/or multiple data sets
+% ----------------------------------------------------------------------
 %
 % If you simulate a model with `N` parameterisations and the input database
 % contains `K` data sets (i.e. each variable is a time series with `K`
@@ -126,6 +201,7 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 % ..., P`, is a simulation of the `min(I,N)`-th model parameterisation
 % using the `min(I,K)`-th input data set number.
 %
+%
 % Example
 % ========
 %
@@ -135,20 +211,17 @@ function [Outp,ExitFlag,AddFact,Discr] = simulate(This,Inp,Range,varargin)
 
 % Parse required inputs.
 pp = inputParser();
-pp.addRequired('m',@(varargin)is.model(varargin{:}));
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@isnumeric);
-pp.parse(This,Inp,Range);
-
+pp.addRequired('D',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@isnumeric);
+pp.parse(Inp,Range);
 
 % Parse options.
 opt = passvalopt('model.simulate',varargin{:});
 
-if ischar(opt.dtrends)
-    opt.dtrends = ~opt.deviation;
-end
-
 %--------------------------------------------------------------------------
+
+% Input struct to the backend functions in `+simulate` package.
+s = struct();
 
 ny = sum(This.nametype == 1);
 nx = size(This.solution{1},1);
@@ -157,25 +230,21 @@ nf = nx - nb;
 ne = sum(This.nametype == 3);
 ng = sum(This.nametype == 5);
 nAlt = size(This.Assign,3);
-nEqtn = length(This.eqtn);
 
 Range = Range(1) : Range(end);
 nPer = length(Range);
-
-% Input struct to the backend functions in `+simulate` package.
-s = struct();
+s.NPer = nPer;
 
 % Simulation plan.
 isPlan = isa(opt.plan,'plan');
 isTune = isPlan && nnzendog(opt.plan) > 0 && nnzexog(opt.plan) > 0;
-isNonlinPlan = any(This.nonlin) ...
+isNonlinPlan = any(This.IxNonlin) ...
     && (isPlan && nnznonlin(opt.plan) > 0);
-isNonlinOpt = any(This.nonlin) ...
+isNonlinOpt = any(This.IxNonlin) ...
     && ~isempty(opt.nonlinearise) && opt.nonlinearise > 0;
-isNonlin = isNonlinPlan || isNonlinOpt;
-
-% Check for option conflicts.
-doChkConflicts();
+s.IsNonlin = isNonlinPlan || isNonlinOpt;
+s.IsDeviation = opt.deviation;
+s.IsAddAstate = opt.addsstate;
 
 % Get initial condition for alpha.
 % alpha is always expanded to match nalt within `datarequest`.
@@ -208,32 +277,26 @@ else
     nShock = 0;
 end
 
-% Get exogenous variables in dtrend equations.
-if ny > 0 && ng > 0 && opt.dtrends
-    G = datarequest('g',This,Inp,Range);
-else
-    G = [];
-end
-nExog = size(G,3);
+% Check for option conflicts.
+doChkConflicts();
 
 % Simulation range and plan range must be identical.
 if isPlan
-    [yAnch,xAnch,eaReal,eaImag,~,~, ...
-        s.QAnch,wReal,wImag] = ...
+    [yAnch,xAnch,eaReal,eaImag,~,~,s.QAnch,wReal,wImag] = ...
         myanchors(This,opt.plan,Range);
 end
 
 % Nonlinearised simulation through the option `'nonlinearise='`.
 if isNonlinOpt
-    if is.numericscalar(opt.nonlinearise) && is.round(opt.nonlinearise)
+    if isintscalar(opt.nonlinearise)
         qStart = 1;
         qEnd = opt.nonlinearise;
     else
         qStart = round(opt.nonlinearise(1) - Range(1) + 1);
         qEnd = round(opt.nonlinearise(end) - Range(1) + 1);
     end
-    s.QAnch = false(nEqtn,max(nPer,qEnd));
-    s.QAnch(This.nonlin,qStart:qEnd) = true;
+    s.QAnch = false(1,max(nPer,qEnd));
+    s.QAnch(1,qStart:qEnd) = true;
 end
 
 if isTune
@@ -275,11 +338,15 @@ else
     s.WghtU = [];
 end
 
+% Get exogenous variables in dtrend equations.
+G = datarequest('g',This,Inp,Range);
+nExog = size(G,3);
+
 % Total number of cycles.
 nLoop = max([1,nAlt,nInit,nShock,nTune,nExog]);
 s.NLoop = nLoop;
 
-if isNonlin
+if s.IsNonlin
     s.NPerNonlin = utils.findlast(s.QAnch);
     % The field `zerothSegment` is used by the Kalman filter to report
     % the correct period.
@@ -290,7 +357,7 @@ if isNonlin
     Discr = cell(1,nLoop);
     doChkNonlinConflicts();
     % Index of log-variables in the `xx` vector.
-    s.XLog = This.log(real(This.solutionid{2}));
+    s.IxXLog = This.IxLog(real(This.solutionid{2}));
 else
     % Output arguments for non-linear simulations.
     s.NPerNonlin = 0;
@@ -304,11 +371,11 @@ xRange = Range(1)-1 : Range(end);
 if ~opt.contributions
     hData = hdataobj(This,xRange,nLoop);
 else
-    hData = hdataobj(This,xRange,ne+2,'Contrib=','E');
+    hData = hdataobj(This,xRange,ne+2,'Contributions=',@shock);
 end
 
 % Maximum expansion needed.
-s.tplusk = max([1,lastEa,lastEndgA,s.NPerNonlin]) - 1;
+s.TPlusK = max([1,lastEa,lastEndgA,s.NPerNonlin]) - 1;
 
 % Create anonymous functions for retrieving anticipated and unanticipated
 % values, and for combining anticipated and unanticipated values.
@@ -319,7 +386,7 @@ s = simulate.antunantfunc(s,opt.anticipate);
 
 isSol = true(1,nLoop);
 
-if opt.progress && (This.linear || opt.display == 0)
+if opt.progress && (This.IsLinear || opt.display == 0)
     s.progress = progressbar('IRIS model.simulate progress');
 else
     s.progress = [];
@@ -329,8 +396,8 @@ for iLoop = 1 : nLoop
     s.iLoop = iLoop;
     
     if iLoop <= nAlt
-        % Update solution to be used in this simulation round.
-        s.isNonlin = isNonlin;
+        % Update solution and other data-independent info to be used in this
+        % simulation round.
         s = myprepsimulate(This,s,iLoop);
     end
     
@@ -344,26 +411,16 @@ for iLoop = 1 : nLoop
     % current shocks, and tunes on measurement and transition variables.
     doGetData();
     
-    % Compute deterministic trends if requested. We don't compute the dtrends
+    % Compute deterministic trends if requested. Do not compute the dtrends
     % in the `+simulate` package because they are dealt with differently when
     % called from within the Kalman filter.
     s.W = [];
     if ny > 0 && opt.dtrends
         s.W = mydtrendsrequest(This,'range',Range,s.G,iLoop);
-    end
-    if isNonlin
-        if opt.deviation && opt.addsstate
-            % Get steady state lines that will be added to simulated paths to evaluate
-            % non-linear equations.
-            isDelog = false;
-            s.XBar = mytrendarray(This,iLoop,isDelog, ...
-                This.solutionid{2},0:s.NPerNonlin);
+        if isTune
+            % Subtract deterministic trends from measurement tunes.
+            s.YTune = s.YTune - s.W;
         end
-    end
-    
-    % Subtract deterministic trends from measurement tunes.
-    if ~isempty(s.Z) && isTune && opt.dtrends
-        s.YTune = s.YTune - s.W;
     end
     
     % Call the backend package `simulate`
@@ -373,30 +430,31 @@ for iLoop = 1 : nLoop
     addFact = [];
     s.y = [];
     s.w = [];
-    if isNonlin
+    if s.IsNonlin
+        % Simulate linear contributions of shocks.
         if opt.contributions
-            usecon = simulate.contributions(s,nPer,opt);
+            useCon = simulate.contributions(s,Inf,opt);
         end
+        % Simulate contributions of nonlinearities residually.
         s = simulate.findsegments(s);          
         [s,exitFlag,discr,addFact] = simulate.nonlinear(s,opt);
         if opt.contributions
-            usecon.w(:,:,ne+2) = s.w - sum(usecon.w,3);
-            usecon.y(:,:,ne+2) = s.y - sum(usecon.y,3);
-            s = usecon;
+            useCon.w(:,:,ne+2) = s.w - sum(useCon.w,3);
+            useCon.y(:,:,ne+2) = s.y - sum(useCon.y,3);
+            s = useCon;
         end
     else
         s.Count = 0;
         s.u = [];
-        nPer = Inf;
         if opt.contributions
-            s = simulate.contributions(s,nPer,opt);
+            s = simulate.contributions(s,Inf,opt);
         else
-            s = simulate.linear(s,nPer,opt);
+            s = simulate.linear(s,Inf,opt);
         end
     end
     
     % Diagnostics output arguments for non-linear simulations.
-    if isNonlin
+    if s.IsNonlin
         ExitFlag{iLoop} = exitFlag;
         Discr{iLoop} = discr;
         AddFact{iLoop} = addFact;
@@ -418,10 +476,10 @@ for iLoop = 1 : nLoop
     s.x0 = xInit(:,1,min(iLoop,end));
     
     % Assign output data.
-    doAssignOutput();
+    doAssignOutp();
     
     % Add equation labels to add-factor and discrepancy series.
-    if isNonlin && nargout > 2
+    if s.IsNonlin && nargout > 2
         label = s.label;
         nSegment = length(s.segment);
         AddFact{iLoop} = tseries(Range(1), ...
@@ -479,7 +537,7 @@ end
         inx3 = [any(imag(Yy) ~= 0,3);any(imag(Xx) ~= 0,3)];
         inx = any(inx1 & (inx2 | inx3),2);
         if any(inx)
-            list = [This.solutionvector{1:2}];
+            list = myvector(This,'yx');
             utils.error('model:simulate', ...
                 ['This variable is exogenised to NaN, Inf or ', ...
                 'complex number: ''%s''.'], ...
@@ -504,7 +562,7 @@ end
 %**************************************************************************
 
 
-    function doAssignOutput()
+    function doAssignOutp()
         n = size(s.w,3);
         xf = [nan(nf,1,n),s.w(1:nf,:,:)];
         alp = s.w(nf+1:end,:,:);
@@ -514,19 +572,25 @@ end
         end
         % Add initial condition to xb.
         if opt.contributions
-            % Place initial condition to (ne+1)-th simulation.
             pos = 1 : ne+2;
             xb = [zeros(nb,1,ne+2),xb];
             xb(:,1,ne+1) = s.x0;
+            g = zeros(ng,nPer,ne+2);
+            g(:,:,ne+1) = s.G;
         else
             pos = iLoop;
             xb = [s.x0,xb];
+            g = s.G;
         end
         % Add current results to output data.
         hdataassign(hData,pos, ...
+            { ...
             [nan(ny,1,n),s.y], ...
             [xf;xb], ...
-            [nan(ne,1,n),s.e]);
+            [nan(ne,1,n),s.e], ...
+            [], ...
+            [nan(ng,1,n),g], ...
+            });
     end % doAssignOutput()
 
 
@@ -535,16 +599,23 @@ end
 
     function doChkConflicts()
         % The option `'contributions='` option cannot be used with the
-        % `'plan='` option or with multiple parameterisations.
+        % `'plan='` option, with multiple parameterisations, or multiple
+        % data sets.
         if opt.contributions
             if isTune
                 utils.error('model:simulate', ...
                     ['Cannot run simulation with ''contributions='' true ', ...
                     'and non-empty ''plan=''.']);
             end
-            if nAlt > 1
+            if nAlt > 1 || nInit > 1 || nShock > 1
                 utils.error('model:simulate', ...
-                    '#Cannot_simulate_contributions');
+                    ['Cannot run simulation with ''contributions='' true ', ...
+                    'in models with multiple alternative parameterizations.']);
+            end
+            if nInit > 1 || nShock > 1
+                utils.error('model:simulate', ...
+                    ['Cannot run simulation with ''contributions='' true ', ...
+                    'and input database with multiple data sets.']);
             end
         end
     end % doChkConflicts()

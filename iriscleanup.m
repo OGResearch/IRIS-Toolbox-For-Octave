@@ -42,10 +42,7 @@ removed = irispathmanager('cleanup');
 if ~isempty(removed)
    fprintf('\n\tThe following IRIS roots have been removed from the Matlab search path:\n');
    for i = 1 : numel(removed)
-      fprintf('\t* <a href="file://Local/%s">%s</a>\n', ...
-         removed{i},removed{i});
+      fprintf('\t* %s\n',removed{i});
    end
    fprintf('\n');
 end
-
-clear classes;

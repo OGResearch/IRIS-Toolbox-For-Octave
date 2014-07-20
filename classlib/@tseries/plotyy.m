@@ -34,8 +34,8 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % Options
 % ========
 %
-% * `'conincident='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
-% grids coincident.
+% * `'coincide='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
+% grids coincide.
 %
 % * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the LHS data.
@@ -120,8 +120,16 @@ comprise = timeRhs([1,end]);
 % Plot now.
 dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);
 dataRhsPlot = grfun.myreplacenancols(dataRhs,Inf);
+lhsPlotFuncStr = opt.lhsplotfunc;
+rhsPlotFuncStr = opt.rhsplotfunc;
+if isfunc(lhsPlotFuncStr)
+    lhsPlotFuncStr = func2str(lhsPlotFuncStr);
+end
+if isfunc(rhsPlotFuncStr)
+    rhsPlotFuncStr = func2str(rhsPlotFuncStr);
+end
 [Ax,hLhs,hRhs] = plotyy(timeLhs,dataLhsPlot,timeRhs,dataRhsPlot, ...
-    mychar(opt.lhsplotfunc),mychar(opt.rhsplotfunc));
+    lhsPlotFuncStr,rhsPlotFuncStr);
 
 % Apply line properties passed in by the user as optional arguments. Do
 % it separately for `hl` and `hr` because they each can be different types.
@@ -144,8 +152,7 @@ setappdata(Ax(2),'freq',freqRhs);
 setappdata(Ax(2),'range',RangeRhs);
 setappdata(Ax(2),'datePosition',opt.dateposition);
 
-if isequal(mychar(opt.lhsplotfunc),'bar') ...
-        || isequal(mychar(opt.rhsplotfunc),'bar')
+if strcmp(lhsPlotFuncStr,'bar') || strcmp(rhsPlotFuncStr,'bar')
     setappdata(Ax(1),'xLimAdjust',true);
     setappdata(Ax(2),'xLimAdjust',true);
 end
@@ -159,6 +166,9 @@ set(Ax(2),'color','none', ...
     'xTickLabel','', ...
     'xTick',[], ...
     'xAxisLocation','top');
+try
+    Ax(2).XRuler.Visible = 'on';
+end
 
 mydatxtick(Ax(1),RangeLhs,timeLhs,freqLhs,userRangeLhs,opt);
 
@@ -180,7 +190,7 @@ end
 % `plotcmp` graphs.
 grfun.swaplhsrhs(Ax(1),Ax(2));
 
-if ~opt.coincident
+if ~opt.coincide
     set(Ax,'yTickMode','auto');
 end
 
@@ -195,12 +205,13 @@ for ih = hRhs(:).'
     setappdata(ih,'dateLine',RangeRhs);
 end
 
-% Use IRIS datatip cursor function in this figure; in
-% `utils.datacursor', we also handle cases where the current figure
-% includes both tseries and non-tseries graphs.
-if ismatlab % datacursormode is not yet implemented in Octave
-obj = datacursormode(gcf());
-set(obj,'updateFcn',@utils.datacursor);
+if true % ##### MOSW
+    % Use IRIS datatip cursor function in this figure; in
+    % `utils.datacursor', we also handle cases where the current figure
+    % includes both tseries and non-tseries graphs.
+    obj = datacursormode(gcf());
+    set(obj,'updateFcn',@utils.datacursor);
+else
+    % Do nothing.
 end
-
 end

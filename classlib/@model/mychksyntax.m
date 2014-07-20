@@ -10,9 +10,13 @@ function mychksyntax(This)
 %--------------------------------------------------------------------------
 
 nName = length(This.name);
-t = This.tzero;
-nt = size(This.occur,2)/nName;
+t0 = find(This.Shift == 0);
+nt = length(This.Shift);
 ne = sum(This.nametype == 3);
+
+% Finalize sstate equations.
+isGrowth = false;
+eqtnS = myfinaleqtns(This,isGrowth);
 
 x = rand(1,nName,nt);
 dx = zeros(1,nName,nt);
@@ -22,34 +26,28 @@ g = zeros(sum(This.nametype == 5),1);
 
 % Create a random vector `x` for dynamic links. In dynamic links, we allow
 % std and corr names to occurs, and append them to the assign vector.
-std = double(This.linear)*1 + double(~This.linear)*log(1.01);
+std = double(This.IsLinear)*1 + double(~This.IsLinear)*log(1.01);
 if any(This.eqtntype == 4)
     xs = [rand(1,nName,1),std*ones(1,ne),zeros(1,ne*(ne-1)/2)];
 end
 
 isLink = This.eqtntype == 4;
 
-if ismatlab
-    s2fH = @str2func;
-else
-    s2fH = @mystr2func;
-end
-
 % Full dynamic equations except links.
 inx = ~isLink;
 try
-    e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
-    e(x,dx,L,t,ttrend,g);
+    e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    feval(e,x,dx,L,t0,ttrend,g);
 catch
     doLookUp('f',inx);
 end
 
 % Steady-state equations.
-if ~This.linear
+if ~This.IsLinear
     inx = ~isLink;
     try
-        e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.EqtnS{inx},']']);
-        e(x,dx,L,t,ttrend,g);
+        e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',eqtnS{inx},']']);
+        feval(e,x,dx,L,t0,ttrend,g);
     catch
         doLookUp('s',inx);
     end
@@ -58,8 +56,8 @@ end
 % Links.
 inx = isLink;
 try
-    e = s2fH(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
-    e(x,dx,L,t,ttrend,g);
+    e = mosw.str2func(['@(x,dx,L,t,ttrend,g) [',This.eqtnF{inx},']']);
+    feval(e,x,dx,L,t0,ttrend,g);
 catch
     doLookUp('f',inx);
 end
@@ -80,7 +78,7 @@ end
             if Type == 'f'
                 e = This.eqtnF{iiEq};
             else
-                e = This.EqtnS{iiEq};
+                e = eqtnS{iiEq};
             end
             
             if isempty(e)
@@ -89,25 +87,25 @@ end
             
             try
                 e = strfun.vectorise(e);
-                e = s2fH(['@(x,dx,L,t,ttrend,g)',e]);
+                e = mosw.str2func(['@(x,dx,L,t,ttrend,g)',e]);
                 
                 if This.eqtntype(iiEq) < 4
-                    e(x,dx,L,t,ttrend,g);
+                    feval(e,x,dx,L,t0,ttrend,g);
                 else
                     % Evaluate RHS of dynamic links. They can refer to std or corr names, so we
                     % have to use the `x1` vector.
                     e(xs,[],[],1,[],g);
                 end
                 
-                if This.linear ...
+                if This.IsLinear ...
                         || This.eqtntype(iiEq) > 2 ...
-                        || isempty(This.EqtnS{iiEq})
+                        || isempty(eqtnS{iiEq})
                     continue
                 end
                 
-                e = This.EqtnS{iiEq};
-                e = s2fH(['@(x,dx,L,t,ttrend,g)',e]);
-                e(x,dx,L,t,ttrend,g);               
+                e = eqtnS{iiEq};
+                e = mosw.str2func(['@(x,dx,L,t,ttrend,g)',e]);
+                feval(e,x,dx,L,t0,ttrend,g);               
             catch E
                 % Undeclared names should have been already caught. But a few exceptions
                 % may still exist.
@@ -139,7 +137,7 @@ end
         if ~isempty(errSyntax)
             utils.error('model',[utils.errorparsing(This), ...
                 'Syntax error in ''%s''.\n', ...
-                '\tMatlab says: %s'], ...
+                '\tUncle says: %s'], ...
                 errSyntax{:});
         end
     end % doLookUp().

@@ -41,13 +41,12 @@ catch %#ok<CTCH>
 end
 
 pp = inputParser();
-pp.addRequired('X',@(isArg)is.tseries(isArg));
-pp.addRequired('K',@(isArg)is.numericscalar(isArg));
-pp.parse(X,K);
-
+pp.addRequired('K',@isnumericscalar);
+pp.parse(K);
 
 %--------------------------------------------------------------------------
 
-X = unop(@(varargin)tseries.mydiff(varargin{:}),X,0,K);
+% @@@@@ MOSW
+X = unop(@(varargin) tseries.mydiff(varargin{:}),X,0,K);
 
 end

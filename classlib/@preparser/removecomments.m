@@ -21,8 +21,8 @@ end
 
 %--------------------------------------------------------------------------
 
-openCode = char(5);
-closeCode = char(6);
+openCode = char(1);
+closeCode = char(2);
 
 for i = 1 : length(varargin)
     

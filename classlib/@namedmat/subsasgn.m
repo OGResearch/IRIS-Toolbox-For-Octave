@@ -1,4 +1,4 @@
-function this = subsasgn(this,varargin)
+function varargout = subsasgn(this,varargin)
 % subsasgn  [Not a public function] Subscripted assignment for namedmat objects.
 %
 % Backed IRIS function.
@@ -9,7 +9,6 @@ function this = subsasgn(this,varargin)
 
 %--------------------------------------------------------------------------
 
-% [varargout{1:nargout}] = subsasgn(double(this),varargin{:});
-this.Value = subsasgn(this.Value,varargin{:});
+[varargout{1:nargout}] = subsasgn(double(this),varargin{:});
 
 end

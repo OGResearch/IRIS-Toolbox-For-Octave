@@ -28,9 +28,10 @@ if nPOut > 0
     x(1,PInx,:) = 0;
 end
 
-occur = This.occur(This.eqtntype == 3,(This.tzero-1)*nName+(1:nName));
+t0 = find(This.Shift == 0);
+occur = This.occur(This.eqtntype == 3,(t0-1)*nName+(1:nName));
 eqtnF = This.eqtnF(This.eqtntype == 3);
-dEqtnF = This.deqtnF(This.eqtntype == 3);
+dEqtnF = This.DEqtnF(This.eqtntype == 3);
 
 for i = 1 : ny
     % Evaluate the deterministic trends with out-of-lik parameters zero.

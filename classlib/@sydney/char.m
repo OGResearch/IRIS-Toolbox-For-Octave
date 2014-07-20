@@ -24,18 +24,15 @@ function C = char(This)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-persistent PLUSPREC TIMESPREC UMINUSPREC;
-if isempty(PLUSPREC) || isempty(TIMESPREC)
-    PLUSPREC = {'le','lt','ge','gt','eq'};
-    TIMESPREC = [{'rdivide','plus','minus'},PLUSPREC];
-    UMINUSPREC = [{'times'},TIMESPREC];
-end
+precPlus = {'le','lt','ge','gt','eq'};
+precTimes = [{'rdivide','plus','minus'},precPlus];
+precUminus = [{'times'},precTimes];
 
 %--------------------------------------------------------------------------
 
 if isempty(This.func)
     % Atomic value.
-    C = xxAtom2Char(This.args);
+    C = myatomchar(This);
     return
 end
 
@@ -55,20 +52,12 @@ end
 nArg = length(This.args);
 
 if strcmp(This.func,'plus')
-    if ismatlab
-        doPlus();
-    else
-        doPlus(PLUSPREC,UMINUSPREC);
-    end
+    doPlus();
     return
 end
 
 if strcmp(This.func,'times')
-    if ismatlab
-        doTimes();
-    else
-        doTimes(TIMESPREC);
-    end
+    doTimes();
     return
 end
 
@@ -79,7 +68,7 @@ if nArg == 1
             C = c1;
         case 'uminus'
             if ischar(This.args{1}.func) ...
-                    && any(strcmp(This.args{1}.func,UMINUSPREC))
+                    && any(strcmp(This.args{1}.func,precUminus))
                 c1 = ['(',c1,')'];
             end
             C = ['-',c1];
@@ -131,6 +120,13 @@ else
     C = [C,')'];
 end
 
+if true % ##### MOSW
+    % Do nothing.
+else
+    % Replace `++` and `--` with `+`.
+    C = mosw.ppmm(C); %#ok<UNRCH>
+end
+
 
 % Nested functions...
 
@@ -138,11 +134,7 @@ end
 %**************************************************************************
     
     
-    function doPlus(varargin)
-        if ~ismatlab && ~isempty(varargin)
-            PLUSPREC = varargin{1};
-            UMINUSPREC = varargin{2};
-        end
+    function doPlus()
         C = '';
         for iiArg = 1 : nArg
             sign = '+';
@@ -150,17 +142,19 @@ end
             if strcmp(a.func,'uminus')
                 c = xxArgs2Char(a.args{1});
                 if ischar(a.args{1}.func) ...
-                        && any(strcmp(a.args{1}.func,UMINUSPREC))
+                        && any(strcmp(a.args{1}.func,precUminus))
                     c = ['(',c,')']; %#ok<AGROW>
                 end
                 sign = '-';
             elseif isempty(a.func) && isnumeric(a.args) ...
                     && all(a.args < 0)
-                c = xxAtom2Char(-a.args);
+                a1 = a;
+                a1.args = -a1.args;
+                c = myatomchar(a1);
                 sign = '-';
             else
                 c = xxArgs2Char(a);
-                if any(strcmp(a.func,PLUSPREC))
+                if any(strcmp(a.func,precPlus))
                     c = ['(',c,')']; %#ok<AGROW>
                 end
             end
@@ -175,16 +169,13 @@ end
 %**************************************************************************
 
     
-    function doTimes(varargin)
-        if ~ismatlab && ~isempty(varargin)
-            TIMESPREC = varargin{1};
-        end
+    function doTimes()
         C = '';
         for iiArg = 1 : nArg
             sign = '*';
             a = This.args{iiArg};
             c = xxArgs2Char(a);
-            if any(strcmp(a.func,TIMESPREC))
+            if any(strcmp(a.func,precTimes))
                 c = ['(',c,')']; %#ok<AGROW>
             end
             C = [C,sign,c]; %#ok<AGROW>
@@ -207,7 +198,7 @@ end
 function C = xxArgs2Char(X)
 if isa(X,'sydney')
     C = char(X);
-elseif is.func(X)
+elseif isfunc(X)
     C = ['@',func2str(X)];
 elseif ischar(X)
     C = ['''',X,''''];
@@ -216,30 +207,3 @@ else
         'Invalid type of function argument in a sydney expression.');
 end
 end % xxArgs2Char()
-
-
-%**************************************************************************
-
-
-function C = xxAtom2Char(A)
-fmt = '%.15g';
-if ischar(A)
-    % Name of a variable.
-    C = A;
-elseif is.numericscalar(A)
-    % Constant.
-    if A == 0
-        C = '0';
-    else
-        C = sprintf(fmt,A);
-    end
-elseif (isnumeric(A) || islogical(A)) ...
-        && ~isempty(A) && length(size(A)) == 2 && size(A,2) == 1
-    % Column vector.
-    C = sprintf([';',fmt],double(A));
-    C = ['[',C(2:end),']'];
-else
-    utils.error('sydney:char', ...
-        'Unknown type of sydney atom.');
-end
-end % xxAtom2Char()

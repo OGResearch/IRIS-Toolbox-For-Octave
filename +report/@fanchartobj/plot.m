@@ -27,7 +27,7 @@ set(Ax,'nextPlot','add');
 pt = nan(1,nint);
 stdata = stdata.*This.options.factor;
 asym = This.options.asym;
-if is.tseries(asym)
+if istseries(asym)
     asym = asym(time);
     asym(isnan(asym)) = 1;
 end
@@ -44,18 +44,10 @@ for i = 1 : nint
     vData = [lData;flipud(hData)];
     vData = vData + [cData;flipud(cData)];
     pt(i) = patch([grid;flipud(grid)],vData,'white');
-    % Temporary show excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(Ax,'on');
-    end
     ch = get(Ax,'children');
     ch(ch == pt(i)) = [];
     ch(end+1) = pt(i); %#ok<AGROW>
     set(Ax,'children',ch);
-    % Hide back excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(Ax,'off');
-    end
     lineCol = get(h,'color');
     faceCol = whi*[1,1,1] + (1-whi)*lineCol;
     if This.options.exclude(min([i,end]))
@@ -69,8 +61,12 @@ for i = 1 : nint
     lgd = This.options.fanlegend;
     if isequal(lgd,Inf)
         if This.options.exclude(min([i,end]))
-            grfun.excludefromlegend(pt(i));
-            Leg(nint+1-i) = [];
+            if true % ##### MOSW
+                grfun.excludefromlegend(pt(i));
+                Leg(nint+1-i) = [];
+            else
+                % Do nothing
+            end
         else
             Leg{nint+1-i} = sprintf('%g%%',100*whi);
         end;
@@ -85,8 +81,12 @@ for i = 1 : nint
 end
 
 if isequalnFunc(This.options.fanlegend,NaN)
-    grfun.excludefromlegend(pt(:));
-    Leg(1:nint) = [];
+    if true % ##### MOSW
+        grfun.excludefromlegend(pt(:));
+        Leg(1:nint) = [];
+    else
+        % Do nothing
+    end
 end
 
 set(Ax,'nextPlot',nextplot);

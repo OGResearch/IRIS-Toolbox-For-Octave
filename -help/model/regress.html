@@ -137,11 +137,11 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrices will be either namedmat objects or plain numeric arrays.</li>
+<li><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>B</code> and <code>CovRes</code> as either <a href="../namedmat/Contents.html"><code>namedmat</code></a> object (i.e. matrices with named rows and columns) or plain numeric arrays.</li>
 </ul>
 <h4 id="description">Description</h4>
 <p>Population regressions calculated by this function are always centred. This means the regressions are always calculated as if estimated on observations with their uncondional means (the steady-state levels) removed from them.</p>
-<p>The Lhs and Rhs variables that are log-variables must include <code>log(...)</code> explicitly in their names. For instance, if <code>X</code> is declared to be a log variable, then you must refer to <code>log(X)</code> or <code>log(X{-1})</code>.</p>
+<p>The Lhs and Rhs variables that are log-variables must include <code>log( )</code> explicitly in their names. For instance, if <code>X</code> is declared to be a log variable, then you must refer to <code>log(X)</code> or <code>log(X{-1})</code>.</p>
 <h4 id="example">Example</h4>
 <pre><code>[B,C] = regress(&#39;log(R)&#39;,{&#39;log(R{-1})&#39;,&#39;log(dP)&#39;});</code></pre>
 

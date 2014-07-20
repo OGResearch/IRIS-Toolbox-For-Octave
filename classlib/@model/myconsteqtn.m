@@ -11,14 +11,14 @@ function Eqtn = myconsteqtn(This,Eqtn)
 
 % Replace
 % * all non-log variables with 0;
-% * all log variables with 1.
+% * all log-plus and log-minus variables with 1.
 
 ptn = '\<x\(:,(\d+),t[^\)]*\)';
-if is.matlab % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFunc($0,$1)}');
 else
-    Eqtn = mosw.octfun.dregexprep(Eqtn,ptn,'doReplace',[0,1]); %#ok<UNRCH>
+    Eqtn = mosw.dregexprep(Eqtn,ptn,'doReplace',[0,1]); %#ok<UNRCH>
 end
 
 Eqtn = sydney.myeqtn2symb(Eqtn);
@@ -32,7 +32,7 @@ Eqtn = strtrim(Eqtn);
 % make sure that the entire string has been used up, otherwise an
 % expression like 4*x(...) will be incorrectly stored as 4.
 [x,count] = sscanf(Eqtn,'%g');
-if count == length(Eqtn) && is.numericscalar(x) && isfinite(x)
+if count == length(Eqtn) && isnumericscalar(x) && isfinite(x)
     Eqtn = x;
 end
 
@@ -40,7 +40,7 @@ end
     function c = doReplace(c0,c1)
         c = sscanf(c1,'%g');
         if This.nametype(c) <= 3
-            if This.log(c)
+            if This.IxLog(c)
                 c = '1';
             else
                 c = '0';

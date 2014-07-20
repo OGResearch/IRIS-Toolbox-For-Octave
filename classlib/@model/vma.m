@@ -26,12 +26,12 @@ function [Phi,List] = vma(This,NPer,varargin)
 % Option
 % =======
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `Phi` will
-% be either a namedmat object or a plain numeric array; if the option
-% `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrix `Phi`
+% as either a [`namedmat`](namedmat/Contents) object (i.e. matrix with
+% named rows and columns) or a plain numeric array.
 %
-% * `'select='` [ cellstr | *`Inf`* ] - Return the VMA matrices for
-% selected variabes and/or shocks only; `Inf` means all variables.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return VMA for selected
+% variables only; `@all` means all variables.
 %
 % Description
 % ============
@@ -45,12 +45,8 @@ function [Phi,List] = vma(This,NPer,varargin)
 
 opt = passvalopt('model.vma',varargin{:});
 
-if ischar(opt.select)
-    opt.select = regexp(opt.select,'\w+','match');
-end
-
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -83,21 +79,30 @@ if ~all(isSol)
         preparser.alt2str(~isSol));
 end
 
-% List of variables in rows (measurement and transion) and columns (shocks)
-% of output matrices.
-List = { ...
-    [This.solutionvector{1:2}], ...
-    This.solutionvector{3}, ...
-    };
-
-% Convert output matrix to namedmat object.
-if isNamedmat
-    Phi = namedmat(Phi,List{1},List{2});
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
 end
 
-% Select variables.
+% List of variables in rows (measurement and transion) and columns (shocks)
+% of matrix `Phi`.
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
+
+% Select variables if requested.
 if isSelect
-    Phi = select(Phi,opt.select);
+    [Phi,pos] = select(Phi,rowNames,colNames,opt.select);
+    rowNames = rowNames(pos{1});
+    colNames = colNames(pos{2});    
+end
+List = {rowNames,colNames};
+
+if true % ##### MOSW
+    % Convert output matrix to namedmat object if requested.
+    if isNamedMat
+        Phi = namedmat(Phi,rowNames,colNames);
+    end
+else
+    % Do nothing.
 end
 
 end

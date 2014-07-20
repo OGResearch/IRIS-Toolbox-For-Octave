@@ -168,8 +168,9 @@ end
 
 
 %**************************************************************************
-function Freq = xxRecogniseFreq(Freq)
 
+
+function Freq = xxRecogniseFreq(Freq)
 freqNum = [1,2,4,6,12,52];
 if ischar(Freq)
     if ~isempty(Freq)
@@ -189,31 +190,31 @@ if ischar(Freq)
 elseif ~any(Freq == freqNum)
     Freq = [];
 end
-
 end % xxRecogniseFreq()
 
 
 %**************************************************************************
+
+
 function X = first(X,varargin) %#ok<DEFNU>
 X = X(1,:);
 end % first()
 
 
 %**************************************************************************
+
+
 function X = last(X,varargin) %#ok<DEFNU>
 X = X(end,:);
 end % last().
 
 
 %**************************************************************************
-function This = xxAggreg(This,Range,FromFreq,ToFreq,Opt)
 
+
+function This = xxAggreg(This,Range,FromFreq,ToFreq,Opt)
 if ischar(Opt.method)
-    if ismatlab
-        Opt.method = str2func(Opt.method);
-    else
-        Opt.method = mystr2func(Opt.method);
-    end
+    Opt.method = mosw.str2func(Opt.method);
 end
 
 % Stretch the original range from the beginning of first year until the end
@@ -261,13 +262,13 @@ for t = 1 : size(fromData,1)
     end
 end
 
-floorToDates = floor(toDates);
-nToPer = floorToDates(end) - floorToDates(1) + 1;
+flToDates = floor(toDates);
+nToPer = flToDates(end) - flToDates(1) + 1;
 
 toStart = toDates(1);
 toData = nan(0,nCol);
-for t = floorToDates(1) : floorToDates(end)
-    inx = t == floorToDates;
+for t = flToDates(1) : flToDates(end)
+    inx = t == flToDates;
     toX = nan(1,nCol);
     if any(inx)
         fromX = fromData(inx,:);
@@ -307,6 +308,8 @@ end % xxAggregDaily()
 
 
 %**************************************************************************
+
+
 function This = xxInterp(This,Range1,FromFreq,ToFreq,Opt)
 
 [xData,Range1] = mygetdata(This,Range1);
@@ -358,8 +361,9 @@ end % xxInterp()
 
 
 %**************************************************************************
-function This = xxInterpMatch(This,Range1,FromFreq,ToFreq,Opt)
 
+
+function This = xxInterpMatch(This,Range1,FromFreq,ToFreq,Opt)
 n = ToFreq/FromFreq;
 if n ~= round(n)
     error('iris:tseris',...
@@ -402,13 +406,13 @@ xData2 = reshape(xData2,[size(xData2,1),xSize(2:end)]);
 This.start = range2(1);
 This.data = xData2;
 This = mytrim(This);
-
 end % xxInterpMatch()
 
 
 %**************************************************************************
-function [Y2,Flag] = xxInterpMatchEval(Y1,N)
 
+
+function [Y2,Flag] = xxInterpMatchEval(Y1,N)
 [nObs,ny] = size(Y1);
 Y2 = nan(nObs*N,ny);
 
@@ -444,5 +448,4 @@ for i = 1 : ny
     iSample = iSample(:);
     Y2(iSample,i) = iY2(:);
 end
-
 end % interpMatchEval()

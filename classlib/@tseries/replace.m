@@ -9,6 +9,7 @@ function This = replace(This,Data,Start,Comment)
 
 %--------------------------------------------------------------------------
 
+This = mystamp(This);
 This.data = Data;
 if nargin > 2
     This.start = Start(1);

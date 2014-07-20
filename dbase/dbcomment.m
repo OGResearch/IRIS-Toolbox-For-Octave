@@ -36,7 +36,7 @@ list = fieldnames(D);
 c = get(M,'descript');
 for i = 1 : length(list)
     name = list{i};
-    if ~is.tseries(D.(name)) && ~isfield(c,name)
+    if ~istseries(D.(name)) && ~isfield(c,name)
         continue
     end
     try %#ok<TRYNC>

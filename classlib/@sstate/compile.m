@@ -64,12 +64,12 @@ end
 
 % Auto name for the output file.
 if isempty(outputfile)
-   [temppath,temptitle] = fileparts(s.fname);
+   [temppath,temptitle] = fileparts(s.FName);
    outputfile = fullfile(temppath,[temptitle,'.m']);
 end
 
 opt.outputfile = outputfile;
-opt.inputfile = s.fname;
+opt.inputfile = s.FName;
 clear('functions');
 
 %--------------------------------------------------------------------------
@@ -175,14 +175,14 @@ for i = forblocks
    end
    % Write end of subfunction.
    x.print('end');
-   subfun{i} = x.code;
+   subfun{i} = x.Code;
 end
 
 % Grab the primary function template from the end of this file.
 c = strfun.grabtext('=== START OF PRIMARY FUNCTION TEMPLATE ===', ...
    '=== END OF PRIMARY FUNCTION TEMPLATE ===');
 
-[~,tempfname] = fileparts(s.fname);
+[~,tempfname] = fileparts(s.FName);
 c = strrep(c,'#fileName',tempfname);
 c = strrep(c,'#FILENAME',upper(tempfname));
 c = strrep(c,'#date',datestr(now()));
@@ -209,7 +209,7 @@ for i = forblocks
    x.printn(subfun{i});
    x.printn('%% $ block%d().',i);
 end
-c = strrep(c,'#blocks',x.code);
+c = strrep(c,'#blocks',x.Code);
 
 % Save ready-to-use m-file function.
 char2file(c,outputfile);
@@ -239,7 +239,7 @@ function code = xxassignment(eqtn,solvefor)
          solvefor{i},solvefor{i});
    end   
    x.autoIndent = 0;   
-   code = x.code;
+   code = x.Code;
 end % xxassignment().
 
 %**************************************************************************
@@ -264,7 +264,7 @@ function code = xxgrowthnames2imag(input,gname)
          input{i},input{i});
    end   
    x.autoIndent = 0;
-   code = x.code;
+   code = x.Code;
 end % xxgrowthnames2imag().
 
 %**************************************************************************
@@ -274,12 +274,6 @@ function [code,errormsg] = ...
    code = '';
    errormsg = '';
    lastwarn('','');
-   
-   if ismatlab
-       mlOrOct = 'Matlab';
-   else
-       mlOrOct = 'Octave';
-   end
 
    nsolvefor = numel(solvefor);
    [~,ftitle] = fileparts(options.outputfile);
@@ -307,7 +301,7 @@ function [code,errormsg] = ...
       end
    catch Error
       errormsg = strtrim(strrep(Error.message,char(10),' '));
-      errormsg = sprintf('%s says: %s',mlOrOct,errormsg);
+      errormsg = sprintf('Uncle says: %s',errormsg);
    end
    if options.deletesymbolicmfiles
       delete([fname,'.m']);
@@ -318,7 +312,7 @@ function [code,errormsg] = ...
    lastWarning = lastwarn();
    if ~isempty(lastWarning)
       errormsg = strtrim(strrep(lastWarning,char(10),' '));
-      errormsg = sprintf('%s says: %s',mlOrOct,errormsg);
+      errormsg = sprintf('Uncle says: %s',errormsg);
       return
    end
 
@@ -379,7 +373,7 @@ function [code,errormsg] = ...
    x.nl();
    
    % Return the code.
-   code = x.code;
+   code = x.Code;
 
 end % xxsymbolic().
 
@@ -467,7 +461,7 @@ function code = xxnumerical(eqtn,solvefor,allbut,logs)
       end
    end   
    
-   code = x.code;
+   code = x.Code;
    
 end % xxnumerical().
 
@@ -490,9 +484,9 @@ function choose = xxmultisolutions(s,solvefor,block)
    end
    x.printn('Multiple solutions found for <a href="">block #%g</a>.',block);
    x.printn('Review the solutions above and choose one of them.');
-   disp(x.code);
+   disp(x.Code);
 
-   %html = strrep(html,'### SOLUTIONS HERE ###',x.code);
+   %html = strrep(html,'### SOLUTIONS HERE ###',x.Code);
    %[ans,h] = web('-new');
    %set(h,'htmlText',html);
 
@@ -520,7 +514,7 @@ function code = xxwritesolution(s,solveFor,prefix,suffix)
    for i = 1 : length(solveFor)
       x.printn('%s%s%s = %s;',prefix,solveFor{i},suffix,s{i});
    end
-   code = x.code;
+   code = x.Code;
 end % xxwritesolutions().
 
 %**************************************************************************
@@ -543,7 +537,7 @@ function xxsavesymbolic(block,fname,eqtn,solvefor,positive,options)
    for i = 1 : numel(solvefor)
       x.iprint('''%s'',',solvefor{i});
    end
-   x.code(end) = '';
+   x.Code(end) = '';
    x.printn(');');
    x.printn('end');
    x.save([fname,'.m']);
@@ -657,7 +651,7 @@ end
 % Create function handles for individual blocks.
 blockFunc = cell(1,nblock);
 for i = 1 : nblock
-    blockFunc{i} = str2func(sprintf('block%d',i));
+    blockFunc{i} = mosw.str2func(sprintf('block%d',i));
 end
 
 % Call individual blocks.

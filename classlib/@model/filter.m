@@ -59,8 +59,8 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *'auto'* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'data='` [ `'predict'` | *`'smooth'`* | `'predict,smooth'` ] - Return
 % smoother data or prediction data or both.
@@ -183,19 +183,17 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 nArgOut = nargout;
 
 % Database with tunes.
-j = [];
+J = [];
 if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
-    j = varargin{1};
+    J = varargin{1};
     varargin(1) = [];
 end
 
 pp = inputParser();
-pp.addRequired('model',@(varargin)is.model(varargin{:}));
-pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
-pp.parse(This,Inp,Range,j);
-
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x) || isempty(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('Tune',@(x) isempty(x) || isstruct(x) || iscell(x));
+pp.parse(Inp,Range,J);
 
 % This FILTER function options.
 [opt,varargin] = passvalopt('model.filter',varargin{:});
@@ -203,7 +201,7 @@ pp.parse(This,Inp,Range,j);
 % Process Kalman filter options; `mypreploglik` also expands solution
 % forward if needed for tunes on the mean of shocks.
 Range = Range(1) : Range(end);
-likOpt = mypreploglik(This,Range,'t',j,varargin{:});
+likOpt = mypreploglik(This,Range,'t',J,varargin{:});
 
 % Get measurement and exogenous variables.
 Inp = datarequest('yg*',This,Inp,Range);
@@ -243,7 +241,7 @@ end
 
 % Post-process regular (non-hdata) output arguments; update the std
 % parameters in the model object if `'relative=' true`.
-[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt);
+[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt,opt);
 
 % Post-process hdata output arguments.
 Outp = hdataobj.hdatafinal(hData);
@@ -253,6 +251,8 @@ Outp = hdataobj.hdatafinal(hData);
 
 
 %**************************************************************************
+
+    
     function doChkConflicts()
         if likOpt.ahead > 1 && (nData > 1 || nAlt > 1)
             utils.error('model', ...
@@ -268,6 +268,8 @@ Outp = hdataobj.hdatafinal(hData);
 
 
 %**************************************************************************
+    
+    
     function doPreallocHData()
         isPred = ~isempty(strfind(opt.data,'pred'));
         isFilter = ~isempty(strfind(opt.data,'filter'));
@@ -299,7 +301,7 @@ Outp = hdataobj.hdatafinal(hData);
                     if likOpt.returncont
                         hData.predcont = hdataobj(This,xRange,nCont, ....
                             'IncludeLag=',false, ...
-                            'Contrib=','Y', ...
+                            'Contributions=',@measurement, ...
                             'Precision',likOpt.precision);
                     end
                 end
@@ -327,7 +329,7 @@ Outp = hdataobj.hdatafinal(hData);
                     if likOpt.returncont
                         hData.filtercont = hdataobj(This,xRange,nCont, ...
                             'IncludeLag=',false, ...
-                            'Contrib=','Y', ...
+                            'Contributions=',@measurement, ...
                             'Precision=',likOpt.precision);
                     end
                 end
@@ -352,7 +354,7 @@ Outp = hdataobj.hdatafinal(hData);
                     end
                     if likOpt.returncont
                         hData.C2 = hdataobj(This,xRange,nCont, ...
-                            'Contrib=','Y', ...
+                            'Contributions=',@measurement, ...
                             'Precision=',likOpt.precision);
                     end
                 end

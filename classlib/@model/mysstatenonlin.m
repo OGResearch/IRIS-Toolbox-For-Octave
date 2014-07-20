@@ -45,7 +45,8 @@ for iAlt = 1 : nAlt
     x(zeroLInx) = 0;
     if ~isempty(Opt.resetinit)
         x(:) = real(Opt.resetinit);
-        x(This.log) = exp(x(This.log));
+        x(This.IxLog == 1) = exp(x(This.IxLog == 1));
+        x(This.IxLog == -1) = -exp(x(This.IxLog == -1));
     else
         % Assign NaN level initial conditions.
         % First, assign values from the previous iteration (if they exist).
@@ -68,7 +69,7 @@ for iAlt = 1 : nAlt
     if any(~zeroGInx)
         if ~isempty(Opt.resetinit)
             dx(:) = imag(Opt.resetinit);
-            dx(This.log) = exp(dx(This.log));
+            dx(This.IxLog ~= 0) = exp(dx(This.IxLog ~= 0));
         else
             % Assign NaN growth initial conditions.
             % First, assign values from the previous iteration (if they exist).
@@ -83,7 +84,7 @@ for iAlt = 1 : nAlt
         end
     end
     % Re-assign zero growth for log-variables to 1.
-    dx(dx == 0 & This.log) = 1;
+    dx(dx == 0 & This.IxLog ~= 0) = 1;
         
     % Cycle over individual blocks
     %------------------------------
@@ -95,11 +96,14 @@ for iAlt = 1 : nAlt
 
         xi = nameBlkL{iBlk};
         dxi = nameBlkG{iBlk};
-        isXLog = This.log(xi);
-        isDxLog = This.log(dxi);
-        isLog = [isXLog,isDxLog];
+        ixLogPlus = Opt.IxLogPlus(xi);
+        ixLogMinus = Opt.IxLogMinus(xi);
+        % Log growth rates are always positive.
+        ixDLog = This.IxLog(dxi);
+        ixLogPlus = [ixLogPlus,ixDLog]; %#ok<AGROW>
+        ixLogMinus = [ixLogMinus,false(size(dxi))]; %#ok<AGROW>
         z0 = [x(xi),dx(dxi)];
-        z0(isLog) = log(z0(isLog));
+        z0(ixLogPlus | ixLogMinus) = log(abs(z0(ixLogPlus | ixLogMinus)));
         
         % Test all equations in this block for NaNs and INfs.
         if Opt.warning
@@ -131,10 +135,14 @@ for iAlt = 1 : nAlt
             end
             if ~isempty(dxi)
                 xk = x;
-                xk(~This.log) = x(~This.log) + Shift*dx(~This.log);
-                xk(This.log) = x(This.log) .* dx(This.log).^Shift;
+                xk(This.IxLog == 0) = ...
+                    x(This.IxLog == 0) + Shift*dx(This.IxLog == 0);
+                % Time shifts of log-plus and log-variables are computed
+                % the same way.
+                xk(This.IxLog ~= 0) = ...
+                    x(This.IxLog ~= 0) .* dx(This.IxLog ~= 0).^Shift;
                 yk = f(xk,dx);
-                if isDxLog
+                if ixDLog
                     z = [z,(yk/y0)^(1/Shift)]; %#ok<AGROW>
                 else
                     z = [z,(yk-y0)/Shift]; %#ok<AGROW>
@@ -143,7 +151,11 @@ for iAlt = 1 : nAlt
             exitFlag = 1;
 
         else
-            switch lower(char(Opt.solver))
+            solverName = Opt.solver;
+            if isfunc(solverName)
+                solverName = func2str(solverName);
+            end
+            switch lower(solverName)
                 case 'lsqnonlin'
                     [z,~,~,exitFlag] = ...
                         lsqnonlin(@doObjFunc,z0,[],[],Opt.optimset);
@@ -157,7 +169,8 @@ for iAlt = 1 : nAlt
                     end
             end
             z(abs(z) <= Opt.optimset.TolX) = 0; %#ok<AGROW>
-            z(isLog) = exp(z(isLog)); %#ok<AGROW>
+            z(ixLogPlus) = exp(z(ixLogPlus)); %#ok<AGROW>
+            z(ixLogMinus) = -exp(z(ixLogMinus)); %#ok<AGROW>
         end
         
         x(xi) = z(1:nxi);
@@ -205,7 +218,8 @@ doRefresh();
        
         % Split the vector of unknows into levels and growth rates; `nxi` is the
         % number of levels.
-        P(isLog) = exp(P(isLog));
+        P(ixLogPlus) = exp(P(ixLogPlus));
+        P(ixLogMinus) = -exp(P(ixLogMinus));
         x(xi) = P(1:nxi);
         dx(dxi) = P(nxi+1:end);
         
@@ -219,20 +233,24 @@ doRefresh();
             % Some growth rates need to be calculated. Evaluate the model equations at
             % time t and t+Shift if at least one growth rate is needed.
             xk = x;
-            xk(~This.log) = x(~This.log) + Shift*dx(~This.log);
-            xk(This.log) = x(This.log) .* dx(This.log).^Shift;
+            xk(This.IxLog == 0) = ...
+                x(This.IxLog == 0) + Shift*dx(This.IxLog == 0);
+            % Time shifts of log-plus and log-variables are computed
+            % the same way.
+            xk(This.IxLog ~= 0) = ...
+                x(This.IxLog ~= 0) .* dx(This.IxLog ~= 0).^Shift;
             Y = [Y;f(xk,dx)];
         end
 
+        
         function doRefresh()
             % dorefresh  Refresh dynamic links in each iteration.
             This.Assign(1,:,iAlt) = x + 1i*dx;
             This = refresh(This,iAlt);
             x = real(This.Assign(1,:,iAlt));
             dx = imag(This.Assign(1,:,iAlt));
-            dx(dx == 0 & This.log) = 1;
-        end
-        % doRefresh()
+            dx(dx == 0 & This.IxLog ~= 0) = 1;
+        end % doRefresh()
         
         
     end % doObjFunc()

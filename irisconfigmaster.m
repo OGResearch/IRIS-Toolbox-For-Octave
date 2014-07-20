@@ -1,4 +1,4 @@
-function varargout = irisconfigmaster(Req,varargin)
+function varargout = irisconfigmaster(varargin)
 % irisconfigmaster  [Not a public function ] The IRIS Toolbox master configuration file.
 %
 % Backend IRIS function.
@@ -8,10 +8,18 @@ function varargout = irisconfigmaster(Req,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent CONFIG;
-if isempty(CONFIG)
+
+if isempty(varargin) || isempty(CONFIG)
     CONFIG = irisconfig();
+    mlock();
 end
-mlock();
+
+try
+    Req = varargin{1};
+    varargin(1) = [];
+catch
+    return
+end
 
 %--------------------------------------------------------------------------
 

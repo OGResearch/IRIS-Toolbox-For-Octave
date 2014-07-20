@@ -9,11 +9,13 @@ function S = segment(S,Opt)
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
 nx = size(S.T,1);
 nb = size(S.T,2);
 nf = nx - nb;
 ne = size(S.e,1);
 nEqtn = length(S.eqtn);
+L = S.L;
 
 S.histMinDiscrep = Inf;
 S.histMinAddFactor = Inf;
@@ -89,20 +91,22 @@ end
 %--------------------
 if S.stop < 0
     if Opt.error
-        messageFunc = @(varargin) utils.error(varargin{:});
+        % @@@@@ MOSW
+        msgFunc = @(varargin) utils.error(varargin{:});
     else
-        messageFunc = @(varargin) utils.warning(varargin{:});
+        % @@@@@ MOSW
+        msgFunc = @(varargin) utils.warning(varargin{:});
     end
 
     switch S.stop
         case -1
-            messageFunc('model', ...
+            msgFunc('model', ...
                 ['Non-linear simulation #%g, segment %s, ', ...
                 'reached the max number of iterations ', ...
                 'without achieving convergence.'], ...
                 S.iLoop,strtrim(S.segmentString));
         case -2
-            messageFunc('model', ...
+            msgFunc('model', ...
                 ['Non-linear simulation #%g, segment %s, ', ...
                 'crashed at Inf, -Inf, or NaN.'], ...
                 S.iLoop,strtrim(S.segmentString));
@@ -117,53 +121,57 @@ end
 
     
     function doDiscrepancy()
-        tt = 1 : S.NPerNonlin;
-        LL = S.TrendArray; 
+        range = 1 : S.NPerNonlin; 
         % Set up the vector of [xf;xb] and include initial condition.
-        xx = [[nan(nf,1);S.a0],S.w(:,tt)];
+        xx = [[nan(nf,1);S.a0],S.w(:,range)];
         xx(nf+1:end,:) = S.U*xx(nf+1:end,:);
         if Opt.deviation && Opt.addsstate
             xx = xx + S.XBar;
         end
+        
         % Delogarithmise log-variables.
-        xx(S.XLog,:) = exp(xx(S.XLog,:));
+        xx(S.IxXLog,:) = realexp(xx(S.IxXLog,:));
+        
         % Set up the vector of shocks including initial condition.
-        ee = real(S.e(:,tt)) + imag(S.e(:,tt));
-        ee = [zeros(ne,1),ee];
+        e = real(S.e(:,range)) + imag(S.e(:,range));
+        e = [zeros(ne,1),e];
         % No measurement variables in the transition equations.
-        yy = [];
+        y = [];
         % Get the current parameter values.
-        pp = S.Assign(1,S.nametype == 4);
+        p = S.Assign(1,S.nametype == 4);
         d = zeros(nEqtn,1+S.NPerNonlin);
         nanInx = false(1,nEqtn);
-        errorMsg = {};
-        for j = find(S.nonlin)   
-            evalInx = [false,S.QAnch(j,:)];
-            if ~any(evalInx)
-                continue
-            end
-            try
-                dj = S.eqtnN{j}(yy,xx,ee,pp,find(evalInx),LL); %#ok<FNDSB>
-                nanInx(j) = any(~isfinite(dj));
-                d(j,evalInx) = dj;
-            catch Error
-                errorMsg{end+1} = S.eqtn{j}; %#ok<AGROW>
-                errorMsg{end+1} = Error.message; %#ok<AGROW>
+        errMsg = {};
+        evalInx = [false,S.QAnch];
+        if any(evalInx)
+            tVec = find(evalInx);
+            % "Absolute time" within the entire nonlinear simulation for sstate
+            % references.
+            TVec = -S.MinT + S.First + tVec - 2;
+            for j = find(S.IxNonlin)
+                try
+                    dj = S.eqtnN{j}(y,xx,e,p,tVec,L,TVec);
+                    nanInx(j) = any(~isfinite(dj));
+                    d(j,evalInx) = dj;
+                catch Err
+                    errMsg{end+1} = S.eqtn{j}; %#ok<AGROW>
+                    errMsg{end+1} = Err.message; %#ok<AGROW>
+                end
             end
         end
-        if ~isempty(errorMsg)
-            utils.error('model', ...
-                ['Error evaluating this non-linearised equation: ''%s''.\n ', ...
-                '\tMatlab says: %s'], ...
-                errorMsg{:});
+        if ~isempty(errMsg)
+            utils.error('simulate:segment', ...
+                ['Error evaluating this nonlinear equation: ''%s''.\n ', ...
+                '\tUncle says: %s'], ...
+                errMsg{:});
         end
         if any(nanInx)
-            utils.error('model', ...
-                ['This non-linearised equation produces ', ...
+            utils.error('simulate:segment', ...
+                ['This nonlinear equation produces ', ...
                 'NaN or Inf: ''%s''.'], ...
                 S.eqtn{nanInx});
         end
-        S.discrep = d(S.nonlin,2:end);
+        S.discrep = d(S.IxNonlin,2:end);
         % Maximum discrepancy and max addfactor.
         S.maxDiscrep2 = max(abs(S.discrep),[],2);
         S.maxDiscrep = max(S.maxDiscrep2);

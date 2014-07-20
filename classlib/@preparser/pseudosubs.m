@@ -18,7 +18,7 @@ while true
     expr = strtrim(match(3:end-2));    
     if ~isempty(expr)
         [value,valid] = preparser.eval(expr,Asgn,Labels);
-        if is.numericscalar(value)
+        if isnumericscalar(value)
             value = sprintf('%g',value);
         elseif isequal(value,true)
             value = 'true';

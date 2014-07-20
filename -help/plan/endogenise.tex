@@ -23,9 +23,9 @@ P = endogenise(P,Dates,List,Sigma)
   \texttt{Dates} {[} numeric {]} - Dates at which the shocks or
   variables will be endogenised.
 \item
-  \texttt{Sigma} {[} numeric {]} - Select the anticipation mode, and
-  assign a weight to the shock in the case of underdetermined simulation
-  plans; if omitted, \texttt{Sigma = 1}.
+  \texttt{Sigma} {[} numeric {]} - Anticipation mode (real or imaginary)
+  for the endogenized shocks, and their numerical weight (used in
+  underdetermined simulation plans); if omitted, \texttt{Sigma = 1}.
 \end{itemize}
 
 \paragraph{Output arguments}\label{output-arguments}

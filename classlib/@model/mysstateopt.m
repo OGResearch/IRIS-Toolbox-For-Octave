@@ -43,19 +43,27 @@ Opt = passvalopt(['model.mysstate',Mode],varargin{:});
 
 %--------------------------------------------------------------------------
 
-if This.linear
+if This.IsLinear
     
     % Linear sstate solver
     %----------------------
     % No need to process any options for the linear sstate solver.
 
 else
-    
+
     % Non-linear sstate solver
     %--------------------------
+    if true % ##### MOSW
+        % Do nothing
+    else
+        % Do not run steady-state solver
+        Opt = false;
+        return
+    end
     [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
     Opt = xxOptimOpt(This,Opt);
+    Opt = xxLogOpt(This,Opt);
     
 end
 
@@ -88,24 +96,14 @@ oo = Opt.optimset;
 if ~isempty(oo)
     oo(1:2:end) = regexprep(oo(1:2:end),'[^\w]','');
 end
-if ismatlab
-    Opt.optimset = optimset( ...
-        'display',Opt.display, ...
-        'maxiter',Opt.maxiter, ...
-        'maxfunevals',Opt.maxfunevals,  ...
-        'tolx',Opt.tolx, ...
-        'tolfun',Opt.tolfun, ...
-        'algorithm','levenberg-marquardt', ...
-        oo{:});
-else
-    Opt.optimset = optimset( ...
-        'display',Opt.display, ...
-        'maxiter',Opt.maxiter, ...
-        'maxfunevals',Opt.maxfunevals,  ...
-        'tolx',Opt.tolx, ...
-        'tolfun',Opt.tolfun, ...
-        oo{:});
-end
+Opt.optimset = optimset( ...
+    'display',Opt.display, ...
+    'maxiter',Opt.maxiter, ...
+    'maxfunevals',Opt.maxfunevals,  ...
+    'tolx',Opt.tolx, ...
+    'tolfun',Opt.tolfun, ...
+    'algorithm','levenberg-marquardt', ...
+    oo{:});
 end % xxOptimOpt()
 
 
@@ -163,13 +161,12 @@ else
     eqtnBlk{2} = find(This.eqtntype == 1);
 end
 
+% Finalize sstate equations.
+isGrowth = Opt.growth;
+eqtnS = myfinaleqtns(This,isGrowth);
+
 nBlk = length(nameBlkL);
 blkFunc = cell(1,nBlk);
-if ismatlab
-    s2fH = @str2func;
-else
-    s2fH = @mystr2func;
-end
 ixAssign = false(1,nBlk);
 % Remove variables fixed by the user.
 % Prepare function handles to evaluate individual equation blocks.
@@ -186,20 +183,16 @@ for ii = 1 : nBlk
     nameLPos = nameBlkL{ii};
     nameGPos = nameBlkG{ii};
     eqtnPos = eqtnBlk{ii};
-    eqtn = This.EqtnS(eqtnPos);
+    iiBlkEqtn = eqtnS(eqtnPos);
     
     % Check if this is a plain, single-equation assignment. If it is an
     % assignment, remove the LHS from `eqtn{1}`, and create a function
     % handle the same way as in other blocks.
     doTestAssign();
-    
-    % Create an anonymous function handle for each block.
-    % Replace log(exp(x(...))) with x(...). This helps a lot.
-    eqtn = regexprep(eqtn,'log\(exp\(x\((\d+)\)\)\)','x($1)');
-    
+        
     % Create a function handle used to evaluate each block of
     % equations or assignments.
-    blkFunc{ii} = s2fH(['@(x,dx) [',eqtn{:},']']);
+    blkFunc{ii} = mosw.str2func(['@(x,dx) [',iiBlkEqtn{:},']']);
 end
 
 if isSwap
@@ -262,18 +255,14 @@ Opt.zeroGInx = zeroGInx;
             end
             
             if ~isempty(Opt.(fix))
-                fixpos = mynameposition(This,Opt.(fix));
-                validate = ~isnan(fixpos);
-                if all(validate)
-                    validate = This.nametype(fixpos) <= 2 ...
-                        | This.nametype(fixpos) == 4;
-                end
-                if any(~validate)
+                fixPos = mynameposition(This,Opt.(fix),[1,2,4]);
+                ixValid = ~isnan(fixPos);
+                if any(~ixValid)
                     utils.error('model:mysstateopt', ...
                         'Cannot fix this name: ''%s''.', ...
-                        Opt.(fix){~validate});
+                        Opt.(fix){~ixValid});
                 end
-                Opt.(fix) = fixpos;
+                Opt.(fix) = fixPos;
             else
                 Opt.(fix) = [];
             end
@@ -304,7 +293,7 @@ Opt.zeroGInx = zeroGInx;
     function doTestAssign()
         % Test for plain assignment: One equation with one variable solved
         % for on the LHS.
-        if length(eqtn) > 1 || length(nameLPos) > 1 || length(nameGPos) > 1
+        if length(iiBlkEqtn) > 1 || length(nameLPos) > 1 || length(nameGPos) > 1
             return
         end
         namePos = nameLPos;
@@ -316,12 +305,63 @@ Opt.zeroGInx = zeroGInx;
         nLhs = length(lhs);
         % The variables that is this block solved for is the only thing on
         % the LHS but does not occur on the RHS.
-        ixAssign(ii) = strncmp(eqtn{1},lhs,nLhs) ...
-            && isempty(strfind(eqtn{1}(nLhs+1:end),xn));
+        ixAssign(ii) = strncmp(iiBlkEqtn{1},lhs,nLhs) ...
+            && isempty(strfind(iiBlkEqtn{1}(nLhs+1:end),xn));
         if ixAssign(ii)
-            eqtn{1}(1:nLhs) = '';
+            iiBlkEqtn{1}(1:nLhs) = '';
         end
     end % doTestAssing()
 
 
 end % xxBlocks()
+
+
+%**************************************************************************
+
+
+function Opt = xxLogOpt(This,Opt)
+% xxLogOpt  Create the list of log-plus and log-minus levels,
+% `Opt.IxLogPlus` and `Opt.IxLogMinus`, based on user options `'Unlog='`
+% and `'LogMinus='`.
+
+unlogList = Opt.Unlog;
+if ischar(unlogList)
+    unlogList = regexp(unlogList,'\w+','match');
+end
+logMinusList = Opt.LogMinus;
+if ischar(logMinusList)
+    logMinusList = regexp(logMinusList,'\w+','match');
+end
+conflict = intersect(unlogList,logMinusList);
+if ~isempty(conflict)
+    utils.error('model:mysstateopt', ...
+        'This name is used in both ''Unlog='' and ''LogMinus='': ''%s''.', ...
+        conflict{:});
+end
+
+% Positions of unlog variables.
+unlogPos = mynameposition(This,unlogList,[1,2]);
+ixValid = ~isnan(unlogPos);
+if any(~ixValid)
+    utils.error('model:mysstateopt', ...
+        'This name cannot be used in ''Unlog='': ''%s''.', ...
+        unlogList{~ixValid});
+end
+
+% Positions of log minus variables.
+logMinusPos = mynameposition(This,logMinusList,[1,2]);
+ixValid = ~isnan(logMinusPos);
+if any(~ixValid)
+    utils.error('model:mysstateopt', ...
+        'This name cannot be used in ''LogMinus='': ''%s''.', ...
+        unlogList{~ixValid});
+end
+
+% Create lists of log-plus and log-minus levels.
+Opt.IxLogPlus = This.IxLog;
+Opt.IxLogMinus = false(size(This.IxLog));
+Opt.IxLogMinus(logMinusPos) = true;
+Opt.IxLogPlus(logMinusPos) = false;
+Opt.IxLogPlus(unlogPos) = false;
+Opt.IxLogMinus(unlogPos) = false;
+end %% xxLogOpt()

@@ -5,7 +5,7 @@ function [MinusLogLik,Grad,Hess,V] ...
 % Syntax
 % =======
 %
-%     [MinusLogLik,Grad,Hess,V] = diffloglik(M,D,Range,PList,...)
+%     [MinusLogLik,Grad,Hess,V] = diffloglik(M,Inp,Range,PList,...)
 %
 % Input arguments
 % ================
@@ -13,14 +13,14 @@ function [MinusLogLik,Grad,Hess,V] ...
 % * `M` [ model ] - Model object whose likelihood function will be
 % differentiated.
 %
-% * `D` [ cell | struct ] - Input data from which measurement variables
+% * `Inp` [ cell | struct ] - Input data from which measurement variables
 % will be taken.
 %
 % * `Range` [ numeric ] - Date range on which the likelihood function
 % will be evaluated.
 %
-% * `List` [ cellstr ] - List of model parameters with respect to which the
-% likelihood function will be differentiated.
+% * `PList` [ cellstr ] - List of model parameters with respect to which
+% the likelihood function will be differentiated.
 %
 % Output arguments
 % =================
@@ -65,12 +65,10 @@ function [MinusLogLik,Grad,Hess,V] ...
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('model',@(isArg)is.model(isArg));
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('plist',@(x) ischar(x) || iscellstr(x));
-pp.parse(This,Data,Range,PList);
-
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('PList',@(x) ischar(x) || iscellstr(x));
+pp.parse(Data,Range,PList);
 
 [opt,varargin] = passvalopt('model.diffloglik',varargin{:});
 
@@ -103,11 +101,17 @@ if nalt > 1
 end
 
 % Find parameter names and create parameter index.
-[assignpos,stdcorrpos] = mynameposition(This,PList,'error');
+[assignPos,stdcorrPos] = mynameposition(This,PList,4);
+ixValid = ~isnan(assignPos) | ~isnan(stdcorrPos);
+if any(~ixValid)
+    utils.error('model:diffloglik', ...
+        'This is not a valid parameter name: ''%s''.', ...
+        PList{~ixValid});
+end
 
 pri = struct();
-pri.assignpos = assignpos;
-pri.stdcorrpos = stdcorrpos;
+pri.assignpos = assignPos;
+pri.stdcorrpos = stdcorrPos;
 pri.Assign = This.Assign;
 pri.stdcorr = This.stdcorr;
 

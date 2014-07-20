@@ -128,14 +128,6 @@ classdef model < modelobj & estimateobj
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
-        % Name of the original model file.
-        %fname = '';
-        % Carry-on packages.
-        %Export = '';
-        % Linear or non-linear model.
-        % linear = false;
-        % List of functions with user derivatives.
-        % userdifflist = cell(1,0);
         % Vector [1-by-nname] of positions of shocks assigned to variables for
         % `autoexogenise`.
         Autoexogenise = nan(1,0);
@@ -146,15 +138,15 @@ classdef model < modelobj & estimateobj
         % Anonymous function handles to streamlined steady-state equations.
         EqtnS = cell(1,0);
         % A 1-by-nEqtn logical index of equations marked as non-linear.
-        nonlin = false(1,0);
+        IxNonlin = false(1,0);
         % Block-recursive structure for variable names.
         NameBlk = cell(1,0);
         % Block recursive structure for steady-state equations.
         EqtnBlk = cell(1,0);
         % Anonymous function handles to derivatives.
-        deqtnF = cell(1,0);
+        DEqtnF = cell(1,0);
         % Function handles to constant terms in linear models.
-        ceqtnF = cell(1,0);
+        CEqtnF = cell(1,0);
         % Struct describing reporting equations.
         outside = struct();
         % Order of execution of dynamic links.
@@ -164,7 +156,9 @@ classdef model < modelobj & estimateobj
         % Logical arrays with occurences of variables, shocks and parameters in steady-state equations.
         occurS = sparse(false(0));
         % Location of t=0 page in `occur`.
-        tzero = NaN;
+        % tzero = NaN;
+        % Vector minT : maxT (min lag to max lead).
+        Shift = [];
         % Vectors of measurement variables, transition variables, and shocks in columns of unsolved sysmtem matrices.
         systemid = { ...
             cell(1,0), ...
@@ -183,12 +177,6 @@ classdef model < modelobj & estimateobj
         solution = {[],[],[],[],[],[],[],[],[]};
         % Vectors of measurement variables, transition variables, and shocks in rows and columns of state-space matrices.
         solutionid = {[],[],[]};
-        % Vectors of variables names with lags, leads and/or logs.
-        solutionvector = { ...
-            cell(1,0), ...
-            cell(1,0), ...
-            cell(1,0), ...
-            };
         % True for predetermined variables for which initial condition is truly needed.
         icondix = false(1,0);
         % True for multipliers (optimal policy).
@@ -266,12 +254,12 @@ classdef model < modelobj & estimateobj
     
     methods (Hidden)
         varargout = hdatainit(varargin)
+        varargout = mychk(varargin)
         varargout = myfdlik(varargin)
         varargout = myfindsspacepos(varargin)
         varargout = myget(varargin)
         varargout = mykalman(varargin)
         varargout = myupdatemodel(varargin)
-        varargout = chk(varargin)
         varargout = datarequest(varargin)
         varargout = disp(varargin)
         varargout = end(varargin)
@@ -299,7 +287,7 @@ classdef model < modelobj & estimateobj
         varargout = mydtrends4lik(varargin)
         varargout = myeqtn2afcn(varargin)
         varargout = myfile2model(varargin)
-        varargout = myfinaleqtn(varargin)
+        varargout = myfinaleqtns(varargin)
         varargout = myfind(varargin)
         varargout = myfindoccur(varargin)
         varargout = myforecastswap(varargin)
@@ -355,23 +343,23 @@ classdef model < modelobj & estimateobj
             % Syntax
             % =======
             %
-            %     m = model(fname,...)
-            %     m = model(m,...)
+            %     M = model(FName,...)
+            %     M = model(M,...)
             %
             % Input arguments
             % ================
             %
-            % * `fname` [ char | cellstr ] - Name(s) of the model file(s) that will
+            % * `FName` [ char | cellstr ] - Name(s) of model file(s) that will be
             % loaded and converted to a new model object.
             %
-            % * `m` [ model ] - Existing model object that will be rebuilt as if from a
+            % * `M` [ model ] - Existing model object that will be rebuilt as if from a
             % model file.
             %
             % Output arguments
             % =================
             %
-            % * `m` [ model ] - New model object based on the input model code
-            % file or files.
+            % * `M` [ model ] - New model object based on the input model code file or
+            % files.
             %
             % Options
             % ========
@@ -489,8 +477,8 @@ classdef model < modelobj & estimateobj
                 if ischar(varargin{1}) || iscellstr(varargin{1})
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
-                    opt = doOptions();
-                    This.linear = opt.linear;
+                    doOptions();
+                    This.IsLinear = opt.linear;
                     [This,asgn] = myfile2model(This,fileName,opt);
                     This = mymodel2model(This,asgn,opt);
                 elseif isa(varargin{1},'model')
@@ -504,26 +492,28 @@ classdef model < modelobj & estimateobj
                     'Incorrect number or type of input argument(s).');
             end
             
-            function Opt = doOptions()
-                [Opt,varargin] = passvalopt('model.model',varargin{:});
-                if isempty(Opt.tolerance)
+            
+            function doOptions()
+                [opt,varargin] = passvalopt('model.model',varargin{:});
+                if isempty(opt.tolerance)
                     This.Tolerance(1) = getrealsmall();
                 else
-                    This.Tolerance(1) = Opt.tolerance(1);
+                    This.Tolerance(1) = opt.tolerance(1);
                     utils.warning('model', ...
                         ['You should NEVER reset the eigenvalue tolerance unless you are ', ...
                         'absolutely sure you know what you are doing!']);
                 end
-                if ~isstruct(Opt.assign)
+                if ~isstruct(opt.assign)
                     % Default for `'assign='` is an empty array.
-                    Opt.assign = struct();
+                    opt.assign = struct();
                 end
-                Opt.assign.sstateOnly = Opt.sstateonly;
-                Opt.assign.linear = Opt.linear;
+                opt.assign.sstateOnly = opt.sstateonly;
+                opt.assign.linear = opt.linear;
                 for iArg = 1 : 2 : length(varargin)
-                    Opt.assign.(varargin{iArg}) = varargin{iArg+1};
+                    opt.assign.(varargin{iArg}) = varargin{iArg+1};
                 end
-            end % doOptions().
+            end % doOptions()
+            
             
         end
         

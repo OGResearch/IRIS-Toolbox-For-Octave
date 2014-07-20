@@ -10,9 +10,8 @@ function [S,Range,Select] = myrf(This,Time,Func,Select,Opt)
 % Parse required input arguments.
 pp = inputParser();
 pp.addRequired('M',@(x) isa(This,'model'));
-pp.addRequired('TIME',@isnumeric);
-pp.parse(This,Time); %#ok<NASGU>
-
+pp.addRequired('Time',@isnumeric);
+pp.parse(This,Time);
 
 % Tell whether time is nper or range.
 if length(Time) == 1 && round(Time) == Time && Time > 0
@@ -24,6 +23,7 @@ nPer = length(Range);
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
 ny = sum(This.nametype == 1);
 nx = size(This.solution{1},1);
 nAlt = size(This.Assign,3);
@@ -50,7 +50,7 @@ end
 
 % Report NaN solutions.
 if ~all(isSol)
-    utils.warning('model', ...
+    utils.warning('model:myrf', ...
         'Solution(s) not available %s.', ...
         preparser.alt2str(~isSol));
 end
@@ -65,21 +65,17 @@ maxLag = -min(imag(This.solutionid{2}));
 Phi = permute(Phi,[1,3,2,4]);
 
 template = tseries();
-comment = repmat(Select,[1,1,nAlt]);
+comment = repmat(Select,1,1,nAlt);
 
 % Measurement variables.
 Y = Phi(1:ny,:,:,:);
 for i = find(This.nametype == 1)
     y = permute(Y(i,:,:,:),[2,3,4,1]);
-    if Opt.delog && This.log(i)
-        y = exp(y);
+    if Opt.delog && This.IxLog(i)
+        y = realexp(y);
     end
     name = This.name{i};
-    if is.matlab % ##### MOSW
-        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
-    else
-        c = strcat(name,{' <-- '},comment);
-    end
+    c = utils.concomment(name,comment,This.IxLog(i));
     S.(name) = replace(template,y,Range(1)-1,c);
 end
 
@@ -88,15 +84,11 @@ X = myreshape(This,Phi(ny+1:end,:,:,:));
 offset = sum(This.nametype == 1);
 for i = find(This.nametype == 2)
     x = permute(X(i-offset,:,:,:),[2,3,4,1]);
-    if Opt.delog && This.log(i)
-        x = exp(x);
+    if Opt.delog && This.IxLog(i)
+        x = realexp(x);
     end
     name = This.name{i};
-    if is.matlab % ##### MOSW
-        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
-    else
-        c = strcat(name,{' <-- '},comment);
-    end
+    c = utils.concomment(name,comment,This.IxLog(i));
     S.(name) = replace(template,x,Range(1)-1-maxLag,c);
 end
 
@@ -104,17 +96,11 @@ end
 e = zeros(nPer,nRun,nAlt);
 for i = find(This.nametype == 3)
     name = This.name{i};    
-    if is.matlab % ##### MOSW
-        c = regexprep(comment,'.*',[name,' <-- $0'],'once');
-    else
-        c = strcat(name,{' <-- '},comment);
-    end
+    c = utils.concomment(name,comment,false);
     S.(name) = replace(template,e,Range(1),c);
 end
 
 % Parameters.
-for i = find(This.nametype == 4)
-    S.(This.name{i}) = permute(This.Assign(1,i,:),[1,3,2]);
-end
+S = addparam(This,S);
 
 end

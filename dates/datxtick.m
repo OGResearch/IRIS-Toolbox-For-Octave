@@ -65,7 +65,6 @@ pp.addRequired('H',@(x) all(ishandle(x)));
 pp.addRequired('Range',@(x) isnumeric(x) && all(isfinite(x)) && ~isempty(x));
 pp.parse(H,NewRange);
 
-
 opt = passvalopt('dates.datxtick',varargin{:});
 
 %--------------------------------------------------------------------------
@@ -74,7 +73,7 @@ opt = passvalopt('dates.datxtick',varargin{:});
 for iH = H
     valid = isequal(getappdata(iH,'tseries'),true);
     oldFreq = getappdata(iH,'freq');
-    if ~valid || ~is.numericscalar(oldFreq)
+    if ~valid || ~isnumericscalar(oldFreq)
         utils.errors('dates', ...
             ['This axes object has not been created ', ...
             'as a valid tseries graph: %g.'], ...

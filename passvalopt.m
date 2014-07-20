@@ -81,7 +81,6 @@ Opt = Spec.options;
 varargout{1} = {};
 
 if ~isempty(varargin)
-    
     if iscellstr(varargin(1:2:end))
         % Called passvalopt(spec,'name',value,...).
         % This is the preferred way.
@@ -141,22 +140,23 @@ if ~isempty(varargin)
     
     % Validate the user-supplied options; default options are NOT validated.
     invalid = {};
-    name = fieldnames(Opt);
-    for i = 1 : length(name)
-        if isempty(changed.(name{i}))
+    list = fieldnames(Opt);
+    for i = 1 : length(list)
+        if isempty(changed.(list{i}))
             continue
         end
-        validFunc = validate.(name{i});
+        value = Opt.(list{i});
+        validFunc = validate.(list{i});
         if ~isempty(validFunc)
             if isequal(validFunc,@config)
                 if isempty(CONFIG)
                     CONFIG = irisconfigmaster('get');
                 end
-                validFunc = CONFIG.validate.(name{i});
+                validFunc = CONFIG.validate.(list{i});
             end
-            if ~feval(validFunc,Opt.(name{i}))
-                invalid{end+1} = changed.(name{i}); %#ok<AGROW>
-                invalid{end+1} = func2str(validate.(name{i})); %#ok<AGROW>
+            if ~feval(validFunc,value)
+                invalid{end+1} = changed.(list{i}); %#ok<AGROW>
+                invalid{end+1} = func2str(validate.(list{i})); %#ok<AGROW>
             end
         end
     end
@@ -166,8 +166,19 @@ if ~isempty(varargin)
             ['Value assigned to option ''%s='' ', ...
             'does not pass validation ''%s''.'],...
             invalid{:});
+    end       
+end
+
+% Evaluate @auto options
+%------------------------
+list = fieldnames(Opt);
+for i = 1 : length(list)
+    value = Opt.(list{i});
+    if isa(value,'function_handle') && isequal(value,@auto)
+        try %#ok<TRYNC>
+            Opt = feval(['irisauto.',list{i}],Opt);
+        end
     end
-    
 end
 
 end
@@ -177,8 +188,9 @@ end
 
 
 %**************************************************************************
-function Y = xxConvert(X)
 
+
+function Y = xxConvert(X)
 name = X(1:3:end);
 nName = length(name);
 name = regexp(name,'[a-zA-Z]\w*','match');
@@ -207,5 +219,4 @@ Y.primaryname = primaryName; % List of corresponding primary names.
 Y.options = options; % Struct with primary names and default values.
 Y.changed = changed; % Struct with empty chars, to be filled with the names used actually by the user.
 Y.validate = validate; % Struct with validating functions.
-
 end % xxConvert()

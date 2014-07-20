@@ -3,7 +3,7 @@
 % New report
 % ===========
 %
-% * [`new`](report/new) - Create new, empty report object.
+% * [`new`](report/new) - Create new empty report object.
 % * [`copy`](report/copy) - Create a copy of a report object.
 %
 % Compiling PDF report

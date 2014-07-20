@@ -53,7 +53,7 @@ function [Pp,Cp] = highlight(varargin)
 
 %#ok<*AGROW>
 
-if all(ishghandle(varargin{1}))
+if ~isempty(varargin{1}) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
     varargin(1) = [];
 else
@@ -65,6 +65,10 @@ varargin(1) = [];
 
 Pp = []; % Handles to patch objects.
 Cp = []; % Handles to caption objects.
+
+if isempty(range)
+    return
+end
 
 % Multiple separate ranges.
 if iscell(range)
@@ -78,39 +82,35 @@ end
 
 opt = passvalopt('grfun.highlight',varargin{:});
 
-if is.numericscalar(opt.color)
+if isnumericscalar(opt.color)
     opt.color = opt.color*[1,1,1];
 end
 
 %--------------------------------------------------------------------------
 
+if true % ##### MOSW
+    infLim = 1e10;
+else
+    infLim = 1e5; %#ok<UNRCH>
+end
+
+zPos = -2;
+
 for iAx = Ax(:).'
     % Preserve the order of figure children.
-    fg = get(iAx,'parent');
-    
-    % Temporary show excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(fg,'on');
-    end
-    
-    fgch = get(fg,'children');
+    % fg = get(iAx,'parent');
+    % fgch = get(fg,'children');
     
     % Check for plotyy peers, and return the background axes object.
     h = grfun.mychkforpeers(iAx);
     
-    % Move grid to the foreground for the grid to be visible.
+    % Move grid to the foreground; otherwise, the upper edge of the plot box
+    % will be overpainted by the highlight patch.
     set(h,'layer','top');
     
-    % Change grid style in HG2 back to black dotted line for the grid lines
-    % not to interfere so much with the plotted data.
-    if is.hg2()
-        set(h,'gridLineStyle',':', ...
-            'gridColor',0.7*[1,1,1]);
-    end
-    
-    % NOTE: Instead of moving the grid to the foreground, we could use
+    % NB: Instead of moving the grid to the foreground, we could use
     % transparent color for the highligh object (faceAlpha). This is
-    % however not supported by the Painters renderer.
+    % unfortunately not supported by the Painters renderer.
     
     range = range([1,end]);
     around = opt.around;
@@ -131,14 +131,15 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    if ismatlab
-        yData = realmax*[-1,-1,1,1]; % such a limits causes OpenGL tesselation error in Octave
+    if true % ##### MOSW
+        bounds = objbounds(iAx);
     else
-        yLim = get(h,'ylim');
-        yData = yLim([1,1,2,2]);
+        bounds = [0,0,0,0]; %#ok<UNRCH>
     end
     xData = timeScale([1,2,2,1]);
-    pt = patch(xData,yData,opt.color, ...
+    yData = infLim*[-1,-1,1,1] + bounds([3,3,4,4]);
+    zData = zPos*ones(size(xData));
+    pt = patch(xData,yData,zData,opt.color, ...
        'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...
        'yLimInclude','off');
     
@@ -149,24 +150,10 @@ for iAx = Ax(:).'
         Cp = [Cp,c];
     end
     
-    % Move the highlight patch object to the background.
-    ch = get(h,'children');
-    ch(ch == pt) = [];
-    ch(end+1) = pt;
-    set(h,'children',ch);
-    
-    if ~ismatlab % keep old behaviour for Octave
-        % Update y-data whenever the parent y-lims change.
-        grfun.listener(h,pt,'highlight');
-    end
-    
-    % Reset the order of figure children.
-    set(fg,'children',fgch);
-    
-    % Hide back excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(fg,'off');
-    end
+    % Make sure zLim includes zPos.
+    zLim = get(iAx,'zLim');
+    zLim(1) = min(zLim(1),zPos);
+    set(iAx,'zLim',zLim);
     
     Pp = [Pp,pt];
 end
@@ -179,9 +166,13 @@ if isempty(Pp)
     return
 end
 
-if opt.excludefromlegend
-    % Exclude highlighted area from legend.
-    grfun.excludefromlegend(Pp);
+if true % ##### MOSW
+    if opt.excludefromlegend
+        % Exclude highlighted area from legend.
+        grfun.excludefromlegend(Pp);
+    end
+else
+    % Do nothing.
 end
 
 end

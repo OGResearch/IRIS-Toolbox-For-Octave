@@ -70,13 +70,9 @@ function This = subsasgn(This,S,B)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-thisClass = class(This);
-
-if ~mosw.isa(This,'modelobj') ...
-        || (~mosw.isa(B,'modelobj') && ~isempty(B) && ~isnumeric(B))
-    utils.error(thisClass, ...
-        ['Invalid subscripted reference or assignment to ',thisClass, ...
-        'object.']);
+if ~ismodel(This) || (~ismodel(B) && ~isempty(B) && ~isnumeric(B))
+    utils.error('modelobj:subsasgn', ...
+        'Invalid subscripted reference or assignment to model object.');
 end
 
 %--------------------------------------------------------------------------
@@ -92,9 +88,8 @@ if isnumeric(B) ...
     Assign = This.Assign;
     [assignPos,stdcorrPos] = mynameposition(This,{name});
     if isnan(assignPos) && isnan(stdcorrPos)
-        utils.error(thisClass, ...
-            ['This name does not exist in the ',thisClass, ...
-            ' object: ''%s''.'], ...
+        utils.error('modelobj:subsasgn', ...
+            'This name does not exist in the model object: ''%s''.', ...
             name);
     elseif ~isnan(assignPos)
         Assign(1,assignPos,:) = B;
@@ -106,7 +101,7 @@ if isnumeric(B) ...
 end
 
 nAlt = size(This.Assign,3);
-S = utils.altersubs(S,nAlt,thisClass);
+S = xxAlterSubs(S,nAlt);
 
 % Regular assignment
 %--------------------
@@ -116,18 +111,17 @@ S = utils.altersubs(S,nAlt,thisClass);
 
 if any(strcmp(S(1).type,{'()','{}'}))
     
-    if ~mosw.isa(B,'modelobj') && ~isempty(B)
-        utils.error(thisClass, ...
-            ['Invalid subscripted reference or assignment ', ...
-            'to ',thisClass,' object.']);
+    if ~ismodel(B) && ~isempty(B)
+        utils.error('modelobj:subsasgn', ...
+            'Invalid subscripted reference or assignment to model object.');
     end
     
     % Make sure the LHS and RHS model objects are compatible in yvector,
     % xvector, and evector.
-    if mosw.isa(B,'modelobj') && ~iscompatible(This,B)
-        utils.error(thisClass, ...
+    if ismodel(B) && ~iscompatible(This,B)
+        utils.error('modelobj:subsasgn', ...
             ['Objects A and B are not compatible in ', ...
-            'in subscripted assignment A(...) = B.']);
+            'in subscripted assignment A( ) = B.']);
     end
     
     AInx = S(1).subs{1};
@@ -138,8 +132,8 @@ if any(strcmp(S(1).type,{'()','{}'}))
     end
     
     nAInx = length(AInx);
-
-    if mosw.isa(B,'modelobj') && ~isempty(B)
+    
+    if ismodel(B) && ~isempty(B)
         % `This(Inx) = B`
         % where `B` is a non-empty model whose length is either 1 or the same as
         % the length of `This(Inx)`.
@@ -149,9 +143,9 @@ if any(strcmp(S(1).type,{'()','{}'}))
         else
             BInx = ':';
             if nAInx ~= nb && nb > 0
-                utils.error(thisClass, ...
-                    ['Number of parameterisations on the LHS and RHS ', ...
-                    'of an assignment to ',thisClass,' object must be the same.']);
+                utils.error('modelobj:subsasgn', ...
+                    ['Number of parameterisations on LHS and RHS ', ...
+                    'of assignment to model object must be the same.']);
             end
         end
         This = mysubsalt(This,AInx,B,BInx);
@@ -164,7 +158,7 @@ if any(strcmp(S(1).type,{'()','{}'}))
 elseif strcmp(S(1).type,'.')
     % `This.Name = B` or `This.Name(Inx) = B`
     % `B` must be numeric.
-
+    
     name = S(1).subs;
     
     % Find the position of the Name in the Assign vector or stdcorr
@@ -186,12 +180,92 @@ elseif strcmp(S(1).type,'.')
     elseif ~isnan(stdcorrPos)
         This.stdcorr(1,stdcorrPos,Inx2) = B;
     else
-        utils.error(thisClass, ...
-            ['This name does not exist in the ',thisClass, ...
-            ' object: ''%s''.'], ...
+        utils.error('modelobj:subsasgn', ...
+            'This name does not exist in the model object: ''%s''.', ...
             name);
     end
 
 end
 
 end
+
+
+% Subfunctions...
+
+
+%**************************************************************************
+
+
+function S = xxAlterSubs(S,N)
+% xxAlterSubs  Check and re-organise subscripted reference to objects with mutliple parameterisations.
+
+% This function accepts the following subscripts
+%     x(index)
+%     x.name
+%     x.(index)
+%     x.name(index)
+%     x(index).name(index)
+% where index is either logical or numeric or ':'
+% and returns
+%     x(numeric)
+%     x.name(numeric)
+
+% Convert x(index1).name(index2) to x.name(index1(index2)).
+if length(S) == 3 && any(strcmp(S(1).type,{'()','{}'})) ...
+        && strcmp(S(2).type,{'.'}) ...
+        && any(strcmp(S(3).type,{'()','{}'}))
+    % convert a(index1).name(index2) to a.name(index1(index2))
+    index1 = S(1).subs{1};
+    if strcmp(index1,':')
+        index1 = 1 : N;
+    end
+    index2 = S(3).subs{1};
+    if strcmp(index2,':');
+        index2 = 1 : length(index1);
+    end
+    S(1) = [];
+    S(2).subs{1} = index1(index2);
+end
+
+% Convert a(index).name to a.name(index).
+if length(S) == 2 && any(strcmp(S(1).type,{'()','{}'})) ...
+        && strcmp(S(2).type,{'.'})
+    S = S([2,1]);
+end
+
+if length(S) > 2
+    utils.error('modelobj:subsasgn', ...
+        'Invalid reference to model object.');
+end
+
+% Convert a(:) or a.name(:) to a(1:n) or a.name(1:n).
+% Convert a(logical) or a.name(logical) to a(numeric) or a.name(numeric).
+if any(strcmp(S(end).type,{'()','{}'}))
+    if strcmp(S(end).subs{1},':')
+        S(end).subs{1} = 1 : N;
+    elseif islogical(S(end).subs{1})
+        S(end).subs{1} = find(S(end).subs{1});
+    end
+end
+
+% Throw error for mutliple indices
+% a(index1,index2,...) or a.name(index1,index2,...).
+if any(strcmp(S(end).type,{'()','{}'}))
+    if length(S(end).subs) ~= 1 || ~isnumeric(S(end).subs{1})
+        utils.error('modelobj:subsasgn', ...
+            'Invalid reference to model object.');
+    end
+end
+
+% Throw error if index is not real positive integer.
+if any(strcmp(S(end).type,{'()','{}'}))
+    index = S(end).subs{1};
+    if any(index < 1) || any(round(index) ~= index) ...
+            || any(imag(index) ~= 0)
+        utils.error('modelobj:subsasgn', ...
+            ['Subscript indices must be ', ...
+            'either real positive integers or logicals.']);
+    end
+end
+
+end % xxAlterSubs()

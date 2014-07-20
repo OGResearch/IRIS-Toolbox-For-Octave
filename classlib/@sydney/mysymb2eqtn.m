@@ -1,4 +1,4 @@
-function Eqtn = mysymb2eqtn(Eqtn,Mode,IsLog)
+function Eqtn = mysymb2eqtn(Eqtn,Mode)
 % mysymb2eqtn  [Not a public function] Replace sydney representation of variables back with a variable array.
 %
 % Backend IRIS function.
@@ -22,6 +22,7 @@ end
 % bracket to avoid conflicts with function names.
 
 switch Mode
+    
     case 'full'
         Eqtn = regexprep(Eqtn, ...
             '\<([xL])(\d+)p(\d+)\>(?!\()', '$1(:,$2,t+$3)' );
@@ -31,24 +32,18 @@ switch Mode
             '\<([xL])(\d+)\>(?!\()', '$1(:,$2,t)' );
         Eqtn = regexprep(Eqtn, ...
             '\<g(\d+)\>(?!\()', 'g($1,:)' );
-    case 'sstate'
-        Eqtn = regexprep(Eqtn, ...
-            '\<[xL](\d+)p(\d+)\>(?!\()', '(%($1)+$2*dx($1))' );
-        Eqtn = regexprep(Eqtn, ...
-            '\<[xL](\d+)m(\d+)\>(?!\()', '(%($1)-$2*dx($1))' );
-        Eqtn = regexprep(Eqtn, ...
-            '\<[xL](\d+)\>(?!\()', '(%($1))' );
-        Eqtn = regexprep(Eqtn, ...
-            '\<g(\d+)\>(?!\()', 'NaN' );
         
-        for i = find(IsLog(:).')
-            ptn = ['(%(',sprintf('%g',i)];
-            rpl = ['exp(%(',sprintf('%g',i)];
-            Eqtn = strrep(Eqtn,ptn,rpl);
-        end
-        Eqtn = strrep(Eqtn,'%','x');
-        Eqtn = strrep(Eqtn,'+1*dx(','+dx(');
-        Eqtn = strrep(Eqtn,'-1*dx(','-dx(');
+    case 'sstate'
+        % Leave lags and leads in sstate equations *semifinished*.
+        Eqtn = regexprep(Eqtn, ...
+            '\<[xL](\d+)p(\d+)\>(?!\()', '%($1){+$2}' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<[xL](\d+)m(\d+)\>(?!\()', '%($1){-$2}' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<[xL](\d+)\>(?!\()', '%($1)' );
+        Eqtn = regexprep(Eqtn, ...
+            '\<g(\d+)\>(?!\()', 'NaN' );        
+        Eqtn = strrep(Eqtn,'%(','x(');
 end
 
 end

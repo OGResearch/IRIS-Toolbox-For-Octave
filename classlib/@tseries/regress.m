@@ -66,11 +66,10 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('y',@(isArg)is.tseries(isArg));
-pp.addRequired('x',@(isArg)is.tseries(isArg));
-pp.addRequired('range',@isnumeric);
+pp.addRequired('Y',@istseries);
+pp.addRequired('X',@istseries);
+pp.addRequired('Range',@isnumeric);
 pp.parse(Y,X,Range);
-
 
 % Parse options.
 opt = passvalopt('tseries.regress',varargin{:});

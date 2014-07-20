@@ -52,10 +52,8 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('X',@(isArg)is.tseries(isArg));
 pp.addRequired('Range',@isnumeric);
-pp.parse(This,Range);
-
+pp.parse(Range);
 
 % Parse options.
 opt = passvalopt('tseries.trend',varargin{:});

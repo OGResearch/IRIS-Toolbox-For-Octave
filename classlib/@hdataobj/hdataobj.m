@@ -5,7 +5,7 @@ classdef hdataobj < handle
         Data = [];
         Range = zeros(1,0);
         Id = cell(1,0);
-        Log = false(1,0);
+        IxLog = false(1,0);
         
         Name = cell(1,0);
         Label = cell(1,0);
@@ -14,7 +14,7 @@ classdef hdataobj < handle
         IncludeLag = true; % Include lags of variables in output tseries.
         IncludeParam = true; % Include parameter database.
         IsVar2Std = false; % Convert variance to std dev.
-        Contrib = []; % If non-empty, contains labels for contributions.
+        Contributions = []; % If non-empty, contains labels for contributions.
         ParamDb = struct();
     end
     

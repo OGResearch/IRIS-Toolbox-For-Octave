@@ -1,0 +1,146 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="trec/trec">trec</h2>
+<div class="headline">Create new recursive time subscript object</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>T = trec(Dates)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>Dates</code> [ numeric ] - Vector of dates or date range on which the final time-recursive expression will be evaluated.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>T</code> [ trec ] - New time-recursive subscript object.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Time-recursive subscript objects are used to reference tseries objects on both the left-hand side and the right-hand side of a time-recursive assignment. The assignment is then evaluated for each date in <code>Dates</code>, from the first to the last.</p>
+<p>See more on time-recursive expressions in <a href="../trec/Contents.html">Contents</a>, including the description of instances in which IRIS fails to evaluate the time-recursive expressions correctly.</p>
+<h4 id="example">Example</h4>
+<p>Construct a first-order autoregressive process with normally distributed residuals:</p>
+<pre><code>T = trec(qq(2010,1):qq(2020,4));
+x = tseries(qq(2009,4),10);
+e = tseries(qq(2010,1):qq(2020,4),@randn);
+x(T) = 10 + 0.8*x(T-1) + e(T);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

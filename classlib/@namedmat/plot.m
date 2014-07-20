@@ -1,9 +1,9 @@
 function varargout = plot(varargin)
 
 % Permute the namedmat input arguments.
-index = cellfun(@(x) isa(x,'namedmat'),varargin);
+index = cellfun(@isnamedmat,varargin);
 for i = find(index)
-    varargin{i}.Value = permute(varargin{i}.Value,[3,1,2,4]);
+    varargin{i} = permute(varargin{i},[3,1,2,4]);
     varargin{i} = double(varargin{i});
     varargin{i} = varargin{i}(:,:);
 end

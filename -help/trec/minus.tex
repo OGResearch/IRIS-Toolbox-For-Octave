@@ -1,0 +1,31 @@
+
+
+    \filetitle{minus}{Create time-recursive lag of tseries object}{trec/minus}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X{T-K}
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Tseries object whose time-recursive lag
+  will be created.
+\item
+  \texttt{T} {[} trec {]} - Initialized trec object.
+\item
+  \texttt{K} {[} numeric {]} - Integer scalar specifying the lag.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The tseries object, \texttt{X}, referenced by \texttt{T-K} in a
+time-recursive expression will, in each iteration, return a value that
+corresponds to period \texttt{t-K}, where \texttt{t} is the currently
+processed date from the vector of dates (or date range) associated with
+the trec object, \texttt{T}.
+
+

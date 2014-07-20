@@ -4,14 +4,14 @@ function varargout = dbeval(D,varargin)
 % Syntax
 % =======
 %
-%     [Value,Value,...] = dbeval(D,Expr,Expr,...)
-%     [Value,Value,...] = dbeval(M,Expr,Expr,...)
+%     [Value1,Value2,...] = dbeval(D,Expr1,Expr2,...)
+%     [Value1,Value2,...] = dbeval(M,Expr1,Expr2,...)
 %
 %
 % Syntax with steady-state references
 % ====================================
 %
-%     [Value,Value,...] = dbeval(D,SS,Expr,Expr,...)
+%     [Value1,Value2,...] = dbeval(D,SS,Expr1,Expr2,...)
 %
 % Input arguments
 % ================
@@ -22,13 +22,13 @@ function varargout = dbeval(D,varargin)
 % * `M` [ model ] - Model object whose steady-state database will be used
 % to evaluate the expression.
 %
-% * `Expr` [ char ] - Expression that will be evaluated using the fields of
-% the input database.
+% * `Expr1`, `Expr2`, ... [ char ] - Expressions that will be evaluated
+% using the fields of the input database.
 %
 % Output arguments
 % =================
 %
-% * `Value` [ ... ] - Resulting value.
+% * `Value1`, `Value2`, ... [ ... ] - Resulting values.
 %
 % Description
 % ============
@@ -59,8 +59,14 @@ function varargout = dbeval(D,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+if true % ##### MOSW
+    className = 'modelobj';
+else
+    className = 'model'; %#ok<UNRCH>
+end
+
 if ~isempty(varargin) ...
-        && (isstruct(varargin{1}) || isa(varargin{1},'modelobj'))
+        && (isstruct(varargin{1}) || isa(varargin{1},className))
     SS = varargin{1};
     varargin(1) = [];
 else
@@ -69,12 +75,10 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('D',@(x) isstruct(x) || is.model(x));
-pp.addRequired('SS',@(x) isstruct(x) || is.model(x));
-pp.addRequired('Expr', ...
-    @(x) isempty(x) || iscellstr(x{1}) || iscellstr(x));
+pp.addRequired('D',@(x) isstruct(x) || ismodel(x));
+pp.addRequired('SS',@(x) isstruct(x) || ismodel(x));
+pp.addRequired('Expr',@(x) isempty(x) || iscellstr(x{1}) || iscellstr(x));
 pp.parse(D,SS,varargin);
-
 
 if isempty(varargin)
     varargout = {};
@@ -98,18 +102,18 @@ end
 %--------------------------------------------------------------------------
 
 expr = strtrim(expr);
-list = fieldnames(D).';
+list1 = fieldnames(D).';
 list2 = fieldnames(SS).';
-prefix = [char(1),'.'];
+prefix1 = [char(1),'.'];
 prefix2 = [char(2),'.'];
 for i = 1 : length(list2)
     expr = regexprep(expr,['&\<',list2{i},'\>'],[prefix2,list2{i}]);
 end
-for i = 1 : length(list)
-    expr = regexprep(expr,['(?<!\.)\<',list{i},'\>'],[prefix,list{i}]);
+for i = 1 : length(list1)
+    expr = regexprep(expr,['(?<!\.)\<',list1{i},'\>'],[prefix1,list1{i}]);
 end
 
-expr = strrep(expr,prefix,'D.');
+expr = strrep(expr,prefix1,'D.');
 expr = strrep(expr,prefix2,'SS.');
 
 % Replace all possible assignments and equal signs used in IRIS codes.

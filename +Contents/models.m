@@ -4,7 +4,7 @@
 %
 % * [model](model/Contents) - Model Objects and Functions.
 %
-% * [plan](plan/Contents) - Simulation Plans.
+% * [plan](plan/Contents) - Model Simulation Plans.
 %
 % * [grouping](grouping/Contents) - Grouping Objects for Aggregation of Contributions.
 %

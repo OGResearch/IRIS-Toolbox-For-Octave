@@ -1,13 +1,23 @@
-function x = mymoving(x,window,fn)
+function X = mymoving(X,Win,Func)
+% mymoving  [Not a public function] Function applied to moving window of observations.
+%
+%
+% Backend IRIS function.
+% No help provided.
 
-window = window(:).';
-if isempty(window)
-    utils.warning('tseries', ...
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
+
+Win = Win(:).';
+if isempty(Win)
+    utils.warning('tseries:mymoving', ...
         'The moving window is empty.');
-    x(:) = NaN;
+    X(:) = NaN;
 else
-    for i = 1 : size(x,2)
-        x(:,i) = feval(fn,tseries.myshift(x(:,i),window),2);
+    for i = 1 : size(X,2)
+        X(:,i) = feval(Func,tseries.myshift(X(:,i),Win),2);
     end
 end
 

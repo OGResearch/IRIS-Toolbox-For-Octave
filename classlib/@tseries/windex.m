@@ -1,4 +1,4 @@
-function X = windex(X,W,Range,varargin)
+function This = windex(This,W,Range,varargin)
 % windex  Simple weighted or Divisia index.
 %
 % Syntax
@@ -44,30 +44,29 @@ if nargin < 3
 end
 
 pp = inputParser();
-pp.addRequired('X',@(isArg)is.tseries(isArg));
-pp.addRequired('W',@(x) isnumeric(x) || is.tseries(x));
+pp.addRequired('X',@istseries);
+pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
 pp.addRequired('Range',@isnumeric);
-pp.parse(X,W,Range);
-
+pp.parse(This,W,Range);
 
 options = passvalopt('tseries.windex',varargin{:});
 
 %--------------------------------------------------------------------------
 
-X.data = X.data(:,:);
-temp = X;
-if is.tseries(W)
+This.data = This.data(:,:);
+temp = This;
+if istseries(W)
     W.data = W.data(:,:);
     temp = mytrim([temp,W]);
 end
 
 % Generate the range.
 Range = specrange(temp,Range);
-data = rangedata(X,Range);
+data = rangedata(This,Range);
 nPer = length(Range);
 
 % Get the weights.
-if is.tseries(W)
+if istseries(W)
     W = rangedata(W,Range);
 elseif size(W,1) == 1
     W = W(ones([1,nPer]),:);
@@ -103,8 +102,8 @@ switch lower(options.method)
         data = exp(cumsum([0;data]));
 end
 
-X.data = data;
-X.start = Range(1);
-X.Comment = {''};
+This.data = data;
+This.start = Range(1);
+This.Comment = {''};
 
 end

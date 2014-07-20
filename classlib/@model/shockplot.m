@@ -34,8 +34,8 @@ function [S,FF,AA] = shockplot(This,ShockName,SimRange,PlotList,varargin)
 % * `'deviation='` [ *`true`* | `false` ] - See the option `'deviation='`
 % in [`model/simulate`](model/simulate).
 %
-% * `'dtrends='` [ *`true`* | `false` ] - See the option `'dtrends='`
-% option in [`model/simulate`](model/simulate).
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - See the option
+% `'dtrends='` option in [`model/simulate`](model/simulate).
 %
 % * `'shockSize='` [ *`'std'`* | numeric ] - Size of the shock that will
 % be simulated; `'std'` means that one std dev of the shock will be
@@ -77,7 +77,6 @@ pp.addRequired('SHOCKNAME',@ischar);
 pp.addRequired('RANGE',@isnumeric);
 pp.addRequired('LIST',@(x) ischar(x) || iscellstr(PlotList));
 pp.parse(This,ShockName,SimRange,PlotList);
-
 
 [opt,varargin] = passvalopt('model.shockplot',varargin{:});
 

@@ -13,7 +13,7 @@ if isempty(Asgn)
 end
 
 if isempty(Export)
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 if isempty(ParentFile)
@@ -44,11 +44,7 @@ for i = 1 : nFileList
     end
 end
 
-if ismatlab
-    fileStr = sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
-else
-    fileStr = sprintf('%s',fileStr);
-end
+fileStr = mosw.sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
 if ~isempty(ParentFile)
     fileStr = [ParentFile,' > ',fileStr];
 end
@@ -59,14 +55,7 @@ Code = strfun.converteols(Code);
 
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
-%tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
-if ismatlab % lookbehind operators of variable length are not allowed in Octave
-    match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
-else
-    tmpstr = regexprep(Code, '^\s*(%%.*$)','$1');
-    match = regexp(tmpstr,'(?<=^%%)[^\n]+','match','once');
-    clear tmpstr;
-end
+match = regexp(Code,'(?<=^%%)[^\n]+','match','once');
 Comment = strtrim(match);
 
 % Read quoted strings 'xxx' and "xxx" and replace them with charcodes.

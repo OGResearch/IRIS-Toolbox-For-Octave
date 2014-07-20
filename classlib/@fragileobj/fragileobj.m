@@ -9,10 +9,12 @@ classdef fragileobj
     
     properties (Constant)
         % General pattern.
-        GPattern = [char(2),'[',char(16),'-',char(25),']+',char(3)];
+        OpenChar = char(3);
+        CloseChar = char(4);
+        GPattern = [char(3),'[',char(16),'-',char(25),']+',char(4)];
         CharUsed = [ ...
-            char(2), ...
             char(3), ...
+            char(4), ...
             char(16), ...
             char(17), ...
             char(18), ...
@@ -36,7 +38,7 @@ classdef fragileobj
             if isempty(c)
                 This.Offset = 0;
             else
-                x = fragileobj.char2dec(c);
+                x = char2dec(This,c);
                 This.Offset = max(x);
             end
         end
@@ -48,6 +50,7 @@ classdef fragileobj
         
         
         varargout = charcode(varargin)
+        varargout = char2dec(varargin)
         varargout = cleanup(varargin) 
         varargout = copytoend(varargin)
         varargout = dec2char(varargin)
@@ -61,9 +64,5 @@ classdef fragileobj
         varargout = restore(varargin)
     end
 
-    
-    methods (Static)
-        varargout = char2dec(varargin)
-    end
     
 end

@@ -135,7 +135,7 @@
         <tocitem target="model/xsf.html">xsf &#8212; Power spectrum and spectral density of model variables</tocitem>
         <tocitem target="model/zerodb.html">zerodb &#8212; Create model-specific zero-deviation database</tocitem>
     </tocitem>
-    <tocitem target="plan/Contents.html" image="HelpIcon.FUNCTION">Simulation Plans
+    <tocitem target="plan/Contents.html" image="HelpIcon.FUNCTION">Model Simulation Plans
         <tocitem target="plan/autoexogenise.html">autoexogenise &#8212; Exogenise variables and automatically endogenise corresponding shocks</tocitem>
         <tocitem target="plan/condition.html">condition &#8212; Condition forecast upon the specified variables at the specified dates</tocitem>
         <tocitem target="plan/detail.html">detail &#8212; Display details of a simulation plan</tocitem>
@@ -146,15 +146,15 @@
         <tocitem target="plan/nnzendog.html">nnzendog &#8212; Number of endogenised data points</tocitem>
         <tocitem target="plan/nnzexog.html">nnzexog &#8212; Number of exogenised data points</tocitem>
         <tocitem target="plan/nnznonlin.html">nnznonlin &#8212; Number of non-linearised data points</tocitem>
-        <tocitem target="plan/nonlinearise.html">nonlinearise &#8212; Select equations for simulation in an exact non-linear mode</tocitem>
-        <tocitem target="plan/plan.html">plan &#8212; Create new, empty simulation plan object</tocitem>
+        <tocitem target="plan/plan.html">plan &#8212; Create new empty simulation plan object</tocitem>
         <tocitem target="plan/subsref.html">subsref &#8212; Subscripted reference for plan objects</tocitem>
+        <tocitem target="plan/swap.html">swap &#8212; Swap endogeneity and exogeneity of variables and shocks</tocitem>
     </tocitem>
     <tocitem target="grouping/Contents.html" image="HelpIcon.FUNCTION">Grouping Objects for Aggregation of Contributions
         <tocitem target="grouping/addgroup.html">addgroup &#8212; Add measurement variable group or shock group to grouping object</tocitem>
         <tocitem target="grouping/detail.html">detail &#8212; Details of a grouping object</tocitem>
         <tocitem target="grouping/eval.html">eval &#8212; Evaluate contributions in input database S using grouping object G</tocitem>
-        <tocitem target="grouping/grouping.html">grouping &#8212; Create new, empty grouping object</tocitem>
+        <tocitem target="grouping/grouping.html">grouping &#8212; Create new empty grouping object</tocitem>
         <tocitem target="grouping/isempty.html">isempty &#8212; True for empty grouping object</tocitem>
     </tocitem>
     <tocitem target="systempriors/Contents.html" image="HelpIcon.FUNCTION">System Priors Objects and Functions
@@ -162,12 +162,12 @@
         <tocitem target="systempriors/isempty.html">isempty &#8212; True if system priors object is empty</tocitem>
         <tocitem target="systempriors/length.html">length &#8212; Number or priors in system priors object</tocitem>
         <tocitem target="systempriors/prior.html">prior &#8212; Add new prior to system priors object</tocitem>
-        <tocitem target="systempriors/systempriors.html">systempriors &#8212; Create new, empty system priors object</tocitem>
+        <tocitem target="systempriors/systempriors.html">systempriors &#8212; Create new empty system priors object</tocitem>
     </tocitem>
     <tocitem target="poster/Contents.html" image="HelpIcon.FUNCTION">Posterior Simulator Objects and Functions
         <tocitem target="poster/arwm.html">arwm &#8212; Adaptive random-walk Metropolis posterior simulator</tocitem>
         <tocitem target="poster/eval.html">eval &#8212; Evaluate posterior density at specified points</tocitem>
-        <tocitem target="poster/poster.html">poster &#8212; Create new, empty posterior simulation (poster) object</tocitem>
+        <tocitem target="poster/poster.html">poster &#8212; Create new empty posterior simulation (poster) object</tocitem>
         <tocitem target="poster/regen.html">regen &#8212; Regeneration time MCMC Metropolis posterior simulator</tocitem>
         <tocitem target="poster/stats.html">stats &#8212; Evaluate selected statistics of ARWM chain</tocitem>
     </tocitem>
@@ -189,7 +189,7 @@
     </tocitem>
 </tocitem>
 <tocitem target="Contents/VARs.html" image="HelpIcon.USER_GUIDE">Multivariate Time Series Analysis
-    <tocitem target="VAR/Contents.html" image="HelpIcon.FUNCTION">Vector Autoregressions (VAR) Objects and Functions
+    <tocitem target="VAR/Contents.html" image="HelpIcon.FUNCTION">Vector Autoregressions: VAR Objects and Functions
         <tocitem target="VAR/acf.html">acf &#8212; Autocovariance and autocorrelation functions for VAR variables</tocitem>
         <tocitem target="VAR/addparam.html">addparam &#8212; Add VAR parameters to a database (struct)</tocitem>
         <tocitem target="VAR/alter.html">alter &#8212; Expand or reduce the number of alternative parameterisations within a VAR object</tocitem>
@@ -229,7 +229,7 @@
         <tocitem target="VAR/subsasgn.html">subsasgn &#8212; Subscripted assignment for VAR objects</tocitem>
         <tocitem target="VAR/subsref.html">subsref &#8212; Subscripted reference for VAR objects</tocitem>
         <tocitem target="VAR/userdata.html">userdata &#8212; Get or set user data in an IRIS object</tocitem>
-        <tocitem target="VAR/VAR.html">VAR &#8212; Create new, empty reduced-form VAR object</tocitem>
+        <tocitem target="VAR/VAR.html">VAR &#8212; Create new empty reduced-form VAR object</tocitem>
         <tocitem target="VAR/vma.html">vma &#8212; Matrices describing the VMA representation of a VAR process</tocitem>
         <tocitem target="VAR/xsf.html">xsf &#8212; Power spectrum and spectral density functions for VAR variables</tocitem>
     </tocitem>
@@ -240,7 +240,7 @@
         <tocitem target="SVAR/srf.html">srf &#8212; Shock (impulse) response function</tocitem>
         <tocitem target="SVAR/SVAR.html">SVAR &#8212; Convert reduced-form VAR to structural VAR</tocitem>
     </tocitem>
-    <tocitem target="BVAR/Contents.html" image="HelpIcon.FUNCTION">Bayesian VAR Package
+    <tocitem target="BVAR/Contents.html" image="HelpIcon.FUNCTION">Bayesian VAR Priors: BVAR Package
         <tocitem target="BVAR/covmat.html">covmat &#8212; Covariance matrix prior dummy observations for BVARs</tocitem>
         <tocitem target="BVAR/litterman.html">litterman &#8212; Litterman's prior dummy observations for BVARs</tocitem>
         <tocitem target="BVAR/sumofcoeff.html">sumofcoeff &#8212; Doan et al sum-of-coefficient prior dummy observations for BVARs</tocitem>
@@ -250,7 +250,7 @@
     <tocitem target="FAVAR/Contents.html" image="HelpIcon.FUNCTION">Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions
         <tocitem target="FAVAR/comment.html">comment &#8212; Get or set user comments in an IRIS object</tocitem>
         <tocitem target="FAVAR/estimate.html">estimate &#8212; Estimate FAVAR using static principal components</tocitem>
-        <tocitem target="FAVAR/FAVAR.html">FAVAR &#8212; Create new, empty FAVAR object</tocitem>
+        <tocitem target="FAVAR/FAVAR.html">FAVAR &#8212; Create new empty FAVAR object</tocitem>
         <tocitem target="FAVAR/filter.html">filter &#8212; Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given</tocitem>
         <tocitem target="FAVAR/forecast.html">forecast &#8212; Forecast FAVAR factors and observables</tocitem>
         <tocitem target="FAVAR/get.html">get &#8212; Query model object properties</tocitem>
@@ -350,7 +350,7 @@
         <tocitem target="tseries/reshape.html">reshape &#8212; Reshape size of time series in 2nd and higher dimensions</tocitem>
         <tocitem target="tseries/resize.html">resize &#8212; Clip tseries object down to a specified date range</tocitem>
         <tocitem target="tseries/rmse.html">rmse &#8212; Compute RMSE for given observations and predictions</tocitem>
-        <tocitem target="tseries/round.html">round &#8212; Round tseries data to specified number of decimals</tocitem>
+        <tocitem target="tseries/round.html">round &#8212; Round tseries values to specified number of decimals</tocitem>
         <tocitem target="tseries/scatter.html">scatter &#8212; Scatter graph for tseries objects</tocitem>
         <tocitem target="tseries/single.html">single &#8212; Return tseries observations as single-precision numeric array</tocitem>
         <tocitem target="tseries/singledata.html">singledata &#8212; Convert tseries observations to single precision</tocitem>
@@ -368,6 +368,11 @@
         <tocitem target="tseries/wmean.html">wmean &#8212; Weighted average of time series observations</tocitem>
         <tocitem target="tseries/x12.html">x12 &#8212; Access to X13-ARIMA-SEATS seasonal adjustment program</tocitem>
         <tocitem target="tseries/yearly.html">yearly &#8212; Display tseries object one full year per row</tocitem>
+    </tocitem>
+    <tocitem target="trec/Contents.html" image="HelpIcon.FUNCTION">Time-Recursive Subscript Objects for Time-Recursive Expressions
+        <tocitem target="trec/minus.html">minus &#8212; Create time-recursive lag of tseries object</tocitem>
+        <tocitem target="trec/plus.html">plus &#8212; Create time-recursive lead of tseries object</tocitem>
+        <tocitem target="trec/trec.html">trec &#8212; Create new recursive time subscript object</tocitem>
     </tocitem>
     <tocitem target="dbase/Contents.html" image="HelpIcon.FUNCTION">Basic Database Management
         <tocitem target="dbase/array2db.html">array2db &#8212; Convert numeric array to database</tocitem>
@@ -415,7 +420,7 @@
         <tocitem target="report/matrix.html">matrix &#8212; Insert matrix or numeric array</tocitem>
         <tocitem target="report/merge.html">merge &#8212; Merge the content of two or more report objects</tocitem>
         <tocitem target="report/modelfile.html">modelfile &#8212; Write formatted model file</tocitem>
-        <tocitem target="report/new.html">new &#8212; Create new, empty report object</tocitem>
+        <tocitem target="report/new.html">new &#8212; Create new empty report object</tocitem>
         <tocitem target="report/pagebreak.html">pagebreak &#8212; Force page break</tocitem>
         <tocitem target="report/publish.html">publish &#8212; Compile PDF from report object</tocitem>
         <tocitem target="report/section.html">section &#8212; Start new section in report</tocitem>

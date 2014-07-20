@@ -27,10 +27,6 @@ ny = sum(This.nametype == 1);
 % Time trend for dtrend equations.
 LikOpt.ttrend = dat2ttrend(Range,This);
 
-if ischar(LikOpt.dtrends)
-    LikOpt.dtrends = ~LikOpt.deviation;
-end
-
 % Conditioning measurement variables.
 if LikOpt.domain == 't'
     LikOpt.condition = myselect(This,'y',LikOpt.condition);

@@ -25,31 +25,23 @@ f = fragileobj(Blk);
 [Blk,f] = protectbrackets(Blk,f);
 
 % Parse names with labels and assignments.
-ptn = ['(?<label>',regexppattern(This.labels),')?\s*', ...
-    '(?<name>[a-zA-Z]\w*)\s*', ... 
-    '(?<value>=[^;,\n]+[;,\n])?']; 
+ptn = [ ...
+    '((',regexppattern(This.Labels),')?)\s*', ... % Label.
+    '([a-zA-Z]\w*)\s*', ... % Name.
+    '((=[^;,\n]+[;,\n])?)', ... % Value.
+    ]; 
 
-x = regexp(Blk,ptn,'names');
-if ismatlab
-    Name = {x(:).name};
-    Label = {x(:).label};
-else
-    Name = x.name;
-    Label = x.label;
-end
-Value = {};
-if nargout > 2
-    if ismatlab
-        Value = {x(:).value};
-    else
-        Value = x.value;
-    end
-    Value = strrep(Value,'=','');
-    Value = strrep(Value,'!','');
-    % Restore protected brackets.
-    Value = restore(Value,f);
-    Value = strtrim(Value);
-end
+x = regexp(Blk,ptn,'tokens');
+x = [x{:}];
+
+Label = x(1:3:end);
+Name = x(2:3:end);
+Value = x(3:3:end);
+Value = strrep(Value,'=','');
+Value = strrep(Value,'!','');
+% Restore protected brackets.
+Value = restore(Value,f);
+Value = strtrim(Value);
 NameFlag = false(size(Name));
 
 end

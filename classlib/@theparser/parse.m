@@ -9,7 +9,7 @@ function [S,Asgn] = parse(This,Opt)
 
 %--------------------------------------------------------------------------
 
-nBlk = length(This.blkName);
+nBlk = length(This.BlkName);
 
 % Replace alternative block syntax.
 This = altsyntax(This);
@@ -17,25 +17,25 @@ This = altsyntax(This);
 % Output struct.
 S = struct();
 
-S.blk = [];
+S.Blk = [];
 
 S.name = cell(1,0);
 S.nametype = zeros(1,0);
 S.namelabel = cell(1,0);
 S.namealias = cell(1,0);
-S.namevalue = cell(1,0);
-S.nameflag = false(1,0);
+S.NameValue = cell(1,0);
+S.IxLog = false(1,0);
 
 S.eqtn = cell(1,0);
 S.eqtntype = zeros(1,0);
 S.eqtnlabel = cell(1,0);
 S.eqtnalias = cell(1,0);
-S.eqtnlhs = cell(1,0);
-S.eqtnrhs = cell(1,0);
-S.eqtnsign = cell(1,0);
-S.sstatelhs = cell(1,0);
-S.sstaterhs = cell(1,0);
-S.sstatesign = cell(1,0);
+S.EqtnLhs = cell(1,0);
+S.EqtnRhs = cell(1,0);
+S.EqtnSign = cell(1,0);
+S.SstateLhs = cell(1,0);
+S.SstateRhs = cell(1,0);
+S.SstateSign = cell(1,0);
 
 S.maxt = zeros(1,0);
 S.mint = zeros(1,0);
@@ -46,24 +46,25 @@ invalid = struct();
 invalid.assign = {};
 invalid.key = {};
 invalid.allBut = false;
-invalid.flag = {};
+invalid.log = {};
 invalid.timeSubs = {};
 invalid.emptyEqtn = {};
 invalid.stdcorr = {};
 
 % Read individual blocks and check for unknown keywords.
+
 [blk,invalid.key,invalid.allBut] = readblk(This);
 for iBlk = 1 : nBlk
-    S(iBlk).blk = blk{iBlk};
+    S(iBlk).Blk = blk{iBlk};
 end
 
 % Read individual names and assignments within each name block.
-for iBlk = find(This.nameBlk)
+for iBlk = find(This.IxNameBlk)
     [S(iBlk).name,S(iBlk).namelabel, ...
-        S(iBlk).namevalue,S(iBlk).nameflag] ...
-        = parsenames(This,S(iBlk).blk);
-    S(iBlk).nametype = This.nameType(iBlk)*ones(size(S(iBlk).name));
-    if ~This.stdcorrAllowed(iBlk)
+        S(iBlk).NameValue,S(iBlk).IxLog] ...
+        = parsenames(This,S(iBlk).Blk);
+    S(iBlk).nametype = This.NameType(iBlk)*ones(size(S(iBlk).name));
+    if ~This.IxStdcorrAllowed(iBlk)
         % Report all names starting with `std_` or `corr_`.
         ixStd = strncmp(S(iBlk).name,'std_',4);
         ixCorr = strncmp(S(iBlk).name,'corr_',5);
@@ -74,21 +75,21 @@ for iBlk = find(This.nameBlk)
     end
 end
 
-% Read names in flag block (only one flag block allowed).
-if any(This.flagBlk)
-    [S(This.flaggable),invalid.flag] ...
-        = parseflags(This,S(This.flagBlk).blk,S(This.flaggable));
+% Read names in log block.
+if any(This.IxLogBlk)
+    [S(This.IxLoggable),invalid.log] ...
+        = parselog(This,S(This.IxLogBlk).Blk,S(This.IxLoggable));
 end
 
 % Read individual equations within each equation block; evaluate and
 % validate time subscripts; check for empty equations consisting of labels
 % only.
-for iBlk = find(This.eqtnBlk)
+for iBlk = find(This.IxEqtnBlk)
     [S(iBlk).eqtn,S(iBlk).eqtnlabel, ...
-        S(iBlk).eqtnlhs,S(iBlk).eqtnrhs,S(iBlk).eqtnsign, ...
-        S(iBlk).sstatelhs,S(iBlk).sstaterhs,S(iBlk).sstatesign, ...
+        S(iBlk).EqtnLhs,S(iBlk).EqtnRhs,S(iBlk).EqtnSign, ...
+        S(iBlk).SstateLhs,S(iBlk).SstateRhs,S(iBlk).SstateSign, ...
         S(iBlk).maxt,S(iBlk).mint,invalidTimeSubs,emptyEqtn] ...
-        = parseeqtns(This,S(iBlk).blk);
+        = parseeqtns(This,S(iBlk).Blk);
     nEqtn = length(S(iBlk).eqtn);
     S(iBlk).eqtntype = iBlk*ones(1,nEqtn);
     invalid.timeSubs = [invalid.timeSubs,invalidTimeSubs];
@@ -100,9 +101,9 @@ doChkInvalid();
 % Put back labels, and extract alias from each label.
 for iBlk = 1 : nBlk
     S(iBlk).namelabel ...
-        = restore(S(iBlk).namelabel,This.labels,'delimiter=',false);
+        = restore(S(iBlk).namelabel,This.Labels,'delimiter=',false);
     S(iBlk).eqtnlabel ...
-        = restore(S(iBlk).eqtnlabel,This.labels,'delimiter=',false);
+        = restore(S(iBlk).eqtnlabel,This.Labels,'delimiter=',false);
     [S(iBlk).namelabel,S(iBlk).namealias] = xxGetAlias(S(iBlk).namelabel);
     [S(iBlk).eqtnlabel,S(iBlk).eqtnalias] = xxGetAlias(S(iBlk).eqtnlabel);
 end
@@ -135,9 +136,11 @@ doChkMultiple();
 
 
 %**************************************************************************
+
+    
     function doChkNamingRules()
         % Names must not start with 0-9 or _.
-        iinx = This.nameBlk;
+        iinx = This.IxNameBlk;
         list = [S(iinx).name];
         valid = cellfun(@isempty,regexp(list,'^[0-9_]','once'));
         if any(~valid)
@@ -156,7 +159,7 @@ doChkMultiple();
         end
         % Shock names must not contain double scores because of the way
         % cross-correlations are referenced.
-        iinx = This.stdcorrBasis;
+        iinx = This.IxStdcorrBasis;
         list = [S(iinx).name];
         valid = cellfun(@isempty,strfind(list,'__'));
         if any(~valid)
@@ -169,26 +172,30 @@ doChkMultiple();
 
 
 %**************************************************************************
+   
+    
     function doClearMultiple()
         % Take the last defined/assigned name in each name block.
-        for iiBlk = find(This.nameBlk)
+        for iiBlk = find(This.IxNameBlk)
             [~,ixRemove] = strfun.unique(S(iiBlk).name);
             if any(ixRemove)
                 S(iiBlk).name(ixRemove) = [];
                 S(iiBlk).nametype(ixRemove) = [];
                 S(iiBlk).namelabel(ixRemove) = [];
                 S(iiBlk).namealias(ixRemove) = [];
-                S(iiBlk).namevalue(ixRemove) = [];
-                S(iiBlk).nameflag(ixRemove) = [];
+                S(iiBlk).NameValue(ixRemove) = [];
+                S(iiBlk).IxLog(ixRemove) = [];
             end
         end
     end % doClearMultiple()
 
 
 %**************************************************************************
+   
+    
     function doChkMultiple()
         % Check for multiple names unless `'multiple=' true`.
-        iinx = This.nameBlk;
+        iinx = This.IxNameBlk;
         list = [S(iinx).name];
         [~,~,ixMultiple] = strfun.unique(list);
         if any(ixMultiple)
@@ -200,20 +207,22 @@ doChkMultiple();
 
 
 %**************************************************************************
+   
+    
     function doChkInvalid()
         ep = utils.errorparsing(This);
         
-        % Blocks marked as essential cannot be empty.
-        for iiBlk = find(This.essential)
-            caller = strtrim(This.caller);
+        % Blocks marked as IxEssential cannot be empty.
+        for iiBlk = find(This.IxEssential)
+            caller = strtrim(This.Caller);
             if ~isempty(caller)
                 caller(end+1) = ' '; %#ok<AGROW>
             end
-            if isempty(S(iiBlk).blk) || all(S(iiBlk).blk <= char(32))
+            if isempty(S(iiBlk).Blk) || all(S(iiBlk).Blk <= char(32))
                 utils.error('theparser:parse',[ep,...
                     'Cannot find a non-empty ''%s'' block. ', ...
                     'This is not a valid ',caller,'file.'], ...
-                    This.blkName{iiBlk});
+                    This.BlkName{iiBlk});
             end
         end
         
@@ -232,17 +241,17 @@ doChkMultiple();
         end
         
         % Invalid names on the log-variable list.
-        if ~isempty(invalid.flag)
-            flagBlkname = This.blkName{This.flagBlk};
+        if ~isempty(invalid.log)
+            IxLogBlkname = This.BlkName{This.IxLogBlk};
             utils.error('theparser:parse',[ep, ...
                 'This name is not allowed ', ...
-                'in the ''',flagBlkname,''' list: ''%s''.'], ...
-                invalid.flag{:});
+                'in the ''',IxLogBlkname,''' list: ''%s''.'], ...
+                invalid.log{:});
         end
         
         % Invalid time subscripts.
         if ~isempty(invalid.timeSubs)
-            invalid.timeSubs = restore(invalid.timeSubs,This.labels);
+            invalid.timeSubs = restore(invalid.timeSubs,This.Labels);
             utils.error('theparser:parse',[ep, ...
                 'Cannot evaluate time index in this equation: ''%s''.'], ...
                 invalid.timeSubs{:});
@@ -250,7 +259,7 @@ doChkMultiple();
         
         % Equations that consist of labels only (throw a warning, not error).
         if ~isempty(invalid.emptyEqtn)
-            invalid.emptyEqtn = restore(invalid.emptyEqtn,This.labels);
+            invalid.emptyEqtn = restore(invalid.emptyEqtn,This.Labels);
             utils.warning('theparser:parse',[ep, ...
                 'This equation is empty, and will be removed: ''%s''.'], ...
                 invalid.emptyEqtn{:});
@@ -272,9 +281,10 @@ end
 
 
 %**************************************************************************
+
+
 function [Label,Alias] = xxGetAlias(Label)
 % xxGetAlias  Extract alias from raw label.
-
 if isempty(Label)
     Alias = Label;
     return
@@ -292,35 +302,34 @@ for i = 1 : length(Label)
 end
 Alias = strtrim(Alias);
 Label = strtrim(Label);
-
 end % xxGetAlias()
 
 
 %**************************************************************************
+
+
 function S = xxSstateOnly(S)
 % sstateonly  Replace full equations with steady-state equatoins when
 % present.
-
 for i = 1 : length(S)
     if isempty(S(i).eqtn)
         continue
     end
     for j = 1 : length(S(i).eqtn)
-        if isempty(S(i).sstatelhs{j}) && isempty(S(i).sstaterhs{j}) ...
-                && isempty(S(i).sstatesign{j})
+        if isempty(S(i).SstateLhs{j}) && isempty(S(i).SstateRhs{j}) ...
+                && isempty(S(i).SstateSign{j})
             continue
         end
-        S(i).eqtnlhs{j} = S(i).sstatelhs{j};
-        S(i).eqtnrhs{j} = S(i).sstaterhs{j};
-        S(i).eqtnsign{j} = S(i).sstatesign{j};
-        S(i).sstatelhs{j} = '';
-        S(i).sstaterhs{j} = '';
-        S(i).sstatesign{j} = '';
+        S(i).EqtnLhs{j} = S(i).SstateLhs{j};
+        S(i).EqtnRhs{j} = S(i).SstateRhs{j};
+        S(i).EqtnSign{j} = S(i).SstateSign{j};
+        S(i).SstateLhs{j} = '';
+        S(i).SstateRhs{j} = '';
+        S(i).SstateSign{j} = '';
         pos = strfind(S(i).eqtn{j},'!!');
         if ~isempty(pos)
             S(i).eqtn{j}(1:pos+1) = '';
         end
     end
 end
-
 end %% xxSstateOnly()

@@ -5,7 +5,7 @@
 	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-NAMES = rownames(X)
+RowNames = rownames(X)
 \end{verbatim}
 
 \paragraph{Input arguments}\label{input-arguments}
@@ -13,8 +13,8 @@ NAMES = rownames(X)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{X} {[} namedmat {]} - A namedmat object (an numeric array with
-  named rows and columns) returned by some of the model functions.
+  \texttt{X} {[} namedmat {]} - A namedmat object (array with named rows
+  and columns) returned as output argument from some model functions.
 \end{itemize}
 
 \paragraph{Output arguments}\label{output-arguments}
@@ -22,7 +22,7 @@ NAMES = rownames(X)
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{NAMES} {[} cellstr {]} - Names of rows in \texttt{X}.
+  \texttt{RowNames} {[} cellstr {]} - Names of rows in \texttt{X}.
 \end{itemize}
 
 \paragraph{Description}\label{description}

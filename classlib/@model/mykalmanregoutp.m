@@ -1,5 +1,5 @@
 function [F,Pe,V,Delta,PDelta,SampleCov,This] ...
-    = mykalmanregoutp(This,RegOutp,XRange,LikOpt)
+    = mykalmanregoutp(This,RegOutp,XRange,LikOpt,Opt)
 % mykalmanregoutp  [Not a public function] Post-process regular (non-hdata) output arguments from the Kalman filter or FD lik.
 %
 % Backed IRIS function.
@@ -10,6 +10,7 @@ function [F,Pe,V,Delta,PDelta,SampleCov,This] ...
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
 template = tseries();
 
 F = [];
@@ -24,8 +25,8 @@ if isfield(RegOutp,'Pe')
     for iName = find(This.nametype == 1)
         name = This.name{iName};
         data = permute(RegOutp.Pe(iName,:,:),[2,3,1]);
-        if This.log(iName)
-            data = exp(data);
+        if This.IxLog(iName)
+            data = realexp(data);
         end
         Pe.(name) = template;
         Pe.(name) = replace(Pe.(name),data,XRange(1),name);
@@ -51,13 +52,19 @@ end
 
 PDelta = [];
 if isfield(RegOutp,'PDelta')
-    PDelta = namedmat(RegOutp.PDelta,deltaList,deltaList);
+    PDelta = RegOutp.PDelta;
+    if Opt.MatrixFmt
+        PDelta = namedmat(PDelta,deltaList,deltaList);
+    end
 end
 
 SampleCov = [];
 if isfield(RegOutp,'SampleCov')
-    eList = This.name(This.nametype == 3);
-    SampleCov = namedmat(RegOutp.SampleCov,eList,eList);
+    SampleCov = RegOutp.SampleCov;
+    if Opt.MatrixFmt
+        eList = This.name(This.nametype == 3);
+        SampleCov = namedmat(SampleCov,eList,eList);
+    end
 end
 
 % Update the std parameters in the model object.

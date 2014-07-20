@@ -11,10 +11,9 @@ function varargout = myxnames(This,XNames)
 %#ok<*CTCH>
 
 pp = inputParser();
-pp.addRequired('V',@(varargin) is.VAR(varargin{:}));
 pp.addRequired('XNames',@(x) isempty(XNames) ...
     || ischar(XNames) || iscellstr(XNames));
-pp.parse(This,XNames);
+pp.parse(XNames);
 
 %--------------------------------------------------------------------------
 

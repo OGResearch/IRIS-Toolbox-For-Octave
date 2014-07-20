@@ -1,4 +1,4 @@
-function hdataassign(This,varargin)
+function hdataassign(This,Pos,Data)
 % hdataassign  [Not a public function] Assign currently processed data to hdataobj.
 %
 % Backend IRIS function.
@@ -7,16 +7,19 @@ function hdataassign(This,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% hdataassign(HData,Col,...,Y,X,E,...)
+% hdataassign(HData, Col , {Y,X,E,...} )
+% hdataassign(HData, {Col,...} , {Y,X,E,...} )
+
+if ~iscell(Pos)
+    Pos = {Pos};
+end
 
 %--------------------------------------------------------------------------
 
 nPack = length(This.Id);
-Data = varargin(end-nPack+1:end);
-varargin(end-nPack+1:end) = [];
-Pos = varargin;
+nData = length(Data);
 
-for i = 1 : nPack
+for i = 1 : min(nPack,nData)
     
     if isempty(Data{i})
         continue
@@ -61,9 +64,10 @@ end
 
 
 %**************************************************************************
+
+
 function D = xxVar2Std(D)
 % xxVar2Std  Convert vectors of vars to vectors of stdevs.
-
 if isempty(D)
     return
 end
@@ -73,5 +77,4 @@ if any(inx(:))
     D(inx) = 0;
 end
 D = sqrt(D);
-
 end % xxVar2Std()

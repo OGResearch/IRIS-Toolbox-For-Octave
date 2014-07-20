@@ -20,7 +20,7 @@ end
 pp = inputParser();
 pp.addRequired('V',@(x) isa(x,'varobj'));
 pp.addRequired('YNames',@(x) isempty(YNames) ...
-    || ischar(YNames) || iscellstr(YNames) || is.func(YNames));
+    || ischar(YNames) || iscellstr(YNames) || isfunc(YNames));
 pp.parse(This,YNames);
 
 %--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ end
 
 if iscellstr(YNames)
     This.YNames = YNames(:).';
-elseif is.func(YNames) && ny > 0
+elseif isfunc(YNames) && ny > 0
     This.YNames = cell(1,ny);
     for i = 1 : ny
         This.YNames{i} = YNames(i);

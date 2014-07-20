@@ -62,7 +62,7 @@ if opt.refresh && ~isempty(This.Refresh)
 end
 
 if opt.warning
-    chk(This,Inf,'parameters','sstate','log');
+    mychk(This,Inf,'parameters','sstate','log');
 end
 
 nAlt = size(This.Assign,3);

@@ -48,7 +48,7 @@ Human = isempty(varargin) || ~isequal(varargin{1},false);
 NameBlk = cell(1,0);
 EqtnBlk = cell(1,0);
 
-if This.linear
+if This.IsLinear
     return
 end
 

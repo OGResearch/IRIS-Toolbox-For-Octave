@@ -25,7 +25,8 @@
 
 \begin{itemize}
 \item
-  \texttt{F} {[} numeric {]} - Forecast MSE matrices.
+  \texttt{F} {[} namedmat \textbar{} numeric {]} - Forecast MSE
+  matrices.
 \item
   \texttt{List} {[} cellstr {]} - List of variables in rows and columns
   of \texttt{M}.
@@ -39,16 +40,14 @@
 
 \begin{itemize}
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrix \texttt{M} will be either a
-  namedmat object or a plain numeric array; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always
-  \texttt{'namedmat'}.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrix \texttt{F} as either a
+  \href{namedmat/Contents}{\texttt{namedmat}} object (i.e.~matrix with
+  named rows and columns) or a plain numeric array.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return FMSE for selected variables only; \texttt{Inf} means all
-  variables. The option does not apply to the output database
-  \texttt{D}.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return FMSE for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
 \paragraph{Description}\label{description}

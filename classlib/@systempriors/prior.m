@@ -66,7 +66,7 @@ function This = prior(This,Def,PriorFunc,varargin)
 % Example
 % ========
 %
-% Create a new, empty systemprios object based on an existing model.
+% Create a new empty systemprios object based on an existing model.
 %
 %     s = systempriors(m);
 %
@@ -98,9 +98,8 @@ function This = prior(This,Def,PriorFunc,varargin)
 pp = inputParser();
 pp.addRequired('S',@(x) isa(x,'systempriors'));
 pp.addRequired('Def',@ischar);
-pp.addRequired('PriorFunc',@(x) isempty(x) || is.func(x));
-pp.parse(This,Def,PriorFunc); %#ok<NASGU>
-
+pp.addRequired('PriorFunc',@(x) isempty(x) || isfunc(x));
+pp.parse(This,Def,PriorFunc);
 
 opt = passvalopt('systempriors.prior',varargin{:});
 
@@ -115,13 +114,9 @@ Def0 = Def;
 Def = xxParseNames(This,Def);
 
 try
-    if ismatlab
-        s2fH = @str2func;
-    else
-        s2fH = @mystr2func;
-    end
-    This.eval{end+1} ...
-        = s2fH(['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
+    
+    This.eval{end+1} = mosw.str2func( ...
+        ['@(srf,ffrf,cov,corr,pws,spd,Assign,stdcorr) ',Def]);
 catch %#ok<CTCH>
     xxThrowError(Def0);
 end
@@ -304,11 +299,11 @@ invalid = {};
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
 ptn = '\.(\<[a-zA-Z]\w*\>(?![\[\(]))';
-if is.matlab % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Def = regexprep(Def,ptn,'${replaceFunc($1)}');
 else
-    Def = mosw.octfun.dregexprep(Def,ptn,'doReplace',1); %#ok<UNRCH>
+    Def = mosw.dregexprep(Def,ptn,'doReplace',1); %#ok<UNRCH>
 end
 
 if ~isempty(invalid)

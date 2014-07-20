@@ -84,11 +84,9 @@ function This = set(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('m',@(varargin)is.model(varargin{:}));
-pp.addRequired('name',@iscellstr);
-pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
-pp.parse(This,varargin(1:2:end-1),varargin(2:2:end));
-
+pp.addRequired('Name',@iscellstr);
+pp.addRequired('Value',@(x) length(x) == length(varargin(1:2:end-1)));
+pp.parse(varargin(1:2:end-1),varargin(2:2:end));
 
 %--------------------------------------------------------------------------
 
@@ -127,8 +125,7 @@ end
         switch query
             
             case 'nalt'
-                if is.numericscalar(Value) ...
-                        && Value > 0 && Value == round(Value)
+                if isintscalar(Value) && Value > 0
                     This = alter(This,Value);
                 else
                     Validated = false;
@@ -151,7 +148,7 @@ end
                 end
                 
             case {'baseyear','torigin'}
-                if is.numericscalar(Value) && Value == round(Value)
+                if isintscalar(Value)
                     This.BaseYear = Value;
                 else
                     Validated = false;
@@ -161,7 +158,7 @@ end
                 This = userdata(This,Value);
                 
             case 'epsilon'
-                if is.numericscalar(Value) && Value > 0
+                if isnumericscalar(Value) && Value > 0
                     This.epsilon = Value;
                 else
                     Validated = false;

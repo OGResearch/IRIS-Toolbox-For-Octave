@@ -1,4 +1,4 @@
-function This = endogenise(This,List,Dates,Weight)
+function This = endogenise(This,List,Dates,Sigma)
 % endogenise  Endogenise shocks or re-endogenise variables at the specified dates.
 %
 % Syntax
@@ -20,9 +20,9 @@ function This = endogenise(This,List,Dates,Weight)
 % * `Dates` [ numeric ] - Dates at which the shocks or variables will be
 % endogenised.
 %
-% * `Sigma` [ numeric ] - Select the anticipation mode, and assign a weight
-% to the shock in the case of underdetermined simulation plans; if omitted,
-% `Sigma = 1`.
+% * `Sigma` [ numeric ] - Anticipation mode (real or imaginary) for the
+% endogenized shocks, and their numerical weight (used in underdetermined
+% simulation plans); if omitted, `Sigma = 1`.
 %
 % Output arguments
 % =================
@@ -55,14 +55,12 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@(varargin)is.plan(varargin{:}));
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('Weight', ...
-    @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
+    @(x) isnumericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
     && real(x) >= 0 && imag(x) >= 0);
-pp.parse(This,List,Dates,Weight);
-
+pp.parse(List,Dates,Weight);
 
 % Convert char list to cell of str.
 if ischar(List)

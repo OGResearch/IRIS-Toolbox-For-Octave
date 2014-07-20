@@ -1,5 +1,5 @@
 function C = charcode(This)
-% charcode  [Not a public function] Get the current replacement code.
+% charcode  [Not a public function] Get replacement code for last entry in storage.
 %
 % Backend IRIS function.
 % No help provided.
@@ -9,6 +9,6 @@ function C = charcode(This)
 
 %--------------------------------------------------------------------------
 
-C = [char(2),dec2char(This,length(This)),char(3)];
+C = [This.OpenChar,dec2char(This,length(This)),This.CloseChar];
 
 end

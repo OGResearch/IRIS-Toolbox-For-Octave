@@ -67,18 +67,11 @@ end
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
         Discr = nan(nEqtnXY,2,nAlt);
-        preSample = This.tzero - 1;
-        if issparse(This.occur)
-            nT = size(This.occur,2) / length(This.name);
-        else
-            nT = size(This.occur,3);
-        end
-        postSample = nT - This.tzero;
         nameYXEPos = find(This.nametype < 4);
         isDelog = true;
         iiAlt = Inf;
         for t = 1 : 2
-            tVec = t + (-preSample : postSample);
+            tVec = t + This.Shift;
             X = mytrendarray(This,iiAlt,isDelog,nameYXEPos,tVec);
             L = X;
             Discr(:,t,:) = lhsmrhs(This,X,L);
@@ -91,26 +84,23 @@ end
     
     function doSstateEqtn()
         Discr = nan(nEqtnXY,2,nAlt);
-        eqtn = This.EqtnS(This.eqtntype <= 2);
-        if ismatlab
-            s2fH = @str2func;
-        else
-            s2fH = @mystr2func;
-        end
+        isGrowth = true;
+        eqtnS = myfinaleqtns(This,isGrowth);
+        eqtnS = eqtnS(This.eqtntype <= 2);
         % Create anonymous funtions for sstate equations.
-        for ii = 1 : length(eqtn)
-            eqtn{ii} = s2fH(['@(x,dx) ',eqtn{ii}]);
+        for ii = 1 : length(eqtnS)
+            eqtnS{ii} = mosw.str2func(['@(x,dx) ',eqtnS{ii}]);
         end
         for iiAlt = 1 : nAlt
             x = real(This.Assign(1,:,iiAlt));
             dx = imag(This.Assign(1,:,iiAlt));
-            dx(This.log & dx == 0) = 1;
+            dx(This.IxLog & dx == 0) = 1;
             % Evaluate discrepancies btw LHS and RHS of steady-state equations.
-            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtn)).';
+            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtnS)).';
             xk = x;
-            xk(~This.log) = x(~This.log) + dx(~This.log);
-            xk(This.log) = x(This.log) .* dx(This.log);
-            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtn)).';
+            xk(~This.IxLog) = x(~This.IxLog) + dx(~This.IxLog);
+            xk(This.IxLog) = x(This.IxLog) .* dx(This.IxLog);
+            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtnS)).';
         end
     end % doSstateEqtn()
 

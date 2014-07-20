@@ -39,10 +39,9 @@ function This = group(This,Grp)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) is.VAR(x) && ispanel(x));
-pp.addRequired('Group',@(x) ischar(x) || is.numericscalar(x) || islogical(x));
+pp.addRequired('V',@(x) isVAR(x) && ispanel(x));
+pp.addRequired('Group',@(x) ischar(x) || isnumericscalar(x) || islogical(x));
 pp.parse(This,Grp);
-
 
 %--------------------------------------------------------------------------
 

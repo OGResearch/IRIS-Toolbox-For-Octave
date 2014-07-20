@@ -27,8 +27,8 @@
 % * `'latexAlias='` [ `true` | *`false`* ] - Treat alias in labels as LaTeX
 % code and typeset it that way.
 %
-% * `'lines='` [ numeric | *`Inf`* ] - Print only selected lines of the model
-% file `FileName`; `Inf` means all lines will be printed.
+% * `'lines='` [ numeric | *`@all`* ] - Print only selected lines of the
+% model file `FileName`; `@all` means all lines will be printed.
 %
 % * `'lineNumbers='` [ *`true`* | `false` ] - Display line numbers.
 %

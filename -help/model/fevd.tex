@@ -50,16 +50,15 @@
 
 \begin{itemize}
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrices \texttt{X} and \texttt{Y}
-  will be either namedmat objects or plain numeric arrays; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always
-  \texttt{'namedmat'}.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{X} and \texttt{Y} as be
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \item
-  \texttt{'select='} {[} char \textbar{} cellstr {]} - Return FEVD for
-  selected variables and/or shocks only; \texttt{Inf} means all
-  variables. This option does not apply to the output databases,
-  \texttt{A} and \texttt{B}.
+  \texttt{'select='} {[} \texttt{@all} \textbar{} char \textbar{}
+  cellstr {]} - Return FEVD for selected variables and/or shocks only;
+  \texttt{@all} means all variables and shocks; this option does not
+  apply to the output databases, \texttt{A} and \texttt{B}.
 \end{itemize}
 
 \paragraph{Description}\label{description}

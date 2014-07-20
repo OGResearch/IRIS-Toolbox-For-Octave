@@ -18,8 +18,8 @@ function [F,List] = ffrf(This,Freq,varargin)
 % Output arguments
 % =================
 %
-% * `F` [ numeric ] - Array with frequency responses of transition
-% variables (in rows) to measurement variables (in columns).
+% * `F` [ namedmat | numeric ] - Array with frequency responses of
+% transition variables (in rows) to measurement variables (in columns).
 %
 % * `List` [ cell ] - List of transition variables in rows of the `F`
 % matrix, and list of measurement variables in columns of the `F` matrix.
@@ -36,14 +36,14 @@ function [F,List] = ffrf(This,Freq,varargin)
 % * `'maxIter='` [ numeric | *500* ] - Maximum number of iteration when
 % computing the steady-state Kalman filter.
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `F` will
-% be either a namedmat object or a plain numeric array; if the option
-% `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrix `F` as
+% either a [`namedmat`](namedmat/Contents) object (i.e. matrix with named
+% rows and columns) or a plain numeric array.
 %
-% * `'select='` [ char | cellstr | *`Inf`* ] - Return the frequency response
-% function for selected variables only; `Inf` means all variables.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return FFRF for selected
+% variables only; `@all` means all variables.
 %
-% * `'tolerance='` [ numeric | *1e-7* ] - Convergence tolerance when
+% * `'tolerance='` [ numeric | *`1e-7`* ] - Convergence tolerance when
 % computing the steady-state Kalman filter.
 %
 % Description
@@ -58,17 +58,11 @@ function [F,List] = ffrf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('M',@(isArg)is.model(isArg));
 pp.addRequired('Freq',@isnumeric);
-pp.parse(This,Freq);
-
+pp.parse(Freq);
 
 % Parse options.
 opt = passvalopt('model.ffrf',varargin{:});
-
-if ischar(opt.select)
-    opt.select = regexp(opt.select,'\w+','match');
-end
 
 if isequal(opt.include,Inf) && ~isempty(opt.exclude)
     opt.include = This.name(This.nametype == 1);
@@ -85,8 +79,8 @@ if ~isempty(opt.exclude) && ~isequal(opt.include,Inf)
         'Options ''include='' and ''exclude='' cannot be combined.');
 end
 
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 % TODO: Implement the `'exclude='` option through the `'select='` option.
 
@@ -115,18 +109,31 @@ else
         'No measurement variables included in calculation of FFRF.');
 end
 
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
+end
+
 % List of variables in rows and columns of `F`.
-List = This.solutionvector(1:2);
+rowNames = myvector(This,'x');
+colNames = myvector(This,'y');
 
-% Convert output matrix to namedmat object.
-if isNamedmat
-    F = namedmat(F,List{2},List{1});
-end
-
-% Select requested variables.
+% Select requested variables if requested.
 if isSelect
-    F = select(F,opt.select);
+    [F,pos] = namedmat.select(F,rowNames,colNames,opt.select);
+    rowNames = rowNames(pos{1});
+    colNames = colNames(pos{2});
 end
+List = {rowNames,colNames};
+
+if true % ##### MOSW
+    % Convert output matrix to namedmat object if requested.
+    if isNamedMat
+        F = namedmat(F,rowNames,colNames);
+    end
+else
+    % Do nothing.
+end
+
 
 % Nested function...
 
@@ -148,7 +155,7 @@ end
         end
         % Solution not available.
         if flag
-            utils.warning('model', ...
+            utils.warning('model:ffrf', ...
                 'Solution not available %s.', ...
                 preparser.alt2str(nanAlt));
         end

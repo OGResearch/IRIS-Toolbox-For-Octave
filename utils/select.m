@@ -49,7 +49,6 @@ pp.addRequired('selection',@(x) ischar(x) || iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
 pp.parse(X,Descript,Select);
 
-
 %--------------------------------------------------------------------------
 
 % Replace log(xxx) with xxx.
@@ -107,7 +106,7 @@ elseif isstruct(X)
     Inx(isnan(Inx)) = [];
     list = fieldnames(X);
     for i = 1 : length(list)
-        if is.tseries(X.(list{i}))
+        if istseries(X.(list{i}))
             X.(list{i}) = X.(list{i}){:,Inx};
         end
     end

@@ -44,7 +44,7 @@ function d = dbextend(d,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isstruct(d) || any(~cellfun(@isstruct,varargin))
-    utils.error('data', ...
+    utils.error('dbase:dbextend', ...
         'All input arguments must be structs (databases).');
 end
 
@@ -58,47 +58,43 @@ end
 %--------------------------------------------------------------------------
 
 s = varargin{1};
-dlist = fieldnames(d);
-slist = fieldnames(s);
-list = union(dlist,slist);
-for j = 1 : numel(list)
-    if ~isfield(s,list{j})
+dList = fieldnames(d);
+sList = fieldnames(s);
+combList = union(dList,sList);
+for j = 1 : numel(combList)
+    if ~isfield(s,combList{j})
         continue
     end
-    if ~isfield(d,list{j})
-        d.(list{j}) = s.(list{j});
+    if ~isfield(d,combList{j})
+        d.(combList{j}) = s.(combList{j});
         continue
     end
-    x = d.(list{j});
-    y = s.(list{j});
-    if is.tseries(x) && is.tseries(y)
+    x = d.(combList{j});
+    y = s.(combList{j});
+    if istseries(x) && istseries(y)
         if get(x,'freq') == get(y,'freq')
             % Two non-empty tseries with the same frequency.
-            d.(list{j}) = [x;y];
+            d.(combList{j}) = [x;y];
         elseif isempty(x.data)
             % Two empty tseries or the first non-empty and the
             % second empty; use the first input anyway.
-            d.(list{j}) = y;
+            d.(combList{j}) = y;
         elseif isempty(y.data)
             % Only the second tseries is non-empty.
-            d.(list{j}) = x;
+            d.(combList{j}) = x;
         else
             % Two non-empty tseries with different frequencies.
-            d.(list{j}) = x;
+            d.(combList{j}) = x;
         end
     else
         % At least one non-tseries input, use the second input.
-        d.(list{j}) = y;
+        d.(combList{j}) = y;
     end
 end
-templist = fieldnames(s);
-if ismatlab % temporary solution while overloading of built-in class methods is not allowed in Octave
-    templist = templist - list;
-else
-    templist = minus(templist, list);
-end
-for j = 1 : length(templist)
-    d.(templist{j}) = s.(templist{j});
+tempList = fieldnames(s);
+tempList = setdiff(tempList,combList);
+for j = 1 : length(tempList)
+    d.(tempList{j}) = s.(tempList{j});
 end
 
 end

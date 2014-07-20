@@ -32,14 +32,13 @@ nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = length(This.solutionid{3});
 ng = sum(This.nametype == 5);
-nEqtn = length(This.eqtn);
 nAlt = size(This.Assign,3);
 nData = size(Inp,3);
 
 %--------------------------------------------------------------------------
 
 s = struct();
-s.isnonlin = Opt.nonlinear > 0 && any(This.nonlin);
+s.isnonlin = Opt.nonlinear > 0 && any(This.IxNonlin);
 s.ahead = Opt.ahead;
 s.isObjOnly = nao == 1;
 
@@ -71,8 +70,8 @@ s.lastSmooth = Opt.lastsmooth;
 
 % Tunes on shock means; model solution is expanded within `mypreploglik`.
 tune = Opt.tune;
-s.istune = ~isempty(tune) && any(tune(:) ~= 0);
-if s.istune
+s.IsShkTune = ~isempty(tune) && any(tune(:) ~= 0);
+if s.IsShkTune
     % Add pre-sample.
     nTune = size(tune,3);
     tune = [zeros(ne,1,nTune),tune];
@@ -167,7 +166,7 @@ for iLoop = 1 : nLoop
         end
         
         % Store `Expand` matrices only if there are tunes on mean of shocks.
-        if ~s.istune
+        if ~s.IsShkTune
             s.Expand = [];
         else
             s.Expand = cell(size(This.Expand));
@@ -232,7 +231,7 @@ for iLoop = 1 : nLoop
     % The std dev of the tuned shocks remain unchanged and hence the
     % filtered shocks can differ from its tunes (unless the user specifies zero
     % std dev).
-    if s.istune
+    if s.IsShkTune
         s.tune = tune(:,:,min(iLoop,end));
         [s.d,s.ka,s.kf] = xxShockTunes(s,Opt);
     end
@@ -417,6 +416,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doRetPred()
         % Return pred mean.
         % Note that s.y0, s.f0 and s.a0 include k-sted-ahead predictions if
@@ -445,22 +446,25 @@ end
                 yy = bsxfun(@plus,yy,s.D);
             end
             % Add shock tunes to shocks.
-            if s.istune
+            if s.IsShkTune
                 % This line is equivalent to the older version:
                 %     ee = ee + s.tune(:,:,ones(1,ahead));
                 ee = bsxfun(@plus,ee,s.tune);
             end
             % Do not use lags in the prediction output data.
-            hdataassign(HData.M0,predCols,yy,xx,ee);
+            hdataassign(HData.M0,predCols, { yy,xx,ee,[],s.g } );
         end
         
         % Return pred std.
         if s.retPredStd
             % Do not use lags in the prediction output data.
             hdataassign(HData.S0,iLoop, ...
-                s.Dy0*s.V, ...
+                {s.Dy0*s.V, ...
                 [s.Df0;s.Db0]*s.V, ...
-                s.De0*s.V);
+                s.De0*s.V, ...
+                [], ...
+                s.Dg0*s.V, ...
+                });
         end
         
         % Return prediction MSE for xb.
@@ -477,7 +481,8 @@ end
             xx(:,1,:) = NaN;
             ee = s.ec0;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.predcont,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.predcont,':', { yy,xx,ee,[],gg } );
         end
 
     end % doRetPred()
@@ -497,11 +502,11 @@ end
                 yy = yy + s.D;
             end
             % Add shock tunes to shocks.
-            if s.istune
+            if s.IsShkTune
                 ee = ee + s.tune;
             end
             % Do not use lags in the filter output data.
-            hdataassign(HData.M1,iLoop,yy,xx,ee);
+            hdataassign(HData.M1,iLoop, { yy,xx,ee,[],s.g } );
         end
         
         % Return PE contributions to filter step.
@@ -512,13 +517,20 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec1;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.filtercont,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.filtercont,':', { yy,xx,ee,[],gg } );
         end
         
         % Return filter std.
         if s.retFilterStd
             hdataassign(HData.S1,iLoop, ...
-                s.Dy1*s.V, [s.Df1;s.Db1]*s.V, [] );
+                { ...
+                s.Dy1*s.V, ...
+                [s.Df1;s.Db1]*s.V, ...
+                [], ...
+                [], ...
+                s.Dg1*s.V, ...
+                });
         end
         
         % Return filtered MSE for `xb`.
@@ -546,12 +558,18 @@ end
                 yy = yy + s.D;
             end
             ee = s.e2;
-            ee(:,1:s.lastSmooth) = NaN;
-            % Add shock tunes to shocks.
-            if s.istune
+            preNaN = NaN;
+            if s.IsShkTune
+                % Add shock tunes to shocks.
                 ee = ee + s.tune;
+                % If there were anticipated shocks (imag), we need to create NaN+1i*NaN to
+                % fill in the pre-sample values.
+                if ~isreal(s.tune);
+                    preNaN = preNaN*(1+1i);
+                end
             end
-            hdataassign(HData.M2,iLoop,yy,xx,ee);
+            ee(:,1:s.lastSmooth) = preNaN;
+            hdataassign(HData.M2,iLoop, { yy,xx,ee,[],s.g } );
         end
         
         % Return smooth std.
@@ -560,7 +578,13 @@ end
             s.Df2(:,1:s.lastSmooth) = NaN;
             s.Db2(:,1:s.lastSmooth-1) = NaN;
             hdataassign(HData.S2,iLoop, ...
-                s.Dy2*s.V, [s.Df2;s.Db2]*s.V, [] );
+                { ...
+                s.Dy2*s.V, ...
+                [s.Df2;s.Db2]*s.V, ...
+                [], ...
+                [], ...
+                s.Dg2*s.V, ...
+                });
         end
         
         % Return PE contributions to smooth step.
@@ -571,7 +595,8 @@ end
             xx = permute(xx,[1,3,2,4]);
             ee = s.ec2;
             ee = permute(ee,[1,3,2,4]);
-            hdataassign(HData.C2,':',yy,xx,ee);
+            gg = [nan(ng,1),zeros(ng,nPer-1)];
+            hdataassign(HData.C2,':', { yy,xx,ee,[],gg } );
         end
         
         objRange = s.objrange & any(s.yindex,1);
@@ -591,18 +616,21 @@ end
 
     function doPrepareNonlin()
         s2.simulateOpt = passvalopt('model.simulate',Opt.simulate{:});
-        s2 = simulate.antunantfunc(s2,s2.simulateOpt.anticipate);
-        s2.isNonlin = true;
-        s2.QAnch = false(nEqtn,Opt.nonlinear);
-        s2.QAnch(This.nonlin,:) = true;
+        s2.IsDeviation = Opt.deviation;
+        s2.IsAddSstate = s2.simulateOpt.addsstate;
+        s2.anticipate = false;
+        s2 = simulate.antunantfunc(s2,s2.anticipate);
+        s2.IsNonlin = true;
+        s2.QAnch = true(1,Opt.nonlinear);
         s2.YAnch = [];
         s2.XAnch = [];
         s2.EaAnch = [];
         s2.EuAnch = [];
         s2.WghtA = [];
         s2.WghtU = [];
+        s2.NPer = 1;
         s2.NPerNonlin = Opt.nonlinear;
-        s2.tplusk = s2.NPerNonlin - 1;
+        s2.TPlusK = s2.NPerNonlin - 1;
         s2.progress = [];
         s2.a0 = [];
         s2.e = zeros(ne,1);
@@ -611,7 +639,7 @@ end
         s2.W = [];
         s2.zerothSegment = 0;
         s2.NLoop = nLoop;
-        s2.XLog = This.log(real(This.solutionid{2}));
+        s2.IxXLog = This.IxLog(real(This.solutionid{2}));
         s2.segment = 1;
     end % doPrepareNonlin()
 
@@ -651,7 +679,7 @@ for k = 2 : min(S.ahead,nPer-1)
     repeat = ones(1,numel(t));
     a0(:,t,k) = S.Ta*a0(:,t-1,k-1);
     if ~isempty(S.ka)
-        if ~S.istune
+        if ~S.IsShkTune
             a0(:,t,k) = a0(:,t,k) + S.ka(:,repeat);
         else
             a0(:,1,t,k) = a0(:,t,k) + S.ka(:,t);
@@ -659,7 +687,7 @@ for k = 2 : min(S.ahead,nPer-1)
     end
     y0(:,t,k) = S.Z*a0(:,t,k);
     if ~isempty(S.d)
-        if ~S.istune
+        if ~S.IsShkTune
             y0(:,t,k) = y0(:,t,k) + S.d(:,repeat);
         else
             y0(:,t,k) = y0(:,t,k) + S.d(:,t);
@@ -668,7 +696,7 @@ for k = 2 : min(S.ahead,nPer-1)
     if S.retPred
         f0(:,t,k) = S.Tf*a0(:,t-1,k-1);
         if ~isempty(S.kf)
-            if ~S.istune
+            if ~S.IsShkTune
                 f0(:,t,k) = f0(:,t,k) + S.kf(:,repeat);
             else
                 f0(:,t,k) = f0(:,t,k) + S.kf(:,t);
@@ -747,8 +775,13 @@ end
 
 for t = lastObs : -1 : 2
     j = yInx(:,t);
-    [y1,f1,b1,e1] = kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
-        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),0);    
+    d = [];
+    if ~isempty(S.d)
+        d = S.d(:,min(t,end));
+    end
+    [y1,f1,b1,e1] = ...
+        kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
+        S.f0(:,1,t,1),S.ydelta(:,1,t),d,0);    
     S.y1(~j,t) = y1(~j,1);
     if nf > 0
         S.f1(:,t) = f1;
@@ -769,6 +802,7 @@ function S = xxFilterMse(S)
 ny = size(S.Z,1);
 nf = size(S.Tf,1);
 nb = size(S.Ta,1);
+ng = size(S.g,1);
 nPer = size(S.y1,2);
 lastObs = S.lastObs;
 
@@ -779,6 +813,7 @@ end
 S.Db1 = nan(nb,nPer); % Diagonal of Pb2.
 S.Df1 = nan(nf,nPer); % Diagonal of Pf2.
 S.Dy1 = nan(ny,nPer); % Diagonal of Py2.
+S.Dg1 = [nan(ng,1),zeros(ng,nPer-1)];
 
 if lastObs < nPer
     S.Pb1(:,:,lastObs+1:nPer) = S.Pb0(:,:,lastObs+1:nPer);
@@ -811,6 +846,7 @@ function S = xxSmoothMse(S)
 ny = size(S.Z,1);
 nf = size(S.Tf,1);
 nb = size(S.Ta,1);
+ng = size(S.g,1);
 nPer = size(S.y1,2);
 lastSmooth = S.lastSmooth;
 lastObs = S.lastObs;
@@ -822,6 +858,7 @@ end
 S.Db2 = nan(nb,nPer); % Diagonal of Pb2.
 S.Df2 = nan(nf,nPer); % Diagonal of Pf2.
 S.Dy2 = nan(ny,nPer); % Diagonal of Py2.
+S.Dg2 = [nan(ng,1),zeros(ng,nPer-1)];
 
 if lastObs < nPer
     S.Pb2(:,:,lastObs+1:nPer) = S.Pb0(:,:,lastObs+1:nPer);
@@ -870,8 +907,13 @@ S.y2(:,lastObs+1:end) = permute(S.y0(:,1,lastObs+1:end,1),[1,3,4,2]);
 r = zeros(nb,1);
 for t = lastObs : -1 : lastSmooth
     j = S.yindex(:,t);
-    [y2,f2,b2,e2,r] = kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
-        S.f0(:,1,t,1),S.ydelta(:,1,t),S.d(:,min(t,end)),r);
+    d = [];
+    if ~isempty(S.d)
+        d = S.d(:,min(t,end));
+    end
+    [y2,f2,b2,e2,r] = ...
+        kalman.onestepbackmean(S,t,S.pe(:,1,t,1),S.a0(:,1,t,1), ...
+        S.f0(:,1,t,1),S.ydelta(:,1,t),d,r);
     S.y2(~j,t) = y2(~j,1);
     if nf > 0
         S.f2(:,t) = f2;
@@ -921,13 +963,13 @@ if isempty(last) || last < 2
     return
 end
 
+Rf = S.Rf;
+Ra = S.Ra;
 if lastAnt > 0
-    R = model.myexpand(S.R,[],lastAnt,S.Expand{:});
+    R = [Rf;Ra];
+    R = model.myexpand(R,[],lastAnt,S.Expand{:});
     Rf = R(1:nf,:);
     Ra = R(nf+1:end,:);
-else
-    Rf = S.Rf;
-    Ra = S.Ra;
 end
 H = S.H;
 

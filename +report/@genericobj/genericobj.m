@@ -159,14 +159,14 @@ classdef genericobj < handle
             % @auto or {@auto,Subtitle}
             if isequal(Title,@auto)
                 try
-                    if is.tseries(This.data{1})
+                    if istseries(This.data{1})
                         x = comment(This.data{1});
                         Title = x{1};
                     end
                 catch
                     try
                         ch = This.children{1};
-                        if is.tseries(ch.data{1})
+                        if istseries(ch.data{1})
                             x = comment(ch.data{1});
                             Title = x{1};
                         end
@@ -400,7 +400,7 @@ classdef genericobj < handle
                     Valid = false;
                 end
                 if ~isempty(c.date) ...
-                        && ~is.numericscalar(c.date)
+                        && ~isnumericscalar(c.date)
                     Valid = false;
                 end
             end

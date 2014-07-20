@@ -1,4 +1,4 @@
-function [CC,RR,List] = acf(This,varargin)
+function [CC,RR,YXVec] = acf(This,varargin)
 % acf  Autocovariance and autocorrelation functions for model variables.
 %
 % Syntax
@@ -41,24 +41,23 @@ function [CC,RR,List] = acf(This,varargin)
 % * `'order='` [ numeric | *`0`* ] - Order up to which ACF will be
 % computed.
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Return matrices `C` and
-% `R` as either namedmat objects (matrices with named rows and columns) or
-% plain numeric arrays; if the option `'select='` is used, `'output='` is
-% always a namedmat object.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `C`
+% and `R` as either [`namedmat`](namedmat/Contents) objects (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
 %
-% * `'select='` [ cellstr | *`Inf`* ] - Return ACF for selected variables
-% only; `Inf` means all variables.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return ACF for selected
+% variables only; `@all` means all variables.
 %
 % Description
 % ============
 %
-% `C` and `R` are both N-by-N-by-(P+1)-by-Alt matrices, where N is the
+% `C` and `R` are both N-by-N-by-(P+1)-by-NAlt matrices, where N is the
 % number of measurement and transition variables (including auxiliary lags
 % and leads in the state space vector), P is the order up to which the ACF
-% is computed (controlled by the option `'order='`), and Alt is the number
+% is computed (controlled by the option `'order='`), and NAlt is the number
 % of alternative parameterisations in the input model object, `M`. If
 % `'contributions=' true`, the size of the two matrices is
-% N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and
+% N-by-N-by-(P+1)-by-E-NAlt, where E is the number of measurement and
 % transition shocks in the model.
 %
 %
@@ -111,15 +110,8 @@ function [CC,RR,List] = acf(This,varargin)
 
 opt = passvalopt('model.acf',varargin{:});
 
-if ischar(opt.select)
-    opt.select = regexp(opt.select, ...
-        '[a-zA-Z][\w\(\)\{\}\+\-]*','match');
-elseif isempty(opt.select)
-    opt.select = {''};
-end
-
-isSelect = iscellstr(opt.select);
-isNamedMat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -136,9 +128,8 @@ end
 CC = nan(ny+nx,ny+nx,opt.order+1,nCont,nAlt);
 
 % Pre-process filter options.
-sspaceVec = [This.solutionvector{1:2}];
-[isFilter,filter,freq,applyTo] = freqdom.applyfilteropt(opt,[],sspaceVec);
-
+YXVec = myvector(This,'yx');
+[isFilter,filter,freq,applyTo] = freqdom.applyfilteropt(opt,[],YXVec);
 
 % Call timedom package to compute autocovariance function.
 isContributions = opt.contributions;
@@ -181,7 +172,7 @@ end
 
 % Report NaN solutions.
 if ~all(isSol)
-    utils.warning('model', ...
+    utils.warning('model:acf', ...
         'Solution(s) not available %s.', ...
         preparser.alt2str(~isSol));
 end
@@ -200,22 +191,26 @@ if nargout > 1
     RR = covfun.cov2corr(CC,'acf');
 end
 
-List = [This.solutionvector{1:2}];
-
-% Convert double arrays to namedmat objects.
-if isNamedMat
-    CC = namedmat(CC,List,List);
+% Select sub-matrices if requested.
+if isSelect
+    [CC,pos] = namedmat.myselect(CC,YXVec,YXVec,opt.select,opt.select);
+    pos = pos{1};
+    YXVec = YXVec(pos);
     try %#ok<TRYNC>
-        RR = namedmat(RR,List,List);
+        RR = RR(pos,pos,:,:,:);
     end
 end
 
-% Select variables.
-if isSelect
-    [CC,inx] = select(CC,opt.select);
-    try %#ok<TRYNC>
-        RR = RR(inx{1},inx{2},:,:,:);
+if true % ##### MOSW
+    % Convert double arrays to namedmat objects if requested.
+    if isNamedMat
+        CC = namedmat(CC,YXVec,YXVec);
+        try %#ok<TRYNC>
+            RR = namedmat(RR,YXVec,YXVec);
+        end
     end
+else
+    % Do nothing.
 end
 
 end

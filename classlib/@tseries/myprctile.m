@@ -16,7 +16,7 @@ end
 pp = inputParser();
 pp.addRequired('X',@isnumeric);
 pp.addRequired('P',@(x) isnumeric(x) && all(P >= 0) && all(P <= 100));
-pp.addRequired('Dim',@(x) is.intscalar(x) && x > 0);
+pp.addRequired('Dim',@(x) isintscalar(x) && x > 0);
 pp.parse(X,P,Dim);
 
 %--------------------------------------------------------------------------

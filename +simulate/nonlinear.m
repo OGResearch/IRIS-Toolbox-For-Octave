@@ -17,7 +17,7 @@ nf = nx - nb;
 ne = size(S.e,1);
 nPer = size(S.e,2);
 lambda0 = Opt.lambda;
-nn = sum(S.nonlin);
+nn = sum(S.IxNonlin);
 
 S0 = S;
 
@@ -87,6 +87,7 @@ for iSegment = 1 : nSegment
     % `lastnonlin` (the number of non-linearised periods) may go beyond `last`.
     % The number of periods simulated is therefore `nper1max`.
     first = S.segment(iSegment);
+    S.First = first;
     if iSegment < nSegment
         lastRep = S.segment(iSegment+1) - 1;
     else
@@ -104,22 +105,23 @@ for iSegment = 1 : nSegment
     
     % Prepare shocks: Combine anticipated shocks on the whole segment with
     % unanticipated shocks in the initial period.
+    range = first : lastSim;
     S.e = S.auFunc( ...
-        ea(:,first:lastSim), ...
+        ea(:,range), ...
         [eu(:,first),zeros(ne,nPerSim-1)]);
     
     % Prepare anchors: Anticipated and unanticipated endogenised shocks cannot
     % be combined in non-linear simulations. If there is no anchors, we can
     % leave the fields empty.
     if isAAnch
-        S.YAnch = yAnch(:,first:lastSim);
-        S.XAnch = xAnch(:,first:lastSim);
-        S.EaAnch = eAAnch(:,first:lastSim);
+        S.YAnch = yAnch(:,range);
+        S.XAnch = xAnch(:,range);
+        S.EaAnch = eAAnch(:,range);
         S.EuAnch = false(size(S.EaAnch));
-        S.WghtA = weightsA(:,first:lastSim);
+        S.WghtA = weightsA(:,range);
         S.WghtU = zeros(size(S.WghtA));
-        S.YTune = yTune(:,first:lastSim);
-        S.XTune = xTune(:,first:lastSim);
+        S.YTune = yTune(:,range);
+        S.XTune = xTune(:,range);
     elseif isUAnch
         S.YAnch = [yAnch(:,first),false(ny,nPerSim-1)];
         S.XAnch = [xAnch(:,first),false(nx,nPerSim-1)];

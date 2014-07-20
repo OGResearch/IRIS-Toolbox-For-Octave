@@ -193,7 +193,7 @@ end
 
 
     function doTempDir()
-        if is.func(tempDir)
+        if isfunc(tempDir)
             tempDir = tempDir();
         end
         isNewTempDir = exist(tempDir,'dir') == 0;

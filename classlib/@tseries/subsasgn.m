@@ -1,4 +1,4 @@
-function This = subsasgn(This,S,Y)
+function This = subsasgn(This,S,Y,varargin)
 % subsasgn  Subscripted assignment for tseries objects.
 %
 % Syntax
@@ -39,12 +39,20 @@ function This = subsasgn(This,S,Y)
 
 %--------------------------------------------------------------------------
 
-if isnumeric(S)
-    % Simplified syntax: subsasgn(x,dates,y)
+if ~isstruct(S)
+    % Simplified syntax: subsasgn(X,Dates,Y,Ref2,Ref3,...)
     dates = S;
     S = struct();
     S.type = '()';
-    S.subs{1} = dates;
+    S.subs = [{dates},varargin];
+end
+
+% Time-recursive assignment.
+isTRec = isanystr(S(1).type,{'{}','()'}) && isa(S(1).subs{1},'trec');
+isSydney = isa(Y,'sydney');
+if isTRec || isSydney
+    This = xxTRecExp(This,S,Y,inputname(1),isTRec,isSydney);
+    return
 end
 
 switch S(1).type
@@ -53,6 +61,7 @@ switch S(1).type
         % the startdate of `x` will be adjusted within `mylagorlead`.
         [This,S,shift] = mylagorlead(This,S);
         if isempty(S)
+            This = mystamp(This);
             return
         end
         % After a lag or lead, only one ()-reference is allowed.
@@ -67,27 +76,26 @@ switch S(1).type
             This.start = This.start + shift;
         end
     otherwise
-%         if ~ismatlab && strcmp(S(1).type,'.') % workaround for Octaves' classdef subsasgn() access issue
-%             This.(S(1).subs) = Y;
-%         else
-            % Give standard access to public properties.
-            This = builtin('subsasgn',This,S,Y);
-%         end
+        % Give standard access to public properties.
+        This = builtin('subsasgn',This,S,Y);
 end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function This = xxSetData(This,S,Y)
 
+
+function This = xxSetData(This,S,Y)
 % Pad LHS tseries data with NaNs to comply with references.
 % Remove the rows from dates that do not pass the frequency test.
 [This,S,dates,freqTest] = xxExpand(This,S);
 
 % Get RHS tseries object data.
-if is.tseries(Y)
+if istseries(Y)
     Y = mygetdata(Y,dates);
 end
 
@@ -133,10 +141,12 @@ if isempty(Y) && strcmp(S.subs{1},':')
 end
 
 This = mytrim(This);
+end % xxSetData()
 
-end % xxSetData().
 
 %**************************************************************************
+
+
 function [This,S,Dates,FreqTest] = xxExpand(This,S)
 
 % If LHS data are complex, use NaN+NaNi to pad missing observations.
@@ -240,5 +250,36 @@ if reshaped
             'Attempt to grow tseries data array along ambiguous dimension.');
     end
 end
+end % xxExpand()
 
-end % xxExpand().
+
+%**************************************************************************
+
+
+function This = xxTRecExp(This,S,Y,InpName,IsTRec,IsSydney)
+if ~IsTRec
+    utils.error('tseries:subsasgn', ...
+        'Invalid left-hand side in time-recursive expression.');
+end
+if ~IsSydney && ~isnumeric(Y)
+    utils.error('tseries:subsasgn', ...
+        'Invalid right-hand side in time-recursive expression.');
+end
+tr = S(1).subs{1};
+if ~isempty(tr.Dates) && ~isnan(This.start) ...
+        && ~freqcmp(tr.Dates(1),This.start)
+    utils.error('tseries:subsasgn', ...
+        'Frequency mismatch in recursive expression.');
+end
+ref = S(1).subs(2:end);
+stamp = This.Stamp;
+
+for t = tr.Dates(:).'
+    if IsSydney
+        x = myeval(Y,t,tr,This,InpName,stamp);
+    else
+        x = Y;
+    end
+    This = subsasgn(This,t,x,ref{:});
+end
+end % xxTRecExp()

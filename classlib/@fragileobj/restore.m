@@ -18,16 +18,16 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-if is.matlab % ##### MOSW
+if true % ##### MOSW
     rplFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${rplFunc($0)}');
 else
-    C = mosw.octfun.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
+    C = mosw.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
 end
 
 
     function C = doReplace(C0)
-        K = fragileobj.char2dec(C0) - This.Offset;
+        K = char2dec(This,C0) - This.Offset;
         C = This.Store{K};
         if opt.delimiter
             C = [This.Open{K},C,This.Close{K}];

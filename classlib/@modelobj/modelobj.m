@@ -8,14 +8,14 @@ classdef modelobj < getsetobj & userdataobj
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
-        % Linear or non-linear model.
-        linear = false;
         % Model function name from which the modelobj was created.
-        fname = '';
-        % IRIS version.
-        build = [];
+        FName = '';
+        % IRIS version in which the model object was last built.
+        Build = '';
+        % Linear or non-linear model.
+        IsLinear = false;
         % Carry-around files.
-        Export = struct('filename',{},'content',{});
+        Export = struct('FName',{},'Content',{});
         % Names of variables, shocks, parameters.
         name = cell(1,0);
         % Name types:
@@ -29,10 +29,8 @@ classdef modelobj < getsetobj & userdataobj
         Assign = zeros(1,0,0);
         % Std devs and cross-correlations.
         stdcorr = zeros(1,0,0);
-        % Flags for log-linearised variables.
-        log = false(1,0);
-        % Signs of log-linearized variables.
-        LogSign = zeros(1,0);
+        % Log status of variables.
+        IxLog = false(1,0);
         % List of equations in user form.
         eqtn = cell(1,0);
         % Equation labels.

@@ -34,7 +34,7 @@ function [This,Y0,K0,Y1,G1] = covmat(C,Repeat,varargin)
 % Parse input arguments.
 pp = inputParser();
 pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
-pp.addRequired('Rep',@(x) is.numericscalar(x) && x > 0 && x == round(x));
+pp.addRequired('Rep',@(x) isintscalar(x) && x > 0);
 pp.parse(C,Repeat);
 
 

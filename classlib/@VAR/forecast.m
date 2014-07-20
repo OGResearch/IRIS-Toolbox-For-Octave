@@ -64,12 +64,10 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@(isArg)is.VAR(isArg));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
 pp.addRequired('Cond',@(x) isempty(x) || isstruct(x));
-pp.parse(This,Inp,Range,Cond);
-
+pp.parse(Inp,Range,Cond);
 
 % Panel VAR.
 if ispanel(This)
@@ -164,8 +162,6 @@ nInst = size(condI,3);
 nOmg = size(opt.omega,3);
 
 nLoop = max([nAlt,nDataY,nDataX,nDataE,nCond,nInst,nOmg]);
-
-retResiduals = opt.returnresiduals;
 
 % Stack initial conditions.
 y0 = y(:,1:p,:);

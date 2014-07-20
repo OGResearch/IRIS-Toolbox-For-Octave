@@ -1,5 +1,5 @@
 classdef plan < userdataobj & getsetobj
-    % plan  Simulation Plans.
+    % plan  Model Simulation Plans.
     %
     % Simulation plans complement the use of the
     % [`model/simulate`](model/simulate) or
@@ -25,7 +25,7 @@ classdef plan < userdataobj & getsetobj
     % Constructor
     % ============
     %
-    % * [`plan`](plan/plan) - Create new, empty simulation plan object.
+    % * [`plan`](plan/plan) - Create new empty simulation plan object.
     %
     % Getting information about simulation plans
     % ===========================================
@@ -44,7 +44,7 @@ classdef plan < userdataobj & getsetobj
     % * [`condition`](plan/condition) - Condition forecast upon the specified variables at the specified dates.
     % * [`endogenise`](plan/endogenise) - Endogenise shocks or re-endogenise variables at the specified dates.
     % * [`exogenise`](plan/exogenise) - Exogenise variables or re-exogenise shocks at the specified dates.
-    % * [`nonlinearise`](plan/nonlinearise) - Select equations for simulation in an exact non-linear mode.
+    % * [`swap`](plan/swap) - Swap endogeneity and exogeneity of variables and shocks.
     %
     % Referencing plan objects
     % ==========================
@@ -81,7 +81,7 @@ classdef plan < userdataobj & getsetobj
     methods
         
         function This = plan(varargin)
-            % plan  Create new, empty simulation plan object.
+            % plan  Create new empty simulation plan object.
             %
             % Syntax
             % =======
@@ -100,7 +100,7 @@ classdef plan < userdataobj & getsetobj
             % Output arguments
             % =================
             %
-            % * `P` [ plan ] - New, empty simulation plan.
+            % * `P` [ plan ] - New empty simulation plan.
             %
             % Description
             % ============
@@ -131,10 +131,9 @@ classdef plan < userdataobj & getsetobj
             if length(varargin) > 1
                 
                 pp = inputParser();
-                pp.addRequired('M',@(x) mosw.isa(x,'modelobj'));
+                pp.addRequired('M',@ismodel);
                 pp.addRequired('Range',@isnumeric);
                 pp.parse(varargin{1:2});
-
                 
                 % Range.
                 This.Start = varargin{2}(1);

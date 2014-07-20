@@ -28,7 +28,7 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 % Options
 % ========
 %
-% * `'linear='` [ *`'auto'`* | `true` | `false` ] - Compute the model using
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Compute the model using
 % a linear approach, i.e. differentiating around zero and not the currently
 % assigned steady state.
 %
@@ -64,8 +64,8 @@ function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 
 opt = passvalopt('model.system',varargin{:});
 
-if ischar(opt.linear) && strcmpi(opt.linear,'auto')
-    opt.linear = This.linear;
+if isequal(opt.linear,@auto)
+    opt.linear = This.IsLinear;
 end
 
 %--------------------------------------------------------------------------
@@ -107,9 +107,9 @@ end
 % Lists of measurement variables, backward-looking transition variables, and
 % forward-looking transition variables.
 List = { ...
-    This.solutionvector{1}, ...
+    myvector(This,'y'), ...
     myvector(This,This.systemid{2} + 1i), ...
-    This.solutionvector{3}, ...
+    myvector(This,'e'), ...
     };
 
 % Number of forward-looking variables.

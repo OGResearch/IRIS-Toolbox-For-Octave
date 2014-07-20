@@ -178,7 +178,7 @@ for ii = 1 : numel(fNames)
     expected = cmp.delta.(fNames{ii}) ;
     assertEqual(This, actual, expected, 'relTol', 1e-2) ;
 end
-assertEqual(This, double(cmp.Pdelta), double(Pdelta), 'relTol', 1e-3) ;
+assertEqual(This, double(Pdelta), double(cmp.Pdelta), 'relTol', 1e-3) ;
 
 %{
 if license('test','distrib_computing_toolbox') 

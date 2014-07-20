@@ -39,8 +39,10 @@
 \itemsep1pt\parskip0pt\parsep0pt
 \item
   \texttt{'plotFunc='} {[} @bar \textbar{} @hist \textbar{} *@plot*
-  \textbar{} @plotpred \textbar{} @stem {]} - Plot function used to
-  create the graphs.
+  \textbar{} @plotcmp \textbar{} @plotpred \textbar{} @stem \textbar{}
+  cell {]} - Plot function used to create the graphs; use a cell array,
+  \texttt{\{plotFunc,...\}} to specify extra input arguments that will
+  be passed into the plotting function.
 \end{itemize}
 
 See help on \href{qreport/qplot}{\texttt{qreport/qplot}} for other

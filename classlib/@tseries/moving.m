@@ -69,6 +69,8 @@ if ~isequal(Range,Inf)
     This = resize(This,Range);
 end
 
-This = unop(@(varargin) tseries.mymoving(varargin{:}),This,0,opt.window,opt.function);
+% @@@@@ MOSW
+This = unop(@(varargin) tseries.mymoving(varargin{:}), ...
+    This,0,opt.window,opt.function);
 
 end

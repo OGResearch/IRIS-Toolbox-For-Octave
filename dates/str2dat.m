@@ -103,12 +103,7 @@ end
     
     function x = doPattern()
         x = upper(opt.dateformat);
-        if is.matlab % ##### MOSW
-            x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
-        else
-            repFun = @(c) strcat('\',c);
-            x = mosw.octfun.dregexprep(x,'[\.\+\{\}\(\)]','repFun',0);
-        end
+        x = regexptranslate('escape',x);
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');
         subs = { ...

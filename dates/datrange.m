@@ -62,9 +62,9 @@ catch
 end
 
 pp = inputParser();
-pp.addRequired('Start',@(varargin) is.numericscalar(varargin{:}));
-pp.addRequired('End',@(x) is.numericscalar(x) && freqcmp(x,Start));
-pp.addRequired('Step',@(varargin) is.intscalar(varargin{:}));
+pp.addRequired('Start',@isnumericscalar);
+pp.addRequired('End',@(x) isnumericscalar(x) && freqcmp(x,Start));
+pp.addRequired('Step',@isintscalar);
 pp.parse(Start,End,Step);
 
 %--------------------------------------------------------------------------

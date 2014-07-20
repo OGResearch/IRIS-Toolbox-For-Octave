@@ -50,7 +50,8 @@ EaImag = P.NAnchImag;
 
 % Anchors for non-linear equations.
 QA = false(nEqtn,nPer);
-QA(This.nonlin,:) = P.QAnch;
+QA(This.IxNonlin,:) = P.QAnch;
+QA = any(QA,1);
 
 WReal = P.NWghtReal;
 WImag = P.NWghtImag;

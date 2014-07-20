@@ -28,14 +28,12 @@ if nAx > 1
     return
 end
 
-
 pp = inputParser();
-    pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
-        && all(strcmp(get(x,'type'),'axes')));
-    pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
-    pp.addRequired('Pos',@isnumeric);
-    pp.parse(Ax,Dir,Loc);
-
+pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
+    && all(strcmp(get(x,'type'),'axes')));
+pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
+pp.addRequired('Pos',@isnumeric);
+pp.parse(Ax,Dir,Loc);
 
 [opt,lineOpt] = passvalopt('grfun.infline',varargin{:});
 lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
@@ -45,7 +43,7 @@ lineOpt(1:2:end) = strrep(lineOpt(1:2:end),'=','');
 isVertical = strncmpi(Dir,'v',1);
 
 % Check for plotyy peers, and return the background axes object.
-Ax = grfun.mychkforpeers(Ax);
+% Ax = grfun.mychkforpeers(Ax);
 
 % Vertical lines: If this is a time series graph, convert the vline
 % position to a date grid point.
@@ -53,7 +51,7 @@ if isVertical
     if isequal(getappdata(Ax,'tseries'),true)
         Loc = dat2dec(Loc,'centre');
         freq = getappdata(Ax,'freq');
-        if ~isempty(freq) && is.numericscalar(freq) ...
+        if ~isempty(freq) && isnumericscalar(freq) ...
                 && any(freq == [0,1,2,4,6,12,52])
             dx = 0.5 / max(1,freq);
             switch opt.timeposition
@@ -66,57 +64,36 @@ if isVertical
     end
 end
 
-infLim = realmax()*[-1,1];
 
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
+if true % ##### MOSW
+    infLim = 1e10;
+else
+    infLim = 1e5; %#ok<UNRCH>
+end
+
+if true % ##### MOSW
+    bounds = objbounds(Ax);
+else
+    bounds = [0,0,0,0]; %#ok<UNRCH>
+end
+zPos = -1;
+
 nLoc = numel(Loc);
 for i = 1 : nLoc
 
-    % Draw vlines as patch objects. Lines do not work with realmax in older
-    % Matlab releases with HG1.
     if isVertical
         xCoor = Loc([i,i]);
-        if is.matlab % ##### MOSW
-            yCoor = infLim;% such a limits may cause OpenGL tesselation error in Octave
-        else
-            yCoor = get(Ax,'yLim');
-        end
+        yCoor = infLim*[-1,1] + bounds([3,4]);
     else
-        if is.matlab % ##### MOSW
-            xCoor = infLim;% such a limits may cause OpenGL tesselation error in Octave
-        else
-            xCoor = get(Ax,'xLim');
-        end
+        xCoor = infLim*[-1,1] + bounds([1,2]);
         yCoor = Loc([i,i]);
     end
-    h = patch(xCoor,yCoor,[0,0,0], ...
-       'parent',Ax,'edgeColor',[0,0,0],'faceColor','none', ...
-       'yLimInclude','off','xLimInclude','off');
-   
-    % Temporary show excluded from legend (for Octave's way of excluding)
-    if ~is.matlab % ##### MOSW
-        grfun.mytrigexcludedfromlegend(Ax,'on');
-    end
-    
-    ch = get(Ax,'children');
-    % Move the object to the background
-    ch(ch == h) = [];
-    ch(end+1) = h; %#ok<AGROW>
-    set(Ax,'children',ch);
-    
-    % keep old behaviour for Octave
-    if ~is.matlab % ##### MOSW
-        xy = 'xy';
-        % Update infline x_OR_y-data whenever the parent axes x_OR_y-lims change.
-        grfun.listener(Ax,h,'infline',xy(isVertical+1));
-    end
-    
-    % Hide back excluded from legend (for Octave's way of excluding)
-    if ~is.matlab % ##### MOSW
-        grfun.mytrigexcludedfromlegend(Ax,'off');
-    end
+    zCoor = zPos*ones(size(xCoor));
+    h = line(xCoor,yCoor,zCoor,'color',[0,0,0], ...
+        'yLimInclude','off','xLimInclude','off');
     
     Ln = [Ln,h]; %#ok<AGROW>
     
@@ -130,6 +107,11 @@ end
 
 % Reset `'nextPlot='` to its original value.
 set(Ax,'nextPlot',nextPlot);
+
+% Make sure zLim includes zPos.
+zLim = get(Ax,'zLim');
+zLim(1) = min(zLim(1),zPos);
+set(Ax,'zLim',zLim);
 
 if isempty(Ln)
     return
@@ -147,9 +129,13 @@ else
     set(Ln,'tag','hline');
 end
 
-% Exclude the line object from legend.
-if opt.excludefromlegend
-    grfun.excludefromlegend(Ln);
+if true % ##### MOSW
+    if opt.excludefromlegend
+        % Exclude the line object from legend.
+        grfun.excludefromlegend(Ln);
+    end
+else
+    % Do nothing.
 end
 
 end

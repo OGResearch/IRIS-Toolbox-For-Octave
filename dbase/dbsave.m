@@ -151,7 +151,6 @@ pp.addRequired('FName',@ischar);
 pp.addRequired('Dates',@isnumeric);
 pp.parse(D,FName,Dates);
 
-
 % Parse options.
 opt = passvalopt('dbase.dbsave',varargin{:});
 
@@ -212,7 +211,7 @@ for i = 1 : numel(List)
     
     name = List{i};
     
-    if is.tseries(D.(name))
+    if istseries(D.(name))
         tmpData = D.(name)(Dates);
         tmpComment = comment(D.(name));
         savedInx(i) = true;
@@ -222,7 +221,7 @@ for i = 1 : numel(List)
         tmpComment = {''};
         savedInx(i) = true;
         tmpClass = class(D.(name));
-    elseif isstruct(D.(name))
+    elseif isa(D.(name),'struct')
         isSubDb(i) = true;
     else
         continue

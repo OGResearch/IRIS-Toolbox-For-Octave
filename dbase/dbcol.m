@@ -54,7 +54,7 @@ isEnd = isequal(inx,'end');
 %--------------------------------------------------------------------------
 
 for i = 1 : length(list)
-    if is.tseries(This.(list{i}))
+    if istseries(This.(list{i}))
         try %#ok<TRYNC>
             if isEnd
                 This.(list{i}) = This.(list{i}){:,end};

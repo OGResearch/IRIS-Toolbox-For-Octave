@@ -35,11 +35,9 @@ function This = condition(This,List,Dates)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('p',@(varargin)is.plan(varargin{:}));
-pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('dates',@isnumeric);
-pp.parse(This,List,Dates);
-
+pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('Dates',@isnumeric);
+pp.parse(List,Dates);
 
 % Convert char list to cell of str.
 if ischar(List)

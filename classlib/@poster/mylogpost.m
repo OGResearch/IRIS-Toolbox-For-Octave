@@ -45,7 +45,7 @@ if ~IsDiscarded
         SP = -SP;
     else
         % Evaluate parameter priors.
-        priorInx = cellfun(@(varargin)is.func(varargin{:}),This.LogPriorFunc);        
+        priorInx = cellfun(@isfunc,This.LogPriorFunc);        
         for k = find(priorInx)
             PP = PP + This.LogPriorFunc{k}(P(k));
             if isinf(PP)

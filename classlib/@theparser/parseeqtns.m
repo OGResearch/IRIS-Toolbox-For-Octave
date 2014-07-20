@@ -45,15 +45,16 @@ end
 
 % Parse the structure of individual equations.
 ptn = [ ...
-    '(?<label>',regexppattern(This.labels),')?', ...
-    '(?<eqtnOnly>[^!;',This.labels.CharUsed,']*)', ...
-    '(?<sstate>!![^!;',This.labels.CharUsed,']*)?;']; 
-tkn = regexp(tempEqtn,ptn,'names');
+    '((',regexppattern(This.Labels),')?)', ... % Label.
+    '([^!;',This.Labels.CharUsed,']*)', ... % Full eqtn.
+    '((!![^!;',This.Labels.CharUsed,']*)?);', ... % Sstate.
+    ]; 
+tkn = regexp(tempEqtn,ptn,'tokens','once');
 tkn = [tkn{:}];
 
-EqtnLabel = {tkn(:).label};
-eqtnOnly = {tkn(:).eqtnOnly};
-sstate = {tkn(:).sstate};
+EqtnLabel = tkn(1:3:end);
+eqtnOnly = tkn(2:3:end);
+sstate = tkn(3:3:end);
 sstate = strrep(sstate,'!!','');
 
 % Remove equations that consist of labels only; throw a warning later.
@@ -72,17 +73,18 @@ end
 end
 
 
-% Subfunctions.
+% Subfunctions...
 
 
 %**************************************************************************
-function [Lhs,Rhs,Sign] = xxEqualSign(List)
 
+
+function [Lhs,Rhs,Sign] = xxEqualSign(List)
 nList = length(List);
 Lhs = strfun.emptycellstr(1,nList);
 Rhs = strfun.emptycellstr(1,nList);
 Sign = strfun.emptycellstr(1,nList);
-[start,finish] = regexp(List,'[:+]?=#?','once','start','end');
+[start,finish] = regexp(List,':=|=#|\+=|=','once','start','end');
 for i = 1 : nList
     if ~isempty(start{i})
         Lhs{i} = List{i}(1:start{i}-1);
@@ -92,5 +94,4 @@ for i = 1 : nList
         Rhs{i} = List{i};
     end
 end
-
 end % xxEqualSign()

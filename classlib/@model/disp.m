@@ -15,7 +15,7 @@ if isempty(This.Assign)
 else
     nAlt = size(This.Assign,3);
     fprintf('\t');
-    if This.linear
+    if This.IsLinear
         fprintf('linear ');
     else
         fprintf('nonlinear ');

@@ -78,7 +78,7 @@ nAlt = size(This.A,3);
 if nx > 0
     utils.error('VAR:sprintf', ...
         ['VAR objects with exogenous inputs cannot be printed ', ...
-        'using sprintf(...) or fprintf(...)']);
+        'using sprintf( ) or fprintf( ).']);
 end
 
 if ~isempty(opt.ynames)

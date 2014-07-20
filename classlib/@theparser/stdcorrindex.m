@@ -24,11 +24,7 @@ if length(Name) >= 5 && strncmp(Name,'std_',4)
     
     % Position of a std deviation.
     
-    if is.matlab % ##### MOSW
-        stdList = regexprep(ListE,'.*','std_$0');
-    else
-        stdList = strcat('std_',ListE);
-    end
+    stdList = strcat('std_',ListE);
     StdcorrIx(1:ne) = strfun.strcmporregexp(stdList,Name);
     ShkIx1 = StdcorrIx;
     

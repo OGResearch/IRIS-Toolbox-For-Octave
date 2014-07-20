@@ -92,10 +92,9 @@ end
 % TODO: Deterministic trends.
 
 nXPer = size(YXE,2);
-nT = size(This.occur,2) / length(This.name);
-preSample = This.tzero - 1;
-postSample = nT - This.tzero;
-t = preSample+1 : nXPer-postSample;
+minT = This.Shift(1);
+maxT = This.Shift(end);
+t = 1-minT : nXPer-maxT;
 
 % Add parameters to the bottom of the `X` array.
 nData = size(YXE,3);

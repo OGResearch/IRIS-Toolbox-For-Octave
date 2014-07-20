@@ -24,7 +24,7 @@ end
 This.BaseYear = Opt.baseyear;
 
 % Create model-specific meta data.
-if any(This.nonlin)
+if any(This.IxNonlin)
     % Do not remove leads from state space vector if there are
     % non-linearised equations.
     % TODO: More sophisticated check which leads are actually needed in
@@ -36,7 +36,7 @@ This = myd2s(This,Opt);
 % Assign default stddevs.
 if ~isnan(Opt.std) && ~isempty(Opt.std)
     defaultStd = Opt.std;
-elseif This.linear
+elseif This.IsLinear
     defaultStd = 1;
 else
     defaultStd = log(1.01);
@@ -100,7 +100,7 @@ end
         nf = nx - nb;
         ne = sum(This.nametype == 3);
         nFKeep = sum(~This.d2s.remove);
-        nn = sum(This.nonlin);
+        nn = sum(This.IxNonlin);
         nName = length(This.name);
 
         This.Assign = nan(1,nName);
