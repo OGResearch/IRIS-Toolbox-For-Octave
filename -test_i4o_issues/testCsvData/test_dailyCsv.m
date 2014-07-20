@@ -4,7 +4,7 @@ d = dbload('testDailyCsv.csv', ...
 actDbase = db2array(d, {'A', 'B', 'C', 'D'}) ;
 actDbase(isnan(actDbase)) = 0 ;
 
-if true % ##### MOSW
+if ismatlab % ##### MOSW
     expDbase = csvread('testDailyCsv.csv', 1, 1) ;
 else
     expDbase = mosw.textscan(strfun.converteols(file2char('testDailyCsv.csv')),'',-1, ...

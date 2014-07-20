@@ -1,4 +1,4 @@
-if true % ##### MOSW
+if ismatlab % ##### MOSW
     rng(0);
 else
     rand('seed',0);

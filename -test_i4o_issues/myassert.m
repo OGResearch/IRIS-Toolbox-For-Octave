@@ -1,6 +1,6 @@
 function myassert(observ, expect, varargin)
 
-if ~true % ##### MOSW
+if ~ismatlab % ##### MOSW
   assert(observ, expect, varargin{:})
 else
   if nargin > 2
