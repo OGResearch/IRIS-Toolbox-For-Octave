@@ -1,0 +1,76 @@
+
+
+    \filetitle{simulate}{Simulate VAR model}{VAR/simulate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Outp = simulate(V,Inp,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object that will be simulated.
+\item
+  \texttt{Inp} {[} tseries \textbar{} struct {]} - Input data from which
+  the initial condtions and residuals will be taken.
+\item
+  \texttt{Range} {[} numeric {]} - Simulation range; must not refer to
+  \texttt{Inf}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Outp} {[} tseries {]} - Simulated output data.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'contributions='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Decompose the simulated paths into the
+  contributions of individual residuals, initial condition, the
+  constant, and exogenous inputs; see Description.
+\item
+  \texttt{'deviation='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Treat input and output data as deviations
+  from unconditional mean.
+\item
+  \texttt{'output='} {[} \emph{\texttt{'auto'}} \textbar{}
+  \texttt{'dbase'} \textbar{} \texttt{'tseries'} {]} - Format of output
+  data.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Backward simulation
+(backcast)}\label{backward-simulation-backcast}
+
+If the \texttt{Range} is a vector of decreasing dates, the simulation is
+performed backward. The VAR object is first converted to its backward
+representation using the function
+\href{VAR/backward}{\texttt{backward}}, and then the data are simulated
+from the latest date to the earliest date.
+
+\subparagraph{Simulation of
+contributions}\label{simulation-of-contributions}
+
+With the option \texttt{'contributions=' true}, the output database
+contains Ne+2 columns for each variable, where Ne is the number of
+residuals. The first Ne columns are the contributions of the individual
+shocks, the (Ne+1)-th column is the contribution of initial condition
+and the constant, and the last, (Ne+2)-th columns is the contribution of
+exogenous inputs.
+
+Contribution simulations can be only run on VAR objects with one
+parameterization.
+
+\paragraph{Example}\label{example}
+
+

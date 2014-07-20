@@ -1,0 +1,155 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="SVAR/Contents">Structural Vector Autoregressions: SVAR Objects and Functions</h1>
+
+
+<p>SVAR methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../SVAR/SVAR.html"><code>SVAR</code></a> - Convert reduced-form VAR to structural VAR.</li>
+</ul>
+<p>SVAR objects can call any of the <a href="../VAR/Contents.html">VAR</a> functions. In addition, the following functions are available for SVAR objects.</p>
+<h4 id="getting-information-about-svar-objects">Getting information about SVAR objects</h4>
+<ul>
+<li><a href="../SVAR/get.html"><code>get</code></a> - Query SVAR object properties.</li>
+</ul>
+<h4 id="simulation">Simulation</h4>
+<ul>
+<li><a href="../SVAR/srf.html"><code>srf</code></a> - Shock (impulse) response function.</li>
+</ul>
+<h4 id="stochastic-properties">Stochastic properties</h4>
+<ul>
+<li><a href="../SVAR/fevd.html"><code>fevd</code></a> - Forecast error variance decomposition for SVAR variables.</li>
+</ul>
+<h4 id="manipulating-svar-objects">Manipulating SVAR objects</h4>
+<ul>
+<li><a href="../SVAR/sort.html"><code>sort</code></a> - Sort SVAR parameterisations by squared distance of shock reponses to median.</li>
+</ul>
+<p>See help on <a href="../VAR/Contents.html">VAR</a> objects for other functions available.</p>
+<h4 id="getting-on-line-help-on-svar-functions">Getting on-line help on SVAR functions</h4>
+<pre><code>help SVAR
+help SVAR/function_name</code></pre>
+<h4 id="getting-on-line-help-on-svar-functions-that-are-inherited-from-vars">Getting on-line help on SVAR functions that are inherited from VARs</h4>
+<pre><code>help VAR
+help VAR/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

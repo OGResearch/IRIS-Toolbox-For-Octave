@@ -1,0 +1,153 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/bpass">bpass</h2>
+<div class="headline">Band-pass filter</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[X,T] = bpass(X,Band,Range,...)</code></pre>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Band-pass filtered tseries object.</p></li>
+<li><p><code>T</code> [ tseries ] - Estimated trend tseries object.</p></li>
+</ul>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input tseries object that will be filtered.</p></li>
+<li><p><code>Range</code> [ numeric | Inf ] Date range on which the data will be filtered.</p></li>
+<li><p><code>Band</code> [ numeric ] - Band of periodicities to be retained in the output data, <code>Band = [LOW,HIGH]</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'addTrend='</code> [ <em><code>true</code></em> | <code>false</code> ] - Add the estimated linear time trend back to filtered output series if <code>band</code> includes Inf.</p></li>
+<li><p><code>'detrend='</code> [ <em><code>true</code></em> | <code>false</code> ] - Remove an estimated time trend from the data before filtering.</p></li>
+<li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the data before filtering, de-logarithmise afterwards.</p></li>
+<li><p><code>'method='</code> [ <em><code>'cf'</code></em> | <code>'hwfsf'</code> ] - Type of band-pass filter: Christiano-Fitzgerald, or h-windowed frequency-selective filter.</p></li>
+<li><p><code>'unitRoot='</code> [ <em><code>true</code></em> | <code>false</code> ] - Assume unit root in the input data.</p></li>
+</ul>
+<p>See help on <a href="../tseries/trend.html"><code>tseries/trend</code></a> for other options available when <code>'detrend='</code> is set to true.</p>
+<h4 id="description">Description</h4>
+<p>Christiano, L.J. and T.J.Fitzgerald (2003). The Band Pass Filter. International Economic Review, 44(2), 435--465.</p>
+<p>Iacobucci, A. &amp; A. Noullez (2005). A Frequency Selective Filter for Short-Length Time Series. Computational Economics, 25, 75--102.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,70 @@
+
+
+    \filetitle{irisget}{Query current IRIS config options}{config/irisget}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Value = irisget(Option)
+S = irisget()
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Option} {[} char {]} - Name of the queried IRIS configuration
+  option.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Value} {[} \ldots{} {]} - Current value of the queried
+  configuration option.
+\item
+  \texttt{S} {[} struct {]} - Structure with all configuration options
+  and their current values.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+You can view any of the modifiable options listed in
+\href{config/irisset}{\texttt{irisset}}, plus the following
+non-modifiable ones (these cannot be changed by the user):
+
+\begin{itemize}
+\item
+  \texttt{'userConfigPath='} {[} char {]} - The path to the user
+  configuration file called by the last executed
+  \href{config/irisstartup}{\texttt{irisstartup}}.
+\item
+  \texttt{'irisRoot='} {[} char {]} - The current IRIS root directory.
+\item
+  \texttt{'version='} {[} char {]} - The current IRIS version string.
+\end{itemize}
+
+When called without any input arguments, the \texttt{irisget} function
+returns a struct with all options and their current values.
+
+When used as input arguments in the \texttt{irisget} function, the
+option names are case-insensitive. When referring to field names of an
+output struct returned by the \texttt{irisget} function, all option
+names are lower-case and case-sensitive.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+irisget('dateFormat')
+ans =
+YFP
+
+g = irisget();
+g.dateformat
+ans =
+YFP
+\end{verbatim}
+
+

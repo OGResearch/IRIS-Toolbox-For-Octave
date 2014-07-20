@@ -1,0 +1,16 @@
+    !variables
+        X1
+    !equations
+        X1 = 2;
+    !variables
+        X2
+    !equations
+        X2 = 3;
+    !variables
+        X3
+    !equations
+        X3 = 4;
+    !variables
+        X4
+    !equations
+        X4 = 5;

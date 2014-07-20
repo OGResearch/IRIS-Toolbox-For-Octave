@@ -1,0 +1,194 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="VAR/Contents">Vector Autoregressions: VAR Objects and Functions</h1>
+
+
+<p>VAR objects can be constructed as plain VARs or simple panel VARs (with fixed effect), and estimated without or with prior dummy observations (quasi-bayesian VARs). VAR objects are reduced-form models; they are also the point of departure for identifying structural VARs (<a href="../SVAR/Contents.html"><code>SVAR</code></a> objects).</p>
+<p>VAR methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../VAR/VAR.html"><code>VAR</code></a> - Create new empty reduced-form VAR object.</li>
+</ul>
+<h4 id="getting-information-about-var-objects">Getting information about VAR objects</h4>
+<ul>
+<li><a href="../VAR/addparam.html"><code>addparam</code></a> - Add VAR parameters to a database (struct).</li>
+<li><a href="../VAR/comment.html"><code>comment</code></a> - Get or set user comments in an IRIS object.</li>
+<li><a href="../VAR/companion.html"><code>companion</code></a> - Matrices of first-order companion VAR.</li>
+<li><a href="../VAR/eig.html"><code>eig</code></a> - Eigenvalues of a VAR process.</li>
+<li><a href="../VAR/fprintf.html"><code>fprintf</code></a> - Write VAR model as formatted model code to text file.</li>
+<li><a href="../VAR/get.html"><code>get</code></a> - Query VAR object properties.</li>
+<li><a href="../VAR/iscompatible.html"><code>iscompatible</code></a> - True if two VAR objects can occur together on the LHS and RHS in an assignment.</li>
+<li><a href="../VAR/isexplosive.html"><code>isexplosive</code></a> - True if any eigenvalue is outside unit circle.</li>
+<li><a href="../VAR/ispanel.html"><code>ispanel</code></a> - True for panel VAR objects.</li>
+<li><a href="../VAR/isstationary.html"><code>isstationary</code></a> - True if all eigenvalues are within unit circle.</li>
+<li><a href="../VAR/length.html"><code>length</code></a> - Number of alternative parameterisations in VAR object.</li>
+<li><a href="../VAR/mean.html"><code>mean</code></a> - Mean of VAR process.</li>
+<li><a href="../VAR/nfitted.html"><code>nfitted</code></a> - Number of data points fitted in VAR estimation.</li>
+<li><a href="../VAR/rngcmp.html"><code>rngcmp</code></a> - True if two VAR objects have been estimated using the same dates.</li>
+<li><a href="../VAR/sprintf.html"><code>sprintf</code></a> - Print VAR model as formatted model code.</li>
+<li><a href="../VAR/sspace.html"><code>sspace</code></a> - Quasi-triangular state-space representation of VAR.</li>
+<li><a href="../VAR/userdata.html"><code>userdata</code></a> - Get or set user data in an IRIS object.</li>
+</ul>
+<h4 id="referencing-var-objects">Referencing VAR objects</h4>
+<ul>
+<li><a href="../VAR/group.html"><code>group</code></a> - Retrieve VAR object from panel VAR for specified group of data.</li>
+<li><a href="../VAR/subsasgn.html"><code>subsasgn</code></a> - Subscripted assignment for VAR objects.</li>
+<li><a href="../VAR/subsref.html"><code>subsref</code></a> - Subscripted reference for VAR objects.</li>
+</ul>
+<h4 id="simulation-forecasting-and-filtering">Simulation, forecasting and filtering</h4>
+<ul>
+<li><a href="../VAR/ferf.html"><code>ferf</code></a> - Forecast error response function.</li>
+<li><a href="../VAR/filter.html"><code>filter</code></a> - Filter data using a VAR model.</li>
+<li><a href="../VAR/forecast.html"><code>forecast</code></a> - Unconditional or conditional VAR forecasts.</li>
+<li><a href="../VAR/instrument.html"><code>instrument</code></a> - Define forecast conditioning instruments in VAR models.</li>
+<li><a href="../VAR/resample.html"><code>resample</code></a> - Resample from a VAR object.</li>
+<li><a href="../VAR/simulate.html"><code>simulate</code></a> - Simulate VAR model.</li>
+</ul>
+<h4 id="manipulating-vars">Manipulating VARs</h4>
+<ul>
+<li><a href="../VAR/assign.html"><code>assign</code></a> - Manually assign system matrices to VAR object.</li>
+<li><a href="../VAR/alter.html"><code>alter</code></a> - Expand or reduce the number of alternative parameterisations within a VAR object.</li>
+<li><a href="../VAR/backward.html"><code>backward</code></a> - Backward VAR process.</li>
+<li><a href="../VAR/demean.html"><code>demean</code></a> - Remove constant and the effect of exogenous inputs from VAR object.</li>
+<li><a href="../VAR/horzcat.html"><code>horzcat</code></a> - Combine two compatible VAR objects in one object with multiple parameterisations.</li>
+<li><a href="../VAR/integrate.html"><code>integrate</code></a> - Integrate VAR process and data associated with it.</li>
+</ul>
+<h4 id="stochastic-properties">Stochastic properties</h4>
+<ul>
+<li><a href="../VAR/acf.html"><code>acf</code></a> - Autocovariance and autocorrelation functions for VAR variables.</li>
+<li><a href="../VAR/fmse.html"><code>fmse</code></a> - Forecast mean square error matrices.</li>
+<li><a href="../VAR/vma.html"><code>vma</code></a> - Matrices describing the VMA representation of a VAR process.</li>
+<li><a href="../VAR/xsf.html"><code>xsf</code></a> - Power spectrum and spectral density functions for VAR variables.</li>
+</ul>
+<h4 id="estimation-identification-and-statistical-tests">Estimation, identification, and statistical tests</h4>
+<ul>
+<li><a href="../VAR/estimate.html"><code>estimate</code></a> - Estimate a reduced-form VAR or BVAR.</li>
+<li><a href="../VAR/infocrit.html"><code>infocrit</code></a> - Populate information criteria for a parameterised VAR.</li>
+<li><a href="../VAR/lrtest.html"><code>lrtest</code></a> - Likelihood ratio test for VAR models.</li>
+<li><a href="../VAR/portest.html"><code>portest</code></a> - Portmanteau test for autocorrelation in VAR residuals.</li>
+<li><a href="../VAR/schur.html"><code>schur</code></a> - Compute and store triangular representation of VAR.</li>
+</ul>
+<h4 id="getting-on-line-help-on-var-functions">Getting on-line help on VAR functions</h4>
+<pre><code>help VAR
+help VAR/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,106 @@
+
+
+    \filetitle{bwf}{Butterworth filter with tunes}{tseries/bwf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[T,C,CutOff,Lambda] = bwf(X,Order)
+[T,C,CutOff,Lambda] = bwf(X,Order,Range,...)
+\end{verbatim}
+
+\paragraph{Syntax with output arguments
+swapped}\label{syntax-with-output-arguments-swapped}
+
+\begin{verbatim}
+[T,C,CutOff,Lambda] = bwf2(X,Order)
+[T,C,CutOff,Lambda] = bwf2(X,Order,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object that will be
+  filtered.
+\item
+  \texttt{Order} {[} numeric {]} - Order of the Butterworth filter; note
+  that \texttt{Order=2} reproduces the Hodrick-Prescott filter
+  (\texttt{hpf}) and \texttt{Order=1} reproduces the local linear filter
+  (\texttt{llf}).
+\item
+  \texttt{Range} {[} numeric {]} - Date Range on which the input data
+  will be filtered; \texttt{Range} can be \texttt{Inf},
+  \texttt{{[}startdata,Inf{]}}, or \texttt{{[}-Inf,enddate{]}}; if not
+  specifired, \texttt{Inf} (i.e.~the entire available Range of the input
+  series) is used.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{T} {[} tseries {]} - Lower-frequency (trend) component.
+\item
+  \texttt{C} {[} tseries {]} - Higher-frequency (cyclical) component.
+\item
+  \texttt{CutOff} {[} numeric {]} - Cut-off periodicity; periodicities
+  above the cut-off are attributed to trends, periodicities below the
+  cut-off are attributed to gaps.
+\item
+  \texttt{Lambda} {[} numeric {]} - Smoothing parameter actually used;
+  this output argument is useful when the option \texttt{'CutOff='} is
+  used instead of \texttt{'Lambda='}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'CutOff='} {[} numeric \textbar{} \emph{empty} {]} - Cut-off
+  periodicity in periods (depending on the time series frequency); this
+  option can be specified instead of \texttt{'Lambda='}; the smoothing
+  parameter will be then determined based on the cut-off periodicity.
+\item
+  \texttt{'CutOffYear='} {[} numeric \textbar{} \emph{empty} {]} -
+  Cut-off periodicity in years; this option can be specified instead of
+  \texttt{'Lambda='}; the smoothing parameter will be then determined
+  based on the cut-off periodicity.
+\end{itemize}
+
+\texttt{'infoSet='} {[} \texttt{1} \textbar{} \emph{\texttt{2}} {]} -
+Information set assumption used in the filter: \texttt{1} runs a
+one-sided filter, \texttt{2} runs a two-sided filter.
+
+\begin{itemize}
+\item
+  \texttt{'Lambda='} {[} numeric \textbar{} \emph{\texttt{@auto}} {]} -
+  Smoothing parameter; needs to be specified for tseries objects with
+  indeterminate frequency. See Description for default values.
+\item
+  \texttt{'level='} {[} tseries {]} - Time series with soft and hard
+  tunes on the level of the trend.
+\item
+  \texttt{'change='} {[} tseries {]} - Time series with soft and hard
+  tunes on the change in the trend.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the data before filtering, de-logarithmise afterwards.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Default smoothing
+parameters}\label{default-smoothing-parameters}
+
+If the user does not specify the smoothing parameter using the
+\texttt{'lambda='} option (or reassigns the default \texttt{@auto}), a
+default value is used. The default value is based on common practice and
+can be calculated using the date frequency of the input time series as
+$\lambda = (10 \cdot f)^n$, where $f$ is the frequency (yearly=1,
+half-yearly=2, quarterly=4, bi-monthly=6, monthly=12), and $n$ is the
+order of the filter, determined by the input parameter \texttt{Order}.
+
+\paragraph{Example}\label{example}
+
+

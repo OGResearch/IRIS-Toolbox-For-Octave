@@ -1,0 +1,52 @@
+
+
+    \filetitle{trec}{Create new recursive time subscript object}{trec/trec}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+T = trec(Dates)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Dates} {[} numeric {]} - Vector of dates or date range on
+  which the final time-recursive expression will be evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{T} {[} trec {]} - New time-recursive subscript object.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Time-recursive subscript objects are used to reference tseries objects
+on both the left-hand side and the right-hand side of a time-recursive
+assignment. The assignment is then evaluated for each date in
+\texttt{Dates}, from the first to the last.
+
+See more on time-recursive expressions in
+\href{trec/Contents}{Contents}, including the description of instances
+in which IRIS fails to evaluate the time-recursive expressions
+correctly.
+
+\paragraph{Example}\label{example}
+
+Construct a first-order autoregressive process with normally distributed
+residuals:
+
+\begin{verbatim}
+T = trec(qq(2010,1):qq(2020,4));
+x = tseries(qq(2009,4),10);
+e = tseries(qq(2010,1):qq(2020,4),@randn);
+x(T) = 10 + 0.8*x(T-1) + e(T);
+\end{verbatim}
+
+

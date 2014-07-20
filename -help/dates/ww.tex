@@ -1,0 +1,49 @@
+
+
+    \filetitle{ww}{IRIS serial date number for weekly date}{dates/ww}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Dat = ww(Year,Week)
+Dat = ww(Year,Month,Day)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Year} {[} numeric {]} - Years.
+\item
+  \texttt{Week} {[} numeric {]} - Week of the year.
+\item
+  \texttt{Month} {[} numeric {]} - Calendar month.
+\item
+  \texttt{Day} {[} numeric {]} - Calendar day of the month
+  \texttt{Month}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Dat} {[} numeric {]} - IRIS serial date number representing
+  the weekly date.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The IRIS weekly dates comply with the ISO 8601 definition:
+
+\begin{itemize}
+\item
+  every week starts on Monday and ends on Sunday;
+\item
+  the month or year to which the week belongs is determined by its
+  Thurdsay.
+\end{itemize}
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,22 @@
+!variables
+
+    'Variable x' x
+    'Redundant'
+    "Variable y" y
+    
+!variables
+
+    "Redundant"
+    'Variable z' z
+    
+!equations
+
+    'Equation x' x = 0;
+    
+    ; 'Redundant'
+    
+    "Equation y" y = 0;
+    
+    ; "Redundant"
+    
+    'Equation z' z;

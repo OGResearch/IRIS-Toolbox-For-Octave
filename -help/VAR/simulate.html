@@ -1,0 +1,152 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="VAR/simulate">simulate</h2>
+<div class="headline">Simulate VAR model</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Outp = simulate(V,Inp,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>V</code> [ VAR ] - VAR object that will be simulated.</p></li>
+<li><p><code>Inp</code> [ tseries | struct ] - Input data from which the initial condtions and residuals will be taken.</p></li>
+<li><p><code>Range</code> [ numeric ] - Simulation range; must not refer to <code>Inf</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Outp</code> [ tseries ] - Simulated output data.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the simulated paths into the contributions of individual residuals, initial condition, the constant, and exogenous inputs; see Description.</p></li>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from unconditional mean.</p></li>
+<li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="backward-simulation-backcast">Backward simulation (backcast)</h5>
+<p>If the <code>Range</code> is a vector of decreasing dates, the simulation is performed backward. The VAR object is first converted to its backward representation using the function <a href="../VAR/backward.html"><code>backward</code></a>, and then the data are simulated from the latest date to the earliest date.</p>
+<h5 id="simulation-of-contributions">Simulation of contributions</h5>
+<p>With the option <code>'contributions=' true</code>, the output database contains Ne+2 columns for each variable, where Ne is the number of residuals. The first Ne columns are the contributions of the individual shocks, the (Ne+1)-th column is the contribution of initial condition and the constant, and the last, (Ne+2)-th columns is the contribution of exogenous inputs.</p>
+<p>Contribution simulations can be only run on VAR objects with one parameterization.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

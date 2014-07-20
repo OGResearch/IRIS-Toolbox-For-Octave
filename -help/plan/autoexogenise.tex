@@ -1,0 +1,43 @@
+
+
+    \filetitle{autoexogenise}{Exogenise variables and automatically endogenise corresponding shocks}{plan/autoexogenise}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P = autoexogenise(P,List,Dates)
+P = autoexogenise(P,List,Dates,Flag)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} plan {]} - Simulation plan.
+\item
+  \texttt{List} {[} cellstr \textbar{} char {]} - List of variables that
+  will be exogenised; these variables must have their corresponding
+  shocks assigned, see
+  \href{modellang/autoexogenise}{\texttt{!autoexogenise}}.
+\item
+  \texttt{Dates} {[} numeric {]} - Dates at which the variables will be
+  exogenised.
+\item
+  \texttt{Flag} {[} 1 \textbar{} 1i {]} - Select the shock anticipation
+  mode; if not specified, \texttt{Flag = 1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{P} {[} plan {]} - Simulation plan with new information on
+  exogenised variables and endogenised shocks included.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

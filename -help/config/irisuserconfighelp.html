@@ -1,0 +1,148 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="config/irisuserconfighelp">irisuserconfig</h2>
+<div class="headline">User configuration file called at the IRIS start-up</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>function c = irisuserconfig(c)
+    c.option = value;
+    c.option = value;
+    ...
+ end</code></pre>
+<h4 id="description">Description</h4>
+<p>You can create your own configuration file to modify the general IRIS options of your choosing at each IRIS start-up. The file must be saved as <code>irisuserconfig.m</code> on the Matlab search path.</p>
+<p>The <code>irisuserconfig.m</code> file must be an m-file function taking one input argument (a struct with the factory settings), and returning one output argument (a struct with the user-modified settings); see <a href="../config/irisset.html"><code>irisset</code></a> for the list of options you can change. In addition, you can also add your own new options, which will be then also accessible through <a href="../config/irisset.html"><code>irisset</code></a> and <a href="../config/irisget.html"><code>irisget</code></a>.</p>
+<h4 id="example">Example</h4>
+<p>If you want the names of months to be displayed in Finnish, create the following m-file and save it in a folder which is on the Matlab search path:</p>
+<pre><code>function c = irisuserconfig(c)
+    c.months = { ...
+        &#39;Tammikuu&#39;,&#39;Helmikuu&#39;,&#39;Maaliskuu&#39;, ...
+        &#39;Huhtikuu&#39;,&#39;Toukokuu&#39;,&#39;Kesakuu&#39;, ...
+        &#39;Heinakuu&#39;,&#39;Elokuu&#39;,&#39;Syyskuu&#39;, ...
+        &#39;Lokakuu&#39;,&#39;Marraskuu&#39;,&#39;Joulukuu&#39;};
+end</code></pre>
+<p>This modification will take effect after you next run <a href="../config/irisstartup.html"><code>irisstartup</code></a>. Your graphs will be then fluent in Finnish:</p>
+<pre><code>x = tseries(mm(2009,1):mm(2009,6),@rand);
+plot(x,&#39;dateformat&#39;,&#39;MmmmYY&#39;);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

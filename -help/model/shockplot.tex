@@ -1,0 +1,74 @@
+
+
+    \filetitle{shockplot}{Short-cut for running and plotting plain shock simulation}{model/shockplot}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[S,FF,AA] = shockplot(M,ShockName,SimRange,PlotList,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object that will be simulated.
+\item
+  \texttt{ShockName} {[} char {]} - Name of the shock that will be
+  simulated.
+\item
+  \texttt{SimRange} {[} numeric {]} - Date range on which the shock will
+  be simulated.
+\item
+  \texttt{PlotList} {[} cellstr {]} - List of variables that will be
+  reported; you can use the syntax of
+  \href{dbase/dbplot}{\texttt{dbase/dbplot}}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} struct {]} - Database with simulation results.
+\item
+  \texttt{FF} {[} numeric {]} - Handles of figure windows created.
+\item
+  \texttt{AA} {[} numeric {]} - Handles of axes objects created.
+\end{itemize}
+
+\paragraph{Options affecting the
+simulation}\label{options-affecting-the-simulation}
+
+\begin{itemize}
+\item
+  \texttt{'deviation='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - See the option \texttt{'deviation='} in
+  \href{model/simulate}{\texttt{model/simulate}}.
+\item
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - See the option \texttt{'dtrends='}
+  option in \href{model/simulate}{\texttt{model/simulate}}.
+\item
+  \texttt{'shockSize='} {[} \emph{\texttt{'std'}} \textbar{} numeric {]}
+  - Size of the shock that will be simulated; \texttt{'std'} means that
+  one std dev of the shock will be simulated.
+\end{itemize}
+
+\paragraph{Options affecting the
+graphs}\label{options-affecting-the-graphs}
+
+See help on \href{dbase/dbplot}{\texttt{dbase/dbplot}} for other options
+available.
+
+\paragraph{Description}\label{description}
+
+The simulated shock always occurs at time \texttt{t=1}. sStarting the
+simulation range, \texttt{SimRange}, before \texttt{t=1} allows you to
+simulate anticipated shocks.
+
+The graphs automatically include one pre-sample period, i.e.~one period
+prior to the start of the simulation.
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,40 @@
+
+
+    \filetitle{evalr}{Evaluate tseries expression recursively}{tseries/evalr}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+evalr(Expr,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Eqtn} {[} char {]} - Equation that will be evaluated
+  recursively ; the expression must be \texttt{'LHS\_Name = RHS\_Expr'}
+  where \texttt{LHS\_Name} is the name of the LHS variable (which must
+  be a tseries object), and \texttt{RHS\_Expr} is the RHS expression
+  that will be evaluated for each period in \texttt{Range}, and whose
+  result will be immediately assigned to the variables named
+  \texttt{LHS\_Name}.
+\item
+  \texttt{Range} {[} numeric {]} - Date range or vector of dates over
+  which the expression will be evaluated.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+The following commands create an autoregressive process with random
+shocks:
+
+\begin{verbatim}
+x = tseries(qq(2000,1):qq(2015,4),0);
+e = tseries(qq(2000,1):qq(2015,4),@randn);
+evalr('x = 0.8*x{-1} + e',qq(2000,2):qq(2015,4));
+\end{verbatim}
+
+

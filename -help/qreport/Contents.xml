@@ -1,0 +1,17 @@
+<folder>
+
+<foldername>qreport</foldername><filename>Contents</filename>
+
+<h1 id="qreport/Contents">Quick-report functions</h1>
+
+<h3>Quick-report functions</h3>
+
+<ul><li><link id="qreport/qplot"><tt>qplot</tt></link>&nbsp;&ndash;&nbsp;Quick report.</li>
+<li><link id="qreport/qstyle"><tt>qstyle</tt></link>&nbsp;&ndash;&nbsp;Apply styles to graphics object and its descandants.</li></ul>
+
+<h3>Getting on-line help on qreport functions</h3>
+<pre>   help qreport
+   help qreport/function_name
+</pre>
+
+</folder>

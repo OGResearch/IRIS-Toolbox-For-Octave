@@ -1,0 +1,45 @@
+
+
+    \filetitle{fprintf}{Write VAR model as formatted model code to text file}{VAR/fprintf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[C,D] = fprintf(V,File,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object that will be printed to a model
+  file.
+\item
+  \texttt{File} {[} char \textbar{} cellstr {]} - Filename, or filename
+  format string, under which the model code will be saved.
+\item
+  Output arguments
+\item
+  \texttt{C} {[} cellstr {]} - Text string with the model code for each
+  parameterisation.
+\item
+  \texttt{D} {[} cell {]} - Parameter databases for each
+  parameterisation; if \texttt{'hardParameters='} true, the database
+  will be empty.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on \href{VAR/sprintf}{\texttt{sprintf}} for options available.
+
+\paragraph{Description}\label{description}
+
+For VAR objects with Na multiple alternative parameterisations, the
+filename \texttt{File} must be either a 1-by-Na cell array of string
+with a filename for each parameterisation, or a \texttt{sprintf} format
+string where a single occurence of \texttt{'\%g'} will be replaced with
+the parameterisation number.
+
+\paragraph{Example}\label{example}
+
+

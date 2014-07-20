@@ -1,0 +1,38 @@
+<folder>
+
+<foldername>sstate_lang</foldername><filename>Contents</filename>
+
+<h1 id="sstate_lang/Contents">Steady-state file language</h1>
+
+<p>Steady-state (sstate) files are a complementary tool to solve and analyse
+the steady states of more complex models. They allow you to create
+steady-state files independent of the original model files, and write the
+steady-state equations in different ways, manipulate their structure or
+order, split the problem into subblocks, and combine numerical and
+symbolic solutions. Using then the <link id="sstate/Contents">sstate objects</link>, you
+can compile and run stand-alone steady-state m-file functions based on
+your steady-state files.</p>
+
+<h3>Input parameters</h3>
+
+<ul><li><link id="sstate_lang/input"><tt>!input</tt></link>&nbsp;&ndash;&nbsp;List of input parameters or variables.</li>
+<li><link id="sstate_lang/growthnames"><tt>!growthnames</tt></link>&nbsp;&ndash;&nbsp;Pattern for creating growth names.</li></ul>
+
+<h3>Equations and assignments</h3>
+
+<ul><li><link id="sstate_lang/equations"><tt>!equations</tt></link>&nbsp;&ndash;&nbsp;Block of equations or assignments.</li>
+<li><link id="sstate_lang/growthnames2imag"><tt>!growthnames2imag</tt></link>&nbsp;&ndash;&nbsp;Combine level and growth variables to complex numbers.</li>
+<li><link id="sstate_lang/solvefor"><tt>!solvefor</tt></link>&nbsp;&ndash;&nbsp;List of variables for which the current equations block will be solved.</li>
+<li><link id="sstate_lang/symbolic"><tt>!symbolic</tt></link>&nbsp;&ndash;&nbsp;Attempt to solve the current equations block symbolically using the Symbolic Maths Toolbox.</li></ul>
+
+<h3>Variables with steady state restricted to be positive</h3>
+
+<ul><li><link id="sstate_lang/log_variables"><tt>!log_variables</tt></link>&nbsp;&ndash;&nbsp;Restrict the steady stae of some of the variables to be positive.</li>
+<li><link id="sstate_lang/allbut"><tt>!allbut</tt></link>&nbsp;&ndash;&nbsp;Inverse list of variables with positive steady states.</li></ul>
+
+<h3>Getting on-line help on sstate file language</h3>
+<pre>   help sstate_lang
+   help sstate_lang/keyword
+</pre>
+
+</folder>

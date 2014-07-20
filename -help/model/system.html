@@ -1,0 +1,152 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/system">system</h2>
+<div class="headline">System matrices for unsolved model</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[A,B,C,D,F,G,H,J,List,Nf] = system(M)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Model object whose system matrices will be returned.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>F</code>, <code>G</code>, <code>H</code> ,<code>J</code> [ numeric ] - Matrices describing the unsolved system, see Description.</p></li>
+<li><p><code>List</code> [ cell ] - Lists of measurement variables, transition variables includint their auxiliary lags and leads, and shocks as they appear in the rows and columns of the system matrices.</p></li>
+<li><p><code>Nf</code> [ numeric ] - Number of non-predetermined (forward-looking) transition variables (multiplied by the first <code>Nf</code> columns of matrices <code>A</code> and <code>B</code>).</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'linear='</code> [ <em><code>@auto</code></em> | <code>true</code> | <code>false</code> ] - Compute the model using a linear approach, i.e. differentiating around zero and not the currently assigned steady state.</p></li>
+<li><p><code>'select='</code> [ <em><code>true</code></em> | <code>false</code> ] - Automatically detect which equations need to be re-differentiated based on parameter changes from the last time the system matrices were calculated.</p></li>
+<li><p><code>'sparse='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return matrices <code>A</code>, <code>B</code>, <code>D</code>, <code>F</code>, <code>G</code>, and <code>J</code> as sparse matrices; can be set to <code>true</code> only in models with one parameterization.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The system before the model is solved has the following form:</p>
+<pre><code>A E[xf;xb] + B [xf(-1);xb(-1)] + C + D e = 0
+
+F y + G xb + H + J e = 0</code></pre>
+<p>where <code>E</code> is a conditional expectations operator, <code>xf</code> is a vector of non-predetermined (forward-looking) transition variables, <code>xb</code> is a vector of predetermined (backward-looking) transition variables, <code>y</code> is a vector of measurement variables, and <code>e</code> is a vector of transition and measurement shocks.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/resample">resample</h2>
+<div class="headline">Resample from the model implied distribution</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Outp = resample(M,Inp,Range,NDraw,...)
+Oupt = resample(M,Inp,Range,NDraw,J,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Solved model object.</p></li>
+<li><p><code>Inp</code> [ struct | empty ] - Input data (if needed) for the distributions of initial condition and/or empirical shocks; if not bootstrap is invovled</p></li>
+<li><p><code>Range</code> [ numeric ] - Resampling date range.</p></li>
+<li><p><code>NDraw</code> [ numeric ] - Number of draws.</p></li>
+<li><p><code>J</code> [ struct | empty ] - Database with user-supplied (time-varying) tunes on std devs, corr coeffs, and/or means of shocks.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Outp</code> [ struct ] - Output database with resampled data.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
+<li><p><code>'dtrends='</code> [ <em><code>@auto</code></em> | <code>true</code> | <code>false</code> ] - Add deterministic trends to measurement variables.</p></li>
+<li><p><code>'method='</code> [ <code>'bootstrap'</code> | <em><code>'montecarlo'</code></em> ] - Method of randomising shocks and initial condition.</p></li>
+<li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
+<li><p><code>'randomInitCond='</code> [ <em><code>true</code></em> | <code>false</code> | numeric ] - Randomise initial condition; a number means the initial condition will be simulated using the specified number of extra pre-sample periods.</p></li>
+<li><p><code>'stateVector='</code> [ <em><code>'alpha'</code></em> | <code>'x'</code> ] - When resampling initial condition, use the transformed state vector, <code>alpha</code>, or the vector of original variables, <code>x</code>; this option is meant to guarantee replicability of results.</p></li>
+<li><p><code>'svdOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Do not attempt Cholesky and only use SVD to factorize the covariance matrix when resampling initial condition; only applies when <code>'randomInitCond=' true</code>.</p></li>
+<li><p><code>'wild='</code> [ <code>true</code> | <em><code>false</code></em> ] - Use wild bootstrap instead of Efron bootstrap; only applies when <code>'method=' 'bootstrap'</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>When you use wild bootstrap for resampling the initial condition, the results are based on an assumption that the mean of the initial condition is the asymptotic mean implied by the model (i.e. the steady state).</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

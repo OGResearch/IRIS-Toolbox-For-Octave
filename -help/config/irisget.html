@@ -1,0 +1,157 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="config/irisget">irisget</h2>
+<div class="headline">Query current IRIS config options</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Value = irisget(Option)
+S = irisget()</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><code>Option</code> [ char ] - Name of the queried IRIS configuration option.</li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>Value</code> [ ... ] - Current value of the queried configuration option.</p></li>
+<li><p><code>S</code> [ struct ] - Structure with all configuration options and their current values.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>You can view any of the modifiable options listed in <a href="../config/irisset.html"><code>irisset</code></a>, plus the following non-modifiable ones (these cannot be changed by the user):</p>
+<ul>
+<li><p><code>'userConfigPath='</code> [ char ] - The path to the user configuration file called by the last executed <a href="../config/irisstartup.html"><code>irisstartup</code></a>.</p></li>
+<li><p><code>'irisRoot='</code> [ char ] - The current IRIS root directory.</p></li>
+<li><p><code>'version='</code> [ char ] - The current IRIS version string.</p></li>
+</ul>
+<p>When called without any input arguments, the <code>irisget</code> function returns a struct with all options and their current values.</p>
+<p>When used as input arguments in the <code>irisget</code> function, the option names are case-insensitive. When referring to field names of an output struct returned by the <code>irisget</code> function, all option names are lower-case and case-sensitive.</p>
+<h4 id="example">Example</h4>
+<pre><code>irisget(&#39;dateFormat&#39;)
+ans =
+YFP
+
+g = irisget();
+g.dateformat
+ans =
+YFP</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>
