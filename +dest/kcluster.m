@@ -235,17 +235,4 @@ end
         end %refineCenters
     end %xxKcluster
 
-end % kcluster().
-
-
-
-
-        
-        end %refineCenters
-    end %xxKcluster
-
-end % kcluster().
-
-
-
-
+end % kcluster()

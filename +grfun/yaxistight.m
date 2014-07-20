@@ -43,6 +43,7 @@ for iAx = Ax
 %             set(iAx,'yLimSpec','tight');
 %         end
     else
+        % @@@@@ MOSW
         lim = mosw.objbounds(iAx);
         if isempty(lim)
             yLim = get(iAx,'yLim');

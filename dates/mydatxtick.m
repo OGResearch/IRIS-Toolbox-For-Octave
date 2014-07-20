@@ -29,7 +29,12 @@ end
 % Does the axies object have a plotyy peer? Set the peer's xlim-related
 % properties the same as in H; do not though set its xtick-related
 % properties.
-peer = getappdata(H,'graphicsPlotyyPeer');
+if true % ##### MOSW
+    peer = getappdata(H,'graphicsPlotyyPeer');
+else
+    peer = get(H,'__plotyy_axes__'); %#ok<UNRCH>
+    peer = peer(peer ~= H);
+end
 
 % Determine x-limits first.
 firstDate = [];

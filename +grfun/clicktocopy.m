@@ -43,16 +43,7 @@ function xxCopyAxes(h,varargin)
     if ~isequal(get(h,'type'),'axes')
       h = get(h,'parent');
     end
-    % Temporary show excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(h,'on');
-    end
     new = copyobj(h,figure());
-    % Hide back excluded from legend (for Octave's way of excluding)
-    if ~ismatlab
-        grfun.mytrigexcludedfromlegend(h,'off');
-        grfun.mytrigexcludedfromlegend(new,'off');
-    end
     set(new, ...
       'position',[0.1300,0.1100,0.7750,0.8150], ...
       'units','normalized', ...

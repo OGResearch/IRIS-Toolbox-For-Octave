@@ -29,7 +29,7 @@ if true % ##### MOSW
     replaceFunc = @doExpand; %#ok<NASGU>
     Blk = regexprep(Blk,ptn,'${replaceFunc($1)}');
 else
-    Blk = mosw.dregexprep(Blk,ptn,@doExpand,1); %#ok<UNRCH>
+    Blk = mosw.dregexprep(Blk,ptn,'doExpand',1); %#ok<UNRCH>
 end
 
 

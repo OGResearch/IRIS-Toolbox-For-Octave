@@ -12,7 +12,12 @@ function Stdcorr = cov2stdcorr(Omg,varargin)
 [~,ne,nPer,nAlt] = size(Omg);
 Omg = Omg(:,:,:);
 
-inx = tril(ones(ne),-1) == 1;
+if ne > 0
+    inx = tril(ones(ne),-1) == 1;
+else
+    inx = [];
+end
+
 R = covfun.cov2corr(Omg);
 n = ne + ne*(ne-1)/2;
 Stdcorr = nan(n,nPer*nAlt);

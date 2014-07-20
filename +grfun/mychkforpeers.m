@@ -9,7 +9,12 @@ function H = mychkforpeers(Ax)
 
 %--------------------------------------------------------------------------
 
-peer = getappdata(Ax,'graphicsPlotyyPeer');
+if true % ##### MOSW
+    peer = getappdata(Ax,'graphicsPlotyyPeer');
+else
+    peer = get(Ax,'__plotyy_axes__'); %#ok<UNRCH>
+    peer = peer(peer ~= Ax);
+end
 
 if isempty(peer) || ~isequal(get(Ax,'color'),'none')
     H = Ax;

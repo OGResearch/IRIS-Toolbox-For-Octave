@@ -10,7 +10,7 @@ function data = textscan(fid,varargin)
 
 %--------------------------------------------------------------------------
 
-if is.matlab()
+if true % ##### MOSW
     
     % Matlab
     %--------

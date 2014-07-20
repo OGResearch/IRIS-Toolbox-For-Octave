@@ -265,7 +265,12 @@ xxApplyTo(H(end:-1:1),D,'axes',Opt);
 rhsPeer = [];
 for iH = H
     % Check if this axes has a plotyy peer.
-    iPeer = getappdata(iH,'graphicsPlotyyPeer');
+    if true % ##### MOSW
+        iPeer = getappdata(iH,'graphicsPlotyyPeer');
+    else
+        iPeer = get(iH,'__plotyy_axes__');
+        iPeer = iPeer(iPeer ~= iH);
+    end
     if ~isempty(iPeer) && strcmp(get(iH,'yAxisLocation'),'right')
         % The current `iH` is an RHS peer. It will be styled first together with
         % its LHS peer, and then separately by using an `rhsaxes` field if it

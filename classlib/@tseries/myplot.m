@@ -125,7 +125,12 @@ if isequal(opt.xlimmargin,true) ...
         && strcmpi(opt.xlimmargin,'auto') ...
         && isanyfunc(Func,{'bar','barcon'}))
     setappdata(Ax,'xLimAdjust',true);
-    peer = getappdata(Ax,'graphicsPlotyyPeer');
+    if true % ##### MOSW
+        peer = getappdata(Ax,'graphicsPlotyyPeer');
+    else
+        peer = get(Ax,'__plotyy_axes__');
+        peer = peer(peer ~= Ax);
+    end
     if ~isempty(peer)
         setappdata(peer,'xLimAdjust',true);
     end

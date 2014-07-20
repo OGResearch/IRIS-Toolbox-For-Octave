@@ -96,6 +96,15 @@ if isequal(This.options.legend,true) ...
     end
     legEntLhs = [legEnt{ixLegLhs}];
     legEngRhs = [legEnt{~ixLegLhs}]; %#ok<NASGU>
+    if true % ##### MOSW
+        % Do nothing
+    else
+        % Temporarily make invisible those excluded from legend
+        kids = findall(Ax(1)); %#ok<UNRCH>
+        toTrig = isappdata(kids,'notInLegend');
+        hvstat = get(kids(toTrig),'handleVisibility');
+        set(kids(toTrig),'handleVisibility','off');
+    end
     % TODO: Create legend for RHS data.
     if ~isempty(legEnt) && ~all(cellfun(@isempty,legEnt))
         if strcmp(This.options.legendlocation,'bottom')
@@ -107,6 +116,12 @@ if isequal(This.options.legend,true) ...
                 set(lg,This.options.legendoptions{:});  
             end
         end
+    end
+    if true % ##### MOSW
+        % Do nothing
+    else
+        % Temporarily make all visible back
+        set(kids(toTrig),{'handleVisibility'},hvstat); %#ok<UNRCH>
     end
 end
 

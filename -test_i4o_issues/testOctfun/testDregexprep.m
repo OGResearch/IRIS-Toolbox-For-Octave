@@ -5,7 +5,7 @@ x(2) = -600;
 x(5) = pi;
 x(10) = 1e15;
 
-actString = mosw.octfun.dregexprep(C,'([#&])(\d+)','doReplace',[1,0,2]);
+actString = mosw.dregexprep(C,'([#&])(\d+)','doReplace',[1,0,2]);
 
     function C = doReplace(C1,C0,C2)
         k = sscanf(C2,'%g');

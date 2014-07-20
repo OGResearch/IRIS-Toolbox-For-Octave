@@ -9,7 +9,7 @@ function excludefromlegend(h)
 
 %--------------------------------------------------------------------------
 
-if ismatlab
+if true % ##### MOSW
     for i = h(:)'
       try %#ok<TRYNC>
           set(get(get(i,'Annotation'),'LegendInformation'),...
@@ -17,7 +17,6 @@ if ismatlab
       end
     end
 else
-    set(h,{'handlevisibility'},{'off'});
     setappdata(h,'notInLegend',true);
 end
 
