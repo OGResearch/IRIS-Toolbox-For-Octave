@@ -88,7 +88,7 @@ end
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     infLim = 1e10;
 else
     infLim = 1e5; %#ok<UNRCH>
@@ -131,7 +131,7 @@ for iAx = Ax(:).'
         timeScale = [range(1)-around,range(end)+around];
     end
     
-    if true % ##### MOSW
+    if false % ##### MOSW
         bounds = objbounds(iAx);
     else
         bounds = [0,0,0,0]; %#ok<UNRCH>
@@ -166,7 +166,7 @@ if isempty(Pp)
     return
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     if opt.excludefromlegend
         % Exclude highlighted area from legend.
         grfun.excludefromlegend(Pp);

@@ -265,7 +265,7 @@ xxApplyTo(H(end:-1:1),D,'axes',Opt);
 rhsPeer = [];
 for iH = H
     % Check if this axes has a plotyy peer.
-    if true % ##### MOSW
+    if false % ##### MOSW
         iPeer = getappdata(iH,'graphicsPlotyyPeer');
     else
         iPeer = get(iH,'__plotyy_axes__');

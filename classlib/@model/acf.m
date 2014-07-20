@@ -201,7 +201,7 @@ if isSelect
     end
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert double arrays to namedmat objects if requested.
     if isNamedMat
         CC = namedmat(CC,YXVec,YXVec);

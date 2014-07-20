@@ -9,7 +9,7 @@ function H = mychkforpeers(Ax)
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     peer = getappdata(Ax,'graphicsPlotyyPeer');
 else
     peer = get(Ax,'__plotyy_axes__'); %#ok<UNRCH>

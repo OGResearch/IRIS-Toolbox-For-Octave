@@ -53,7 +53,7 @@ else
 
     % Non-linear sstate solver
     %--------------------------
-    if true % ##### MOSW
+    if false % ##### MOSW
         % Do nothing
     else
         % Do not run steady-state solver
