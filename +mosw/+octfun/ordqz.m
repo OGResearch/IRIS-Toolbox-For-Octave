@@ -10,7 +10,7 @@ function varargout = ordqz(varargin)
 
 %--------------------------------------------------------------------------
 
-if is.matlab()
+if false % ##### MOSW
     
     % Matlab
     %--------
@@ -20,7 +20,17 @@ else
     % Octave
     %--------
     varargout = cell(1,nargout);
-    [varargout{:}] = mosw.octfun.myordqz(varargin{:});
+    if ispc
+        [varargout{:}] = mosw.octfun.myordqz_win32(varargin{:});
+    elseif isunix
+        [varargout{:}] = mosw.octfun.myordqz_unix(varargin{:});
+    else
+        try
+            [varargout{:}] = mosw.octfun.myordqz_unix(varargin{:});
+        catch
+            error('iris4octave:myordqz.mex','Are you on MAC? We need to recompile this mex-file for you.');
+        end
+    end
 end
 
 end

@@ -177,7 +177,7 @@ end
 % return
 
 %% look for % ##### MOSW
-%{
+% {
 pattern = '% ##### MOSW';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
@@ -210,7 +210,7 @@ end
 %}
 
 %% look for % >>>>> MOSW
-%{
+% {
 pattern = '% >>>>> MOSW';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
