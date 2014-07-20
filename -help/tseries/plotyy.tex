@@ -2,14 +2,14 @@
 
     \filetitle{plotyy}{Line plot function with LHS and RHS axes for time series}{tseries/plotyy}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [Ax,Lhs,Rhs,Range] = plotyy(X,Y,...)
 [Ax,Lhs,Rhs,Range] = plotyy(Range,X,Y,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -23,7 +23,7 @@
   be plotted and labelled on the RHS.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -40,25 +40,13 @@
   date range.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
-  \texttt{'conincident='} {[} \texttt{true} \textbar{}
+  \texttt{'coincide='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Make the LHS and RHS y-axis grids
-  coincident.
-\item
-  \texttt{'dateFormat='} {[} char \textbar{}
-  \emph{\texttt{irisget('plotDateFormat')}} {]} - Date format for the
-  tick marks on the x-axis.
-\item
-  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
-\item
-  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBM'}}
-  {]} - Five letters to represent the five date frequencies (yearly,
-  half-yearly, quarterly, bi-monthly, and monthly).
+  coincide.
 \item
   \texttt{'lhsPlotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
   \textbar{} \emph{\texttt{@plot}} \textbar{} \texttt{@stem} {]} -
@@ -75,8 +63,11 @@
   \emph{\texttt{false}} {]} - Make the RHS y-axis tight.
 \end{itemize}
 
-\paragraph{Description}
+See help on \href{tseries/plot}{\texttt{tseries/plot}} and the built-in
+function \texttt{plotyy} for all options available.
 
-\paragraph{Example}
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

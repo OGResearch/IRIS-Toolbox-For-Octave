@@ -2,16 +2,14 @@
 
     \filetitle{assign}{Manually assign system matrices to VAR object}{VAR/assign}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-V = assign(V,A,K,Omg)
-V = assign(V,A,[],Omg)
-V = assign(V,A,K,Omg,Dates)
-V = assign(V,A,[],Omg,Dates)
+V = assign(V,A,K,J,Omg)
+V = assign(V,A,K,J,Omg,Dates)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -20,8 +18,11 @@ V = assign(V,A,[],Omg,Dates)
   \texttt{A} {[} numeric {]} - Transition matrices; see Description.
 \item
   \texttt{K} {[} numeric \textbar{} empty {]} - Constant vector or
-  matrix; if omitted, the constant vector will be set to zeros, and will
+  matrix; if empty, the constant vector will be set to zeros, and will
   not be included in the number of free parameters.
+\item
+  \texttt{J} {[} numeric \textbar{} empty {]} - Coefficient matrix in
+  front exogenous inputs; if empty the matrix will be set to zeros.
 \item
   \texttt{Omg} {[} numeric {]} - Covariance matrix of forecast errors
   (reduced-form residuals).
@@ -30,7 +31,7 @@ V = assign(V,A,[],Omg,Dates)
   fitted observations; may be omitted.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -38,7 +39,7 @@ V = assign(V,A,[],Omg,Dates)
   \texttt{V} {[} VAR {]} - VAR object with system matrices assigned.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 To assign matrices for a p-th order VAR, stack the transition matrices
 for individual lags horizontally,
@@ -50,6 +51,6 @@ A = [A1,...,Ap]
 where \texttt{A1} is the coefficient matrix on the first lag, and
 \texttt{Ap} is the coefficient matrix on the last, p-th, lag.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -2,13 +2,13 @@
 
     \filetitle{dat2str}{Convert IRIS dates to cell array of strings}{dates/dat2str}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 S = dat2str(Dat,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@ S = dat2str(Dat,...)
   \texttt{Dat} {[} numeric {]} - IRIS serial date number(s).
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,29 +25,30 @@ S = dat2str(Dat,...)
   input dates.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
   \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
-  \emph{`YYYYFP'} {]} - Date format string, or array of format strings
-  (possibly different for each date).
+  \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+  strings (possibly different for each date).
 \item
-  \texttt{'freqLetters='} {[} char \textbar{} \emph{`YHQBM'} {]} -
-  Letters representing the five possible frequencies
-  (annual,semi-annual,quarterly,bimontly,monthly).
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+  {]} - Six letters used to represent the six possible frequencies of
+  IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+  monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
 \item
-  \texttt{'months='} {[} cellstr \textbar{} \emph{English names of
-  months} {]} - Cell array of twelve strings representing the names of
-  months.
+  \texttt{'months='} {[} cellstr \textbar{}
+  \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+  representing the names of the twelve months.
 \item
   \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
-  \textbar{} \texttt{*1*} {]} - Which month will represent a
-  lower-than-monthly-frequency date if month is part of the date format
-  string.
+  \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+  lower-than-monthly-frequency date if the month is part of the date
+  format string.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 There are two types of date strings in IRIS: year-period strings and
 calendar date strings. The year-period strings can be printed for dates
@@ -56,7 +57,7 @@ indeterminate frequencies. The calendar date strings can be printed for
 dates with weekly and daily frequencies. Date formats for calendar date
 strings must start with a dollar sign, \texttt{\$}.
 
-\subparagraph{Year-period date strings}
+\subparagraph{Year-period date strings}\label{year-period-date-strings}
 
 Regular date formats can include any combination of the following
 fields:
@@ -93,7 +94,7 @@ fields:
   \texttt{'Q'} - Upper-case roman numeral for the month or stand-in
   month.
 \item
-  \texttt{'r'} - Lower-case roman numeral for the month or stand-in
+  \texttt{'q'} - Lower-case roman numeral for the month or stand-in
   month.
 \item
   \texttt{'F'} - Upper-case letter representing the date frequency.
@@ -113,7 +114,7 @@ fields:
   non-monthly dates.
 \end{itemize}
 
-\subparagraph{Calendar date strings}
+\subparagraph{Calendar date strings}\label{calendar-date-strings}
 
 Calendar date formats must start with a dollar sign, \texttt{\$}, and
 can include any combination of the following fields:
@@ -149,7 +150,7 @@ can include any combination of the following fields:
   \texttt{'D'} - Day numeral.
 \end{itemize}
 
-\subparagraph{Escaping control letters}
+\subparagraph{Escaping control letters}\label{escaping-control-letters}
 
 To get the format letters printed literally in the date string, use a
 percent sign as an escape character: \texttt{'\%Y'}, \texttt{'\%P'},
@@ -157,6 +158,6 @@ percent sign as an escape character: \texttt{'\%Y'}, \texttt{'\%P'},
 \texttt{'\%R'}, \texttt{'\%r'}, \texttt{'\%Q'}, \texttt{'\%q'},
 \texttt{'\%D'}, \texttt{'\%E'}, \texttt{'\%D'}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

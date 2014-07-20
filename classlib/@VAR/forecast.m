@@ -56,19 +56,18 @@ function Outp = forecast(This,Inp,Range,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-JData = [];
+Cond = [];
 if ~isempty(varargin) && ~ischar(varargin{1})
-    JData = varargin{1};
+    Cond = varargin{1};
     varargin(1) = [];
 end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@is.VAR);
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.addRequired('Cond',@(x) myisvalidinpdata(This,x));
-pp.parse(This,Inp,Range,JData);
+pp.addRequired('Cond',@(x) isempty(x) || isstruct(x));
+pp.parse(Inp,Range,Cond);
 
 % Panel VAR.
 if ispanel(This)
@@ -84,10 +83,14 @@ opt = passvalopt('VAR.forecast',varargin{1:end});
 ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+nx = length(This.XNames);
 ni = size(This.Zi,1);
+isX = nx > 0;
+isConst = ~opt.deviation;
 
 if isempty(Range)
-    utils.warning('VAR','Forecast range is empty.');
+    utils.warning('VAR:forecast', ...
+        'Forecast range is empty.');
     if opt.meanonly
         Inp = [];
     else
@@ -99,66 +102,78 @@ end
 
 if (Range(1) > Range(end))
     % Go backward in time.
-    backcast = true;
+    isBackcast = true;
     This = backward(This);
     xRange = Range(end) : Range(1)+p;
     Range = Range(end) : Range(1);
 else
-    backcast = false;
+    isBackcast = false;
     xRange = Range(1)-p : Range(end);
 end
 
 % Include pre-sample.
-[outpFmt,xRange,y,e] = mydatarequest(This,Inp,xRange,opt);
+req = datarequest('y*,x*,e',This,Inp,xRange,opt);
+outpFmt = req.Format;
+xRange = req.Range;
+y = req.Y;
+x = req.X;
+e = req.E;
+
 e = e(:,p+1:end,:);
+if isX
+    x = x(:,p+1:end,:);
+end
 
 % Get tunes on VAR variables and instruments; do not include pre-sample.
-[~,~,jy,je,ji] = mydatarequest(This,JData,Range);
+req = datarequest('y,e,i',This,Cond,Range);
+condY = req.Y;
+condE = req.E;
+condI = req.I;
 
 % Changes in residual means can be either in `e` or `je` (but not both).
 e(isnan(e)) = 0;
-je(isnan(je)) = 0;
-if any(je(:) ~= 0)
+condE(isnan(condE)) = 0;
+if any(condE(:) ~= 0)
     if any(e(:) ~= 0)
         utils.error('VAR:forecast', ...
             ['Changes in residual means can be entered either ', ...
             'in the input database or in the conditioning database, ', ...
             'but not in both.']);
     else
-        e = je;
+        e = condE;
     end
 end
 
-if backcast
-    y = y(:,end:-1:1,:,:);
-    e = e(:,end:-1:1,:,:);
-    jy = jy(:,end:-1:1,:,:);
-    ji = ji(:,end:-1:1,:,:);
+if isBackcast
+    y = flip(y,2);
+    x = flip(x,2);
+    e = flip(e,2);
+    condY = flip(condY,2);
+    condI = flip(condI,2);
 end
 
 nPer = length(Range);
 nXPer = length(xRange);
-nData = size(y,3);
-nCond = size(jy,3);
-nInst = size(ji,3);
+nDataY = size(y,3);
+nDataX = size(x,3);
+nDataE = size(e,3);
+nCond = size(condY,3);
+nInst = size(condI,3);
 nOmg = size(opt.omega,3);
 
-nLoop = max([nAlt,nData,nCond,nInst,nOmg]);
-
-retInstruments = ni > 0 && opt.returninstruments;
-retResiduals = opt.returnresiduals;
+nLoop = max([nAlt,nDataY,nDataX,nDataE,nCond,nInst,nOmg]);
 
 % Stack initial conditions.
-x0 = y(:,1:p,:);
-x0 = x0(:,p:-1:1,:);
-x0 = reshape(x0(:),ny*p,size(x0,3));
+y0 = y(:,1:p,:);
+y0 = y0(:,p:-1:1,:);
+y0 = reshape(y0(:),ny*p,size(y0,3));
 
+% Preallocate output data.
 Y = nan(ny,nXPer,nLoop);
+X = nan(nx,nXPer,nLoop);
 E = nan(ny,nXPer,nLoop);
 P = zeros(ny,ny,nXPer,nLoop);
-if retInstruments
-    I = nan(ni,nXPer,nLoop);
-end
+I = nan(ni,nXPer,nLoop);
 
 Zi = This.Zi;
 if isempty(Zi)
@@ -174,15 +189,12 @@ s.ahead = 1;
 
 for iLoop = 1 : nLoop
     
-    [iA,iB,iK,iOmg] = mysystem(This,iLoop);
+    [iA,iB,iK,iJ,iOmg] = mysystem(This,iLoop);
     
     if ~isempty(opt.omega)
         iOmg(:,:) = opt.omega(:,:,min(iLoop,end));
     end
-    % Remove the constant vector if this is a deviation simulation.
-    if opt.deviation
-        iK = [];
-    end
+        
     % Reduce or zero off-diagonal elements in the cov matrix of residuals
     % if requested. This only matters in VARs, not SVARs.
     if double(opt.cross) < 1
@@ -195,69 +207,68 @@ for iLoop = 1 : nLoop
     s.allObs = rank(iOmg) == ny;
 
     % Get the iLoop-th data.
-    ix0 = x0(:,min(iLoop,end));
-    ie = e(:,:,min(iLoop,end));
-    ijy = jy(:,:,min(iLoop,end));
-    
-    if retInstruments
-        jii = ji(:,:,min(iLoop,end));
-        Cii = Zi(:,1);
-        Zii = Zi(:,2:end);
-    else
-        jii = zeros(0,nPer);
-        Cii = zeros(0,1);
-        Zii = zeros(0,ny*p);
+    iY0 = y0(:,min(iLoop,end));
+    if isX
+        iX = x(:,:,min(iLoop,end));
     end
+    iE = e(:,:,min(iLoop,end));
+    iCondY = condY(:,:,min(iLoop,end));
+    iCondI = condI(:,:,min(iLoop,end));
 
-    if ~isempty(jii)
-        Z = [eye(ny,ny*p);Zii];
-        D = [zeros(ny,1);Cii];
+    if ~isempty(iCondI)
+        Z = [eye(ny,ny*p);Zi(:,2:end)];
+        D = [zeros(ny,1);Zi(:,1)];
         s.allObs = false;
     else
         Z = eye(ny);
         D = [];
     end
+
+    % Collect all deterministic terms (constant and exogenous inputs).
+    iKJ = zeros(ny,nPer);
+    if isConst
+        iKJ = iKJ + iK(:,ones(1,nPer));
+    end    
+    if isX
+        iKJ = iKJ + iJ*iX;
+    end
     
     % Run Kalman filter and smoother.
     [~,~,iE,~,iY,iP] = ...
-        timedom.varsmoother(iA,iB,iK,Z,D,iOmg,0,[ijy;jii],ie,ix0,0,s);
+        timedom.varsmoother(iA,iB,iKJ,Z,D,iOmg, ...
+        [],[iCondY;iCondI],iE,iY0,0,s);
     
     E(:,p+1:end,iLoop) = iE;
     % Add pre-sample initial condition.
-    Y(:,p:-1:1,iLoop) = reshape(ix0,ny,p);
+    Y(:,p:-1:1,iLoop) = reshape(iY0,ny,p);
     % Add forecast data; `iY` includes both the VAR variables and the
     % instruments.
     Y(:,p+1:end,iLoop) = iY(1:ny,:);
-    P(:,:,p+1:end,iLoop) = iP(1:ny,1:ny,:);
-    % Evaluate conditioning instruments.
-    if retInstruments
-        I(:,p+1:end,iLoop) = iY(ny+1:end,:);
+    if isX
+        X(:,p+1:end,iLoop) = iX;
     end
+    P(:,:,p+1:end,iLoop) = iP(1:ny,1:ny,:);
+    % Return conditioning instruments.
+    I(:,p+1:end,iLoop) = iY(ny+1:end,:);
 end
 
-if backcast
-    Y = Y(:,end:-1:1,:);
-    E = E(:,end:-1:1,:);
-    if retInstruments
-        I = I(:,end:-1:1,:);
+if isBackcast
+    Y = flip(Y,2);
+    E = flip(E,2);
+    if isX
+        X = flip(X,2);
     end
-    P = P(:,:,end:-1:1,:);
+    I = flip(I,2);
+    P = flip(X,3);
 end
 
 % Prepare output data.
-names = This.YNames;
-if retResiduals
-    Y = [Y;E];
-    names = [names,This.ENames];
-end
-if retInstruments
-    Y = [Y;I];
-    names = [names,This.INames];
-end
+names = [This.YNames,This.XNames,This.ENames,This.INames];
+data = [Y;X;E;I];
 
 % Output data for endougenous variables, residuals, and instruments.
 if opt.meanonly
-    Outp = myoutpdata(This,outpFmt,xRange,Y,[],names);
+    Outp = myoutpdata(This,outpFmt,xRange,data,[],names);
     if strcmp(outpFmt,'dbase') && opt.dboverlay
         if ~isfield(Inp,'mean')
             Outp = dboverlay(Inp,Outp);
@@ -266,7 +277,7 @@ if opt.meanonly
         end
     end
 else
-    Outp = myoutpdata(This,outpFmt,xRange,Y,P,names);
+    Outp = myoutpdata(This,outpFmt,xRange,data,P,names);
     if strcmp(outpFmt,'dbase') && opt.dboverlay
         if ~isfield(Inp,'mean')
             Outp.mean = dboverlay(Inp,Outp.mean);

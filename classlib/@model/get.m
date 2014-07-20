@@ -196,12 +196,20 @@ function varargout = get(This,varargin)
 % * `'build'` - Returns [ numeric ] IRIS version number under which the
 % model object has been built.
 %
+% * `'eqtnBlk'` - Returns [ cell ] of cell str with the recursive block
+% structure of steady-state equations (if the block-recursive analysis has
+% already been performed).
+%
 % * `'log'` - Returns [ struct ] a database with `true` for each
 % log-linearised variables, and `false` for each linearised variable.
 %
 % * `'maxLag'` - Returns [ numeric ] the maximum lag in the model.
 %
 % * `'maxLead'` - Returns [ numeric ] the maximum lead in the model.
+%
+% * `'nameBlk'` - Returns [ cell ] of cell str with the recursive block
+% structure of variable names (if the block-recursive analysis has already
+% been performed).
 %
 % * `'stationary'` - Returns [ struct ] a database with `true` for each
 % stationary variables, and `false` for each unit-root (non-stationary)
@@ -293,9 +301,8 @@ function varargout = get(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 P = inputParser();
-P.addRequired('M',@is.model);
 P.addRequired('Query',@iscellstr);
-P.parse(This,varargin);
+P.parse(varargin);
 
 %--------------------------------------------------------------------------
 

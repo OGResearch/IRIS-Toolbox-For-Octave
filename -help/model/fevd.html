@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -128,12 +140,12 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrices <code>X</code> and <code>Y</code> will be either namedmat objects or plain numeric arrays; if the option <code>'select='</code> is used, <code>'output='</code> is always <code>'namedmat'</code>.</p></li>
-<li><p><code>'select='</code> [ char | cellstr ] - Return FEVD for selected variables and/or shocks only; <code>Inf</code> means all variables. This option does not apply to the output databases, <code>A</code> and <code>B</code>.</p></li>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>X</code> and <code>Y</code> as be either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</p></li>
+<li><p><code>'select='</code> [ <code>@all</code> | char | cellstr ] - Return FEVD for selected variables and/or shocks only; <code>@all</code> means all variables and shocks; this option does not apply to the output databases, <code>A</code> and <code>B</code>.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

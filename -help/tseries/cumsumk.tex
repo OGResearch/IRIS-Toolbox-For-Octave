@@ -2,7 +2,7 @@
 
     \filetitle{cumsumk}{Cumulative sum with a k-period leap}{tseries/cumsumk}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Y = cumsumk(X,K,Rho,Range)
@@ -11,7 +11,7 @@ Y = cumsumk(X,K)
 Y = cumsumk(X)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@ Y = cumsumk(X)
   will be computed and the output series returned.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -38,7 +38,7 @@ Y = cumsumk(X)
   below.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -48,7 +48,7 @@ Y = cumsumk(X)
   data back after, running \texttt{x12}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 If \texttt{K \textless{} 0}, the first \texttt{K} observations in the
 output series \texttt{Y} are copied from \texttt{X}, and the new
@@ -70,7 +70,7 @@ going backwards in time.
 
 If \texttt{K == 0}, the input data are returned.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 Construct random data with seasonal pattern, and run X12 to seasonally
 adjust these series.

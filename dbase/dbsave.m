@@ -36,7 +36,7 @@ function Saved = dbsave(D,FName,varargin)
 % * `'decimal='` [ numeric | *empty* ] - Number of decimals up to which the
 % data will be saved; if empty the `'format'` option is used.
 %
-% * `'format='` [ char | *`'%.8e'`* ] Numeric format that will be used to
+% * `'format='` [ char | *`'%.8e'`* ] - Numeric format that will be used to
 % represent the data, see `sprintf` for details on formatting, The format
 % must start with a `'%'`, and must not include identifiers specifying
 % order of processing, i.e. the `'$'` signs, or left-justify flags, the
@@ -155,7 +155,7 @@ pp.parse(D,FName,Dates);
 opt = passvalopt('dbase.dbsave',varargin{:});
 
 % Run Dates/datdefaults to substitute the default (irisget) date format
-% options for 'config'.
+% options for `@config`.
 opt = datdefaults(opt);
 
 % Remove double quotes from the date format string. This is because the
@@ -211,7 +211,7 @@ for i = 1 : numel(List)
     
     name = List{i};
     
-    if is.tseries(D.(name))
+    if istseries(D.(name))
         tmpData = D.(name)(Dates);
         tmpComment = comment(D.(name));
         savedInx(i) = true;
@@ -221,7 +221,7 @@ for i = 1 : numel(List)
         tmpComment = {''};
         savedInx(i) = true;
         tmpClass = class(D.(name));
-    elseif isstruct(D.(name))
+    elseif isa(D.(name),'struct')
         isSubDb(i) = true;
     else
         continue

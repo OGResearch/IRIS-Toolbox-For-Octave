@@ -2,13 +2,13 @@
 
     \filetitle{islinear}{True for models declared as linear}{model/islinear}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Flag = islinear(M)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@ Flag = islinear(M)
   \texttt{m} {[} model {]} - Queried model object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,14 +25,14 @@ Flag = islinear(M)
   if the model has been declared linear.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The value returned dependes on whether the model has been declared as
 linear by the user when constructing the model object by calling the
 \href{model/model}{\texttt{model/model}} function. In other words, no
 check is performed whether or not the model is actually linear.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 m = model('mymodel.file','linear=',true);

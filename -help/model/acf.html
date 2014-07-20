@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -128,11 +140,11 @@ code.LaTeX {
 <li><p><code>'filter='</code> [ char | <em>empty</em> ] - Linear filter that is applied to variables specified by 'applyto'.</p></li>
 <li><p><code>'nFreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the filter in the option <code>'filter='</code> is numerically integrated.</p></li>
 <li><p><code>'order='</code> [ numeric | <em><code>0</code></em> ] - Order up to which ACF will be computed.</p></li>
-<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrices <code>C</code> and <code>R</code> as either namedmat objects (matrices with named rows and columns) or plain numeric arrays; if the option <code>'select='</code> is used, <code>'output='</code> is always a namedmat object.</p></li>
-<li><p><code>'select='</code> [ cellstr | <em><code>Inf</code></em> ] - Return ACF for selected variables only; <code>Inf</code> means all variables.</p></li>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>C</code> and <code>R</code> as either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</p></li>
+<li><p><code>'select='</code> [ <em><code>@all</code></em> | char | cellstr ] - Return ACF for selected variables only; <code>@all</code> means all variables.</p></li>
 </ul>
 <h4 id="description">Description</h4>
-<p><code>C</code> and <code>R</code> are both N-by-N-by-(P+1)-by-Alt matrices, where N is the number of measurement and transition variables (including auxiliary lags and leads in the state space vector), P is the order up to which the ACF is computed (controlled by the option <code>'order='</code>), and Alt is the number of alternative parameterisations in the input model object, <code>M</code>. If <code>'contributions=' true</code>, the size of the two matrices is N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and transition shocks in the model.</p>
+<p><code>C</code> and <code>R</code> are both N-by-N-by-(P+1)-by-NAlt matrices, where N is the number of measurement and transition variables (including auxiliary lags and leads in the state space vector), P is the order up to which the ACF is computed (controlled by the option <code>'order='</code>), and NAlt is the number of alternative parameterisations in the input model object, <code>M</code>. If <code>'contributions=' true</code>, the size of the two matrices is N-by-N-by-(P+1)-by-E-NAlt, where E is the number of measurement and transition shocks in the model.</p>
 <h5 id="acf-with-linear-filters">ACF with linear filters</h5>
 <p>You can use the option <code>'filter='</code> to get the ACF for variables as though they were filtered through a linear filter. You can specify the filter in both the time domain (such as first-difference filter, or Hodrick-Prescott) and the frequncy domain (such as a band of certain frequncies or periodicities). The filter is a text string in which you can use the following references:</p>
 <ul>
@@ -152,5 +164,5 @@ code.LaTeX {
 <pre><code>[C,R] = acf(m,&#39;filter&#39;,&#39;per &gt;= 4 &amp; per &lt;= 40&#39;)</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

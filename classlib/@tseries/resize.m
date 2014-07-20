@@ -38,6 +38,7 @@ pp.addRequired('x',@(x) isa(x,'tseries'));
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Range);
 
+
 %--------------------------------------------------------------------------
 
 if isempty(Range) || isnan(X.start)

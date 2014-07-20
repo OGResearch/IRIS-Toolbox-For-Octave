@@ -1,14 +1,14 @@
 
 
-    \filetitle{plan}{Create new, empty simulation plan object}{plan/plan}
+    \filetitle{plan}{Create new empty simulation plan object}{plan/plan}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 P = plan(M,Range)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,33 +19,33 @@ P = plan(M,Range)
   exactly correspond to the range on which the model will be simulated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{P} {[} plan {]} - New, empty simulation plan.
+  \texttt{P} {[} plan {]} - New empty simulation plan.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 You need to use a simulation plan object to set up the following types
 of more complex simulations or forecats:
 
-\paragraph{simulations or forecasts with some of the model variables
-temporarily
-exogenised;}
-
-\paragraph{simulations with some of the non-linear equations solved
-exactly.}
-
-\paragraph{forecasts conditioned upon some
-variables;}
+\begin{itemize}
+\item
+  simulations or forecasts with some of the model variables temporarily
+  exogenised;
+\item
+  simulations with some of the non-linear equations solved exactly.
+\item
+  forecasts conditioned upon some variables;
+\end{itemize}
 
 The plan object is passed to the \href{model/simulate}{simulate} or
 \href{model/jforecast}{\texttt{jforecast}} functions through the option
 \texttt{'plan='}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -22,7 +22,11 @@ stdcorreq = [false,all(stdcorr(:,2:end) == stdcorr(:,1:end-1),1)];
 
 stdonly = size(stdcorr,1) == ne;
 nstdcorr = size(stdcorr,2);
-pos = tril(ones(ne),-1) == 1;
+if ne > 0
+  pos = tril(ones(ne),-1) == 1;
+else
+  pos = [];
+end
 stdcorr(1:ne,:) = abs(stdcorr(1:ne,:));
 stdvec = stdcorr(1:ne,:);
 

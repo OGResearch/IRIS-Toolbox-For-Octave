@@ -1,4 +1,4 @@
-% gettinghelp  Getting on-line help.
+% gettinghelp  Getting Online Help.
 %
 % Use either `help` or `idoc` to get help on IRIS functions:
 %

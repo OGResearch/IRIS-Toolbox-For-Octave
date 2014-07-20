@@ -39,6 +39,8 @@ end
 
 
 %**************************************************************************
+
+
 function xxDispND(Start,Data,Comment,Pos,Name,Disp2DFUnc,NDim,Config)
 lastDimSize = size(Data,NDim);
 nPer = size(Data,1);
@@ -82,6 +84,8 @@ end % xxDispND()
 
 
 %**************************************************************************
+
+
 function X = xxDisp2d(Start,Data,Tab,Sep,Num2StrFunc)
 dateFormat = 'YFP';
 dateFormatW = '$ (Thu DD-Mmm-YYYY)';
@@ -103,6 +107,8 @@ end % xxDisp2DDefault()
 
 
 %**************************************************************************
+
+
 function C = xxReduceSpaces(C,Max)
 inx = all(C == ' ',1);
 s = char(32*ones(size(inx)));
@@ -113,10 +119,12 @@ end % xxReduceSpaces().
 
 
 %**************************************************************************
+
+
 function C = xxNum2Str(X,Fmt)
-try
-    C = num2str(X,Fmt);
-catch %#ok<CTCH>
+if isempty(Fmt)
     C = num2str(X);
+else
+    C = num2str(X,Fmt);
 end
 end % xxNum2Str()

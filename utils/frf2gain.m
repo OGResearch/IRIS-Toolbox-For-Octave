@@ -28,17 +28,17 @@ function F = frf2gain(F,varargin)
 
 %--------------------------------------------------------------------------
 
-isNamed = isa(F,'namedmat');
+isNamed = isnamedmat(F);
 
 if isNamed
-    row = rownames(F);
-    col = colnames(F);
+    rowNames = rownames(F);
+    colNames = colnames(F);
 end
     
 F = abs(F);
 
 if isNamed
-    F = namedmat(F,row,col);
+    F = namedmat(F,rowNames,colNames);
 end
 
 end

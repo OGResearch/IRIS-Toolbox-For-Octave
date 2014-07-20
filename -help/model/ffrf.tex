@@ -2,13 +2,13 @@
 
     \filetitle{ffrf}{Filter frequency response function of transition variables to measurement variables}{model/ffrf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [F,List] = ffrf(M,Freq,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,19 +19,20 @@
   response function will be computed.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
-  \texttt{F} {[} numeric {]} - Array with frequency responses of
-  transition variables (in rows) to measurement variables (in columns).
+  \texttt{F} {[} namedmat \textbar{} numeric {]} - Array with frequency
+  responses of transition variables (in rows) to measurement variables
+  (in columns).
 \item
   \texttt{List} {[} cell {]} - List of transition variables in rows of
   the \texttt{F} matrix, and list of measurement variables in columns of
   the \texttt{F} matrix.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -46,22 +47,21 @@
   \texttt{'maxIter='} {[} numeric \textbar{} \emph{500} {]} - Maximum
   number of iteration when computing the steady-state Kalman filter.
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrix \texttt{F} will be either a
-  namedmat object or a plain numeric array; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always
-  \texttt{'namedmat'}.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrix \texttt{F} as either a
+  \href{namedmat/Contents}{\texttt{namedmat}} object (i.e.~matrix with
+  named rows and columns) or a plain numeric array.
 \item
-  \texttt{'select='} {[} char \textbar{} cellstr \textbar{}
-  \emph{\texttt{Inf}} {]} - Return the frequency response function for
-  selected variables only; \texttt{Inf} means all variables.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return FFRF for selected variables only; \texttt{@all}
+  means all variables.
 \item
-  \texttt{'tolerance='} {[} numeric \textbar{} \emph{1e-7} {]} -
-  Convergence tolerance when computing the steady-state Kalman filter.
+  \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-7}} {]}
+  - Convergence tolerance when computing the steady-state Kalman filter.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

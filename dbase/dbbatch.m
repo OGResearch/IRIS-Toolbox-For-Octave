@@ -71,6 +71,29 @@ function [D,List0,List,Flag] = dbbatch(D,NewName,Expr,varargin)
 % case, use the dot or colon syntax: `$.0`, `$.1`, `$.2` for ower case, and
 % `$:0`, `$:1`, `$:2` for upper case.
 %
+% Failure
+% --------
+%
+% The function `dbbatch` will *always* fail when called on a sub-database
+% from within a function (as opposed to a script). A sub-database is a
+% struct within a struct, a struct within a cell array, a struct within an
+% array of structs, etc.
+%
+%     function ...
+%         d.e = dbbatch(d.e,...);
+%         ...
+%     end
+%
+%     function ...
+%         d{1} = dbbatch(d{1},...);
+%         ...
+%     end
+%
+%     function ...
+%         d(1) = dbbatch(d(1),...);
+%         ...
+%     end
+%
 % Example
 % ========
 %
@@ -126,35 +149,59 @@ Expr = strrep(Expr,'"','''');
 [List,expr] = xxParse(NewName,Expr,List0,tokens);
 
 Flag = true;
+
+% When called from within a ***function***, the output database is "under
+% construction" and cannot be evaluated from within dbbatch. Try to create
+% a new database in the caller workspace and rename all references to the
+% old database in the expressions. This may fail if the input database is a
+% substruct or an element in cell array (in which case `inputname(1)`
+% returns an empty string).
+%
+% NB: `dbbatch( )` will ***always fail*** when called on a subdatabase, i.e.
+% `dbbatch(d.e,...)` or `dbbatch(d{1},...)` or `dbbatch(d(1),...)`, etc.
+% from within a function.
+
+inpDbName = inputname(1);
+expr2eval = expr;
+if ~isempty(inpDbName)
+    tempDbName = tempname('.');
+    tempDbName(1:2) = '';
+    assignin('caller',tempDbName,D);
+    expr2eval = regexprep(expr2eval,['\<',inpDbName,'\>'],tempDbName);
+end
+
 if opt.fresh
     D = struct();
 end
 
-errorlist = {};
+errList = {};
 for i = 1 : length(List0)
     try
         lastwarn('');
-        value = evalin('caller',expr{i});
+        value = evalin('caller',expr2eval{i});
         D.(List{i}) = value;
         msg = lastwarn();
         if ~isempty(msg)
             disp(' ');
-            utils.warning('dbase:dbbatch',[ ...
-                'The above warning occurred when dbbatch() ', ...
+            utils.warning('dbase:dbbatch', ...
+                ['The above warning occurred when dbbatch( ) ', ...
                 'attempted to evaluate ''%s''.'], ...
                 expr{i});
         end
     catch Error
-        errorlist(end+(1:2)) = {expr{i},Error.message}; %#ok<AGROW>
+        msg = Error.message;
+        msg = regexprep(msg,'^Error:\s*','','once');
+        msg = strtrim(msg);
+        errList(end+(1:2)) = {expr{i},msg}; %#ok<AGROW>
     end
 end
 
-if ~isempty(errorlist)
-    Flag = false;
-    utils.warning('dbase:dbbatch',[ ...
-        '\n*** Error evaluating DBBATCH expression ', ...
-        '''%s''.\n\t Matlab says: %s'], ...
-        errorlist{:});
+if ~isempty(errList)
+    Flag = false;   
+    utils.warning('dbase:dbbatch', ...
+        ['Error evaluating this expression in dbbatch( ): ''%s''.\n', ...
+        '\tUncle says: %s'], ...
+        errList{:});
 end
 
 

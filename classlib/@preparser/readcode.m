@@ -13,7 +13,7 @@ if isempty(Asgn)
 end
 
 if isempty(Export)
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 if isempty(ParentFile)
@@ -44,7 +44,7 @@ for i = 1 : nFileList
     end
 end
 
-fileStr = sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
+fileStr = mosw.sprintf('<a href="matlab:edit %s">%s</a>',fileStr,fileStr);
 if ~isempty(ParentFile)
     fileStr = [ParentFile,' > ',fileStr];
 end
@@ -55,17 +55,8 @@ Code = strfun.converteols(Code);
 
 % Check if there is an initial %% comment line that will be used as comment
 % in model objects.
-%tokens = regexp(Code,'^\s*%%([^\n]+)','tokens','once');
-match = regexp(Code,'(?<=^\s*%%)[^\n]+','match','once');
+match = regexp(Code,'(?<=^%%)[^\n]+','match','once');
 Comment = strtrim(match);
-
-% Characters beyond char(highcharcode) not allowed except comments.
-% Default is 1999.
-charCap = irisget('highcharcode');
-if any(Code > char(charCap))
-    utils.error('preparser:readcode',[ep, ...
-        'The file contains characters beyond char(%g).'],charCap);
-end
 
 % Read quoted strings 'xxx' and "xxx" and replace them with charcodes.
 % The quoted strings must not stretch across mutliple lines.

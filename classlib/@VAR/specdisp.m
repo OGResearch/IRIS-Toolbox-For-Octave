@@ -9,10 +9,16 @@ function specdisp(This)
 
 %--------------------------------------------------------------------------
 
-fprintf('\tinstruments: ');
-if isempty(This.INames)
-    fprintf('empty');
-else
+% Exogenous inputs.
+fprintf('\texogenous: [%g] ',length(This.XNames));
+if ~isempty(This.XNames)
+    fprintf('%s',strfun.displist(This.XNames));
+end
+fprintf('\n');
+
+% Conditioning instruments.
+fprintf('\tinstruments: [%g] ',length(This.INames));
+if ~isempty(This.INames)
     fprintf('%s',strfun.displist(This.INames));
 end
 fprintf('\n');

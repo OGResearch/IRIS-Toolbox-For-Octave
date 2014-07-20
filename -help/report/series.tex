@@ -2,28 +2,30 @@
 
     \filetitle{series}{Add new data to graph or table}{report/series}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 P.series(Cap,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
   \texttt{P} {[} struct {]} - Report object created by the
   \href{report/new}{\texttt{report.new}} function.
 \item
-  \texttt{Cap} {[} char {]} - Caption used as a default legend entry in
-  a graph, or in the leading column in a table.
+  \texttt{Cap} {[} char \textbar{} cellstr \textbar{} \texttt{@auto} {]}
+  - Caption used as a default legend entry in a graph, or in the leading
+  column in a table; \texttt{@auto} means that the first comment from
+  the input tseries object, \texttt{X}, will be used for the title.
 \item
   \texttt{X} {[} tseries {]} - Input data that will be added to the
   current table or graph.
 \end{itemize}
 
 \paragraph{Options for both table series and graph
-series}
+series}\label{options-for-both-table-series-and-graph-series}
 
 \begin{itemize}
 \item
@@ -39,7 +41,7 @@ series}
   when input data is a multivariate tseries object.
 \end{itemize}
 
-\paragraph{Options for table series}
+\paragraph{Options for table series}\label{options-for-table-series}
 
 \begin{itemize}
 \item
@@ -103,15 +105,15 @@ series}
   column of tables.
 \end{itemize}
 
-\paragraph{Options for graph series}
+\paragraph{Options for graph series}\label{options-for-graph-series}
 
 \begin{itemize}
 \item
-  \texttt{'legend='} {[} char \textbar{} cellstr \textbar{} \texttt{NaN}
-  \textbar{} \emph{\texttt{Inf}} {]} - Legend entries used instead of
-  the series caption and marks; Inf means the caption and marks will be
-  used to construct legend entries; NaN means the series will be exluded
-  from legend.
+  \texttt{'legendEntry='} {[} char \textbar{} cellstr \textbar{}
+  \texttt{NaN} \textbar{} \emph{\texttt{@auto}} {]} - Legend entries
+  used instead of the series caption and marks; \texttt{@auto} means the
+  caption and marks will be used to construct legend entries;
+  \texttt{NaN} means the series will be exluded from legend.
 \item
   \texttt{'plotFunc='} {[} \texttt{@area} \textbar{} \texttt{@bar}
   \textbar{} \texttt{@barcon} \textbar{} \emph{\texttt{@plot}}
@@ -127,15 +129,15 @@ series}
   series; see also comments on LHS-RHS plots in Description.
 \end{itemize}
 
-\paragraph{Generic options}
+\paragraph{Generic options}\label{generic-options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\subparagraph{Using the \texttt{'nan='}, \texttt{'inf='},
-\texttt{'pureZero='} and \texttt{'printedZero='}
-options}
+\subparagraph{Using the options \texttt{'nan='}, \texttt{'inf='},
+\texttt{'pureZero='} and
+\texttt{'printedZero='}}\label{using-the-options-nan-inf-purezero-and-printedzero}
 
 When specifying the LaTeX string for these options, bear in mind that
 the table entries are printed in the math model. This means that
@@ -143,8 +145,8 @@ whenever you wish to print a normal text, you need to use an appropriate
 text formatting command allowed within a math mode. Most frequently, it
 would be \texttt{'\textbackslash{}textnormal\{...\}'}.
 
-\subparagraph{Using the \texttt{'plotFunc='}
-option}
+\subparagraph{Using the option
+\texttt{'plotFunc='}}\label{using-the-option-plotfunc}
 
 When you set the option to \texttt{'plotpred'}, the input data
 \texttt{X} (second input argument) must be a multicolumn tseries object
@@ -152,7 +154,7 @@ where the first column is the time series observations, and the second
 and further columns are its Kalman filter predictions as returned by the
 \texttt{filter} function.
 
-\subparagraph{Conditional formatting}
+\subparagraph{Conditional formatting}\label{conditional-formatting}
 
 The conditional format struct (or an array of structs) specified through
 the \texttt{'condFormat='} option must have two fields, \texttt{.test}
@@ -231,7 +233,7 @@ You can combine multiple tests and their correponding formats in one
 structure; they will be all applied to each entry in the specified
 order.
 
-\subparagraph{LHS-RHS plots}
+\subparagraph{LHS-RHS plots}\label{lhs-rhs-plots}
 
 The LHS-RHS report graphs are still an experimental feature.
 
@@ -244,7 +246,7 @@ command, or \texttt{'style='} in the respective
 \href{report/graph}{\texttt{graph}} command.
 
 \paragraph{Example (Conditional format
-structure)}
+structure)}\label{example-conditional-format-structure}
 
 Typeset negative values in italic, and values in periods before 2010Q1
 blue:

@@ -341,17 +341,16 @@ end
 
 % Validate required input arguments.
 pp = inputParser();
-pp.addRequired('M',@is.model);
 pp.addRequired('Data',@(x) isstruct(x) || iscell(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) || isempty(x));
 pp.addRequired('Est',@(x) isstruct(x) || iscell(x));
 pp.addRequired('SysPri',@(x) isempty(x) || isa(x,'systempriors'));
-pp.parse(This,Data,Range,E,SP);
+pp.parse(Data,Range,E,SP);
 
 estOpt = passvalopt('model.estimate',varargin{:});
 
 % Initialise and pre-process sstate and chksstate options.
-estOpt.sstate = mysstateopt(This,'silent',estOpt.sstate);
+[estOpt.sstate,This] = mysstateopt(This,'silent',estOpt.sstate);
 estOpt.chksstate = mychksstateopt(This,'silent',estOpt.chksstate);
 estOpt.solve = mysolveopt(This,'silent',estOpt.solve);
 
@@ -424,7 +423,7 @@ if estOpt.evallik && (nargout >= 5 || likOpt.relative)
     % in the model object, and refresh if needed.
     xRange = Range(1)-1 : Range(end);
     [~,~,V,Delta,PDelta,~,This] ...
-        = mykalmanregoutp(This,regOutp,xRange,likOpt);
+        = mykalmanregoutp(This,regOutp,xRange,likOpt,estOpt);
 end
 
 % Database with point estimates.
@@ -436,11 +435,12 @@ if nargout > 8
     PDelta1 = PDelta;
 end
 
-
 % Nested functions...
 
 
 %**************************************************************************
+    
+    
     function doChkPriors()
         [flag,invalidBound,invalidPrior] = chkpriors(This,E);
         if ~flag
@@ -461,6 +461,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doPopulatePosterObj()
         % Make sure that draws that fail to solve do not cause an error
         % and hence do not interupt the posterior simulator.
@@ -471,21 +473,21 @@ end
                 'posterior simulation object.']);
         end
         
-        Pos.paramList = pri.plist;
-        Pos.minusLogPostFunc = @objfunc;
-        Pos.minusLogPostFuncArgs = {This,Data,pri,estOpt,likOpt};
-        Pos.initLogPost = -objStar;
-        Pos.initParam = pStar;
+        Pos.ParamList = pri.plist;
+        Pos.MinusLogPostFunc = @objfunc;
+        Pos.MinusLogPostFuncArgs = {This,Data,pri,estOpt,likOpt};
+        Pos.InitLogPost = -objStar;
+        Pos.InitParam = pStar;
         try
-            Pos.initProposalCov = PCov;
+            Pos.InitProposalCov = PCov;
         catch Error
             utils.warning('model', ...
                 ['Posterior simulator object cannot be initialised.', ...
                 '\nThe following error occurs:\n\n%s'], ...
                 Error.message);
         end
-        Pos.lowerBounds = pri.pl;
-        Pos.upperBounds = pri.pu;
+        Pos.LowerBounds = pri.pl;
+        Pos.UpperBounds = pri.pu;
     end % doPopulatePosterObj()
 
 

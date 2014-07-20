@@ -2,14 +2,14 @@
 
     \filetitle{select}{Select submatrix by referring to row names and column names}{namedmat/select}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[X,Pos] = select(This,RowSelect,ColSelect)
-[X,Pos] = select(X,Select)
+[XX,Pos] = select(X,RowSelect,ColSelect)
+[XX,Pos] = select(X,Select)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -26,19 +26,19 @@
   that will be applied to both rows and columns.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
-  \texttt{X} {[} namedmat {]} - Submatrix with named rows and columns.
+  \texttt{XX} {[} namedmat {]} - Submatrix with named rows and columns.
 \item
-  \texttt{Pos} {[} cell {]} - \texttt{Pos\{1\}} is the vector of rows
-  included in the submatrix \texttt{X}, \texttt{Pos\{2\}} is the vector
-  of columns included in the submatrix \texttt{X}.
+  \texttt{Pos} {[} cell {]} - \texttt{Pos\{1\}} is av ector of rows
+  included in the submatrix \texttt{XX},
+  \texttt{Pos\{2\} is a vector of columns included in the submatrix}XX`.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

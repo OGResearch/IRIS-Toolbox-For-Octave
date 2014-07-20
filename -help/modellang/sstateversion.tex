@@ -2,13 +2,13 @@
 
     \filetitle{!!}{Steady-state version of an equation}{modellang/sstateversion}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Equation !! SteadyStateEquation;
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 For each transition or measurement equation, you can provide a separate
 steady-state version of it. The steady-state version is used when you
@@ -23,7 +23,7 @@ file extension with the Matlab editor, anything after an exclamation
 point is displayed red making it easier to spot the steady-state
 equations.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 The following steady state version will be, of course, valid only in
 stationary models where we can safely remove lags and leads.
@@ -32,7 +32,7 @@ stationary models where we can safely remove lags and leads.
 Lambda = Lambda{1}*(1+r)*beta !! r = 1/beta - 1;
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 \begin{verbatim}
 log(A) = log(A{-1}) + epsilon_a !! A = 1;

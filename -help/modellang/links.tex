@@ -2,7 +2,7 @@
 
     \filetitle{!links}{Define dynamic links}{modellang/links}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 !links
@@ -11,7 +11,7 @@
 \end{verbatim}
 
 \paragraph{Syntax with equation
-labels}
+labels}\label{syntax-with-equation-labels}
 
 \begin{verbatim}
 !links
@@ -19,7 +19,7 @@ labels}
    'Equation label' VariableName := Expression;
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The dynamic links relate a particular parameter (or steady-state value)
 on the LHS to a function of other parameters or steady-state values on
@@ -43,7 +43,7 @@ The links must not involve parameters occuring in
 estimated using the \texttt{'outoflik='} option of the
 \href{model/estimate}{\texttt{estimate}} function.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 !links

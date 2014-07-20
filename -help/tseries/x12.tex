@@ -3,15 +3,15 @@
     \filetitle{x12}{Access to X13-ARIMA-SEATS seasonal adjustment program}{tseries/x12}
 
 	\paragraph{Syntax with a single type of output
-requested}
+requested}\label{syntax-with-a-single-type-of-output-requested}
 
 \begin{verbatim}
-[Y,OutpFile,ErrFile,Model,X] = x12(X)
+[Y,OutpFile,ErrFile,Model,X] = x12(X,...)
 [Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
 \end{verbatim}
 
 \paragraph{Syntax with mutliple types of output
-requested}
+requested}\label{syntax-with-mutliple-types-of-output-requested}
 
 \begin{verbatim}
 [Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
@@ -20,7 +20,7 @@ requested}
 See the option \texttt{'output='} for the types of output data available
 from X12.
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@ from X12.
   run; if not specified or Inf the entire available range will be used.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -57,7 +57,7 @@ from X12.
   \texttt{'backcast='} are used.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -141,14 +141,20 @@ from X12.
   {]} - Correct for the number of trading days. See help on the
   \texttt{x11regression} specs in the X13-ARIMA-SEATS manual.
 \item
+  \texttt{'tempDir='} {[} char \textbar{} function\_handle \textbar{}
+  \texttt{'.'} {]} - Directory in which X13-ARIMA-SEATS temporary files
+  will be created; if the directory does not exist, it will be created
+  at the beginning and deleted at the end of the execution (unless
+  \texttt{'cleanup=' false}).
+\item
   \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
-  - Convergence tolerance for the X12 estimation procedure. See help on
+  - Convergence tolerance for the X13 estimation procedure. See help on
   the \texttt{estimation} specs in the X13-ARIMA-SEATS manual.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\subparagraph{Output requests}
+\subparagraph{Output requests}\label{output-requests}
 
 The option ``output=' can combine any number of the following requests:
 
@@ -166,7 +172,7 @@ The option ``output=' can combine any number of the following requests:
   by running an estimated ARIMA model.
 \end{itemize}
 
-\subparagraph{Missing observations}
+\subparagraph{Missing observations}\label{missing-observations}
 
 If you keep \texttt{'missing=' false} (this is the default for backward
 compatibility), \texttt{x12} will not run on series with in-sample
@@ -178,7 +184,7 @@ by filling in values predicted by the estimated ARIMA process. You can
 request the series with missing values filled in by including
 \texttt{MV} in the option \texttt{'output='}.
 
-\subparagraph{Spec file}
+\subparagraph{Spec file}\label{spec-file}
 
 The default X13-ARIMA-SEATS spec file is
 \texttt{+thirdparty/x12/default.spc}. You can create your own spec file
@@ -239,7 +245,7 @@ Two of the placeholders, \texttt{'\$series\_data\$} and
 spec file, IRIS throws an error.
 
 \subparagraph{Estimates of ARIMA model
-parameters}
+parameters}\label{estimates-of-arima-model-parameters}
 
 The ARIMA model specification, \texttt{Model}, is a struct with three
 fields:
@@ -258,7 +264,7 @@ fields:
   coefficients (non-seasonal and seasonal).
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 If you wish to run \texttt{x12} on the entire range on which the input
 time series is defined, and do not use any options, you can omit the
@@ -271,7 +277,7 @@ xsa = x12(x,Inf);
 xsa = x12(x,get(x,'range'));
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 If you wish to specify some of the options, you have to enter a date
 range or use \texttt{Inf}:

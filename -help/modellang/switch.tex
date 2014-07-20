@@ -3,7 +3,7 @@
     \filetitle{!switch...!case...!otherwise...!end}{Switch among several cases based on expression}{modellang/switch}
 
 	\paragraph{Syntax with an otherwise
-clause}
+clause}\label{syntax-with-an-otherwise-clause}
 
 \begin{verbatim}
 !switch Expr
@@ -18,7 +18,7 @@ clause}
 \end{verbatim}
 
 \paragraph{Syntax without an otherwise
-clause}
+clause}\label{syntax-without-an-otherwise-clause}
 
 \begin{verbatim}
 !switch Expr
@@ -30,7 +30,7 @@ clause}
 !end
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The \texttt{!switch...!case...!otherwise...!end} command works the same
 way as its counterpart in the Matlab programming language.
@@ -52,7 +52,7 @@ a \texttt{!switch} command without the \texttt{!otherwise} clause, the
 whole command is discarded. The Matlab function \texttt{isequal} is used
 to match the \texttt{!switch} expression with the \texttt{!case} values.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 !switch policy_regime

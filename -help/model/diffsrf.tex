@@ -2,30 +2,30 @@
 
     \filetitle{diffsrf}{Differentiate shock response functions w.r.t. specified parameters}{model/diffsrf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-S = diffsrf(M,RANGE,LIST,...)
-S = diffsrf(M,NPER,LIST,...)
+S = diffsrf(M,Range,PList,...)
+S = diffsrf(M,NPer,PList,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
   \texttt{M} {[} model {]} - Model object whose response functions will
   be simulated and differentiated.
 \item
-  \texttt{RANGE} {[} numeric {]} - Simulation date range with the first
+  \texttt{Range} {[} numeric {]} - Simulation date range with the first
   date being the shock date.
 \item
-  \texttt{NPER} {[} numeric {]} - Number of simulation periods.
+  \texttt{NPer} {[} numeric {]} - Number of simulation periods.
 \item
-  \texttt{LIST} {[} char \textbar{} cellstr {]} - List of parameters
+  \texttt{PList} {[} char \textbar{} cellstr {]} - List of parameters
   w.r.t. which the shock response functions will be differentiated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -34,12 +34,12 @@ S = diffsrf(M,NPER,LIST,...)
   stowed in multivariate time series.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 See \href{model/srf}{\texttt{model/srf}} for options available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -24,28 +24,38 @@ function clicktocopy(ax)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('h',@(x) all(ishghandle(x)) ...
-   && all(strcmp(get(x,'type'),'axes')));
+    pp.addRequired('h',@(x) all(ishghandle(x)) ...
+       && all(strcmp(get(x,'type'),'axes')));
+
 
 %--------------------------------------------------------------------------
 
 set(ax,'buttonDownFcn',@xxCopyAxes);
-h = findobj(ax,'tag','highlight');
+h = findobj(ax(:),'tag','highlight');
 set(h,'buttonDownFcn',@xxCopyAxes);
-h = findobj(ax,'tag','vline');
+h = findobj(ax(:),'tag','vline');
 set(h,'buttonDownFcn',@xxCopyAxes);
 
 end
 
 %**************************************************************************
 function xxCopyAxes(h,varargin)
-   if ~isequal(get(h,'type'),'axes')
+    if ~isequal(get(h,'type'),'axes')
       h = get(h,'parent');
-   end
-   new = copyobj(h,figure());
-   set(new, ...
+    end
+    % Temporary show excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(h,'on');
+    end
+    new = copyobj(h,figure());
+    % Hide back excluded from legend (for Octave's way of excluding)
+    if ~ismatlab
+        grfun.mytrigexcludedfromlegend(h,'off');
+        grfun.mytrigexcludedfromlegend(new,'off');
+    end
+    set(new, ...
       'position',[0.1300,0.1100,0.7750,0.8150], ...
       'units','normalized', ...
       'buttonDownFcn','');
-end
-% xxCopyAxes().
+    end
+    % xxCopyAxes().

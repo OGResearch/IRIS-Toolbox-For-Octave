@@ -2,13 +2,13 @@
 
     \filetitle{sstate}{Compute steady state or balance-growth path of the model}{model/sstate}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 M = sstate(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@ M = sstate(M,...)
   \texttt{M} {[} model {]} - Parameterised model object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,11 +25,11 @@ M = sstate(M,...)
   state assigned.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
-  \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
+  \texttt{'linear='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
   \textbar{} \texttt{false} {]} - Solve for steady state using a linear
   approach, i.e.~based on the first-order solution matrices and the
   vector of constants.
@@ -39,7 +39,7 @@ M = sstate(M,...)
 \end{itemize}
 
 \subparagraph{Options for non-linear
-models}
+models}\label{options-for-non-linear-models}
 
 \begin{itemize}
 \item
@@ -117,7 +117,7 @@ models}
 \end{itemize}
 
 \subparagraph{Options for linear
-models}
+models}\label{options-for-linear-models}
 
 \begin{itemize}
 \item
@@ -128,7 +128,7 @@ models}
   {]} - Solve model before computing steady state.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 Note that for backward compatibility, the option \texttt{'growth='} is
 set to \texttt{false} by default so that either the model is assumed
@@ -138,6 +138,6 @@ for computing both the steady-state levels and steady-state growth rates
 in a balanced-growth model, you need to set the option
 \texttt{'growth=' true}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -39,8 +39,9 @@ function [This,Y0,K0,Y1,G1] = litterman(Rho,Mu,Lmb,varargin)
 pp = inputParser();
 pp.addRequired('Rho',@(x) isnumeric(x) && all(x >= 0 & x <= 1));
 pp.addRequired('Mu',@(x) isnumeric(x) && all(x >= 0));
-pp.addRequired('Lmb',@(x) is.numericscalar(x) && x >= 0);
+pp.addRequired('Lmb',@(x) isnumericscalar(x) && x >= 0);
 pp.parse(Rho,Mu,Lmb);
+
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR', ...
@@ -69,6 +70,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function Y0 = y0(Ny,P,~,~)
         nd = Ny*P;
         muRho = Mu .* Rho;
@@ -80,6 +83,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function K0 = k0(Ny,P,~,Nk)
         nd = Ny*P;
         K0 = zeros(Nk,nd);
@@ -87,6 +92,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function Y1 = y1(Ny,P,~,~)
         sgm = Mu;
         if length(sgm) == 1 && Ny > 1
@@ -103,6 +110,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function G1 = g1(Ny,P,Ng,~)
         nd = Ny*P;
         G1 = zeros(Ng,nd);

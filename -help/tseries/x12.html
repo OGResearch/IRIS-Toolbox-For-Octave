@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -110,7 +122,7 @@ code.LaTeX {
 <div class="headline">Access to X13-ARIMA-SEATS seasonal adjustment program</div>
 
 <h4 id="syntax-with-a-single-type-of-output-requested">Syntax with a single type of output requested</h4>
-<pre><code>[Y,OutpFile,ErrFile,Model,X] = x12(X)
+<pre><code>[Y,OutpFile,ErrFile,Model,X] = x12(X,...)
 [Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)</code></pre>
 <h4 id="syntax-with-mutliple-types-of-output-requested">Syntax with mutliple types of output requested</h4>
 <pre><code>[Y1,Y2,...,OutpFile,ErrFile,Model,X] = x12(X,Range,...)</code></pre>
@@ -145,7 +157,8 @@ code.LaTeX {
 <li><p><code>'saveAs='</code> [ char | <em>empty</em> ] - Name (or a whole path) under which X13-ARIMA-SEATS output files will be saved.</p></li>
 <li><p><code>'specFile='</code> [ char | <em><code>'default'</code></em> ] - Name of the X13-ARIMA-SEATS spec file; if <code>'default'</code> the IRIS default spec file will be used, see description.</p></li>
 <li><p><code>'tdays='</code> [ <code>true</code> | <em><code>false</code></em> ] - Correct for the number of trading days. See help on the <code>x11regression</code> specs in the X13-ARIMA-SEATS manual.</p></li>
-<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance for the X12 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
+<li><p><code>'tempDir='</code> [ char | function_handle | <code>'.'</code> ] - Directory in which X13-ARIMA-SEATS temporary files will be created; if the directory does not exist, it will be created at the beginning and deleted at the end of the execution (unless <code>'cleanup=' false</code>).</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>1e-5</code></em> ] - Convergence tolerance for the X13 estimation procedure. See help on the <code>estimation</code> specs in the X13-ARIMA-SEATS manual.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h5 id="output-requests">Output requests</h5>
@@ -194,5 +207,5 @@ xsa = x12(x,get(x,&#39;range&#39;));</code></pre>
 <pre><code>xsa = x12(x,Inf,&#39;mode=&#39;,&#39;add&#39;);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

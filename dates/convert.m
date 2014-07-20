@@ -40,11 +40,7 @@ function NewDat = convert(Dat,ToFreq,varargin)
 
 % Parse options.
 opt = passvalopt('dates.convert',varargin{:});
-
-config = irisget();
-if isequal(opt.standinmonth,'config')
-   opt.standinmonth = config.standinmonth;
-end
+opt = datdefaults(opt);
 
 %--------------------------------------------------------------------------
 

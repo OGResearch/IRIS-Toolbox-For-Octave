@@ -9,11 +9,11 @@ function [This,NewPos,NewChar] = copytoend(This,Pos)
 
 %--------------------------------------------------------------------------
 
-This.Storage{end+1} = This.Storage{Pos};
+This.Store{end+1} = This.Store{Pos};
 This.Open{end+1} = This.Open{Pos};
 This.Close{end+1} = This.Close{Pos};
 
-NewPos = length(This.Storage);
+NewPos = length(This.Store);
 NewChar = charcode(This);
 
 end

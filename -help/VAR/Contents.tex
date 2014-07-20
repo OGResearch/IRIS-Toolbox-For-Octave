@@ -1,5 +1,5 @@
 
-    \foldertitle{VAR}{Vector autoregressions (VAR) objects and functions}{VAR/Contents}
+    \foldertitle{VAR}{Vector Autoregressions: VAR Objects and Functions}{VAR/Contents}
 
 	VAR objects can be constructed as plain VARs or simple panel VARs (with
 fixed effect), and estimated without or with prior dummy observations
@@ -9,17 +9,17 @@ also the point of departure for identifying structural VARs
 
 VAR methods:
 
-\paragraph{Constructor}
+\paragraph{Constructor}\label{constructor}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \href{VAR/VAR}{\texttt{VAR}} - Create new, empty reduced-form VAR
+  \href{VAR/VAR}{\texttt{VAR}} - Create new empty reduced-form VAR
   object.
 \end{itemize}
 
 \paragraph{Getting information about VAR
-objects}
+objects}\label{getting-information-about-var-objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -46,8 +46,7 @@ objects}
   \href{VAR/isexplosive}{\texttt{isexplosive}} - True if any eigenvalue
   is outside unit circle.
 \item
-  \href{VAR/ispanel}{\texttt{ispanel}} - True for panel VAR based
-  objects.
+  \href{VAR/ispanel}{\texttt{ispanel}} - True for panel VAR objects.
 \item
   \href{VAR/isstationary}{\texttt{isstationary}} - True if all
   eigenvalues are within unit circle.
@@ -73,7 +72,7 @@ objects}
   IRIS object.
 \end{itemize}
 
-\paragraph{Referencing VAR objects}
+\paragraph{Referencing VAR objects}\label{referencing-var-objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -89,7 +88,7 @@ objects}
 \end{itemize}
 
 \paragraph{Simulation, forecasting and
-filtering}
+filtering}\label{simulation-forecasting-and-filtering}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -109,7 +108,7 @@ filtering}
   \href{VAR/simulate}{\texttt{simulate}} - Simulate VAR model.
 \end{itemize}
 
-\paragraph{Manipulating VARs}
+\paragraph{Manipulating VARs}\label{manipulating-vars}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -122,7 +121,8 @@ filtering}
 \item
   \href{VAR/backward}{\texttt{backward}} - Backward VAR process.
 \item
-  \href{VAR/demean}{\texttt{demean}} - Remove constant from VAR object.
+  \href{VAR/demean}{\texttt{demean}} - Remove constant and the effect of
+  exogenous inputs from VAR object.
 \item
   \href{VAR/horzcat}{\texttt{horzcat}} - Combine two compatible VAR
   objects in one object with multiple parameterisations.
@@ -131,7 +131,7 @@ filtering}
   data associated with it.
 \end{itemize}
 
-\paragraph{Stochastic properties}
+\paragraph{Stochastic properties}\label{stochastic-properties}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -149,7 +149,7 @@ filtering}
 \end{itemize}
 
 \paragraph{Estimation, identification, and statistical
-tests}
+tests}\label{estimation-identification-and-statistical-tests}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -171,7 +171,7 @@ tests}
 \end{itemize}
 
 \paragraph{Getting on-line help on VAR
-functions}
+functions}\label{getting-on-line-help-on-var-functions}
 
 \begin{verbatim}
 help VAR

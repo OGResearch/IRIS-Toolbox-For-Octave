@@ -10,6 +10,7 @@ function C = headline(This)
 %--------------------------------------------------------------------------
 
 try
+    isequaln(0,0);
     isequalnFunc = @isequaln;
 catch
     isequalnFunc = @isequalwithequalnans;
@@ -56,9 +57,17 @@ end
 range = range(:).';
 nPer = length(range);
 if isDates
-    currentDates = dat2str(range,'dateFormat=',currentFmt);
+    currentDates = dat2str(range, ...
+        'dateFormat=',currentFmt, ...
+        'freqLetters=',This.options.freqletters, ...
+        'months=',This.options.months, ...
+        'standinMonth=',This.options.standinmonth);
     if ~isnan(yearFmt)
-        yearDates = dat2str(range,'dateFormat=',yearFmt);
+        yearDates = dat2str(range, ...
+            'dateFormat=',yearFmt, ...
+            'freqLetters=',This.options.freqletters, ...
+            'months=',This.options.months, ...
+            'standinMonth=',This.options.standinmonth);
         yearDates = interpret(This,yearDates);
     end
     currentDates = interpret(This,currentDates);

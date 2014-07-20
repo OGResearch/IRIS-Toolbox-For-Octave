@@ -1,33 +1,33 @@
 
 
-    \filetitle{demean}{Remove constant from VAR object}{VAR/demean}
+    \filetitle{demean}{Remove constant and the effect of exogenous inputs from VAR object}{VAR/demean}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 V = demean(V)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{V} {[} VAR {]} - VAR object in which the constant vector will
-  be reset to zero.
+  \texttt{V} {[} VAR {]} - VAR object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{V} {[} VAR {]} - VAR object with the constant vector reset to
-  zero.
+  \texttt{V} {[} VAR {]} - VAR object with the constant vector,
+  \texttt{K}, and the asymptotic assumptions for exogenous inputs,
+  \texttt{X0}, reset to zero.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

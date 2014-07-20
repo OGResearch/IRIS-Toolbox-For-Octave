@@ -2,14 +2,14 @@
 
     \filetitle{estimate}{Estimate model parameters by optimising selected objective function}{model/estimate}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
 [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -28,7 +28,7 @@
   object, \href{systempriors/Contents}{\texttt{systempriors}}.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -60,7 +60,7 @@ The remaining three output arguments, \texttt{V}, \texttt{Delta},
 \href{model/loglik}{\texttt{model/loglik}} output arguments of the same
 names.
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -154,7 +154,7 @@ names.
 \end{itemize}
 
 \paragraph{Options for Particle Swarm
-Optimizer}
+Optimizer}\label{options-for-particle-swarm-optimizer}
 
 The following options can be specified through the main option
 \texttt{'optimset='} when \texttt{'optimiser=pso'}.
@@ -287,7 +287,7 @@ The following options can be specified through the main option
   higher for constrained problems than unconstrained problems.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 In the input parameter database, \texttt{E}, you can provide the
 following four specifications for each parameter:
@@ -310,7 +310,7 @@ them at all. You can leave the prior distribution empty or not specify
 it at all.
 
 \subparagraph{User-supplied optimisation (minimisation)
-routine}
+routine}\label{user-supplied-optimisation-minimisation-routine}
 
 You can supply a function handle to your own minimisation routine
 through the option \texttt{'optimiser='}. This routine will be used
@@ -370,7 +370,7 @@ In that case, the optimiser will be called the following way:
 \end{verbatim}
 
 \subparagraph{User-supplied steady-state
-solver}
+solver}\label{user-supplied-steady-state-solver}
 
 You can supply a function handle to your own steady-state solver (i.e.~a
 function that finds the steady state for given parameters) through the
@@ -407,6 +407,6 @@ The actual function call will have the following form:
 [M,Success] = mysstatesolver(M,1,'a',X)
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -44,6 +44,8 @@ end
 
 
 %**************************************************************************
+
+
 function C = xxBookmarks(B)
 persistent bookmarks %typeset;
 if nargin == 0 && nargout == 0
@@ -71,6 +73,8 @@ end % xxBookmarks()
 
 
 %**************************************************************************
+
+
 function [C,Author,Event] = xxIntroduction(X,Type,Opt)
 C = '';
 br = sprintf('\n');
@@ -163,6 +167,8 @@ end % xxIntroduction()
 
 
 %**************************************************************************
+
+
 function C = xxToc(X,Type,Opt) %#ok<INUSL>
 br = sprintf('\n');
 C = '';
@@ -173,11 +179,12 @@ if isequal(Type,'master')
     C = [C,'\clearpage',br];
 end
 C = [C,'\mytableofcontents',br,br];
-end
-% toc()
+end % toc()
 
 
 %**************************************************************************
+
+
 function C = xxNormalCell(X,Type,Opt) %#ok<INUSD>
 br = sprintf('\n');
 title = strtrim(latex.xml.xpath(X,'steptitle','string'));
@@ -204,11 +211,14 @@ if ~isempty(y)
     inpCode = strfun.removetrails(inpCode);
     [~,n] = xxOriginalCode(inpCode);
     
-    % ##### MOSW:
-    % replace = @xxBookmarks; %#ok<NASGU>
-    % inpCode = regexprep(inpCode,'%\?(\w+)\?','`${replace($1)}`');
-    inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
-        @(C1) ['`',xxBookmarks(C1),'`'],1);
+    if true % ##### MOSW
+        replace = @xxBookmarks; %#ok<NASGU>
+        inpCode = regexprep(inpCode,'%\?(\w+)\?', ...
+            '`${replace($1)}`');
+    else
+        inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
+            'xxBookmarks',1); %#ok<UNRCH>
+    end
     
     C = [C,br, ...
         '\begin{inputcode}',br, ...
@@ -243,6 +253,8 @@ end % xxNormalCell()
 
 
 %**************************************************************************
+
+
 function [Code1,N] = xxOriginalCode(X)
 persistent code;
 try %#ok<TRYNC>
@@ -274,6 +286,8 @@ end % xxOriginalCode()
 
 
 %**************************************************************************
+
+
 function C = xxText(X)
 C = '';
 if isempty(X)
@@ -346,7 +360,7 @@ for i = 1 : n
             % deleted at the end.
             if strcmp(char(this.getAttribute('class')),'equation')
                 alt = char(this.getAttribute('alt'));
-                C = [C,alt]; %#ok<AGROW>
+                C = [C,alt];
             end
         case 'equation'
             % An equation element either contains a latex code directly
@@ -358,18 +372,20 @@ for i = 1 : n
                 c1 = xxText(this);
                 c1 = strtrim(c1);
             end
-            C = [C,c1]; %#ok<AGROW>
+            C = [C,c1];
         otherwise
             c1 = char(this.getTextContent());
             c1 = regexprep(c1,'\s+',' ');
             c1 = xxSpecChar(c1);
-            C = [C,c1]; %#ok<AGROW>
+            C = [C,c1];
     end
 end
 end % xxText()
 
 
 %**************************************************************************
+
+
 function C = xxIdiosyncrasy(C)
 C = strrep(C,'\end{itemize}\begin{itemize}','');
 C = strrep(C,'\end{enumerate}\begin{enumerate}','');
@@ -377,6 +393,8 @@ end % xxIdiosyncrasy()
 
 
 %**************************************************************************
+
+
 function C = xxImg(X)
 % File name in the `src` attribute is a relative path wrt the original
 % directory. We only need to refer to the file name.
@@ -400,6 +418,8 @@ end % xxImg()
 
 
 %**************************************************************************
+
+
 function C = xxSpecChar(C)
 C = strrep(C,'\','\textbackslash ');
 C = strrep(C,'_','\_');
@@ -412,64 +432,3 @@ C = strrep(C,'>','\ensuremath{>}');
 C = strrep(C,'~','\ensuremath{\sim}');
 C = strrep(C,'^','\^{ }');
 end %xxSpecChar()
-
-
-%**************************************************************************
-%{
-function X = xxBookmarkTypeset()
-
-persistent B
-
-if ~isempty(B)
-    X = B;
-    return
-end
-
-B = {};
-for i = 1 : 99
-    B{end+1,1} = sprintf('%g',i);
-end
-for i = 97 : 122
-    B{end+1,1} = char(i);
-end
-
-B = [B;{ ...
-    '$\alpha$'
-    '$\beta$'
-    '$\gamma$'
-    '$\delta$'
-    '$\epsilon$'
-    '$\zeta$'
-    '$\eta$'
-    '$\theta$'
-    '$\iota$'
-    '$\kappa$'
-    '$\lambda$'
-    '$\mu$'
-    '$\nu$'
-    '$\xi$'
-    '$\pi$'
-    '$\varrho$'
-    '$\sigma$'
-    '$\tau$'
-    '$\upsilon$'
-    '$\phi$'
-    '$\chi$'
-    '$\psi$'
-    '$\omega$'
-    '$\Gamma$'
-    '$\Delta$'
-    '$\Theta$'
-    '$\Lambda$'
-    '$\Xi$'
-    '$\Pi$'
-    '$\Sigma$'
-    '$\Upsilon$'
-    '$\Phi$'
-    '$\Psi$'
-    '$\Omega$'
-    }];
-X = B;
-
-end % xxBookmarkTypeset()
-%}

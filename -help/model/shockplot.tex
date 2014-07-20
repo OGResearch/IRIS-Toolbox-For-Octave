@@ -2,13 +2,13 @@
 
     \filetitle{shockplot}{Short-cut for running and plotting plain shock simulation}{model/shockplot}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [S,FF,AA] = shockplot(M,ShockName,SimRange,PlotList,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -25,7 +25,7 @@
   \href{dbase/dbplot}{\texttt{dbase/dbplot}}.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -37,7 +37,7 @@
 \end{itemize}
 
 \paragraph{Options affecting the
-simulation}
+simulation}\label{options-affecting-the-simulation}
 
 \begin{itemize}
 \item
@@ -45,9 +45,9 @@ simulation}
   \texttt{false} {]} - See the option \texttt{'deviation='} in
   \href{model/simulate}{\texttt{model/simulate}}.
 \item
-  \texttt{'dtrends='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - See the option \texttt{'dtrends='} option in
-  \href{model/simulate}{\texttt{model/simulate}}.
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - See the option \texttt{'dtrends='}
+  option in \href{model/simulate}{\texttt{model/simulate}}.
 \item
   \texttt{'shockSize='} {[} \emph{\texttt{'std'}} \textbar{} numeric {]}
   - Size of the shock that will be simulated; \texttt{'std'} means that
@@ -55,12 +55,12 @@ simulation}
 \end{itemize}
 
 \paragraph{Options affecting the
-graphs}
+graphs}\label{options-affecting-the-graphs}
 
 See help on \href{dbase/dbplot}{\texttt{dbase/dbplot}} for other options
 available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The simulated shock always occurs at time \texttt{t=1}. sStarting the
 simulation range, \texttt{SimRange}, before \texttt{t=1} allows you to
@@ -69,6 +69,6 @@ simulate anticipated shocks.
 The graphs automatically include one pre-sample period, i.e.~one period
 prior to the start of the simulation.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

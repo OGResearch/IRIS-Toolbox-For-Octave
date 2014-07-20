@@ -2,7 +2,7 @@
 
     \filetitle{errorbar}{Line plot with error bars}{tseries/errorbar}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [LL,EE,Range] = errorbar(X,B,...)
@@ -13,7 +13,7 @@
 [LL,EE,Range] = errorbar(AA,Range,X,Lo,Hi,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -34,7 +34,7 @@
   \texttt{Hi} {[} tseries {]} - Width of the band above the line.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -45,17 +45,10 @@
   \texttt{Range} {[} numeric {]} - Actually plotted date range.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
-\item
-  \texttt{'dateformat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
-\item
-  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
+\itemsep1pt\parskip0pt\parsep0pt
 \item
   \texttt{'relative='} {[} \emph{\texttt{true}} \textbar{}
   \texttt{false} {]} - If \texttt{true}, the data for the lower and
@@ -66,6 +59,6 @@
   \texttt{X}, and \texttt{Hi} must be higher than \texttt{X}).
 \end{itemize}
 
-See help on built-in \texttt{plot} function for other options available.
+See help on \href{tseries/plot}{\texttt{tseries/plot}}.
 
 

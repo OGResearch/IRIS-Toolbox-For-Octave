@@ -13,9 +13,9 @@ if isequal(NPer,Inf)
     NPer = size(S.e,2);
 end
 
-S.lastexog = utils.findlast([S.yAnchors;S.xAnchors]);
+S.LastExg = utils.findlast([S.YAnch;S.XAnch]);
 
-if S.lastexog == 0
+if S.LastExg == 0
     
     % Plain simulation
     %------------------
@@ -27,16 +27,16 @@ else
     % Simulation with exogenised variables
     %--------------------------------------
     % Position of last anticipated and unanticipated endogenised shock.
-    S.lastendoga = utils.findlast(S.eaanchors);
-    S.lastendogu = utils.findlast(S.euanchors);
+    S.LastEndgA = utils.findlast(S.EaAnch);
+    S.LastEndgU = utils.findlast(S.EuAnch);
     % Exogenised simulation.
     % Plain simulation first.
     [S.y,S.w] = simulate.plainlinear( ...
-        S,S.a0,S.e,S.lastexog,Opt.deviation,S.Y,S.u);
+        S,S.a0,S.e,S.LastExg,Opt.deviation,S.Y,S.u);
     % Compute multiplier matrices in the first round only. No
     % need to re-calculate the matrices in the second and further
     % rounds of non-linear simulations.
-    if S.count == 0
+    if S.Count == 0
         S.M = [ ...
             simulate.multipliers(S,true), ...
             simulate.multipliers(S,false), ...
@@ -44,14 +44,14 @@ else
     end
     
     % Back out add-factors to shocks.
-    S = simulate.exogenise(S);
+    [addEa,addEu] = simulate.exogenise(S);
     if Opt.anticipate
-        S.addeu = 1i*S.addeu;
+        addEu = 1i*addEu;
     else
-        S.addea = 1i*S.addea;
+        addEa = 1i*addEa;
     end
-    S.e(:,1:S.lastendogu) = S.e(:,1:S.lastendogu) + S.addeu;
-    S.e(:,1:S.lastendoga) = S.e(:,1:S.lastendoga) + S.addea;
+    S.e(:,1:S.LastEndgU) = S.e(:,1:S.LastEndgU) + addEu;
+    S.e(:,1:S.LastEndgA) = S.e(:,1:S.LastEndgA) + addEa;
     
     % Re-simulate with shocks added.
     [S.y,S.w] = simulate.plainlinear( ...

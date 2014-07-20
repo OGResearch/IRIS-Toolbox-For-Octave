@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -130,13 +142,13 @@ code.LaTeX {
 <li><p><code>'applyTo='</code> [ cellstr | char | <em><code>Inf</code></em> ] - List of variables to which the option <code>'filter='</code> will be applied; <code>Inf</code> means all variables.</p></li>
 <li><p><code>'filter='</code> [ char | <em>empty</em> ] - Linear filter that is applied to variables specified by 'applyto'.</p></li>
 <li><p><code>'nFreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the 'filter' is numerically integrated.</p></li>
-<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrices <code>S</code> and <code>F</code> will be either namedmat objects or plain numeric arrays; if the option <code>'select='</code> is used, <code>'output='</code> is always a namedmat object.</p></li>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>S</code> and <code>D</code> as either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</p></li>
 <li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar on in the command window.</p></li>
-<li><p><code>'select='</code> [ cellstr | <em><code>Inf</code></em> ] - Return XSF for selected variables only; <code>Inf</code> means all variables.</p></li>
+<li><p><code>'select='</code> [ <em><code>@all</code></em> | char | cellstr ] - Return XSF for selected variables only; <code>@all</code> means all variables.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

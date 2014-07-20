@@ -3,7 +3,7 @@
     \filetitle{!for...!do...!end}{For loop for automated creation of model code}{modellang/for}
 
 	\paragraph{Abbreviated syntax (cannot be
-nested)}
+nested)}\label{abbreviated-syntax-cannot-be-nested}
 
 \begin{verbatim}
 !for
@@ -13,7 +13,7 @@ nested)}
 !end
 \end{verbatim}
 
-\paragraph{Full syntax}
+\paragraph{Full syntax}\label{full-syntax}
 
 \begin{verbatim}
 !for
@@ -23,7 +23,7 @@ nested)}
 !end
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 Use the `!for\ldots{}!do\ldots{}!end' command to specify a template and
 let the IRIS preparser automatically create multiple instances of the
@@ -61,7 +61,7 @@ The expression must evaluate to either a numeric vector, a char vector,
 or a cell array of numerics and/or strings; the value will be then
 converted to a comma-separted list.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 In a model code file, instead of writing a number of definitions of
 growth rates like the following ones
@@ -83,7 +83,7 @@ you can use `!for\ldots{}!do\ldots{}!end' as follows:
 !end
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 We redo the example 1, but using now the fact that you can have as many
 variable declaration sections or equation sections as you wish. The
@@ -126,7 +126,7 @@ The preparser expands this structure as follows:
 Obviously, you now do not include the growth rate variables in the
 section where you declare the rest of the variables.
 
-\paragraph{Example}
+\paragraph{Example}\label{example-2}
 
 In a model code file, instead of writing a number of autoregression
 processes like the following ones
@@ -147,7 +147,7 @@ you can use `!for\ldots{}!do\ldots{}!end' as follows:
 !end
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-3}
 
 We redo Example 3, but now for six variables named `A1', `A2', `B1',
 `B2', `C1', `C2', nesting two `!for\ldots{}!do\ldots{}!end' structures
@@ -177,7 +177,7 @@ C1 = rhoc1*C1{-1} + ec1;
 C2 = rhoc2*C2{-1} + ec2;
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-4}
 
 We use a Matlab expression (the colon operator) to simplify the list of
 tokens. The following block of code

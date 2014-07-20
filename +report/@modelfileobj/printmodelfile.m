@@ -9,21 +9,26 @@ function C = printmodelfile(This)
 
 %--------------------------------------------------------------------------
 
-offset = irisget('highcharcode');
-
 % TODO: Handle comment blocks %{...%} properly.
 C = '';
 if isempty(This.filename)
     return
 end
-isModel = ~isempty(This.modelobj) && isa(This.modelobj,'modelobj');
+isModel = ~isempty(This.modelobj) && isa(This.modelobj,'model');
 if isModel
     pList = get(This.modelobj,'pList');
     eList = get(This.modelobj,'eList');
 end
 br = sprintf('\n');
 
-file = file2char(This.filename,'cellstrl',This.options.lines);
+% Read the text file into a cellstr with EOLs removed.
+file = file2char(This.filename,'cellstr');
+if isequal(This.options.lines,@all)
+    nLine = length(file);
+    This.options.lines = 1 : nLine;
+else
+    file = file(This.options.lines);
+end
 
 % Choose escape character.
 escList = '`@?$#~&":|!^[]{}<>';
@@ -37,10 +42,6 @@ if isempty(esc)
 end
 verbEsc = ['\verb',esc];
 
-nLine = length(file);
-if isinf(This.options.lines)
-    This.options.lines = 1 : nLine;
-end
 nDigit = ceil(log10(max(This.options.lines)));
 
 C = [C,'\definecolor{mylabel}{rgb}{0.55,0,0.35}',br];
@@ -48,8 +49,6 @@ C = [C,'\definecolor{myparam}{rgb}{0.90,0,0}',br];
 C = [C,'\definecolor{mykeyword}{rgb}{0,0,0.75}',br];
 C = [C,'\definecolor{mycomment}{rgb}{0,0.50,0}',br];
 
-file = strrep(file,char(10),'');
-file = strrep(file,char(13),'');
 for i = 1 : nLine
     c = doOneLine(file{i});
     C = [C,c,' \\',br]; %#ok<AGROW>
@@ -57,13 +56,16 @@ end
 
 C = strrep(C,['\verb',esc,esc],'');
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function C = doOneLine(C)
-        
-        
-        [C,lab] = xxProtectLabels(C,offset);
+        labels = fragileobj(C);
+        [C,labels] = protectquotes(C,labels);
         
         lineComment = '';
         pos = strfind(C,'%');
@@ -75,14 +77,16 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            % ##### MOSW:
-            % keywordsFunc = @doKeywords; %#ok<NASGU>
-            % C = regexprep(C, ...
-            %    '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-            %    '${keywordsFunc($0)}');
-            C = mosw.dregexprep(C, ...
-                '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-                @doKeywords,0);
+            if true % ##### MOSW
+                keywordsFunc = @doKeywords; %#ok<NASGU>
+                C = regexprep(C, ...
+                    '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
+                    '${keywordsFunc($0)}');
+            else
+                C = mosw.dregexprep(C, ...
+                    '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
+                    'doKeywords',0); %#ok<UNRCH>
+            end
             % Line comments.
             if ~isempty(lineComment)
                 lineComment = [ ...
@@ -97,14 +101,16 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            % ##### MOSW:
-            % paramValFunc = @doParamVal; %#ok<NASGU>
-            % C = regexprep(C, ...
-            %    '(?<!!)\<\w+\>', ...
-            %    '${paramValFunc($0)}');
-            C = mosw.dregexprep(C, ...
-                '(?<!!)\<\w+\>', ...
-                @doParamVal,0);
+            if true % ##### MOSW
+                paramValFunc = @doParamVal; %#ok<NASGU>
+                C = regexprep(C, ...
+                    '(?<!!)\<\w+\>', ...
+                    '${paramValFunc($0)}');
+            else
+                C = mosw.dregexprep(C, ...
+                    '(?<!!)\<\w+\>', ...
+                    'doParamVal',0); %#ok<UNRCH>
+            end
         end
         
         if This.options.linenumbers
@@ -112,12 +118,15 @@ C = strrep(C,['\verb',esc,esc],'');
                 sprintf('%*g: ',nDigit,This.options.lines(i)), ...
                 C];
         end
-        C = xxLabelsBack(C,lab,offset,esc, ...
-            This.options.syntax,This.options.latexalias);
+        
+        % Put labels back into the model code.
+        labels1 = xxLabelSyntax(labels, ...
+            esc,This.options.syntax,This.options.latexalias);
+        C = restore(C,labels1);
         
         % Put labels back into comments; no syntax colouring or latexing aliases.
-        lineComment = xxLabelsBack(lineComment,lab,offset,esc, ...
-            false,false);
+        labels2 = xxLabelSyntax(labels,esc,false,false);
+        lineComment = restore(lineComment,labels2);
 
         C = [verbEsc,C,lineComment,esc];
         
@@ -153,78 +162,55 @@ C = strrep(C,['\verb',esc,esc],'');
                 prefix,value,'}\right>$}'];
             C = [C,esc,value,verbEsc];
         end
-        
-    end % doSyntax().
+    end % doOneLine()
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function [C,Labels] = xxProtectLabels(C,Offset)
 
-Labels = {};
-while true
-    [tok,start,finish] = regexp(C,'([''"])([^\n]*?)\1', ...
-        'once','tokens','start','end');
-    if isempty(tok)
-        break
-    end
-    Labels{end+1} = C(start:finish); %#ok<AGROW>
-    C = [C(1:start-1),char(Offset+length(Labels)),C(finish+1:end)];
-end
 
-end % xxProtectLabels().
-
-%**************************************************************************
-function C = xxLabelsBack(C,Labels,Offset,Esc,IsSyntax,IsLatexAlias)
+function Labels = xxLabelSyntax(Labels,Esc,IsSyntax,IsLatexAlias)
 
 verbEsc = ['\verb',Esc];
 
-for i = 1 : length(Labels)
-    pos = strfind(C,char(Offset+i));
-    if isempty(pos)
-        continue
-    end
-    split = strfind(Labels{i},'!!');
-    openQuote = Labels{i}(1);
-    closeQuote = Labels{i}(end);
+for i = 1 : length(Labels.Store)
+    text = Labels.Store{i};
+    open = Labels.Open{i};
+    close = Labels.Close{i};
+    split = strfind(text,'!!');
     if ~isempty(split)
         split = split(1);
-        label = Labels{i}(2:split+1);
-        alias = Labels{i}(split+2:end-1);
+        label = text(1:split+1);
+        alias = text(split+2:end);
         if IsLatexAlias
             alias = [Esc,alias,verbEsc]; %#ok<AGROW>
         end
     else
-        label = Labels{i}(2:end-1);
+        label = text;
         alias = '';
     end
     
     if IsSyntax
-        pre = [Esc,'{\color{mylabel}',verbEsc];
-        post = [Esc,'}',verbEsc];
-    else
-        pre = '';
-        post = '';
+        open = [Esc,'{\color{mylabel}',verbEsc,open]; %#ok<AGROW>
+        close = [close,Esc,'}',verbEsc]; %#ok<AGROW>
     end
     
-    C = [ ...
-        C(1:pos-1), ...
-        pre, ...
-        openQuote, ...
-        label,alias, ...
-        closeQuote, ...
-        post, ...
-        C(pos+1:end), ...
-        ];
+    Labels.Store{i} = [label,alias];
+    Labels.Open{i} = open;
+    Labels.Close{i} = close;
 end
 
-end % xxLabelsBack().
+end % xxLabelSyntax()
+
 
 %**************************************************************************
-function Esc = xxChooseEscChar(File,EscList)
 
+
+function Esc = xxChooseEscChar(File,EscList)
 File = [File{:}];
 Esc = '';
 for i = 1 : length(EscList)
@@ -234,4 +220,4 @@ for i = 1 : length(EscList)
     end
 end
 
-end % xxChooseEscChar().
+end % xxChooseEscChar()

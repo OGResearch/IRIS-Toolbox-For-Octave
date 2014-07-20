@@ -1,4 +1,4 @@
-function [X,List,D] = fmse(This,Time,varargin)
+function [X,YXVec,D] = fmse(This,Time,varargin)
 % fmse  Forecast mean square error matrices.
 %
 % Syntax
@@ -20,7 +20,7 @@ function [X,List,D] = fmse(This,Time,varargin)
 % Output arguments
 % =================
 %
-% * `F` [ numeric ] - Forecast MSE matrices.
+% * `F` [ namedmat | numeric ] - Forecast MSE matrices.
 %
 % * `List` [ cellstr ] - List of variables in rows and columns of `M`.
 %
@@ -31,13 +31,12 @@ function [X,List,D] = fmse(This,Time,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `M` will
-% be either a namedmat object or a plain numeric array; if the option
-% `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrix `F` as
+% either a [`namedmat`](namedmat/Contents) object (i.e. matrix with named
+% rows and columns) or a plain numeric array.
 %
-% * `'select='` [ cellstr | *`Inf`* ] - Return FMSE for selected variables
-% only; `Inf` means all variables. The option does not apply to the
-% output database `D`.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return FMSE for selected
+% variables only; `@all` means all variables.
 %
 % Description
 % ============
@@ -51,10 +50,6 @@ function [X,List,D] = fmse(This,Time,varargin)
 
 opt = passvalopt('model.fmse',varargin{:});
 
-if ischar(opt.select)
-    opt.select = regexp(opt.select,'\w+','match');
-end
-
 % tell whether time is nper or range
 if length(Time) == 1 && round(Time) == Time && Time > 0
     range = 1 : Time;
@@ -63,8 +58,8 @@ else
 end
 nPer = length(range);
 
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -88,12 +83,10 @@ end
 
 % Report NaN solutions.
 if ~all(isSol)
-    utils.warning('model', ...
+    utils.warning('model:fmse', ...
         'Solution(s) not available %s.', ...
         preparser.alt2str(~isSol));
 end
-
-List = [This.solutionvector{1:2}];
 
 % Database of std deviations.
 if nargout > 2
@@ -109,14 +102,26 @@ if nargout > 2
     end
 end
 
-% Convert output matrix to namedmat object.
-if isNamedmat
-    X = namedmat(X,List,List);
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
 end
 
-% Select variables.
+YXVec = myvector(This,'yx');
+
+% Select variables if requested.
 if isSelect
-    X = select(X,opt.select);
+    [X,pos] = select(X,YXVec,YXVec,opt.select);
+    pos = pos{1};
+    YXVec = YXVec(pos);
+end
+
+if true % ##### MOSW
+    % Convert output matrix to namedmat object if requested.
+    if isNamedMat
+        X = namedmat(X,YXVec,YXVec);
+    end
+else
+    % Do nothing.
 end
 
 end

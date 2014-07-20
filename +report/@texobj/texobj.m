@@ -21,8 +21,9 @@ classdef texobj < report.userinputobj
                 varargin(1) = [];
             else
                 caller = dbstack('-completenames');
+                caller = caller(4);
                 if length(caller) >= 4
-                    This.userinput = preparser.grabcommentblk(caller(4));
+                    This.userinput = preparser.grabcommentblk(caller);
                 else
                     utils.warning('report:texobj', ...
                         'No block comment to grab for text or LaTeX input.');

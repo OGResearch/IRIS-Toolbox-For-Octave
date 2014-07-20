@@ -1,4 +1,4 @@
-function [AssignPos,StdcorrPos] = mynameposition(This,Input,varargin)
+function [AssignPos,StdcorrPos] = mynameposition(This,Input,Type)
 % mynameposition  [Not a public function] Position of a name in the Assign or stdcorr vector.
 %
 % Backend IRIS function.
@@ -15,10 +15,22 @@ function [AssignPos,StdcorrPos] = mynameposition(This,Input,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+try
+    Type; %#ok<VUNUS>
+catch
+    Type = [];
+end
+
 %--------------------------------------------------------------------------
 
 name = This.name;
-eList = This.name(This.nametype == 3);
+if ~isempty(Type)
+    exclude = setdiff(unique(This.nametype),Type);
+    for i = exclude(:).'
+        name(This.nametype == i) = {''};
+    end
+end
+eList = name(This.nametype == 3);
 
 if iscellstr(Input)
     
@@ -34,13 +46,6 @@ if iscellstr(Input)
         end
         if any(stdcorrIx)
             StdcorrPos(i) = find(stdcorrIx);
-        end
-    end
-    if any(strcmp(varargin,'error'))
-        found = ~isnan(AssignPos) | ~isnan(StdcorrPos);
-        if any(~found)
-            utils.error('model:mynameposition', ...
-                '#Name_not_exists',Input{~found});
         end
     end
     

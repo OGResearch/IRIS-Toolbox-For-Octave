@@ -1,5 +1,5 @@
 function This = loadobj(This)
-% loadobj  [Not a public function] Prepare tmsobj for use in workspace and handle bkw compatibility.
+% loadobj  [Not a public function] Prepare varobj for use in workspace and handle bkw compatibility.
 %
 % Backend IRIS function.
 % No help provided.

@@ -4,10 +4,12 @@ function D = plus(D1,D2)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
+if is.matlab
 pp = inputParser();
 pp.addRequired('D1',@isstruct);
 pp.addRequired('D2',@isstruct);
 pp.parse(D1,D2);
+end
 
 %--------------------------------------------------------------------------
 

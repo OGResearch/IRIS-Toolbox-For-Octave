@@ -29,8 +29,10 @@ function [FF,AA,PDb] = dbplot(D,List,Range,varargin)
 % Options
 % ========
 %
-% * `'plotFunc='` [ @bar | @hist | *@plot* | @plotpred | @stem ] - Plot
-% function used to create the graphs.
+% * `'plotFunc='` [ @bar | @hist | *@plot* | @plotcmp | @plotpred | @stem |
+% cell ] - Plot function used to create the graphs; use a cell array,
+% `{plotFunc,...}` to specify extra input arguments that will be passed
+% into the plotting function.
 %
 % See help on [`qreport/qplot`](qreport/qplot) for other options available.
 %

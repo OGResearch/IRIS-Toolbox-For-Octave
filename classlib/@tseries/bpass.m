@@ -72,10 +72,9 @@ end
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('x',@is.tseries);
-pp.addRequired('band',@(x) isnumeric(x) && length(x) == 2);
-pp.addRequired('range',@isnumeric);
-pp.parse(X,Band,Range);
+pp.addRequired('Band',@(x) isnumeric(x) && length(x) == 2);
+pp.addRequired('Range',@isnumeric);
+pp.parse(Band,Range);
 
 % Parse options.
 [opt,varargin] = passvalopt('tseries.bpass',varargin{:});

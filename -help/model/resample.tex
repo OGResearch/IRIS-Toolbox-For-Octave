@@ -2,14 +2,14 @@
 
     \filetitle{resample}{Resample from the model implied distribution}{model/resample}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Outp = resample(M,Inp,Range,NDraw,...)
 Oupt = resample(M,Inp,Range,NDraw,J,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -28,7 +28,7 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   means of shocks.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -36,7 +36,7 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   \texttt{Outp} {[} struct {]} - Output database with resampled data.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -44,9 +44,9 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   \emph{\texttt{false}} {]} - Treat input and output data as deviations
   from balanced-growth path.
 \item
-  \texttt{'dtrends='} {[} \emph{\texttt{'auto'}} \textbar{}
-  \texttt{true} \textbar{} \texttt{false} {]} - Add deterministic trends
-  to measurement variables.
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Add deterministic trends to
+  measurement variables.
 \item
   \texttt{'method='} {[} \texttt{'bootstrap'} \textbar{}
   \emph{\texttt{'montecarlo'}} {]} - Method of randomising shocks and
@@ -77,13 +77,13 @@ Oupt = resample(M,Inp,Range,NDraw,J,...)
   \texttt{'method=' 'bootstrap'}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 When you use wild bootstrap for resampling the initial condition, the
 results are based on an assumption that the mean of the initial
 condition is the asymptotic mean implied by the model (i.e.~the steady
 state).
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -114,7 +114,7 @@ end
 %--------------------------------------------------------------------------
 
 Stat = struct();
-nPar = length(This.paramList);
+nPar = length(This.ParamList);
 
 if isFile
     inpFile = Theta;
@@ -139,7 +139,7 @@ elseif opt.esttime
 end
 
 for i = 1 : nPar
-    name = This.paramList{i};
+    name = This.ParamList{i};
     
     if isFile
         iTheta = getThetaFunc(i);
@@ -184,11 +184,11 @@ for i = 1 : nPar
         Stat.prctile.(name) = prctile(iTheta,opt.prctile,2);
     end
     if opt.bounds
-        Stat.bounds.(name) = [This.lowerBounds(i),This.upperBounds(i)];
+        Stat.bounds.(name) = [This.LowerBounds(i),This.UpperBounds(i)];
     end
     if ~isequal(opt.ksdensity,false)
-        low = This.lowerBounds(i);
-        high = This.upperBounds(i);
+        low = This.LowerBounds(i);
+        high = This.UpperBounds(i);
         [x,y] = poster.myksdensity(iTheta,low,high,opt.ksdensity);
         Stat.ksdensity.(name) = [x,y];
     end
@@ -323,7 +323,7 @@ end
             % Parameter list.
             paramList = h5readatt(inpFile,'/','paramList');
             paramList = regexp(paramList,'\w+','match');
-            valid = valid && isequal(paramList,This.paramList);
+            valid = valid && isequal(paramList,This.ParamList);
             % Number of draws.
             nDraw = h5readatt(inpFile,'/','nDraw');
             % Save every.

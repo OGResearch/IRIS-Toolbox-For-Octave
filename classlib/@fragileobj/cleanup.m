@@ -10,12 +10,12 @@ function C = cleanup(C,This)
 
 %--------------------------------------------------------------------------
 
-if isnan(This.Offset) || isempty(This.Storage)
+if isnan(This.Offset) || isempty(This.Store)
     return
 end
 
 for i = 1 : length(This)
-    ptn = [char(2),dec2char(This,i),char(3)];
+    ptn = [This.OpenChar,dec2char(This,i),This.CloseChar];
     C = strrep(C,ptn,'');
 end
 

@@ -8,34 +8,8 @@ function [Y,Rng,YNames,InpFmt,varargin] = myinpdata(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
-
-if ispanel(This) && isstruct(varargin{1})
-
-    % Database for panel VAR
-    %------------------------
-    InpFmt = 'panel';
-    d = varargin{1};
-    varargin(1) = [];
-    Rng = varargin{1};
-    varargin(1) = [];
-    YNames = This.YNames;
-    if any(isinf(Rng(:)))
-        utils.error('varobj', ...
-            'Cannot use Inf for input range in panel estimation.');
-    end
-    usrRng = Rng;
-    nGrp = length(This.GroupNames);
-    Y = cell(1,nGrp);
-    % Check if all group names are contained withing the input database.
-    doChkGroupNames();
-    for iGrp = 1 : nGrp        
-        name = This.GroupNames{iGrp};        
-        iY = db2array(d.(name),YNames,Rng);
-        iY = permute(iY,[2,1,3]);
-        Y{iGrp} = iY;
-    end
     
-elseif isstruct(varargin{1})
+if isstruct(varargin{1})
     
     % Database for plain VAR
     %------------------------
@@ -43,43 +17,32 @@ elseif isstruct(varargin{1})
     d = varargin{1};
     varargin(1) = [];
     
-    isObsolete = false;
     if iscellstr(varargin{1}) || ischar(varargin{1})
         % ##### Nov 2013 OBSOLETE and scheduled for removal.
-        isObsolete = true;
         YNames = varargin{1};
         if ischar(YNames)
             YNames = regexp(YNames,'\w+','match');
         end
         varargin(1) = [];
-    else
-        YNames = This.YNames;
-    end
-    
-    if isObsolete
+        
         if ~isempty(This.YNames)
             utils.error('varobj:myinpdata', ...
                 'Variable names already specified in the %s object.', ...
                 class(This));
         else
-            utils.warning('obsolete', ...
-                ['This syntax for specifying variable names is obsolete ', ...
-                'and will be removed from a future version of IRIS. ', ...
-                'Specify variable names at the time of creating ', ...
-                '%s objects instead.'], ...
-                class(This));
             This.YNames = YNames;
             This = myenames(This,[]);
         end
     end
+    YNames = This.YNames;
     
     Rng = varargin{1};
     varargin(1) = [];
     usrRng = Rng;
-    [Y,~,Rng] = db2array(d,YNames,Rng);
+    [Y,~,Rng] = db2array(d,This.YNames,Rng);
     Y = permute(Y,[2,1,3]);
     
-elseif is.tseries(varargin{1})
+elseif istseries(varargin{1})
     
     % Time series for plain VAR
     %---------------------------
@@ -103,7 +66,7 @@ else
     
     % Invalid
     %---------
-    utils.error('varobj','Invalid format of input data.');
+    utils.error('varobj:myinpdata','Invalid format of input data.');
 
 end
 
@@ -114,22 +77,5 @@ if isequal(usrRng,Inf)
     Y = Y(:,first:last,:);
     Rng = Rng(first:last);
 end
-
-% Nested function.
-
-%**************************************************************************
-    function doChkGroupNames()
-        found = true(1,nGrp);
-        for iiGrp = 1 : nGrp
-            if ~isfield(d,This.GroupNames{iiGrp})
-                found(iiGrp) = false;
-            end
-        end
-        if any(~found)
-            utils.error('VAR', ...
-                'This group is not contained in the input database: ''%s''.', ...
-                This.GroupNames{~found});
-        end
-    end % doChkGroupNames().
 
 end

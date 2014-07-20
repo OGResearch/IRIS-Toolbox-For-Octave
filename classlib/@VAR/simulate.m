@@ -25,7 +25,8 @@ function Outp = simulate(This,Inp,Range,varargin)
 % ========
 %
 % * `'contributions='` [ `true` | *`false`* ] - Decompose the simulated
-% paths into contributions of individual residuals.
+% paths into the contributions of individual residuals, initial condition,
+% the constant, and exogenous inputs; see Description.
 %
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from unconditional mean.
@@ -44,6 +45,19 @@ function Outp = simulate(This,Inp,Range,varargin)
 % representation using the function [`backward`](VAR/backward), and then
 % the data are simulated from the latest date to the earliest date.
 %
+% Simulation of contributions
+% ----------------------------
+%
+% With the option `'contributions=' true`, the output database contains
+% Ne+2 columns for each variable, where Ne is the number of residuals. The
+% first Ne columns are the contributions of the individual shocks, the
+% (Ne+1)-th column is the contribution of initial condition and the
+% constant, and the last, (Ne+2)-th columns is the contribution of
+% exogenous inputs.
+%
+% Contribution simulations can be only run on VAR objects with one
+% parameterization.
+%
 % Example
 % ========
 %
@@ -53,10 +67,9 @@ function Outp = simulate(This,Inp,Range,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.parse(This,Inp,Range);
+pp.parse(Inp,Range);
 
 % Panel VAR.
 if ispanel(This)
@@ -72,6 +85,8 @@ opt = passvalopt('VAR.simulate',varargin{1:end});
 ny = size(This.A,1);
 pp = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+nx = length(This.XNames);
+isX = nx > 0;
 
 if isempty(Range)
     return
@@ -85,18 +100,32 @@ else
     Range = Range(1)-pp : Range(end);
 end
 
-[outpFmt,Range,x,e] = mydatarequest(This,Inp,Range,opt);
+% Include pre-sample.
+req = datarequest('y*,x*,e',This,Inp,Range,opt);
+xRange = req.Range;
+y = req.Y;
+x = req.X;
+e = req.E;
 e(isnan(e)) = 0;
 
+if ~isequal(req.Format,'dbase')
+    utils.error('VAR:simulate', ...
+        ['Only database (struct) is now a valid input data format in ', ...
+        'VAR/simulate(...).']);
+end
+
 if isBackcast
-    x = x(:,end:-1:1,:,:);
-    e = e(:,end:-1:1,:,:);
+    y = flip(y,2);
+    e = flip(e,2);
+    x = flip(x,2);
 end
 
 e(:,1:pp,:) = NaN;
-nPer = length(Range);
-nData = size(x,3);
-nLoop = max(nAlt,nData);
+nXPer = length(xRange);
+nDataY = size(y,3);
+nDataX = size(x,3);
+nDataE = size(e,3);
+nLoop = max([nAlt,nDataY,nDataX,nDataE]);
 
 if opt.contributions
     if nLoop > 1
@@ -104,70 +133,102 @@ if opt.contributions
         utils.error('model','#Cannot_simulate_contributions');
     else
         % Simulation of contributions.
-        nLoop = ny + 1;
+        nLoop = ny + 2;
     end
 end
 
-if nData < nLoop
-    expand = ones(1,nLoop-nData);
-    x = cat(3,x,x(:,:,end*expand));
-    e = cat(3,e,e(:,:,end*expand));
+% Expand Y, E, X data in 3rd dimension to match nLoop.
+if nDataY < nLoop
+    y = cat(3,y,y(:,:,end*ones(1,nLoop-nDataY)));
 end
+if nDataE < nLoop
+    e = cat(3,e,e(:,:,end*ones(1,nLoop-nDataE)));
+end
+if isX && nDataX < nLoop
+    x = cat(3,x,x(:,:,end*ones(1,nLoop-nDataX)));
+elseif ~isX
+    x = zeros(nx,nXPer,nLoop);
+end
+
+if opt.contributions
+    y(:,:,[1:end-2,end]) = 0;
+    x(:,:,1:end-1) = 0;
+end
+
+if ~opt.contributions
+    Outp = hdataobj(This,xRange,nLoop);
+else
+    Outp = hdataobj(This,xRange,nLoop,'Contributions=',@shock);
+end
+
+% Main loop
+%-----------
 
 for iLoop = 1 : nLoop
     if iLoop <= nAlt
-        [iA,iB,iK] = mysystem(This,iLoop);
+        [iA,iB,iK,iJ] = mysystem(This,iLoop);
     end
+
     isConst = ~opt.deviation;
     if opt.contributions
         if iLoop <= ny
+            % Contributions of shocks.
             inx = true(1,ny);
             inx(iLoop) = false;
             e(inx,:,iLoop) = 0;
-            x(:,1:pp,iLoop) = 0;
             isConst = false;
-        else
+        elseif iLoop == ny+1
+            % Contributions of init and const.
             e(:,:,iLoop) = 0;
+            isConst = true;
+        elseif iLoop == ny+2
+            % Contributions of exogenous inputs.
+            e(:,:,iLoop) = 0;
+            isConst = false;
         end
     end
+    
+    iE = e(:,:,iLoop);
     if isempty(iB)
-        iBe = e(:,:,iLoop);
+        iBe = iE;
     else
-        iBe = iB*e(:,:,iLoop);
+        iBe = iB*iE;
     end
-    iX = x(:,:,iLoop);
-    for t = pp + 1 : nPer
-        iXLags = iX(:,t-(1:pp));
-        iX(:,t) = iA*iXLags(:) + iBe(:,t);
-        if isConst
-            iX(:,t) = iX(:,t) + iK;
+    
+    iY = y(:,:,iLoop);
+    iX = [];
+    if isX
+        iX = x(:,:,iLoop);
+    end
+
+    % Collect deterministic terms (constant, exogenous inputs).
+    iKJ = zeros(ny,nXPer);
+    if isConst
+        iKJ = iKJ + iK(:,ones(1,nXPer));
+    end
+    if isX
+        iKJ = iKJ + iJ*iX;
+    end
+    
+    for t = pp + 1 : nXPer
+        iXLags = iY(:,t-(1:pp));
+        iY(:,t) = iA*iXLags(:) + iKJ(:,t) + iBe(:,t);
+    end
+    
+    if isBackcast
+        iY = flip(iY,2);
+        iE = flip(iE,2);
+        if isX
+            iX = flip(iX,2);
         end
     end
-    x(:,:,iLoop) = iX;
+
+    % Assign current results.
+    hdataassign(Outp,iLoop, { iY,iX,iE,[] } );
+    
 end
 
-if isBackcast
-    x = x(:,end:-1:1,:,:);
-    e = e(:,end:-1:1,:,:);
-end
-
-names = This.YNames;
-if opt.returnresiduals
-    names = [names,This.ENames];
-else
-    e = [];
-end
-
-% Output data.
-Outp = myoutpdata(This,outpFmt,Range,[x;e],[],names);
-
-% Contributions comments.
-if opt.contributions && strcmp(outpFmt,'dbase')
-    contList = [This.ENames,{'Init+Const'}];
-    for i = 1 : length(names)
-        c = utils.concomment(names{i},contList);
-        Outp.(names{i}) = comment(Outp.(names{i}),c);
-    end
-end
+% Create output database.
+Outp = hdata2tseries(Outp);
 
 end

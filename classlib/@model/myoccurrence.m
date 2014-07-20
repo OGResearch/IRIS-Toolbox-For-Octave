@@ -14,7 +14,7 @@ if isequal(EqtnList,Inf)
     EqtnList = 1 : length(This.eqtn);
 end
 
-tZero = This.tzero;
+t0 = find(This.Shift == 0);
 nEqtn = length(This.eqtn);
 nName = length(This.name);
 nt = size(This.occur,2)/nName;
@@ -23,19 +23,19 @@ offsetG = sum(This.nametype < 5);
 % Steady-state equations
 %------------------------
 
-if ~This.linear
+if ~This.IsLinear
     nameCurr = cell(size(This.eqtn));
     
     % Look for x(10).
     nameCurr(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'\<x\((\d+)\)','tokens');
+        regexp(This.EqtnS(EqtnList),'\<x\((\d+)\)','tokens');
     
     % Loog for g(10).
     nameExog(EqtnList) = ...
-        regexp(This.eqtnS(EqtnList),'\<g\((\d+)\)','tokens');
+        regexp(This.EqtnS(EqtnList),'\<g\((\d+)\)','tokens');
     
     for iEq = EqtnList
-        if isempty(This.eqtnS{iEq}) ...
+        if isempty(This.EqtnS{iEq}) ...
                 || (isempty(nameCurr{iEq}) && isempty(nameExog{iEq}))
             continue
         end
@@ -84,7 +84,7 @@ for iEq = EqtnList
         sub = sprintf('%s,',iNameTime{:});
         sub = sscanf(sub,'%g,');
         nameSub = sub(1:2:end);
-        timeSub = tZero + sub(2:2:end);
+        timeSub = t0 + sub(2:2:end);
         ind = sub2ind([nEqtn,nName,nt], ...
             iEq*ones(size(nameSub)),nameSub,timeSub);
         This.occur(ind) = true;
@@ -94,7 +94,7 @@ for iEq = EqtnList
     if ~isempty(iNameCurr)
         nameSub = sprintf('%s,',iNameCurr{:});
         nameSub = sscanf(nameSub,'%g,');
-        timeSub = tZero*ones(size(nameSub));
+        timeSub = t0*ones(size(nameSub));
         ind = sub2ind([nEqtn,nName,nt], ...
             iEq*ones(size(nameSub)),nameSub,timeSub);
         This.occur(ind) = true;
@@ -105,7 +105,7 @@ for iEq = EqtnList
         nameSub = sprintf('%s,',iNameExog{:});
         nameSub = sscanf(nameSub,'%g,');
         nameSub = nameSub + offsetG;
-        timeSub = tZero*ones(size(nameSub));
+        timeSub = t0*ones(size(nameSub));
         ind = sub2ind([nEqtn,nName,nt], ...
             iEq*ones(size(nameSub)),nameSub,timeSub);
         This.occur(ind) = true;

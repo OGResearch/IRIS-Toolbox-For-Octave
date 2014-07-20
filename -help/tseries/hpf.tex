@@ -2,7 +2,7 @@
 
     \filetitle{hpf}{Hodrick-Prescott filter with tunes (aka LRX filter)}{tseries/hpf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [T,C,CutOff,Lambda] = hpf(X)
@@ -10,14 +10,14 @@
 \end{verbatim}
 
 \paragraph{Syntax with output arguments
-swapped}
+swapped}\label{syntax-with-output-arguments-swapped}
 
 \begin{verbatim}
 [C,T,CutOff,Lambda] = hpf2(X)
 [C,T,CutOff,Lambda] = hpf2(X,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@ swapped}
   series) is used.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -49,7 +49,7 @@ swapped}
   used instead of \texttt{'lambda='}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -76,9 +76,9 @@ one-sided filter, \texttt{2} runs a two-sided filter.
 
 \begin{itemize}
 \item
-  \texttt{'lambda='} {[} numeric \textbar{}
-  \emph{\texttt{100 freq\^{}2}} {]} - Smoothing parameter; needs to be
-  specified for tseries objects with indeterminate frequency.
+  \texttt{'lambda='} {[} numeric \textbar{} \emph{\texttt{@auto}} {]} -
+  Smoothing parameter; needs to be specified for tseries objects with
+  indeterminate frequency. See Description for default values.
 \item
   \texttt{'level='} {[} tseries {]} - Time series with hard tunes and
   soft tunes on the level of the trend.
@@ -90,10 +90,10 @@ one-sided filter, \texttt{2} runs a two-sided filter.
   - Logarithmise the data before filtering, de-logarithmise afterwards.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 \subparagraph{The underlying optimisation
-problem}
+problem}\label{the-underlying-optimisation-problem}
 
 The function \texttt{hpf} solves a constrained optimisation problem
 described by the following Lagrangian
@@ -155,7 +155,7 @@ in which the respective bracketed terms are defined (observations or
 tunes exist). You can combine any number of any tunes in one run of
 \texttt{hpf}, including out-of-sample tunes (see below).
 
-\subparagraph{How to enter the tunes}
+\subparagraph{How to enter the tunes}\label{how-to-enter-the-tunes}
 
 \begin{itemize}
 \item
@@ -181,7 +181,7 @@ tunes exist). You can combine any number of any tunes in one run of
   part becomes zero and the tune becomes a hard tune.
 \end{itemize}
 
-\subparagraph{Out-of-sample tunes}
+\subparagraph{Out-of-sample tunes}\label{out-of-sample-tunes}
 
 Tunes can be imposed also at dates before the first observation of the
 input series, or after the last observation. In other words, the time
@@ -189,14 +189,15 @@ series in \texttt{'level='} and/or \texttt{'growth='} can have a more
 extended Range (at either side) than the filtered input series.
 
 \subparagraph{Default smoothing
-parameters}
+parameters}\label{default-smoothing-parameters}
 
 If the user does not specify the smoothing parameter using the
-\texttt{'lambda='} option, a default value is used. The default value is
-based on common practice and can be calculated using the date frequency
-of the input time series as $\lambda = 100 \cdot f^2$, where $f$ is the
-frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6,
-monthly=12). This gives the following default values:
+\texttt{'lambda='} option (or reassigns the default \texttt{@auto}), a
+default value is used. The default value is based on common practice and
+can be calculated using the date frequency of the input time series as
+$\lambda = 100 \cdot f^2$, where $f$ is the frequency (yearly=1,
+half-yearly=2, quarterly=4, bi-monthly=6, monthly=12). This gives the
+following default values:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -216,6 +217,6 @@ Note that there is no default value for data with indeterminate or daily
 frequency: for these types of time series, you must always use the
 option ``lambda=''.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

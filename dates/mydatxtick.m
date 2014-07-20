@@ -58,6 +58,8 @@ doXLimAdjust();
 
 
 %**************************************************************************
+
+    
     function doXLim()
         if isequal(UserRange,Inf)
             if Freq == 0
@@ -86,8 +88,14 @@ doXLimAdjust();
 
 
 %**************************************************************************
+    
+    
     function doXTick()
         if isequal(Opt.datetick,Inf)
+            utils.error('dates:mydatxtick', ...
+                ['Inf is an obsolete value for the option ''dateTick=''. ', ...
+                'Use @auto instead.']);
+        elseif isequal(Opt.datetick,@auto)
             % Determine step and xTick.
             % Step is number of periods.
             % If multiple axes handles are passed in (e.g. plotyy) use just
@@ -126,28 +134,35 @@ doXLimAdjust();
 
 
 %**************************************************************************
+   
+    
     function doXTickZero()
         % Make sure the xTick step is not smaller than 1.
-        if isinf(Opt.datetick)
-            if any(diff(xTick) < 1)
-                xTick = xTick(1) : xTick(end);
-                set(H, ...
-                    'xTick',xTick', ...
-                    'xTickMode','manual');
-            end
+        if isequal(Opt.datetick,Inf)
+            utils.error('dates:mydatxtick', ...
+                ['Inf is an obsolete value for the option ''dateTick=''. ', ...
+                'Use @auto instead.']);
+        elseif isequal(Opt.datetick,@auto)
+            % Do nothing.
         else
             xTick = Opt.datetick;
-            set(H,...
-                'xTick',xTick,...
-                'xTickMode','manual');
         end
+        if any(diff(xTick) < 1)
+            xTick = xTick(1) : xTick(end);
+        end
+        set(H, ...
+            'xTick',xTick', ...
+            'xTickMode','manual');
         if strncmp(Opt.dateformat,'$',1)
+            xTickDates = xTick;
             doSetXTickLabel();
         end
     end % doXTickZero()
 
 
 %**************************************************************************
+   
+    
     function doSetXTickLabel()
         set(H, ...
             'xTick',xTick, ...
@@ -181,6 +196,8 @@ doXLimAdjust();
 
 
 %**************************************************************************
+  
+    
     function doXLimAdjust()
         % Expand x-limits for bar graphs, or make sure they are kept wide if a bar
         % graph is added a non-bar plot.

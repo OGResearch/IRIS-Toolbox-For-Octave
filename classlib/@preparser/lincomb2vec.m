@@ -1,4 +1,4 @@
-function [Z,C] = lincomb2vec(S,List)
+function [Z,C,IsValid] = lincomb2vec(S,List)
 % lincomb2vec  [Not a public function] Convert a string with a linear combination of variables to a coefficient vector.
 %
 % Backend IRIS function.
@@ -19,23 +19,31 @@ nList = length(List);
 
 List = regexptranslate('escape',List);
 for i = 1 : nList
-    S = regexprep(S,['\<',List{i},'\>'],sprintf('x(%g)',i));
+    S = regexprep(S,[List{i},'(?!\{)'],sprintf('x(%g)',i));
 end
 
 Z = zeros(ns,nList);
 C = zeros(ns,1);
+IsValid = true(1,ns);
 for i = 1 : ns
-    [Z(i,:),C(i)] = xxLinComb2Vec(S{i},nList);
+    try
+        [Z(i,:),C(i)] = xxLinComb2Vec(S{i},nList);
+    catch
+        IsValid(i) = false;
+    end
 end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function [Z,C] = xxLinComb2Vec(S,nlist)
 
-f = str2func(['@(x)',S]);
+
+function [Z,C] = xxLinComb2Vec(S,nlist)
+f = mosw.str2func(['@(x)',S]);
 x = zeros(1,nlist);
 try
     C = f(x);
@@ -49,5 +57,4 @@ for i = 1 : nlist
     x(i) = 1;
     Z(i) = f(x) - C;
 end
-
-end % xxLinComb2Vec().
+end % xxLinComb2Vec()

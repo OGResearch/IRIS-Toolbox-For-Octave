@@ -10,7 +10,7 @@ function S = myprepsimulate(This,S,IAlt)
 % The input struct `S` must include the followin fields:
 %
 % * `.isnonlin` - true if a non-linear simulate is requested;
-% * `.tplusk` - farthest expansion needed;
+% * `.TPlusK` - farthest expansion needed;
 %
 % The output struct `S` returns the following new fields:
 %
@@ -32,13 +32,14 @@ function S = myprepsimulate(This,S,IAlt)
 %--------------------------------------------------------------------------
 
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 
 % Loop-dependet fields
 %----------------------
 
 % Current values of parameters and steady states.
 S.Assign = This.Assign(1,:,IAlt);
+S.IxLog = This.IxLog;
 
 % Solution matrices.
 S.T = This.solution{1}(:,:,IAlt);
@@ -51,8 +52,24 @@ S.U = This.solution{7}(:,:,IAlt);
 
 % Effect of non-linear add-factors.
 S.Y = []; 
-if S.isNonlin
-    S.Y = This.solution{8}(:,:,IAlt);
+S.XBar = [];
+if S.IsNonlin
+    S.Y = This.solution{8}(:,:,IAlt);    
+    if S.IsDeviation && S.IsAddSstate
+        % Get steady state lines that will be added to simulated paths to evaluate
+        % non-linear equations.
+        isDelog = false;
+        s.XBar = mytrendarray(This,IAlt, ...
+            isDelog,This.solutionid{2},0:S.NPerNonlin);
+    end
+    nPerMax = S.NPer + S.NPerNonlin - 1;
+    minT = This.Shift(1);
+    maxT = This.Shift(end);
+    isDelog = true;
+    id = 1 : length(This.name);
+    tVec = (1+minT) : (nPerMax+maxT);
+    S.L = mytrendarray(This,IAlt,isDelog,id,tVec);
+    S.MinT = minT;
 end
 
 % Solution expansion matrices.
@@ -62,24 +79,24 @@ for ii = 1 : numel(S.Expand)
 end
 
 % Expand solution forward up to t+k if needed.
-if S.tplusk > 0
-    if S.isNonlin && (ne > 0 || nn > 0)
+if S.TPlusK > 0
+    if S.IsNonlin && (ne > 0 || nn > 0)
         % Expand solution forward to t+k for both shocks and non-linear
         % add-factors.
-        [S.R,S.Y] = model.myexpand(S.R,S.Y,S.tplusk,S.Expand{1:6});
+        [S.R,S.Y] = model.myexpand(S.R,S.Y,S.TPlusK,S.Expand{1:6});
     elseif ne > 0
         % Expand solution forward to t+k for shocks only.
-        S.R = model.myexpand(S.R,[],S.tplusk,S.Expand{1:5},[]);
+        S.R = model.myexpand(S.R,[],S.TPlusK,S.Expand{1:5},[]);
     end
 end
 
-if ~S.isNonlin
+if ~S.IsNonlin
     return
 end
 
 % Loop-independent fields added for non-linear simulations only
 %---------------------------------------------------------------
-S.nonlin = This.nonlin;
+S.IxNonlin = This.IxNonlin;
 S.eqtn = This.eqtn;
 S.eqtnN = This.eqtnN;
 S.nametype = This.nametype;

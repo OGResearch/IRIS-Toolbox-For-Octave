@@ -83,6 +83,7 @@ pp.addRequired('d',@(x) isstruct(x) || isa(x,'tseries'));
 pp.addRequired('range',@isnumeric);
 pp.parse(This,Inp,Range);
 
+
 % Parse options.
 opt = passvalopt('FAVAR.filter',varargin{:});
 
@@ -93,7 +94,11 @@ p = size(This.A,2)/nx;
 Range = Range(1) : Range(end);
 
 % Retrieve and standardise input data.
-[outpFormat,Range,y] = mydatarequest(This,Inp,Range,opt);
+req = datarequest('y*',This,Inp,Range,opt);
+outpFormat = req.Format;
+Range = req.Range;
+y = req.Y;
+
 [This,y] = standardise(This,y);
 nPer = size(y,2);
 

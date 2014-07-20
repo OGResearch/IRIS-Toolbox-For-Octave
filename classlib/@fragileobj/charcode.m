@@ -9,6 +9,6 @@ function C = charcode(This)
 
 %--------------------------------------------------------------------------
 
-C = [char(2),dec2char(This,length(This)),char(3)];
+C = [This.OpenChar,dec2char(This,length(This)),This.CloseChar];
 
 end

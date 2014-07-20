@@ -28,29 +28,20 @@ if nPOut > 0
     x(1,PInx,:) = 0;
 end
 
-occur = This.occur(This.eqtntype == 3,(This.tzero-1)*nName+(1:nName));
-eqtn = This.eqtnF(This.eqtntype == 3);
-dEqtn = This.deqtnF(This.eqtntype == 3);
+t0 = find(This.Shift == 0);
+occur = This.occur(This.eqtntype == 3,(t0-1)*nName+(1:nName));
+eqtnF = This.eqtnF(This.eqtntype == 3);
+dEqtnF = This.DEqtnF(This.eqtntype == 3);
 
 for i = 1 : ny
     % Evaluate the deterministic trends with out-of-lik parameters zero.
-    D(i,:) = eqtn{i}(x,1,TTrend,G);
+    D(i,:) = eqtnF{i}(x,1,TTrend,G);
     if isX && ~isempty(PInx)
         parametersInThisDTrend = find(occur(i,:));
         for j = 1 : nPOut
             inx = parametersInThisDTrend == PInx(j);
             if any(inx)
-                % Evaluate derivatives of dtrends equation w.r.t.
-                % out-of-likelihood parameters. size of d is nocc-by-nper.
-                if isempty(dEqtn{i}) || isempty(dEqtn{i}{inx})  ...
-                        || ~isa(dEqtn{i}{inx},'function_handle')
-                    utils.error('model', ....
-                        ['This model object has been loaded from a disk file ', ...
-                        'created in an older version of IRIS, and is not ', ...
-                        'compatible. You must re-create the model object from ', ...
-                        'from the original model file.']);
-                end
-                X(i,j,:) = dEqtn{i}{inx}(x,1,TTrend,G);
+                X(i,j,:) = dEqtnF{i}{inx}(x,1,TTrend,G);
             end
         end
     end

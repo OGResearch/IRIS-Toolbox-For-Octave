@@ -2,13 +2,13 @@
 
     \filetitle{filter}{Kalman smoother and estimator of out-of-likelihood parameters}{model/filter}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [M,Outp,V,Delta,PE,SCov] = filter(M,Inp,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@
   \texttt{Range} {[} numeric {]} - Filter date range.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -47,7 +47,7 @@
   variables.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -69,7 +69,7 @@
   \emph{\texttt{false}} {]} - Treat input and output data as deviations
   from balanced-growth path.
 \item
-  \texttt{'dtrends='} {[} \emph{`auto'} \textbar{} \texttt{true}
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
   \textbar{} \texttt{false} {]} - Measurement data contain deterministic
   trends.
 \item
@@ -137,7 +137,7 @@
 \end{itemize}
 
 \paragraph{Options for models with non-linearised
-equations}
+equations}\label{options-for-models-with-non-linearised-equations}
 
 \begin{itemize}
 \item
@@ -152,14 +152,14 @@ equations}
   \texttt{0}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The \texttt{'ahead='} and \texttt{'rollback='} options cannot be
 combined with one another, or with multiple data sets, or with multiple
 parameterisations.
 
 \subparagraph{Initial conditions in time
-domain}
+domain}\label{initial-conditions-in-time-domain}
 
 By default (with \texttt{'initCond=' 'stochastic'}), the Kalman filter
 starts from the model-implied asymptotic distribution. You can change
@@ -188,7 +188,7 @@ following four different values:
 
 \subparagraph{Contributions of measurement variables to the estimates of
 all
-variables}
+variables}\label{contributions-of-measurement-variables-to-the-estimates-of-all-variables}
 
 Use the option \texttt{'returnCont=' true} to request the decomposition
 of measurement variables, transition variables, and shocks into the
@@ -205,6 +205,6 @@ difference between the actual path for a particular variable and the sum
 of the contributions (or their product in the case of log-varibles) is
 due to the effect of constant terms and deterministic trends.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

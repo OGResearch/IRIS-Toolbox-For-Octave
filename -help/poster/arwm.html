@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -110,7 +122,8 @@ code.LaTeX {
 <div class="headline">Adaptive random-walk Metropolis posterior simulator</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)</code></pre>
+<pre><code>[Theta,LogPost,ArVec,PosUpd] = arwm(Pos,NDraw,...)
+[Theta,LogPost,ArVec,PosUpd,SgmVec,FinalCov] = arwm(Pos,NDraw,...)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>Pos</code> [ poster ] - Initialised posterior simulator object.</p></li>
@@ -120,8 +133,9 @@ code.LaTeX {
 <ul>
 <li><p><code>Theta</code> [ numeric ] - MCMC chain with individual parameters in rows.</p></li>
 <li><p><code>LogPost</code> [ numeric ] - Vector of log posterior density (up to a constant) in each draw.</p></li>
-<li><p><code>AccRat</code> [ numeric ] - Vector of cumulative acceptance ratios.</p></li>
-<li><p><code>Scale</code> [ numeric ] - Vector of proposal scale factors in each draw.</p></li>
+<li><p><code>ArVec</code> [ numeric ] - Vector of cumulative acceptance ratios.</p></li>
+<li><p><code>PosUpd</code> [ poster ] - Posterior simulator object with its properties updated so to capture the final state of the simulation.</p></li>
+<li><p><code>SgmVec</code> [ numeric ] - Vector of proposal scale factors in each draw.</p></li>
 <li><p><code>FinalCov</code> [ numeric ] - Final proposal covariance matrix; the final covariance matrix of the random walk step is Scale(end)^2*FinalCov.</p></li>
 </ul>
 <h4 id="options">Options</h4>
@@ -142,16 +156,17 @@ code.LaTeX {
 </ul>
 <h4 id="description">Description</h4>
 <p>The function <code>poster/arwm</code> returns the simulated chain of parameters and the corresponding value of the log posterior density. To obtain simulated sample statistics for each parameter (such as posterior mean, median, percentiles, etc.) use the function <a href="../poster/stats.html"><code>poster/stats</code></a> to process the simulated chain and calculate the statistics.</p>
+<p>The properties of the posterior object returned as the 4th output argument are updated so that they capture the final state of the posterior simulations. This can be used to initialize a next simulation at the point where the previous ended.</p>
 <h5 id="parallelised-arwm">Parallelised ARWM</h5>
 <p>Set <code>'nStep='</code> greater than <code>1</code>, and <code>'firstPrefetch='</code> smaller than <code>NDraw</code> to start a pre-fetching parallelised algorithm (pre-fetched will be all draws starting from <code>'firstPrefetch='</code>); to that end, a pool of parallel workers (using e.g. <code>matlabpool</code> from the Parallel Computing Toolbox) must be opened before calling <code>arwm</code>.</p>
 <p>With pre-fetching, all possible paths <code>'nStep='</code> steps ahead (i.e. all possible combinations of reject/accept) are pre-evaluated in parallel, and then the resulting path is selected. Adapation then occurs only every <code>'nStep='</code> steps, and hence the results will always somewhat differ from a serial run. Identical results can be obtained by turning down adaptation before pre-fetching starts, i.e. by setting <code>'lastAdapt='</code> smaller than <code>'firstPrefetch='</code> (and, obviously, by re-setting the random number generator).</p>
 <h4 id="references">References</h4>
-<ol style="list-style-type: decimal">
+<ul>
 <li><p>Brockwell, A.E., 2005. &quot;Parallel Markov Chain Monte Carlo Simulation by Pre-Fetching,&quot; CMU Statistics Dept. Tech. Report 802.</p></li>
 <li><p>Strid, I., 2009. &quot;Efficient parallelisation of Metropolis-Hastings algorithms using a prefetching approach,&quot; SSE/EFI Working Paper Series in Economics and Finance No. 706.</p></li>
-</ol>
+</ul>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

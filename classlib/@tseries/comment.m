@@ -4,19 +4,19 @@ function This = comment(This,varargin)
 % Syntax for getting user comments
 % =================================
 %
-%     C = comment(X)
+%     Cmt = comment(X)
 %
 % Syntax for assigning user comments
 % ===================================
 %
-%     X = comment(X,C)
+%     X = comment(X,Cmt)
 %
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Tseries object.
 %
-% * `C` [ char | cellstr ] - Comment or comments that will be assigned to
+% * `Cmt` [ char | cellstr ] - Comment or comments that will be assigned to
 % each column in the input tseries object.
 %
 % Output arguments
@@ -24,7 +24,7 @@ function This = comment(This,varargin)
 %
 % * `X` [ tseries ] - Tseries object with new comments.
 %
-% * `C` [ cellstr ] - Comments from the tseries object.
+% * `Cmt` [ cellstr ] - Comments from the tseries object.
 %
 % Description
 % ============
@@ -32,11 +32,11 @@ function This = comment(This,varargin)
 % Multivariate tseries have comments for each of the columns. When
 % assigning comments (using the syntax with two input arguments) you can
 % either pass in a char (text string) or a cellstr (a cell array of
-% strings). If `C` is a char, then this same comment will be assigned to
-% all of the tseries columns. If `C` is a cellstr, its size in the 2nd and
-% higher dimensions must match the size of the tseries data; the individual
-% strings from `C` will be then copied to the comments belonging to the
-% individual tseries columns.
+% strings). If `Cmt` is a char, then this same comment will be assigned to
+% all of the tseries columns. If `Cmt` is a cellstr, its size in the 2nd
+% and higher dimensions must match the size of the tseries data; the
+% individual strings from `Cmt` will be then copied to the comments
+% belonging to the individual tseries columns.
 %
 % Example
 % ========
@@ -72,9 +72,8 @@ function This = comment(This,varargin)
 
 if ~isempty(varargin)
     pp = inputParser();
-    pp.addRequired('x',@is.tseries);
-    pp.addRequired('comment',@(x) ischar(x) || iscellstr(x));
-    pp.parse(This,varargin{1});
+    pp.addRequired('Cmt',@(x) ischar(x) || iscellstr(x));
+    pp.parse(varargin{1});
 end
 
 %--------------------------------------------------------------------------
@@ -94,7 +93,7 @@ else
         if length(s1) == length(s2) && all(s1 == s2)
             This.Comment = varargin{1};
         else
-            utils.error('tseries', ...
+            utils.error('tseries:comment', ...
                 'Incorrect size of comments attempted to be assigned.');
         end
     end

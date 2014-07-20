@@ -25,7 +25,7 @@ C = [C,xxPrintNames(This,'!transition_shocks',pos(tshocks),false)];
 pos = find(This.nametype == 4);
 C = [C,xxPrintNames(This,'!parameters',pos)];
 
-pos = find(This.log);
+pos = find(This.IxLog);
 C = [C,xxPrintNames(This,'!log_variables',pos,false)];
 
 pos = find(This.eqtntype == 1);
@@ -36,11 +36,14 @@ C = [C,xxPrintEqtns(This,'!transition_equations',pos)];
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function C = xxPrintNames(This,Heading,Pos,IsValue)
-    
 try
     IsValue; %#ok<VUNUS>
 catch %#ok<CTCH>
@@ -69,29 +72,26 @@ for i = Pos
     end
     C = [C,br]; %#ok<AGROW>
 end
+end % xxPrintNames()
 
-end % xxPrintNames().
 
 %**************************************************************************
-function C = xxPrintEqtns(This,Heading,Pos)
 
+
+function C = xxPrintEqtns(This,Heading,Pos)
 if isempty(Pos)
     C = '';
     return
 end
-
 br = sprintf('\n');
 tab = sprintf('\t');
-
 C = [br,Heading,br];
-
 for i = Pos
     eqtn = This.eqtn{i};
     eqtn = strrep(eqtn,'=',' = ');
     eqtn = strrep(eqtn,'= #',' =# ');
     eqtn = strrep(eqtn,'!!',[' ...',br,tab,tab,'!! ']);
     C = [C,tab,eqtn]; %#ok<AGROW>
-    C = [C,br,br];
+    C = [C,br,br]; %#ok<AGROW>
 end
-
-end % xxPrintEqtns().
+end % xxPrintEqtns()

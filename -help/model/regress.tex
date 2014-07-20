@@ -2,13 +2,13 @@
 
     \filetitle{regress}{Centred population regression for selected model variables}{model/regress}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [B,CovRes,R2] = regress(M,Lhs,Rhs,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -25,7 +25,7 @@
   in the state-space vector.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -39,17 +39,18 @@
   (R-squared).
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrices will be either namedmat
-  objects or plain numeric arrays.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{B} and \texttt{CovRes}
+  as either \href{namedmat/Contents}{\texttt{namedmat}} object
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 Population regressions calculated by this function are always centred.
 This means the regressions are always calculated as if estimated on
@@ -57,11 +58,11 @@ observations with their uncondional means (the steady-state levels)
 removed from them.
 
 The Lhs and Rhs variables that are log-variables must include
-\texttt{log(...)} explicitly in their names. For instance, if \texttt{X}
+\texttt{log( )} explicitly in their names. For instance, if \texttt{X}
 is declared to be a log variable, then you must refer to \texttt{log(X)}
 or \texttt{log(X\{-1\})}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 [B,C] = regress('log(R)',{'log(R{-1})','log(dP)'});

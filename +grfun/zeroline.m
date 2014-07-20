@@ -34,18 +34,18 @@ function [Ln,Cp] = zeroline(varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~isempty(varargin) && ~ischar(varargin{1})
+%--------------------------------------------------------------------------
+
+if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
     varargin(1) = [];
 else
     Ax = gca();
 end
 
-%--------------------------------------------------------------------------
+[Ln,Cp] = grfun.myinfline(Ax,'h',0,varargin{:});
 
-[Ln,Cp] = grfun.hline(Ax,0,'excludeFromLegend=',true,varargin{:});
-
-% Tag the hline for `qstyle`.
+% Tag the line for `qstyle`.
 set(Ln,'tag','zeroline');
 
 end

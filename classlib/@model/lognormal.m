@@ -53,24 +53,22 @@ function D = lognormal(This,D,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('this',@is.model);
-pp.addRequired('data', ...
+pp.addRequired('D', ...
     @(x) isstruct(x) && isfield(x,'mean') && isfield(x,'std'));
-pp.parse(This,D);
+pp.parse(D);
 
 Opt = passvalopt('model.lognormal',varargin{:});
 
-%**************************************************************************
+%--------------------------------------------------------------------------
 
 preexist = fieldnames(D);
-logList = This.name(This.log);
 field = @(x) sprintf('%s%s%',Opt.prefix,x);
 
 doInitStruct();
 template = tseries();
 
-for i = 1 : length(logList)
-    name = logList{i};
+for namePos = find(This.IxLog)
+    name = This.name(namePos);
     doPopulate();
 end
 
@@ -78,9 +76,13 @@ if ~Opt.fresh
     D = rmfield(D,preexist);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doInitStruct()
         if Opt.median
             D.(field('median')) = struct();
@@ -100,9 +102,12 @@ end
             Opt.prctile(Opt.prctile <= 0 | Opt.prctile >= 100) = [];
             D.(field('pct')) = struct();
         end
-    end
+    end % doInitStruct()
+
 
 %**************************************************************************
+
+    
     function doPopulate()
         [expmu,range] = rangedata(D.mean.(name),Inf);
         if isempty(range)
@@ -137,34 +142,51 @@ end
             co = repmat(co,1,length(Opt.prctile));
             D.(field('pct')).(name) = replace(template,x,start,co);
         end
-    end
+    end % doPopulate()
+
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function X = xxMedian(ExpMu,~,~)
 X = ExpMu;
-end % xxMedian().
+end % xxMedian()
+
 
 %**************************************************************************
+
+
 function X = xxMode(ExpMu,~,Sgm2)
 X = ExpMu ./ exp(Sgm2);
-end % xxMode().
+end % xxMode()
+
 
 %**************************************************************************
+
+
 function X = xxMean(ExpMu,~,Sgm2)
 X = ExpMu .* exp(0.5*Sgm2);
-end % xxMean().
+end % xxMean()
+
 
 %**************************************************************************
+
+
 function X = xxStd(ExpMu,Sgm,Sgm2)
 X = xxmean(ExpMu,Sgm,Sgm2) .* sqrt(exp(Sgm2)-1);
-end % xxStd().
+end % xxStd()
+
 
 %**************************************************************************
+
+
 function X = xxPrctile(ExpMu,Sgm,~,P)
 A = -sqrt(2).*erfcinv(2*P);
 X = exp(Sgm.*A) .* ExpMu;
-end % doPrctile().
+end % doPrctile()

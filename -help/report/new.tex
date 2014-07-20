@@ -1,26 +1,26 @@
 
 
-    \filetitle{new}{Create new, empty report object}{report/new}
+    \filetitle{new}{Create new empty report object}{report/new}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-P = report.new(Caption,...)
+P = report.new(Cap,...)
 \end{verbatim}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
   \texttt{P} {[} struct {]} - Report object with function handles
   through wich the individual report elements can be created.
 \item
-  \texttt{Caption} {[} char {]} - Report caption; the caption will also
-  be printed on the title page of the report if published with the
-  option \texttt{'makeTitle='} \texttt{true}.
+  \texttt{Cap} {[} char {]} - Report caption; the caption will also be
+  printed on the title page of the report if published with the option
+  \texttt{'makeTitle='} \texttt{true}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item

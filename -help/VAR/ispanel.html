@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -107,22 +119,21 @@ code.LaTeX {
 
 
 <h2 id="VAR/ispanel">ispanel</h2>
-<div class="headline">True for panel VAR based objects</div>
+<div class="headline">True for panel VAR objects</div>
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>Flag = ispanel(X)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><code>X</code> [ VAR | SVAR | FAVAR ] - VAR based object.</li>
+<li><code>X</code> [ VAR | SVAR ] - VAR object.</li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>Flag</code> [ <code>true</code> | <code>false</code> ] - True if the VAR based object, <code>X</code>, is based on a panel of data.</li>
+<li><code>Flag</code> [ <code>true</code> | <code>false</code> ] - True if the VAR object, <code>X</code>, is based on a panel of data.</li>
 </ul>
 <h4 id="description">Description</h4>
-<p>Plain, i.e. non-panel, VAR based objects are created by calling the constructor with one input argument: the list of variables. Panel VAR based objects are created by calling the constructor with two input arguments: the list of variables, and the names of groups of data.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

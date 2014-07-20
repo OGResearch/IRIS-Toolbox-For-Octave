@@ -26,6 +26,7 @@
 % ===============================
 %
 % * [`irisget`](config/irisget) - Query current IRIS config options.
+% * [`irisman`](config/irisman) - Open IRIS Reference Manual PDF.
 % * [`irisroot`](config/irisroot) - Current IRIS root folder.
 % * [`irisrequired`](config/irisrequired) - Throw error if the installed version of IRIS fails to comply with the required minimum.
 % * [`irisversion`](config/irisversion) - Current IRIS version.

@@ -45,19 +45,7 @@ function [Dat,IsCalendar] = str2dat(String,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('dates.str2dat',varargin{:});
-
-% If the following options are empty numerics, the default setting from
-% irisconfig is used.
-config = irisget();
-if isequal(opt.dateformat,'config')
-    opt.dateformat = config.dateformat;
-end
-if isequal(opt.freqletters,'config')
-    opt.freqletters = config.freqletters;
-end
-if isequal(opt.months,'config')
-    opt.months = config.months;
-end
+opt = datdefaults(opt);
 
 %--------------------------------------------------------------------------
 
@@ -69,7 +57,6 @@ shortMonthList = regexp(opt.months,'\w{1,3}','match','once');
 shortMonthList = sprintf('%s|',shortMonthList{:});
 shortMonthList(end) = '';
 romanList = 'xii|xi|x|ix|viii|vii|vi|v|iv|iii|ii|i|iv|v|x';
-offset = config.highcharcode;
 
 if ischar(String)
     String = {String};
@@ -82,16 +69,16 @@ end
 
 ptn = doPattern();
 tkn = regexpi(String,ptn,'names','once');
-[year,per,day,freq] = xxParseDates(tkn,IsCalendar,opt);
+[year,per,day,month,freq] = xxParseDates(tkn,IsCalendar,opt);
 
 if IsCalendar
     ixDaily = freq == 365;
     ixWeekly = freq == 52;
     if any(ixDaily)
-        Dat(ixDaily) = dd(year(ixDaily),per(ixDaily),day(ixDaily));
+        Dat(ixDaily) = dd(year(ixDaily),month(ixDaily),day(ixDaily));
     end
     if any(ixWeekly)
-        Dat(ixWeekly) = ww(year(ixWeekly),per(ixWeekly),day(ixWeekly));
+        Dat(ixWeekly) = ww(year(ixWeekly),month(ixWeekly),day(ixWeekly));
     end
 else
     Dat = datcode(freq,year,per);
@@ -112,9 +99,11 @@ end
 
 
 %**************************************************************************
+
+    
     function x = doPattern()
         x = upper(opt.dateformat);
-        x = regexprep(x,'[\.\+\{\}\(\)]','\\$0');
+        x = regexptranslate('escape',x);
         x = regexprep(x,'(?<!%)\*','.*?');
         x = regexprep(x,'(?<!%)\?','.');
         subs = { ...
@@ -123,7 +112,6 @@ end
             '(?<!%)Y','(?<longyear>\\d{0,4})'; ... One to four digits of year
             '(?<!%)PP','(?<longperiod>\\d{2})'; ... Two-digit period
             '(?<!%)P','(?<shortperiod>\\d*)'; ... Any number of digits of period
-            '(?<!%)F',sprintf('(?<freqletter>[%s])',opt.freqletters); ... Frequency letter
             '(?<!%)MMMM',['(?<month>',longMonthList,')']; ... Full name of months
             '(?<!%)MMM',['(?<month>',shortMonthList,')']; ... Three-letter name of month
             '(?<!%)MM','(?<numericmonth>\\d{2})'; ... Two-digit month
@@ -133,18 +121,19 @@ end
             '(?<!%)I','(?<indeterminate>\\d+)'; ... Any number of digits for indeterminate frequency
             '(?<!%)DD','(?<longday>\\d{2})'; ... Two-digit day
             '(?<!%)D','(?<varday>\\d{1,2})'; ... One- or two-digit day
+            ... Frequency letters must be done last because they can include characters that would be substituted for.
+            '(?<!%)F',sprintf('(?<freqletter>[%s])',opt.freqletters); ... Frequency letter
             };
         for ii = 1 : size(subs,1)
-            x = regexprep(x,subs{ii,1},char(offset+ii));
-        end
-        for ii = 1 : size(subs,1)
-            x = regexprep(x,char(offset+ii),subs{ii,2});
+            x = regexprep(x,subs{ii,1},subs{ii,2});
         end
         x = regexprep(x,'%([YFPMQRID])','$1');
     end % doPattern()
 
 
 %**************************************************************************
+    
+    
     function doDateFormat()
         
         if isequal(opt.freq,'daily')
@@ -193,7 +182,9 @@ end
 
 
 %**************************************************************************
-function [Year,Per,Day,Freq] = xxParseDates(Tokens,IsCalendar,Opt)
+
+
+function [Year,Per,Day,Month,Freq] = xxParseDates(Tokens,IsCalendar,Opt)
 [thisYear,~] = datevec(now());
 thisCentury = 100*floor(thisYear/100);
 freqVec = [1,2,4,6,12,52];
@@ -209,6 +200,7 @@ Day = nan(size(Tokens));
 % Set period to 1 by default so that e.g. YPF is correctly matched with
 % 2000Y.
 Per = ones(size(Tokens));
+Month = nan(size(Tokens));
 Year = nan(size(Tokens));
 for i = 1 : length(Tokens)
     
@@ -264,21 +256,20 @@ for i = 1 : length(Tokens)
         Per(i) = xxRoman2Num(Tokens{i}.romanperiod);
     end
     
-    month = NaN;
     try
-        month = xxRoman2Num(Tokens{i}.romanmonth);
+        Month(i) = xxRoman2Num(Tokens{i}.romanmonth);
     end
     try
-        month = sscanf(Tokens{i}.numericmonth,'%g');
+        Month(i) = sscanf(Tokens{i}.numericmonth,'%g');
     end
     try
         inx = strncmpi(Tokens{i}.month,Opt.months,length(Tokens{i}.month));
         if any(inx)
-            month = find(inx,1);
+            Month(i) = find(inx,1);
         end
     end
-    if ~isnumeric(month) || length(month) ~= 1 || isinf(month)
-        month = NaN;
+    if ~isnumeric(Month(i)) || isinf(Month(i))
+        Month(i) = NaN;
     end
     
     if IsCalendar
@@ -294,16 +285,12 @@ for i = 1 : length(Tokens)
         Freq(i) = Opt.freq;
     end
     
-    if ~isnan(month)
-        if IsCalendar || isequal(Opt.freq,52)
-            Per(i) = month;
+    if ~isnan(Month(i)) && ~IsCalendar
+        if ~isnan(Freq(i)) && Freq(i) ~= 12
+            Per(i) = month2per(Month(i),Freq(i));
         else
-            if ~isnan(Freq(i)) && Freq(i) ~= 12
-                Per(i) = month2per(month,Freq(i));
-            else
-                Per(i) = month;
-                Freq(i) = 12;
-            end
+            Per(i) = Month(i);
+            Freq(i) = 12;
         end
     end
     
@@ -331,13 +318,13 @@ end % xParseDates()
 
 
 %**************************************************************************
-function Per = xxRoman2Num(RomanPer)
 
+
+function Per = xxRoman2Num(RomanPer)
 Per = 1;
 list = {'i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii'};
 inx = strcmpi(RomanPer,list);
 if any(inx)
     Per = find(inx,1);
 end
-
 end % xxRoman2Num()

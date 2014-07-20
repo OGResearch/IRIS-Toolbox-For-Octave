@@ -18,8 +18,8 @@ function [W,List] = ifrf(This,Freq,varargin)
 % Output arguments
 % =================
 %
-% * `W` [ numeric ] - Array with frequency responses of transition
-% variables (in rows) to shocks (in columns).
+% * `W` [ namedmat | numeric ] - Array with frequency responses of
+% transition variables (in rows) to shocks (in columns).
 %
 % * `List` [ cell ] - List of transition variables in rows of the `W`
 % matrix, and list of shocks in columns of the `W` matrix.
@@ -27,12 +27,12 @@ function [W,List] = ifrf(This,Freq,varargin)
 % Options
 % ========
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrix `W` will
-% be either a namedmat object or a plain numeric array; if the option
-% `'select='` is used, `'output='` is always `'namedmat'`.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrix `W` as
+% either a [`namedmat`](namedmat/Contents) object (i.e. matrix with named
+% rows and columns) or a plain numeric array.
 %
-% * `'select='` [ char | cellstr | *`Inf`* ] - Return the frequency
-% response function only for selected variables and/or selected shocks.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return IFRF for selected
+% variables only; `@all` means all variables.
 %
 % Description
 % ============
@@ -46,15 +46,14 @@ function [W,List] = ifrf(This,Freq,varargin)
 
 % Parse input arguments.
 pp = inputParser();
-pp.addRequired('m',@is.model);
-pp.addRequired('freq',@isnumeric);
-pp.parse(This,Freq);
+pp.addRequired('Freq',@isnumeric);
+pp.parse(Freq);
 
 % Parse options.
 opt = passvalopt('model.ifrf',varargin{:});
 
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -84,23 +83,34 @@ end
 
 % Report NaN solutions.
 if ~all(isSol)
-    utils.warning('model', ...
+    utils.warning('model:ifrf', ...
         'Solution(s) not available %s.', ...
         preparser.alt2str(~isSol));
 end
 
-List = { ...
-    [This.solutionvector{1:2}], ...
-    This.solutionvector{3}, ...
-    };
-    
-if isNamedmat
-    W = namedmat(W,List{1},List{2});
+if nargout <= 1 && ~isSelect && ~isNamedMat
+    return
 end
 
-% Select variables.
+% Variables and shocks in rows and columns of `W`.
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
+    
+% Select variables if requested.
 if isSelect
-    W = select(W,opt.select);
+    [W,pos] = select(W,rowNames,colNames,opt.select);
+    rowNames = rowNames(pos{1});
+    colNames = colNames(pos{2});
+end
+List = {rowNames,colNames};
+
+if true % ##### MOSW
+    % Convert output matrix to namedmat object if requested.
+    if isNamedMat
+        W = namedmat(W,rowNames,colNames);
+    end
+else
+    % Do nothing.
 end
 
 end

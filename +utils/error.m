@@ -21,11 +21,7 @@ if isempty(stack)
 end
 
 msg = sprintf('IRIS Toolbox Error @ %s.',(Mnemonic));
-if isempty(varargin)
-    msg = [msg,sprintf('\n*** '),Body];
-else
-    msg = [msg,sprintf(['\n*** ',Body],varargin{:})];
-end
+msg = [msg,mosw.sprintf(['\n*** ',Body],varargin{:})];
 
 if nargout == 0
     tmp = struct();
@@ -44,10 +40,10 @@ end
 
 
 %**************************************************************************
+
+
 function Body = xxFrequents(Body,Cls)
-
 switch Body
-
     case '#Name_not_exists'
         Body = ['This name does not exist in the ',Cls,' object: %s.'];
     
@@ -62,7 +58,5 @@ switch Body
     
     otherwise
         Body = '';
-        
 end
-
 end % xxFrequents()

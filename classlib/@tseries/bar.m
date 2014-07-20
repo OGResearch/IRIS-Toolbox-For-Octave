@@ -30,15 +30,8 @@ function varargout = bar(varargin)
 % Options
 % ========
 %
-% * `'dateFormat='` [ char | *`irisget('plotdateformat')`* ] - Date format
-% for the tick marks on the x-axis.
-%
-% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
-% marks on the x-axis; Inf means they will be created automatically.
-%
-% * `'tight='` [ `true` | *`false`* ] - Make the y-axis tight.
-%
-% See help on built-in `bar` function for other options available.
+% See help on [`tseries/bar`](tseries/bar) and the built-in function `bar`
+% for all options available.
 %
 % Description
 % ============

@@ -2,13 +2,13 @@
 
     \filetitle{dbbatch}{Run a batch job to create new database fields}{dbase/dbbatch}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [D,Processed,Added] = dbbatch(D,NewName,Expr,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -26,7 +26,7 @@
   the expression can include \texttt{'\$0'}, \texttt{'\$1'}, etc.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -40,7 +40,7 @@
   \texttt{Processed}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -69,7 +69,7 @@
   and/or \texttt{'classFilter='} to narrow the selection.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 This function is primarily meant to create new database fields, each
 based on an existing one. If you, on the otherhand, only wish to modify
@@ -85,7 +85,31 @@ lower case or upper case, use the dot or colon syntax: \texttt{\$.0},
 \texttt{\$.1}, \texttt{\$.2} for ower case, and \texttt{\$:0},
 \texttt{\$:1}, \texttt{\$:2} for upper case.
 
-\paragraph{Example}
+\subparagraph{Failure}\label{failure}
+
+The function \texttt{dbbatch} will \emph{always} fail when called on a
+sub-database from within a function (as opposed to a script). A
+sub-database is a struct within a struct, a struct within a cell array,
+a struct within an array of structs, etc.
+
+\begin{verbatim}
+function ...
+    d.e = dbbatch(d.e,...);
+    ...
+end
+
+function ...
+    d{1} = dbbatch(d{1},...);
+    ...
+end
+
+function ...
+    d(1) = dbbatch(d(1),...);
+    ...
+end
+\end{verbatim}
+
+\paragraph{Example}\label{example}
 
 For each field (all assumed to be tseries) create a first difference,
 and name the new series \texttt{DX} where \texttt{X} is the name of the
@@ -98,7 +122,7 @@ d = dbbatch(d,'D$0','diff(d.$0)');
 Note that the original series will be presered in the database, together
 with the newly created ones.
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 Suppose that in database \texttt{D} you want to seasonally adjust all
 time series whose names end with \texttt{\_u}, and give these seasonally

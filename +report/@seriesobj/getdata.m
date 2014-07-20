@@ -21,6 +21,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doDates()
         % Table range can consist of dates with different frequencies.
         % For each frequency, find an input tseries with matching
@@ -53,6 +55,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function doColStruct()
         nRow = size(Inp{1},2);
         Outp = nan(nCol,nRow);
@@ -61,21 +65,21 @@ end
             func = ColStruct(ii).func;
             date = ColStruct(ii).date;
             x = Inp{1};
-            if isa(func,'function_handle')
-                x = func(x);
-                if ~isa(x,'tseries') && ~is.numericscalar(x)
-                    utils.error('report', ...
+            if isfunc(func)
+                x = feval(func,x);
+                if ~isa(x,'tseries') && ~isnumericscalar(x)
+                    utils.error('seriesobj:getdata', ...
                         ['Function %s fails to evaluate to tseries or numeric scalar ', ...
                         'when applied to this series: ''%s''.'], ...
-                        char(func),This.title);
+                        func2str(func),This.title);
                 end
             end
             if isa(x,'tseries')
                 x = x(date);
             end
-            if ~is.numericscalar(x)
-                if ~isa(x,'tseries') && ~is.numericscalar(x)
-                    utils.error('report', ...
+            if ~isnumericscalar(x)
+                if ~isa(x,'tseries') && ~isnumericscalar(x)
+                    utils.error('seriesobj:getdata', ...
                         ['Value in column #%g ', ...
                         'fails evalute to numeric scalar for this series: ''%s''.'], ...
                         ii,This.title);

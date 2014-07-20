@@ -9,17 +9,16 @@ function This = mystruct2obj(This,S)
 
 %--------------------------------------------------------------------------
 
-% List of non-dependent object properties.
-prop = utils.ndprop(class(This));
+propList = getsetobj.proplist(This);
+structList = getsetobj.proplist(S);
 
-nProp = length(prop);
-for i = 1 : nProp
-    try
-        This.(prop{i}) = S.(prop{i});
-    catch %#ok<CTCH>
-        try %#ok<TRYNC>
-            This.(prop{i}) = S.(lower(prop{i}));
-        end
+for i = 1 : length(propList)
+    inx = strcmpi(structList,propList{i});
+    if ~any(inx)
+        continue
+    end
+    for pos = find(inx(:).')
+        This.(propList{i}) = S.(structList{pos});
     end
 end
 

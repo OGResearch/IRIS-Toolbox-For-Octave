@@ -38,12 +38,12 @@ end
 
 for iAx = Ax
     
-    if false % is.hg2()
+    if false % ishg2()
 %         try %#ok<TRYNC>
 %             set(iAx,'yLimSpec','tight');
 %         end
     else
-        lim = objbounds(iAx);
+        lim = mosw.objbounds(iAx);
         if isempty(lim)
             yLim = get(iAx,'yLim');
         else

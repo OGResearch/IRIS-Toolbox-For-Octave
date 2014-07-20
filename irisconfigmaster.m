@@ -1,4 +1,4 @@
-function varargout = irisconfigmaster(Req,varargin)
+function varargout = irisconfigmaster(varargin)
 % irisconfigmaster  [Not a public function ] The IRIS Toolbox master configuration file.
 %
 % Backend IRIS function.
@@ -7,10 +7,18 @@ function varargout = irisconfigmaster(Req,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-mlock();
-persistent config;
-if isempty(config)
-    config = irisconfig();
+persistent CONFIG;
+
+if isempty(varargin) || isempty(CONFIG)
+    CONFIG = irisconfig();
+    mlock();
+end
+
+try
+    Req = varargin{1};
+    varargin(1) = [];
+catch
+    return
 end
 
 %--------------------------------------------------------------------------
@@ -19,7 +27,7 @@ switch Req
     
     case 'get'
         if nargin == 1
-            varargout{1} = rmfield(config,'protected');
+            varargout{1} = CONFIG;
         else
             notFound = {};
             n = length(varargin);
@@ -27,7 +35,7 @@ switch Req
             for i = 1 : n
                 try
                     name = lower(varargin{i});
-                    varargout{i} = config.(name);
+                    varargout{i} = CONFIG.(name);
                 catch %#ok<CTCH>
                     notFound{end+1} = varargin{i}; %#ok<AGROW>
                     varargout{i} = NaN;
@@ -45,15 +53,15 @@ switch Req
         unable = {};
         for i = 1 : 2 : nargin-1
             name = lower(varargin{i});
-            if any(strcmp(name,config.protected))
+            if any(strcmp(name,CONFIG.protected))
                 unable{end+1} = varargin{i}; %#ok<AGROW>
-            elseif isfield(config,name)
+            elseif isfield(CONFIG,name)
                 value = varargin{i+1};
-                if isfield(config.validate,name) ...
-                        && ~config.validate.(name)(config.(name))
+                if isfield(CONFIG.validate,name) ...
+                        && ~CONFIG.validate.(name)(CONFIG.(name))
                     invalid{end+1} = name; %#ok<AGROW>
                 else
-                    config.(name) = value;
+                    CONFIG.(name) = value;
                 end
             end
         end
@@ -71,7 +79,7 @@ switch Req
         end
         
     case 'reset'
-        config = irisconfig();
+        CONFIG = irisconfig();
     
     otherwise
         error('iris:config',...

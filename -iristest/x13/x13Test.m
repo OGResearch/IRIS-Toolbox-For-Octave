@@ -4,12 +4,16 @@ end
 
 
 %**************************************************************************
+
+
 function This = setupOnce(This) %#ok<*DEFNU>
-This.TestData.absTol = 1e-14;
+This.TestData.absTol = 1e-6;
 end % setupOnce()
 
 
 %**************************************************************************
+
+
 function testSeasonalDummy(This)
 
 range = qq(2000,1):qq(2004,4);
@@ -114,8 +118,11 @@ expS12 = tseries(range,[ ...
    2.982451512496400
    2.136182829967600]);
 
-assertEqual(This,actS,expS,'absTol',This.TestData.absTol);
-assertEqual(This,actS1,expS1,'absTol',This.TestData.absTol);
-assertEqual(This,actS12,expS12,'absTol',This.TestData.absTol);
+assertEqual(This,actS(range),expS(range), ...
+    'absTol',This.TestData.absTol);
+assertEqual(This,actS1(range),expS1(range), ...
+    'absTol',This.TestData.absTol);
+assertEqual(This,actS12(range),expS12(range), ...
+    'absTol',This.TestData.absTol);
 
 end % testSeasonalDummy()

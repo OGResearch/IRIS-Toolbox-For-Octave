@@ -2,13 +2,13 @@
 
     \filetitle{vma}{Vector moving average representation of the model}{model/vma}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [Phi,List] = vma(M,P,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@
   evaluated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -30,23 +30,22 @@
   in the columns of the \texttt{Phi} matrix.
 \end{itemize}
 
-\paragraph{Option}
+\paragraph{Option}\label{option}
 
 \begin{itemize}
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrix \texttt{Phi} will be either a
-  namedmat object or a plain numeric array; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always
-  \texttt{'namedmat'}.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrix \texttt{Phi} as either a
+  \href{namedmat/Contents}{\texttt{namedmat}} object (i.e.~matrix with
+  named rows and columns) or a plain numeric array.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return the VMA matrices for selected variabes and/or shocks only;
-  \texttt{Inf} means all variables.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return VMA for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

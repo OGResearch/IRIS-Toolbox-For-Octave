@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -136,7 +148,7 @@ code.LaTeX {
 </ul>
 <p><code>'infoSet='</code> [ <code>1</code> | <em><code>2</code></em> ] - Information set assumption used in the filter: <code>1</code> runs a one-sided filter, <code>2</code> runs a two-sided filter.</p>
 <ul>
-<li><p><code>'lambda='</code> [ numeric | <em><code>10 freq</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency.</p></li>
+<li><p><code>'lambda='</code> [ numeric | <em><code>@auto</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency. See Description for default values.</p></li>
 <li><p><code>'level='</code> [ tseries ] - Time series with soft and hard tunes on the level of the trend.</p></li>
 <li><p><code>'change='</code> [ tseries ] - Time series with soft and hard tunes on the change in the trend.</p></li>
 <li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the data before filtering, de-logarithmise afterwards.</p></li>
@@ -182,7 +194,7 @@ filter with time-varying signal-to-noise ratio} + \cdots$$</span> <span class="L
 <h5 id="out-of-sample-tunes">Out-of-sample tunes</h5>
 <p>Tunes can be imposed also at dates before the first observation of the input series, or after the last observation. In other words, the time series in <code>'level='</code> and/or <code>'growth='</code> can have a more extended range (at either side) than the filtered input series.</p>
 <h5 id="default-smoothing-parameters">Default smoothing parameters</h5>
-<p>If the user does not specify the smoothing parameter using the <code>'lambda='</code> option, a default value is used. The default value is based on common practice and can be calculated using the date frequency of the input time series as <code>\lambda = 10 \cdot f</code>, where <code>f</code> is the frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6, monthly=12). This gives the following default values:</p>
+<p>If the user does not specify the smoothing parameter using the <code>'lambda='</code> option (or reassigns the default <code>@auto</code>), a default value is used. The default value is based on common practice and can be calculated using the date frequency of the input time series as <code>\lambda = 10 \cdot f</code>, where <code>f</code> is the frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6, monthly=12). This gives the following default values:</p>
 <ul>
 <li>10 for yearly time series (cut-off periodicity of 19.79 years);</li>
 <li>20 for half-yearly time series (cut-off periodicity of 14.02 years);</li>
@@ -194,5 +206,5 @@ filter with time-varying signal-to-noise ratio} + \cdots$$</span> <span class="L
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

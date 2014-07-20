@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -117,21 +129,21 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>C</code> [ numeric ] - Auto/cross-covariance matrices.</p></li>
-<li><p><code>R</code> [ numeric ] - Auto/cross-correlation matrices.</p></li>
+<li><p><code>C</code> [ namedmat | numeric ] - Auto/cross-covariance matrices.</p></li>
+<li><p><code>R</code> [ namedmat | numeric ] - Auto/cross-correlation matrices.</p></li>
 </ul>
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'applyTo='</code> [ logical | <em><code>Inf</code></em> ] - Logical index of variables to which the <code>'filter='</code> will be applied; the default Inf means all variables.</p></li>
 <li><p><code>'filter='</code> [ char | <em>empty</em> ] - Linear filter that is applied to variables specified by 'applyto'.</p></li>
-<li><p><code>'nfreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the 'filter' is numerically integrated.</p></li>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>C</code> and <code>R</code> as either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</p></li>
+<li><p><code>'nFreq='</code> [ numeric | <em><code>256</code></em> ] - Number of equally spaced frequencies over which the <code>'filter='</code> is numerically integrated.</p></li>
 <li><p><code>'order='</code> [ numeric | <em><code>0</code></em> ] - Order up to which ACF will be computed.</p></li>
-<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Return matrices <code>C</code> and <code>R</code> as either namedmat objects (matrices with named rows and columns) or plain numeric arrays.</p></li>
 <li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

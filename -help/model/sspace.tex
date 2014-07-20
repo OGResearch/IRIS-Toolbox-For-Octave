@@ -2,13 +2,13 @@
 
     \filetitle{sspace}{State-space matrices describing the model solution}{model/sspace}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [T,R,K,Z,H,D,U,Omg] = sspace(m,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@
   \texttt{m} {[} model {]} - Solved model object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -41,7 +41,7 @@
   \texttt{Omg} {[} numeric {]} - Covariance matrix of shocks.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -54,7 +54,7 @@
   original vector of transition variables.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The state-space representation has the following form:
 

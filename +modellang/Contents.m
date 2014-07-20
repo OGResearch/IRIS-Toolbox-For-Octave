@@ -1,4 +1,4 @@
-% modellang  Model file language.
+% modellang  Model File Language.
 % 
 % Model file language is used to write model files. The model files are
 % plain text files (saved under any filename with any extension) that
@@ -44,13 +44,6 @@
 % * [`!all_but`](modellang/allbut) - Inverse list of log-linearised variables.
 % * [`<...>`](modellang/regexpression) - Regular expression in log-variable list.
 %
-% Model pseudofunctions
-% ======================
-%
-% Pseudofunctions do not start with an exclamation point.
-%
-% * [`min`](modellang/min) - Define loss function for optimal policy.
-%
 % Special operators
 % ==================
 % 
@@ -61,11 +54,12 @@
 % * [`=#`](modellang/exactnonlin) - Mark an equation for exact non-linear simulation.
 % * [`'...!!...'`](modellang/alias) - Beginning of aliasing inside descriptions and labels.
 %
-% Preparser pseudofunctions
-% ==========================
+% Pseudofunctions
+% ================
 %
 % Pseudofunctions do not start with an exclamation point.
 %
+% * [`min`](modellang/min) - Define loss function for optimal policy.
 % * [`diff`](modellang/diff) - First difference pseudofunction.
 % * [`dot`](modellang/dot) - Gross rate of growth pseudofunction.
 % * [`difflog`](modellang/difflog) - First log-difference pseudofunction.

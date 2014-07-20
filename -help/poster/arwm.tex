@@ -2,13 +2,14 @@
 
     \filetitle{arwm}{Adaptive random-walk Metropolis posterior simulator}{poster/arwm}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[Theta,LogPost,AccRat,Scale,FinalCov] = arwm(Pos,NDraw,...)
+[Theta,LogPost,ArVec,PosUpd] = arwm(Pos,NDraw,...)
+[Theta,LogPost,ArVec,PosUpd,SgmVec,FinalCov] = arwm(Pos,NDraw,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +19,7 @@
   burn-in.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -28,10 +29,13 @@
   \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
   to a constant) in each draw.
 \item
-  \texttt{AccRat} {[} numeric {]} - Vector of cumulative acceptance
+  \texttt{ArVec} {[} numeric {]} - Vector of cumulative acceptance
   ratios.
 \item
-  \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+  \texttt{PosUpd} {[} poster {]} - Posterior simulator object with its
+  properties updated so to capture the final state of the simulation.
+\item
+  \texttt{SgmVec} {[} numeric {]} - Vector of proposal scale factors in
   each draw.
 \item
   \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
@@ -39,7 +43,7 @@
   Scale(end)\^{}2*FinalCov.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -104,7 +108,7 @@
   - Target acceptance ratio.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The function \texttt{poster/arwm} returns the simulated chain of
 parameters and the corresponding value of the log posterior density. To
@@ -113,7 +117,12 @@ mean, median, percentiles, etc.) use the function
 \href{poster/stats}{\texttt{poster/stats}} to process the simulated
 chain and calculate the statistics.
 
-\subparagraph{Parallelised ARWM}
+The properties of the posterior object returned as the 4th output
+argument are updated so that they capture the final state of the
+posterior simulations. This can be used to initialize a next simulation
+at the point where the previous ended.
+
+\subparagraph{Parallelised ARWM}\label{parallelised-arwm}
 
 Set \texttt{'nStep='} greater than \texttt{1}, and
 \texttt{'firstPrefetch='} smaller than \texttt{NDraw} to start a
@@ -131,10 +140,9 @@ turning down adaptation before pre-fetching starts, i.e.~by setting
 \texttt{'lastAdapt='} smaller than \texttt{'firstPrefetch='} (and,
 obviously, by re-setting the random number generator).
 
-\paragraph{References}
+\paragraph{References}\label{references}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
+\begin{itemize}
 \item
   Brockwell, A.E., 2005. ``Parallel Markov Chain Monte Carlo Simulation
   by Pre-Fetching,'' CMU Statistics Dept. Tech. Report 802.
@@ -142,8 +150,8 @@ obviously, by re-setting the random number generator).
   Strid, I., 2009. ``Efficient parallelisation of Metropolis-Hastings
   algorithms using a prefetching approach,'' SSE/EFI Working Paper
   Series in Economics and Finance No. 706.
-\end{enumerate}
+\end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

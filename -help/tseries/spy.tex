@@ -2,14 +2,14 @@
 
     \filetitle{spy}{Visualise tseries observations that pass a test}{tseries/spy}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [AA,LL] = spy(X,...)
 [AA,LL] = spy(RANGE,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@
   range will be used.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -30,17 +30,9 @@
   \texttt{LL} {[} tseries {]} - Handle to the marks plotted.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
-\item
-  \texttt{'dateformat='} {[} char \textbar{}
-  \emph{irisget(`plotdateformat')} {]} - Date format for the tick marks
-  on the x-axis.
-\item
-  \texttt{'datetick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
 \item
   \texttt{'names='} {[} cellstr {]} - Names that will be used to
   annotate individual columns of the input tseries object.
@@ -50,8 +42,11 @@
   observations; only the values returning a true will be displayed.
 \end{itemize}
 
-\paragraph{Description}
+See help on \href{tseries/plot}{\texttt{tseries/plot}} and the built-in
+function \texttt{spy} for all options available.
 
-\paragraph{Example}
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

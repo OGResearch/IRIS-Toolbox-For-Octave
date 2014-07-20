@@ -2,13 +2,13 @@
 
     \filetitle{acf}{Autocovariance and autocorrelation functions for model variables}{model/acf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [C,R,List] = acf(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@
   be computed.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -31,7 +31,7 @@
   of \texttt{C} and \texttt{R}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -54,30 +54,29 @@
   \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{0}} {]} - Order
   up to which ACF will be computed.
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Return matrices \texttt{C} and \texttt{R} as
-  either namedmat objects (matrices with named rows and columns) or
-  plain numeric arrays; if the option \texttt{'select='} is used,
-  \texttt{'output='} is always a namedmat object.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{C} and \texttt{R} as
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return ACF for selected variables only; \texttt{Inf} means all
-  variables.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return ACF for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-Alt matrices,
+\texttt{C} and \texttt{R} are both N-by-N-by-(P+1)-by-NAlt matrices,
 where N is the number of measurement and transition variables (including
 auxiliary lags and leads in the state space vector), P is the order up
 to which the ACF is computed (controlled by the option
-\texttt{'order='}), and Alt is the number of alternative
+\texttt{'order='}), and NAlt is the number of alternative
 parameterisations in the input model object, \texttt{M}. If
 \texttt{'contributions=' true}, the size of the two matrices is
-N-by-N-by-(P+1)-by-E-Alt, where E is the number of measurement and
+N-by-N-by-(P+1)-by-E-NAlt, where E is the number of measurement and
 transition shocks in the model.
 
-\subparagraph{ACF with linear filters}
+\subparagraph{ACF with linear filters}\label{acf-with-linear-filters}
 
 You can use the option \texttt{'filter='} to get the ACF for variables
 as though they were filtered through a linear filter. You can specify
@@ -97,7 +96,7 @@ can use the following references:
   \texttt{'freq'}, the frequency.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 A first-difference filter (i.e.~computes the ACF for the first
 differences of the respective variables):
@@ -106,7 +105,7 @@ differences of the respective variables):
 [C,R] = acf(m,'filter=','1-L')
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 The cyclical component of the Hodrick-Prescott filter with the smoothing
 parameter, $lambda$, 1,600. The formula for the filter follows from the
@@ -118,7 +117,7 @@ classical Wiener-Kolmogorov signal extraction theory,
 [C,R] = acf(m,'filter','1600/(1600 + 1/abs((1-L)^2)^2)')
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-2}
 
 A band-pass filter with user-specified lower and upper bands. The
 band-pass filters can be defined either in frequencies or periodicities;

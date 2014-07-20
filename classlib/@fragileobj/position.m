@@ -10,9 +10,9 @@ function Pos = position(This,C)
 %--------------------------------------------------------------------------
 
 
-Pos = round(fragileobj.char2dec(C) - This.Offset);
+Pos = round(char2dec(This,C) - This.Offset);
 
-if Pos < 1 || Pos > length(This.Storage)
+if Pos < 1 || Pos > length(This.Store)
     utils.error('fragileobj:position', ...
         'Replacement code not found in the fragileobj object.');
 end

@@ -9,8 +9,8 @@ function [x,outofrange] = mydateindex(this,dates)
 
 %**************************************************************************
 
-nper = round(this.endDate - this.startDate + 1);
-x = round(dates - this.startDate + 1);
+nper = round(this.End - this.Start + 1);
+x = round(dates - this.Start + 1);
 outofrangeindex = x < 1 | x > nper;
 outofrange = dates(outofrangeindex);
 x(outofrangeindex) = NaN;

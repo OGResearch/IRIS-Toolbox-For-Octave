@@ -9,6 +9,13 @@ function Leg = plot(This,Ax)
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 % Create the line plot first using the parent's method.
 [Leg,h,time,cData,grid] = plot@report.seriesobj(This,Ax);
 grid = grid(:);
@@ -20,7 +27,7 @@ set(Ax,'nextPlot','add');
 pt = nan(1,nint);
 stdata = stdata.*This.options.factor;
 asym = This.options.asym;
-if is.tseries(asym)
+if istseries(asym)
     asym = asym(time);
     asym(isnan(asym)) = 1;
 end
@@ -54,8 +61,12 @@ for i = 1 : nint
     lgd = This.options.fanlegend;
     if isequal(lgd,Inf)
         if This.options.exclude(min([i,end]))
-            grfun.excludefromlegend(pt(i));
-            Leg(nint+1-i) = [];
+            if true % ##### MOSW
+                grfun.excludefromlegend(pt(i));
+                Leg(nint+1-i) = [];
+            else
+                % Do nothing
+            end
         else
             Leg{nint+1-i} = sprintf('%g%%',100*whi);
         end;
@@ -69,9 +80,13 @@ for i = 1 : nint
     end
 end
 
-if isequalwithequalnans(This.options.fanlegend,NaN)
-    grfun.excludefromlegend(pt(:));
-    Leg(1:nint) = [];
+if isequalnFunc(This.options.fanlegend,NaN)
+    if true % ##### MOSW
+        grfun.excludefromlegend(pt(:));
+        Leg(1:nint) = [];
+    else
+        % Do nothing
+    end
 end
 
 set(Ax,'nextPlot',nextplot);

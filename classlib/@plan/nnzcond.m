@@ -28,6 +28,6 @@ function n = nnzcond(this)
 
 %**************************************************************************
 
-n = nnz(this.cAnchors);
+n = nnz(this.CAnch);
 
 end

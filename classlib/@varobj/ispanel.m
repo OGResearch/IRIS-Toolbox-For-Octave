@@ -1,5 +1,5 @@
 function Flag = ispanel(This)
-% ispanel  True for panel VAR based objects.
+% ispanel  True for panel VAR objects.
 %
 % Syntax
 % =======
@@ -9,21 +9,16 @@ function Flag = ispanel(This)
 % Input arguments
 % ================
 %
-% * `X` [ VAR | SVAR | FAVAR ]  - VAR based object.
+% * `X` [ VAR | SVAR ]  - VAR object.
 %
 % Output arguments
 % =================
 %
-% * `Flag` [ `true` | `false` ] - True if the VAR based object, `X`, is
-% based on a panel of data.
+% * `Flag` [ `true` | `false` ] - True if the VAR object, `X`, is based on
+% a panel of data.
 %
 % Description
 % ============
-%
-% Plain, i.e. non-panel, VAR based objects are created by calling the
-% constructor with one input argument: the list of variables. Panel VAR
-% based objects are created by calling the constructor with two input
-% arguments: the list of variables, and the names of groups of data.
 %
 % Example
 % ========

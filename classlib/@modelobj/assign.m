@@ -38,11 +38,15 @@ Assign = false(size(This.name));
 stdcorr = false(size(This.stdcorr));
 
 if isempty(varargin)
-    doReset();
+    % @@@@@ MOSW
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     Assigned = cell(1,0);
     return
     
-elseif n == 1 && isa(varargin{1},'modelobj')
+elseif n == 1 && ismodel(varargin{1})
     % Assign from another model object. The names, name types, and number of
     % parameterisations must match.
     equalNames = isequal(This.name,varargin{1}.name);
@@ -122,7 +126,10 @@ elseif n <= 2 && iscellstr(varargin{1})
         stdcorr(STDCORRPOS) = true;
         This.stdcorr(1,STDCORRPOS,:) = value(1,STDCORRRHS,:);
     end
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 elseif n <= 2 && isstruct(varargin{1})
     % m = assign(m,struct), or
@@ -180,7 +187,10 @@ elseif n <= 2 && isstruct(varargin{1})
         stdcorr(stdcorrPos(i)) = true;
     end
     doChkValid();
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     if nargout == 1
         return
     end
@@ -232,7 +242,10 @@ elseif iscellstr(varargin(1:2:end))
         end
     end
     doChkValid();
-    doReset();
+    ASSIGNPOS = [];
+    ASSIGNRHS = [];
+    STDCORRPOS = [];
+    STDCORRRHS = [];
     
 else
     % Throw an invalid assignment error.
@@ -248,30 +261,16 @@ if nargout > 1
     Assigned = This.name(Assign);
     ne = sum(This.nametype == 3);
     eList = This.name(This.nametype == 3);
-    Assigned = [Assigned, ...
-        regexprep(eList(stdcorr(1:ne)),'^.','std_$0','once')];
+    Assigned = [Assigned,strcat('std_',eList(stdcorr(1:ne)))];
     pos = find(tril(ones(ne),-1) == 1);
     temp = zeros(ne);
     temp(pos(stdcorr(ne+1:end))) = 1;
     [i,j] = find(temp == 1);
-    for k = 1 : length(i)
-        Assigned{end+1} = ['corr_',eList{i(k)},'_',eList{j(k)}]; %#ok<AGROW>
-    end
+    Assigned = [Assigned,strcat('corr_',eList(i),'__',eList(j))];
 end
 
 
 % Nested functions...
-
-
-%**************************************************************************
-
-    
-    function doReset()
-        ASSIGNPOS = [];
-        ASSIGNRHS = [];
-        STDCORRPOS = [];
-        STDCORRRHS = [];
-    end % doReset()
 
 
 %**************************************************************************

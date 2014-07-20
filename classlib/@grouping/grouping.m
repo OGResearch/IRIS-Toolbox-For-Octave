@@ -1,5 +1,5 @@
 classdef grouping < userdataobj & getsetobj
-    % grouping  Grouping objects for aggregation of contributions.
+    % grouping  Grouping Objects for Aggregation of Contributions.
     %
     % Grouping objects can be used for aggregating the contributions of shocks
     % in model simulations, [`model/simulate`](model/simulate), or aggregating
@@ -11,7 +11,7 @@ classdef grouping < userdataobj & getsetobj
     % Constructor
     % ============
     %
-    % * [`grouping`](grouping/grouping) - Create new, empty grouping object.
+    % * [`grouping`](grouping/grouping) - Create new empty grouping object.
     %
     % Getting information about groups
     % =================================
@@ -56,7 +56,7 @@ classdef grouping < userdataobj & getsetobj
     methods
         
         function This = grouping(varargin)
-            % grouping  Create new, empty grouping object.
+            % grouping  Create new empty grouping object.
             %
             % Syntax
             % =======
@@ -73,7 +73,7 @@ classdef grouping < userdataobj & getsetobj
             % Output arguments
             % =================
             %
-            % * `G` [ grouping ] - New, empty grouping object.
+            % * `G` [ grouping ] - New empty grouping object.
             %
             % Description
             % ============
@@ -101,7 +101,7 @@ classdef grouping < userdataobj & getsetobj
             Type = varargin{2};
             
             pp = inputParser();
-            pp.addRequired('M',@(x) isa(x,'modelobj'));
+            pp.addRequired('M',@(x) isa(x,'model'));
             pp.addRequired('Type',@(x) ischar(x) ...
                 && any(strncmpi(x,{'shock','measu'},5)));
             pp.parse(M,Type);

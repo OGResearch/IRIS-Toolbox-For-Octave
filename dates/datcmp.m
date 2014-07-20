@@ -45,6 +45,7 @@ pp.addRequired('D1',@isnumeric);
 pp.addRequired('D2',@isnumeric);
 pp.parse(Dat1,Dat2);
 
+
 %--------------------------------------------------------------------------
 
 Flag = abs(Dat1 - Dat2) < 0.01 | (isinf(Dat1) & isinf(Dat2));

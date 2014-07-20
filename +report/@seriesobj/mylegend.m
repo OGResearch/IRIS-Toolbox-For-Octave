@@ -1,4 +1,4 @@
-function [LegendEntry,Exclude] = mylegend(This,NData)
+function [LegEnt,Exclude] = mylegend(This,NData)
 % mylegend  [Not a public function] Create legend entries for report/series.
 %
 % Backend IRIS function.
@@ -10,6 +10,7 @@ function [LegendEntry,Exclude] = mylegend(This,NData)
 %--------------------------------------------------------------------------
 
 try
+    isequaln(0,0);
     isequalnFunc = @isequaln;
 catch
     isequalnFunc = @isequalwithequalnans;
@@ -32,7 +33,7 @@ if isequal(This.options.legendentry,@auto) ...
     end
     
     % Produce default legend entries.
-    LegendEntry = cell(1,NData);
+    LegEnt = cell(1,NData);
     for i = 1 : NData
         name = This.caption;
         if i <= numel(This.options.marks)
@@ -41,27 +42,27 @@ if isequal(This.options.legendentry,@auto) ...
             mark = '';
         end
         if ~isempty(name) && ~isempty(mark)
-            LegendEntry{i} = [name,': ',mark];
+            LegEnt{i} = [name,': ',mark];
         elseif isempty(mark)
-            LegendEntry{i} = name;
+            LegEnt{i} = name;
         elseif isempty(name)
-            LegendEntry{i} = mark;
+            LegEnt{i} = mark;
         end
     end
 elseif isequalnFunc(This.options.legendentry,NaN)
     % Exclude the series from legend.
-    LegendEntry = {};
+    LegEnt = {};
     Exclude = true;
 else
     % Use user-suppied legend entries.
-    LegendEntry = cell(1,NData);
+    LegEnt = cell(1,NData);
     if ischar(This.options.legendentry)
         This.options.legendentry = {This.options.legendentry};
     end
     This.options.legendentry = This.options.legendentry(:).';
     n = min(length(This.options.legendentry),NData);
-    LegendEntry(1:n) = This.options.legendentry(1:n);
-    LegendEntry(n+1:end) = {''};
+    LegEnt(1:n) = This.options.legendentry(1:n);
+    LegEnt(n+1:end) = {''};
 end
 
 end

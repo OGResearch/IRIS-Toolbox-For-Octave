@@ -2,14 +2,14 @@
 
     \filetitle{modelfile}{Write formatted model file}{report/modelfile}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 P.modelfile(Caption,FileName,...)
 P.modelfile(Caption,FileName,M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -26,11 +26,11 @@ P.modelfile(Caption,FileName,M,...)
   parameter values or std devs will be printed.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
-  \texttt{'latexAlias'} {[} \texttt{true} \textbar{}
+  \texttt{'latexAlias='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Treat alias in labels as LaTeX code and
   typeset it that way.
 \item
@@ -62,7 +62,7 @@ P.modelfile(Caption,FileName,M,...)
   as \texttt{\textbackslash{}textit\{...\}}).
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 If you enter a model object with multiple parameterisations, only the
 first parameterisation will get reported.
@@ -70,6 +70,6 @@ first parameterisation will get reported.
 At the moment, the syntax highlighting in model file reports does not
 handle correctly comment blocks, i.e. \texttt{\%\{ ... \%\}}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

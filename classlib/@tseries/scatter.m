@@ -30,13 +30,8 @@ function varargout = scatter(varargin)
 % Options
 % ========
 %
-% * `'dateformat='` [ char | *irisget('plotdateformat')* ] - Date format for
-% the tick marks on the x-axis.
-%
-% * `'datetick='` [ numeric | *`Inf`* ] - Vector of dates locating tick marks
-% on the x-axis; Inf means they will be created automatically.
-%
-% See help on built-in `plot` function for other options available.
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `scatter` for all options available.
 %
 % Description
 % ============

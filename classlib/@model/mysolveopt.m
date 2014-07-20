@@ -1,5 +1,5 @@
 function Opt = mysolveopt(This,Mode,Opt)
-% mysstateopt  [Not a public function] Prepare steady-state solver options.
+% mysolveopt  [Not a public function] Prepare options for model solution.
 %
 % Backend IRIS function.
 % No help provided.
@@ -25,9 +25,9 @@ if isequal(Mode,'silent')
     Opt.warning = false;
 end
 
-if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
-    Opt.linear = This.linear;
-elseif Opt.linear ~= This.linear
+if isequal(Opt.linear,@auto)
+    Opt.linear = This.IsLinear;
+elseif Opt.linear ~= This.IsLinear
     Opt.select = false;
 end
 

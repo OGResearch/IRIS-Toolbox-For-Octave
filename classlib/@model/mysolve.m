@@ -36,7 +36,7 @@ nx = length(This.systemid{2});
 nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
-nn = sum(This.nonlin);
+nn = sum(This.IxNonlin);
 fKeep = ~This.d2s.remove;
 nfKeep = sum(fKeep);
 nxKeep = nfKeep + nb;
@@ -109,12 +109,13 @@ for iAlt = SelAlt
         if ~Opt.linear
             % Steady-state levels needed in doTransition() and
             % doMeasurement().
-            ssY = mytrendarray(This, ...
-                find(This.nametype == 1),0,false,iAlt);
-            ssXf = mytrendarray(This, ...
-                This.solutionid{2}(1:nfKeep),[-1,0],false,iAlt);
-            ssXb = mytrendarray(This, ...
-                This.solutionid{2}(nfKeep+1:end),[-1,0],false,iAlt);
+            isDelog = false;
+            ssY = mytrendarray(This,iAlt,isDelog, ...
+                find(This.nametype == 1),0);
+            ssXf = mytrendarray(This,iAlt,isDelog, ...
+                This.solutionid{2}(1:nfKeep),[-1,0]);
+            ssXb = mytrendarray(This,iAlt,isDelog, ...
+                This.solutionid{2}(nfKeep+1:end),[-1,0]);
         end
         
         % Solution matrices
@@ -130,7 +131,7 @@ for iAlt = SelAlt
             flagTrans = doTrans();
         end
         if ~flagTrans || ~flagMeas
-            if ~This.linear && ~mychksstate(This)
+            if ~This.IsLinear && ~mychksstate(This)
                 NPath(iAlt) = -4;
                 continue;
             else
@@ -185,24 +186,34 @@ end
         while true
             AA = fA(eqOrd,:);
             BB = fB(eqOrd,:);
-            [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
-            % Ordered inverse eigvals.
-            eigVal = -ordeig(SS,TT);
+            if true % ##### MOSW
+                [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
+                % Ordered inverse eigvals.
+                eigVal = -ordeig(SS,TT);
+            else
+                lastwarn('');
+                [SS,TT,QQ,ZZ,eigVal] = mosw.octfun.ordqz(AA,BB,eigValTol); % leading block has ||eigVals|-1|<eigValTol; next block has |eigVal| >= 1 + eigValTol
+                isEmptyWarn = isempty(lastwarn());
+                % Ordered inverse eigvals.
+                eigVal = -eigVal;
+            end
             eigVal = eigVal(:).';
             isSevn2 = doSevn2Patch();
             stable = abs(eigVal) >= 1 + eigValTol;
             unit = abs(abs(eigVal)-1) < eigValTol;
-            % Clusters of unit, stable, and unstable eigenvalues.
-            clusters = zeros(size(eigVal));
-            % Unit roots first.
-            clusters(unit) = 2;
-            % Stable roots second.
-            clusters(stable) = 1;
-            % Unstable roots last.
-            % Re-order by the clusters.
-            lastwarn('');
-            [SS,TT,QQ,ZZ] = ordqz(SS,TT,QQ,ZZ,clusters);
-            isEmptyWarn = isempty(lastwarn());
+            if true % ##### MOSW
+                % Clusters of unit, stable, and unstable eigenvalues.
+                clusters = zeros(size(eigVal));
+                % Unit roots first.
+                clusters(unit) = 2;
+                % Stable roots second.
+                clusters(stable) = 1;
+                % Unstable roots last.
+                % Re-order by the clusters.
+                lastwarn('');
+                [SS,TT,QQ,ZZ] = ordqz(SS,TT,QQ,ZZ,clusters);
+                isEmptyWarn = isempty(lastwarn());
+            end
             % If the first equations is ordered second, it indicates the
             % next cycle would bring the equations to their original order.
             % We stop and throw an error.
@@ -227,9 +238,11 @@ end
         end
         
         % Re-order the inverse eigvals.
-        eigVal = -ordeig(SS,TT);
-        eigVal = eigVal(:).';
-        isSevn2 = doSevn2Patch() | isSevn2;
+        if true % ##### MOSW
+            eigVal = -ordeig(SS,TT);
+            eigVal = eigVal(:).';
+            isSevn2 = doSevn2Patch() | isSevn2;
+        end
         if Opt.warning && isSevn2
             utils.warning('model', ...
                 ['Numerical instability in QZ decomposition. ', ...
@@ -298,7 +311,7 @@ end
     function Flag = doTrans()
         
         Flag = true;
-        isNonlin = any(This.nonlin);
+        isNonlin = any(This.IxNonlin);
         S11 = SS(1:nb,1:nb);
         S12 = SS(1:nb,nb+1:end);
         S22 = SS(nb+1:end,nb+1:end);
@@ -475,7 +488,7 @@ end
         This.solution{7}(:,:,iAlt) = U;
         if isNonlin
             This.solution{8}(:,1:nn,iAlt) = Y;
-        end        
+        end
         
         % Necessary initial conditions in xb vector.
         if ~Opt.fast

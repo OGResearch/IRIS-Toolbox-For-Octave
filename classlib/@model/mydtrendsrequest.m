@@ -56,6 +56,7 @@ switch Req
         end
         varargout{1} = dtLevel;
         varargout{2} = dtGrowth;
+        
     case 'range'
         nPer = numel(Range);
         eqtn = This.eqtnF(This.eqtntype == 3);

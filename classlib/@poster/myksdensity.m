@@ -26,14 +26,14 @@ elseif isinf(Low) && ~isinf(High) && High ~= 0
 end
 
 try
-    if is.intscalar(NPoints)
+    if isintscalar(NPoints)
         npoints = NPoints;
     else
         npoints = 100;
     end
     [Y,X] = ksdensity(Theta,'support',[Low,High],'npoints',npoints);
 catch 
-    if is.intscalar(NPoints)
+    if isintscalar(NPoints)
         npoints = NPoints;
     else
         npoints = 2^10;

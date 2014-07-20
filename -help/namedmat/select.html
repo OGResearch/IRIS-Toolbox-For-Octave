@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -110,8 +122,8 @@ code.LaTeX {
 <div class="headline">Select submatrix by referring to row names and column names</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[X,Pos] = select(This,RowSelect,ColSelect)
-[X,Pos] = select(X,Select)</code></pre>
+<pre><code>[XX,Pos] = select(X,RowSelect,ColSelect)
+[XX,Pos] = select(X,Select)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ namedmat ] - Matrix or array with named rows and columns.</p></li>
@@ -121,12 +133,12 @@ code.LaTeX {
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><p><code>X</code> [ namedmat ] - Submatrix with named rows and columns.</p></li>
-<li><p><code>Pos</code> [ cell ] - <code>Pos{1}</code> is the vector of rows included in the submatrix <code>X</code>, <code>Pos{2}</code> is the vector of columns included in the submatrix <code>X</code>.</p></li>
+<li><p><code>XX</code> [ namedmat ] - Submatrix with named rows and columns.</p></li>
+<li><p><code>Pos</code> [ cell ] - <code>Pos{1}</code> is av ector of rows included in the submatrix <code>XX</code>, <code>Pos{2} is a vector of columns included in the submatrix</code>XX`.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

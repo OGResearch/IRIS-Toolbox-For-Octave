@@ -1,7 +1,7 @@
 classdef codecreator < handle
     
     properties
-        code = '';
+        Code = '';
         indentString = '   ';
         autoIndent = 0;
     end
@@ -13,23 +13,23 @@ classdef codecreator < handle
             end
         end
         function This = nl(This,varargin)
-            if isempty(varargin) || ~is.numericscalar(varargin{1})
+            if isempty(varargin) || ~isnumericscalar(varargin{1})
                 nNl = 1;
             else
                 nNl = varargin{1};
             end
             nl = sprintf('\n');
-            This.code = [This.code,nl(ones([1,nNl]))];
+            This.Code = [This.Code,nl(ones([1,nNl]))];
         end
         function [This,varargin] = indent(This,varargin)
-            if isempty(varargin) || ~is.numericscalar(varargin{1})
+            if isempty(varargin) || ~isnumericscalar(varargin{1})
                 nIndent = 1;
             else
                 nIndent = varargin{1};
                 varargin(1) = [];
             end
             for i = 1 : nIndent
-                This.code = [This.code,This.indentString];
+                This.Code = [This.Code,This.indentString];
             end
         end
         function This = print(This,varargin)
@@ -37,9 +37,9 @@ classdef codecreator < handle
                 This = indent(This,This.autoIndent);
             end
             if length(varargin) == 1
-                This.code = [This.code,varargin{1}];
+                This.Code = [This.Code,varargin{1}];
             else
-                This.code = [This.code,sprintf(varargin{:})];
+                This.Code = [This.Code,sprintf(varargin{:})];
             end
         end
         function This = printn(This,varargin)
@@ -65,7 +65,7 @@ classdef codecreator < handle
             This = print(This,varargin{1});
         end
         function save(This,filename)
-            strfun.char2file(This.code,filename);
+            char2file(This.Code,filename);
         end
     end
     

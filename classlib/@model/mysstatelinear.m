@@ -17,6 +17,7 @@ end
 
 doRefresh();
 
+realexp = @(x) real(exp(x));
 eigValTol = This.Tolerance(1);
 realSmall = getrealsmall();
 ny = sum(This.nametype == 1);
@@ -24,34 +25,43 @@ nAlt = size(This.Assign,3);
 
 [Flag,isNanSol] = isnan(This,'solution');
 if isWarn && Flag
-    utils.warning('model', ...
+    utils.warning('model:mysstatelinear', ...
         ['Cannot compute linear steady state ', ...
         'because solution is not available %s.'], ...
         preparser.alt2str(isNanSol));
 end
 
 isDiffStat = true(1,nAlt);
+realAsgn = nan(size(This.Assign));
+imagAsgn = zeros(size(This.Assign));
 for iAlt = find(~isNanSol)
     doOneSstate();
 end
 
 % Some parameterizations are not difference stationary.
 if any(~isDiffStat)
-    utils.warning('model', ...
+    utils.warning('model:mysstatelinear', ...
         ['Model is not difference stationary. ', ...
         'Some steady-state growth rates are not fixed numbers %s.'], ...
         preparser.alt2str(~isDiffStat));
 end
 
-
-if any(This.log)
-    realAssign = real(This.Assign(1,This.log,:));
-    imagAssign = imag(This.Assign(1,This.log,:));
-    This.Assign(1,This.log,:) = exp(realAssign) + 1i*exp(imagAssign);
+% Delog sstate of log variables.
+if any(This.IxLog)
+    realAsgn(1,This.IxLog,:) = realexp(realAsgn(1,This.IxLog,:));
+    imagAsgn(1,This.IxLog,:) = exp(imagAsgn(1,This.IxLog,:));
 end
 
-doRefresh();
+% Assign the values to the model object, measurement and transition
+% variables only.
+inx = This.nametype <= 2;
+This.Assign(1,inx,:) = realAsgn(1,inx,:) + 1i*imagAsgn(1,inx,:);
 
+% Make sure steady state is zero for all shocks.
+inx = This.nametype == 3;
+This.Assign(1,inx,:) = 0;
+
+doRefresh();
 
 % Nested functions...
 
@@ -115,14 +125,17 @@ doRefresh();
         realId(~iinx) = [];
         x(~iinx) = [];
         dx(~iinx) = [];
-        This.Assign(1,realId,iAlt) = x(:).' + 1i*dx(:).';
+        realAsgn(1,realId,iAlt) = x(:).';
+        imagAsgn(1,realId,iAlt) = dx(:).';
         
         % Measurement variables
         %-----------------------
         if ny > 0
             y = Z(:,nUnit+1:end)*a2 + D;
             dy = Z(:,1:nUnit)*da1;
-            This.Assign(1,This.nametype == 1,iAlt) = y(:).' + 1i*dy(:).';
+            realId = real(This.solutionid{1});
+            realAsgn(1,realId,iAlt) = y(:).';
+            imagAsgn(1,realId,iAlt) = dy(:).';
         end
     end % doOneSstate()
 

@@ -2,7 +2,7 @@
 
     \filetitle{barcon}{Contribution bar graph for tseries objects}{tseries/barcon}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [H,Range] = barcon(X,...)
@@ -10,7 +10,7 @@
 [H,Range] = barcon(Ax,Range,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -25,7 +25,7 @@
   be ploted as a contribution bar graph.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -35,7 +35,7 @@
   \texttt{Range} {[} numeric {]} - Actually plotted date range.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -46,14 +46,6 @@
   \texttt{'colorMap='} {[} numeric \textbar{}
   \emph{\texttt{get(gcf(),'colorMap')}} {]} - Color map used to fill the
   contribution bars.
-\item
-  \texttt{'dateFormat='} {[} char \textbar{}
-  \emph{\texttt{irisget('plotDateFormat')}} {]} - Date format for the
-  tick marks on the x-axis.
-\item
-  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
 \item
   \texttt{'evenlySpread='} {[} \emph{\texttt{true}} \textbar{}
   \texttt{false} {]} - Colors picked for the contribution bars are
@@ -66,8 +58,11 @@
   preserved.
 \end{itemize}
 
-\paragraph{Description}
+See help on \href{tseries/plot}{\texttt{tseries/plot}} and the built-in
+function \texttt{bar} for other options available.
 
-\paragraph{Example}
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
 
 

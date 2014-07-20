@@ -1,5 +1,5 @@
 
-    \foldertitle{plan}{Simulation plans}{plan/Contents}
+    \foldertitle{plan}{Model Simulation Plans}{plan/Contents}
 
 	Simulation plans complement the use of the
 \href{model/simulate}{\texttt{model/simulate}} or
@@ -9,18 +9,18 @@ You need to use a simulation plan object to set up the following types
 of more complex simulations or forecasts (or a combination of these):
 
 \paragraph{simulations or forecasts with some of the model variables
-temporarily}
+temporarily}\label{simulations-or-forecasts-with-some-of-the-model-variables-temporarily}
 
 exogenised;
 
 \paragraph{simulations with some of the non-linear equations solved in
 an
-exact}
+exact}\label{simulations-with-some-of-the-non-linear-equations-solved-in-an-exact}
 
 non-linear mode;
 
 \paragraph{forecasts conditioned upon some
-variables;}
+variables;}\label{forecasts-conditioned-upon-some-variables}
 
 The plan object is passed to the
 \href{model/simulate}{\texttt{model/simulate}} or
@@ -29,17 +29,17 @@ The plan object is passed to the
 
 Plan methods:
 
-\paragraph{Constructor}
+\paragraph{Constructor}\label{constructor}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \href{plan/plan}{\texttt{plan}} - Create new, empty simulation plan
+  \href{plan/plan}{\texttt{plan}} - Create new empty simulation plan
   object.
 \end{itemize}
 
 \paragraph{Getting information about simulation
-plans}
+plans}\label{getting-information-about-simulation-plans}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -63,7 +63,7 @@ plans}
 \end{itemize}
 
 \paragraph{Setting up simulation
-plans}
+plans}\label{setting-up-simulation-plans}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -80,11 +80,11 @@ plans}
   \href{plan/exogenise}{\texttt{exogenise}} - Exogenise variables or
   re-exogenise shocks at the specified dates.
 \item
-  \href{plan/nonlinearise}{\texttt{nonlinearise}} - Select equations for
-  simulation in an exact non-linear mode.
+  \href{plan/swap}{\texttt{swap}} - Swap endogeneity and exogeneity of
+  variables and shocks.
 \end{itemize}
 
-\paragraph{Referencing plan objects}
+\paragraph{Referencing plan objects}\label{referencing-plan-objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -94,7 +94,7 @@ plans}
 \end{itemize}
 
 \paragraph{Getting on-line help on simulation
-plans}
+plans}\label{getting-on-line-help-on-simulation-plans}
 
 \begin{verbatim}
 help plan

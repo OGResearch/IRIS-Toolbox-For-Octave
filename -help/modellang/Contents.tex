@@ -1,5 +1,5 @@
 
-    \foldertitle{modellang}{Model file language}{modellang/Contents}
+    \foldertitle{modellang}{Model File Language}{modellang/Contents}
 
 	Model file language is used to write model files. The model files are
 plain text files (saved under any filename with any extension) that
@@ -20,7 +20,7 @@ of the files, and helps understand the model more quickly. See
 \href{setup/Contents}{the setup instructions} for more details.
 
 \paragraph{Variables, parameters, substitutions and
-functions}
+functions}\label{variables-parameters-substitutions-and-functions}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -47,7 +47,7 @@ functions}
   of variable/shock pairs for use in autoexogenised simulation plans.
 \end{itemize}
 
-\paragraph{Equations}
+\paragraph{Equations}\label{equations}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -65,7 +65,7 @@ functions}
 \end{itemize}
 
 \paragraph{Linearised and log-linearised
-variables}
+variables}\label{linearised-and-log-linearised-variables}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -80,18 +80,7 @@ variables}
   - Regular expression in log-variable list.
 \end{itemize}
 
-\paragraph{Model pseudofunctions}
-
-Pseudofunctions do not start with an exclamation point.
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \href{modellang/min}{\texttt{min}} - Define loss function for optimal
-  policy.
-\end{itemize}
-
-\paragraph{Special operators}
+\paragraph{Special operators}\label{special-operators}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -114,12 +103,15 @@ Pseudofunctions do not start with an exclamation point.
   inside descriptions and labels.
 \end{itemize}
 
-\paragraph{Preparser pseudofunctions}
+\paragraph{Pseudofunctions}\label{pseudofunctions}
 
 Pseudofunctions do not start with an exclamation point.
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{modellang/min}{\texttt{min}} - Define loss function for optimal
+  policy.
 \item
   \href{modellang/diff}{\texttt{diff}} - First difference
   pseudofunction.
@@ -139,7 +131,7 @@ Pseudofunctions do not start with an exclamation point.
   \href{modellang/movsum}{\texttt{movsum}} - Moving sum pseudofunction.
 \end{itemize}
 
-\paragraph{Preparser control commands}
+\paragraph{Preparser control commands}\label{preparser-control-commands}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -171,7 +163,7 @@ Pseudofunctions do not start with an exclamation point.
 \end{itemize}
 
 \paragraph{Getting on-line help on model file
-language}
+language}\label{getting-on-line-help-on-model-file-language}
 
 When getting help on model file language, type the names of the keywords
 and commands without the exclamation point:
@@ -184,7 +176,7 @@ help modellang/pseudofunction
 \end{verbatim}
 
 \paragraph{Matlab functions and user functions in model
-files}
+files}\label{matlab-functions-and-user-functions-in-model-files}
 
 You can use any of the built-in functions (Matlab functions, functions
 within the Toolboxes you have on your computer, and so on). In addition,
@@ -231,7 +223,7 @@ If any of these calls fail, the respective derivative will be simply
 evaluated numerically.
 
 \paragraph{Basic rules IRIS model
-files}
+files}\label{basic-rules-iris-model-files}
 
 \begin{itemize}
 \item

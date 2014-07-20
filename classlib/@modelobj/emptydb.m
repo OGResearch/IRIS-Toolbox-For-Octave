@@ -1,5 +1,5 @@
 function D = emptydb(This)
-% emptydb  Create model-specific database with variables, shocks, and parameters.
+% emptydb  Create model-specific database with empty tseries for all variables and shocks.
 %
 % Syntax
 % =======
@@ -16,7 +16,8 @@ function D = emptydb(This)
 % =================
 %
 % * `D` [ struct ] - Database with an empty tseries object for each
-% variable and each shock, and an empty array for each parameter.
+% variable and each shock, and a vector of currently assigned values for
+% each parameter.
 %
 % Description
 % ============
@@ -30,9 +31,10 @@ function D = emptydb(This)
 
 %--------------------------------------------------------------------------
 
+nAlt = size(This.Assign,3);
 x = cell(size(This.name));
-x(This.nametype <= 3) = {tseries()};
-x(This.nametype == 4) = {[]}; 
+x(This.nametype <= 3) = {tseries(NaN,zeros(0,nAlt))};
 D = cell2struct(x,This.name,2);
+D = addparam(This,D);
 
 end

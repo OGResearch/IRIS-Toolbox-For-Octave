@@ -2,34 +2,34 @@
 
     \filetitle{model}{Create new model object based on model file}{model/model}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-m = model(fname,...)
-m = model(m,...)
+M = model(FName,...)
+M = model(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
-  \texttt{fname} {[} char \textbar{} cellstr {]} - Name(s) of the model
-  file(s) that will loaded and converted to a new model object.
+  \texttt{FName} {[} char \textbar{} cellstr {]} - Name(s) of model
+  file(s) that will be loaded and converted to a new model object.
 \item
-  \texttt{m} {[} model {]} - Existing model object that will be rebuilt
+  \texttt{M} {[} model {]} - Existing model object that will be rebuilt
   as if from a model file.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{m} {[} model {]} - New model object based on the input model
+  \texttt{M} {[} model {]} - New model object based on the input model
   code file or files.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -43,6 +43,11 @@ m = model(m,...)
 \item
   \texttt{'baseYear='} {[} numeric \textbar{} \emph{2000} {]} - Base
   year for constructing deterministic time trends.
+\item
+  \texttt{'blazer='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Perform block-recursive analysis of steady-state equations at
+  the time the model object is being created; the option works only in
+  nonlinear models.
 \item
   \texttt{'comment='} {[} char \textbar{} \emph{empty} {]} - Text
   comment attached to the model object.
@@ -79,9 +84,9 @@ m = model(m,...)
   user data to the model object.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\subparagraph{Loading a model file}
+\subparagraph{Loading a model file}\label{loading-a-model-file}
 
 The \texttt{model} function can be used to read in a
 \href{modellang/Contents}{model file} named \texttt{fname}, and create a
@@ -93,14 +98,14 @@ If \texttt{fname} is a cell array of more than one file names then all
 files are combined together in order of appearance.
 
 \subparagraph{Re-building an existing model
-object}
+object}\label{re-building-an-existing-model-object}
 
 The only instance where you may need to call a model function on an
 existing model object is to change the \texttt{'removeLeads='} option.
 Of course, you can always achieve the same by loading the original model
 file.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 Read in a model code file named \texttt{my.model}, and declare the model
 as linear:
@@ -109,7 +114,7 @@ as linear:
 m = model('my.model','linear',true);
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 Read in a model code file named \texttt{my.model}, declare the model as
 linear, and assign some of the model parameters:

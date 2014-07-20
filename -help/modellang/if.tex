@@ -3,7 +3,7 @@
     \filetitle{!if...!elseif...!else...!end}{Choose block of code based on logical condition}{modellang/if}
 
 	\paragraph{Syntax with else and elseif
-clauses}
+clauses}\label{syntax-with-else-and-elseif-clauses}
 
 \begin{verbatim}
 !if Condition1
@@ -18,7 +18,7 @@ clauses}
 \end{verbatim}
 
 \paragraph{Syntax with an else clause
-only}
+only}\label{syntax-with-an-else-clause-only}
 
 \begin{verbatim}
 !if Condition1
@@ -29,7 +29,7 @@ only}
 \end{verbatim}
 
 \paragraph{Syntax without an else
-clause}
+clause}\label{syntax-without-an-else-clause}
 
 \begin{verbatim}
 !if Condition
@@ -37,7 +37,7 @@ clause}
 !end
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The \texttt{!if...!elseif...!else...!end} command works the same way as
 its counterpart in the Matlab programming language.
@@ -52,7 +52,7 @@ model parameters, or to other fields included in the database passed in
 through the option `\texttt{assign=}' in the
 \href{model/model}{\texttt{model}} function.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 !if B < Inf
@@ -71,7 +71,7 @@ use the Phillips curve equation instead, you need to re-read the model
 file with \texttt{B} set to a number other than Inf. In this example,
 \texttt{B} needs to be, obviously, declared as a model parameter.
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 \begin{verbatim}
 !if exogenous == true

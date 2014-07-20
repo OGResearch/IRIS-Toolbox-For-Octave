@@ -2,24 +2,26 @@
 
     \filetitle{graph}{Add graph to figure}{report/graph}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-P.graph(Caption,...)
+P.graph(Cap,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
   \texttt{P} {[} struct {]} - Report object created by the
   \href{report/new}{\texttt{report.new}} function.
 \item
-  \texttt{Caption} {[} char \textbar{} cellstr {]} - Title, or cell
-  array with title and subtitle, displayed at the top of the graph.
+  \texttt{Cap} {[} char \textbar{} cellstr \textbar{} \texttt{@auto} {]}
+  - Title, or cell array with title and subtitle, displayed at the top
+  of the graph; \texttt{@auto} means that the first comment from the
+  first child \texttt{series} object will be used for the title.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -27,12 +29,13 @@ P.graph(Caption,...)
   (Inheritable) Options executed by calling \texttt{set} on the axes
   handle before running \texttt{'postProcess='}.
 \item
-  \texttt{'dateFormat='} {[} char \textbar{} \emph{\texttt{'YYYY:P'}}
-  {]} - (Inheritable) Date format string, see help on
-  \href{dates/dat2str}{\texttt{dat2str}}.
-\item
   \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
   (Inheritable) Date tick spacing.
+\item
+  \texttt{'grid='} {[} \texttt{@auto} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - (Inheritable) Display grid lines; if
+  \texttt{@auto}, \texttt{'grid='} is \texttt{true} unless a
+  right-hand-side axis is plotted.
 \item
   \texttt{'legend='} {[} \emph{\texttt{false}} \textbar{} \texttt{true}
   {]} - (Inheritable) Add legend to the graph.
@@ -60,9 +63,11 @@ P.graph(Caption,...)
   (Inheritable) Apply this style structure to the graph and its
   children; see help on \href{qreport/qstyle}{\texttt{qstyle}}.
 \item
-  \texttt{'tight='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
-  {]} - (Inheritable) Set the y-axis limits to the minimum and maximum
-  of displayed data.
+  \texttt{'tight='} {[} \texttt{@auto} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - (Inheritable) Set the y-axis limits to
+  the minimum and maximum of displayed data; if \texttt{@auto},
+  \texttt{'tight='} is \texttt{true} unless a right-hand-side axis is
+  plotted.
 \item
   \texttt{'xLabel='} {[} char \textbar{} \emph{empty} {]} - Label the
   x-axis.
@@ -71,15 +76,42 @@ P.graph(Caption,...)
   y-axis.
 \item
   \texttt{'zeroLine='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - (Inheritable) Add a horizontal zero line
-  if zero is included on the y-axis.
+  \emph{\texttt{false}} \textbar{} cell {]} - (Inheritable) Add a
+  horizontal zero line if zero is included on the y-axis; specify
+  zeroline options in a cell array.
 \end{itemize}
 
-\paragraph{Generic options}
+\paragraph{Date format options}\label{date-format-options}
+
+See \href{dates/dat2str}{\texttt{dat2str}} for details on date format
+options.
+
+\begin{itemize}
+\item
+  \texttt{'dateFormat='} {[} char \textbar{} cellstr \textbar{}
+  \emph{\texttt{'YYYYFP'}} {]} - Date format string, or array of format
+  strings (possibly different for each date).
+\item
+  \texttt{'freqLetters='} {[} char \textbar{} \emph{\texttt{'YHQBMW'}}
+  {]} - Six letters used to represent the six possible frequencies of
+  IRIS dates, in this order: yearly, half-yearly, quarterly, bi-monthly,
+  monthly, and weekly (such as the \texttt{'Q'} in \texttt{'2010Q1'}).
+\item
+  \texttt{'months='} {[} cellstr \textbar{}
+  \emph{\texttt{\{'January',...,'December'\}}} {]} - Twelve strings
+  representing the names of the twelve months.
+\item
+  \texttt{'standinMonth='} {[} numeric \textbar{} \texttt{'last'}
+  \textbar{} \emph{\texttt{1}} {]} - Month that will represent a
+  lower-than-monthly-frequency date if the month is part of the date
+  format string.
+\end{itemize}
+
+\paragraph{Generic options}\label{generic-options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The options \texttt{'preProcess='} and \texttt{'postProcess='} give you
 additional flexibility in customising the graphics style of the axes
@@ -98,7 +130,7 @@ can refer to the following variables:
   \texttt{NaN}.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 Create a one-page report with a chart in on the LHS and the legend moved
 to the RHS. Use the function \texttt{grfun.movetosubplot} in the option

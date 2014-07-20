@@ -7,7 +7,7 @@
 %
 %     %{
 %     Write text or \LaTeX\ code as a block comment
-%     right after the P.tex(...) command.
+%     right after the P.tex( ) command.
 %     %}
 %
 % Syntax with input specified as char argument

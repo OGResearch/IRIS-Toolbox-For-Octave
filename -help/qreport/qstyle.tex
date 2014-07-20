@@ -2,13 +2,13 @@
 
     \filetitle{qstyle}{Apply styles to graphics object and its descandants}{qreport/qstyle}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 qstyle(H,S,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -22,7 +22,7 @@ qstyle(H,S,...)
   graphics objects allowed.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -34,7 +34,7 @@ qstyle(H,S,...)
   {]} - Display warnings produced by this function.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The style structure, \texttt{S}, is constructed of any number of nested
 object-property fields:
@@ -70,7 +70,7 @@ top-level fields can refer to:
   \texttt{text}
 \end{itemize}
 
-\subparagraph{Special object names}
+\subparagraph{Special object names}\label{special-object-names}
 
 In addition to standard Matlab graphics object names, you can also refer
 to the following special instances of objects created by IRIS functions:
@@ -90,7 +90,7 @@ to the following special instances of objects created by IRIS functions:
   \texttt{highlightcaption} (a text object created by
   \texttt{highlight});
 \item
-  \texttt{vline} (a line object created by \texttt{vline});
+  \texttt{vline} (a patch object created by \texttt{vline});
 \item
   \texttt{vlinecaption} (a text object created by \texttt{vline});
 \item
@@ -118,7 +118,7 @@ following:
   \texttt{H}, a handle to the current object.
 \end{itemize}
 
-\subparagraph{Setting font size}
+\subparagraph{Setting font size}\label{setting-font-size}
 
 Font size (in objects like axes, title, etc.) can be set to either a
 numeric scalar (which is the default Matlab behavior) or a character
@@ -126,6 +126,6 @@ string describing a numerical value followed by a percent sign, such as
 \texttt{'150\%'}. In that case, the font size will be set to the
 corresponding percentage of the current size.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -37,7 +37,7 @@ function [This,Y0,K0,Y1,G1] = uncmean(YBar,Mu,varargin)
 
 pp = inputParser();
 pp.addRequired('YBar',@isnumeric);
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@isnumericscalar);
 pp.parse(YBar,Mu);
 
 if ~isempty(varargin) && nargout == 1
@@ -59,9 +59,13 @@ if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function Y0 = y0(Ny,~,~,Nk)
         yBar = YBar(:);
         if length(yBar) == 1
@@ -71,14 +75,20 @@ end
         if Nk ~= 1
             Y0 = Y0(:,ones(Nk,1));
         end
-    end % y0().
+    end % y0()
+
 
 %**************************************************************************
+
+    
     function K0 = k0(~,~,~,Nk)
         K0 = Mu*eye(Nk);
-    end % k0().
+    end % k0()
+
 
 %**************************************************************************
+
+    
     function Y1 = y1(Ny,P,~,Nk)
         yBar = YBar(:);
         if length(yBar) == 1
@@ -88,11 +98,15 @@ end
         if Nk ~= 1
             Y1 = Y1(:,ones(Nk,1));
         end
-    end % y1().
+    end % y1()
+
 
 %**************************************************************************
+
+    
     function G1 = g1(~,~,Ng,Nk)
         G1 = zeros(Ng,Nk);
-    end % g1().
+    end % g1()
+
 
 end

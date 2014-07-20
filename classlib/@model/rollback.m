@@ -66,11 +66,10 @@ function D = rollback(This,D,Range,Last)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('M',@(x) is.model(x) && length(x) == 1);
 pp.addRequired('Inp',@(x) isstruct(x) || isempty(x));
 pp.addRequired('Range',@(x) isnumeric(x) && all(freqcmp(x)));
-pp.addRequired('Back',@(x) is.numericscalar(x) && all(freqcmp(x,Range)));
-pp.parse(This,D,Range,Last);
+pp.addRequired('Back',@(x) isnumericscalar(x) && all(freqcmp(x,Range)));
+pp.parse(D,Range,Last);
 
 %--------------------------------------------------------------------------
 
@@ -123,7 +122,7 @@ end
             name = yList{ii};
             if isfield(D,name)
                 x = D.(name);
-                ixTseries(ii) = is.tseries(x);
+                ixTseries(ii) = istseries(x);
                 if ixTseries(ii)
                     ixSingleCol(ii) = size(x.data(:,:),2) == 1;
                 end

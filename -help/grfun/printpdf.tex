@@ -2,14 +2,14 @@
 
     \filetitle{printpdf}{Print figure window to PDF via EPS}{grfun/printpdf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 printpdf(FileName)
 printpdf(Fig,FileName)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -20,17 +20,14 @@ printpdf(Fig,FileName)
   PDF.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The function \texttt{printpdf} prints a figure window to a PDF by first
 creating a color EPS file and then using the \texttt{epstopdf} utility
 to convert the EPS to the final PDF. The Painters renderer is used in
 the Matlab \texttt{print} command.
 
-The advantage of printing a PDF via EPS with Painters is to crop the
-unnecessary white margins around the graphics.
-
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 plot(rand(15));

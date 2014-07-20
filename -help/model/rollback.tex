@@ -2,13 +2,13 @@
 
     \filetitle{rollback}{Prepare database for a rollback run of Kalman filter}{model/rollback}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Inp = rollback(M,Inp,Range,Date)
 \end{verbatim}
 
-\paragraph{Input argument}
+\paragraph{Input argument}\label{input-argument}
 
 \begin{itemize}
 \item
@@ -24,7 +24,7 @@ Inp = rollback(M,Inp,Range,Date)
   entries will be rolled back, see Description.
 \end{itemize}
 
-\paragraph{Output argument}
+\paragraph{Output argument}\label{output-argument}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -34,7 +34,7 @@ Inp = rollback(M,Inp,Range,Date)
   a time, see Description.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The function \texttt{rollback} takes a database with a single set of
 input data that is supposed to be used in a future call to a Kalman
@@ -62,7 +62,7 @@ variables contained in the database) in the following way:
   \texttt{Range}.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 If the model \texttt{m} contains, for instance, 3 measurement variable,
 the following commands will produce a total of 13 Kalman filter runs,

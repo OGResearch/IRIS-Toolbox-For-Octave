@@ -2,30 +2,30 @@
 
     \filetitle{diffloglik}{Approximate gradient and hessian of log-likelihood function}{model/diffloglik}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-[MinusLogLik,Grad,Hess,V] = diffloglik(M,D,Range,PList,...)
+[MinusLogLik,Grad,Hess,V] = diffloglik(M,Inp,Range,PList,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
   \texttt{M} {[} model {]} - Model object whose likelihood function will
   be differentiated.
 \item
-  \texttt{D} {[} cell \textbar{} struct {]} - Input data from which
+  \texttt{Inp} {[} cell \textbar{} struct {]} - Input data from which
   measurement variables will be taken.
 \item
   \texttt{Range} {[} numeric {]} - Date range on which the likelihood
   function will be evaluated.
 \item
-  \texttt{List} {[} cellstr {]} - List of model parameters with respect
+  \texttt{PList} {[} cellstr {]} - List of model parameters with respect
   to which the likelihood function will be differentiated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -40,7 +40,7 @@
   \texttt{'relative='} options is true; otherwise \texttt{v} is 1.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -65,8 +65,8 @@
 See help on \href{model/filter}{\texttt{model/filter}} for other options
 available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

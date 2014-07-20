@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -107,21 +119,21 @@ code.LaTeX {
 
 
 <h2 id="VAR/demean">demean</h2>
-<div class="headline">Remove constant from VAR object</div>
+<div class="headline">Remove constant and the effect of exogenous inputs from VAR object</div>
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>V = demean(V)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
-<li><code>V</code> [ VAR ] - VAR object in which the constant vector will be reset to zero.</li>
+<li><code>V</code> [ VAR ] - VAR object.</li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
-<li><code>V</code> [ VAR ] - VAR object with the constant vector reset to zero.</li>
+<li><code>V</code> [ VAR ] - VAR object with the constant vector, <code>K</code>, and the asymptotic assumptions for exogenous inputs, <code>X0</code>, reset to zero.</li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

@@ -9,7 +9,7 @@ function [This,S] = assign(This,S)
 
 %--------------------------------------------------------------------------
 
-asgn = This.assign;
+asgn = This.Assign;
 
 % Evaluate values assigned in the model code and/or in the `assign`
 % database. Go backward to evaluate parameters first so that they are
@@ -23,10 +23,12 @@ asgn = This.assign;
     end % doReplaceNameValue()
 
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-% rplFunc = @doReplaceNameValue; %#ok<NASGU>
+if true % ##### MOSW
+    rplFunc = @doReplaceNameValue; %#ok<NASGU>
+end
 stdcorrDecld = {};
 
-for iBlk = blkpos(This,This.assignBlkOrd)
+for iBlk = blkpos(This,This.AssignBlkOrd)
     
     if isempty(S(iBlk).name)
         continue
@@ -38,17 +40,19 @@ for iBlk = blkpos(This,This.assignBlkOrd)
             continue
         end
         
-        value = S(iBlk).namevalue{iName};
+        value = S(iBlk).NameValue{iName};
         if isempty(value)
             continue
         end
-        % ##### MOSW:
-        % value = regexprep(value,ptn,'${rplFunc($0)}');
-        value = mosw.dregexprep(value,ptn,@doReplaceNameValue,0);
+        if true % ##### MOSW
+            value = regexprep(value,ptn,'${rplFunc($0)}');
+        else
+            value = mosw.dregexprep(value,ptn,'doReplaceNameValue',0); %#ok<UNRCH>
+        end
         
         try
             x = eval(value);
-            if isnumeric(x) % is.numericscalar(x)
+            if isnumeric(x) % isnumericscalar(x)
                 asgn.(name) = x(:).';
             end
         catch %#ok<CTCH>
@@ -67,7 +71,7 @@ for iBlk = blkpos(This,This.assignBlkOrd)
         S(iBlk).nametype(inx) = [];
         S(iBlk).namelabel(inx) = [];
         S(iBlk).namealias(inx) = [];
-        S(iBlk).nameflag(inx) = [];
+        S(iBlk).IxLog(inx) = [];
     end
     
 end
@@ -76,7 +80,7 @@ end
 if ~isempty(stdcorrDecld)
     nStdcorrDecld = length(stdcorrDecld);
     valid = true(size(stdcorrDecld));
-    listE = [S(This.stdcorrBasis).name];
+    listE = [S(This.IxStdcorrBasis).name];
     for i = 1 : nStdcorrDecld
         stdcorr = stdcorrDecld{i};
         inx = theparser.stdcorrindex(listE,stdcorr);
@@ -89,6 +93,6 @@ if ~isempty(stdcorrDecld)
     end
 end
 
-This.assign = asgn;
+This.Assign = asgn;
 
 end

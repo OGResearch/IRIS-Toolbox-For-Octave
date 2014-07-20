@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{concmath}
-\usepackage{sectsty,amsmath,color}
+\usepackage{sectsty,amsmath,color,amssymb}
 \usepackage[scale=0.7]{geometry}
 \usepackage{inconsolata}
 \usepackage[pdftex,colorlinks,linkcolor=blue]{hyperref}
@@ -13,7 +13,8 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.5\baselineskip}
 
-\definecolor{codecolor}{rgb}{0.30,0.30,0.30}
+\definecolor{codecolor}{rgb}{0.2,0.2,0.4}
+\definecolor{coderulecolor}{rgb}{0.5,0.5,0.6}
 \definecolor{sectioncolor}{rgb}{0.80,0,0}
 \definecolor{warningcolor}{rgb}{0.90,0,0}
 
@@ -70,7 +71,6 @@
 \partfont{\centering}
 \sectionfont{\centering}
 \subsectionfont{\mycmss\normalsize}
-\paragraphfont{\mdseries\itshape}
 
 \newcommand{\thefolderheading}{}
 \newcommand{\thefileheading}{}
@@ -91,23 +91,28 @@
 
 \renewcommand{\emph}[1]{\underline{#1}}
 
-\newcommand{\irisversion}{20140508}
+\newcommand{\irisversion}{20140719}
 \newcommand{\matlabversion}{R2010a}
 \newcommand{\tsum}{{\textstyle{\sum}\,}}
 \newcommand{\dollar}{\$}
+\newcommand{\attention}{{\color{red}\bigstar\bigstar\bigstar}}
 
 \RecustomVerbatimEnvironment
   {verbatim}{Verbatim}
-  {frame=leftline,framerule=0.2em,framesep=0.5em,formatcom=\color{codecolor},xleftmargin=1em}
+  {frame=leftline,framerule=0.4em,framesep=0.5em,
+   rulecolor=\color{coderulecolor},
+   formatcom=\color{codecolor},xleftmargin=1em}
 
 \setcounter{secnumdepth}{1}	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 \begin{document}
 
 \thispagestyle{empty}
-\title{\vspace*{0.2\textheight}\huge\mdseries IRIS Toolbox\\Reference Manual \\[24pt] \rmfamily \large \mdseries Version \texttt{\#\irisversion}\ \\[6pt]
+\title{\vspace*{0.2\textheight}\Huge\mdseries IRIS Toolbox\\Reference Manual \\[30pt] \rmfamily \large \mdseries Release {\irisversion}\ \\[6pt]
 Runs in Matlab\raisebox{5pt}{\tiny $\copyright$}\ \matlabversion\ or later}
-\author{by \\[2pt] IRIS Solutions Team}
+\author{\textit{by} \\[2pt] IRIS Solutions Team}
 \date{\bigskip\bigskip \Today\\[5pt]}
 \maketitle
 \thispagestyle{empty}

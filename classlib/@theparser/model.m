@@ -10,150 +10,150 @@ function This = model(This)
 %--------------------------------------------------------------------------
 
 % 1 - Measurement variables.
-This.blkName{end+1} = '!measurement_variables';
-This.nameType(end+1) = 1;
-This.nameBlk(end+1) = true;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = true;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!measurement_variables';
+This.NameType(end+1) = 1;
+This.IxNameBlk(end+1) = true;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = true;
+This.IxEssential(end+1) = false;
 
 % 2 - Transition variables.
-This.blkName{end+1} = '!transition_variables';
-This.nameBlk(end+1) = true;
-This.nameType(end+1) = 2;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = true;
-This.essential(end+1) = true;
+This.BlkName{end+1} = '!transition_variables';
+This.IxNameBlk(end+1) = true;
+This.NameType(end+1) = 2;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = true;
+This.IxEssential(end+1) = true;
 
 % 3 - Parameters.
-This.blkName{end+1} = '!parameters';
-This.nameBlk(end+1) = true;
-This.nameType(end+1) = 4;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = true;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!parameters';
+This.IxNameBlk(end+1) = true;
+This.NameType(end+1) = 4;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = true;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 4 - Log variables.
-This.blkName{end+1} = '!log_variables';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = true;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!log_variables';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = true;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 5 - Measurement equations.
-This.blkName{end+1} = '!measurement_equations';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!measurement_equations';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 6 - Transition equations.
-This.blkName{end+1} = '!transition_equations';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = true;
+This.BlkName{end+1} = '!transition_equations';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = true;
 
 % 7 - Deterministic trends.
-This.blkName{end+1} = '!dtrends';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!dtrends';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 8 - Reporting equations.
-This.blkName{end+1} = '!reporting_equations';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!reporting_equations';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 9 - Measurement shocks.
-This.blkName{end+1} = '!measurement_shocks';
-This.nameBlk(end+1) = true;
-This.nameType(end+1) = 3.1;
-This.stdcorrBasis(end+1) = true;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!measurement_shocks';
+This.IxNameBlk(end+1) = true;
+This.NameType(end+1) = 3.1;
+This.IxStdcorrBasis(end+1) = true;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 10 - Transition shocks.
-This.blkName{end+1} = '!transition_shocks';
-This.nameBlk(end+1) = true;
-This.nameType(end+1) = 3.2;
-This.stdcorrBasis(end+1) = true;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!transition_shocks';
+This.IxNameBlk(end+1) = true;
+This.NameType(end+1) = 3.2;
+This.IxStdcorrBasis(end+1) = true;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 11 - Dynamic links.
-This.blkName{end+1} = '!links';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!links';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 12 - Autoexogenise.
-This.blkName{end+1} = '!autoexogenise';
-This.nameBlk(end+1) = false;
-This.nameType(end+1) = NaN;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = true;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!autoexogenise';
+This.IxNameBlk(end+1) = false;
+This.NameType(end+1) = NaN;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = true;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % 13 - Exogenous variables in dtrends.
-This.blkName{end+1} = '!exogenous_variables';
-This.nameBlk(end+1) = true;
-This.nameType(end+1) = 5;
-This.stdcorrBasis(end+1) = false;
-This.stdcorrAllowed(end+1) = false;
-This.eqtnBlk(end+1) = false;
-This.flagBlk(end+1) = false;
-This.flaggable(end+1) = false;
-This.essential(end+1) = false;
+This.BlkName{end+1} = '!exogenous_variables';
+This.IxNameBlk(end+1) = true;
+This.NameType(end+1) = 5;
+This.IxStdcorrBasis(end+1) = false;
+This.IxStdcorrAllowed(end+1) = false;
+This.IxEqtnBlk(end+1) = false;
+This.IxLogBlk(end+1) = false;
+This.IxLoggable(end+1) = false;
+This.IxEssential(end+1) = false;
 
 % Alternative names.
-This.altBlkName = { ...
+This.AltBlkName = { ...
     '!allbut','!all_but'; ...
     '!equations','!transition_equations'; ...
     '!variables','!transition_variables'; ...
@@ -162,7 +162,7 @@ This.altBlkName = { ...
     };
 
 % Alternative names with warning.
-This.altBlkNameWarn = { ...
+This.AltBlkNameWarn = { ...
     '!coefficients','!parameters'; ...
     '!variables:residual','!shocks'; ...
     '!variables:innovation','!shocks'; ...
@@ -182,14 +182,14 @@ This.altBlkNameWarn = { ...
     };
 
 % Other keywords -- do not throw an error message for these.
-This.otherKey = { ...
+This.OtherKey = { ...
     '!linear', ...
     '!ttrend', ...
     '!min', ...
     };
 
 % Order in which values assigned to names will be evaluated in assign().
-This.assignBlkOrd = { ...
+This.AssignBlkOrd = { ...
     '!parameters', ...
     '!exogenous_variables', ...
     '!transition_variables', ...

@@ -1,6 +1,6 @@
-% BVAR  Bayesian VAR prior dummies: BVAR package.
+% BVAR  Bayesian VAR Priors: BVAR Package.
 %
-% The BVAR package can be used to create the basic types of prior dummy
+% The BVAR package is used to create basic types of prior dummy
 % observations when estimating Bayesian VAR models. The dummy observations
 % are passed in the [`VAR/estimate`](VAR/estimate) function through the
 % `'BVAR='` option.

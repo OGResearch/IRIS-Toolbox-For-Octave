@@ -2,21 +2,21 @@
 
     \filetitle{loglik}{Evaluate minus the log-likelihood function in time or frequency domain}{model/loglik}
 
-	\paragraph{Full syntax}
+	\paragraph{Full syntax}\label{full-syntax}
 
 \begin{verbatim}
 [Obj,V,F,PE,Delta,PDelta] = loglik(M,D,Range,...)
 \end{verbatim}
 
 \paragraph{Syntax for fast one-off likelihood
-evaluation}
+evaluation}\label{syntax-for-fast-one-off-likelihood-evaluation}
 
 \begin{verbatim}
 Obj = loglik(M,D,Range,...)
 \end{verbatim}
 
 \paragraph{Syntax for repeated fast likelihood
-evaluations}
+evaluations}\label{syntax-for-repeated-fast-likelihood-evaluations}
 
 \begin{verbatim}
 % Step #1: Initialise.
@@ -36,7 +36,7 @@ L = loglik(M);
 % ...
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -49,7 +49,7 @@ L = loglik(M);
   \texttt{Range} {[} numeric {]} - Date range.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -74,7 +74,7 @@ L = loglik(M);
   \texttt{'outoflik='} parameters.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -92,7 +92,7 @@ L = loglik(M);
 See help on \href{model/filter}{\texttt{model/filter}} for other options
 available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The number of output arguments you request when calling \texttt{loglik}
 affects computational efficiency. Running the function with only the
@@ -104,7 +104,7 @@ The \texttt{loglik} function runs an identical Kalman filter as
 types and order of output arguments returned.
 
 \subparagraph{Fast evaluation of
-likelihood}
+likelihood}\label{fast-evaluation-of-likelihood}
 
 Every time you change the parameters, you need to update the steady
 state and solution of the model if necessary by yourself, before calling
@@ -135,6 +135,6 @@ state and solution of the model if necessary by yourself, before calling
   \href{model/solve}{\texttt{solve}}.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

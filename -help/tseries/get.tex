@@ -2,32 +2,32 @@
 
     \filetitle{get}{Query tseries object property}{tseries/get}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
-Value = get(x,Query)
-[Value,Value,...] = get(x,Query,Query,...)
+Ans = get(X,Query)
+[Ans,Ans,...] = get(X,Query,Query,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
-  \texttt{x} {[} model {]} - Tseries object.
+  \texttt{X} {[} model {]} - Tseries object.
 \item
-  \texttt{Query} {[} char {]} - Name of the queried property.
+  \texttt{Query} {[} char {]} - Query to the tseries object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  \texttt{Value} {[} \ldots{} {]} - Value of the queried property.
+  \texttt{Ans} {[} \ldots{} {]} - Answer to the query.
 \end{itemize}
 
-\paragraph{Valid queries on tseries
-objects}
+\paragraph{Valid queries to tseries
+objects}\label{valid-queries-to-tseries-objects}
 
 \begin{itemize}
 \item
@@ -56,6 +56,6 @@ objects}
   observation.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 

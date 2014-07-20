@@ -31,11 +31,11 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('Mu',@is.numericscalar);
+pp.addRequired('Mu',@isnumericscalar);
 pp.parse(Mu);
 
 if ~isempty(varargin) && nargout == 1
-    utils.warning('BVAR', ...
+    utils.warning('BVAR:sumofcoeff', ...
         ['This is an obsolete syntax to call BVAR.litterman(). ', ...
         'See documentation for valid syntax.']);
 end
@@ -53,26 +53,40 @@ if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function Y0 = y0(Ny,~,~,~)
         Y0 = eye(Ny)*Mu;
-    end % y0().
+    end % y0()
+
 
 %**************************************************************************
+
+
     function K0 = k0(Ny,~,~,Nk)
         K0 = zeros(Nk,Ny);
-    end % k0().
+    end % k0()
+
 
 %**************************************************************************
+    
+
     function Y1 = y1(Ny,P,~,~)
         Y1 = repmat(Mu*eye(Ny),[P,1]);
-    end % y1().
+    end % y1()
+
 
 %**************************************************************************
+
+    
     function G1 = g1(~,~,Ng,~)
         G1 = zeros(Ng,Ny);
-    end % g1().
+    end % g1()
+
 
 end

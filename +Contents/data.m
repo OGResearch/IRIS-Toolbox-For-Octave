@@ -1,10 +1,12 @@
-% data  Time series and database management.
+% data  Time Series and Database Management.
 %
-% * [dates](dates/Contents) - Dates and date ranges.
+% * [dates](dates/Contents) - Dates and Date Ranges.
 %
-% * [tseries](tseries/Contents) - Time series objects and functions.
+% * [tseries](tseries/Contents) - Time Series (Tseries) Objects and Functions.
 %
-% * [dbase](dbase/Contents) - Basic database management.
+% * [trec](trec/Contents) - Time-Recursive Subscript Objects for Time-Recursive Expressions.
+%
+% * [dbase](dbase/Contents) - Basic Database Management.
 %
 
 % -IRIS Toolbox.

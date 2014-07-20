@@ -34,8 +34,8 @@ function Outp = resample(This,Inp,Range,NDraw,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Add deterministic trends to
-% measurement variables.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Add deterministic
+% trends to measurement variables.
 %
 % * `'method='` [ `'bootstrap'` | *`'montecarlo'`* ] - Method of
 % randomising shocks and initial condition.
@@ -91,21 +91,14 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('M',@is.model);
-pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || is.tseries(x));
+pp.addRequired('Inp',@(x) isnumeric(x) || isstruct(x) || istseries(x));
 pp.addRequired('Range',@(x) isnumeric(x));
-pp.addRequired('NDraw',@(x) is.numericscalar(x));
+pp.addRequired('NDraw',@(x) isnumericscalar(x));
 pp.addRequired('J',@(x) isempty(x) || isstruct(x));
-pp.parse(This,Inp,Range,NDraw,J);
+pp.parse(Inp,Range,NDraw,J);
 
 % Parse options.
 opt = passvalopt('model.resample',varargin{:});
-
-% If `'dtrends='` option is `'auto'` switch on/off the dtrends according to
-% `'deviation='`.
-if ischar(opt.dtrends) && strcmpi(opt.dtrends,'auto')
-    opt.dtrends = ~opt.deviation;
-end
 
 % `nInit` is the number of pre-sample periods used to resample the initial
 % condition if user does not wish to factorise the covariance matrix.
@@ -132,9 +125,8 @@ end
 %--------------------------------------------------------------------------
 
 Range = Range(1) : Range(end);
-XRange = Range(1)-1 : Range(end);
+xRange = Range(1)-1 : Range(end);
 nPer = length(Range);
-nXPer = length(XRange);
 realSmall = getrealsmall();
 nAlt = size(This.Assign,3);
 
@@ -150,18 +142,19 @@ nx = size(This.solution{1},1);
 nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = sum(This.nametype == 3);
+ng = sum(This.nametype == 5);
 
 [T,R,K,Z,H,D,U,Omg] = mysspace(This,1,false);
 
 % Pre-allocate output data.
-hData = hdataobj(This,[],nXPer,NDraw);
+hData = hdataobj(This,xRange,NDraw);
 
 % Return immediately if solution is not available.
 if any(isnan(T(:)))
     utils.warning('model', ...
         'Solution(s) not available: #1.');
     % Convert emptpy hdataobj to tseries database.
-    Outp = hdata2tseries(hData,This,XRange);
+    Outp = hdata2tseries(hData);
     return
 end
 
@@ -177,16 +170,14 @@ usrStdcorr = mytune2stdcorr(This,Range,J,opt);
 usrStdcorrInx = ~isnan(usrStdcorr);
 
 % Get tunes on the mean of shocks.
-isShockMean = false;
+isShkMean = false;
 if ~isempty(J)
-    shockMean = datarequest('e',This,J,Range);
-    isShockMean = any(shockMean(:) ~= 0);
+    shkMean = datarequest('e',This,J,Range,1);
+    isShkMean = any(shkMean(:) ~= 0);
 end
 
 % Get exogenous variables in dtrend equations.
-if opt.dtrends
-    G = datarequest('g',This,Inp,Range);
-end
+G = datarequest('g',This,Inp,Range);
 
 % Describe the distribution of initial conditions
 %-------------------------------------------------
@@ -196,17 +187,17 @@ elseif isequal(opt.method,'bootstrap')
     % (1) Bootstrap.
     if ~opt.wild
         % (1a) Efron boostrap.
-        sourceAlpha = datarequest('alpha',This,Inp,Range);
+        sourceAlpha = datarequest('alpha',This,Inp,Range,1);
     else
         % (1b) Wild bootstrap.
-        sourceAlpha0 = datarequest('init',This,Inp,Range);
+        sourceAlpha0 = datarequest('init',This,Inp,Range,1);
         Ea = doUncMean();
     end
 else
     % (2) Monte Carlo or user-supplied sampler.
     if ~isempty(Inp)
         % (2a) User-supplied distribution.
-        [Ea,~,~,Pa] = datarequest('init',This,Inp,Range);
+        [Ea,~,~,Pa] = datarequest('init',This,Inp,Range,1);
         Ex = U*Ea;
         if isempty(Pa)
             opt.randominitcond = false;
@@ -246,7 +237,7 @@ end
 %-------------------------------------
 if isequal(opt.method,'bootstrap')
     % (1) Bootstrap.
-    sourceE = datarequest('e',This,Inp,Range);
+    sourceE = datarequest('e',This,Inp,Range,1);
 else
     % (2) Monte Carlo.
     % TODO: Use `mycombinestdcorr` instead.
@@ -289,10 +280,6 @@ end
 RInx = any(abs(R(:,1:ne)) > 0,1);
 HInx = any(abs(H(:,1:ne)) > 0,1);
 
-if opt.dtrends
-    W = mydtrendsrequest(This,'range',Range,G,Inf);
-end
-
 % Create a command-window progress bar.
 if opt.progress
     progress = progressbar('IRIS model.resample progress');
@@ -303,8 +290,8 @@ end
 for iDraw = 1 : NDraw
     e = doDrawShocks();
     % 
-    if isShockMean
-        e = e + shockMean;
+    if isShkMean
+        e = e + shkMean;
     end
     a0 = doDrawInitCond();
     % Transition variables.
@@ -324,8 +311,10 @@ for iDraw = 1 : NDraw
     if ~opt.deviation
         y = y + D(:,ones(1,nPer));
     end
+    g = G(:,:,min(iDraw,end));
     if opt.dtrends
-        y = y + W(:,:,min(iDraw,end));
+        W = mydtrendsrequest(This,'range',Range,g);
+        y = y + W;
     end
     % Store this draw.
     doStoreDraw();
@@ -336,7 +325,7 @@ for iDraw = 1 : NDraw
 end
 
 % Convert hdataobj to tseries database.
-Outp = hdata2tseries(hData,This,XRange);
+Outp = hdata2tseries(hData);
 
 % Nested functions.
 
@@ -432,9 +421,12 @@ Outp = hdata2tseries(hData,This,XRange);
                 a0 = Ea;
             end
         end
-    end % doDrawInitCond().
+    end % doDrawInitCond()
+
 
 %**************************************************************************
+    
+    
     function doStoreDraw()
         if nInit == 0
             init = a0;
@@ -443,10 +435,15 @@ Outp = hdata2tseries(hData,This,XRange);
         end
         xf = [nan(nf,1),w(1:nf,nInit+1:end)];
         xb = U*[init,w(nf+1:end,nInit+1:end)];
-        hdataassign(hData,This,iDraw, ...
+        hdataassign(hData,iDraw, ...
+            { ...
             [nan(ny,1),y], ...
             [xf;xb], ...
-            [nan(ne,1),e(:,nInit+1:end)]);
-    end % doStoreDraw().
+            [nan(ne,1),e(:,nInit+1:end)], ...
+            [], ...
+            [nan(ng,1),g], ...
+            });
+    end % doStoreDraw()
+
 
 end

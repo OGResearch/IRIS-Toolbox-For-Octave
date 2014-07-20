@@ -2,13 +2,13 @@
 
     \filetitle{array}{Insert array with user data}{report/array}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 P.array(Caption,Data)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -23,7 +23,7 @@ P.array(Caption,Data)
   text entries are allowed.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -107,22 +107,22 @@ P.array(Caption,Data)
   \texttt{\textbackslash{}textit\{...\}}).
 \end{itemize}
 
-\paragraph{Generic options}
+\paragraph{Generic options}\label{generic-options}
 
 See help on \href{report/Contents}{generic options} in report objects.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The input cell array \texttt{Data} can contain either strings or numeric
 values, or horizontal rules. Numeric values are printed using the
 standard \texttt{sprintf} function and formatted using the
 \texttt{'format='} option. Horizontal rules must be entered as a string
-of five (or more) dashes, \texttt{'-{}-{}-{}-{}-'}, in the first cell of
+of five (or more) dashes, \texttt{'-\/-\/-\/-\/-'}, in the first cell of
 the respective row, with all other cells empty in that row. If you wish
 to include a \LaTeX~command or a piece of \LaTeX~code, you must enclose
 it in curly brackets.
 
-\subparagraph{Titles and subtitles}
+\subparagraph{Titles and subtitles}\label{titles-and-subtitles}
 
 The input argument \texttt{Caption} can be either a text string, or a
 1-by-2 cell array of strings. In the latter case, the first cell will be
@@ -135,7 +135,7 @@ LaTeX commands wrapped in curly brackets:
 is the width of an extra vertical space (in points) added between the
 respective lines.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 These commands create a table with two rows separated by a horizontal
 rule, and three columns in each of them. The middle columns will have
@@ -157,7 +157,7 @@ x.publish('test1.pdf');
 open test1.pdf;
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 Use the option \texttt{'inputFormat='} to change the way the input
 strings are interpreted. Compare the two tables in the resulting PDF.

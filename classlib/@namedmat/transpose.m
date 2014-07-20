@@ -29,12 +29,13 @@ function This = transpose(This)
 
 %--------------------------------------------------------------------------
 
-rowNames = This.Rownames;
-colNames = This.Colnames;
+rowNames = This.RowNames;
+colNames = This.ColNames;
 
 This = double(This);
 n = ndims(This);
 This = permute(This,[2,1,3:n]);
+
 This = namedmat(This,colNames,rowNames);
 
 end

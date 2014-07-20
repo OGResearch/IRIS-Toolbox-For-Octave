@@ -1,4 +1,4 @@
-function [X,Flag,Query] = specget(This,Query)
+function [Ans,Flag,Query] = specget(This,Query)
 % specget  [Not a public function] Implement GET method for model objects.
 %
 % Backend IRIS function.
@@ -10,14 +10,14 @@ function [X,Flag,Query] = specget(This,Query)
 %--------------------------------------------------------------------------
 
 % Call superclass `specget` first.
-[X,Flag,Query] = specget@modelobj(This,Query);
+[Ans,Flag,Query] = specget@modelobj(This,Query);
 
 % Call to superclass successful.
 if Flag
     return
 end
 
-X = [];
+Ans = [];
 Flag = true;
 
 ssLevel = [];
@@ -56,115 +56,117 @@ addParams = false;
 switch Query
     
     case 'ss'
-        X = cell2DbaseFunc(ssLevel+1i*ssGrowth);
+        Ans = cell2DbaseFunc(ssLevel+1i*ssGrowth);
         % addParams = true;
         
     case 'sslevel'
-        X = cell2DbaseFunc(ssLevel);
+        Ans = cell2DbaseFunc(ssLevel);
         addParams = true;
         
     case 'ssgrowth'
-        X = cell2DbaseFunc(ssGrowth);
+        Ans = cell2DbaseFunc(ssGrowth);
         addParams = true;
         
     case 'dt'
-        X = cell2DbaseFunc(dtLevel+1i*dtGrowth);
+        Ans = cell2DbaseFunc(dtLevel+1i*dtGrowth);
         addParams = true;
         
     case 'dtlevel'
-        X = cell2DbaseFunc(dtLevel);
+        Ans = cell2DbaseFunc(dtLevel);
         addParams = true;
         
     case 'dtgrowth'
         inx = This.nametype == 1;
-        X = cell2DbaseFunc(dtGrowth);
+        Ans = cell2DbaseFunc(dtGrowth);
         addParams = true;
         
     case 'ss+dt'
-        X = cell2DbaseFunc(level+1i*growth);
+        Ans = cell2DbaseFunc(level+1i*growth);
         addParams = true;
         
     case 'sslevel+dtlevel'
-        X = cell2DbaseFunc(level);
+        Ans = cell2DbaseFunc(level);
         addParams = true;
         
     case 'ssgrowth+dtgrowth'
-        X = cell2DbaseFunc(growth);
+        Ans = cell2DbaseFunc(growth);
         addParams = true;
         
     case {'eig','eigval','roots'}
-        X = eig(This);
+        Ans = eig(This);
         
     case 'rlist'
-        X = {This.outside.lhs{:}};
+        Ans = {This.outside.lhs{:}};
         
     case {'deqtn'}
-        X = This.eqtn(This.eqtntype == 3);
-        X(cellfun(@isempty,X)) = [];
+        Ans = This.eqtn(This.eqtntype == 3);
+        Ans(cellfun(@isempty,Ans)) = [];
         
     case {'leqtn'}
-        X = This.eqtn(This.eqtntype == 4);
+        Ans = This.eqtn(This.eqtntype == 4);
         
     case 'reqtn'
         n = length(This.outside.rhs);
-        X = cell([1,n]);
+        Ans = cell([1,n]);
         for i = 1 : n
-            X{i} = sprintf('%s=%s;', ...
+            Ans{i} = sprintf('%s=%s;', ...
                 This.outside.lhs{i},This.outside.rhs{i});
         end
         % Remove references to database d from reporting equations.
-        X = regexprep(X,'d\.([a-zA-Z])','$1');
+        Ans = regexprep(Ans,'d\.([a-zA-Z])','$1');
         
     case {'neqtn','nonlineqtn'}
-        X = This.eqtn(This.nonlin);
+        Ans = This.eqtn(This.IxNonlin);
         
     case {'nlabel','nonlinlabel'}
-        X = This.eqtnlabel(This.nonlin);
+        Ans = This.eqtnlabel(This.IxNonlin);
         
     case 'rlabel'
-        X = This.outside.label;
+        Ans = This.outside.label;
         
     case 'yvector'
-        X = This.solutionvector{1};
+        Ans = myvector(This,'y');
         
     case 'xvector'
-        X = This.solutionvector{2};
+        Ans = myvector(This,'x');
         
     case 'xfvector'
-        X = This.solutionvector{2}(1:nf);
+        Ans = myvector(This,'x');
+        Ans = Ans(1:nf);
         
     case 'xbvector'
-        X = This.solutionvector{2}(nf+1:end);
+        Ans = myvector(This,'x');
+        Ans = Ans(nf+1:end);
         
     case 'evector'
-        X = This.solutionvector{3};
+        Ans = myvector(This,'e');
         
     case {'ylog','xlog','elog'}
         inx = find(Query(1) == 'yxe');
-        X = This.log(This.nametype == inx);
+        Ans = This.IxLog(This.nametype == inx);
         
     case 'yid'
-        X = This.solutionid{1};
+        Ans = This.solutionid{1};
         
     case 'xid'
-        X = This.solutionid{2};
+        Ans = This.solutionid{2};
         
     case 'eid'
-        X = This.solutionid{3};
+        Ans = This.solutionid{3};
         
     case {'eylist','exlist'}
-        t = This.tzero;
+        t0 = find(This.Shift == 0);
         nname = length(This.name);
-        inx = nname*(t-1) + find(This.nametype == 3);
+        inx = nname*(t0-1) + find(This.nametype == 3);
         eyoccur = This.occur(This.eqtntype == 1,inx);
         exoccur = This.occur(This.eqtntype == 2,inx);
         eyindex = any(eyoccur,1);
         exindex = any(exoccur,1);        
         elist = This.name(This.nametype == 3);
         if Query(2) == 'y'
-            X = elist(eyindex);
+            Ans = elist(eyindex);
         else
-            X = elist(exindex);
+            Ans = elist(exindex);
         end
 
     case {'derivatives','xderivatives','yderivatives'}
@@ -175,14 +177,14 @@ switch Query
         
     case {'dlabel','llabel'}
         type = find(Query(1) == 'xydl');
-        X = This.eqtnlabel(This.eqtntype == type);
+        Ans = This.eqtnlabel(This.eqtntype == type);
 
     case {'deqtnalias','leqtnalias'}
         type = find(Query(1) == 'xydl');
-        X = This.eqtnalias(This.eqtntype == type);
+        Ans = This.eqtnalias(This.eqtntype == type);
         
     case 'link'
-        X = cell2struct(This.eqtn(This.eqtntype == 4), ...
+        Ans = cell2struct(This.eqtn(This.eqtntype == 4), ...
             This.name(This.Refresh),2);
         
     case {'diffuse','nonstationary','stationary', ...
@@ -190,21 +192,21 @@ switch Query
         doStationary();
         
     case 'maxlag'
-        X = min(imag(This.systemid{2}));
+        Ans = min(imag(This.systemid{2}));
         
     case 'maxlead'
-        X = max(imag(This.systemid{2})) + 1;
+        Ans = max(imag(This.systemid{2})) + 1;
         
     case {'icond','initcond','required'}
         % List of intial conditions required at least for one parameterisation.
         id = This.solutionid{2}(nf+1:end);
         inx = any(This.icondix,3);
         id = id(inx) - 1i;
-        X = myvector(This,id);
+        Ans = myvector(This,id);
         
     case {'forward'}
         ne = sum(This.nametype == 3);
-        X = size(This.solution{2},2)/ne - 1;
+        Ans = size(This.solution{2},2)/ne - 1;
         chkSolution = true;
         
     case {'stableroots','unitroots','unstableroots'}
@@ -216,25 +218,25 @@ switch Query
             case 'unitroots'
                 inx = abs(abs(This.eigval) - 1) <= eigValTol;
         end
-        X = nan(size(This.eigval));
+        Ans = nan(size(This.eigval));
         for iAlt = 1 : nAlt
             n = sum(inx(1,:,iAlt));
-            X(1,1:n,iAlt) = This.eigval(1,inx(1,:,iAlt),iAlt);
+            Ans(1,1:n,iAlt) = This.eigval(1,inx(1,:,iAlt),iAlt);
         end
-        X(:,all(isnan(X),3),:) = [];
+        Ans(:,all(isnan(Ans),3),:) = [];
         
     case 'epsilon'
-        X = This.epsilon;
+        Ans = This.epsilon;
         
     case 'userdata'
-        X = userdata(This);
+        Ans = userdata(This);
         
     % Database of autoexogenise definitions d.variable = 'shock';
     case {'autoexogenise','autoexogenised','autoexogenize','autoexogenized'}
-        X = autoexogenise(This);
+        Ans = autoexogenise(This);
         
     case {'activeshocks','inactiveshocks'}
-        X = cell([1,nAlt]);
+        Ans = cell([1,nAlt]);
         for iAlt = 1 : nAlt
             list = This.name(This.nametype == 3);
             stdvec = This.Assign(1, ...
@@ -244,22 +246,28 @@ switch Query
             else
                 list(stdvec ~= 0) = [];
             end
-            X{iAlt} = list;
+            Ans{iAlt} = list;
         end
         
     case 'nx'
-        X = length(This.solutionid{2});
+        Ans = length(This.solutionid{2});
     case 'nb'
-        X = size(This.solution{7},1);
+        Ans = size(This.solution{7},1);
     case 'nf'
-        X = length(This.solutionid{2}) - size(This.solution{7},1);
+        Ans = length(This.solutionid{2}) - size(This.solution{7},1);
     case 'ny'
-        X = length(This.solutionid{1});
+        Ans = length(This.solutionid{1});
     case 'ne'
-        X = length(This.solutionid{3});
+        Ans = length(This.solutionid{3});
         
     case 'lastsyst'
-        X = This.lastSyst;
+        Ans = This.lastSyst;
+        
+    case 'eqtnblk'
+        Ans = blazer.human(This.eqtn,This.EqtnBlk);
+        
+    case 'nameblk'
+        Ans = blazer.human(This.name,This.NameBlk);
         
     otherwise
         Flag = false;
@@ -278,7 +286,7 @@ end
 
 % Add parameters, std devs and non-zero cross-corrs.
 if addParams
-    X = addparam(This,X);
+    Ans = addparam(This,Ans);
 end
 
 
@@ -315,18 +323,18 @@ end
         if ~isempty(strfind(Query,'list'))
             % List.
             if nAlt == 1
-                X = name(status == true | status == 1);
-                X = X(:)';
+                Ans = name(status == true | status == 1);
+                Ans = Ans(:)';
             else
-                X = cell([1,nAlt]);
+                Ans = cell([1,nAlt]);
                 for ii = 1 : nAlt
-                    X{ii} = name(status(:,ii) == true | status(:,ii) == 1);
-                    X{ii} = X{ii}(:)';
+                    Ans{ii} = name(status(:,ii) == true | status(:,ii) == 1);
+                    Ans{ii} = Ans{ii}(:)';
                 end
             end
         else
             % Database.
-            X = cell2struct(num2cell(status,2),name(:),1);
+            Ans = cell2struct(num2cell(status,2),name(:),1);
         end
     end % doStationary()
 
@@ -343,26 +351,31 @@ end
             select = This.eqtntype <= 2;
         end
         nEqtn = sum(select);
-        X = cell(1,nEqtn);
+        Ans = cell(1,nEqtn);
         for iieq = find(select)
-            u = char(This.deqtnF{iieq});
+            u = This.DEqtnF{iieq};
+            if isfunc(u)
+                u = func2str(u);
+            end
             u = regexprep(u,'^@\(.*?\)','','once');
             
-            % ##### MOSW:
-            % replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
-            % u = regexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
-            %     '${replacePlusMinus($1,$2)}');
-            u = mosw.dregexprep(u,'\<x\>\(:,(\d+),t([+\-]\d+)\)', ...
-                @doReplacePlusMinus,[1,2]);
+            ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
+            if true % ##### MOSW
+                replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
+                u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
+            else
+                u = mosw.dregexprep(u,ptn,'doReplacePlusMinus',[1,2]); %#ok<UNRCH>
+            end
             
-            % ##### MOSW:
-            % replaceZero = @doReplaceZero; %#ok<NASGU>
-            % u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
-            %     '${replaceZero($1)}');
-            u = regexprep(u,'\<x\>\(:,(\d+),t\)', ...
-                @doReplaceZero,1);
+            ptn = '\<x\>\(:,(\d+),t\)';
+            if true % ##### MOSW
+                replaceZero = @doReplaceZero; %#ok<NASGU>
+                u = regexprep(u,ptn,'${replaceZero($1)}');
+            else
+                u = regexprep(u,ptn,'doReplaceZero',1); %#ok<UNRCH>
+            end
             
-            X{iieq} = u;
+            Ans{iieq} = u;
         end
         
         function c = doReplacePlusMinus(c1,c2)
@@ -390,21 +403,22 @@ end
             select = This.eqtntype <= 2;
         end        
         neqtn = sum(select);
-        X = cell(1,neqtn);
+        Ans = cell(1,neqtn);
+        t0 = find(This.Shift == 0);
         for iieq = find(select)
-            [tmocc,nmocc] = myfindoccur(This,iieq,'variables_shocks');
-            tmocc = tmocc - This.tzero;
-            nocc = length(tmocc);
-            X{iieq} = cell(1,nocc);
-            for iiocc = 1 : nocc
-                c = This.name{nmocc(iiocc)};
-                if tmocc(iiocc) ~= 0
-                    c = sprintf('%s{%+g}',c,tmocc(iiocc));
+            [tmOcc,nmOcc] = myfindoccur(This,iieq,'variables_shocks');
+            tmOcc = tmOcc - t0;
+            nOcc = length(tmOcc);
+            Ans{iieq} = cell(1,nOcc);
+            for iiOcc = 1 : nOcc
+                c = This.name{nmOcc(iiOcc)};
+                if tmOcc(iiOcc) ~= 0
+                    c = sprintf('%s{%+g}',c,tmOcc(iiOcc));
                 end
-                if This.log(nmocc(iiocc))
+                if This.IxLog(nmOcc(iiOcc))
                     c = ['log(',c,')']; %#ok<AGROW>
                 end
-                X{iieq}{iiocc} = c;
+                Ans{iieq}{iiOcc} = c;
             end
         end
     end % doWrt()
@@ -422,8 +436,8 @@ end
 function [ssLevel,ssGrowth,dtLevel,dtGrowth,ssDtLevel,ssDtGrowth] ...
     = xxSstate(This)
 
+realexp = @(x) real(exp(x));
 Assign = This.Assign;
-isLog = This.log;
 ny = sum(This.nametype == 1);
 nAlt = size(Assign,3);
 nName = size(This.Assign,2);
@@ -433,7 +447,7 @@ ssLevel = real(Assign);
 ssGrowth = imag(Assign);
 
 % Fix missing (=zero) growth in steady states of log variables.
-ssGrowth(ssGrowth == 0 & isLog(1,:,ones(1,nAlt))) = 1;
+ssGrowth(ssGrowth == 0 & This.IxLog(1,:,ones(1,nAlt))) = 1;
 
 % Retrieve dtrends.
 [dtLevel,dtGrowth] = mydtrendsrequest(This,'sstate');
@@ -441,17 +455,17 @@ dtLevel = permute(dtLevel,[3,1,2]);
 dtGrowth = permute(dtGrowth,[3,1,2]);
 dtLevel(:,ny+1:nName,:) = 0;
 dtGrowth(:,ny+1:nName,:) = 0;
-dtLevel(1,~isLog,:) = dtLevel(1,~isLog,:);
-dtLevel(1,isLog,:) = exp(dtLevel(1,isLog,:));
-dtGrowth(1,~isLog,:) = dtGrowth(1,~isLog,:);
-dtGrowth(1,isLog,:) = exp(dtGrowth(1,isLog,:));
+
+dtLevel(1,This.IxLog,:) = realexp(dtLevel(1,This.IxLog,:));
+dtGrowth(1,This.IxLog,:) = exp(dtGrowth(1,This.IxLog,:));
 
 % Steady state plus dtrends.
 ssDtLevel = ssLevel;
-ssDtLevel(1,isLog,:) = ssDtLevel(1,isLog,:) .* dtLevel(1,isLog,:);
-ssDtLevel(1,~isLog,:) = ssDtLevel(1,~isLog,:) + dtLevel(1,~isLog,:);
+ssDtLevel(1,~This.IxLog,:) = ssDtLevel(1,~This.IxLog,:) + dtLevel(1,~This.IxLog,:);
+ssDtLevel(1,This.IxLog,:) = ssDtLevel(1,This.IxLog,:) .* dtLevel(1,This.IxLog,:);
+
 ssDtGrowth = ssGrowth;
-ssDtGrowth(1,isLog,:) = ssDtGrowth(1,isLog,:) .* dtGrowth(1,isLog,:);
-ssDtGrowth(1,~isLog,:) = ssDtGrowth(1,~isLog,:) + dtGrowth(1,~isLog,:);
+ssDtGrowth(1,~This.IxLog,:) = ssDtGrowth(1,~This.IxLog,:) + dtGrowth(1,~This.IxLog,:);
+ssDtGrowth(1,This.IxLog,:) = ssDtGrowth(1,This.IxLog,:) .* dtGrowth(1,This.IxLog,:);
 
 end % xxSstate()

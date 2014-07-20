@@ -2,7 +2,7 @@
 
     \filetitle{bar}{Bar graph for tseries objects}{tseries/bar}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [H,Range] = bar(X,...)
@@ -10,7 +10,7 @@
 [H,Range] = bar(Ax,Range,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -25,7 +25,7 @@
   be ploted as a bar graph.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -35,26 +35,13 @@
   \texttt{Range} {[} numeric {]} - Actually plotted date Range.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
-\begin{itemize}
-\item
-  \texttt{'dateFormat='} {[} char \textbar{}
-  \emph{\texttt{irisget('plotdateformat')}} {]} - Date format for the
-  tick marks on the x-axis.
-\item
-  \texttt{'dateTick='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
-  Vector of dates locating tick marks on the x-axis; Inf means they will
-  be created automatically.
-\item
-  \texttt{'tight='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
-  {]} - Make the y-axis tight.
-\end{itemize}
+See help on \href{tseries/bar}{\texttt{tseries/bar}} and the built-in
+function \texttt{bar} for all options available.
 
-See help on built-in \texttt{bar} function for other options available.
+\paragraph{Description}\label{description}
 
-\paragraph{Description}
-
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

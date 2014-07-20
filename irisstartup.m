@@ -43,10 +43,19 @@ function irisstartup(varargin)
 %--------------------------------------------------------------------------
 
 % IRIS can only run in Matlab Release 2010a and higher.
-if xxMatlabRelease() < 2010
-    error('iris:startup',...
-        ['Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> ', ...
-        'can only run in Matlab R2010a or higher.']);
+if true % ##### MOSW
+    if xxMatlabRelease() < 2010
+        error('iris:startup',...
+            ['Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> ', ...
+            'can only run in Matlab R2010a or higher.']);
+    end
+else
+    vv = xxOctaveRelease();
+    if vv < 4101 % 4.1.0+, since classdef branch is far from stable
+        error('iris:startup', ['Sorry, The IRIS Toolbox ', ...
+        'can only run in Octave 4.1.0 or higher.']);
+    end
+    mlock; % temporary, while octave bug #35881 is not fixed
 end
 
 shutup = any(strcmpi(varargin,'-shutup'));
@@ -76,14 +85,15 @@ end
 try %#ok<TRYNC>
     munlock('irisconfigmaster');
 end
-clear('functions');
-passvalopt();
-passvalopt();
 
 % Reset the configuration file.
-rehash();
-irisreset();
+munlock irisconfigmaster;
+irisconfigmaster();
+irisreset(varargin{:});
 config = irisget();
+
+munlock passvalopt;
+passvalopt();
 
 version = irisget('version');
 if isIdChk
@@ -101,6 +111,8 @@ end
 
 
 %**************************************************************************
+
+    
     function doDeleteProgress()
         progress(1:end) = sprintf('\b');
         fprintf(progress); 
@@ -108,27 +120,28 @@ end
 
 
 %**************************************************************************
-    function doMessage()
-        
+    
+    
+    function doMessage()    
         % Intro message.
-        fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
+        mosw.fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
         fprintf('Release %s.',version);
         fprintf('\n');
         fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
-        fprintf('<a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">');
-        fprintf('IRIS Solutions Team</a>.');
+        mosw.fprintf('<a href="https://code.google.com/p/iris-toolbox-project/wiki/ist">');
+        mosw.fprintf('IRIS Solutions Team</a>.');
         fprintf('\n\n');
         
         % IRIS root folder.
-        fprintf('\tIRIS root: <a href="file:///%s">%s</a>.\n',root,root);
+        mosw.fprintf('\tIRIS root: <a href="file:///%s">%s</a>.\n',root,root);
         
         % Report user config file used.
         fprintf('\tUser config file: ');
         if isempty(config.userconfigpath)
-            fprintf('<a href="matlab: idoc config/irisuserconfighelp">');
+            mosw.fprintf('<a href="matlab: idoc config/irisuserconfighelp">');
             fprintf('No user config file found</a>.');
         else
-            fprintf('<a href="matlab: edit %s">%s</a>.', ...
+            mosw.fprintf('<a href="matlab: edit %s">%s</a>.', ...
                 config.userconfigpath,config.userconfigpath);
         end
         fprintf('\n');
@@ -136,17 +149,16 @@ end
         % TeX/LaTeX executables.
         fprintf('\tLaTeX binary files: ');
         if isempty(config.pdflatexpath)
-            fprintf('<a href="matlab: edit .m">');
-            fprintf('No TeX/LaTeX installation found</a>.');
+            fprintf('No TeX/LaTeX installation found.');
         else
             tmppath = fileparts(config.pdflatexpath);
-            fprintf('<a href="file:///%s">%s</a>.',tmppath,tmppath);
+            mosw.fprintf('<a href="file:///%s">%s</a>.',tmppath,tmppath);
         end
         fprintf('\n');
         
         % Report the X12 version integrated with IRIS.
-        fprintf('\t<a href="http://www.census.gov/srd/www/x13as/">');
-        fprintf('X13-ARIMA-SEATS</a>: ');
+        mosw.fprintf('\t<a href="http://www.census.gov/srd/www/x13as/">');
+        mosw.fprintf('X13-ARIMA-SEATS</a>: ');
         fprintf('Version 1.1 Build 9.');
         fprintf('\n');
         
@@ -156,18 +168,19 @@ end
             fprintf('\tSuperfluous IRIS folders removed from Matlab path:');
             fprintf('\n');
             for i = 1 : numel(removed)
-                fprintf('\t* <a href="file:///%s">%s</a>', ...
+                mosw.fprintf('\t* <a href="file:///%s">%s</a>', ...
                     removed{i},removed{i});
                 fprintf('\n');
             end
         end
         
         fprintf('\n');
-        
     end % doMessage()
 
 
 %**************************************************************************
+
+    
     function doIdChk()
         list = dir(fullfile(root,'iristbx*'));
         if length(list) == 1
@@ -225,3 +238,15 @@ try %#ok<TRYNC>
     end
 end
 end % xxMatlabRelease()
+
+function verNum = xxOctaveRelease()
+
+try
+    s = ver('OCTAVE');
+    verVec = sscanf(s.Version,'%d.%d.%d%c');
+    verNum = sum(reshape(verVec(1:3),1,[]).*[1e3 1e2 1e1]) + (length(verVec)>3);
+catch %#ok<CTCH>
+    verNum = [];
+end
+
+end % xxOctaveRelease()

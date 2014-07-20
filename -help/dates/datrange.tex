@@ -2,14 +2,14 @@
 
     \filetitle{datrange}{Numerically safe way to create a date range}{dates/datrange}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Rng = datrange(Start,End)
 Rng = datrange(Start,End,Step)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@ Rng = datrange(Start,End,Step)
   periods; if omitted, \texttt{Step = 1}.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -30,7 +30,7 @@ Rng = datrange(Start,End,Step)
   \texttt{Start : Step : End}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 Most of the time, using a colon operator to create a date range works
 fine,
@@ -53,7 +53,7 @@ is equivalent (but numerically safer) to
 Start : Step : End
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 The date ranges created in this example are identical, and no numerical
 inaccuracies exist:

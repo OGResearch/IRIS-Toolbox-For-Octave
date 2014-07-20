@@ -58,7 +58,7 @@ nb = size(This.solution{1},2);
 % Set the size of the initial conditions.
 if isempty(opt.size)
     % Default.
-    if This.linear
+    if This.IsLinear
         icSize = ones(1,nb);
     else
         icSize = ones(1,nb)*log(1.01);

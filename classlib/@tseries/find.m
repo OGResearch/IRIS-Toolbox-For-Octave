@@ -44,6 +44,7 @@ pp.addRequired('X',@(x) isa(x,'tseries'));
 pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
 pp.parse(X,Func);
 
+
 %--------------------------------------------------------------------------
 
 ix = Func(X.data(:,:),2);

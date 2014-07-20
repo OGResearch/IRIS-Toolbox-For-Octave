@@ -2,13 +2,13 @@
 
     \filetitle{addparam}{Add VAR parameters to a database (struct)}{VAR/addparam}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 D = addparam(V,D)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@ D = addparam(V,D)
   will be added.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -27,16 +27,17 @@ D = addparam(V,D)
   `D {[} struct {]} - Database with the VAR parameter matrices added.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The newly created database entries are named \texttt{A\_} (transition
-matrix), \texttt{K\_} (constant terms), \texttt{B\_} (matrix of
-instantaneous whock effects), and \texttt{Cov\_} (covariance matrix of
-shocks). Be aware that all existing database entries in \texttt{D} named
+matrix), \texttt{K\_} (constant terms), \texttt{J\_} (coefficient matrix
+in front of exogenous inputs), \texttt{B\_} (matrix of instantaneous
+whock effects), and \texttt{Cov\_} (covariance matrix of shocks). Be
+aware that all existing database entries in \texttt{D} named
 \texttt{A\_}, \texttt{K\_}, \texttt{B\_}, or \texttt{Omg\_} will be
 overwritten.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 D = struct();

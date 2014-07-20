@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -107,7 +119,7 @@ code.LaTeX {
 
 
 <h2 id="model/chksstate">chksstate</h2>
-<div class="headline">Check if equations hold for currently assigned steady0state values</div>
+<div class="headline">Check if equations hold for currently assigned steady-state values</div>
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>[Flag,List] = chksstate(M,...)
@@ -125,8 +137,8 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'error='</code> [ <em><code>true</code></em> | <code>false</code> ] - Throw an error if one or more equations do not hold.</p></li>
+<li><p><code>'eqtn='</code> [ <em><code>'full'</code></em> | <code>'sstate'</code> ] - Evaluate either full or steady-state equations on steady-state values.</p></li>
 <li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links before evaluating the equations.</p></li>
-<li><p><code>'sstateEqtn='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>false</code>, the dynamic model equations will be checked; if <code>true</code>, the steady-state versions of the equations (wherever available) will be checked.</p></li>
 <li><p><code>'tolerance='</code> [ numeric | <code>getrealsmall()</code> ] - Tolerance.</p></li>
 <li><p><code>'warning='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display warnings produced by this function.</p></li>
 </ul>
@@ -134,5 +146,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

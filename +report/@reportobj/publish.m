@@ -102,7 +102,7 @@ Info = outpstruct(This.hInfo);
     
     function doCreateTempDir()
         % Assign the temporary directory name property.
-        if is.func(opt.tempdir)
+        if isfunc(opt.tempdir)
             tempDir = opt.tempdir();
         else
             tempDir = opt.tempdir;
@@ -152,7 +152,8 @@ Info = outpstruct(This.hInfo);
             else
                 utils.warning('report', ...
                     ['Error compiling LaTeX and/or PDF files.\n', ...
-                    '\tMatlab says: %s'],msg);
+                    '\tUncle says: %s'], ...
+                    msg);
             end
         end
     end % doCompile()

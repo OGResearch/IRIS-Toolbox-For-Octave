@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -124,11 +136,12 @@ code.LaTeX {
 <h4 id="options">Options</h4>
 <ul>
 <li><p><code>'deviations='</code> [ <code>true</code> | <em><code>false</code></em> ] - Input and output data are deviations from balanced-growth paths.</p></li>
-<li><p><code>'dtrends='</code> [ <em><code>'auto'</code></em> | <code>true</code> | <code>false</code> ] - Measurement variables in input and output data include deterministic trends specified in <a href="../modellang/dtrends.html"><code>!dtrends</code></a> equations.</p></li>
+<li><p><code>'dtrends='</code> [ <em><code>@auto</code></em> | <code>true</code> | <code>false</code> ] - Measurement variables in input and output data include deterministic trends specified in <a href="../modellang/dtrends.html"><code>!dtrends</code></a> equations.</p></li>
 </ul>
 <h4 id="description">Description</h4>
+<p>The BN decomposition is accurate only if the input data have been generated using unanticipated shocks.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

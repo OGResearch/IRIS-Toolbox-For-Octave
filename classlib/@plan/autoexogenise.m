@@ -51,13 +51,12 @@ end
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('P',@is.plan);
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('Dates',@isnumeric);
 pp.addRequired('Weight', ...
-    @(x) is.numericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
+    @(x) isnumericscalar(x) && ~(real(x) ~=0 && imag(x) ~=0) ...
     && real(x) >= 0 && imag(x) >= 0 && x ~= 0);
-pp.parse(This,List,Dates,Weight);
+pp.parse(List,Dates,Weight);
 
 % Convert char list to cell of str.
 if ischar(List)
@@ -74,14 +73,14 @@ nList = numel(List);
 valid = true(1,nList);
 
 for i = 1 : nList
-    xInx = strcmp(This.xList,List{i});
-    nPos = This.AutoExogenise(xInx);
+    xInx = strcmp(This.XList,List{i});
+    nPos = This.AutoEx(xInx);
     if ~any(xInx) || isnan(nPos)
         valid(i) = false;
         continue
     end
-    This = exogenise(This,This.xList{xInx},Dates);    
-    This = endogenise(This,This.nList{nPos},Dates,Weight);
+    This = exogenise(This,This.XList{xInx},Dates);    
+    This = endogenise(This,This.NList{nPos},Dates,Weight);
 end
 
 if any(~valid)

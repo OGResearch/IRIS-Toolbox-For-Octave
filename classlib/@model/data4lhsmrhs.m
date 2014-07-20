@@ -56,10 +56,9 @@ function [YXE,List,XRange] = data4lhsmrhs(This,D,Range)
 
 List = This.name(This.nametype < 4);
 
-nT = size(This.occur,2) / length(This.name);
-preSample = This.tzero - 1;
-postSample = nT - This.tzero;
-XRange = Range(1)-preSample : Range(end)+postSample;
+minT = This.Shift(1);
+maxT = This.Shift(end);
+XRange = Range(1)+minT : Range(end)+maxT;
 
 YXE = db2array(D,List,XRange);
 YXE = permute(YXE,[2,1,3]);

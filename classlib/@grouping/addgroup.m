@@ -40,6 +40,7 @@ pp.addRequired('GroupContents',@(x) ~isempty(x) ...
     && (iscell(x) || ischar(x)) || isequal(x,Inf) ) ;
 pp.parse(This,GroupName,GroupContentsList) ;
 
+
 if ischar(GroupContentsList)
     GroupContentsList = regexp(GroupContentsList,'[^ ,;]+','match') ;
 end

@@ -34,18 +34,8 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % Options
 % ========
 %
-% * `'conincident='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
-% grids coincident.
-%
-% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
-% for the tick marks on the x-axis.
-%
-% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
-% marks on the x-axis; Inf means they will be created automatically.
-%
-% * `'freqLetters='` [ char | *`'YHQBM'`* ] - Five letters to represent the
-% five date frequencies (yearly, half-yearly, quarterly, bi-monthly, and
-% monthly).
+% * `'coincide='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
+% grids coincide.
 %
 % * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the LHS data.
@@ -56,6 +46,9 @@ function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
 % that will be used to plot the RHS data.
 %
 % * `'rhsTight='` [ `true` | *`false`* ] - Make the RHS y-axis tight.
+%
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `plotyy` for all options available.
 %
 % Description
 % ============
@@ -127,8 +120,16 @@ comprise = timeRhs([1,end]);
 % Plot now.
 dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);
 dataRhsPlot = grfun.myreplacenancols(dataRhs,Inf);
+lhsPlotFuncStr = opt.lhsplotfunc;
+rhsPlotFuncStr = opt.rhsplotfunc;
+if isfunc(lhsPlotFuncStr)
+    lhsPlotFuncStr = func2str(lhsPlotFuncStr);
+end
+if isfunc(rhsPlotFuncStr)
+    rhsPlotFuncStr = func2str(rhsPlotFuncStr);
+end
 [Ax,hLhs,hRhs] = plotyy(timeLhs,dataLhsPlot,timeRhs,dataRhsPlot, ...
-    char(opt.lhsplotfunc),char(opt.rhsplotfunc));
+    lhsPlotFuncStr,rhsPlotFuncStr);
 
 % Apply line properties passed in by the user as optional arguments. Do
 % it separately for `hl` and `hr` because they each can be different types.
@@ -151,8 +152,7 @@ setappdata(Ax(2),'freq',freqRhs);
 setappdata(Ax(2),'range',RangeRhs);
 setappdata(Ax(2),'datePosition',opt.dateposition);
 
-if isequal(char(opt.lhsplotfunc),'bar') ...
-        || isequal(char(opt.rhsplotfunc),'bar')
+if strcmp(lhsPlotFuncStr,'bar') || strcmp(rhsPlotFuncStr,'bar')
     setappdata(Ax(1),'xLimAdjust',true);
     setappdata(Ax(2),'xLimAdjust',true);
 end
@@ -166,6 +166,9 @@ set(Ax(2),'color','none', ...
     'xTickLabel','', ...
     'xTick',[], ...
     'xAxisLocation','top');
+try
+    Ax(2).XRuler.Visible = 'on';
+end
 
 mydatxtick(Ax(1),RangeLhs,timeLhs,freqLhs,userRangeLhs,opt);
 
@@ -187,7 +190,7 @@ end
 % `plotcmp` graphs.
 grfun.swaplhsrhs(Ax(1),Ax(2));
 
-if ~opt.coincident
+if ~opt.coincide
     set(Ax,'yTickMode','auto');
 end
 
@@ -202,10 +205,13 @@ for ih = hRhs(:).'
     setappdata(ih,'dateLine',RangeRhs);
 end
 
-% Use IRIS datatip cursor function in this figure; in
-% `utils.datacursor', we also handle cases where the current figure
-% includes both tseries and non-tseries graphs.
-obj = datacursormode(gcf());
-set(obj,'updateFcn',@utils.datacursor);
-
+if true % ##### MOSW
+    % Use IRIS datatip cursor function in this figure; in
+    % `utils.datacursor', we also handle cases where the current figure
+    % includes both tseries and non-tseries graphs.
+    obj = datacursormode(gcf());
+    set(obj,'updateFcn',@utils.datacursor);
+else
+    % Do nothing.
+end
 end

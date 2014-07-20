@@ -36,6 +36,7 @@ pp.addRequired('G',@(x) isa(x,'grouping'));
 pp.addRequired('GroupName',@iscellstr);
 pp.parse(This,GroupName);
 
+
 %--------------------------------------------------------------------------
 
 nGroup = length(GroupName);
@@ -62,5 +63,3 @@ if any(~valid)
 end
 
 end
-
-

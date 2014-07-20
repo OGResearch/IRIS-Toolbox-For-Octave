@@ -40,24 +40,16 @@ Dat = Year.*Freq + Per - 1 + Freq/100;
 
 % Indeterminate frequency
 %-------------------------
-if any(Freq(:) == 0)
-    if length(Freq) == 1
-        Dat(:) = Per(:);
-    else
-        inx = Freq == 0;
-        Dat(inx) = Per(inx);
-    end
+inx = Freq == 0;
+if any(inx(:))
+    Dat(inx) = Per(inx);
 end
 
 % Weekly frequency
 %------------------
-if any(Freq(:) == 52)
-    if length(Freq) == 1
-        Dat(:) = ww(Year,Per);
-    else
-        inx = Freq == 52;
-        Dat(inx) = ww(Year(inx),Per(inx));
-    end
+inx = Freq == 52;
+if any(inx(:))
+    Dat(inx) = ww(Year(inx),Per(inx));
 end
 
 end

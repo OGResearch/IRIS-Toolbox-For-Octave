@@ -26,7 +26,7 @@
 % Inf for either to indicate the default format.
 %
 % * `'colFootnote='` [ cell | *empty* ] - Footnotes for individual dates in
-% the headings of the columns, of column names in user-defined tables; the
+% the headings of the columns, or column names in user-defined tables; the
 % option must be a cell array with date-footnote pairs.
 %
 % * `'colHighlight='` [ numeric | *empty* ] - Dates for which the entire
@@ -44,9 +44,6 @@
 % * `'headlineJust='` [ *`'c'`* | `'l'` | `'r'` ] - Horizontal
 % justification of the headline entries (individual dates or user-defined
 % text): centre, left, right.
-%
-% * `'dateFormat='` [ char | cellstr | *`irisget('dateformat')`* ] -
-% (Inheritable from parent objects) Format string for the date row.
 %
 % * `'footnote='` [ char | *empty* ] - Footnote at the table title; only
 % shows if the title is non-empty.
@@ -82,6 +79,26 @@
 %
 % * `'vline='` [ numeric | *empty* ] - (Inheritable from parent objects)
 % Vector of dates after which a vertical line (divider) will be placed.
+%
+% Date format options
+% ====================
+%
+% See [`dat2str`](dates/dat2str) for details on date format options.
+%
+% * `'dateFormat='` [ char | cellstr | *`'YYYYFP'`* ] - Date format string,
+% or array of format strings (possibly different for each date).
+%
+% * `'freqLetters='` [ char | *`'YHQBMW'`* ] - Six letters used to
+% represent the six possible frequencies of IRIS dates, in this order:
+% yearly, half-yearly, quarterly, bi-monthly, monthly,  and weekly (such as
+% the `'Q'` in `'2010Q1'`).
+%
+% * `'months='` [ cellstr | *`{'January',...,'December'}`* ] - Twelve
+% strings representing the names of the twelve months.
+%
+% * `'standinMonth='` [ numeric | `'last'` | *`1`* ] - Month that will
+% represent a lower-than-monthly-frequency date if the month is part of the
+% date format string.
 %
 % Generic options
 % ================

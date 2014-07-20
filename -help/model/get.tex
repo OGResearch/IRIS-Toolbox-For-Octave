@@ -2,14 +2,14 @@
 
     \filetitle{get}{Query model object properties}{model/get}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Ans = get(M,Query)
 [Ans,Ans,...] = get(M,Query,Query,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +18,7 @@ Ans = get(M,Query)
   \texttt{Query} {[} char {]} - Query to the model object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -27,7 +27,7 @@ Ans = get(M,Query)
 \end{itemize}
 
 \paragraph{Valid queries to model
-objects}
+objects}\label{valid-queries-to-model-objects}
 
 This is the categorised list of queries to model objects. Note that
 letter \texttt{'y'} is used in various contexts to denote measurement
@@ -37,7 +37,7 @@ variables, \texttt{'d'} deterministic trend equations, \texttt{'l'}
 dynamic links, and \texttt{'r'} reporting equations. The property names
 are case insensitive.
 
-\subparagraph{Steady state}
+\subparagraph{Steady state}\label{steady-state}
 
 \begin{itemize}
 \item
@@ -80,7 +80,7 @@ are case insensitive.
 \end{itemize}
 
 \subparagraph{Variables, shocks, and
-parameters}
+parameters}\label{variables-shocks-and-parameters}
 
 \begin{itemize}
 \item
@@ -117,7 +117,7 @@ parameters}
   model code.
 \end{itemize}
 
-\subparagraph{Equations}
+\subparagraph{Equations}\label{equations}
 
 \begin{itemize}
 \item
@@ -133,7 +133,7 @@ parameters}
 \end{itemize}
 
 \subparagraph{First-order Taylor expansion of
-equations}
+equations}\label{first-order-taylor-expansion-of-equations}
 
 \begin{itemize}
 \item
@@ -149,7 +149,7 @@ equations}
 \end{itemize}
 
 \subparagraph{Descriptions and aliases of variables, parameters, and
-shocks}
+shocks}\label{descriptions-and-aliases-of-variables-parameters-and-shocks}
 
 \begin{itemize}
 \item
@@ -173,7 +173,7 @@ shocks}
 \end{itemize}
 
 \subparagraph{Equation labels and
-aliases}
+aliases}\label{equation-labels-and-aliases}
 
 \begin{itemize}
 \item
@@ -196,7 +196,7 @@ aliases}
   dynamic links (\texttt{l}), and reporting equations (\texttt{r}).
 \end{itemize}
 
-\subparagraph{Parameter values}
+\subparagraph{Parameter values}\label{parameter-values}
 
 \begin{itemize}
 \item
@@ -214,7 +214,7 @@ aliases}
   deviations of shocks.
 \end{itemize}
 
-\subparagraph{Eigenvalues}
+\subparagraph{Eigenvalues}\label{eigenvalues}
 
 \begin{itemize}
 \item
@@ -232,12 +232,16 @@ aliases}
 \end{itemize}
 
 \subparagraph{Model structure, solution,
-build}
+build}\label{model-structure-solution-build}
 
 \begin{itemize}
 \item
   \texttt{'build'} -- Returns {[} numeric {]} IRIS version number under
   which the model object has been built.
+\item
+  \texttt{'eqtnBlk'} -- Returns {[} cell {]} of cell str with the
+  recursive block structure of steady-state equations (if the
+  block-recursive analysis has already been performed).
 \item
   \texttt{'log'} -- Returns {[} struct {]} a database with \texttt{true}
   for each log-linearised variables, and \texttt{false} for each
@@ -248,6 +252,10 @@ build}
 \item
   \texttt{'maxLead'} -- Returns {[} numeric {]} the maximum lead in the
   model.
+\item
+  \texttt{'nameBlk'} -- Returns {[} cell {]} of cell str with the
+  recursive block structure of variable names (if the block-recursive
+  analysis has already been performed).
 \item
   \texttt{'stationary'} -- Returns {[} struct {]} a database with
   \texttt{true} for each stationary variables, and \texttt{false} for
@@ -297,10 +305,10 @@ build}
   \href{model/sspace}{\texttt{model/sspace}} function.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 \subparagraph{First-order Taylor expansion of
-equations}
+equations}\label{first-order-taylor-expansion-of-equations-1}
 
 The expressions for symbolic/automatic derivatives of individual model
 equations returned by \texttt{'derivatives'} are expressions that
@@ -327,7 +335,7 @@ in the derivatives for non-stationary (unit-root) models. For stationary
 models, the lags and leads can be removed and each simply replaced with
 the current date of the respective variable.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 d = get(m,'derivatives');

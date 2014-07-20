@@ -48,7 +48,7 @@ end
         Validated = true;
         query = nnet.myalias(UsrQuery);
         
-        if is.func(Value) || is.numericscalar(Value)
+        if isfunc(Value) || isnumericscalar(Value)
             Value = @(x) Value() ;
             switch query
                 case 'activation'

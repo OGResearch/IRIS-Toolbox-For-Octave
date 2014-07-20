@@ -2,26 +2,31 @@
 
     \filetitle{dat2ttrend}{Construct linear time trend from date range}{dates/dat2ttrend}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [TTrend,BaseDate] = dat2ttrend(Range)
+[TTrend,BaseDate] = dat2ttrend(Range,BaseYear)
 [TTrend,BaseDate] = dat2ttrend(Range,Obj)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
   \texttt{Range} {[} numeric {]} - Date range from which an integer
   linear time trend will be constructed.
 \item
+  \texttt{BaseYear} {[} model \textbar{} VAR {]} - Base year that will
+  be used to construct the time trend.
+\item
   \texttt{Obj} {[} model \textbar{} VAR {]} - Model or VAR object whose
-  base year will be used to construct the time trend; if omitted, the
-  base year from \texttt{irisget('baseYear')} will be used.
+  base year will be used to construct the time trend; if both
+  \texttt{BaseYear} and \texttt{Obj} are omitted, the base year from
+  \texttt{irisget('baseYear')} will be used.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -32,7 +37,7 @@
   input date range; see Description.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 For regular date frequencies, the time trend is constructed the
 following way. First, a base date is created first period in the base
@@ -48,6 +53,6 @@ TTrend = floor(Range - BaseDate);
 For indeterminate date frequencies, \texttt{BaseDate = 0}, and the
 output time trend is simply the input date range.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

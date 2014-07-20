@@ -1,5 +1,5 @@
 function [Flag,varargout] = chksstate(This,varargin)
-% chksstate  Check if equations hold for currently assigned steady0state values.
+% chksstate  Check if equations hold for currently assigned steady-state values.
 %
 % Syntax
 % =======
@@ -30,12 +30,11 @@ function [Flag,varargout] = chksstate(This,varargin)
 % * `'error='` [ *`true`* | `false` ] - Throw an error if one or more
 % equations do not hold.
 %
+% * `'eqtn='` [ *`'full'`* | `'sstate'` ] - Evaluate either full or
+% steady-state equations on steady-state values.
+%
 % * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links before
 % evaluating the equations.
-%
-% * `'sstateEqtn='` [ `true` | *`false`* ] - If `false`, the dynamic model
-% equations will be checked; if `true`, the steady-state versions of the
-% equations (wherever available) will be checked.
 %
 % * `'tolerance='` [ numeric | `getrealsmall()` ] - Tolerance.
 %
@@ -63,7 +62,7 @@ if opt.refresh && ~isempty(This.Refresh)
 end
 
 if opt.warning
-    chk(This,Inf,'parameters','sstate','log');
+    mychk(This,Inf,'parameters','sstate','log');
 end
 
 nAlt = size(This.Assign,3);

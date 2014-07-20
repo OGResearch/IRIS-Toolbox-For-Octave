@@ -54,7 +54,7 @@ if all(assignNan) && ~isa(Opt.sstate,'function_handle') && ~refreshed
     return
 end
 
-if This.linear
+if This.IsLinear
     % Linear models
     %---------------
     if ~isequal(Opt.solve,false)

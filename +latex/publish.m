@@ -131,18 +131,18 @@ br = sprintf('\n');
 switch lower(opt.template)
     case 'paper'
         template = file2char(fullfile(irisroot(),'+latex','paper.tex'));
-        if ~is.numericscalar(opt.linespread)
+        if ~isnumericscalar(opt.linespread)
             opt.linespread = 1.1;
         end
     case 'present'
         template = file2char(fullfile(irisroot(),'+latex','present.tex'));
-        if ~is.numericscalar(opt.linespread)
+        if ~isnumericscalar(opt.linespread)
             opt.linespread = 1;
         end
         opt.toc = false;
     otherwise
         template = file2char(opt.template);
-        if ~is.numericscalar(opt.linespread)
+        if ~isnumericscalar(opt.linespread)
             opt.linespread = 1;
         end
 end
@@ -230,8 +230,9 @@ try
     copyfile('main.pdf',OutpFile);
     movefile(OutpFile,thisDir);
 catch Error
-    utils.warning('xml', ...
-        'Error producing PDF.\n\tMatlab says: %s', ...
+    utils.warning('latex:publish', ...
+        ['Error producing PDF.\n', ...
+        '\tUncle says: %s'], ...
         Error.message);
 end
 
@@ -246,9 +247,13 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function C = xxDocSubs(C,Opt)
 br = sprintf('\n');
 C = strrep(C,'$papersize$',Opt.papersize);
@@ -312,10 +317,12 @@ else
 end
 linespread = sprintf('%g',Opt.linespread);
 C = strrep(C,'$linespread$',linespread);
+end % xxDocSubs()
 
-end % xxDocSubs().
 
 %**************************************************************************
+
+
 function Copy = xxPrepareToPublish(File)
 % xxpreparetopublish  Remove formats not recognised by built-in publish.
 c = file2char(File);
@@ -330,4 +337,4 @@ c = regexprep(c,'^% ?----+','%','lineanchors');
 % Replace ` with |.
 c = strrep(c,'`','|');
 char2file(c,File);
-end % xxPrepareToPublish().
+end % xxPrepareToPublish()

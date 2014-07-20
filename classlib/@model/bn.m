@@ -28,12 +28,15 @@ function Outp = bn(This,Inp,Range,varargin)
 % * `'deviations='` [ `true` | *`false`* ] - Input and output data are
 % deviations from balanced-growth paths.
 %
-% * `'dtrends='` [ *`'auto'`* | `true` | `false` ] - Measurement variables
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement variables
 % in input and output data include deterministic trends specified in
 % [`!dtrends`](modellang/dtrends) equations.
 %
 % Description
 % ============
+%
+% The BN decomposition is accurate only if the input data have been
+% generated using unanticipated shocks.
 %
 % Example
 % ========
@@ -44,17 +47,11 @@ function Outp = bn(This,Inp,Range,varargin)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('m',@is.model);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x));
-pp.addRequired('range',@(x) isnumeric(x));
-pp.parse(This,Inp,Range);
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@(x) isnumeric(x));
+pp.parse(Inp,Range);
 
 opt = passvalopt('model.bn',varargin{:});
-
-% Auto set the 'dtrends' option.
-if ischar(opt.dtrends) && strcmpi(opt.dtrends,'auto')
-    opt.dtrends = ~opt.deviation;
-end
 
 %--------------------------------------------------------------------------
 
@@ -62,6 +59,7 @@ nx = length(This.solutionid{2});
 nb = size(This.solution{1},2);
 nf = nx - nb;
 ne = length(This.solutionid{3});
+ng = sum(This.nametype == 5);
 nAlt = size(This.Assign,3);
 Range = Range(1) : Range(end);
 nPer = length(Range);
@@ -77,7 +75,7 @@ G = datarequest('g',This,Inp,Range);
 nLoop = max([nData,nAlt]);
 
 % Pre-allocate hdataobj for output data.
-hd = hdataobj(This,struct('IsPreSample',false),nPer,nLoop);
+hd = hdataobj(This,Range,nLoop,'IncludeLag=',false);
 
 repeat = ones(1,nPer);
 isSol = true(1,nAlt);
@@ -85,6 +83,8 @@ isDiffStat = true(1,nAlt);
 
 for iLoop = 1 : nLoop
     
+    
+    g = G(:,:,min(iLoop,end));
     if iLoop <= nAlt
         T = This.solution{1}(:,:,iLoop);
         Tf = T(1:nf,:);
@@ -97,7 +97,7 @@ for iLoop = 1 : nLoop
         end
         
         nUnit = mynunit(This,iLoop);
-        if ~is.eye(Ta(1:nUnit,1:nUnit))
+        if ~iseye(Ta(1:nUnit,1:nUnit))
             isDiffStat(iLoop) = false;
             continue
         end
@@ -116,7 +116,7 @@ for iLoop = 1 : nLoop
             D = D(:,repeat);
         end
         if opt.dtrends
-            W = mydtrendsrequest(This,'range',Range,G,iLoop);
+            W = mydtrendsrequest(This,'range',Range,g,iLoop);
         end
     end
     
@@ -154,7 +154,7 @@ for iLoop = 1 : nLoop
     % Store output data #iloop.
     x = [xf;xb];
     e = zeros(ne,nPer);
-    hdataassign(hd,This,iLoop,y,x,e);
+    hdataassign(hd,iLoop, { y,x,e,[],g } );
     
 end
 
@@ -174,6 +174,6 @@ if any(~isDiffStat)
 end
 
 % Create output database from hdataobj.
-Outp = hdata2tseries(hd,This,Range);
+Outp = hdata2tseries(hd);
 
 end

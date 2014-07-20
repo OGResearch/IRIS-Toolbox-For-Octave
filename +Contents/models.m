@@ -1,24 +1,20 @@
-% models  Model development and operation.
+% models  Model Development and Operation.
 %
-% * [modellang](modellang/Contents) - Model file language.
+% * [modellang](modellang/Contents) - Model File Language.
 %
-% * [model](model/Contents) - Model objects and functions.
+% * [model](model/Contents) - Model Objects and Functions.
 %
-% * [plan](plan/Contents) - Simulation plans.
+% * [plan](plan/Contents) - Model Simulation Plans.
 %
-% * [grouping](grouping/Contents) - Grouping objects for aggregation of contributions.
+% * [grouping](grouping/Contents) - Grouping Objects for Aggregation of Contributions.
 %
-% * [systempriors](systempriors/Contents) - System priors.
+% * [systempriors](systempriors/Contents) - System Priors Objects and Functions.
 %
-% * [poster](poster/Contents) - Posterior objects and functions.
+% * [poster](poster/Contents) - Posterior Simulator Objects and Functions.
 %
-% * [poster](logdist/Contents) - Probability distribution package.
+% * [poster](logdist/Contents) - Probability Distribution Package.
 %
-% * [sstatelang](sstatelang/Contents) - Steady-state file language.
-%
-% * [sstate](sstate/Contents) - Steady-state objects and functions.
-%
-% * [namedmat](namedmat/Contents) - Matrices with named rows and columns.
+% * [namedmat](namedmat/Contents) - Matrices with Named Rows and Columns.
 %
 
 % -IRIS Toolbox.

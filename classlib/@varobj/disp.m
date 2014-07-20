@@ -12,38 +12,43 @@ function disp(This)
 ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+isPanel = ispanel(This);
 
 if isempty(This.A)
     fprintf('\tempty %s object',class(This));
 else
     fprintf('\t');
-    if ispanel(This)
+    if isPanel
         fprintf('Panel ');
     end
     fprintf('%s(%g) object: ',class(This),p);
     fprintf('[%g] parameterisation(s)',nAlt);
-    if ispanel(This)
+    if isPanel
         nGrp = length(This.GroupNames);
-        fprintf(' * %g group(s)',nGrp);
+        fprintf(' * [%g] group(s)',nGrp);
     end
 end
 fprintf('\n');
 
+fprintf('\tvariables: ');
 if ~isempty(This.YNames)
-    yNames = strfun.displist(This.YNames);
+    fprintf('[%g] %s',length(This.YNames),strfun.displist(This.YNames));
 else
-    yNames = 'empty';
+    fprintf('none');
 end
-fprintf('\tvariables: %s',yNames);
 fprintf('\n');
 
 specdisp(This);
 
 % Group names for panel objects.
-if ispanel(This)
-    fprintf('\tgroups: %s',strfun.displist(This.GroupNames));
-    fprintf('\n');
+fprintf('\tgroups: ');
+if ~isPanel
+    fprintf('implicit');
+else
+    fprintf('[%g] %s',length(This.GroupNames), ...
+        strfun.displist(This.GroupNames));
 end
+fprintf('\n');
 
 disp@userdataobj(This);
 disp(' ');

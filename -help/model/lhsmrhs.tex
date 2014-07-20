@@ -3,19 +3,19 @@
     \filetitle{lhsmrhs}{Evaluate the discrepancy between the LHS and RHS for each model equation and given data}{model/lhsmrhs}
 
 	\paragraph{Syntax for casual
-evaluation}
+evaluation}\label{syntax-for-casual-evaluation}
 
 \begin{verbatim}
 Q = lhsmrhs(M,D,Range)
 \end{verbatim}
 
-\paragraph{Syntax for fast evaluation}
+\paragraph{Syntax for fast evaluation}\label{syntax-for-fast-evaluation}
 
 \begin{verbatim}
 Q = lhsmrhs(M,YXE)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \texttt{M} {[} model {]} - Model object whose equations and currently
 assigned parameters will be evaluated.
@@ -36,12 +36,12 @@ shocks organised row-wise.
   will be evaluated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \texttt{Q} {[} numeric {]} - Numeric array with discrepancies between
 the LHS and RHS for each model equation.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The function \texttt{lhsmrhs} evaluates the discrepancy between the LHS
 and the RHS in each model equation; each lead is replaced with the
@@ -62,7 +62,7 @@ create \texttt{X} in a prior call to
 the greater of the number of alternative parameterisations in
 \texttt{M}, and the number of alternative datasets in the input data.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 YXE = data4lhsmrhs(M,d,range);

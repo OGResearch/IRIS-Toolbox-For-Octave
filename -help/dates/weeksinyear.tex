@@ -2,13 +2,13 @@
 
     \filetitle{weeksinyear}{Number of weeks in year}{dates/weeksinyear}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 N = weeksinyear(Year)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -16,7 +16,7 @@ N = weeksinyear(Year)
   \texttt{Year} {[} numeric {]} - Year.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -24,14 +24,14 @@ N = weeksinyear(Year)
   \texttt{N} {[} numeric {]} - Number of weeks in \texttt{Year}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The number of weeks in a year is either \texttt{52} or \texttt{53}, and
 complies with the definition of the first week in a year in ISO 8601.
 The first week of a year is the one that contains the 4th day of January
 (in other words, has most of its days in that year).
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 weeksinyear(2000:2010)

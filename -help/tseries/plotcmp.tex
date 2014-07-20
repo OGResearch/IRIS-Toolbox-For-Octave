@@ -2,14 +2,14 @@
 
     \filetitle{plotcmp}{Comparison graph for two time series}{tseries/plotcmp}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [Ax,Lhs,Rhs] = plotcmp(X,...)
 [Ax,Lhs,Rhs] = plotcmp(Range,X,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -22,7 +22,7 @@
   \texttt{'compare='}) will be displayed as an RHS area or bar graph.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -36,9 +36,12 @@
   or bar difference graph.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
+\item
+  \texttt{'baseLine='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Draw a baseline in the bar/area difference graph.
 \item
   \texttt{'compare='} {[} numeric \textbar{} \emph{\texttt{{[}-1;1{]}}}
   {]} - Linear combination of the observations that will be plotted in
@@ -57,8 +60,8 @@
 See help on \href{tseries/plotyy}{\texttt{tseries/plotyy}} for other
 options available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

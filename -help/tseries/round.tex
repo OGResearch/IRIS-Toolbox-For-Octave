@@ -1,15 +1,16 @@
 
 
-    \filetitle{round}{Round tseries data to specified number of decimals}{tseries/round}
+    \filetitle{round}{Round tseries values to specified number of decimals}{tseries/round}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 X = round(X)
 X = round(X,Dec)
+X = round(X,Dec,'significant')
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,9 +20,12 @@ X = round(X,Dec)
   \texttt{Dec} {[} numeric {]} - Number of decimals to which the tseries
   data will be rounded; if not specified, the data are rounded to
   nearest integer.
+\item
+  \texttt{'significant'} - See documentation on the built-in Matlab
+  function \texttt{round}; works only in R2014b or later.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -29,11 +33,11 @@ X = round(X,Dec)
   \texttt{X} {[} tseries {]} - Rounded tseries object.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The number of decimals, to which the tseries data will be rounded, can
 be positive, zero, or negative.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

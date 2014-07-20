@@ -35,6 +35,7 @@ pp.addRequired('G',@(x) isa(x,'grouping'));
 pp.addRequired('GroupName',@iscellstr);
 pp.parse(This,GroupName);
 
+
 %--------------------------------------------------------------------------
 
 for iGroup = 1:numel(GroupName)
@@ -59,5 +60,3 @@ for iGroup = 1:numel(GroupName)
 end
 
 end
-
-

@@ -2,13 +2,13 @@
 
     \filetitle{fprintf}{Write VAR model as formatted model code to text file}{VAR/fprintf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [C,D] = fprintf(V,File,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -28,11 +28,11 @@
   will be empty.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 See help on \href{VAR/sprintf}{\texttt{sprintf}} for options available.
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 For VAR objects with Na multiple alternative parameterisations, the
 filename \texttt{File} must be either a 1-by-Na cell array of string
@@ -40,6 +40,6 @@ with a filename for each parameterisation, or a \texttt{sprintf} format
 string where a single occurence of \texttt{'\%g'} will be replaced with
 the parameterisation number.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

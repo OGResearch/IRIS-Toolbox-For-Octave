@@ -26,10 +26,10 @@ function [S,Range,Select] = srf(This,Time,varargin)
 % ========
 %
 % * `'delog='` [ *`true`* | `false` ] - Delogarithmise the responses for
-% variables declared as `!variables:log`.
+% log-variables.
 %
-% * `'select='` [ cellstr | *`Inf`* ] - Run the shock response function for a
-% selection of shocks only; `Inf` means all shocks are simulated.
+% * `'select='` [ cellstr | *`Inf`* ] - Run the shock response function for
+% a selection of shocks only; `Inf` means all shocks are simulated.
 %
 % * `'size='` [ *'std'* | numeric ] - Size of the shocks that will be
 % simulated; 'std' means that each shock will be set to its std dev
@@ -92,21 +92,26 @@ for i = 1 : length(Select)
     S.(Select{i}) = mytrim(S.(Select{i}));
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function doChkShockSelection()
         if any(isnan(pos))
-            utils.error('model', ...
+            utils.error('model:srf', ...
                 'This is not a valid shock name: ''%s''.', ...
                 opt.select{isnan(pos)});
         end
         nonUnique = strfun.nonunique(pos);
         if ~isempty(nonUnique)
-            utils.error('model', ...
+            utils.error('model:srf', ...
                 'This shock name is requested more than once: ''%s''.', ...
                 opt.select{nonUnique});
         end
-    end % doChkShockSelection().
+    end % doChkShockSelection()
+
 
 end

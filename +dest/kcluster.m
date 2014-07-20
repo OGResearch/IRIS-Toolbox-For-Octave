@@ -64,6 +64,7 @@ pp = inputParser();
 pp.addRequired('Sample', @isnumeric );
 pp.parse( Sample );
 
+
 % Parse options.
 opt = passvalopt('dest.kcluster',varargin{:});
 
@@ -236,6 +237,14 @@ end
 
 end % kcluster().
 
+
+
+
+        
+        end %refineCenters
+    end %xxKcluster
+
+end % kcluster().
 
 
 

@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -105,14 +117,14 @@ code.LaTeX {
 
 
 
-<h1 id="VAR/Contents">Vector autoregressions (VAR) objects and functions</h1>
+<h1 id="VAR/Contents">Vector Autoregressions: VAR Objects and Functions</h1>
 
 
 <p>VAR objects can be constructed as plain VARs or simple panel VARs (with fixed effect), and estimated without or with prior dummy observations (quasi-bayesian VARs). VAR objects are reduced-form models; they are also the point of departure for identifying structural VARs (<a href="../SVAR/Contents.html"><code>SVAR</code></a> objects).</p>
 <p>VAR methods:</p>
 <h4 id="constructor">Constructor</h4>
 <ul>
-<li><a href="../VAR/VAR.html"><code>VAR</code></a> - Create new, empty reduced-form VAR object.</li>
+<li><a href="../VAR/VAR.html"><code>VAR</code></a> - Create new empty reduced-form VAR object.</li>
 </ul>
 <h4 id="getting-information-about-var-objects">Getting information about VAR objects</h4>
 <ul>
@@ -124,7 +136,7 @@ code.LaTeX {
 <li><a href="../VAR/get.html"><code>get</code></a> - Query VAR object properties.</li>
 <li><a href="../VAR/iscompatible.html"><code>iscompatible</code></a> - True if two VAR objects can occur together on the LHS and RHS in an assignment.</li>
 <li><a href="../VAR/isexplosive.html"><code>isexplosive</code></a> - True if any eigenvalue is outside unit circle.</li>
-<li><a href="../VAR/ispanel.html"><code>ispanel</code></a> - True for panel VAR based objects.</li>
+<li><a href="../VAR/ispanel.html"><code>ispanel</code></a> - True for panel VAR objects.</li>
 <li><a href="../VAR/isstationary.html"><code>isstationary</code></a> - True if all eigenvalues are within unit circle.</li>
 <li><a href="../VAR/length.html"><code>length</code></a> - Number of alternative parameterisations in VAR object.</li>
 <li><a href="../VAR/mean.html"><code>mean</code></a> - Mean of VAR process.</li>
@@ -154,7 +166,7 @@ code.LaTeX {
 <li><a href="../VAR/assign.html"><code>assign</code></a> - Manually assign system matrices to VAR object.</li>
 <li><a href="../VAR/alter.html"><code>alter</code></a> - Expand or reduce the number of alternative parameterisations within a VAR object.</li>
 <li><a href="../VAR/backward.html"><code>backward</code></a> - Backward VAR process.</li>
-<li><a href="../VAR/demean.html"><code>demean</code></a> - Remove constant from VAR object.</li>
+<li><a href="../VAR/demean.html"><code>demean</code></a> - Remove constant and the effect of exogenous inputs from VAR object.</li>
 <li><a href="../VAR/horzcat.html"><code>horzcat</code></a> - Combine two compatible VAR objects in one object with multiple parameterisations.</li>
 <li><a href="../VAR/integrate.html"><code>integrate</code></a> - Integrate VAR process and data associated with it.</li>
 </ul>
@@ -178,5 +190,5 @@ code.LaTeX {
 help VAR/function_name</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

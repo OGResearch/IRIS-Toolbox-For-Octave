@@ -43,12 +43,11 @@ function [Stat,Crit] = portest(This,Inp,H,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
-pp.addRequired('H',@is.numericscalar);
-pp.parse(This,Inp,H);
+pp.addRequired('H',@isnumericscalar);
+pp.parse(Inp,H);
 
-if length(varargin) == 1 && is.numericscalar(varargin{1})
+if length(varargin) == 1 && isnumericscalar(varargin{1})
     % Bkw compatibility.
     varargin = [{'level='},varargin];
 end
@@ -67,7 +66,8 @@ if H <= p
 end
 
 % Request residuals.
-[~,~,~,e] = mydatarequest(This,Inp,This.Range);
+req = datarequest('e*',This,Inp,This.Range);
+e = req.E;
 nData = size(e,3);
 if nData ~= nAlt
     utils.error('VAR', ...

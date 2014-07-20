@@ -2,13 +2,13 @@
 
     \filetitle{estimate}{Estimate a reduced-form VAR or BVAR}{VAR/estimate}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [V,VData,Fitted] = estimate(V,Inp,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -21,7 +21,7 @@
   VAR.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -34,7 +34,7 @@
   been calculated.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -48,13 +48,17 @@
   \texttt{'C='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
   on the individual values in the constant vector, \texttt{C}.
 \item
+  \texttt{'J='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
+  on the individual values in the coefficient matrix in front of
+  exogenous inputs, \texttt{J}.
+\item
   \texttt{'diff='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
   {]} - Difference the series before estimating the VAR; integrate the
   series back afterwards.
 \item
   \texttt{'G='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
-  on the individual values in the matrix at the co-integrating vector,
-  \texttt{G}.
+  on the individual values in the coefficient matrix in front of the
+  co-integrating vector, \texttt{G}.
 \item
   \texttt{'cointeg='} {[} numeric \textbar{} \emph{empty} {]} -
   Co-integrating vectors (in rows) that will be imposed on the estimated
@@ -110,11 +114,11 @@
   {]} - Display warnings produced by this function.
 \end{itemize}
 
-\paragraph{Options for panel VAR}
+\paragraph{Options for panel VAR}\label{options-for-panel-var}
 
 \begin{itemize}
 \item
-  \texttt{'fixedEffect='} {[} \texttt{true} \textbar{}
+  \texttt{'fixedEff='} {[} \texttt{true} \textbar{}
   \emph{\texttt{false}} {]} - Include constant dummies for fixed effect
   in panel estimation; applies only if \texttt{'constant=' true}.
 \item
@@ -124,9 +128,9 @@
   to sum up to \texttt{1}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\subparagraph{Estimating a panel VAR}
+\subparagraph{Estimating a panel VAR}\label{estimating-a-panel-var}
 
 Panel VAR objects are created by calling the function
 \href{VAR/VAR}{\texttt{VAR}} with two input arguments: the list of
@@ -144,6 +148,6 @@ d.Group2_Name.Var2_Name
 ...
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

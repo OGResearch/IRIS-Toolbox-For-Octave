@@ -3,13 +3,13 @@
 
     \filetitle{data4lhsmrhs}{Prepare data array for running}{model/data4lhsmrhs}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [YXE,List,XRange] = data4lhsmrhs(M,D,Range)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -24,7 +24,7 @@
   \href{model/lhsmrhs}{\texttt{lhsmrhs}} will be evaluated.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -41,7 +41,7 @@
   transition variables.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The resulting array, \texttt{YXE}, is \texttt{nVar} by \texttt{nXPer} by
 \texttt{nData}, where \texttt{nVar} is the total number of measurement
@@ -51,7 +51,7 @@ needed to evaluate lags and leads, and \texttt{nData} is the number of
 alternative data sets (i.e.~the number of columns in each input time
 series) in the input database, \texttt{D}.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 YXE = data4lhsmrhs(M,d,range);

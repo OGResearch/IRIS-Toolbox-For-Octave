@@ -1,14 +1,14 @@
 
 
-    \filetitle{\dollar[...]\dollar}{Pseudosubstitutions}{modellang/pseudosubs}
+    \filetitle{$[...]$}{Pseudosubstitutions}{modellang/pseudosubs}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 $[Expr]$
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The expression \texttt{Expr} enclosed within \texttt{\${[}...{]}\$} is
 evaluated as a Matlab expression, and converted to a character string.
@@ -18,7 +18,7 @@ The expression may refer to parameters passed into the function
 expression must evaluate to a scalar number, a logical scalar, or
 character string.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 The following line of code
 
@@ -43,13 +43,13 @@ P.K = 3;
 model('my.model','assign=',P);
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example-1}
 
 The following \href{modellang/for}{\texttt{!for}} loop
 
 \begin{verbatim}
 !for
-    [ 2 : 4 ]
+    $[ 2 : 4 ]$
 !do
     x? = x$[?-1]${-1};
 !end

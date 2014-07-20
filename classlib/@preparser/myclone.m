@@ -11,15 +11,18 @@ function C = myclone(C,Clone)
 %--------------------------------------------------------------------------
 
 if ~preparser.mychkclonestring(Clone)
-    utils.error('preparser', ...
+    utils.error('preparser:myclone', ...
         'Invalid clone string: ''%s''.', ...
         Clone);
 end
 
 ptn = '(?<!!)\<([A-Za-z]\w*)\>(?!\()';
-% ##### MOSW:
-% rpl = '${strrep(Clone,''?'',$0)}';
-% C = regexprep(C,ptn,rpl);
-C = mosw.dregexprep(C,ptn,@(C0) strrep(Clone,'?',C0),0);
+if true % ##### MOSW
+    rpl = '${strrep(Clone,''?'',$1)}';
+    C = regexprep(C,ptn,rpl);
+else
+    rpl = @(C1) strrep(Clone,'?',C1);
+    C = mosw.dregexprep(C,ptn,'rpl',1); %#ok<UNRCH>
+end
 
 end

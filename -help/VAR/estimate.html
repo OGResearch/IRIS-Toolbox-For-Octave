@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -128,8 +140,9 @@ code.LaTeX {
 <li><p><code>'A='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the transition matrix, <code>A</code>.</p></li>
 <li><p><code>'BVAR='</code> [ numeric ] - Prior dummy observations for estimating a BVAR; construct the dummy observations using the one of the <code>BVAR</code> functions.</p></li>
 <li><p><code>'C='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the constant vector, <code>C</code>.</p></li>
+<li><p><code>'J='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the coefficient matrix in front of exogenous inputs, <code>J</code>.</p></li>
 <li><p><code>'diff='</code> [ <code>true</code> | <em><code>false</code></em> ] - Difference the series before estimating the VAR; integrate the series back afterwards.</p></li>
-<li><p><code>'G='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the matrix at the co-integrating vector, <code>G</code>.</p></li>
+<li><p><code>'G='</code> [ numeric | <em>empty</em> ] - Restrictions on the individual values in the coefficient matrix in front of the co-integrating vector, <code>G</code>.</p></li>
 <li><p><code>'cointeg='</code> [ numeric | <em>empty</em> ] - Co-integrating vectors (in rows) that will be imposed on the estimated VAR.</p></li>
 <li><p><code>'comment='</code> [ char | <code>Inf</code> ] - Assign comment to the estimated VAR object; <code>Inf</code> means the existing comment will be preserved.</p></li>
 <li><p><code>'constraints='</code> [ char | cellstr ] - General linear constraints on the VAR parameters.</p></li>
@@ -148,7 +161,7 @@ code.LaTeX {
 </ul>
 <h4 id="options-for-panel-var">Options for panel VAR</h4>
 <ul>
-<li><p><code>'fixedEffect='</code> [ <code>true</code> | <em><code>false</code></em> ] - Include constant dummies for fixed effect in panel estimation; applies only if <code>'constant=' true</code>.</p></li>
+<li><p><code>'fixedEff='</code> [ <code>true</code> | <em><code>false</code></em> ] - Include constant dummies for fixed effect in panel estimation; applies only if <code>'constant=' true</code>.</p></li>
 <li><p><code>'groupWeights='</code> [ numeric | <em>empty</em> ] - A 1-by-NGrp vector of weights applied to groups in panel estimation, where NGrp is the number of groups; the weights will be rescaled so as to sum up to <code>1</code>.</p></li>
 </ul>
 <h4 id="description">Description</h4>
@@ -163,5 +176,5 @@ d.Group2_Name.Var2_Name
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

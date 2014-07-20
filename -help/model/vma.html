@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -123,12 +135,12 @@ code.LaTeX {
 </ul>
 <h4 id="option">Option</h4>
 <ul>
-<li><p><code>'output='</code> [ <em><code>'namedmat'</code></em> | <code>'numeric'</code> ] - Output matrix <code>Phi</code> will be either a namedmat object or a plain numeric array; if the option <code>'select='</code> is used, <code>'output='</code> is always <code>'namedmat'</code>.</p></li>
-<li><p><code>'select='</code> [ cellstr | <em><code>Inf</code></em> ] - Return the VMA matrices for selected variabes and/or shocks only; <code>Inf</code> means all variables.</p></li>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrix <code>Phi</code> as either a <a href="../namedmat/Contents.html"><code>namedmat</code></a> object (i.e. matrix with named rows and columns) or a plain numeric array.</p></li>
+<li><p><code>'select='</code> [ <em><code>@all</code></em> | char | cellstr ] - Return VMA for selected variables only; <code>@all</code> means all variables.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

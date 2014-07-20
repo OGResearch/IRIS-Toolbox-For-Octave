@@ -2,14 +2,14 @@
 
     \filetitle{get}{Query VAR object properties}{VAR/get}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Ans = get(V,Query)
 [Ans,Ans,...] = get(V,Query,Query,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -18,7 +18,7 @@ Ans = get(V,Query)
   \texttt{Query} {[} char {]} - Query to the VAR object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -27,9 +27,9 @@ Ans = get(V,Query)
 \end{itemize}
 
 \paragraph{Valid queries to VAR
-objects}
+objects}\label{valid-queries-to-var-objects}
 
-\subparagraph{VAR variables}
+\subparagraph{VAR variables}\label{var-variables}
 
 \begin{itemize}
 \item
@@ -51,7 +51,7 @@ objects}
   (forecast) instruments.
 \end{itemize}
 
-\subparagraph{System matrices}
+\subparagraph{System matrices}\label{system-matrices}
 
 \begin{itemize}
 \item
@@ -61,6 +61,9 @@ objects}
 \item
   \texttt{'K'}, \texttt{'const'} -- Returns {[} numeric {]} the constant
   vector or matrix (the latter for panel VARs).
+\item
+  \texttt{'J'} -- Returns {[} numeric {]} the coefficient matrix in
+  front of exogenous inputs.
 \item
   \texttt{'Omg'}, \texttt{'Omega'} -- Returns {[} numeric {]} the
   covariance matrix of one-step-ahead forecast errors, i.e.~reduced-form
@@ -76,7 +79,7 @@ objects}
   cointegration terms.
 \end{itemize}
 
-\subparagraph{Information criteria}
+\subparagraph{Information criteria}\label{information-criteria}
 
 \begin{itemize}
 \item
@@ -86,7 +89,7 @@ objects}
   \texttt{'SBC'} -- Returns {[} numeric {]} Schwarz bayesian criterion.
 \end{itemize}
 
-\subparagraph{Other queries}
+\subparagraph{Other queries}\label{other-queries}
 
 \begin{itemize}
 \item
@@ -100,9 +103,9 @@ objects}
   the VAR object.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\subparagraph{Transition matrix}
+\subparagraph{Transition matrix}\label{transition-matrix}
 
 There are three queries to request the VAR transition matrix:
 \texttt{'A\#'}, \texttt{'A*'}, \texttt{'A\$'}. They differ in how the
@@ -121,6 +124,6 @@ higher-order transition matrices are arranged.
   \ldots{} \texttt{Ap} are the coefficient matrices on individual lags.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

@@ -2,13 +2,13 @@
 
     \filetitle{publish}{Compile PDF from report object}{report/publish}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [OutpFile,Info] = P.publish(InpFile,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -19,7 +19,7 @@
   will be saved.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@
   building the PDF report; see Description.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -91,9 +91,10 @@
   \emph{\texttt{'datestr(now())'}} {]} - String printed in the top-left
   corner of each page.
 \item
-  \texttt{'tempDir='} {[} char \textbar{} \emph{\texttt{tempname(cd())}}
-  {]} - Directory for storing temporary files; the directory is deleted
-  at the end of the execution if it's empty.
+  \texttt{'tempDir='} {[} char \textbar{} function\_handle \textbar{}
+  \emph{\texttt{tempname(pwd())}} {]} - Directory for storing temporary
+  files; the directory is deleted at the end of the execution if it's
+  empty.
 \item
   \texttt{'maxRerun='} {[} numeric \textbar{} \emph{\texttt{5}} {]} -
   Maximum number of times the \LaTeX\\compiler will be run to resolve
@@ -104,13 +105,15 @@
   cross-references, etc.
 \item
   \texttt{'textScale='} {[} numeric \textbar{} \emph{\texttt{0.8}} {]} -
-  Percentage of the total page area that will be used.
+  Percentage of the total page area that will be used; the value can be
+  either a scalar (the same percentage for the width and the height) or
+  a 1-by-2 vector (the width and the height).
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 \subparagraph{Difference between \texttt{'display='} and
-\texttt{'echo='}}
+\texttt{'echo='}}\label{difference-between-display-and-echo}
 
 There are two differences between these otherwise similar options:
 
@@ -129,7 +132,7 @@ There are two differences between these otherwise similar options:
   \texttt{Ctrl+C} may be needed to regain control.
 \end{itemize}
 
-\subparagraph{Information struct}
+\subparagraph{Information struct}\label{information-struct}
 
 The second output argument, \texttt{Info}, is a struct with details of
 building the PDF report. It contains the following fields:
@@ -156,6 +159,6 @@ building the PDF report. It contains the following fields:
   (saved in the temporary directory) necessary to build the output PDF.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

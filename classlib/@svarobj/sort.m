@@ -96,10 +96,13 @@ nAlt = size(This.A,3);
 % Handle residuals.
 if isData
     % Get data.
-    [outpFmt,rng,~,e] = mydatarequest(This,Data,Inf,opt);
+    req = datarequest('e',This,Data,Inf,opt);
+    outpFmt = req.Format;
+    rng = req.Range;
+    e = req.E;
     nData = size(e,3);
     if nData ~= nAlt
-        utils.error('SVAR', ...
+        utils.error('svarobj:sort', ...
             ['The number of data sets (%g) must match ', ...
             'the number of parameterisations (%g).'], ...
             nData,nAlt);
@@ -136,6 +139,8 @@ end
 
 
 %**************************************************************************
+    
+    
     function [S,Y] = doSimulate()
         % Simulate the test statistics.
         S = zeros(ny,ny,0);
@@ -154,21 +159,25 @@ end
 
 
 %**************************************************************************
+    
+    
     function doEvalSort()
         % Evalutate the sort criterion.
         try
             X = eval(SortBy);
             XX = [XX,X(:)];
         catch err
-            utils.error('VAR', ...
+            utils.error('svarobj:sort', ...
                 ['Error evaluating the sort string ''%s''.\n', ...
-                '\tMatlab says: %s'], ...
+                '\tUncle says: %s'], ...
                 SortBy,err.message);
         end
     end % doEvalSort()
 
 
 %**************************************************************************
+    
+    
     function Inx = doSort()
         % Sort by the distance from median.
         n = size(XX,2);

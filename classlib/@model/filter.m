@@ -59,8 +59,8 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 % * `'deviation='` [ `true` | *`false`* ] - Treat input and output data as
 % deviations from balanced-growth path.
 %
-% * `'dtrends='` [ *'auto'* | `true` | `false` ] - Measurement data contain
-% deterministic trends.
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - Measurement data
+% contain deterministic trends.
 %
 % * `'data='` [ `'predict'` | *`'smooth'`* | `'predict,smooth'` ] - Return
 % smoother data or prediction data or both.
@@ -183,18 +183,17 @@ function [This,Outp,V,Delta,Pe,SCov] = filter(This,Inp,Range,varargin)
 nArgOut = nargout;
 
 % Database with tunes.
-j = [];
+J = [];
 if ~isempty(varargin) && (isstruct(varargin{1}) || isempty(varargin{1}))
-    j = varargin{1};
+    J = varargin{1};
     varargin(1) = [];
 end
 
 pp = inputParser();
-pp.addRequired('model',@is.model);
-pp.addRequired('data',@(x) isstruct(x) || iscell(x) || isempty(x));
-pp.addRequired('range',@isnumeric);
-pp.addRequired('tune',@(x) isempty(x) || isstruct(x) || iscell(x));
-pp.parse(This,Inp,Range,j);
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x) || isempty(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('Tune',@(x) isempty(x) || isstruct(x) || iscell(x));
+pp.parse(Inp,Range,J);
 
 % This FILTER function options.
 [opt,varargin] = passvalopt('model.filter',varargin{:});
@@ -202,7 +201,7 @@ pp.parse(This,Inp,Range,j);
 % Process Kalman filter options; `mypreploglik` also expands solution
 % forward if needed for tunes on the mean of shocks.
 Range = Range(1) : Range(end);
-likOpt = mypreploglik(This,Range,'t',j,varargin{:});
+likOpt = mypreploglik(This,Range,'t',J,varargin{:});
 
 % Get measurement and exogenous variables.
 Inp = datarequest('yg*',This,Inp,Range);
@@ -242,16 +241,18 @@ end
 
 % Post-process regular (non-hdata) output arguments; update the std
 % parameters in the model object if `'relative=' true`.
-[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt);
+[~,Pe,V,Delta,~,SCov,This] = mykalmanregoutp(This,regOutp,xRange,likOpt,opt);
 
 % Post-process hdata output arguments.
-Outp = hdataobj.hdatafinal(hData,This,xRange);
+Outp = hdataobj.hdatafinal(hData);
 
 
 % Nested functions...
 
 
 %**************************************************************************
+
+    
     function doChkConflicts()
         if likOpt.ahead > 1 && (nData > 1 || nAlt > 1)
             utils.error('model', ...
@@ -267,6 +268,8 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
 
 
 %**************************************************************************
+    
+    
     function doPreallocHData()
         isPred = ~isempty(strfind(opt.data,'pred'));
         isFilter = ~isempty(strfind(opt.data,'filter'));
@@ -275,81 +278,84 @@ Outp = hdataobj.hdatafinal(hData,This,xRange);
         nPred = max(nLoop,likOpt.ahead);
         nCont = ny;
         if nArgOut >= 2
-            % Prediction step.
+            
+            % Prediction step
+            %-----------------
             if isPred
-                hData.predmean = hdataobj(This, ...
-                    struct('IsPreSample',false, ...
-                    'Precision',likOpt.precision), ...
-                    nXPer,nPred);
+                hData.M0 = hdataobj(This,xRange,nPred, ...
+                    'IncludeLag=',false, ...
+                    'Precision=',likOpt.precision);
                 if ~likOpt.meanonly
                     if likOpt.returnstd
-                        hData.predstd = hdataobj(This, ...
-                            struct('IsPreSample',false, ...
-                            'IsStd',true, ...
-                            'Precision',likOpt.precision), ...
-                            nXPer,nLoop);
+                        hData.S0 = hdataobj(This,xRange,nLoop, ...
+                            'IncludeLag=',false, ...
+                            'IsVar2Std=',true, ...
+                            'Precision=',likOpt.precision);
                     end
                     if likOpt.returnmse
-                        hData.predmse = nan(nb,nb,nXPer,nLoop, ...
+                        hData.Mse0 = hdataobj();
+                        hData.Mse0.Data = nan(nb,nb,nXPer,nLoop, ...
                             likOpt.precision);
+                        hData.Mse0.Range = xRange;
                     end
                     if likOpt.returncont
-                        hData.predcont = hdataobj(This, ....
-                            struct('IsPreSample',false, ...
-                            'Precision',likOpt.precision, ...
-                            'Contrib','Y'), ...
-                            nXPer,nCont);
+                        hData.predcont = hdataobj(This,xRange,nCont, ....
+                            'IncludeLag=',false, ...
+                            'Contributions=',@measurement, ...
+                            'Precision',likOpt.precision);
                     end
                 end
             end
-            % Filter step.
+            
+            % Filter step
+            %-------------
             if isFilter
-                hData.filtermean = hdataobj(This, ...
-                    struct('IsPreSample',false, ...
-                    'Precision',likOpt.precision), ...
-                    nXPer,nLoop);
+                hData.M1 = hdataobj(This,xRange,nLoop, ...
+                    'IncludeLag=',false, ...
+                    'Precision=',likOpt.precision);
                 if ~likOpt.meanonly
                     if likOpt.returnstd
-                        hData.filterstd = hdataobj(This, ...
-                            struct('IsPreSample',false, ...
-                            'IsStd',true, ...
-                            'Precision',likOpt.precision), ...
-                            nXPer,nLoop);
+                        hData.S1 = hdataobj(This,xRange,nLoop, ...
+                            'IncludeLag=',false, ...
+                            'IsVar2Std=',true, ...
+                            'Precision',likOpt.precision);
                     end
                     if likOpt.returnmse
-                        hData.filtermse = nan(nb,nb,nXPer,nLoop, ...
+                        hData.Mse1 = hdataobj();
+                        hData.Mse1.Data = nan(nb,nb,nXPer,nLoop, ...
                             likOpt.precision);
+                        hData.Mse1.Range = xRange;
                     end
                     if likOpt.returncont
-                        hData.filtercont = hdataobj(This, ...
-                            struct('IsPreSample',false, ...
-                            'Precision',likOpt.precision, ...
-                            'Contrib','Y'), ...
-                            nXPer,nCont);
+                        hData.filtercont = hdataobj(This,xRange,nCont, ...
+                            'IncludeLag=',false, ...
+                            'Contributions=',@measurement, ...
+                            'Precision=',likOpt.precision);
                     end
                 end
             end
-            % Smooth data.
+            
+            % Smoother
+            %----------
             if isSmooth
-                hData.smoothmean = hdataobj(This, ...
-                    struct('Precision',likOpt.precision), ...
-                    nXPer,nLoop);
+                hData.M2 = hdataobj(This,xRange,nLoop, ...
+                    'Precision=',likOpt.precision);
                 if ~likOpt.meanonly
                     if likOpt.returnstd
-                        hData.smoothstd = hdataobj(This, ...
-                            struct('IsStd',true, ...
-                            'Precision',likOpt.precision), ...
-                            nXPer,nLoop);
+                        hData.S2 = hdataobj(This,xRange,nLoop, ...
+                            'IsVar2Std=',true, ...
+                            'Precision=',likOpt.precision);
                     end
                     if likOpt.returnmse
-                        hData.smoothmse = nan(nb,nb,nXPer,nLoop, ...
+                        hData.Mse2 = hdataobj();
+                        hData.Mse2.Data = nan(nb,nb,nXPer,nLoop, ...
                             likOpt.precision);
+                        hData.Mse2.Range = xRange;
                     end
                     if likOpt.returncont
-                        hData.smoothcont = hdataobj(This, ...
-                            struct('Precision',likOpt.precision, ...
-                            'Contrib','Y'), ...
-                            nXPer,nCont);
+                        hData.C2 = hdataobj(This,xRange,nCont, ...
+                            'Contributions=',@measurement, ...
+                            'Precision=',likOpt.precision);
                     end
                 end
             end

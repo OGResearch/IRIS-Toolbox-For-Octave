@@ -37,15 +37,15 @@ function D = dbredate(D,OldDate,NewDate)
 
 pp = inputParser();
 pp.addRequired('d',@isstruct);
-pp.addRequired('oldDate',@is.numericscalar);
-pp.addRequired('newDate',@is.numericscalar);
+pp.addRequired('oldDate',@isnumericscalar);
+pp.addRequired('newDate',@isnumericscalar);
 pp.parse(D,OldDate,NewDate);
 
 %--------------------------------------------------------------------------
 
 list = fieldnames(D);
-tseriesInx = structfun(@is.tseries,D);
-structInx = structfun(@isstruct,D);
+tseriesInx = structfun(@istseries,D);
+structInx = structfun(@(xArg)isa(xArg,'struct'),D);
 
 % Cycle over all tseries objects.
 for i = find(tseriesInx.')

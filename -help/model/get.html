@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -184,9 +196,11 @@ code.LaTeX {
 <h5 id="model-structure-solution-build">Model structure, solution, build</h5>
 <ul>
 <li><p><code>'build'</code> -- Returns [ numeric ] IRIS version number under which the model object has been built.</p></li>
+<li><p><code>'eqtnBlk'</code> -- Returns [ cell ] of cell str with the recursive block structure of steady-state equations (if the block-recursive analysis has already been performed).</p></li>
 <li><p><code>'log'</code> -- Returns [ struct ] a database with <code>true</code> for each log-linearised variables, and <code>false</code> for each linearised variable.</p></li>
 <li><p><code>'maxLag'</code> -- Returns [ numeric ] the maximum lag in the model.</p></li>
 <li><p><code>'maxLead'</code> -- Returns [ numeric ] the maximum lead in the model.</p></li>
+<li><p><code>'nameBlk'</code> -- Returns [ cell ] of cell str with the recursive block structure of variable names (if the block-recursive analysis has already been performed).</p></li>
 <li><p><code>'stationary'</code> -- Returns [ struct ] a database with <code>true</code> for each stationary variables, and <code>false</code> for each unit-root (non-stationary) variables (under current solution).</p></li>
 <li><p><code>'nonStationary'</code> -- Returns [ struct ] a database with <code>true</code> for each unit-root (non-stationary) varible, and <code>false</code> for each stationary variable (under current solution).</p></li>
 <li><p><code>'stationaryList'</code> -- Returns [ cellstr ] the list of stationary variables (under current solution).</p></li>
@@ -217,5 +231,5 @@ w = get(m,&#39;wrt&#39;);</code></pre>
 <pre><code>w{k}</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

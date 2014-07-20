@@ -31,6 +31,9 @@ function [Ax,Lhs,Rhs,varargout] = plotcmp(varargin)
 % Options
 % ========
 %
+% * `'baseLine='` [ *`true`* | `false` ] - Draw a baseline in the bar/area
+% difference graph.
+%
 % * `'compare='` [ numeric | *`[-1;1]`* ] - Linear combination of the
 % observations that will be plotted in the RHS graph; `[-1;1]` means a
 % difference between the second series and the first series,
@@ -92,6 +95,11 @@ d = replace(X,X.data * opt.compare,X.start);
    plotyy(Range,X,Range,d,varargin{:},'rhsPlotFunc=',opt.cmpplotfunc);
 
 set(Rhs,'faceColor',opt.cmpcolor,'edgeColor',opt.cmpcolor);
+
+if ~opt.baseline
+    h = get(Rhs,'BaseLine');
+    delete(h);
+end
 
 set(Ax(1),'tag','plotcmpLhs');
 set(Ax(2),'tag','plotcmpRhs');

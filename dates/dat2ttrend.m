@@ -1,10 +1,11 @@
-function [TTrend,BaseYear] = dat2ttrend(Range,Obj)
+function [TTrend,BaseYear] = dat2ttrend(Range,BaseYear)
 % dat2ttrend  Construct linear time trend from date range.
 %
 % Syntax
 % =======
 %
 %     [TTrend,BaseDate] = dat2ttrend(Range)
+%     [TTrend,BaseDate] = dat2ttrend(Range,BaseYear)
 %     [TTrend,BaseDate] = dat2ttrend(Range,Obj)
 %
 % Input arguments
@@ -13,9 +14,12 @@ function [TTrend,BaseYear] = dat2ttrend(Range,Obj)
 % * `Range` [ numeric ] - Date range from which an integer linear time
 % trend will be constructed.
 %
+% * `BaseYear` [ model | VAR ] - Base year that will be used to construct
+% the time trend.
+%
 % * `Obj` [ model | VAR ] - Model or VAR object whose base year will be
-% used to construct the time trend; if omitted, the base year from
-% `irisget('baseYear')` will be used.
+% used to construct the time trend; if both `BaseYear` and `Obj` are
+% omitted, the base year from `irisget('baseYear')` will be used.
 %
 % Output arguments
 % =================
@@ -48,14 +52,17 @@ function [TTrend,BaseYear] = dat2ttrend(Range,Obj)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-try %#ok<TRYNC>
-    BaseYear = [];
-    BaseYear = get(Obj,'baseYear');
+try
+    if ~isintscalar(BaseYear)
+        BaseYear = get(BaseYear,'baseYear');
+    end
+catch
+    BaseYear = @config;
 end
 
 %--------------------------------------------------------------------------
 
-if ~is.intscalar(BaseYear)
+if ~isintscalar(BaseYear)
     BaseYear = irisget('baseYear');
 end
 

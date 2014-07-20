@@ -40,11 +40,13 @@ ptn = '\{[^@].*?\}';
 s = regexp([Eqtn{:}],ptn,'once');
 if ~isempty(s)
     for iEq = 1 : nEqtn
-        % ##### MOSW:
-        % replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
-        % Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
-        Eqtn{iEq} = mosw.dregexprep(Eqtn{iEq},ptn, ...
-            @doNonstandardTimeSubs,0);
+        if true % ##### MOSW
+            replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
+            Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
+        else
+            Eqtn{iEq} = mosw.dregexprep(Eqtn{iEq},ptn, ...
+                'doNonstandardTimeSubs',0); %#ok<UNRCH>
+        end
     end
     if any(~ValidSubs)
         return
@@ -61,14 +63,14 @@ if ~isempty(c)
     MaxT = max([MaxT,x]);
     MinT = min([MinT,x]);
 end
-    
+
 
     function C = doNonstandardTimeSubs(C0)
         C = '';
         try %#ok<TRYNC>
             c = C0(2:end-1); % Strip out the enclosing curly braces.
             xx = xxProtectedEval(c); % Use protected eval to avoid conflict with workspace.
-            if is.numericscalar(xx) && xx == round(xx)
+            if isintscalar(xx)
                 if round(xx) == 0
                     C = '';
                     return

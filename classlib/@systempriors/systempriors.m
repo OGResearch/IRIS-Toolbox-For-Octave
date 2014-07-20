@@ -1,5 +1,5 @@
 classdef systempriors < userdataobj
-    % systempriors  System priors.
+    % systempriors  System Priors Objects and Functions.
     %
     % System priors are priors imposed on the system properties of the model as
     % whole, such as shock response functions, frequency response functions,
@@ -12,7 +12,7 @@ classdef systempriors < userdataobj
     % Constructor
     % ============
     %
-    % * [`systempriors`](systempriors/systempriors) - Create new, empty system priors object.
+    % * [`systempriors`](systempriors/systempriors) - Create new empty system priors object.
     %
     % Setting up priors
     % ==================
@@ -59,7 +59,7 @@ classdef systempriors < userdataobj
     
     methods
         function This = systempriors(varargin)
-            % systempriors  Create new, empty system priors object.
+            % systempriors  Create new empty system priors object.
             %
             % Syntax
             % =======
@@ -75,7 +75,7 @@ classdef systempriors < userdataobj
             % Output arguments
             % =================
             %
-            % * `S` [ systempriors ] - New, empty system priors object.
+            % * `S` [ systempriors ] - New empty system priors object.
             %
             % Description
             % ============

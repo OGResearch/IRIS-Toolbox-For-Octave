@@ -1,4 +1,4 @@
-function [S,D,List,Freq] = xsf(This,Freq,varargin)
+function [S,D,YXVec,Freq] = xsf(This,Freq,varargin)
 % xsf  Power spectrum and spectral density of model variables.
 %
 % Syntax
@@ -43,15 +43,15 @@ function [S,D,List,Freq] = xsf(This,Freq,varargin)
 % * `'nFreq='` [ numeric | *`256`* ] - Number of equally spaced frequencies
 % over which the 'filter' is numerically integrated.
 %
-% * `'output='` [ *`'namedmat'`* | `'numeric'` ] - Output matrices `S` and
-% `F` will be either namedmat objects or plain numeric arrays; if the
-% option `'select='` is used, `'output='` is always a namedmat object.
+% * `'matrixFmt='` [ *`'namedmat'`* | `'plain'` ] - Return matrices `S`
+% and `D` as either [`namedmat`](namedmat/Contents) objects (i.e.
+% matrices with named rows and columns) or plain numeric arrays.
 %
 % * `'progress='` [ `true` | *`false`* ] - Display progress bar on in the
 % command window.
 %
-% * `'select='` [ cellstr | *`Inf`* ] - Return XSF for selected variables
-% only; `Inf` means all variables.
+% * `'select='` [ *`@all`* | char | cellstr ] - Return XSF for selected
+% variables only; `@all` means all variables.
 %
 % Description
 % ============
@@ -65,7 +65,7 @@ function [S,D,List,Freq] = xsf(This,Freq,varargin)
 
 opt = passvalopt('model.xsf',varargin{:});
 
-if is.numericscalar(Freq) && Freq == round(Freq)
+if isintscalar(Freq)
     nFreq = Freq;
     Freq = linspace(0,pi,nFreq);
 else
@@ -73,13 +73,9 @@ else
     nFreq = length(Freq);
 end
 
-if ischar(opt.select)
-    opt.select = regexp(opt.select,'\w+','match');
-end
-
-isSelect = iscellstr(opt.select);
-isNamedmat = strcmpi(opt.output,'namedmat') || isSelect;
 isDensity = nargout > 1;
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -88,8 +84,8 @@ nx = length(This.solutionid{2});
 nAlt = size(This.Assign,3);
 
 % Pre-process filter options.
-sspaceVec = [This.solutionvector{1:2}];
-[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,sspaceVec);
+YXVec = myvector(This,'yx');
+[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,YXVec);
 
 if opt.progress
     progress = progressbar('IRIS VAR.xsf progress');
@@ -122,30 +118,32 @@ if ~all(isSol)
         preparser.alt2str(~isSol));
 end
 
-% List of variables in rows and columns of `S` and `D`.
-List = [This.solutionvector{1:2}];
-
 % Convert power spectrum to spectral density.
 if isDensity
     C = acf(This);
     D = freqdom.psf2sdf(S,C);
 end
 
-% Convert output matrices to namedmat objects.
-if isNamedmat
-    S = namedmat(S,List,List);
+% Select variables if requested.
+if isSelect
+    [S,pos] = namedmat.myselect(S,YXVec,YXVec,opt.select,opt.select);
+    pos = pos{1};
+    YXVec = YXVec(pos);
     if isDensity
-        D = namedmat(D,List,List);
+        D = D(pos,pos,:,:,:);
     end
 end
 
-% Select variables. For backward compatibility only.
-% Use SELECT function afterwards instead.
-if isSelect
-    [S,inx] = select(S,opt.select);
-    if isDensity
-        D = D(inx{1},inx{2},:,:);
+if true % ##### MOSW
+    % Convert double arrays to namedmat objects if requested.
+    if isNamedMat
+        S = namedmat(S,YXVec,YXVec);
+        try %#ok<TRYNC>
+            D = namedmat(D,YXVec,YXVec);
+        end
     end
+else
+    % Do nothing.
 end
 
 end

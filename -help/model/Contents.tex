@@ -1,5 +1,5 @@
 
-    \foldertitle{model}{Model objects and functions}{model/Contents}
+    \foldertitle{model}{Model Objects and Functions}{model/Contents}
 
 	Model objects are created by loading a \href{modellang/Contents}{model
 file}. Once a model object exists, you can use model functions and
@@ -10,7 +10,7 @@ and so on.
 
 Model methods:
 
-\paragraph{Constructor}
+\paragraph{Constructor}\label{constructor}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -20,7 +20,7 @@ Model methods:
 \end{itemize}
 
 \paragraph{Getting information about
-models}
+models}\label{getting-information-about-models}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -86,7 +86,7 @@ models}
   IRIS object.
 \end{itemize}
 
-\paragraph{Referencing model objects}
+\paragraph{Referencing model objects}\label{referencing-model-objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -98,7 +98,7 @@ models}
   model and systemfit objects.
 \end{itemize}
 
-\paragraph{Changing model objects}
+\paragraph{Changing model objects}\label{changing-model-objects}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -130,13 +130,16 @@ models}
   single precision.
 \end{itemize}
 
-\paragraph{Steady state}
+\paragraph{Steady state}\label{steady-state}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
+  \href{model/blazer}{\texttt{blazer}} - Reorder steady-state equations
+  into block-recursive structure.
+\item
   \href{model/chksstate}{\texttt{chksstate}} - Check if equations hold
-  for currently assigned steady0state values.
+  for currently assigned steady-state values.
 \item
   \href{model/sstate}{\texttt{sstate}} - Compute steady state or
   balance-growth path of the model.
@@ -146,10 +149,13 @@ models}
 \end{itemize}
 
 \paragraph{Solution, simulation and
-forecasting}
+forecasting}\label{solution-simulation-and-forecasting}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/chkmissing}{\texttt{chkmissing}} - Check for missing
+  initial values in simulation database.
 \item
   \href{model/diffsrf}{\texttt{diffsrf}} - Differentiate shock response
   functions w.r.t. specified parameters.
@@ -182,7 +188,7 @@ forecasting}
   \href{model/srf}{\texttt{srf}} - Shock response functions.
 \end{itemize}
 
-\paragraph{Model data}
+\paragraph{Model data}\label{model-data}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -191,7 +197,7 @@ forecasting}
   for running \texttt{lhsmrhs}.
 \item
   \href{model/emptydb}{\texttt{emptydb}} - Create model-specific
-  database with variables, shocks, and parameters.
+  database with empty tseries for all variables and shocks.
 \item
   \href{model/rollback}{\texttt{rollback}} - Prepare database for a
   rollback run of Kalman filter.
@@ -203,7 +209,7 @@ forecasting}
   zero-deviation database.
 \end{itemize}
 
-\paragraph{Stochastic properties}
+\paragraph{Stochastic properties}\label{stochastic-properties}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -231,7 +237,7 @@ forecasting}
 \end{itemize}
 
 \paragraph{Identification, estimation and
-filtering}
+filtering}\label{identification-estimation-and-filtering}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -271,7 +277,7 @@ filtering}
 \end{itemize}
 
 \paragraph{Getting on-line help on model
-functions}
+functions}\label{getting-on-line-help-on-model-functions}
 
 \begin{verbatim}
 help model

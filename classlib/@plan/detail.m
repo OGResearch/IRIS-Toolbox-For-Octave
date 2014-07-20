@@ -50,22 +50,22 @@ nq = nnznonlin(This);
 nc = nnzcond(This);
 
 disp(' ');
-range = This.startDate:This.endDate;
+range = This.Start:This.End;
 dates = dat2str(range);
 
 printDates = @(index) sprintf(' %s',dates{index});
 
-[xDetail,xNan] = xxDetail(This.xAnchors,This.xList,range,[],Data);
+[xDetail,xNan] = xxDetail(This.XAnch,This.XList,range,[],Data);
 nRealDetail = ...
-    xxDetail(This.nAnchorsReal,This.nList,range,This.nWeightsReal,[]);
+    xxDetail(This.NAnchReal,This.NList,range,This.NWghtReal,[]);
 nImagDetail = ...
-    xxDetail(This.nAnchorsImag,This.nList,range,This.nWeightsImag,[]);
-[cDetail,cNan] = xxDetail(This.cAnchors,This.cList,range,[],Data);
+    xxDetail(This.NAnchImag,This.NList,range,This.NWghtImag,[]);
+[cDetail,cNan] = xxDetail(This.CAnch,This.CList,range,[],Data);
 
 qList = {};
-for i = find(any(This.qAnchors,2)).'
-    temp = printDates(This.qAnchors(i,:));
-    qList = [qList,{strfun.ellipsis(This.qList{i},20),temp}];
+for i = find(any(This.QAnch,2)).'
+    temp = printDates(This.QAnch(i,:));
+    qList = [qList,{strfun.ellipsis(This.QList{i},20),temp}];
 end
 
 checkList = [ ...
@@ -130,10 +130,14 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
-function [Det,NNan] = xxDetail(Anchors,List,Range,W,D)
+
+
+function [Det,NNan] = xxDetail(Anch,List,Range,W,D)
 
 isData = ~isempty(D) && isstruct(D);
 isWeight = ~isempty(W) && isnumeric(W);
@@ -141,20 +145,20 @@ isWeight = ~isempty(W) && isnumeric(W);
 dates = dat2str(Range);
 Det = {};
 NNan = 0;
-for irow = find(any(Anchors,2)).'
-    index = Anchors(irow,:);
+for irow = find(any(Anch,2)).'
+    index = Anch(irow,:);
     name = List{irow};
     if isData
         if isfield(D,name) && isa(D.(name),'tseries')
             [~,ndata] = size(D.(name).data);
-            values = nan(ndata,size(Anchors,2));
+            values = nan(ndata,size(Anch,2));
             for idata = 1 : ndata
                 values(idata,index) = D.(name)(Range(index),idata).';
                 NNan = NNan + sum(isnan(values(idata,index)));
             end
         else
             ndata = 1;
-            values = nan(ndata,size(Anchors,2));
+            values = nan(ndata,size(Anch,2));
         end            
         row = '';
         for icol = find(index)
@@ -171,4 +175,4 @@ for irow = find(any(Anchors,2)).'
     Det = [Det,List(irow),{row}]; %#ok<*AGROW>
 end
 
-end % xxDetail().
+end % xxDetail()

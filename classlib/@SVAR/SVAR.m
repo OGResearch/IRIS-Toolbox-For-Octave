@@ -1,5 +1,5 @@
 classdef SVAR < VAR & svarobj
-    % SVAR  Structural vector autoregressions: SVAR objects and functions.
+    % SVAR  Structural Vector Autoregressions: SVAR Objects and Functions.
     %
     % SVAR methods:
     %
@@ -177,6 +177,7 @@ classdef SVAR < VAR & svarobj
     
     methods (Access=protected,Hidden)
         varargout = mycompatible(varargin)
+        varargout = mystruct2obj(varargin)
         varargout = mysubsalt(varargin)
         specdisp(varaargin)
     end

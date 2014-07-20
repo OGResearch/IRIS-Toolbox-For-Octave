@@ -1,4 +1,4 @@
-function [D,NanDerv] = myderiv(This,EqSelect,IAlt,Opt)
+function [Derv,NanDerv] = myderiv(This,EqSelect,IAlt,Opt)
 % myderiv  [Not a public function] Compute first-order expansion of equations around current steady state.
 %
 % Backed IRIS function.
@@ -9,14 +9,16 @@ function [D,NanDerv] = myderiv(This,EqSelect,IAlt,Opt)
 
 isNanDeriv = nargout > 2;
 
-if ischar(Opt.linear) && strcmpi(Opt.linear,'auto')
-    Opt.linear = This.linear;
+if isequal(Opt.linear,@auto)
+    Opt.linear = This.IsLinear;
 end
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
+
 % Copy last computed derivatives.
-D = This.lastSyst.derv;
+Derv = This.lastSyst.derv;
 
 assign = This.Assign(1,:,IAlt);
 nName = length(This.name);
@@ -34,11 +36,11 @@ occur = permute(occur,[3,2,1]);
 
 if any(EqSelect)
     
-    nt = size(This.occur,2) / nName;
+    nt = length(This.Shift);
     nVar = sum(This.nametype <= 3);
-    t = This.tzero;
+    t0 = find(This.Shift == 0);
     if Opt.symbolic
-        symbSelect = ~cellfun(@isempty,This.deqtnF);
+        symbSelect = ~cellfun(@isempty,This.DEqtnF);
     else
         symbSelect = false(1,nEqtn);
     end
@@ -56,20 +58,19 @@ if any(EqSelect)
     
     % Reset the add-factors in non-linear equations to 1.
     tempEye = -eye(sum(This.eqtntype <= 2));
-    D.n(EqSelect,:) = tempEye(EqSelect,This.nonlin);
+    Derv.n(EqSelect,:) = tempEye(EqSelect,This.IxNonlin);
     
     % Normalise derivatives by largest number in non-linear models.
-    if ~Opt.linear
+    if ~Opt.linear && Opt.Normalize
         for iEq = find(EqSelect)
-            inx = D.f(iEq,:) ~= 0;
+            inx = Derv.f(iEq,:) ~= 0;
             if any(inx)
-                norm = max(abs(D.f(iEq,inx)));
-                D.f(iEq,inx) = D.f(iEq,inx) / norm;
-                D.n(iEq,:) = D.n(iEq,:) / norm;
+                norm = max(abs(Derv.f(iEq,inx)));
+                Derv.f(iEq,inx) = Derv.f(iEq,inx) / norm;
+                Derv.n(iEq,:) = Derv.n(iEq,:) / norm;
             end
         end
     end
-    
 end
 
 
@@ -80,9 +81,8 @@ end
 
 
     function doNumDeriv()
-        
-        minT = 1 - t;
-        maxT = nt - t;
+        minT = 1 - t0;
+        maxT = nt - t0;
         tVec = minT : maxT;
         
         if Opt.linear
@@ -91,24 +91,28 @@ end
             init = init(1,:,ones(1,nt));
             h = ones(1,nName,nt);
         else
-            init = mytrendarray(This,1:nName,tVec,false,IAlt);
+            isDelog = false;
+            init = mytrendarray(This,IAlt,isDelog,1:nName,tVec);
             init = shiftdim(init,-1);
             h = abs(This.epsilon(1))*max([init;ones(1,nName,nt)],[],1);
         end
         
         xPlus = init + h;
         xMinus = init - h;
-        step = xPlus - xMinus;
+        % Any imag parts in `xPlus` and `xMinus` should cancel; `real()` does no
+        % harm here therefore.
+        step = real(xPlus - xMinus);
         
-        if any(This.log)
-            init(1,This.log,:) = exp(init(1,This.log,:));
-            xPlus(1,This.log,:) = exp(xPlus(1,This.log,:));
-            xMinus(1,This.log,:) = exp(xMinus(1,This.log,:));
+        % Delog log-plus variables.
+        if any(This.IxLog)
+            init(1,This.IxLog,:) = realexp(init(1,This.IxLog,:));
+            xPlus(1,This.IxLog,:) = realexp(xPlus(1,This.IxLog,:));
+            xMinus(1,This.IxLog,:) = realexp(xMinus(1,This.IxLog,:));
         end
         
         % References to steady-state levels and growth rates.
         if ~Opt.linear
-            L = init(:,:,t);
+            L = init(:,:,t0);
         else
             L = [];
         end
@@ -125,21 +129,21 @@ end
             gridPlus = init(ones(1,n),:,:);
             gridMinus = init(ones(1,n),:,:);
             for ii = 1 : n
-                gridMinus(ii,nmOcc(ii),tmOcc(ii)) = ...
-                    xMinus(1,nmOcc(ii),tmOcc(ii));
-                gridPlus(ii,nmOcc(ii),tmOcc(ii)) = ...
-                    xPlus(1,nmOcc(ii),tmOcc(ii));
+                iNm = nmOcc(ii);
+                iTm = tmOcc(ii);
+                gridMinus(ii,iNm,iTm) = xMinus(1,iNm,iTm);
+                gridPlus(ii,iNm,iTm) = xPlus(1,iNm,iTm);
             end
             
             x = gridMinus;
-            fMinus = eqtn(x,t,L);
+            fMinus = eqtn(x,t0,L);
             x = gridPlus;
-            fPlus = eqtn(x,t,L);
+            fPlus = eqtn(x,t0,L);
             
             % Constant in linear models.
             if Opt.linear
                 x = grid;
-                D.c(iiEq) = eqtn(x,t,L);
+                Derv.c(iiEq) = eqtn(x,t0,L);
             end
             
             value = zeros(1,n);
@@ -150,15 +154,13 @@ end
             
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
-            D.f(iiEq,inx) = value;
+            Derv.f(iiEq,inx) = value;
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))
                 NanDerv(iiEq) = true;
             end
-
         end
-        
     end % doNumDeriv()
 
 
@@ -166,23 +168,18 @@ end
 
     
     function doSymbDeriv()
-
         if Opt.linear
             x = zeros(1,nName);
-            if any(This.log)
-                x(1,This.log) = 1;
-            end
+            x(1,This.IxLog) = 1;
             x(1,This.nametype == 4) = real(assign(This.nametype == 4));
             x = x(1,:,ones(1,nt));
-            % References to steady-state levels and growth rates.
+            % References to steady-state levels.
             L = [];
         else
-            minT = 1 - t;
-            maxT = nt - t;
-            tVec = minT : maxT;
-            x = mytrendarray(This,1:nName,tVec,true,IAlt);
+            isDelog = true;
+            x = mytrendarray(This,IAlt,isDelog);
             x = shiftdim(x,-1);
-            % References to steady-state levels and growth rates.
+            % References to steady-state levels.
             L = x;
         end
    
@@ -190,31 +187,47 @@ end
             % Get occurences of variables in this equation.
             [tmOcc,nmOcc] = find(occur(:,:,iiEq));
             
+            % Log derivatives need to be multiplied by x. Log-plus and
+            % log-minus variables are treated the same way because
+            % df(x)/dlog(xm) = df(x)/d(x) * d(x)/d(xm) * d(xm)/dlog(xm) 
+            % = df(x)/d(x) * (-1) * xm = df(x)/d(x) * (-1) * (-1)*x
+            % = df(x)/d(x) *x.
+            ixLog = This.IxLog(nmOcc);
+            if any(ixLog)
+                logMult = ones(size(nmOcc));
+                for iiOcc = find(ixLog)
+                    logMult(iiOcc) = x(1,nmOcc(iiOcc),tmOcc(iiOcc));
+                end
+            end
+            
             % Constant in linear models. Becuase all variables are set to
             % zero, evaluating the equations gives the constant.
             if Opt.linear
-                if isnumeric(This.ceqtnF{iiEq})
-                    c = This.ceqtnF{iiEq};
+                if isnumeric(This.CEqtnF{iiEq})
+                    c = This.CEqtnF{iiEq};
                 else
-                    c = This.ceqtnF{iiEq}(x,t,L);
+                    c = This.CEqtnF{iiEq}(x,t0,L);
                 end
-                D.c(iiEq) = c;
+                Derv.c(iiEq) = c;
             end
             
             % Evaluate all derivatives of the equation at once.
-            value = This.deqtnF{iiEq}(x,t,L);
+            value = This.DEqtnF{iiEq}(x,t0,L);
             
+            % Multiply derivatives wrt to log variables by x.
+            if any(ixLog)
+                value = value .* logMult;
+            end
+
             % Assign values to the array of derivatives.
             inx = (tmOcc-1)*nVar + nmOcc;
-            D.f(iiEq,inx) = value;
+            Derv.f(iiEq,inx) = value(:)';
             
             % Check for NaN derivatives.
             if isNanDeriv && any(~isfinite(value))
                 NanDerv(iiEq) = true;
             end
-
         end
-        
     end % doSymbDeriv()
 
 

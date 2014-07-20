@@ -19,15 +19,15 @@ ny = sum(This.nametype == 1);
 nxx = sum(This.nametype == 2);
 ne = sum(This.nametype == 3);
 n = ny + nxx + ne;
-t = This.tzero;
+t0 = find(This.Shift == 0);
 
 % Find max lag, minShift, and max lead, maxShift, for each transition
 % variable.
 minShift = zeros(1,nxx);
 maxShift = zeros(1,nxx);
-isNonlin = any(This.nonlin);
+isNonlin = any(This.IxNonlin);
 for i = 1 : nxx
-    findOccur = find(any(occur(This.eqtntype == 2,ny+i,:),1)) - t;
+    findOccur = find(any(occur(This.eqtntype == 2,ny+i,:),1)) - t0;
     findOccur = findOccur(:).';
     if ~isempty(findOccur)
         minShift(i) = min([minShift(i),findOccur]);
@@ -41,15 +41,15 @@ for i = 1 : nxx
         % equations.
         if isNonlin && maxShift(i) > 0
             maxOccur = max(find( ...
-                any(occur(This.eqtntype == 2 & This.nonlin,ny+i,:),1) ...
-                ) - t);
+                any(occur(This.eqtntype == 2 & This.IxNonlin,ny+i,:),1) ...
+                ) - t0);
             if maxOccur == maxShift(i)
                 maxShift(i) = maxShift(i) + 1;
             end
         end
     end
     % If x(t-k) occurs in measurement equations then add k-1 lag.
-    findOccur = find(any(occur(This.eqtntype == 1,ny+i,:),1)) -  t;
+    findOccur = find(any(occur(This.eqtntype == 1,ny+i,:),1)) -  t0;
     findOccur = findOccur(:).';
     if ~isempty(findOccur)
         minShift(i) = min([minShift(i),min(findOccur)-1]);
@@ -66,6 +66,8 @@ end
 This.systemid{1} = find(This.nametype == 1);
 This.systemid{3} = find(This.nametype == 3);
 This.systemid{2} = zeros(1,0);
+This.systemid{4} = zeros(1,0);
+This.systemid{5} = find(This.nametype == 5);
 for k = max(maxShift) : -1 : min(minShift)
     % Add transition variables with this shift.
     This.systemid{2} = [This.systemid{2}, ...
@@ -98,7 +100,7 @@ This.d2s.e = zeros(1,0);
 
 % Transition variables
 %----------------------
-This.d2s.y_ = (t-1)*n + find(This.nametype == 1);
+This.d2s.y_ = (t0-1)*n + find(This.nametype == 1);
 This.d2s.y = 1 : ny;
 
 % Delete double occurences. These emerge whenever a variable has maxshift >
@@ -115,10 +117,10 @@ end
 for i = 1 : nu
     id = This.systemid{2}(i);
     if imag(id) == minShift(real(id)-ny)
-        This.d2s.xu_(end+1) = (imag(id)+t-1)*n + real(id);
+        This.d2s.xu_(end+1) = (imag(id)+t0-1)*n + real(id);
         This.d2s.xu(end+1) = i;
     end
-    This.d2s.xu1_(end+1) = (imag(id)+t+1-1)*n + real(id);
+    This.d2s.xu1_(end+1) = (imag(id)+t0+1-1)*n + real(id);
     This.d2s.xu1(end+1) = i;
 end
 
@@ -127,16 +129,16 @@ end
 for i = 1 : np
     id = This.systemid{2}(nu+i);
     if imag(id) == minShift(real(id)-ny)
-        This.d2s.xp_(end+1) = (imag(id)+t-1)*n + real(id);
+        This.d2s.xp_(end+1) = (imag(id)+t0-1)*n + real(id);
         This.d2s.xp(end+1) = nu + i;
     end
-    This.d2s.xp1_(end+1) = (imag(id)+t+1-1)*n + real(id);
+    This.d2s.xp1_(end+1) = (imag(id)+t0+1-1)*n + real(id);
     This.d2s.xp1(end+1) = nu + i;
 end
 
 % Shocks
 %--------
-This.d2s.e_ = (t-1)*n + find(This.nametype == 3);
+This.d2s.e_ = (t0-1)*n + find(This.nametype == 3);
 This.d2s.e = 1 : ne;
 
 % Dynamic identity matrices
@@ -162,15 +164,11 @@ nb = sum(imag(This.systemid{2}) < 0);
 nf = nx - nb;
 
 This.solutionid = {...
-    This.systemid{1},...
-    [This.systemid{2}(~This.d2s.remove),1i+This.systemid{2}(nf+1:end)],...
-    This.systemid{3},...
-    };
-
-This.solutionvector = { ...
-    myvector(This,'y'), ...
-    myvector(This,'x'), ...
-    myvector(This,'e'), ...
+    This.systemid{1}, ...
+    [This.systemid{2}(~This.d2s.remove),1i+This.systemid{2}(nf+1:end)], ...
+    This.systemid{3}, ...
+    This.systemid{4}, ...
+    This.systemid{5}, ...
     };
 
 end

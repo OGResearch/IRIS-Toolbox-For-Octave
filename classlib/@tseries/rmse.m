@@ -52,6 +52,7 @@ pp.addRequired('Pred',@(x) isa(x,'tseries'));
 pp.addRequired('Range',@isnumeric);
 pp.parse(Obs,Pred,Range);
 
+
 %--------------------------------------------------------------------------
 
 Obs = resize(Obs,Range);

@@ -39,22 +39,46 @@ function This = group(This,Grp)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'VAR'));
-pp.addRequired('Group',@(x) ischar(x) || is.numericscalar(x) || islogical(x));
+pp.addRequired('V',@(x) isVAR(x) && ispanel(x));
+pp.addRequired('Group',@(x) ischar(x) || isnumericscalar(x) || islogical(x));
 pp.parse(This,Grp);
 
 %--------------------------------------------------------------------------
 
 if ischar(Grp)
+    GrpName = Grp;
     Grp = strcmp(Grp,This.GroupNames);
     if ~any(Grp)
-    utils.error('VAR', ...
-        'This group name does not exist in the %s object : ''%s''.', ...
-        class(This),Grp);
+        utils.error('VAR:group', ...
+            'This group does not exist in the %s object: ''%s''.', ...
+            class(This),GrpName);
     end
 end
 
-This = group@varobj(This,Grp);
-This.K = This.K(:,Grp,:);
+if islogical(Grp)
+    Grp = find(Grp);
+    if length(Grp) ~= 1
+        utils.error('VAR:group', ...
+            'Exactly one group only must be requested.');
+    end
+end
+
+try
+    This.GroupNames = {};
+    This.Fitted = This.Fitted(Grp,:,:);
+    This.K = This.K(:,Grp,:);
+    This.X0 = This.X0(:,Grp,:);
+    if islogical(Grp)
+        Grp = find(Grp);
+    end
+    nx = length(This.XNames);
+    pos = (Grp-1)*nx + (1:nx);
+    This.J = This.J(:,pos,:);
+    
+catch
+    utils.error('VAR:group', ...
+        'This group does not exist in the %s object: %g.', ...
+        class(This),Grp);
+end
 
 end

@@ -1,14 +1,14 @@
 % index  IRIS Toolbox Reference Manual.
 %
-% * [sessions](Contents/sessions) - IRIS sessions.
+% * [sessions](Contents/sessions) - IRIS Sessions.
 %
-% * [models](Contents/models) - Model development and operation.
+% * [models](Contents/models) - Model Development and Operation.
 %
-% * [VARs](Contents/VARs) - Multivariate time series analysis.
+% * [VARs](Contents/VARs) - Multivariate Time Series Analysis.
 %
-% * [data](Contents/data) - Time series and database management.
+% * [data](Contents/data) - Time Series and Database Management.
 %
-% * [reporting](Contents/reporting) - Reporting and publishing.
+% * [reporting](Contents/reporting) - Reporting and Publishing.
 %
 
 % -IRIS Toolbox.

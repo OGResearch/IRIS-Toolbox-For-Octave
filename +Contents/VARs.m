@@ -1,12 +1,12 @@
-% VARs  Multivariate time series analysis.
+% VARs  Multivariate Time Series Analysis.
 %
-% * [VAR](VAR/Contents) - Vector autoregressions (VAR) objects and functions.
+% * [VAR](VAR/Contents) - Vector Autoregressions: VAR Objects and Functions.
 %
-% * [SVAR](SVAR/Contents) - Structural vector autoregressions: SVAR objects and functions.
+% * [SVAR](SVAR/Contents) - Structural Vector Autoregressions: SVAR Objects and Functions.
 %
-% * [BVAR](BVAR/Contents) - Bayesian VAR prior dummies: BVAR package.
+% * [BVAR](BVAR/Contents) - Bayesian VAR Priors: BVAR Package.
 %
-% * [FAVAR](FAVAR/Contents) - Factor-augmented vector autoregressions: FAVAR objects and functions.
+% * [FAVAR](FAVAR/Contents) - Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions.
 %
 
 % -IRIS Toolbox.

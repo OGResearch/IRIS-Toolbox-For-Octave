@@ -46,7 +46,7 @@ function This = reset(This,varargin)
  
 ne = sum(This.nametype == 3);
 
-if This.linear
+if This.IsLinear
     std = 1;
 else
     std = 0.01;

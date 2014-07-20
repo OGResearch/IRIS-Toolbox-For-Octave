@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -134,12 +146,12 @@ code.LaTeX {
 <li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the simulated paths into contributions of individual shocks.</p></li>
 <li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from balanced-growth path.</p></li>
 <li><p><code>'dbOverlay='</code> [ <code>true</code> | <em><code>false</code></em> | struct ] - Use the function <code>dboverlay</code> to combine the simulated output data with the input database, or with another database, at the end.</p></li>
-<li><p><code>'dTrends='</code> [ <em>'auto'</em> | <code>true</code> | <code>false</code> ] - Add deterministic trends to measurement variables.</p></li>
+<li><p><code>'dTrends='</code> [ <em><code>@auto</code></em> | <code>true</code> | <code>false</code> ] - Add deterministic trends to measurement variables.</p></li>
 <li><p><code>'ignoreShocks='</code> [ <code>true</code> | <em><code>false</code></em> ] - Read only initial conditions from input data, and ignore any shocks within the simulation range.</p></li>
 <li><p><code>'plan='</code> [ plan ] - Specify a simulation plan to swap endogeneity and exogeneity of some variables and shocks temporarily, and/or to simulate some of the non-linear equations accurately.</p></li>
 <li><p><code>'progress='</code> [ <code>true</code> | <em><code>false</code></em> ] - Display progress bar in the command window.</p></li>
 </ul>
-<h4 id="options-in-non-linear-simualations">Options in non-linear simualations</h4>
+<h4 id="options-in-nonlinear-simualations">Options in nonlinear simualations</h4>
 <ul>
 <li><p><code>'addSstate='</code> [ <em><code>true</code></em> | <code>false</code> ] - Add steady state levels to simulated paths before evaluating non-linear equations; this option is used only if <code>'deviation=' true</code>.</p></li>
 <li><p><code>'display='</code> [ <em><code>true</code></em> | <code>false</code> | numeric | Inf ] - Report iterations on the screen; if <code>'display=' N</code>, report every <code>N</code> iterations; if <code>'display=' Inf</code>, report only final iteration.</p></li>
@@ -151,8 +163,25 @@ code.LaTeX {
 </ul>
 <h4 id="description">Description</h4>
 <h5 id="output-range">Output range</h5>
-<p>Time series in the output database, <code>S</code>, are are defined on the simulation range, <code>RANGE</code>, plus include all necessary initial conditions, i.e. lags of variables that occur in the model code. You can use the option <code>'dboverlay='</code> to combine the output database with the input database (i.e. to include a longer history of data in the simulated series).</p>
-<h5 id="simulations-with-multilple-parameterisations-andor-multiple-data-sets">Simulations with multilple parameterisations and/or multiple data sets</h5>
+<p>Time series in the output database, <code>S</code>, are are defined on the simulation range, <code>Range</code>, plus include all necessary initial conditions, i.e. lags of variables that occur in the model code. You can use the option <code>'dboverlay='</code> to combine the output database with the input database (i.e. to include a longer history of data in the simulated series).</p>
+<h5 id="deviations-from-steady-state-and-deterministic-trends">Deviations from steady-state and deterministic trends</h5>
+<p>By default, both the input database, <code>D</code>, and the output database, <code>S</code>, are in full levels and the simulated paths for measurement variables include the effect of deterministic trends, including possibly exogenous variables. The default behavior can be changed by changing the options <code>'deviation='</code> and <code>'dTrends='</code>.</p>
+<p>The default value for <code>'deviation='</code> is false. If set to <code>true</code>, then the input database is expected to contain data in the form of deviations from their steady state levels or paths. For ordinary variables (i.e. variables whose log status is <code>false</code>), it is <span class="LaTeX">$x_t-\Bar x_t$</span>, meaning that a 0 indicates that the variable is at its steady state and e.g. 2 indicates the variables exceeds its steady state by 2. For log-variables (i.e. variables whose log status is <code>true</code>), it is <span class="LaTeX">$x_t/\Bar x_t$</span>, meaning that a 1 indicates that the variable is at its steady state and e.g. 1.05 indicates that the variable is 5 per cent above its steady state.</p>
+<p>The default value for <code>'dTrends='</code> is <code>@auto</code>. This means that its behavior depends on the option <code>'deviation='</code>. If <code>'deviation=' false</code> then deterministic trends are added to measurement variables, unless you manually override this behavior by setting <code>'dTrends=' false</code>. On the other hand, if <code>'deviation=' true</code> then deterministic trends are not added to measurement variables, unless you manually override this behavior by setting <code>'dTrends=' true</code>.</p>
+<h5 id="simulating-contributions-of-shocks">Simulating contributions of shocks</h5>
+<p>Use the option <code>'contributions=' true</code> to request the contributions of shocks to the simulated path for each variable; this option cannot be used in models with multiple alternative parameterizations or with multiple input data sets.</p>
+<p>The output database, <code>S</code>, contains Ne+2 columns for each variable, where Ne is the number of shocks in the model:</p>
+<ul>
+<li><p>the first columns 1...Ne are the contributions of the Ne individual shocks to the respective variable;</p></li>
+<li><p>column Ne+1 is the contribution of initial condition, th econstant, and deterministic trends, including possibly exogenous variables;</p></li>
+<li><p>column Ne+2 is the contribution of nonlinearities in nonlinear simulations (it is always zero otherwise).</p></li>
+</ul>
+<p>The contributions are additive for ordinary variables (i.e. variables whose log status is <code>false</code>), and multplicative for log varibles (i.e. variables whose log status is <code>true</code>). In other words, if <code>S</code> is the output database from a simulation with <code>'contributions=' true</code>, <code>X</code> is an ordinary variable, and <code>Z</code> is a log variable, then</p>
+<pre><code>sum(S.X,2)</code></pre>
+<p>(i.e. the sum of all Ne+2 contributions in each period, i.e. summation goes across 2nd dimension) reproduces the final simulated path for the variable <code>X</code>, whereas</p>
+<pre><code>prod(S.Z,2)</code></pre>
+<p>(i.e. the product of all Ne+2 contributions) reproduces the final simulated path for the variable <code>Z</code>.</p>
+<h5 id="simulations-with-multiple-parameterisations-andor-multiple-data-sets">Simulations with multiple parameterisations and/or multiple data sets</h5>
 <p>If you simulate a model with <code>N</code> parameterisations and the input database contains <code>K</code> data sets (i.e. each variable is a time series with <code>K</code> columns), then the following happens:</p>
 <ul>
 <li><p>The model will be simulated a total of <code>P = max(N,K)</code> number of times. This means that each variables in the output database will have <code>P</code> columns.</p></li>
@@ -162,5 +191,5 @@ code.LaTeX {
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

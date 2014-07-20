@@ -35,10 +35,9 @@ function This = condition(This,List,Dates)
 
 % Parse required input arguments.
 pp = inputParser();
-pp.addRequired('p',@is.plan);
-pp.addRequired('list',@(x) ischar(x) || iscellstr(x));
-pp.addRequired('dates',@isnumeric);
-pp.parse(This,List,Dates);
+pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('Dates',@isnumeric);
+pp.parse(List,Dates);
 
 % Convert char list to cell of str.
 if ischar(List)
@@ -63,9 +62,9 @@ nList = numel(List);
 valid = true(1,nList);
 
 for i = 1 : nList
-    index = strcmp(This.cList,List{i});
+    index = strcmp(This.CList,List{i});
     if any(index)
-        This.cAnchors(index,Dates) = true;
+        This.CAnch(index,Dates) = true;
     else
         valid(i) = false;
     end

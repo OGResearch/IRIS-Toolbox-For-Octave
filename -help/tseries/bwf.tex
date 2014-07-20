@@ -2,7 +2,7 @@
 
     \filetitle{bwf}{Butterworth filter with tunes}{tseries/bwf}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [T,C,CutOff,Lambda] = bwf(X,Order)
@@ -10,14 +10,14 @@
 \end{verbatim}
 
 \paragraph{Syntax with output arguments
-swapped}
+swapped}\label{syntax-with-output-arguments-swapped}
 
 \begin{verbatim}
 [T,C,CutOff,Lambda] = bwf2(X,Order)
 [T,C,CutOff,Lambda] = bwf2(X,Order,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -36,7 +36,7 @@ swapped}
   series) is used.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -53,7 +53,7 @@ swapped}
   used instead of \texttt{'Lambda='}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -74,9 +74,9 @@ one-sided filter, \texttt{2} runs a two-sided filter.
 
 \begin{itemize}
 \item
-  \texttt{'Lambda='} {[} numeric \textbar{}
-  \emph{\texttt{(10 freq)\^{}Order}} {]} - Smoothing parameter; needs to
-  be specified for tseries objects with indeterminate frequency.
+  \texttt{'Lambda='} {[} numeric \textbar{} \emph{\texttt{@auto}} {]} -
+  Smoothing parameter; needs to be specified for tseries objects with
+  indeterminate frequency. See Description for default values.
 \item
   \texttt{'level='} {[} tseries {]} - Time series with soft and hard
   tunes on the level of the trend.
@@ -88,8 +88,19 @@ one-sided filter, \texttt{2} runs a two-sided filter.
   - Logarithmise the data before filtering, de-logarithmise afterwards.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\subparagraph{Default smoothing
+parameters}\label{default-smoothing-parameters}
+
+If the user does not specify the smoothing parameter using the
+\texttt{'lambda='} option (or reassigns the default \texttt{@auto}), a
+default value is used. The default value is based on common practice and
+can be calculated using the date frequency of the input time series as
+$\lambda = (10 \cdot f)^n$, where $f$ is the frequency (yearly=1,
+half-yearly=2, quarterly=4, bi-monthly=6, monthly=12), and $n$ is the
+order of the filter, determined by the input parameter \texttt{Order}.
+
+\paragraph{Example}\label{example}
 
 

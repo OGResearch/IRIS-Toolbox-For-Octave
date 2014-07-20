@@ -2,13 +2,13 @@
 
     \filetitle{ismissing}{True if some initical conditions are missing from input database}{model/ismissing}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [Flag,List] = ismissing(M,Inp,Range)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@
   \texttt{Range} {[} numeric {]} - Simulation range.\%
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -32,7 +32,7 @@
   from the database \texttt{Inp}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The complete list of initial conditions required for simulating the
 model \texttt{M} can be obtained by
@@ -41,6 +41,6 @@ model \texttt{M} can be obtained by
 get(M,'required')
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

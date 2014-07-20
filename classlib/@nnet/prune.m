@@ -46,6 +46,7 @@ pp.addRequired('This',@(x) isa(x,'nnet')) ;
 pp.addRequired('Data',@(x) isa(x,'struct')) ;
 pp.parse(This,Data) ;
 
+
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1} ;
     varargin(1) = [] ;
@@ -154,7 +155,5 @@ end
     end
 
 end
-
-
 
 

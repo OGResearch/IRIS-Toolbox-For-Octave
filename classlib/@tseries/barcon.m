@@ -36,18 +36,15 @@ function varargout = barcon(varargin)
 % * `'colorMap='` [ numeric | *`get(gcf(),'colorMap')`* ] - Color map used
 % to fill the contribution bars.
 %
-% * `'dateFormat='` [ char | *`irisget('plotDateFormat')`* ] - Date format
-% for the tick marks on the x-axis.
-%
-% * `'dateTick='` [ numeric | *`Inf`* ] - Vector of dates locating tick
-% marks on the x-axis; Inf means they will be created automatically.
-%
 % * `'evenlySpread='` [ *`true`* | `false` ] - Colors picked for the
 % contribution bars are evenly spread across the color map.
 %
 % * `'ordering='` [ `'ascend'` | `'descend'` | *`'preserve'`* | numeric ] -
 % Ordering of contributions with the same sign withinin each period;
 % `'preserve'` means the original order will be preserved.
+%
+% See help on [`tseries/plot`](tseries/plot) and the built-in function
+% `bar` for other options available.
 %
 % Description
 % ============

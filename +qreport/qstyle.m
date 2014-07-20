@@ -59,7 +59,7 @@ function qstyle(GS,H,varargin)
 % * `plotpred` (line objects with prediction data created by `plotpred`);
 % * `highlight` (a patch object created by `highlight`);
 % * `highlightcaption` (a text object created by `highlight`);
-% * `vline` (a line object created by `vline`);
+% * `vline` (a patch object created by `vline`);
 % * `vlinecaption` (a text object created by `vline`);
 % * `zeroline` (a line object created by `zeroline`).
 %
@@ -141,9 +141,13 @@ end
 
 end
 
-% Subfunctions.
+
+% Subfunctions...
+
 
 %**************************************************************************
+
+
 function d = xxRunGsf(Gsf,Func)
 % Run graphic style file and create graphic style database.
 axes = [];
@@ -158,9 +162,12 @@ d.figure = figure;
 d.label = label;
 d.line = line;
 d.title = title;
-end % xxRunGsf().
+end % xxRunGsf()
+
 
 %**************************************************************************
+
+
 function xxApplyTo(H,D,Field,Opt)
 
 H = findobj(H,'flat','-not','userData','excludeFromStyle');
@@ -198,16 +205,19 @@ for i = 1 : length(list)
             if ~flag && Opt.warning
                 warning('iris:qreport',...
                     ['Error setting %s property ''%s''.\n', ...
-                    '\tMatlab says: %s'],...
+                    '\tUncle says: %s'],...
                     Field,name,Error.message);
             end
         end
     end
 end
 
-end % xxApplyTo().
+end % xxApplyTo()
+
 
 %**************************************************************************
+
+
 function xxFigure(H,D,Opt)
 if isempty(H)
     return
@@ -226,9 +236,12 @@ if Opt.cascade
         xxAxes(obj(:).',D,Opt);
     end
 end
-end % xxFigure().
+end % xxFigure()
+
 
 %**************************************************************************
+
+
 function xxAxes(H,D,Opt)
 % xxAxes  Style axes objects and their associates.
 
@@ -304,13 +317,19 @@ for iH = H
     hLineObj = findobj(jH,'type','line','tag','hline');
     xxApplyTo(hLineObj.',D,'zeroline',Opt);
     
-    % Find handles to vlines. Do not revert the order of handles.
-    vLineObj = findobj(jH,'type','line','tag','vline');
+    % Find handles to vlines. Do not revert the order of handles; vline objects
+    % are now patches, not lines any more.
+    % vLineObj = findobj(jH,'type','line','tag','vline');
+    vLineObj = findobj(jH,'type','patch','tag','vline');
     xxApplyTo(vLineObj.',D,'vline',Opt);
     
     % Bar graphs.
     barObj = findobj(jH,'-property','barWidth');
     xxApplyTo(barObj(end:-1:1).',D,'bar',Opt);
+    
+    % Stem graphs.
+    stemObj = findobj(jH,'type','stem');
+    xxApplyTo(stemObj.',D,'stem',Opt);
     
     % Find handles to all patches except highlights and fancharts.
     patchObj = findobj(jH,'type','patch', ...
@@ -350,9 +369,12 @@ for iPeer = rhsPeer
     xxApplyTo(iPeer,D,'rhsaxes',Opt);
 end
 
-end % xxAxes().
+end % xxAxes()
+
 
 %**************************************************************************
+
+
 function Flag = xxExceptions(H,Name,Value)
 
 Flag = true;
@@ -371,7 +393,9 @@ if strcmpi(Name,'fontsize') ...
     return
 end
 
-switch get(H,'type')
+hType = get(H,'type');
+hTag = get(H,'tag');
+switch hType
     case 'axes'
         switch lower(Name)
             case 'yaxislocation'
@@ -419,9 +443,15 @@ switch get(H,'type')
                     end;
                     set(H,'faceColor',faceColor);
                 end
+            case 'color'
+                % Vline objects used to be lines, now they are patches (zero width); see
+                % remarks in `grfun.vline`.
+                if strcmpi(hTag,'vline')
+                    set(H,'edgeColor',Value);
+                end
             otherwise
                 Flag = false;
         end
 end
 
-end % xxExceptions().
+end % xxExceptions()

@@ -1,15 +1,15 @@
 
 
-    \filetitle{chksstate}{Check if equations hold for currently assigned steady0state values}{model/chksstate}
+    \filetitle{chksstate}{Check if equations hold for currently assigned steady-state values}{model/chksstate}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [Flag,List] = chksstate(M,...)
 [Flag,Discr,List] = chksstate(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@
   \texttt{M} {[} model {]} - Model object.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -32,20 +32,19 @@
   discrepancy between LHS and RHS is greater than \texttt{'tolerance='}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
   \texttt{'error='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
   {]} - Throw an error if one or more equations do not hold.
 \item
+  \texttt{'eqtn='} {[} \emph{\texttt{'full'}} \textbar{}
+  \texttt{'sstate'} {]} - Evaluate either full or steady-state equations
+  on steady-state values.
+\item
   \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
   {]} - Refresh dynamic links before evaluating the equations.
-\item
-  \texttt{'sstateEqtn='} {[} \texttt{true} \textbar{}
-  \emph{\texttt{false}} {]} - If \texttt{false}, the dynamic model
-  equations will be checked; if \texttt{true}, the steady-state versions
-  of the equations (wherever available) will be checked.
 \item
   \texttt{'tolerance='} {[} numeric \textbar{} \texttt{getrealsmall()}
   {]} - Tolerance.
@@ -54,8 +53,8 @@
   {]} - Display warnings produced by this function.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

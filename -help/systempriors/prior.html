@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -139,7 +151,7 @@ S = prior(S,Expr,[],...)</code></pre>
 <h5 id="expressions-involving-combinations-or-functions-of-parameters">Expressions involving combinations or functions of parameters</h5>
 <p>Model parameter names can be referred to in <code>Expr</code> preceded by a dot (period), e.g. <code>.alpha^2 + .beta^2</code> defines a prior on the sum of squares of the two parameters (<code>alpha</code> and <code>beta</code>).</p>
 <h4 id="example">Example</h4>
-<p>Create a new, empty systemprios object based on an existing model.</p>
+<p>Create a new empty systemprios object based on an existing model.</p>
 <pre><code>s = systempriors(m);</code></pre>
 <p>Add a prior on minus the shock response function of variable <code>ygap</code> to shock <code>eps_pie</code> in period 4. The prior density is lognormal with mean 0.3 and std deviation 0.05;</p>
 <pre><code>s = prior(s,&#39;-srf[ygap,eps_pie,4]&#39;,logdist.lognormal(0.3,0.05));</code></pre>
@@ -150,5 +162,5 @@ S = prior(S,Expr,[],...)</code></pre>
     &#39;lowerBound=&#39;,0,&#39;upperBound=&#39;,1);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

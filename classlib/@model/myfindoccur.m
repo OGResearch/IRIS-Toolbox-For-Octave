@@ -13,6 +13,7 @@ nName = length(This.name);
 occur = This.occur(Eq,:);
 occur = reshape(occur,[nName,size(This.occur,2)/nName]);
 occur = occur.';
+t0 = find(This.Shift == 0);
 
 switch Type
     case 'variables_shocks'
@@ -21,16 +22,16 @@ switch Type
         [Time,Name] = find(occur);
     case 'variables(0)'
         % Occurences of current dates of variables.
-        occur = occur(This.tzero,This.nametype <= 2);
+        occur = occur(t0,This.nametype <= 2);
         [Time,Name] = find(occur);
     case 'shocks'
         % Occurences of shocks.
-        occur = occur(This.tzero,:);
+        occur = occur(t0,:);
         occur(:,This.nametype ~= 3) = false;
         [Time,Name] = find(occur);
     case 'parameters'
         % Occurences of parameters.
-        occur = occur(This.tzero,:);
+        occur = occur(t0,:);
         occur(:,This.nametype ~= 4) = false;
         [Time,Name] = find(occur);
     otherwise

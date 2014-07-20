@@ -1,5 +1,5 @@
-function [X,Incl,Range,NotFound,NonTseries] = ...
-    db2array(D,List,Range,LagOrLead,Log,Warn)
+function [X,ixIncl,Range,IxNotFound,IxNonTseries] ...
+    = db2array(D,List,Range,Sw)
 % db2array  Convert tseries database entries to numeric array.
 %
 % Syntax
@@ -71,45 +71,63 @@ catch
 end
 
 try
-    LagOrLead;
+    Sw;
 catch
-    LagOrLead = [];
+    Sw = struct();
 end
 
 try
-    Log;
+    Sw.LagOrLead;
 catch
-    Log = [];
+    Sw.LagOrLead = [];
 end
 
 try
-    Warn;
+    Sw.IxLog;
 catch
-    Warn = struct();
+    Sw.IxLog = [];
 end
 
 try
-    Warn.notFound;
+    Sw.Warn;
 catch
-    Warn.notFound = true;
+    Sw.Warn = struct();
 end
 
 try
-    Warn.sizeMismatch;
+    Sw.Warn.NotFound;
 catch
-    Warn.sizeMismatch = true;
+    Sw.Warn.NotFound = true;
 end
 
 try
-    Warn.freqMismatch;
+    Sw.Warn.SizeMismatch;
 catch
-    Warn.freqMismatch = true;
+    Sw.Warn.SizeMismatch = true;
 end
 
 try
-    Warn.nonTseries;
+    Sw.Warn.FreqMismatch;
 catch
-    Warn.nonTseries = true;
+    Sw.Warn.FreqMismatch = true;
+end
+
+try
+    Sw.Warn.NonTseries;
+catch
+    Sw.Warn.NonTseries = true;
+end
+
+try
+    Sw.Warn.NoRangeFound;
+catch
+    Sw.Warn.NoRangeFound = true;
+end
+
+try
+    Sw.BaseYear;
+catch
+    Sw.BaseYear = @config;
 end
 
 % Swap `List` and `Range` if needed.
@@ -124,13 +142,24 @@ if ischar(List)
 end
 List = List(:).';
 
+nList = length(List);
+ixInvalid = false(1,nList);
+ixIncl = false(1,nList);
+ixFreqMismatch = false(1,nList);
+IxNotFound = false(1,nList);
+IxNonTseries = false(1,nList);
+
 range2 = [];
 if any(isinf(Range([1,end])))
     range2 = dbrange(D,List);
     if isempty(range2)
-        utils.warning('dbase', ...
-            ['No tseries entries found in the list ', ...
-            'of entries included in the output array.']);
+        if Sw.Warn.NoRangeFound
+            utils.warning('dbase', ...
+                ['Cannot determine range because ', ...
+                'no tseries entries have been found in the database.']);
+        end
+        X = [];
+        Range = [];
         return
     end
 end
@@ -152,29 +181,31 @@ rangeFreq = datfreq(startDate);
 nPer = numel(Range);
 
 X = nan(nPer,0);
-nList = length(List);
-NotFound = false(1,nList);
-Invalid = false(1,nList);
-Incl = false(1,nList);
-freqMismatch = false(1,nList);
-NonTseries = false(1,nList);
-
 for i = 1 : nList
     name = List{i};
-    if ~isfield(D,name)
-        NotFound(i) = true;
+    try
+        nData = max(1,size(X,3));
+        if strcmp(name,'!ttrend')
+            Xi = [];
+            doGetTtrend();
+            doAddData();
+        else
+            field = D.(name);
+            if istseries(field)
+                Xi = [];
+                doGetTseriesData();
+                doAddData();
+            else
+                IxNonTseries(i) = true;
+            end
+        end
+    catch
+        IxNotFound(i) = true;
         continue
-    end
-    if is.tseries(D.(name))
-        Xi = [];
-        doGetTseriesData();
-        doAddData();
-    else
-        NonTseries(i) = true;
     end
 end
 
-Incl = List(Incl);
+ixIncl = List(ixIncl);
 
 doWarning();
 
@@ -182,27 +213,47 @@ if isempty(X)
     X = nan(nPer,nList);
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+
     function doGetTseriesData()
-        tmpFreq = freq(D.(name));
+        tmpFreq = freq(field);
         if ~isnan(tmpFreq) && rangeFreq ~= tmpFreq
             nData = max(1,size(X,3));
             Xi = nan(nPer,nData);
-            freqMismatch(i) = true;
+            ixFreqMismatch(i) = true;
         else
             k = 0;
-            if ~isempty(LagOrLead)
-                k = LagOrLead(i);
+            if ~isempty(Sw.LagOrLead)
+                k = Sw.LagOrLead(i);
             end
-            Xi = rangedata(D.(name),Range+k);
+            Xi = rangedata(field,Range+k);
             % Make sure the input data are 2D only.
             Xi = Xi(:,:);
         end
-    end % doGetTseriesData().
+    end % doGetTseriesData()
+
 
 %**************************************************************************
+
+
+    function doGetTtrend()
+        k = 0;
+        if ~isempty(Sw.LagOrLead)
+            k = Sw.LagOrLead(i);
+        end
+        Xi = dat2ttrend(Range+k,Sw.BaseYear);
+        Xi = Xi(:);
+    end % doGetTtrend()
+
+
+%**************************************************************************
+
+
     function doAddData()
         if isempty(X)
             X = nan(nPer,nList,size(Xi,2));
@@ -219,45 +270,49 @@ end
             nAltXi = nAltX;
         end
         if nAltX == nAltXi
-            if ~isempty(Log) && Log(i)
+            if ~isempty(Sw.IxLog) && Sw.IxLog(i)
                 Xi = log(Xi);
             end
             X(:,i,1:nAltXi) = permute(Xi,[1,3,2]);
-            Incl(i) = true;
+            ixIncl(i) = true;
         else
-            Invalid(i) = true;
+            ixInvalid(i) = true;
         end
-    end % doAddData().
+    end % doAddData()
+
 
 %**************************************************************************
+
+
     function doWarning()
-        if Warn.notFound && any(NotFound)
+        if Sw.Warn.NotFound && any(IxNotFound)
             utils.warning('dbase', ...
                 ['This name does not exist ', ...
                 'in the database: ''%s''.'], ...
-                List{NotFound});
+                List{IxNotFound});
         end
         
-        if Warn.sizeMismatch && any(Invalid)
+        if Sw.Warn.SizeMismatch && any(ixInvalid)
             utils.warning('dbase', ...
                 ['This database entry does not match ', ...
                 'the size of others: ''%s''.'], ...
-                List{Invalid});
+                List{ixInvalid});
         end
         
-        if Warn.freqMismatch && any(freqMismatch)
+        if Sw.Warn.FreqMismatch && any(ixFreqMismatch)
             utils.warning('dbase', ...
                 ['This database entry does not match ', ...
                 'the frequency of the dates requested: ''%s''.'], ...
-                List{freqMismatch});
+                List{ixFreqMismatch});
         end
         
-        if Warn.nonTseries && any(NonTseries)
+        if Sw.Warn.NonTseries && any(IxNonTseries)
             utils.warning('dbase', ...
                 ['This name exists in the database, ', ...
                 'but is not a tseries object: ''%s''.'], ...
-                List{NonTseries});
+                List{IxNonTseries});
         end
-    end % doWarning().
+    end % doWarning()
+
 
 end

@@ -2,13 +2,13 @@
 
     \filetitle{solve}{Calculate first-order accurate solution of the model}{model/solve}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 M = solve(M,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@ M = solve(M,...)
   models must also have a steady state values assigned.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -25,7 +25,7 @@ M = solve(M,...)
   \texttt{M} {[} model {]} - Model with newly computed solution.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -45,7 +45,7 @@ M = solve(M,...)
   {]} - Throw an error if no unique stable solution exists; if
   \texttt{false}, a warning message only will be displayed.
 \item
-  \texttt{'linear='} {[} \emph{\texttt{'auto'}} \textbar{} \texttt{true}
+  \texttt{'linear='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
   \textbar{} \texttt{false} {]} - Solve the model using a linear
   approach, i.e.~differentiating around zero and not the currently
   assigned steady state.
@@ -66,7 +66,7 @@ M = solve(M,...)
   {]} - Display warnings produced by this function.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The IRIS solver uses an ordered QZ (or generalised Schur) decomposition
 to integrate out future expectations. The QZ may (very rarely) fail for
@@ -91,6 +91,6 @@ patch (Eigenvalues-Too-Close-To-Swap).
   total number of equations.
 \end{itemize}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

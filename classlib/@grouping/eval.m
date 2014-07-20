@@ -51,6 +51,7 @@ pp.addRequired('S',@isstruct);
 pp.addRequired('G',@(x) isa(x,'grouping'));
 pp.parse(S,This);
 
+
 opt = passvalopt('grouping.eval',varargin{:});
 
 isOther = any(This.otherContents);

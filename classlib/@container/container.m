@@ -63,6 +63,7 @@ classdef container
                 pp.addRequired('c',@(x) isa(x,'container'));
                 pp.addRequired('name',@ischar);
                 pp.parse(This,varargin{1});
+
                 if ~isempty(varargin)
                     flag = container.request('set',varargin{1},varargin{2});
                     if ~flag

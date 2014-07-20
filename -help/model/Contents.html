@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -105,7 +117,7 @@ code.LaTeX {
 
 
 
-<h1 id="model/Contents">Model objects and functions</h1>
+<h1 id="model/Contents">Model Objects and Functions</h1>
 
 
 <p>Model objects are created by loading a <a href="../modellang/Contents.html">model file</a>. Once a model object exists, you can use model functions and standard Matlab functions to write your own m-files to perform the desired tasks, such calibrate or estimate the model, find its steady state, solve and simulate it, produce forecasts, analyse its properties, and so on.</p>
@@ -157,12 +169,14 @@ code.LaTeX {
 </ul>
 <h4 id="steady-state">Steady state</h4>
 <ul>
-<li><a href="../model/chksstate.html"><code>chksstate</code></a> - Check if equations hold for currently assigned steady0state values.</li>
+<li><a href="../model/blazer.html"><code>blazer</code></a> - Reorder steady-state equations into block-recursive structure.</li>
+<li><a href="../model/chksstate.html"><code>chksstate</code></a> - Check if equations hold for currently assigned steady-state values.</li>
 <li><a href="../model/sstate.html"><code>sstate</code></a> - Compute steady state or balance-growth path of the model.</li>
 <li><a href="../model/sstatefile.html"><code>sstatefile</code></a> - Create a steady-state file based on the model object's steady-state equations.</li>
 </ul>
 <h4 id="solution-simulation-and-forecasting">Solution, simulation and forecasting</h4>
 <ul>
+<li><a href="../model/chkmissing.html"><code>chkmissing</code></a> - Check for missing initial values in simulation database.</li>
 <li><a href="../model/diffsrf.html"><code>diffsrf</code></a> - Differentiate shock response functions w.r.t. specified parameters.</li>
 <li><a href="../model/expand.html"><code>expand</code></a> - Compute forward expansion of model solution for anticipated shocks.</li>
 <li><a href="../model/jforecast.html"><code>jforecast</code></a> - Forecast with judgmental adjustments (conditional forecasts).</li>
@@ -178,7 +192,7 @@ code.LaTeX {
 <h4 id="model-data">Model data</h4>
 <ul>
 <li><a href="../model/data4lhsmrhs.html"><code>data4lhsmrhs</code></a> - Prepare data array for running <code>lhsmrhs</code>.</li>
-<li><a href="../model/emptydb.html"><code>emptydb</code></a> - Create model-specific database with variables, shocks, and parameters.</li>
+<li><a href="../model/emptydb.html"><code>emptydb</code></a> - Create model-specific database with empty tseries for all variables and shocks.</li>
 <li><a href="../model/rollback.html"><code>rollback</code></a> - Prepare database for a rollback run of Kalman filter.</li>
 <li><a href="../model/sstatedb.html"><code>sstatedb</code></a> - Create model-specific steady-state or balanced-growth-path database.</li>
 <li><a href="../model/zerodb.html"><code>zerodb</code></a> - Create model-specific zero-deviation database.</li>
@@ -212,5 +226,5 @@ code.LaTeX {
 help model/function_name</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

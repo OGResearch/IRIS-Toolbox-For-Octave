@@ -9,9 +9,9 @@ function [MShocks,TShocks] = myshocktype(This)
 
 %--------------------------------------------------------------------------
 
-t = This.tzero;
+t0 = find(This.Shift == 0);
 nName = length(This.name);
-inx = nName*(t-1) + find(This.nametype == 3);
+inx = nName*(t0-1) + find(This.nametype == 3);
 mOccur = This.occur(This.eqtntype == 1,inx);
 tOccur = This.occur(This.eqtntype == 2,inx);
 

@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -123,15 +135,18 @@ code.LaTeX {
 </ul>
 <h4 id="options">Options</h4>
 <ul>
-<li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the simulated paths into contributions of individual residuals.</p></li>
+<li><p><code>'contributions='</code> [ <code>true</code> | <em><code>false</code></em> ] - Decompose the simulated paths into the contributions of individual residuals, initial condition, the constant, and exogenous inputs; see Description.</p></li>
 <li><p><code>'deviation='</code> [ <code>true</code> | <em><code>false</code></em> ] - Treat input and output data as deviations from unconditional mean.</p></li>
 <li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h5 id="backward-simulation-backcast">Backward simulation (backcast)</h5>
 <p>If the <code>Range</code> is a vector of decreasing dates, the simulation is performed backward. The VAR object is first converted to its backward representation using the function <a href="../VAR/backward.html"><code>backward</code></a>, and then the data are simulated from the latest date to the earliest date.</p>
+<h5 id="simulation-of-contributions">Simulation of contributions</h5>
+<p>With the option <code>'contributions=' true</code>, the output database contains Ne+2 columns for each variable, where Ne is the number of residuals. The first Ne columns are the contributions of the individual shocks, the (Ne+1)-th column is the contribution of initial condition and the constant, and the last, (Ne+2)-th columns is the contribution of exogenous inputs.</p>
+<p>Contribution simulations can be only run on VAR objects with one parameterization.</p>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

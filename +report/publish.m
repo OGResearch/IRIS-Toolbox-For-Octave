@@ -70,7 +70,7 @@
 % * `'timeStamp='` [ char | *`'datestr(now())'`* ] - String printed in the
 % top-left corner of each page.
 %
-% * `'tempDir='` [ char | function_handle | *`tempname(cd())`* ] -
+% * `'tempDir='` [ char | function_handle | *`tempname(pwd())`* ] -
 % Directory for storing temporary files; the directory is deleted at the
 % end of the execution if it's empty.
 %

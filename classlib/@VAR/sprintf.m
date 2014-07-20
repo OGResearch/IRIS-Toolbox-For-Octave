@@ -71,8 +71,15 @@ end
 %--------------------------------------------------------------------------
 
 ny = size(This.A,1);
+nx = length(This.XNames);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
+
+if nx > 0
+    utils.error('VAR:sprintf', ...
+        ['VAR objects with exogenous inputs cannot be printed ', ...
+        'using sprintf( ) or fprintf( ).']);
+end
 
 if ~isempty(opt.ynames)
     This.ynames = opt.ynames;

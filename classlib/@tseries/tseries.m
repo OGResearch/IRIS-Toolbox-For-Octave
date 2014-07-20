@@ -1,7 +1,7 @@
-classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
+classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ... % >>>>> MOSW classdef ...
         tseries < getsetobj & userdataobj 
     
-    % tseries  Time series objects and functions.
+    % tseries  Time Series (Tseries) Objects and Functions.
     %
     % Tseries methods:
     %
@@ -50,8 +50,8 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % `median`, `min`, `mode`, `nanmean`, `nanstd`, `nansum`, `nanvar`, `prod`,
     % `std`, `sum`, `var`
     %
-    % Filters
-    % ========
+    % Filters and evaluation
+    % =======================
     %
     % * [`arf`](tseries/arf) - Run autoregressive function on a tseries object.
     % * [`bpass`](tseries/bpass) - Band-pass filter.
@@ -59,6 +59,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % * [`bwf2`](tseries/bwf2) - Swap output arguments of the Butterworth filter with tunes.
     % * [`detrend`](tseries/detrend) - Remove a linear time trend.
     % * [`expsmooth`](tseries/expsmooth) - Exponential smoothing.
+    % * [`evalr`](utils/evalr) - Evaluate tseries expression recursively.
     % * [`hpf`](tseries/hpf) - Hodrick-Prescott filter with tunes (aka LRX filter).
     % * [`hpf2`](tseries/hpf2) - Swap output arguments of the Hodrick-Prescott filter with tunes.
     % * [`fft`](tseries/fft) - Discrete Fourier transform of tseries object.
@@ -124,7 +125,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     % * [`interp`](tseries/interp) - Interpolate missing observations.
     % * [`normalise`](tseries/normalise) - Normalise (or rebase) data to particular date.
     % * [`pct`](tseries/pct) - Percent rate of change.
-    % * [`round`](tseries/round) - Round tseries data to specified number of decimals.
+    % * [`round`](tseries/round) - Round tseries values to specified number of decimals.
     % * [`rmse`](tseries/rmse) - Compute RMSE for given observations and predictions.
     % * [`stdise`](tseries/stdise) - Standardise tseries data by subtracting mean and dividing by std deviation.
     % * [`windex`](tseries/windex) - Simple weighted or Divisia index.
@@ -186,6 +187,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@userdataobj();
+            This = This@getsetobj();
             This.Comment = {''};
             
             % Empty call.
@@ -193,7 +195,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                 return
             end
             % Tseries input.
-            if nargin == 1 && is.tseries(varargin{1})
+            if nargin == 1 && istseries(varargin{1})
                 This = varargin{1};
                 return
             end
@@ -236,7 +238,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             pp = inputParser();
             pp.addRequired('Dates',@isnumeric);
             pp.addRequired('Data',@(x) ...
-                isnumeric(x) || islogical(x) || ischar(x) || is.func(x));
+                isnumeric(x) || islogical(x) || ischar(x) || isfunc(x));
             pp.addRequired('Comment',@(x) ischar(x) || iscellstr(x));
             pp.parse(usrDates,usrData,usrComment);
             
@@ -249,15 +251,11 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                 error('All dates must have the same frequency.');
             end
             
-            % Create data from a function handle or function name.
+            % Create data from function handle or function name.
             if ischar(usrData) && strcmpi(usrData,'lintrend')
                 usrData = (1 : nPer).';
-            elseif ischar(usrData) || is.func(usrData)
-                try
-                    usrData = feval(usrData,[nPer,1]);
-                catch %#ok<CTCH>
-                    usrData = feval(char(usrData),[nPer,1]);
-                end
+            elseif ischar(usrData) || isfunc(usrData)
+                usrData = feval(usrData,[nPer,1]);
             elseif isnumeric(usrData) || islogical(usrData)
                 if sum(size(usrData) > 1) == 1 ...
                         && length(usrData) > 1 ...
@@ -297,7 +295,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
                     utils.error('model', ...
                         ['Cannot assign comments to the new tseries object. ', ...
                         'Check the size of the comments passed in.\n', ...
-                        '\tMatlab says: %s'], ...
+                        '\tUncle says: %s'], ...
                         Error.message);
                 end
             end
@@ -386,6 +384,8 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
     
     methods (Hidden)
         disp(varargin)
+        varargout = max(varargin)
+        varargout = min(varargin)
         varargout = mytrim(varargin)
         varargout = cat(varargin)
         varargout = cut(varargin)
@@ -412,6 +412,7 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
         varargout = mystruct2obj(varargin)
         varargout = binop(varargin)
         varargout = unop(varargin)
+        varargout = unopinx(varargin)
         varargout = catcheck(varargin)
         function dispcomment(varargin)
         end
@@ -560,7 +561,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 2
                 dim = 1;
             end
-            x = unop(@tseries.mynanmean,x,dim,dim);
+            % @@@@@ MOSW
+            x = unop(@(varargin) tseries.mynanmean(varargin{:}), ...
+                x,dim,dim);
         end
         function This = nanstd(This,Flag,Dim)
             if nargin < 2
@@ -569,13 +572,17 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 Dim = 1;
             end
-            This = unop(@tseries.mynanstd,This,Dim,Flag,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynanstd(varargin{:}), ...
+                This,Dim,Flag,Dim);
         end
         function This = nansum(This,Dim)
             if nargin < 2
                 Dim = 1;
             end
-            This = unop(@tseries.mynansum,This,Dim,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynansum(varargin{:}), ...
+                This,Dim,Dim);
         end
         function This = nanvar(This,Flag,Dim)
             if nargin < 2
@@ -584,7 +591,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 Dim = 1;
             end
-            This = unop(@tseries.mynanvar,This,Dim,Flag,Dim);
+            % @@@@@ MOSW
+            This = unop(@(varargin) tseries.mynanvar(varargin{:}), ...
+                This,Dim,Flag,Dim);
         end
         function This = ne(This,Y)
             This = binop(@ne,This,Y);
@@ -709,12 +718,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             end
             a = unop(@geomean,x,dim,dim);
         end
-        function x = max(x,dim)
-            if nargin < 2
-                dim = 1;
-            end
-            x = unop(@max,x,dim,[],dim);
-        end
         function x = mean(x,dim)
             if nargin  < 2
                 dim = 1;
@@ -727,12 +730,6 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             end
             x = unop(@median,x,dim,dim);
         end
-        function x = min(x,dim)
-            if nargin < 2
-                dim = 1;
-            end
-            x = unop(@min,x,dim,[],dim);
-        end
         function x = mode(x,dim)
             if nargin  < 2
                 dim = 1;
@@ -743,7 +740,9 @@ classdef (InferiorClasses={?matlab.graphics.axis.Axes}) ...
             if nargin < 3
                 dim = 1;
             end
-            x = unop(@tseries.myprctile,x,dim,p,dim);
+            % @@@@@ MOSW
+            x = unop(@(varargin) tseries.myprctile(varargin{:}), ...
+                x,dim,p,dim);
         end
         % Alias for prctile.
         function varargout = pctile(varargin)

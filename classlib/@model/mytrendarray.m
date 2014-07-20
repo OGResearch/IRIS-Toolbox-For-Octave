@@ -1,4 +1,4 @@
-function X = mytrendarray(This,Id,TVec,Delog,iAlt)
+function X = mytrendarray(This,ILoop,IsDelog,Id,TVec)
 % mytrendarray  [Not a public function] Create array with steady state paths for all variables.
 %
 % Backend IRIS function.
@@ -7,33 +7,49 @@ function X = mytrendarray(This,Id,TVec,Delog,iAlt)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-
-% Note that `iAlt` is allowed to be greater that `nAlt`.
 try
-    iAlt;
-catch %#ok<CTCH>
-    iAlt = Inf;
+    ILoop;
+catch
+    ILoop = Inf;
+end
+
+try
+    IsDelog;
+catch
+    IsDelog = true;
+end
+
+try
+    Id; %#ok<VUNUS>
+catch
+    Id = 1 : length(This.name);
+end
+
+try
+    TVec; %#ok<VUNUS>
+catch
+    TVec = This.Shift;
 end
 
 %--------------------------------------------------------------------------
 
+realexp = @(x) real(exp(x));
 nAlt = size(This.Assign,3);
 nPer = length(TVec);
 nId = length(Id);
 
-realid = real(Id);
-imagid = imag(Id);
-logInx = This.log(realid);
-repeat = ones(1,nPer);
-shift = imagid(:);
-shift = shift(:,repeat);
-shift = shift + TVec(ones(1,nId),:);
+realId = real(Id);
+imagId = imag(Id);
+ixLog = This.IxLog(realId);
+rep = ones(1,nPer);
+sh = imagId(:);
+sh = sh(:,rep);
+sh = sh + TVec(ones(1,nId),:);
 
-if isequal(iAlt,Inf)
+if isequal(ILoop,Inf)
     X = zeros(nId,nPer,nAlt);
-    for iAlt = 1 : nAlt
-        Xi = doOneTrendArray();
-        X(:,:,iAlt) = Xi;
+    for ILoop = 1 : nAlt
+        X(:,:,ILoop) = doOneTrendArray();
     end
 else
     X = doOneTrendArray();
@@ -44,26 +60,36 @@ end
 
 
 %**************************************************************************
+
+
     function X = doOneTrendArray()
-        
-            level = real(This.Assign(1,realid,min(iAlt,end)));
-            growth = imag(This.Assign(1,realid,min(iAlt,end)));
+            lvl = real(This.Assign(1,realId,min(ILoop,end)));
+            grw = imag(This.Assign(1,realId,min(ILoop,end)));
             
-            % No imaginary part means zero growth for log variables.
-            growth(logInx & growth == 0) = 1;
+            % Zero or no imag means zero growth also for log variables.
+            grw(ixLog & grw == 0) = 1;
             
-            % Use `reallog` to make sure negative numbers throw an error.
-            level(logInx) = reallog(level(logInx));
-            growth(logInx) = reallog(growth(logInx));
+            ixGrw = (~ixLog & grw ~= 0) | (ixLog & grw ~= 1);
             
-            level = level.';
-            growth = growth.';
+            % Level can be negative and log(level) complex for log variables; growth
+            % must be positive for log variables.
+            lvl(ixLog) = log(lvl(ixLog));
+            grw(ixLog) = reallog(grw(ixLog));
             
-            X = level(:,repeat) + shift.*growth(:,repeat);
-            if Delog
-                X(logInx,:) = exp(X(logInx,:));
+            lvl = lvl.';
+            grw = grw.';
+            
+            X = lvl(:,rep);
+            if any(ixGrw)
+                X(ixGrw,:) = X(ixGrw,:) ...
+                    + sh(ixGrw,:).*grw(ixGrw,rep);
             end
-        
-    end % doOneTrendArray().
+            
+            % Delog only if requested.
+            if IsDelog
+                X(ixLog,:) = realexp(X(ixLog,:));
+            end
+    end % doOneTrendArray()
+
 
 end

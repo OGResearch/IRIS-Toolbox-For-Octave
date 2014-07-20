@@ -2,14 +2,14 @@ function flag = isempty(this,query)
 
 switch query
     case 'tunes'
-        flag = nnz(this.xAnchors) == 0 ...
-            || nnz(this.nAnchorsReal) + nnz(this.nAnchorsImag) == 0;
+        flag = nnz(this.XAnch) == 0 ...
+            || nnz(this.NAnchReal) + nnz(this.NAnchImag) == 0;
     case 'cond'
-        flag = nnz(this.cAnchors) == 0;
+        flag = nnz(this.CAnch) == 0;
     case 'nonlin'
-        flag = nnz(this.qAnchors) == 0;
+        flag = nnz(this.QAnch) == 0;
     case 'range'
-        flag = isempty(this.startDate) || isempty(this.endDate);
+        flag = isempty(this.Start) || isempty(this.End);
 end
 
 end

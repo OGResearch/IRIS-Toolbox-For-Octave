@@ -2,7 +2,7 @@
 
     \filetitle{endogenise}{Endogenise shocks or re-endogenise variables at the specified dates}{plan/endogenise}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 P = endogenise(P,List,Dates)
@@ -11,7 +11,7 @@ P = endogenise(P,List,Dates,Sigma)
 P = endogenise(P,Dates,List,Sigma)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -23,12 +23,12 @@ P = endogenise(P,Dates,List,Sigma)
   \texttt{Dates} {[} numeric {]} - Dates at which the shocks or
   variables will be endogenised.
 \item
-  \texttt{Sigma} {[} numeric {]} - Select the anticipation mode, and
-  assign a weight to the shock in the case of underdetermined simulation
-  plans; if omitted, \texttt{Sigma = 1}.
+  \texttt{Sigma} {[} numeric {]} - Anticipation mode (real or imaginary)
+  for the endogenized shocks, and their numerical weight (used in
+  underdetermined simulation plans); if omitted, \texttt{Sigma = 1}.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -37,8 +37,8 @@ P = endogenise(P,Dates,List,Sigma)
   endogenised shocks included.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

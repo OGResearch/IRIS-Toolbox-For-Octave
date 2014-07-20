@@ -12,9 +12,10 @@ if ischar(Range)
 end
 pp = inputParser() ;
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
-pp.addRequired('InData',@(x) isa(x,'tseries') || isa(x,'struct')) ;
+pp.addRequired('Data',@(x) isa(x,'tseries') || isa(x,'struct')) ;
 pp.addOptional('Range',@(x) isnumeric(x) && isvector(x)) ;
 pp.parse(This,InData,Range) ;
+
 if This.nAlt>1
 	utils.error('nnet:eval',...
 		'Eval does not support input neural network objects with multiple parameterizations.') ;
@@ -71,8 +72,6 @@ if strcmpi(options.Output,'dbase')
 end
 
 end
-
-
 
 
 

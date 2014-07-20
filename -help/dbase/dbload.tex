@@ -2,14 +2,14 @@
 
     \filetitle{dbload}{Create database by loading CSV file}{dbase/dbload}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 D = dbload(FName, ...)
 D = dbload(D,FName, ...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -20,7 +20,7 @@ D = dbload(D,FName, ...)
   new entries from the input CSV data file entries will be added.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -29,7 +29,7 @@ D = dbload(D,FName, ...)
   file(s).
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
@@ -110,14 +110,14 @@ D = dbload(D,FName, ...)
   that will be included as user data in each time series.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 Use the \texttt{'freq='} option whenever there is ambiguity in
 intepreting the date strings, and IRIS is not able to determine the
 frequency correctly (see Example).
 
 \subparagraph{Structure of CSV database
-files}
+files}\label{structure-of-csv-database-files}
 
 The minimalist structure of a CSV database file has a leading row with
 variables names, a leading column with dates in the basic IRIS format,
@@ -179,7 +179,7 @@ tseries objects as fields of their userdata.
 |         |         |         |
 \end{verbatim}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 Typical example of using the \texttt{'freq='} option is a quarterly
 database with dates represented by the corresponding months, such as a

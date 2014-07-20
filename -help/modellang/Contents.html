@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -105,7 +117,7 @@ code.LaTeX {
 
 
 
-<h1 id="modellang/Contents">Model file language</h1>
+<h1 id="modellang/Contents">Model File Language</h1>
 
 
 <p>Model file language is used to write model files. The model files are plain text files (saved under any filename with any extension) that describes the model: its equations, variables, parameters, etc. The model file, on the other hand, does not describe what to do with the model. To run the tasks you want to perform with the model, you need first to load the model file into Matlab using the <a href="../model/model.html"><code>model</code></a> function. This function creates a model object. Then you write your own m-files using Matlab and IRIS functions to perform the desired tasks with the model object.</p>
@@ -133,11 +145,6 @@ code.LaTeX {
 <li><a href="../modellang/allbut.html"><code>!all_but</code></a> - Inverse list of log-linearised variables.</li>
 <li><a href="../modellang/regexpression.html"><code>&lt;...&gt;</code></a> - Regular expression in log-variable list.</li>
 </ul>
-<h4 id="model-pseudofunctions">Model pseudofunctions</h4>
-<p>Pseudofunctions do not start with an exclamation point.</p>
-<ul>
-<li><a href="../modellang/min.html"><code>min</code></a> - Define loss function for optimal policy.</li>
-</ul>
 <h4 id="special-operators">Special operators</h4>
 <ul>
 <li><a href="../modellang/sstateversion.html"><code>!!</code></a> - Steady-state version of an equation.</li>
@@ -147,9 +154,10 @@ code.LaTeX {
 <li><a href="../modellang/exactnonlin.html"><code>=#</code></a> - Mark an equation for exact non-linear simulation.</li>
 <li><a href="../modellang/alias.html"><code>'...!!...'</code></a> - Beginning of aliasing inside descriptions and labels.</li>
 </ul>
-<h4 id="preparser-pseudofunctions">Preparser pseudofunctions</h4>
+<h4 id="pseudofunctions">Pseudofunctions</h4>
 <p>Pseudofunctions do not start with an exclamation point.</p>
 <ul>
+<li><a href="../modellang/min.html"><code>min</code></a> - Define loss function for optimal policy.</li>
 <li><a href="../modellang/diff.html"><code>diff</code></a> - First difference pseudofunction.</li>
 <li><a href="../modellang/dot.html"><code>dot</code></a> - Gross rate of growth pseudofunction.</li>
 <li><a href="../modellang/difflog.html"><code>difflog</code></a> - First log-difference pseudofunction.</li>
@@ -203,5 +211,5 @@ myfunc(x,y,z,&#39;diff&#39;,3)</code></pre>
 </ul>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

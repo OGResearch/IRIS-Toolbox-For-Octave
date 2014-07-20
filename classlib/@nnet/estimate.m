@@ -8,6 +8,7 @@ pp.addRequired('This',@(x) isa(x,'nnet')) ;
 pp.addRequired('Data',@isstruct) ;
 pp.addRequired('Range',@(x) isnumeric(x) && isvector(x)) ;
 pp.parse(This,Data,Range) ;
+
 if This.nAlt>1
     utils.error('nnet:estimate',...
         'Estimate does not support input neural network objects with multiple parameterizations.') ;
@@ -128,4 +129,3 @@ for iOpt = 1:numel(options.Select)
 end
 
 end
-

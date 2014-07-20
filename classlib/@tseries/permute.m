@@ -36,6 +36,7 @@ pp.addRequired('x',@(x) isa(x,'tseries'));
 pp.addRequired('order',@(x) isnumeric(x) && ~isempty(x) && x(1) == 1);
 pp.parse(This,Order);
 
+
 %--------------------------------------------------------------------------
 
 This.data = permute(This.data,Order);

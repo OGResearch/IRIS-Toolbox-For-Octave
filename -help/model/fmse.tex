@@ -2,14 +2,14 @@
 
     \filetitle{fmse}{Forecast mean square error matrices}{model/fmse}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [F,List,D] = fmse(M,NPer,...)
 [F,List,D] = fmse(M,Range,...)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -21,11 +21,12 @@
   \texttt{Range} {[} numeric {]} - Date range.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
-  \texttt{F} {[} numeric {]} - Forecast MSE matrices.
+  \texttt{F} {[} namedmat \textbar{} numeric {]} - Forecast MSE
+  matrices.
 \item
   \texttt{List} {[} cellstr {]} - List of variables in rows and columns
   of \texttt{M}.
@@ -35,24 +36,22 @@
   of \texttt{F}.
 \end{itemize}
 
-\paragraph{Options}
+\paragraph{Options}\label{options}
 
 \begin{itemize}
 \item
-  \texttt{'output='} {[} \emph{\texttt{'namedmat'}} \textbar{}
-  \texttt{'numeric'} {]} - Output matrix \texttt{M} will be either a
-  namedmat object or a plain numeric array; if the option
-  \texttt{'select='} is used, \texttt{'output='} is always
-  \texttt{'namedmat'}.
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrix \texttt{F} as either a
+  \href{namedmat/Contents}{\texttt{namedmat}} object (i.e.~matrix with
+  named rows and columns) or a plain numeric array.
 \item
-  \texttt{'select='} {[} cellstr \textbar{} \emph{\texttt{Inf}} {]} -
-  Return FMSE for selected variables only; \texttt{Inf} means all
-  variables. The option does not apply to the output database
-  \texttt{D}.
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return FMSE for selected variables only; \texttt{@all}
+  means all variables.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

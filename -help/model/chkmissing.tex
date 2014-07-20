@@ -1,0 +1,49 @@
+
+
+    \filetitle{chkmissing}{Check for missing initial values in simulation database}{model/chkmissing}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Ok,Miss] = chkmissing(M,D,Start)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{D} {[} struct {]} - Input database for the simulation.
+\item
+  \texttt{Start} {[} numeric {]} - Start date for the simulation.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Ok} {[} \texttt{true} \textbar{} \texttt{false} {]} - True if
+  the input database \texttt{D} contains all required initial values for
+  simulating model \texttt{M} from date \texttt{Start}.
+\item
+  \texttt{Miss} {[} cellstr {]} - List of missing initial values.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'error='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Throw an error if one or more initial values are missing.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+This function does not perform any simulation; it only checks for
+missing initial values in an input database.
+
+\paragraph{Example}\label{example}
+
+

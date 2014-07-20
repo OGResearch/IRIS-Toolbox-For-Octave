@@ -2,13 +2,13 @@
 
     \filetitle{rngcmp}{Compare two IRIS date ranges}{dates/rngcmp}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Flag = rngcmp(R1,R2)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -17,7 +17,7 @@ Flag = rngcmp(R1,R2)
   will be compared.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -26,7 +26,7 @@ Flag = rngcmp(R1,R2)
   if the two date ranges are the same.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 An IRIS date range is distinct from a vector of dates in that only the
 first and the last dates matter. Often, date ranges are context
@@ -37,7 +37,7 @@ given context), or simply \texttt{Inf} for the whole range (meaning from
 the earliest possible date to the latest possible date in the given
 context).
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 r1 = qq(2010,1):qq(2020,4);

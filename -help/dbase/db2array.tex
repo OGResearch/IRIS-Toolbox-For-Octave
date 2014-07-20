@@ -2,7 +2,7 @@
 
     \filetitle{db2array}{Convert tseries database entries to numeric array}{dbase/db2array}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 [X,Incl,Range] = db2array(D)
@@ -10,7 +10,7 @@
 [X,Incl,Range] = db2array(D,List,Range)
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \item
@@ -27,7 +27,7 @@
   the very last non-NaN observation.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -42,7 +42,7 @@
   or \texttt{Inf}.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The output array, \texttt{X}, is always NPer-by-NList-by-NAlt, where
 NPer is the length of the \texttt{Range} (the number of periods), NList
@@ -55,6 +55,6 @@ column) are always expanded along 3rd dimension only. For instance, a
 10-by-2-by-3 tseries will occupy a 10-by-1-by-6 space in \texttt{X} at
 its respective location.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 

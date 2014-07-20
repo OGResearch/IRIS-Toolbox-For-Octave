@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -110,19 +122,21 @@ code.LaTeX {
 <div class="headline">Reference to the steady-state level of a variable</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>&amp;VariableName</code></pre>
-<h4 id="alternative-syntax">Alternative syntax</h4>
-<pre><code>$VariableName</code></pre>
+<pre><code>&amp;VariableName
+$VariableName
+&amp;VariableName{K}
+$VariableName{K}</code></pre>
 <h4 id="description">Description</h4>
-<p>Use either a <code>&amp;</code> or <code>$</code> sign in front of a variable name to create a reference to that variable's steady-state level in transition or measurement equations. The two signs, <code>&amp;</code> and <code>$</code>, are interchangeable.</p>
+<p>Use either a <code>&amp;</code> or <code>$</code> sign in front of a variable name to create a reference to that variable's steady-state level in transition or measurement equations. The two signs, <code>&amp;</code> and <code>$</code>, are interchangeable. Steady-state references may only be used in nonlinear models.</p>
+<p>The steady-state reference can include a time shift (a lag or a lead), <code>K</code>. In that case, the steady-state value will be adjusted for steady-state growth backward or forward accordingly.</p>
 <p>The steady-state reference will be replaced</p>
 <ul>
-<li><p>with the variable itself at the time model's steady state is being calculated, i.e. when calling the function <a href="../model/sstate.html"><code>sstate</code></a>;</p></li>
+<li><p>with the variable itself at the time the model's steady state is being calculated, i.e. when calling the function <a href="../model/sstate.html"><code>sstate</code></a>;</p></li>
 <li><p>with the actually assigned steady-state value at the time the model is being solved, i.e. when calling the function <a href="../model/solve.html">'solve'</a>'.</p></li>
 </ul>
 <h4 id="example">Example</h4>
 <pre><code>x = rho*x{-1} + (1-rho)*&amp;x + epsilon_x !! x = 1;</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

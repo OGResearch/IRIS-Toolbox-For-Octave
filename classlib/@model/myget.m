@@ -18,11 +18,11 @@ switch lower(Query)
         Ans = This.name(This.nametype == 3);
         
     case 'canbenonlinearised'
-        if any(This.nonlin)
+        if any(This.IxNonlin)
             label = This.eqtnlabel;
             empty = cellfun(@isempty,label);
             label(empty) = This.eqtn(empty);
-            Ans = label(This.nonlin);
+            Ans = label(This.IxNonlin);
         else
             Ans = {};
         end

@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -127,7 +139,7 @@ List = dbsave(D,FName,Dates,...)</code></pre>
 <li><p><code>'class='</code> [ <em><code>true</code></em> | false ] - Include a row with class and size specifications.</p></li>
 <li><p><code>'comment='</code> [ <em><code>true</code></em> | <code>false</code> ] - Include a row with comments for tseries objects.</p></li>
 <li><p><code>'decimal='</code> [ numeric | <em>empty</em> ] - Number of decimals up to which the data will be saved; if empty the <code>'format'</code> option is used.</p></li>
-<li><p><code>'format='</code> [ char | <em><code>'%.8e'</code></em> ] Numeric format that will be used to represent the data, see <code>sprintf</code> for details on formatting, The format must start with a <code>'%'</code>, and must not include identifiers specifying order of processing, i.e. the <code>'$'</code> signs, or left-justify flags, the <code>'-'</code> signs.</p></li>
+<li><p><code>'format='</code> [ char | <em><code>'%.8e'</code></em> ] - Numeric format that will be used to represent the data, see <code>sprintf</code> for details on formatting, The format must start with a <code>'%'</code>, and must not include identifiers specifying order of processing, i.e. the <code>'$'</code> signs, or left-justify flags, the <code>'-'</code> signs.</p></li>
 <li><p><code>'freqLetters='</code> [ char | <em><code>'YHQBM'</code></em> ] - Five letters to represent the five possible date frequencies (annual, semi-annual, quarterly, bimonthly, monthly).</p></li>
 <li><p><code>'nan='</code> [ char | <em><code>'NaN'</code></em> ] - String that will be used to represent NaNs.</p></li>
 <li><p><code>'saveSubdb='</code> [ <code>true</code> | <em><code>false</code></em> ] - Save sub-databases (structs found within the struct <code>D</code>); the sub-databases will be saved to separate CSF files.</p></li>
@@ -173,5 +185,5 @@ d =
             y: [4x1 tseries]</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

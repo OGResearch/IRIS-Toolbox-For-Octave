@@ -1,5 +1,5 @@
 classdef model < modelobj & estimateobj
-    % model  Model objects and functions.
+    % model  Model Objects and Functions.
     %
     % Model objects are created by loading a [model file](modellang/Contents).
     % Once a model object exists, you can use model functions and standard
@@ -61,14 +61,15 @@ classdef model < modelobj & estimateobj
     % Steady state
     % =============
     %
-    % * [`chksstate`](model/chksstate) - Check if equations hold for currently assigned steady0state values.
+    % * [`blazer`](model/blazer) - Reorder steady-state equations into block-recursive structure.
+    % * [`chksstate`](model/chksstate) - Check if equations hold for currently assigned steady-state values.
     % * [`sstate`](model/sstate) - Compute steady state or balance-growth path of the model.
     % * [`sstatefile`](model/sstatefile) - Create a steady-state file based on the model object's steady-state equations.
     %
     % Solution, simulation and forecasting
     % =====================================
     %
-    % * [`chkmissing`](model/chkmissing) - 
+    % * [`chkmissing`](model/chkmissing) - Check for missing initial values in simulation database.
     % * [`diffsrf`](model/diffsrf) - Differentiate shock response functions w.r.t. specified parameters.
     % * [`expand`](model/expand) - Compute forward expansion of model solution for anticipated shocks.
     % * [`jforecast`](model/jforecast) - Forecast with judgmental adjustments (conditional forecasts).
@@ -85,7 +86,7 @@ classdef model < modelobj & estimateobj
     % ===========
     %
     % * [`data4lhsmrhs`](model/data4lhsmrhs) - Prepare data array for running `lhsmrhs`.
-    % * [`emptydb`](model/emptydb) - Create model-specific database with variables, shocks, and parameters.
+    % * [`emptydb`](model/emptydb) - Create model-specific database with empty tseries for all variables and shocks.
     % * [`rollback`](model/rollback) - Prepare database for a rollback run of Kalman filter.
     % * [`sstatedb`](model/sstatedb) - Create model-specific steady-state or balanced-growth-path database.
     % * [`zerodb`](model/zerodb) - Create model-specific zero-deviation database.
@@ -127,14 +128,6 @@ classdef model < modelobj & estimateobj
     % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties (GetAccess=public,SetAccess=protected,Hidden)
-        % Name of the original model file.
-        %fname = '';
-        % Carry-on packages.
-        %Export = '';
-        % Linear or non-linear model.
-        % linear = false;
-        % List of functions with user derivatives.
-        % userdifflist = cell(1,0);
         % Vector [1-by-nname] of positions of shocks assigned to variables for
         % `autoexogenise`.
         Autoexogenise = nan(1,0);
@@ -143,17 +136,17 @@ classdef model < modelobj & estimateobj
         % Anonymous function handles to streamlined full dynamic equations.
         eqtnF = cell(1,0);
         % Anonymous function handles to streamlined steady-state equations.
-        eqtnS = cell(1,0);
+        EqtnS = cell(1,0);
         % A 1-by-nEqtn logical index of equations marked as non-linear.
-        nonlin = false(1,0);
+        IxNonlin = false(1,0);
         % Block-recursive structure for variable names.
-        nameblk = cell(1,0);
+        NameBlk = cell(1,0);
         % Block recursive structure for steady-state equations.
-        eqtnblk = cell(1,0);
+        EqtnBlk = cell(1,0);
         % Anonymous function handles to derivatives.
-        deqtnF = cell(1,0);
+        DEqtnF = cell(1,0);
         % Function handles to constant terms in linear models.
-        ceqtnF = cell(1,0);
+        CEqtnF = cell(1,0);
         % Struct describing reporting equations.
         outside = struct();
         % Order of execution of dynamic links.
@@ -163,7 +156,9 @@ classdef model < modelobj & estimateobj
         % Logical arrays with occurences of variables, shocks and parameters in steady-state equations.
         occurS = sparse(false(0));
         % Location of t=0 page in `occur`.
-        tzero = NaN;
+        % tzero = NaN;
+        % Vector minT : maxT (min lag to max lead).
+        Shift = [];
         % Vectors of measurement variables, transition variables, and shocks in columns of unsolved sysmtem matrices.
         systemid = { ...
             cell(1,0), ...
@@ -182,12 +177,6 @@ classdef model < modelobj & estimateobj
         solution = {[],[],[],[],[],[],[],[],[]};
         % Vectors of measurement variables, transition variables, and shocks in rows and columns of state-space matrices.
         solutionid = {[],[],[]};
-        % Vectors of variables names with lags, leads and/or logs.
-        solutionvector = { ...
-            cell(1,0), ...
-            cell(1,0), ...
-            cell(1,0), ...
-            };
         % True for predetermined variables for which initial condition is truly needed.
         icondix = false(1,0);
         % True for multipliers (optimal policy).
@@ -209,6 +198,7 @@ classdef model < modelobj & estimateobj
         varargout = alter(varargin)
         varargout = assign(varargin)
         varargout = autoexogenise(varargin)
+        varargout = blazer(varargin)        
         varargout = bn(varargin)
         varargout = chksstate(varargin)
         varargout = data4lhsmrhs(varargin)
@@ -263,12 +253,13 @@ classdef model < modelobj & estimateobj
     end
     
     methods (Hidden)
+        varargout = hdatainit(varargin)
+        varargout = mychk(varargin)
         varargout = myfdlik(varargin)
         varargout = myfindsspacepos(varargin)
         varargout = myget(varargin)
         varargout = mykalman(varargin)
         varargout = myupdatemodel(varargin)
-        varargout = chk(varargin)
         varargout = datarequest(varargin)
         varargout = disp(varargin)
         varargout = end(varargin)
@@ -285,7 +276,6 @@ classdef model < modelobj & estimateobj
         varargout = myalpha2xb(varargin)
         varargout = myanchors(varargin)
         varargout = myautoexogenise(varargin)
-        varargout = myblazer(varargin)
         varargout = mychksstate(varargin)
         varargout = mychksstateopt(varargin)
         varargout = mychksyntax(varargin)
@@ -297,7 +287,7 @@ classdef model < modelobj & estimateobj
         varargout = mydtrends4lik(varargin)
         varargout = myeqtn2afcn(varargin)
         varargout = myfile2model(varargin)
-        varargout = myfinaleqtn(varargin)
+        varargout = myfinaleqtns(varargin)
         varargout = myfind(varargin)
         varargout = myfindoccur(varargin)
         varargout = myforecastswap(varargin)
@@ -353,23 +343,23 @@ classdef model < modelobj & estimateobj
             % Syntax
             % =======
             %
-            %     m = model(fname,...)
-            %     m = model(m,...)
+            %     M = model(FName,...)
+            %     M = model(M,...)
             %
             % Input arguments
             % ================
             %
-            % * `fname` [ char | cellstr ] - Name(s) of the model file(s) that will
+            % * `FName` [ char | cellstr ] - Name(s) of model file(s) that will be
             % loaded and converted to a new model object.
             %
-            % * `m` [ model ] - Existing model object that will be rebuilt as if from a
+            % * `M` [ model ] - Existing model object that will be rebuilt as if from a
             % model file.
             %
             % Output arguments
             % =================
             %
-            % * `m` [ model ] - New model object based on the input model code
-            % file or files.
+            % * `M` [ model ] - New model object based on the input model code file or
+            % files.
             %
             % Options
             % ========
@@ -383,6 +373,11 @@ classdef model < modelobj & estimateobj
             %
             % * `'baseYear='` [ numeric | *2000* ] - Base year for constructing
             % deterministic time trends.
+            %
+            % * `'blazer='` [ *`true`* | `false` ] - Perform
+            % block-recursive analysis of steady-state equations at the
+            % time the model object is being created; the option works only
+            % in nonlinear models.
             %
             % * `'comment='` [ char | *empty* ] - Text comment attached to the model
             % object.
@@ -483,7 +478,7 @@ classdef model < modelobj & estimateobj
                     fileName = strtrim(varargin{1});
                     varargin(1) = [];
                     doOptions();
-                    This.linear = opt.linear;
+                    This.IsLinear = opt.linear;
                     [This,asgn] = myfile2model(This,fileName,opt);
                     This = mymodel2model(This,asgn,opt);
                 elseif isa(varargin{1},'model')

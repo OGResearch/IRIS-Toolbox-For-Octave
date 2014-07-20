@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -107,15 +119,17 @@ code.LaTeX {
 
 
 <h2 id="tseries/round">round</h2>
-<div class="headline">Round tseries data to specified number of decimals</div>
+<div class="headline">Round tseries values to specified number of decimals</div>
 
 <h4 id="syntax">Syntax</h4>
 <pre><code>X = round(X)
-X = round(X,Dec)</code></pre>
+X = round(X,Dec)
+X = round(X,Dec,&#39;significant&#39;)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><p><code>X</code> [ tseries ] - Tseries object whose data will be rounded.</p></li>
 <li><p><code>Dec</code> [ numeric ] - Number of decimals to which the tseries data will be rounded; if not specified, the data are rounded to nearest integer.</p></li>
+<li><p><code>'significant'</code> - See documentation on the built-in Matlab function <code>round</code>; works only in R2014b or later.</p></li>
 </ul>
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
@@ -126,5 +140,5 @@ X = round(X,Dec)</code></pre>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

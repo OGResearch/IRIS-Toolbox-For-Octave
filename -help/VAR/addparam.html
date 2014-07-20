@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -121,11 +133,11 @@ code.LaTeX {
 <li>`D [ struct ] - Database with the VAR parameter matrices added.</li>
 </ul>
 <h4 id="description">Description</h4>
-<p>The newly created database entries are named <code>A_</code> (transition matrix), <code>K_</code> (constant terms), <code>B_</code> (matrix of instantaneous whock effects), and <code>Cov_</code> (covariance matrix of shocks). Be aware that all existing database entries in <code>D</code> named <code>A_</code>, <code>K_</code>, <code>B_</code>, or <code>Omg_</code> will be overwritten.</p>
+<p>The newly created database entries are named <code>A_</code> (transition matrix), <code>K_</code> (constant terms), <code>J_</code> (coefficient matrix in front of exogenous inputs), <code>B_</code> (matrix of instantaneous whock effects), and <code>Cov_</code> (covariance matrix of shocks). Be aware that all existing database entries in <code>D</code> named <code>A_</code>, <code>K_</code>, <code>B_</code>, or <code>Omg_</code> will be overwritten.</p>
 <h4 id="example">Example</h4>
 <pre><code>D = struct();
 D = addparam(V,D);</code></pre>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

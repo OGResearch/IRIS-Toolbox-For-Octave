@@ -30,9 +30,6 @@ function varargout = plot(varargin)
 % Options
 % ========
 %
-% * `'dateFormat='` [ char | *`irisget('plotdateformat')`* ] - Date format
-% for the tick marks on the X-axis.
-%
 % * `'datePosition='` [ *`'centre'`* | `'end'` | `'start'` ] - Position of
 % each date point within a given period span.
 %
@@ -42,6 +39,26 @@ function varargout = plot(varargin)
 % * `'tight='` [ `true` | *`false`* ] - Make the y-axis tight.
 %
 % See help on built-in `plot` function for other options available.
+%
+% Date format options
+% ====================
+%
+% See [`dat2str`](dates/dat2str) for details on date format options.
+%
+% * `'dateFormat='` [ char | cellstr | *`'YYYYFP'`* ] - Date format string,
+% or array of format strings (possibly different for each date).
+%
+% * `'freqLetters='` [ char | *`'YHQBMW'`* ] - Six letters used to
+% represent the six possible frequencies of IRIS dates, in this order:
+% yearly, half-yearly, quarterly, bi-monthly, monthly,  and weekly (such as
+% the `'Q'` in `'2010Q1'`).
+%
+% * `'months='` [ cellstr | *`{'January',...,'December'}`* ] - Twelve
+% strings representing the names of the twelve months.
+%
+% * `'standinMonth='` [ numeric | `'last'` | *`1`* ] - Month that will
+% represent a lower-than-monthly-frequency date if the month is part of the
+% date format string.
 %
 % Description
 % ============

@@ -34,8 +34,9 @@ function [This,Y0,K0,Y1,G1] = covmat(C,Repeat,varargin)
 % Parse input arguments.
 pp = inputParser();
 pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
-pp.addRequired('Rep',@(x) is.numericscalar(x) && x > 0 && x == round(x));
+pp.addRequired('Rep',@(x) isintscalar(x) && x > 0);
 pp.parse(C,Repeat);
+
 
 %--------------------------------------------------------------------------
 
@@ -56,38 +57,52 @@ if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
 end
 
-% Nested functions.
+
+% Nested functions...
+
 
 %**************************************************************************
+
+    
     function Y0 = y0(~,~,~,~)
         Y0 = C;
         if Repeat > 1
             Y0 = repmat(Y0,1,Repeat);
         end
-    end % y0().
+    end % y0()
+
 
 %**************************************************************************
+
+    
     function K0 = k0(Ny,~,~,~)
         K0 = zeros(1,Ny);
         if Repeat > 1
             K0 = repmat(K0,1,Repeat);
         end
-    end % k0().
+    end % k0()
+
 
 %**************************************************************************
+
+    
     function Y1 = y1(Ny,P,~,~)
         Y1 = zeros(Ny*P,Ny);
         if Repeat > 1
             Y1 = repmat(Y1,1,Repeat);
         end
-    end % y1().
+    end % y1()
+
 
 %**************************************************************************
+
+    
     function G1 = g1(Ny,~,Ng,~)
         G1 = zeros(Ng,Ny);
         if Repeat > 1
             G1 = repmat(G1,1,Repeat);
         end
-    end % g1().
+    end % g1()
+
 
 end

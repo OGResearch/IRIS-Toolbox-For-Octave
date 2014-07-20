@@ -28,12 +28,6 @@ classdef genericobj < handle
         
         function This = genericobj(varargin)
             This.default = [This.default,{ ...
-                'captionformat',[],@(x) isempty(x) ...
-                || ischar(x) || ...
-                (iscell(x) && length(x) == 2 ...
-                && (ischar(x{1}) || isequal(x{1},Inf)) ...
-                && (ischar(x{2}) || isequal(x{2},Inf))), ...
-                true, ...
                 'captiontypeface',{'\large\bfseries',''}, ...
                 @(x) ischar(x) || ...
                 (iscell(x) && length(x) == 2 ...
@@ -82,7 +76,7 @@ classdef genericobj < handle
             for i = 1 : 4 : length(Default)
                 match = regexp(Default{i},'\w+','match');
                 defValue = Default{i+1};
-                validateFunc = Default{i+2};
+                validFunc = Default{i+2};
                 isInheritable = Default{i+3};
                 primaryName = match{1};
                 % First, assign default under the primary name.
@@ -96,15 +90,20 @@ classdef genericobj < handle
                     end
                     % Last, get it from current user options if supplied.
                     invalid = {};
-                    index = strcmpi(optName,userName);
-                    if any(index)
-                        valuePos = find(index);
+                    ix = strcmpi(optName,userName);
+                    if any(ix)
+                        pos = find(ix);
                         % Validate user option.
-                        if feval(validateFunc,userValue{valuePos})
-                            This.options.(primaryName) = userValue{valuePos};
+                        if isequal(validFunc,@config)
+                            iconfig = irisconfigmaster('get');
+                            validFunc = iconfig.validate.(primaryName);
+                        end
+                        ok = feval(validFunc,userValue{pos});
+                        if ok
+                            This.options.(primaryName) = userValue{pos};
                         else
                             invalid{end+1} = optName; %#ok<AGROW>
-                            invalid{end+1} = func2str(validateFunc); %#ok<AGROW>
+                            invalid{end+1} = func2str(validFunc); %#ok<AGROW>
                         end
                         % Report values that do not pass validation.
                         if ~isempty(invalid)
@@ -115,15 +114,6 @@ classdef genericobj < handle
                         end
                     end
                 end
-            end
-            % Obsolete option names.
-            if ~isempty(This.options.captionformat)
-                utils.warning('report', ...
-                    ['The option ''captionformat'' is obsolete ', ...
-                    'and will be removed from future IRIS versions. ', ...
-                    'Use ''captiontypeface'' instead.']);
-                This.options.captiontypeface = This.options.captionformat;
-                This.options.captionformat = [];
             end
         end % setoptions()
         
@@ -169,14 +159,14 @@ classdef genericobj < handle
             % @auto or {@auto,Subtitle}
             if isequal(Title,@auto)
                 try
-                    if is.tseries(This.data{1})
+                    if istseries(This.data{1})
                         x = comment(This.data{1});
                         Title = x{1};
                     end
                 catch
                     try
                         ch = This.children{1};
-                        if is.tseries(ch.data{1})
+                        if istseries(ch.data{1})
                             x = comment(ch.data{1});
                             Title = x{1};
                         end
@@ -388,14 +378,20 @@ classdef genericobj < handle
         
         
         function Valid = validatecolstruct(ColStruct)
+            try
+                isequaln(0,0);
+                isequalnFunc = @isequaln;
+            catch
+                isequalnFunc = @isequalwithequalnans;
+            end
             Valid = true;
             for i = 1 : length(ColStruct)
                 c = ColStruct(i);
                 if ~(ischar(c.name) ...
                         || ( ...
                         iscell(c.name) && length(c.name) == 2 ...
-                        && (ischar(c.name{1}) || isequalwithequalnans(c.name{1},NaN)) ...
-                        && (ischar(c.name{2}) || isequalwithequalnans(c.name{2},NaN)) ...
+                        && (ischar(c.name{1}) || isequalnFunc(c.name{1},NaN)) ...
+                        && (ischar(c.name{2}) || isequalnFunc(c.name{2},NaN)) ...
                         )) %#ok<FPARK>
                     Valid = false;
                 end
@@ -404,7 +400,7 @@ classdef genericobj < handle
                     Valid = false;
                 end
                 if ~isempty(c.date) ...
-                        && ~is.numericscalar(c.date)
+                        && ~isnumericscalar(c.date)
                     Valid = false;
                 end
             end

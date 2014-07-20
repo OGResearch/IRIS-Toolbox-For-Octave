@@ -43,6 +43,13 @@ function [Y,Range] = rangedata(X,Range)
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 if nargin == 1
     Y = X.data;
     Range = [X.start,X.start+size(X.data,1)-1];
@@ -50,7 +57,7 @@ if nargin == 1
 end
 
 tmpSize = size(X.data);
-if isempty(Range) || isequalwithequalnans(Range,NaN)
+if isempty(Range) || isequalnFunc(Range,NaN)
     Y = zeros([0,tmpSize(2:end)]);
     return
 end

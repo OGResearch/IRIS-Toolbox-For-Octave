@@ -19,8 +19,8 @@ This = saveobj@modelobj(This);
 % executiona considerably. This is a Matlab issue.
 
 eqtnF = This.eqtnF;
-deqtnF = This.deqtnF;
-ceqtnF = This.ceqtnF;
+dEqtnF = This.DEqtnF;
+cEqtnF = This.CEqtnF;
 
 nEqtn = length(This.eqtn);
 for iEqtn = 1 : nEqtn
@@ -29,24 +29,24 @@ for iEqtn = 1 : nEqtn
         eqtnF{iEqtn} = func2str(eqtnF{iEqtn});
     end
     
-    if isa(deqtnF{iEqtn},'function_handle')
-        deqtnF{iEqtn} = func2str(deqtnF{iEqtn});
-    elseif iscell(deqtnF{iEqtn})
-        for j = 1 : length(deqtnF{iEqtn})
-            if isa(deqtnF{iEqtn}{j},'function_handle');
-                deqtnF{iEqtn}{j} = func2str(deqtnF{iEqtn}{j});
+    if isa(dEqtnF{iEqtn},'function_handle')
+        dEqtnF{iEqtn} = func2str(dEqtnF{iEqtn});
+    elseif iscell(dEqtnF{iEqtn})
+        for j = 1 : length(dEqtnF{iEqtn})
+            if isa(dEqtnF{iEqtn}{j},'function_handle');
+                dEqtnF{iEqtn}{j} = func2str(dEqtnF{iEqtn}{j});
             end
         end
     end
     
-    if isa(ceqtnF{iEqtn},'function_handle')
-        ceqtnF{iEqtn} = func2str(ceqtnF{iEqtn});
+    if isa(cEqtnF{iEqtn},'function_handle')
+        cEqtnF{iEqtn} = func2str(cEqtnF{iEqtn});
     end
     
 end
 
 This.eqtnF = eqtnF;
-This.deqtnF = deqtnF;
-This.ceqtnF = ceqtnF;
+This.DEqtnF = dEqtnF;
+This.CEqtnF = cEqtnF;
 
 end

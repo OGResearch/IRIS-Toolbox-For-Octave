@@ -10,6 +10,18 @@ body {
    font-size: 12px;
 }
 
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
 h4 {
     font-size: 100%;
     font-style: normal;
@@ -110,7 +122,7 @@ code.LaTeX {
 <div class="headline">Matrices of first-order companion VAR</div>
 
 <h4 id="syntax">Syntax</h4>
-<pre><code>[A,B,K] = companion(V)</code></pre>
+<pre><code>[A,B,K,J] = companion(V)</code></pre>
 <h4 id="input-arguments">Input arguments</h4>
 <ul>
 <li><code>V</code> [ VAR ] - VAR object for which the companion matrices will be returned.</li>
@@ -118,12 +130,12 @@ code.LaTeX {
 <h4 id="output-arguments">Output arguments</h4>
 <ul>
 <li><p><code>A</code> [ numeric ] - First-order companion transition matrix.</p></li>
-<li><p><code>B</code> [ numeric ] - First-order companion coefficient matrix at reduced-form residuals.</p></li>
+<li><p><code>B</code> [ numeric ] - First-order companion coefficient matrix in front of reduced-form residuals.</p></li>
 <li><p><code>K</code> [ numeric ] - First-order compnaion constant vector.</p></li>
 </ul>
 <h4 id="description">Description</h4>
 <h4 id="example">Example</h4>
 
 </body>
-<div class="copyright">IRIS Toolbox. Copyright &copy; 2007&#8212;2013 Jaromir Benes.</div>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
 </html>

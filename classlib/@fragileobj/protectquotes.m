@@ -11,10 +11,12 @@ function [C,This] = protectquotes(C,This)
 %--------------------------------------------------------------------------
 
 ptn = '([''"])([^\n]*?)\1';
-% ##### MOSW:
-% replaceFunc = @doReplace; %#ok<NASGU>
-% C = regexprep(C,pattern,'${replaceFunc($1,$2)}');
-C = mosw.dregexprep(C,ptn,@doReplace,[1,2]);
+if true % ##### MOSW
+    replaceFunc = @doReplace; %#ok<NASGU>
+    C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
+else
+    C = mosw.dregexprep(C,ptn,'doReplace',[1,2]); %#ok<UNRCH>
+end
 
 
 % Nested functions...
@@ -24,7 +26,7 @@ C = mosw.dregexprep(C,ptn,@doReplace,[1,2]);
 
     
     function K = doReplace(Quote,String)
-        This.Storage{end+1} = String;
+        This.Store{end+1} = String;
         This.Open{end+1} = Quote;
         This.Close{end+1} = Quote;
         K = charcode(This);

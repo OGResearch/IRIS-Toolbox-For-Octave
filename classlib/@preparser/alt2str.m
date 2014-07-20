@@ -10,7 +10,7 @@ function S = alt2str(Alt,Label)
 try
     Label; %#ok<VUNUS>
 catch
-    Label = 'Param';
+    Label = 'Alt';
 end
 
 if islogical(Alt)

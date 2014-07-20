@@ -2,7 +2,7 @@
 
     \filetitle{!transition\_variables}{List of transition variables}{modellang/transitionvariables}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 !transition_variables
@@ -10,7 +10,7 @@
     ...
 \end{verbatim}
 
-\paragraph{Abbreviated syntax}
+\paragraph{Abbreviated syntax}\label{abbreviated-syntax}
 
 \begin{verbatim}
 !variables
@@ -18,7 +18,7 @@
     ...
 \end{verbatim}
 
-\paragraph{Syntax with descriptors}
+\paragraph{Syntax with descriptors}\label{syntax-with-descriptors}
 
 \begin{verbatim}
 !transition_variables
@@ -27,7 +27,7 @@
 \end{verbatim}
 
 \paragraph{Syntax with steady-state
-values}
+values}\label{syntax-with-steady-state-values}
 
 \begin{verbatim}
 !transition_variables
@@ -35,7 +35,7 @@ values}
     VariableName = Value
 \end{verbatim}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 The \texttt{!transition\_variables} keyword starts a new declaration
 block for transition variables (i.e.~endogenous variables); the names of
@@ -56,7 +56,7 @@ For each individual variable in a non-linear model, you can also decide
 if it is to be linearised or log-linearised by listing its name in the
 \href{modellang/logvariables}{\texttt{!log\_variables}} section.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 !transition_variables

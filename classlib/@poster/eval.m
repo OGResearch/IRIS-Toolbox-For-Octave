@@ -49,7 +49,7 @@ function [Obj,L,PP,SP] = eval(This,varargin)
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(varargin)
-    p = This.initParam;
+    p = This.InitParam;
 elseif length(varargin) == 1
     p = varargin{1};
 else
@@ -60,7 +60,7 @@ end
 
 if nargin == 1 && nargout <= 1
     % Return log posterior at optimum.
-    Obj = This.initLogPost;
+    Obj = This.InitLogPost;
     return
 end
 
@@ -69,10 +69,10 @@ end
 % as multiple input arguments.
 if isstruct(p)
     p0 = p;
-    nPar = length(This.paramList);
+    nPar = length(This.ParamList);
     p = nan(1,nPar);
     for i = 1 : nPar
-        p(i) = p0.(This.paramList{i});
+        p(i) = p0.(This.ParamList{i});
     end
 end
 

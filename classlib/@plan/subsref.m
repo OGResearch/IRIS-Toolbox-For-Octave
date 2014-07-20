@@ -40,8 +40,8 @@ function This = subsref(This,S)
 if isequal(S(1).type,'{}') ...
         && length(S(1).subs) == 1 && length(S(1).subs{1}) == 1
     shift = S(1).subs{1}(1);
-    This.startDate = This.startDate + shift;
-    This.endDate = This.endDate + shift;
+    This.Start = This.Start + shift;
+    This.End = This.End + shift;
     S(1) = [];
     if ~isempty(S)
         This = builtin('subsref',This,S);
@@ -49,8 +49,8 @@ if isequal(S(1).type,'{}') ...
 elseif isequal(S(1).type,'()') ...
         && length(S(1).subs) == 1
     newRange = S(1).subs{1};
-    if ~datcmp(This.startDate,newRange(1)) ...
-            || ~datcmp(This.endDate,newRange(end))
+    if ~datcmp(This.Start,newRange(1)) ...
+            || ~datcmp(This.End,newRange(end))
         This = mychngrange(This,newRange);
     end
 elseif isequal(S(1).type,'.')

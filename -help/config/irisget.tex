@@ -2,14 +2,14 @@
 
     \filetitle{irisget}{Query current IRIS config options}{config/irisget}
 
-	\paragraph{Syntax}
+	\paragraph{Syntax}\label{syntax}
 
 \begin{verbatim}
 Value = irisget(Option)
 S = irisget()
 \end{verbatim}
 
-\paragraph{Input arguments}
+\paragraph{Input arguments}\label{input-arguments}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -18,7 +18,7 @@ S = irisget()
   option.
 \end{itemize}
 
-\paragraph{Output arguments}
+\paragraph{Output arguments}\label{output-arguments}
 
 \begin{itemize}
 \item
@@ -29,7 +29,7 @@ S = irisget()
   and their current values.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}\label{description}
 
 You can view any of the modifiable options listed in
 \href{config/irisset}{\texttt{irisset}}, plus the following
@@ -54,7 +54,7 @@ option names are case-insensitive. When referring to field names of an
 output struct returned by the \texttt{irisget} function, all option
 names are lower-case and case-sensitive.
 
-\paragraph{Example}
+\paragraph{Example}\label{example}
 
 \begin{verbatim}
 irisget('dateFormat')

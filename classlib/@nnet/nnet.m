@@ -107,6 +107,7 @@ classdef nnet < userdataobj & getsetobj
             pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
             pp.parse(Inputs,Outputs,Layout) ;
+
             
             % Superclass constructors
             This = This@userdataobj();
@@ -252,4 +253,3 @@ classdef nnet < userdataobj & getsetobj
     
     
 end
-

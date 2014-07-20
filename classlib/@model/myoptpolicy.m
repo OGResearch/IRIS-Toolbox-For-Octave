@@ -12,6 +12,7 @@ function [NewEqtn,NewEqtnF,NewEqtnS,NewNonlin] ...
 
 template = sydney();
 flNameType = floor(This.nametype);
+t0 = find(This.Shift == 0);
 
 % Make the model names visible inside dynamic regexps.
 name = This.name;
@@ -66,7 +67,7 @@ for eq = first : LossPos
         % differentiate wrt to current dates or lags of transition
         % variables. Remove leads from the list of variables we will
         % differentiate wrt.
-        inx = inx & tmOcc <= This.tzero;
+        inx = inx & tmOcc <= t0;
     end
     
     tmOcc = tmOcc(inx);
@@ -77,17 +78,17 @@ for eq = first : LossPos
     % differentiate.
     unknown = cell(1,nOcc);
     for j = 1 : nOcc
-        if tmOcc(j) == This.tzero
+        if tmOcc(j) == t0
             % Time index == 0: replace x(1,23,t) with x23.
             unknown{j} = sprintf('x%g',nmOcc(j));
-        elseif tmOcc(j) < This.tzero
+        elseif tmOcc(j) < t0
             % Time index < 0: replace x(1,23,t-1) with x23m1.
             unknown{j} = sprintf('x%gm%g', ...
-                nmOcc(j),round(This.tzero-tmOcc(j)));
-        elseif tmOcc(j) > This.tzero
+                nmOcc(j),round(t0-tmOcc(j)));
+        elseif tmOcc(j) > t0
             % Time index > 0: replace x(1,23,t+1) with x23p1.
             unknown{j} = sprintf('x%gp%g', ...
-                nmOcc(j),round(tmOcc(j)-This.tzero));
+                nmOcc(j),round(tmOcc(j)-t0));
         end
     end
     
@@ -99,7 +100,7 @@ for eq = first : LossPos
   
     for j = 1 : nOcc
 
-        sh = tmOcc(j) - This.tzero;
+        sh = tmOcc(j) - t0;
         newEq = nmOcc(j);
         
         % Multiply derivatives wrt lags and leads by the discount factor.
@@ -122,7 +123,7 @@ for eq = first : LossPos
             diffz{j} = diffz{j}*mult;
         end
 
-        dEqtn = char(reduce(diffz{j}),'human');
+        dEqtn = char(reduce(diffz{j}));
         
         % Shift lags and leads of variables (but not parameters) in the
         % derivative by -sh if sh ~= 0.
@@ -131,28 +132,25 @@ for eq = first : LossPos
         end
         
         dEqtnF = sydney.mysymb2eqtn(dEqtn);
-        if ~This.linear
-            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate',This.log);
+        if ~This.IsLinear
+            dEqtnS = sydney.mysymb2eqtn(dEqtn,'sstate');
         end
-         
-        % Create human equations.
-        % ##### MOSW:
-        % replFunc = @doReplaceNames; %#ok<NASGU>
-        % dEqtn = regexprep(dEqtn,'x(\d+)([pm]\d+)?','${replFunc($1,$2)}');
-        dEqtn = mosw.dregexprep(dEqtn,'x(\d+)([pm]\d+)?', ...
-            @doReplaceNames,[1,2]);
-        
-        % ##### MOSW:
-        % dEqtn = regexprep(dEqtn,'L(\d+)','&${name{sscanf($1,''%g'')}}');
-        dEqtn = mosw.dregexprep(dEqtn,'L(\d+)', ...
-            @(C1) ['&',name{sscanf(C1,'%g')}],1);
+
+        % Create human equations: `x10m3` -> `Name{-3}`, `L10m3` -> `&Name{-3}`.
+        ptn = '([xL])(\d+)(([pm]\d+)?)';
+        if true % ##### MOSW
+            replFunc = @doReplaceNames; %#ok<NASGU>
+            dEqtn = regexprep(dEqtn,ptn,'${replFunc($1,$2,$3)}');
+        else
+            dEqtn = mosw.dregexprep(dEqtn,ptn,'doReplaceNames',[1,2,3]); %#ok<UNRCH>
+        end
         
         % Put together the derivative of the Lagrangian wrt to variable
         % #neweq.
         if isempty(NewEqtn{newEq})
             NewEqtn{newEq} = '=0;';
             NewEqtnF{newEq} = ';';
-            if ~This.linear
+            if ~This.IsLinear
                 NewEqtnS{newEq} = ';';
             end
         end
@@ -165,20 +163,20 @@ for eq = first : LossPos
         end
         NewEqtn{newEq} = [dEqtn,sign,NewEqtn{newEq}];
         NewEqtnF{newEq} = [dEqtnF,sign,NewEqtnF{newEq}];
-        if ~This.linear
+        if ~This.IsLinear
             NewEqtnS{newEq} = [dEqtnS,sign,NewEqtnS{newEq}];
             % Earmark the derivative for non-linear simulation if at least one equation
             % in it is non-linear and the derivative is non-zero. The derivative of the
             % loss function is supposed to be treated as non-linear if the loss
             % function itself has been introduced by min#() and not min().
-            isNonlin = This.nonlin(eq) && ~isequal(dEqtn,'0');
+            isNonlin = This.IxNonlin(eq) && ~isequal(dEqtn,'0');
             NewNonlin(newEq) = NewNonlin(newEq) || isNonlin;
         end
         
     end
 end
 
-if ~This.linear
+if ~This.IsLinear
     % Replace = with #= in non-linear human equations.
     NewEqtn(NewNonlin) = strrep(NewEqtn(NewNonlin),'=0;','=#0;');
 end
@@ -187,15 +185,20 @@ end
 % Nested functions...
 
 
-        function C = doReplaceNames(C1,C2)
-            C = name{sscanf(C1,'%g')};
-            if isempty(C2)
+        function C = doReplaceNames(C1,C2,C3)
+            C = name{sscanf(C2,'%g')};
+            if strcmp(C1,'L')
+                % C1 is either 'x' or 'L'. 'L' means a sstate reference; add an '&' in
+                % front of the variable name.
+                C = ['&',C];
+            end
+            if isempty(C3)
                 return
             end
-            if C2(1) == 'p'
-                C = [C,'{+',C2(2:end),'}'];
-            elseif C2(1) == 'm'
-                C = [C,'{-',C2(2:end),'}'];
+            if C3(1) == 'p'
+                C = [C,'{+',C3(2:end),'}'];
+            elseif C3(1) == 'm'
+                C = [C,'{-',C3(2:end),'}'];
             end
         end
 

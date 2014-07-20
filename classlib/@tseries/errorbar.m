@@ -42,12 +42,6 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % Options
 % ========
 %
-% * `'dateformat='` [ char | *irisget('plotdateformat')* ] - Date format for
-% the tick marks on the x-axis.
-%
-% * `'datetick='` [ numeric | *`Inf`* ] - Vector of dates locating tick marks
-% on the x-axis; Inf means they will be created automatically.
-%
 % * `'relative='` [ *`true`* | `false` ] - If `true`, the data for the
 % lower and upper bounds are relative to the centre, i.e. the bounds will
 % be added to the centre (in this case, `Lo` must be negative numbers and
@@ -55,7 +49,8 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % (in this case `Lo` must be lower than `X`, and `Hi` must be higher than
 % `X`).
 %
-% See help on built-in `plot` function for other options available.
+% See help on [`tseries/plot`](tseries/plot).
+%
 
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.

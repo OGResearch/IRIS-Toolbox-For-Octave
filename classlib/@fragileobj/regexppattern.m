@@ -19,6 +19,6 @@ P = dec2char(This,1);
 for i = 2 : n
     P = [P,'|',dec2char(This,i)]; %#ok<AGROW>
 end
-P = [char(2),'(?:',P,')',char(3)];
+P = [This.OpenChar,'(?:',P,')',This.CloseChar];
 
 end

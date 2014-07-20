@@ -34,7 +34,7 @@ end
 
 % Substitute quoted strings back for the #(...) marks before
 % saving the pre-parsed file.
-C = restore(P.code,P.labels);
+C = restore(P.Code,P.Labels);
 
 if ~isempty(FName)
     char2file(C,FName);

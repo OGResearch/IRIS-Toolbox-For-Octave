@@ -25,15 +25,16 @@ end
 try
     Export;
 catch
-    Export = struct('filename',{},'content',{});
+    Export = struct('FName',{},'Content',{});
 end
 
 %--------------------------------------------------------------------------
 
 Error = struct();
-Error.code = '';
+Error.Code = '';
 Error.exprsn = '';
 Error.leftover = '';
+warnParsing = strrep(ErrParsing,'Error','Warning');
 
 % Cannot evaluate expression.
 warn = {};
@@ -48,7 +49,7 @@ while ~isempty(pos)
     commandCap = [upper(command(1)),lower(command(2:end))];
     [s,tail,isError] = feval(['xxParse',commandCap],C,pos+len);
     if isError
-        Error.code = C(pos:end);
+        Error.Code = C(pos:end);
         break
     end
     
@@ -74,8 +75,8 @@ end
 if ~isempty(warn)
     warn = strtrim(warn);
     warn = restore(warn,Labels);
-    utils.warning('preparser', ...
-        ['Cannot properly evaluate this ', ...
+    utils.warning('preparser:controls',[warnParsing, ...
+        'Cannot properly evaluate this ', ...
         'control command condition: ''%s''.'], ...
         warn{:});
 end
@@ -97,20 +98,20 @@ doErrors();
 
 
     function doErrors()
-        if ~isempty(Error.code)
-            utils.error('preparser', [ErrParsing, ...
+        if ~isempty(Error.Code)
+            utils.error('preparser:controls', [ErrParsing, ...
                 'Something wrong with this control command(s) or commands nested inside: ''%s...''.'], ...
-                xxFormatError(Error.code,Labels));
+                xxFormatError(Error.Code,Labels));
         end
         
         if ~isempty(Error.exprsn)
-            utils.error('preparser', [ErrParsing, ...
+            utils.error('preparser:controls', [ErrParsing, ...
                 'Cannot evaluate this control expression: ''%s...''.'], ...
                 xxFormatError(Error.exprsn,Labels));
         end
         
         if ~isempty(Error.leftover)
-            utils.error('preparser', [ErrParsing, ...
+            utils.error('preparser:controls', [ErrParsing, ...
                 'This control command is miplaced or unfinished: ''%s...''.'], ...
                 xxFormatError(Error.leftover,Labels));
         end
@@ -283,7 +284,8 @@ function [Replace,Labels,Err,Warn] ...
 Replace = '';
 Err = '';
 Warn = {};
-
+warnParsing = strrep(ErrParsing,'Error','Warning');
+    
 forBody = S.ForBody;
 doBody = S.DoBody;
 
@@ -317,15 +319,20 @@ end
 % TODO: Use pseudosubstitutions to evaluate $[...]$ in the body of !for
 % loops.
 
-% ##### MOSW: replaceFunc = @doExpandSqb; %#ok<NASGU> forBody =
-% regexprep(forBody,'(\$?)(\[[^\]]*\])\1','${replaceFunc($1,$2)}');
 obsolete = {};
-forBody = mosw.dregexprep(forBody,'(\$?)(\[[^\]]*\])\1',@doExpandSqb,[1,2]);
+ptn = '(\$?)(\[[^\]]*\])\1';
+if true % ##### MOSW
+    replaceFunc = @doExpandSqb; %#ok<NASGU>
+    forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
+else
+    forBody = mosw.dregexprep(forBody,ptn,'doExpandSqb',[1,2]); %#ok<UNRCH>
+end
 if ~isempty(obsolete)
     % ##### May 2014 OBSOLETE and scheduled for removal.
-    utils.warning('preparser:controls', [ErrParsing, ...
+    utils.warning('obsolete', [warnParsing, ...
         'This is obsolete syntax, and will be removed from a future ', ...
-        'version of IRIS. Use pseudosubstitution syntax $[...]$ instead.'], ...
+        'version of IRIS. Use pseudosubstitution syntax $[...]$ instead: ', ...
+        '''%s''.'], ...
         obsolete{:});
 end
 
@@ -348,7 +355,7 @@ list = regexp(forBody,'[^\s,;]+','match');
                 C2 = regexprep(C2,plist,'D.$1');
             end
             % Create an anonymous function handle and evaluate it on D.
-            f = str2func(['@(D) ',C2]);
+            f = mosw.str2func(['@(D) ',C2]);
             x = f(D);
             % The results may only be numeric arrays, logical arrays, character
             % strings, or cell arrays of these. Any other results will be discarded.
@@ -410,8 +417,8 @@ for i = 1 : nList
             % Copy the `pos`-th entry to the end of storage.
             [Labels,newPos,newCode] = copytoend(Labels,pos);
             % Substitute inside the comment string.
-            Labels.Storage{newPos} ...
-                = doSubsForControl(Labels.Storage{newPos},control,list{i});
+            Labels.Store{newPos} ...
+                = doSubsForControl(Labels.Store{newPos},control,list{i});
             C = strrep(C,jCode,newCode);
         end
     end
@@ -422,8 +429,8 @@ end
 
 if isObsolete
     doBody = restore(doBody,Labels);
-    utils.warning('obsolete', ...
-        ['The syntax for lower/upper case of a !for control variable ', ...
+    utils.warning('obsolete',[warnParsing, ...
+        'The syntax for lower/upper case of a !for control variable ', ...
         'in the following piece of code is obsolete, and will be removed ', ...
         'from IRIS in the future: ''%s''.'], ...
         doBody);
@@ -546,8 +553,8 @@ end
 
 S.ExportBody = restore(S.ExportBody,Labels);
 
-Export(end+1).filename = S.ExportName;
-Export(end).content = S.ExportBody;
+Export(end+1).FName = S.ExportName;
+Export(end).Content = S.ExportBody;
 
 end % xxExport()
 

@@ -1,5 +1,5 @@
 classdef VAR < varobj
-    % VAR  Vector autoregressions (VAR) objects and functions.
+    % VAR  Vector Autoregressions: VAR Objects and Functions.
     %
     % VAR objects can be constructed as plain VARs or simple panel VARs (with
     % fixed effect), and estimated without or with prior dummy observations
@@ -12,7 +12,7 @@ classdef VAR < varobj
     % Constructor
     % ============
     %
-    % * [`VAR`](VAR/VAR) - Create new, empty reduced-form VAR object.
+    % * [`VAR`](VAR/VAR) - Create new empty reduced-form VAR object.
     %
     % Getting information about VAR objects
     % ======================================
@@ -25,7 +25,7 @@ classdef VAR < varobj
     % * [`get`](VAR/get) - Query VAR object properties.
     % * [`iscompatible`](VAR/iscompatible) - True if two VAR objects can occur together on the LHS and RHS in an assignment.
     % * [`isexplosive`](VAR/isexplosive) - True if any eigenvalue is outside unit circle.
-    % * [`ispanel`](VAR/ispanel) - True for panel VAR based objects.
+    % * [`ispanel`](VAR/ispanel) - True for panel VAR objects.
     % * [`isstationary`](VAR/isstationary) - True if all eigenvalues are within unit circle.
     % * [`length`](VAR/length) - Number of alternative parameterisations in VAR object.
     % * [`mean`](VAR/mean) - Mean of VAR process.
@@ -58,7 +58,7 @@ classdef VAR < varobj
     % * [`assign`](VAR/assign) - Manually assign system matrices to VAR object.
     % * [`alter`](VAR/alter) - Expand or reduce the number of alternative parameterisations within a VAR object.
     % * [`backward`](VAR/backward) - Backward VAR process.
-    % * [`demean`](VAR/demean) - Remove constant from VAR object.
+    % * [`demean`](VAR/demean) - Remove constant and the effect of exogenous inputs from VAR object.
     % * [`horzcat`](VAR/horzcat) - Combine two compatible VAR objects in one object with multiple parameterisations.
     % * [`integrate`](VAR/integrate) - Integrate VAR process and data associated with it.
     %
@@ -99,6 +99,13 @@ classdef VAR < varobj
         Sbc = []; % Schwartz bayesian criterion.
         Rr = []; % Parameter restrictions.
         NHyper = NaN; % Number of estimated hyperparameters.
+        
+        % Exogenous inputs in VARXs.
+        XNames = cell(1,0); % Names of exogenous inputs.
+        X0 = []; % Asymptotic mean assumption for exogenous inputs.
+        J = []; % Coefficient matrix for exogenous inputs.
+        
+        % Conditioning instruments.
         INames = cell(1,0); % Names of conditioning instruments.
         IEqtn = cell(1,0); % Expressions for conditioning instruments.
         Zi = []; % Measurement matrix for conditioning instruments.
@@ -109,6 +116,7 @@ classdef VAR < varobj
         varargout = acf(varargin)
         varargout = backward(varargin)
         varargout = companion(varargin)
+        varargout = datarequest(varargin)
         varargout = demean(varargin)
         varargout = eig(varargin)
         varargout = estimate(varargin)
@@ -121,7 +129,7 @@ classdef VAR < varobj
         varargout = group(varargin)
         varargout = infocrit(varargin)
         varargout = instrument(varargin)
-        varargout = integrate(varargin)  
+        varargout = integrate(varargin)
         varargout = iscompatible(varargin)
         varargout = isexplosive(varargin)
         varargout = isstationary(varargin)
@@ -135,12 +143,14 @@ classdef VAR < varobj
         varargout = sprintf(varargin)
         varargout = sspace(varargin)
         varargout = vma(varargin)
+        varargout = xasymptote(varargin)
         varargout = xsf(varargin)
         varargout = subsref(varargin)
         varargout = subsasgn(varargin)
     end
     
     methods (Hidden)
+        varargout = hdatainit(varargin)
         varargout = end(varargin)
         varargout = saveobj(varargin)
         varargout = specget(varargin)
@@ -150,63 +160,83 @@ classdef VAR < varobj
     end
     
     methods (Access=protected,Hidden)
+        varargout = myassignest(varargin)
         varargout = mycompatible(varargin)
-        varargout = myfitted(varargin)
         varargout = myglsqweights(varargin)
+        varargout = myinpdata(varargin)
         varargout = myisvalidinpdata(varargin)
         varargout = myny(varargin)
         varargout = myprealloc(varargin)
         varargout = myrngcmp(varargin);
         varargout = mystackdata(varargin)
         varargout = mysubsalt(varargin)
+        varargout = myxnames(varargin)
         varargout = size(varargin)
-        specdisp(varargin)
+        varargout = specdisp(varargin)
     end
-
+    
     methods (Static,Hidden)
         varargout = myglsq(varargin)
         varargout = loadobj(varargin)
         varargout = restrict(varargin)
     end
-
+    
     methods (Access=protected,Hidden)
         % Methods sealed in extension classes svarobj or varxobj.
         varargout = mybmatrix(varargin)
         varargout = mycovmatrix(varargin)
+        varargout = mystruct2obj(varargin)
     end
     
     
-    % Constructor.
-    methods    
+    % Constructor...
+    
+    
+    methods
         function This = VAR(varargin)
-            % VAR  Create new, empty reduced-form VAR object.
+            % VAR  Create new empty reduced-form VAR object.
             %
-            % Syntax for plain VAR
-            % =====================
+            % Syntax for plain VAR and VARX
+            % ==============================
             %
             %     V = VAR(YNames)
+            %     V = VAR(YNames,'exogenous=',XNames)
             %
-            % Syntax for panel VAR
-            % =====================
+            % Syntax for panel VAR and VARX
+            % ==============================
             %
-            %     V = VAR(YNames,GroupNames)
+            %     V = VAR(YNames,'groups=',GroupNames)
+            %     V = VAR(YNames,'exogenous=',XNames,'groups=',GroupNames)
             %
             % Output arguments
             % =================
             %
             % * `V` [ VAR ] - New empty VAR object.
             %
-            % * `YNames` [ cellstr | char | function_handle ] - Names of VAR variables.
+            % * `YNames` [ cellstr | char | function_handle ] - Names of endogenous variables.
             %
-            % * `GroupNames` [ cellstr | char | function_handle ] - Names of groups of
-            % data for panel estimation.
+            % * `XNames` [ cellstr | char | function_handle ] - Names of exogenous inputs.
+            %
+            % * `GroupNames` [ cellstr | char | function_handle ] - Names of groups for
+            % panel VAR estimation.
+            %
+            % Options
+            % ========
+            %
+            % * `'exogenous='` [ cellstr | *empty* ] - Names of exogenous inputs; one
+            % of the names can be `!ttrend`, a linear time trend, which will be created
+            % automatically each time input data are required, and then included in the
+            % output database under the name `ttrend`.
+            %
+            % * `'groups='` [ cellstr | *empty* ] - Names of groups for panel VAR
+            % estimation.
             %
             % Description
             % ============
             %
             % This function creates a new empty VAR object. It is usually followed by
-            % the [`estimate`](VAR/estimate) function to estimate the VAR parameters on
-            % data.
+            % an [`estimate`](VAR/estimate) command to estimate the VAR parameters on
+            % the data.
             %
             % Example
             % ========
@@ -225,42 +255,25 @@ classdef VAR < varobj
             % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@varobj(varargin{:});
+            
             if nargin == 0
                 return
-            elseif nargin == 1
-                if isa(varargin{1},'VAR')
-                    This = varargin{1};
-                    return
-                elseif isstruct(varargin{1})
-                    % Convert struct to VAR object.
-                    s = varargin{1};
-                    plist = properties(This);
-                    slist = fieldnames(s);
-                    for i = 1 : length(plist)
-                        inx = strcmpi(slist,plist{i});
-                        if ~any(inx)
-                            continue
-                        end
-                        for pos = find(inx(:).')
-                            try %#ok<TRYNC>
-                                This.(plist{i}) = s.(slist{pos});
-                            end
-                        end
-                    end
-                    % Populate triangular representation.
-                    if isempty(This.T) || isempty(This.U) ...
-                            || isempty(This.EigVal)
-                        This = schur(This);
-                    end
-                    % Populate information criteria.
-                    if isempty(This.Aic) || isempty(This.Sbc)
-                        This = infocrit(This);
-                    end
-                    return
+            elseif nargin == 1 && isVAR(varargin{1})
+                This = varargin{1};
+                return
+            elseif nargin == 1 && isstruct(varargin{1})
+                This = mystruct2obj(This,varargin{1});
+                return
+            elseif nargin >= 3
+                % VAR(YNames,...)
+                varargin(1) = [];
+                [opt,~] = passvalopt('VAR.VAR',varargin{:});
+                if ~isempty(opt.exogenous)
+                    This = myxnames(This,opt.exogenous);
                 end
             end
-
         end
+        
     end
     
 end

@@ -1,7 +1,6 @@
 function [Y0,K0,Y1,G1] = mydummymat(This,varargin)
 % mydummymat  [Not a public function] Create extra output arguments for bkw compatibility.
 %
-%
 % Backend IRIS function.
 % No help provided.
 

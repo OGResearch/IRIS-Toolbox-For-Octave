@@ -1,21 +1,22 @@
 function Tests = sydneyCharTest()
 
+%#ok<*DEFNU>
 Tests = functiontests(localfunctions) ;
 
 end
 
 
 %**************************************************************************
-function setupOnce(This) %#ok<*DEFNU>
 
+
+function setupOnce(This)
 This.TestData.absTol = eps()^(2/3);
-
 end % setupOnce()
 
 
 %**************************************************************************
-function testPrecedence(This)
 
+function testPrecedence(This)
 func = { ...
     'x*a*(y-z)*z/b*(-x*z/c/z*(x-c))', ...
     'x*a + b*y - c*z + a*(b*c - z*y)', ...
@@ -31,11 +32,11 @@ nFunc = length(func);
 actValue = nan(1,nFunc);
 expValue = nan(1,nFunc);
 for i = 1 : nFunc
-    expFunc = str2func(['@(a,b,c,x,y,z) ',func{i}]);
+    expFunc = mosw.str2func(['@(a,b,c,x,y,z) ',func{i}]);
     actFunc = sydney(func{i},{});
     actFunc = reduce(actFunc);
     actFunc = char(actFunc);
-    actFunc = str2func(['@(a,b,c,x,y,z) ',actFunc]);
+    actFunc = mosw.str2func(['@(a,b,c,x,y,z) ',actFunc]);
     a = 1 + rand*10;
     b = 1 + rand*10;
     c = 1 + rand*10;
@@ -45,7 +46,5 @@ for i = 1 : nFunc
     expValue(i) = expFunc(a,b,c,x,y,z);
     actValue(i) = actFunc(a,b,c,x,y,z);
 end
-
 assertEqual(This,actValue,expValue,'absTol',This.TestData.absTol);
-
 end % testPrecedence()

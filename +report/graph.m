@@ -22,11 +22,12 @@
 % * `'axesOptions='` [ cell | *empty* ] - (Inheritable) Options executed
 % by calling `set` on the axes handle before running `'postProcess='`.
 %
-% * `'dateFormat='` [ char | *`'YYYY:P'`* ] - (Inheritable) Date format
-% string, see help on [`dat2str`](dates/dat2str).
-%
 % * `'dateTick='` [ numeric | *`Inf`* ] - (Inheritable) Date tick
 % spacing.
+%
+% * `'grid='` [ `@auto` | `true` | `false` ] - (Inheritable) Display grid
+% lines; if `@auto`, `'grid='` is `true` unless a right-hand-side
+% axis is plotted.
 %
 % * `'legend='` [ *`false`* | `true` ] - (Inheritable) Add legend to
 % the graph.
@@ -51,15 +52,37 @@
 % structure to the graph and its children; see help on
 % [`qstyle`](qreport/qstyle).
 %
-% * `'tight='` [ *`true`* | `false` ] - (Inheritable) Set the y-axis
-% limits to the minimum and maximum of displayed data.
+% * `'tight='` [ `@auto` | `true` | `false` ] - (Inheritable) Set the
+% y-axis limits to the minimum and maximum of displayed data; if `@auto`,
+% `'tight='` is `true` unless a right-hand-side axis is plotted.
 %
 % * `'xLabel='` [ char | *empty* ] - Label the x-axis.
 %
 % * `'yLabel='` [ char | *empty* ] - Label the y-axis.
 %
-% * `'zeroLine='` [ `true` | *`false`* ] - (Inheritable) Add a
-% horizontal zero line if zero is included on the y-axis.
+% * `'zeroLine='` [ `true` | *`false`* | cell ] - (Inheritable) Add a
+% horizontal zero line if zero is included on the y-axis; specify zeroline
+% options in a cell array.
+%
+% Date format options
+% ====================
+%
+% See [`dat2str`](dates/dat2str) for details on date format options.
+%
+% * `'dateFormat='` [ char | cellstr | *`'YYYYFP'`* ] - Date format string,
+% or array of format strings (possibly different for each date).
+%
+% * `'freqLetters='` [ char | *`'YHQBMW'`* ] - Six letters used to
+% represent the six possible frequencies of IRIS dates, in this order:
+% yearly, half-yearly, quarterly, bi-monthly, monthly,  and weekly (such as
+% the `'Q'` in `'2010Q1'`).
+%
+% * `'months='` [ cellstr | *`{'January',...,'December'}`* ] - Twelve
+% strings representing the names of the twelve months.
+%
+% * `'standinMonth='` [ numeric | `'last'` | *`1`* ] - Month that will
+% represent a lower-than-monthly-frequency date if the month is part of the
+% date format string.
 %
 % Generic options
 % ================

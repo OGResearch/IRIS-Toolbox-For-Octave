@@ -1,4 +1,4 @@
-function [Y0,K0,Y1,G1,CI,NGrp] = mystackdata(This,Y,Opt) %#ok<INUSL>
+function [Y0,K0,X0,Y1,G1,CI] = mystackdata(This,Y,X,Opt) %#ok<INUSL>
 % mystackdata  [Not a public function] Re-arrange data for VAR estimation.
 %
 % Backend IRIS function.
@@ -7,40 +7,69 @@ function [Y0,K0,Y1,G1,CI,NGrp] = mystackdata(This,Y,Opt) %#ok<INUSL>
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
  
-% Pretend plain VAR is a panel VAR with one group of data.
-if ~iscell(Y)
-    Y = {Y};
-end
-
 %--------------------------------------------------------------------------
 
-NGrp = length(Y);
+% Plain (non-panel) input data are stored in 1-by-1 cell arrays, as are
+% 1-group panel VARs.
+
+nGrp = length(Y);
 ny = size(Y{1},1);
+nx = size(X{1},1);
 nAlt = size(Y{1},3);
+nXPer = size(Y{1},2); % nXPer is the same for each group because Range cannot be Inf for panel VARs.
 p = Opt.order;
 
+% Endogenous variables
+%----------------------
 YInp = Y;
 Y = [];
-K0 = [];
-for iGrp = 1 : NGrp
+for iGrp = 1 : nGrp
     % Separate groups by a total of `p` NaNs.
-    y = [YInp{iGrp},nan(ny,p,nAlt)];
-    Y = [Y,y]; %#ok<AGROW>
-    if Opt.constant
-        if Opt.fixedeffect
-            % Dummy constants for fixed-effect panel estimation.
-            k0 = zeros(NGrp,size(y,2));
-            k0(iGrp,:) = 1;
-        else
-            k0 = ones(1,size(y,2));
-        end
-    else
-        k0 = zeros(0,size(y,2));
-    end
-    K0 = [K0,k0]; %#ok<AGROW>
+    Y = [Y,YInp{iGrp},nan(ny,p,nAlt)]; %#ok<AGROW>
 end
 n = size(Y,2);
 
+% Constant including fixed effect
+%---------------------------------
+K0 = zeros(0,n);
+if Opt.constant
+    if Opt.fixedeff
+        % Dummy constants for fixed-effect panel estimation.
+        K0 = zeros(nGrp,0);
+        for iGrp = 1 : nGrp
+            k = zeros(nGrp,nXPer+p);
+            k(iGrp,1:nXPer) = 1;
+            k(iGrp,nXPer:end) = NaN;
+            K0 = [K0,k]; %#ok<AGROW>
+        end
+    else
+        K0 = ones(1,n);
+    end
+end
+
+% Exogenous inputs including fixed effect
+%-----------------------------------------
+X0 = zeros(0,n);
+if nx > 0
+    if Opt.fixedeff
+        X0 = zeros(nGrp*nx,0);
+        for iGrp = 1 : nGrp
+            x = zeros(nGrp*nx,nXPer+p,nAlt);
+            pos = (iGrp-1)*nx + (1 : nx);
+            x(pos,1:nXPer,:) = X{iGrp};
+            x(pos,nxPer:end,:) = NaN;
+            X0 = [X0,x]; %#ok<AGROW>
+        end
+    else
+        X0 = zeros(nx,0);
+        for iGrp = 1 : nGrp
+            X0 = [X0,X{iGrp},nan(nx,p,nAlt)]; %#ok<AGROW>
+        end
+    end
+end
+
+% Cointegrating vectors
+%-----------------------
 % Only one set of cointegrating vectors allowed.
 CI = Opt.cointeg;
 if isempty(CI)
