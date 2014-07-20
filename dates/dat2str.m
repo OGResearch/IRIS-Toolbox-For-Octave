@@ -284,11 +284,11 @@ end
         
         while true
             found = false;
-            if is.matlab % ##### MOSW
+            if true % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
             else
-                fmt = mosw.octfun.dregexprep(fmt,ptn,'doReplace',1,'once'); %#ok<UNRCH>
+                fmt = mosw.dregexprep(fmt,ptn,'doReplace',1,'once'); %#ok<UNRCH>
             end
             if ~found
                 break

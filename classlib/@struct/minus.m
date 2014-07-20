@@ -4,7 +4,7 @@ function This = minus(This,List)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if is.matlab
+if true % ##### MOSW
 pp = inputParser();
 pp.addRequired('D',@isstruct);
 pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
