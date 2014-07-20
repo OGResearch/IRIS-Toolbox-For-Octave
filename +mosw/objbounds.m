@@ -1,4 +1,14 @@
-function lims = myobjbounds(this)
+function lims = objbounds(this)
+% objbounds  [Not a public function] Implementation of objbounds function
+% missing in Octave
+%
+% Backend IRIS function.
+% No help provided.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%--------------------------------------------------------------------------
 
 try
     lims = objbounds(this);
@@ -12,7 +22,13 @@ catch
         types = {types};
     end
     
-    [this,types] = xxReplaceAxesWithKids(this,types);
+    tags = get(this,'tag');
+    
+    if ischar(tags)
+        tags = {tags};
+    end
+    
+    [this,types] = xxReplaceAxesWithKids(this,types,tags);
     
     for ix = 1:numel(types)
         switch types{ix}
@@ -55,8 +71,8 @@ end
 
 end
 
-function [this,types] = xxReplaceAxesWithKids(this,types)
-    axIx = strcmpi(types,'axes');
+function [this,types] = xxReplaceAxesWithKids(this,types,tags)
+    axIx = strcmpi(types,'axes') & ~strcmpi(tags,'legend');
     if all(~axIx)
         return
     end
