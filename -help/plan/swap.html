@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="plan/swap">swap</h2>
+<div class="headline">Swap endogeneity and exogeneity of variables and shocks</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>P = swap(P,ExogList,EndogList,Dates)
+P = swap(P,ExogList,EndogList,Dates,Sigma)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>P</code> [ plan ] - Simulation plan.</p></li>
+<li><p><code>ExogList</code> [ cellstr | char ] - List of variables that will be exogenized.</p></li>
+<li><p><code>EndogList</code> [ cellstr | char ] - List of shocks that will be endogenized.</p></li>
+<li><p><code>Dates</code> [ numeric ] - Dates at which the variables and shocks will be exogenized/endogenized.</p></li>
+<li><p><code>Sigma</code> [ numeric ] - Anticipation mode (real or imaginary) for the endogenized shocks, and their numerical weight (used in underdetermined simulation plans); if omitted, <code>Sigma = 1</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>P</code> [ plan ] - Simulation plan with new information on exogenized variables and endogenized shocks included.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The function <code>swap</code> is equivalent to the following separate calls to functions <code>exogenize</code> and <code>endogenize</code>:</p>
+<pre><code>p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates);</code></pre>
+<p>or</p>
+<pre><code>p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates,Sigma);</code></pre>
+<p>if the input argument <code>Sigma</code> is provided.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

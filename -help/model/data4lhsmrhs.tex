@@ -1,0 +1,61 @@
+/bin/bash: lhsmrhs: command not found
+
+
+    \filetitle{data4lhsmrhs}{Prepare data array for running}{model/data4lhsmrhs}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[YXE,List,XRange] = data4lhsmrhs(M,D,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object whose equations will be later
+  evaluated by calling \href{model/lhsmrhs}{\texttt{lhsmrhs}}.
+\item
+  \texttt{D} {[} struct {]} - Input database with observations on
+  measurement variables, transition variables, and shocks on which
+  \href{model/lhsmrhs}{\texttt{lhsmrhs}} will be evaluated.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which
+  \href{model/lhsmrhs}{\texttt{lhsmrhs}} will be evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{YXE} {[} numeric {]} - Numeric array with the observations on
+  measurement variables, transition variables, and shocks organised
+  row-wise.
+\item
+  \texttt{List} {[} cellstr {]} - List of measurement variables,
+  transition variables and shocks in order of their appearance in the
+  rows of \texttt{YXE}.
+\item
+  \texttt{XRange} {[} numeric {]} - Extended range including pre-sample
+  and post-sample observations needed to evaluate lags and leads of
+  transition variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The resulting array, \texttt{YXE}, is \texttt{nVar} by \texttt{nXPer} by
+\texttt{nData}, where \texttt{nVar} is the total number of measurement
+variables, transition variables, and shocks, \texttt{nXPer} is the
+number of periods including the pre-sample and post-sample periods
+needed to evaluate lags and leads, and \texttt{nData} is the number of
+alternative data sets (i.e.~the number of columns in each input time
+series) in the input database, \texttt{D}.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+YXE = data4lhsmrhs(M,d,range);
+D = lhsmrhs(M,YXE);
+\end{verbatim}
+
+

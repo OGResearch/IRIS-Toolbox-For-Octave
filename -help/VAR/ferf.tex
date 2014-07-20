@@ -1,0 +1,52 @@
+
+
+    \filetitle{ferf}{Forecast error response function}{VAR/ferf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[R,C] = ferf(V,NPer)
+[R,C] = ferf(V,Range)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object for which the forecast error
+  response function will be computed.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Resp} {[} tseries \textbar{} struct {]} - Forecast error
+  response functions.
+\item
+  \texttt{Cum} {[} tseries \textbar{} struct {]} - Cumulative forecast
+  error response functions.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'presample='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Include zeros for pre-sample initial
+  conditions in the output data.
+\item
+  \texttt{'select='} {[} cellstr \textbar{} char \textbar{} logical
+  \textbar{} numeric \textbar{} \emph{\texttt{Inf}} {]} - Selection of
+  variable to whose forecast errors the responses will be simulated.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

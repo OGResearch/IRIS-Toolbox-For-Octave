@@ -1,0 +1,54 @@
+
+
+    \filetitle{bn}{Beveridge-Nelson trends}{model/bn}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Outp = bn(M,Inp,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Solved model object.
+\item
+  \texttt{Inp} {[} struct \textbar{} cell {]} - Input data on which the
+  BN trends will be computed.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the BN trends
+  will be computed.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Outp} {[} struct \textbar{} cell {]} - Output data with the BN
+  trends.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'deviations='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Input and output data are deviations from
+  balanced-growth paths.
+\item
+  \texttt{'dtrends='} {[} \emph{\texttt{@auto}} \textbar{} \texttt{true}
+  \textbar{} \texttt{false} {]} - Measurement variables in input and
+  output data include deterministic trends specified in
+  \href{modellang/dtrends}{\texttt{!dtrends}} equations.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The BN decomposition is accurate only if the input data have been
+generated using unanticipated shocks.
+
+\paragraph{Example}\label{example}
+
+

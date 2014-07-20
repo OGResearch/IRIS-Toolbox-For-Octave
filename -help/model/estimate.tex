@@ -1,0 +1,412 @@
+
+
+    \filetitle{estimate}{Estimate model parameters by optimising selected objective function}{model/estimate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
+[PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{D} {[} struct \textbar{} cell {]} - Input database or datapack
+  from which the measurement variables will be taken.
+\item
+  \texttt{Range} {[} struct {]} - Date range.
+\item
+  \texttt{Est} {[} struct {]} - Database with the list of paremeters
+  that will be estimated, and the parameter prior specifications (see
+  below).
+\item
+  \texttt{SPr} {[} empty \textbar{} systempriors {]} - System priors
+  object, \href{systempriors/Contents}{\texttt{systempriors}}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{PEst} {[} struct {]} - Database with point estimates of
+  requested parameters.
+\item
+  \texttt{Pos} {[} poster {]} - Posterior,
+  \href{poster/Contents}{\texttt{poster}}, object; this object also
+  gives you access to the value of the objective function at optimum or
+  at any point in the parameter space, see the
+  \href{poster/eval}{\texttt{poster/eval}} function.
+\item
+  \texttt{Cov} {[} numeric {]} - Approximate covariance matrix for the
+  estimates of parameters with slack bounds based on the asymptotic
+  Fisher information matrix (not on the Hessian returned from the
+  optimisation routine).
+\item
+  \texttt{Hess} {[} cell {]} - \texttt{Hess\{1\}} is the total hessian
+  of the objective function; \texttt{Hess\{2\}} is the contributions of
+  the priors to the hessian.
+\item
+  \texttt{M} {[} model {]} - Model object solved with the estimated
+  parameters (including out-of-likelihood parameters and common variance
+  factor).
+\end{itemize}
+
+The remaining three output arguments, \texttt{V}, \texttt{Delta},
+\texttt{PDelta}, are the same as the
+\href{model/loglik}{\texttt{model/loglik}} output arguments of the same
+names.
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'chkSstate='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} \textbar{} cell {]} - Check steady state in each
+  iteration; works only in non-linear models.
+\item
+  \texttt{'evalFrfPriors='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - In each iteration, evaluate frequency response
+  function prior density, and include it to the overall objective
+  function to be optimised.
+\item
+  \texttt{'evalLik='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - In each iteration, evaluate likelihood (or another data based
+  criterion), and include it to the overall objective function to be
+  optimised.
+\item
+  \texttt{'evalPPriors='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - In each iteration, evaluate parameter prior
+  density, and include it to the overall objective function to be
+  optimised.
+\item
+  \texttt{'evalSPriors='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - In each iteration, evaluate system prior density,
+  and include it to the overall objective function to be optimised.
+\item
+  \texttt{'filter='} {[} cell \textbar{} \emph{empty} {]} - Cell array
+  of options that will be passed on to the Kalman filter including the
+  type of objective function; see help on
+  \href{model/filter}{\texttt{model/filter}} for the options available.
+\item
+  \texttt{'initVal='} {[} \texttt{model} \textbar{}
+  \emph{\texttt{struct}} \textbar{} struct {]} - If \texttt{struct} use
+  the values in the input struct \texttt{Est} to start the iteration; if
+  \texttt{model} use the currently assigned parameter values in the
+  input model, \texttt{M}.
+\item
+  \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{500}} {]} -
+  Maximum number of iterations allowed.
+\item
+  \texttt{'maxFunEvals='} {[} numeric \textbar{} \emph{\texttt{2000}}
+  {]} - Maximum number of objective function calls allowed.
+\item
+  \texttt{'noSolution='} {[} \emph{\texttt{'error'}} \textbar{}
+  \texttt{'penalty'} {]} - Specifies what happens if solution or steady
+  state fails to solve in an iteration: \texttt{'error='} stops the
+  execution with an error message, \texttt{'penalty='} returns an
+  extremely low value of the likelihood.
+\item
+  \texttt{'optimSet='} {[} cell \textbar{} \emph{empty} {]} - Cell array
+  used to create the Optimization Toolbox options structure; works only
+  with the option \texttt{'optimiser='} \texttt{'default'}.
+\item
+  \texttt{'refresh='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Refresh dynamic links in each iteration.
+\item
+  \texttt{'solve='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  \textbar{} cellstr {]} - Re-compute solution in each iteration; you
+  can specify a cell array with options for the \texttt{solve} function.
+\item
+  \texttt{'optimiser='} {[} \emph{\texttt{'default'}} \textbar{}
+  \texttt{'pso'} \textbar{} cell \textbar{} function\_handle {]} -
+  Minimisation procedure.
+
+  \begin{itemize}
+  \item
+    \texttt{'default'}: The Optimization Toolbox function
+    \texttt{fminunc} or \texttt{fmincon} will be called depending on the
+    presence or absence of lower and/or upper bounds.
+  \item
+    \texttt{'pso'}: The Particle Swarm Optimizer will be called; use the
+    option \texttt{'pso='} to specify further options to control the
+    optimizer (see Options for Particle Swarm Optimizer below).
+  \item
+    function\_handle or cell: Enter a function handle to your own
+    optimisation procedure, or a cell array with a function handle and
+    additional input arguments (see below).
+  \end{itemize}
+\item
+  \texttt{'sstate='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  \textbar{} cell \textbar{} function\_handle {]} - Re-compute steady
+  state in each iteration; you can specify a cell array with options for
+  the \texttt{sstate} function, or a function handle whose behaviour is
+  described below.
+\item
+  \texttt{'tolFun='} {[} numeric \textbar{} \emph{\texttt{1e-6}} {]} -
+  Termination tolerance on the objective function.
+\item
+  \texttt{'tolX='} {[} numeric \textbar{} \emph{\texttt{1e-6}} {]} -
+  Termination tolerance on the estimated parameters.
+\end{itemize}
+
+\paragraph{Options for Particle Swarm
+Optimizer}\label{options-for-particle-swarm-optimizer}
+
+The following options can be specified through the main option
+\texttt{'optimset='} when \texttt{'optimiser=pso'}.
+
+\begin{itemize}
+\item
+  \texttt{'cognitiveAttraction='} {[} numeric \textbar{}
+  \emph{\texttt{0.5}} {]} - Scalar between \texttt{0} and \texttt{1} to
+  control the relative attraction to the best location a particle can
+  remember.
+\item
+  \texttt{'constrBoundary='} {[} \texttt{absorb} \textbar{}
+  \emph{\texttt{reflect}} \textbar{} \texttt{soft} {]} - Controls the
+  way imposed constraints are handled when violated.
+
+  \begin{itemize}
+  \item
+    \texttt{'soft'}: Particles are allowed to travel outside the bounds
+    but get bad fitness function (likelihood) values when they do;
+  \item
+    \texttt{'reflect'}: Particle velocity is changed such that when the
+    particle encounters the bound its velocity is changed to effectively
+    make it bounce off of the boundary;
+  \item
+    \texttt{'absorb'}: Particles hit the bound and stay at the bound
+    until attracted elsewhere because its velocity is set to zero.
+  \end{itemize}
+\item
+  \texttt{'display='} {[} \texttt{'off'} \textbar{} \texttt{'final'}
+  \textbar{} \emph{\texttt{'iter'}} {]} - Level of display in order of
+  increasing verbosity; \texttt{'iter'} will only produce output at most
+  \texttt{'updateInterval='} seconds.
+\item
+  \texttt{'fitnessLimit='} {[} numeric \textbar{} \emph{\texttt{-Inf}}
+  {]} - Algorithm will terminate when a function value this low is
+  encountered.
+\item
+  \texttt{'generations='} {[} numeric \textbar{} \emph{\texttt{1000}}
+  {]} - Positive integer describing the maximum length of swarm
+  evolution.
+\item
+  \texttt{'hybridFcn='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} \textbar{} \texttt{'fmincon'} \textbar{}
+  \texttt{'fminunc'} \textbar{} cell {]} - Run a second stage
+  optimization after PSO (only available with the Optimization Tbx
+  installed):
+
+  \begin{itemize}
+  \item
+    \texttt{false}: No second stage optimization, run the particle swarm
+    only.
+  \item
+    \texttt{true}: After PSO, run either \texttt{fminunc} or
+    \texttt{fmincon}, the Optimization Toolbox routines, depending on
+    the presence or absence of lower and upper bounds on estimated
+    parameters.
+  \item
+    \texttt{'fminunc'}, \texttt{'fmincon'}: After PSO, run the specified
+    Optimization Toolbox routine.
+  \item
+    cell: A cell array in which the first argument specifies the
+    function as previously and the second argument contains the options
+    structure for that function; for instance
+    \texttt{\{@fmincon,optimset('Display','iter')\}}.
+  \end{itemize}
+\item
+  \texttt{'includeInitialValue='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Include the initial vector of parameters in the
+  initial population.
+\item
+  \texttt{'initialPopulation=}' {[} numeric \textbar{} \emph{empty} {]}
+  - An NPar-by-NPop array containing the initial distribution of
+  particles, where NPar is the number of estimated parameters, and NPop
+  is the size of population. If empty, a population will be created
+  containing the initial parameter vector and the rest of the particles
+  will be randomly generated according to \texttt{'popInitRange='}. Use
+  the option \texttt{'includeInitialValue=' false} oo exclude the
+  initial value from the initial population so that the entire
+  population is randomly generated.
+\item
+  \texttt{'socialAttraction='} {[} numeric \textbar{}
+  \emph{\texttt{1.25}} {]} - Positive scalar to control the relative
+  attraction of each particle to the best location they have heard about
+  from other particles.
+\item
+  \texttt{'plotFcns='} {[} cell \textbar{} \emph{empty} {]} - Cell array
+  of function handles to functions which accept
+  \texttt{(options,state,flag)} values as input arguments. The only
+  built-in general-purpose plotting function is
+  \texttt{@optim.scoreDiversity}.
+\item
+  \texttt{'populationSize='} {[} numeric \textbar{} \emph{\texttt{40}}
+  {]} - Positive integer which determines the number of particles in the
+  swarm.
+\item
+  \texttt{'popInitRange='} {[} numeric \textbar{} \emph{empty} {]} - A
+  2-by-NPar array which sets the range over which the initial population
+  will be distributed, where NPar is the number of estimated parameters,
+  or a 2-by-1 array with the range for all parameters. If empty and
+  \texttt{'PopInitRange='} is not set, the upper and lower bounds will
+  be used if both are finite. If either of the bounds are infinite, the
+  range will be \texttt{{[}0;1{]}}.
+\item
+  \texttt{'stallGenLimit='} {[} numeric \textbar{} \emph{\texttt{100}}
+  {]} - Maximum number of swarm iterations which result in no
+  improvement in the fitness function (likelihood) value before the
+  algorithm terminates.
+\item
+  \texttt{'timeLimit='} {[} numeric \textbar{} \emph{\texttt{Inf}} {]} -
+  Maximum running time in seconds.
+\item
+  \texttt{'tolCon='} {[} numeric \textbar{} \emph{\texttt{1e-6}} {]} -
+  Largest tolerated constraint violation.
+\item
+  \texttt{'tolFun='} {[} numeric \textbar{} \emph{\texttt{1e-6}} {]} -
+  Function tolerance; when the change in the best fitness function value
+  (likelihood) improvement per generation falls below this value the
+  algorithm will terminate.
+\item
+  \texttt{'velocityLimit='} {[} numeric \textbar{} \emph{\texttt{Inf}}
+  {]} - Positive scalar to bound particle intertia from above.
+\item
+  \texttt{'updateInterval='}* {[} numeric \textbar{} \texttt{5} {]} -
+  Minimum length of time in seconds which must pass before new command
+  window output will be produced.
+\item
+  \texttt{'useParallel='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Use a \texttt{parfor} loop which requires
+  you already have a \texttt{matlabpool} open. Overhead is slightly
+  higher for constrained problems than unconstrained problems.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+In the input parameter database, \texttt{E}, you can provide the
+following four specifications for each parameter:
+
+\begin{verbatim}
+E.parameter_name = {start,lower,upper,logprior}
+\end{verbatim}
+
+where \texttt{start} is the value from which the numerical optimisation
+will start, \texttt{lower} is the lower bound, \texttt{upper} is the
+upper bound, and \texttt{logprior} is a function handle expected to
+return the log of the prior density. You can use the
+\href{logdist/Contents}{\texttt{logdist}} package to create function
+handles for some of the basic prior distributions.
+
+You can use \texttt{NaN} for \texttt{start} if you wish to use the value
+currently assigned in the model object. You can use \texttt{-Inf} and
+\texttt{Inf} for the bounds, or leave the bounds empty or not specify
+them at all. You can leave the prior distribution empty or not specify
+it at all.
+
+\subparagraph{User-supplied optimisation (minimisation)
+routine}\label{user-supplied-optimisation-minimisation-routine}
+
+You can supply a function handle to your own minimisation routine
+through the option \texttt{'optimiser='}. This routine will be used
+instead of the Optim Tbx's \texttt{fminunc} or \texttt{fmincon}
+functions. The user-supplied function is expected to take at least five
+input arguments and return three output arguments:
+
+\begin{verbatim}
+[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,OptimSet)
+\end{verbatim}
+
+with the following input arguments:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{F} is a function handle to the function minimised;
+\item
+  \texttt{P0} is a 1-by-N vector of initial parameter values;
+\item
+  \texttt{PLow} is a 1-by-N vector of lower bounds (with \texttt{-Inf}
+  indicating no lower bound);
+\item
+  \texttt{PHigh} is a 1-by-N vector of upper bounds (with \texttt{Inf}
+  indicating no upper bounds);
+\item
+  \texttt{OptimSet} is a cell array with name-value pairs entered by the
+  user through the option \texttt{'optimSet='}. This option can be used
+  to modify various settings related to the optimisation routine, such
+  as tolerance, number of iterations, etc. Of course, you may simply
+  ignore it and leave this input argument unused;
+\end{itemize}
+
+and the following output arguments:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{PEst} is a 1-by-N vector of estimated parameters;
+\item
+  \texttt{ObjEst} is the value of the objective function at optimum;
+\item
+  \texttt{Hess} is a N-by-N approximate Hessian matrix at optimum.
+\end{itemize}
+
+If you need to use extra input arguments in your minimisation function,
+enter a cell array instead of a plain function handle:
+
+\begin{verbatim}
+{@yourminfunc,Arg1,Arg2,...}
+\end{verbatim}
+
+In that case, the optimiser will be called the following way:
+
+\begin{verbatim}
+[PEst,ObjEst,Hess] = yourminfunc(F,P0,PLow,PHigh,Opt,Arg1,Arg2,...)
+\end{verbatim}
+
+\subparagraph{User-supplied steady-state
+solver}\label{user-supplied-steady-state-solver}
+
+You can supply a function handle to your own steady-state solver (i.e.~a
+function that finds the steady state for given parameters) through the
+\texttt{'sstate='} option.
+
+The function is expected to take one input argument, the model object
+with newly assigned parameters, and return at least two output
+arguments, the model object with a new steady state (or balanced-growth
+path) and a success flag. The flag is \texttt{true} if the steady state
+has been successfully computed, and \texttt{false} if not:
+
+\begin{verbatim}
+[M,Success] = mysstatesolver(M)
+\end{verbatim}
+
+It is your responsibility to add the growth characteristics if some of
+the model variables drift over time. In other words, you need to take
+care of the imaginary parts of the steady state values in the model
+object returned by the solver.
+
+Alternatively, you can also run the steady-state solver with extra input
+arguments (with the model object still being the first input argument).
+In that case, you need to set the option \texttt{'sstate='} to a cell
+array with the function handle in the first cell, and the other input
+arguments afterwards, e.g.
+
+\begin{verbatim}
+'sstate=',{@mysstatesolver,1,'a',X}
+\end{verbatim}
+
+The actual function call will have the following form:
+
+\begin{verbatim}
+[M,Success] = mysstatesolver(M,1,'a',X)
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+

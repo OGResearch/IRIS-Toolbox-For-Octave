@@ -1,0 +1,30 @@
+
+
+    \filetitle{!export}{Create a carry-around file to be saved on the disk}{modellang/export}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+!export(FileName)
+    FileContents
+!end
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+You can include in the model file the contents of files you need or want
+to carry around together with the model; a typical example is your own
+m-file functions used in the model equations.
+
+The file or files are created and save under the name specified in the
+\texttt{!export} keyword at the time you load the model using the
+function \href{model/model}{\texttt{model}}. The contents of the export
+files is are also stored in the model objects. You can manually
+re-create and re-save the files by running the function
+\href{model/export}{\texttt{export}}.
+
+If no filename is provided or \texttt{FileName} is empty, the
+corresponding \texttt{!export} block is discarded with no error or
+warning.
+
+

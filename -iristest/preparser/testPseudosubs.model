@@ -1,0 +1,8 @@
+!for
+    ? = $[ 1 : 4 ]$
+!do
+    !variables
+        X?
+    !equations
+        X? = $[ ? + 1 ]$;
+!end

@@ -1,0 +1,37 @@
+
+
+    \filetitle{lrtest}{Likelihood ratio test for VAR models}{VAR/lrtest}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Stat,Crit] = lrtest(V1,V2,Level)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V1} {[} VAR {]} - Unrestricted VAR model.
+\item
+  \texttt{V2} {[} VAR {]} - Restricted VAR model.
+\item
+  \texttt{Level} {[} numeric {]} - Significance level; if not specified,
+  5 percent significance is used, \texttt{Level=0.05}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Stat} {[} numeric {]} - LR test stastic.
+\item
+  \texttt{Crit} {[} numeric {]} - LR test critical value based on
+  chi-square distribution.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

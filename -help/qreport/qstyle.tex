@@ -1,0 +1,131 @@
+
+
+    \filetitle{qstyle}{Apply styles to graphics object and its descandants}{qreport/qstyle}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+qstyle(H,S,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{H} {[} numeric {]} - Handle to a figure or axes object that
+  will be styled together with its descandants (unless
+  \texttt{'cascade='} is false).
+\item
+  \texttt{S} {[} struct {]} - Struct each field of which refers to an
+  object-dot-property; the value of the field will be applied to the the
+  respective property of the respective object; see below the list of
+  graphics objects allowed.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'cascade='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Cascade through all descendants of the object \texttt{H}; if
+  false only the object \texttt{H} itself will be styled.
+\item
+  \texttt{'warning='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Display warnings produced by this function.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The style structure, \texttt{S}, is constructed of any number of nested
+object-property fields:
+
+\begin{verbatim}
+S.object.property = value;
+\end{verbatim}
+
+The following is the list of standard Matlab grahics objects the
+top-level fields can refer to:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{figure}
+\item
+  \texttt{axes}
+\item
+  \texttt{title}
+\item
+  \texttt{xlabel}
+\item
+  \texttt{ylabel}
+\item
+  \texttt{zlabel}
+\item
+  \texttt{line}
+\item
+  \texttt{bar}
+\item
+  \texttt{patch}
+\item
+  \texttt{text}
+\end{itemize}
+
+\subparagraph{Special object names}\label{special-object-names}
+
+In addition to standard Matlab graphics object names, you can also refer
+to the following special instances of objects created by IRIS functions:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{rhsaxes} (an RHS axes object created by \texttt{plotyy})
+\item
+  \texttt{legend} (represented by an axes object);
+\item
+  \texttt{plotpred} (line objects with prediction data created by
+  \texttt{plotpred});
+\item
+  \texttt{highlight} (a patch object created by \texttt{highlight});
+\item
+  \texttt{highlightcaption} (a text object created by
+  \texttt{highlight});
+\item
+  \texttt{vline} (a patch object created by \texttt{vline});
+\item
+  \texttt{vlinecaption} (a text object created by \texttt{vline});
+\item
+  \texttt{zeroline} (a line object created by \texttt{zeroline}).
+\end{itemize}
+
+The property used as the second-level field is simply any regular Matlab
+property of the respective object (see Matlab help on graphics).
+
+The value assigned to a particular property can be either of the
+following:
+
+\begin{itemize}
+\item
+  a single proper valid value (i.e.~a value you would be able to assign
+  using the standard Matlab \texttt{set} function);
+\item
+  a cell array of multiple different values that will be assigned to the
+  objects of the same type in order of their creation;
+\item
+  a text string starting with a double exclamation point, \texttt{!!},
+  followed by Matlab commands. The commands are expected to eventually
+  create a variable named \texttt{SET} whose value will then assigned to
+  the respective property. The commands have access to variable
+  \texttt{H}, a handle to the current object.
+\end{itemize}
+
+\subparagraph{Setting font size}\label{setting-font-size}
+
+Font size (in objects like axes, title, etc.) can be set to either a
+numeric scalar (which is the default Matlab behavior) or a character
+string describing a numerical value followed by a percent sign, such as
+\texttt{'150\%'}. In that case, the font size will be set to the
+corresponding percentage of the current size.
+
+\paragraph{Example}\label{example}
+
+

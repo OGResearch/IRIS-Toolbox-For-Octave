@@ -1,0 +1,179 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dbase/dbbatch">dbbatch</h2>
+<div class="headline">Run a batch job to create new database fields</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[D,Processed,Added] = dbbatch(D,NewName,Expr,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Input database.</p></li>
+<li><p><code>NewName</code> [ char ] - Pattern that will be used to create names for new database fields based on the existing ones; use <code>'$0'</code> to refer to the name of the currently processed database field; use <code>'$1'</code>, <code>'$2'</code>, etc. to refer to tokens captured in regular expression specified in the <code>'namefilter='</code> option.</p></li>
+<li><p><code>Expr</code> [ char ] - Expression that will be evaluated on a selection of existing database entries to create new database entries; the expression can include <code>'$0'</code>, <code>'$1'</code>, etc.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>D</code> [ struct ] - Output database.</p></li>
+<li><p><code>Processed</code> [ cellstr ] - List of database fields that have been used to create new fields.</p></li>
+<li><p><code>Added</code> [ cellstr ] - List of new database fields created by evaluating <code>Expr</code> on the corresponding field in <code>Processed</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'classFilter='</code> [ char | <em><code>Inf</code></em> ] - From the existing database entries, select only those that are objects of the specified class or classes, and evaluate the expression <code>Expr</code> on these.</p></li>
+<li><p><code>'fresh='</code> [ <code>true</code> | <em><code>false</code></em> ] - If true, the output database will only contain the newly created entries; if false the output database will also include all the entries from the input database.</p></li>
+<li><p><code>'nameFilter='</code> [ char | <em>empty</em> ] - From the existing database entries, select only those that match this regular expression, and evaluate the expression <code>Expr</code> on these.</p></li>
+<li><p><code>'nameList='</code> [ cellstr | <em><code>Inf</code></em> ] - Evaluate the <code>COMMAND</code> on this list of existing database entries.</p></li>
+<li><p><code>'stringList='</code> [ cellstr | <em>empty</em> ] - Evaluate the expression <code>Expr</code> on this list of strings; the strings do not need to be names existing in the database; this options can be comined with <code>'nameFilter='</code>, <code>'nameList='</code>, and/or <code>'classFilter='</code> to narrow the selection.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>This function is primarily meant to create new database fields, each based on an existing one. If you, on the otherhand, only wish to modify a number of existing fields without adding any new ones, use <a href="../dbase/dbfun.html"><code>dbfun</code></a> instead.</p>
+<p>The expression <code>Expr</code> is evaluated in the caller workspace, and hence may refer to any variables existing in the workspace, not only to the database and its fields.</p>
+<p>To convert the strings <code>$0</code>, <code>$1</code>, <code>$2</code>, etc. to lower case or upper case, use the dot or colon syntax: <code>$.0</code>, <code>$.1</code>, <code>$.2</code> for ower case, and <code>$:0</code>, <code>$:1</code>, <code>$:2</code> for upper case.</p>
+<h5 id="failure">Failure</h5>
+<p>The function <code>dbbatch</code> will <em>always</em> fail when called on a sub-database from within a function (as opposed to a script). A sub-database is a struct within a struct, a struct within a cell array, a struct within an array of structs, etc.</p>
+<pre><code>function ...
+    d.e = dbbatch(d.e,...);
+    ...
+end
+
+function ...
+    d{1} = dbbatch(d{1},...);
+    ...
+end
+
+function ...
+    d(1) = dbbatch(d(1),...);
+    ...
+end</code></pre>
+<h4 id="example">Example</h4>
+<p>For each field (all assumed to be tseries) create a first difference, and name the new series <code>DX</code> where <code>X</code> is the name of the original series.</p>
+<pre><code>d = dbbatch(d,&#39;D$0&#39;,&#39;diff(d.$0)&#39;);</code></pre>
+<p>Note that the original series will be presered in the database, together with the newly created ones.</p>
+<h4 id="example-1">Example</h4>
+<p>Suppose that in database <code>D</code> you want to seasonally adjust all time series whose names end with <code>_u</code>, and give these seasonally adjusted series names without the _u.</p>
+<pre><code>d = dbbatch(d,&#39;$1&#39;,&#39;x12(d.$0)&#39;,&#39;nameFilter&#39;,&#39;(.*)u&#39;);</code></pre>
+<p>or, if you want to make sure only tseries objects will be selected (in case there are database entries ending with a <code>u</code> other than tseries objects)</p>
+<pre><code>d = dbbatch(d,&#39;$1&#39;,&#39;x12(d.$0)&#39;, ...
+    &#39;nameFilter=&#39;,&#39;(.*)u&#39;,&#39;classFilter=&#39;,&#39;tseries&#39;);</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

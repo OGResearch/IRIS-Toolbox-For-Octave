@@ -1,0 +1,42 @@
+
+
+    \filetitle{maxfigure}{Maximize figure window}{grfun/maxfigure}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Fig = maxfigure(H,...)
+Fig = maxfigure(...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{H} {[} handle {]} - Handle to existing figure window that will
+  be maximized; if omitted, a new maximized figure window will be
+  created.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Fig} {[} numeric {]} - Handle to the figure created.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+See help on standar \texttt{figure} for the options available.
+
+\paragraph{Description}\label{description}
+
+The function \texttt{maxfigure} uses \texttt{get(0,'screenSize')} to
+determine the size of the screen, and sets the figure property
+\texttt{'outerPosition'} accordingly.
+
+\paragraph{Example}\label{example}
+
+

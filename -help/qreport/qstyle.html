@@ -1,0 +1,177 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="qreport/qstyle">qstyle</h2>
+<div class="headline">Apply styles to graphics object and its descandants</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>qstyle(H,S,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>H</code> [ numeric ] - Handle to a figure or axes object that will be styled together with its descandants (unless <code>'cascade='</code> is false).</p></li>
+<li><p><code>S</code> [ struct ] - Struct each field of which refers to an object-dot-property; the value of the field will be applied to the the respective property of the respective object; see below the list of graphics objects allowed.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'cascade='</code> [ <em><code>true</code></em> | <code>false</code> ] - Cascade through all descendants of the object <code>H</code>; if false only the object <code>H</code> itself will be styled.</p></li>
+<li><p><code>'warning='</code> [ <em><code>true</code></em> | <code>false</code> ] - Display warnings produced by this function.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>The style structure, <code>S</code>, is constructed of any number of nested object-property fields:</p>
+<pre><code>S.object.property = value;</code></pre>
+<p>The following is the list of standard Matlab grahics objects the top-level fields can refer to:</p>
+<ul>
+<li><code>figure</code></li>
+<li><code>axes</code></li>
+<li><code>title</code></li>
+<li><code>xlabel</code></li>
+<li><code>ylabel</code></li>
+<li><code>zlabel</code></li>
+<li><code>line</code></li>
+<li><code>bar</code></li>
+<li><code>patch</code></li>
+<li><code>text</code></li>
+</ul>
+<h5 id="special-object-names">Special object names</h5>
+<p>In addition to standard Matlab graphics object names, you can also refer to the following special instances of objects created by IRIS functions:</p>
+<ul>
+<li><code>rhsaxes</code> (an RHS axes object created by <code>plotyy</code>)</li>
+<li><code>legend</code> (represented by an axes object);</li>
+<li><code>plotpred</code> (line objects with prediction data created by <code>plotpred</code>);</li>
+<li><code>highlight</code> (a patch object created by <code>highlight</code>);</li>
+<li><code>highlightcaption</code> (a text object created by <code>highlight</code>);</li>
+<li><code>vline</code> (a patch object created by <code>vline</code>);</li>
+<li><code>vlinecaption</code> (a text object created by <code>vline</code>);</li>
+<li><code>zeroline</code> (a line object created by <code>zeroline</code>).</li>
+</ul>
+<p>The property used as the second-level field is simply any regular Matlab property of the respective object (see Matlab help on graphics).</p>
+<p>The value assigned to a particular property can be either of the following:</p>
+<ul>
+<li><p>a single proper valid value (i.e. a value you would be able to assign using the standard Matlab <code>set</code> function);</p></li>
+<li><p>a cell array of multiple different values that will be assigned to the objects of the same type in order of their creation;</p></li>
+<li><p>a text string starting with a double exclamation point, <code>!!</code>, followed by Matlab commands. The commands are expected to eventually create a variable named <code>SET</code> whose value will then assigned to the respective property. The commands have access to variable <code>H</code>, a handle to the current object.</p></li>
+</ul>
+<h5 id="setting-font-size">Setting font size</h5>
+<p>Font size (in objects like axes, title, etc.) can be set to either a numeric scalar (which is the default Matlab behavior) or a character string describing a numerical value followed by a percent sign, such as <code>'150%'</code>. In that case, the font size will be set to the corresponding percentage of the current size.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,0 +1,67 @@
+
+
+    \filetitle{tex}{Include \LaTeX\ code or verbatim input in report}{report/tex}
+
+	\paragraph{Syntax with input specified in comment
+block}\label{syntax-with-input-specified-in-comment-block}
+
+\begin{verbatim}
+P.tex(Cap,...)
+
+%{
+Write text or \LaTeX\ code as a block comment
+right after the P.tex( ) command.
+%}
+\end{verbatim}
+
+\paragraph{Syntax with input specified as char
+argument}\label{syntax-with-input-specified-as-char-argument}
+
+\begin{verbatim}
+P.tex(Cap,Code,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Cap} {[} char {]} - Caption displayed at the top of the text.
+\item
+  \texttt{Code} {[} char {]} - \LaTeX~code or text input that will be
+  included in the report.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'centering='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - (Inheritable from parent objects) Centre
+  the \LaTeX~code or text input on the page.
+\item
+  \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
+  at the tex block title; only shows if the title is non-empty.
+\item
+  \texttt{'separator='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
+  (Inheritable from parent objects) LaTeX commands that will be inserted
+  after the text.
+\item
+  \texttt{'verbatim='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - If true the text will be typeset verbatim
+  in monospaced font; if false the text will be treated as \LaTeX\\code
+  included in the report.
+\end{itemize}
+
+\paragraph{Generic options}\label{generic-options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

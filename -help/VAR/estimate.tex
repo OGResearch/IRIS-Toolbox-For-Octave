@@ -1,0 +1,153 @@
+
+
+    \filetitle{estimate}{Estimate a reduced-form VAR or BVAR}{VAR/estimate}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[V,VData,Fitted] = estimate(V,Inp,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Empty VAR object.
+\item
+  \texttt{Inp} {[} struct {]} - Input database.
+\item
+  \texttt{Range} {[} numeric {]} - Estimation range, including
+  \texttt{P} pre-sample periods, where \texttt{P} is the order of the
+  VAR.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - Estimated reduced-form VAR object.
+\item
+  \texttt{VData} {[} struct {]} - Output database with the endogenous
+  variables and the estimated residuals.
+\item
+  \texttt{Fitted} {[} numeric {]} - Periods in which fitted values have
+  been calculated.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'A='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
+  on the individual values in the transition matrix, \texttt{A}.
+\item
+  \texttt{'BVAR='} {[} numeric {]} - Prior dummy observations for
+  estimating a BVAR; construct the dummy observations using the one of
+  the \texttt{BVAR} functions.
+\item
+  \texttt{'C='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
+  on the individual values in the constant vector, \texttt{C}.
+\item
+  \texttt{'J='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
+  on the individual values in the coefficient matrix in front of
+  exogenous inputs, \texttt{J}.
+\item
+  \texttt{'diff='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Difference the series before estimating the VAR; integrate the
+  series back afterwards.
+\item
+  \texttt{'G='} {[} numeric \textbar{} \emph{empty} {]} - Restrictions
+  on the individual values in the coefficient matrix in front of the
+  co-integrating vector, \texttt{G}.
+\item
+  \texttt{'cointeg='} {[} numeric \textbar{} \emph{empty} {]} -
+  Co-integrating vectors (in rows) that will be imposed on the estimated
+  VAR.
+\item
+  \texttt{'comment='} {[} char \textbar{} \texttt{Inf} {]} - Assign
+  comment to the estimated VAR object; \texttt{Inf} means the existing
+  comment will be preserved.
+\item
+  \texttt{'constraints='} {[} char \textbar{} cellstr {]} - General
+  linear constraints on the VAR parameters.
+\item
+  \texttt{'constant='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Include a constant vector in the VAR.
+\item
+  \texttt{'covParam='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Calculate and store the covariance matrix
+  of estimated parameters.
+\item
+  \texttt{'eqtnByEqtn='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Estimate the VAR equation by equation.
+\item
+  \texttt{'maxIter='} {[} numeric \textbar{} \emph{\texttt{1}} {]} -
+  Maximum number of iterations when generalised least squares algorithm
+  is involved.
+\item
+  \texttt{'mean='} {[} numeric \textbar{} \emph{empty} {]} - Impose a
+  particular asymptotic mean on the VAR process.
+\item
+  \texttt{'order='} {[} numeric \textbar{} \emph{\texttt{1}} {]} - Order
+  of the VAR.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\item
+  \texttt{'schur='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Calculate triangular (Schur) representation of the estimated VAR
+  straight away.
+\item
+  \texttt{'stdize='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - Adjust the prior dummy observations by the std dev of the
+  observations.
+\item
+  \texttt{'timeWeights=}' {[} tseries \textbar{} empty {]} - Time series
+  of weights applied to individual periods in the estimation range.
+\item
+  \texttt{'tolerance='} {[} numeric \textbar{} \emph{\texttt{1e-5}} {]}
+  - Convergence tolerance when generalised least squares algorithm is
+  involved.
+\item
+  \texttt{'warning='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Display warnings produced by this function.
+\end{itemize}
+
+\paragraph{Options for panel VAR}\label{options-for-panel-var}
+
+\begin{itemize}
+\item
+  \texttt{'fixedEff='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Include constant dummies for fixed effect
+  in panel estimation; applies only if \texttt{'constant=' true}.
+\item
+  \texttt{'groupWeights='} {[} numeric \textbar{} \emph{empty} {]} - A
+  1-by-NGrp vector of weights applied to groups in panel estimation,
+  where NGrp is the number of groups; the weights will be rescaled so as
+  to sum up to \texttt{1}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{Estimating a panel VAR}\label{estimating-a-panel-var}
+
+Panel VAR objects are created by calling the function
+\href{VAR/VAR}{\texttt{VAR}} with two input arguments: the list of
+variables, and the list of group names. To estimate a panel VAR, the
+input data, \texttt{Inp}, must be organised a super-database with
+sub-databases for each group, and time series for each variables within
+each group:
+
+\begin{verbatim}
+d.Group1_Name.Var1_Name
+d.Group1_Name.Var2_Name
+...
+d.Group2_Name.Var1_Name
+d.Group2_Name.Var2_Name
+...
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+

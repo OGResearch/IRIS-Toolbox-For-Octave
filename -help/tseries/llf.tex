@@ -1,0 +1,228 @@
+
+
+    \filetitle{llf}{Local level filter (aka random walk plus white noise) with tunes}{tseries/llf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[T,C,CutOff,Lambda] = llf(X)
+[T,C,CutOff,Lambda] = llf(X,Range,...)
+\end{verbatim}
+
+\paragraph{Syntax with output arguments
+swapped}\label{syntax-with-output-arguments-swapped}
+
+\begin{verbatim}
+[C,T,CutOff,Lambda] = llf2(X)
+[C,T,CutOff,Lambda] = llf2(X,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object that will be
+  filtered.
+\item
+  \texttt{Range} {[} numeric {]} - Date range on which the input data
+  will be filtered; \texttt{Range} can be \texttt{Inf},
+  \texttt{{[}startdata,Inf{]}}, or \texttt{{[}-Inf,enddate{]}}; if not
+  specifired, \texttt{Inf} (i.e.~the entire available range of the input
+  series) is used.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{T} {[} tseries {]} - Low-frequency (trend) component.
+\item
+  \texttt{C} {[} tseries {]} - High-frequency (cyclical or gap)
+  component.
+\item
+  \texttt{CutOff} {[} numeric {]} - Cut-off periodicity; periodicities
+  above the cut-off are attributed to trends, periodicities below the
+  cut-off are attributed to gaps.
+\item
+  \texttt{Lambda} {[} numeric {]} - Smoothing parameter actually used;
+  this output argument is useful when the option \texttt{'cutoff='} is
+  used instead of \texttt{'lambda='}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'cutoff='} {[} numeric \textbar{} \emph{empty} {]} - Cut-off
+  periodicity in periods (depending on the time series frequency); this
+  option can be specified instead of \texttt{'lambda='}; the smoothing
+  parameter will be then determined based on the cut-off periodicity.
+\item
+  \texttt{'cutoffYear='} {[} numeric \textbar{} \emph{empty} {]} -
+  Cut-off periodicity in years; this option can be specified instead of
+  \texttt{'lambda='}; the smoothing parameter will be then determined
+  based on the cut-off periodicity.
+\item
+  \texttt{'gamma='} {[} numeric \textbar{} tseries \textbar{} \emph{1}
+  {]} - Weight or weights on the deviations of the trend from
+  observations; it only makes sense to use this option to make the
+  signal-to-noise ratio time-varying; see the optimisation problem
+  below.
+\item
+  \texttt{'drift='} {[} numeric \textbar{} tseries \textbar{}
+  \emph{\texttt{0}} {]} - Deterministic drift in the trend.
+\end{itemize}
+
+\texttt{'infoSet='} {[} \texttt{1} \textbar{} \emph{\texttt{2}} {]} -
+Information set assumption used in the filter: \texttt{1} runs a
+one-sided filter, \texttt{2} runs a two-sided filter.
+
+\begin{itemize}
+\item
+  \texttt{'lambda='} {[} numeric \textbar{} \emph{\texttt{@auto}} {]} -
+  Smoothing parameter; needs to be specified for tseries objects with
+  indeterminate frequency. See Description for default values.
+\item
+  \texttt{'level='} {[} tseries {]} - Time series with soft and hard
+  tunes on the level of the trend.
+\item
+  \texttt{'change='} {[} tseries {]} - Time series with soft and hard
+  tunes on the change in the trend.
+\item
+  \texttt{'log='} {[} \texttt{true} \textbar{} \emph{\texttt{false}} {]}
+  - Logarithmise the data before filtering, de-logarithmise afterwards.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\subparagraph{The underlying optimisation
+problem}\label{the-underlying-optimisation-problem}
+
+The function \texttt{llf} solves a constrained optimisation problem
+described by the following Lagrangian
+
+\[\min_{\bar y_t, \omega_t, \sigma_t}
+\underbrace{
+\tsum \lambda \left( \Delta \bar y_t - \delta_t \right)^2
++ \tsum \gamma_t \left( \bar y_t - y_t \right)^2}_\text{Plain local level
+filter with time-varying signal-to-noise ratio} + \cdots\] \[\cdots +
+\underbrace{\tsum u_t \left( \bar y_t - a_t \right)^2}_\text{Soft level tunes}
++ \underbrace{\tsum v_t \left( \Delta \bar y_t - b_t
+\right)^2}_\text{Soft growth tunes} +
+\underbrace{\tsum \omega_t \left( \bar y_t - c_t \right)}_\text{Hard level tunes}
++ \underbrace{\tsum \sigma_t \left( \Delta \bar y_t - d_t
+\right)}_\text{Hard growth tunes},\]
+
+where
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  $\Delta$ is the first-difference operator;
+\item
+  $\lambda$ is a (scalar) smoothing parameter;
+\item
+  $y_t$ are user-supplied observations;
+\item
+  $\bar y_t$ is the fitted trend;
+\item
+  $\delta_t$ is a user-supplied drift, either constant or time-varying,
+  enetered in the option \texttt{'drift='};
+\item
+  $\gamma_t$ are user-supplied weights to modify the basic
+  signal-to-noise ratio over time (the default setting is $\gamma_t=1$),
+  entered in the option \texttt{'gamma='};
+\item
+  $a_t$ and $u_t$ are soft tunes on the level of the trend and the
+  weights associated with these soft level tunes, respectively, entered
+  together as complex numbers in the option \texttt{'level='};
+\item
+  $b_t$ and $v_t$ are soft tunes on the change in the level of the trend
+  and the weights associated with these soft growth tunes, respectively,
+  entered together as complex numbers in the option \texttt{'growth='};
+\item
+  $c_t$ are hard tunes on the level of the trend, entered as real
+  numbers in the option \texttt{'level='};
+\item
+  $d_t$ are hard tunes on the change in the level of the trend, entered
+  as real numbers in the option \texttt{'growth='};
+\item
+  $\omega_t$ are lagrange multipliers on the hard level tunes (note that
+  these are computed as part of the optimisation problem, not entered by
+  the user);
+\item
+  $\sigma_t$ are lagrange multipliers on the hard growth tunes (note
+  that these are computed as part of the optimisation problem, not
+  entered by the user).
+\end{itemize}
+
+Each of the summations in the above Lagrangian goes over those periods
+in which the respective bracketed terms are defined (observations or
+tunes exist). You can combine any number of any tunes in one run of
+\texttt{llf}, including out-of-sample tunes (see below).
+
+\subparagraph{How to enter the tunes}\label{how-to-enter-the-tunes}
+
+\begin{itemize}
+\item
+  The soft and hard tunes on the level of the trend are entered as time
+  series through the option \texttt{'level='}.
+\item
+  The soft and hard tunes on the change in the trend are entered as time
+  series through the option \texttt{'change='}.
+\item
+  In the tseries objects entered through \texttt{'level='} and/or
+  \texttt{'change='}, you can combine any number of hard and soft tune.
+  In each particular period, you can obviously specify only a hard tune
+  or only a soft tune. You can think of hard tunes as a special case of
+  soft tunes with infinitely large weights.
+\item
+  A hard tune is specified as a plain real number (i.e.~a number with a
+  zero complex part).
+\item
+  A soft tune must be entered as a complex number whose real part
+  specifies the tune itself, and the imaginary part specifies the
+  \emph{inverse} of the weight, i.e. $1/v_t$ or $1/u_t$, on that tune in
+  that period. Note that if the weight goes to infinity, the imaginary
+  part becomes zero and the tune becomes a hard tune.
+\end{itemize}
+
+\subparagraph{Out-of-sample tunes}\label{out-of-sample-tunes}
+
+Tunes can be imposed also at dates before the first observation of the
+input series, or after the last observation. In other words, the time
+series in \texttt{'level='} and/or \texttt{'growth='} can have a more
+extended range (at either side) than the filtered input series.
+
+\subparagraph{Default smoothing
+parameters}\label{default-smoothing-parameters}
+
+If the user does not specify the smoothing parameter using the
+\texttt{'lambda='} option (or reassigns the default \texttt{@auto}), a
+default value is used. The default value is based on common practice and
+can be calculated using the date frequency of the input time series as
+\texttt{\textbackslash{}lambda = 10 \textbackslash{}cdot f}, where
+\texttt{f} is the frequency (yearly=1, half-yearly=2, quarterly=4,
+bi-monthly=6, monthly=12). This gives the following default values:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  10 for yearly time series (cut-off periodicity of 19.79 years);
+\item
+  20 for half-yearly time series (cut-off periodicity of 14.02 years);
+\item
+  40 for quarterly time series (cut-off periodicity of 9.92 years);
+\item
+  60 for bi-monthly time series (cut-off periodicity of 8.11 years);
+\item
+  120 for monthly time series (cut-off periodicity of 5.73 years).
+\end{itemize}
+
+Note that there is no default value for data with indeterminate or daily
+frequency: for these types of time series, you must always use the
+option ``lambda=''.
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,22 @@
+!variables
+
+    x, y, z, w
+    
+!shocks
+
+    ex, ey, ez, ew
+
+
+!equations
+
+    x = 0;
+    y = 0;
+    z = 0;
+    w = 0;
+    
+!autoexogenize
+
+    x := ex;
+    y := ey;
+    z := ez;
+    w := ew;

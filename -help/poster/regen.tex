@@ -1,0 +1,53 @@
+
+
+    \filetitle{regen}{Regeneration time MCMC Metropolis posterior simulator}{poster/regen}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[Theta,LogPost,AR,Scale,FinalCov] = regen(Pos,NDraw,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Pos} {[} poster {]} - Initialised posterior simulator object.
+\item
+  \texttt{NDraw} {[} numeric {]} - Length of the chain not including
+  burn-in.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{Theta} {[} numeric {]} - MCMC chain with individual parameters
+  in rows.
+\item
+  \texttt{LogPost} {[} numeric {]} - Vector of log posterior density (up
+  to a constant) in each draw.
+\item
+  \texttt{AR} {[} numeric {]} - Vector of cumulative acceptance ratios
+  in each draw.
+\item
+  \texttt{Scale} {[} numeric {]} - Vector of proposal scale factors in
+  each draw.
+\item
+  \texttt{FinalCov} {[} numeric {]} - Final proposal covariance matrix;
+  the final covariance matrix of the random walk step is
+  \texttt{Scale(end)\^{}2*FinalCov}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\paragraph{References}\label{references}
+
+\paragraph{Brockwell, A.E., and Kadane, J.B., 2004. ``Identification of
+Regeneration Times in MCMC Simulation, with Application to Adaptive
+Schemes,'' mimeo, Carnegie Mellon
+University.}\label{brockwell-a.e.-and-kadane-j.b.-2004.-identification-of-regeneration-times-in-mcmc-simulation-with-application-to-adaptive-schemes-mimeo-carnegie-mellon-university.}
+
+\paragraph{Example}\label{example}
+
+
