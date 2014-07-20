@@ -151,7 +151,7 @@ end
 
 
 %% look for ismatlab
-%
+%{
 pattern = 'ismatlab';
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
@@ -174,4 +174,70 @@ for ix = 1 : numel(lst)
     end
 end
 %}
-return
+% return
+
+%% look for % ##### MOSW
+%{
+pattern = '% ##### MOSW';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+nfor = 2;
+files = {};
+nmatches = 0;
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern,nfor);
+    if flg
+        files = [files,lst{ix}]; %#ok<AGROW>
+        nmatches = nmatches + length(lines.n);
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+            for fx = 1 : nfor
+                fprintf('\t%4d: %s\n',lines.n(nx)+fx,lines.fwd{nx}{fx});
+            end
+            if fx > 0 && nx < length(lines.n)
+                fprintf('\t-----\n');
+            end
+        end
+    end
+end
+
+for ix = 1 : numel(files)
+    irisroom.iris4oct.parseMoswTrue(files{ix});
+end
+%}
+
+%% look for % >>>>> MOSW
+%{
+pattern = '% >>>>> MOSW';
+
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+
+nfor = 2;
+files = {};
+nmatches = 0;
+
+for ix = 1 : numel(lst)
+    [flg, lines] = irisroom.iris4oct.isPatternInFile(lst{ix},pattern,nfor);
+    if flg
+        files = [files,lst{ix}]; %#ok<AGROW>
+        nmatches = nmatches + length(lines.n);
+        fprintf('\n[file]: %s\n\t[lines]:\n',lst{ix});
+        for nx = 1 : length(lines.n)
+            fprintf('\t%4d: %s\n',lines.n(nx),lines.str{nx});
+            for fx = 1 : nfor
+                fprintf('\t%4d: %s\n',lines.n(nx)+fx,lines.fwd{nx}{fx});
+            end
+            if fx > 0 && nx < length(lines.n)
+                fprintf('\t-----\n');
+            end
+        end
+    end
+end
+
+for ix = 1 : numel(files)
+    irisroom.iris4oct.parseMoswLine(files{ix});
+end
+%}
