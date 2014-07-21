@@ -33,7 +33,7 @@ R = report.new('','orientation','portrait');
 
 R.figure('This is a figure...', ...
     'subplot',[3,2], ...
-    'style',sty,'visible',true);
+    'style',sty);
 
 for i = 1 : 4
     R.graph(sprintf('Graph #%g',i));

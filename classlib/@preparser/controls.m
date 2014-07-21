@@ -341,7 +341,7 @@ if ~isempty(Err)
 end
 
 % Remove `'name='` from `forbody` to get the RHS.
-forBody = regexprep(forBody,[control,'\s*=\s*'],'');
+forBody = regexprep(forBody,[regexptranslate('wildcard',control),'\s*=\s*'],'');
 
 % Itemize the RHS of the `!for` body.
 list = regexp(forBody,'[^\s,;]+','match');

@@ -17,10 +17,10 @@ catch
 end
 
 % Create the line plot first using the parent's method.
-[Leg,h,time,cData,grid] = plot@report.seriesobj(This,Ax);
+[LegLin,h,time,cData,grid] = plot@report.seriesobj(This,Ax);
 grid = grid(:);
 stdata = This.std(time);
-probdata = This.prob;
+[probdata,ixSort] = sort(This.prob);
 nint = size(probdata,1);
 nextplot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
@@ -33,16 +33,27 @@ if istseries(asym)
 end
 lstData = stdata.*(2./(1 + asym));
 hstData = stdata.*(2.*asym./(1+asym));
-Leg = [cell(1,nint) Leg];
 
-zPosRange = linspace(-2,-1,nint+2);
+
+lgd = This.options.fanlegend;
+if iscell(lgd)
+    if numel(lgd) < length(probdata)
+        for i = numel(lgd)+1:length(probdata)
+            lgd{i} = sprintf('%g%%',100*This.prop(i));
+        end
+    end
+    lgd = lgd(ixSort);
+end
+Leg = cell(1,nint);
+legEntToDel = [];
+
+% Specify z-axis positions of fanchart bands
+zPosRange = linspace(-1,-2,nint+2);
 zPosRange = zPosRange(2:end-1);
 
 for i = 1 : nint
     whi = probdata(i);
-    % ldata = -norminv(0.5*probdata(i)+0.5)*lstdata;
     lData = sqrt(2)*erfcinv(probdata(i)+1)*lstData;
-    % hdata = norminv(0.5*probdata(i)+0.5)*hstdata;
     hData = -sqrt(2)*erfcinv(probdata(i)+1)*hstData;
     vData = [lData;flipud(hData)];
     vData = vData + [cData;flipud(cData)];
@@ -58,28 +69,40 @@ for i = 1 : nint
         'lineStyle','-', ...
         'tag','fanchart', ...
         'userData', whi);
-    lgd = This.options.fanlegend;
     if isequal(lgd,Inf)
         if This.options.exclude(min([i,end]))
             grfun.excludefromlegend(pt(i));
-            Leg(nint+1-i) = [];
+            legEntToDel = [legEntToDel,i];
         else
-            Leg{nint+1-i} = sprintf('%g%%',100*whi);
-        end;
+            Leg{i} = sprintf('%g%%',100*whi);
+        end
     elseif iscell(lgd)
-        if ~all(isnan(lgd{i})) && ~This.options.exclude(min([i,end]))
-            Leg{nint+1-i} = lgd{i};
-        else
+        if ischar(lgd{i}) && ~This.options.exclude(min([i,end]))
+            Leg{i} = lgd{i};
+        elseif isnan(lgd{i}) || This.options.exclude(min([i,end]))
             grfun.excludefromlegend(pt(i));
-            Leg(nint+1-i) = [];
+            legEntToDel = [legEntToDel,i];
         end
     end
 end
 
+% Remove legend entries of bands which have been excluded from legend
+Leg(legEntToDel) = [];
+
+% Make sure zLim includes zPosRange
+zLim = get(Ax,'zLim');
+zLim(1) = min([zLim(1),zPosRange]);
+zLim(2) = max(zLim(2),0);
+set(Ax,'zLim',zLim);
+
+% Remove all fanchart entries
 if isequalnFunc(This.options.fanlegend,NaN)
     grfun.excludefromlegend(pt(:));
     Leg(1:nint) = [];
 end
+
+% Combine line and fanchart legend entried
+Leg = [LegLin, Leg];
 
 set(Ax,'nextPlot',nextplot);
 

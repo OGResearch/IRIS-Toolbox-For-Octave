@@ -128,7 +128,10 @@ if isequal(opt.xlimmargin,true) ...
     if false % ##### MOSW
         peer = getappdata(Ax,'graphicsPlotyyPeer');
     else
-        peer = get(Ax,'__plotyy_axes__');
+        peer = [];
+        try
+            peer = get(Ax,'__plotyy_axes__');
+        end
         peer = peer(peer ~= Ax);
     end
     if ~isempty(peer)

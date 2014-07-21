@@ -153,6 +153,7 @@ for iAx = Ax(:).'
     % Make sure zLim includes zPos.
     zLim = get(iAx,'zLim');
     zLim(1) = min(zLim(1),zPos);
+    zLim(2) = max(zLim(2),0);
     set(iAx,'zLim',zLim);
     
     Pp = [Pp,pt];

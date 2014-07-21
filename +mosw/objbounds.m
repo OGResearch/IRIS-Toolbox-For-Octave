@@ -78,11 +78,13 @@ function [this,types] = xxReplaceAxesWithKids(this,types,tags)
     end
     newKids = [];
     newTypes = [];
+    newTags = [];
     for ix = find(axIx)
         allObj = findobj(this(ix));
         newKids = [newKids;allObj(2:end)];
         newTypes = get(newKids,'type');
-        [newKids,newTypes] = xxReplaceAxesWithKids(newKids,newTypes);
+        newTags = get(newKids,'tag');
+        [newKids,newTypes] = xxReplaceAxesWithKids(newKids,newTypes,newTags);
     end
     this = [this(~axIx);newKids];
     types = [types(~axIx);newTypes];

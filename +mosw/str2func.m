@@ -17,7 +17,7 @@ else
         S__ = ['@',S__];
     end
     % Replace `++` and `--` with `+`.
-    S__ = mosw.ppmm(S___);
+    S__ = mosw.ppmm(S__);
     % Create the function handle.
     F__ = eval(S__);
 end

@@ -12,6 +12,7 @@ function [F,Pe,V,Delta,PDelta,SampleCov,This] ...
 
 realexp = @(x) real(exp(x));
 template = tseries();
+isNamedMat = strcmpi(Opt.MatrixFmt,{'namedmat'});
 
 F = [];
 if isfield(RegOutp,'F');
@@ -53,7 +54,7 @@ end
 PDelta = [];
 if isfield(RegOutp,'PDelta')
     PDelta = RegOutp.PDelta;
-    if Opt.MatrixFmt
+    if isNamedMat
         PDelta = namedmat(PDelta,deltaList,deltaList);
     end
 end
@@ -61,7 +62,7 @@ end
 SampleCov = [];
 if isfield(RegOutp,'SampleCov')
     SampleCov = RegOutp.SampleCov;
-    if Opt.MatrixFmt
+    if isNamedMat
         eList = This.name(This.nametype == 3);
         SampleCov = namedmat(SampleCov,eList,eList);
     end

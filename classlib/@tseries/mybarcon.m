@@ -99,10 +99,21 @@ end
 % Plot bars for one series and all periods at once.
 H = [];
 for j = 1 : nData
-    if j == 2
-        set(Ax,'nextPlot','add');
+    if false % ##### MOSW
+        if j == 2
+            set(Ax,'nextPlot','add');
+        end 
+        H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
+    else
+        Hk = zeros(size(xx,2),1);
+        for k = 1 : size(xx,2)
+            if k == 2
+                set(Ax,'nextPlot','add');
+            end
+            Hk(k) = fill(xx(:,k),yy(:,k,j),Colors(j,:));
+        end
+        H = [H,Hk];
     end
-    H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
 end
 
 % Make all bar clusters invisible except the first period with all non-zero

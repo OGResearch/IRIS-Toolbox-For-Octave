@@ -53,16 +53,13 @@ else
 
     % Non-linear sstate solver
     %--------------------------
-    if false % ##### MOSW
-        % Do nothing
-    else
-        % Do not run steady-state solver
-        Opt = false;
-        return
-    end
     [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
-    Opt = xxOptimOpt(This,Opt);
+    if true % ##### MOSW
+        Opt = xxOptimOpt(This,Opt);
+    else
+        % Do nothing
+    end
     Opt = xxLogOpt(This,Opt);
     
 end

@@ -111,6 +111,7 @@ set(Ax,'nextPlot',nextPlot);
 % Make sure zLim includes zPos.
 zLim = get(Ax,'zLim');
 zLim(1) = min(zLim(1),zPos);
+zLim(2) = max(zLim(2),0);
 set(Ax,'zLim',zLim);
 
 if isempty(Ln)

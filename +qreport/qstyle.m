@@ -268,7 +268,10 @@ for iH = H
     if false % ##### MOSW
         iPeer = getappdata(iH,'graphicsPlotyyPeer');
     else
-        iPeer = get(iH,'__plotyy_axes__');
+        iPeer = [];
+        try
+            iPeer = get(iH,'__plotyy_axes__');
+        end
         iPeer = iPeer(iPeer ~= iH);
     end
     if ~isempty(iPeer) && strcmp(get(iH,'yAxisLocation'),'right')

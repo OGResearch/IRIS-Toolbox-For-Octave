@@ -32,7 +32,10 @@ end
 if false % ##### MOSW
     peer = getappdata(H,'graphicsPlotyyPeer');
 else
-    peer = get(H,'__plotyy_axes__'); %#ok<UNRCH>
+    peer = [];
+    try
+        peer = get(H,'__plotyy_axes__'); %#ok<UNRCH>
+    end
     peer = peer(peer ~= H);
 end
 

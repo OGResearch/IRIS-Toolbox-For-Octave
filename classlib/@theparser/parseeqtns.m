@@ -50,6 +50,17 @@ ptn = [ ...
     '((!![^!;',This.Labels.CharUsed,']*)?);', ... % Sstate.
     ]; 
 tkn = regexp(tempEqtn,ptn,'tokens','once');
+if false % ##### MOSW
+    % Do nothing
+else
+    % Check for Octave regexp bug -- very first unmatched token is not recorded
+    % in resulting cell at all, even if token is enclosed in extra parentheses
+    for ix = 1 : numel(tkn)
+        if numel(tkn{ix}) == 2
+            tkn{ix} = [''; tkn{ix}];
+        end
+    end
+end
 tkn = [tkn{:}];
 
 EqtnLabel = tkn(1:3:end);

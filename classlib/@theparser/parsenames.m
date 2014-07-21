@@ -32,6 +32,15 @@ ptn = [ ...
     ]; 
 
 x = regexp(Blk,ptn,'tokens');
+if false % ##### MOSW
+    % Do nothing
+else
+    % Check for Octave regexp bug -- very first unmatched token is not recorded
+    % in resulting cell at all, even if token is enclosed in extra parentheses
+    if numel(x{1}) == 2
+        x{1} = ['', x{1}];
+    end
+end
 x = [x{:}];
 
 Label = x(1:3:end);
