@@ -124,7 +124,7 @@ end
     
     function doMessage()    
         % Intro message.
-        mosw.fprintf('\t<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ');
+        mosw.fprintf('%8s<a href="http://www.iris-toolbox.com">IRIS Toolbox</a> ','');
         fprintf('Release %s.',version);
         fprintf('\n');
         fprintf('\tCopyright (c) 2007-%s ',datestr(now,'YYYY'));
@@ -139,7 +139,7 @@ end
         fprintf('\tUser config file: ');
         if isempty(config.userconfigpath)
             mosw.fprintf('<a href="matlab: idoc config/irisuserconfighelp">');
-            fprintf('No user config file found</a>.');
+            mosw.fprintf('No user config file found</a>.');
         else
             mosw.fprintf('<a href="matlab: edit %s">%s</a>.', ...
                 config.userconfigpath,config.userconfigpath);
