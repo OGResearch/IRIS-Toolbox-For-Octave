@@ -69,7 +69,9 @@ for i = 1 : length(List)
         command = ['"',epstopdf,'" ',jFile,' ',CmdArgs];
         system(command);
     end
-    cd(thisDir);
+    while ~isequal(pwd(),thisDir)
+        cd(thisDir);
+    end
 end
 
 % Clean up.

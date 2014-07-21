@@ -18,7 +18,9 @@ if ~isempty(list)
    % Change figure extensions to PDF in latex file.
    c = regexprep(c,'(?<=\{)(\w+\.)eps(?=\})','$1pdf','ignorecase');
    char2file(c,inputfile);
-   cd(thisDir);
+   while ~isequal(pwd(),thisDir)
+       cd(thisDir);
+   end
 end
 
 end

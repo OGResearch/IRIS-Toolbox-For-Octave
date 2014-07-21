@@ -113,7 +113,9 @@ end
 
 delete('xls2csv.js');
 if ~isempty(inpDir)
-    cd(thisDir);
+    while ~isequal(pwd(),thisDir)
+        cd(thisDir);
+    end
 end
 
 end

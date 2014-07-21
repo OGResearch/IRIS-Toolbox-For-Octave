@@ -164,7 +164,7 @@ Flag = true;
 inpDbName = inputname(1);
 expr2eval = expr;
 if ~isempty(inpDbName)
-    tempDbName = tempname('.');
+    tempDbName = mosw.tempname('.');
     tempDbName(1:2) = '';
     assignin('caller',tempDbName,D);
     expr2eval = regexprep(expr2eval,['\<',inpDbName,'\>'],tempDbName);

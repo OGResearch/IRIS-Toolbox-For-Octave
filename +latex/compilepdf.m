@@ -57,7 +57,9 @@ while true
 end
 
 % Return back to the original directory.
-cd(thisDir);
+while ~isequal(pwd(),thisDir)
+    cd(thisDir);
+end
 
 if opt.display || status ~= 0
     disp(result);

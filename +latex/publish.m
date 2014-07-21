@@ -149,7 +149,7 @@ end
 template = strfun.converteols(template);
 
 thisDir = pwd();
-wDir = tempname(thisDir);
+wDir = mosw.tempname(thisDir);
 mkdir(wDir);
 
 % Run input files with compact spacing.
@@ -236,7 +236,9 @@ catch Error
         Error.message);
 end
 
-cd(thisDir);
+while ~isequal(pwd(),thisDir)
+    cd(thisDir);
+end
 if opt.cleanup
     rmdir(wDir,'s');
 end

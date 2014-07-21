@@ -72,7 +72,7 @@ InclGraph = [ ...
         h = This.handle;
         % Create graphics file path and title.
         if isempty(This.options.saveas)
-            pdfName = tempname(tempDir);
+            pdfName = mosw.tempname(tempDir);
             [~,pdfTitle] = fileparts(pdfName);
         else
             [saveAsPath,saveAsTitle] = fileparts(This.options.saveas);

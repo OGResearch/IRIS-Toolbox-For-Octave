@@ -125,7 +125,7 @@ Info = outpstruct(This.hInfo);
     
     function doSaveLatexFile()
         tempDir = This.hInfo.tempDir;
-        latexFile = [tempname(tempDir),'.tex'];
+        latexFile = [mosw.tempname(tempDir),'.tex'];
         char2file(c,latexFile);
     end % doSaveLatexFile()
 

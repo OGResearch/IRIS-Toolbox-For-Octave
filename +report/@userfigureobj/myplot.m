@@ -20,7 +20,7 @@ This = myplot@report.basefigureobj(This);
 % Re-create the figure whose handle was captured at the
 % time the figure constructor was called.
 if ~isempty(This.savefig)
-    figFile = [tempname(pwd()),'.fig'];
+    figFile = [mosw.tempname(pwd()),'.fig'];
     fid = fopen(figFile,'w+');
     fwrite(fid,This.savefig);
     fclose(fid);

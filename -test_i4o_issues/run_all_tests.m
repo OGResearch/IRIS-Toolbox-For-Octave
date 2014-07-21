@@ -16,7 +16,9 @@ testsCalledOverall = 0;
 testsPassedOverall = 0;
 for ix = 1:length(subFolders)
   if ~isempty(subFolders{ix})
-    cd(subFolders{ix});
+    while ~isequal(pwd(),subFolders{ix})
+        cd(subFolders{ix});
+    end
     fprintf('\n* tests from [%s]',subFolders{ix});
     testFiles = dir(fullfile(subFolders{ix},'test_*.m'));
     testsCalled = 0;
@@ -46,7 +48,9 @@ for ix = 1:length(subFolders)
       fprintf('\n < Tests passed: %g. Tests failed: %g >\n\n',testsPassed,...
         testsCalled-testsPassed);
     end
-    cd(curFolder);
+    while ~isequal(pwd(),curFolder)
+        cd(curFolder);
+    end
     testsCalledOverall = testsCalledOverall + testsCalled;
     testsPassedOverall = testsPassedOverall + testsPassed;
   end

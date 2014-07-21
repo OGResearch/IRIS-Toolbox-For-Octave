@@ -33,7 +33,9 @@ for i = 1 : length(list)
       command = ['"',ps2pdf,'" ',tmp(j).name];
       system(command);
    end
-   cd(thisdir);
+   while ~isequal(pwd(),thisdir)
+       cd(thisdir);
+   end
 end
 
 end
