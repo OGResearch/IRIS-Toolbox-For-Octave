@@ -13,7 +13,7 @@ if false % ##### MOSW
     % Do noting.
 else
     % Remove HTML tags from `Message`.
-   % Msg = mosw.removehtml(Msg); %#ok<UNRCH>
+    [Msg,varargin] = mosw.removehtml(Msg,varargin); %#ok<UNRCH>
 end
 
 Msg = sprintf(Msg,varargin{:});

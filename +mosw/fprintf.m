@@ -15,7 +15,7 @@ if false % ##### MOSW
 else
     % Remove HTML tags from `Message`.
     Msg = mosw.sprintf(Msg,varargin{:}); %#ok<UNRCH>
-    fprintf(Msg);
+    fprintf('%s',Msg);
 end
 
 end
