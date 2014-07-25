@@ -1,4 +1,4 @@
-function AA = mychristianofitzgerald_(T,pl,pu,root,drift,ifilt,nfix,thet)
+function AA = mychristianofitzgerald(T,pl,pu,root,drift,ifilt,nfix,thet)
 %
 %	MATLAB COMMAND FOR DEFAULT FILTER:  fX = bpass(X,pl,pu)
 %
@@ -122,25 +122,25 @@ if pl < 2
    warning(' (bpass): pl less than 2 , reset to 2')
    pl = 2;
 end
-if root ~= 0 & root ~= 1
+if root ~= 0 && root ~= 1
    error(' (bpass): root must be 0 or 1')
 end
-if drift<0 | drift > 1
+if drift<0 || drift > 1
    error(' (bpass): drift must be 0 or 1')
 end
-if ifilt<0 | ifilt > 4
+if ifilt<0 || ifilt > 4
    error(' (bpass): ifilt must be 0, 1, 2, 3, or 3')
 end
-if (ifilt == 2 | ifilt == 3) & nfix < 1
+if (ifilt == 2 || ifilt == 3) && nfix < 1
    error(' (bpass): fixed lag length must be >= 1')
 end
-if ifilt == 2 & nfix < nq
+if ifilt == 2 && nfix < nq
    error(' (bpass): fixed lag length must be >= q')
 end
-if (ifilt == 2 | ifilt ==3) & nfix >= T/2
+if (ifilt == 2 || ifilt ==3) && nfix >= T/2
       error(' (bpass): fixed lag length must be < T/2')
 end
-if (ifilt == 4 & T-2*floor(T/2) ~= 0)
+if (ifilt == 4 && T-2*floor(T/2) ~= 0)
    error(' (bpass): trigonometric regressions only available for even T')
 end
 
@@ -323,7 +323,7 @@ end
 if ifilt == 4
 	jj = 1:T./2;
 	% find frequencies in desired band omitting T/2;
-	jj = find(T./pu<=jj & jj<=T./pl & jj<T./2);
+	jj = find(T./pu<=jj && jj<=T./pl && jj<T./2);
 	if isempty(jj)
 	   error(' (bpass): frequency band is empty in trigonometric regression');
 	end
@@ -355,7 +355,7 @@ end
 %
 if root == 1
    tst = max(abs(sum(AA')));
-   if tst > 1.e-09 & root ~= 0
+   if tst > 1.e-09 && root ~= 0
       warning(' (bpass): Bhat does not sum to 0 ')
       tst   
    end
