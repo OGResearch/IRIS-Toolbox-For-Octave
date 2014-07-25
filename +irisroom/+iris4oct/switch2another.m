@@ -1,15 +1,18 @@
 function switch2another()
 
 path2iris = pwd();
-switchFile = fullfile(path2iris,'+irisroom','iris4oct','.lastSwitchTo');
+switchFile = fullfile(path2iris,'+irisroom','+iris4oct','.lastSwitchTo');
 
 addpath(fullfile(path2iris,'utils'));
 
 if exist(switchFile,'file')
-  syst = file2char(fullfile(path2iris,'+irisroom','iris4oct','.lastSwitch'));
-  toOct = isequal(syst,'octave');
+  toOctave = isequal(file2char(switchFile),'matlab');
+  toMatlab = isequal(file2char(switchFile),'octave');
+  if ~toOctave && ~toMatlab
+    error('Wrong content of ".lastSwitchTo" file!');
+  end
 else
-  error('No ".lastSwitch" file. Cannot decide how to switch.');
+  error('No ".lastSwitchTo" file! Cannot decide how to switch.');
 end
 
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
@@ -21,7 +24,7 @@ for ix = 1 : numel(lst)
   char2file(content,filename);
   % parse "##### MOSW" occurrences
   content = file2char(filename);
-  if toOct
+  if toOctave
     content = strrep(content,'true % ##### MOSW','false % ##### MOSW');
   else
     content = strrep(content,'false % ##### MOSW','true % ##### MOSW');
@@ -30,7 +33,7 @@ for ix = 1 : numel(lst)
 end
 rmpath(fullfile(path2iris,'utils'));
 
-if toOct
+if toOctave
   char2file('octave',switchFile);
 else
   char2file('matlab',switchFile);
