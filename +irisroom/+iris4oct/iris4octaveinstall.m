@@ -90,7 +90,9 @@ fid = fopen(rcfname,'w+');
 fprintf(fid,'%s\n','page_screen_output (false);');
 fprintf(fid,'%s\n','graphics_toolkit fltk');
 fclose(fid);
-
+% apply the settings right away
+page_screen_output (false);
+graphics_toolkit fltk;
 
 %% PARSE ALL IRIS FILES AND MOSW-SWITCH THEM TO OCTAVE VERSION
 %--------------------------------------------------------------------------
