@@ -1,5 +1,7 @@
 function iris4octaveinstall(varargin)
 
+%% ADD IRIS TO THE LIST OF OCTAVE PACKAGES
+%--------------------------------------------------------------------------
 % process user options
 % path to iris to be installed
 ix = find(strcmpi(varargin,'path'),1,'last');
@@ -49,7 +51,7 @@ end
 nPkg = numel(local_packages);
 ixIris = nPkg + 1;
 for ix = 1 : nPkg
-  if strcmpi(local_packages{ix}.name,'iris-toolbox')
+  if strcmpi(local_packages{ix}.name,'IRIS Toolbox')
     ixIris = ix;
     break
   end
@@ -63,9 +65,57 @@ doUpdateIrisPkgInfo();
 local_packages{ixIris} = pkgInfo;
 save(path2octPkg,'local_packages');
 
-% Nested functions
+
+%% INSTALL "GENERAL" PACKAGE WITH NEW @INPUTPARSER
+%--------------------------------------------------------------------------
+% replace source file of "general" package with one containig new @inputParser
+% (based on classdef syntax)
+generalName = 'general-1.3.4.tar.gz';
+generalSrc = fullfile(path2iris,'+irisroom','+iris4oct',generalName);
+copyfile (generalSrc, fullfile(OCTAVE_HOME,'src'), 'f');
+
+% install new "general" package
+pkg('install', '-auto', fullfile(OCTAVE_HOME,'src',generalName));
+
+
+%% CREATE ".OCTAVERC" FILE IN USER's DIRECTORY
+%--------------------------------------------------------------------------
+userDir = getenv('USERPROFILE');
+rcfname = fullfile(userDir,'.octaverc');
+if exist(rcfname,'file')
+  copyfile(rcfname,[rcfname,'_backup']);
+  warning('New ".octaverc" file is being created! Existing one was backed up.');
+end
+fid = fopen(rcfname,'w+');
+fprintf(fid,'%s\n','page_screen_output (false);');
+fprintf(fid,'%s\n','graphics_toolkit fltk');
+fclose(fid);
+
+
+%% PARSE ALL IRIS FILES AND MOSW-SWITCH THEM TO OCTAVE VERSION
+%--------------------------------------------------------------------------
+lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
+for ix = 1 : numel(lst)
+  filename = lst{ix};
+  % parse ">>>>> MOSW" occurrences
+  content = file2char(filename);
+  content = regexprep(content,'(.*)( % >>>>> MOSW )(.*?)(\n.*)','$3$2$1$4');
+  char2file(content,filename);
+  % parse "##### MOSW" occurrences
+  content = file2char(filename);
+  content = strrep(content,'true % ##### MOSW','false % ##### MOSW');
+  char2file(content,filename);
+end
+
+
+% Nested functions...
+
+
+%**************************************************************************
+
+
   function doUpdateIrisPkgInfo
-    pkgInfo.name = 'iris-toolbox';
+    pkgInfo.name = 'IRIS Toolbox';
     pkgInfo.version = irisVer;
     pkgInfo.date = datestr(now(),'yyyy-mm-dd');
     pkgInfo.author = 'IRIS Solutions Team';
@@ -81,7 +131,7 @@ save(path2octPkg,'local_packages');
       pkgInfo.depends{2} = struct();
         pkgInfo.depends{2}.package = 'general';
         pkgInfo.depends{2}.operator = '>=';
-        pkgInfo.depends{2}.version = '1.3.0';
+        pkgInfo.depends{2}.version = '1.3.4';
     pkgInfo.autoload = 1;
     pkgInfo.license = 'BSD New';
     pkgInfo.url = 'http://iris-toolbox.com';
