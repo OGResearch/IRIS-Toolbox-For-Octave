@@ -94,6 +94,7 @@ fclose(fid);
 
 %% PARSE ALL IRIS FILES AND MOSW-SWITCH THEM TO OCTAVE VERSION
 %--------------------------------------------------------------------------
+%{
 lst = irisroom.iris4oct.irisfulldirlist('files',true,'fileExt','.m');
 addpath(fullfile(path2iris,'utils'));
 for ix = 1 : numel(lst)
@@ -108,7 +109,7 @@ for ix = 1 : numel(lst)
   char2file(content,filename);
 end
 rmpath(fullfile(path2iris,'utils'));
-
+%}
 
 % Nested functions...
 
