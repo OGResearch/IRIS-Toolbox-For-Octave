@@ -20,16 +20,20 @@ for ix = 1 : numel(lst)
   filename = lst{ix};
   % parse ">>>>> MOSW" occurrences
   content = file2char(filename);
-  content = regexprep(content,'(.*)( % >>>>> MOSW )(.*?)(\n.*)','$3$2$1$4');
-  char2file(content,filename);
+  if ~isempty(strfind(content,'>>>>> MOSW'))
+    content = regexprep(content,'(.*)( % >>>>> MOSW )(.*?)(\n.*)','$3$2$1$4');
+    char2file(content,filename);
+  end
   % parse "##### MOSW" occurrences
   content = file2char(filename);
-  if toOctave
-    content = strrep(content,'true % ##### MOSW','false % ##### MOSW');
-  else
-    content = strrep(content,'false % ##### MOSW','true % ##### MOSW');
+  if ~isempty(strfind(content,'##### MOSW'))
+    if toOctave
+      content = strrep(content,'true % ##### MOSW','false % ##### MOSW');
+    else
+      content = strrep(content,'false % ##### MOSW','true % ##### MOSW');
+    end
+    char2file(content,filename);
   end
-  char2file(content,filename);
 end
 
 if toOctave
@@ -39,4 +43,5 @@ else
 end
 
 rmpath(fullfile(path2iris,'utils'));
+
 end
