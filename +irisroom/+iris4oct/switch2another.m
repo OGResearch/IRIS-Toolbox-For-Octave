@@ -31,7 +31,6 @@ for ix = 1 : numel(lst)
   end
   char2file(content,filename);
 end
-rmpath(fullfile(path2iris,'utils'));
 
 if toOctave
   char2file('octave',switchFile);
@@ -39,4 +38,5 @@ else
   char2file('matlab',switchFile);
 end
 
+rmpath(fullfile(path2iris,'utils'));
 end
