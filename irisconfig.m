@@ -117,11 +117,7 @@ cd(tmp);
 % Read IRIS version. The IRIS version is stored in the root Contents.m
 % file, and is displayed by the Matlab ver() command.
 x = ver();
-if false % ##### MOSW
-    index = strcmp('IRIS Toolbox',{x.Name});
-else
-    index = strcmp('iris-toolbox',{x.Name}); % name of Octave package (preliminary)
-end
+index = strcmp('IRIS Toolbox',{x.Name});
 if any(index)
     Config.version = x(index).Version;
 else
