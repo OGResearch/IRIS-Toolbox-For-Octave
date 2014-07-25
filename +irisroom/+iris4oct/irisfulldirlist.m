@@ -42,10 +42,10 @@ if files
     fileExtPtn = strcat('.*',strrep(fileExt,'.','\.'),'$');
     extIx = cellfun(@(x)any(~cellfun(@isempty,regexp(x,fileExtPtn))), ...
         names);
-    nFiles = numel(names(~dirIx & extIx));
-    lst = cell(nFiles,1);
-    for nx = 1 : nFiles
-        lst{nx} = fullfile(path,names(~dirIx & extIx){nx});
+    fileIx = find(~dirIx & extIx);
+    lst = cell(length(fileIx),1);
+    for nx = 1 : length(fileIx)
+        lst{nx} = fullfile(path,names{fileIx(nx)});
     end
 else
     lst = path;
