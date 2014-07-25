@@ -205,7 +205,8 @@ for ix = 1 : numel(lst)
 end
 
 for ix = 1 : numel(files)
-    irisroom.iris4oct.parseMoswTrue(files{ix});
+%     irisroom.iris4oct.parseMoswTrue(files{ix});
+    irisroom.iris4oct.parseMoswFalse(files{ix});
 end
 %}
 
