@@ -6,7 +6,7 @@ if ~ischar(root) && numel(root) > 1
     error('More than one IRIS is on your path!');
 end
 
-lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','\+Contents','\+iris4oct','iris4octaveinstall'}},varargin{:});
+lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','\+Contents','\+iris4oct'}},varargin{:});
 
 end
 
