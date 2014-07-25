@@ -6,7 +6,7 @@ if ~ischar(root) && numel(root) > 1
     error('More than one IRIS is on your path!');
 end
 
-lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','+Contents','+iris4oct'}},varargin{:});
+lst = xxGetCurDirSubs(root,'exclude',{{'^\.','^\-','\+Contents','\+iris4oct','iris4octaveinstall'}},varargin{:});
 
 end
 
@@ -42,7 +42,11 @@ if files
     fileExtPtn = strcat('.*',strrep(fileExt,'.','\.'),'$');
     extIx = cellfun(@(x)any(~cellfun(@isempty,regexp(x,fileExtPtn))), ...
         names);
-    lst = fullfile(path,names(~dirIx & extIx));
+    nFiles = numel(names(~dirIx & extIx));
+    lst = cell(nFiles,1);
+    for nx = 1 : nFiles
+        lst{nx} = fullfile(path,names(~dirIx & extIx){nx});
+    end
 else
     lst = path;
 end
