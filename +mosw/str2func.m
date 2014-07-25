@@ -9,7 +9,7 @@ function F__ = str2func(S__)
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     F__ = str2func(S__);
 else
     % Make sure the function string starts with an `@`.

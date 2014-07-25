@@ -25,7 +25,7 @@ end
 if ~isempty(regexp(Command,'\<L\>','once'))
     L = nan(size(H));
     for i = 1 : numel(H)
-        if true % ##### MOSW
+        if false % ##### MOSW
             x = getappdata(H(i),'LegendPeerHandle');
         else
             x = mosw.findLegendPeer(H(i));

@@ -32,7 +32,7 @@ ptn = [ ...
     ]; 
 
 x = regexp(Blk,ptn,'tokens');
-if true % ##### MOSW
+if false % ##### MOSW
     % Do nothing
 else
     % Check for Octave regexp bug -- very first unmatched token is not recorded

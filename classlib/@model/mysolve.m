@@ -186,7 +186,7 @@ end
         while true
             AA = fA(eqOrd,:);
             BB = fB(eqOrd,:);
-            if true % ##### MOSW
+            if false % ##### MOSW
                 [SS,TT,QQ,ZZ] = qz(AA,BB,'real');
                 % Ordered inverse eigvals.
                 eigVal = -ordeig(SS,TT);
@@ -201,7 +201,7 @@ end
             isSevn2 = doSevn2Patch();
             stable = abs(eigVal) >= 1 + eigValTol;
             unit = abs(abs(eigVal)-1) < eigValTol;
-            if true % ##### MOSW
+            if false % ##### MOSW
                 % Clusters of unit, stable, and unstable eigenvalues.
                 clusters = zeros(size(eigVal));
                 % Unit roots first.
@@ -238,7 +238,7 @@ end
         end
         
         % Re-order the inverse eigvals.
-        if true % ##### MOSW
+        if false % ##### MOSW
             eigVal = -ordeig(SS,TT);
             eigVal = eigVal(:).';
             isSevn2 = doSevn2Patch() | isSevn2;

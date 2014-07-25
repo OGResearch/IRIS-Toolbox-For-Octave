@@ -9,7 +9,7 @@ function Flag = iscompatible(M1,M2)
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     className = 'modelobj';
 else
     className = 'model'; %#ok<UNRCH>

@@ -1,6 +1,6 @@
 function out = tempname(drc)
 
-if true % ##### MOSW
+if false % ##### MOSW
   out = tempname(drc);
 else
   out = strrep(tempname(drc),P_tmpdir,drc);

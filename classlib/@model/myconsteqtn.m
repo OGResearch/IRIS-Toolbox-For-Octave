@@ -14,7 +14,7 @@ function Eqtn = myconsteqtn(This,Eqtn)
 % * all log-plus and log-minus variables with 1.
 
 ptn = '\<x\(:,(\d+),t[^\)]*\)';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFunc($0,$1)}');
 else

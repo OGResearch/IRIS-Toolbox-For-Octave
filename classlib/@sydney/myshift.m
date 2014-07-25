@@ -14,7 +14,7 @@ if Shift == 0
 end
 
 ptn = '\<x(\d+)(([pm]\d+)?)\>(?!\()';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFn = @doReplace; %#ok<NASGU>
     Eqtn = regexprep(Eqtn,ptn,'${replaceFn($0,$1,$2)}');
 else

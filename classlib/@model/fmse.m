@@ -115,7 +115,7 @@ if isSelect
     YXVec = YXVec(pos);
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
         X = namedmat(X,YXVec,YXVec);

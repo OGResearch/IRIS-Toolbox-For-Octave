@@ -43,7 +43,7 @@ function irisstartup(varargin)
 %--------------------------------------------------------------------------
 
 % IRIS can only run in Matlab Release 2010a and higher.
-if true % ##### MOSW
+if false % ##### MOSW
     if xxMatlabRelease() < 2010
         error('iris:startup',...
             ['Sorry, <a href="http://www.iris-toolbox.com">The IRIS Toolbox</a> ', ...

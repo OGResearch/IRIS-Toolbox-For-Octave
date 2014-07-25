@@ -59,7 +59,7 @@ function varargout = dbeval(D,varargin)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if true % ##### MOSW
+if false % ##### MOSW
     className = 'modelobj';
 else
     className = 'model'; %#ok<UNRCH>

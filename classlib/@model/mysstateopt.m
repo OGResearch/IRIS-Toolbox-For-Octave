@@ -55,7 +55,7 @@ else
     %--------------------------
     [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
-    if true % ##### MOSW
+    if false % ##### MOSW
         Opt = xxOptimOpt(This,Opt);
     else
         % Do nothing

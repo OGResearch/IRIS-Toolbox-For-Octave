@@ -360,7 +360,7 @@ end
             u = regexprep(u,'^@\(.*?\)','','once');
             
             ptn = '\<x\>\(:,(\d+),t([+\-]\d+)\)';
-            if true % ##### MOSW
+            if false % ##### MOSW
                 replacePlusMinus = @doReplacePlusMinus; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replacePlusMinus($1,$2)}');
             else
@@ -368,7 +368,7 @@ end
             end
             
             ptn = '\<x\>\(:,(\d+),t\)';
-            if true % ##### MOSW
+            if false % ##### MOSW
                 replaceZero = @doReplaceZero; %#ok<NASGU>
                 u = regexprep(u,ptn,'${replaceZero($1)}');
             else

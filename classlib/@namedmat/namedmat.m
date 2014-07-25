@@ -1,4 +1,4 @@
-classdef namedmat < double % >>>>> MOSW classdef namedmat
+classdef namedmat % >>>>> MOSW classdef namedmat < double
     % namedmat  Matrices with Named Rows and Columns.
     %
     % Matrices with named rows and columns are returned as output arguments

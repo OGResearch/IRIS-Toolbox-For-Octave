@@ -7,7 +7,7 @@ function mysavefig(This,hFig,figFile)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Do nothing
 else
     % set x/ylimmode to 'manual' to avoid their adjustment when loading from file

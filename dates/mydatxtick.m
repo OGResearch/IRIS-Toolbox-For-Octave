@@ -29,7 +29,7 @@ end
 % Does the axies object have a plotyy peer? Set the peer's xlim-related
 % properties the same as in H; do not though set its xtick-related
 % properties.
-if true % ##### MOSW
+if false % ##### MOSW
     peer = getappdata(H,'graphicsPlotyyPeer');
 else
     peer = [];

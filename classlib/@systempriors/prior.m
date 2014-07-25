@@ -299,7 +299,7 @@ invalid = {};
 % Dot-references to the names of variables, shocks and parameters names
 % (must not be followed by an opening round bracket).
 ptn = '\.(\<[a-zA-Z]\w*\>(?![\[\(]))';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     Def = regexprep(Def,ptn,'${replaceFunc($1)}');
 else
