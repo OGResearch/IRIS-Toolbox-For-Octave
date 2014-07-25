@@ -211,7 +211,7 @@ if ~isempty(y)
     inpCode = strfun.removetrails(inpCode);
     [~,n] = xxOriginalCode(inpCode);
     
-    if false % ##### MOSW
+    if true % ##### MOSW
         replace = @xxBookmarks; %#ok<NASGU>
         inpCode = regexprep(inpCode,'%\?(\w+)\?', ...
             '`${replace($1)}`');

@@ -321,7 +321,7 @@ end
 
 obsolete = {};
 ptn = '(\$?)(\[[^\]]*\])\1';
-if false % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doExpandSqb; %#ok<NASGU>
     forBody = regexprep(forBody,ptn,'${replaceFunc($1,$2)}');
 else

@@ -9,7 +9,7 @@ function excludefromlegend(h)
 
 %--------------------------------------------------------------------------
 
-if false % ##### MOSW
+if true % ##### MOSW
     for i = h(:)'
       try %#ok<TRYNC>
           set(get(get(i,'Annotation'),'LegendInformation'),...

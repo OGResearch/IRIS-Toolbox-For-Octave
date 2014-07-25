@@ -68,13 +68,13 @@ end
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
-if false % ##### MOSW
+if true % ##### MOSW
     infLim = 1e10;
 else
     infLim = 1e5; %#ok<UNRCH>
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     bounds = objbounds(Ax);
 else
     bounds = [0,0,0,0]; %#ok<UNRCH>
@@ -130,7 +130,7 @@ else
     set(Ln,'tag','hline');
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     if opt.excludefromlegend
         % Exclude the line object from legend.
         grfun.excludefromlegend(Ln);

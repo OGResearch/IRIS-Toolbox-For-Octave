@@ -10,7 +10,7 @@ function fprintf(Msg,varargin)
 %--------------------------------------------------------------------------
 
 
-if false % ##### MOSW
+if true % ##### MOSW
     fprintf(Msg,varargin{:});
 else
     % Remove HTML tags from `Message`.

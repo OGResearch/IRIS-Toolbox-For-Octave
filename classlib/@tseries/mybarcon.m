@@ -99,7 +99,7 @@ end
 % Plot bars for one series and all periods at once.
 H = [];
 for j = 1 : nData
-    if false % ##### MOSW
+    if true % ##### MOSW
         if j == 2
             set(Ax,'nextPlot','add');
         end 

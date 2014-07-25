@@ -96,7 +96,7 @@ if isSelect
 end
 List = {rowNames,colNames};
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
         Phi = namedmat(Phi,rowNames,colNames);

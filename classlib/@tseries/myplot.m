@@ -125,7 +125,7 @@ if isequal(opt.xlimmargin,true) ...
         && strcmpi(opt.xlimmargin,'auto') ...
         && isanyfunc(Func,{'bar','barcon'}))
     setappdata(Ax,'xLimAdjust',true);
-    if false % ##### MOSW
+    if true % ##### MOSW
         peer = getappdata(Ax,'graphicsPlotyyPeer');
     else
         peer = [];
@@ -175,7 +175,7 @@ for ih = H(:).'
     setappdata(ih,'dateLine',Rng);
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Use IRIS datatip cursor function in this figure; in `utils.datacursor',
     % we also handle cases where the current figure includes both tseries and
     % non-tseries graphs.

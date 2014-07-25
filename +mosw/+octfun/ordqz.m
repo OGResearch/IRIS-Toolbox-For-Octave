@@ -10,7 +10,7 @@ function varargout = ordqz(varargin)
 
 %--------------------------------------------------------------------------
 
-if false % ##### MOSW
+if true % ##### MOSW
     
     % Matlab
     %--------

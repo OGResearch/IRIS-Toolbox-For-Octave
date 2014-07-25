@@ -18,7 +18,7 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-if false % ##### MOSW
+if true % ##### MOSW
     rplFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${rplFunc($0)}');
 else

@@ -85,7 +85,7 @@ InclGraph = [ ...
         
         % Print the figure window to PDF.
         try
-            if false % ##### MOSW
+            if true % ##### MOSW
                 print(h,'-dpdf','-painters',pdfName);
             else
                 print(h,'-dpdf',pdfName);

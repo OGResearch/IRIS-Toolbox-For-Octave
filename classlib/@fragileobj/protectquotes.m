@@ -11,7 +11,7 @@ function [C,This] = protectquotes(C,This)
 %--------------------------------------------------------------------------
 
 ptn = '([''"])([^\n]*?)\1';
-if false % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else

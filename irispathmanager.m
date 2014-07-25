@@ -38,7 +38,7 @@ switch lower(Req)
         % Add subfolders within the current root to the temporary
         % search path.
         [p,allp] = irisgenpath();
-        if false % ##### MOSW
+        if true % ##### MOSW
             % Do nothing.
         else 
             if ~isempty(p.OctBegin) %#ok<UNRCH>
@@ -51,7 +51,7 @@ switch lower(Req)
         if ~isempty(p.End)
             addpath(p.End{:},'-end');
         end
-        if false % ##### MOSW
+        if true % ##### MOSW
             % Do nothing.
         else
             if ~isempty(p.OctEnd) %#ok<UNRCH>
@@ -82,7 +82,7 @@ if isempty(varargin)
     return
 end
 status = warning('query','all');
-if false % ##### MOSW
+if true % ##### MOSW
     warning('off','MATLAB:rmpath:DirNotFound');
 else
     warning('off','all');

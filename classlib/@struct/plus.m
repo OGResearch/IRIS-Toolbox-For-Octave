@@ -4,7 +4,7 @@ function D = plus(D1,D2)
 % -IRIS Toolbox.
 % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if false % ##### MOSW
+if true % ##### MOSW
 pp = inputParser();
 pp.addRequired('D1',@isstruct);
 pp.addRequired('D2',@isstruct);

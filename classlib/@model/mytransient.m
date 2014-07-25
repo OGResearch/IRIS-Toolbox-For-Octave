@@ -94,7 +94,7 @@ doNonlinEqtn();
             
             % Replace variables, shocks, and parameters.
             ptn = '\<x\(:,(\d+),t(([\+\-]\d+)?)\)';
-            if false % ##### MOSW
+            if true % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 eqtnN = regexprep(eqtnN,ptn,'${replaceFunc($1,$2)}');
             else

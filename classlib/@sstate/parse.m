@@ -60,7 +60,7 @@ end
 % Combine and process input blocks.
 inputblock = '';
 ptn = '!input.*?(?=!equations|$)';
-if false % ##### MOSW
+if true % ##### MOSW
     replaceFunc = @doReplaceInp; %#ok<NASGU>
     code = regexprep(code,ptn,'${replaceFunc($0)}');
 else
@@ -268,7 +268,7 @@ invalidtime = {};
 ptn = '(\<[a-zA-Z]\w*\>)\{(.*?)\}';
 for i = 1 : nBlock
     % s.growth{i} = {};
-    if false % ##### MOSW
+    if true % ##### MOSW
         replaceTimeFunc = @doReplaceTime; %#ok<NASGU>
         s.eqtn{i} = regexprep(s.eqtn{i},ptn,'${replaceTimeFunc($1,$2)}');
     else

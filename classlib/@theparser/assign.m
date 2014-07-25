@@ -23,7 +23,7 @@ asgn = This.Assign;
     end % doReplaceNameValue()
 
 ptn = '\<[A-Za-z]\w*\>(?![\(\.])';
-if false % ##### MOSW
+if true % ##### MOSW
     rplFunc = @doReplaceNameValue; %#ok<NASGU>
 end
 stdcorrDecld = {};
@@ -44,7 +44,7 @@ for iBlk = blkpos(This,This.AssignBlkOrd)
         if isempty(value)
             continue
         end
-        if false % ##### MOSW
+        if true % ##### MOSW
             value = regexprep(value,ptn,'${rplFunc($0)}');
         else
             value = mosw.dregexprep(value,ptn,'doReplaceNameValue',0); %#ok<UNRCH>

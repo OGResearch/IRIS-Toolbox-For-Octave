@@ -77,7 +77,7 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            if false % ##### MOSW
+            if true % ##### MOSW
                 keywordsFunc = @doKeywords; %#ok<NASGU>
                 C = regexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
@@ -101,7 +101,7 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            if false % ##### MOSW
+            if true % ##### MOSW
                 paramValFunc = @doParamVal; %#ok<NASGU>
                 C = regexprep(C, ...
                     '(?<!!)\<\w+\>', ...

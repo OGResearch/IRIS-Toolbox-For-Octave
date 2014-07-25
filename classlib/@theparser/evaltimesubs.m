@@ -40,7 +40,7 @@ ptn = '\{[^@].*?\}';
 s = regexp([Eqtn{:}],ptn,'once');
 if ~isempty(s)
     for iEq = 1 : nEqtn
-        if false % ##### MOSW
+        if true % ##### MOSW
             replaceFunc = @doNonstandardTimeSubs; %#ok<NASGU>
             Eqtn{iEq} = regexprep(Eqtn{iEq},ptn,'${replaceFunc($0)}');
         else

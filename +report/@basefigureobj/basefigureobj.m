@@ -8,7 +8,7 @@ classdef basefigureobj < report.tabularobj
     
     methods
         function This = basefigureobj(varargin)
-            if false % ##### MOSW
+            if true % ##### MOSW
                 IsVisibleDefault = false;
             else
                 IsVisibleDefault = true; %#ok<UNRCH>
@@ -51,7 +51,7 @@ classdef basefigureobj < report.tabularobj
         function This = setoptions(This,varargin)
             This = setoptions@report.tabularobj(This,varargin{:});
             This.options.long = false;
-            if false % ##### MOSW
+            if true % ##### MOSW
                 % Do nothing.
             else
                 % Figure windows must be visible for printing in Octave.

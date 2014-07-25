@@ -205,7 +205,7 @@ for ih = hRhs(:).'
     setappdata(ih,'dateLine',RangeRhs);
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Use IRIS datatip cursor function in this figure; in
     % `utils.datacursor', we also handle cases where the current figure
     % includes both tseries and non-tseries graphs.

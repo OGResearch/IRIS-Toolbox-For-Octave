@@ -50,7 +50,7 @@ ptn = [ ...
     '((!![^!;',This.Labels.CharUsed,']*)?);', ... % Sstate.
     ]; 
 tkn = regexp(tempEqtn,ptn,'tokens','once');
-if false % ##### MOSW
+if true % ##### MOSW
     % Do nothing
 else
     % Check for Octave regexp bug -- very first unmatched token is not recorded

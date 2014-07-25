@@ -49,7 +49,7 @@ File = varargin{1};
 
 [fpath,ftit] = fileparts(File);
 epsFile = fullfile(fpath,[ftit,'.eps']);
-if false % ##### MOSW
+if true % ##### MOSW
     print(Fig,'-depsc','-painters',epsFile);
 else
     if ispc

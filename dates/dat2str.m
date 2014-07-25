@@ -284,7 +284,7 @@ end
         
         while true
             found = false;
-            if false % ##### MOSW
+            if true % ##### MOSW
                 replaceFunc = @doReplace; %#ok<NASGU>
                 fmt = regexprep(fmt,ptn,'${replaceFunc($1)}','once');
             else

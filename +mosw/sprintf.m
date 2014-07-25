@@ -9,7 +9,7 @@ function Msg = sprintf(Msg,varargin)
 
 %--------------------------------------------------------------------------
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Do noting.
 else
     % Remove HTML tags from `Message`.

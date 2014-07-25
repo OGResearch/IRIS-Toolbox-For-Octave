@@ -120,7 +120,7 @@ if isCorr
     Q = covfun.cov2corr(C,'acf');
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Convert double arrays to namedmat objects if requested.
     if isNamedMat
         C = namedmat(C,This.YNames,This.YNames);

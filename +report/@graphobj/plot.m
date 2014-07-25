@@ -96,7 +96,7 @@ if isequal(This.options.legend,true) ...
     end
     legEntLhs = [legEnt{ixLegLhs}];
     legEngRhs = [legEnt{~ixLegLhs}]; %#ok<NASGU>
-    if false % ##### MOSW
+    if true % ##### MOSW
         % Do nothing
     else
         % Temporarily make invisible those excluded from legend
@@ -117,7 +117,7 @@ if isequal(This.options.legend,true) ...
             end
         end
     end
-    if false % ##### MOSW
+    if true % ##### MOSW
         % Do nothing
     else
         % Temporarily make all visible back
@@ -185,7 +185,7 @@ end
             'XLimMode','auto','XTickMode','auto', ...
             'YLimMode','auto','YTickMode','auto');
         set(Ax(2),'ColorOrder',get(Ax(1),'ColorOrder'));
-        if false % ##### MOSW
+        if true % ##### MOSW
             try
                 % HG2.
                 set(Ax,'ColorOrderIndex',1);
@@ -220,7 +220,7 @@ end
             if isRhs
                 % In graphs with LHS and RHS axes, keep the color order index the same in
                 % Ax(1) and Ax(2) at all times.
-                if false % ##### MOSW
+                if true % ##### MOSW
                     try
                         % HG2.
                         cix = get(Ax,'ColorOrderIndex');

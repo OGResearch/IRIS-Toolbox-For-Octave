@@ -113,7 +113,7 @@ if nargout > 2 && ~isempty(This.YNames)
     end
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Convert output matrices to namedmat objects if requested.
     if isNamedMat
         X = namedmat(X,This.YNames,This.ENames);

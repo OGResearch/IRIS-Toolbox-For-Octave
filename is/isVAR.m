@@ -28,7 +28,7 @@ function Flag = isVAR(X)
 
 %--------------------------------------------------------------------------
 
-if false % ##### MOSW
+if true % ##### MOSW
     Flag = isa(X,'VAR');
 else
     Flag = isa(X,'VAR') || isa(X,'SVAR'); %#ok<UNRCH>

@@ -120,7 +120,7 @@ else
     C = [C,')'];
 end
 
-if false % ##### MOSW
+if true % ##### MOSW
     % Do nothing.
 else
     % Replace `++` and `--` with `+`.
