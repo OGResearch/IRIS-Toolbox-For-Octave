@@ -1,0 +1,265 @@
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1398850202 -7200
+#      Wed Apr 30 11:30:02 2014 +0200
+# Node ID 7a421e260adacc17c3ab47f94da3a11519a14688
+# Parent  770c0d79341bf443e2c02df2a8458fd574f17273
+splotnikov -- temporary solution: paper size in line with the paper orientation when printing
+
+diff -r 770c0d79341b -r 7a421e260ada scripts/plot/util/private/__print_parse_opts__.m
+--- a/scripts/plot/util/private/__print_parse_opts__.m	Thu Jul 17 11:48:32 2014 -0400
++++ b/scripts/plot/util/private/__print_parse_opts__.m	Wed Apr 30 11:30:02 2014 +0200
+@@ -580,6 +580,12 @@
+     paperposition = convert2points (paperposition, paperunits);
+   endif
+ 
++  if (strcmpi (get (hfig,"paperorientation"), "landscape"))
++    papersize = sort (papersize, "descend");
++  else
++    papersize = sort (papersize);
++  endif
++
+   ## FIXME: This will be obsoleted by listeners for paper properties.
+   ##        Papersize is tall when portrait,and wide when landscape.
+   if ((papersize(1) > papersize(2) && strcmpi (paperorientation, "portrait"))
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1400006062 -7200
+#      Tue May 13 20:34:22 2014 +0200
+# Node ID 4d1e3d4f7c40a6582418587a53c139272e176419
+# Parent  7a421e260adacc17c3ab47f94da3a11519a14688
+splotnikov: classdef debug output was commented out
+
+diff -r 7a421e260ada -r 4d1e3d4f7c40 libinterp/octave-value/ov-classdef.cc
+--- a/libinterp/octave-value/ov-classdef.cc	Wed Apr 30 11:30:02 2014 +0200
++++ b/libinterp/octave-value/ov-classdef.cc	Tue May 13 20:34:22 2014 +0200
+@@ -1856,14 +1856,14 @@
+ 
+ handle_cdef_object::~handle_cdef_object (void)
+ {
+-  gnulib::printf ("deleting %s object (handle)\n",
+-                  get_class ().get_name ().c_str ());
++ /* gnulib::printf ("deleting %s object (handle)\n",
++                  get_class ().get_name ().c_str ());*/
+ }
+ 
+ value_cdef_object::~value_cdef_object (void)
+ {
+-  gnulib::printf ("deleting %s object (value)\n",
+-                  get_class ().get_name ().c_str ());
++ /* gnulib::printf ("deleting %s object (value)\n",
++                  get_class ().get_name ().c_str ());*/
+ }
+ 
+ cdef_class::cdef_class_rep::cdef_class_rep (const std::list<cdef_class>& superclasses)
+@@ -2067,8 +2067,8 @@
+                       for (std::list<cdef_class>::const_iterator it = explicit_ctor_list.begin ();
+                            ! error_state && it != explicit_ctor_list.end (); ++it)
+                         {
+-                          gnulib::printf ("explicit superclass constructor: %s\n",
+-                                          it->get_name ().c_str ());
++                         /* gnulib::printf ("explicit superclass constructor: %s\n",
++                                          it->get_name ().c_str ());*/
+                           implicit_ctor_list.remove (*it);
+                         }
+                     }
+@@ -2384,13 +2384,13 @@
+     {
+     case '(':
+       // Constructor call
+-      gnulib::printf ("constructor\n");
++      /*gnulib::printf ("constructor\n");*/
+       retval(0) = construct (idx.front ());
+       break;
+ 
+     case '.':
+       // Static method, constant (or property?)
+-      gnulib::printf ("static method/property\n");
++      /*gnulib::printf ("static method/property\n");*/
+       if (idx.front ().length () == 1)
+         {
+           std::string nm = idx.front ()(0).string_value ();
+@@ -2685,7 +2685,7 @@
+   class_name = full_class_name = t->ident ()->name ();
+   if (! t->package_name ().empty ())
+     full_class_name = t->package_name () + "." + full_class_name;
+-  gnulib::printf ("class: %s\n", full_class_name.c_str ());
++  /*gnulib::printf ("class: %s\n", full_class_name.c_str ());*/
+ 
+   std::list<cdef_class> slist;
+ 
+@@ -2696,7 +2696,7 @@
+         {
+           std::string sclass_name = (*it)->class_name ();
+ 
+-          gnulib::printf ("superclass: %s\n", sclass_name.c_str ());
++          /*gnulib::printf ("superclass: %s\n", sclass_name.c_str ());*/
+ 
+           cdef_class sclass = lookup_class (sclass_name);
+ 
+@@ -2742,8 +2742,8 @@
+           std::string aname = (*it)->ident ()->name ();
+           octave_value avalue = compute_attribute_value (*it);
+ 
+-          gnulib::printf ("class attribute: %s = %s\n", aname.c_str (),
+-                  attribute_value_to_string (*it, avalue).c_str ());
++         /* gnulib::printf ("class attribute: %s = %s\n", aname.c_str (),
++                  attribute_value_to_string (*it, avalue).c_str ());*/
+           retval.put (aname, avalue);
+         }
+     }
+@@ -2766,7 +2766,7 @@
+            it != mb_list.end (); ++it)
+         {
+           std::map<std::string, octave_value> amap;
+-          gnulib::printf ("method block\n");
++          /*gnulib::printf ("method block\n");*/
+ 
+           // Method attributes
+ 
+@@ -2778,8 +2778,8 @@
+                   std::string aname = (*ait)->ident ()->name ();
+                   octave_value avalue = compute_attribute_value (*ait);
+ 
+-                  gnulib::printf ("method attribute: %s = %s\n", aname.c_str (),
+-                                  attribute_value_to_string (*ait, avalue).c_str ());
++                 /* gnulib::printf ("method attribute: %s = %s\n", aname.c_str (),
++                                  attribute_value_to_string (*ait, avalue).c_str ());*/
+                   amap[aname] = avalue;
+                 }
+             }
+@@ -2804,8 +2804,8 @@
+                     {
+                       cdef_method meth = make_method (retval, mname, *mit);
+ 
+-                      gnulib::printf ("%s: %s\n", (mname == class_name ? "constructor" : "method"),
+-                                      mname.c_str ());
++                     /* gnulib::printf ("%s: %s\n", (mname == class_name ? "constructor" : "method"),
++                                      mname.c_str ());*/
+                       for (std::map<std::string, octave_value>::iterator ait = amap.begin ();
+                            ait != amap.end (); ++ait)
+                         meth.put (ait->first, ait->second);
+@@ -2866,7 +2866,7 @@
+            it != pb_list.end (); ++it)
+         {
+           std::map<std::string, octave_value> amap;
+-          gnulib::printf ("property block\n");
++          /*gnulib::printf ("property block\n");*/
+ 
+           // Property attributes
+ 
+@@ -2878,8 +2878,8 @@
+                   std::string aname = (*ait)->ident ()->name ();
+                   octave_value avalue = compute_attribute_value (*ait);
+ 
+-                  gnulib::printf ("property attribute: %s = %s\n", aname.c_str (),
+-                          attribute_value_to_string (*ait, avalue).c_str ());
++                 /* gnulib::printf ("property attribute: %s = %s\n", aname.c_str (),
++                          attribute_value_to_string (*ait, avalue).c_str ());*/
+                   if (aname == "Access")
+                     {
+                       amap["GetAccess"] = avalue;
+@@ -2901,13 +2901,13 @@
+ 
+                   cdef_property prop = ::make_property (retval, prop_name);
+ 
+-                  gnulib::printf ("property: %s\n", (*pit)->ident ()->name ().c_str ());
++                  /*gnulib::printf ("property: %s\n", (*pit)->ident ()->name ().c_str ());*/
+                   if ((*pit)->expression ())
+                     {
+                       octave_value pvalue = (*pit)->expression ()->rvalue1 ();
+ 
+-                      gnulib::printf ("property default: %s\n",
+-                              attribute_value_to_string (*pit, pvalue).c_str ());
++                     /* gnulib::printf ("property default: %s\n",
++                              attribute_value_to_string (*pit, pvalue).c_str ());*/
+                       prop.put ("DefaultValue", pvalue);
+                     }
+ 
+@@ -3444,7 +3444,7 @@
+ 
+           if (! error_state)
+             {
+-              gnulib::printf ("meta.package query: %s\n", nm.c_str ());
++              /*gnulib::printf ("meta.package query: %s\n", nm.c_str ());*/
+ 
+               octave_value o = find (nm);
+ 
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1405621900 -7200
+#      Thu Jul 17 20:31:40 2014 +0200
+# Node ID d59a24785d2ed675fbb34d05cf4ee60e4b74bcfa
+# Parent  4d1e3d4f7c40a6582418587a53c139272e176419
+splotnikov -- temporary solution: unify units of subplots before setting tightinset and looseinset
+
+diff -r 4d1e3d4f7c40 -r d59a24785d2e scripts/plot/util/subplot.m
+--- a/scripts/plot/util/subplot.m	Tue May 13 20:34:22 2014 +0200
++++ b/scripts/plot/util/subplot.m	Thu Jul 17 20:31:40 2014 +0200
+@@ -429,6 +429,8 @@
+       hfig = ancestor (h, "figure");
+       hsubplots = findall (hfig, "type", "axes", "subplot_align", "off");
+       if (! isempty (hsubplots))
++        units = get (hsubplots, "units");
++        set (hsubplots, "units", "points");
+         tightinset = get (hsubplots, "tightinset");
+         if (iscell (tightinset))
+           tightinset = max (cell2mat (tightinset));
+@@ -439,6 +441,7 @@
+         endif
+         looseinset = max (tightinset, looseinset);
+         set (hsubplots, "looseinset", looseinset);
++        set (hsubplots, {"units"}, units);
+       endif
+     unwind_protect_cleanup
+       updating = false;
+ 
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1406709332 -7200
+#      Wed Jul 30 10:35:32 2014 +0200
+# Node ID 3368329d9c453420590d45dc7b38bad48e9c3ab5
+# Parent  2a4f79dbf1f18d856627e8859c6713212a2a74f0
+always use 3D-specific sorting algo in gl2ps, since simple 2D sorting causes wrong ordering and missing primitives when printing
+
+diff -r 2a4f79dbf1f1 -r 3368329d9c45 scripts/plot/util/private/__fltk_print__.m
+--- a/scripts/plot/util/private/__fltk_print__.m	Thu Jul 17 20:31:40 2014 +0200
++++ b/scripts/plot/util/private/__fltk_print__.m	Wed Jul 30 10:35:32 2014 +0200
+@@ -155,7 +155,7 @@
+     vw = vertcat (vw{:});
+   endif
+   is2D = all (abs (vw(:,2)) == 90);
+-  if (is2D)
++  if false %(is2D)
+     gl2ps_device{end} = [gl2ps_device{end}, "is2D"];
+   endif
+ 
+# HG changeset patch
+# User Philip Nienhuis <prnienhuis@users.sf.net>
+# Date 1404478438 -7200
+#      Fri Jul 04 14:53:58 2014 +0200
+# Node ID 2cf6dd58bd747d792997a700f4e7cb22d290b243
+# Parent  d59a24785d2ed675fbb34d05cf4ee60e4b74bcfa
+textscan.m: Avoid conjugate transpose for complex data and empty format string (bug #42528)
+
+diff -r d59a24785d2e -r 2cf6dd58bd74 scripts/io/textscan.m
+--- a/scripts/io/textscan.m	Thu Jul 17 20:31:40 2014 +0200
++++ b/scripts/io/textscan.m	Fri Jul 04 14:53:58 2014 +0200
+@@ -329,7 +329,7 @@
+       ## Compute nr. of rows
+       nrows = floor (numel (C{1}) / ncols);
+       ## Reshape C; watch out, transpose needed
+-      C(1) = reshape (C{1}, ncols, numel (C{1}) / ncols)';
++      C(1) = reshape (C{1}, ncols, numel (C{1}) / ncols).';
+       ## Distribute columns over C and wipe cols 2:end of C{1}
+       for ii=2:ncols
+         C(ii) = C{1}(:, ii);
+@@ -677,3 +677,7 @@
+ %! a = textscan (",1,,4\nInf,  ,NaN", "", "delimiter", ",", "emptyvalue", -10);
+ %! assert (cell2mat (a), [-10, 1, -10, 4; Inf, -10, NaN, -10]);
+ 
++%% Bug #42528
++%!test
++%! assert (textscan ("1i", ""){1},  0+1i);
++%! assert (cell2mat (textscan ("3, 2-4i, NaN\n -i, 1, 23.4+2.2i", "")), [3+0i, 2-4i, NaN+0i; 0-i,  1+0i, 23.4+2.2i]);
+
