@@ -1165,7 +1165,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee makeinst-script.sh
 -   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (Command Line).lnk" "\$INSTDIR\\bin\\octave-cli.exe" "-i --line-editing" "\$INSTDIR\\$ICON" 0
 -   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (Experimental GUI).lnk" "\$INSTDIR\\bin\\octave-gui.exe" "-i --line-editing" "\$INSTDIR\\$ICON" 0
 +   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (Command Line).lnk" "\$INSTDIR\\bin\\octave-cli-4.1.0+.bat" "-i --line-editing" "\$INSTDIR\\share\\octave\\4.1.0+\\imagelib\\octave-logo.ico" 0
-+   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (GUI).lnk" "\$INSTDIR\\bin\\octave-4.1.0+.bat" "-i --line-editing" "\$INSTDIR\\share\\octave\\4.1.0+\\imagelib\\octave-logo.ico" 0
++   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (GUI).lnk" "\$INSTDIR\\bin\\octave-4.1.0+.bat" "-i --line-editing --force-gui" "\$INSTDIR\\share\\octave\\4.1.0+\\imagelib\\octave-logo.ico" 0
   \${Else}
 -   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (Command Line).lnk" "\$INSTDIR\\bin\\octave-cli.exe" "" "\$INSTDIR\\$ICON" 0
 -   CreateShortCut "\$SMPROGRAMS\\Octave-$VERSION\\Octave (Experimental GUI).lnk" "\$INSTDIR\\bin\\octave-gui.exe" "" "\$INSTDIR\\$ICON" 0
@@ -1180,7 +1180,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee makeinst-script.sh
      \${If} \$IsWin8 == 1
 -       CreateShortCut "\$desktop\\Octave-$VERSION (Command Line).lnk" "\$INSTDIR\\bin\\octave-cli.exe" "-i --line-editing" "\$INSTDIR\\$ICON" 0
 -       CreateShortCut "\$desktop\\Octave-$VERSION (Experimental GUI).lnk" "\$INSTDIR\\bin\\octave-gui.exe" "-i --line-editing" "\$INSTDIR\\$ICON" 0
-+      CreateShortCut "\$desktop\\Octave-$VERSION.lnk" "\$INSTDIR\\bin\\octave-4.1.0+.bat" "-i --line-editing" "\$INSTDIR\\share\octave\4.1.0+\imagelib\octave-logo.ico" 0
++      CreateShortCut "\$desktop\\Octave-$VERSION.lnk" "\$INSTDIR\\bin\\octave-4.1.0+.bat" "-i --line-editing --force-gui" "\$INSTDIR\\share\octave\4.1.0+\imagelib\octave-logo.ico" 0
      \${Else}
 -       CreateShortCut "\$desktop\\Octave-$VERSION (Command Line).lnk" "\$INSTDIR\\bin\\octave-cli.exe" "" "\$INSTDIR\\$ICON" 0
 -       CreateShortCut "\$desktop\\Octave-$VERSION (Experimental GUI).lnk" "\$INSTDIR\\bin\\octave-gui.exe" "" "\$INSTDIR\\$ICON" 0
@@ -1209,7 +1209,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee octave-4.1.0+.bat
 +
 +Rem  Start Octave (this detaches octave-gui and immediately
 +Rem   returns):
-+start octave-gui.exe %1 %2
++start octave-gui.exe %1 %2 %3
 +
 +Rem   Close the batch file's cmd32.exe window
 +exit
