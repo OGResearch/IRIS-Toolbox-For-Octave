@@ -1199,8 +1199,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee octave-4.1.0+.bat
 +set OCT_HOME=%~dp0
 +
 +Rem Find the path to MIKTEX bin folder
-+for /f "delims=" %%a in ('findtexmf --file-type=exe latex') do @set tmpvar=%%a
-+set LATEX_PATH=%tmpvar:~0,-9%
++for /f "delims=" %%a in ('findtexmf --file-type=exe latex') do @set LATEX_PATH=%%~sdpa
 +
 +Rem   Set up PATH. Make sure the Octave-version-specific subdir
 +Rem   comes first. Use system environment variables for the
@@ -1209,7 +1208,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee octave-4.1.0+.bat
 +
 +Rem  Start Octave (this detaches octave-gui and immediately
 +Rem   returns):
-+start octave-gui.exe %1 %2 %3
++start octave-gui.exe %*
 +
 +Rem   Close the batch file's cmd32.exe window
 +exit
@@ -1224,8 +1223,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee octave-cli-4.1.0+.bat
 +set OCT_HOME=%~dp0
 +
 +Rem Find the path to MIKTEX bin folder
-+for /f "delims=" %%a in ('findtexmf --file-type=exe latex') do @set tmpvar=%%a
-+set LATEX_PATH=%tmpvar:~0,-9%
++for /f "delims=" %%a in ('findtexmf --file-type=exe latex') do @set LATEX_PATH=%%~sdpa
 +
 +Rem   Set up PATH. Make sure the Octave-version-specific subdir
 +Rem   comes first. Use system environment variables for the
@@ -1234,7 +1232,7 @@ diff -r 95454fa2df8b -r 2cb5076ae9ee octave-cli-4.1.0+.bat
 +
 +Rem  Start Octave (this detaches octave-gui and immediately
 +Rem   returns):
-+start octave-cli.exe %1 %2
++start octave-cli.exe %*
 +
 +Rem   Close the batch file's cmd32.exe window
 +exit
