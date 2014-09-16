@@ -157,6 +157,7 @@ classdef VAR < varobj
         varargout = SVAR(varargin)
         varargout = myresponse(varargin)
         varargout = mysystem(varargin)
+        varargout = myisvalidinpdata(varargin)
     end
     
     methods (Access=protected,Hidden)
@@ -164,7 +165,6 @@ classdef VAR < varobj
         varargout = mycompatible(varargin)
         varargout = myglsqweights(varargin)
         varargout = myinpdata(varargin)
-        varargout = myisvalidinpdata(varargin)
         varargout = myny(varargin)
         varargout = myprealloc(varargin)
         varargout = myrngcmp(varargin);
