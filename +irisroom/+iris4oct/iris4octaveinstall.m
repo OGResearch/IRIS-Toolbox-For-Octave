@@ -72,15 +72,18 @@ save(path2octPkg,'local_packages');
 % (based on classdef syntax)
 generalName = 'general-1.3.4.tar.gz';
 generalSrc = fullfile(path2iris,'+irisroom','+iris4oct',generalName);
-copyfile (generalSrc, fullfile(OCTAVE_HOME,'src'), 'f');
 
 % install new "general" package
-pkg('install', '-auto', fullfile(OCTAVE_HOME,'src',generalName));
+pkg('install', '-auto', generalSrc);
 
 
 %% CREATE ".OCTAVERC" FILE IN USER's DIRECTORY
 %--------------------------------------------------------------------------
-userDir = getenv('USERPROFILE');
+if ispc
+  userDir = getenv('USERPROFILE');
+else
+  userDir = tilde_expand("~");
+end
 rcfname = fullfile(userDir,'.octaverc');
 if exist(rcfname,'file')
   copyfile(rcfname,[rcfname,'_backup']);
