@@ -18,7 +18,7 @@ catch
 end
 
 pp = inputParser();
-pp.addRequired('V',@(x) isa(x,'varobj'));
+pp.addRequired('V',@(x) isVAR(x) || isFAVAR(x));
 pp.addRequired('YNames',@(x) isempty(YNames) ...
     || ischar(YNames) || iscellstr(YNames) || isfunc(YNames));
 pp.parse(This,YNames);

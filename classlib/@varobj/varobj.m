@@ -69,7 +69,7 @@ classdef varobj < userdataobj & getsetobj
                 return
             end
             
-            if length(varargin) == 1 && isa(varargin,'varobj')
+            if length(varargin) == 1 && (isVAR(varargin) || isFAVAR(varargin))
                 This = varargin{1};
                 return
             end
