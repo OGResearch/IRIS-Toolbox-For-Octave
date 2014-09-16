@@ -12,7 +12,11 @@ function [C,Diffuse] = acovf(T,R,~,Z,H,~,U,Omg,Eig,Order)
 realSmall = getrealsmall();
 
 if isempty(Eig)
-    Eig = ordeig(T);
+    if false % ##### MOSW
+        Eig = ordeig(T);
+    else
+        Eig = mosw.octfun.ordeig(T);
+    end
 end
 
 nY = size(Z,1);

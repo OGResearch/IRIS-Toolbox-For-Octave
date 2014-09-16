@@ -106,7 +106,11 @@ y0 = y;
 % Estimate VAR(p,q) on factors.
 [This.A,This.B,This.Omega,This.T,This.U,E,This.Fitted] = ...
     FAVAR.estimatevar(FF,opt.order,opt.rank);
-This.EigVal = ordeig(This.T);
+if false % ##### MOSW
+    This.EigVal = ordeig(This.T);
+else
+    This.EigVal = mosw.octfun.ordeig(This.T);
+end
 
 % Reduce or zero off-diagonal elements in the cov matrix of idiosyncratic
 % residuals if requested.

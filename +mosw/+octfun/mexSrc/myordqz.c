@@ -1,4 +1,4 @@
-/* [SS,TT,QQ,ZZ] = mydgges(AA,BB,eigValTol) */
+/* [SS,TT,QQ,ZZ,eigVal] = myordqz(AA,BB,eigValTol) */
 
 #define dgemm dgemm_
 #define dgges dgges_

@@ -56,16 +56,20 @@ for ialt = 1 : nAlt
     if any(any(isnan(A(:,:,ialt))))
         continue
     else
-        [U,T] = schur(A(:,:,ialt));
-        eigVal = ordeig(T);
-        eigVal = eigVal(:)';
-        unstable = abs(eigVal) > 1 + realSmall;
-        unit = abs(abs(eigVal) - 1) <= realSmall;
-        clusters = zeros(size(eigVal));
-        clusters(unstable) = 2;
-        clusters(unit) = 1;
-        [This.U(:,:,ialt),This.T(:,:,ialt)] = ordschur(U,T,clusters);
-        This.EigVal(1,:,ialt) = ordeig(This.T(:,:,ialt)).';
+        if false % ##### MOSW
+          [U,T] = schur(A(:,:,ialt));
+          eigVal = ordeig(T);
+          eigVal = eigVal(:)';
+          unstable = abs(eigVal) > 1 + realSmall;
+          unit = abs(abs(eigVal) - 1) <= realSmall;
+          clusters = zeros(size(eigVal));
+          clusters(unstable) = 2;
+          clusters(unit) = 1;
+          [This.U(:,:,ialt),This.T(:,:,ialt)] = ordschur(U,T,clusters);
+          This.EigVal(1,:,ialt) = ordeig(This.T(:,:,ialt)).';
+        else
+          [This.U(:,:,ialt),This.T(:,:,ialt)] = mosw.octfun.ordschur(A(:,:,ialt),realSmall);
+        end
     end
 end
 
