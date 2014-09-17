@@ -26,7 +26,7 @@ switch Query
         if all(size(This.A) == 0)
             X = [];
         else
-            X = poly.var2poly(This.A);
+            X = polyn.var2poly(This.A);
         end
     case 'a*'
         X = reshape(This.A,[nx,nx,p,nAlt]);

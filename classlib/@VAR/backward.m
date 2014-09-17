@@ -48,7 +48,7 @@ for iAlt = 1 : nAlt
         ANew = ANew(:,:);
         This.A(:,:,iAlt) = ANew;
         This.Omega(:,:,iAlt) = Omg(end-ny+1:end,end-ny+1:end);
-        R = sum(poly.var2poly(ANew),3) / sum(poly.var2poly(AOld),3);
+        R = sum(polyn.var2poly(ANew),3) / sum(polyn.var2poly(AOld),3);
         This.K(:,:,iAlt) = R * This.K(:,:,iAlt);
         This.J(:,:,iAlt) = R * This.J(:,:,iAlt);
     else

@@ -34,12 +34,12 @@ switch Query
                 'Use ''A#'' instead.']);
         end
         if ~all(size(This.A) == 0)
-            Ans = poly.var2poly(This.A);
+            Ans = polyn.var2poly(This.A);
         end
         
     case 'a*'
         if ~all(size(This.A) == 0)
-            Ans = poly.var2poly(This.A);
+            Ans = polyn.var2poly(This.A);
             Ans = -Ans(:,:,2:end,:);
         end
         
@@ -100,7 +100,7 @@ switch Query
         
     case {'cumlong','cumlongrun'}
         % Matrix of long-run cumulative responses.
-        C = sum(poly.var2poly(This.A),3);
+        C = sum(polyn.var2poly(This.A),3);
         Ans = nan(ny,ny,nAlt);
         for iAlt = 1 : nAlt
             if rank(C(:,:,1,iAlt)) == ny

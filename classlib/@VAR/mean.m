@@ -95,7 +95,7 @@ end
         if nUnit == 0
             % Stationary parameterisation
             %-----------------------------
-            Mean = sum(poly.var2poly(This.A(:,:,IAlt)),3) ...
+            Mean = sum(polyn.var2poly(This.A(:,:,IAlt)),3) ...
                 \ This.K(:,:,IAlt);
             if isYInit
                 % The function `mean` requests YInit only when called on VAR, not panel VAR
