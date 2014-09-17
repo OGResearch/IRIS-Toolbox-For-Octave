@@ -51,10 +51,17 @@ pp.parse(UserY0,UserK0,UserY1,UserG1);
 
 This = BVAR.bvarobj();
 This.name = 'user';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(~,~,~,~)UserY0;
+    This.k0 = @(~,~,~,~)UserK0;
+    This.y1 = @(~,~,~,~)UserY1;
+    This.g1 = @(~,~,~,~)UserG1;
+end
 
 
 % Nested functions...

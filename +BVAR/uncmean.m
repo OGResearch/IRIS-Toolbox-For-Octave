@@ -50,10 +50,17 @@ end
 
 This = BVAR.bvarobj();
 This.name = 'uncmean';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(Ny,~,~,Nk) y0_oct(Ny,Nk,YBar,Mu);
+    This.k0 = @(~,~,~,Nk)  k0_oct(Nk,Mu);
+    This.y1 = @(Ny,P,~,Nk) y1_oct(Ny,P,Nk,YBar,Mu);
+    This.g1 = @(~,~,Ng,Nk) g1([],[],Ng,Nk);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -107,6 +114,44 @@ end
     function G1 = g1(~,~,Ng,Nk)
         G1 = zeros(Ng,Nk);
     end % g1()
+
+
+%**************************************************************************
+
+    
+    function Y0 = y0_oct(Ny,Nk,YBar,Mu)
+        yBar = YBar(:);
+        if length(yBar) == 1
+            yBar = yBar(ones(Ny,1),1);
+        end
+        Y0 = yBar * Mu;
+        if Nk ~= 1
+            Y0 = Y0(:,ones(Nk,1));
+        end
+    end % y0_oct()
+
+
+%**************************************************************************
+
+    
+    function K0 = k0_oct(Nk,Mu)
+        K0 = Mu*eye(Nk);
+    end % k0_oct()
+
+
+%**************************************************************************
+
+    
+    function Y1 = y1_oct(Ny,P,Nk,YBar,Mu)
+        yBar = YBar(:);
+        if length(yBar) == 1
+            yBar = yBar(ones(Ny,1),1);
+        end        
+        Y1 = repmat(yBar*Mu,[P,1]);
+        if Nk ~= 1
+            Y1 = Y1(:,ones(Nk,1));
+        end
+    end % y1_oct()
 
 
 end

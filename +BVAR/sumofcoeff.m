@@ -44,10 +44,17 @@ end
 
 This = BVAR.bvarobj();
 This.name = 'sumofcoeff';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(Ny,~,~,~)  y0_oct(Ny,Mu);
+    This.k0 = @(Ny,~,~,Nk) k0(Ny,[],[],Nk);
+    This.y1 = @(Ny,P,~,~)  y1_oct(Ny,P,Mu);
+    This.g1 = @(~,~,Ng,~)  g1([],[],Ng,[]);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -87,6 +94,23 @@ end
     function G1 = g1(~,~,Ng,~)
         G1 = zeros(Ng,Ny);
     end % g1()
+
+
+%**************************************************************************
+
+    
+    function Y0 = y0_oct(Ny,Mu)
+        Y0 = eye(Ny)*Mu;
+    end % y0_oct()
+
+
+%**************************************************************************
+    
+
+    function Y1 = y1_oct(Ny,P,Mu)
+        Y1 = repmat(Mu*eye(Ny),[P,1]);
+    end % y1_oct()
+
 
 
 end

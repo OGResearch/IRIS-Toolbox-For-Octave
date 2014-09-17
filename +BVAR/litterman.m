@@ -56,10 +56,17 @@ Mu = Mu(:);
 
 This = BVAR.bvarobj();
 This.name = 'litterman';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(Ny,P,~,~)  y0_oct(Ny,P,Mu,Rho);
+    This.k0 = @(Ny,P,~,Nk) k0(Ny,P,[],Nk);
+    This.y1 = @(Ny,P,~,~)  y1_oct(Ny,P,Mu,Lmb);
+    This.g1 = @(Ny,P,Ng,~) g1(Ny,P,Ng,[]);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -116,6 +123,37 @@ end
         nd = Ny*P;
         G1 = zeros(Ng,nd);
     end % g1()
+
+
+%**************************************************************************
+    
+    
+    function Y0 = y0_oct(Ny,P,Mu,Rho)
+        nd = Ny*P;
+        muRho = Mu .* Rho;
+        if length(muRho) == 1 && Ny > 1
+            muRho = muRho(ones(1,Ny),1);
+        end
+        Y0 = [diag(muRho),zeros(Ny,nd-Ny)];
+    end % y0_oct()
+
+
+%**************************************************************************
+    
+    
+    function Y1 = y1_oct(Ny,P,Mu,Lmb)
+        sgm = Mu;
+        if length(sgm) == 1 && Ny > 1
+            sgm = sgm(ones(1,Ny),1);
+        end
+        sgm = sgm(:,ones(1,P));
+        if Lmb > 0
+            lags = (1 : P).^Lmb;
+            lags = lags(ones(1,Ny),:);
+            sgm = sgm .* lags;
+        end
+        Y1 = diag(sgm(:));
+    end % y1_oct()
 
 
 end

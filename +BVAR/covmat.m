@@ -48,10 +48,17 @@ end
 
 This = BVAR.bvarobj();
 This.name = 'covmat';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(~,~,~,~)   y0_oct(C,Repeat);
+    This.k0 = @(Ny,~,~,~)  k0_oct(Ny,Repeat);
+    This.y1 = @(Ny,P,~,~)  y1_oct(Ny,P,Repeat);
+    This.g1 = @(Ny,~,Ng,~) g1_oct(Ny,Ng,Repeat);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -103,6 +110,50 @@ end
             G1 = repmat(G1,1,Repeat);
         end
     end % g1()
+
+
+%**************************************************************************
+
+    
+    function Y0 = y0_oct(C,Repeat)
+        Y0 = C;
+        if Repeat > 1
+            Y0 = repmat(Y0,1,Repeat);
+        end
+    end % y0_oct()
+
+
+%**************************************************************************
+
+    
+    function K0 = k0_oct(Ny,Repeat)
+        K0 = zeros(1,Ny);
+        if Repeat > 1
+            K0 = repmat(K0,1,Repeat);
+        end
+    end % k0_oct()
+
+
+%**************************************************************************
+
+    
+    function Y1 = y1_oct(Ny,P,Repeat)
+        Y1 = zeros(Ny*P,Ny);
+        if Repeat > 1
+            Y1 = repmat(Y1,1,Repeat);
+        end
+    end % y1_oct()
+
+
+%**************************************************************************
+
+    
+    function G1 = g1_oct(Ny,Ng,Repeat)
+        G1 = zeros(Ng,Ny);
+        if Repeat > 1
+            G1 = repmat(G1,1,Repeat);
+        end
+    end % g1_oct()
 
 
 end
