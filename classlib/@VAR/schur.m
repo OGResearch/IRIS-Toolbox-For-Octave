@@ -68,7 +68,9 @@ for ialt = 1 : nAlt
           [This.U(:,:,ialt),This.T(:,:,ialt)] = ordschur(U,T,clusters);
           This.EigVal(1,:,ialt) = ordeig(This.T(:,:,ialt)).';
         else
-          [This.U(:,:,ialt),This.T(:,:,ialt)] = mosw.octfun.ordschur(A(:,:,ialt),realSmall);
+          [This.U(:,:,ialt),This.T(:,:,ialt),eigVal] = ...
+              mosw.octfun.ordschur(A(:,:,ialt),realSmall);
+          This.EigVal(1,:,ialt) = eigVal.';
         end
     end
 end
