@@ -10,7 +10,7 @@ function Flag = mycompatible(V1,V2)
 %--------------------------------------------------------------------------
 
 try
-    Flag = isa(V1,'svarobj') && isa(V2,'svarobj');   
+    Flag = issvarobj(V1) && issvarobj(V2);   
 catch %#ok<CTCH>
     Flag = false;
 end
