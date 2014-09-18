@@ -69,7 +69,7 @@ if ~isempty(rest)
         end
     end
     % Convert restrictions to implicit forms: `A=B` to `A-B`.
-    rest = regexprep(rest,'=(.*)','-\($1\)');
+    rest = regexprep(rest,'=(.*)','-($1)');
     % Vectorise and vertically concatenate all general restrictions.
     rest = strcat('xxVec(',rest,');');
     rest = ['[',rest{:},']'];
