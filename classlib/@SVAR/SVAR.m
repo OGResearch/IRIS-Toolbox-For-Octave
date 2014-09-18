@@ -179,6 +179,7 @@ classdef SVAR < VAR & svarobj
         varargout = mycompatible(varargin)
         varargout = mystruct2obj(varargin)
         varargout = mysubsalt(varargin)
+        varargout = mycovmatrix(varargin)
         specdisp(varaargin)
     end
     
