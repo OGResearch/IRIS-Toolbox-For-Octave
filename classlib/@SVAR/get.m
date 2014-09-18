@@ -45,6 +45,7 @@ function varargout = get(This,varargin)
 
 %--------------------------------------------------------------------------
 
-[varargout{1:nargout}] = get@getsetobj(This,varargin{:});
+varargout = cell(1,max(1,nargout));
+[varargout{1:max(1,nargout)}] = get@getsetobj(This,varargin{:});
 
 end
