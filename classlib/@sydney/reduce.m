@@ -60,19 +60,27 @@ if strcmp(This.func,'sydney.d')
     return
 end
 
-%{
+% {
 % Reduce a*(x/a), (x/a)*a to x.
-if strcmp(This.func,'times');
-    doCancelTimes();
+if strcmp(This.func,'times')
+    % @@@@@ MOSW.
+    % Octave crashes if it reaches isequal on two sydney objects.
+    try %#ok<TRYNC>
+        doCancelTimes();
+    end
 end
-%}
+% }
 
-%{
+% {
 % Reduce a/(x*a), a/(a*x) to 1/x, (x*a)/a, (a*x)/a to x.
 if strcmp(This.func,'rdivide')
-    doCancelRdivide();
+    % @@@@@ MOSW.
+    % Octave crashes if it reaches isequal on two sydney objects.
+    try %#ok<TRYNC>
+        doCancelRdivide();
+    end
 end
-%}
+% }
 
 % Evaluate the function if all arguments are numeric.
 if ~isempty(This.func) && iscell(This.args) && ~isempty(This.args)
