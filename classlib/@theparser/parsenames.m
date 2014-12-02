@@ -25,27 +25,29 @@ f = fragileobj(Blk);
 [Blk,f] = protectbrackets(Blk,f);
 
 % Parse names with labels and assignments.
+% @@@@@ MOSW.
+% Extra pair of brackets needed in Octave.
 ptn = [ ...
     '((',regexppattern(This.Labels),')?)\s*', ... % Label.
     '([a-zA-Z]\w*)\s*', ... % Name.
     '((=[^;,\n]+[;,\n])?)', ... % Value.
     ]; 
 
-x = regexp(Blk,ptn,'tokens');
+tkn = regexp(Blk,ptn,'tokens');
 if false % ##### MOSW
-    % Do nothing
+    % Do nothing.
 else
-    % Check for Octave regexp bug -- very first unmatched token is not recorded
-    % in resulting cell at all, even if token is enclosed in extra parentheses
-    if numel(x{1}) == 2
-        x{1} = ['', x{1}];
+    for i = 1 : length(tkn) %#ok<UNRCH>
+        if length(tkn{i}) == 2
+            tkn{i} = [{''},tkn{i}];
+        end
     end
 end
-x = [x{:}];
+tkn = [tkn{:}];
 
-Label = x(1:3:end);
-Name = x(2:3:end);
-Value = x(3:3:end);
+Label = tkn(1:3:end);
+Name = tkn(2:3:end);
+Value = tkn(3:3:end);
 Value = strrep(Value,'=','');
 Value = strrep(Value,'!','');
 % Restore protected brackets.

@@ -44,6 +44,8 @@ if any(~validTimeSubs)
 end
 
 % Parse the structure of individual equations.
+% @@@@@ MOSW.
+% Extra pair of brackets needed in Octave.
 ptn = [ ...
     '((',regexppattern(This.Labels),')?)', ... % Label.
     '([^!;',This.Labels.CharUsed,']*)', ... % Full eqtn.
@@ -51,13 +53,11 @@ ptn = [ ...
     ]; 
 tkn = regexp(tempEqtn,ptn,'tokens','once');
 if false % ##### MOSW
-    % Do nothing
+    % Do nothing.
 else
-    % Check for Octave regexp bug -- very first unmatched token is not recorded
-    % in resulting cell at all, even if token is enclosed in extra parentheses
-    for ix = 1 : numel(tkn)
-        if numel(tkn{ix}) == 2
-            tkn{ix} = [''; tkn{ix}];
+    for i = 1 : length(tkn) %#ok<UNRCH>
+        if length(tkn{i}) == 2
+            tkn{i} = [{''};tkn{i}];
         end
     end
 end
@@ -106,3 +106,4 @@ for i = 1 : nList
     end
 end
 end % xxEqualSign()
+

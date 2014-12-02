@@ -63,10 +63,13 @@ end
 % {
 % Reduce a*(x/a), (x/a)*a to x.
 if strcmp(This.func,'times')
-    % @@@@@ MOSW.
-    % Octave crashes if it reaches isequal on two sydney objects.
-    try %#ok<TRYNC>
+    if false % ##### MOSW
         doCancelTimes();
+    else
+        % Octave shows warnings when converting classdef objest to struct
+        warning('off','Octave:classdef-to-struct');
+        doCancelTimes();
+        warning('on','Octave:classdef-to-struct');
     end
 end
 % }
@@ -74,10 +77,13 @@ end
 % {
 % Reduce a/(x*a), a/(a*x) to 1/x, (x*a)/a, (a*x)/a to x.
 if strcmp(This.func,'rdivide')
-    % @@@@@ MOSW.
-    % Octave crashes if it reaches isequal on two sydney objects.
-    try %#ok<TRYNC>
+    if false % ##### MOSW
         doCancelRdivide();
+    else
+        % Octave shows warnings when converting classdef objest to struct
+        warning('off','Octave:classdef-to-struct');
+        doCancelRdivide();
+        warning('on','Octave:classdef-to-struct');
     end
 end
 % }

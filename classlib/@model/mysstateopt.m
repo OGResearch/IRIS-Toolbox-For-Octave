@@ -50,16 +50,12 @@ if This.IsLinear
     % No need to process any options for the linear sstate solver.
 
 else
-
+    
     % Non-linear sstate solver
     %--------------------------
     [Opt,This] = xxBlocks(This,Opt);
     Opt = xxDisplayOpt(This,Opt);
-    if false % ##### MOSW
-        Opt = xxOptimOpt(This,Opt);
-    else
-        % Do nothing
-    end
+    Opt = xxOptimOpt(This,Opt);
     Opt = xxLogOpt(This,Opt);
     
 end
@@ -99,8 +95,12 @@ Opt.optimset = optimset( ...
     'maxfunevals',Opt.maxfunevals,  ...
     'tolx',Opt.tolx, ...
     'tolfun',Opt.tolfun, ...
-    'algorithm','levenberg-marquardt', ...
     oo{:});
+try %#ok<TRYNC>
+    Opt.optimset = optimset( ...
+        Opt.optimset, ...
+        'algorithm','levenberg-marquardt');
+end
 end % xxOptimOpt()
 
 
