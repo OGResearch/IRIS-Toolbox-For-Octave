@@ -1,4 +1,4 @@
-function F__ = str2func(S__)
+function varargout = str2func(varargin)
 % str2func  [Not a public function] Workaround for Octave's str2func.
 %
 % Backend IRIS function.
@@ -10,16 +10,16 @@ function F__ = str2func(S__)
 %--------------------------------------------------------------------------
 
 if false % ##### MOSW
-    F__ = str2func(S__);
+    varargout{1} = str2func(varargin{1});
 else
     % Make sure the function string starts with an `@`.
-    if S__(1) ~= '@' %#ok<UNRCH>
-        S__ = ['@',S__];
+    if varargin{1}(1) ~= '@' %#ok<UNRCH>
+        varargin{1} = ['@',varargin{1}];
     end
     % Replace `++` and `--` with `+`.
-    S__ = mosw.ppmm(S__);
+    varargin{1} = mosw.ppmm(varargin{1});
     % Create the function handle.
-    F__ = eval(S__);
+    varargout{1} = eval(varargin{1});
 end
 
 end
