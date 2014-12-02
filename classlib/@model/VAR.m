@@ -116,7 +116,7 @@ for iAlt = 1 : nAlt
     % Calculate constant vector.
     Ki = zeros(size(zbari));
     if opt.constant
-        Ki = sum(polyn.var2poly(Ai),3)*zbari;
+        Ki = sum(polyn.var2polyn(Ai),3)*zbari;
     end
     
     % Populate VAR properties.

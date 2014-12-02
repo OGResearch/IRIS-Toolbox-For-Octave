@@ -1,5 +1,5 @@
-function C = polyprod(A,B)
-% polyprod  [Not a public function] Product of polynomials.
+function C = prod(A,B)
+% prod  [Not a public function] Product of polynomials.
 %
 % Backend IRIS function.
 % No help provided.

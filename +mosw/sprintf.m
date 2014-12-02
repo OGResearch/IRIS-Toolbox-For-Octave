@@ -9,13 +9,13 @@ function Msg = sprintf(Msg,varargin)
 
 %--------------------------------------------------------------------------
 
+Msg = sprintf(Msg,varargin{:});
+
 if false % ##### MOSW
     % Do noting.
 else
     % Remove HTML tags from `Message`.
-    [Msg,varargin] = mosw.removehtml(Msg,varargin); %#ok<UNRCH>
+    Msg = mosw.removehtml(Msg); %#ok<UNRCH>
 end
-
-Msg = sprintf(Msg,varargin{:});
 
 end

@@ -151,7 +151,7 @@ end
         end
         % Asymptotic impulse responses.
         if isY
-            A = polyn.var2poly(This.A(:,:,iAlt));
+            A = polyn.var2polyn(This.A(:,:,iAlt));
             C = sum(A,3);
             Y = C\This.B(:,:,iAlt);
         end

@@ -65,8 +65,8 @@ if Opt.diff
         K = K + L;
     end
     A = reshape(A,ny,ny,p);
-    A = polyn.polyprod(A,cat(3,eye(ny),-eye(ny)));
-    A = polyn.polysum(A,eye(ny)+G*ci(:,2:end));
+    A = polyn.prod(A,cat(3,eye(ny),-eye(ny)));
+    A = polyn.sum(A,eye(ny)+G*ci(:,2:end));
     p = p + 1;
     A = reshape(A,ny,ny*p);
 end

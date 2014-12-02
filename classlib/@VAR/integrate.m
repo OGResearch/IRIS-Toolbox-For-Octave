@@ -61,8 +61,8 @@ if any(ApplyTo)
     A = This.A;
     This.A(:,end+1:end+ny,:) = NaN;
     for iAlt = 1 : nAlt
-        a = polyn.polyprod(polyn.var2poly(A(:,:,iAlt)),D);
-        This.A(:,:,iAlt) = polyn.poly2var(a);
+        a = polyn.prod(polyn.var2polyn(A(:,:,iAlt)),D);
+        This.A(:,:,iAlt) = polyn.polyn2var(a);
     end
     This = schur(This);
 end

@@ -1,4 +1,4 @@
-function [Msg,args] = removehtml(Msg,args)
+function Msg = removehtml(Msg)
 % removehtml [Not a public function] Remove HTML tags from message before printing.
 %
 % Backend IRIS function.
@@ -9,18 +9,6 @@ function [Msg,args] = removehtml(Msg,args)
 
 %--------------------------------------------------------------------------
 
-% process args
-fSpecPos = regexp(Msg,'%[^%]','start');
-nSpec = length(fSpecPos);
-[openTagPos,closeTagPos] = regexp(Msg,'<a[^<]*>','start','end');
-nTags = length(openTagPos);
-ix = any(repmat(fSpecPos,nTags,1)>repmat(openTagPos',1,nSpec) & ...
-         repmat(fSpecPos,nTags,1)<repmat(closeTagPos',1,nSpec),1);
-
-% remove args contained into tags
-args(ix) = [];
-         
-% remove tags
 Msg = regexprep(Msg,'<a[^<]*>','');
 Msg = strrep(Msg,'</a>','');
 

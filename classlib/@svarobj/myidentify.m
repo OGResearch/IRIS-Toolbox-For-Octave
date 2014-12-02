@@ -12,7 +12,7 @@ function [This,Data,B,Count] = myidentify(This,Data,Opt)
 ny = size(This.A,1);
 nAlt = size(This.A,3);
 
-A = polyn.var2poly(This.A);
+A = polyn.var2polyn(This.A);
 Omg = This.Omega;
 
 % Std dev of structural residuals requested by the user.
@@ -157,7 +157,7 @@ function [BB,Count] = xxDraw(This,Opt)
 % 23977, http://mpra.ub.uni-muenchen.de/23977.
 
 test = Opt.test;
-A = polyn.var2poly(This.A);
+A = polyn.var2polyn(This.A);
 C = sum(A,3);
 Ci = inv(C);
 ny = size(A,1);

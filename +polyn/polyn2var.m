@@ -1,5 +1,5 @@
-function A = poly2var(A)
-% poly2var  Convert 3D polynomial to VAR style matrix.
+function A = polyn2var(A)
+% polyn2var  [Not a public function] Convert 3D polynomial to VAR style matrix.
 %
 % Backend IRIS function.
 % No help provided.
