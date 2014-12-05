@@ -1,0 +1,76 @@
+
+
+    \filetitle{xsf}{Power spectrum and spectral density of model variables}{model/xsf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[S,D,List] = xsf(M,Freq,...)
+[S,D,List,Freq] = xsf(M,NFreq,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object.
+\item
+  \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
+  XSFs will be evaluated.
+\item
+  \texttt{NFreq} {[} numeric {]} - Total number of requested
+  frequencies; the frequencies will be evenly spread between 0 and
+  \texttt{pi}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} namedmat \textbar{} numeric {]} - Power spectrum
+  matrices.
+\item
+  \texttt{D} {[} namedmat \textbar{} numeric {]} - Spectral density
+  matrices.
+\item
+  \texttt{List} {[} cellstr {]} - List of variable in order of
+  appearance in rows and columns of \texttt{S} and \texttt{D}.
+\item
+  \texttt{Freq} {[} numeric {]} - Vector of frequencies at which the
+  XSFs has been evaluated.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'applyTo='} {[} cellstr \textbar{} char \textbar{}
+  \emph{\texttt{Inf}} {]} - List of variables to which the option
+  \texttt{'filter='} will be applied; \texttt{Inf} means all variables.
+\item
+  \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
+  filter that is applied to variables specified by `applyto'.
+\item
+  \texttt{'nFreq='} {[} numeric \textbar{} \emph{\texttt{256}} {]} -
+  Number of equally spaced frequencies over which the `filter' is
+  numerically integrated.
+\item
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{S} and \texttt{D} as
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar on in the command
+  window.
+\item
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return XSF for selected variables only; \texttt{@all}
+  means all variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

@@ -1,0 +1,52 @@
+
+
+    \filetitle{spy}{Visualise tseries observations that pass a test}{tseries/spy}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[AA,LL] = spy(X,...)
+[AA,LL] = spy(RANGE,X,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input tseries object whose non-NaN
+  observations will be plotted as markers.
+\item
+  \texttt{RANGE} {[} tseries {]} - Date range on which the tseries
+  observations will be visualised; if not specified the entire available
+  range will be used.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{AA} {[} tseries {]} - Handle to the axes created.
+\item
+  \texttt{LL} {[} tseries {]} - Handle to the marks plotted.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'names='} {[} cellstr {]} - Names that will be used to
+  annotate individual columns of the input tseries object.
+\item
+  \texttt{'test='} {[} function\_handle \textbar{}
+  \emph{@(x)\textasciitilde{}isnan(x)} {]} - Test applied to each
+  observations; only the values returning a true will be displayed.
+\end{itemize}
+
+See help on \href{tseries/plot}{\texttt{tseries/plot}} and the built-in
+function \texttt{spy} for all options available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

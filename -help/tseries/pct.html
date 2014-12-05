@@ -1,0 +1,149 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/pct">pct</h2>
+<div class="headline">Percent rate of change</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>X = pct(X)
+X = pct(X,K,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input tseries object.</p></li>
+<li><p><code>K</code> [ numeric ] - Time shift over which the rate of change will be computed, i.e. between time t and t+k; if not specified <code>K</code> will be set to <code>-1</code>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>X</code> [ tseries ] - Percentage rate of change in the input data.</li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><code>'outputFreq='</code> [ <code>1</code> | <code>2</code> | <code>4</code> | <code>6</code> | <code>12</code> | <em>empty</em> ] - Convert the rate of change to the requested date frequency; empty means plain rate of change with no conversion.</li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+<p>In this example, <code>x</code> is a monthly time series. The following command computes the annualised rate of change between month t and t-1:</p>
+<pre><code>pct(x,-1,&#39;outputfreq=&#39;,1)</code></pre>
+<p>while the following line computes the annualised rate of change between month t and t-3:</p>
+<pre><code>pct(x,-3,&#39;outputFreq=&#39;,1)</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

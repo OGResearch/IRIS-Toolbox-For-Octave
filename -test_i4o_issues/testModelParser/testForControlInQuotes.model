@@ -1,0 +1,9 @@
+
+!for
+    X, Y, Z
+!do
+    !variables
+        ?
+    !equations
+        'Equation for ?' ? = 0;
+!end

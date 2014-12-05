@@ -1,0 +1,48 @@
+
+
+    \filetitle{ftitle}{Add title to figure window}{grfun/ftitle}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Aa = grfun.ftitle(Titles,...)
+Aa = grfun.ftitle(FF,Titles,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{FF} {[} numeric \textbar{} struct {]} - Handle to a figure
+  window or windows; or a struct that includes a field name
+  \texttt{figure}.
+\item
+  \texttt{Titles} {[} cellstr \textbar{} char {]} - Text string to be
+  centred, or cell array of strings to be placed on the LHS, centred,
+  and on the RHS of the figure.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Aa} {[} numeric {]} - Handle or handles to annotation objects.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'location='} {[} \emph{\texttt{'north'}} \textbar{}
+  \texttt{'west'} \textbar{} \texttt{'east'} \textbar{} \texttt{'south'}
+  {]} - Location of the figure title: top, left edge sideways, right
+  edge sideways, bottom.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

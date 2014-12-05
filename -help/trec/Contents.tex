@@ -1,0 +1,177 @@
+
+    \foldertitle{trec}{Time-Recursive Subscript Objects for Time-Recursive Expressions}{trec/Contents}
+
+	Time subscript objects enable to create and evaluate time-recursive
+expressions based on tseries objects. Read below carefully when IRIS
+fails to evaluate time-recursive expessions correctly.
+
+Trec methods:
+
+\paragraph{Constructor}\label{constructor}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{trec/trec}{\texttt{trec}} - Create new recursive time subscript
+  object.
+\end{itemize}
+
+\paragraph{Creating lags and leads}\label{creating-lags-and-leads}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{trec/plus}{\texttt{plus}} - Create time-recursive lead of
+  tseries object.
+\item
+  \href{trec/minus}{\texttt{minus}} - Create time-recursive lag of
+  tseries object.
+\end{itemize}
+
+\paragraph{Using Time-Recursive
+Subscripts}\label{using-time-recursive-subscripts}
+
+Time-recursive expressions are expressions that are evaluated period by
+period, with each result assigned immediately to the left-hand side
+tseries variable, and used in subsequent periods evaluated afterwards.
+
+To construct and evaluate time-recursive expressions, use tseries
+referenced by a trec object, or a lag or lead created from a trec
+object. Every tseries object on both the left-hand side (i.e.~the
+variable under construction) and the right-hand side (i.e.~the variables
+in the expression that is being evaluated) must be referenced by a trec
+object (or possibly a lag or lead). When referencing a tseries object by
+a trec, you can use either curly braces, \texttt{\{...\}}, or round
+brackets, \texttt{(...)}; there is no difference between them in
+time-recursive expressions.
+
+$\attention$ See the description of circumstances under which IRIS fails
+to evaluate time-recursive expressions correctly, and how to avoid/fix
+such situations.
+
+\paragraph{Example}\label{example}
+
+Construct an autoregressive sequence starting from 10 with a
+autoregressive coefficient 0.8:
+
+\begin{verbatim}
+ T = trec(qq(2010,1):qq(2020,4));
+ X = tseries(qq(2009,4),10);
+ X{T} = 0.8*X{T-1};
+\end{verbatim}
+
+\paragraph{Example}\label{example-1}
+
+Construct a first-order autoregressive process, \texttt{x}, with
+normally distributed innovations, \texttt{e}:
+
+\begin{verbatim}
+T = trec(qq(2010,1):qq(2020,4));
+x = tseries(qq(2009,4),10);
+e = tseries(qq(2010,1):qq(2020,4),@randn);
+x{T} = 10 + 0.8*x{T-1} + e{T};
+\end{verbatim}
+
+\paragraph{Example}\label{example-2}
+
+Construct a second-order log-autoregressive process going backward.
+
+\begin{verbatim}
+T = trec(yy(2020):-1:yy(2000));
+B = tseries();
+B(yy(2022)) = 1.56;
+B(yy(2021)) = 1.32;
+B{T} = B{T+1}^1.2 * B{T+2}^0.6;
+\end{verbatim}
+
+\paragraph{Example}\label{example-3}
+
+Construct Fibonacci sequence:
+
+\begin{verbatim}
+ T = trec(3:20);
+ F = tseries(1:2,1);
+ F{T} = F{T-1} + F{T-2};
+\end{verbatim}
+
+\paragraph{When IRIS Fails to Evaluate Time-Recursive Expressions
+Correctly}\label{when-iris-fails-to-evaluate-time-recursive-expressions-correctly}
+
+IRIS fails to evaluate time-recursive expressions correctly (without any
+indication of an error) when the following two circumstances occur at
+the same time:
+
+\begin{itemize}
+\item
+  The time series used in the expression are within a database (struct),
+  or a cell array;
+\item
+  At least one tseries object on the right-hand side has been created by
+  copying the left-hand side tseries object with no further
+  manipulation.
+\end{itemize}
+
+Under these circumstances, the right-hand side tseries variable will be
+assigned (updated with) the results calculated in iteration as if it
+were the tseries variable on the left-hand side.
+
+\paragraph{Example}\label{example-4}
+
+Create a database with two tseries. Create one of the tseries by simply
+copying the other (i.e.~plain assignment with no further manipulation).
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x;
+
+T = trec(2:10);
+d.x{T} = 0.8*d.y{T-1}; % Fails to evaluate correctly!
+\end{verbatim}
+
+The above time-recursive expression will be incorrectly evaluated as if
+it were \texttt{d.x\{T\} = 0.8*d.x\{T-1\}}.
+
+Note that when the tseries objects are not stored within a database
+(struct), the expression will evaluate correctly:
+
+\begin{verbatim}
+x = tseries(1:10,1);
+y = x;
+
+T = trec(2:10);
+x{T} = 0.8*y{T-1}; % Evaluates correctly.
+\end{verbatim}
+
+\paragraph{Workaround}\label{workaround}
+
+To evaluate the expression correctly, simply apply any kind of operator
+or function to the tseries \texttt{d.y} before it enters the
+time-recursive expression. Below are examples of some simple
+manipulations that do the job without changing the tseries \texttt{d.y}:
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(1:10,1);
+d.y = 1*d.x;
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x{:};
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+d = struct();
+d.x = tseries(1:10,1);
+d.y = d.x;
+d.y = d.y + 0;
+\end{verbatim}
+
+
+

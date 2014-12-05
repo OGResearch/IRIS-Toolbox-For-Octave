@@ -1,0 +1,153 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/diffloglik">diffloglik</h2>
+<div class="headline">Approximate gradient and hessian of log-likelihood function</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[MinusLogLik,Grad,Hess,V] = diffloglik(M,Inp,Range,PList,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object whose likelihood function will be differentiated.</p></li>
+<li><p><code>Inp</code> [ cell | struct ] - Input data from which measurement variables will be taken.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which the likelihood function will be evaluated.</p></li>
+<li><p><code>PList</code> [ cellstr ] - List of model parameters with respect to which the likelihood function will be differentiated.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>MinusLogLik</code> [ numeric ] - Value of minus the likelihood function at the input data.</p></li>
+<li><p><code>Grad</code> [ numeric ] - Gradient (or score) vector.</p></li>
+<li><p><code>Hess</code> [ numeric ] - Hessian (or information) matrix.</p></li>
+<li><p><code>V</code> [ numeric ] - Estimated variance scale factor if the <code>'relative='</code> options is true; otherwise <code>v</code> is 1.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'chkSstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - Check steady state in each iteration; works only in non-linear models.</p></li>
+<li><p><code>'refresh='</code> [ <em><code>true</code></em> | <code>false</code> ] - Refresh dynamic links for each change in a parameter.</p></li>
+<li><p><code>'solve='</code> [ <em><code>true</code></em> | <code>false</code> | cellstr ] - Re-compute solution for each parameter change; you can specify a cell array with options for the <code>solve</code> function.</p></li>
+<li><p><code>'sstate='</code> [ <code>true</code> | <em><code>false</code></em> | cell ] - Re-compute steady state in each differentiation step; if the model is non-linear, you can pass in a cell array with options used in the <code>sstate</code> function.</p></li>
+</ul>
+<p>See help on <a href="../model/filter.html"><code>model/filter</code></a> for other options available.</p>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

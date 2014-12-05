@@ -1,0 +1,64 @@
+
+
+    \filetitle{xsf}{Power spectrum and spectral density functions for VAR variables}{VAR/xsf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[S,D] = xsf(V,Freq,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{V} {[} VAR {]} - VAR object.
+\item
+  \texttt{Freq} {[} numeric {]} - Vector of Frequencies at which the
+  XSFs will be evaluated.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{S} {[} numeric {]} - Power spectrum matrices.
+\item
+  \texttt{D} {[} numeric {]} - Spectral density matrices.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'applyTo='} {[} cellstr \textbar{} char \textbar{}
+  \emph{\texttt{':'}} {]} - List of variables to which the
+  \texttt{'filter='} will be applied; \texttt{':'} means all variables.
+\item
+  \texttt{'filter='} {[} char \textbar{} \emph{empty} {]} - Linear
+  filter that is applied to variables specified by `applyto'.
+\item
+  \texttt{'nFreq='} {[} numeric \textbar{} \emph{256} {]} - Number of
+  equally spaced frequencies over which the `filter' is numerically
+  integrated.
+\item
+  \texttt{'progress='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - Display progress bar in the command
+  window.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The output matrices, \texttt{S} and \texttt{D}, are
+\texttt{N}-by-\texttt{N}-by-\texttt{K}, where \texttt{N} is the number
+of VAR variables and \texttt{K} is the number of frequencies (i.e.~the
+length of the vector \texttt{freq}).
+
+The k-th page is the \texttt{S} matrix, i.e. \texttt{S(:,:,k)}, is the
+cross-spectrum matrix for the VAR variables at the k-th frequency.
+Similarly, the \texttt{k}-th page in \texttt{D}, i.e. \texttt{D(:,:,k)},
+is the cross-density matrix.
+
+\paragraph{Example}\label{example}
+
+

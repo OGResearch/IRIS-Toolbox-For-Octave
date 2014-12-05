@@ -1,0 +1,37 @@
+
+
+    \filetitle{printpdf}{Print figure window to PDF via EPS}{grfun/printpdf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+printpdf(FileName)
+printpdf(Fig,FileName)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{FileName} {[} char {]} - File name (without extension) to
+  which the figure window will be printed in PDF format.
+\item
+  \texttt{Fig} {[} handle {]} - Figure window that will be printed to
+  PDF.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The function \texttt{printpdf} prints a figure window to a PDF by first
+creating a color EPS file and then using the \texttt{epstopdf} utility
+to convert the EPS to the final PDF. The Painters renderer is used in
+the Matlab \texttt{print} command.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+plot(rand(15));
+printpdf('myfigure');
+\end{verbatim}
+
+

@@ -1,0 +1,68 @@
+
+
+    \filetitle{plotpred}{Plot Kalman filter predictions}{tseries/plotpred}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[H1,H2,H3] = plotpred(X,Y,...)
+[H1,H2,H3] = plotpred(Ax,X,Y,...)
+[H1,H2,H3] = plotpred(Ax,Range,X,Y,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input data with time series observations.
+\item
+  \texttt{Y} {[} tseries {]} - Input data with predictions calculated in
+  a Kalman filter run with an \texttt{'ahead='} option.
+\item
+  \texttt{Ax} {[} numeric {]} - Handle to axes object in which the data
+  will be plotted.
+\item
+  \texttt{Range} {[} numeric \textbar{} Inf {]} - Date range on which
+  the input data will be plotted.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{H1} {[} numeric {]} - Handles to a line object showing the
+  time series observations (the first column, \texttt{X}, in the input
+  data).
+\item
+  \texttt{H2} {[} numeric {]} - Handles to line objects showing the
+  Kalman filter predictions (the second and further columns, \texttt{Y},
+  in the input data).
+\item
+  \texttt{H3} {[} numeric {]} - Handles to one-point line objects
+  displaying a marker at the start of each line.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'connect='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - Connect the prediction lines, \texttt{Y}, with the corresponding
+  observation in \texttt{X}.
+\item
+  \texttt{'firstMarker='} {[} \emph{\texttt{'none'}} \textbar{} char {]}
+  - Type of marker displayed at the start of each prediction line.
+\item
+  \texttt{'showNaNLines='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - Show or remove lines with whose starting points
+  are NaN (missing observations).
+\end{itemize}
+
+See help on \href{tseries/plot}{\texttt{plot}} and on the built-in
+function \texttt{plot} for options available.
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

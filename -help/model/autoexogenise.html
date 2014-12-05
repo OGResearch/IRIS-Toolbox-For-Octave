@@ -1,0 +1,143 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/autoexogenise">autoexogenise</h2>
+<div class="headline">Get or set variable/shock pairs for use in autoexogenised simulation plans</div>
+
+<h4 id="syntax-fo-getting-autoexogenised-variableshock-pairs">Syntax fo getting autoexogenised variable/shock pairs</h4>
+<pre><code>A = autoexogenise(M)</code></pre>
+<h4 id="syntax-fo-setting-autoexogenised-variableshock-pairs">Syntax fo setting autoexogenised variable/shock pairs</h4>
+<pre><code>M = autoexogenise(M,A)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object.</p></li>
+<li><p><code>A</code> [ struct | empty ] - Database with each field representing a variable/shock pair, A.Variable_Name = 'Shock_Name', that can be used in building <a href="../plan/Contents.html">simulation plans</a> by the plan function <a href="../plan/autoexogenise.html"><code>autoexogenise</code></a>.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>M</code> [ model ] - Model object with updated definitions of autoexogenised variable/shock pairs.</li>
+</ul>
+<h4 id="description">Description</h4>
+<p>Whenever you set the autoexogenised variable/shock pairs, the previously assigned pairs are removed, and replaced with the new ones in <code>A</code>. In other words, the new pairs are not added to the existing ones, the replace them.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>
