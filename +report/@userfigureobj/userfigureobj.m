@@ -1,14 +1,16 @@
 classdef userfigureobj < report.basefigureobj
     
+    
     properties
         savefig = [];
     end
     
-    methods
-        
+    
+    methods    
         function This = userfigureobj(varargin)
             This = This@report.basefigureobj(varargin{:});
         end
+        
         
         % Process class-specific input arguments.
         function [This,varargin] = specargin(This,varargin)
@@ -23,7 +25,28 @@ classdef userfigureobj < report.basefigureobj
                         'a valid handle to a figure window.']);
                 end
                 figFile = [mosw.tempname(pwd()),'.fig'];
-                mysavefig(This,h,figFile);
+                if true % ##### MOSW
+                    % Matlab only
+                    %-------------
+                    % Do nothing.
+                else
+                    % Octave only
+                    %-------------
+                    a = findobj(h,'type','axes'); %#ok<UNRCH>
+                    if ~isempty(a)
+                        xLimMode = get(a,'xLimMode');
+                        yLimMode = get(a,'yLimMode');
+                        zLimMode = get(a,'zLimMode');
+                        setappdata(h,'xLimMode',xLimMode);
+                        setappdata(h,'yLimMode',yLimMode);
+                        setappdata(h,'zLimMode',zLimMode);
+                        set(a, ...
+                            'xLimMode','manual', ...
+                            'yLimMode','manual', ...
+                            'zLimMode','manual');
+                    end
+                end
+                hgsave(h,figFile);
                 fid = fopen(figFile);
                 This.savefig = fread(fid);
                 fclose(fid);
@@ -31,18 +54,18 @@ classdef userfigureobj < report.basefigureobj
             end
         end
         
+        
         function This = setoptions(This,varargin)
             This = setoptions@report.basefigureobj(This,varargin{:});
         end
         
+        
     end
     
-    methods (Access=protected,Hidden)
-        
+    
+    methods (Access=protected,Hidden)    
         varargout = myplot(varargin)
-        mysavefig(varargin)
-        varargout = myloadfig(varargin)
-        
     end
+    
     
 end
