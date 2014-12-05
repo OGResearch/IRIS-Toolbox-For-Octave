@@ -24,9 +24,28 @@ if ~isempty(This.savefig)
     fid = fopen(figFile,'w+');
     fwrite(fid,This.savefig);
     fclose(fid);
-    This.handle = myloadfig(This,figFile);
-    set(This.handle,'visible',visibleFlag);
+    h = hgload(figFile);
+    set(h,'visible',visibleFlag);
     delete(figFile);
+    This.handle = h;
+    if true % ##### MOSW
+        % Matlab only
+        %-------------
+        % Do nothing.
+    else
+        % Octave only
+        %-------------
+        a = findobj(h,'type','axes'); %#ok<UNRCH>
+        if ~isempty(a)
+            xLimMode = getappdata(h,'xLimMode');
+            yLimMode = getappdata(h,'yLimMode');
+            zLimMode = getappdata(h,'zLimMode');
+            set(a, ...
+                'xLimMode',xLimMode, ...
+                'yLimMode',yLimMode, ...
+                'zLimMode',zLimMode);
+        end
+    end
 end
 
 end
