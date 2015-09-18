@@ -19,7 +19,7 @@ else
     % Replace `++` and `--` with `+`.
     varargin{1} = mosw.ppmm(varargin{1});
     % Create the function handle.
-    varargout{1} = eval(varargin{1});
+    varargout{1} = evalin('caller',varargin{1});
 end
 
 end
