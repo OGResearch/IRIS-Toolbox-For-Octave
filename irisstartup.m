@@ -51,9 +51,9 @@ if false % ##### MOSW
     end
 else
     vv = xxOctaveRelease();
-    if vv < 4101 % 4.1.0+, since classdef branch is far from stable
+    if vv < 4000 % classdef was added in 4.0.0
         error('iris:startup', ['Sorry, The IRIS Toolbox ', ...
-        'can only run in Octave 4.1.0 or higher.']);
+        'can only run in Octave 4.0.0 or higher.']);
     end
     mlock; % temporary, while octave bug #35881 is not fixed
 end

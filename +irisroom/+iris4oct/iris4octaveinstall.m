@@ -1,9 +1,12 @@
 function iris4octaveinstall(varargin)
 
+fprintf('\nInstalling Iris for Octave...\n\n');
+
 %% ADD IRIS TO THE LIST OF OCTAVE PACKAGES
 %--------------------------------------------------------------------------
 % process user options
 % path to iris to be installed
+fprintf('\tAdding IRIS to the list of Octave packages...\n');
 ix = find(strcmpi(varargin,'path'),1,'last');
 if ~isempty(ix) && (nargin > ix)
   path2iris = varargin{ix+1};
@@ -38,7 +41,7 @@ end
 
 % load local_packages
 if ~exist(path2octPkg,'file')
-  warning('File "%s" doesn''t exist and will be created.',path2octPkg);
+  fprintf('\t\tFile "%s" doesn''t exist and will be created.\n',path2octPkg);
 else
   load(path2octPkg);
 end
@@ -65,20 +68,28 @@ doUpdateIrisPkgInfo();
 local_packages{ixIris} = pkgInfo;
 save(path2octPkg,'local_packages');
 
+fprintf('\tAdded successfully!\n');
 
-%% INSTALL "GENERAL" PACKAGE WITH NEW @INPUTPARSER
+%% COMPILE MEX-FILES NEEDED FOR OCTAVE
 %--------------------------------------------------------------------------
-% replace source file of "general" package with one containig new @inputParser
-% (based on classdef syntax)
-generalName = 'general-1.3.4.tar.gz';
-generalSrc = fullfile(path2iris,'+irisroom','+iris4oct',generalName);
-
-% install new "general" package
-pkg('install', '-auto', generalSrc);
-
+fprintf('\tCompiling libraries missing in Octave...\n');
+% ordqz()
+fprintf('\t\tORDQZ...\n');
+mkoctfile(fullfile(path2iris,'+mosw','+octfun','mexSrc','myordqz.c'), ...
+          '-o', fullfile(path2iris,'+mosw','+octfun','myordqz.mex'), ...
+          '--mex', '-lblas', '-llapack');
+fprintf('\t\tDone!\n');
+% ordschur()
+fprintf('\t\tORDSCHUR...\n');
+mkoctfile(fullfile(path2iris,'+mosw','+octfun','mexSrc','myordschur.c'), ...
+          '-o', fullfile(path2iris,'+mosw','+octfun','myordschur.mex'), ...
+          '--mex', '-lblas', '-llapack');
+fprintf('\t\tDone!\n');
+fprintf('\tCompiled successfully!\n');
 
 %% CREATE ".OCTAVERC" FILE IN USER's DIRECTORY
 %--------------------------------------------------------------------------
+fprintf('\tCreating ".octaverc" file in user''s folder...\n');
 if ispc
   userDir = getenv('USERPROFILE');
 else
@@ -87,15 +98,16 @@ end
 rcfname = fullfile(userDir,'.octaverc');
 if exist(rcfname,'file')
   copyfile(rcfname,[rcfname,'_backup']);
-  warning('New ".octaverc" file is being created! Existing one was backed up.');
+  fprintf('\t\tExisting ".octaverc" file was backed up.\n');
 end
 fid = fopen(rcfname,'w+');
 fprintf(fid,'%s\n','page_screen_output (false);');
-fprintf(fid,'%s\n','graphics_toolkit fltk');
+fprintf(fid,'%s\n','graphics_toolkit qt');
 fclose(fid);
 % apply the settings right away
 page_screen_output (false);
-graphics_toolkit fltk;
+graphics_toolkit qt;
+fprintf('\tCreated successfully!\n');
 
 %% PARSE ALL IRIS FILES AND MOSW-SWITCH THEM TO OCTAVE VERSION
 %--------------------------------------------------------------------------
@@ -115,6 +127,8 @@ for ix = 1 : numel(lst)
 end
 rmpath(fullfile(path2iris,'utils'));
 %}
+
+fprintf('\nIris for Octave was successfully installed!\n\n');
 
 % Nested functions...
 

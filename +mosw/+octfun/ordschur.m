@@ -20,17 +20,7 @@ else
     % Octave
     %--------
     varargout = cell(1,max([1,nargout]));
-    if ispc
-        [varargout{:}] = mosw.octfun.myordschur_win32(varargin{:});
-    elseif isunix
-        [varargout{:}] = mosw.octfun.myordschur_unix(varargin{:});
-    else
-        try
-            [varargout{:}] = mosw.octfun.myordschur_unix(varargin{:});
-        catch
-            error('iris4octave:myordschur.mex','Are you on MAC? We need to recompile this mex-file for you.');
-        end
-    end
+    [varargout{:}] = mosw.octfun.myordschur(varargin{:});
 end
 
 end
