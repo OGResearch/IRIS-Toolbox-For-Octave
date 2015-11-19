@@ -38,7 +38,9 @@ command = [ ...
 % Capture the current directory, and switch to the input file directory.
 thisDir = pwd();
 if ~isempty(inpPath)
-    cd(inpPath);
+	while ~isequal(pwd(),inpPath)
+		cd(inpPath);
+	end
 end
 
 Count = 0;
