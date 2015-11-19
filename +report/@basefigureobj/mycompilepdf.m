@@ -88,7 +88,9 @@ InclGraph = [ ...
             if false % ##### MOSW
                 print(h,'-dpdf','-painters',pdfName);
             else
+              while ~exist([pdfName,'.pdf'],'file')
                 print(h,'-dpdf',pdfName);
+              end
             end
             addtempfile(This,[pdfName,'.pdf']);
         catch Err
