@@ -4,4 +4,5 @@ if false % ##### MOSW
   out = tempname(drc);
 else
   out = strrep(tempname(drc),P_tmpdir,drc);
+  out = strrep(out,'-','_');
 end
