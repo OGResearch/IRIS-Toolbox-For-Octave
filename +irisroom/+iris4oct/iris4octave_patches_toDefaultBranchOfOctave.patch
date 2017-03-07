@@ -1,0 +1,53 @@
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1398850202 -7200
+#      Wed Apr 30 11:30:02 2014 +0200
+# Node ID 7a421e260adacc17c3ab47f94da3a11519a14688
+# Parent  770c0d79341bf443e2c02df2a8458fd574f17273
+splotnikov -- temporary solution: paper size in line with the paper orientation when printing
+
+diff -r 770c0d79341b -r 7a421e260ada scripts/plot/util/private/__print_parse_opts__.m
+--- a/scripts/plot/util/private/__print_parse_opts__.m	Thu Jul 17 11:48:32 2014 -0400
++++ b/scripts/plot/util/private/__print_parse_opts__.m	Wed Apr 30 11:30:02 2014 +0200
+@@ -580,6 +580,12 @@
+     paperposition = convert2points (paperposition, paperunits);
+   endif
+ 
++  if (strcmpi (get (hfig,"paperorientation"), "landscape"))
++    papersize = sort (papersize, "descend");
++  else
++    papersize = sort (papersize);
++  endif
++
+   ## FIXME: This will be obsoleted by listeners for paper properties.
+   ##        Papersize is tall when portrait,and wide when landscape.
+   if ((papersize(1) > papersize(2) && strcmpi (paperorientation, "portrait"))
+# HG changeset patch
+# User Sergey Plotnikov <seryozha.plotnikov@gmail.com>
+# Date 1405621900 -7200
+#      Thu Jul 17 20:31:40 2014 +0200
+# Node ID d59a24785d2ed675fbb34d05cf4ee60e4b74bcfa
+# Parent  4d1e3d4f7c40a6582418587a53c139272e176419
+splotnikov -- temporary solution: unify units of subplots before setting tightinset and looseinset
+
+diff -r 4d1e3d4f7c40 -r d59a24785d2e scripts/plot/util/subplot.m
+--- a/scripts/plot/util/subplot.m	Tue May 13 20:34:22 2014 +0200
++++ b/scripts/plot/util/subplot.m	Thu Jul 17 20:31:40 2014 +0200
+@@ -429,6 +429,8 @@
+       hfig = ancestor (h, "figure");
+       hsubplots = findall (hfig, "type", "axes", "subplot_align", "off");
+       if (! isempty (hsubplots))
++        units = get (hsubplots, "units");
++        set (hsubplots, "units", "points");
+         tightinset = get (hsubplots, "tightinset");
+         if (iscell (tightinset))
+           tightinset = max (cell2mat (tightinset));
+@@ -439,6 +441,7 @@
+         endif
+         looseinset = max (tightinset, looseinset);
+         set (hsubplots, "looseinset", looseinset);
++        set (hsubplots, {"units"}, units);
+       endif
+     unwind_protect_cleanup
+       updating = false;
+ 

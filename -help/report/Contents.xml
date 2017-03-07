@@ -1,0 +1,60 @@
+<folder>
+
+<foldername>report</foldername><filename>Contents</filename>
+
+<h1 id="report/Contents">Report objects and functions</h1>
+
+<h3>New report</h3>
+
+<ul><li><link id="report/new"><tt>new</tt></link>&nbsp;&ndash;&nbsp;New report object.</li>
+<li><link id="report/copy"><tt>copy</tt></link>&nbsp;&ndash;&nbsp;Create a copy of a report object.</li></ul>
+
+<h3>Compiling PDF report</h3>
+
+<ul><li><link id="report/publish"><tt>publish</tt></link>&nbsp;&ndash;&nbsp;Compile PDF from report object.</li></ul>
+
+<h3>Top-level objects</h3>
+
+<ul><li><link id="report/table"><tt>table</tt></link>&nbsp;&ndash;&nbsp;Start new table in report.</li>
+<li><link id="report/figure"><tt>figure</tt></link>&nbsp;&ndash;&nbsp;Start new figure in report.</li>
+<li><link id="report/matrix"><tt>matrix</tt></link>&nbsp;&ndash;&nbsp;Insert matrix, or numeric array, in report.</li>
+<li><link id="report/modelfile"><tt>modelfile</tt></link>&nbsp;&ndash;&nbsp;Write formatted model file in report.</li>
+<li><link id="report/array"><tt>array</tt></link>&nbsp;&ndash;&nbsp;Insert an array with user data in report.</li>
+<li><link id="report/tex"><tt>tex</tt></link>&nbsp;&ndash;&nbsp;Include LaTeX code or verbatim text input in report.</li></ul>
+
+<h3>Figure objects</h3>
+
+<ul><li><link id="report/graph"><tt>graph</tt></link>&nbsp;&ndash;&nbsp;Add graph to figure.</li></ul>
+
+<h3>Table and graph objects</h3>
+
+<ul><li><link id="report/band"><tt>band</tt></link>&nbsp;&ndash;&nbsp;Add new data with lower and upper bounds to graph or table.</li>
+<li><link id="report/fanchart"><tt>fanchart</tt></link>&nbsp;&ndash;&nbsp;Add fancharts to graphs.</li>
+<li><link id="report/series"><tt>series</tt></link>&nbsp;&ndash;&nbsp;Add new data to graph or table.</li>
+<li><link id="report/subheading"><tt>subheading</tt></link>&nbsp;&ndash;&nbsp;Enter subheading in table.</li>
+<li><link id="report/vline"><tt>vline</tt></link>&nbsp;&ndash;&nbsp;Add vertical line to graph.</li>
+<li><link id="report/highlight"><tt>highlight</tt></link>&nbsp;&ndash;&nbsp;Highlight range in graph.</li></ul>
+
+<h3>Structuring reports</h3>
+
+<ul><li><link id="report/align"><tt>align</tt></link>&nbsp;&ndash;&nbsp;Vertically align the following K objects.</li>
+<li><link id="report/empty"><tt>empty</tt></link>&nbsp;&ndash;&nbsp;Empty report object.</li>
+<li><link id="report/include"><tt>include</tt></link>&nbsp;&ndash;&nbsp;Include text or LaTeX input file in the report.</li>
+<li><link id="report/merge"><tt>merge</tt></link>&nbsp;&ndash;&nbsp;Merge the content of two or more report objects.</li>
+<li><link id="report/pagebreak"><tt>pagebreak</tt></link>&nbsp;&ndash;&nbsp;Force page break.</li>
+<li><link id="report/section"><tt>section</tt></link>&nbsp;&ndash;&nbsp;Start new section in report.</li></ul>
+
+<h3>Getting on-line help on report functions</h3>
+<pre>   help report
+   help report/function_name
+</pre>
+
+<h3>Generic options</h3>
+
+<p>The following generic options can be used on any of the report objects.</p>
+
+<ul><li><tt>'saveAs'</tt> [ char | <b>empty</b> ]&nbsp;&ndash;&nbsp;(Not inheritable from parent objects)
+Save the LaTeX code generated for the respective report element in a text
+file under the specified name.</li></ul>
+
+</folder>

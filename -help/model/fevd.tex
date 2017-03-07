@@ -1,0 +1,68 @@
+
+
+    \filetitle{fevd}{Forecast error variance decomposition for model variables}{model/fevd}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[X,Y,List,A,B] = fevd(M,Range,...)
+[X,Y,List,A,B] = fevd(M,NPer,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object for which the decomposition
+  will be computed.
+\item
+  \texttt{Range} {[} numeric {]} - Decomposition date range with the
+  first date beign the first forecast period.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods for which the
+  decomposition will be computed.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} namedmat \textbar{} numeric {]} - Array with the
+  absolute contributions of individual shocks to total variance of each
+  variables.
+\item
+  \texttt{Y} {[} namedmat \textbar{} numeric {]} - Array with the
+  relative contributions of individual shocks to total variance of each
+  variables.
+\item
+  \texttt{List} {[} cellstr {]} - List of variables in rows of the
+  \texttt{X} an \texttt{Y} arrays, and shocks in columns of the
+  \texttt{X} and \texttt{Y} arrays.
+\item
+  \texttt{A} {[} struct {]} - Database with the absolute contributions
+  converted to time series.
+\item
+  \texttt{B} {[} struct {]} - Database with the relative contributions
+  converted to time series.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{X} and \texttt{Y} as be
+  either \href{namedmat/Contents}{\texttt{namedmat}} objects
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
+\item
+  \texttt{'select='} {[} \texttt{@all} \textbar{} char \textbar{}
+  cellstr {]} - Return FEVD for selected variables and/or shocks only;
+  \texttt{@all} means all variables and shocks; this option does not
+  apply to the output databases, \texttt{A} and \texttt{B}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

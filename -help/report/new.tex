@@ -1,0 +1,38 @@
+
+
+    \filetitle{new}{Create new empty report object}{report/new}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P = report.new(Cap,...)
+\end{verbatim}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object with function handles
+  through wich the individual report elements can be created.
+\item
+  \texttt{Cap} {[} char {]} - Report caption; the caption will also be
+  printed on the title page of the report if published with the option
+  \texttt{'makeTitle='} \texttt{true}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'centering='} {[} \emph{\texttt{true}} \textbar{}
+  \texttt{false} {]} - All report elements, except
+  \href{report/tex}{\texttt{tex}}, will be centered on the page.
+\item
+  \texttt{'orientation='} {[} \emph{\texttt{'landscape'}} \textbar{}
+  `\texttt{portrait}' {]} - Paper orientation of the published report.
+\end{itemize}
+
+Report options are cascading. You can specify any of an object's options
+in any of his parent (or ascendant) objects.
+
+

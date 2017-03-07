@@ -1,0 +1,137 @@
+
+
+    \filetitle{figure}{Start new figure}{report/figure}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P.figure(Caption,...)
+\end{verbatim}
+
+\paragraph{Syntax to capture an existing figure
+window}\label{syntax-to-capture-an-existing-figure-window}
+
+This is an obsolete syntax, and will be removed from IRIS in a future
+release. Use \href{report/userfigure}{\texttt{report/userfigure}}
+instead.
+
+\begin{verbatim}
+P.figure(Caption,H,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} struct {]} - Report object created by the
+  \href{report/new}{\texttt{report.new}} function.
+\item
+  \texttt{Caption} {[} char \textbar{} cellstr {]} - Title or a cell
+  array with title and subtitle displayed at the top of the figure; see
+  Description for splitting the title or subtitle into multiple lines.
+\item
+  \texttt{H} {[} numeric {]} - See help on
+  \href{report/userfigure}{\texttt{report/userfigure}}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'aspectRatio='} {[} \texttt{@auto} \textbar{} numeric {]} -
+  Plot box aspect ratio for all graphs in the figure; must be a 1-by-2
+  vector describing the horizontal-to-vertical ratio.
+\item
+  \texttt{'captionTypeface='} {[} cellstr \textbar{} char \textbar{}
+  \emph{\texttt{'\textbackslash{}large\textbackslash{}bfseries'}} {]} -
+  LaTeX format commands for typesetting the figure caption; the
+  subcaption format can be entered as the second cell in a cell array.
+\item
+  \texttt{'close='} {[} \emph{\texttt{true}} \textbar{} \texttt{false}
+  {]} - (Inheritable from parent objects) Close the underlying figure
+  window when finished; see Description.
+\item
+  \texttt{'separator='} {[} char \textbar{}
+  \emph{\texttt{'\textbackslash{}medskip\textbackslash{}par'}} {]} -
+  (Inheritable from parent objects) LaTeX commands that will be inserted
+  after the figure.
+\item
+  \texttt{'figureOptions='} {[} cell \textbar{} \emph{empty} {]} -
+  Figure options that will be applied to the figure handle at opening.
+\item
+  \texttt{'figureScale='} {[} numeric \textbar{} \emph{\texttt{0.85}}
+  {]} - (Inheritable from parent objects) Scale of the figure in the
+  LaTeX document.
+\item
+  \texttt{'figureTrim='} {[} numeric \textbar{} \emph{\texttt{0}} {]} -
+  Trim figure when it is inserted into the report by the specified
+  amount of points; must be either a scalar or a 1-by-4 vector (points
+  removed from left, bottom, right, top).
+\item
+  \texttt{'footnote='} {[} char \textbar{} \emph{empty} {]} - Footnote
+  at the figure title; only shows if the title is non-empty.
+\item
+  \texttt{'sideways='} {[} \texttt{true} \textbar{}
+  \emph{\texttt{false}} {]} - (Inheritable from parent objects) Print
+  the table rotated by 90 degrees.
+\item
+  \texttt{'style='} {[} struct \textbar{} \emph{empty} {]} - Apply this
+  cascading style structure to the figure; see
+  \href{qreport/qstyle}{\texttt{qstyle}}.
+\item
+  \texttt{'subplot='} {[} numeric \textbar{} \emph{\texttt{'auto'}} {]}
+  - (Inheritable from parent objects) Subplot division of the figure.
+\item
+  \texttt{'typeface='} {[} char \textbar{} \emph{empty} {]} - (Not
+  inheritable from parent objects) LaTeX code specifying the typeface
+  for the figure as a whole; it must use the declarative forms (such as
+  \texttt{\textbackslash{}itshape}) and not the command forms (such as
+  \texttt{\textbackslash{}textit\{...\}}).
+\item
+  \texttt{'visible='} {[} \texttt{true} \textbar{} \emph{\texttt{false}}
+  {]} - (Inheritable from parent objects) Visibility of the underlying
+  Matlab figure window.
+\end{itemize}
+
+\paragraph{Generic options}\label{generic-options}
+
+See help on \href{report/Contents}{generic options} in report objects.
+
+\paragraph{Description}\label{description}
+
+Figures are top-level report objects and cannot be nested within other
+report objects, except \href{report/align}{\texttt{align}}. Figure
+objects can have the following types of children:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{report/graph}{\texttt{graph}};
+\item
+  \href{report/empty}{\texttt{empty}}.
+\end{itemize}
+
+\subparagraph{Titles and subtitles}\label{titles-and-subtitles}
+
+The input argument \texttt{Caption} can be either a text string, or a
+1-by-2 cell array of strings. In the latter case, the first cell will be
+printed as a title, and the second cell will be printed as a subtitle.
+
+To split the title or subtitle into multiple lines, use the following
+LaTeX commands wrapped in curly brackets:
+\texttt{\{\textbackslash{}\textbackslash{}\}} or
+\texttt{\{\textbackslash{}\textbackslash{}{[}Xpt{]}\}}, where \texttt{X}
+is the width of an extra vertical space (in points) added between the
+respective lines.
+
+\subparagraph{Figure handle}\label{figure-handle}
+
+If the option \texttt{'close='} is set to \texttt{false} the figure
+window will remain open after the report is published. The handle to
+this figure window will be included in the field \texttt{.figureHandle}
+of the information struct \texttt{Info} returned by
+\href{report/publish}{\texttt{report/publish}}.
+
+\paragraph{Example}\label{example}
+
+

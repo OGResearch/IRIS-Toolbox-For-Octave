@@ -1,0 +1,91 @@
+
+
+    \filetitle{!switch...!case...!otherwise...!end}{Switch among several cases based on expression}{modellang/switch}
+
+	\paragraph{Syntax with an otherwise
+clause}\label{syntax-with-an-otherwise-clause}
+
+\begin{verbatim}
+!switch Expr
+    !case Balue1
+        Block1
+    !case Balue2
+        Block2
+    ...
+    !otherwise
+        OtherwiseBlock
+!end
+\end{verbatim}
+
+\paragraph{Syntax without an otherwise
+clause}\label{syntax-without-an-otherwise-clause}
+
+\begin{verbatim}
+!switch Expr
+    !case Value1
+        Block1
+    !case Value2
+        Block2
+    ...
+!end
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+The \texttt{!switch...!case...!otherwise...!end} command works the same
+way as its counterpart in the Matlab programming language.
+
+Use the \texttt{!switch...!case...!end} command to create a larger
+number of branches of the model code. Which block of code is actually
+read in and which blocks are discarded depends on which value in the
+\texttt{!case} clauses matches the value of the \texttt{!switch}
+expression. This works exactly as the \texttt{switch...case...end}
+command in Matlab. The expression after the \texttt{!switch} part of the
+command must must be a valid Matlab expression, and can refer to the
+model parameters, or to other fields included in the parameter database
+passed in when you run the \href{model/model}{\texttt{model}} function;
+see \href{model/model}{the option \texttt{'assign='}}.
+
+If the expression fails to be matched by any value in the \texttt{!case}
+clauses, the branch in the \texttt{!otherwise} clause is used. If it is
+a \texttt{!switch} command without the \texttt{!otherwise} clause, the
+whole command is discarded. The Matlab function \texttt{isequal} is used
+to match the \texttt{!switch} expression with the \texttt{!case} values.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+!switch policy_regime
+
+    !case 'IT'
+        r = rho*r{-1} + (1-rho)*kappa*pie{4} + epsilon;
+
+    !case 'Managed_exchange_rate'
+        s = s{-1} + epsilon;
+
+    !case 'Constant_money_growth'
+        m-m{-1} = m{-1}-m{-2} + epsilon;
+   
+!end
+\end{verbatim}
+
+When reading the model file in, create a parameter database, include at
+least a field named \texttt{policy\_regime} in it, and use the option
+\texttt{'assign='} to pass the database in. Note that you do not need to
+declare \texttt{policy\_regime} as a parameter in the model file.
+
+\begin{verbatim}
+P = struct();
+P.policy_regime = 'Managed_exchange_rate';
+...
+m = model('my.model','assign',P);
+\end{verbatim}
+
+In this case, the managed exchange rate policy rule,
+\texttt{s = s\{-1\} + epsilon;} is read in and the rest of the
+\texttt{!switch} command is discarded. To use another branch of the
+\texttt{!switch} command you need to re-read the model file again with a
+different value assigned to the \texttt{policy\_regime} field of the
+input database.
+
+

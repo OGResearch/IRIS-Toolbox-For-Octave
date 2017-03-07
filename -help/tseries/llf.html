@@ -1,0 +1,210 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="tseries/llf">llf</h2>
+<div class="headline">Local level filter (aka random walk plus white noise) with tunes</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[T,C,CutOff,Lambda] = llf(X)
+[T,C,CutOff,Lambda] = llf(X,Range,...)</code></pre>
+<h4 id="syntax-with-output-arguments-swapped">Syntax with output arguments swapped</h4>
+<pre><code>[C,T,CutOff,Lambda] = llf2(X)
+[C,T,CutOff,Lambda] = llf2(X,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>X</code> [ tseries ] - Input tseries object that will be filtered.</p></li>
+<li><p><code>Range</code> [ numeric ] - Date range on which the input data will be filtered; <code>Range</code> can be <code>Inf</code>, <code>[startdata,Inf]</code>, or <code>[-Inf,enddate]</code>; if not specifired, <code>Inf</code> (i.e. the entire available range of the input series) is used.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>T</code> [ tseries ] - Low-frequency (trend) component.</p></li>
+<li><p><code>C</code> [ tseries ] - High-frequency (cyclical or gap) component.</p></li>
+<li><p><code>CutOff</code> [ numeric ] - Cut-off periodicity; periodicities above the cut-off are attributed to trends, periodicities below the cut-off are attributed to gaps.</p></li>
+<li><p><code>Lambda</code> [ numeric ] - Smoothing parameter actually used; this output argument is useful when the option <code>'cutoff='</code> is used instead of <code>'lambda='</code>.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'cutoff='</code> [ numeric | <em>empty</em> ] - Cut-off periodicity in periods (depending on the time series frequency); this option can be specified instead of <code>'lambda='</code>; the smoothing parameter will be then determined based on the cut-off periodicity.</p></li>
+<li><p><code>'cutoffYear='</code> [ numeric | <em>empty</em> ] - Cut-off periodicity in years; this option can be specified instead of <code>'lambda='</code>; the smoothing parameter will be then determined based on the cut-off periodicity.</p></li>
+<li><p><code>'gamma='</code> [ numeric | tseries | <em>1</em> ] - Weight or weights on the deviations of the trend from observations; it only makes sense to use this option to make the signal-to-noise ratio time-varying; see the optimisation problem below.</p></li>
+<li><p><code>'drift='</code> [ numeric | tseries | <em><code>0</code></em> ] - Deterministic drift in the trend.</p></li>
+</ul>
+<p><code>'infoSet='</code> [ <code>1</code> | <em><code>2</code></em> ] - Information set assumption used in the filter: <code>1</code> runs a one-sided filter, <code>2</code> runs a two-sided filter.</p>
+<ul>
+<li><p><code>'lambda='</code> [ numeric | <em><code>@auto</code></em> ] - Smoothing parameter; needs to be specified for tseries objects with indeterminate frequency. See Description for default values.</p></li>
+<li><p><code>'level='</code> [ tseries ] - Time series with soft and hard tunes on the level of the trend.</p></li>
+<li><p><code>'change='</code> [ tseries ] - Time series with soft and hard tunes on the change in the trend.</p></li>
+<li><p><code>'log='</code> [ <code>true</code> | <em><code>false</code></em> ] - Logarithmise the data before filtering, de-logarithmise afterwards.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h5 id="the-underlying-optimisation-problem">The underlying optimisation problem</h5>
+<p>The function <code>llf</code> solves a constrained optimisation problem described by the following Lagrangian</p>
+<p><span class="LaTeX">$$\min_{\bar y_t, \omega_t, \sigma_t}
+\underbrace{
+\tsum \lambda \left( \Delta \bar y_t - \delta_t \right)^2
++ \tsum \gamma_t \left( \bar y_t - y_t \right)^2}_\text{Plain local level
+filter with time-varying signal-to-noise ratio} + \cdots$$</span> <span class="LaTeX">$$\cdots +
+\underbrace{\tsum u_t \left( \bar y_t - a_t \right)^2}_\text{Soft level tunes}
++ \underbrace{\tsum v_t \left( \Delta \bar y_t - b_t
+\right)^2}_\text{Soft growth tunes} +
+\underbrace{\tsum \omega_t \left( \bar y_t - c_t \right)}_\text{Hard level tunes}
++ \underbrace{\tsum \sigma_t \left( \Delta \bar y_t - d_t
+\right)}_\text{Hard growth tunes},$$</span></p>
+<p>where</p>
+<ul>
+<li><span class="LaTeX">$\Delta$</span> is the first-difference operator;</li>
+<li><span class="LaTeX">$\lambda$</span> is a (scalar) smoothing parameter;</li>
+<li><span class="LaTeX">$y_t$</span> are user-supplied observations;</li>
+<li><span class="LaTeX">$\bar y_t$</span> is the fitted trend;</li>
+<li><span class="LaTeX">$\delta_t$</span> is a user-supplied drift, either constant or time-varying, enetered in the option <code>'drift='</code>;</li>
+<li><span class="LaTeX">$\gamma_t$</span> are user-supplied weights to modify the basic signal-to-noise ratio over time (the default setting is <span class="LaTeX">$\gamma_t=1$</span>), entered in the option <code>'gamma='</code>;</li>
+<li><span class="LaTeX">$a_t$</span> and <span class="LaTeX">$u_t$</span> are soft tunes on the level of the trend and the weights associated with these soft level tunes, respectively, entered together as complex numbers in the option <code>'level='</code>;</li>
+<li><span class="LaTeX">$b_t$</span> and <span class="LaTeX">$v_t$</span> are soft tunes on the change in the level of the trend and the weights associated with these soft growth tunes, respectively, entered together as complex numbers in the option <code>'growth='</code>;</li>
+<li><span class="LaTeX">$c_t$</span> are hard tunes on the level of the trend, entered as real numbers in the option <code>'level='</code>;</li>
+<li><span class="LaTeX">$d_t$</span> are hard tunes on the change in the level of the trend, entered as real numbers in the option <code>'growth='</code>;</li>
+<li><span class="LaTeX">$\omega_t$</span> are lagrange multipliers on the hard level tunes (note that these are computed as part of the optimisation problem, not entered by the user);</li>
+<li><span class="LaTeX">$\sigma_t$</span> are lagrange multipliers on the hard growth tunes (note that these are computed as part of the optimisation problem, not entered by the user).</li>
+</ul>
+<p>Each of the summations in the above Lagrangian goes over those periods in which the respective bracketed terms are defined (observations or tunes exist). You can combine any number of any tunes in one run of <code>llf</code>, including out-of-sample tunes (see below).</p>
+<h5 id="how-to-enter-the-tunes">How to enter the tunes</h5>
+<ul>
+<li><p>The soft and hard tunes on the level of the trend are entered as time series through the option <code>'level='</code>.</p></li>
+<li><p>The soft and hard tunes on the change in the trend are entered as time series through the option <code>'change='</code>.</p></li>
+<li><p>In the tseries objects entered through <code>'level='</code> and/or <code>'change='</code>, you can combine any number of hard and soft tune. In each particular period, you can obviously specify only a hard tune or only a soft tune. You can think of hard tunes as a special case of soft tunes with infinitely large weights.</p></li>
+<li><p>A hard tune is specified as a plain real number (i.e. a number with a zero complex part).</p></li>
+<li><p>A soft tune must be entered as a complex number whose real part specifies the tune itself, and the imaginary part specifies the <em>inverse</em> of the weight, i.e. <span class="LaTeX">$1/v_t$</span> or <span class="LaTeX">$1/u_t$</span>, on that tune in that period. Note that if the weight goes to infinity, the imaginary part becomes zero and the tune becomes a hard tune.</p></li>
+</ul>
+<h5 id="out-of-sample-tunes">Out-of-sample tunes</h5>
+<p>Tunes can be imposed also at dates before the first observation of the input series, or after the last observation. In other words, the time series in <code>'level='</code> and/or <code>'growth='</code> can have a more extended range (at either side) than the filtered input series.</p>
+<h5 id="default-smoothing-parameters">Default smoothing parameters</h5>
+<p>If the user does not specify the smoothing parameter using the <code>'lambda='</code> option (or reassigns the default <code>@auto</code>), a default value is used. The default value is based on common practice and can be calculated using the date frequency of the input time series as <code>\lambda = 10 \cdot f</code>, where <code>f</code> is the frequency (yearly=1, half-yearly=2, quarterly=4, bi-monthly=6, monthly=12). This gives the following default values:</p>
+<ul>
+<li>10 for yearly time series (cut-off periodicity of 19.79 years);</li>
+<li>20 for half-yearly time series (cut-off periodicity of 14.02 years);</li>
+<li>40 for quarterly time series (cut-off periodicity of 9.92 years);</li>
+<li>60 for bi-monthly time series (cut-off periodicity of 8.11 years);</li>
+<li>120 for monthly time series (cut-off periodicity of 5.73 years).</li>
+</ul>
+<p>Note that there is no default value for data with indeterminate or daily frequency: for these types of time series, you must always use the option `'lambda=''.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

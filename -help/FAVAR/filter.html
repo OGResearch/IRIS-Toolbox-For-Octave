@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="FAVAR/filter">filter</h2>
+<div class="headline">Re-estimate the factors by Kalman filtering the data taking FAVAR coefficients as given</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[A,D,CC,F,U,E] = filter(A,D,Range,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>A</code> [ FAVAR ] - Estimated FAVAR object.</p></li>
+<li><p><code>D</code> [ struct | tseries ] - Input database or tseries object with the FAVAR observables.</p></li>
+<li><p><code>Range</code> [ numeric ] - Filter date range.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>A</code> [ FAVAR ] - FAVAR object.</p></li>
+<li><p><code>D</code> [ struct ] - Output database or tseries object with the FAVAR observables.</p></li>
+<li><p><code>CC</code> [ struct | tseries ] - Re-estimated common components in the observables.</p></li>
+<li><p><code>F</code> [ tseries ] - Re-estimated common factors.</p></li>
+<li><p><code>U</code> [ tseries ] - Re-estimated idiosyncratic residuals.</p></li>
+<li><p><code>E</code> [ tseries ] - Re-estimated structural residuals.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'cross='</code> [ <em><code>true</code></em> | <code>false</code> | numeric ] - Run the filter with the off-diagonal elements in the covariance matrix of idiosyncratic residuals; if false all cross-covariances are reset to zero; if a number between zero and one, all cross-covariances are multiplied by that number.</p></li>
+<li><p><code>'invFunc='</code> [ <em><code>'auto'</code></em> | function_handle ] - Inversion method for the FMSE matrices.</p></li>
+<li><p><code>'meanOnly='</code> [ <code>true</code> | <em><code>false</code></em> ] - Return only mean data, i.e. point estimates.</p></li>
+<li><p><code>'persist='</code> [ <code>true</code> | <em><code>false</code></em> ] - If <code>filter</code> or <code>forecast</code> is used with <code>'persist='</code> set to true for the first time, the forecast MSE matrices and their inverses will be stored; subsequent calls of the <code>filter</code> or <code>forecast</code> functions will re-use these matrices until <code>filter</code> or <code>forecast</code> is called.</p></li>
+<li><p><code>'output='</code> [ <em><code>'auto'</code></em> | <code>'dbase'</code> | <code>'tseries'</code> ] - Format of output data.</p></li>
+<li><p><code>'tolerance='</code> [ numeric | <em><code>0</code></em> ] - Numerical tolerance under which two FMSE matrices computed in two consecutive periods will be treated as equal and their inversions will be re-used, not re-computed.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<p>It is the user's responsibility to make sure that <code>filter</code> and <code>forecast</code> called with <code>'persist='</code> set to true are valid, i.e. that the previously computed FMSE matrices can be really re-used in the current run.</p>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>
