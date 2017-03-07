@@ -1,0 +1,288 @@
+
+    \foldertitle{model}{Model Objects and Functions}{model/Contents}
+
+	Model objects are created by loading a \href{modellang/Contents}{model
+file}. Once a model object exists, you can use model functions and
+standard Matlab functions to write your own m-files to perform the
+desired tasks, such calibrate or estimate the model, find its steady
+state, solve and simulate it, produce forecasts, analyse its properties,
+and so on.
+
+Model methods:
+
+\paragraph{Constructor}\label{constructor}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/model}{\texttt{model}} - Create new model object based on
+  model file.
+\end{itemize}
+
+\paragraph{Getting information about
+models}\label{getting-information-about-models}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/addparam}{\texttt{addparam}} - Add model parameters to a
+  database (struct).
+\item
+  \href{model/autocaption}{\texttt{autocaption}} - Create captions for
+  graphs of model variables or parameters.
+\item
+  \href{model/autoexogenise}{\texttt{autoexogenise}} - Get or set
+  variable/shock pairs for use in autoexogenised simulation plans.
+\item
+  \href{model/comment}{\texttt{comment}} - Get or set user comments in
+  an IRIS object.
+\item
+  \href{model/eig}{\texttt{eig}} - Eigenvalues of the transition matrix.
+\item
+  \href{model/findeqtn}{\texttt{findeqtn}} - Find equations by the
+  labels.
+\item
+  \href{model/findname}{\texttt{findname}} - Find names of variables,
+  shocks, or parameters by their descriptors.
+\item
+  \href{model/get}{\texttt{get}} - Query model object properties.
+\item
+  \href{model/iscompatible}{\texttt{iscompatible}} - True if two models
+  can occur together on the LHS and RHS in an assignment.
+\item
+  \href{model/islinear}{\texttt{islinear}} - True for models declared as
+  linear.
+\item
+  \href{model/islog}{\texttt{islog}} - True for log-linearised
+  variables.
+\item
+  \href{model/ismissing}{\texttt{ismissing}} - True if some initical
+  conditions are missing from input database.
+\item
+  \href{model/isnan}{\texttt{isnan}} - Check for NaNs in model object.
+\item
+  \href{model/isname}{\texttt{isname}} - True for valid names of
+  variables, parameters, or shocks in model object.
+\item
+  \href{model/issolved}{\texttt{issolved}} - True if a model solution
+  exists.
+\item
+  \href{model/isstationary}{\texttt{isstationary}} - True if model or
+  specified combination of variables is stationary.
+\item
+  \href{model/length}{\texttt{length}} - Number of alternative
+  parameterisations.
+\item
+  \href{model/omega}{\texttt{omega}} - Get or set the covariance matrix
+  of shocks.
+\item
+  \href{model/sspace}{\texttt{sspace}} - State-space matrices describing
+  the model solution.
+\item
+  \href{model/system}{\texttt{system}} - System matrices for unsolved
+  model.
+\item
+  \href{model/userdata}{\texttt{userdata}} - Get or set user data in an
+  IRIS object.
+\end{itemize}
+
+\paragraph{Referencing model objects}\label{referencing-model-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/subsasgn}{\texttt{subsasgn}} - Subscripted assignment for
+  model and systemfit objects.
+\item
+  \href{model/subsref}{\texttt{subsref}} - Subscripted reference for
+  model and systemfit objects.
+\end{itemize}
+
+\paragraph{Changing model objects}\label{changing-model-objects}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/alter}{\texttt{alter}} - Expand or reduce number of
+  alternative parameterisations.
+\item
+  \href{model/assign}{\texttt{assign}} - Assign parameters, steady
+  states, std deviations or cross-correlations.
+\item
+  \href{model/export}{\texttt{export}} - Save carry-around files on the
+  disk.
+\item
+  \href{model/horzcat}{\texttt{horzcat}} - Combine two compatible model
+  objects in one object with multiple parameterisations.
+\item
+  \href{model/refresh}{\texttt{refresh}} - Refresh dynamic links.
+\item
+  \href{model/reset}{\texttt{reset}} - Reset specific values within
+  model object.
+\item
+  \href{model/stdscale}{\texttt{stdscale}} - Re-scale all std deviations
+  by the same factor.
+\item
+  \href{model/set}{\texttt{set}} - Change modifiable model object
+  property.
+\item
+  \href{model/single}{\texttt{single}} - Convert solution matrices to
+  single precision.
+\end{itemize}
+
+\paragraph{Steady state}\label{steady-state}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/blazer}{\texttt{blazer}} - Reorder steady-state equations
+  into block-recursive structure.
+\item
+  \href{model/chksstate}{\texttt{chksstate}} - Check if equations hold
+  for currently assigned steady-state values.
+\item
+  \href{model/sstate}{\texttt{sstate}} - Compute steady state or
+  balance-growth path of the model.
+\item
+  \href{model/sstatefile}{\texttt{sstatefile}} - Create a steady-state
+  file based on the model object's steady-state equations.
+\end{itemize}
+
+\paragraph{Solution, simulation and
+forecasting}\label{solution-simulation-and-forecasting}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/chkmissing}{\texttt{chkmissing}} - Check for missing
+  initial values in simulation database.
+\item
+  \href{model/diffsrf}{\texttt{diffsrf}} - Differentiate shock response
+  functions w.r.t. specified parameters.
+\item
+  \href{model/expand}{\texttt{expand}} - Compute forward expansion of
+  model solution for anticipated shocks.
+\item
+  \href{model/jforecast}{\texttt{jforecast}} - Forecast with judgmental
+  adjustments (conditional forecasts).
+\item
+  \href{model/icrf}{\texttt{icrf}} - Initial-condition response
+  functions.
+\item
+  \href{model/lhsmrhs}{\texttt{lhsmrhs}} - Evaluate the discrepancy
+  between the LHS and RHS for each model equation and given data.
+\item
+  \href{model/resample}{\texttt{resample}} - Resample from the model
+  implied distribution.
+\item
+  \href{model/reporting}{\texttt{reporting}} - Run reporting equations.
+\item
+  \href{model/shockplot}{\texttt{shockplot}} - Short-cut for running and
+  plotting plain shock simulation.
+\item
+  \href{model/simulate}{\texttt{simulate}} - Simulate model.
+\item
+  \href{model/solve}{\texttt{solve}} - Calculate first-order accurate
+  solution of the model.
+\item
+  \href{model/srf}{\texttt{srf}} - Shock response functions.
+\end{itemize}
+
+\paragraph{Model data}\label{model-data}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/data4lhsmrhs}{\texttt{data4lhsmrhs}} - Prepare data array
+  for running \texttt{lhsmrhs}.
+\item
+  \href{model/emptydb}{\texttt{emptydb}} - Create model-specific
+  database with empty tseries for all variables and shocks.
+\item
+  \href{model/rollback}{\texttt{rollback}} - Prepare database for a
+  rollback run of Kalman filter.
+\item
+  \href{model/sstatedb}{\texttt{sstatedb}} - Create model-specific
+  steady-state or balanced-growth-path database.
+\item
+  \href{model/zerodb}{\texttt{zerodb}} - Create model-specific
+  zero-deviation database.
+\end{itemize}
+
+\paragraph{Stochastic properties}\label{stochastic-properties}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/acf}{\texttt{acf}} - Autocovariance and autocorrelation
+  functions for model variables.
+\item
+  \href{model/ifrf}{\texttt{ifrf}} - Frequency response function to
+  shocks.
+\item
+  \href{model/fevd}{\texttt{fevd}} - Forecast error variance
+  decomposition for model variables.
+\item
+  \href{model/ffrf}{\texttt{ffrf}} - Filter frequency response function
+  of transition variables to measurement variables.
+\item
+  \href{model/fmse}{\texttt{fmse}} - Forecast mean square error
+  matrices.
+\item
+  \href{model/vma}{\texttt{vma}} - Vector moving average representation
+  of the model.
+\item
+  \href{model/xsf}{\texttt{xsf}} - Power spectrum and spectral density
+  of model variables.
+\end{itemize}
+
+\paragraph{Identification, estimation and
+filtering}\label{identification-estimation-and-filtering}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \href{model/bn}{\texttt{bn}} - Beveridge-Nelson trends.
+\item
+  \href{model/diffloglik}{\texttt{diffloglik}} - Approximate gradient
+  and hessian of log-likelihood function.
+\item
+  \href{model/estimate}{\texttt{estimate}} - Estimate model parameters
+  by optimising selected objective function.
+\item
+  \href{model/evalsystempriors}{\texttt{evalsystempriors}} - Evaluate
+  minus log of system prior density.
+\item
+  \href{model/filter}{\texttt{filter}} - Kalman smoother and estimator
+  of out-of-likelihood parameters.
+\item
+  \href{model/fisher}{\texttt{fisher}} - Approximate Fisher information
+  matrix in frequency domain.
+\item
+  \href{model/lognormal}{\texttt{lognormal}} - Characteristics of
+  log-normal distributions returned by filter of forecast.
+\item
+  \href{model/loglik}{\texttt{loglik}} - Evaluate minus the
+  log-likelihood function in time or frequency domain.
+\item
+  \href{model/neighbourhood}{\texttt{neighbourhood}} - Evaluate the
+  local behaviour of the objective function around the estimated
+  parameter values.
+\item
+  \href{model/regress}{\texttt{regress}} - Centred population regression
+  for selected model variables.
+\item
+  \href{model/VAR}{\texttt{VAR}} - Population VAR for selected model
+  variables.
+\end{itemize}
+
+\paragraph{Getting on-line help on model
+functions}\label{getting-on-line-help-on-model-functions}
+
+\begin{verbatim}
+help model
+help model/function_name
+\end{verbatim}
+
+
+

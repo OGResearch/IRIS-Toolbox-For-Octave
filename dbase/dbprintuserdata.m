@@ -27,8 +27,8 @@ function dbprintuserdata(D,Field,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ischar(Field)
     Field = {Field};
@@ -59,7 +59,7 @@ for i = 1 : length(list)
             end
             value = u.(field);
         catch %#ok<CTCH>
-            value = { };
+            value = {};
         end
         if ischar(value)
             value = regexprep(value,':\s*',': ');
@@ -83,7 +83,7 @@ end
 if isHtml
     dbName = inputname(1);
     html = ['<html><head><title>', ...
-        dbName,' ',datestr(now( )), ...
+        dbName,' ',datestr(now()), ...
         '</title></head>',...'
         '<body><pre>',dbName,'</pre><pre>',html,'</pre></body></html>.'];
     [~,h] = web('-new');
@@ -99,6 +99,6 @@ end
         else
             fprintf(varargin{:});
         end
-    end % doPrint( ).
+    end % doPrint().
 
 end

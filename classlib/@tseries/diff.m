@@ -29,8 +29,8 @@ function X = diff(X,K)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % diff, df, pct, apct
 
@@ -40,7 +40,7 @@ catch %#ok<CTCH>
     K = -1;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('K',@isnumericscalar);
 pp.parse(K);
 

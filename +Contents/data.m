@@ -1,13 +1,13 @@
 % data  Time Series and Database Management.
 %
-% * [Dates and Date Ranges](dates/Contents)
+% * [dates](dates/Contents) - Dates and Date Ranges.
 %
-% * [Time Series (tseries Objects)](tseries/Contents)
+% * [tseries](tseries/Contents) - Time Series (Tseries) Objects and Functions.
 %
-% * [Time-Recursive Expressions (trec Objects)](trec/Contents)
+% * [trec](trec/Contents) - Time-Recursive Subscript Objects for Time-Recursive Expressions.
 %
-% * [Basic Database Management](dbase/Contents)
+% * [dbase](dbase/Contents) - Basic Database Management.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

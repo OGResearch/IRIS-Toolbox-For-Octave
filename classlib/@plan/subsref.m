@@ -32,8 +32,8 @@ function This = subsref(This,S)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ if isequal(S(1).type,'{}') ...
     shift = S(1).subs{1}(1);
     This.Start = This.Start + shift;
     This.End = This.End + shift;
-    S(1) = [ ];
+    S(1) = [];
     if ~isempty(S)
         This = builtin('subsref',This,S);
     end
@@ -55,7 +55,7 @@ elseif isequal(S(1).type,'()') ...
     end
 elseif isequal(S(1).type,'.')
     This = builtin('subsref',This,S(1));
-    S(1) = [ ];
+    S(1) = [];
     if ~isempty(S)
         This = builtin('subsref',This,S);
     end

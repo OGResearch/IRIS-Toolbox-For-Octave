@@ -1,27 +1,16 @@
-function this = loadobj(this)
-% loadobj  Prepare varobj based objects for loading and handle bkw compatibility.
+function This = loadobj(This)
+% loadobj  [Not a public function] Prepare varobj for use in workspace and handle bkw compatibility.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-try
-    build = sscanf(this.Build,'%g',1);
-catch
-    build = 0;
-end
-
-if build<20150218
-    this.IxFitted = this.Fitted;
-    this = rmfield(this, 'Fitted');
-end
-
-if isstruct(this)
-    this = struct2obj(this);
+if isstruct(This)
+    This = VAR(This);
 end
 
 end

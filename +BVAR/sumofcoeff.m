@@ -27,27 +27,34 @@ function [O,Y0,K0,Y1,G1] = sumofcoeff(Mu,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Mu',@isnumericscalar);
 pp.parse(Mu);
 
 if ~isempty(varargin) && nargout == 1
     utils.warning('BVAR:sumofcoeff', ...
-        ['This is an obsolete syntax to call BVAR.litterman( ). ', ...
+        ['This is an obsolete syntax to call BVAR.litterman(). ', ...
         'See documentation for valid syntax.']);
 end
 
 %--------------------------------------------------------------------------
 
-This = BVAR.bvarobj( );
+This = BVAR.bvarobj();
 This.name = 'sumofcoeff';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(Ny,~,~,~)  y0_oct(Ny,Mu);
+    This.k0 = @(Ny,~,~,Nk) k0(Ny,[],[],Nk);
+    This.y1 = @(Ny,P,~,~)  y1_oct(Ny,P,Mu);
+    This.g1 = @(~,~,Ng,~)  g1([],[],Ng,[]);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -62,7 +69,7 @@ end
     
     function Y0 = y0(Ny,~,~,~)
         Y0 = eye(Ny)*Mu;
-    end % y0( )
+    end % y0()
 
 
 %**************************************************************************
@@ -70,15 +77,15 @@ end
 
     function K0 = k0(Ny,~,~,Nk)
         K0 = zeros(Nk,Ny);
-    end % k0( )
+    end % k0()
 
 
 %**************************************************************************
     
 
     function Y1 = y1(Ny,P,~,~)
-        Y1 = repmat(Mu*eye(Ny),P,1);
-    end % y1( )
+        Y1 = repmat(Mu*eye(Ny),[P,1]);
+    end % y1()
 
 
 %**************************************************************************
@@ -86,7 +93,24 @@ end
     
     function G1 = g1(~,~,Ng,~)
         G1 = zeros(Ng,Ny);
-    end % g1( )
+    end % g1()
+
+
+%**************************************************************************
+
+    
+    function Y0 = y0_oct(Ny,Mu)
+        Y0 = eye(Ny)*Mu;
+    end % y0_oct()
+
+
+%**************************************************************************
+    
+
+    function Y1 = y1_oct(Ny,P,Mu)
+        Y1 = repmat(Mu*eye(Ny),[P,1]);
+    end % y1_oct()
+
 
 
 end

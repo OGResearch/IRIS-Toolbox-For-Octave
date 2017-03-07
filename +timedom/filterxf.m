@@ -11,7 +11,7 @@ Tat = Ta';
 Rat = s.R(nf+1:end,:)';
 Rft = s.R(1:nf,:)';
 if isempty(s.k)
-   kf = [ ];
+   kf = [];
 else
    kf = s.k(1:nf,1);
 end

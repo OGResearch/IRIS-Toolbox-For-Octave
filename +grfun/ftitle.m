@@ -1,67 +1,58 @@
-function aa = ftitle(varargin)
+function Aa = ftitle(varargin)
 % ftitle  Add title to figure window.
 %
 % Syntax
 % =======
 %
-%     aa = grfun.ftitle(titles, ...)
-%     aa = grfun.ftitle(ff, titles, ...)
-%
+%     Aa = grfun.ftitle(Titles,...)
+%     Aa = grfun.ftitle(FF,Titles,...)
 %
 % Input arguments
 % ================
 %
-% * `ff` [ numeric | struct ] - Handle to a figure window or windows; or a
+% * `FF` [ numeric | struct ] - Handle to a figure window or windows; or a
 % struct that includes a field name `figure`.
 %
-% * `titles` [ cellstr | char ] - Text string to be centred, or cell array
+% * `Titles` [ cellstr | char ] - Text string to be centred, or cell array
 % of strings to be placed on the LHS, centred, and on the RHS of the
 % figure.
-%
 %
 % Output arguments
 % =================
 %
-% * `aa` [ cell ] - Cell array of handles to annotation objects created,
-% one cell for each figure; each cell contains up to three handles
-% depending on `'titles'`.
-%
+% * `Aa` [ numeric ] - Handle or handles to annotation objects.
 %
 % Options
 % ========
 %
-% * `'Location='` [ *`'north'`* | `'west'` | `'east'` | `'south'` ] -
+% * `'location='` [ *`'north'`* | `'west'` | `'east'` | `'south'` ] -
 % Location of the figure title: top, left edge sideways, right edge
 % sideways, bottom.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-DEFAULT_FONT_NAME = get(0, 'DefaultAxesFontName');
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if all(ishandle(varargin{1}(:)))
     ff = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 elseif isstruct(varargin{1}) ...
-        && isfield(varargin{1}, 'figure') ...
+        && isfield(varargin{1},'figure') ...
         && all(ishandle(varargin{1}.figure(:)))
     ff = varargin{1}.figure;
-    varargin(1) = [ ];    
+    varargin(1) = [];    
 else
-    ff = gcf( );
+    ff = gcf();
 end
 
 string = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 
 if ischar(string)
     string = {string};
@@ -69,19 +60,19 @@ end
 
 switch length(string)
     case 0
-        string = {'', '', ''};
+        string = {'','',''};
     case 1
-        string = [{''}, string, {''}];
+        string = [{''},string,{''}];
     case 2
-        string = [string, {''}];
+        string = [string,{''}];
 end
 
-[opt, varargin] = passvalopt('grfun.ftitle', varargin{:});
+[opt,varargin] = passvalopt('grfun.ftitle',varargin{:});
 
 %--------------------------------------------------------------------------
 %#ok<*AGROW>
 
-string = regexprep(string, '[ ]*\\\\[ ]*', sprintf('\n'));
+string = strrep(string,'\\',sprintf('\n'));
 
 switch lower(opt.location)
     case 'north'
@@ -123,54 +114,89 @@ switch lower(opt.location)
 end
 
 textOpt = { ...
-    'VerticalAlignment', valign, ...
-    'FontWeight', 'bold', ...
-    'FontName', DEFAULT_FONT_NAME, ...
-    'LineStyle', 'none', ...
-    'Margin', 0, ...
+    'VerticalAlignment',valign, ...
+    'FontWeight','bold', ...
+    'LineStyle','none', ...
+    'Margin',ishg2(0,0.0001), ...
     };
 
-nff = numel(ff);
-aa = cell(1, nff);
-for i = 1 : nff
-    aa{i} = annotate( );
+if ~ishg2()
+    textOpt = [textOpt,{ ...
+        'Rotation',rotation, ...
+        }];
 end
 
-return
+Aa = [];
+for iFig = ff(:).'
+    if ishg2()
+        doHg2();
+    else
+        doHg1();
+    end
+end
 
 
+% Nested functions...
 
 
-    function a = annotate( )
-        a = [ ];
-        fontSize = get(0, 'defaultAxesFontSize') * 1.15;
+%**************************************************************************
+    function doHg1()
+        ca = get(iFig,'currentAxes');
+        ax = axes('position',[0,0,1,1],'parent',iFig,'visible','off');
         if ~isempty(string{1})
-            a = [ a, ...
-                annotation(ff(i), 'TextBox', [x1, y1, 0, 0], ...
-                'FitBoxToText', 'on', ...
-                'String', string{1}, ...
-                'FontSize', fontSize, ...
-                'HorizontalAlignment', 'left', ...
-                textOpt{:}, varargin{:}) ];
+            Aa = [Aa, ...
+                text(x1,y1,string{1}, ...
+                'parent',ax,'horizontalAlignment','left', ...
+                textOpt{:},varargin{:})];
         end
         if ~isempty(string{2})
-            a = [ a, ...
-                annotation(ff(i), 'TextBox', [x2, y2, 0, 0], ...
-                'FitBoxToText', 'on', ...
-                'String', string{2}, ...
-                'FontSize', fontSize, ...
-                'HorizontalAlignment', 'center', ...
-                textOpt{:}, varargin{:}) ];
-            set(ff(i), 'Name', string{2});
+            Aa = [Aa, ...
+                text(x2,y2,string{2}, ...
+                'parent',ax,'horizontalAlignment','center', ...
+                textOpt{:},varargin{:})];
         end
         if ~isempty(string{3})
-            a = [ a, ...
-                annotation(ff(i), 'TextBox', [x3, y3, 0, 0], ...
-                'FitBoxToText', 'on', ...
-                'String', string{3}, ...
-                'FontSize', fontSize, ...
-                'HorizontalAlignment', 'right', ...
-                textOpt{:}, varargin{:}) ];
+            Aa = [Aa, ...
+                text(x3,y3,string{3}, ...
+                'parent',ax, ...
+                'horizontalAlignment','right', ...
+                textOpt{:},varargin{:})];
         end
-    end
+        set(iFig,'currentAxes',ca);
+    end % doHg1()
+
+
+%**************************************************************************
+    function doHg2()
+        fontSize = get(0,'defaultAxesFontSize') * 1.15;
+        if ~isempty(string{1})
+            Aa = [Aa, ...
+                annotation('TextBox',[x1,y1,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{1}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','left', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{2})
+            Aa = [Aa, ...
+                annotation('TextBox',[x2,y2,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{2}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','center', ...
+                textOpt{:},varargin{:})];
+        end
+        if ~isempty(string{3})
+            Aa = [Aa, ...
+                annotation('TextBox',[x3,y3,0,0], ...
+                'FitBoxToText','on', ...
+                'String',string{3}, ...
+                'FontSize',fontSize, ...
+                'HorizontalAlignment','right', ...
+                textOpt{:},varargin{:})];
+        end
+    end % doHg2()
+
+
 end

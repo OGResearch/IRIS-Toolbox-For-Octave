@@ -6,7 +6,7 @@ end
 xsize = size(x);
 x = x(:,:);
 [nper,nx] = size(x);
-y = [ ];
+y = [];
 for k = s(:).'
    if k > 0
       tmp = [x(1+k:end,:);NaN*ones([min([nper,k]),nx])];

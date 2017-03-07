@@ -9,7 +9,7 @@ for i = 1 : size(xs{1},1)
 end
 
 if nargout > 1
-  realsmall = getrealsmall( );
+  realsmall = getrealsmall();
   lag = phase;
   for i = 1 : length(xs{2})
     if abs(xs{2}(i)) < realsmall

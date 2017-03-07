@@ -92,8 +92,8 @@ function [Max,Inx] = max(This,Dim)
 %         user data: empty
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Dim; %#ok<VUNUS>
@@ -103,6 +103,6 @@ end
 
 %--------------------------------------------------------------------------
 
-[Max,Inx] = unopinx(@max,This,Dim,[ ],Dim);
+[Max,Inx] = unopinx(@max,This,Dim,[],Dim);
 
 end

@@ -1,4 +1,4 @@
-function outp = forecast(this, inp, range, varargin)
+function Outp = forecast(This,Inp,Range,varargin)
 % forecast  Unconditional or conditional VAR forecasts.
 %
 % Syntax
@@ -53,81 +53,79 @@ function outp = forecast(this, inp, range, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% Panel VAR.
-if ispanel(this)
-    outp = mygroupmethod(@forecast, this, inp, range, varargin{:});
-    return
-end
-
-cond = [ ];
+Cond = [];
 if ~isempty(varargin) && ~ischar(varargin{1})
-    cond = varargin{1};
-    varargin(1) = [ ];
+    Cond = varargin{1};
+    varargin(1) = [];
 end
 
 % Parse input arguments.
-pp = inputParser( );
-pp.addRequired('V', @(x) isa(this, 'VAR'));
-pp.addRequired('Inp',@isstruct);
-pp.addRequired('Range', @(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.addRequired('Cond', @(x) isempty(x) || isstruct(x));
-pp.parse(this, inp, range, cond);
+pp = inputParser();
+pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp.addRequired('Cond',@(x) isempty(x) || isstruct(x));
+pp.parse(Inp,Range,Cond);
+
+% Panel VAR.
+if ispanel(This)
+    Outp = mygroupmethod(@forecast,This,Inp,Range,varargin{:});
+    return
+end
 
 % Parse options.
 opt = passvalopt('VAR.forecast',varargin{1:end});
 
 %--------------------------------------------------------------------------
 
-ny = size(this.A, 1);
-p = size(this.A, 2) / max(ny, 1);
-nAlt = size(this.A, 3);
-kx = length(this.XNames);
-ni = size(this.Zi, 1);
-isX = kx>0;
+ny = size(This.A,1);
+p = size(This.A,2) / max(ny,1);
+nAlt = size(This.A,3);
+nx = length(This.XNames);
+ni = size(This.Zi,1);
+isX = nx > 0;
+isConst = ~opt.deviation;
 
-if isempty(range)
+if isempty(Range)
     utils.warning('VAR:forecast', ...
         'Forecast range is empty.');
     if opt.meanonly
-        inp = [ ];
+        Inp = [];
     else
-        inp = struct( );
-        inp.mean = [ ];
-        inp.std = [ ];
+        Inp = struct();
+        Inp.mean = [];
+        Inp.std = [];
     end
 end
 
-if range(1)>range(end)
+if (Range(1) > Range(end))
     % Go backward in time.
     isBackcast = true;
-    this = backward(this);
-    xRange = range(end) : range(1)+p;
-    range = range(end) : range(1);
+    This = backward(This);
+    xRange = Range(end) : Range(1)+p;
+    Range = Range(end) : Range(1);
 else
     isBackcast = false;
-    xRange = range(1)-p : range(end);
+    xRange = Range(1)-p : Range(end);
 end
 
 % Include pre-sample.
-req = datarequest('y* x* e', this, inp, xRange);
+req = datarequest('y*,x*,e',This,Inp,xRange,opt);
+outpFmt = req.Format;
 xRange = req.Range;
 y = req.Y;
 x = req.X;
 e = req.E;
 
-e = e(:, p+1:end,:);
+e = e(:,p+1:end,:);
 if isX
-    x = x(:, p+1:end,:);
+    x = x(:,p+1:end,:);
 end
 
 % Get tunes on VAR variables and instruments; do not include pre-sample.
-if ~isstruct(cond)
-    cond = struct( );
-end
-req = datarequest('y e i', this, cond, range);
+req = datarequest('y,e,i',This,Cond,Range);
 condY = req.Y;
 condE = req.E;
 condI = req.I;
@@ -135,8 +133,8 @@ condI = req.I;
 % Changes in residual means can be either in `e` or `je` (but not both).
 e(isnan(e)) = 0;
 condE(isnan(condE)) = 0;
-if any( condE(:)~=0 )
-    if any( e(:)~=0 )
+if any(condE(:) ~= 0)
+    if any(e(:) ~= 0)
         utils.error('VAR:forecast', ...
             ['Changes in residual means can be entered either ', ...
             'in the input database or in the conditioning database, ', ...
@@ -147,42 +145,42 @@ if any( condE(:)~=0 )
 end
 
 if isBackcast
-    y = flip(y, 2);
-    x = flip(x, 2);
-    e = flip(e, 2);
-    condY = flip(condY, 2);
-    condI = flip(condI, 2);
+    y = flip(y,2);
+    x = flip(x,2);
+    e = flip(e,2);
+    condY = flip(condY,2);
+    condI = flip(condI,2);
 end
 
-nPer = length(range);
+nPer = length(Range);
 nXPer = length(xRange);
-nDataY = size(y, 3);
-nDataX = size(x, 3);
-nDataE = size(e, 3);
-nCond = size(condY, 3);
-nInst = size(condI, 3);
-nOmg = size(opt.omega, 3);
+nDataY = size(y,3);
+nDataX = size(x,3);
+nDataE = size(e,3);
+nCond = size(condY,3);
+nInst = size(condI,3);
+nOmg = size(opt.omega,3);
 
-nLoop = max([nAlt, nDataY, nDataX, nDataE, nCond, nInst, nOmg]);
+nLoop = max([nAlt,nDataY,nDataX,nDataE,nCond,nInst,nOmg]);
 
 % Stack initial conditions.
-y0 = y(:, 1:p,:);
+y0 = y(:,1:p,:);
 y0 = y0(:,p:-1:1,:);
-y0 = reshape(y0(:), ny*p,size(y0, 3));
+y0 = reshape(y0(:),ny*p,size(y0,3));
 
 % Preallocate output data.
-Y = nan(ny, nXPer, nLoop);
-X = nan(kx, nXPer, nLoop);
-E = nan(ny, nXPer, nLoop);
-P = zeros(ny, ny, nXPer, nLoop);
-I = nan(ni, nXPer, nLoop);
+Y = nan(ny,nXPer,nLoop);
+X = nan(nx,nXPer,nLoop);
+E = nan(ny,nXPer,nLoop);
+P = zeros(ny,ny,nXPer,nLoop);
+I = nan(ni,nXPer,nLoop);
 
-Zi = this.Zi;
+Zi = This.Zi;
 if isempty(Zi)
-    Zi = zeros(0, 1+ny*p);
+    Zi = zeros(0,1+ny*p);
 end
 
-s = struct( );
+s = struct();
 s.invFunc = @inv;
 s.allObs = NaN;
 s.tol = 0;
@@ -191,100 +189,100 @@ s.ahead = 1;
 
 for iLoop = 1 : nLoop
     
-    [iA, iB, iK, iJ, iOmg] = mysystem(this, iLoop);
+    [iA,iB,iK,iJ,iOmg] = mysystem(This,iLoop);
     
     if ~isempty(opt.omega)
-        iOmg(:,:) = opt.omega(:,:, min(iLoop, end));
+        iOmg(:,:) = opt.omega(:,:,min(iLoop,end));
     end
         
     % Reduce or zero off-diagonal elements in the cov matrix of residuals
     % if requested. This only matters in VARs, not SVARs.
-    if double(opt.cross)<1
-        ix = logical( eye(size(iOmg)) );
-        iOmg(~ix) = double(opt.cross)*iOmg(~ix);
+    if double(opt.cross) < 1
+        inx = logical(eye(size(iOmg)));
+        iOmg(~inx) = double(opt.cross)*iOmg(~inx);
     end
     
     % Use the `allObserved` option in `varsmoother` only if the cov matrix is
     % full rank. Otherwise, there is singularity.
-    s.allObs = rank(iOmg)==ny;
+    s.allObs = rank(iOmg) == ny;
 
     % Get the iLoop-th data.
-    iY0 = y0(:, min(iLoop, end));
+    iY0 = y0(:,min(iLoop,end));
     if isX
-        iX = x(:, :, min(iLoop, end));
+        iX = x(:,:,min(iLoop,end));
     end
-    iE = e(:,:, min(iLoop, end));
-    iCondY = condY(:, :, min(iLoop, end));
-    iCondI = condI(:, :, min(iLoop, end));
+    iE = e(:,:,min(iLoop,end));
+    iCondY = condY(:,:,min(iLoop,end));
+    iCondI = condI(:,:,min(iLoop,end));
 
     if ~isempty(iCondI)
-        Z = [eye(ny, ny*p); Zi(:, 2:end)];
-        D = [zeros(ny, 1); Zi(:, 1)];
+        Z = [eye(ny,ny*p);Zi(:,2:end)];
+        D = [zeros(ny,1);Zi(:,1)];
         s.allObs = false;
     else
         Z = eye(ny);
-        D = [ ];
+        D = [];
     end
 
     % Collect all deterministic terms (constant and exogenous inputs).
-    iKJ = zeros(ny, nPer);
-    if ~opt.deviation
-        iKJ = iKJ + repmat(iK, 1, nPer);
+    iKJ = zeros(ny,nPer);
+    if isConst
+        iKJ = iKJ + iK(:,ones(1,nPer));
     end    
     if isX
         iKJ = iKJ + iJ*iX;
     end
     
     % Run Kalman filter and smoother.
-    [~,~, iE,~, iY, iP] = ...
-        timedom.varsmoother(iA, iB, iKJ, Z, D, iOmg, ...
-        [ ], [iCondY;iCondI], iE, iY0,0,s);
+    [~,~,iE,~,iY,iP] = ...
+        timedom.varsmoother(iA,iB,iKJ,Z,D,iOmg, ...
+        [],[iCondY;iCondI],iE,iY0,0,s);
     
-    E(:,p+1:end, iLoop) = iE;
+    E(:,p+1:end,iLoop) = iE;
     % Add pre-sample initial condition.
-    Y(:,p:-1:1, iLoop) = reshape(iY0, ny,p);
+    Y(:,p:-1:1,iLoop) = reshape(iY0,ny,p);
     % Add forecast data; `iY` includes both the VAR variables and the
     % instruments.
-    Y(:,p+1:end, iLoop) = iY(1:ny,:);
+    Y(:,p+1:end,iLoop) = iY(1:ny,:);
     if isX
-        X(:,p+1:end, iLoop) = iX;
+        X(:,p+1:end,iLoop) = iX;
     end
-    P(:,:,p+1:end, iLoop) = iP(1:ny, 1:ny,:);
+    P(:,:,p+1:end,iLoop) = iP(1:ny,1:ny,:);
     % Return conditioning instruments.
-    I(:,p+1:end, iLoop) = iY(ny+1:end,:);
+    I(:,p+1:end,iLoop) = iY(ny+1:end,:);
 end
 
 if isBackcast
-    Y = flip(Y, 2);
-    E = flip(E, 2);
+    Y = flip(Y,2);
+    E = flip(E,2);
     if isX
-        X = flip(X, 2);
+        X = flip(X,2);
     end
-    I = flip(I, 2);
-    P = flip(X, 3);
+    I = flip(I,2);
+    P = flip(X,3);
 end
 
 % Prepare output data.
-names = [this.YNames, this.XNames, this.ENames, this.INames];
-data = [Y; X; E; I];
+names = [This.YNames,This.XNames,This.ENames,This.INames];
+data = [Y;X;E;I];
 
 % Output data for endougenous variables, residuals, and instruments.
 if opt.meanonly
-    outp = myoutpdata(this, xRange, data, [ ], names);
-    if opt.dboverlay
-        if ~isfield(inp, 'mean')
-            outp = dboverlay(inp, outp);
+    Outp = myoutpdata(This,outpFmt,xRange,data,[],names);
+    if strcmp(outpFmt,'dbase') && opt.dboverlay
+        if ~isfield(Inp,'mean')
+            Outp = dboverlay(Inp,Outp);
         else
-            outp = dboverlay(inp.mean, outp);
+            Outp = dboverlay(Inp.mean,Outp);
         end
     end
 else
-    outp = myoutpdata(this, xRange, data, P, names);
-    if opt.dboverlay
-        if ~isfield(inp, 'mean')
-            outp.mean = dboverlay(inp, outp.mean);
+    Outp = myoutpdata(This,outpFmt,xRange,data,P,names);
+    if strcmp(outpFmt,'dbase') && opt.dboverlay
+        if ~isfield(Inp,'mean')
+            Outp.mean = dboverlay(Inp,Outp.mean);
         else
-            outp.mean = dboverlay(inp.mean, outp.mean);
+            Outp.mean = dboverlay(Inp.mean,Outp.mean);
         end
     end    
 end

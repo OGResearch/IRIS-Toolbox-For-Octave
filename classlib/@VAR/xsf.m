@@ -24,8 +24,8 @@ function [S,D] = xsf(This,Freq,varargin)
 % Options
 % ========
 %
-% * `'applyTo='` [ cellstr | char | *`@all`* ] - List of variables to which
-% the `'filter='` will be applied; `@all` means all variables.
+% * `'applyTo='` [ cellstr | char | *`':'`* ] - List of variables to which
+% the `'filter='` will be applied; `':'` means all variables.
 %
 % * `'filter='` [ char  | *empty* ] - Linear filter that is applied to
 % variables specified by 'applyto'.
@@ -51,11 +51,11 @@ function [S,D] = xsf(This,Freq,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('freq',@isnumeric);
 pp.parse(Freq);
 
@@ -72,7 +72,7 @@ nFreq = length(Freq);
 [~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,This.YNames);
 
 if opt.progress
-    progress = ProgressBar('IRIS VAR.xsf progress');
+    progress = progressbar('IRIS VAR.xsf progress');
 end
 
 S = nan(ny,ny,nFreq,nAlt);

@@ -33,14 +33,14 @@ function [This,XMean,XStd] = stdise(This,Flag)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2
    Flag = 0;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Flag',@(x) isequal(x,0) || isequal(x,1) );
 pp.parse(Flag);
 

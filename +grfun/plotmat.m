@@ -52,8 +52,8 @@ function [HPos,HNeg,HNaNInf,HMax] = plotmat(X,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 X = X(:,:);
 
@@ -93,12 +93,12 @@ radius = 0.45;
 X = X/opt.scale * radius;
 gray = 0.6*[1,1,1];
 
-HPos = [ ];
-HNeg = [ ];
-HNaNInf = [ ];
-HMax = [ ];
+HPos = [];
+HNeg = [];
+HNaNInf = [];
+HMax = [];
 
-status = ishold( );
+status = ishold();
 hold on;
 
 for row = 1 : nRow
@@ -121,7 +121,7 @@ for row = 1 : nRow
     end
 end
 
-set(gca( ), ...
+set(gca(), ...
     'xAxisLocation','top', ...
     'box','on', ...
     'xLim',[0,nCol+1], ...
@@ -168,11 +168,11 @@ if ischar(C)
     C = strtrim(C);
 end
 if isempty(C)
-    C = { };
+    C = {};
     return
 end
 if length(C) < N
     C(end+1:N) = {''};
 end
 
-end % xxGetNames( ).
+end % xxGetNames().

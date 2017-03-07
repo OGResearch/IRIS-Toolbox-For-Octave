@@ -21,5 +21,5 @@
 %     !transition_equations
 %         x = rho*x{-1} %{ this is a valid block comment %} + epsilon;
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

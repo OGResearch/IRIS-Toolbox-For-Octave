@@ -4,11 +4,12 @@ classdef reportobj < report.genericobj
     % Backed IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     
     methods
+        
         % Constructor
         %-------------
         function This = reportobj(varargin)
@@ -20,8 +21,8 @@ classdef reportobj < report.genericobj
                 @(x) any(strcmpi(x,{'landscape','portrait'})),false, ...
                 'typeface','',@ischar,false, ...
                 }];
-            This.parent = [ ];
-            This.hInfo = report.hinfoobj( );
+            This.parent = [];
+            This.hInfo = report.hinfoobj();
         end
         
         function [This,varargin] = setoptions(This,varargin)
@@ -39,10 +40,9 @@ classdef reportobj < report.genericobj
         varargout = cleanup(varargin)
         varargout = merge(varargin)
         varargout = publish(varargin)
+        
     end
 
-    
-    
     
     methods (Access=protected,Hidden)
         varargout = add(varargin)
@@ -50,11 +50,11 @@ classdef reportobj < report.genericobj
     end
     
     
-    
-    
     methods
+        
         % Level 1 objects
         %-----------------
+        
         function [This,NewObj] = section(This,varargin)
             NewObj = report.sectionobj(varargin{:});
             This = add(This,NewObj,varargin{2:end});
@@ -76,8 +76,19 @@ classdef reportobj < report.genericobj
         end
         
         function [This,NewObj] = figure(This,varargin)
-            NewObj = report.figureobj(varargin{:});
-            This = add(This, NewObj, varargin{2:end});
+            if length(varargin) == 1 || ischar(varargin{2})
+                NewObj = report.figureobj(varargin{:});
+                This = add(This,NewObj,varargin{2:end});
+            else
+                % For bkw compatibility.
+                % ##### Nov 2013 OBSOLETE and scheduled for removal.
+                utils.warning('obsolete', ...
+                    ['Using report/figure for inserting existing figure ', ...
+                    'windows into the report is obsolete, and this feature ', ...
+                    'will be removed from IRIS in a future release. ', ...
+                    'Use report/userfigure instead.']);
+                This = userfigure(This,varargin{:});
+            end
         end
         
         function [This,NewObj] = userfigure(This,varargin)
@@ -130,6 +141,7 @@ classdef reportobj < report.genericobj
         
         % Level 2 and 3 objects
         %-----------------------
+        
         function [This,NewObj] = graph(This,varargin)
             NewObj = report.graphobj(varargin{:});
             This = add(This,NewObj,varargin{2:end});
@@ -163,13 +175,8 @@ classdef reportobj < report.genericobj
         function [This,NewObj] = subheading(This,varargin)
             NewObj = report.subheadingobj(varargin{:});
             This = add(This,NewObj,varargin{2:end});
-        end  
+        end
+        
     end
     
-    
-    
-    
-    methods (Static)
-        varargout = insertDocSubstitutions(varargin)
-    end
 end

@@ -4,12 +4,12 @@ function [Pe0,A0,Y0,YDelta] = correct(S,Pe0,A0,Y0,Est,D)
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-nPOut = S.NPOut;
+nPOut = S.npout;
 delta = Est(1:nPOut,:);
 nPer = size(S.y1,2);
 for t = 2 : nPer

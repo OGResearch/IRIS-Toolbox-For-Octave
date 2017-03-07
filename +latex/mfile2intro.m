@@ -1,26 +1,23 @@
-function intro = mfile2intro(file)
+function Intro = mfile2intro(File)
 
-[~, ~, ext] = fileparts(file);
+[~,~,ext] = fileparts(File);
 if isempty(ext)
-    file = [file,'.m'];
+    File = [File,'.m'];
 end
 
-c = file2char(file);
-c = textfun.converteols(c);
+c = file2char(File);
+c = strfun.converteols(c);
 
-start = regexp(c,'^%%(?!%)', 'start', 'lineanchors');
+start = regexp(c,'^%%(?!%)','start','lineanchors');
 
 if isempty(start)
     utils.error('latex:mfile2intro', ...
         'No introduction found in %s.', ...
-        file);
+        File);
 end
 
 start = [start,length(c)+1];
-intro = c(start(1):start(2)-1);
-intro = regexprep(intro,'\n+$','');
-
-% Remove by author.
-intro = regexprep(intro, '^%[ ]*[Bb]y.*?\n', '', 'once', 'lineanchors');
+Intro = c(start(1):start(2)-1);
+Intro = regexprep(Intro,'\n+$','');
 
 end

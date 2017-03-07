@@ -1,43 +1,38 @@
-function flag = isempty(this)
+function Flag = isempty(This)
 % isempty  True for empty grouping object.
 %
 % Syntax
 % =======
 %
-%     flag = isempty(g)
-%
+%     Flag = isempty(G)
 %
 % Input arguments
 % ================
 %
-% * `g` [ grouping ] - Grouping object.
-%
+% * `G` [ grouping ] - Grouping object.
 %
 % Output arguments
 % =================
 %
-% * `flag` [ `true` | `false` ] - True if `g` is a grouping object with no
-% groups.
-%
+% * `Flag` [ `true` | `false` ] - True if `G` is an empty grouping object.
 %
 % Description
 % ============
 %
-%
 % Example
 % ========
 %
-%     g = grouping( );
+%     g = grouping();
 %     isempty(g)
 %     ans = 
 %          1
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-flag = isempty(this.GroupNames);
+Flag = isempty(This.groupNames);
 
 end

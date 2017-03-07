@@ -4,9 +4,9 @@ function varargout = stem(varargin)
 % Syntax
 % =======
 %
-%     [H,Range] = stem(X,...)
-%     [H,Range] = stem(Range,X,...)
-%     [H,Range] = stem(Ax,Range,X,...)
+%     [h,range] = stem(x,...)
+%     [h,range] = stem(range,x,...)
+%     [h,range] = stem(a,range,x,...)
 %
 % Input arguments
 % ================
@@ -14,10 +14,10 @@ function varargout = stem(varargin)
 % * `Ax` [ handle | numeric ] - Handle to axes in which the graph will be
 % plotted; if not specified, the current axes will used.
 %
-% * `Range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
-% * `X` [ tseries ] - Input tseries object whose columns will be plotted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % a stem graph.
 %
 % Output arguments
@@ -40,17 +40,13 @@ function varargout = stem(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% AREA, BAND, BAR, BARCON, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
-
-[Ax,Rng,X,PlotSpec,varargin] = irisinp.parser.parse('tseries.plot',varargin{:});
-[opt,varargin] = passvalopt('tseries.plot',varargin{:});
+% AREA, BAR, PLOT, CONBAR, PLOTCMP, PLOTYY, STEM
 
 %--------------------------------------------------------------------------
 
-[~,varargout{1:nargout}] = ...
-    tseries.myplot(@stem,Ax,Rng,[ ],X,PlotSpec,opt,varargin{:});
+[varargout{1:nargout}] = tseries.myplot(@stem,varargin{:});
 
 end

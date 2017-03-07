@@ -1,24 +1,21 @@
-function fn = chisquare(df)
-% chisquare  Create function proportional to log of Chi-Squared distribution.
+function F = chisquare(Df)
+% gamma  Create function proportional to log of Chi-Squared distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.chisquare(df)
-%
+%     F = logdist.chisquare(Df)
 %
 % Input arguments
 % ================
 %
-% * `df` [ integer ] - Degrees of freedom of Chi-squared distribution.
-%
+% * `Df` [ integer ] - Degrees of freedom of Chi-squared distribution.
 %
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of the gamma density.
-%
 %
 % Description
 % ============
@@ -26,25 +23,24 @@ function fn = chisquare(df)
 % See [help on the logdisk package](logdist/Contents) for details on
 % using the function handle `F`.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-a = df / 2 ;
+a = Df / 2 ;
 b = 2 ;
-mean_ = a*b ;
-std_ = sqrt(a)*b ;
-if a>=1
-    mode_ = (a - 1)*b;
+Mean = a*b ;
+Std = sqrt(a)*b ;
+if a >= 1
+    mode = (a - 1)*b;
 else
-    mode_ = NaN;
+    mode = NaN;
 end
-fn = @(x, varargin) logdist.fnGamma(x, a, b, mean_, std_, mode_, varargin{:});
+F = @(x,varargin) logdist.mygamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end

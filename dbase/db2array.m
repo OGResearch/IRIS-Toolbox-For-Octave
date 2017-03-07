@@ -1,356 +1,318 @@
-function [x, ixIncl, range, ixNotFound, ixNonSeries] = db2array(d, list, range, sw)
+function [X,ixIncl,Range,IxNotFound,IxNonTseries] ...
+    = db2array(D,List,Range,Sw)
 % db2array  Convert tseries database entries to numeric array.
 %
 % Syntax
 % =======
 %
-%     [x, includedList, range] = db2array(d)
-%     [x, includedList, range] = db2array(d, list)
-%     [x, includedList, range] = db2array(d, list, range, ...)
-%
+%     [X,Incl,Range] = db2array(D)
+%     [X,Incl,Range] = db2array(D,List)
+%     [X,Incl,Range] = db2array(D,List,Range)
 %
 % Input arguments
 % ================
 %
-% * `d` [ struct ] - Input database with tseries objects that will be
+% * `D` [ struct ] - Input database with tseries objects that will be
 % converted to a numeric array.
 %
-% * `list` [ char | cellstr ] - List of time series names that will be
-% converted to numeric array and included in the output matrix; if not
-% specified, all time series entries found in the input database, `d`, will
-% be included in the output array, `x`.
+% * `List` [ char | cellstr ] - List of tseries names that will be
+% converted to a numeric array; if not specified, all tseries
+% entries found in the input database, `D`, will be included in the output
+% arrays, `X`.
 %
-% * `range` [ numeric | `@all` ] - Date range; `@all` means a range from the
+% * `Range` [ numeric | `Inf` ] - Date range; `Inf` means a range from the
 % very first non-NaN observation to the very last non-NaN observation.
-%
 %
 % Output arguments
 % =================
 %
-% * `x` [ numeric ] - Numeric array with observations from individual
+% * `X` [ numeric ] - Numeric array with observations from individual
 % tseries objects in columns.
 %
-% * `includedList` [ cellstr ] - List of time series names that have been 
-% included in the output array.
+% * `Incl` [ cellstr ] - List of tseries names that have been actually
+% found in the database.
 %
-% * `range` [ numeric ] - Date range actually used; this output argument is
-% useful when the input argument `range` is missing or `Inf`.
-%
+% * `Range` [ numeric ] - Date range actually used; this output argument is
+% useful when the input argument `Range` is missing or `Inf`.
 %
 % Description
 % ============
 %
-% The output array, `x`, is always NPer-by-NList-by-NAlt, where NPer is the
-% length of the `range` (the number of periods), NList is the number of
-% tseries included in the `list`, and NAlt is the maximum number of columns
-% that any of the tseries included in the `list` have.
+% The output array, `X`, is always NPer-by-NList-by-NAlt, where NPer is the
+% length of the `Range` (the number of periods), NList is the number of
+% tseries included in the `List`, and NAlt is the maximum number of columns
+% that any of the tseries included in the `List` have.
 %
-% If all tseries data have the same size in 2nd and higher dimensions, the
-% output array will respect that size in 3rd and higher dimensions. For
-% instance, if all tseries data are NPer-by-2-by-5, the output array will
-% be NPer-by-Nx-by-2-by-5. If some tseries data have unmatching size in 2nd
-% or higher dimensions, the output array will be always a 3D array with all
-% higher dimensions unfolded in 3rd dimension.
-%
-% If some tseries data have smaller size in 2nd or higher dimensions than
-% other tseries entries, the last available column will be repeated for the
-% missing columns.
-%
+% All tseries with more than one dimension (i.e. with more than one column)
+% are always expanded along 3rd dimension only. For instance, a
+% 10-by-2-by-3 tseries will occupy a 10-by-1-by-6 space in `X` at its
+% respective location.
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
 try
-    list;
+    List;
 catch
-    list = dbnames(d, 'ClassFilter=', 'tseries');
+    List = dbnames(D,'classFilter=','tseries');
 end
 
 try
-    if isequal(range, @all)
-        range = Inf;
-    end
+    Range;
 catch
-    range = Inf;
+    Range = Inf;
 end
 
 try
-    sw;
+    Sw;
 catch
-    sw = struct( );
+    Sw = struct();
 end
 
 try
-    sw.LagOrLead;
+    Sw.LagOrLead;
 catch
-    sw.LagOrLead = [ ];
+    Sw.LagOrLead = [];
 end
 
 try
-    sw.IxLog;
+    Sw.IxLog;
 catch
-    sw.IxLog = [ ];
+    Sw.IxLog = [];
 end
 
 try
-    sw.Warn;
+    Sw.Warn;
 catch
-    sw.Warn = struct( );
+    Sw.Warn = struct();
 end
 
 try
-    sw.Warn.NotFound;
+    Sw.Warn.NotFound;
 catch
-    sw.Warn.NotFound = true;
+    Sw.Warn.NotFound = true;
 end
 
 try
-    sw.Warn.SizeMismatch;
+    Sw.Warn.SizeMismatch;
 catch
-    sw.Warn.SizeMismatch = true;
+    Sw.Warn.SizeMismatch = true;
 end
 
 try
-    sw.Warn.FreqMismatch;
+    Sw.Warn.FreqMismatch;
 catch
-    sw.Warn.FreqMismatch = true;
+    Sw.Warn.FreqMismatch = true;
 end
 
 try
-    sw.Warn.NonTseries;
+    Sw.Warn.NonTseries;
 catch
-    sw.Warn.NonTseries = true;
+    Sw.Warn.NonTseries = true;
 end
 
 try
-    sw.Warn.NoRangeFound;
+    Sw.Warn.NoRangeFound;
 catch
-    sw.Warn.NoRangeFound = true;
+    Sw.Warn.NoRangeFound = true;
 end
 
-try, sw.BaseYear; catch, sw.BaseYear = @config; end
-
-try, sw.ExpandMethod; catch, sw.ExpandMethod = 'RepeatLast'; end %#ok<*NOCOM>
-
-% Swap `list` and `Range` if needed.
-if isnumeric(list) && (iscellstr(range) || ischar(range))
-    [list, range] = deal(range, list);
+try
+    Sw.BaseYear;
+catch
+    Sw.BaseYear = @config;
 end
 
-pp = inputParser( );
-pp.addRequired('d', @isstruct);
-pp.addRequired('list', @iscellstr);
-pp.addRequired('range', @isnumeric);
-pp.parse(d, list, range);
+% Swap `List` and `Range` if needed.
+if isnumeric(List) && (iscellstr(Range) || ischar(Range))
+    [List,Range] = deal(Range,List);
+end
 
 %--------------------------------------------------------------------------
 
-if ischar(list)
-    list = regexp(list, '\w+', 'match');
+if ischar(List)
+    List = regexp(List,'\w+','match');
 end
-list = list(:).';
+List = List(:).';
 
-nList = length(list);
-ixInvalid = false(1, nList);
-ixIncl = false(1, nList);
-ixFreqMismatch = false(1, nList);
-ixNotFound = false(1, nList);
-ixNonSeries = false(1, nList);
+nList = length(List);
+ixInvalid = false(1,nList);
+ixIncl = false(1,nList);
+ixFreqMismatch = false(1,nList);
+IxNotFound = false(1,nList);
+IxNonTseries = false(1,nList);
 
-range2 = [ ];
-if any(isinf(range([1, end])))
-    range2 = dbrange(d, list);
+range2 = [];
+if any(isinf(Range([1,end])))
+    range2 = dbrange(D,List);
     if isempty(range2)
-        if sw.Warn.NoRangeFound
-            throw( ...
-                exception.Base('Dbase:CannotDetermineRange', 'warning') ...
-                );
+        if Sw.Warn.NoRangeFound
+            utils.warning('dbase', ...
+                ['Cannot determine range because ', ...
+                'no tseries entries have been found in the database.']);
         end
-        x = [ ];
-        range = [ ];
+        X = [];
+        Range = [];
         return
     end
 end
 
-if isinf(range(1))
+if isinf(Range(1))
     startDate = range2(1);
 else
-    startDate = range(1);
+    startDate = Range(1);
 end
 
-if isinf(range(end))
+if isinf(Range(end))
     endDate = range2(end);
 else
-    endDate = range(end);
+    endDate = Range(end);
 end
 
-range = startDate : endDate;
+Range = startDate : endDate;
 rangeFreq = datfreq(startDate);
-nPer = numel(range);
+nPer = numel(Range);
 
-
-% If all existing tseries have the same size in 2nd and higher dimensions, 
-% reshape the output array to match that size. Otherwise, return a 2D
-% array.
-outpSize = [ ];
-isReshape = true;
-
-x = nan(nPer, 0);
+X = nan(nPer,0);
 for i = 1 : nList
-    name = list{i};
+    name = List{i};
     try
-        nData = max(1, size(x, 3));
-        if strcmp(name, '!ttrend')
-            iX = [ ];
-            getTtrend( );
-            addData( );
+        nData = max(1,size(X,3));
+        if strcmp(name,'!ttrend')
+            Xi = [];
+            doGetTtrend();
+            doAddData();
         else
-            field = d.(name);
+            field = D.(name);
             if istseries(field)
-                iX = [ ];
-                getSeriesData( );
-                addData( );
+                Xi = [];
+                doGetTseriesData();
+                doAddData();
             else
-                ixNonSeries(i) = true;
+                IxNonTseries(i) = true;
             end
         end
     catch
-        ixNotFound(i) = true;
+        IxNotFound(i) = true;
         continue
     end
 end
 
-ixIncl = list(ixIncl);
+ixIncl = List(ixIncl);
 
-throwWarning( );
+doWarning();
 
-if isempty(x)
-    x = nan(nPer, nList);
+if isempty(X)
+    X = nan(nPer,nList);
 end
 
-if isReshape
-    outpSize = [ size(x, 1), size(x, 2), outpSize ];
-    x = reshape(x, outpSize);
-end
 
-return
+% Nested functions...
 
 
+%**************************************************************************
 
 
-    function getSeriesData( )
+    function doGetTseriesData()
         tmpFreq = freq(field);
-        if ~isnan(tmpFreq) && rangeFreq~=tmpFreq
-            nData = max(1, size(x, 3));
-            iX = nan(nPer, nData);
+        if ~isnan(tmpFreq) && rangeFreq ~= tmpFreq
+            nData = max(1,size(X,3));
+            Xi = nan(nPer,nData);
             ixFreqMismatch(i) = true;
         else
             k = 0;
-            if ~isempty(sw.LagOrLead)
-                k = sw.LagOrLead(i);
+            if ~isempty(Sw.LagOrLead)
+                k = Sw.LagOrLead(i);
             end
-            iX = rangedata(field, range+k);
-            iSize = size(iX);
-            iSize(1) = [ ];
-            if isempty(outpSize)
-                outpSize = iSize;
-            else
-                isReshape = isReshape && isequal(outpSize, iSize);
-            end
-            % Make sure iX is processed as 2D array.
-            iX = iX(:, :);
+            Xi = rangedata(field,Range+k);
+            % Make sure the input data are 2D only.
+            Xi = Xi(:,:);
         end
-    end 
+    end % doGetTseriesData()
 
 
+%**************************************************************************
 
 
-    function getTtrend( )
+    function doGetTtrend()
         k = 0;
-        if ~isempty(sw.LagOrLead)
-            k = sw.LagOrLead(i);
+        if ~isempty(Sw.LagOrLead)
+            k = Sw.LagOrLead(i);
         end
-        iX = dat2ttrend(range+k, sw.BaseYear);
-        iX = iX(:);
-    end 
+        Xi = dat2ttrend(Range+k,Sw.BaseYear);
+        Xi = Xi(:);
+    end % doGetTtrend()
 
 
+%**************************************************************************
 
 
-    function addData( )
-        if isempty(x)
-            x = nan(nPer, nList, size(iX, 2));
+    function doAddData()
+        if isempty(X)
+            X = nan(nPer,nList,size(Xi,2));
         end
-        iX = permute(iX, [1, 3, 2]);
-        nAltX = size(x, 3);
-        nAltXi = size(iX, 3);
+        nAltX = size(X,3);
+        nAltXi = size(Xi,2);
         % If needed, expand number of alternatives in current array or current
         % addition.
-        if nAltX==1 && nAltXi>1
-            x = expand(x, nAltXi);
-        elseif nAltX>1 && nAltXi==1
-            iX = expand(iX, nAltX);
+        if nAltX == 1 && nAltXi > 1
+            X = X(:,:,ones(1,nAltXi));
+            nAltX = nAltXi;
+        elseif nAltX > 1 && nAltXi == 1
+            Xi = Xi(:,ones(1,nAltX));
+            nAltXi = nAltX;
         end
-        nAltX = size(x, 3);
-        nAltXi = size(iX, 3);
-        if nAltX==nAltXi
-            if ~isempty(sw.IxLog) && sw.IxLog(i)
-                iX = log(iX);
+        if nAltX == nAltXi
+            if ~isempty(Sw.IxLog) && Sw.IxLog(i)
+                Xi = log(Xi);
             end
-            x(:, i, 1:nAltXi) = iX;
+            X(:,i,1:nAltXi) = permute(Xi,[1,3,2]);
             ixIncl(i) = true;
         else
             ixInvalid(i) = true;
         end
-        
-        
-        
-        
-        function x = expand(x, n)
-            x = repmat(x, 1, 1, n);
-            if strcmpi(sw.ExpandMethod, 'NaN')
-                x(:, :, 2:end) = NaN;
-            end
-        end
-    end 
+    end % doAddData()
 
 
+%**************************************************************************
 
 
-    function throwWarning( )
-        if sw.Warn.NotFound && any(ixNotFound)
-            throw( ...
-                exception.Base('Dbase:NameNotExist', 'warning'), ...
-                list{ixNotFound} ...
-                );
+    function doWarning()
+        if Sw.Warn.NotFound && any(IxNotFound)
+            utils.warning('dbase', ...
+                ['This name does not exist ', ...
+                'in the database: ''%s''.'], ...
+                List{IxNotFound});
         end
         
-        if sw.Warn.SizeMismatch && any(ixInvalid)
-            throw( ...
-                exception.Base('Dbase:EntrySizeMismatch', 'warning'), ...
-                list{ixInvalid} ...
-                );
+        if Sw.Warn.SizeMismatch && any(ixInvalid)
+            utils.warning('dbase', ...
+                ['This database entry does not match ', ...
+                'the size of others: ''%s''.'], ...
+                List{ixInvalid});
         end
         
-        if sw.Warn.FreqMismatch && any(ixFreqMismatch)
-            throw( ...
-                exception.Base('Dbase:EntryFrequencyMismatch', 'warning'), ...
-                list{ixFreqMismatch} ...
-                );
+        if Sw.Warn.FreqMismatch && any(ixFreqMismatch)
+            utils.warning('dbase', ...
+                ['This database entry does not match ', ...
+                'the frequency of the dates requested: ''%s''.'], ...
+                List{ixFreqMismatch});
         end
         
-        if sw.Warn.NonTseries && any(ixNonSeries)
-            throw( ...
-                exception.Base('Dbase:EntryNotSeries', 'warning'), ...
-                list{ixNonSeries} ...
-                );
+        if Sw.Warn.NonTseries && any(IxNonTseries)
+            utils.warning('dbase', ...
+                ['This name exists in the database, ', ...
+                'but is not a tseries object: ''%s''.'], ...
+                List{IxNonTseries});
         end
-    end
+    end % doWarning()
+
+
 end

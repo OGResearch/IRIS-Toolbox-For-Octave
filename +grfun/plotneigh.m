@@ -63,8 +63,8 @@ function varargout = plotneigh(d,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('grfun.plotneigh',varargin{:});
 
@@ -78,12 +78,12 @@ isPlot = isPlotObj || isPlotLik || isPlotEst;
 
 %--------------------------------------------------------------------------
 
-figh = [ ];
-axh = [ ];
-objh = [ ];
-likh = [ ];
-esth = [ ];
-bh = [ ];
+figh = [];
+axh = [];
+objh = [];
+likh = [];
+esth = [];
+bh = [];
 
 if ~isPlot
     return
@@ -91,7 +91,17 @@ end
 
 plist = fieldnames(d);
 np = numel(plist);
-sub = grfun.nsubplot(opt.subplot,np);
+
+if strcmpi(opt.subplot,'auto')
+    sub = ceil(sqrt(np));
+    if sub*(sub-1) >= np
+        sub = [sub-1,sub];
+    else
+        sub = [sub,sub];
+    end
+else
+    sub = opt.subplot;
+end
 
 n = prod(sub);
 yLim = nan(np,2);
@@ -99,24 +109,24 @@ yLim = nan(np,2);
 % Force a new figure window.
 count = n + 1;
 
-plotObjOpt = { };
-plotEstOpt = { };
-plotLikOpt = { };
-plotBoundsOpt = { };
-titleOpt = { };
-doGraphicsOpt( );
+plotObjOpt = {};
+plotEstOpt = {};
+plotLikOpt = {};
+plotBoundsOpt = {};
+titleOpt = {};
+doGraphicsOpt();
 
 % Graph titles.
 if isTitle
     cp = cell(1,np);
-    doCaptions( );
+    doCaptions();
 end
 
 for i = 1 : np
     count = count + 1;
     if count > n
         count = 1;
-        figh(end+1) = figure( ); %#ok<AGROW>
+        figh(end+1) = figure(); %#ok<AGROW>
     end
     axh(end+1) = subplot(sub(1),sub(2),count); %#ok<AGROW>
     x = d.(plist{i}){1};
@@ -180,7 +190,7 @@ if nargout > 1
 else
     % Create struct with graphics handles.
     varargout = cell(1,1);
-    varargout{1} = struct( );
+    varargout{1} = struct();
     varargout{1}.figure = figh;
     varargout{1}.axes = axh;
     varargout{1}.obj = objh;
@@ -192,7 +202,7 @@ end
 % Nested functions.
 
 %**************************************************************************
-    function doGraphicsOpt( )
+    function doGraphicsOpt()
         if iscell(opt.plotobj) && iscellstr(opt.plotobj(1:2:end))
             plotObjOpt = opt.plotobj;
             plotObjOpt(1:2:end) = strrep(plotObjOpt(1:2:end),'=','');
@@ -213,10 +223,10 @@ end
             titleOpt = opt.title;
             titleOpt(1:2:end) = strrep(titleOpt(1:2:end),'=','');
         end
-    end % doGraphicsOpt( ).
+    end % doGraphicsOpt().
 
 %**************************************************************************
-    function doCaptions( )
+    function doCaptions()
         if ~isempty(opt.caption) && iscellstr(opt.caption)
             cp = opt.caption;
             ncp = length(cp);
@@ -228,5 +238,5 @@ end
         else
             cp = plist;
         end
-    end % doCaptions( ).
+    end % doCaptions().
 end 

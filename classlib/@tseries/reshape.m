@@ -26,18 +26,20 @@ function [x,ss] = reshape(x,s)
 % Example
 % ========
 %
+%}
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+%**************************************************************************
 
 ss = size(x.data);
 if nargin < 2
    s = prod(ss(2:end));
 else
    if ~isinf(s(1)) && s(1) ~= ss(1)
-      utils.error('tseries:reshape', ...
+      error('iris:tseries', ...
          'First dimension of tseries objects must remain unchanged after RESHAPE.');
    end
    s(1) = ss(1);

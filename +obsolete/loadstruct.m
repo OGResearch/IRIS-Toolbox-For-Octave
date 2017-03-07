@@ -25,16 +25,16 @@ function X = loadstruct(FName)
 % `savestruct` and `loadstruct` functions are considered obsolete.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % ##### Jan 2014 OBSOLETE and scheduled for removal.
 utils.warning('obsolete', ...
-    ['The function loadstruct( ) is obsolete, and', ...
+    ['The function loadstruct() is obsolete, and', ...
     'will be removed from IRIS in a future release. ', ...
-    'Use save( ) and load( ), or saveasto( ) and loadasfrom( ) instead.']);
+    'Use save() and load(), or saveasto() and loadasfrom() instead.']);
 
 % Load all entries.
 % Because keywords are loaded with underscores, fix their names.
@@ -48,7 +48,7 @@ if any(~index)
     X = load('-mat',FName,list{~index});
     warning(state);
 else
-    X = struct( );
+    X = struct();
 end
 if any(index)
     state = warning('query');

@@ -1,0 +1,159 @@
+<folder>
+
+<foldername>model_lang</foldername><filename>Contents</filename>
+
+<h1 id="model_lang/Contents">Model file language</h1>
+
+<p>Model file language is used to write model files. The model files are
+plain text files (saved under any filename with any extension) that
+describes the model: its equations, variables, parameters, etc. The model
+file, on the other hand, does not describe what to do with the model. To
+run the tasks you want to perform with the model, you need first to load
+the model file into Matlab using the <link id="model/model"><tt>model</tt></link> function. This
+function creates a model object. Then you write your own m-files using
+Matlab and IRIS functions to perform the desired tasks with the model
+object.</p>
+
+<p>Why do all the keywords (except pseudofunctions) start with an
+exclamation point? Why do the comments have the same style as in Matlab?
+Why do substitutions and steady-state references use the dollar sign?
+Because this way, you can get the model files syntax-highlighted in the
+Matlab editor. Syntax highlighting improves enormously the readability of
+the files, and helps understand the model more quickly. See
+<link id="setup/Contents"><tt>the setup instructions</tt></link> for more details.</p>
+
+<h3>Variables, parameters and substitutions</h3>
+
+<ul><li><link id="model_lang/transition_variables"><tt>!transition_variables</tt></link>&nbsp;&ndash;&nbsp;List of transition variables.</li>
+<li><link id="model_lang/transition_shocks"><tt>!transition_shocks</tt></link>&nbsp;&ndash;&nbsp;List of transition shocks.</li>
+<li><link id="model_lang/measurement_variables"><tt>!measurement_variables</tt></link>&nbsp;&ndash;&nbsp;List of measurement variables.</li>
+<li><link id="model_lang/measurement_shocks"><tt>!measurement_shocks</tt></link>&nbsp;&ndash;&nbsp;List of measurement shocks.</li>
+<li><link id="model_lang/parameters"><tt>!parameters</tt></link>&nbsp;&ndash;&nbsp;List of parameters.</li></ul>
+
+<h3>Equations</h3>
+
+<ul><li><link id="model_lang/transition_equations"><tt>!transition_equations</tt></link>&nbsp;&ndash;&nbsp;Block of transition equations.</li>
+<li><link id="model_lang/measurement_equations"><tt>!measurement_equations</tt></link>&nbsp;&ndash;&nbsp;Block of measurement equations.</li>
+<li><link id="model_lang/dtrends"><tt>!dtrends</tt></link>&nbsp;&ndash;&nbsp;Block of deterministic trend equations.</li>
+<li><link id="model_lang/links"><tt>!links</tt></link>&nbsp;&ndash;&nbsp;Define dynamic links.</li></ul>
+
+<h3>Linearised and log-linearised variables</h3>
+
+<ul><li><link id="model_lang/log_variables"><tt>!log_variables</tt></link>&nbsp;&ndash;&nbsp;List of log-linearised variables.</li>
+<li><link id="model_lang/allbut"><tt>!allbut</tt></link>&nbsp;&ndash;&nbsp;Inverse list of log-linearised variables.</li></ul>
+
+<h3>Model pseudofunctions</h3>
+
+<p>Note that the pseudofunctions do not start with an exclamation point.</p>
+
+<ul><li><link id="model_lang/min"><tt>min</tt></link>&nbsp;&ndash;&nbsp;Define the loss function in a time-consistent optimal policy model.</li></ul>
+
+<h3>Special operators</h3>
+
+<ul><li><link id="model_lang/ttrend"><tt>!ttrend</tt></link>&nbsp;&ndash;&nbsp;Linear time trend in deterministic trend equations.</li>
+<li><link id="model_lang/lag_lead"><tt>{...}</tt></link>&nbsp;&ndash;&nbsp;Lag or lead.</li>
+<li><link id="model_lang/sstate_ref"><tt>&</tt></link>&nbsp;&ndash;&nbsp;Reference to the steady-state level of a variable.</li>
+<li><link id="model_lang/sstate_version"><tt>!!</tt></link>&nbsp;&ndash;&nbsp;Steady-state version of an equation.</li>
+<li><link id="model_lang/exact_nonlin"><tt>=#</tt></link>&nbsp;&ndash;&nbsp;Mark an equation for exact non-linear simulation.</li></ul>
+
+<h3>Preparser pseudofunctions</h3>
+
+<p>Note that the pseudofunctions do not start with an exclamation point.</p>
+
+<ul><li><link id="model_lang/diff"><tt>diff</tt></link>&nbsp;&ndash;&nbsp;First difference pseudofunction.</li>
+<li><link id="model_lang/dot"><tt>dot</tt></link>&nbsp;&ndash;&nbsp;Gross rate of growth pseudofunction.</li>
+<li><link id="model_lang/difflog"><tt>difflog</tt></link>&nbsp;&ndash;&nbsp;First log-difference pseudofunction.</li>
+<li><link id="model_lang/movavg"><tt>movavg</tt></link>&nbsp;&ndash;&nbsp;Moving average pseudofunction.</li>
+<li><link id="model_lang/movprod"><tt>movprod</tt></link>&nbsp;&ndash;&nbsp;Moving product pseudofunction.</li>
+<li><link id="model_lang/movsum"><tt>movsum</tt></link>&nbsp;&ndash;&nbsp;Moving sum pseudofunction.</li></ul>
+
+<h3>Preparser control commands</h3>
+
+<ul><li><link id="model_lang/substitutions"><tt>!substitutions</tt></link>&nbsp;&ndash;&nbsp;Define text substitutions.</li>
+<li><link id="model_lang/import"><tt>!import</tt></link>&nbsp;&ndash;&nbsp;Include the content of another model file.</li>
+<li><link id="model_lang/export"><tt>!export</tt></link>&nbsp;&ndash;&nbsp;Create a carry-on file to be saved on the disk.</li>
+<li><link id="model_lang/if"><tt>!if...!elseif...!else...!end</tt></link>&nbsp;&ndash;&nbsp;Choose block of code depending on a condition.</li>
+<li><link id="model_lang/switch"><tt>!switch...!case...!end</tt></link>&nbsp;&ndash;&nbsp;Switch among several branches of the model code depending on the value of an expression.</li>
+<li><link id="model_lang/for"><tt>!for...!do...!end</tt></link>&nbsp;&ndash;&nbsp;For loop for automated creation of model code.</li>
+<li><link id="model_lang/line_comments"><tt>%</tt></link>&nbsp;&ndash;&nbsp;Line comments.</li>
+<li><link id="model_lang/block_comments"><tt>%{...%}</tt></link>&nbsp;&ndash;&nbsp;Block comments.</li></ul>
+
+<h3>Getting on-line help on model file language</h3>
+
+<p>When getting help on model file language, type the names of the keywords
+and commands without the exclamation point:
+<pre>   help model_lang
+   help model_lang/keyword
+   help model_lang/command 
+   help model_lang/pseudofunction
+</pre></p>
+
+<h3>Matlab functions and user functions in model files</h3>
+
+<p>You can use any of the built-in functions (Matlab functions, functions
+within the Toolboxes you have on your computer, and so on). In addition,
+you can also use your own functions (written as an m-file) as long as the
+m-file is on the Matlab search path or in the current directory.</p>
+
+<p>In your own m-file functions, you can also (optionally) supply the first
+derivatives that will be used to compute Taylor expansions when the model
+is being solved. To do so, the function must comply with the following
+requirements. First, when called with a single argument <tt>'diff'</tt>, the must
+return a string <tt>'yes'</tt>. Second, write your function so that it can be
+called with two extra input arguments on top of the regular input
+arguments, <tt>'diff'</tt> and the number determining with respect to which
+input argument the derivative is currently requested.</p>
+
+<p>For instance, your function takes three input arguments,
+<pre>   my_func(x,y,z)
+</pre></p>
+
+<p>To supply the first derivatives, allow the function to be called as
+follows:
+<pre>   my_func('diff')
+</pre></p>
+
+<p>must return the string 'yes';
+<pre>   my_func(x,y,z,'diff',1)
+</pre></p>
+
+<p>returns the first derivative wrt to the first input argument;
+<pre>   my_func(x,y,z,'diff',2)
+</pre></p>
+
+<p>returns the first derivative wrt to the second input argument;
+<pre>   my_func(x,y,z,'diff',3)
+</pre></p>
+
+<p>returns the first derivative wrt to the third input argument.</p>
+
+<h3>Basic rules IRIS model files</h3>
+
+<ul><li>There can be four types of equations in IRIS models: transition equations
+which are simply the endogenous dynamic equations, measurement equations
+which link the model to observables, deterministic trend equations which
+can be added at the top of measurement equations, and dynamic links which
+can be used to link some parameters or steady-state values to each other.</li>
+<li>There can be two types of variables and two types of shocks in IRIS
+models: transition variables and shocks, and measurement variables and
+shocks.</li>
+<li>Each model must have at least one transition (aka endogenous)
+variable and one transition equation.</li>
+<li>Each variable, shock, or parameter must be declared in the appropriate
+declaration section.</li>
+<li>The declaration sections and equations sections can be written in any
+order.</li>
+<li>You can have as many declaration sections or equations sections of the
+same kind as you wish in one model file; they all get combined together
+at the time the model is being loaded.</li>
+<li>The transition variables can occur with lags and leads in transition
+equations. The transition variables cannot, though, have leads in
+measurement equations.</li>
+<li>The measurement variables and the shocks cannot have any lags or leads.</li>
+<li>The transition shocks cannot occur in measurement equations, and the
+measurement shocks cannot occur in transition equations.</li>
+<li>You can choose between linearisation and log-linearisation for each
+individual transition and measurement variable. Shocks are always
+linearised.</li></ul>
+
+</folder>

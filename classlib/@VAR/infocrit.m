@@ -27,8 +27,8 @@ function This = infocrit(This)
 % Example
 % =======
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ nAlt = size(This.Omega,3);
 This.Aic = nan(1,nAlt);
 This.Sbc = nan(1,nAlt);
 
-if all(~This.IxFitted(:)) || ~isfinite(This.NHyper)
+if all(~This.Fitted(:)) || ~isfinite(This.NHyper)
     return
 end
 

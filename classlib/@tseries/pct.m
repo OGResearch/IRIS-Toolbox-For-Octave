@@ -45,8 +45,8 @@ function X = pct(X,S,varargin)
 %     pct(x,-3,'outputFreq=',1)
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     S; %#ok<VUNUS>

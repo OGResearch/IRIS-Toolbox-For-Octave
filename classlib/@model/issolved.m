@@ -1,36 +1,32 @@
 function Flag = issolved(m)
-% issolved  True if model solution exists.
-%
+% issolved  True if a model solution exists.
 %
 % Syntax
 % =======
 %
-%     Flag = issolved(M)
-%
+%     flag = issolved(m)
 %
 % Input arguments
 % ================
 %
-% * `M` [ model ] - Model object.
-%
+% * `m` [ model ] - Model object.
 %
 % Output arguments
 % =================
 %
-% * `Flag` [ `true` | `false` ] - True for each parameterisation for which
-% a stable unique solution exists currently in the model object.
-%
+% * `flag` [ `true` | `false` ] - True for each parameterisation for which a
+% stable unique solution has been found and exists currently in the model
+% object.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

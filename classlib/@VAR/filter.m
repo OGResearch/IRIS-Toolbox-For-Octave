@@ -47,11 +47,11 @@ function [This,Outp] = filter(This,Inp,Range,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Inp',@(x) isstruct(x));
 pp.addRequired('Range',@isnumeric);
 pp.parse(Inp,Range);
@@ -61,7 +61,7 @@ opt = passvalopt('VAR.filter',varargin{1:end});
 
 if isequal(Range,Inf)
     utils.error('VAR', ...
-        'Cannot use Inf for range in VAR/filter( ).');
+        'Cannot use Inf for range in VAR/filter().');
 end
 
 isSmooth = ~isempty(strfind(opt.output,'smooth'));
@@ -82,12 +82,8 @@ isConst = ~opt.deviation;
 Range = Range(1) : Range(end);
 xRange = Range(1)-p : Range(end);
 
-if length(Range)<2
-    utils.error('iris:VAR:filter','Invalid range specification.') ;
-end
-
 % Include pre-sample.
-req = datarequest('y*,x*',This,Inp,xRange);
+req = datarequest('y*,x*',This,Inp,xRange,opt);
 xRange = req.Range;
 y = req.Y;
 x = req.X;
@@ -102,16 +98,16 @@ nDataX = size(x,3);
 nOmg = size(opt.omega,3);
 
 nLoop = max([nAlt,nDataY,nDataX,nOmg]);
-doChkOptions( );
+doChkOptions();
 
 % Stack initial conditions.
 yInit = yInit(:,p:-1:1,:);
 yInit = reshape(yInit(:),ny*p,nLoop);
 
-YY = [ ];
-doRequestOutp( );
+YY = [];
+doRequestOutp();
 
-s = struct( );
+s = struct();
 s.invFunc = @inv;
 s.allObs = NaN;
 s.tol = 0;
@@ -154,10 +150,10 @@ for iLoop = 1 : nLoop
     
     % Run Kalman filter and smoother.
     [~,~,iE2,~,iY2,iPy2,~,iY0,iPy0,iY1,iPy1] = timedom.varsmoother( ...
-        iA,iB,iKJ,Z,[ ],iOmg,[ ],iY,[ ],iYInit,0,s);
+        iA,iB,iKJ,Z,[],iOmg,[],iY,[],iYInit,0,s);
     
     % Add pre-sample periods and assign hdata.
-    doAssignOutp( );
+    doAssignOutp();
     
 end
 
@@ -171,22 +167,22 @@ Outp = hdataobj.hdatafinal(YY);
 %**************************************************************************
 
     
-    function doChkOptions( )
+    function doChkOptions()
         if nLoop > 1 && opt.ahead > 1
             utils.error('VAR', ...
-                ['Cannot run filter( ) with option ``ahead=`` greater than 1 ', ...
+                ['Cannot run filter() with option ``ahead=`` greater than 1 ', ...
                 'on multiple parameterisations or multiple data sets.']);
         end
         if ~isPred
             opt.ahead = 1;
         end
-    end % doChkOptions( )
+    end % doChkOptions()
 
 
 %**************************************************************************
 
     
-    function doRequestOutp( )
+    function doRequestOutp()
         if isSmooth
             YY.M2 = hdataobj(This,xRange,nLoop);
             if ~opt.meanonly
@@ -209,23 +205,23 @@ Outp = hdataobj.hdatafinal(YY);
                     'IsVar2Std=',true);
             end
         end
-    end % doRequestOutp( )
+    end % doRequestOutp()
 
 
 %**************************************************************************
 
 
-    function doAssignOutp( )
+    function doAssignOutp()
         if isSmooth
             iY2 = [nan(ny,p),iY2];
             iY2(:,p:-1:1) = reshape(iYInit,ny,p);
             iX2 = [nan(nx,p),iX];
             iE2 = [nan(ny,p),iE2];
-            hdataassign(YY.M2,iLoop, { iY2,iX2,iE2,[ ] } );
+            hdataassign(YY.M2,iLoop, { iY2,iX2,iE2,[] } );
             if ~opt.meanonly
                 iD2 = covfun.cov2var(iPy2);
                 iD2 = [zeros(ny,p),iD2];
-                hdataassign(YY.S2,iLoop, { iD2,[ ],[ ],[ ] } );
+                hdataassign(YY.S2,iLoop, { iD2,[],[],[] } );
             end
         end
         if isPred
@@ -236,25 +232,25 @@ Outp = hdataobj.hdatafinal(YY);
             else
                 pos = iLoop;
             end
-            hdataassign(YY.M0,pos, { iY0,[ ],iE0,[ ] } );
+            hdataassign(YY.M0,pos, { iY0,[],iE0,[] } );
             if ~opt.meanonly
                 iD0 = covfun.cov2var(iPy0);
                 iD0 = [zeros(ny,p),iD0];
-                hdataassign(YY.S0,iLoop, { iD0,[ ],[ ],[ ] } );
+                hdataassign(YY.S0,iLoop, { iD0,[],[],[] } );
             end
         end
         if isFilter
             iY1 = [nan(ny,p),iY1];
             iX1 = [nan(nx,p),iX];
             iE1 = [nan(ny,p),zeros(ny,nPer)];
-            hdataassign(YY.M1,pos, { iY1,iX1,iE1,[ ] } );
+            hdataassign(YY.M1,pos, { iY1,iX1,iE1,[] } );
             if ~opt.meanonly
                 iD1 = covfun.cov2var(iPy1);
                 iD1 = [zeros(ny,p),iD1];
-                hdataassign(YY.S1,iLoop, { iD1,[ ],[ ],[ ] } );
+                hdataassign(YY.S1,iLoop, { iD1,[],[],[] } );
             end
         end
-    end % doAssignOutp( )
+    end % doAssignOutp()
 
 
 end

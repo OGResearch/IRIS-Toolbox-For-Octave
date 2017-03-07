@@ -17,7 +17,7 @@ function [Ln,Cp] = zeroline(varargin)
 % Output arguments
 % =================
 %
-% * `Ln` [ numeric ] - Handle to the line plotted (line object).
+% * `Ln` [ numeric ] - Handle to the line ploted (line object).
 %
 % Options
 % ========
@@ -31,27 +31,19 @@ function [Ln,Cp] = zeroline(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
-if ~isempty(varargin) 
-    if isequal(varargin{1}, false)
-        return
-    elseif isequal(varargin{1}, true)
-        varargin(1) = [ ];
-    end
-end
-
-[Ln,Cp] = grfun.myinfline(Ax, 'h', 0, varargin{:});
+[Ln,Cp] = grfun.myinfline(Ax,'h',0,varargin{:});
 
 % Tag the line for `qstyle`.
 set(Ln,'tag','zeroline');

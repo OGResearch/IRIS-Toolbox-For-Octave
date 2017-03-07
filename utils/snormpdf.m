@@ -2,8 +2,8 @@ function [F,Mu,Sgm] = snormpdf(X,Ex,Sx,Tau)
 % snormpdf  Probability density function for univariate split normal
 % distribution.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

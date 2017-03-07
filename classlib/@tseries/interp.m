@@ -11,8 +11,8 @@ function X = interp(X,varargin)
 %
 % * `X` [ tseries ] - Input time series.
 %
-% * `Range` [ numeric | char ] - Date range on which any missing
-% observations (`NaN`) will be interpolated.
+% * `Range` [ tseries ] - Date range on which any missing, i.e. NaN,
+% observations will be interpolated.
 %
 % Output arguments
 % =================
@@ -33,15 +33,12 @@ function X = interp(X,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~isempty(varargin) && isdatinp(varargin{1})
+if ~isempty(varargin) && ~ischar(varargin{1})
     Range = varargin{1};
-    varargin(1) = [ ];
-    if ischar(Range)
-        Range = textinp2dat(Range);
-    end
+    varargin(1) = [];
 else
     Range = Inf;
 end

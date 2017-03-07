@@ -4,8 +4,8 @@ function [A,B,Omg,T,U,u,Fitted] = estimatevar(X,P,Q)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ nPer = size(X,2);
 t = P+1 : nPer;
 presample = nan(nx,P);
 x0 = [presample,X(:,t)];
-x1 = [ ];
+x1 = [];
 for i = 1 : P
    x1 = [x1;presample,X(:,t-i)]; %#ok<AGROW>
 end

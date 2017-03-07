@@ -1,23 +1,21 @@
 % models  Model Development and Operation.
 %
-% * [Model File Language](modellang/Contents)
+% * [modellang](modellang/Contents) - Model File Language.
 %
-% * [Models (model Objects)](model/Contents)
+% * [model](model/Contents) - Model Objects and Functions.
 %
-% * [Reporting Equations (rpteq Objects)](rpteq/Contents)
+% * [plan](plan/Contents) - Model Simulation Plans.
 %
-% * [Model Simulation Plans (plan Objects)](plan/Contents)
+% * [grouping](grouping/Contents) - Grouping Objects for Aggregation of Contributions.
 %
-% * [Grouping and Aggregation of Contributions (grouping Objects)](grouping/Contents)
+% * [systempriors](systempriors/Contents) - System Priors Objects and Functions.
 %
-% * [System Priors (systempriors Objects)](systempriors/Contents)
+% * [poster](poster/Contents) - Posterior Simulator Objects and Functions.
 %
-% * [Posterior Simulator (poster Objects)](poster/Contents)
+% * [poster](logdist/Contents) - Probability Distribution Package.
 %
-% * [Probability Distributions (logdist Package)](logdist/Contents)
-%
-% * [Matrices with Named Rows and Columns (namedmat Objects)](namedmat/Contents)
+% * [namedmat](namedmat/Contents) - Matrices with Named Rows and Columns.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

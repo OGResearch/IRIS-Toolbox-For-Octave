@@ -4,15 +4,15 @@ function varargout = request(action,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-mlock( );
+mlock();
 persistent X;
 
 if isempty(X)
     % @@@@ MOSW
-    X = struct( );
+    X = struct();
     X.name = cell(1,0);
     X.data = cell(1,0);
     X.lock = false(1,0);
@@ -22,22 +22,21 @@ end
 
 switch action
     case 'get'
-        ix = strcmp(X.name,varargin{1});
-        if any(ix)
-            varargout{1} = X.data{ix};
+        index = strcmp(X.name,varargin{1});
+        if any(index)
+            varargout{1} = X.data{index};
             varargout{2} = true;
         else
-            varargout{1} = [ ];
+            varargout{1} = [];
             varargout{2} = false;
         end
-        
     case 'set'
-        ix = strcmp(X.name,varargin{1});
-        if any(ix)
-            if X.lock(ix)
+        index = strcmp(X.name,varargin{1});
+        if any(index)
+            if X.lock(index)
                 varargout{1} = false;
             else
-                X.data{ix} = varargin{2};
+                X.data{index} = varargin{2};
                 varargout{1} = true;
             end
         else
@@ -46,81 +45,71 @@ switch action
             X.lock(end+1) = false;
             varargout{1} = true;
         end
-        
     case 'list'
         varargout{1} = X.name;
-        
     case {'lock','unlock'}
         tmp = strcmp(action,'lock');
         if isempty(varargin)
             X.lock(:) = tmp;
         else
-            pos = doFindNames(X,varargin);
-            X.lock(pos) = tmp;
+            index = doFindNames(X,varargin);
+            X.lock(index) = tmp;
         end
     case 'islocked'
-        pos = doFindNames(X,varargin);
-        varargout{1} = X.lock(pos);
-        
+        index = doFindNames(X,varargin);
+        varargout{1} = X.lock(index);
     case 'locked'
         varargout{1} = X.name(X.lock);
-        
     case 'unlocked'
         varargout{1} = X.name(~X.lock);
-        
     case 'clear'
         % @@@@@ MOSW
-        X = struct( );
+        X = struct();
         X.name = cell(1,0);
         X.data = cell(1,0);
         X.lock = false(1,0);
-        
     case 'save'
         if nargin > 1
-            pos = doFindNames(X,varargin);
-            x = struct( );
-            x.name = X.name(pos);
-            x.data = X.data(pos);
-            x.lock = X.lock(pos);
+            index = doFindNames(X,varargin);
+            x = struct();
+            x.name = X.name(index);
+            x.data = X.data(index);
+            x.lock = X.lock(index);
             varargout{1} = x;
         else
             varargout{1} = X;
         end
-        
     case 'load';
-        pos = textfun.findnames(X.name,varargin{1}.name,'[^\s,;]+');
-        new = isnan(pos);
+        index = strfun.findnames(X.name,varargin{1}.name,'[^\s,;]+');
+        new = isnan(index);
         nnew = sum(new);
         X.name(end+(1:nnew)) = varargin{1}.name(new);
         X.data(end+(1:nnew)) = varargin{1}.data(new);
         X.lock(end+(1:nnew)) = varargin{1}.lock(new);
-        pos = pos(~new);
-        if any(X.lock(pos))
-            pos = pos(X.lock(pos));
-            container.error(1,X.name(pos));
+        index = index(~new);
+        if any(X.lock(index))
+            index = index(X.lock(index));
+            container.error(1,X.name(index));
         end
-        X.data(pos) = varargin{1}.data(~new);
-        
+        X.data(index) = varargin{1}.data(~new);
     case 'remove'
         if ~isempty(varargin)
-            pos = doFindNames(X,varargin);
-            X.name(pos) = [ ];
-            X.data(pos) = [ ];
-            X.lock(pos) = [ ];
+            index = doFindNames(X,varargin);
+            X.name(index) = [];
+            X.data(index) = [];
+            X.lock(index) = [];
         end
     case 'count'
         varargout{1} = numel(X.name);
-        
     case '?name'
         varargout{1} = X.name;
-        
     case '?data'
         varargout{1} = X.data;
-        
     case '?lock'
         varargout{1} = X.lock;
 end
 
+XX = X;
 
 % Nested functions...
 
@@ -128,10 +117,12 @@ end
 %**************************************************************************
 
 
-    function Pos = doFindNames(X,Select)
-        Pos = textfun.findnames(X.name,Select,'[^\s,;]+');
-        if any(isnan(Pos))
-            container.error(2,Select(isnan(Pos)));
+    function Inx = doFindNames(X,Select)
+        Inx = strfun.findnames(X.name,Select,'[^\s,;]+');
+        if any(isnan(Inx))
+            container.error(2,Select(isnan(Inx)));
         end
-    end % doFindNames( )
+    end % doFindNames()
+
+
 end

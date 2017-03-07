@@ -1,40 +1,36 @@
-function eoq = dateoq(dat)
+function D = dateoq(D)
 % dateoq  End of quarter for the specified daily date.
 %
 % Syntax
 % =======
 %
-%     eoq = dateoq(dat)
-%
+%     Eoq = dateoq(D)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - Daily serial date number.
-%
+% * `D` [ numeric ] - Daily serial date number.
 %
 % Output arguments
 % =================
 %
-% * `eoq` [ numeric ] - Daily serial date number for the last day of the
-% same quarter as `dat`.
-%
+% * `Eoq` [ numeric ] - Daily serial date number for the last day of the
+% same quarter as `D`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[y, m] = datevec( double(dat) );
+[y,m] = datevec(D);
 m = 3*(ceil(m/3)-1) + 3;
-eoq = datenum([y, m, eomday(y, m)]);
+D = datenum([y,m,eomday(y,m)]);
 
 end

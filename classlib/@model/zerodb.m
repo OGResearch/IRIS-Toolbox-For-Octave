@@ -1,14 +1,11 @@
-function [d, isDev] = zerodb(this, range, varargin)
+function [D,Dev] = zerodb(This,Range,varargin)
 % zerodb  Create model-specific zero-deviation database.
-%
 %
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [D,IsDev] = zerodb(M,Range,~NCol,...)
-%
+%     [D,IsDev] = zerodb(M,Range)
+%     [D,IsDev] = zerodb(M,Range,NCol)
 %
 % Input arguments
 % ================
@@ -20,20 +17,8 @@ function [d, isDev] = zerodb(this, range, varargin)
 % be created on a range that also automatically includes all the necessary
 % lags.
 %
-% * `~NCol` [ numeric | *`1`* ] - Number of columns created in the time
-% series object for each variable; the input argument `NCol` can be only
-% used on models with one parameterisation; may be omitted.
-%
-%
-% Options
-% ========
-%
-% * `'shockFunc='` [ `@lhsnorm` | `@randn` | *`@zeros`* ] - Function used
-% to generate data for shocks. If `@zeros`, the shocks will simply be
-% filled with zeros. Otherwise, the random numbers will be drawn using the
-% specified function and adjusted by the respective covariance matrix
-% implied by the current model parameterization.
-%
+% * `NCol` [ numeric ] - Number of columns for each variable; the input
+% argument `NCol` can be only used on models with one parameterisation.
 %
 % Output arguments
 % =================
@@ -47,28 +32,21 @@ function [d, isDev] = zerodb(this, range, varargin)
 % can be used to set the option `'deviation='` in
 % [`model/simulate`](model/simulate).
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % zerodb, sstatedb
 
-pp = inputParser( );
-pp.addRequired('M', @(x) isa(x, 'model'));
-pp.addRequired('Range', @(x) isdatinp(x));
-pp.parse(this, range);
-
 %--------------------------------------------------------------------------
 
-isDev = true;
-d = createSourceDbase(this, range, varargin{:}, 'Deviation=', isDev);
+D = mysourcedb(This,Range,varargin{:},'deviation',true);
+Dev = true;
 
 end

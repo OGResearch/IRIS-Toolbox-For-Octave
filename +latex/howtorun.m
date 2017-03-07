@@ -20,5 +20,3 @@
 % pressing a keyboard shortcut (which differ on different systems and
 % Matlab versions). To learn more on code sections, search Matlab
 % documentation for "code section".
-
-clc;

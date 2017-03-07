@@ -1,13 +1,11 @@
-function [Dmc,C] = dbminuscontrol(varargin)
+function [DMC,C] = dbminuscontrol(This,D,C)
 % dbminuscontrol  Create simulation-minus-control database.
-%
 %
 % Syntax
 % =======
 %
 %    [D,C] = dbminuscontrol(M,D)
 %    [D,C] = dbminuscontrol(M,D,C)
-%
 %
 % Input arguments
 % ================
@@ -17,32 +15,20 @@ function [Dmc,C] = dbminuscontrol(varargin)
 %
 % * `D` [ struct ] - Simulation database.
 %
-% * `C` [ struct ] - Control database; if the input argument `C` is
-% omitted the steady-state database of the model `M` is used for the
+% * `C` [ struct ] - Control database; if the input argument `C` is not
+% specified, the steady-state database of the model `M` is used for the
 % control database.
-%
 %
 % Output arguments
 % =================
 %
 % * `D` [ struct ] - Simulation-minus-control database, in which all
-% log variables are `d.x/c.x`, and all other variables are `d.x-c.x`.
+% log-variables are `d.x/c.x`, and all other variables are `d.x-c.x`.
 %
 % * `C` [ struct ] - Control database.
 %
-%
-% Options
-% ========
-%
-% * `'fresh='` [ `true` | *`false`* ] - If `true`, the output database will
-% only contain entries corresponding to model variables in `M`; if `false`
-% all other entries found in the input database will be also kept in the
-% output database.
-%
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
@@ -54,64 +40,71 @@ function [Dmc,C] = dbminuscontrol(varargin)
 %     d = sstatedb(m,1:40);
 %     ... % Set up a shock or shocks here.
 %     s = simulate(m,d,1:40);
-%     s = dboverlay(d,s);
+%     s = dbextend(d,s);
 %     s = dbminuscontrol(m,s,d);
 %
-% The above block of code is equivalent to this one:
+% Note that this is equivalent to running
 %
 %     d = zerodb(m,1:40);
 %     ... % Set up a shock or shocks here.
-%     s = simulate(m,d,1:40,'deviation=',true);
-%     s = dboverlay(d,s);
+%     s = simulate(m,d,1:40,'deviation',true);
+%     s = dbextend(d,s);
 %
 
 % -The IRIS Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-[This,D,C,varargin] = irisinp.parser.parse('dbase.dbminuscontrol',varargin{:});
-opt = passvalopt('dbase.dbminuscontrol',varargin{:});
+try
+    C; 
+catch
+    C = [];
+end
+
+pp = inputParser();
+pp.addRequired('M',@ismodel);
+pp.addRequired('D',@isstruct);
+pp.addRequired('C',@(x) isstruct(x) || isempty(x));
+pp.parse(This,D,C);
 
 %--------------------------------------------------------------------------
 
-list = [get(This,'YList'),get(This,'XList'),get(This,'EList')];
-isLog = get(This,'IsLog');
+list = [get(This,'ylist'),get(This,'xlist'),get(This,'elist')];
+isLog = get(This,'log');
 
 if isempty(C)
     range = dbrange(D,list, ...
-        'StartDate=','MaxRange','EndDate=','MaxRange');
+        'startdate=','maxrange','enddate=','maxrange');
     C = sstatedb(This,range);
 end
 
-Dmc = D;
-ixKeep = true(size(list));
+DMC = D;
+remove = false(size(list));
 for i = 1 : length(list)
-    name = list{i};
-    if isfield(D,name) && isfield(C,name)
-        if isLog.(name)
+    if isfield(D,list{i}) && isfield(C,list{i})
+        if isLog.(list{i})
             func = @rdivide;
         else
             func = @minus;
         end
         try
-            Dmc.(name) = bsxfun( ...
+            DMC.(list{i}) = bsxfun( ...
                 func, ...
-                real(D.(name)), ...
-                real(C.(name)) ...
+                real(DMC.(list{i})), ...
+                real(C.(list{i})) ...
                 );
-            Dmc.(name) = comment(Dmc.(name),D.(name));
         catch %#ok<CTCH>
-            ixKeep(i) = false;
+            remove(i) = true;
         end
     else
-        ixKeep(i) = false;
+        remove(i) = true;
     end
 end
 
-if opt.fresh && any(~ixKeep)
-    Dmc = rmfield(Dmc,list(~ixKeep));
+if any(remove)
+    DMC = rmfield(DMC,list(remove));
 end
 
 end

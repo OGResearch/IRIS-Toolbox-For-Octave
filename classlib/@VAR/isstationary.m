@@ -21,13 +21,13 @@ function Flag = isstationary(This,varargin)
 % Options
 % ========
 %
-% * `'tolerance='` [ numeric | *`getrealsmall( )`* ] - Tolerance for the
+% * `'tolerance='` [ numeric | *`getrealsmall()`* ] - Tolerance for the
 % eigenvalue test.
 %
 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.isstationary',varargin{:});
 

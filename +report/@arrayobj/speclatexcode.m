@@ -4,8 +4,8 @@ function C = speclatexcode(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ This.options.colspec = colSpec;
 This.ncol = nCol;
 This.nlead = 0;
 
-% Begin the tabular environment; `begin( )` is defined in `tabularobj`.
+% Begin the tabular environment; `begin()` is defined in `tabularobj`.
 C = [C,begin(This)];
 
 % The variable `colspec=` will be used to determine the position of the
@@ -84,7 +84,7 @@ for iRow = 1 : nRow
     else
         % If this is a regular row, cycle over columns and print cell by cell.
         for iCol = 1 : nCol
-            doOneCell( );
+            doOneCell();
         end
         cRow = [cRow,' \\']; %#ok<AGROW>
     end
@@ -94,7 +94,7 @@ for iRow = 1 : nRow
     C = [C, br, cRow]; %#ok<AGROW>
 end
 
-% End the tabular environment; `finish( )` is defined in `tabularobj`.
+% End the tabular environment; `finish()` is defined in `tabularobj`.
 C = [C, br, finish(This)];
 
 
@@ -102,7 +102,7 @@ C = [C, br, finish(This)];
 
 
 %**************************************************************************
-    function doOneCell( )
+    function doOneCell()
         c = '';
         iColW = This.options.colwidth(min(iCol,end));
         if ~isempty(This.data{iRow,iCol}) ...
@@ -120,7 +120,7 @@ C = [C, br, finish(This)];
         if iCol < nCol
             cRow = [cRow,' & '];
         end
-    end % doOneCell( )
+    end % doOneCell()
 
 
 end

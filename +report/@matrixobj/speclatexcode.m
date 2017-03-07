@@ -4,8 +4,8 @@ function C = speclatexcode(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -59,8 +59,8 @@ for iRow = 1 : This.nrow
     % Cycle over the matrix columns.
     c1 = cell(1,This.ncol);
     for iCol = 1 : This.ncol
-        a = struct( );
-        doAttributes( );
+        a = struct();
+        doAttributes();
         iColW = This.options.colwidth(min(iCol,end));
         c1{iCol} = testnformat(This,a,iColW,'r','');
     end
@@ -81,7 +81,7 @@ C = [C, br, finish(This)];
 
 
 %**************************************************************************
-    function doAttributes( )
+    function doAttributes()
         % doattributes  Prepare an attribute struct for cond formatting.
         a.value = This.data(iRow,iCol);
         a.rowvalues = This.data(iRow,:);
@@ -91,7 +91,7 @@ C = [C, br, finish(This)];
         a.colname = This.options.colnames{iCol};
         a.row = iRow;
         a.col = iCol;
-    end % doAttributes( )
+    end % doAttributes()
 
 
 end

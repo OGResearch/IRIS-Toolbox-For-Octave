@@ -1,89 +1,42 @@
-function Ax = plot(varargin)
-% plot  Visualize neural network structure.
-%
-% Syntax
-% =======
-%
-%     Ax = plot(M,...)
-%     Ax = plot(Ax,M,...)
-%
-% Input arguments
-% ================
-%
-% * `Ax` [ hghandle ] - Handle to axes in which the graph will be plotted;
-% if not specified, the current axes will used.
-%
-% * `M` [ nnet ] - Neural network model object.
-%
-% Output arguments
-% =================
-%
-% * `Ax` [ hghandle ] - Axes handle. 
-%
-% Options
-% ========
-%
-% * `'Color='` [ *`'blue'`* | `'activation'` | numeric ] - Color of
-% connections between neurons can be either a constant blue, a
-% shade of blue based on the strength of that connection, or a constant
-% thisColor specified as a numeric vector.
-%
+function plot(This,varargin)
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-if ishghandle(varargin{1})
-    Ax = varargin{1}(1) ;
-    varargin(1) = [ ] ;
-    axes(Ax) ; % because text( ) does not accept axes
-else
-    Ax = gca( ) ;
-end
-This = varargin{1} ;
-varargin(1) = [ ] ;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 options = passvalopt('nnet.plot',varargin{:}) ;
 
 % Get plot dimensions
 maxH = max(This.Layout)+max(This.Bias) ;
-shf = 0 ;
+shf = -0.1 ;
 
 % Get colour space
-if isnumeric(options.Color)
-    fixColor = options.Color ;
-    isFixed = true ;
-elseif strcmpi(options.Color,'activation')
-    lc = min(abs(get(This,'activation'))) ;
-    mc = max(abs(get(This,'activation'))) ;
-    if eq(lc,mc)
-        options.Color = 'blue' ;
-    end
-    isFixed = false ;
-else
-    fixColor = [.1 .1 .8] ;
-    isFixed = true ;
+switch options.Color
+    case 'activation'
+        lc = min(abs(get(This,'activation'))) ;
+        mc = max(abs(get(This,'activation'))) ;
 end
 
 % Plot inputs
-pos = linspace(1,maxH,This.nInput+2) ;
+pos = linspace(1,maxH,This.nInputs+2) ;
 pos = pos(2:end-1) ;
-for iInput = 1:This.nInput
+for iInput = 1:This.nInputs
     hold on
-    scatter(Ax,0,pos(iInput),400,[.2 .7 .2],'s','filled') ;
-    th = text(-0.5,pos(iInput),xxFixText(This.Inputs{iInput})) ;
-    th.HorizontalAlignment = 'right' ;
+    scatter(0,pos(iInput),400,[.2 .7 .2],'s','filled') ;
+    text(-1,pos(iInput),xxFixText(This.Inputs{iInput})) ;
     
     % Plot connections
     for iNode = 1:This.Layout(1)
-        if intersect(This.Neuron{1}{iNode}.ActivationIndexLocal,iInput)
-            doLineColor( ) ;
-            hold on
-            plot(Ax,[0,This.Neuron{1}{iNode}.Position(1)],[pos(iInput),This.Neuron{1}{iNode}.Position(2)],'Color',thisColor) ;
+        switch options.Color
+            case 'activation'
+                color = xxColor(This.Neuron{1}{iNode}.ActivationParams(iInput)) ;
+            otherwise
+                color = [.1 .1 .8] ;
         end
+        hold on
+        plot([0,This.Neuron{1}{iNode}.Position(1)],[pos(iInput),This.Neuron{1}{iNode}.Position(2)],'Color',color) ;
     end
 end
-th = text(shf,-1,'Inputs') ;
-th.HorizontalAlignment = 'center' ;
+text(shf,-1,'Inputs') ;
 
 % Plot neurons
 lb = Inf ;
@@ -96,11 +49,11 @@ for iLayer = 1:This.nLayer
         ub = max(ub,pos(2)) ;
         hold on
         if iNode == NN && This.Bias(iLayer)
-            thisColor = [.3 .5 .9] ;
+            color = [.3 .5 .9] ;
         else
-            thisColor = [.3 .3 .3] ;
+            color = [.3 .3 .3] ;
         end
-        scatter(Ax,pos(1),pos(2),100,thisColor,'filled') ;
+        scatter(pos(1),pos(2),100,color,'filled') ;
         
         % Plot connections
         if iLayer<This.nLayer
@@ -110,65 +63,46 @@ for iLayer = 1:This.nLayer
                 NN2 = numel(This.Neuron{iLayer+1}) ;
             end
             for iNext = 1:NN2
-                if intersect(This.Neuron{iLayer+1}{iNext}.ActivationIndexLocal,iNode)
-                    doLineColor( ) ;
-                    hold on
-                    plot(Ax,[iLayer,iLayer+1],[This.Neuron{iLayer}{iNode}.Position(2),This.Neuron{iLayer+1}{iNext}.Position(2)],'Color',thisColor) ;
+                switch options.Color
+                    case 'activation'
+                        color = xxColor(This.Neuron{iLayer+1}{iNext}.ActivationParams(iNode)) ;
+                    otherwise
+                        color = [.1 .1 .8] ;
                 end
+                hold on
+                plot([iLayer,iLayer+1],[This.Neuron{iLayer}{iNode}.Position(2),This.Neuron{iLayer+1}{iNext}.Position(2)],'Color',color) ;
             end
         end
     end
-    th = text(iLayer+shf,-1,sprintf('Layer %g',iLayer)) ;
-    th.HorizontalAlignment = 'center' ;
+    text(iLayer+shf,-1,sprintf('Layer %g',iLayer)) ;
 end
 
 % Plot outputs
-pos = linspace(1,maxH,This.nOutput+2) ;
+pos = linspace(1,maxH,This.nOutputs+2) ;
 pos = pos(2:3) ;
-for iOutput = 1:This.nOutput
+for iOutput = 1:This.nOutputs
     hold on
-    scatter(Ax,This.nLayer+1,pos(iOutput),400,[.7,.2,.2],'s','filled') ;
-    text(This.nLayer+1.5,pos(iOutput),xxFixText(This.Outputs{iOutput})) ;
+    scatter(This.nLayer+1,pos(iOutput),400,[.7,.2,.2],'s','filled') ;
+    text(This.nLayer+2,pos(iOutput),xxFixText(This.Outputs{iOutput})) ;
     for iNode = 1:numel(This.Neuron{This.nLayer})
-        if intersect(This.Neuron{This.nLayer+1}{iOutput}.ActivationIndexLocal,iNode)
-            doLineColor( ) ;
-            hold on
-            plot(Ax,[This.nLayer,This.nLayer+1],[This.Neuron{This.nLayer}{iNode}.Position(2),pos(iOutput)],'Color',thisColor) ;
-        end
+        hold on
+        plot([This.nLayer,This.nLayer+1],[This.Neuron{This.nLayer}{iNode}.Position(2),pos(iOutput)]) ;
     end
 end
-th = text(This.nLayer+1+shf,-1,'Outputs') ;
-th.HorizontalAlignment = 'center' ;
+text(This.nLayer+1+shf,-1,'Outputs') ;
 
-% Set scale and clean up
-set(Ax,'ylim',[lb-4,ub+2]) ;
-set(Ax,'xlim',[-2 This.nLayer+3]) ;
+% Set scale
+set(gca,'ylim',[lb-4,ub+2]) ;
+set(gca,'xlim',[-2 This.nLayer+3]) ;
 hold off
-Ax.XTick = [ ] ;
-Ax.YTick = [ ] ;
-Ax.Position = [0 0 1 1] ;
 
-    function x = xxFixText(x)
-        x = regexprep(x,'_','\\_') ;
-        if ~isempty(regexp(x,'\{','once'))
-            x = regexprep(x,'\{','_\{t') ;
-        else
-            x = sprintf('%s%s',x,'_{t}') ;
-        end
+    function out = xxFixText(in)
+        out = regexprep(in,'\{','_\{') ;
     end
 
     function out = xxColor(in)
         in = abs(in) ;
         out = [0 0 1-((in-lc)/(mc-lc))^2] ;
-    end
-
-    function doLineColor( )
-        if isFixed
-            thisColor = fixColor ;
-        else
-            thisColor = xxColor(This.Neuron{1}{iNode}.ActivationParams(iInput)) ;
-        end
-        
     end
 
 end

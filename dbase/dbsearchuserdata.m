@@ -59,8 +59,8 @@ function varargout = dbsearchuserdata(d,varargin)
 % All tseries object that pass both of these conditions are returned in the
 % `List` and the output database `D`.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -68,11 +68,11 @@ func = @(x) all(x);
 if ~isempty(varargin)
     if (isequal(varargin{1},'-all') || isequal(varargin{1},'-any'))
         func = mosw.str2func(['@',varargin{1}(2:end)]);
-        varargin(1) = [ ];
+        varargin(1) = [];
     end
 end
 
-doTest( );
+doTest();
 
 % Output arguments.
 varargout{1} = list;
@@ -83,14 +83,14 @@ end
 % Nested functions.
 
 %**************************************************************************
-    function doTest( )
+    function doTest()
         list = fieldnames(d).';
         nList = length(list);
         
-        testField = { };
-        testValue = { };
-        testFunc = { };
-        doPrepTests( );
+        testField = {};
+        testValue = {};
+        testFunc = {};
+        doPrepTests();
         nTest = length(testField);
         
         matched = false(1,nList);
@@ -101,12 +101,12 @@ end
                 if ~isstruct(x)
                     continue
                 end
-                doEvalTests( );
+                doEvalTests();
             end
         end
         list = list(matched);
         
-        function doPrepTests( )
+        function doPrepTests()
             varargin(1:2:end) = strtrim(varargin(1:2:end));
             for ii = 1 : 2 : length(varargin)
                 if isempty(varargin{ii}) || isempty(varargin{ii+1})
@@ -126,9 +126,9 @@ end
                     testField{end}(1) = '';
                 end
             end
-        end % doPrepTests( ).
+        end % doPrepTests().
 
-        function doEvalTests( )
+        function doEvalTests()
             xList = cell(1,0);
             if isstruct(x)
                 xList = fieldnames(x);
@@ -153,8 +153,8 @@ end
             end
             matched(i) = func(xMatched);
         end
-        % doEvalTests( ).
+        % doEvalTests().
         
-    end % doTest( ).
+    end % doTest().
 
 end

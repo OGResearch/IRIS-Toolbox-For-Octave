@@ -1,11 +1,11 @@
-function X = irisroot( )
+function X = irisroot()
 % irisroot  Current IRIS root folder.
 %
 % Syntax
 % =======
 %
 %     irisroot
-%     X = irisroot( )
+%     X = irisroot()
 %
 % Output arguments
 % =================
@@ -21,8 +21,8 @@ function X = irisroot( )
 %     irisget('irisroot')
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

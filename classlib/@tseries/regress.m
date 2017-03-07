@@ -1,14 +1,11 @@
 function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,varargin)
 % regress  Ordinary or weighted least-square regression.
 %
-%
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,~Range,...)
-%
+%     [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X)
+%     [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,Range,...)
 %
 % Input arguments
 % ================
@@ -17,9 +14,8 @@ function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,varargin)
 %
 % * `X` [ tseries] - Tseries object with regressors (RHS) variables.
 %
-% * `~Range` [ numeric ] - Date range on which the regression will be run;
-% if omitted, the entire range available will be used.
-%
+% * `Range` [ numeric ] - Date range on which the regression will be run;
+% if not specified, the entire range available will be used.
 %
 % Output arguments
 % =================
@@ -39,40 +35,37 @@ function [B,BStd,E,EStd,YFit,Range,BCov] = regress(Y,X,varargin)
 %
 % * `bBCov` [ numeric ] - Covariance matrix of the coefficient estimates.
 %
-%
 % Options
 % ========
 %
 % * `'constant='` [ `true` | *`false`* ] - Include a constant vector in the
-% regression; if `true` the constant will be placed last in the matrix of
+% regression; if true the constant will be placed last in the matrix of
 % regressors.
 %
 % * `'weighting='` [ tseries | *empty* ] - Tseries object with weights on
-% observations in individual periods.
-%
+% the observations in the individual periods.
 %
 % Description
 % ============
 %
 % This function calls the built-in `lscov` function.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
     Range = Inf;
 end
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Y',@istseries);
 pp.addRequired('X',@istseries);
 pp.addRequired('Range',@isnumeric);
@@ -105,11 +98,11 @@ else
 end
 EStd = sqrt(eVar);
 
-if nargout>2
+if nargout > 2
     E = replace(Y,yData - xData*B,Range(1));
 end
 
-if nargout>4
+if nargout > 4
     YFit = replace(Y,xData*B,Range(1));
 end
 

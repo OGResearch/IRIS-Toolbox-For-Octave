@@ -4,8 +4,8 @@ function SET = mystyleprocessor(H,Command) %#ok<STOUT>
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % `Command` is a string that can use the following references:
 %
@@ -25,7 +25,11 @@ end
 if ~isempty(regexp(Command,'\<L\>','once'))
     L = nan(size(H));
     for i = 1 : numel(H)
-        x = getappdata(H(i), 'LegendPeerHandle');
+        if false % ##### MOSW
+            x = getappdata(H(i),'LegendPeerHandle');
+        else
+            x = mosw.findLegendPeer(H(i));
+        end
         if ~isempty(x) && ishandle(x)
             L(i) = x;
         end
@@ -38,9 +42,9 @@ if nargout > 0
     try
         SET; %#ok<VUNUS>
     catch %#ok<CTCH>
-        utils.error('grfun:mystyleprocessor', ...
+        utils.error('qreport', ...
             ['Style processor failed to create ', ...
-            'the output variable SET: %s.'], ...
+            'the output variable SET: ''%s''.'], ...
             Command);
     end
 end

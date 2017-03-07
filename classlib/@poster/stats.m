@@ -59,8 +59,7 @@ function Stat = stats(This,Theta,varargin)
 % with the specified number of bins.
 %
 % * `'hpdi='` [ *`false`* | numeric ] - Include in `S` the highest
-% probability density intervals with the specified percent coverage (e.g.
-% 90% is entered as `90`, not `0.90`).
+% probability density intervals with the specified coverage.
 %
 % * `'ksdensity='` [ `true` | *`false`* | numeric ] - Include in `S` the x-
 % and y-axis points for kernel-smoothed posterior density; use a numeric
@@ -89,19 +88,19 @@ function Stat = stats(This,Theta,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     LogPost = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    LogPost = [ ];
+    LogPost = [];
 end
 
 opt = passvalopt('poster.stats',varargin{:});
 
-doOutpOpt( );
+doOutpOpt();
 
 % Simulated chain has been saved in a collection of mat files.
 isFile = ischar(Theta);
@@ -114,27 +113,27 @@ end
 
 %--------------------------------------------------------------------------
 
-Stat = struct( );
+Stat = struct();
 nPar = length(This.ParamList);
 
 if isFile
     inpFile = Theta;
     nDraw = NaN;
     saveEvery = NaN;
-    doChkPosterFile( );
+    doChkPosterFile();
     getThetaFunc = @(I) h5read(inpFile,'/theta',[I,1],[1,Inf]);
-    getLogPostFunc = @( ) h5read(inpFile,'/logPost',[1,1],[1,Inf]);
+    getLogPostFunc = @() h5read(inpFile,'/logPost',[1,1],[1,Inf]);
 else
     [nPar,nDraw] = size(Theta);
 end
 
 if opt.mean || opt.cov || opt.std || opt.mdd
     thetaMean = nan(nPar,1);
-    doMean( );
+    doMean();
 end
 
 if opt.progress
-    progress = ProgressBar('IRIS poster.arwm progress');
+    progress = progressbar('IRIS poster.arwm progress');
 elseif opt.esttime
     eta = esttime('IRIS poster.arwm is running');
 end
@@ -185,11 +184,11 @@ for i = 1 : nPar
         Stat.prctile.(name) = prctile(iTheta,opt.prctile,2);
     end
     if opt.bounds
-        Stat.bounds.(name) = [This.Lower(i),This.Upper(i)];
+        Stat.bounds.(name) = [This.LowerBounds(i),This.UpperBounds(i)];
     end
     if ~isequal(opt.ksdensity,false)
-        low = This.Lower(i);
-        high = This.Upper(i);
+        low = This.LowerBounds(i);
+        high = This.UpperBounds(i);
         [x,y] = poster.myksdensity(iTheta,low,high,opt.ksdensity);
         Stat.ksdensity.(name) = [x,y];
     end
@@ -206,7 +205,7 @@ end
 % any longer after this point.
 if opt.cov || opt.mdd
     Sgm = nan(nPar);
-    doCov( );
+    doCov();
 end
 
 if opt.cov
@@ -215,8 +214,8 @@ end
 
 if opt.mdd
     uuu = nan(1,nDraw);
-    doUuu( );
-    Stat.mdd = doMdd( );
+    doUuu();
+    Stat.mdd = doMdd();
 end
 
 
@@ -224,7 +223,7 @@ end
 
 
 %**************************************************************************
-    function doMean( )
+    function doMean()
         if isFile
             for ii = 1 : nPar
                 iTheta = getThetaFunc(ii);
@@ -233,11 +232,11 @@ end
         else
             thetaMean = sum(Theta,2) / nDraw;
         end
-    end % doMean( )
+    end % doMean()
 
 
 %**************************************************************************
-    function doCov( )
+    function doCov()
         if isFile
             Sgm = zeros(nPar);
             for ii = 1 : saveEvery : nDraw
@@ -254,21 +253,21 @@ end
             end
             Sgm = Theta * Theta.' / nDraw;
         end
-    end % doCov( )
+    end % doCov()
 
 
 %**************************************************************************
-    function d = doMdd( )
+    function d = doMdd()
         % doMdd  Modified harmonic mean estimator of minus the log marginal data
         % density; Geweke (1999).
         
-        % Copyright (c) 2010-2017 IRIS Solutions Team & Troy Matheson.
+        % Copyright (c) 2010-2014 IRIS Solutions Team & Troy Matheson.
         logDetSgm = log(det(Sgm));
         
         % Compute g(theta) := f(theta) / post(theta) for all thetas,
         % where f(theta) is given by (4.3.2) in Geweke (1999).
         if isFile
-            LogPost = getLogPostFunc( );
+            LogPost = getLogPostFunc();
         end
         logG = -(nPar*log(2*pi) + logDetSgm + uuu)/2 - LogPost;
         
@@ -278,7 +277,7 @@ end
         avgLogG = sum(logG) / nDraw;
         logG = logG - avgLogG;
         
-        d = [ ];
+        d = [];
         for pr = opt.mddgrid(:).'
             crit = chi2inv(pr,nPar);
             inx = crit >= uuu;
@@ -288,11 +287,11 @@ end
             end
         end
         d = -mean(d);
-    end % doMdd( )
+    end % doMdd()
 
 
 %**************************************************************************
-    function doUuu( )
+    function doUuu()
         invSgm = inv(Sgm);
         if isFile
             pos = 0;
@@ -314,11 +313,11 @@ end
                 uuu(jj) = Theta(:,jj).' * invSgm * Theta(:,jj); %#ok<MINV>
             end
         end
-    end % doUuu( )
+    end % doUuu()
 
 
 %**************************************************************************
-    function doChkPosterFile( )
+    function doChkPosterFile()
         try
             valid = true;
             % Parameter list.
@@ -343,15 +342,15 @@ end
                 'This is not a valid posterior simulation file: ''%s''.', ...
                 inpFile);
         end
-    end % doChkPosterFiles( )
+    end % doChkPosterFiles()
 
 
 %**************************************************************************
-    function doOutpOpt( )
+    function doOutpOpt()
         if ~isempty(opt.output)
             utils.warning('poster', ...
                 ['This is an obsolete way of requesting output characteristics ',...
-                'from stats( ). See help for more information.']);
+                'from stats(). See help for more information.']);
             output = opt.output;
             if ischar(output)
                 output = regexp(output,'\w+','match');
@@ -367,17 +366,17 @@ end
                     opt.prctile = [10,90];
                 end
             else
-                opt.prctile = [ ];
+                opt.prctile = [];
             end
             if any(strcmpi(output,'hpdi'))
                 opt.hpdi = opt.hpdicover;
             else
-                opt.hpdi = [ ];
+                opt.hpdi = [];
             end
             if any(strcmpi(output,'hist'))
                 opt.hist = opt.histbins;
             else
-                opt.hist = [ ];
+                opt.hist = [];
             end
         else
             if isequal(opt.prctile,true)
@@ -390,7 +389,7 @@ end
                 opt.hist = 50;
             end
         end
-    end % doOutpOpt( )
+    end % doOutpOpt()
 
 
 end

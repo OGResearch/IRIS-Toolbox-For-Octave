@@ -1,15 +1,15 @@
-function Def = dest( )
+function Def = dest()
 % dest  [Not a public function] Default options for dest package functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-Def = struct( );
+Def = struct();
 
 Def.kcluster = { ...
     'k,maxk', 4, @(x) isintscalar(x) && x>0, ...

@@ -1,34 +1,4 @@
-classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserDataContainer & shared.GetterSetter
-    % nnet  Neural network (nnet) Objects and Functions. 
-    %
-    % nnet methods:
-    %
-    % Constructor
-    % ============
-    %
-    % * [`nnet`](nnet/nnet) - Create new artificial neural network (nnet) object.
-    %
-    % Methods
-    % ========
-    %
-    % * [`copy`](nnet/copy) - Create a copy of an artificial neural network
-    % * [`disp`](nnet/disp) - Display information about an artificial neural network. 
-    % * [`estimate`](nnet/estimate) - Estimate artificial neural network parameters. 
-    % * [`eval`](nnet/eval) - Evaluate neural network. 
-    % * [`get`](nnet/get) - Query neural network model property. 
-    % * [`plot`](nnet/plot) - Visualize neural network structure. 
-    % * [`prune`](nnet/prune) - Eliminate weak connections between neurons.
-    % * [`set`](nnet/set) - Change modifiable neural network model property. 
-    %
-    % Getting on-line help on nnet functions
-    % ==========================================
-    %
-    %     help nnet
-    %     help nnet/function_name
-    %
-    
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+classdef nnet < userdataobj & getsetobj
     
     properties
         % cell array of variables
@@ -40,7 +10,7 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
         Bias = false ;
         nAlt ;
         
-        Layout = [ ] ;
+        Layout = [] ;
         
         nPruned ;
         nActivationParams ;
@@ -50,8 +20,8 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
         
         Neuron@cell = cell(0,1) ;
 
-        nInput ;
-        nOutput ;
+        nInputs ;
+        nOutputs ;
         nLayer ;
     end
     
@@ -62,7 +32,8 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             % Syntax
             % =======
             %
-            %     m =  nnet(Inputs,Outputs,Layout,...)
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,...)
+            %     [PEst,Pos,Cov,Hess,M,V,Delta,PDelta] = estimate(M,D,Range,Est,SPr,...)
             %
             % Input arguments
             % ================
@@ -78,7 +49,7 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             % 
             % * `Layout` [ numeric ] - Vector of integers with length equal
             % to the number of layers such that each element specifies the
-            % number of nodes in that layer. 
+            % number of nodes in that hidden layer. 
             %
             % Output arguments
             % =================
@@ -88,22 +59,12 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             % Options
             % ========
             %
-            % * `'ActivationFn='` [ *`linear`* | `minkovsky` | cell ] -
-            % Specify the activation function for all layers using a
-            % valid string, or specify different activation functions
-            % for each layer using a cell array of valid strings which has
-            % one entry for each layer plus an entry for the output layer. 
+            % * `'ActivationFn='` [ *`linear`* | `minkovsky` ] - Activation function. 
             % 
-            % * `'Bias='` [ logical | *false* ] - Include bias
-            % nodes. Can be set to logical, in which case it affects all
-            % layers in the same way; or it can be a vector which specifies
-            % which layers should have bias nodes. 
+            % * `'OutputFn='` [ *`logistic`* | `s4` | `tanh` ] - Output function. 
             % 
-            % * `'OutputFn='` [ *`logistic`* | `s4` | `tanh` | cell ] - 
-            % Specify the output function for all layers using a valid
-            % string, or specify different output functions for each layer
-            % using a cell array of valid strings which has one entry for
-            % each layer plus an entry for the output layer. 
+            % The composition of the activation and output functions is
+            % used to create flexible transfer functions. 
             %
             % Description
             % ============
@@ -117,43 +78,39 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             % (1999). Features include: 
             % 
             % * Network training using a variety of optimization methods,
-            % including backpropogation. 
+            % including particle swarm optimization.  
             % * Network pruning as in Kaashoek and Van Dijk (2002) to mitigate 
             % overfitting problems. 
             % * Network architecture visualisation. 
+            % * K-step ahead forecasts. 
             % * Parallel network pruning and training algorithms. 
-            % 
-            % Examples
-            % =========
-            % 
-            % M = nnet({'x{-1}','x{-2}'},'x',[5 10],'bias=',true,...
-            %     'outputFn=',{'logistic','logistic','linear'}) ;
             % 
             % References
             % ===========
             %
-            % * Duch, Wlodzislaw; Jankowski, Norbert (1999). "Survey of
-            % neural transfer functions," Neural Computing Surveys 2. 
+            % # Duch, Wlodzislaw; Jankowski, Norbert (1999). "Survey of
+            %   neural transfer functions," Neural Computing Surveys 2
             % 
-            % * Gorodkin, J., Hansen, L.K., Krogh, A., Savarer, C., and
+            % # Gorodkin, J., Hansen, L.K., Krogh, A., Savarer, C., and
             % Winther, O. (1993). "A quantitative study of pruning by
             % optimal brain damage," mimeo. 
             % 
-            % * Kaashoek, Johan F., and Van Dijk, Herman K. (2002). "Neural
+            % # Kaashoek, Johan F., and Van Dijk, Herman K. (2002). "Neural
             % network pruning applied to real exchange rate analysis,"
             % Journal of Forecasting. 
             %
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            pp = inputParser( ) ;
+            pp = inputParser() ;
             pp.addRequired('Inputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Outputs',@(x) iscellstr(x) || ischar(x)) ;
             pp.addRequired('Layout',@(x) isvector(x) && isnumeric(x)) ;
             pp.parse(Inputs,Outputs,Layout) ;
+
             
             % Superclass constructors
-            This = This@shared.UserDataContainer( );
+            This = This@userdataobj();
             
             % Construct
             This.Inputs = cellstr(Inputs) ;
@@ -162,8 +119,8 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             This.nAlt = 1 ;
             
             This.nLayer = numel(This.Layout) ;
-            This.nInput = numel(This.Inputs) ;
-            This.nOutput = numel(This.Outputs) ;
+            This.nInputs = numel(This.Inputs) ;
+            This.nOutputs = numel(This.Outputs) ;
             This.nPruned = 0 ;
             
             % Parse options
@@ -187,16 +144,14 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             HyperIndex = 0 ;
             Nmax = max(This.Layout) ;
             This.Neuron = cell(This.nLayer+1,1) ;
-            % Normal layers first
             for iLayer = 1:This.nLayer
                 NN = This.Layout(iLayer) + This.Bias(iLayer) ;
-                pos = linspace(Nmax,1,NN) ;
+                pos = linspace(1,Nmax,NN) ;
                 if iLayer == 1
-                    nInput = This.nInput ;
+                    nInput = This.nInputs ;
                 else
-                    nInput = numel(This.Neuron{iLayer-1}) ; %#ok<*PROP>
+                    nInput = numel(This.Neuron{iLayer-1}) ;
                 end
-                % Regular neurons
                 This.Neuron{iLayer} = cell(This.Layout(iLayer),1) ;
                 for iNode = 1:This.Layout(iLayer)
                     Position = [iLayer,pos(iNode)] ;
@@ -206,28 +161,26 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
                         nInput,...
                         Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
-                    xxUpdateIndex( ) ;
+                    xxUpdateIndex() ;
                 end
-                % Bias neurons
                 if options.Bias(iLayer)
                     Position = [iLayer,pos(This.Layout(iLayer)+1)] ;
                     This.Neuron{iLayer}{This.Layout(iLayer)+1} ...
                         = neuron('bias','bias',nInput,Position,...
                         ActivationIndex,OutputIndex,HyperIndex) ;
-                    xxUpdateIndex( ) ;
+                    xxUpdateIndex() ;
                 end
             end
-            % Output layer
             iLayer = This.nLayer + 1 ;
-            This.Neuron{iLayer} = cell(This.nOutput,1) ;
-            for iNode = 1:This.nOutput
+            This.Neuron{iLayer} = cell(This.nOutputs,1) ;
+            for iNode = 1:This.nOutputs
                 This.Neuron{iLayer}{iNode} ...
                     = neuron(options.ActivationFn{iLayer},...
                     options.OutputFn{iLayer},...
                     This.Layout(This.nLayer)+This.Bias(This.nLayer),...
                     [NaN,NaN],...
                     ActivationIndex,OutputIndex,HyperIndex) ;
-                xxUpdateIndex( ) ;
+                xxUpdateIndex() ;
             end
             
             This.nActivationParams = ActivationIndex ;
@@ -237,7 +190,29 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
             
             This = set(This,'hyper',1,'activation',0,'output',1) ;
             
-            function xxUpdateIndex( )
+            % Tell nodes about their forward/backward connections
+            for iLayer = 1:This.nLayer+1
+                for iNode = 1:numel(This.Neuron{iLayer})
+                    if iLayer < This.nLayer+1
+                        This.Neuron{iLayer}{iNode}.ForwardConnection ...
+                            = cell( numel(This.Neuron{iLayer+1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer+1})
+                            This.Neuron{iLayer}{iNode}.ForwardConnection{sLayer} ...
+                                = This.Neuron{iLayer+1}{sLayer} ;
+                        end
+                    end
+                    if iLayer > 1
+                        This.Neuron{iLayer}{iNode}.BackwardConnection ...
+                            = cell( numel(This.Neuron{iLayer-1}), 1 ) ;
+                        for sLayer = 1:numel(This.Neuron{iLayer-1})
+                            This.Neuron{iLayer}{iNode}.BackwardConnection{sLayer} ...
+                                = This.Neuron{iLayer-1}{sLayer} ;
+                        end
+                    end
+                end
+            end
+            
+            function xxUpdateIndex()
                 ActivationIndex = ActivationIndex + numel(This.Neuron{iLayer}{iNode}.ActivationIndex) ;
                 OutputIndex = OutputIndex + numel(This.Neuron{iLayer}{iNode}.OutputIndex) ;
                 HyperIndex = HyperIndex + numel(This.Neuron{iLayer}{iNode}.HyperIndex) ;
@@ -263,14 +238,6 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
     end
     
     methods( Hidden )
-        function flag = chkConsistency(this)
-            flag = chkConsistency@shared.GetterSetter(this) && ...
-                chkConsistency@shared.UserDataContainer(this);
-        end
-
-        
-        
-        
         varargout = copy(varargin) ;
         varargout = rmnan(varargin) ;
         varargout = myrange(varargin) ;
@@ -278,9 +245,6 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
         varargout = datarequest(varargin) ;
         varargout = horzcat(varargin) ;
         varargout = vertcat(varargin) ;
-        varargout = myfwdpass(varargin) ;
-        varargout = bp(varargin) ;
-        varargout = maxabs(varargin) ;
     end
     
     methods( Static, Hidden )
@@ -289,4 +253,3 @@ classdef ( InferiorClasses={?matlab.graphics.axis.Axes} ) nnet < shared.UserData
     
     
 end
-

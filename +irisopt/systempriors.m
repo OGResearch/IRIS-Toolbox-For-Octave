@@ -1,15 +1,15 @@
-function def = systempriors( )
+function def = systempriors()
 % systempriors  [Not a public function] Default options for systempriors class functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-def = struct( );
+def = struct();
 
 def.prior = { ...
     'lowerbound,lower',-Inf,@(x) isnumericscalar(x), ...

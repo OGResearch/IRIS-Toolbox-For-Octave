@@ -1,30 +1,26 @@
-function f = freq(x)
-% freq  Date frequency of tseries object.
+function y = freq(x)
+% freq  Frequency of a tseries object.
 %
 % Syntax
 % =======
 %
-%     F = freq(X)
-%
+%     f = freq(x)
 %
 % Input arguments
 % ================
 %
-% * `X` [ tseries ] - Input tseries object.
-%
+% * `x` [ tseries ] - Tseries object.
 %
 % Output arguments
 % =================
 %
-% * `F` [ `0` | `1` | `2` | `4` | `6` | `12` | `52` | `365` ] - Date
-% frequency of observations in the input tseries object; `F` is the number
-% of periods within a year.
-%
+% * `f` [ 0 | 1 | 2 | 4 | 6 | 12 ] - Frequency of observations in the input
+% tseries object (`f` is the number of periods within a year).
 %
 % Description
 % ============
 %
-% The `freq( )` function is equivalent to calling the `get( )` function:
+% The `freq` function is equivalent to calling
 %
 %     get(x,'freq')
 %
@@ -32,11 +28,11 @@ function f = freq(x)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-f = datfreq(x.start);
+y = datfreq(x.start);
 
 end

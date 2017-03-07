@@ -3,8 +3,8 @@ function varargout = plotpp(varargin)
 %
 % See help on [`grfun.plotpp`](grfun/plotpp).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.plotpp(varargin{:});
 

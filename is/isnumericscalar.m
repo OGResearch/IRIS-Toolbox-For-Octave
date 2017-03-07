@@ -1,19 +1,15 @@
-function Flag = isnumericscalar(X,Lb,Ub)
+function Flag = isnumericscalar(X)
 % isnumericscalar  True if variable is numeric scalar (of any numeric type).
 %
 % Syntax 
 % =======
 %
-%     Flag = isnumericscalar(X,Lb,Ub)
+%     Flag = isnumericscalar(X)
 %
 % Input arguments
 % ================
 %
 % * `X` [ numeric ] - Variable that will be tested.
-%
-% * `Lb` [ numeric ] - Lower bound test.
-% 
-% * `Ub` [ numeric ] - Upper bound test. 
 %
 % Output arguments
 %
@@ -27,18 +23,11 @@ function Flag = isnumericscalar(X,Lb,Ub)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 Flag = isnumeric(X) && numel(X) == 1;
-
-if nargin>1
-    Flag = Flag.*(X>Lb) ;
-    if nargin>2
-        Flag = Flag.*(X<Ub) ;
-    end
-end
 
 end

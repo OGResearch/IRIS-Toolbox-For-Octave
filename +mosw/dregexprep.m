@@ -1,22 +1,25 @@
 function C = dregexprep(C,Pattern,ReplFunc,InpTokens,varargin)
 % dregexprep  [Not a public function] Regexprep with dynamic expressions,
-% Matlab-Octave switch.
+% version for Octave.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 isChar = ischar(C);
 if isChar
     C = {C};
+elseif ~iscellstr(C)
+    C = NaN;
+    return
 end
 inx = strcmpi(varargin,'once');
 isOnce = any(inx);
-varargin(inx) = [ ];
+varargin(inx) = [];
 for i = 1 : length(C)
     from = 1;
     while true
@@ -27,12 +30,15 @@ for i = 1 : length(C)
         if isempty(start)
             break
         end
-        args = { };
+        args = {};
         if ~isempty(InpTokens)
-            args = [{match},tokens];
+            tokens = regexprep(tokens,'((?<!''))['']((?!''))','$1''''$2');
+            args = [{match},tokens(:)'];
             args = args(InpTokens+1);
         end
-        replString = ReplFunc(args{:});
+        args = sprintf('''%s'',',args{:});
+        replString = evalin('caller',sprintf('%s(%s)', ...
+            ReplFunc,args(1:end-1)));
         start = from + start - 1;
         finish = from + finish - 1;
         C{i} = [C{i}(1:start-1),replString,C{i}(finish+1:end)];

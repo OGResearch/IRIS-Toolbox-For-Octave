@@ -1,0 +1,77 @@
+
+
+    \filetitle{arf}{Run autoregressive function on a tseries object}{tseries/arf}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+X = arf(X,A,Z,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} tseries {]} - Input data from which initial condition
+  will be taken.
+\item
+  \texttt{A} {[} numeric {]} - Vector of coefficients of the
+  autoregressive polynomial.
+\item
+  \texttt{Z} {[} numeric \textbar{} tseries {]} - Exogenous input series
+  or constant in the autoregressive process.
+\item
+  \texttt{Range} {[} numeric \textbar{} Inf {]} - Date range on which
+  the new time series observations will be computed; \texttt{RANGE} does
+  not include pre-sample initial condition. \texttt{Inf} means the
+  entire possible range will be used (taking into account the length of
+  pre-sample initial condition needed).
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{X} {[} tseries {]} - Output data with new observations created
+  by running an autoregressive process described by \texttt{A} and
+  \texttt{Z}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The autoregressive process has one of the following forms:
+
+\begin{verbatim}
+A1*x + A2*x(-1) + ... + An*x(-n) = z,
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+A1*x + A2*x(+1) + ... + An*x(+n) = z,
+\end{verbatim}
+
+depending on whether the range is increasing (running forward in time),
+or decreasing (running backward in time). The coefficients
+\texttt{A1},\ldots{}\texttt{An} are gathered in the input vector
+\texttt{A},
+
+\begin{verbatim}
+A = [A1,A2,...,An].
+\end{verbatim}
+
+\paragraph{Example}\label{example}
+
+The following two lines create an autoregressive process constructed
+from normally distributed residuals,
+
+\[ x_t = \rho x_{t-1} + \epsilon_t \]
+
+\begin{verbatim}
+rho = 0.8;
+X = tseries(1:20,@randn);
+X = arf(X,[1,-rho],X,2:20);
+\end{verbatim}
+
+

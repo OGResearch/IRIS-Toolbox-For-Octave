@@ -1,2 +1,2 @@
-function config( )
+function config()
 end

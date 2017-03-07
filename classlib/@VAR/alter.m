@@ -26,8 +26,8 @@ function This = alter(This,N)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -37,10 +37,10 @@ if N == nAlt
     return
 elseif N > nAlt
     % Expand nAlt by copying the last parameterisation.
-    This = subsalt(This,nAlt+1:N,This,nAlt*ones(1,N-nAlt));
+    This = mysubsalt(This,nAlt+1:N,This,nAlt*ones(1,N-nAlt));
 else
     % Reduce nAlt by deleting the last parameterisations.
-    This = subsalt(This,N+1:nAlt,[ ]);
+    This = mysubsalt(This,N+1:nAlt,[]);
 end
 
 end

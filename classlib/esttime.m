@@ -13,12 +13,12 @@ classdef esttime < handle
     methods
         
         function This = esttime(varargin)
-            textfun.loosespace( );
+            strfun.loosespace();
             if ~isempty(varargin) && ischar(varargin{1})
                 disp(varargin{1});
             end
             fprintf('Estimated time to go: ');
-            This.startTime = tic( );
+            This.startTime = tic();
         end
         
         function This = update(This,N)
@@ -64,7 +64,7 @@ classdef esttime < handle
             end
             if stop
                 fprintf('\n');
-                textfun.loosespace( );
+                strfun.loosespace();
             end
         end
         

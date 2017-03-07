@@ -3,7 +3,7 @@
 % Syntax
 % =======
 %
-%     P.empty( )
+%     P.empty()
 %     P.empty(Caption,...)
 %
 % Input arguments
@@ -31,6 +31,6 @@
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 

@@ -1,49 +1,47 @@
-function varargout = findeqtn(this, varargin)
-% findeqtn  Find equations by their labels.
+function varargout = findeqtn(This,varargin)
+% findeqtn  Find equations by the labels.
 %
 % Syntax
 % =======
 %
-%     [found, found, ...] = findeqtn(M, search, search, ...)
-%
+%     [Eqtn,Eqtn,...] = findeqtn(M,Label,Label,...)
+%     [List,List,...] = findeqtn(M,'-rexp',Rexp,Rexp,...)
 %
 % Input arguments
 % ================
 %
-% * `m` [ model ] - Model object in which the equations will be searched
+% * `M` [ model ] - Model object in which the equations will be searched
 % for.
 %
-% * `search` [ char | rexp ] - Equation labels that will be searched for,
-% or rexp objects (regular expressions) against which the labels will be
-% matched.
+% * `Label` [ char ] - Equation label that will be searched for.
 %
+% * `Rexp` [ char ] - Regular expressions that will be matched against
+% equation labels.
 %
 % Output arguments
 % =================
 %
-% * `found` [ char | cellstr ] - If `search` is a text string, `found` is
-% the first equation found with the label `search`; if `search` is a rexp
-% object (regular expression), `found` is a cell array of equations matched
-% successfully against the regular expression.
+% * `Eqtn` [ char ] - First equation found with the label `Label`.
 %
+% * `List` [ cellstr ] - List of equations whose labels match the regular
+% expression `Rexp`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if nargin<2
+if nargin < 2
     return
 end
 
-[ varargout{1:numel(varargin)} ] = find(this, 'eqn', varargin{:});
+[varargout{1:nargout}] = myfind(This,'findeqtn',varargin{:});
 
 end

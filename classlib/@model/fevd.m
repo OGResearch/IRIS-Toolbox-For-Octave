@@ -1,11 +1,11 @@
-function [X, Y, lsName, dbAbs, dbRel] = fevd(this, time, varargin)
+function [X,Y,List,XX,YY] = fevd(This,Time,varargin)
 % fevd  Forecast error variance decomposition for model variables.
 %
 % Syntax
 % =======
 %
-%     [X, Y, List, A, B] = fevd(M, Range, ...)
-%     [X, Y, List, A, B] = fevd(M, NPer, ...)
+%     [X,Y,List,A,B] = fevd(M,Range,...)
+%     [X,Y,List,A,B] = fevd(M,NPer,...)
 %
 % Input arguments
 % ================
@@ -13,8 +13,8 @@ function [X, Y, lsName, dbAbs, dbRel] = fevd(this, time, varargin)
 % * `M` [ model ] - Model object for which the decomposition will be
 % computed.
 %
-% * `Range` [ numeric | char ] - Decomposition date range with the first
-% date beign the first forecast period.
+% * `Range` [ numeric ] - Decomposition date range with the first date
+% beign the first forecast period.
 %
 % * `NPer` [ numeric ] - Number of periods for which the decomposition will
 % be computed.
@@ -55,117 +55,113 @@ function [X, Y, lsName, dbAbs, dbRel] = fevd(this, time, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-pp = inputParser( );
-pp.addRequired('M', @(x) isa(x, 'model'));
-pp.addRequired('Time', @(x) isdatinp(x));
-pp.parse(this, time);
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse options.
-opt = passvalopt('model.fevd', varargin{:});
+opt = passvalopt('model.fevd',varargin{:});
 
 % Tell whether time is nPer or Range.
-if ischar(time)
-    time = textinp2dat(time);
-elseif length(time) == 1 && round(time) == time && time > 0
-    time = 1 : time;
+if length(Time) == 1 && round(Time) == Time && Time > 0
+    range = 1 : Time;
+else
+    range = Time(1) : Time(end);
 end
-Range = time(1) : time(end);
-nPer = length(Range);
+nPer = length(range);
 
-isSelect = ~isequal(opt.select, @all);
-isNamedMat = strcmpi(opt.MatrixFmt, 'namedmat');
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
-[ny, nxx, ~, ~, ne] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-X = nan(ny+nxx, ne, nPer, nAlt);
-Y = nan(ny+nxx, ne, nPer, nAlt);
+ny = sum(This.nametype == 1);
+nx = length(This.solutionid{2});
+ne = sum(This.nametype == 3);
+nAlt = size(This.Assign,3);
+X = nan(ny+nx,ne,nPer,nAlt);
+Y = nan(ny+nx,ne,nPer,nAlt);
 
-ixZeroCorr = true(1, nAlt);
-ixSolved = true(1, nAlt);
+isZeroCorr = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
     
     % Continue immediately if some cross-corrs are non-zero.
-    ixZeroCorr(iAlt) = all(this.Variant{iAlt}.StdCorr(1, ne+1:end)==0);
-    if ~ixZeroCorr(iAlt)
+    isZeroCorr(iAlt) = all(This.stdcorr(1,ne+1:end,iAlt) == 0);
+    if ~isZeroCorr(iAlt)
         continue
     end
     
-    [T, R, K, Z, H, D, Za, Omg] = mysspace(this, iAlt, false);
+    [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
     
     % Continue immediately if solution is not available.
-    ixSolved(iAlt) = all(~isnan(T(:)));
-    if ~ixSolved(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
     
-    [Xi, Yi] = timedom.fevd(T, R, K, Z, H, D, Za, Omg, nPer);
-    X(:, :, :, iAlt) = Xi;
-    Y(:, :, :, iAlt) = Yi;
+    [Xi,Yi] = timedom.fevd(T,R,K,Z,H,D,Za,Omg,nPer);
+    X(:,:,:,iAlt) = Xi;
+    Y(:,:,:,iAlt) = Yi;
 end
 
 % Report NaN solutions.
-if ~all(ixSolved)
+if ~all(isSol)
     utils.warning('model:fevd', ...
         'Solution(s) not available %s.', ...
-        exception.Base.alt2str(~ixSolved) );
+        preparser.alt2str(~isSol));
 end
 
 % Report non-zero cross-correlations.
-if ~all(ixZeroCorr)
+if ~all(isZeroCorr)
     utils.warning('model:fevd', ...
         ['Cannot compute FEVD with ', ...
         'nonzero cross-correlations %s.'], ...
-        exception.Base.alt2str(~ixZeroCorr) );
+        preparser.alt2str(~isZeroCorr));
 end
 
 if nargout <= 2 && ~isSelect && ~isNamedMat
     return
 end
 
-rowNames = printSolutionVector(this, 'yx');
-colNames = printSolutionVector(this, 'e');
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
 
-% Convert arrays to time series databases.
+% Convert arrays to tseries databases.
 if nargout > 3
     % Select only current dated variables.
-    id = [this.Vector.Solution{1:2}];
-    name = this.Quantity.Name(real(id));
+    id = [This.solutionid{1:2}];
+    name = This.name(real(id));
 
-    dbAbs = struct( );
-    dbRel = struct( );
+    XX = struct();
+    YY = struct();
     for i = find(imag(id) == 0)
-        c = strcat(rowNames{i}, ' <-- ', colNames);
-        dbAbs.(name{i}) = Series(Range, permute(X(i, :, :, :), [3, 2, 4, 1]), c);
-        dbRel.(name{i}) = Series(Range, permute(Y(i, :, :, :), [3, 2, 4, 1]), c);
+        c = strcat(rowNames{i},' <-- ',colNames);
+        XX.(name{i}) = tseries(range,permute(X(i,:,:,:),[3,2,4,1]),c);
+        YY.(name{i}) = tseries(range,permute(Y(i,:,:,:),[3,2,4,1]),c);
     end
     % Add parameter database.
-    dbAbs = addparam(this, dbAbs);
-    dbRel = addparam(this, dbRel);
+    XX = addparam(This,XX);
+    YY = addparam(This,YY);
 end
 
 % Select variables if requested; selection only applies to the matrix
 % outputs, `X` and `Y`, and not to the database outputs, `x` and `y`.
 if isSelect
-    [X, pos] = namedmat.myselect(X, rowNames, colNames, opt.select);
+    [X,pos] = select(X,rowNames,colNames,opt.select);
     rowNames = rowNames(pos{1});
     colNames = colNames(pos{2});
     if nargout > 1
-        Y = Y(pos{1}, pos{2}, :, :);
+        Y = Y(pos{1},pos{2},:,:);
     end
 end
-lsName = {rowNames, colNames};
+List = {rowNames,colNames};
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrices to namedmat objects if requested.
     if isNamedMat
-        X = namedmat(X, rowNames, colNames);
+        X = namedmat(X,rowNames,colNames);
         if nargout > 1
-            Y = namedmat(Y, rowNames, colNames);
+            Y = namedmat(Y,rowNames,colNames);
         end
     end
 else

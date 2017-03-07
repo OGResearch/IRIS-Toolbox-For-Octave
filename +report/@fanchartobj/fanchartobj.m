@@ -1,8 +1,8 @@
 classdef fanchartobj < report.seriesobj
   
     properties
-        std = [ ];
-        prob = [ ];
+        std = [];
+        prob = [];
     end
     
     methods
@@ -24,7 +24,7 @@ classdef fanchartobj < report.seriesobj
             [This,varargin] = specargin@report.seriesobj(This,varargin{:});
             if ~isempty(varargin)
                 This.std = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
             end
             if ~isempty(varargin)
                 This.prob = varargin{1};
@@ -33,13 +33,13 @@ classdef fanchartobj < report.seriesobj
                     i = 1;
                     while i<length(This.prob)
                         if This.prob(i) == This.prob(i+1)
-                            This.prob(i+1) = [ ];
+                            This.prob(i+1) = [];
                         else
                             i = i + 1;
                         end;
                     end;
                 end
-                varargin(1) = [ ];
+                varargin(1) = [];
             end
         end
         

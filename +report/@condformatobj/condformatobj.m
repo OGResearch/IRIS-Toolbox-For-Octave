@@ -4,12 +4,12 @@ classdef condformatobj < handle
 % Backend IRIS class.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        test = { };
-        format = { };
+        test = {};
+        format = {};
     end
     
     properties (Constant)

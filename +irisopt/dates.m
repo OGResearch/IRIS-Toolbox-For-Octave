@@ -1,43 +1,43 @@
-function def = dates( )
-% dates  Default options for IRIS date functions.
+function Def = dates()
+% dates  [Not a public function] Default options for IRIS date functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-def = struct( );
+Def = struct();
 
-def.dates = {
-    'dateformat', @config, @config
-    'freqletters, freqletter', @config, @config
-    'months, month', @config, @config
-    'standinmonth', @config, @config
-    'wwday', @config, @config
+dates = { ...
+    'dateformat',@config,@config, ...
+    'freqletters,freqletter',@config,@config, ...
+    'months,month',@config,@config, ...
+    'standinmonth',@config,@config, ...
     };
 
-def.convert = [
-    def.dates
-    ];
+Def.convert = { ...
+   'standinmonth',@config,@config, ...
+};
 
-def.dat2str = [
-    def.dates
-    ];
+Def.dat2str = { ...
+    dates{:}, ...
+}; %#ok<CCAT1>
 
-def.datxtick = [
-    def.dates
-    {
-    'DatePosition', 'c', @(x) ischar(x) && ~isempty(x) && any(x(1) == 'sec')
-    'DateTick, DateTicks', @auto, @(x) isequal(x, @auto) || isnumeric(x) || isanystri(x, {'yearstart', 'yearend', 'yearly'}) || isfunc(x)
-    } ];
+Def.datxtick = { ...
+    dates{:}, ...
+    'dateposition','c',@(x) ischar(x) && ~isempty(x) && any(x(1) == 'sec'), ...
+    'datetick,dateticks','auto',@(x) isequal(x,'auto') || isnumeric(x) ...
+    || isanystri(x,{'yearstart','yearend','yearly'}) || isfunc(x), ...
+}; %#ok<CCAT>
 
-def.str2dat = [
-    def.dates
-    {
-    'freq', [ ], @(x) isempty(x) || (isnumericscalar(x) && any(x == [0, 1, 2, 4, 6, 12, 52, 365])) || isequal(x, 'daily')
-    } ];
+Def.str2dat = { ...
+    dates{:}, ...
+   'freq',[],@(x) isempty(x) ...
+      || (isnumericscalar(x) && any(x == [0,1,2,4,6,12,52,365])) ...
+      || isequal(x,'daily'), ...
+}; %#ok<CCAT>
 
 end

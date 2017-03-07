@@ -6,50 +6,47 @@ function clicktocopy(ax)
 %
 %     grfun.clicktocopy(h)
 %
-%
 % Input arguments
 % ================
 %
 % * `h` [ numeric ] - Handle to axes objects that will be added a Button
 % Down callback opening them in a new window on mouse click.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('h', @(x) all(ishghandle(x)) ...
-    && all(strcmp(get(x, 'type'), 'axes')));
+% Parse input arguments.
+pp = inputParser();
+    pp.addRequired('h',@(x) all(ishghandle(x)) ...
+       && all(strcmp(get(x,'type'),'axes')));
+
 
 %--------------------------------------------------------------------------
 
-set(ax, 'buttonDownFcn', @copyAxes);
-h = findobj(ax, 'tag', 'highlight');
-set(h, 'buttonDownFcn', @copyAxes);
-h = findobj(ax, 'tag', 'vline');
-set(h, 'buttonDownFcn', @copyAxes);
+set(ax,'buttonDownFcn',@xxCopyAxes);
+h = findobj(ax(:),'tag','highlight');
+set(h,'buttonDownFcn',@xxCopyAxes);
+h = findobj(ax(:),'tag','vline');
+set(h,'buttonDownFcn',@xxCopyAxes);
 
 end
 
-
-
-
-function copyAxes(h, varargin)
-POSITION = [0.1300, 0.1100, 0.7750, 0.8150];
-if ~isequal(get(h, 'type'), 'axes')
-    h = get(h, 'parent');
-end
-new = copyobj(h, figure( ));
-set(new, ...
-    'position', POSITION, ...
-    'units', 'normalized', ...
-    'buttonDownFcn', '');
-end
+%**************************************************************************
+function xxCopyAxes(h,varargin)
+    if ~isequal(get(h,'type'),'axes')
+      h = get(h,'parent');
+    end
+    new = copyobj(h,figure());
+    set(new, ...
+      'position',[0.1300,0.1100,0.7750,0.8150], ...
+      'units','normalized', ...
+      'buttonDownFcn','');
+    end
+    % xxCopyAxes().

@@ -1,26 +1,35 @@
-function c = myatomchar(this)
-% myatomchar  Print sydney atom to char string.
+function C = myatomchar(This)
+% myatomchar  [Not a public function] Print sydney atom to char string.
+%
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-a = this.args;
+a = This.args;
+fmt = '%.15g';
 if ischar(a)
-    c = a;
-elseif numel(a)==1
-    if a==0
-        c = '0';
+    % Name of a variable.
+    C = a;
+elseif isnumericscalar(a)
+    % Constant.
+    if a == 0
+        C = '0';
     else
-        c = sprintf('%.16g', a);
+        C = sprintf(fmt,a);
     end
+elseif (isnumeric(a) || islogical(a)) ...
+        && ~isempty(a) && length(size(a)) == 2 && size(a,2) == 1
+    % Column vector.
+    C = sprintf([';',fmt],double(a));
+    C = ['[',C(2:end),']'];
 else
-    c = sprintf('%.16g;', a);
-    c = [ '[', c(1:end-1), ']' ];
+    utils.error('sydney:char', ...
+        'Unknown type of sydney atom.');
 end
 
 end

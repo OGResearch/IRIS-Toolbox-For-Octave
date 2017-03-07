@@ -1,103 +1,79 @@
-function fn = invgamma(mean_, std_, a, b)
+function F = invgamma(Mean,Std)
 % invgamma  Create function proportional to log of inv-gamma distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.invgamma(mean, stdev)
-%     fn = logdist.invgamma(NaN, NaN, a, b)
-%
+%     F = logdist.invgamma(MEAN,STD)
 %
 % Input arguments
 % ================
 %
-% * `mean` [ numeric ] - Mean of the inv-gamma distribution.
+% * `MEAN` [ numeric ] - Mean of the inv-gamma distribution.
 %
-% * `stdev` [ numeric ] - Stdev of the inv-gamma distribution.
-%
-% * `a` [ numeric ] - Parameter alpha defining inv-gamma distribution.
-%
-% * 'b` [ numeric ] - Parameter beta defining inv-gamma distribution.
-%
+% * `STD` [ numeric ] - Std dev of the inv-gamma distribution.
 %
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of the inv-gamma density.
-%
 %
 % Description
 % ============
 %
 % See [help on the logdisk package](logdist/Contents) for details on
-% using the function handle `fn`.
-%
+% using the function handle `F`.
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if isequaln(mean_, NaN) && isequaln(std_, NaN)
-    if a>1
-        mean_ = b/(a - 1);
-    else
-        mean_ = NaN;
-    end
-    if a>2
-        std_ = mean_/sqrt(a - 2);
-    else
-        std_ = NaN;
-    end 
-else
-    a = 2 + (mean_/std_)^2;
-    b = mean_*(1 + (mean_/std_)^2);
-end
-mode_ = b/(a + 1);
-fn = @(x,varargin) fnInvGamma(x, a, b, mean_, std_, mode_, varargin{:});
+a = 2 + (Mean/Std)^2;
+b = Mean*(1 + (Mean/Std)^2);
+mode = b/(a + 1);
+F = @(x,varargin) xxInvGamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end
 
+% Subfunctions.
 
+%**************************************************************************
+function Y = xxInvGamma(X,A,B,Mean,Std,Mode,varargin)
 
-
-function y = fnInvGamma(x, a, b, mean_, std_, mode_, varargin)
-y = zeros(size(x));
-ix = x>0;
-x = x(ix);
+Y = zeros(size(X));
+inx = X > 0;
+X = X(inx);
 if isempty(varargin)
-    y(ix) = (-a-1)*log(x) - b./x;
-    y(~ix) = -Inf;
+    Y(inx) = (-A-1)*log(X) - B./X;
+    Y(~inx) = -Inf;
     return
 end
+
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y(ix) = b^a/gamma(a)*(1./x).^(a+1).*exp(-b./x);
+    case {'proper','pdf'}
+        Y(inx) = B^A/gamma(A)*(1./X).^(A+1).*exp(-B./X);
     case 'info'
-        y(ix) = (2*b - x*(a + 1))./x.^3;
-        y(~ix) = NaN;
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y(inx) = -(2*B - X*(A + 1))./X.^3;
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mean;
+    case {'sigma','sgm','std'}
+        Y = Std;
     case 'mode'
-        y = mode_;
+        Y = Mode;
     case 'name'
-        y = 'invgamma';
-    case {'rand', 'draw'}
-        y = 1./gamrnd(a, 1/b, varargin{2:end});
-    case 'lower'
-        y = 0;
-    case 'upper'
-        y = Inf;
+        Y = 'invgamma';
+    case 'draw'
+        Y = 1./gamrnd(A,1/B,varargin{2:end});
 end
-end
+
+end % xxInvGamma().

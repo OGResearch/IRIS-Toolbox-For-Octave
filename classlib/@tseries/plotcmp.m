@@ -54,24 +54,22 @@ function [Ax,Lhs,Rhs,varargout] = plotcmp(varargin)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-% AREA, BAND, BAR, BARCON, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isnumeric(varargin{1})
    Range = varargin{1};
-   varargin(1) = [ ];
+   varargin(1) = [];
 else
    Range = Inf;
 end
 
 X = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 X.data = X.data(:,:);
 if size(X.data,2) < 2
-   utils.error('tseries:plotcmp', ...
-      'The function plotcmp( ) requires multicolumn input time series.');
+   utils.error('tseries', ...
+      'The function plotcmp() only works with multi-column tseries objects.');
 end
 
 [opt,varargin] = passvalopt('tseries.plotcmp',varargin{:});
@@ -89,7 +87,7 @@ nCmp = length(opt.compare);
 if nx > nCmp
     opt.compare(end+1:nx,1) = 0;
 elseif nx < nCmp
-    opt.compare(nx+1:end,1) = [ ];
+    opt.compare(nx+1:end,1) = [];
 end
 d = replace(X,X.data * opt.compare,X.start);
 

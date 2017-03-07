@@ -5,32 +5,32 @@ function [C,This] = protectquotes(C,This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 ptn = '([''"])([^\n]*?)\1';
-if true % ##### MOSW
+if false % ##### MOSW
     replaceFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${replaceFunc($1,$2)}');
 else
-    C = mosw.dregexprep(C,ptn,@doReplace,[1,2]); %#ok<UNRCH>
+    C = mosw.dregexprep(C,ptn,'doReplace',[1,2]); %#ok<UNRCH>
 end
 
-return
 
-    
-    
+% Nested functions...
+
+
+%**************************************************************************
+
     
     function K = doReplace(Quote,String)
         This.Store{end+1} = String;
         This.Open{end+1} = Quote;
         This.Close{end+1} = Quote;
         K = charcode(This);
-    end % doReplace( )
+    end % doReplace()
     
-
-
 
 end

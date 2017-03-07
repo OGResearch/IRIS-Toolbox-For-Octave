@@ -3,14 +3,14 @@ function display(This)
 %
 % Help provided in +report/disp.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-textfun.loosespace( );
+strfun.loosespace();
 disp([inputname(1),' =']);
-textfun.loosespace( );
+strfun.loosespace();
 disp(This);
 
 end

@@ -1,11 +1,10 @@
-function [flag, lsMissing] = chkmissing(this, d, start, varargin)
+function [Ok,Miss] = chkmissing(This,D,Start,varargin)
 % chkmissing  Check for missing initial values in simulation database.
 %
 % Syntax
 % =======
 %
-%     [Ok, Miss] = chkmissing(M, D, Start)
-%
+%     [Ok,Miss] = chkmissing(M,D,Start)
 %
 % Input arguments
 % ================
@@ -16,7 +15,6 @@ function [flag, lsMissing] = chkmissing(this, d, start, varargin)
 %
 % * `Start` [ numeric ] - Start date for the simulation.
 %
-%
 % Output arguments
 % =================
 %
@@ -25,13 +23,11 @@ function [flag, lsMissing] = chkmissing(this, d, start, varargin)
 %
 % * `Miss` [ cellstr ] - List of missing initial values.
 %
-%
 % Options
 % ========
 %
 % * `'error='` [ *`true`* | `false` ] - Throw an error if one or more
 % initial values are missing.
-%
 %
 % Description
 % ============
@@ -39,54 +35,48 @@ function [flag, lsMissing] = chkmissing(this, d, start, varargin)
 % This function does not perform any simulation; it only checks for missing
 % initial values in an input database.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.chkmissing',varargin{:});
 
 %--------------------------------------------------------------------------
 
-lsMissing = cell(1, 0);
+Miss = {};
 
-nAlt = length(this.Variant);
-[~, ~, nb, nf] = sizeOfSolution(this.Vector);
-vecXb = this.Vector.Solution{2}(nf+1:end);
+% List of initial conditions.
+nx = length(This.solutionid{2});
+nb = size(This.solution{1},2);
+nf = nx - nb;
+id = This.solutionid{2}(nf+1:end);
+ixInit = any(This.icondix,3);
+id = id(ixInit);
 
-ixInit = model.Variant.get(this.Variant, 'IxInit', ':');
-
-ixAvailable = true(1, nb);
-for j = 1 : nb
-    pos = real( vecXb(j) );
-    sh = imag( vecXb(j) );
-    name = this.Quantity.Name{pos};
-    lag = sh - 1;
+for j = id
+    realId = real(j);
+    imagId = imag(j);
+    name = This.name{realId};
+    lag = imagId - 1;
     try
-        value = rangedata(d.(name), start+lag);
-        value = value(:, :);
-        if numel(value)==1 && nAlt>1
-            value = repmat(value, 1, nAlt);
-        end
-        ix = permute(ixInit(1, j, :), [1, 3, 2]);
-        ixAvailable(j) = all(~isnan(value) | ~ix);
+        x = D.(name){lag};
+        x = x(Start);
     catch
-        ixAvailable(j) = false;
+        x = NaN;
+    end
+    if ~isnumeric(x) || any(isnan(x))
+        Miss{end+1} = sprintf('%s{%g}',name,lag); %#ok<AGROW>
     end
 end
 
-flag = all(ixAvailable);
-if ~flag
-    lsMissing = printSolutionVector(this, vecXb(~ixAvailable));
-    if opt.error
-        throw( ...
-            exception.Base('Model:MissingInitCond', 'error'), ...
-            lsMissing{:} ...
-            );
-    end
+Ok = isempty(Miss);
+if ~Ok && opt.error
+    utils.error('model:chkmissing', ...
+        'This initial value is missing from input database: ''%s''.', ...
+        Miss{:});
 end
 
 end

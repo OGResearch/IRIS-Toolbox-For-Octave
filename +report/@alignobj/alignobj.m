@@ -23,14 +23,14 @@ classdef alignobj < report.tabularobj
             This.caption = {'',''};
             if isintscalar(varargin{1}) && varargin{1} >= 0
                 This.K = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
             else
                 utils.error('report', ...
                     'Invalid input argument K in ALIGN.');
             end
             if isintscalar(varargin{1}) && varargin{1} > 0
                 This.ncol = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
             else
                 utils.error('report', ...
                     'Invalid input argument NCOL in ALIGN.');

@@ -1,5 +1,5 @@
-classdef plan < shared.UserDataContainer & shared.GetterSetter
-    % plan  Model Simulation Plans (plan Objects).
+classdef plan < userdataobj & getsetobj
+    % plan  Model Simulation Plans.
     %
     % Simulation plans complement the use of the
     % [`model/simulate`](model/simulate) or
@@ -8,13 +8,13 @@ classdef plan < shared.UserDataContainer & shared.GetterSetter
     % You need to use a simulation plan object to set up the following types of
     % more complex simulations or forecasts (or a combination of these):
     %
-    % * simulations or forecasts with some of the model variables temporarily
-    % exogenized;
+    % # simulations or forecasts with some of the model variables temporarily
+    % exogenised;
     %
-    % * simulations with some of the non-linear equations solved in an exact
+    % # simulations with some of the non-linear equations solved in an exact
     % non-linear mode;
     %
-    % * forecasts conditioned upon some variables;
+    % # forecasts conditioned upon some variables;
     %
     % The plan object is passed to the [`model/simulate`](model/simulate) or
     % [`model/jforecast`](model/jforecast) functions through the `'plan='`
@@ -22,13 +22,10 @@ classdef plan < shared.UserDataContainer & shared.GetterSetter
     %
     % Plan methods:
     %
-    %
     % Constructor
     % ============
     %
-    %
     % * [`plan`](plan/plan) - Create new empty simulation plan object.
-    %
     %
     % Getting information about simulation plans
     % ===========================================
@@ -36,26 +33,23 @@ classdef plan < shared.UserDataContainer & shared.GetterSetter
     % * [`detail`](plan/detail) - Display details of a simulation plan.
     % * [`get`](plan/get) - Query to plan object.
     % * [`nnzcond`](plan/nnzcond) - Number of conditioning data points.
-    % * [`nnzendog`](plan/nnzendog) - Number of endogenized data points.
-    % * [`nnzexog`](plan/nnzexog) - Number of exogenized data points.
-    %
+    % * [`nnzendog`](plan/nnzendog) - Number of endogenised data points.
+    % * [`nnzexog`](plan/nnzexog) - Number of exogenised data points.
+    % * [`nnznonlin`](plan/nnznonlin) - Number of non-linearised data points.
     %
     % Setting up simulation plans
     % ============================
     %
-    % * [`autoexogenize`](plan/autoexogenize) - Exogenize variables and automatically endogenize corresponding shocks.
+    % * [`autoexogenise`](plan/autoexogenise) - Exogenise variables and automatically endogenise corresponding shocks.
     % * [`condition`](plan/condition) - Condition forecast upon the specified variables at the specified dates.
-    % * [`endogenize`](plan/endogenize) - Endogenize shocks or re-endogenize variables at the specified dates.
-    % * [`exogenize`](plan/exogenize) - Exogenize variables or re-exogenize shocks at the specified dates.
-    % * [`reset`](plan/reset) - Remove all endogenized, exogenized, autoexogenized and conditioned upon data points from simulation plan.
+    % * [`endogenise`](plan/endogenise) - Endogenise shocks or re-endogenise variables at the specified dates.
+    % * [`exogenise`](plan/exogenise) - Exogenise variables or re-exogenise shocks at the specified dates.
     % * [`swap`](plan/swap) - Swap endogeneity and exogeneity of variables and shocks.
-    %
     %
     % Referencing plan objects
     % ==========================
     %
     % * [`subsref`](plan/subsref) - Subscripted reference for plan objects.
-    %
     %
     % Getting on-line help on simulation plans
     % =========================================
@@ -64,63 +58,58 @@ classdef plan < shared.UserDataContainer & shared.GetterSetter
     %     help plan/function_name
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        Start = NaN
-        End = NaN
-        XList = { } % List of names that can be exogenized.
-        NList = { } % List of names that can be endogenized.
-        CList = { } % List of names upon which it can be conditioned.
-        XAnch = [ ] % Exogenized.
-        NAnchReal = [ ] % Endogenized real.
-        NAnchImag = [ ] % Endogenized imag.
-        NWghtReal = [ ] % Weights for endogenized real.
-        NWghtImag = [ ] % Weights for endogenized imag.
-        CAnch = [ ] % Conditioned.
-        AutoX = [ ]
+        Start = NaN;
+        End = NaN;
+        XList = {}; % List of names that can be exogenized.
+        NList = {}; % List of names that can be endogenized.
+        QList = {};
+        CList = {}; % List of names upon which it can be conditioned.
+        XAnch = []; % Exogenised.
+        NAnchReal = []; % Endogenised real.
+        NAnchImag = []; % Endogenised imag.
+        NWghtReal = []; % Weights for endogenised real.
+        NWghtImag = []; % Weights for endogenised imag.
+        CAnch = []; % Conditioned.
+        QAnch = []; % Non-linearised.
+        AutoEx = [];
     end
     
-    
     methods
-        function this = plan(varargin)
+        
+        function This = plan(varargin)
             % plan  Create new empty simulation plan object.
-            %
             %
             % Syntax
             % =======
             %
-            %     P = plan(Context, M, Range)
-            %
+            %     P = plan(M,Range)
             %
             % Input arguments
             % ================
             %
-            % * `Context` [ `@simulate` | `@steady` ] - Context for which the plan will
-            % be prepared.
-            %
             % * `M` [ model ] - Model object that will be simulated subject to this
             % simulation plan.
             %
-            % * `Range` [ numeric | char ] - Simulation range; this range must exactly
+            % * `Range` [ numeric ] - Simulation range; this range must exactly
             % correspond to the range on which the model will be simulated.
-            %
             %
             % Output arguments
             % =================
             %
             % * `P` [ plan ] - New empty simulation plan.
             %
-            %
             % Description
             % ============
             %
-            % Simulation plans are useful in the following types of more complex
-            % simulations or forecats:
+            % You need to use a simulation plan object to set up the following types of
+            % more complex simulations or forecats:
             %
             % * simulations or forecasts with some of the model variables temporarily
-            % exogenized;
+            % exogenised;
             %
             % * simulations with some of the non-linear equations solved exactly.
             %
@@ -129,122 +118,105 @@ classdef plan < shared.UserDataContainer & shared.GetterSetter
             % The plan object is passed to the [simulate](model/simulate) or
             % [`jforecast`](model/jforecast) functions through the option `'plan='`.
             %
-            %
             % Example
             % ========
             %
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            this = this@shared.UserDataContainer( );
-            this = this@shared.GetterSetter( );
+            This = This@userdataobj();
+            This = This@getsetobj();
             
-            if length(varargin)>1
-                if isa(varargin{1}, 'function_handle')
-                    context = varargin{1};
-                    varargin(1) = [ ];
-                else
-                    context = @dynamic;
-                end
+            if length(varargin) > 1
                 
-                [M, Range, this.XList, this.NList, this.CList] = ...
-                    irisinp.parser.parse('plan.plan', varargin{:});
+                pp = inputParser();
+                pp.addRequired('M',@ismodel);
+                pp.addRequired('Range',@isnumeric);
+                pp.parse(varargin{1:2});
                 
-                this.Start = Range(1);
-                this.End = Range(end);
-                nPer = round(this.End - this.Start + 1);
-                
-                % List of names that can be exogenized, endogenized, and conditioned upon.
-                if isa(M, 'model')
-                    [this.XList,this.NList,this.CList] = myinfo4plan(M);
-                end
-                
-                % Anchors.
-                this.XAnch = false(length(this.XList),nPer);
-                this.NAnchReal = false(length(this.NList),nPer);
-                this.NAnchImag = false(length(this.NList),nPer);
-                this.CAnch = false(length(this.CList),nPer);
-                
-                % Weights for endogenized data points.
-                this.NWghtReal = zeros(length(this.NList),nPer);
-                this.NWghtImag = zeros(length(this.NList),nPer);
-                
-                % Autoexogenize.
-                this.AutoX = nan(size(this.XList));
-                
-                if ~isempty(M)
-                    try %#ok<TRYNC>
-                        a = autoexog(M);
-                        lsExg = fieldnames(a.Dynamic);
-                        if ~isempty(lsExg)
-                            lsExg = lsExg(:).';
-                            lsEndg = struct2cell(a.Dynamic);
-                            lsEndg = lsEndg(:).';
-                            for i = 1 : length(lsExg)
-                                ixExg = strcmp(this.XList, lsExg{i});
-                                ixEndg = strcmp(this.NList, lsEndg{i});
-                                this.AutoX(ixExg) = find(ixEndg);
-                            end
-                        end
+                % Range.
+                This.Start = varargin{2}(1);
+                This.End = varargin{2}(end);
+                nPer = round(This.End - This.Start + 1);
+                % Exogenising.
+                This.XList = myget(varargin{1},'canbeexogenised');
+                This.XAnch = false(length(This.XList),nPer);
+                % Endogenising.
+                This.NList = myget(varargin{1},'canbeendogenised');
+                This.NAnchReal = false(length(This.NList),nPer);
+                This.NAnchImag = false(length(This.NList),nPer);
+                This.NWghtReal = zeros(length(This.NList),nPer);
+                This.NWghtImag = zeros(length(This.NList),nPer);
+                % Non-linearising.
+                This.QList = myget(varargin{1},'canbenonlinearised');
+                This.QAnch = false(length(This.QList),nPer);
+                % Conditioning.
+                This.CList = This.XList;
+                This.CAnch = This.XAnch;
+                % Autoexogenise.
+                This.AutoEx = nan(size(This.XList));
+                try %#ok<TRYNC>
+                    auto = autoexogenise(varargin{1});
+                    XList = fieldnames(auto); %#ok<PROP>
+                    NList = struct2cell(auto); %#ok<PROP>
+                    na = length(XList); %#ok<PROP>
+                    for ia = 1 : na
+                        xInx = strcmp(This.XList,XList{ia}); %#ok<PROP>
+                        nInx = strcmp(This.NList,NList{ia}); %#ok<PROP>
+                        This.AutoEx(xInx) = find(nInx);
                     end
                 end
-            end    
+            end
+            
         end
         
-        
-        
-        
-        varargout = autoexogenize(varargin)
+        varargout = autoexogenise(varargin)
         varargout = condition(varargin)
         varargout = detail(varargin)
-        varargout = exogenize(varargin)
-        varargout = endogenize(varargin)
+        varargout = exogenise(varargin)
+        varargout = endogenise(varargin)
         varargout = isempty(varargin)
         varargout = nnzcond(varargin)
         varargout = nnzendog(varargin)
         varargout = nnzexog(varargin)
-        varargout = reset(varargin)
+        varargout = nnznonlin(varargin)
+        varargout = nonlinearise(varargin)
         varargout = subsref(varargin)
+        
         varargout = get(varargin)
         varargout = set(varargin)
+        
     end
     
-    
     methods (Hidden)
+        
         varargout = mydateindex(varargin)
         varargout = disp(varargin)
         
-        
-        
-        
-        function flag = chkConsistency(this)
-            flag = chkConsistency@shared.GetterSetter(this) && ...
-                chkConsistency@shared.UserDataContainer(this);
+        % Aliasing.
+        function varargout = autoexogenize(varargin)
+            [varargout{1:nargout}] = autoexogenise(varargin{:});
         end
+        
+        function varargout = exogenize(varargin)
+            [varargout{1:nargout}] = exogenise(varargin{:});
+        end
+        
+        function varargout = endogenize(varargin)
+            [varargout{1:nargout}] = endogenise(varargin{:});
+        end
+        
+        function varargout = nonlinearize(varargin)
+            [varargout{1:nargout}] = nonlinearise(varargin{:});
+        end
+        
     end
     
-
-    
-    
-    methods (Access=protected, Hidden)
-        varargout = mychngplan(varargin)
+    methods (Access=protected,Hidden)
+        
+       varargout = mychngplan(varargin) 
+       
     end
     
-    
-    
-    
-    methods
-        function varargout = autoexogenise(varargin)
-            [varargout{1:nargout}] = autoexogenize(varargin{:});
-        end
-        
-        function varargout = exogenise(varargin)
-            [varargout{1:nargout}] = exogenize(varargin{:});
-        end
-        
-        function varargout = endogenise(varargin)
-            [varargout{1:nargout}] = endogenize(varargin{:});
-        end
-    end
 end

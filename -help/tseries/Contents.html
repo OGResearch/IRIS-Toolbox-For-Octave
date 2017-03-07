@@ -1,0 +1,231 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+<h1 id="tseries/Contents">Time Series (Tseries) Objects and Functions</h1>
+
+
+<p>Tseries methods:</p>
+<h4 id="constructor">Constructor</h4>
+<ul>
+<li><a href="../tseries/tseries.html"><code>tseries</code></a> - Create new time series (tseries) object.</li>
+</ul>
+<h4 id="getting-information-about-tseries-objects">Getting information about tseries objects</h4>
+<ul>
+<li><a href="../tseries/daily.html"><code>daily</code></a> - Calendar view of a daily tseries object.</li>
+<li><a href="../tseries/enddate.html"><code>enddate</code></a> - Date of the last available observation in a tseries object.</li>
+<li><a href="../tseries/freq.html"><code>freq</code></a> - Frequency of a tseries object.</li>
+<li><a href="../tseries/get.html"><code>get</code></a> - Query tseries object property.</li>
+<li><a href="../tseries/isequal.html"><code>isequal</code></a> - [Not a public function] Compare two tseries objects.</li>
+<li><a href="../tseries/length.html"><code>length</code></a> - Length of tseries object.</li>
+<li><a href="../tseries/ndims.html"><code>ndims</code></a> - Number of dimensions in tseries object data.</li>
+<li><a href="../tseries/size.html"><code>size</code></a> - Size of tseries object data.</li>
+<li><a href="../tseries/startdate.html"><code>startdate</code></a> - Date of the first available observation in a tseries object.</li>
+<li><a href="../tseries/yearly.html"><code>yearly</code></a> - Display tseries object one full year per row.</li>
+</ul>
+<h4 id="referencing-tseries-objects">Referencing tseries objects</h4>
+<ul>
+<li><a href="../tseries/subsasgn.html"><code>subsasgn</code></a> - Subscripted assignment for tseries objects.</li>
+<li><a href="../tseries/subsref.html"><code>subsref</code></a> - Subscripted reference function for tseries objects.</li>
+</ul>
+<h4 id="maths-and-statistics-functions-and-operators">Maths and statistics functions and operators</h4>
+<p>Some of the following functions require the Statistics Toolbox.</p>
+<p><code>+</code>, <code>-</code>, <code>*</code>, <code>\</code>, <code>/</code>, <code>^</code>, <code>&amp;</code>, <code>|</code>, <code>~</code>, <code>==</code>, <code>~=</code>, <code>&gt;=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>abs</code>, <code>acos</code>, <code>asin</code>, <code>atan</code>, <code>atan2</code>, <code>ceil</code>, <code>cos</code>, <code>exp</code>, <code>fix</code>, <code>floor</code>,<code>imag</code>, <code>isinf</code>, <code>isnan</code>, <code>log</code>, <code>log10</code>, <code>real</code>, <code>round</code>, <code>sin</code>, <code>sqrt</code>, <code>tan</code>, <code>normpdf</code>, <code>normcdf</code>, <code>prctile</code>, <code>lognpdf</code>, <code>logncdf</code></p>
+<p>The behaviour of the following functions depend on the dimension along which they are performed.</p>
+<p>Some of the following functions require the Statistics Toolbox.</p>
+<p><code>all</code>, <code>any</code>, <code>cumprod</code>, <code>cumsum</code>, <code>find</code>, <code>geomean</code>, <code>max</code>, <code>mean</code>, <code>median</code>, <code>min</code>, <code>mode</code>, <code>nanmean</code>, <code>nanstd</code>, <code>nansum</code>, <code>nanvar</code>, <code>prod</code>, <code>std</code>, <code>sum</code>, <code>var</code></p>
+<h4 id="filters-and-evaluation">Filters and evaluation</h4>
+<ul>
+<li><a href="../tseries/arf.html"><code>arf</code></a> - Run autoregressive function on a tseries object.</li>
+<li><a href="../tseries/bpass.html"><code>bpass</code></a> - Band-pass filter.</li>
+<li><a href="../tseries/bwf.html"><code>bwf</code></a> - Butterworth filter with tunes.</li>
+<li><a href="../tseries/bwf2.html"><code>bwf2</code></a> - Swap output arguments of the Butterworth filter with tunes.</li>
+<li><a href="../tseries/detrend.html"><code>detrend</code></a> - Remove a linear time trend.</li>
+<li><a href="../tseries/expsmooth.html"><code>expsmooth</code></a> - Exponential smoothing.</li>
+<li><a href="../utils/evalr.html"><code>evalr</code></a> - Evaluate tseries expression recursively.</li>
+<li><a href="../tseries/hpf.html"><code>hpf</code></a> - Hodrick-Prescott filter with tunes (aka LRX filter).</li>
+<li><a href="../tseries/hpf2.html"><code>hpf2</code></a> - Swap output arguments of the Hodrick-Prescott filter with tunes.</li>
+<li><a href="../tseries/fft.html"><code>fft</code></a> - Discrete Fourier transform of tseries object.</li>
+<li><a href="../tseries/llf.html"><code>llf</code></a> - Local level filter (aka random walk plus white noise) with tunes.</li>
+<li><a href="../tseries/llf2.html"><code>llf2</code></a> - Swap output arguments of the local linear trend filter with tunes.</li>
+<li><a href="../tseries/moving.html"><code>moving</code></a> - Apply function to moving window of observations.</li>
+<li><a href="../tseries/trend.html"><code>trend</code></a> - Estimate a time trend.</li>
+<li><a href="../tseries/x12.html"><code>x12</code></a> - Access to X13-ARIMA-SEATS seasonal adjustment program.</li>
+</ul>
+<h4 id="estimation-and-sample-characteristics">Estimation and sample characteristics</h4>
+<p>Note that most of the sample characteristics are listed above in the Maths and statistics functions and operators section.</p>
+<ul>
+<li><a href="../tseries/acf.html"><code>acf</code></a> - Sample autocovariance and autocorrelation functions.</li>
+<li><a href="../tseries/hpdi.html"><code>hpdi</code></a> - Highest probability density interval.</li>
+<li><a href="../tseries/chowlin.html"><code>chowlin</code></a> - Chow-Lin distribution of low-frequency observations over higher-frequency periods.</li>
+<li><a href="../tseries/regress.html"><code>regress</code></a> - Ordinary or weighted least-square regression.</li>
+</ul>
+<h4 id="visualising-tseries-objects">Visualising tseries objects</h4>
+<ul>
+<li><a href="../tseries/area.html"><code>area</code></a> - Area graph for tseries objects.</li>
+<li><a href="../tseries/bar.html"><code>bar</code></a> - Bar graph for tseries objects.</li>
+<li><a href="../tseries/barcon.html"><code>barcon</code></a> - Contribution bar graph for tseries objects.</li>
+<li><a href="../tseries/errorbar.html"><code>errorbar</code></a> - Line plot with error bars.</li>
+<li><a href="../tseries/plot.html"><code>plot</code></a> - Line graph for tseries objects.</li>
+<li><a href="../tseries/plotcmp.html"><code>plotcmp</code></a> - Comparison graph for two time series.</li>
+<li><a href="../tseries/plotpred.html"><code>plotpred</code></a> - Plot Kalman filter predictions.</li>
+<li><a href="../tseries/plotyy.html"><code>plotyy</code></a> - Line plot function with LHS and RHS axes for time series.</li>
+<li><a href="../tseries/scatter.html"><code>scatter</code></a> - Scatter graph for tseries objects.</li>
+<li><a href="../tseries/spy.html"><code>spy</code></a> - Visualise tseries observations that pass a test.</li>
+<li><a href="../tseries/stem.html"><code>stem</code></a> - Plot tseries as discrete sequence data.</li>
+</ul>
+<h4 id="manipulating-tseries-objects">Manipulating tseries objects</h4>
+<ul>
+<li><a href="../tseries/empty.html"><code>empty</code></a> - Empty tseries object preserving its size in 2nd and higher dimensions.</li>
+<li><a href="../tseries/permute.html"><code>permute</code></a> - Permute dimensions of a tseries object.</li>
+<li><a href="../tseries/redate.html"><code>redate</code></a> - Change time dimension of a tseries object.</li>
+<li><a href="../tseries/reshape.html"><code>reshape</code></a> - Reshape size of time series in 2nd and higher dimensions.</li>
+<li><a href="../tseries/resize.html"><code>resize</code></a> - Clip tseries object down to a specified date range.</li>
+<li><a href="../tseries/sort.html"><code>sort</code></a> - Sort tseries columns by specified criterion.</li>
+</ul>
+<h4 id="converting-tseries-objects">Converting tseries objects</h4>
+<ul>
+<li><a href="../tseries/convert.html"><code>convert</code></a> - Convert tseries object to a different frequency.</li>
+<li><a href="../tseries/double.html"><code>double</code></a> - Return tseries observations as double-precision numeric array.</li>
+<li><a href="../tseries/doubledata.html"><code>doubledata</code></a> - Convert tseries observations to double precision.</li>
+<li><a href="../tseries/single.html"><code>single</code></a> - Return tseries observations as single-precision numeric array.</li>
+<li><a href="../tseries/singledata.html"><code>singledata</code></a> - Convert tseries observations to single precision.</li>
+</ul>
+<h4 id="other-tseries-functions">Other tseries functions</h4>
+<ul>
+<li><a href="../tseries/apct.html"><code>apct</code></a> - Annualised percent rate of change.</li>
+<li><a href="../tseries/bsxfun.html"><code>bsxfun</code></a> - Standard BSXFUN implemented for tseries objects.</li>
+<li><a href="../tseries/cumsumk.html"><code>cumsumk</code></a> - Cumulative sum with a k-period leap.</li>
+<li><a href="../tseries/destdise.html"><code>destdise</code></a> - Destandardise tseries object by applying specified standard deviation and mean to it.</li>
+<li><a href="../tseries/diff.html"><code>diff</code></a> - First difference.</li>
+<li><a href="../tseries/interp.html"><code>interp</code></a> - Interpolate missing observations.</li>
+<li><a href="../tseries/normalise.html"><code>normalise</code></a> - Normalise (or rebase) data to particular date.</li>
+<li><a href="../tseries/pct.html"><code>pct</code></a> - Percent rate of change.</li>
+<li><a href="../tseries/round.html"><code>round</code></a> - Round tseries values to specified number of decimals.</li>
+<li><a href="../tseries/rmse.html"><code>rmse</code></a> - Compute RMSE for given observations and predictions.</li>
+<li><a href="../tseries/stdise.html"><code>stdise</code></a> - Standardise tseries data by subtracting mean and dividing by std deviation.</li>
+<li><a href="../tseries/windex.html"><code>windex</code></a> - Simple weighted or Divisia index.</li>
+<li><a href="../tseries/wmean.html"><code>wmean</code></a> - Weighted average of time series observations.</li>
+</ul>
+<h4 id="getting-on-line-help-on-tseries-functions">Getting on-line help on tseries functions</h4>
+<pre><code>help tseries
+help tseries/function_name</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

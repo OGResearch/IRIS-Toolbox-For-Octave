@@ -1,13 +1,15 @@
 function D = plus(D1,D2)
 % See help on dbase/dbplus.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+if false % ##### MOSW
+pp = inputParser();
 pp.addRequired('D1',@isstruct);
 pp.addRequired('D2',@isstruct);
 pp.parse(D1,D2);
+end
 
 %--------------------------------------------------------------------------
 

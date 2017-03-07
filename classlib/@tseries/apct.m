@@ -1,4 +1,4 @@
-function X = apct(X, Q)
+function X = apct(X,Q)
 % apct  Annualised percent rate of change.
 %
 % Syntax
@@ -24,8 +24,8 @@ function X = apct(X, Q)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Q; %#ok<VUNUS>
@@ -36,7 +36,7 @@ catch %#ok<CTCH>
     end
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Q',@isnumericscalar);
 pp.parse(Q);
 

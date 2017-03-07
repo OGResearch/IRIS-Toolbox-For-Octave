@@ -4,9 +4,9 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % Syntax
 % =======
 %
-%     [LL,EE,Range] = errorbar(X,W,...)
-%     [LL,EE,Range] = errorbar(Range,X,W,...)
-%     [LL,EE,Range] = errorbar(AA,Range,X,W,...)
+%     [LL,EE,Range] = errorbar(X,B,...)
+%     [LL,EE,Range] = errorbar(Range,X,B,...)
+%     [LL,EE,Range] = errorbar(AA,Range,X,B,...)
 %     [LL,EE,Range] = errorbar(X,Lo,Hi,...)
 %     [LL,EE,Range] = errorbar(Range,X,Lo,Hi,...)
 %     [LL,EE,Range] = errorbar(AA,Range,X,Lo,Hi,...)
@@ -17,13 +17,13 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % * `AA` [ numeric ] - Handle to axes in which the graph will be plotted; if
 % not specified, the current axes will used.
 %
-% * `Range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
 % * `X` [ tseries ] - Tseries object whose data will be plotted as a line
 % graph.
 %
-% * `W` [ tseries ] - Width of the bands that will be plotted around the
+% * `B` [ tseries ] - Width of the bands that will be plotted around the
 % lines.
 %
 % * `Lo` [ tseries ] - Width of the band below the line.
@@ -52,69 +52,63 @@ function [H1,H2,Range,Data] = errorbar(varargin)
 % See help on [`tseries/plot`](tseries/plot).
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% if nargin == 0
-%     H1 = [ ];
-%     H2 = [ ];
-%     return
-% end
-% 
-% if all(ishghandle(varargin{1}))
-%     ax = varargin{1}(1);
-%     varargin(1) = [ ];
-% else
-%     ax = gca( );
-% end
-% 
-% if isnumeric(varargin{1})
-%     Range = varargin{1};
-%     varargin(1) = [ ];
-% else
-%     Range = Inf;
-% end
-% 
-% x = varargin{1};
-% varargin(1) = [ ];
-% 
-% if isempty(varargin) || ~isa(varargin{1},'tseries')
-%     low = x;
-%     low.data = low.data(:,2:2:end);
-%     low.Comment = low.comment(:,2:2:end);
-%     high = low;
-%     x.data = x.data(:,1:2:end);
-%     x.Comment = x.comment(:,1:2:end);
-% else
-%     low = varargin{1};
-%     varargin(1) = [ ];
-%     if ~isempty(varargin) && isa(varargin{1},'tseries')
-%         high = varargin{1};
-%         varargin(1) = [ ];
-%     else
-%         high = low;
-%     end
-% end
+if nargin == 0
+    H1 = [];
+    H2 = [];
+    return
+end
 
-[Ax,Range,X,Lo,Hi,PlotSpec,varargin] = ...
-    irisinp.parser.parse('tseries.errorbar',varargin{:});
-[errorbarOpt,varargin] = passvalopt('tseries.errorbar',varargin{:});
-[plotOpt,varargin] = passvalopt('tseries.plot',varargin{:});
+if all(ishghandle(varargin{1}))
+    ax = varargin{1}(1);
+    varargin(1) = [];
+else
+    ax = gca();
+end
+
+if isnumeric(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
+    Range = Inf;
+end
+
+x = varargin{1};
+varargin(1) = [];
+
+if isempty(varargin) || ~isa(varargin{1},'tseries')
+    low = x;
+    low.data = low.data(:,2:2:end);
+    low.Comment = low.comment(:,2:2:end);
+    high = low;
+    x.data = x.data(:,1:2:end);
+    x.Comment = x.comment(:,1:2:end);
+else
+    low = varargin{1};
+    varargin(1) = [];
+    if ~isempty(varargin) && isa(varargin{1},'tseries')
+        high = varargin{1};
+        varargin(1) = [];
+    else
+        high = low;
+    end
+end
+
+[opt,varargin] = passvalopt('tseries.errorbar',varargin{:});
 
 %--------------------------------------------------------------------------
 
-[~,H1,Range,Data,time] = ...
-    tseries.myplot(@plot,Ax,Range,[ ],X,PlotSpec,plotOpt,varargin{:});
+[H1,Range,Data,time] = ...
+    tseries.myplot(@plot,ax,Range,x,varargin{:});
 
-status = get(gca( ),'nextPlot');
-set(gca( ),'nextPlot','add');
-loData = mygetdata(Lo,Range);
-if ~isa(Hi,'tseries')
-    Hi = Lo;
-end
-hiData = mygetdata(Hi,Range);
-H2 = tseries.myerrorbar(time,Data,loData,hiData,errorbarOpt);
-set(gca( ),'nextPlot',status);
+status = get(gca(),'nextPlot');
+set(gca(),'nextPlot','add');
+low = mygetdata(low,Range);
+high = mygetdata(high,Range);
+H2 = tseries.myjusterrorbars(time,Data,low,high,opt.relative);
+set(gca(),'nextPlot',status);
 
 % link = cell(size(h1));
 for i = 1 : numel(H1)
@@ -122,5 +116,6 @@ for i = 1 : numel(H1)
     % link{i} = linkprop([h1(i),h2(i)],'color');
 end
 % setappdata(ax,'link',link);
+grfun.excludefromlegend(H2);
 
 end

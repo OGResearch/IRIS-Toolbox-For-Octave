@@ -1,10 +1,10 @@
-function flag = rngcmp(r1, r2)
+function Flag = rngcmp(R1,R2)
 % rngcmp  Compare two IRIS date ranges.
 %
 % Syntax
 % =======
 %
-%     Flag = rngcmp(R1, R2)
+%     Flag = rngcmp(R1,R2)
 %
 % Input arguments
 % ================
@@ -19,14 +19,13 @@ function flag = rngcmp(r1, r2)
 % Description
 % ============
 %
-% IRIS date ranges are distinct from plain vectors of dates: ranges are
-% defined by their first and last dates only, and anything else is
-% disregarded. Often, date ranges are context sensitive. In that case, you
-% can use `-Inf` for the start date (meaning the earliest possible date in
-% the given context) and `Inf` for the end date (meaning the latest
-% possible date in the given context), or simply `Inf` for the whole range
-% (meaning from the earliest possible date to the latest possible date in
-% the given context).
+% An IRIS date range is distinct from a vector of dates in that only the
+% first and the last dates matter. Often, date ranges are context
+% sensitive. In that case, you can use `-Inf` for the start date (meaning
+% the earliest possible date in the given context) and `Inf` for the end
+% date (meaning the latest possible date in the given context), or simply
+% `Inf` for the whole range (meaning from the earliest possible date to the
+% latest possible date in the given context).
 %
 % Example
 % ========
@@ -39,22 +38,23 @@ function flag = rngcmp(r1, r2)
 %         1
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
-pp = inputParser( );
-pp.addRequired('R1', @isnumeric);
-pp.addRequired('R2', @isnumeric);
-pp.parse(r1, r2);
+pp = inputParser();
+pp.addRequired('R1',@isnumeric);
+pp.addRequired('R2',@isnumeric);
+pp.parse(R1,R2);
+
 
 %--------------------------------------------------------------------------
 
-if isempty(r1) || isempty(r2)
-    flag = isempty(r1) && isempty(r2);
+if isempty(R1) || isempty(R2)
+    Flag = isempty(R1) && isempty(R2);
     return
 end
 
-flag = datcmp(r1(1), r2(1)) && datcmp(r1(end), r2(end));
+Flag = datcmp(R1(1),R2(1)) && datcmp(R1(end),R2(end));
 
 end

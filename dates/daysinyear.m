@@ -19,8 +19,8 @@ function N = daysinyear(Year)
 % Description
 % ============
 %
-% `N` is `365` for non-leap years, and `366` for leap years. Leap years are
-% either years divisible by `4` but not `100`, or years divisible by `400`.
+% `N` is `365` for non-leap years, and `366` for leap years. Leap years
+% either those divisible by `4` but not `100`, or those divisible by `400`.
 %
 % Example
 % ========
@@ -30,8 +30,8 @@ function N = daysinyear(Year)
 %        366   365
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

@@ -1,19 +1,17 @@
-function this = redate(this, oldDate, newDate)
-% redate  Change time dimension of time series.
+function This = redate(This,OldDate,NewDate)
+% redate  Change time dimension of a tseries object.
 %
 % Syntax
 % =======
 %
-%     X = redate(X, oldDate, newDate)
+%     X = redate(X,oldDate,newDate)
 %
 % Input arguments
 % ================
 %
-% * `X` [ tseries ] - Input time series.
+% * `X` [ tseries ] - Input tseries object.
 %
-% * `OldDate` [ numeric ] - Base date that will be converted to a new date;
-% `OldDate` does not need to be the stard date of `X` and does not even
-% need to be within the current date range of `X`.
+% * `OldDate` [ numeric ] - Base date that will be converted to a new date.
 %
 % * `NewDate` [ numeric ] - A new date to which the base date `oldDate`
 % will be changed; `NewDate` need not be the same frequency as
@@ -31,54 +29,27 @@ function this = redate(this, oldDate, newDate)
 % Example
 % ========
 %
-% Create a time series on a date range from `2000Q1` to `2000Q4`. Change
-% the time dimension of the time series so that `1999Q4` (which is a date
-% outside the original time series range) changes into `2009Q4` (which will
-% again be a date outside the new time series range).
-%
-%     >> x = tseries(qq(2000,1):qq(2000,4),1:4)
-%     x =
-%         tseries object: 4-by-1
-%         2000Q1:  1
-%         2000Q2:  2
-%         2000Q3:  3
-%         2000Q4:  4
-%         ''
-%         user data: empty
-%         export files: [0]
-%     >> redate(x,qq(1999,4),qq(2009,4))
-%     ans =
-%         tseries object: 4-by-1
-%         2010Q1:  1
-%         2010Q2:  2
-%         2010Q3:  3
-%         2010Q4:  4
-%         ''
-%         user data: empty
-%         export files: [0]
-%
 
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('x',@(x) isa(x,'tseries'));
 pp.addRequired('oldDate',@isnumericscalar);
 pp.addRequired('newDate',@isnumericscalar);
-pp.parse(this,oldDate,newDate);
+pp.parse(This,OldDate,NewDate);
 
 %--------------------------------------------------------------------------
 
-xFreq = get(this,'freq');
-oldFreq = datfreq(oldDate);
+xFreq = get(This,'freq');
+oldFreq = datfreq(OldDate);
 
 if oldFreq ~= xFreq
-   utils.error('tseries:redate', ...
+   utils.error('tseries', ...
       'Time series frequency and base date frequency must match.');
 end
 
-sh = round(this.start - oldDate);
-this.start = newDate + sh;
+shift = round(This.start - OldDate);
+This.start = NewDate + shift;
 
 end

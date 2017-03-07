@@ -3,10 +3,10 @@ function x = normalize(varargin)
 %
 % See help on [`tseries/normalise`](tseries/normalise).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
 x = normalise(varargin{:});
 

@@ -1,58 +1,46 @@
-function this = alter(this, n)
-% alter  Expand or reduce number of model variants.
+function This = alter(This,N)
+% alter  Expand or reduce number of alternative parameterisations.
 %
 % Syntax
 % =======
 %
-%     m = alter(m, n)
-%
+%     M = alter(M,N)
 %
 % Input arguments
 % ================
 %
-% * `m` [ model ] - Model object in which the number of model variants
+% * `M` [ model ] - Model object in which the number of paremeterisations
 % will be changed.
 %
-% * `n` [ numeric ] - New number of model variants.
-%
+% * `N` [ numeric ] - New number of parameterisations.
 %
 % Output arguments
 % =================
 %
-% * `m` [ model ] - Model object with the new number of variants.
-%
+% * `M` [ model ] - Model object with the new number of parameterisations.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
-if n==nAlt
+nAlt = length(This);
+if N == nAlt
     % Do nothing.
     return
-elseif nAlt==0 && n>0
-    if this.IsLinear
-        std = this.DEFAULT_STD_LINEAR;
-    else
-        std = this.DEFAULT_STD_NONLINEAR;
-    end
-    template = model.Variant(this.Quantity, this.Vector, std);
-    this.Variant = repmat({template}, 1, nAlt);
-elseif n>nAlt
+elseif N > nAlt
     % Expand nAlt by copying the last parameterisation.
-    this = subsalt(this, nAlt+1:n, this, nAlt*ones(1, n-nAlt));
+    This = mysubsalt(This,nAlt+1:N,This,nAlt*ones(1,N-nAlt));
 else
     % Reduce nAlt by deleting the last parameterisations.
-    this = subsalt(this, n+1:nAlt, [ ]);
+    This = mysubsalt(This,N+1:nAlt,[]);
 end
 
 end

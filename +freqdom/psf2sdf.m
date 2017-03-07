@@ -4,13 +4,13 @@ function D = psf2sdf(S,C)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
 D = S;
-realSmall = getrealsmall( );
+realSmall = getrealsmall();
 nAlt = size(S,4);
 
 for iAlt = 1 : nAlt

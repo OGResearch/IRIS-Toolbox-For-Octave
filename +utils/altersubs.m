@@ -4,8 +4,8 @@ function s = altersubs(s,n,obj)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ if length(s) == 3 && any(strcmp(s(1).type,{'()','{}'})) ...
     if strcmp(index2,':');
         index2 = 1 : length(index1);
     end
-    s(1) = [ ];
+    s(1) = [];
     s(2).subs{1} = index1(index2);
 end
 

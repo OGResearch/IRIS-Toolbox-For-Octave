@@ -1,5 +1,5 @@
-function This = empty(This)
-% empty  Empty time series preserving the size in 2nd and higher dimensions.
+function x = empty(x)
+% empty  Empty tseries object preserving its size in 2nd and higher dimensions.
 %
 % Syntax
 % =======
@@ -9,12 +9,12 @@ function This = empty(This)
 % Input arguments
 % ================
 %
-% * `This` [ tseries ] - Input time series that will be emptied.
+% * `x` [ tseries ] - Tseries object that will be emptied.
 %
 % Output arguments
 % =================
 %
-% * `This` [ tseries ] - Empty time series with the 2nd and higher
+% * `x` [ tseries ] - Empty tseries object with the 2nd and higher
 % dimensions the same size as the input tseries object, and comments
 % preserved.
 %
@@ -25,15 +25,14 @@ function This = empty(This)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-This.start = NaN;
-s = size(This.data);
-s(1) = 0;
-This.data = zeros(s);
+x.start = NaN;
+tmpsize = size(x.data);
+x.data = zeros([0,tmpsize(2:end)]);
 % Comments are preserved.
 
 end

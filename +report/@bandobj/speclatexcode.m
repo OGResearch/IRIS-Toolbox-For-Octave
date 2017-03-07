@@ -4,8 +4,8 @@ function C = speclatexcode(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -14,8 +14,8 @@ time = par.options.range;
 colStruct = par.options.colstruct;
 
 [cData,time] = getdata(This,This.data,time,colStruct);
-lData = getdata(This,This.Low,time,colStruct);
-hData = getdata(This,This.High,time,colStruct);
+lData = getdata(This,This.low,time,colStruct);
+hData = getdata(This,This.high,time,colStruct);
 cData = cData(:,:);
 lData = lData(:,:);
 hData = hData(:,:);

@@ -1,4 +1,4 @@
-function r = range(x)
+function y = range(x)
 % range  Date range from the first to the last available observation.
 %
 % Syntax
@@ -6,12 +6,10 @@ function r = range(x)
 %
 %     rng = range(x)
 %
-%
 % Input arguments
 % ================
 %
-% * `x` [ Series ] - Time series.
-%
+% * `x` [ tseries ] - Tseries object.
 %
 % Output arguments
 % =================
@@ -20,29 +18,26 @@ function r = range(x)
 % range from the first to the last available observation in the input
 % tseries.
 %
-%
 % Description
 % ============
 %
 % The `range` function is equivalent to calling
 %
-%     get(x, 'range')
-%
+%     get(x,'range')
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-if isempty(x.Data)
-    r = zeros(0, 1);
+if isempty(x.data)
+    y = [];
 else
-    r = x.Start : (x.Start + size(x.Data, 1) - 1);
+    y = x.start : x.start + size(x.data,1) - 1;
 end
-r = dates.Date(r);
 
 end

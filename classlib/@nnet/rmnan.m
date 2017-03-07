@@ -1,13 +1,14 @@
 function This = rmnan(This)
 
-% rmnan  [Not a public function]  Remove connections between neurons based 
-% on activation parameters which are set to NaN. 
+% rmnan  []
 %
 % This is the only function which changes network layout, and is only
-% called by `prune`. 
+% called by `prune`.
+%
+% Only works for activation parameters at this point.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isnan(This)
     return ;
@@ -27,12 +28,12 @@ else
                 This.Neuron{iLayer}{iNode}.ActivationRemovedLocal ...
                     = [This.Neuron{iLayer}{iNode}.ActivationRemovedLocal; ...
                     This.Neuron{iLayer}{iNode}.ActivationIndexLocal(chk)] ;
-                This.Neuron{iLayer}{iNode}.ActivationIndexLocal(chk) = [ ] ;
+                This.Neuron{iLayer}{iNode}.ActivationIndexLocal(chk) = [] ;
                 
                 % Adjust global indices and parameters in current node
-                This.Neuron{iLayer}{iNode}.ActivationParams(chk) = [ ] ;
-                This.Neuron{iLayer}{iNode}.ActivationLB(chk) = [ ] ;
-                This.Neuron{iLayer}{iNode}.ActivationUB(chk) = [ ] ;
+                This.Neuron{iLayer}{iNode}.ActivationParams(chk) = [] ;
+                This.Neuron{iLayer}{iNode}.ActivationLB(chk) = [] ;
+                This.Neuron{iLayer}{iNode}.ActivationUB(chk) = [] ;
                 indexStart = This.Neuron{iLayer}{iNode}.ActivationIndex(1) ;
                 This.Neuron{iLayer}{iNode}.ActivationIndex ...
                     = indexStart:indexStart+numel(This.Neuron{iLayer}{iNode}.ActivationParams)-1 ;

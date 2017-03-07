@@ -4,8 +4,8 @@ function [Y,Count] = ffrf3(T,R,~,Z,H,~,U,Omg,NUnit,Freq,Incl,Tol,MaxIter)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 ny = size(Z,1);
 [nx,nb] = size(T);
@@ -37,15 +37,15 @@ Count = 0;
 % Index of zero frequencies (allow for multiple zeros in the vector).
 zeroFreqInx = Freq == 0;
 
-% Non-zero frquencies. Evaluate `xsf( )` and compute regressions.
+% Non-zero frquencies. Evaluate `xsf()` and compute regressions.
 if any(~zeroFreqInx)
-   doNonzeroFreq( ); 
+   doNonzeroFreq(); 
 end
 
 % We must do zero frequency last, becuase the input state space matrices
-% are modified within `dozerofreq( )`.
+% are modified within `dozerofreq()`.
 if any(zeroFreqInx)
-    doZeroFreq( );
+    doZeroFreq();
 end
 
 
@@ -55,9 +55,9 @@ end
 %**************************************************************************
 
     
-    function doNonzeroFreq( )
-        S = freqdom.xsf(T,R,[ ],Z1,H1,[ ],U,Omg,NUnit, ...
-            Freq(~zeroFreqInx),[ ],[ ]);
+    function doNonzeroFreq()
+        S = freqdom.xsf(T,R,[],Z1,H1,[],U,Omg,NUnit, ...
+            Freq(~zeroFreqInx),[],[]);
         nNonzero = sum(~zeroFreqInx);
         Yn = zeros(nx,ny1,nNonzero);
         for i = 1 : nNonzero
@@ -66,13 +66,13 @@ end
             Yn(:,:,i) = S12' / S11;
         end
         Y(:,Incl,~zeroFreqInx) = Yn;
-    end % doNonzeroFreq( )
+    end % doNonzeroFreq()
 
 
 %**************************************************************************
     
     
-    function doZeroFreq( )
+    function doZeroFreq()
         % dozerofreq  Compute FFRF for zero frequency by deriving a polynomial
         % representation of steady-state Kalman filter.
         Tf = T(1:nf,:);
@@ -134,7 +134,7 @@ end
         end
         nZero = sum(zeroFreqInx);
         Y(:,Incl,zeroFreqInx) = Y0(:,:,ones(1,nZero));
-    end % doZeroFreq( )
+    end % doZeroFreq()
 
 
 end

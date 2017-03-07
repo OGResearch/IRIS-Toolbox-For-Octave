@@ -4,8 +4,8 @@ function C = speclatexcode(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ while ~isempty(ch)
     n = min(nCol,length(ch));
     % All objects in this row.
     objs = ch(1:n);
-    ch(1:n) = [ ];
+    ch(1:n) = [];
     
     [This,objs] = xxShareCaption(This,objs);
     
@@ -94,4 +94,4 @@ else
     This.caption = {'',''};
 end
 
-end % xxShareCaption( )
+end % xxShareCaption()

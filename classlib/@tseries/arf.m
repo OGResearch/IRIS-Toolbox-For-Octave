@@ -1,12 +1,10 @@
 function X = arf(X,A,Z,Range,varargin)
-% arf  Run autoregressive function on time series.
-%
+% arf  Run autoregressive function on a tseries object.
 %
 % Syntax
 % =======
 %
 %     X = arf(X,A,Z,Range,...)
-%
 %
 % Input arguments
 % ================
@@ -20,18 +18,16 @@ function X = arf(X,A,Z,Range,varargin)
 % * `Z` [ numeric | tseries ] - Exogenous input series or constant in the
 % autoregressive process.
 %
-% * `Range` [ numeric | `@all` ] - Date range on which the new time series
-% observations will be computed; `Range` does not include pre-sample
-% initial condition. `@all` means the entire possible range will be used
+% * `Range` [ numeric | Inf ] - Date range on which the new time series
+% observations will be computed; `RANGE` does not include pre-sample
+% initial condition. `Inf` means the entire possible range will be used
 % (taking into account the length of pre-sample initial condition needed).
-%
 %
 % Output arguments
 % =================
 %
 % * `X` [ tseries ] - Output data with new observations created by running
 % an autoregressive process described by `A` and `Z`.
-%
 %
 % Description
 % ============
@@ -50,7 +46,6 @@ function X = arf(X,A,Z,Range,varargin)
 %
 %     A = [A1,A2,...,An].
 %
-%
 % Example
 % ========
 %
@@ -60,23 +55,23 @@ function X = arf(X,A,Z,Range,varargin)
 % $$ x_t = \rho x_{t-1} + \epsilon_t $$
 %
 %     rho = 0.8;
-%     X = Series(1:20,@randn);
+%     X = tseries(1:20,@randn);
 %     X = arf(X,[1,-rho],X,2:20);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 4
     Range = Inf;
 end
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('X',@istseries);
 pp.addRequired('A',@isnumeric);
 pp.addRequired('Z',@(x) isnumericscalar(x) || istseries(x));
-pp.addRequired('Range',@(x) isnumeric(x) || isequal(x,@all));
+pp.addRequired('Range',@isnumeric);
 pp.parse(X,A,Z,Range);
 
 %--------------------------------------------------------------------------

@@ -1,26 +1,23 @@
-function fn = uniform(lo, hi)
+function F = uniform(Lo,Hi)
 % uniform  Create function proportional to log of uniform distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.uniform(lo, hi)
-%
+%     F = logdist.uniform(Lo,Hi)
 %
 % Input arguments
 % ================
 %
-% * `lo` [ numeric ] - Lower bound of the uniform distribution.
+% * `Lo` [ numeric ] - Lower bound of the uniform distribution.
 %
-% * `hi` [ numeric ] - Upper bound of the uniform distribution.
-%
+% * `Hi` [ numeric ] - Upper bound of the uniform distribution.
 %
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Handle to a function returning a value that
+% * `F` [ function_handle ] - Handle to a function returning a value that
 % is proportional to the log of the uniform density.
-%
 %
 % Description
 % ============
@@ -28,62 +25,59 @@ function fn = uniform(lo, hi)
 % See [help on the logdisk package](logdist/Contents) for details on
 % using the function handle `F`.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if lo>hi
-    [lo, hi] = deal(hi, lo);
+if Lo > Hi
+    [Lo,Hi] = deal(Hi,Lo);
 end
 
-mu = 1/2*(lo + hi);
-sgm = sqrt(1/12*(hi - lo)^2);
+mu = 1/2*(Lo + Hi);
+sgm = sqrt(1/12*(Hi - Lo)^2);
 mode = mu;
 
-fn = @(x, varargin) fnUniform(x, lo, hi, mu, sgm, mode, varargin{:});
+F = @(x,varargin) xxUniform(x,Lo,Hi,mu,sgm,mode,varargin{:});
 
 end
 
+% Subfunctions.
 
+%**************************************************************************
+function Y = xxUniform(X,A,B,Mu,Sgm,Mode,varargin)
 
-
-function y = fnUniform(x, a, b, mean_, std_, mode_, varargin)
-y = zeros(size(x));
-ix = x>=a & x<=b;
-y(~ix) = -Inf;
+Y = zeros(size(X));
+index = X >= A & X <= B;
+Y(~index) = -Inf;
 if isempty(varargin)
     return
 end
+
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y(ix) = 1/(b - a);
-        y(~ix) = 0;
+    case {'proper','pdf'}
+        Y(index) = 1/(B - A);
+        Y(~index) = 0;
     case 'info'
-        y(ix) = 0;
-        y(~ix) = NaN;
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y = 0;
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mu;
+    case {'sigma','sgm','std'}
+        Y = Sgm;
     case 'mode'
-        y = mode_;
+        Y = Mode;
     case 'name'
-        y = 'uniform';
-    case {'rand', 'draw'}
-        y = a + (b-a)*rand(varargin{2:end});
-    case 'lower'
-        y = a;
-    case 'upper'
-        y = b;
+        Y = 'uniform';
+    case 'draw'
+        Y = A + (B-A)*rand(varargin{2:end});
 end
-end
+
+end % xxUniform().

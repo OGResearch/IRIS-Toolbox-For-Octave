@@ -1,72 +1,65 @@
-function this = rmgroup(this, varargin)
+function This = rmgroup(This,varargin)
 % rmgroup  Remove group from grouping object.
 %
 % Syntax
 % =======
 %
-%     g = rmgroup(g, groupName1, groupName2, ...)
-%
+%     G = rmgroup(G,GroupName1,GroupName2,...)
 %
 % Input arguments
 % ================
 %
-% * `g` [ grouping ] - Grouping object.
+% * `G` [ grouping ] - Grouping object.
 %
-% * `groupName1`, `groupName2`, ... [ char ] - Names of groups that will be
+% * `GroupName1`, `GroupName2`,... [ char ] - Names of groups that will be
 % removed.
-%
 %
 % Output arguments
 % =================
 %
-% * `g` [ grouping ] - Grouping object.
-%
+% * `G` [ groupin ] - Grouping object.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-groupName = varargin;
+GroupName = varargin;
 
-pp = inputParser( );
-pp.addRequired('G', @(x) isa(x, 'grouping'));
-pp.addRequired('GroupName', @iscellstr);
-pp.parse(this, groupName);
+pp = inputParser();
+pp.addRequired('G',@(x) isa(x,'grouping'));
+pp.addRequired('GroupName',@iscellstr);
+pp.parse(This,GroupName);
+
 
 %--------------------------------------------------------------------------
 
-nGroup = length(groupName);
-ixValid = true(1, nGroup);
+nGroup = length(GroupName);
+valid = true(1,nGroup);
 for iGroup = 1:nGroup
-    ix = strcmpi(this.GroupNames, groupName{iGroup}) ;
-    if any(ix)
+    ind = strcmpi(This.groupNames,GroupName{iGroup}) ;
+    if any(ind)
         % Group exists, remove
-        this.GroupNames(ix) = [ ] ;
-        this.GroupContents(ix) = [ ] ;
-    elseif strcmpi(this.OTHER_NAME, groupName{iGroup})
-        throw( ...
-            exception.Base('Grouping:CannotRemoveGroup', 'error'), ...
-            this.OTHER_NAME ...
-            );
+        This.groupNames(ind) = [] ;
+        This.groupContents(ind) = [] ;
+    elseif strcmpi(This.otherName,GroupName{iGroup})
+        utils.error('grouping', ...
+            'Cannot remove ''%s'' group.', ...
+            This.otherName) ;
     else
-        ixValid(iGroup) = false ;
+        valid(iGroup) = false ;
     end
 end
 
-if any(~ixValid)
-    throw( ...
-        exception.Base('Grouping:NotExistCannotRemove', 'error'), ...
-        groupName{~ixValid} ...
-        );
+if any(~valid)
+    utils.error('grouping', ...
+        'This group name does not exist and cannot be removed: ''%s''.', ...
+        GroupName{~valid});
 end
 
 end
-
-

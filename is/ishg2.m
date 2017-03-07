@@ -4,8 +4,8 @@ function X = ishg2(Yes,No)
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Yes; %#ok<VUNUS>
@@ -23,7 +23,7 @@ end
 
 isHg2 = false;
 try %#ok<TRYNC>
-    isHg2 = ~verLessThan('matlab','8.4.0');
+    isHg2 = feature('UseHG2') || feature('HGUsingMATLABClasses');
 end
 
 if isHg2

@@ -1,5 +1,5 @@
 classdef FAVAR < varobj
-    % FAVAR  Factor-Augmented Vector Autoregressions (FAVAR Objects).
+    % FAVAR  Factor-Augmented Vector Autoregressions: FAVAR Objects and Functions.
     %
     % Constructor
     % ============
@@ -33,24 +33,21 @@ classdef FAVAR < varobj
     %     help FAVAR/function_name
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        Mean = [ ] % Vector of estimated means used to standardise the input data.
-        Std = [ ] % Vector of estimated stdevs used to standardise the input data.
-        SingVal = [ ] % Singular values of the principal components.
-        B = [ ] % Coefficient matrix at orthonormalised shocks in factor VAR.
-        C = [ ] % Measurement matrix.
+        Mean = []; % Vector of estimated means used to standardise the input data.
+        Std = []; % Vector of estimated stdevs used to standardise the input data.
+        SingVal = []; % Singular values of the principal components.
+        B = []; % Coefficient matrix at orthonormalised shocks in factor VAR.
+        C = []; % Measurement matrix.
         
-        T = [ ] % Schur decomposition of the transition matrix.
-        U = [ ] % Schur transformation of the factors.
-        Sigma = [ ] % Cov of idiosyncratic residuals.
+        T = []; % Schur decomposition of the transition matrix.
+        U = []; % Schur transformation of the factors.
+        Sigma = []; % Cov of idiosyncratic residuals.
         Cross = NaN;
     end
-    
-    
-    
     
     methods
         varargout = eig(vararing)
@@ -62,56 +59,40 @@ classdef FAVAR < varobj
         varargout = VAR(varargin)
     end
     
-    
-    
-    
     methods (Hidden)
         varargout = standardise(varargin)
     end
     
-    
-    
-    
-    methods (Access=protected, Hidden)
+    methods (Access=protected,Hidden)
         varargout = myny(varargin)
-        varargout = getEstimationData(varargin)
-        varargout = outputFactorData(varargin)
     end
     
-    
-    
-    
-    methods (Static, Hidden)
+    methods (Static,Hidden)
         varargout = pc(varargin)
         varargout = estimatevar(varargin)
-        varargout = cc(varargin)
+        varargout = cc(varargin);
         varargout = destandardise(varargin)
     end
     
-    
-    
-    
+    % Constructor.
     methods
-        function this = FAVAR(varargin)
+        function This = FAVAR(varargin)
             % FAVAR  Create new empty FAVAR object.
             %
             % Syntax
             % =======
             %
-            %     f = FAVAR(list)
-            %
+            %     F = FAVAR(YNames)
             %
             % Input arguments
             % ================
             %
-            % * `list` [ cellstr | char ] - Names of observed variables in the FAVAR model.
-            %
+            % * `YNames` [ cellstr | char ] - Names of observed variables in the FAVAR model.
             %
             % Output arguments
             % =================
             %
-            % * `f` [ FAVAR ] - New FAVAR object.
-            %
+            % * `F` [ FAVAR ] - New FAVAR object.
             %
             % Description
             % ============
@@ -120,28 +101,28 @@ classdef FAVAR < varobj
             % the [estimate](FAVAR/estimate) function to estimate the FAVAR parameters
             % on data.
             %
-            %
             % Example
             % ========
             %
             % To estimate a FAVAR, you first need to create an empty VAR object, and
             % then run the [FAVAR](FAVAR/estimate) function on it, e.g.
             %
-            %     list = {'DLCPI', 'DLGDP', 'R'};
+            %     list = {'DLCPI','DLGDP','R'};
             %     f = FAVAR(list);
-            %     f = estimate(f, d, range);
+            %     f = estimate(f,d,range);
             %
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            this = this@varobj(varargin{:});
-            if length(varargin)==1
-                if isa(varargin{1}, 'FAVAR')
-                    this = varargin{1};
+            This = This@varobj(varargin{:});
+            if length(varargin) == 1
+                if isa(varargin{1},'FAVAR')
+                    This = varargin{1};
                     return
                 end
             end
         end
     end
+    
 end

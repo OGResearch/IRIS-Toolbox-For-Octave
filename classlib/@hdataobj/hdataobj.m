@@ -1,15 +1,8 @@
 classdef hdataobj < handle
-    % hdataobj  [Not a public class] Handle class for memory-efficient storing of output data.
-    %
-    % Backend IRIS class.
-    % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
-
     
     properties
-        Data = struct( );
+        Data = [];
         Range = zeros(1,0);
         Id = cell(1,0);
         IxLog = false(1,0);
@@ -21,8 +14,8 @@ classdef hdataobj < handle
         IncludeLag = true; % Include lags of variables in output tseries.
         IncludeParam = true; % Include parameter database.
         IsVar2Std = false; % Convert variance to std dev.
-        Contributions = [ ]; % If non-empty, contains labels for contributions.
-        ParamDb = struct( );
+        Contributions = []; % If non-empty, contains labels for contributions.
+        ParamDb = struct();
     end
     
     
@@ -37,6 +30,8 @@ classdef hdataobj < handle
     end
     
     
+    % Constructor
+    %-------------
     methods
         function This = hdataobj(varargin)
             if nargin == 0
@@ -47,11 +42,13 @@ classdef hdataobj < handle
                 return
             end
             if nargin > 1
+                
                 % hdataobj(CallerObj,Range,[Size2,...],...)
+                
                 CallerObj = varargin{1};
                 This.Range = varargin{2};
                 Size = varargin{3};
-                varargin(1:3) = [ ];
+                varargin(1:3) = [];
                 nPer = length(This.Range);
                 if isempty(Size)
                     utils.error('hdataobj:hdataobj', ...
@@ -65,22 +62,15 @@ classdef hdataobj < handle
                     
                 hdatainit(CallerObj,This);
                 
-                % Initialize all variables in each block with NaN arrays. Max lag is
-                % computed for each block.
                 for i = 1 : length(This.Id) 
-                    if isempty(This.Id{i})
-                        continue
-                    end
                     imagId = imag(This.Id{i});
                     realId = real(This.Id{i});
                     maxLag = -min(imagId);
-                    nRow = nPer;
-                    if This.IncludeLag && maxLag > 0
-                        nRow = nRow + maxLag;
-                    end
-                    for j = sort(realId(imagId == 0))
-                        name = This.Name{j};
-                        This.Data.(name) = nan(nRow,Size,This.Precision);
+                    for j = find(imagId == 0)
+                        name = This.Name{realId(j)};
+                        This.Data.(name) = ...
+                            nan([maxLag+nPer,Size], ...
+                            This.Precision);
                     end
                 end 
                 
@@ -90,4 +80,6 @@ classdef hdataobj < handle
             end
         end
     end
+
+
 end

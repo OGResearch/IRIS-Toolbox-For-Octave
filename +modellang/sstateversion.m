@@ -3,24 +3,22 @@
 % Syntax
 % =======
 %
-%     FullEquation !! SteadyStateEquation;
+%     Equation !! SteadyStateEquation;
 %
 % Description
 % ============
 %
 % For each transition or measurement equation, you can provide a separate
 % steady-state version of it. The steady-state version is used when you run
-% the functions [`sstate`](model/sstate) and
-% [`chksstate`](model/chksstate), the latter unless you change the option
-% `'eqtn='`. This is useful when you can substantially simplify some parts
-% of the full dynamic equations, and help therefore the numerical solver to
-% achieve faster and possibly laso more accurate results.
+% the [`sstate`](model/sstate) function. This is useful when you can
+% substantially simplify some parts of the dynamic equations, and help
+% therefore the numerical solver to achieve faster and more accurate
+% results.
 %
 % Why is a double exclamation point, `!!`, used to start the steady-state
-% versions of equations? Because if you associate your model file
-% extension(s) (such as `'mod'` or `'model'`) with the Matlab editor,
-% anything after an exclamation point is displayed red making it easier to
-% spot the steady-state equations.
+% versions of equations? Because if you associate your model file extension
+% with the Matlab editor, anything after an exclamation point is displayed
+% red making it easier to spot the steady-state equations.
 %
 % Example
 % ========
@@ -36,5 +34,5 @@
 %     log(A) = log(A{-1}) + epsilon_a !! A = 1;
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

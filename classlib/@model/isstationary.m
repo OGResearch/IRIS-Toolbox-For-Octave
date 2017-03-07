@@ -1,101 +1,84 @@
-function [flag, test] = isstationary(this, varargin)
+function varargout = isstationary(This,varargin)
 % isstationary  True if model or specified combination of variables is stationary.
-%
 %
 % Syntax
 % =======
 %
 %     Flag = isstationary(M)
-%     Flag = isstationary(M,Name)
-%     Flag = isstationary(M,LinComb)
-%
+%     Flag = isstationary(M,Expn)
 %
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Model object.
 %
-% * `Name` [ char ] - Transition variable name.
-%
-% * `LinComb` [ char ] - Text string defining a linear combination of
-% transition variables; log variables need to be enclosed in `log(...)`.
-%
+% * `Expn` [ char ] - Text string with an expression describing a
+% combination of transition variables to be tested.
 %
 % Output arguments
 % =================
 %
-% * `Flag` [ `true` | `false` ] - True if the model (if called without a
-% second input argument) or the specified transition variable or
-% combination of transition variables (if called with a second input
-% argument) is stationary.
-%
+% * `'flag='` [ `true` | `false` ] - True if the model (if called without a
+% second input argument) or the specified combination of variables (if
+% called with a second input argument) is stationary.
 %
 % Description
 % ============
 %
-%
 % Example
 % ========
 %
-% In the following examples, `m` is a solved model object with two of its
-% transition variables named `X` and `Y`; the latter is a log variable:
-%
-%     isstationary(m)
-%     isstationary(m,'X')
-%     isstationary(m,'log(Y)')
-%     isstationary(m,'X - 0.5*log(Y)')
-%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-EIGEN_TOLERANCE = this.Tolerance.Eigen;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if isempty(this.solution{1})
-    flag = NaN;
-    return
-end
+eigValTol = This.Tolerance(1);
 
 if isempty(varargin)
-    % Called Flag = isstationary(This).
-    nb = size(this.solution{1}, 2);
-    eig_ = model.Variant.get(this.Variant, 'Eigen', ':');
-    test = abs( eig_(1, 1:nb, :) );
-    flag = all( test<1-EIGEN_TOLERANCE, 2);
-    flag = permute(flag, [1, 3, 2]);
+    % Called flag = isstationary(model).
+    if isempty(This.solution{1})
+        varargout{1} = NaN;
+    else
+        nb = size(This.solution{1},2);
+        varargout{1} = ...
+            permute(all(abs(This.eigval(1,1:nb,:)) < 1-eigValTol,2), ...
+            [1,3,2]);
+    end
 else
-    % Called [Flag, Test] = isstationary(this, expn).
-    [flag, test] = isCointegrated(this, varargin{1}, EIGEN_TOLERANCE);
+    % Called [flag,...] = isstationary(model,expression,...).
+    [varargout{1:length(varargin)}] = ...
+        xxIsCointegrated(This,varargin{:});
 end
 
 end
 
 
+% Subfunctions...
 
 
-function [flag, test] = isCointegrated(this, expn, EIGEN_TOLERANCE)
-[~, ~, ~, nf] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-% Get the vector of coefficients describing the tested linear combination.
-% Normalize the vector of coefficients by the largest coefficient.
-[w, ~, isValid] = parser.vectorizeLinComb(expn, printSolutionVector(this, 'x'));
-if ~isValid || all(w==0)
-    utils.error('model:isstationary', ...
-        ['This is not a valid linear combination of ', ...
-        'transition variables: %s '], ...
-        expn);
+%**************************************************************************
+
+
+function varargout = xxIsCointegrated(This,varargin)
+[nx,nb,nAlt] = size(This.solution{1});
+realSmall = getrealsmall();
+xVec = myvector(This,'x');
+
+varargout = cell(1,length(varargin));
+for iArg = 1 : length(varargin)
+    exprn = varargin{iArg};
+    w = preparser.lincomb2vec(exprn,xVec);
+    nf = nx - nb;
+    flag = false(1,nAlt);
+    for iAlt = 1 : nAlt
+        Tf = This.solution{1}(1:nf,:,iAlt);
+        U = This.solution{7}(:,:,iAlt);
+        nUnit = mynunit(This,iAlt);
+        test = w*[Tf(:,1:nUnit);U(:,1:nUnit)];
+        flag(iAlt) = all(abs(test) <= realSmall);
+    end
+    varargout{iArg} = flag;
 end
-w = w / max(w);
-% Test stationarity in each parameterization.
-flag = false(1, nAlt);
-test = cell(1, nAlt);
-for iAlt = 1 : nAlt
-    Tf = this.solution{1}(1:nf, :, iAlt);
-    U = this.solution{7}(:, :, iAlt);
-    nUnit = sum(this.Variant{iAlt}.Stability==TYPE(1));
-    test{iAlt} = w*[ Tf(:, 1:nUnit); U(:, 1:nUnit) ];
-    flag(iAlt) = all( abs(test{iAlt})<=EIGEN_TOLERANCE );
-end
-end
+end % xxIsCointegrated()

@@ -4,16 +4,16 @@ function [Outp,Time] = getdata(This,Inp,Range,ColStruct)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 nCol = length(Range);
 if isempty(ColStruct)
-    doDates( );
+    doDates();
 else
-    doColStruct( );
+    doColStruct();
 end
 
 
@@ -23,7 +23,7 @@ end
 %**************************************************************************
 
     
-    function doDates( )
+    function doDates()
         % Table range can consist of dates with different frequencies.
         % For each frequency, find an input tseries with matching
         % frequency.
@@ -37,8 +37,8 @@ end
         dataFreq = cellfun(@freq,Inp);
         % We cannot pre-allocate `outp` properly because the number of
         % columns is unknown at this point.
-        Outp = [ ];
-        for ii = [0,1,2,4,6,12,52,365]
+        Outp = [];
+        for ii = [0,1,2,4,6,12,52]
             rangePos = rangeFreq == ii;
             dataPos = dataFreq == ii;
             if any(rangePos) && any(dataPos)
@@ -51,13 +51,13 @@ end
                 Outp(rangePos,:) = thisData;
             end
         end
-    end % doDates( )
+    end % doDates()
 
 
 %**************************************************************************
     
     
-    function doColStruct( )
+    function doColStruct()
         nRow = size(Inp{1},2);
         Outp = nan(nCol,nRow);
         Time = 1 : nCol;
@@ -89,7 +89,7 @@ end
                 Outp(ii,:) = x;
             end
         end
-    end % doColStruct( )
+    end % doColStruct()
 
 
 end

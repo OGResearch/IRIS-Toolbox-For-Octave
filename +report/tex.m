@@ -10,12 +10,10 @@
 %     right after the P.tex( ) command.
 %     %}
 %
-%
 % Syntax with input specified as char argument
 % =============================================
 %
-%     P.tex(Cap, Code,...)
-%
+%     P.tex(Cap,Code,...)
 %
 % Input arguments
 % ================
@@ -27,7 +25,6 @@
 %
 % * `Code` [ char ] - \LaTeX\ code or text input that will be included in
 % the report.
-%
 %
 % Options
 % ========
@@ -45,20 +42,17 @@
 % verbatim in monospaced font; if false the text will be treated as \LaTeX\
 % code included in the report.
 %
-%
 % Generic options
 % ================
 %
 % See help on [generic options](report/Contents) in report objects.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

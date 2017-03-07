@@ -1,91 +1,82 @@
-function [this, tt, ts] = trend(this, varargin)
-% trend  Estimate time trend in time series data.
+function [This,TT,TS] = trend(This,Range,varargin)
+% trend  Estimate a time trend.
 %
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     x = trend(x, ~range, ...)
-%
+%     X = trend(X,range)
 %
 % Input arguments
 % ================
 %
-% * `x` [ tseries ] - Input time series.
+% * `X` [ tseries ] - Input time series.
 %
-% * `~range` [ numeric | `@all` | char ] - Range for which the trend will be
-% computed; if omitted or assigned `@all`, the entire range of the input times series.
-%
+% * `Range` [ tseries ] - Range for which the trend will be computed.
 %
 % Output arguments
 % =================
 %
-% * `x` [ tseries ] - Output trend time series.
-%
+% * `X` [ tseries ] - Output trend time series.
 %
 % Options
 % ========
 %
-% * `'Break='` [ numeric | *empty* ] - Vector of breaking points at which
+% * `'break='` [ numeric | *empty* ] - Vector of breaking points at which
 % the trend may change its slope.
 %
-% * `'Connect='` [ *`true`* | `false` ] - Calculate the trend by connecting
+% * `'connect='` [ *`true`* | `false` ] - Calculate the trend by connecting
 % the first and the last observations.
 %
-% * `'Diff='` [ `true` | *`false`* ] - Estimate the trend on differenced
+% * `'diff='` [ `true` | *`false`* ] - Estimate the trend on differenced
 % data.
 %
-% * `':og='` [ `true` | *`false`* ] - Logarithmise the input data, 
+% * `'log='` [ `true` | *`false`* ] - Logarithmise the input data,
 % de-logarithmise the output data.
 %
-% * `'Season='` [ `true` | *`false`* | `2` | `4` | `6` | `12` ] - Include
+% * `'season='` [ `true` | *`false`* | `2` | `4` | `6` | `12` ] - Include
 % deterministic seasonal factors in the trend.
-%
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~isempty(varargin) && isdatinp(varargin{1})
-    range = varargin{1};
-    varargin(1) = [ ];
-    if ischar(range)
-        range = textinp2dat(range);
-    end
-else
-    range = @all;
+if nargin < 2
+    Range = Inf;
 end
 
+% Parse required input arguments.
+pp = inputParser();
+pp.addRequired('Range',@isnumeric);
+pp.parse(Range);
+
 % Parse options.
-opt = passvalopt('tseries.trend', varargin{:});
+opt = passvalopt('tseries.trend',varargin{:});
 
 %--------------------------------------------------------------------------
 
-[data, range] = rangedata(this, range);
-size_ = size(data);
-data = data(:, :);
+[ThisData,Range] = rangedata(This,Range);
+tmpSize = size(ThisData);
+ThisData = ThisData(:,:);
 
 % Compute the trend.
-[data, ttData, tsData] = tseries.mytrend(data, range(1), opt);
-data = reshape(data, size_);
+[ThisData,TTdata,TSdata] = tseries.mytrend(ThisData,Range(1),opt);
+ThisData = reshape(ThisData,tmpSize);
 
 % Output data.
-this = replace(this, data, range(1));
-this = trim(this);
-if nargout>1
-    tt = replace(this, reshape(ttData, size_));
-    tt = trim(tt);
-    if nargout>2
-        ts = replace(this, reshape(tsData, size_));
-        ts = trim(ts);
+This = replace(This,ThisData,Range(1));
+This = mytrim(This);
+if nargout > 1
+    TT = replace(This,reshape(TTdata,tmpSize));
+    TT = mytrim(TT);
+    if nargout > 2
+        TS = replace(This,reshape(TSdata,tmpSize));
+        TS = mytrim(TS);
     end
 end
 

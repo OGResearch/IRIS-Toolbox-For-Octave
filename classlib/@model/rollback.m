@@ -1,4 +1,4 @@
-function inp = rollback(this, inp, range, lastDate)
+function D = rollback(This,D,Range,Last)
 % rollback  Prepare database for a rollback run of Kalman filter.
 %
 % Syntax
@@ -14,7 +14,7 @@ function inp = rollback(this, inp, range, lastDate)
 % * `Inp` [ struct ] - Database with a single set of input data for a
 % Kalman filter.
 %
-% * `Range` [ numeric | char ] - Filter data range.
+% * `Range` [ numeric ] - Filter data range.
 %
 % * `Date` [ numeric ] - Date up to which the input data entries will be
 % rolled back, see Description.
@@ -62,47 +62,40 @@ function inp = rollback(this, inp, range, lastDate)
 %     [mf,f] = filter(m,dd,qq(2000,1):qq(2015,4));
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Inp',@(x) isstruct(x) || isempty(x));
-pp.addRequired('Range',@(x) isdatinp(x));
-pp.addRequired('Back',@(x) isnumericscalar(x) && all(freqcmp(x,range)));
-pp.parse(inp,range,lastDate);
-
-if ischar(range)
-    range = textinp2dat(range);
-end
+pp.addRequired('Range',@(x) isnumeric(x) && all(freqcmp(x)));
+pp.addRequired('Back',@(x) isnumericscalar(x) && all(freqcmp(x,Range)));
+pp.parse(D,Range,Last);
 
 %--------------------------------------------------------------------------
 
-ixy = this.Quantity.Type==int8(1);
-lsy = this.Quantity.Name(ixy);
-ny = sum(ixy);
+yList = This.name(This.nametype == 1);
+ny = length(yList);
 
-range = range(1) : range(end);
-if floor(lastDate) > floor(range(end))
-    lastDate = range(end);
-elseif floor(lastDate) < floor(range(1))
-    lastDate = range(1);
+Range = Range(1) : Range(end);
+if floor(Last) > floor(Range(end))
+    Last = Range(end);
+elseif floor(Last) < floor(Range(1))
+    Last = Range(1);
 end
 
-rbRange = datrange(range(end),lastDate,-1);
+rbRange = datrange(Range(end),Last,-1);
 if isempty(rbRange)
     return
 end
-nPer = length(range);
+nPer = length(Range);
 nRbPer = length(rbRange);
 
 ixTseries = false(1,ny);
 ixSingleCol = false(1,ny);
 addData = nan(ny,nPer);
-doChkInpData( );
+doChkInpData();
 nAdd = nRbPer * ny;
-% @@@@@ MOSW.
-% Matlab accepts repmat(addData,1,1,nAdd), too.
-addData = repmat(addData,[1,1,nAdd]);
+addData = repmat(addData,1,1,nAdd);
 
 page = 0;
 for t = nPer : -1 : 1
@@ -113,10 +106,10 @@ for t = nPer : -1 : 1
 end
 
 for i = find(ixTseries & ixSingleCol)
-    name = lsy{i};
+    name = yList{i};
     iData = addData(i,:,:);
     iData = permute(iData,[2,3,1]);
-    inp.(name)(range,1+(1:nAdd)) = iData;
+    D.(name)(Range,1+(1:nAdd)) = iData;
 end
 
 
@@ -124,18 +117,18 @@ end
 
 
 %**************************************************************************
-    function doChkInpData( )
+    function doChkInpData()
         for ii = 1 : ny
-            name = lsy{ii};
-            if isfield(inp,name)
-                x = inp.(name);
+            name = yList{ii};
+            if isfield(D,name)
+                x = D.(name);
                 ixTseries(ii) = istseries(x);
                 if ixTseries(ii)
                     ixSingleCol(ii) = size(x.data(:,:),2) == 1;
                 end
             end
             if ixTseries(ii) && ixSingleCol(ii)
-                addData(ii,:) = rangedata(x,range).';
+                addData(ii,:) = rangedata(x,Range).';
             else
                 addData(ii,:) = nan(1,nPer);
             end
@@ -144,9 +137,9 @@ end
         if any(ixInvalid)
             utils.error('model:rollback', ...
                 'This times series includes multiple data sets: ''%s''.', ...
-                lsy{ixInvalid});
+                yList{ixInvalid});
         end
-    end % doChkInpData( )
+    end % doChkInpData()
 
 
 end

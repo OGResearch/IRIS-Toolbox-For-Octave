@@ -1,15 +1,15 @@
-function default = IRIS( )
+function default = IRIS()
 % IRIS  [Not a public function] Default options for general IRIS functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
-default = struct( );
+default = struct();
 
 default.irisremove = { ...
    'display',true,@islogical, ...

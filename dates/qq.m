@@ -1,41 +1,37 @@
-function dat = qq(varargin)
-% qq  Create quarterly date.
+function Dat = qq(varargin)
+% qq  IRIS serial date number for quarterly date.
 %
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     dat = qq(year, ~quarter)
+%     Dat = qq(Y)
+%     Dat = qq(Y,Q)
 %
 % Input arguments
 % ================
 %
-% * `year` [ numeric ] - Year of vector of years.
+% * `Y` [ numeric ] - Year.
 %
-% * `~quarter` [ numeric ] - Quarter of the year or vector of quarters; if
-% omitted, first quarter is assumed.
+% * `Q` [ numeric ] - Quarter; if omitted, first quarter is assumed.
 %
 % Output arguments
 % =================
 %
-% * `dat` [ dates.Date ] - Quarterly date.
-%
+% * `Dat` [ numeric ] - IRIS serial date number representing the quarterly
+% date.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dat = datcode(4, varargin{:});
-dat = dates.Date(dat);
+Dat = datcode(4,varargin{:});
 
 end

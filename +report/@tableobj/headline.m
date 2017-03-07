@@ -1,35 +1,42 @@
-function c = headline(this)
-% headline  Latex code for table headline.
+function C = headline(This)
+% headline  [Not a public function] Latex code for table headline.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-BR = sprintf('\n');
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-isDates = isempty(this.options.colstruct);
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
+isDates = isempty(This.options.colstruct);
 if isDates
-    range = this.options.range;
+    range = This.options.range;
 else
-    nCol = length(this.options.colstruct);
+    nCol = length(This.options.colstruct);
     range = 1 : nCol;
 end
 
-dateFormat = this.options.dateformat;
-nLead = this.nlead;
+dateFormat = This.options.dateformat;
+nLead = This.nlead;
+
+br = sprintf('\n');
 
 if isDates
     yearFmt = dateFormat{1};
     currentFmt = dateFormat{2};
-    isTwoLines = isDates && ~isequaln(yearFmt, NaN);
+    isTwoLines = isDates && ~isequalnFunc(yearFmt,NaN);
 else
     isTwoLines = false;
     for i = 1 : nCol
-        isTwoLines = ~isequaln(this.options.colstruct(i).name{1}, NaN);
+        isTwoLines = ~isequalnFunc(This.options.colstruct(i).name{1},NaN);
         if isTwoLines
             break
         end
@@ -40,9 +47,9 @@ lead = '&';
 lead = lead(ones(1,nLead-1));
 if isempty(range)
     if isnan(yearFmt)
-        c = lead;
+        C = lead;
     else
-        c = [lead,BR,'\\',lead];
+        C = [lead,br,'\\',lead];
     end
     return
 end
@@ -52,18 +59,18 @@ nPer = length(range);
 if isDates
     currentDates = dat2str(range, ...
         'dateFormat=',currentFmt, ...
-        'freqLetters=',this.options.freqletters, ...
-        'months=',this.options.months, ...
-        'standinMonth=',this.options.standinmonth);
+        'freqLetters=',This.options.freqletters, ...
+        'months=',This.options.months, ...
+        'standinMonth=',This.options.standinmonth);
     if ~isnan(yearFmt)
         yearDates = dat2str(range, ...
             'dateFormat=',yearFmt, ...
-            'freqLetters=',this.options.freqletters, ...
-            'months=',this.options.months, ...
-            'standinMonth=',this.options.standinmonth);
-        yearDates = interpret(this,yearDates);
+            'freqLetters=',This.options.freqletters, ...
+            'months=',This.options.months, ...
+            'standinMonth=',This.options.standinmonth);
+        yearDates = interpret(This,yearDates);
     end
-    currentDates = interpret(this,currentDates);
+    currentDates = interpret(This,currentDates);
     [year,per,freq] = dat2ypf(range); %#ok<ASGLU>
 end
 
@@ -72,13 +79,13 @@ secondLine = lead; % Main line.
 divider = lead; % Dividers between first and second lines.
 yCount = 0;
 
-colFootDate = [ this.options.colfootnote{1:2:end} ];
-colFootText = this.options.colfootnote(2:2:end);
+colFootDate = [ This.options.colfootnote{1:2:end} ];
+colFootText = This.options.colfootnote(2:2:end);
 
 for i = 1 : nPer
     isLastCol = i == nPer;
     yCount = yCount + 1;
-    colW = this.options.colwidth(min(i,end));
+    colW = This.options.colwidth(min(i,end));
     f = '';
     if isDates
         s = currentDates{i};
@@ -88,13 +95,13 @@ for i = 1 : nPer
                 || (year(i) ~= year(i+1) || freq(i) ~= freq(i+1));
         end
     else
-        s = this.options.colstruct(i).name{2};
+        s = This.options.colstruct(i).name{2};
         if isTwoLines
-            f = this.options.colstruct(i).name{1};
+            f = This.options.colstruct(i).name{1};
             isFirstLineChg = isLastCol ...
-                || ~isequaln(this.options.colstruct(i).name{1}, ...
-                this.options.colstruct(i+1).name{1});
-            if isequaln(f, NaN)
+                || ~isequalnFunc(This.options.colstruct(i).name{1}, ...
+                This.options.colstruct(i+1).name{1});
+            if isequalnFunc(f,NaN)
                 f = '';
             end
         end
@@ -105,30 +112,30 @@ for i = 1 : nPer
     for j = find(inx)
         if ~isempty(colFootText{j})
             s = [s, ...
-                footnotemark(this,colFootText{j})]; %#ok<AGROW>
+                footnotemark(This,colFootText{j})]; %#ok<AGROW>
         end
     end
 
-    col = this.options.headlinejust;
-    if any(this.highlight == i)
+    col = This.options.headlinejust;
+    if any(This.highlight == i)
         col = upper(col);
     end
-    if i == 1 && any(this.vline == 0)
+    if i == 1 && any(This.vline == 0)
         col = ['|',col]; %#ok<AGROW>
     end
-    if any(this.vline == i)
+    if any(This.vline == i)
         col = [col,'|']; %#ok<AGROW>
     end    
 
     % Second=Main line.
     s = ['&\multicolumn{1}{',col,'}{', ...
-        report.tableobj.makebox(s,'',colW,this.options.headlinejust,''), ...
+        report.tableobj.makebox(s,'',colW,This.options.headlinejust,''), ...
         '}'];
     secondLine = [secondLine,s]; %#ok<AGROW>
     
     % Print the first line text across this and all previous columns that have
     % the same date/text on the first line.
-    % hRule = [hRule,'&\multicolumn{1}{c|}{ }'];
+    % hRule = [hRule,'&\multicolumn{1}{c|}{}'];
     if isTwoLines && isFirstLineChg
         command = [ ...
             '&\multicolumn{', ...
@@ -147,13 +154,13 @@ for i = 1 : nPer
 end
 
 if isTwoLines
-    c = [firstLine, '\\[-8pt]', BR, divider, '\\', BR, secondLine];
+    C = [firstLine,'\\[-8pt]',br,divider,'\\',br,secondLine];
 else
-    c = secondLine;
+    C = secondLine;
 end
 
-if iscellstr(c)
-    c = [c{:}];
+if iscellstr(C)
+    C = [C{:}];
 end
 
 end

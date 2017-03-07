@@ -1,24 +1,19 @@
-function [ep, wp] = errorparsing(this)
-% errorparsing  Create "Error parsing" and "Warning parsing" messages.
+function S = errorparsing(This)
+% errorparsing  [Not a public function] Create "Error parsing" message.
+%
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-fname = implementGet(this, 'file');
+fname = specget(This,'file');
 
-if true % ##### MOSW
-    p = sprintf('parsing file(s) <a href="matlab: edit %s">%s</a>. ', ...
-        strrep(fname,' & ',' '), fname);
-else
-    p = sprintf('parsing file(s) %s. ', fname); %#ok<UNRCH>
-end
-
-ep = ['Error ', p];
-wp = ['Warning ', p];
+S = mosw.sprintf( ...
+    'Error parsing file(s) <a href="matlab: edit %s">%s</a>. ', ...
+    strrep(fname,' & ',' '),fname);
 
 end

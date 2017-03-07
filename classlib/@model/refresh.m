@@ -1,4 +1,4 @@
-function this = refresh(this, vecAlt)
+function This = refresh(This,IAlt)
 % refresh  Refresh dynamic links.
 %
 % Syntax
@@ -6,22 +6,18 @@ function this = refresh(this, vecAlt)
 %
 %     M = refresh(M)
 %
-%
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Model object whose dynamic links will be refreshed.
-%
 %
 % Output arguments
 % =================
 %
 % * `M` [ model ] - Model object with dynamic links refreshed.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
@@ -29,61 +25,35 @@ function this = refresh(this, vecAlt)
 %     m = refresh(m);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-PTR = @int16;
-
-lhs = this.Pairing.Link.Lhs;
-ixla = lhs>PTR(0); % Index of active links.
-if ~any(ixla)
-    return
+if isempty(This.Refresh)
+   return
 end
 
-nAlt = length(this);
+nalt = size(This.Assign,3);
 try
-    if isequal(vecAlt, Inf) || isequal(vecAlt, @all)
-        vecAlt = 1 : nAlt;
-    end
+    IAlt; %#ok<VUNUS>
 catch %#ok<CTCH>
-    vecAlt = 1 : nAlt;
+    IAlt = 1 : nalt;
 end
-nVecAlt = length(vecAlt);
 
 %--------------------------------------------------------------------------
 
-nQuan = length(this.Quantity);
+% We cannot use cellfun to evaluate the equations because dynamic links can
+% be recursive.
 
-% Get a 1-(nQty+nStdCorr)-nAlt matrix of quantities and stdcorrs.
-x = [ ...
-    model.Variant.getQuantity(this.Variant, ':', vecAlt), ...
-    model.Variant.getStdCorr(this.Variant, ':', vecAlt) ...
-    ];
-
-% Permute from 1-(nQty+nStdCorr)-nAlt to (nQty+nStdCorr)-nAlt-1.
-x = permute(x, [2, 3, 1]);
-
-% Evaluate links in user's order or reorder sequentially if available.
-order = this.Pairing.Link.Order(ixla);
-posl = find(ixla);
-if all(order>PTR(0))
-    [~, temp] = sort(order);
-    posl = posl(temp);
+eqtn = This.eqtnF(This.eqtntype == 4);
+n = size(This.Assign,2);
+x = [This.Assign(1,:,IAlt),This.stdcorr(1,:,IAlt)];
+x = permute(x,[3,2,1]);
+for j = 1 : length(This.Refresh)
+   namepos = This.Refresh(j);
+   x(:,namepos) = feval(eqtn{j},x,1);
 end
+x = ipermute(x,[3,2,1]);
+This.Assign(1,:,IAlt) = x(1,1:n,:);
+This.stdcorr(1,:,IAlt) = x(1,n+1:end,:);
 
-t = 1 : nVecAlt;
-for j = posl
-    x(lhs(j), :) = this.Equation.Dynamic{j}(x, t);
-end
-
-
-% Permute from (nQty+nStdCorr)-nAlt-1 to 1-(nQty+nStdCorr)-nAlt.
-x = ipermute(x, [2, 3, 1]);
-
-this.Variant = model.Variant.assignQuantity( ...
-    this.Variant, ':', ':', x(1, 1:nQuan, :) ...
-    );
-this.Variant = model.Variant.assignStdCorr( ...
-    this.Variant, ':', ':', x(1, nQuan+1:end, :) ...
-    );
 end

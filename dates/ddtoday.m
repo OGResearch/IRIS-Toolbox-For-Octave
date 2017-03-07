@@ -1,10 +1,10 @@
-function Dat = ddtoday( )
+function Dat = ddtoday()
 % ddtoday  Matlab serial date number for today's date.
 %
 % Syntax
 % =======
 %
-%     Dat = ddtoday( )
+%     Dat = ddtoday()
 %
 % Output arguments
 % =================
@@ -18,11 +18,11 @@ function Dat = ddtoday( )
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-Dat = floor(now( ));
+Dat = floor(now());
 
 end

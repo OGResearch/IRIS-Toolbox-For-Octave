@@ -1,4 +1,4 @@
-function v = VAR(this, select, range, varargin)
+function V = VAR(This,Select,Range,varargin)
 % VAR  Population VAR for selected model variables.
 %
 % Syntax
@@ -13,8 +13,8 @@ function v = VAR(this, select, range, varargin)
 %
 % * `List` [ cellstr | char ] - List of variables selected for the VAR.
 %
-% * `Range` [ numeric | char ] - Hypothetical range, including pre-sample
-% initial condition, on which the VAR would be estimated.
+% * `Range` [ numeric ] - Hypothetical range, including pre-sample initial
+% condition, on which the VAR would be estimated.
 %
 % Output arguments
 % =================
@@ -36,72 +36,69 @@ function v = VAR(this, select, range, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required arguments.
-pp = inputParser( );
-pp.addRequired('List', @(x) ischar(x) || iscellstr(x));
-pp.addRequired('Range', @(x) isdatinp(x));
-pp.parse(List,range);
+pp = inputParser();
+pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
+pp.addRequired('Range',@isnumeric);
+pp.parse(List,Range);
 
 % Parse options.
-opt = passvalopt('model.VAR', varargin{:});
+opt = passvalopt('model.VAR',varargin{:});
 
 % Convert char list to cellstr.
-if ischar(select)
-    select = regexp(select, ...
+if ischar(Select)
+    Select = regexp(Select, ...
         '[a-zA-Z][\w\(\)\{\}\+\-]*','match');
-end
-
-if ischar(range)
-    range = textinp2dat(range);
 end
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
-nz = length(select);
+nAlt = size(This.Assign,3);
+nz = length(Select);
 p = opt.order;
-C = acf(this, opt.acf{:}, 'order=', p, 'output=', 'numeric');
-range = range(1) : range(end);
-nPer = length(range);
+C = acf(This,opt.acf{:},'order=',p,'output=','numeric');
+Range = Range(1) : Range(end);
+nPer = length(Range);
 nk = double(opt.constant);
 
 % Find the position of selected variables in the sspace vector and in the
 % model names.
-[posSpace, posName] = myfindsspacepos(this,select, '-error');
+[sspacePos,namePos] = myfindsspacepos(This,Select,'-error');
 
-C = C(posSpace, posSpace, :, :);
-ixLog = this.Quantity.IxLog(1, posName);
+C = C(sspacePos,sspacePos,:,:);
+zBar = permute(This.Assign(1,namePos,:),[2,3,1]);
+ixLog = This.IxLog(1,namePos);
+zBar(ixLog) = log(zBar(ixLog));
 
 % TODO: Calculate Sigma.
-v = VAR( );
-v.A = nan(nz,nz*p,nAlt);
-v.K = zeros(nz,nAlt);
-v.Omega = nan(nz,nz,nAlt);
-v.Sigma = [ ];
-v.G = nan(nz,0,nAlt);
-v.Range = range;
-v.IxFitted = true(1,nPer);
-v.IxFitted(1:p) = false;
-v.NHyper = nz*(nk+p*nz);
+V = VAR();
+V.A = nan(nz,nz*p,nAlt);
+V.K = zeros(nz,nAlt);
+V.Omega = nan(nz,nz,nAlt);
+V.Sigma = [];
+V.G = nan(nz,0,nAlt);
+V.Range = Range;
+V.Fitted = true(1,nPer);
+V.Fitted(1:p) = false;
+V.NHyper = nz*(nk+p*nz);
 
 for iAlt = 1 : nAlt
     Ci = C(:,:,:,iAlt);
-    zBar = this.Variant{iAlt}.Quantity(1, posName).';
-    zBar(ixLog) = log(zBar(ixLog));
+    zbari = zBar(:,iAlt);
     
     % Put together moment matrices.
     % M1 := [C1, C2, ...]
-    M1 = reshape(Ci(:, :, 2:end), nz, nz*p);
+    M1 = reshape(Ci(:,:,2:end),nz,nz*p);
     
     % M0 := [C0, C1, ...; C1', C0, ... ]
     % First, produce M0' : = [C0, C1', ...; C1, C0, ...].
-    M0t = [ ];
+    M0t = [];
     for i = 0 : p-1
         M0t = [M0t; ...
-            nan(nz, nz*i), reshape(Ci(:,:,1:p-i), nz, nz*(p-i)) ...
+            nan(nz,nz*i),reshape(Ci(:,:,1:p-i),nz,nz*(p-i)) ...
             ]; %#ok<AGROW>
     end
     M0 = M0t.';
@@ -117,27 +114,27 @@ for iAlt = 1 : nAlt
     Omgi = Ci(:,:,1) - M1*Ai.' - Ai*M1.' + Ai*M0*Ai.';
     
     % Calculate constant vector.
-    Ki = zeros(size(zBar));
+    Ki = zeros(size(zbari));
     if opt.constant
-        Ki = sum(polyn.var2polyn(Ai), 3)*zBar;
+        Ki = sum(polyn.var2polyn(Ai),3)*zbari;
     end
     
     % Populate VAR properties.
-    v.A(:, :, iAlt) = Ai;
-    v.K(:, iAlt) = Ki;
-    v.Omega(:, :, iAlt) = Omgi;
+    V.A(:,:,iAlt) = Ai;
+    V.K(:,iAlt) = Ki;
+    V.Omega(:,:,iAlt) = Omgi;
 end
 
 % Assign variable names.
-v = myynames(v, select);
+V = myynames(V,Select);
 
 % Create residual names automatically.
-v = myenames(v, [ ]);
+V = myenames(V,[]);
 
 % Compute triangular representation.
-v = schur(v);
+V = schur(V);
 
 % Populate AIC and SBC criteria.
-v = infocrit(v);
+V = infocrit(V);
 
 end

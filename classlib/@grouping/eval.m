@@ -1,132 +1,125 @@
-function [s, lg] = eval(this, s, varargin)
-% eval  Evaluate contributions in input database using grouping object.
+function [S,L] = eval(This,S,varargin)
+% eval  Evaluate contributions in input database S using grouping object G.
 %
 % Syntax
 % =======
 %
-%     [s, lg] = eval(g, s)
-%
+%     [S,L] = eval(G,S)
 %
 % Input arguments
 % ================
 %
-% * `g` [ grouping ] - Grouping object.
+% * `G` [ grouping ] - Grouping object.
 %
-% * `s` [ dbase ] - Input dabase with individual contributions.
-%
+% * `S` [ dbase ] - Input dabase with individual contributions.
 %
 % Output arguments
 % =================
 %
-% * `s` [ dbase ] - Output database with grouped contributions.
+% * `S` [ dbase ] - Output database with grouped contributions.
 %
-% * `lg` [ cellstr ] - Legend entries based on the list of group names.
-%
+% * `L` [ cellstr ] - Legend entries based on the list of group names.
 %
 % Options
 % ========
 %
-% * `'Append='` [ *`true`* | `false` ] - Append in the output database all
+% * `'append='` [ *`true`* | `false` ] - Append in the output database all
 % remaining data columns from the input database that do not correspond to
 % any contribution of shocks or measurement variables.
-%
 %
 % Description
 % ============
 %
-%
 % Example
 % ========
 %
-% For a model object `m`, database `d` and simulation range `r`, 
+% For a model object `M`, database `D` and simulation range `R`,
 %
-%     s = simulate(m, d, r, 'contributions=', true) ;
-%     g = grouping(m, 'Shocks')
+%     S = simulate(M,D,R,'contributions=',true) ;
+%     G = grouping(M)
 %     ...
-%     g = addgroup(g, 'SupplyShocks', 'shock_pi', 'shock_w') ;
-%     g = addgroup(g, 'DemandShocks', 'shock_y', 'shock_is') ;
+%     G = addgroup(G,GroupName,GroupContents) ;
 %     ...
-%     s = eval(s, g)
+%     S = eval(S,G)
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('S', @isstruct);
-pp.addRequired('G', @(x) isa(x, 'grouping'));
-pp.parse(s, this);
+pp = inputParser();
+pp.addRequired('S',@isstruct);
+pp.addRequired('G',@(x) isa(x,'grouping'));
+pp.parse(S,This);
 
-opt = passvalopt('grouping.eval', varargin{:});
 
-%--------------------------------------------------------------------------
+opt = passvalopt('grouping.eval',varargin{:});
 
-isOther = any(this.OtherContents);
+isOther = any(This.otherContents);
 
 % Contributions of shocks or measurement variables.
-nGroup = numel(this.GroupNames) ;
+nGroup = numel(This.groupNames) ;
 nNewCol = nGroup + double(isOther) ;
 
 % Number of old columns used in grouping; the remaing old columns will
-% be appended to the final data (this includes things like Init+Const, 
+% simply appended to the final data (this includes things like Init+Const,
 % Nonlinear, etc.).
-nColUsed = length(this.List) ;
+nColUsed = length(This.list) ;
 
-varNames = fields(this.IsLog) ;
+varNames = fields(This.logVars) ;
 for iVar = 1:numel(varNames)
     
     iName = varNames{iVar};
     
     % Contributions for log variables are multiplicative
-    isLog = this.IsLog.(iName); 
+    isLog = This.logVars.(iName); 
     if isLog
-        meth = @(x) prod(x, 2) ;
+        meth = @(x) prod(x,2) ;
     else
-        meth = @(x) sum(x, 2) ;
+        meth = @(x) sum(x,2) ;
     end
     
     % Do grouping
-    [oldData, range] = rangedata(s.(iName)) ;
-    oldCmt = comment(s.(iName));
-    nPer = size(oldData, 1) ;
+    [oldData,range] = rangedata(S.(iName)) ;
+    oldCmt = comment(S.(iName));
+    nPer = size(oldData,1) ;
     
-    newData = nan(nPer, nNewCol) ;
+    newData = nan(nPer,nNewCol) ;
     for iGroup = 1:nGroup
-        ind = this.GroupContents{iGroup} ;
-        newData(:, iGroup) = meth(oldData(:, ind)) ;
+        ind = This.groupContents{iGroup} ;
+        newData(:,iGroup) = meth(oldData(:,ind)) ;
     end
     
     % Handle 'Other' group.
     if isOther
-        ind = this.OtherContents ;
-        newData(:, nGroup+1) = meth(oldData(:, ind)) ;
+        ind = This.otherContents ;
+        newData(:,nGroup+1) = meth(oldData(:,ind)) ;
     end
     
     
-    % Comment the new tseries( ) object.
-    newCmt = cell(1, nNewCol) ;
+    % Comment the new tseries() object.
+    newCmt = cell(1,nNewCol) ;
     for iGroup = 1:nGroup
         newCmt{iGroup} = ...
-            utils.concomment(iName, this.GroupNames{iGroup}, isLog) ;
+            utils.concomment(iName,This.groupNames{iGroup},isLog) ;
     end
     if isOther
-        newCmt{nGroup+1} = utils.concomment(iName, this.OTHER_NAME, isLog) ;
+        newCmt{nGroup+1} = utils.concomment(iName,This.otherName,isLog) ;
     end
     
     % Append remaining old data and old columns.
     if opt.append
-        oldData(:, 1:nColUsed) = [ ] ;
-        newData = [newData, oldData] ; %#ok<AGROW>
-        oldCmt(:, 1:nColUsed) = [ ] ;
-        newCmt = [newCmt, oldCmt] ; %#ok<AGROW>
+        oldData(:,1:nColUsed) = [] ;
+        newData = [newData,oldData] ; %#ok<AGROW>
+        oldCmt(:,1:nColUsed) = [] ;
+        newCmt = [newCmt,oldCmt] ; %#ok<AGROW>
     end
     
-    s.(iName) = replace(s.(iName), newData, range(1), newCmt) ;
+    S.(iName) = replace(S.(iName),newData,range(1),newCmt) ;
 end
 
-lg = this.GroupNames;
+L = This.groupNames;
 if isOther
-    lg = [lg, {this.OTHER_NAME}];
+    L = [L,{This.otherName}];
 end
 
 end

@@ -1,8 +1,7 @@
-% logdist  Probability Distributions (logdist Package).
+% logdist  Probability Distribution Package.
 %
-% The logdist package gives quick access to basic univariate distributions,
-% and in particular to functions proportional to the logarithm of those
-% basic distributions. Its primary use is setting up priors in the
+% This package gives quick access to basic univariate distributions. Its
+% primary use is setting up priors in the
 % [`model/estimate`](model/estimate) and [`poster/arwm`](poster/arwm)
 % functions.
 %
@@ -20,12 +19,12 @@
 % ======================================================
 %
 % * [`chisquare`](logdist/chisquare) - Create function proportional to log of Chi-Squared distribution.
-% * [`normal`](logdist/normal) - Create function proportional to log of Normal distribution.
+% * [`normal`](logdist/normal) - Create function proportional to log of Normal or Student distribution.
 % * [`lognormal`](logdist/lognormal) - Create function proportional to log of log-normal distribution.
 % * [`beta`](logdist/beta) - Create function proportional to log of beta distribution.
 % * [`gamma`](logdist/gamma) - Create function proportional to log of gamma distribution.
 % * [`invgamma`](logdist/invgamma) - Create function proportional to log of inv-gamma distribution.
-% * [`t`](logdist/t) - Create function proportional to log of Student T distribution.
+% * [`t`] (logdist/t) - Create function proportional to log of Student T distribution. 
 % * [`uniform`](logdist/uniform) - Create function proportional to log of uniform distribution.
 %
 % Calling the logdist function handles
@@ -48,28 +47,28 @@
 % mode, and information (the inverse of the second derivative of the log
 % density):
 %
-%     m = F([ ],'mean')
-%     s = F([ ],'std')
-%     o = F([ ],'mode')
-%     i = F([ ],'info')
+%     m = F([],'mean')
+%     s = F([],'std')
+%     o = F([],'mode')
+%     i = F([],'info')
 %
 % * Get the underlying "structural" parameters of the respective
 % distribution:
 %
-%     a = F([ ],'a')
-%     b = F([ ],'b')
+%     a = F([],'a')
+%     b = F([],'b')
 %
 % * Get the name of the distribution (the names correspond to the function
 % names, i.e. can be either of `'normal'`, `'lognormal'`, `'beta'`,
 % `'gamma'`, `'invgamma'`, `'uniform'`):
 %
-%     name = F([ ],'name')
+%     name = F([],'name')
 %
 % * Draw a vector or matrix of random numbers from the distribution;
 % drawing from beta, gamma, and inverse gamma requires the Statistics
 % Toolbox:
 %
-%     a = F([ ],'draw',1,1000);
+%     a = F([],'draw',1,1000);
 %
 %     size(a)
 %     ans =
@@ -82,5 +81,5 @@
 %     help logdist/function_name
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

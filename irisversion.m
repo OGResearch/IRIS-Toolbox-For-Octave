@@ -1,38 +1,39 @@
-function [c, n] = irisversion( )
+function [C,N] = irisversion()
 % irisversion  Current IRIS version.
 %
 % Syntax
 % =======
 %
 %     irisversion
-%     x = irisversion( )
-%
+%     X = irisversion()
 %
 % Output arguments
 % =================
 %
-% * `x` [ char ] - String describing the currently installed IRIS version.
-%
+% * `X` [ char ] - String describing the currently installed IRIS version.
 %
 % Description
 % ============
 %
-% The version string is the distribution date in a `yyyymmdd` format. The
-% `irisversion` function is equivalent to the call `irisget('version')`.
+% The version string consists of the generation number, followed by a dot
+% and the distribution date (yyyymmdd).
+%
+% The `irisversion` function is equivalent to the following call to
+% calling `irisget('version')`.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % IRIS version is permanently stored in the root Contents.m file, and is
-% accessible through the Matlab ver( ) command. In each session, the version
+% accessible through the Matlab ver() command. In each session, the version
 % is refreshed by the `irisconfig` file.
 
-c = irisconfigmaster('get', 'version');
-if nargout>1
-    n = sscanf(c, '%g', 1);
+C = irisconfigmaster('get','version');
+if nargout > 1
+    N = str2double(C);
 end
 
 end

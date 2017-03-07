@@ -1,18 +1,18 @@
-function default = sstate( )
+function default = sstate()
 % sstate  [Not a public function] Default options for steady-state functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
-default = struct( );
+default = struct();
 
 default.sstate = { ...
-   'assign',struct( ),@(x) isempty(x) || isstruct(x), ...
+   'assign',struct(),@(x) isempty(x) || isstruct(x), ...
    'saveas','',@ischar, ...
 };
 

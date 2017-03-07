@@ -4,8 +4,8 @@ function S = outpstruct(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ list = { ...
     'tempFile', ...
     };
 
-S = struct( );
+S = struct();
 for i = 1 : length(list)
     S.(list{i}) = This.(list{i});
 end

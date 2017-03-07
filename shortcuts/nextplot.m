@@ -4,8 +4,8 @@ function varargout = nextplot(varargin)
 % See help on [`grfun.nextplot`](grfun/nextplot).
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.nextplot(varargin{:});
 

@@ -1,87 +1,147 @@
-function outp = myoutpdata(this, range, inpMean, inpMse, lsy, addDb) %#ok<INUSL>
-% myoutpdata  Output data for varobj objects.
+function Outp = myoutpdata(This,Fmt,Rng,InpMean,InpMse,Names,AddDb) %#ok<INUSL>
+% myoutpdata  [Not a public function] Output data for varobj objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TEMPLATE_SERIES = Series( );
-
-try, inpMse; catch, inpMse = [ ]; end %#ok<VUNUS,NOCOM>
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    lsy; %#ok<VUNUS>
-    ix = strcmp(lsy, '!ttrend');
-    if any(ix)
-        lsy(ix) = {'ttrend'};
-    end
+    InpMse;
 catch %#ok<CTCH>
-    lsy = { };
+    InpMse = [];
 end
 
-try, addDb; catch, addDb = struct( ); end %#ok<VUNUS,NOCOM>
+try
+    Names;
+    ix = strcmp(Names,'!ttrend');
+    if any(ix)
+        Names(ix) = {'ttrend'};
+    end
+catch %#ok<CTCH>
+    Names = {};
+end
+
+try
+    AddDb;
+catch
+    AddDb = struct();
+end
 
 %--------------------------------------------------------------------------
 
-nx = size(inpMean, 1);
-if ~isempty(range)
-    range = range(1) : range(end);
-    nPer = numel(range);
-    start = range(1);
+nx = size(InpMean,1);
+if ~isempty(Rng)
+    Rng = Rng(1) : Rng(end);
+    nPer = numel(Rng);    
+    start = Rng(1);
 else
-    range = zeros(1, 0); %#ok<NASGU>
+    Rng = zeros(1,0); %#ok<NASGU>
     nPer = 0;
     start = NaN;
 end
-nData3 = size(inpMean, 3);
-nData4 = size(inpMean, 4);
+nData3 = size(InpMean,3);
+nData4 = size(InpMean,4);
 
 % Prepare array of std devs if cov matrix is supplied.
-if numel(inpMse) == 1 && isnan(inpMse)
-    nStd = size(inpMean, 1);
-    std = nan(nStd, nPer, nData3, nData4);
-elseif ~isempty(inpMse)
-    inpMse = timedom.fixcov(inpMse);
-    nStd = min(size(inpMean, 1), size(inpMse, 1));
-    std = zeros(nStd, nPer, nData3, nData4);
+if numel(InpMse) == 1 && isnan(InpMse)
+    nStd = size(InpMean,1);
+    std = nan(nStd,nPer,nData3,nData4);
+elseif ~isempty(InpMse)
+    InpMse = timedom.fixcov(InpMse);
+    nStd = min(size(InpMean,1),size(InpMse,1));
+    std = zeros(nStd,nPer,nData3,nData4);
     for i = 1 : nData3
         for j = 1 : nData4
             for k = 1 : nStd
-                std(k, :, i, j) = permute(sqrt(inpMse(k, k, :, i, j)), [1, 3, 2, 4, 5]);
+                std(k,:,i,j) = permute(sqrt(InpMse(k,k,:,i,j)),[1,3,2,4,5]);
             end
         end
     end
 end
 
-outp = addDb;
-for ii = 1 : nx
-    name = lsy{ii};
-    outp.(name) = replace( ...
-        TEMPLATE_SERIES, ...
-        permute(inpMean(ii, :, :, :), [2, 3, 4, 1]), ...
-        start, ...
-        name ...
-        );
-end
-
-% Include std data in output database.
-if ~isempty(inpMse)
-    outp = struct( ...
-        'mean', outp, ...
-        'std', struct( ) ...
-        );
-    for ii = 1 : nStd
-        name = lsy{ii};
-        outp.std.(name) = replace( ...
-            TEMPLATE_SERIES, ...
-            permute(std(ii, :, :, :), [2, 3, 4, 1]), ...
-            start, ...
-            name ...
-            );
-        outp.std.(name) = trim(outp.std.(name));
+if strcmpi(Fmt,'auto')
+    if isempty(Names)
+        Fmt = 'tseries';
+    else
+        Fmt = 'dbase';
     end
 end
+
+switch Fmt
+    case 'tseries'
+        template = tseries();
+        doTseries();
+    case 'dbase'
+        template = tseries();
+        doStruct();
+    case 'array'
+        doArray();
+end
+
+if ~strcmp(Fmt,'dbase')
+    % ##### Feb 2014 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['Using tseries objects as input/output data to/from VAR objects', ...
+        'is obsolete, and will be removed from a future version of IRIS. ', ...
+        'Use databases (structs) instead.']);
+end
+
+
+% Nested functions...
+
+
+%**************************************************************************
+   
+    
+    function doTseries()
+        if isempty(InpMse)
+            Outp = replace(template,permute(InpMean,[2,1,3,4]),start);
+        else
+            Outp = struct();
+            Outp.mean = replace(template,permute(InpMean,[2,1,3,4]),start);
+            Outp.std = replace(template,permute(std,[2,1,3,4]),start);
+        end
+    end % doTseries()
+
+
+%**************************************************************************
+   
+    
+    function doStruct()
+        Outp = AddDb;
+        for ii = 1 : nx
+            Outp.(Names{ii}) = replace(template, ...
+                permute(InpMean(ii,:,:,:),[2,3,4,1]), ...
+                start, ...
+                Names{ii});
+        end
+        if ~isempty(InpMse)
+            Outp = struct('mean',Outp,'std',struct());
+            for ii = 1 : nStd
+                Outp.std.(Names{ii}) = replace(template, ...
+                    permute(std(ii,:,:,:),[2,3,4,1]), ...
+                    start, ...
+                    Names{ii});
+                Outp.std.(Names{ii}) = mytrim(Outp.std.(Names{ii}));
+            end
+        end
+    end % doStruct()
+
+
+%**************************************************************************
+ 
+    
+    function doArray()
+        if isempty(InpMse)
+            Outp = permute(InpMean,[2,1,3,4]);
+        else
+            Outp = struct();
+            Outp.mean = permute(InpMean,[2,1,3,4]);
+            Outp.std = permute(std,[2,1,3,4]);
+        end
+    end % doArray()
+
 
 end

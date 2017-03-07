@@ -4,20 +4,12 @@ function specdisp(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 specdisp@VAR(This);
-
-fprintf('\tidentification: ');
-if ~isempty(This.Method)
-    u = unique(This.Method);
-    fprintf('%s',textfun.displist(u));
-else
-    fprintf('empty');
-end
-fprintf('\n');
+specdisp@svarobj(This);
 
 end

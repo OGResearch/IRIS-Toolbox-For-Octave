@@ -1,72 +1,82 @@
-function dat = dec2dat(dec, freq, pos)
+function Dat = dec2dat(Dec,Freq,Pos)
 % dec2dat  Convert decimal representation of date to IRIS serial date number.
 %
 % Syntax
 % =======
 %
-%     dat = dec2dat(dec, freq)
-%
+%     Dat = dec2dat(Dec,Freq)
 %
 % Input arguments
 % ================
 %
-% * `dec` [ numeric ] - Decimal numbers representing dates.
+% * `Dec` [ numeric ] - Decimal numbers representing dates.
 %
-% * `freq` [ freq ] - Date frequency.
-%
+% * `Freq` [ freq ] - Date frequency.
 %
 % Output arguments
 % =================
 %
-% * `dat` [ numeric ] - IRIS serial date numbers corresponding to the
-% decimal representations `dec`.
-%
+% * Dat [ numeric ] - IRIS serial date numbers corresponding to the decimal
+% representations `Dec`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if nargin<3
-    pos = 's';
+try
+    Pos; %#ok<VUNUS>
+catch
+    Pos = 's';
 end
-pos = lower(pos(1));
+Pos = lower(Pos(1));
 
 %--------------------------------------------------------------------------
 
-dates.Date.chkMixedFrequency(freq);
-freq = freq(1);
+if length(Freq) == 1
+    Freq = Freq*ones(size(Dec));
+end
 
-switch freq
-    case 0
-        dat = dec;
-    case {1, 2, 4, 6, 12}
-        switch pos
-            case {'s','b'}
-                adjust = -1;
-            case {'c','m'}
-                adjust = -1/2;
-            case {'e'}
-                adjust = 0;
-            otherwise
-                adjust = -1;
-        end
-        year = floor(dec);
-        per = round((dec - year)*freq - adjust);
-        dat = datcode(freq, year, per);
-    case 52
-        day = dec2day(dec);
-        dat = day2ww(day);
-    otherwise
-        throw( ...
-            exception.Base('Dates:UnrecognizedFrequency', 'error') ...
-            );        
+ixZero = Freq == 0;
+ixWeekly = Freq == 52;
+ixRegular = ~ixZero & ~ixWeekly;
+
+Dat = nan(size(Dec));
+
+% Regular frequencies
+%---------------------
+if any(ixRegular(:))
+    switch Pos
+        case {'s','b'}
+            adjust = -1;
+        case {'c','m'}
+            adjust = -1/2;
+        case {'e'}
+            adjust = 0;
+        otherwise
+            adjust = -1;
+    end    
+    year = floor(Dec(ixRegular));
+    per = round((Dec(ixRegular) - year) .* Freq(ixRegular) - adjust);
+    Dat(ixRegular) = datcode(Freq(ixRegular),year,per);
+end
+
+% Weekly frequency
+%------------------
+if any(ixWeekly(:))
+    x = dec2day(Dec(ixWeekly));
+    Dat(ixWeekly) = day2ww(x);
+end
+
+% Indeterminate frequency
+%-------------------------
+if any(ixZero(:))
+    Dat(ixZero) = Dec(ixZero);
 end
 
 end

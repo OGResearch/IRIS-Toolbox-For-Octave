@@ -4,10 +4,10 @@ function ax = axisoneitherside(varargin)
 % Syntax
 % =======
 %
-%     aa = grfun.axisoneitherside( )
+%     aa = grfun.axisoneitherside()
 %     aa = grfun.axisoneitherside(aa)
 %     aa = grfun.axisoneitherside(spec)
-%     aa = grfun.axisoneitherside(aa, spec)
+%     aa = grfun.axisoneitherside(aa,spec)
 %
 % Input arguments
 % ================
@@ -29,73 +29,73 @@ function ax = axisoneitherside(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isnumeric(varargin{1})
    ax = varargin{1};
-   varargin(1) = [ ];
+   varargin(1) = [];
 else   
-   ax = gca( );
+   ax = gca();
 end
 if ~isempty(varargin)
-   opt = lower(strtrim(varargin{1}));
-   varargin(1) = [ ]; %#ok<NASGU>
+   option = lower(strtrim(varargin{1}));
+   varargin(1) = [];
 else
-   opt = 'xy';
+   option = 'xy';
 end
 nax = numel(ax);
 if nax > 1
-   ax2 = nan([2, nax]);
+   ax2 = nan([2,nax]);
    for i = 1 : numel(ax)
-      ax2(:, i) = yaxisboth(ax(i), opt);
+      ax2(:,i) = yaxisboth(ax(i),option);
    end
    ax = ax2;
    return
 end
 
-isXAxis = ~isempty(strfind(opt, 'x'));
-isYAxis = ~isempty(strfind(opt, 'y'));
+xaxis = ~isempty(strfind(option,'x'));
+yaxis = ~isempty(strfind(option,'y'));
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-ax2 = getappdata(ax, 'IRIS_AXIS_ON_EITHER_SIDE');
+ax2 = getappdata(ax,'axisOnEitherSide');
 if isempty(ax2)
    keepTheOther = false;
-   pa = get(ax, 'Parent');
-   ax2 = copyobj(ax, pa);
+   pa = get(ax,'parent');
+   ax2 = copyobj(ax,pa);
    % Swap the two axes in the list of children to make sure the one with
    % the data is sits on top.
-   ch = get(pa, 'Children');
-   index1 = find(ch==ax);
-   index2 = find(ch==ax2);
-   [ch(index1), ch(index2)] = deal(ch(index2), ch(index1));
-   set(pa, 'Children', ch);
-   setappdata(ax, 'IRIS_AXIS_ON_EITHER_SIDE', ax2);
+   ch = get(pa,'children');
+   index1 = find(ch == ax);
+   index2 = find(ch == ax2);
+   [ch(index1),ch(index2)] = deal(ch(index2),ch(index1));
+   set(pa,'children',ch);
+   setappdata(ax,'axisOnEitherSide',ax2);
 else
    keepTheOther = true;
 end
 
 cla(ax2);
-set(ax2, 'XGrid', 'Off', 'YGrid', 'Off');
-pn = {'*TickLabel', '*TickLabelMode', '*Tick', '*TickMode'};
-pnx = strrep(pn, '*', 'x');
-pny = strrep(pn, '*', 'y');
-pvoff = {'', 'Manual', [ ], 'Manual'};
-if isXAxis
-   set(ax2, pnx, get(ax, pnx));
-   set(ax2, 'XAxisLocation', 'Top');
+set(ax2,'xGrid','off','yGrid','off');
+pn = {'*TickLabel','*TickLabelMode','*Tick','*TickMode'};
+pnx = strrep(pn,'*','x');
+pny = strrep(pn,'*','y');
+pvoff = {'','manual',[],'manual'};
+if xaxis
+   set(ax2,pnx,get(ax,pnx));
+   set(ax2,'xAxisLocation','top');
 elseif ~keepTheOther
-   set(ax2, pnx, pvoff);
+   set(ax2,pnx,pvoff);
 end
-if isYAxis
-   set(ax2, pny, get(ax, pny));
-   set(ax2, 'YAxisLocation', 'Right');
+if yaxis
+   set(ax2,pny,get(ax,pny));
+   set(ax2,'yAxisLocation','right');
 elseif ~keepTheOther
-   set(ax2, pny, pvoff);
+   set(ax2,pny,pvoff);
 end
 
 ax = [ax;ax2];
-linkaxes(ax, opt);
+linkaxes(ax,option);
 
 end

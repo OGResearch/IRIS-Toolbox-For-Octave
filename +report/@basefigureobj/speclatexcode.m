@@ -1,18 +1,18 @@
-function c = speclatexcode(this)
-% speclatexcode  Produce LaTeX code for figure object.
+function C = speclatexcode(This)
+% speclatexcode  [Not a public function] Produce LaTeX code for figure object.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-c = '';
+C = '';
 
 % Create a figure window, and update the property `This.handle`.
-this = myplot(this);
+This = myplot(This);
 
 % Create PDF
 %------------
@@ -20,43 +20,43 @@ this = myplot(this);
 % We need to pass in the top level report object's options that control
 % orientation and paper size.
 includeGraphics = '';
-if ~isempty(this.handle) && ~isempty(get(this.handle, 'children'))
+if ~isempty(This.handle) && ~isempty(get(This.handle,'children'))
     try
-        includeGraphics = mycompilepdf(this, this.hInfo);
+        includeGraphics = mycompilepdf(This,This.hInfo);
     catch Error
         try %#ok<TRYNC>
-            close(this.handle);
+            close(This.handle);
         end
         utils.warning('report', ...
-            ['Error creating this figure: %s.\n', ...
+            ['Error creating figure ''%s''.\n', ...
             '\tUncle says: %s'], ...
-            this.title, Error.message);
+            This.title,Error.message);
         return
     end
 end
 
 % Close figure window or add its handle to the list of open figures
 %-------------------------------------------------------------------
-if ~isempty(this.handle)
-    if this.options.close
+if ~isempty(This.handle)
+    if This.options.close
         try %#ok<TRYNC>
-            close(this.handle);
+            close(This.handle);
         end
     else
-        addfigurehandle(this, this.handle);
-        if ~isempty(this.title)
+        addfigurehandle(This,This.handle);
+        if ~isempty(This.title)
             % If the figure stays open, add title.
             % TODO: Add also subtitle.
-            grfun.ftitle(this.handle, this.title);
+            grfun.ftitle(This.handle,This.title);
         end
     end
 end
 
 % Finish LaTeX code
 %-------------------
-c = [beginsideways(this), beginwrapper(this, 7)];
-c = [c, includeGraphics];
-c = [c, finishwrapper(this), finishsideways(this)];
-c = [c, footnotetext(this)];
+C = [beginsideways(This),beginwrapper(This,7)];
+C = [C,includeGraphics];
+C = [C,finishwrapper(This),finishsideways(This)];
+C = [C,footnotetext(This)];
 
 end

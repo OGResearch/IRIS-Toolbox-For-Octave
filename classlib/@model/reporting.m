@@ -1,11 +1,10 @@
-function d = reporting(this, inp, range, varargin)
-% reporting  Evaluate reporting equations from within model object.
+function D = reporting(This,varargin)
+% reporting  Run reporting equations.
 %
 % Syntax
 % =======
 %
 %     D = reporting(M,D,Range,...)
-%
 %
 % Input arguments
 % ================
@@ -15,31 +14,33 @@ function d = reporting(this, inp, range, varargin)
 % * `D` [ struct ] - Input database that will be used to evaluate the
 % reporting equations.
 %
-% * `Range` [ numeric | char ] - Date range on which the reporting
-% equations will be evaluated.
-%
+% * `Range` [ numeric ] - Date range on which the reporting equations will
+% be evaluated.
 %
 % Output arguments
 % =================
 %
 % * `D` [ struct ] - Output database with reporting variables.
 %
-%
 % Options
 % ========
 %
-% See [`rpteq/run`](rpteq/run) for options available.
+% * `'dynamic='` [ *`true`* | `false` ] - If true, equations will be
+% evaluated period by period allowing for own lags; if false, equations
+% will be evaluated en bloc for all periods.
 %
+% * `'merge='` [ *`true`* | `false` ] - Merge output database with input
+% datase.
 %
 % Description
 % ============
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-d = run(this.Reporting, inp, range, this, varargin{:});
+D = reporting(This.outside,varargin{:});
 
 end

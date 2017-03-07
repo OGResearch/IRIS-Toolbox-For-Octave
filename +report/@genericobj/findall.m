@@ -3,12 +3,12 @@ function Collect = findall(This,varargin)
 %
 % Help provided in +report/findall.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-Collect = { };
+Collect = {};
 for i = 1 : length(This.children)
     flag = false;
     for j = 1 : length(varargin)

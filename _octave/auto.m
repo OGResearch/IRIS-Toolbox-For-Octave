@@ -1,2 +1,2 @@
-function auto( )
+function auto()
 end

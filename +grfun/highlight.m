@@ -48,23 +48,23 @@ function [Pp,Cp] = highlight(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*AGROW>
 
 if ~isempty(varargin{1}) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
 range = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 
-Pp = [ ]; % Handles to patch objects.
-Cp = [ ]; % Handles to caption objects.
+Pp = []; % Handles to patch objects.
+Cp = []; % Handles to caption objects.
 
 if isempty(range)
     return
@@ -73,9 +73,9 @@ end
 % Multiple separate ranges.
 if iscell(range)
     for i = 1 : numel(range)
-        [pt, c] = highlight(Ax, range{i}, varargin{:});
-        Pp = [Pp, pt(:).'];
-        Cp = [Cp, c(:).'];
+        [pt,c] = highlight(Ax,range{i},varargin{:});
+        Pp = [Pp,pt(:).'];
+        Cp = [Cp,c(:).'];
     end
     return
 end
@@ -88,21 +88,13 @@ end
 
 %--------------------------------------------------------------------------
 
-if ischar(range)
-    range = textinp2dat(range);
+if false % ##### MOSW
+    infLim = 1e10;
+else
+    infLim = 1e5; %#ok<UNRCH>
 end
 
-if true % ##### MOSW
-    % Matlab only
-    %-------------
-    infLim = 1e10;
-    zCoor = 0;
-else
-    % Octave only
-    %-------------
-    infLim = 1e5; %#ok<UNRCH>
-    zCoor = -2;
-end
+zPos = -2;
 
 for iAx = Ax(:).'
     % Preserve the order of figure children.
@@ -120,39 +112,36 @@ for iAx = Ax(:).'
     % transparent color for the highligh object (faceAlpha). This is
     % unfortunately not supported by the Painters renderer.
     
-    range = range([1, end]);
+    range = range([1,end]);
     around = opt.around;
-    if isequal(getappdata(h, 'IRIS_SERIES'), true)
+    if isequal(getappdata(h,'tseries'),true)
         freq = datfreq(range(1));
-        timeScale = dat2dec(range, 'centre');
+        timeScale = dat2dec(range,'centre');
         if isempty(timeScale)
             continue
         end
         if isnan(around)
-            around = 0.5;
-            if any(freq==[2, 4, 6, 12])
-                around = around / freq;
-            end
+            around = 0.5 / max(1,freq);
         end
-        timeScale = [timeScale(1)-around, timeScale(end)+around];
+        timeScale = [timeScale(1)-around,timeScale(end)+around];
     else
         if isnan(around)
             around = 0.5;
         end
-        timeScale = [range(1)-around, range(end)+around];
+        timeScale = [range(1)-around,range(end)+around];
     end
     
-    if true % ##### MOSW
+    if false % ##### MOSW
         bounds = objbounds(iAx);
     else
-        bounds = mosw.objbounds(iAx); %#ok<UNRCH>
+        bounds = [0,0,0,0]; %#ok<UNRCH>
     end
     xData = timeScale([1,2,2,1]);
     yData = infLim*[-1,-1,1,1] + bounds([3,3,4,4]);
-    zData = zCoor*ones(size(xData));    
+    zData = zPos*ones(size(xData));
     pt = patch(xData,yData,zData,opt.color, ...
-        'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...
-        'yLimInclude','off');
+       'parent',h,'edgeColor','none','faceAlpha',1-opt.transparent, ...
+       'yLimInclude','off');
     
     % Add caption to the highlight.
     if ~isempty(opt.caption)
@@ -161,55 +150,30 @@ for iAx = Ax(:).'
         Cp = [Cp,c];
     end
     
-    % Make sure zLim includes zCoor.
+    % Make sure zLim includes zPos.
     zLim = get(iAx,'zLim');
-    zLim(1) = min(zLim(1),zCoor);
+    zLim(1) = min(zLim(1),zPos);
     zLim(2) = max(zLim(2),0);
     set(iAx,'zLim',zLim);
     
     Pp = [Pp,pt];
-    
-    if true % ##### MOSW
-        % Matlab only
-        %-------------
-        % Do nothing.
-    else
-        % Octave only
-        %-------------
-        % Order highlight area first so that it is effectively excluded from
-        % legend. Plotting it on the background is guaranteed by its z-coordinate.
-        ch = get(h,'children'); %#ok<UNRCH>
-        ch(ch == pt) = [ ];
-        ch = [pt;ch];
-        set(h,'children',ch);
-    end
 end
+
+% Tag the highlights and captions for `qstyle`.
+set(Pp,'tag','highlight');
+set(Cp,'tag','highlight-caption');
 
 if isempty(Pp)
     return
 end
 
-% Tag the highlights and captions for grfun.style.
-set(Pp,'tag','highlight');
-set(Cp,'tag','highlight-caption');
-for i = 1 : length(Pp)
-    setappdata(Pp(i), 'IRIS_BACKGROUND', 'Highlight');
-end
-
-
-if true % ##### MOSW
-    % Matlab only
-    %-------------
-    grfun.mymovetobkg(Ax);
+if false % ##### MOSW
+    if opt.excludefromlegend
+        % Exclude highlighted area from legend.
+        grfun.excludefromlegend(Pp);
+    end
 else
-    % Octave only
-    %-------------
     % Do nothing.
-end
-
-if opt.excludefromlegend
-    % Exclude highlighted area from legend.
-    grfun.excludefromlegend(Pp);
 end
 
 end

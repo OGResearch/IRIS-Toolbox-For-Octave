@@ -4,8 +4,8 @@ function [Phi,ShkSize] = srf(T,R,~,Z,H,~,U,~,NPer,ShkSize)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 %#ok<*VUNUS>

@@ -41,10 +41,8 @@ function [X,D,D1] = fmse(This,Time,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TEMPLATE_SERIES = Series( );
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.fmse',varargin{:});
 
@@ -56,7 +54,7 @@ else
 end
 nPer = length(range);
 
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -79,6 +77,7 @@ end
 X = cumsum(X,3);
 
 % Return std devs for individual series.
+templ = tseries();
 if nargout > 1
     x = nan(nPer,ny,nAlt);
     for i = 1 : ny
@@ -86,11 +85,11 @@ if nargout > 1
     end
     % ##### Nov 2013 OBSOLETE and scheduled for removal.
     % All VAR output data will be returned as dbase (struct).
-    D = struct( );
+    D = struct();
     for i = 1 : ny
         name = This.YNames{i};
         data = x(:,i,:);
-        D.(name) = replace(TEMPLATE_SERIES,data(:,:),range(1));
+        D.(name) = replace(templ,data(:,:),range(1));
     end
     if nargout > 2
         % ##### Nov 2013 OBSOLETE and scheduled for removal.
@@ -101,7 +100,7 @@ if nargout > 1
     end
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
         X = namedmat(X,This.YNames,This.YNames);

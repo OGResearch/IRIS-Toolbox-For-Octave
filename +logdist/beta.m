@@ -1,89 +1,83 @@
-function fn = beta(mean_, std_)
+function F = beta(Mean,Std)
 % beta  Create function proportional to log of beta distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.beta(mean, stdev)
-%
+%     F = logdist.beta(Mean,Std)
 %
 % Input arguments
 % ================
 %
-% * `mean` [ numeric ] - Mean of the beta distribution.
+% * `Mean` [ numeric ] - Mean of the beta distribution.
 %
-% * `stdev` [ numeric ] - Stdev of the beta distribution.
-%
+% * `Std` [ numeric ] - Std dev of the beta distribution.
 %
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of the beta density.
-%
 %
 % Description
 % ============
 %
 % See [help on the logdisk package](logdist/Contents) for details on
-% using the function handle `fn`.
-%
+% using the function handle `F`.
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-a = (1-mean_)*mean_^2/std_^2 - mean_;
-b = a*(1/mean_ - 1);
+a = (1-Mean)*Mean^2/Std^2 - Mean;
+b = a*(1/Mean - 1);
 if a > 1 && b > 1
-    mode_ = (a - 1)/(a + b - 2);
+    mode = (a - 1)/(a + b - 2);
 else
-    mode_ = NaN;
+    mode = NaN;
 end
-fn = @(x, varargin) fnBeta(x, a, b, mean_, std_, mode_, varargin{:});
+F = @(x,varargin) xxBeta(x,a,b,Mean,Std,mode,varargin{:});
 
 end
 
+% Subfunctions.
 
+%**************************************************************************
+function Y = xxBeta(X,A,B,Mean,Std,Mode,varargin)
 
-
-function y = fnBeta(x, a, b, mean_, std_, mode_, varargin)
-y = zeros(size(x));
-ix = x>0 & x<1;
-x = x(ix);
+Y = zeros(size(X));
+inx = X > 0 & X < 1;
+X = X(inx);
 if isempty(varargin)
-    y(ix) = (a-1)*log(x) + (b-1)*log(1-x);
-    y(~ix) = -Inf;
+    Y(inx) = (A-1)*log(X) + (B-1)*log(1-X);
+    Y(~inx) = -Inf;
     return
 end
+
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y(ix) = x.^(a-1).*(1-x).^(b-1) / beta(a, b);
+    case {'proper','pdf'}
+        Y(inx) = X.^(A-1).*(1-X).^(B-1)/beta(A,B);
     case 'info'
-        y(ix) = (b - 1)./(x - 1).^2 + (a - 1)./x.^2;
-        y(~ix) = NaN;
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y(inx) = -(B - 1)./(X - 1).^2 - (A - 1)./X.^2;
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mean;
+    case {'sigma','sgm','std'}
+        Y = Std;
     case 'mode'
-        y = mode_;
+        Y = Mode;
     case 'name'
-        y = 'beta';
-    case {'rand', 'draw'}
-        y = betarnd(a, b, varargin{2:end});
-    case 'lower'
-        y = 0;
-    case 'upper'
-        y = 1;
+        Y = 'beta';
+    case 'draw'
+        Y = betarnd(A,B,varargin{2:end});
 end
-end 
+
+end % xxBeta().

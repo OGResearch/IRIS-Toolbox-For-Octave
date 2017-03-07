@@ -1,67 +1,63 @@
-function [c, d] = fprintf(this, fileName, varargin)
+function [C,D] = fprintf(This,File,varargin)
 % fprintf  Write VAR model as formatted model code to text file.
 %
 % Syntax
 % =======
 %
-%     [c, d] = fprintf(v, fileName, ...)
-%
+%     [C,D] = fprintf(V,File,...)
 %
 % Input arguments
 % ================
 %
-% * `v` [ VAR ] - VAR object that will be printed to a model file.
+% * `V` [ VAR ] - VAR object that will be printed to a model file.
 %
-% * `fileName` [ char | cellstr ] - Filename, or filename format string, under
+% * `File` [ char | cellstr ] - Filename, or filename format string, under
 % which the model code will be saved.
 %
-% Output arguments
-% =================
+% - Output arguments
 %
-% * `c` [ cellstr ] - Text string with the model code for each
+% * `C` [ cellstr ] - Text string with the model code for each
 % parameterisation.
 %
-% * `d` [ cell ] - Parameter databases for each parameterisation; if
-% `'HardParameters='` true, the database will be empty.
-%
+% * `D` [ cell ] - Parameter databases for each parameterisation; if
+% `'hardParameters='` true, the database will be empty.
 %
 % Options
 % ========
 %
 % See help on [`sprintf`](VAR/sprintf) for options available.
 %
-%
 % Description
 % ============
 %
 % For VAR objects with Na multiple alternative parameterisations, the
-% filename `fileName` must be either a 1-by-Na cell array of string with a
+% filename `File` must be either a 1-by-Na cell array of string with a
 % filename for each parameterisation, or a `sprintf` format string where a
 % single occurence of `'%g'` will be replaced with the parameterisation
 % number.
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('fileName', @(x) ischar(x) || (iscellstr(x) && length(this)==numel(x)));
-pp.parse(fileName);
+pp = inputParser();
+pp.addRequired('File',@(x) ischar(x) ...
+    || (iscellstr(x) && length(This) ==  numel(x)));
+pp.parse(File);
 
 %--------------------------------------------------------------------------
 
-[c, d] = sprintf(this, varargin{:});
-for iAlt = 1 : length(c)
-    if iscellstr(fileName)
-        iFile = fileName{iAlt};
+[C,D] = sprintf(This,varargin{:});
+for iAlt = 1 : length(C)
+    if iscellstr(File)
+        iFile = File{iAlt};
     else
-        iFile = sprintf(fileName, iAlt);
+        iFile = sprintf(File,iAlt);
     end
-    char2file(c{iAlt}, iFile);
+    char2file(C{iAlt},iFile);
 end
 
 end

@@ -1,21 +1,18 @@
-function this = loadobj(this, varargin)
-% loadobj  Prepare tseries object for loading from disk.
+function This = loadobj(This)
+% loadobj  [Not a public function] Prepare tseries object for loading from disk.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if isstruct(this)
-    this = struct2obj(tseries( ), this);
-    if ~chkConsistency(this)
-        this = tseries( );
-    end 
+if isstruct(This)
+   This = tseries(This);
 end
 
-this = stampMe(this);
+This = mystamp(This);
 
 end

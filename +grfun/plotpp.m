@@ -1,138 +1,121 @@
-function [priorPoints, posterPoints, varargout] = plotpp(inp, varargin)
+function [PrG,PoG,varargout] = plotpp(Pr,varargin)
 % plotpp  Plot prior and/or posterior distributions and/or posterior mode.
 %
 % Syntax
 % =======
 %
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, [ ], [ ], ...)
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, est, [ ], ...)
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, [ ], theta, ...)
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, [ ], stats, ...)
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, est, theta, ...)
-%     [priorPoints, posterPoints, H] = grfun.plotpp(inp, est, stats, ...)
-%
+%     [PrG,PoG,H] = grfun.plotpp(E,[],[],...)
+%     [PrG,PoG,H] = grfun.plotpp(E,Est,[],...)
+%     [PrG,PoG,H] = grfun.plotpp(E,[],Theta,...)
+%     [PrG,PoG,H] = grfun.plotpp(E,[],Stats,...)
+%     [PrG,PoG,H] = grfun.plotpp(E,Est,Theta,...)
+%     [PrG,PoG,H] = grfun.plotpp(E,Est,Stats,...)
 %
 % Input arguments
 % ================
 %
-% * `inp` [ struct ] - Estimation input struct, see
+% * `E` [ struct ] - Estimation input struct, see
 % [`estimate`](model/estimate), with prior function handles from the
 % [logdist](logdist/Contents) package.
 %
-% * `est` [ struct | empty ] - Output struct returned from the
-% [`model/estimate`](model/estimate) function; `est` will be used to plot
-% the maximized posterior modes.
+% * `Est` [ struct | empty ] - Output struct returned by the
+% [`model/estimate`](model/estimate) function; `Est` will be used to plot
+% the maximised posterior modes.
 %
-% * `theta` [ numeric | empty ] - Array with the chain of draws from the
+% * `Theta` [ numeric | empty ] - Array with the chain of draws from the
 % posterior simulator [`arwm`](poster/arwm).
 %
-% * `stats` [ struct | empty ] - Output struct returned from the posterior
+% * `Stats` [ struct | empty ] - Output struct returned by the posterior
 % simulator statistics function [`stats`](poster/stats).
-%
 %
 % Output arguments
 % =================
 %
-% * `priorPoints` [ struct ] - Struct with x- and y-axis coordinates to plot the
+% * `PrG` [ struct ] - Struct with x- and y-axis coordinates to plot the
 % prior distribution for each parameter.
 %
-% * `posterPoints` [ struct ] - Struct with x- and y-axis coordinates to plot the
+% * `PoG` [ struct ] - Struct with x- and y-axis coordinates to plot the
 % posterior distribution for each parameter.
 %
 % * `H` [ struct ] - Struct with handles to the graphics objects plotted by
 % `plotpp`; the struct has the following fields with vectors of handles:
 % `figure`, `axes`, `prior`, `poster`, `bounds`, `init`, `mode`, `title`.
 %
-%
 % Options
 % ========
 %
-% * `'Axes='` [ *empty* | cell ] - Graphics options that will be applied to
-% every Axes object created by `plotpp( )`.
-%
-% * `'Caption='` [ *empty* | cellstr ] - User-supplied graph titles; if
+% * `'caption='` [ *empty* | cellstr ] - User-supplied graph titles; if
 % empty, default captions will be automatically created.
 %
-% * `'Describe='` [ *@auto* | true | false ] - Include information on
+% * `'describe='` [ *'auto'* | true | false ] - Include information on
 % prior distributions, starting values, and maximised posterior modes in
-% the graph titles; `@auto` means the descriptions will be shown only if
-% `'PlotPrior='` is true.
+% the graph titles; `'auto'` means the descriptions will be shown only if
+% `'plotPrior='` is true.
 %
-% * `'Figure='` [ *empty* | cell ] - Graphics options that will be applied
-% to every Figure object created by `plotpp( )`.
-%
-% * `'KsDensity='` [ numeric | *empty* ] - Number of points over which the
+% * `'ksdensity='` [ numeric | *empty* ] - Number of points over which the
 % density will be calculated; if empty, default number will be used
 % depending on the backend function available.
 %
-% * `'PlotInit='` [ *`true`* | `false` | cell ] - Plot starting values
+% * `'plotInit='` [ *`true`* | `false` | cell ] - Plot starting values
 % (initial consition used in posterior mode maximisation) as vertical
 % stems.
 %
-% * `'PlotPrior='` [ *`true`* | `false` | cell ] - Plot prior
+% * `'plotPrior='` [ *`true`* | `false` | cell ] - Plot prior
 % distributions.
 %
-% * `'PlotMode='` [ *`true`* | `false` | cell ] - Plot maximised posterior
-% modes as vertical stems; the modes are taken from  `est` (and not from
-% `stats` or `theta`).
+% * `'plotMode='` [ *`true`* | `false` | cell ] - Plot maximised posterior
+% modes as vertical stems; the modes are taken from  `Est` (and not from
+% `Stats` or `Theta`).
 %
-% * `'PlotPoster='` [ *`true`* | `false` | cell ] - Plot posterior
+% * `'plotPoster='` [ *`true`* | `false` | cell ] - Plot posterior
 % distributions.
 %
-% * `'PlotBounds='` [ *`true`* | `false` | cell ] - Plot lower and/or upper
+% * `'plotBounds='` [ *`true`* | `false` | cell ] - Plot lower and/or upper
 % bounds as vertical lines; if `false`, the bounds will be plotted only
 % added if within the graph x-limits.
 %
-% * `'Sigma='` [ numeric | *3* ] - Number of std devs from the mean or the
+% * `'sigma='` [ numeric | *3* ] - Number of std devs from the mean or the
 % mode (whichever covers a larger area) to the left and to right that will
 % be plotted unless running out of bounds.
 %
-% * `'Subplot='` [ `@auto` | numeric ] - Specification of subplot division
-% of graphs produced by `plotpp( )`; `@auto` means all graphs will be
-% fitted into one figure window using optimal subplot divison; `[k, n]`
-% means graphs will be arranged into k-by-n subplots in as many figure
-% windows as needed; a scalar, `n`, is the same as `[n, n]`.
+% * `'tight='` [ *`true`* | `false` ] - Make graph axes tight.
 %
-% * `'Tight='` [ *`true`* | `false` ] - Make graph axes tight.
-%
-% * `'Title='` [ *`true`* | `false` | cell ] - Display graph titles, and
+% * `'title=`' [ *`true`* | `false` | cell ] - Display graph titles, and
 % specify graphics options for the titles.
 %
-% * `'XLims='` [ struct | *empty* ] - Control the x-limits of the prior and
+% * `'xLims='` [ struct | *empty* ] - Control the x-limits of the prior and
 % posterior graphs.
-%
 %
 % Description
 % ============
 %
 % The options that control what will be plotted in the graphs
-% (i.e. `'PlotInit='`, `'PlotPrior='`, `'PlotMode='`, `'PlotPoster='`, 
-% `'PlotBounds='`, `'Title='`) can be set to one of the following three
+% (i.e. `'plotInit='`, `'plotPrior='`, `'plotMode='`, `'plotPoster='`,
+% `'plotBounds='`,`'title='`) can be set to one of the following three
 % values:
 %
-% * `true`, 
-% * `false`, 
+% * `true`,
+% * `false`,
 % * a cell array with sub-options to control the appearance of the
 % respetive line; these will be passed into the respective plotting
 % function.
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-mo = [ ]; % Maximised posterior mode.
-po = [ ]; % Simulated posterior distribution.
+MO = []; % Maximised posterior mode.
+PO = []; % Simulated posterior distribution.
 
 if ~isempty(varargin)
     if isempty(varargin{1}) ...
             || (isstruct(varargin{1}) ...
-            && isequal(fieldnames(inp), fieldnames(varargin{1})))
-        mo = varargin{1};
-        varargin(1) = [ ];
+            && isequal(fieldnames(Pr),fieldnames(varargin{1})))
+        MO = varargin{1};
+        varargin(1) = [];
     end
 end
 
@@ -140,421 +123,415 @@ if ~isempty(varargin)
     if isempty(varargin{1}) ...
             || isnumeric(varargin{1}) ...
             || isstruct(varargin{1})
-        po = varargin{1};
-        varargin(1) = [ ];
+        PO = varargin{1};
+        varargin(1) = [];
     end
 end
 
-opt = passvalopt('grfun.plotpp', varargin{:});
+opt = passvalopt('grfun.plotpp',varargin{:});
 
-if isequal(opt.Describe, @auto)
-    opt.Describe = ~isequal(opt.PlotPrior, false);
+if isequal(opt.describe,'auto')
+    opt.describe = ~isequal(opt.plotprior,false);
 end
 
 %--------------------------------------------------------------------------
 
-if isempty(mo)
-    opt.PlotMode = false;
+if isempty(MO)
+    opt.plotmode = false;
 end
 
-if isempty(po)
-    opt.PlotPoster = false;
+if isempty(PO)
+    opt.plotposter = false;
 end
 
 % Get lower and upper bounds for individual params.
-bnd = getBounds(inp);
+b = xxGetBounds(Pr);
 
 % Get prior function handles.
-priorFunc = getPriorFunc(inp);
+prF = xxGetPrFunc(Pr);
 
 % Get x-limits for individual priors.
-priorXLim = getPriorXLim(priorFunc, bnd, opt);
+prXLim = xxGetPrXLims(prF,b,opt);
 
 % Compute x- and y-axis co-ordinates for prior graphs.
-priorPoints = getPriorPoints(priorFunc, priorXLim);
+PrG = xxGetPrGraphs(prF,prXLim);
 
 % Compute x- and y-axis co-ordinates for posterior graphs.
-posterPoints = getPosterPoints(po, bnd, opt);
+PoG = xxGetPoGraphs(PO,b,opt);
 
 % Find maximum displayed in each graph; they are used in plotting stem
 % graphs.
-max_ = getMax(priorPoints, posterPoints);
+mx = xxGetMax(PrG,PoG);
 
 % Compute x- and y-axis co-ordinates for mode graphs.
-modePoints = getModePoints(mo, max_);
+mog = xxGetMoGraphs(MO,mx);
 
-% Get starting values for posterior mode maximization.
-initPoints = getInitPoints(inp, max_);
+% Get starting values for posterior mode maximisation.
+ing = xxGetInitGraph(Pr,mx);
 
 % Get x-limits for posteriors.
-posterXLim = getPosterXLim(posterPoints); %#ok<NASGU>
+poxlim = xxGetPoXLims(PoG); %#ok<NASGU>
 
-% fig = [ ];
-% ax = [ ];
-prLin = [ ];
-moLin = [ ];
-poLin = [ ];
-bndLin = [ ];
-inLin = [ ];
+% Fig = [];
+% Ax = [];
+PrLin = [];
+MoLin = [];
+PoLin = [];
+BLin = [];
+InLin = [];
 
 % We're done if actual plots are not requested.
-if isequal(opt.PlotPrior, false) ...
-        && isequal(opt.PlotPoster, false) ...
-        && isequal(opt.PlotInit, false) ...
-        && isequal(opt.PlotMode, false)
+if isequal(opt.plotprior,false) ...
+        && isequal(opt.plotposter,false) ...
+        && isequal(opt.plotinit,false) ...
+        && isequal(opt.plotmode,false)
     return
 end
 
 % Create titles.
-descript = [ ];
-if ~isequal(opt.Title, false)
-    descript = createTitles(priorFunc, modePoints, posterPoints, initPoints, opt);
+descript = [];
+if ~isequal(opt.title,false)
+    descript = xxCreateTitles(prF,mog,PoG,ing,opt);
 end
 
 % Create graphs.
-[fig, ax, tit] = createGraphs(inp, descript, opt);
+[Fig,Ax,Tit] = xxCreateGraphs(Pr,descript,opt);
 
 % Plot priors.
-if ~isequal(opt.PlotPrior, false)
-    prLin = plotPriors(ax, priorPoints, opt);
+if ~isequal(opt.plotprior,false)
+    PrLin = xxPlotPriors(Ax,PrG,opt);
 end
 
 % Plot starting values.
-if ~isequal(opt.PlotInit, false)
-    inLin = plotInit(ax, initPoints, opt);
+if ~isequal(opt.plotinit,false)
+    InLin = xxplotinit(Ax,ing,opt);
 end
 
 % Plot modes.
-if ~isequal(opt.PlotMode, false)
-    moLin = plotMode(ax, modePoints, opt);
+if ~isequal(opt.plotmode,false)
+    MoLin = xxPlotMode(Ax,mog,opt);
 end
 
 % Plot posteriors.
-if ~isequal(opt.PlotPoster, false)
-    poLin = plotPoster(ax, posterPoints, opt);
+if ~isequal(opt.plotposter,false)
+    PoLin = xxPlotPoster(Ax,PoG,opt);
 end
 
 % Plot bounds as vertical lines.
-if ~isequal(opt.PlotBounds, false)
-    bndLin = plotBounds(ax, bnd, max_, opt);
+if ~isequal(opt.plotbounds,false)
+    BLin = xxPlotBounds(Ax,b,mx,opt);
 end
 
 % Output arguments. For bkw compatiblity, the user can ask for more then
 % three, in which case the handle vectors are returned individually.
-if nargout>3
+if nargout > 3
     varargout = { ...
-        fig, ax, prLin, poLin, bndLin, tit, inLin, moLin, ...
+        Fig,Ax,PrLin,PoLin,BLin,Tit,InLin,MoLin, ...
         };
 else
     varargout{1} = struct( ...
-        'figure', fig, ...
-        'axes', ax, ...
-        'prior', prLin, ...
-        'poster', poLin, ...
-        'bounds', bndLin, ...
-        'init', inLin, ...
-        'mode', moLin, ...
-        'title', tit ...
+        'figure',Fig, ...
+        'axes',Ax, ...
+        'prior',PrLin, ...
+        'poster',PoLin, ...
+        'bounds',BLin, ...
+        'init',InLin, ...
+        'mode',MoLin, ...
+        'title',Tit ...
         );
 end
 
 end
 
+% Subfunctions.
 
+%**************************************************************************
+function B = xxGetBounds(Pr)
 
-
-function bnd = getBounds(inp)
-list = fieldnames(inp);
+list = fieldnames(Pr);
 nlist = numel(list);
-bnd = struct( );
+B = struct();
 for i = 1 : nlist
-    temp = inp.(list{i});
-    low = NaN;
-    upp = NaN;
+    pr = Pr.(list{i});
+    low = -Inf;
+    upp = Inf;
     try
-        low = temp{2};
+        low = pr{2};
     catch
         try %#ok<*TRYNC>
-            low = temp(2);
+            low = pr(2);
         end
     end
     try
-        upp = temp{3};
+        upp = pr{3};
     catch %#ok<*CTCH>
         try
-            upp = temp(3);
+            upp = pr(3);
         end
     end
-    bnd.(list{i}) = [low, upp];
+    B.(list{i}) = [low,upp];
 end
-end
 
+end % xxGetBounds().
 
+%**************************************************************************
+function PrF = xxGetPrFunc(Pr)
 
-
-function priorFunc = getPriorFunc(inp)
-list = fieldnames(inp);
+list = fieldnames(Pr);
 nList = numel(list);
-priorFunc = struct( );
+PrF = struct();
 for i = 1 : nList
     try
-        priorFunc.(list{i}) = inp.(list{i}){4};
+        PrF.(list{i}) = Pr.(list{i}){4};
     catch
-        priorFunc.(list{i}) = [ ];
+        PrF.(list{i}) = [];
     end
 end
-end
 
+end % xxGetPrFunc().
 
+%**************************************************************************
+function PrXLim = xxGetPrXLims(PrF,B,Opt)
 
+w = Opt.sigma;
+usrXLims = Opt.xlims;
 
-function priorXLim = getPriorXLim(priorFunc, bnd, opt)
-w = opt.Sigma;
-userXLim = opt.XLim;
-
-list = fieldnames(priorFunc);
+list = fieldnames(PrF);
 nList = numel(list);
-priorXLim = struct( );
+PrXLim = struct();
 for i = 1 : nList
-    f = priorFunc.(list{i});
+    f = PrF.(list{i});
     from = NaN;
     to = NaN;
     try
-        from = double(userXLim.(list{i})(1));
-        to = double(userXLim.(list{i})(1));
+        from = double(usrXLims.(list{i})(1));
+        to = double(usrXLims.(list{i})(1));
     end
     if (isnan(from) || isnan(to) ) && ~isempty(f)
-        low = bnd.(list{i})(1);
-        high = bnd.(list{i})(2);
-        mean = f([ ], 'mean');
-        sgm = f([ ], 'std');
-        mode = f([ ], 'mode');
-        from = min(mean-w*sgm, mode-w*sgm);
-        from = max(from, low);
-        to = max(mean+w*sgm, mode+w*sgm);
+        low = B.(list{i})(1);
+        high = B.(list{i})(2);
+        mean = f([],'mean');
+        sgm = f([],'std');
+        mode = f([],'mode');
+        from = min(mean-w*sgm,mode-w*sgm);
+        from = max(from,low);
+        to = max(mean+w*sgm,mode+w*sgm);
         if ~isfinite(to)
-            to = max(w*mean, w*mode);
+            to = max(w*mean,w*mode);
         end
-        to = min(to, high);
+        to = min(to,high);
     end
-    priorXLim.(list{i}) = [from, to];
+    PrXLim.(list{i}) = [from,to];
 end
-end
 
+end % xxGetPrXLims().
 
+%**************************************************************************
+function PrG = xxGetPrGraphs(PrF,PrXLim)
 
-
-function priorPoints = getPriorPoints(priorFunc, priorXLim)
-list = fieldnames(priorFunc);
+list = fieldnames(PrF);
 nList = numel(list);
-priorPoints = struct( );
+PrG = struct();
 for i = 1 : nList
-    f = priorFunc.(list{i});
+    f = PrF.(list{i});
     if isempty(f)
         x = NaN;
         y = NaN;
     else
-        from = priorXLim.(list{i})(1);
-        to = priorXLim.(list{i})(2);
-        x = linspace(from, to, 1000);
-        y = f(x, 'proper');
+        from = PrXLim.(list{i})(1);
+        to = PrXLim.(list{i})(2);
+        x = linspace(from,to,1000);
+        y = f(x,'proper');
     end
-    priorPoints.(list{i}) = {x, y};
+    PrG.(list{i}) = {x,y};
 end
-end
 
+end % xxgetrpxlim().
 
+%**************************************************************************
+function [Fig,Ax,Tit] = xxCreateGraphs(Pr,Descript,Opt)
 
-
-function [fig, ax, tit] = createGraphs(inp, descript, opt)
-list = fieldnames(inp);
+list = fieldnames(Pr);
 nList = numel(list);
 
-nSub = opt.Subplot;
-if isequal(nSub, @auto)
+nSub = Opt.subplot;
+if isequal(nSub,'auto')
     nSub = ceil(sqrt(nList));
-    if nSub*(nSub-1)>=nList
-        nSub = [nSub-1, nSub];
+    if nSub*(nSub-1) >= nList
+        nSub = [nSub-1,nSub];
     else
-        nSub = [nSub, nSub];
+        nSub = [nSub,nSub];
     end
-elseif length(nSub)==1
-    nSub = [nSub, nSub];
 end
-
-figureOpt = { };
-axesOpt = { };
-titleOpt = { };
-processGraphicsOptions( );
 
 total = prod(nSub);
-fig = figure(figureOpt{:});
-ax = [ ];
-tit = [ ];
+Fig = figure();
+Ax = nan(1,nList);
+Tit = nan(1,nList);
 pos = 1;
 
+figureOpt = {};
+axesOpt = {};
+titleOpt = {};
+doGraphicsOptions();
+
 for i = 1 : nList
-    if pos>total
-        fig = [fig, figure(figureOpt{:})]; %#ok<AGROW>
+    if pos > total
+        Fig = [Fig,figure(figureOpt{:})]; %#ok<AGROW>
         pos = 1;
     end
-    ax = [ax, subplot(nSub(1), nSub(2), pos, axesOpt{:})];
-    if ~isequal(opt.Title, false)
-        tit(i) = title(descript{i}, titleOpt{:});
+    Ax(i) = subplot(nSub(1),nSub(2),pos,axesOpt{:});
+    if ~isequal(Opt.title,false)
+        Tit(i) = title(Descript{i},titleOpt{:});
     end
-    hold on;
+    hold(Ax(i),'all');
     pos = pos + 1;
 end
-grfun.clicktocopy(ax);
+grfun.clicktocopy(Ax);
 
-return
-
-
-
-
-    function processGraphicsOptions( )
-        if iscell(opt.Figure)
-            figureOpt = opt.Figure;
-            figureOpt(1:2:end) = strrep(figureOpt(1:2:end), '=', '');
+    function doGraphicsOptions()
+        if iscell(Opt.figure)
+            figureOpt = Opt.figure;
+            figureOpt(1:2:end) = strrep(figureOpt(1:2:end),'=','');
         end
-        if iscell(opt.Axes)
-            axesOpt = opt.Axes;
-            axesOpt(1:2:end) = strrep(axesOpt(1:2:end), '=', '');
+        if iscell(Opt.axes)
+            axesOpt = Opt.axes;
+            axesOpt(1:2:end) = strrep(axesOpt(1:2:end),'=','');
         end
-        if iscell(opt.Title)
-            titleOpt = opt.Title;
-            titleOpt(1:2:end) = strrep(titleOpt(1:2:end), '=', '');
+        if iscell(Opt.title)
+            titleOpt = Opt.title;
+            titleOpt(1:2:end) = strrep(titleOpt(1:2:end),'=','');
         end
     end
-end
 
+end % xxCreateGraphs().
 
+%**************************************************************************
+function PrLin = xxPlotPriors(Ax,PrG,Opt)
 
-
-function prLin = plotPriors(ax, priorPoints, opt)
-list = fieldnames(priorPoints);
+list = fieldnames(PrG);
 nList = numel(list);
-prLin = [ ];
-plotopt = { };
-if iscell(opt.PlotPrior)
-    plotopt = opt.PlotPrior;
-    plotopt(1:2:end) = strrep(plotopt(1:2:end), '=', '');
+PrLin = [];
+plotopt = {};
+if iscell(Opt.plotprior)
+    plotopt = Opt.plotprior;
+    plotopt(1:2:end) = strrep(plotopt(1:2:end),'=','');
 end
 for i = 1 : nList
-    temp = priorPoints.(list{i});
-    h = plot(ax(i), temp{:}, plotopt{:});
-    prLin = [prLin, h]; %#ok<AGROW>
-    if opt.Tight
-        grfun.yaxistight(ax(i));
+    prG = PrG.(list{i});
+    h = plot(Ax(i),prG{:},plotopt{:});
+    PrLin = [PrLin,h]; %#ok<AGROW>
+    if Opt.tight
+        grfun.yaxistight(Ax(i));
     end
-    grid(ax(i), 'on');
+    grid(Ax(i),'on');
 end
-end
 
+end % xxPlotPriors().
 
+%**************************************************************************
+function PoLin = xxPlotPoster(Ax,PoG,Opt)
 
-
-function poLin = plotPoster(ax, posterPoints, opt)
-list = fieldnames(posterPoints);
+list = fieldnames(PoG);
 nList = numel(list);
-poLin = [ ];
-plotOpt = { };
-if iscell(opt.PlotPoster)
-    plotOpt = opt.PlotPoster;
-    plotOpt(1:2:end) = strrep(plotOpt(1:2:end), '=', '');
+PoLin = [];
+plotOpt = {};
+if iscell(Opt.plotposter)
+    plotOpt = Opt.plotposter;
+    plotOpt(1:2:end) = strrep(plotOpt(1:2:end),'=','');
 end
 for i = 1 : nList
-    temp = posterPoints.(list{i});
-    h = plot(ax(i), temp{:}, plotOpt{:});
-    poLin = [poLin, h]; %#ok<AGROW>
-    if opt.Tight
-        grfun.yaxistight(ax(i));
+    poG = PoG.(list{i});
+    h = plot(Ax(i),poG{:},plotOpt{:});
+    PoLin = [PoLin,h]; %#ok<AGROW>
+    if Opt.tight
+        grfun.yaxistight(Ax(i));
     end
-    grid(ax(i), 'on');
+    grid(Ax(i),'on');
 end
-end 
 
+end % xxPlotPoster().
 
+%**************************************************************************
+function MoLin = xxPlotMode(Ax,MoG,Opt)
 
-
-function moLin = plotMode(ax, modePoints, opt)
-list = fieldnames(modePoints);
+list = fieldnames(MoG);
 nList = numel(list);
-moLin = [ ];
-plotOpt = { };
-if iscell(opt.PlotMode)
-    plotOpt = opt.PlotMode;
-    plotOpt(1:2:end) = strrep(plotOpt(1:2:end), '=', '');
+MoLin = [];
+plotOpt = {};
+if iscell(Opt.plotmode)
+    plotOpt = Opt.plotmode;
+    plotOpt(1:2:end) = strrep(plotOpt(1:2:end),'=','');
 end
 for i = 1 : nList
-    temp = modePoints.(list{i});
-    h = stem(ax(i), temp{:}, plotOpt{:});
-    moLin = [moLin, h]; %#ok<AGROW>
-    if opt.Tight
-        grfun.yaxistight(ax(i));
+    moG = MoG.(list{i});
+    h = stem(Ax(i),moG{:},plotOpt{:});
+    MoLin = [MoLin,h]; %#ok<AGROW>
+    if Opt.tight
+        grfun.yaxistight(Ax(i));
     end
-    grid(ax(i), 'on');
+    grid(Ax(i),'on');
 end
-end
 
+end % xxPlotMode().
 
+%**************************************************************************
+function BLin = xxPlotBounds(Ax,B,Max,Opt)
 
-
-function bndLin = plotBounds(ax, bnd, max_, opt)
-list = fieldnames(bnd);
+list = fieldnames(B);
 nList = numel(list);
-bndLin = [ ];
+BLin = [];
 for i = 1 : nList
-    low = bnd.(list{i})(1);
-    high = bnd.(list{i})(2);
-    y = max_.(list{i});
-    [hLow, hHigh] = grfun.plotbounds(ax(i), low, high, y, opt.PlotBounds);  
-    bndLin = [bndLin, hLow, hHigh]; %#ok<AGROW>
+    low = B.(list{i})(1);
+    high = B.(list{i})(2);
+    y = Max.(list{i});
+    [hLow,hHigh] = grfun.plotbounds(Ax(i),low,high,y,Opt.plotbounds);  
+    BLin = [BLin,hLow,hHigh]; %#ok<AGROW>
 end
-end
 
+end % xxPlotPriors().
 
+%**************************************************************************
+function InLin = xxplotinit(Ax,InG,Opt)
 
-
-function inLin = plotInit(ax, initPoints, opt)
-list = fieldnames(initPoints);
+list = fieldnames(InG);
 nList = numel(list);
-inLin = [ ];
-plotOpt = { };
-if iscell(opt.PlotInit)
-    plotOpt = opt.PlotInit;
-    plotOpt(1:2:end) = strrep(plotOpt(1:2:end), '=', '');
+InLin = [];
+plotOpt = {};
+if iscell(Opt.plotinit)
+    plotOpt = Opt.plotinit;
+    plotOpt(1:2:end) = strrep(plotOpt(1:2:end),'=','');
 end
 for i = 1 : nList
-    temp = initPoints.(list{i});
-    if isempty(temp)
+    inG = InG.(list{i});
+    if isempty(inG)
         continue
     end
-    h = stem(ax(i), temp{:}, plotOpt{:});
-    inLin = [inLin, h]; %#ok<AGROW>
-    if opt.Tight
-        grfun.yaxistight(ax(i));
+    h = stem(Ax(i),inG{:},plotOpt{:});
+    InLin = [InLin,h]; %#ok<AGROW>
+    if Opt.tight
+        grfun.yaxistight(Ax(i));
     end
-    grid(ax(i), 'on');
+    grid(Ax(i),'on');
 end
-end
 
+end % xxPlotInit().
 
+%**************************************************************************
+function MoG = xxGetMoGraphs(MO,Max)
 
-
-function modePoints = getModePoints(mo, max_)
-if isempty(mo)
-    modePoints = [ ];
+if isempty(MO)
+    MoG = [];
     return
 end
 
-list = fieldnames(mo);
+list = fieldnames(MO);
 nList = numel(list);
-modePoints = struct( );
+MoG = struct();
 for i = 1 : nList
     try
-        x = mo.(list{i});
-        y = 0.98*max_.(list{i});
+        x = MO.(list{i});
+        y = 0.98*Max.(list{i});
         if isnan(y)
             % This happens if there's no prior distribution on this
             % parameter.
@@ -564,204 +541,192 @@ for i = 1 : nList
         x = NaN;
         y = NaN;
     end
-    modePoints.(list{i}) = {x, y};
+    MoG.(list{i}) = {x,y};
 end
-end
 
+end % xxGetMoGraphs().
 
+%**************************************************************************
+function PoG = xxGetPoGraphs(Po,B,Opt)
 
-
-function posterPoints = getPosterPoints(po, bnd, opt)
-if isempty(po)
-    posterPoints = [ ];
+if isempty(Po)
+    PoG = [];
     return
 end
 
-% w = opt.Sigma;
+% w = Opt.sigma;
 w = 5;
-list = fieldnames(bnd);
+list = fieldnames(B);
 nList = numel(list);
 for i = 1 : nList
     try
-        x = po.ksdensity(:, 1);
-        y = po.ksdensity(:, 2);
-        posterPoints.(list{i}) = {x, y};
+        x = Po.ksdensity(:,1);
+        y = Po.ksdensity(:,2);
+        PoG.(list{i}) = {x,y};
         continue
     end
-    the = tryGetChain( );
-    if ~isempty(the)
+    theta = doTryGetChain();
+    if ~isempty(theta)
         % User supplied simulated posterior distributions.
-        low = bnd.(list{i})(1);
-        high = bnd.(list{i})(2);
-        [x, y] = poster.myksdensity(the, low, high, opt.KsDensity);
-        myMean = mean(the);
-        myStd = std(the);
-        inx = x<myMean-w*myStd | x>myMean+w*myStd;
-        x(inx) = [ ];
-        y(inx) = [ ];
+        low = B.(list{i})(1);
+        high = B.(list{i})(2);
+        [x,y] = poster.myksdensity(theta,low,high,Opt.ksdensity);
+        myMean = mean(theta);
+        myStd = std(theta);
+        inx = x < myMean-w*myStd | x > myMean+w*myStd;
+        x(inx) = [];
+        y(inx) = [];
     else
         x = NaN;
         y = NaN;
     end
-    posterPoints.(list{i}) = {x, y};
+    PoG.(list{i}) = {x,y};
 end
 
-return
-
-
-
-
-    function the = tryGetChain( )
-        the = [ ];
-        if isnumeric(po)
+    function theta = doTryGetChain()
+        theta = [];
+        if isnumeric(Po)
             try
-                the = po(i, :);
+                theta = Po(i,:);
             end
         else
             try
-                the = po.chain.(list{i});
+                theta = Po.chain.(list{i});
             end
         end
-    end
-end 
+    end % doTryGetChain().
 
+end % xxgGetPosGraph().
 
+%**************************************************************************
+function PoXLim = xxGetPoXLims(PoG)
 
-
-function posterXLim = getPosterXLim(posterPoints)
-if isempty(posterPoints)
-    posterXLim = [ ];
+if isempty(PoG)
+    PoXLim = [];
     return
 end
-list = fieldnames(posterPoints);
+
+list = fieldnames(PoG);
 nList = numel(list);
-posterXLim = struct( );
+PoXLim = struct();
 for i = 1 : nList
-    temp = posterPoints.(list{i});
-    from = min(temp{1});
-    to = max(temp{1});
-    posterXLim.(list{i}) = [from, to];
+    poG = PoG.(list{i});
+    from = min(poG{1});
+    to = max(poG{1});
+    PoXLim.(list{i}) = [from,to];
 end
-end
 
+end % xxGetPoXLims().
 
+%**************************************************************************
+function InG = xxGetInitGraph(Pr,Max)
 
-
-function initPoints = getInitPoints(inp, max_)
-list = fieldnames(inp);
+list = fieldnames(Pr);
 nList = numel(list);
-initPoints = struct( );
+InG = struct();
 for i = 1 : nList
-    temp = inp.(list{i});
-    if isempty(temp)
+    pr = Pr.(list{i});
+    if isempty(pr)
         x = NaN;
-    elseif isnumeric(temp)
-        x = temp(1);
-    elseif iscell(temp)
-        x = temp{1};
+    elseif isnumeric(pr)
+        x = pr(1);
+    elseif iscell(pr)
+        x = pr{1};
     else
         x = NaN;
     end
-    % Keep NaNs.
-    y = 0.98*max_.(list{i});
-    initPoints.(list{i}) = {x, y};
-end
-end
-
-
-
-
-function tit = createTitles(priorFunc, modePoints, ~, initPoints, opt)
-list = fieldnames(priorFunc);
-nList = numel(list);
-tit = cell(1, nList);
-for iGraph = 1 : nList
-    if iscellstr(opt.Caption) && length(opt.Caption)>=iGraph
-        % User-supplied captions.
-        tit{iGraph} = opt.Caption{iGraph};
-    else
-        % Default captions based on the parameter name; treat underscores because
-        % the Interpreter= is 'tex' by default.
-        tit{iGraph} = list{iGraph};
-        tit{iGraph} = strrep(tit{iGraph}, '_', '\_');
-        tit{iGraph} = ['{\bf', tit{iGraph}, '}'];
-    end
-    if ~opt.Describe
+    if isnan(x)
+        InG.(list{i}) = [];
         continue
     end
-    if ~isequal(opt.PlotPrior, false)
-        describePrior( );
+    y = 0.98*Max.(list{i});
+    InG.(list{i}) = {x,y};
+end
+
+end % xxGetInitGraph().
+
+%**************************************************************************
+function Tit = xxCreateTitles(PrF,MoG,~,InG,Opt)
+
+list = fieldnames(PrF);
+nList = numel(list);
+Tit = cell(1,nList);
+for iGraph = 1 : nList
+    if iscellstr(Opt.caption) && length(Opt.caption) >= iGraph
+        % User-supplied captions.
+        Tit{iGraph} = Opt.caption{iGraph};
+    else
+        % Default captions based on the parameter name; treat underscores because
+        % the `'interpreter='` is `'tex'` by default.
+        Tit{iGraph} = list{iGraph};
+        Tit{iGraph} = strrep(Tit{iGraph},'_','\_');
+        Tit{iGraph} = ['{\bf',Tit{iGraph},'}'];
     end
-    if ~isequal(opt.PlotMode, false)
-        describeMode( );
+    if ~Opt.describe
+        continue
     end
-    if ~isequal(opt.PlotInit, false)
-        describeInit( );
+    if ~isequal(Opt.plotprior,false)
+        doDescribePrior();
+    end
+    if ~isequal(Opt.plotmode,false)
+        doDescribeMode();
+    end
+    if ~isequal(Opt.plotinit,false)
+        doDescribeInit();
     end
 end
 
-return
-
-
-
-
-    function describePrior( )
-        f = priorFunc.(list{iGraph});
+    function doDescribePrior()
+        f = PrF.(list{iGraph});
         if isempty(f)
-            tit{iGraph} = [tit{iGraph}, sprintf('\nprior: flat')];
+            Tit{iGraph} = [Tit{iGraph},sprintf('\nprior: flat')];
         else
             try
-                name = f([ ], 'name');
-                mu = f([ ], 'mean');
-                sgm = f([ ], 'std');
-                tit{iGraph} = [tit{iGraph}, ...
+                name = f([],'name');
+                mu = f([],'mean');
+                sgm = f([],'std');
+                Tit{iGraph} = [Tit{iGraph}, ...
                     sprintf('\nprior: %s {\\mu=}%g {\\sigma=}%g', ...
-                    name, mu, sgm)];
+                    name,mu,sgm)];
             end
         end
-    end 
+    end % doDescribePrior().
 
-
-
-
-    function describeMode( )
+    function doDescribeMode()
         try
-            temp = modePoints.(list{iGraph}){1};
-            tit{iGraph} = [tit{iGraph}, ...
-                sprintf('\nmaximised poster: %g', temp)];
+            mog = MoG.(list{iGraph}){1};
+            Tit{iGraph} = [Tit{iGraph}, ...
+                sprintf('\nmaximised poster: %g',mog)];
         end
+    end % doDescribeMode().
+
+    function doDescribeInit()
+        try
+            ing = InG.(list{iGraph}){1};
+            if isnumericscalar(ing)
+                Tit{iGraph} = [Tit{iGraph}, ...
+                    sprintf('\nstart: %g',ing)];
+            end
+        end
+    end % doDescribeInit().
+
+end % xxCreateTitles().
+
+%**************************************************************************
+function Max = xxGetMax(PrG,PoG)
+
+list = fieldnames(PrG);
+nList = numel(list);
+Max = struct();
+for i = 1 : nList
+    prg = PrG.(list{i}){2};
+    mx = max(prg(:));
+    try
+        poG = PoG.(list{i}){2};
+        poGMax = max(poG(:));
+        mx = max(mx,poGMax);
     end
-
-
-
-
-    function describeInit( )
-        try
-            h = initPoints.(list{iGraph}){1};
-            if isnumericscalar(h)
-                tit{iGraph} = [tit{iGraph}, ...
-                    sprintf('\nstart: %g', h)];
-            end
-        end
-    end 
+    Max.(list{i}) = mx;
 end 
 
-
-
-
-function max_ = getMax(priorPoints, posterPoints)
-list = fieldnames(priorPoints);
-nList = numel(list);
-max_ = struct( );
-for i = 1 : nList
-    temp = priorPoints.(list{i}){2};
-    maxPrior = max(temp(:));
-    try
-        temp = posterPoints.(list{i}){2};
-        maxPoster = max(temp(:));
-    catch
-        maxPoster = [ ];
-    end
-    max_.(list{i}) = max([maxPrior; maxPoster]);
-end
-end
+end % xxGetMax().

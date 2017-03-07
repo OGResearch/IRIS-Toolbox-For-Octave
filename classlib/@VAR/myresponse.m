@@ -1,9 +1,9 @@
-function [S, C] = myresponse(This,Time,Phi0,Select,Opt)
+function [S,C,S1,C1] = myresponse(This,Time,Phi0,Select,Opt)
 % srf  Shock (impulse) response function.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Tell if `Time` is `NPer` or `Range`.
 [range,nPer] = varobj.mytelltime(Time);
@@ -39,11 +39,31 @@ else
     xRange = range;
 end
 
-names = [This.YNames, This.ENames];
-S = myoutpdata( This, xRange, [Phi; Eps], [ ], names);
-if nargout>1
-    Psi = cumsum(Phi, 2);
-    C = myoutpdata( This, xRange, [Psi; Eps], [ ], names);
+S = myoutpdata(This,'auto',xRange, ...
+    [Phi;Eps],[],[This.YNames,This.ENames]);
+
+% For bkw compatibility.
+if nargout > 2
+    S1 = myoutpdata(This,'tseries',xRange, ...
+        [Phi;Eps],[],[This.YNames,This.ENames]);
+end
+
+if nargout > 1
+    Psi = cumsum(Phi,2);
+    C = myoutpdata(This,'auto',xRange, ...
+        [Psi;Eps],[],[This.YNames,This.ENames]);
+    % For bkw compatibility.
+    if nargout > 3
+        C1 = myoutpdata(This,'tseries',xRange, ...
+            [Psi;Eps],[],[This.YNames,This.ENames]);
+    end
+end
+
+if nargout > 2
+    % ##### Nov 2013 OBSOLETE and scheduled for removal.
+    utils.error('obsolete', ...
+        ['Syntax with more than two output arguments is obsolete, and ', ...
+        'is will be removed from a future version of IRIS.']);
 end
 
 end

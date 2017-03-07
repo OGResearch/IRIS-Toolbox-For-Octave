@@ -44,7 +44,7 @@ function [B,CovRes,R2] = regress(This,Lhs,Rhs,varargin)
 % observations with their uncondional means (the steady-state levels)
 % removed from them.
 %
-% The Lhs and Rhs variables that are log variables must include
+% The Lhs and Rhs variables that are log-variables must include
 % `log( )` explicitly in their names. For instance, if `X` is declared
 % to be a log variable, then you must refer to `log(X)` or `log(X{-1})`.
 %
@@ -54,8 +54,8 @@ function [B,CovRes,R2] = regress(This,Lhs,Rhs,varargin)
 %     [B,C] = regress('log(R)',{'log(R{-1})','log(dP)'});
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.regress',varargin{:});
 
@@ -67,7 +67,7 @@ if ischar(Rhs)
     Rhs = regexp(Rhs,'[\w\(\)\{\}\d+\-]+','match');
 end
 
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
@@ -75,16 +75,16 @@ isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
 Lhs = regexprep(Lhs(:).','\s+','');
 Rhs = regexprep(Rhs(:).','\s+','');
 
-nAlt = length(This);
+nAlt = size(This.Assign,3);
 
-% `lhspos` is a vector of positions in [ Vector.Solution{1:2} ];
+% `lhspos` is a vector of positions in [solutionid{1:2}];
 [~,~,lhsPos] = myfindsspacepos(This,Lhs,'-error');
 nLhs = length(lhsPos);
 
-% `rhspos` is a vector of either positions in [ Vector.Solution{1:2} ] (when
+% `rhspos` is a vector of either positions in `[solutionid{1:2}]` (when
 % imag is zero) or the position of the max lag of that variables in
-% [ Vector.Solution{1:2} ] with imag being the distance to the lag requested.
-% For example, if `x` enters [ Vector.Solution{1:2} ] as `x{-3}` at maximum, and
+% `[solutionid{1:2}]` with imag being the distance to the lag requested.
+% For example, if `x` enters `[solutionid{1:2}]` as `x{-3}` at maximum, and
 % requested is x{-5}, `rhspos` is the position of `x{-3}` and imag is -2.
 % The minimum imag also determines the order up to which ACF needs to be
 % calculated.
@@ -92,11 +92,11 @@ nLhs = length(lhsPos);
 nRhs = length(rhsPos);
 
 p = -min([imag(rhsPos),imag(lhsPos)]);
-C = acf(This,opt.acf{:},'order=',p,'matrixFmt=','plain');
+C = acf(This,opt.acf{:},'order=',p,'output=','numeric');
 nc = size(C,1);
 
 % Convert `lhspos` and `rhspos` to positions in
-% `[ Vector.Solution{1:2}, Vector.Solution{1:2}{-1}, ...]`.
+% `[solutionid{1:2},solutionid{1:2}{-1},...]`.
 lhsPos = real(lhsPos) - nc*imag(lhsPos);
 rhsPos = real(rhsPos) - nc*imag(rhsPos);
 
@@ -122,7 +122,7 @@ for ialt = 1 : nAlt
     R2(:,ialt) = 1 - diag(CovRes(:,:,ialt))./diag(YY);
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     if isNamedMat
         B = namedmat(B,Lhs,Rhs);
         CovRes = namedmat(CovRes,Lhs,Lhs);

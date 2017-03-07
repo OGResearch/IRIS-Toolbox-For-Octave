@@ -7,7 +7,6 @@ function Rng = datrange(Start,End,Step)
 %     Rng = datrange(Start,End)
 %     Rng = datrange(Start,End,Step)
 %
-%
 % Input arguments
 % ================
 %
@@ -18,12 +17,10 @@ function Rng = datrange(Start,End,Step)
 % * `Step` [ numeric ] - Step size in the number of base periods; if
 % omitted, `Step = 1`.
 %
-%
 % Output arguments
 % =================
 % 
 % * `Rng` [ numeric ] - Date vector `Start : Step : End`.
-%
 %
 % Description
 % ============
@@ -33,17 +30,15 @@ function Rng = datrange(Start,End,Step)
 %
 %     Start : Step : End
 %
-% Under some (rather rare) circumstances, the colon operator may give
-% incorrect results caused by rounding error difficulties since IRIS serial
-% date numbers are non-integer values. In that case, the function
-% `datrange` provides a safe workaround:
+% Under some rare circumstances, the colon operator may bump into round
+% error difficulties as IRIS serial date numbers are non-integer values. In
+% that case, the function `datrange` provides a safe workaround:
 %
 %     datrange(Start,End,Step)
 %
 % is equivalent (but numerically safer) to
 %
 %     Start : Step : End
-%
 %
 % Example
 % ========
@@ -57,8 +52,8 @@ function Rng = datrange(Start,End,Step)
 %     r1 - r2
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Step; %#ok<VUNUS>
@@ -66,7 +61,7 @@ catch
     Step = 1;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Start',@isnumericscalar);
 pp.addRequired('End',@(x) isnumericscalar(x) && freqcmp(x,Start));
 pp.addRequired('Step',@isintscalar);

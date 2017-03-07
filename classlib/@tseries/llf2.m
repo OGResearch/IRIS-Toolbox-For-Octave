@@ -3,16 +3,14 @@ function varargout = llf2(varargin)
 %
 % See help on [`tseries/llf`](tseries/llf).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % BWF2, HPF2, LLF2
 
 %--------------------------------------------------------------------------
 
-n = max(2,nargout);
-[varargout{1:n}] = llf(varargin{:});
-varargout([1,2]) = varargout([2,1]); %#ok<VARARG>
+[varargout{[2,1,3,4]}] = llf(varargin{:});
 
 end
 

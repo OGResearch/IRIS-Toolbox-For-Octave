@@ -50,7 +50,7 @@ function xls2csv(InpFile,OutpFile,varargin)
 % Save the worksheet named 'Sheet3' to a CSV file; the name of the CSV file
 % will be `'myDataFile.csv'`.
 %
-%     xls2csv('myDataFile.xls',[ ],'sheet=','Sheet3');
+%     xls2csv('myDataFile.xls',[],'sheet=','Sheet3');
 %
 % Example
 % ========
@@ -61,25 +61,26 @@ function xls2csv(InpFile,OutpFile,varargin)
 %     xls2csv('myDataFile.xls','myDataFile_2.csv,'sheet=',2);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     OutpFile; %#ok<VUNUS>
 catch %#ok<CTCH>
-    OutpFile = [ ];
+    OutpFile = [];
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('InpFile',@ischar);
 pp.addRequired('OutpFile',@(x) ischar(x) || isempty(x));
 pp.parse(InpFile,OutpFile);
+
 
 opt = passvalopt('dbase.xls2csv',varargin{:});
 
 %--------------------------------------------------------------------------
 
-jsPath = fullfile(irisroot( ),'+thirdparty','xls2csv.js');
+jsPath = fullfile(irisroot(),'+thirdparty','xls2csv.js');
 [inpDir,inpTitle,inpExt] = fileparts(InpFile);
 
 if isempty(OutpFile)
@@ -104,15 +105,17 @@ char2file(c,fullfile(inpDir,'xls2csv.js'));
 
 try %#ok<TRYNC>
     if ~isempty(inpDir)
-        thisDir = pwd( );
+        thisDir = pwd();
         cd(inpDir);
     end
     system('xls2csv.js');
 end
 
-utils.delete('xls2csv.js');
+delete('xls2csv.js');
 if ~isempty(inpDir)
-    cd(thisDir);
+    while ~isequal(pwd(),thisDir)
+        cd(thisDir);
+    end
 end
 
 end

@@ -1,4 +1,4 @@
-% report  PDF Reports (report Package and Objects).
+% report  Report Functions.
 %
 % New report
 % ===========
@@ -75,5 +75,5 @@
 % file under the specified name.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

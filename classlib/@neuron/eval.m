@@ -1,4 +1,4 @@
-function [Y,Z] = eval(This,X)
+function Dou = eval(This,Din)
 % eval  [Not a public function]
 %
 % Splits transfer function evaluation into evaluation of the composition of
@@ -7,19 +7,17 @@ function [Y,Z] = eval(This,X)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 switch This.ActivationFn
     case 'bias'
-        Y = 1 ;
-        Z = 0 ;
+        Dou = 1 ;
     otherwise
         activationParams = NaN(This.nActivationParams,1) ;
         activationParams(This.ActivationIndexLocal) = This.ActivationParams ;
         activationParams(This.ActivationRemovedLocal) = 0.0 ;
-        Z = xxActivation(X) ;
-        Y = xxOutput(Z) ;
+        Dou = xxOutput(xxActivation(Din)) ;
 end
 
     function out = xxActivation(in)
@@ -43,8 +41,6 @@ end
             case 'tanh'
                 atmp = exp(-in*This.OutputParams) ;
                 out = (1-atmp)/(1+atmp) ;
-            case 'linear'
-                out = This.OutputParams*in ;
         end
     end
 end

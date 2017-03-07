@@ -35,8 +35,8 @@ function This = expsmooth(This,Beta,Range,varargin)
 % =========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Range; %#ok<VUNUS>
@@ -60,6 +60,6 @@ if opt.log
     This.data = exp(This.data);
 end
 
-This = trim(This);
+This = mytrim(This);
 
 end

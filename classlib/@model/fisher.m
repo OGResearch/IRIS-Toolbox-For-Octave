@@ -1,11 +1,10 @@
-function [F, FF, delta, freq, G, step] = fisher(this, nPer, lsPar, varargin)
+function [F,FF,Delta,Freq,G,Step] = fisher(This,NPer,PList,varargin)
 % fisher  Approximate Fisher information matrix in frequency domain.
 %
 % Syntax
 % =======
 %
-%     [F, FF, Delta, Freq] = fisher(M, NPer, PList, ...)
-%
+%     [F,FF,Delta,Freq] = fisher(M,NPer,List,...)
 %
 % Input arguments
 % ================
@@ -15,9 +14,8 @@ function [F, FF, delta, freq, G, step] = fisher(this, nPer, lsPar, varargin)
 % * `NPer` [ numeric ] - Length of the hypothetical range for which the
 % Fisher information will be computed.
 %
-% * `PList` [ cellstr ] - List of parameters with respect to which the
+% * `List` [ cellstr ] - List of parameters with respect to which the
 % likelihood function will be differentiated.
-%
 %
 % Output arguments
 % =================
@@ -33,201 +31,197 @@ function [F, FF, delta, freq, G, step] = fisher(this, nPer, lsPar, varargin)
 % * `Freq` [ numeric ] - Vector of frequencies at which the Fisher
 % information matrix is evaluated.
 %
-%
 % Options
 % ========
 %
-% * `'ChkSstate='` [ `true` | *`false`* | cell ] - Check steady state in
+% * `'chkSstate='` [ `true` | *`false`* | cell ] - Check steady state in
 % each iteration; works only in non-linear models.
 %
-% * `'Deviation='` [ *`true`* | `false` ] - Exclude the steady state effect
+% * `'deviation='` [ *`true`* | `false` ] - Exclude the steady state effect
 % at zero frequency.
 %
-% * `'Exclude='` [ char | cellstr | *empty* ] - List of measurement
+% * `'exclude='` [ char | cellstr | *empty* ] - List of measurement
 % variables that will be excluded from the likelihood function.
 %
-% * `'Percent='` [ `true` | *`false`* ] - Report the overall Fisher matrix
+% * `'percent='` [ `true` | *`false`* ] - Report the overall Fisher matrix
 % `F` as Hessian w.r.t. the log of variables; the interpretation for this
 % is that the Fisher matrix describes the changes in the log-likelihood
 % function in reponse to percent, not absolute, changes in parameters.
 %
-% * `'Progress='` [ `true` | *`false`* ] - Display progress bar in the
+% * `'progress='` [ `true` | *`false`* ] - Display progress bar in the
 % command window.
 %
-% * `'Solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution in
+% * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links in each
+% differentiation step.
+%
+% * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution in
 % each differentiation step; you can specify a cell array with options for
 % the `solve` function.
 %
-% * `'Sstate='` [ `true` | *`false`* | cell ] - Re-compute steady state in
-% each differentiation step; if the model is non-linear, you can pass in a
-% cell array with opt used in the `sstate( )` function.
-%
+% * `'sstate='` [ `true` | *`false`* | cell ] - Re-compute steady state in each
+% differentiation step; if the model is non-linear, you can pass in a cell
+% array with opt used in the `sstate` function.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate required input arguments.
-pp = inputParser( );
-pp.addRequired('M', @(x) isa(x, 'model'));
-pp.addRequired('NPer', @(x) isnumeric(x) && length(x)==1);
-pp.addRequired('PList', @(x) iscellstr(x) || ischar(x));
-pp.parse(this, nPer, lsPar);
+pp = inputParser();
+pp.addRequired('this',@(x) isa(x,'model'));
+pp.addRequired('nper',@(x) isnumeric(x) && length(x) == 1);
+pp.addRequired('plist',@(x) iscellstr(x) || ischar(x));
+pp.parse(This,NPer,PList);
 
 % Read and validate optional input arguments.
-opt = passvalopt('model.fisher', varargin{:});
+opt = passvalopt('model.fisher',varargin{:});
 
-ixy = this.Quantity.Type==TYPE(1);
-[ny, ~, ~, nf, ne] = sizeOfSolution(this.Vector);
-nAlt = length(this);
+ny = sum(This.nametype == 1);
+nx = size(This.solution{1},1);
+nb = size(This.solution{1},2);
+nf = nx - nb;
+ne = sum(This.nametype == 3);
+nAlt = size(This.Assign,3);
 
 % Process the 'exclude' option.
-ixExclude = false(ny, 1);
+excl = false(ny,1);
 if ~isempty(opt.exclude)
     if ischar(opt.exclude)
-        opt.exclude = regexp(opt.exclude, '\w+', 'match');
+        opt.exclude = regexp(opt.exclude,'\w+','match');
     end
-    lsMeasurementVar = this.Quantity.Name(ixy);
+    ylist = This.name(This.nametype == 1);
     for i = 1 : length(opt.exclude)
-        ix = strcmp(lsMeasurementVar, opt.exclude{i});
-        ixExclude(ix) = true;
+        index = strcmp(ylist,opt.exclude{i});
+        excl(index) = true;
     end
 end
 
 % Get parameter cellstr list from a char list.
-if ischar(lsPar)
-    lsPar = regexp(lsPar, '\w+', 'match');
+if ischar(PList)
+    PList = regexp(PList,'\w+','match');
 end
 
 % Initialise steady-state solver and chksstate options.
-opt.Steady = prepareSteady(this, 'silent', opt.sstate);
-opt.chksstate = prepareChkSteady(this, 'silent', opt.chksstate);
-opt.solve = prepareSolve(this, 'silent, fast', opt.solve);
-
-EPSILON = eps( )^opt.epspower;
+opt.sstate = mysstateopt(This,'silent',opt.sstate);
+opt.chksstate = mychksstateopt(This,'silent',opt.chksstate);
+opt.solve = mysolveopt(This,'silent',opt.solve);
 
 %--------------------------------------------------------------------------
 
-ny = ny - sum(ixExclude);
-if ny==0
-    utils.warning('model:fisher', ...
+ny = ny - sum(excl);
+if ny == 0
+    utils.warning('model', ...
         'No measurement variables included in computing Fisher matrix.');
 end
 
-ixYLog = this.Quantity.IxLog(ixy);
-ixYLog(ixExclude) = [ ];
+ixYLog = This.IxLog(This.nametype == 1);
+ixYLog(excl) = [];
 
-ell = lookup(this.Quantity, lsPar, TYPE(4));
-posQty = ell.PosName;
-posStdCorr = ell.PosStdCorr;
-
-ixAssignNan = isnan(posQty);
-ixStdcorrNan = isnan(posStdCorr);
+[assignPos,stdcorrPos] = mynameposition(This,PList,4);
+ixAssignNan = isnan(assignPos);
+ixStdcorrNan = isnan(stdcorrPos);
 ixValid = ~ixAssignNan | ~ixStdcorrNan;
 if any(~ixValid)
     utils.error('model:fisher', ...
         'This is not a valid parameter name: ''%s''.', ...
-        lsPar{~ixValid});
+        PList{~ixValid});
 end
 
-itr = model.IterateOver( );
-itr.Quantity = this.Variant{1}.Quantity;
-itr.StdCorr = this.Variant{1}.StdCorr;
-itr.PosQty = posQty;
-itr.PosStdCorr = posStdCorr;
+pri = struct();
+pri.Assign = This.Assign;
+pri.stdcorr = This.stdcorr;
+pri.assignpos = assignPos;
+pri.stdcorrpos = stdcorrPos;
 
-nPList = length(lsPar);
-nFreq = floor(nPer/2) + 1;
-freq = 2*pi*(0 : nFreq-1)/nPer;
+nPList = length(PList);
+nFreq = floor(NPer/2) + 1;
+Freq = 2*pi*(0 : nFreq-1)/NPer;
 
 % Kronecker delta vector.
 % Different for even or odd number of periods.
-delta = ones(1, nFreq);
-if mod(nPer, 2)==0
-    delta(2:end-1) = 2;
+Delta = ones(1,nFreq);
+if mod(NPer,2) == 0
+    Delta(2:end-1) = 2;
 else
-    delta(2:end) = 2;
+    Delta(2:end) = 2;
 end
 
-FF = nan(nPList, nPList, nFreq, nAlt);
-F = nan(nPList, nPList, nAlt);
+FF = nan(nPList,nPList,nFreq,nAlt);
+F = nan(nPList,nPList,nAlt);
 
 % Create a command-window progress bar.
 if opt.progress
-    progress = ProgressBar('IRIS model.fisher progress');
+    progress = progressbar('IRIS model.fisher progress');
 end
 
 throwErr = true;
 
 for iAlt = 1 : nAlt    
     % Fetch the i-th parameterisation.
-    m = this(iAlt);
+    m = This(iAlt);
     
     % Minimum necessary state space.
-    [T0, R0, Z0, H0, Omg0, nunit0] = getSspace( );
+    [T0,R0,Z0,H0,Omg0,nunit0] = doGetSspace();
     
     % SGF and inverse SGF at p0.
-    [G, Gi] = computeSgfy(T0, R0, Z0, H0, Omg0, nunit0, freq, opt);
+    [G,Gi] = xxSgfy(T0,R0,Z0,H0,Omg0,nunit0,Freq,opt);
     
     % Compute derivatives of SGF and steady state
     % wrt the selected parameters.
-    dG = nan(ny, ny, nFreq, nPList);
+    dG = nan(ny,ny,nFreq,nPList);
     if ~opt.deviation
-        dy = zeros(ny, nPList);
+        dy = zeros(ny,nPList);
     end
     % Determine differentiation step.
-    p0 = nan(1, nPList);
-    p0(~ixAssignNan) = m.Variant{1}.Quantity(1, posQty(~ixAssignNan));
-    p0(~ixStdcorrNan) = m.Variant{1}.StdCorr(1, posStdCorr(~ixStdcorrNan));
-    step = max([abs(p0);ones(1, nPList)], [ ], 1)*EPSILON;
+    p0 = nan(1,nPList);
+    p0(~ixAssignNan) = m.Assign(1,assignPos(~ixAssignNan));
+    p0(~ixStdcorrNan) = m.stdcorr(1,stdcorrPos(~ixStdcorrNan));
+    Step = max([abs(p0);ones(1,nPList)],[],1)*eps()^opt.epspower;
     
     for i = 1 : nPList
         pp = p0;
         pm = p0;
-        pp(i) = pp(i) + step(i);
-        pm(i) = pm(i) - step(i);
+        pp(i) = pp(i) + Step(i);
+        pm(i) = pm(i) - Step(i);
         twoSteps = pp(i) - pm(i);
 
-        isSstate = ~opt.deviation && ~isnan(posQty(i));
+        isSstate = ~opt.deviation && ~isnan(assignPos(i));
         
         % Steady state, state space and SGF at p0(i) + step(i).
-        m = update(m, pp, itr, 1, opt, throwErr);
+        m = myupdatemodel(m,pp,pri,opt,throwErr);
         if isSstate
-            yp = getSstate( );
+            yp = doGetSstate();
         end
-        [Tp, Rp, Zp, Hp, Omgp, nunitp] = getSspace( );
-        Gp = computeSgfy(Tp, Rp, Zp, Hp, Omgp, nunitp, freq, opt);
+        [Tp,Rp,Zp,Hp,Omgp,nunitp] = doGetSspace();
+        Gp = xxSgfy(Tp,Rp,Zp,Hp,Omgp,nunitp,Freq,opt);
         
-        % Steady state, state space and SGF at p0(i) - step(i).
-        m = update(m, pm, itr, 1, opt, throwErr);
+        % Steady state,state space and SGF at p0(i) - step(i).
+        m = myupdatemodel(m,pm,pri,opt,throwErr);
         if isSstate
-            ym = getSstate( );
+            ym = doGetSstate();
         end
-        [Tm, Rm, Zm, Hm, Omgm, nunitm] = getSspace( );
-        Gm = computeSgfy(Tm, Rm, Zm, Hm, Omgm, nunitm, freq, opt);
+        [Tm,Rm,Zm,Hm,Omgm,nunitm] = doGetSspace();
+        Gm = xxSgfy(Tm,Rm,Zm,Hm,Omgm,nunitm,Freq,opt);
         
         % Differentiate SGF and steady state.
-        dG(:, :, :, i) = (Gp - Gm) / twoSteps;
+        dG(:,:,:,i) = (Gp - Gm) / twoSteps;
         if isSstate
-            dy(:, i) = real(yp(:) - ym(:)) / twoSteps;
+            dy(:,i) = real(yp(:) - ym(:)) / twoSteps;
         end
         
         % Reset model parameters to `p0`.
-        m.Variant{1}.Quantity(1, posQty(~ixAssignNan)) = p0(1, ~ixAssignNan);
-        m.Variant{1}.StdCorr(1, posStdCorr(~ixStdcorrNan)) = p0(1, ~ixStdcorrNan);
+        m.Assign(1,assignPos(~ixAssignNan)) = p0(1,~ixAssignNan);
+        m.stdcorr(1,stdcorrPos(~ixStdcorrNan)) = p0(1,~ixStdcorrNan);
         
         % Update the progress bar.
         if opt.progress
-            update(progress, ((iAlt-1)*nPList+i)/(nAlt*nPList));
+            update(progress,((iAlt-1)*nPList+i)/(nAlt*nPList));
         end
         
     end
@@ -236,29 +230,29 @@ for iAlt = 1 : nAlt
     % Steady-state-independent part.
     for i = 1 : nPList
         for j = i : nPList
-            fi = zeros(1, nFreq);
+            fi = zeros(1,nFreq);
             for k = 1 : nFreq
                 fi(k) = ...
-                    trace(real(Gi(:, :, k)*dG(:, :, k, i)*Gi(:, :, k)*dG(:, :, k, j)));
+                    trace(real(Gi(:,:,k)*dG(:,:,k,i)*Gi(:,:,k)*dG(:,:,k,j)));
             end
             if ~opt.deviation
                 % Add steady-state effect to zero frequency.
                 % We don't divide the effect by 2*pi because
                 % we skip dividing G by 2*pi, too.
-                A = dy(:, i)*dy(:, j)';
-                fi(1) = fi(1) + nPer*trace(Gi(:, :, 1)*(A + A'));
+                A = dy(:,i)*dy(:,j)';
+                fi(1) = fi(1) + NPer*trace(Gi(:,:,1)*(A + A'));
             end
-            FF(i, j, :, iAlt) = fi;
-            FF(j, i, :, iAlt) = fi;
-            f = delta*fi';
-            F(i, j, iAlt) = f;
-            F(j, i, iAlt) = f;
+            FF(i,j,:,iAlt) = fi;
+            FF(j,i,:,iAlt) = fi;
+            f = Delta*fi';
+            F(i,j,iAlt) = f;
+            F(j,i,iAlt) = f;
         end
     end
 
     if opt.percent
         P0 = diag(p0);
-        F(:, :, iAlt) = P0*F(:, :, iAlt)*P0;
+        F(:,:,iAlt) = P0*F(:,:,iAlt)*P0;
     end
     
 end
@@ -267,65 +261,61 @@ end
 FF = FF / 2;
 F = F / 2;
 
-return
+% Nested functions.
 
-
-
-
-    function [T, R, Z, H, Omg, nUnit] = getSspace( )
+%**************************************************************************
+    function [T,R,Z,H,Omg,nunit] = doGetSspace()
         T = m.solution{1};
-        nUnit = sum(this.Variant{1}.Stability==TYPE(1));
-        Z = m.solution{4}(~ixExclude, :);
-        T = T(nf+1:end, :);
+        [nx,nb] = size(T);
+        nf = nx - nb;
+        nunit = mynunit(m,1);
+        Z = m.solution{4}(~excl,:);
+        T = T(nf+1:end,:);
         % Cut off forward expansion.
-        R = m.solution{2}(nf+1:end, 1:ne);
-        H = m.solution{5}(~ixExclude, 1:ne);
+        ne = sum(m.nametype == 3);
+        R = m.solution{2}(nf+1:end,1:ne);
+        H = m.solution{5}(~excl,1:ne);
         Omg = omega(m);
-    end 
+    end % doGetSspace().
 
-
-
-    
-    function y = getSstate( )
+%**************************************************************************
+    function y = doGetSstate()
         % Get the steady-state levels for the measurement variables.
-        y = m.Variant{1}.Quantity(ixy);
+        y = m.Assign(This.nametype == 1);
         y = real(y);
         % Adjust for the excluded measurement variables.
-        y(ixExclude) = [ ];
-        % Take log of log variables; `ixYLog` has been already adjusted
+        y(excl) = [];
+        % Take log of log-variables; `ixYLog` has been already adjusted
         % for the excluded measurement variables.
         y(ixYLog) = log(y(ixYLog));
-    end 
-
-
-
+    end % doGetSstate().
 
 end 
 
+% Subfunctions.
 
-
-
-function [G, Gi] = computeSgfy(T, R, Z, H, Omg, nUnit, freq, opt)
+%**************************************************************************
+function [G,Gi] = xxSgfy(T,R,Z,H,Omg,nunit,freq,opt)
 % Spectrum generating function and its inverse.
 % Computationally optimised for observables.
-[ny, nb] = size(Z);
-nFreq = length(freq(:));
+[ny,nb] = size(Z);
+nfreq = length(freq(:));
 Sgm1 = R*Omg*R.';
 Sgm2 = H*Omg*H.';
-G = nan(ny, ny, nFreq);
-for i = 1 : nFreq
-    iFreq = freq(i);
-    if iFreq==0 && nUnit>0
+G = nan(ny,ny,nfreq);
+for i = 1 : nfreq
+    freqi = freq(i);
+    if freqi == 0 && nunit > 0
         % Exclude the unit-root part of the transition matrix, and compute SGF only
         % for the stable part. Stationary variables are unaffected.
-        Z0 = Z(:, nUnit+1:end);
-        T0 = T(nUnit+1:end, nUnit+1:end);
-        R0 = R(nUnit+1:end, :);
-        X = Z0 / (eye(nb-nUnit) - T0);
-        G(:, :, i) = trimSymmetric(X*(R0*Omg*R0.')*X' + Sgm2);
+        Z0 = Z(:,nunit+1:end);
+        T0 = T(nunit+1:end,nunit+1:end);
+        R0 = R(nunit+1:end,:);
+        X = Z0 / (eye(nb-nunit) - T0);
+        G(:,:,i) = xxSymmetric(X*(R0*Omg*R0.')*X' + Sgm2);
     else
-        X = Z/(eye(nb) - T*exp(-1i*iFreq));
-        G(:, :, i) = trimSymmetric(X*Sgm1*X' + Sgm2);
+        X = Z/(eye(nb) - T*exp(-1i*freqi));
+        G(:,:,i) = xxSymmetric(X*Sgm1*X' + Sgm2);
     end
     
 end
@@ -333,50 +323,45 @@ end
 % First, this cancels out in Gi*dG*Gi*dG
 % and second, we do not divide the steady-state effect
 % by 2*pi either.
-if nargout>1
-    Gi = nan(ny, ny, nFreq);
+if nargout > 1
+    Gi = nan(ny,ny,nfreq);
     if opt.chksgf
-        for i = 1 : nFreq
-            Gi(:, :, i) = computePseudoInverse(G(:, :, i), opt.tolerance);
+        for i = 1 : nfreq
+            Gi(:,:,i) = xxPInverse(G(:,:,i),opt.tolerance);
         end
     else
-        for i = 1 : nFreq
-            Gi(:, :, i) = inv(G(:, :, i));
+        for i = 1 : nfreq
+            Gi(:,:,i) = inv(G(:,:,i));
         end
     end
 end
-end 
+end % xxSgfy().
 
-
-
-
-function x = trimSymmetric(x)
+%**************************************************************************
+function x = xxSymmetric(x)
 % Minimise numerical inaccuracy between upper and lower parts
 % of symmetric matrices.
-ix = eye(size(x))==1;
-x = (x + x.')/2;
-x(ix) = real(x(ix));
-end 
+index = eye(size(x)) == 1;
+x = (x + x')/2;
+x(index) = real(x(index));
+end % xxSymmetric().
 
-
-
-
-function X = computePseudoInverse(A, Tol)
-c = class(A);
+%**************************************************************************
+function X = xxPInverse(A,Tol)
 if isempty(A)
-    X = zeros(size(A'), c);
+    X = zeros(size(A'),class(A));
     return
 end
-m = size(A, 1);
+m = size(A,1);
 s = svd(A);
-r = sum(s/s(1)>Tol);
-if r==0
-    X = zeros(size(A'), c);
-elseif r==m
+r = sum(s/s(1) > Tol);
+if r == 0
+    X = zeros(size(A'),class(A));
+elseif r == m
     X = inv(A);
 else
-    [U, ~, V] = svd(A, 0);
+    [U,~,V] = svd(A,0);
     S = diag(1./s(1:r));
-    X = V(:, 1:r)*S*U(:, 1:r)';
+    X = V(:,1:r)*S*U(:,1:r)';
 end
-end
+end % xxPInverse().

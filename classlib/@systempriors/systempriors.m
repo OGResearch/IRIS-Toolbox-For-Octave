@@ -1,7 +1,7 @@
-classdef systempriors < shared.UserDataContainer
-    % systempriors  System Priors (systempriors Objects).
+classdef systempriors < userdataobj
+    % systempriors  System Priors Objects and Functions.
     %
-    % System priors are priors imposed on the system properties of a model as
+    % System priors are priors imposed on the system properties of the model as
     % whole, such as shock response functions, frequency response functions,
     % correlations, or spectral densities; moreover, systempriors objects also
     % allow for priors on combinations of parameters. The system priors can be
@@ -27,36 +27,35 @@ classdef systempriors < shared.UserDataContainer
     % * [`length`](systempriors/length) - Number or priors in system priors object.
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
-    
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        Eval = cell(1,0);
-        PriorFn = cell(1,0);
-        LowerBnd = zeros(1,0);
-        UpperBnd = zeros(1,0);
-        UserString = cell(1,0);
-        Names = cell(1,0);
-        NameTypes = zeros(1,0);
-        SystemFn = struct( );
-        ShkSize = zeros(1,0);
-    end % properties
+        eval = cell(1,0);
+        priorFunc = cell(1,0);
+        lowerBound = zeros(1,0);
+        upperBound = zeros(1,0);
+        userString = cell(1,0);
+        yVec = cell(1,0);
+        xVec = cell(1,0);
+        eVec = cell(1,0);
+        name = cell(1,0);
+        eList = cell(1,0);
+        systemFunc = struct();
+        shockSize = zeros(1,0);
+    end % properties.
 
-    
     methods
         varargout = detail(varargin)
         varargout = disp(varargin)
         varargout = prior(varargin)
         varargout = isempty(varargin)
         varargout = length(varargin)        
-    end % methods
-    
+    end % methods.
     
     methods (Access=protected,Hidden)
         varargout = mydefinesystemfunc(varargin)
-    end % methods
-    
+    end % methods.
     
     methods
         function This = systempriors(varargin)
@@ -84,8 +83,8 @@ classdef systempriors < shared.UserDataContainer
             % Example
             % ========
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
 
             %--------------------------------------------------------------------------
             
@@ -102,17 +101,21 @@ classdef systempriors < shared.UserDataContainer
             if length(varargin) == 1 ...
                     && isa(varargin{1},'model')
                 m = varargin{1};
-                This.Names = implementGet(m,'name');
-                This.NameTypes = implementGet(m,'nametype');
-                ne = sum(This.NameTypes==3);
+                This.yVec = specget(m,'yvector');
+                This.xVec = specget(m,'xvector');
+                This.eVec = specget(m,'evector');
+                This.name = specget(m,'name');
+                ne = length(This.eVec);
                 if islinear(m)
-                    This.ShkSize = ones(1,ne);
+                    This.shockSize = ones(1,ne);
                 else
-                    This.ShkSize = log(1.01)*ones(1,ne);
+                    This.shockSize = 0.01*ones(1,ne);
                 end
-                This = mydefinesystemfunc(This,m);
+                This = mydefinesystemfunc(This);
             end
             
-        end % systempriors( )
-    end % methods
-end % classdef
+        end % systempriors().
+        
+    end % methods.
+
+end % classdef.

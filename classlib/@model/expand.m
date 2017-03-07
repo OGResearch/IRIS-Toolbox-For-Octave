@@ -1,10 +1,10 @@
-function this = expand(this, k)
+function This = expand(This,K)
 % expand  Compute forward expansion of model solution for anticipated shocks.
 %
 % Syntax
 % =======
 %
-%     M = expand(M, K)
+%     M = expand(M,K)
 %
 % Input arguments
 % ================
@@ -26,50 +26,44 @@ function this = expand(this, k)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-ixe = this.Quantity.Type==TYPE(31) | this.Quantity.Type==TYPE(32);
-ne = sum(ixe);
-nn = sum(this.Equation.IxHash);
-nAlt = length(this);
-
-if ne==0 && nn==0
+ne = sum(This.nametype == 3);
+nn = sum(This.IxNonlin);
+nAlt = size(This.Assign,3);
+if ne == 0 && nn == 0
     return
 end
 
 % Impact matrix of structural shocks.
-R = this.solution{2};
+R = This.solution{2};
 
 % Impact matrix of non-linear add-factors.
-Y = this.solution{8};
+Y = This.solution{8};
 
 % Expansion up to t+k0 available.
 k0 = size(R,2)/ne - 1;
 
 % Expansion up to t+k0 already available.
-if k0>=k
+if k0 >= K
     return
 end
 
 % Expand the R and Y solution matrices.
-this.solution{2}(:, end+(1:ne*(k-k0)), 1:nAlt) = NaN;
-this.solution{8}(:, end+(1:nn*(k-k0)), 1:nAlt) = NaN;
+This.solution{2}(:,end+(1:ne*(K-k0)),1:nAlt) = NaN;
+This.solution{8}(:,end+(1:nn*(K-k0)),1:nAlt) = NaN;
 for iAlt = 1 : nAlt
     % m.Expand{5} Jk stores J^(k-1) and needs to be updated after each
     % expansion.
-    [ this.solution{2}(:,:,iAlt), ...
-        this.solution{8}(:,:,iAlt), ...
-        this.Expand{5}(:,:,iAlt) ] = ...
-        model.myexpand( ...
-        R(:,:,iAlt), Y(:,:,iAlt), k, ...
-        this.Expand{1}(:,:,iAlt), this.Expand{2}(:,:,iAlt), this.Expand{3}(:,:,iAlt), ...
-        this.Expand{4}(:,:,iAlt), this.Expand{5}(:,:,iAlt), this.Expand{6}(:,:,iAlt) ...
-        );
+    [This.solution{2}(:,:,iAlt), ...
+        This.solution{8}(:,:,iAlt), ...
+        This.Expand{5}(:,:,iAlt)] = ...
+        model.myexpand(R(:,:,iAlt),Y(:,:,iAlt),K, ...
+        This.Expand{1}(:,:,iAlt),This.Expand{2}(:,:,iAlt),This.Expand{3}(:,:,iAlt), ...
+        This.Expand{4}(:,:,iAlt),This.Expand{5}(:,:,iAlt),This.Expand{6}(:,:,iAlt));
 end
 
 end

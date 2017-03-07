@@ -4,8 +4,8 @@ function C = printcaption(This,NCol,Just,Space)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     NCol; %#ok<*VUNUS>
@@ -92,7 +92,7 @@ while true
     end
     C = [C,br]; %#ok<AGROW>
     
-end % xxSplitTitle( )
+end % xxSplitTitle()
 
 
 end

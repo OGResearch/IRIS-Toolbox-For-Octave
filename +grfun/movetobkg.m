@@ -27,7 +27,7 @@ ch = get(Par,'children');
 for b = Bkg(:).'
     inx = ch == b;
     if any(inx)
-        ch(inx) = [ ];
+        ch(inx) = [];
         ch = [ch;b]; %#ok<AGROW>
     end
 end

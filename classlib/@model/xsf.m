@@ -1,4 +1,4 @@
-function [S, D, yxvec, freq] = xsf(this, freq, varargin)
+function [S,D,YXVec,Freq] = xsf(This,Freq,varargin)
 % xsf  Power spectrum and spectral density of model variables.
 %
 % Syntax
@@ -6,7 +6,6 @@ function [S, D, yxvec, freq] = xsf(this, freq, varargin)
 %
 %     [S,D,List] = xsf(M,Freq,...)
 %     [S,D,List,Freq] = xsf(M,NFreq,...)
-%
 %
 % Input arguments
 % ================
@@ -18,7 +17,6 @@ function [S, D, yxvec, freq] = xsf(this, freq, varargin)
 %
 % * `NFreq` [ numeric ] - Total number of requested frequencies; the
 % frequencies will be evenly spread between 0 and `pi`.
-%
 %
 % Output arguments
 % =================
@@ -33,12 +31,11 @@ function [S, D, yxvec, freq] = xsf(this, freq, varargin)
 % * `Freq` [ numeric ] - Vector of frequencies at which the XSFs has been
 % evaluated.
 %
-%
 % Options
 % ========
 %
-% * `'applyTo='` [ cellstr | char | *`@all`* ] - List of variables to which
-% the option `'filter='` will be applied; `@all` means all variables.
+% * `'applyTo='` [ cellstr | char | *`Inf`* ] - List of variables to which
+% the option `'filter='` will be applied; `Inf` means all variables.
 %
 % * `'filter='` [ char  | *empty* ] - Linear filter that is applied to
 % variables specified by 'applyto'.
@@ -56,61 +53,58 @@ function [S, D, yxvec, freq] = xsf(this, freq, varargin)
 % * `'select='` [ *`@all`* | char | cellstr ] - Return XSF for selected
 % variables only; `@all` means all variables.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.xsf',varargin{:});
 
-if isintscalar(freq)
-    nFreq = freq;
-    freq = linspace(0,pi,nFreq);
+if isintscalar(Freq)
+    nFreq = Freq;
+    Freq = linspace(0,pi,nFreq);
 else
-    freq = freq(:).';
-    nFreq = length(freq);
+    Freq = Freq(:).';
+    nFreq = length(Freq);
 end
 
 isDensity = nargout > 1;
 isSelect = ~isequal(opt.select,@all);
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = isanystri(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
-[ny, nxx] = sizeOfSolution(this.Vector);
-nAlt = length(this);
+ny = length(This.solutionid{1});
+nx = length(This.solutionid{2});
+nAlt = size(This.Assign,3);
 
 % Pre-process filter options.
-yxvec = printSolutionVector(this,'yx');
-[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,freq,yxvec);
+YXVec = myvector(This,'yx');
+[~,filter,~,applyTo] = freqdom.applyfilteropt(opt,Freq,YXVec);
 
 if opt.progress
-    progress = ProgressBar('IRIS VAR.xsf progress');
+    progress = progressbar('IRIS VAR.xsf progress');
 end
 
-S = nan(ny+nxx,ny+nxx,nFreq,nAlt);
-ixSolved = true(1,nAlt);
+S = nan(ny+nx,ny+nx,nFreq,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
-    [T,R,~,Z,H,~,U,Omega] = mysspace(this,iAlt,false);
+    [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
     
     % Continue immediately if solution is not available.
-    ixSolved(iAlt) = all(~isnan(T(:)));
-    if ~ixSolved(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
     
-    nUnit = sum(this.Variant{iAlt}.Stability==TYPE(1));
-    S(:,:,:,iAlt) = freqdom.xsf(T,R,[ ],Z,H,[ ],U,Omega,nUnit, ...
-        freq,filter,applyTo);
+    nUnit = mynunit(This,iAlt);
+    S(:,:,:,iAlt) = freqdom.xsf(T,R,[],Z,H,[],U,Omega,nUnit, ...
+        Freq,filter,applyTo);
     if opt.progress
         update(progress,iAlt/nAlt);
     end
@@ -118,34 +112,34 @@ end
 S = S / (2*pi);
 
 % Report NaN solutions.
-if ~all(ixSolved)
-    utils.warning('model:xsf', ...
+if ~all(isSol)
+    utils.warning('model', ...
         'Solution(s) not available %s.', ...
-        exception.Base.alt2str(~ixSolved) );
+        preparser.alt2str(~isSol));
 end
 
 % Convert power spectrum to spectral density.
 if isDensity
-    C = acf(this);
+    C = acf(This);
     D = freqdom.psf2sdf(S,C);
 end
 
 % Select variables if requested.
 if isSelect
-    [S,pos] = namedmat.myselect(S,yxvec,yxvec,opt.select,opt.select);
+    [S,pos] = namedmat.myselect(S,YXVec,YXVec,opt.select,opt.select);
     pos = pos{1};
-    yxvec = yxvec(pos);
+    YXVec = YXVec(pos);
     if isDensity
         D = D(pos,pos,:,:,:);
     end
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert double arrays to namedmat objects if requested.
     if isNamedMat
-        S = namedmat(S,yxvec,yxvec);
+        S = namedmat(S,YXVec,YXVec);
         try %#ok<TRYNC>
-            D = namedmat(D,yxvec,yxvec);
+            D = namedmat(D,YXVec,YXVec);
         end
     end
 else

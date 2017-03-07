@@ -3,8 +3,8 @@ function [varargout] = destdize(varargin)
 %
 % See help on [`tseries/destdise`](tseries/destdise).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 

@@ -4,8 +4,8 @@ function [Obj,V,Est,PEst] = oolik(LogDetF,PeFiPe,MtFiM,MtFiPe,NObs,Opt)
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 
@@ -49,7 +49,7 @@ if Opt.relative && Opt.objfunc == 1
 end
 
 % Put together the requested objective function.
-if Opt.objfunc==1
+if Opt.objfunc == 1
     % Minus log likelihood.
     log2Pi = log(2*pi);
     Obj = (sumNObs*log2Pi + sumLogDetF + sumPeFiPe) / 2;

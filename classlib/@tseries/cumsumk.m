@@ -70,24 +70,24 @@ function X = cumsumk(X,K,Rho,varargin)
 % with `x1 = cumsumk(x)`.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    K; %#ok<VUNUS>
+    K;
 catch
     K = -max(1,datfreq(X.start));
 end         
 
 try
-    Rho; %#ok<VUNUS>
+    Rho;
 catch
     Rho = 1;
 end
 
 if ~isempty(varargin) && ~ischar(varargin{1})
     Range = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
     Range = Inf;
 end
@@ -98,9 +98,9 @@ if K == 0
     return
 end
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-dataSize = size(X.data);
+datasize = size(X.data);
 X.data = X.data(:,:);
 [data,range] = rangedata(X,Range);
 
@@ -115,10 +115,10 @@ if opt.log
 end
 
 X.start = range(1);
-if length(dataSize) == 2
+if length(datasize) == 2
     X.data = data;
 else
-    X.data = reshape(data,[size(data,1),dataSize(2:end)]);
+    X.data = reshape(data,[size(data,1),datasize(2:end)]);
 end
 
 end

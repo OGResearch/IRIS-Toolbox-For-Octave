@@ -41,8 +41,8 @@
 % * `'separator='` [ char | *`'\medskip\par'`* ] - (Inheritable from parent
 % objects) LaTeX commands that will be inserted after the figure.
 %
-% * `'figureOpt='` [ cell | *empty* ] - Figure options that will be applied
-% to the figure handle at opening.
+% * `'figureOptions='` [ cell | *empty* ] - Figure options that will be
+% applied to the figure handle at opening.
 %
 % * `'figureScale='` [ numeric | *`0.85`* ] - (Inheritable from parent objects)
 % Scale of the figure in the LaTeX document.
@@ -58,7 +58,7 @@
 % Print the table rotated by 90 degrees.
 %
 % * `'style='` [ struct | *empty* ] - Apply this cascading style structure
-% to the figure; see [`grfun.style`](grfun/style).
+% to the figure; see [`qstyle`](qreport/qstyle).
 %
 % * `'subplot='` [ numeric | *`'auto'`* ] - (Inheritable from parent objects)
 % Subplot division of the figure.
@@ -110,5 +110,5 @@
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

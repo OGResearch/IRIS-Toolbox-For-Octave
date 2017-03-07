@@ -20,15 +20,15 @@ function d = tsd2dbase(fname,varargin)
 %     'nan' [ numeric <a href="default.html">1e15</a> ] Numerical value for missing observations.
 %     'replace' [ char | <a href="default.html">'_'</a> ] Replace other-than-word characters in time series names with this one.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % old syntax tsd2dbase(fname,d)
 if ~isempty(varargin) && isstruct(varargin{1})
   options.merge = varargin{1};
-  varargin(1) = [ ];
+  varargin(1) = [];
 else
-  options.merge = [ ];
+  options.merge = [];
 end
 
 default = {...
@@ -45,7 +45,7 @@ options = passvalopt(default,varargin{:});
 if isstruct(options.merge) && ~isempty(options.merge)
   d = options.merge;
 else 
-  d = struct( );
+  d = struct();
 end
 
 fid = fopen(fname,'r');
@@ -54,20 +54,20 @@ if fid == -1
 end
 
 freqlist = [1,2,4,6,12];
-template = tseries( );
+template = tseries();
 line = fgetl(fid);
 count = 0;
-invalidname = [ ];
-invalidrange = { };
-invalidfreq = { };
-invalidlength = { };
+invalidname = [];
+invalidrange = {};
+invalidfreq = {};
+invalidlength = {};
 
 % When EOF is reached, line == -1.
 while ischar(line)
    count = count + 1;
    % Find first data line.
-   header = { };
-   data = { };
+   header = {};
+   data = {};
    while ischar(line) && ~isdataline_(line)
       header{end+1} = line;
       line = fgetl(fid);
@@ -87,7 +87,7 @@ while ischar(line)
       continue
    end
    d.(name) = template;
-   d.(name) = stampMe(d.(name));
+   d.(name) = mystamp(d.(name));
    % Fetch comments from Multi-line headers.
    comment = strtrim(header{1}(16:end));
    for i = 2 : length(header)-1
@@ -143,15 +143,15 @@ end
 
 
 %**************************************************************************
-%! Subfunction isdataline_( ).
+%! Subfunction isdataline_().
 
 function flag = isdataline_(x)
    flag = ~isempty(regexp(x,'^\s*(?:[ \-]\d\.\d{6}E[\+\-]\d{4}){1,5}\s*$','match','once'));
 end
-% End of subfunction isdataline_( ).
+% End of subfunction isdataline_().
 
 %**************************************************************************
-%! Subfunction name_( ).
+%! Subfunction name_().
 
 function x = getname_(x,options)
    x = strtrim(x);
@@ -169,7 +169,7 @@ function x = getname_(x,options)
    % Replace characters other than a-zA-Z0-9_ with options.replace.
    x = regexprep(x,'[^\w]',options.replace);
 end
-% End of subfunction name_( ).
+% End of subfunction name_().
 
 
 
@@ -196,7 +196,7 @@ switch code
 end
 
 if nargin == 1
-    list = { };
+    list = {};
 end
 
 utils.warning('io',msg,list{:});

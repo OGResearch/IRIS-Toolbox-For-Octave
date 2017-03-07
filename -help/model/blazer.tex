@@ -1,0 +1,48 @@
+
+
+    \filetitle{blazer}{Reorder steady-state equations into block-recursive structure}{model/blazer}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[NameBlk,EqtnBlk] = blazer(M,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{M} {[} model {]} - Model object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object with variables and
+  steady-state equations regrouped to create block-recursive structure.
+\item
+  \texttt{NameBlk} {[} cell {]} - Cell of cellstr with variable names in
+  each block.
+\item
+  \texttt{EqtnBlk} {[} cell {]} - Cell of cellstr with equations in each
+  block.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The reordering algorithm first identifies equations with a single
+variable in each, and variables occurring in a single equation each, and
+then uses a combination of column and row approximate minimum degree
+permutations (\texttt{colamd}) followed by a Dulmage-Mendelsohn
+permutation (\texttt{dmperm}).
+
+The output arguments \texttt{NameBlk} and \texttt{EqtnBlk} are 1-by-N
+cell arrays, where N is the number of blocks, and each cell is a 1-by-Kn
+cell array of strings, where Kn is the number of variables and equations
+in block N.
+
+\paragraph{Example}\label{example}
+
+

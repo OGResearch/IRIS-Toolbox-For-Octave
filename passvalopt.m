@@ -1,242 +1,222 @@
-function varargout = passvalopt(spec, varargin)
-% passvalopt  Pass in and validate optional arguments. Initialise and
-% permanently store default options for IRIS functions. If called with two
-% output arguments, it passes out unused option names-values and does not
-% throw a warning.
+function [Opt,varargout] = passvalopt(Spec,varargin)
+% passvalopt  [Not a public function] Pass in and validate optional
+% arguments. Initialise and permanently store default options for IRIS
+% functions. If called with two output arguments, it passes out unused
+% option names-values and does not throw a warning.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent DEF CONFIG;
 
-if (nargin==0 && nargout==0) || isempty(DEF)
+if (nargin == 0 && nargout == 0) || isempty(DEF)
     % Initialise default options, and store them as a persistent struct.
-    munlock( );
+    munlock();
     clear passvalopt;
-    initialize( );
-    mlock( );
+    DEF = struct();
+    DEF.dates = irisopt.dates();
+    DEF.dbase = irisopt.dbase();
+    DEF.dest = irisopt.dest();
+    DEF.estimateobj = irisopt.estimateobj();
+    DEF.FAVAR = irisopt.FAVAR();
+    DEF.fragileobj = irisopt.fragileobj();
+    DEF.freqdom = irisopt.freqdom();
+    DEF.grfun = irisopt.grfun();
+    DEF.grouping = irisopt.grouping();
+    DEF.iris = irisopt.IRIS();
+    DEF.latex = irisopt.latex();
+    DEF.likfunc = irisopt.likfunc();
+    DEF.model = irisopt.model();
+    DEF.modelobj = irisopt.modelobj();
+    DEF.nnet = irisopt.nnet();
+    DEF.optim = irisopt.optim();
+    DEF.poster = irisopt.poster();
+    DEF.preparser = irisopt.preparser();
+    DEF.qreport = irisopt.qreport();
+    DEF.report = irisopt.report();
+    DEF.sstate = irisopt.sstate();
+    DEF.strfun = irisopt.strfun();
+    DEF.SVAR = irisopt.SVAR();
+    DEF.systempriors = irisopt.systempriors();
+    DEF.tseries = irisopt.tseries();
+    DEF.VAR = irisopt.VAR();
+    DEF.varobj = irisopt.varobj();
+    folderList = fieldnames(DEF);
+    for i = 1 : length(folderList)
+        funcList = fieldnames(DEF.(folderList{i}));
+        for j = 1 : length(funcList)
+            DEF.(folderList{i}).(funcList{j}) = ...
+                xxConvert(DEF.(folderList{i}).(funcList{j}));
+        end
+    end
+    mlock();
 end
 
-if nargout==0
+if nargout == 0
     return
-elseif nargin==0
-    varargout{1} = DEF;
+elseif nargin == 0
+    Opt = DEF;
     return
 end
 
 %--------------------------------------------------------------------------
 
-if ischar(spec)
-    spl = strsplit(spec, '.');
-    spec = DEF.(spl{1}).(spl{2});
+if ischar(Spec)
+    dotPos = strfind(Spec,'.');
+    Spec = DEF.(Spec(1:dotPos-1)).(Spec(dotPos+1:end));
 else
-    spec = list2struct(spec);
+    Spec = xxConvert(Spec);
 end
 
-defaultName = spec.Name;
-defaultPrimaryName = spec.PrimaryName;
-changed = spec.Changed;
-validate = spec.Validate;
-opt = spec.Options;
+defaultName = Spec.name;
+defaultPrimaryName = Spec.primaryname;
+changed = Spec.changed;
+validate = Spec.validate;
+Opt = Spec.options;
 
 % Return list of unused options.
-lsUnused = cell(1, 0);
+varargout{1} = {};
 
 if ~isempty(varargin)
     if iscellstr(varargin(1:2:end))
-        % Called passvalopt(Spec, 'Name=', Value,...).
+        % Called passvalopt(spec,'name',value,...).
         % This is the preferred way.
         userName = varargin(1:2:end);
         userValue = varargin(2:2:end);
         
-    elseif nargin==2 && isstruct(varargin{1})
-        % Called passvalopt(Spec, struct).
+    elseif nargin == 2 && isstruct(varargin{1})
+        % Called passvalopt(spec,struct).
         userName = fieldnames(varargin{1});
         userValue = struct2cell(varargin{1})';
         
-    elseif nargin==2 && iscell(varargin{1})
-        % Called passvalopt(Spec, {'Name=', Value}).
+    elseif nargin == 2 && iscell(varargin{1});
+        % Called passvalopt(spec,{'name',value}).
         userName = varargin{1}(1:2:end);
         userValue = varargin{1}(2:2:end);
     else
-        utils.error('iris:passvalopt', ...
+        utils.error('options', ...
             'Incorrect list of user options.');
     end
     
-    if length(userName)>length(userValue)
-        utils.error('iris:passvalopt', ...
-            'No value assigned to the last option: %s', ...
+    if length(userName) > length(userValue)
+        utils.error('options',...
+            'No value assigned to the last option: ''%s''.', ...
             varargin{end});
     end
     
     % Remove non-alphanumeric characters from user names; this is primarily
     % meant to deal with the optional equal signs in option names.
-    userName = regexp(userName, '[a-zA-Z]\w*', 'once', 'match');
+    userName = regexp(userName,'[a-zA-Z]\w*','once','match');
     
     % List of primary option names specified by the user; this is used to check
     % conflicting options.
-    userPrimaryName = { };
+    userPrimaryName = {};
     
     for i = 1 : length(userName)
         if isempty(userName{i})
             continue
         end
-        pos = strcmpi(userName{i}, defaultName);
-        if any(pos)
-            pos = find(pos,1);
+        dotPos = strcmpi(userName{i},defaultName);
+        if any(dotPos)
+            pos = find(dotPos,1);
             name = defaultPrimaryName{pos};
             userPrimaryName{end+1} = name; %#ok<AGROW>
-            opt.(name) = userValue{i};
+            Opt.(name) = userValue{i};
             changed.(name) = userName{i};
         else
-            lsUnused{end+1} = userName{i}; %#ok<AGROW>
-            lsUnused{end+1} = userValue{i}; %#ok<AGROW>
+            varargout{1}{end+1} = userName{i};
+            varargout{1}{end+1} = userValue{i};
         end
     end
     
-    if nargout==1 && ~isempty(lsUnused)
-        throw( ...
-            exception.Base('Options:InvalidObsolete', 'error'), ...
-            lsUnused{1:2:end} ...
-            );
+    if nargout == 1 && ~isempty(varargout{1})
+        utils.error('options',...
+            'Invalid or obsolete option: ''%s''.',...
+            varargout{1}{1:2:end});
     end
     
     % Validate the user-supplied options; default options are NOT validated.
-    lsInvalid = { };
-    list = fieldnames(opt);
-    for i = 1 : numel(list)
+    invalid = {};
+    list = fieldnames(Opt);
+    for i = 1 : length(list)
         if isempty(changed.(list{i}))
             continue
         end
-        value = opt.(list{i});
+        value = Opt.(list{i});
         validFunc = validate.(list{i});
         if ~isempty(validFunc)
-            if isequal(validFunc, @config)
+            if isequal(validFunc,@config)
                 if isempty(CONFIG)
                     CONFIG = irisconfigmaster('get');
                 end
                 validFunc = CONFIG.validate.(list{i});
             end
             if ~feval(validFunc,value)
-                lsInvalid{end+1} = changed.(list{i}); %#ok<AGROW>
-                lsInvalid{end+1} = func2str(validate.(list{i})); %#ok<AGROW>
+                invalid{end+1} = changed.(list{i}); %#ok<AGROW>
+                invalid{end+1} = func2str(validate.(list{i})); %#ok<AGROW>
             end
         end
     end
-
-    if ~isempty(lsInvalid)
-        throw( ...
-            exception.Base('Options:FailsValidation', 'error'), ....
-            lsInvalid{:} ...
-            );
-    end
+    
+    if ~isempty(invalid)
+        utils.error('options',...
+            ['Value assigned to option ''%s='' ', ...
+            'does not pass validation ''%s''.'],...
+            invalid{:});
+    end       
 end
 
 % Evaluate @auto options
 %------------------------
-list = fieldnames(opt);
+list = fieldnames(Opt);
 for i = 1 : length(list)
-    value = opt.(list{i});
-    if isa(value,'function_handle') && isequal(value, @auto)
+    value = Opt.(list{i});
+    if isa(value,'function_handle') && isequal(value,@auto)
         try %#ok<TRYNC>
-            opt = feval(['irisopt.auto.', list{i}], opt);
+            Opt = feval(['irisauto.',list{i}],Opt);
         end
     end
 end
 
-varargout = { opt, lsUnused };
-
-return
-
-
-
-
-    function initialize( )
-        DEF = struct( );
-        DEF.dates = irisopt.dates( );
-        DEF.dbase = irisopt.dbase( );
-        DEF.dest = irisopt.dest( );
-        DEF.Estimation = irisopt.Estimation( );
-        DEF.FAVAR = irisopt.FAVAR( );
-        DEF.fragileobj = irisopt.fragileobj( );
-        DEF.freqdom = irisopt.freqdom( );
-        DEF.Global = irisopt.Global( );
-        DEF.HData = irisopt.HData( );
-        DEF.grfun = irisopt.grfun( );
-        DEF.grouping = irisopt.grouping( );
-        DEF.iris = irisopt.IRIS( );
-        DEF.irisoptim = irisopt.irisoptim( );
-        DEF.latex = irisopt.latex( );
-        DEF.model = irisopt.model( );
-        DEF.nnet = irisopt.nnet( );
-        DEF.poster = irisopt.poster( );
-        DEF.report = irisopt.report( );
-        DEF.rpteq = irisopt.rpteq( );
-        DEF.solver = irisopt.solver( );
-        DEF.sstate = irisopt.sstate( );
-        DEF.textfun = irisopt.textfun( );
-        DEF.SVAR = irisopt.SVAR( );
-        DEF.systempriors = irisopt.systempriors( );
-        DEF.theparser = irisopt.theparser( );
-        DEF.tseries = irisopt.tseries( );
-        DEF.VAR = irisopt.VAR( );
-        DEF.varobj = irisopt.varobj( );
-        DEF.XlsSheet = irisopt.XlsSheet( );
-        lsFolder = fieldnames(DEF);
-        for ii = 1 : numel(lsFolder)
-            folder = lsFolder{ii};
-            lsFunc = fieldnames(DEF.(folder));
-            for jj = 1 : numel(lsFunc)
-                func = lsFunc{jj};
-                DEF.(folder).(func) = list2struct(DEF.(folder).(func));
-            end
-        end
-    end
 end
 
 
+% Subfunctions...
 
 
-function y = list2struct(x)
-y = struct( );
-if isempty(x)
-    return
-end
-if size(x, 1)==1 && size(x, 2)>3
-    x = reshape(x, 3, size(x, 2)/3).';
-end
+%**************************************************************************
 
-lsName = x(:, 1);
-nName = numel(lsName);
-lsName = regexp(lsName, '[a-zA-Z]\w*', 'match');
-lsPrimaryName = { };
-options = struct( );
-changed = struct( );
-validate = struct( );
+
+function Y = xxConvert(X)
+name = X(1:3:end);
+nName = length(name);
+name = regexp(name,'[a-zA-Z]\w*','match');
+primaryName = {};
+options = struct();
+changed = struct();
+validate = struct();
 
 for i = 1 : nName
-    name = lsName{i};
-    primaryName = name{1};
-    n = length(name);
+    n = length(name{i});
     % List of primary names.
-    lsPrimaryName = [lsPrimaryName, repmat( { primaryName }, 1, n)]; %#ok<AGROW>
-    options.(name{1}) = x{i, 2};
+    primaryName = [primaryName,name{i}(ones(1,n))]; %#ok<AGROW>
+    options.(name{i}{1}) = X{(i-1)*3+2};
     % If this option is changed, save the exact name the user used so that an
     % error can refer to it should the user value fail to validate.
-    changed.(name{1}) = '';
+    changed.(name{i}{1}) = '';
     % Anonymous functions to validate user supplied values.
-    validate.(name{1}) = x{i, 3};
+    validate.(name{i}{1}) = X{(i-1)*3+3};
 end
+% List of all possible names; name{i} maps into primaryname{i}.
+name = [name{:}];
 
-% List of all possible names; name{i} maps into primaryName{i}.
-lsName = [ lsName{:} ];
-
-y.Name = lsName; % List of all possible option names.
-y.PrimaryName = lsPrimaryName; % List of corresponding primary names.
-y.Options = options; % Struct with primary names and default values.
-y.Changed = changed; % Struct with empty chars, to be filled with the names used actually by the user.
-y.Validate = validate; % Struct with validating functions.
-end
+Y = struct();
+Y.name = name; % List of all possible option names.
+Y.primaryname = primaryName; % List of corresponding primary names.
+Y.options = options; % Struct with primary names and default values.
+Y.changed = changed; % Struct with empty chars, to be filled with the names used actually by the user.
+Y.validate = validate; % Struct with validating functions.
+end % xxConvert()

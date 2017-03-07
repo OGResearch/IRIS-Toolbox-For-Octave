@@ -24,15 +24,15 @@ function NFitted = nfitted(This)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 nAlt = size(This.A,3);
 NFitted = nan(1,nAlt);
 for iAlt = 1 : nAlt
-    iFitted = This.IxFitted(:,:,iAlt);
+    iFitted = This.Fitted(:,:,iAlt);
     NFitted(iAlt) = sum(double(iFitted(:)));
 end
 

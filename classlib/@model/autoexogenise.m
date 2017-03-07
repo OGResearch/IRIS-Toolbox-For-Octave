@@ -1,18 +1,95 @@
-function varargout = autoexogenise(this, varargin)
-% autoexogenise  Obsolete function; use autoexog instead.
+function varargout = autoexogenise(This,varargin)
+% autoexogenise  Get or set variable/shock pairs for use in autoexogenised simulation plans.
 %
-% Obsolete IRIS function.
-% No help provided.
+% Syntax fo getting autoexogenised variable/shock pairs
+% ======================================================
+%
+%     A = autoexogenise(M)
+%
+% Syntax fo setting autoexogenised variable/shock pairs
+% ======================================================
+%
+%     M = autoexogenise(M,A)
+%
+% Input arguments
+% ================
+%
+% * `M` [ model ] - Model object.
+%
+% * `A` [ struct | empty ] - Database with each field representing a
+% variable/shock pair, A.Variable_Name = 'Shock_Name', that can be used in
+% building [simulation plans](plan/Contents) by the plan function
+% [`autoexogenise`](plan/autoexogenise).
+%
+% Output arguments
+% =================
+%
+% * `M` [ model ] - Model object with updated definitions of autoexogenised
+% variable/shock pairs.
+%
+% Description
+% ============
+%
+% Whenever you set the autoexogenised variable/shock pairs, the previously
+% assigned pairs are removed, and replaced with the new ones in `A`. In
+% other words, the new pairs are not added to the existing ones, the
+% replace them.
+%
+% Example 
+% ========
+%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[varargout{1:nargout}] = autoexog(this, varargin{:});
-
 if isempty(varargin)
-    varargout{1} = varargout{1}.Dynamic;
+    varargout{1} = doGetAutoExogenise();
+else
+    doSetAutoExogenise();
+    varargout{1} = This;
 end
+
+
+% Nested functions...
+
+
+%**************************************************************************
+
+    
+    function A = doGetAutoExogenise()
+        inx = ~isnan(This.Autoexogenise);
+        if any(inx)
+            xylist = This.name(inx);
+            elist = This.name(This.Autoexogenise(inx));
+            A = cell2struct(elist,xylist,2);
+        else
+            A = struct();
+        end
+    end % doGetAutoexogenise()
+
+
+%**************************************************************************
+
+    
+    function doSetAutoExogenise()
+        xyList = fieldnames(varargin{1});
+        eList = struct2cell(varargin{1});
+        % `This.Autoexogenise` is reset to NaNs within `myautoexogenise`.
+        [This,invalid,multiple] = myautoexogenise(This,xyList,eList);
+        if any(invalid)
+            utils.error('model', ...
+                'Cannot autoexogenise the following name: ''%s''.', ...
+                xyList{invalid});
+        end
+        if ~isempty(multiple)
+            utils.warning('model:myautoexogenise', ...
+                ['This shock is included in more than one ', ...
+                'autoexogenise definitions: ''%s''.'], ...
+                multiple{:});
+        end
+    end % doSetAutoExogenise()
+
 
 end

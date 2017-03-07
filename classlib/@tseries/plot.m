@@ -14,10 +14,10 @@ function varargout = plot(varargin)
 % * `Ax` [ numeric ] - Handle to axes in which the graph will be plotted;
 % if not specified, the current axes will used.
 %
-% * `Range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
-% * `X` [ tseries ] - Input tseries object whose columns will be plotted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % a line graph.
 %
 % Output arguments
@@ -67,23 +67,18 @@ function varargout = plot(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% AREA, BAND, BAR, BARCON, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
+% AREA, BAR, PLOT, CONBAR, PLOTCMP, PLOTYY, STEM
 
 % TODO: Add help on date format related options.
 
 % TODO: Document the use of half-ranges in plot functions [-Inf,date],
 % [date,Inf].
 
-[Ax,Rng,X,PlotSpec,varargin] = ...
-    irisinp.parser.parse('tseries.plot',varargin{:});
-[opt,varargin] = passvalopt('tseries.plot',varargin{:});
-
 %--------------------------------------------------------------------------
 
-[~,varargout{1:nargout}] = ...
-    tseries.myplot(@plot,Ax,Rng,[ ],X,PlotSpec,opt,varargin{:});
+[varargout{1:nargout}] = tseries.myplot(@plot,varargin{:});
 
 end

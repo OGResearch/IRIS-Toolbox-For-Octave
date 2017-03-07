@@ -1,41 +1,47 @@
-function R = cov2corr(C)
-% cov2corr  Autocovariance to autocorrelation function conversion.
+function R = cov2corr(C,varargin)
+% cov2corr  [Not a public function] Autocovariance to autocorrelation function conversion.
+%
+% Syntax
+% =======
+%
+%     R = covfun.cov2corr(C)
+%     R = covfun.cov2corr(C,'acf')
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% The input matrix C must be ne-ne-nPer-nAlt where nPer is the number of
-% lags or periods. Std errors will be taken from the first page in 3rd
-% dimension of each parameterisation. Otherwise, std errors will be updated
-% for each individual matrix.
+% If called from within `acf` functions, std errors will be taken from
+% the first page of each parameterisation. Otherwise, std errors will
+% be updated for each individual matrix.
+isAcf = any(strcmpi(varargin,'acf'));
 
 %--------------------------------------------------------------------------
 
 R = C;
-realSmall = getrealsmall( );
-nAlt = size(R, 4);
-ixDiag = eye(size(R,1))==1;
+realSmall = getrealsmall();
+nAlt = size(R,4);
+diagInx = eye(size(R,1)) == 1;
 
 for iAlt = 1 : nAlt
-    for iLag = 1 : size(R,3)
-        Ri = C(:, :, iLag, iAlt);
-        if iLag==1
-            invStd = diag(Ri);
-            ixNonzero = abs(invStd)>realSmall;
-            invStd(ixNonzero) = 1./sqrt(invStd(ixNonzero));
-            D = invStd * invStd.';
+    for i = 1 : size(R,3)
+        Ri = C(:,:,i,iAlt);
+        if i == 1 || ~isAcf
+            stdInv = diag(Ri);
+            nonZero = abs(stdInv) > realSmall;
+            stdInv(nonZero) = 1./sqrt(stdInv(nonZero));
+            D = stdInv * stdInv.';
         end
-        ixFinite = isfinite(Ri);
-        Ri(~ixFinite) = 0;
+        inx = ~isfinite(Ri);
+        Ri(inx) = 0;
         Ri = D .* Ri;
-        Ri(~ixFinite) = NaN;
-        if iLag==1
-            Ri(ixDiag) = 1;
+        Ri(inx) = NaN;
+        if i == 1 || ~isAcf
+            Ri(diagInx) = 1;
         end
-        R(:, :, iLag, iAlt) = Ri;
+        R(:,:,i,iAlt) = Ri;
     end
 end
 

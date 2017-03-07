@@ -1,46 +1,28 @@
-function outp = mygroupmethod(func, this, inp, varargin)
-% mygroupmethod  Implement methods requiring input data for panel VARs.
+function Outp = mygroupmethod(Func,This,Inp,varargin)
+% mygroupmethod  [Not a public function] Implement varobj methods requiring input data for panel VARs.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Empty input data are allowed in `resample`.
-isEmptyInp = isempty(inp);
+isEmptyInp = isempty(Inp);
 
 %--------------------------------------------------------------------------
 
-nGrp = length(this.GroupNames);
-outp = struct( );
-
-% Verify that input data contain fields for each group.
-if ~isEmptyInp
-    ixValid = true(1, nGrp);
-    for iGrp = 1 : nGrp
-        name = this.GroupNames{iGrp};
-        try
-            inp.(name);
-        catch
-            ixValid(iGrp) = false;
-        end
-    end
-    if any(~ixValid)
-        throw( exception.Base('VAR:GROUP_NOT_INPUT_DATA', 'error'), ...
-            this.GroupNames{~ixValid} );
-    end
-end
-
+nGrp = length(This.GroupNames);
+Outp = struct();
 for iGrp = 1 : nGrp
-    name = this.GroupNames{iGrp};
-    iThis = group(this, name);
+    name = This.GroupNames{iGrp};
+    iThis = group(This,name);
     if isEmptyInp
-        iInp = [ ];
+        iInp = [];
     else
-        iInp = inp.(name);
+        iInp = Inp.(name);
     end
-    outp.(name) = func(iThis, iInp, varargin{:});
+    Outp.(name) = Func(iThis,iInp,varargin{:});
 end
 
 end

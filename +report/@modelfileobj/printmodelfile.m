@@ -4,8 +4,8 @@ function C = printmodelfile(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ else
 end
 
 % Choose escape character.
-escList = '`@?$#~&":|!^[ ]{ }<>';
+escList = '`@?$#~&":|!^[]{}<>';
 esc = xxChooseEscChar(file,escList);
 if isempty(esc)
     utils.error('report', ...
@@ -77,7 +77,7 @@ C = strrep(C,['\verb',esc,esc],'');
 
         if This.options.syntax
             % Keywords.
-            if true % ##### MOSW
+            if false % ##### MOSW
                 keywordsFunc = @doKeywords; %#ok<NASGU>
                 C = regexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
@@ -85,7 +85,7 @@ C = strrep(C,['\verb',esc,esc],'');
             else
                 C = mosw.dregexprep(C, ...
                     '!!|!\<\w+\>|=#|&\<\w+>|\$.*?\$', ...
-                    @doKeywords,0); %#ok<UNRCH>
+                    'doKeywords',0); %#ok<UNRCH>
             end
             % Line comments.
             if ~isempty(lineComment)
@@ -101,7 +101,7 @@ C = strrep(C,['\verb',esc,esc],'');
         if isModel && This.options.paramvalues
             % Find words not preceeded by an !; whether they really are
             % parameter names or std errors is verified within doParamVal.
-            if true % ##### MOSW
+            if false % ##### MOSW
                 paramValFunc = @doParamVal; %#ok<NASGU>
                 C = regexprep(C, ...
                     '(?<!!)\<\w+\>', ...
@@ -109,7 +109,7 @@ C = strrep(C,['\verb',esc,esc],'');
             else
                 C = mosw.dregexprep(C, ...
                     '(?<!!)\<\w+\>', ...
-                    @doParamVal,0); %#ok<UNRCH>
+                    'doParamVal',0); %#ok<UNRCH>
             end
         end
         
@@ -162,7 +162,7 @@ C = strrep(C,['\verb',esc,esc],'');
                 prefix,value,'}\right>$}'];
             C = [C,esc,value,verbEsc];
         end
-    end % doOneLine( )
+    end % doOneLine()
 
 end
 
@@ -204,7 +204,7 @@ for i = 1 : length(Labels.Store)
     Labels.Close{i} = close;
 end
 
-end % xxLabelsBack( )
+end % xxLabelSyntax()
 
 
 %**************************************************************************
@@ -220,4 +220,4 @@ for i = 1 : length(EscList)
     end
 end
 
-end % xxChooseEscChar( )
+end % xxChooseEscChar()

@@ -1,9 +1,9 @@
-classdef grouping < shared.UserDataContainer & shared.GetterSetter
-    % grouping  Grouping and Aggregation of Contributions (grouping Objects).
+classdef grouping < userdataobj & getsetobj
+    % grouping  Grouping Objects for Aggregation of Contributions.
     %
     % Grouping objects can be used for aggregating the contributions of shocks
     % in model simulations, [`model/simulate`](model/simulate), or aggregating
-    % the contributions of measurement variables in Kalman filtering, 
+    % the contributions of measurement variables in Kalman filtering,
     % [`model/filter`](model/filter).
     %
     % Grouping methods:
@@ -13,20 +13,17 @@ classdef grouping < shared.UserDataContainer & shared.GetterSetter
     %
     % * [`grouping`](grouping/grouping) - Create new empty grouping object.
     %
-    %
     % Getting information about groups
     % =================================
     %
     % * [`detail`](grouping/detail) - Details of a grouping object.
     % * [`isempty`](grouping/isempty) - True for empty grouping object.
     %
-    %
     % Setting up and using groups
     % ============================
     %
     % * [`addgroup`](grouping/addgroup) - Add measurement variable group or shock group to grouping object.
     % * [`eval`](grouping/eval) - Evaluate contributions in input database S using grouping object G.
-    %
     %
     % Getting on-line help on groups
     % ===============================
@@ -35,145 +32,120 @@ classdef grouping < shared.UserDataContainer & shared.GetterSetter
     %     help grouping/function_name
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
-    properties (Hidden)
-        Type = ''
-        GroupNames = cell(1, 0)
-        GroupContents = cell(1, 0)
+    properties ( Hidden) %GetAccess=protected, SetAccess=protected,
+        type = '' ;
+        groupNames = cell(1,0) ;
+        groupContents = cell(1,0) ;
         
-        List = cell(1, 0)
-        Label = cell(1, 0)        
-        IsLog = struct( )
+        logVars = struct() ;
+        list = cell(1,0) ;
+        descript = cell(1,0) ;
+        
+        otherName = 'Other';
+%         constName = 'Init+Const';
+%         nonlinName = 'Nonlinear';
     end
-    
-    
-    
     
     properties (Hidden, Dependent)
-        OtherContents
+        otherContents ;
     end
-    
-    
-    
-    
-    properties (Constant)
-        OTHER_NAME = 'Other';
-    end
-    
-    
-    
     
     methods
-        function this = grouping(varargin)
+        
+        function This = grouping(varargin)
             % grouping  Create new empty grouping object.
             %
             % Syntax
             % =======
             %
-            %     g = grouping(m, type, ...)
-            %
+            %     G = grouping(M,Type)
             %
             % Input arguments
             % ================
             %
-            % * `m` [ model ] - Model object.
+            % * `M` [ model ] - Model object.
             %
-            % * `type` [ `'shock'` | `'measurement'` ] - Type of grouping object.
-            %
+            % * `Type` [ `'shock'` | `'measurement'` ] - Type of grouping object.
             %
             % Output arguments
             % =================
             %
-            % * `g` [ grouping ] - New empty grouping object.
-            %
-            %
-            % Options
-            % ========
-            %
-            % * `'IncludeExtras='` [ `true` | *`false`* ] - Include two extra
-            % decomposition columns, `Init+Const+Dtrend` and `Nonlinear`, produced by
-            % the `simulate( )` functio, in the list of constributions available in
-            % this grouping.
-            %
+            % * `G` [ grouping ] - New empty grouping object.
             %
             % Description
             % ============
-            %
             %
             % Example
             % ========
             %
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            this = this@shared.UserDataContainer( );
-            this = this@shared.GetterSetter( );
+            This = This@userdataobj();
+            This = This@getsetobj();
             
             if isempty(varargin)
                 return
             end
             
-            if length(varargin)==1 && isa(varargin{1}, 'grouping')
-                this = varargin{1};
+            if length(varargin) == 1 && isa(varargin{1},'grouping')
+                This = varargin{1};
                 return
             end
             
-            m = varargin{1};
-            type = varargin{2};
-            varargin(1:2) = [ ];
-            opt = passvalopt('grouping.grouping', varargin{:});
+            M = varargin{1};
+            Type = varargin{2};
             
-            pp = inputParser( );
-            pp.addRequired('m', @(x) isa(x, 'model'));
-            pp.addRequired('type', @(x) ischar(x));
-            pp.parse(m, type);
+            pp = inputParser();
+            pp.addRequired('M',@(x) isa(x,'model'));
+            pp.addRequired('Type',@(x) ischar(x) ...
+                && any(strncmpi(x,{'shock','measu'},5)));
+            pp.parse(M,Type);
 
-            if any(strncmpi(type, {'shock', 'measu'}, 5))
-                this = prepareGrouping(m, this, type, opt);
-            else
-                throw( ...
-                    exception.Base('Grouping:InvalidType', 'error'), ...
-                    type ...
-                    ); %#ok<GTARG>
+            switch lower(Type(1:5))
+                case 'shock'
+                    This.type = 'shocks';
+                    listRequest = 'eList';
+                    descriptRequest = 'eDescript';
+                case 'measu'
+                    This.type = 'measurement';
+                    listRequest = 'yList';
+                    descriptRequest = 'yDescript';
+                otherwise
+                    utils.error('grouping:grouping', ...
+                        'Unknown grouping type: ''%s''.', ...
+                        This.type);
             end
+            This.list = get(M,listRequest) ;
+            This.descript = get(M,descriptRequest) ;
+            This.logVars = get(M,'log') ;
         end
 
-        
-        
-        
         varargout = addgroup(varargin)
         varargout = detail(varargin)
         varargout = eval(varargin)
         varargout = isempty(varargin)
         varargout = rmgroup(varargin)
         varargout = splitgroup(varargin)
+        
         varargout = get(varargin)
         varargout = set(varargin)
-       
         
-        
-        
-        function otherContents = get.OtherContents(This)
-            allGroupContents = any([This.GroupContents{:}], 2);
+        function otherContents = get.otherContents(This)
+            allGroupContents = any([This.groupContents{:}],2);
             otherContents = ~allGroupContents;
         end
+        
     end
-    
-    
-    
     
     methods (Hidden)
-        function flag = chkConsistency(this)
-            flag = chkConsistency@shared.GetterSetter(this) && ...
-                chkConsistency@shared.UserDataContainer(this);
-        end
-        
-        
-        
         
         varargout = disp(varargin)
+        
     end
+    
 end

@@ -1,4 +1,4 @@
-function [year, per, freq] = dat2ypf(dat)
+function [Year,Per,Freq] = dat2ypf(Dat)
 % dat2ypf  Convert IRIS serial date number to year, period and frequency.
 %
 % Syntax
@@ -27,42 +27,36 @@ function [year, per, freq] = dat2ypf(dat)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-freq = double(datfreq(dat));
-serial = double(floor(dat));
-ixZero = freq==0;
-ixWeekly = freq==52;
-ixDaily = freq==365;
-ixReg = ~ixZero & ~ixWeekly & ~ixDaily;
+Freq = datfreq(Dat);
+ixZero = Freq == 0;
+ixWeekly = Freq == 52;
+ixRegular = ~ixZero & ~ixWeekly;
 
-[year,per] = deal(nan(size(dat)));
+[Year,Per] = deal(nan(size(Dat)));
 
 % Regular frequencies.
-if any(ixReg)
-    year(ixReg) = floor( double(serial(ixReg)) ./ double(freq(ixReg)) );
-    per(ixReg) = round(serial(ixReg) - year(ixReg).*freq(ixReg) + 1);
+if any(ixRegular)
+    yp = floor(Dat);
+    Year(ixRegular)  = floor(yp(ixRegular) ./ Freq(ixRegular));
+    Per(ixRegular) = ...
+        round(yp(ixRegular) - Year(ixRegular).*Freq(ixRegular) + 1);
 end
 
-% Unspecified frequency.
+% Indeterminate or daily frequency.
 if any(ixZero)
-    year(ixZero) = NaN;
-    per(ixZero) = serial(ixZero);
-end
-
-% Daily frequency; dat2ypf not applicable.
-if any(ixDaily)
-    year(ixDaily) = NaN;
-    per(ixDaily) = serial(ixDaily);
+    Year(ixZero) = 0;
+    Per(ixZero) = Dat(ixZero);
 end
 
 % Weekly frequency.
 if any(ixWeekly)
-    x = ww2day(serial(ixWeekly));
-    [year(ixWeekly), per(ixWeekly)] = day2ypfweekly(x);
+    x = ww2day(Dat(ixWeekly));
+    [Year(ixWeekly),Per(ixWeekly)] = day2ypfweekly(x);
 end
 
 end

@@ -39,8 +39,8 @@ function [H,HU,HQ] = ploteig(X,varargin)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [opt,varargin] = passvalopt('grfun.ploteig',varargin{:});
 
@@ -57,10 +57,10 @@ end
 
 H = plot(real(X),imag(X),plotSpec{:});
 
-HU = [ ];
-HQ = [ ];
+HU = [];
+HQ = [];
 if opt.ucircle
-    ax = gca( );
+    ax = gca();
     nextPlot = get(ax,'nextplot');
     set(ax,'nextPlot','add');
     HU = grfun.ucircle('color','black');

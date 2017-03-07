@@ -1,11 +1,11 @@
-function [c, author, event] = xml2tex(X, opt)
-% xml2tex  Convert published XML to LaTeX code.
+function [C,Author,Event] = xml2tex(X,Type,Opt)
+% xml2tex  Convert publish XML to TEX code.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -14,43 +14,54 @@ if ischar(X)
     X = xmlread(X);
 end
 
-parseOriginalCode(X);
-replaceBookmarks( );
+xxOriginalCode(X);
+xxBookmarks();
 
 % Overview cell (introduction).
-[c,author,event] = parseIntroduction(X, opt);
+[C,Author,Event] = xxIntroduction(X,Type,Opt);
 
 % Table of contents.
-c = [c,addToc(X,opt)];
+C = [C,xxToc(X,Type,Opt)];
+
+if isequal(Type,'master')
+    return
+end
 
 % Normal cells.
 y = latex.xml.xpath(X,'//cell[not(@style="overview")]','nodeset');
-n = y.getLength( );
+n = y.getLength();
 for i = 1 : n
-    c = [c,parseNormalCell(y.item(i-1))];
+    C = [C,xxNormalCell(y.item(i-1),Type,Opt)];
 end
 
 % Fix idiosyncrasies.
-c = resolveList(c);
+C = xxIdiosyncrasy(C);
 
 end
 
 
+% Subfunctions...
 
 
-function C = replaceBookmarks(B)
-persistent BOOKMARKS;
+%**************************************************************************
+
+
+function C = xxBookmarks(B)
+persistent bookmarks %typeset;
 if nargin == 0 && nargout == 0
-    code = parseOriginalCode( );
-    BOOKMARKS = regexp(code,'%\?(\w+)\?','tokens');
-    BOOKMARKS = [BOOKMARKS{:}];
-    [~,inx] = unique(BOOKMARKS,'first');
-    BOOKMARKS = BOOKMARKS(sort(inx));
+    code = xxOriginalCode();
+    bookmarks = regexp(code,'%\?(\w+)\?','tokens');
+    bookmarks = [bookmarks{:}];
+    [~,inx] = unique(bookmarks,'first');
+    bookmarks = bookmarks(sort(inx));
+    %nbkm = length(bookmarks);
+    %typeset = xxBookmarkTypeset();
+    %typeset = typeset(1:nbkm);
     return
 end
 C = '';
 if ischar(B)
-    inx = strcmp(B,BOOKMARKS);
+    inx = strcmp(B,bookmarks);
     if any(inx)
         C = sprintf('%g',find(inx,1)); % typeset{inx};
     else
@@ -58,96 +69,123 @@ if ischar(B)
     end
     C = ['\bookmark{',C,'}'];
 end
-end 
+end % xxBookmarks()
 
 
+%**************************************************************************
 
 
-function [c, author, event] = parseIntroduction(X, Opt)
-c = '';
-BR = sprintf('\n');
-[~, ftit, fext] = ...
-    fileparts(latex.xml.xpath(X, '//filename', 'string')); %#ok<ASGLU>
+function [C,Author,Event] = xxIntroduction(X,Type,Opt)
+C = '';
+br = sprintf('\n');
+[ans,ftit,fext] = ...
+    fileparts(latex.xml.xpath(X,'//filename','string')); %#ok<NOANS,ASGLU>
+mfilename = [ftit,fext];
+[~,~,fext] = fileparts(mfilename);
+if isempty(fext)
+    mfilename = [mfilename,'.m'];
+end
 % Read title.
 title = latex.xml.xpath(X,'//cell[@style="overview"]/steptitle','node');
-title = parseText(title);
+title = xxText(title);
 title = strtrim(title);
-
-if isempty(title)
-    error('Empty title.');
-end
-
-superTitle = '';
-pos = strfind(title, '//');
-if ~isempty(pos)
-    superTitle = strtrim( title(1:pos(1)-1) );
-    title = strtrim( title(pos(1)+3:end) );
-elseif ~isempty(Opt.supertitle)
-    superTitle = strtrim(Opt.supertitle);
-end
-
-isEmptySuperTitle = isempty(superTitle);
-
+emptytitle = isempty(title);
 % Read first paragraph and check if it gives the authors.
-author = NaN;
-event = NaN;
+Author = NaN;
+Event = NaN;
 p = latex.xml.xpath(X, ...
     '//cell[@style="overview"]/text/p[position()=1]','node');
 if ~isempty(p)
-    temp = strtrim(char(p.getTextContent( )));
+    temp = strtrim(char(p.getTextContent()));
     if strncmp(temp,'by ',3)
-        author = temp(4:end);
-        author = strrep(author,'&',' \\ ');
-        if ~isempty(strfind(author,' \\ '))
-            author = ['\\ ',author];
+        Author = temp(4:end);
+        Author = strrep(Author,'&',' \\ ');
+        if ~isempty(strfind(Author,' \\ '))
+            Author = ['\\ ',Author];
         end
         % Remove the first paragraph.
         p.getParentNode.removeChild(p);
     elseif strncmp(temp,'at ',3)
-        event = temp(4:end);
+        Event = temp(4:end);
         % Remove the first paragraph.
         p.getParentNode.removeChild(p);
     end
 end
 % Read abstract.
 abstract = latex.xml.xpath(X,'//cell[@style="overview"]/text','node');
-abstract = parseText(abstract);
+abstract = xxText(abstract);
 abstract = strtrim(abstract);
-
-% Read file title.
-if isEmptySuperTitle
-    c = [c, '\mytitle{', title, '}', BR];
-    fileTitle = title;
-else
-    c = [c, '\mytitle{', superTitle, ':\\ ', title, '}', BR];
-    fileTitle = [superTitle, ': ', title];
+% Read file name.
+mfilename = xxSpecChar(mfilename);
+switch Type
+    case 'single'
+        if ~emptytitle
+            C = [C, ...
+                '\introduction{',title,'}', ...
+                '{\mfilenametitle{',mfilename,'}}',br, ...
+                ];
+        else
+            C = [C,'\introduction{',mfilename,'}{}',br];
+        end
+        if ~isempty(abstract)
+            C = [C,'\begin{myabstract}',abstract,'\end{myabstract}',br];
+        end
+    case 'master'
+        if ~emptytitle
+            C = [C,'\introduction{',title,'}','{}',br];
+        else
+            C = [C,'\introduction{',mfilename,'}{}',br];
+        end
+        if ~isempty(abstract)
+            C = [C,'\begin{abstract}',abstract,'\end{abstract}',br];
+        end
+    case 'multiple'
+        C = ['\clearpage',br];
+        if emptytitle
+            tocentry = title;
+        else
+            tocentry = [title,' --- \texttt{',mfilename,'}'];
+        end
+        if Opt.numbered
+            C = [C,'\section[',tocentry,']{',title];
+        else
+            C = [C,'\section*{',title];
+        end
+        if ~emptytitle
+            C = [C,' \mfilenametitle{',mfilename,'}'];
+        end
+        C = [C,'}',br];
 end
-if ~isempty(abstract)
-    c = [c,'\begin{myabstract}',abstract,'\end{myabstract}',BR];
+if ~isequal(Type,'master')
+    C = [C, ...
+        '\renewcommand{\filetitle}{',title,'}',br, ...
+        '\renewcommand{\mfilename}{',mfilename,'}',br];
+    C = [C,br,'\bigskip\par'];
 end
-
-c = [c, '\renewcommand{\filetitle}{', fileTitle, '}', BR];
-c = [c,BR,'\bigskip\par'];
-
-c = [c,BR,BR];
-end
+C = [C,br,br];
+end % xxIntroduction()
 
 
+%**************************************************************************
 
 
-function C = addToc(~,Opt)
+function C = xxToc(X,Type,Opt) %#ok<INUSL>
 br = sprintf('\n');
 C = '';
-if ~Opt.toc
+if ~Opt.toc || isequal(Type,'multiple')
     return
 end
-C = [C,'\mytableofcontents',br,br];
+if isequal(Type,'master')
+    C = [C,'\clearpage',br];
 end
+C = [C,'\mytableofcontents',br,br];
+end % toc()
 
 
+%**************************************************************************
 
 
-function C = parseNormalCell(X)
+function C = xxNormalCell(X,Type,Opt) %#ok<INUSD>
 br = sprintf('\n');
 title = strtrim(latex.xml.xpath(X,'steptitle','string'));
 if isequal(title,'...')
@@ -159,7 +197,7 @@ else
 end
 C = '';
 % Intro text.
-c1 = parseText(latex.xml.xpath(X,'text','node'));
+c1 = xxText(latex.xml.xpath(X,'text','node'));
 if ~isempty(c1)
     C = [C,'\begin{introtext}',br];
     C = [C,c1,br];
@@ -168,18 +206,18 @@ end
 % Input code.
 y = latex.xml.xpath(X,'mcode','node');
 if ~isempty(y)
-    inpCode = char(y.getTextContent( ));
-    inpCode = textfun.converteols(inpCode);
-    inpCode = textfun.removetrails(inpCode);
-    [~,n] = parseOriginalCode(inpCode);
+    inpCode = char(y.getTextContent());
+    inpCode = strfun.converteols(inpCode);
+    inpCode = strfun.removetrails(inpCode);
+    [~,n] = xxOriginalCode(inpCode);
     
-    if true % ##### MOSW
-        replace = @replaceBookmarks; %#ok<NASGU>
+    if false % ##### MOSW
+        replace = @xxBookmarks; %#ok<NASGU>
         inpCode = regexprep(inpCode,'%\?(\w+)\?', ...
             '`${replace($1)}`');
     else
         inpCode = mosw.dregexprep(inpCode,'%\?(\w+)\?', ...
-            @(C1) ['`',xxBookmarks(C1),'`'],1); %#ok<UNRCH>
+            'xxBookmarks',1); %#ok<UNRCH>
     end
     
     C = [C,br, ...
@@ -193,8 +231,8 @@ end
 % Output code.
 outputCode = latex.xml.xpath(X,'mcodeoutput','node');
 if ~isempty(outputCode)
-    outputCode = char(outputCode.getTextContent( ));
-    outputCode = textfun.converteols(outputCode);
+    outputCode = char(outputCode.getTextContent());
+    outputCode = strfun.converteols(outputCode);
     C = [C,br, ...
         '\begin{outputcode}',br, ...
         '\begin{lstlisting}',br, ...
@@ -204,34 +242,35 @@ if ~isempty(outputCode)
 end
 % Images that are part of code output.
 images = latex.xml.xpath(X,'img','nodeset');
-nImg = images.getLength( );
+nImg = images.getLength();
 if nImg > 0
     for iImg = 1 : nImg
-        C = [C,insertImg(images.item(iImg-1))];
+        C = [C,xxImg(images.item(iImg-1))];
     end
 end
 C = [cBegin,br,C,br,cEnd,br,br];
-end
+end % xxNormalCell()
 
 
+%**************************************************************************
 
 
-function [Code1,N] = parseOriginalCode(X)
-persistent CODE;
+function [Code1,N] = xxOriginalCode(X)
+persistent code;
 try %#ok<TRYNC>
     if ~ischar(X)
         % Initialise `originalcode` when `x` is an xml dom.
-        CODE = latex.xml.xpath(X,'//originalCode','string');
-        CODE = textfun.converteols(CODE);
-        CODE = textfun.removetrails(CODE);
+        code = latex.xml.xpath(X,'//originalCode','string');
+        code = strfun.converteols(code);
+        code = strfun.removetrails(code);
     end
 end
-Code1 = CODE;
+Code1 = code;
 if nargout < 2
     return
 end
 nCode = length(X);
-start = strfind(CODE,X);
+start = strfind(code,X);
 if isempty(start)
     disp(X);
     utils.error('latex', ...
@@ -239,79 +278,78 @@ if isempty(start)
 end
 start = start(1);
 finish = start + nCode - 1;
-N = sum(CODE(1:start-1) == char(10)) + 1;
+N = sum(code(1:start-1) == char(10)) + 1;
 nReplace = sum(X == char(10));
 replace = char(10*ones(1,nReplace));
-CODE = [CODE(1:start-1),replace,CODE(finish+1:end)];
-end 
+code = [code(1:start-1),replace,code(finish+1:end)];
+end % xxOriginalCode()
 
 
+%**************************************************************************
 
 
-function C = parseText(X)
+function C = xxText(X)
 C = '';
 if isempty(X)
     return
 end
 br = sprintf('\n');
 X = latex.xml.xpath(X,'node()','nodeset');
-n = X.getLength( );
+n = X.getLength();
 for i = 1 : n
     this = X.item(i-1);
     switch char(this.getNodeName)
         case 'latex'
-            c1 = char(this.getTextContent( ));
+            c1 = char(this.getTextContent());
             c1 = strrep(c1,'<latex>','');
             c1 = strrep(c1,'</latex>','');
             C = [C,br,br,c1,br]; %#ok<*AGROW>
         case 'p'
             % Paragraph.
-            C = [C,br,'\begin{par}',parseText(this), ...
+            C = [C,br,'\begin{par}',xxText(this), ...
                 '\end{par}'];
         case 'a'
             % Bookmark in the text.
-            c1 = char(this.getTextContent( ));
+            c1 = char(this.getTextContent());
             if ~isempty(c1) && all(c1([1,end]) == '?')
-                c1 = replaceBookmarks(c1(2:end-1));
+                c1 = xxBookmarks(c1(2:end-1));
             else
-                c1 = parseText(this);
+                c1 = xxText(this);
                 c1 = ['\texttt{\underline{',c1,'}}'];
             end
             C = [C,c1];
         case 'b'
-            C = [C,'\textbf{',parseText(this),'}'];
+            C = [C,'\textbf{',xxText(this),'}'];
         case 'i'
-            C = [C,'\textit{',parseText(this),'}'];
+            C = [C,'\textit{',xxText(this),'}'];
         case 'tt'
-            % C = [C,'{\codesize\texttt{', parseText(this), '}}'];
-            c1 = char(this.getTextContent( ));
-            C = [C,'{\codesize\verb`', c1, '`}'];
+            C = [C,'{\codesize\texttt{',xxText(this),'}}'];
         case 'ul'
-            C = [C,'\begin{itemize}',parseText(this), ...
+            C = [C,'\begin{itemize}',xxText(this), ...
                 '\end{itemize}'];
         case 'ol'
-            C = [C,'\begin{enumerate}',parseText(this), ...
+            C = [C,'\begin{enumerate}',xxText(this), ...
                 '\end{enumerate}'];
         case 'li'
-            c1 = strtrim(parseText(this));
+            c1 = strtrim(xxText(this));
             n = length('\bookmark{');
             if strncmp(c1,'\bookmark{',n)
                 % Item starting with a bookmark.
-                close = textfun.matchbrk(c1,n);
+                close = strfun.matchbrk(c1,n);
                 if isempty(close)
                     close = 0;
                 end
                 C = [C,'\item[',c1(1:close),'] ',c1(close+1:end)];
             else
                 % Regular item.
-                C = [C, '\item ', c1];
+                C = [C,'\item ',c1];
             end
         case 'pre'
             % If this is a <pre class="error">, do not display
             % anything.
-            if ~strcmp(char(this.getAttribute('class')), 'error')
-                c1 = char(this.getTextContent( ));
-                C = [C, '{\codesize\begin{verbatim}', c1, ...
+            if ~strcmp(char(this.getAttribute('class')),'error')
+                c1 = char(this.getTextContent());
+                C = [C,'{\codesize\begin{verbatim}',c1, ...
                     '\end{verbatim}}'];
             end
         case 'img'
@@ -327,46 +365,45 @@ for i = 1 : n
         case 'equation'
             % An equation element either contains a latex code directly
             % (if conversion to image failed), or an image element.
-            c1 = char(this.getTextContent( ));
+            c1 = char(this.getTextContent());
             c1 = strtrim(c1);
             if isempty(c1)
                 % Image element.
-                c1 = parseText(this);
+                c1 = xxText(this);
                 c1 = strtrim(c1);
             end
-            C = [C, c1];
+            C = [C,c1];
         otherwise
-            c1 = char(this.getTextContent( ));
-            c1 = regexprep(c1, '\s+', ' ');
-            c1 = latex.replaceSpecChar(c1);
-            C = [C, c1];
+            c1 = char(this.getTextContent());
+            c1 = regexprep(c1,'\s+',' ');
+            c1 = xxSpecChar(c1);
+            C = [C,c1];
     end
 end
-end
+end % xxText()
 
 
-
-function C = resolveList(C)
-C = regexprep(C, ...
-    '\\end\{itemize\}\s*\\begin\{itemize\}', ...
-    '');
-C = regexprep(C, ...
-    '\\end\{enumerate\}\s*\\begin\{enumerate\}', ...
-    '');
-end
+%**************************************************************************
 
 
+function C = xxIdiosyncrasy(C)
+C = strrep(C,'\end{itemize}\begin{itemize}','');
+C = strrep(C,'\end{enumerate}\begin{enumerate}','');
+end % xxIdiosyncrasy()
 
 
-function C = insertImg(X)
+%**************************************************************************
+
+
+function C = xxImg(X)
 % File name in the `src` attribute is a relative path wrt the original
 % directory. We only need to refer to the file name.
 fName = latex.xml.xpath(X,'@src','string');
 [~,fTitle,fExt] = fileparts(fName);
 C = '';
-if ~utils.exist([fTitle,fExt])
+if ~exist([fTitle,fExt],'file')
     utils.warning('xml', ...
-        'Image file not found: %s.',[fTitle,fExt]);
+        'Image file not found: ''%s''.',[fTitle,fExt]);
     return
 end
 if isequal(fExt,'.eps')
@@ -374,5 +411,24 @@ if isequal(fExt,'.eps')
     fExt = '.pdf';
 end
 br = sprintf('\n');
-C = [br,'\matlabfigure{',[fTitle,fExt],'}',br];
-end
+C = [br,'{\centering', ...
+    br,'\includegraphics[scale=$figurescale$]{',[fTitle,fExt],'}', ...
+    br,'\par}'];
+end % xxImg()
+
+
+%**************************************************************************
+
+
+function C = xxSpecChar(C)
+C = strrep(C,'\','\textbackslash ');
+C = strrep(C,'_','\_');
+C = strrep(C,'%','\%');
+C = strrep(C,'$','\$');
+C = strrep(C,'#','\#');
+C = strrep(C,'&','\&');
+C = strrep(C,'<','\ensuremath{<}');
+C = strrep(C,'>','\ensuremath{>}');
+C = strrep(C,'~','\ensuremath{\sim}');
+C = strrep(C,'^','\^{ }');
+end %xxSpecChar()

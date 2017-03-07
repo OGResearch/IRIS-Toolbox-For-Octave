@@ -1,0 +1,47 @@
+
+
+    \filetitle{diff}{First difference pseudofunction}{modellang/diff}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+diff(Expr)
+diff(Expr,K)
+\end{verbatim}
+
+\paragraph{Description}\label{description}
+
+If the input argument \texttt{K} is not specified, this pseudofunction
+expands to
+
+\begin{verbatim}
+((Expr)-(Expr{-1}))
+\end{verbatim}
+
+If the input argument \texttt{K} is specified, it expands to
+
+\begin{verbatim}
+((Expr)-(Expr{K}))
+\end{verbatim}
+
+The two derived expressions, \texttt{Expr\{-1\}} and \texttt{Expr\{K\}},
+are based on \texttt{Expr}, and have all its time subscripts shifted by
+--1 or by \texttt{K} periods, respectively.
+
+\paragraph{Example}\label{example}
+
+These two lines
+
+\begin{verbatim}
+diff(Z)
+diff(log(X{1})-log(Y{-1}),-2)
+\end{verbatim}
+
+will expand to
+
+\begin{verbatim}
+((Z)-(Z{-1}))
+((log(X{1})-log(Y{-1}))-(log(X{-1})-log(Y{-3})))
+\end{verbatim}
+
+

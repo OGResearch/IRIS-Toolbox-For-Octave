@@ -2,9 +2,9 @@ IRIS Solutions
 IRIS Toolbox
 Software License Agreement
 
-------------------------------------------------------------------
-Copyright (C) 2007-2017 IRIS Solutions Team. All rights reserved.
-------------------------------------------------------------------
+------------------------------------------------------------
+Copyright (C) 2007-2014 Jaromir Benes. All rights reserved.
+------------------------------------------------------------
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are

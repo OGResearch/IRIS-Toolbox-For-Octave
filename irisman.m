@@ -1,4 +1,4 @@
-function irisman( )
+function irisman()
 % irisman  Open IRIS Reference Manual PDF.
 %
 % Syntax
@@ -7,12 +7,12 @@ function irisman( )
 %     irisman
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-file = fullfile(irisroot( ),'^help','IRIS_Man.pdf');
+file = fullfile(irisroot(),'-help','IRIS_Man.pdf');
 open(file);
 
 end

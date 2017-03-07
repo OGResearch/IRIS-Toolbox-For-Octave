@@ -1,15 +1,15 @@
-% index  IRIS Macroeconomic Modeling Toolbox Reference Manual.
+% index  IRIS Toolbox Reference Manual.
 %
-% * [IRIS Sessions](Contents/sessions)
+% * [sessions](Contents/sessions) - IRIS Sessions.
 %
-% * [Model Development and Operation](Contents/models)
+% * [models](Contents/models) - Model Development and Operation.
 %
-% * [Multivariate Time Series Analysis](Contents/VARs)
+% * [VARs](Contents/VARs) - Multivariate Time Series Analysis.
 %
-% * [Time Series and Database Management](Contents/data)
+% * [data](Contents/data) - Time Series and Database Management.
 %
-% * [Reporting and Publishing](Contents/reporting)
-% 
+% * [reporting](Contents/reporting) - Reporting and Publishing.
+%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

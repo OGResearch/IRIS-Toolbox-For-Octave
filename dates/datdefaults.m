@@ -1,40 +1,44 @@
-function opt = datdefaults(opt, isPlot)
-% datdefaults  Set up defaults for date-related opt if they are `@config`.
+function Opt = datdefaults(Opt,IsPlot)
+% datdefaults  [Not a public function] Set up defaults for date-related opt if they are `@config`.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-try, isPlot; catch, isPlot = false; end %#ok<NOCOM,VUNUS>
+persistent CONFIG;
+
+try
+    IsPlot; %#ok<VUNUS>
+catch
+    IsPlot = false;
+end
 
 %--------------------------------------------------------------------------
 
-cfg = irisconfigmaster('get');
+if isempty(CONFIG)
+    CONFIG = irisconfigmaster('get');
+end
 
-if ~isfield(opt,'dateformat') || isequal(opt.dateformat, @config)
-    if ~isPlot
-        opt.dateformat = cfg.dateformat;
+if ~isfield(Opt,'dateformat') || isequal(Opt.dateformat,@config)
+    if ~IsPlot
+        Opt.dateformat = CONFIG.dateformat;
     else
-        opt.dateformat = cfg.plotdateformat;
+        Opt.dateformat = CONFIG.plotdateformat;
     end
 end
 
-if ~isfield(opt,'freqletters') || isequal(opt.freqletters, @config)
-    opt.freqletters = cfg.freqletters;
+if ~isfield(Opt,'freqletters') || isequal(Opt.freqletters,@config)
+    Opt.freqletters = CONFIG.freqletters;
 end
 
-if ~isfield(opt,'months') || isequal(opt.months, @config)
-    opt.months = cfg.months;
+if ~isfield(Opt,'months') || isequal(Opt.months,@config)
+    Opt.months = CONFIG.months;
 end
 
-if ~isfield(opt,'standinmonth') || isequal(opt.standinmonth, @config)
-    opt.standinmonth = cfg.standinmonth;
-end
-
-if ~isfield(opt,'wwday') || isequal(opt.wwday, @config)
-    opt.wwday = cfg.wwday;
+if ~isfield(Opt,'standinmonth') || isequal(Opt.standinmonth,@config)
+    Opt.standinmonth = CONFIG.standinmonth;
 end
 
 end

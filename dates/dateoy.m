@@ -1,39 +1,35 @@
-function eoy = dateoy(dat)
+function D = dateoy(D)
 % dateoy  End of year for the specified daily date.
 %
 % Syntax
 % =======
 %
-%     eoy = dateoy(dat)
-%
+%     Eoy = dateoy(D)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - Daily serial date number.
-%
+% * `D` [ numeric ] - Daily serial date number.
 %
 % Output arguments
 % =================
 %
-% * `eoy` [ numeric ] - Daily serial date number for the last day of the
-% same year as `dat`.
-%
+% * `Eoy` [ numeric ] - Daily serial date number for the last day of the
+% same year as `D`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[y, ~] = datevec( double(dat) );
-eoy = datenum([y, 12, eomday(y, 12)]);
+[y,m] = datevec(D); %#ok<NASGU>
+D = datenum([y,12,eomday(y,12)]);
 
 end

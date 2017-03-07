@@ -1,4 +1,4 @@
-function x = horzcat(varargin)
+function X = horzcat(varargin)
 % horzcat  Horizontal concatenation of tseries objects.
 %
 % Syntax
@@ -29,11 +29,11 @@ function x = horzcat(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-x = cat(2, varargin{:});
+X = cat(2,varargin{:});
 
 end

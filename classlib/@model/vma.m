@@ -1,4 +1,4 @@
-function [phi, list] = vma(this, nPer, varargin)
+function [Phi,List] = vma(This,NPer,varargin)
 % vma  Vector moving average representation of the model.
 %
 % Syntax
@@ -40,62 +40,66 @@ function [phi, list] = vma(this, nPer, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('model.vma',varargin{:});
 
 isSelect = ~isequal(opt.select,@all);
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
-[ny, nxx, ~, ~, ne] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-phi = zeros(ny+nxx, ne, nPer+1, nAlt);
-ixSolved = true(1, nAlt);
+ny = length(This.solutionid{1});
+nx = length(This.solutionid{2});
+ne = length(This.solutionid{3});
+nAlt = size(This.Assign,3);
 
+Phi = zeros(ny+nx,ne,NPer+1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
-   [T,R,K,Z,H,D,U,Omg] = mysspace(this,iAlt,false);
+   [T,R,K,Z,H,D,U,Omg] = mysspace(This,iAlt,false);
+   
     % Continue immediately if solution is not available.
-    ixSolved(iAlt) = all(~isnan(T(:)));
-    if ~ixSolved(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
-   phi(:,:,:,iAlt) = timedom.srf(T,R,K,Z,H,D,U,Omg,nPer,1);
+   
+   Phi(:,:,:,iAlt) = timedom.srf(T,R,K,Z,H,D,U,Omg,NPer,1);
 end
 
 % Remove pre-sample period.
-phi(:,:,1,:) = [ ];
+Phi(:,:,1,:) = [];
 
 % Report NaN solutions.
-if ~all(ixSolved)
-    utils.warning('model:vma', ...
+if ~all(isSol)
+    utils.warning('model', ...
         'Solution(s) not available %s.', ...
-        exception.Base.alt2str(~ixSolved) );
+        preparser.alt2str(~isSol));
 end
 
-if nargout<=1 && ~isSelect && ~isNamedMat
+if nargout <= 1 && ~isSelect && ~isNamedMat
     return
 end
 
 % List of variables in rows (measurement and transion) and columns (shocks)
 % of matrix `Phi`.
-rowNames = printSolutionVector(this,'yx');
-colNames = printSolutionVector(this,'e');
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
 
 % Select variables if requested.
 if isSelect
-    [phi,pos] = namedmat.myselect(phi,rowNames,colNames,opt.select);
+    [Phi,pos] = select(Phi,rowNames,colNames,opt.select);
     rowNames = rowNames(pos{1});
     colNames = colNames(pos{2});    
 end
-list = {rowNames,colNames};
+List = {rowNames,colNames};
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
-        phi = namedmat(phi,rowNames,colNames);
+        Phi = namedmat(Phi,rowNames,colNames);
     end
 else
     % Do nothing.

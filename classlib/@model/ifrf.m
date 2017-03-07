@@ -1,11 +1,10 @@
-function [W, list] = ifrf(this, freq, varargin)
+function [W,List] = ifrf(This,Freq,varargin)
 % ifrf  Frequency response function to shocks.
 %
 % Syntax
 % =======
 %
 %     [W,List] = ifrf(M,Freq,...)
-%
 %
 % Input arguments
 % ================
@@ -16,7 +15,6 @@ function [W, list] = ifrf(this, freq, varargin)
 % * `Freq` [ numeric ] - Vector of frequencies for which the response
 % function will be computed.
 %
-%
 % Output arguments
 % =================
 %
@@ -25,7 +23,6 @@ function [W, list] = ifrf(this, freq, varargin)
 %
 % * `List` [ cell ] - List of transition variables in rows of the `W`
 % matrix, and list of shocks in columns of the `W` matrix.
-%
 %
 % Options
 % ========
@@ -37,7 +34,6 @@ function [W, list] = ifrf(this, freq, varargin)
 % * `'select='` [ *`@all`* | char | cellstr ] - Return IFRF for selected
 % variables only; `@all` means all variables.
 %
-%
 % Description
 % ============
 %
@@ -45,49 +41,51 @@ function [W, list] = ifrf(this, freq, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Freq',@isnumeric);
-pp.parse(freq);
+pp.parse(Freq);
 
 % Parse options.
 opt = passvalopt('model.ifrf',varargin{:});
 
 isSelect = ~isequal(opt.select,@all);
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
-freq = freq(:)';
-nFreq = length(freq);
-[ny, nxx, ~, ~, ne] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-W = zeros(ny+nxx, ne, nFreq, nAlt);
+Freq = Freq(:)';
+nFreq = length(Freq);
+ny = length(This.solutionid{1});
+nx = length(This.solutionid{2});
+ne = length(This.solutionid{3});
+nAlt = size(This.Assign,3);
+W = zeros(ny+nx,ne,nFreq,nAlt);
 
-if ne>0
-    ixSolved = true(1, nAlt);
+if ne > 0
+    isSol = true(1,nAlt);
     for iAlt = 1 : nAlt
-        [T,R,K,Z,H,D,Za,Omg] = mysspace(this,iAlt,false);
+        [T,R,K,Z,H,D,Za,Omg] = mysspace(This,iAlt,false);
         
         % Continue immediately if solution is not available.
-        ixSolved(iAlt) = all(~isnan(T(:)));
-        if ~ixSolved(iAlt)
+        isSol(iAlt) = all(~isnan(T(:)));
+        if ~isSol(iAlt)
             continue
         end
         
         % Call Freq Domain package.
-        W(:,:,:,iAlt) = freqdom.ifrf(T,R,K,Z,H,D,Za,Omg,freq);
+        W(:,:,:,iAlt) = freqdom.ifrf(T,R,K,Z,H,D,Za,Omg,Freq);
     end
 end
 
 % Report NaN solutions.
-if ~all(ixSolved)
+if ~all(isSol)
     utils.warning('model:ifrf', ...
         'Solution(s) not available %s.', ...
-        exception.Base.alt2str(~ixSolved) );
+        preparser.alt2str(~isSol));
 end
 
 if nargout <= 1 && ~isSelect && ~isNamedMat
@@ -95,18 +93,18 @@ if nargout <= 1 && ~isSelect && ~isNamedMat
 end
 
 % Variables and shocks in rows and columns of `W`.
-rowNames = printSolutionVector(this,'yx');
-colNames = printSolutionVector(this,'e');
+rowNames = myvector(This,'yx');
+colNames = myvector(This,'e');
     
 % Select variables if requested.
 if isSelect
-    [W,pos] = namedmat.myselect(W,rowNames,colNames,opt.select);
+    [W,pos] = select(W,rowNames,colNames,opt.select);
     rowNames = rowNames(pos{1});
     colNames = colNames(pos{2});
 end
-list = {rowNames,colNames};
+List = {rowNames,colNames};
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
         W = namedmat(W,rowNames,colNames);

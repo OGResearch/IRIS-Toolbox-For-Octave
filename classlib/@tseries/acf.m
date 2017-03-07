@@ -1,6 +1,5 @@
-function [C,R] = acf(varargin)
+function [C,R] = acf(X,varargin)
 % acf  Sample autocovariance and autocorrelation functions.
-%
 %
 % Syntax
 % =======
@@ -8,15 +7,13 @@ function [C,R] = acf(varargin)
 %     [C,R] = acf(X)
 %     [C,R] = acf(X,Dates,...)
 %
-%
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Tseries object.
 %
-% * `Dates` [ numeric | Inf ] - Dates or date range from which the input
-% tseries data will be used.
-%
+% * `Dates` [ numeric | Inf ] - Dates or date range on which tseries data
+% will be used.
 %
 % Output arguments
 % =================
@@ -24,7 +21,6 @@ function [C,R] = acf(varargin)
 % * `C` [ numeric ] - Auto-/cross-covariance matrices.
 %
 % * `R` [ numeric ] - Auto-/cross-correlation matrices.
-%
 %
 % Options
 % ========
@@ -38,35 +34,44 @@ function [C,R] = acf(varargin)
 % * `'smallSample='` [ *`true`* | `false` ] - Adjust degrees of freedom for
 % small samples.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-[This,Dates,varargin] = irisinp.parser.parse('tseries.acf',varargin{:});
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Dates = varargin{1};
+    varargin(1) = [];
+else
+    Dates = Inf;
+end
+
 opt = passvalopt('tseries.acf',varargin{:});
 
 %--------------------------------------------------------------------------
 
-data = mygetdata(This,Dates);
+if isequal(Dates,Inf)
+    data = mygetdata(X,'min');
+else
+    data = mygetdata(X,Dates);
+end
 
 if ndims(data) > 3
     data = data(:,:,:);
 end
 
 C = covfun.acovfsmp(data,opt);
-if nargout>1
-    R = covfun.cov2corr(C);
+if nargout > 1
+    % Convert covariances to correlations.
+    R = covfun.cov2corr(C,'acf');
 end
 
 end

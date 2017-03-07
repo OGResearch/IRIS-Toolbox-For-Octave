@@ -4,14 +4,14 @@ function X = fixcov(X)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-tol = model.DEFAULT_MSE_TOLERANCE;
+tol = getrealsmall('mse');
 
-% Unfold x in 3rd dimension. This is to handle 4-th and higher
+% Unfold `x` in 3rd dimension. This is to handle 4-th and higher
 % dimensional matrices without having to detect the exact structure of
 % dimensions.
 xSize = size(X);

@@ -4,7 +4,7 @@ function yaxisreformat(varargin)
 % Syntax
 % =======
 %
-%     yaxisreformat( )
+%     yaxisreformat()
 %     yaxisreformat(NewFormat)
 %     yaxisreformat(Ax,NewFormat)
 %
@@ -24,19 +24,19 @@ function yaxisreformat(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
 if ~isempty(varargin)
     NewFormat = varargin{1};
-    varargin(1) = [ ]; %#ok<NASGU>
+    varargin(1) = []; %#ok<NASGU>
 else
     NewFormat = 'auto';
 end

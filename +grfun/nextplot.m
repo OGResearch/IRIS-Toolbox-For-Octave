@@ -1,4 +1,4 @@
-function varargout = nextplot(x, varargin)
+function varargout = nextplot(x,varargin)
 % nextplot  Simplify the use of the standard subplot function.
 %
 % Syntax for new figure window with certain subplot division
@@ -10,7 +10,7 @@ function varargout = nextplot(x, varargin)
 % Syntax for new graph at the next subplot position
 % ==================================================
 %
-%     [AA,NewFig,I]  = grfun.nextplot( )
+%     [AA,NewFig,I]  = grfun.nextplot()
 %
 % Input arguments
 % ================
@@ -38,76 +38,83 @@ function varargout = nextplot(x, varargin)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-none = nargin>0 && isequaln(x, NaN);
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
+
+none = nargin > 0 && isequalnFunc(x,NaN);
 
 % Open a new figure and initialise subplot data.
-if nargin>0 && ~none
-    if length(x)==3
+if nargin > 0 && ~none
+    if length(x) == 3
         sub = x(1:2);
         current = x(3);
-    elseif length(x)==2
+    elseif length(x) == 2
         sub = x;
         current = 0;
-    elseif length(x)==1
-        if ~isempty(varargin) && ~ishandle(varargin{1})
-            sub = [x, varargin{1}];
-            varargin(1) = [ ];
+    elseif length(x) == 1
+        if ~isempty(varargin) && isnumericscalar(varargin{1})
+            sub = [x,varargin{1}];
+            varargin(1) = [];
         else
             s = ceil(sqrt(x));
-            if s*(s-1)>=x
-                sub = [s-1, s];
+            if s*(s-1) >= x
+                sub = [s-1,s];
             else
-                sub = [s, s];
+                sub = [s,s];
             end
         end
         current = 0;
     end
     fg = figure(varargin{:});
-    setappdata(fg, 'IRIS_NEXTPLOT_SUB', sub);
-    setappdata(fg, 'IRIS_NEXTPLOT_CURRENT', current);
-    setappdata(fg, 'IRIS_NEXTPLOT_FIGUREPROP', varargin);
+    setappdata(fg,'nextplot_sub',sub);
+    setappdata(fg,'nextplot_current',current);
+    setappdata(fg,'nextplot_figureProp',varargin);
     varargout{1} = fg;
     return
 end
 
-fg = gcf( );
-sub = getappdata(fg, 'IRIS_NEXTPLOT_SUB');
-current = getappdata(fg, 'IRIS_NEXTPLOT_CURRENT');
+fg = gcf();
+sub = getappdata(fg,'nextplot_sub');
+current = getappdata(fg,'nextplot_current');
 
-if ~isnumeric(sub) || length(sub)~=2 ...
+if ~isnumeric(sub) || length(sub) ~= 2 ...
         || ~isnumericscalar(current)
     error('Cannot use NEXTPLOT in this figure.');
 end
 
-newFig = [ ];
+newFig = [];
 % Open a new figure if the number of subplots exceeds the maximum.
-if current>=prod(sub)
+if current >= prod(sub)
     current = 0;
-    figureProp = getappdata(fg, 'IRIS_NEXTPLOT_FIGUREPROP');
+    figureProp = getappdata(fg,'nextplot_figureProp');
     if isempty(figureProp)
-        fg = figure( );
+        fg = figure();
     else
         fg = figure(figureProp{:});
     end
-    setappdata(fg, 'IRIS_NEXTPLOT_SUB', sub);
-    setappdata(fg, 'IRIS_NEXTPLOT_CURRENT', current);
+    setappdata(fg,'nextplot_sub',sub);
+    setappdata(fg,'nextplot_current',current);
     newFig = fg;
 end
 
 % Add new subplot to the current figure.
 current = current + 1;
 if ~none
-    aa = subplot(sub(1), sub(2), current);
-    grfun.clicktocopy(aa);
+    aa = subplot(sub(1),sub(2),current);
 else
-    aa = [ ];
+    aa = [];
 end
-setappdata(fg, 'IRIS_NEXTPLOT_CURRENT', current);
+setappdata(fg,'nextplot_current',current);
 varargout{1} = aa;
 varargout{2} = newFig;
 varargout{3} = current;

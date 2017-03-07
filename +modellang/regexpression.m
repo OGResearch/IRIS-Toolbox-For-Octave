@@ -1,4 +1,4 @@
-% <...>  Regular expression in log variable list.
+% <...>  Regular expression in log-variable list.
 %
 % Syntax
 % =======
@@ -11,5 +11,5 @@
 %
 % See help on [`!log_variables`](modellang/logvariables).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

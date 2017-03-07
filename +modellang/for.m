@@ -46,9 +46,9 @@
 % replaced with the currently processed string converted to upper case;
 % this option is NOT available with the abbreviated syntax;
 %
-% The list of tokens can be based on Matlab expressions, including the
-% [interpolation](modellang/interp) syntax: Enclose an
-% expression in a pair of angle braces, `<...>`. The expression must
+% The list of tokens can be based on Matlab expressions. Use the
+% [pseudosubstitution](modellang/pseudosubs) syntax to this end: Enclose an
+% expression in dollar-square brackets, `$[...]$`. The expression must
 % evaluate to either a numeric vector, a char vector, or a cell array of
 % numerics and/or strings; the value will be then converted to a
 % comma-separted list.
@@ -178,5 +178,5 @@
 %     !end
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

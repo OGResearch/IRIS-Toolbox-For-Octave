@@ -2,14 +2,14 @@ function tickyears(varargin)
 % tickyears  Year-based grid on X axis.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
-    vecH = varargin{1};
-    varargin(1) = [ ];
+    h = varargin{1};
+    varargin(1) = [];
 else
-    vecH = gca( );
+    h = gca();
 end
 
 if ~isempty(varargin)
@@ -20,21 +20,20 @@ end
 
 %--------------------------------------------------------------------------
 
-for i = 1 : numel(vecH)
-    peer = getappdata(vecH(i), 'graphicsPlotyyPeer');
-    if isempty(peer)
-        h = vecH(i);
+for ih = h(:).'
+    if isempty(getappdata(ih,'plotyy'))
+        iHandle = ih;
     else
-        h = peer;
+        iHandle = getappdata(ih,'plotyy');
     end
-    xLim = get(h, 'xLim');
+    xLim = get(iHandle,'xLim');
     xTick = floor(xLim(1)) : n : ceil(xLim(end));
-    set( h,...
-        'XLim', xTick([1, end]),...
-        'XLimMode', 'Manual',...
-        'XTick', xTick,...
-        'XTickMode', 'Manual',...
-        'XTickLabelMode', 'Auto' );
+    set(iHandle,...
+        'xLim',xTick([1,end]),...
+        'xLimMode','manual',...
+        'xTick',xTick,...
+        'xTickMode','manual',...
+        'xTickLabelMode','auto');
 end
 
 end

@@ -4,8 +4,8 @@ function [f,count] = ffrf2(T,R,~,Z,H,~,U,Omg,freq,tolerance,maxiter)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(tolerance)
     tolerance = 1e-7;

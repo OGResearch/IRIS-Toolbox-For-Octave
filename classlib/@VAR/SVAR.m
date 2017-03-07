@@ -1,47 +1,47 @@
-function [this, data, B, count] = SVAR(V, data, varargin)
-% SVAR  Identify SVAR from reduced-form VAR.
+function [This,Data,B,Count] = SVAR(V,Data,varargin)
+% SVAR  [Not a public function] Identify SVAR from a reduced-form VAR.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    data; %#ok<VUNUS>
+    Data; %#ok<VUNUS>
 catch
-    data = [ ];
+    Data = [];
 end
 
 % Parse required input arguments.
-pp = inputParser( );
-pp.addRequired('Data', @(x) isempty(x) || isnumeric(x) || istseries(x) ...
+pp = inputParser();
+pp.addRequired('Data',@(x) isempty(x) || isnumeric(x) || istseries(x) ...
     || isstruct(x));
-pp.parse(data);
+pp.parse(Data);
 
-opt = passvalopt('SVAR.SVAR', varargin{1:end});
+opt = passvalopt('SVAR.SVAR',varargin{1:end});
 
 %--------------------------------------------------------------------------
 
-ny = size(V.A, 1);
-nAlt = size(V.A, 3);
+ny = size(V.A,1);
+nAlt = size(V.A,3);
 
 % Create an empty SVAR object.
-this = SVAR( );
-this.B = nan(ny, ny, nAlt);
-this.Std = nan(1, nAlt);
+This = SVAR();
+This.B = nan(ny,ny,nAlt);
+This.Std = nan(1,nAlt);
 
 % Populate properties inherited from superclass VAR.
-this = struct2obj(this, V);
+This = mystruct2obj(This,V);
 
 % Identify the B matrix.
-[this,data,B,count] = myidentify(this, data, opt);
+[This,Data,B,Count] = myidentify(This,Data,opt);
 
-if nargin<2 || nargout<2 || isempty(data)
+if nargin < 2 || nargout < 2 || isempty(Data)
     return
 end
 
 % Convert reduced-form residuals to structural shocks.
-data = myred2struct(this, data, opt);
+Data = mystructuralshocks(This,Data,opt);
 
 end

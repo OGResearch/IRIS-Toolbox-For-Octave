@@ -36,14 +36,14 @@ function This = windex(This,W,Range,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Range = Inf;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('X',@istseries);
 pp.addRequired('W',@(x) isnumeric(x) || istseries(x));
 pp.addRequired('Range',@isnumeric);
@@ -57,7 +57,7 @@ This.data = This.data(:,:);
 temp = This;
 if istseries(W)
     W.data = W.data(:,:);
-    temp = trim([temp,W]);
+    temp = mytrim([temp,W]);
 end
 
 % Generate the range.

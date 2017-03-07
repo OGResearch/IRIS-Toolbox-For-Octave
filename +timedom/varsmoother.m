@@ -5,8 +5,8 @@ function [X2,Px2,E,U,Y2,Py2,YInx,Y0,F,Y1,Py1] = ...
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % The VAR-based state-space system is given by
 %
@@ -51,7 +51,7 @@ pe = nan(ny,nPer);
 Fipe = nan(ny,nPer);
 L = nan(nx*p,nx*p,nPer);
 G = nan(nx*p,ny,nPer);
-U = [ ];
+U = [];
 
 if isempty(E)
     if isempty(B)
@@ -118,7 +118,7 @@ for t = 1 : nPer
         Y0(:,t,1) = Y0(:,t,1) + D;
     end
     if ahead > 1
-        doAhead( );
+        doAhead();
     end
     % Prediction error.
     pe(jy,t) = y(jy,t) - Y0(jy,t,1);
@@ -156,7 +156,7 @@ for t = 1 : nPer
     Fipe(jy,t) = F(jy,jy,t)\pe(jy,t);
     G(:,jy,t) = T*Px2(:,1:nz2,t)*Z(jy,:).'/F(jy,jy,t);
     
-    doUpdate( );
+    doUpdate();
     
     % L = T - G*[Z,0].
     L(:,:,t) = T;
@@ -188,12 +188,12 @@ end
 
 if reuse
     if isempty(REUSE)
-        REUSE = struct( );
+        REUSE = struct();
         REUSE.F = F;
         REUSE.Fi = Fi;
     end
 else
-    REUSE = [ ];
+    REUSE = [];
 end
 
 % Backward smoothing
@@ -250,19 +250,19 @@ end
 %**************************************************************************
 
 
-    function doUpdate( )
+    function doUpdate()
         X1 = X2(:,t) + Px2(:,1:nz2,t)*Z(jy,:).'*Fipe(jy,t);
         Y1(:,t) = Z*X1(1:nz2,:);
         if ~isDEmpty
             Y1(:,t) = Y1(:,t) + D;
         end
-    end % doUpdate( )
+    end % doUpdate()
 
 
 %**************************************************************************
 
 
-    function doAhead( )
+    function doAhead()
         x = nan(size(X2,1),ahead);
         x(:,1) = X2(:,t);
         for kk = 2 : min(ahead,nPer-t+1)
@@ -277,7 +277,7 @@ end
             end
             Y0(:,t+kk-1,kk) = y0;
         end
-    end % doAhead( )
+    end % doAhead()
 
 
 end

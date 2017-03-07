@@ -4,8 +4,8 @@ function [X,Y] = fevd(T,R,K,Z,H,D,U,OMG,NPER)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
@@ -16,11 +16,11 @@ ne = size(R,2);
 n = ny + nf + nb;
 
 Phi = timedom.srf(T,R,K,Z,H,D,U,OMG,NPER);
-Phi(:,:,1) = [ ];
+Phi(:,:,1) = [];
 
 X = cumsum(Phi.^2,3); % FEVD in absolute contributions
 Y = zeros(size(X)); % FEVD in relative contributions
-status = warning( );
+status = warning();
 warning('off'); %#ok<WNOFF>
 varmat = diag(OMG);
 varmat = varmat(:)';

@@ -4,20 +4,20 @@ function This = rdivide(A,B)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent SYDNEY;
 
 if isnumeric(SYDNEY)
-    SYDNEY = sydney( );
+    SYDNEY = sydney();
 end
 
 %--------------------------------------------------------------------------
 
 This = SYDNEY;
 This.args = cell(1,2);
-This.Func = 'rdivide';
+This.func = 'rdivide';
 This.lookahead = false(1,2);
 
 if isnumeric(A)

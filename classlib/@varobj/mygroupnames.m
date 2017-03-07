@@ -4,8 +4,8 @@ function This = mygroupnames(This,GroupNames)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
  
@@ -15,7 +15,7 @@ end
 
 if iscellstr(GroupNames)
     GroupNames = GroupNames(:).';
-    nonUnique = parser.getMultiple(GroupNames);
+    nonUnique = strfun.nonunique(GroupNames);
     if ~isempty(nonUnique)
         utils.error(class(This), ...
             'Group names must be unique: ''%s''.', ...

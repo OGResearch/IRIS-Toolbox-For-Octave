@@ -21,7 +21,7 @@ function Flag = isexplosive(This,varargin)
 % Options
 % ========
 %
-% * `'tolerance='` [ numeric | *`getrealsmall( )`* ] - Tolerance for the
+% * `'tolerance='` [ numeric | *`getrealsmall()`* ] - Tolerance for the
 % eigenvalue test.
 %
 % Description
@@ -31,8 +31,8 @@ function Flag = isexplosive(This,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.isexplosive',varargin{:});
 

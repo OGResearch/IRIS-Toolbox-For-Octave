@@ -3,8 +3,8 @@ function varargout = qplot(varargin)
 %
 % See help on [`qreport.qplot`](qreport/qplot).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

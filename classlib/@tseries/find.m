@@ -30,8 +30,8 @@ function Dates = find(X,Func)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Func; %#ok<VUNUS>
@@ -39,10 +39,11 @@ catch
     Func = @all;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('X',@(x) isa(x,'tseries'));
 pp.addRequired('Func',@(x) isequal(x,@all) || isequal(x,@any));
 pp.parse(X,Func);
+
 
 %--------------------------------------------------------------------------
 

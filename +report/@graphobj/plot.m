@@ -1,241 +1,255 @@
-function plot(this, ax)
-% plot  Draw report/graph object.
+function plot(This,Ax)
+% plot  [Not a public function] Draw report/graph object.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if isempty(this.children)
+if isempty(This.children)
     return
 end
 
 % Clear the axes object.
-cla(ax);
+cla(Ax);
 
 % Run user-supplied style pre-processor on the axes object.
-if ~isempty(this.options.preprocess)
-    grfun.mystyleprocessor(ax, this.options.preprocess);
+if ~isempty(This.options.preprocess)
+    grfun.mystyleprocessor(Ax,This.options.preprocess);
 end
 
 % Array of legend entries.
-legEnt = cell(1, 0);
+legEnt = cell(1,0);
 
-nChild = length(this.children);
+nChild = length(This.children);
 
-lhsInx = false(1, nChild);
-rhsInx = false(1, nChild);
-annotateInx = false(1, nChild);
-isLhsOrRhsOrAnnotate( );
+lhsInx = false(1,nChild);
+rhsInx = false(1,nChild);
+annotateInx = false(1,nChild);
+doIsLhsOrRhsOrAnnotate();
 isRhs = any(rhsInx);
 
 if isRhs
     % Plot functions `@plotyy`, `@plotcmp`, `@barcon` not allowed.
-    chkPlotFunc( );
+    doChkPlotFunc();
     % Legend location cannot be `best` in LHS-RHS plots. This is a Matlab
     % issue.
-    getLegendLocation( );
+    doLegendLocation();
     % Create an axes object for the RHS plots.
-    openRhsAxes( );
+    doOpenRhsAxes();
 end
 
-if isequal(this.options.grid, @auto)
-    this.options.grid = ~isRhs;
+if isequal(This.options.grid,@auto)
+    This.options.grid = ~isRhs;
 end
 
-if isequal(this.options.tight, @auto)
-    this.options.tight = ~isRhs;
+if isequal(This.options.tight,@auto)
+    This.options.tight = ~isRhs;
 end
 
-hold(ax(1), 'all');
+hold(Ax(1),'all');
 if isRhs
-    hold(ax(end), 'all');
+    hold(Ax(end),'all');
 end
 
-legEnt = cell(1, nChild);
-ixLegLhs = true(1, nChild);
-doPlot( );
+doPlot();
 
-if this.options.grid
-    grid(ax(end), 'on');
+if This.options.grid
+    grid(Ax(end),'on');
 end
 
-if ~isequal(this.options.zeroline, false)
-    zerolineOpt = { };
-    if iscell(this.options.zeroline)
-        zerolineOpt = this.options.zeroline;
+if ~isequal(This.options.zeroline,false)
+    zerolineOpt = {};
+    if iscell(This.options.zeroline)
+        zerolineOpt = This.options.zeroline;
     end
-    grfun.zeroline(ax(end), zerolineOpt{:});
+    grfun.zeroline(Ax(end),zerolineOpt{:});
 end
 
 % Make the y-axis tight if requested by the user. Only after that the vline
 % children can be plotted.
-if this.options.tight
-    grfun.yaxistight(ax(end));
+if This.options.tight
+    grfun.yaxistight(Ax(end));
 end
 
 % Add title and subtitle (must be done before the legend).
-titleCell = {this.title, this.subtitle};
-ixEmpty = cellfun(@isempty, titleCell);
-titleCell(ixEmpty) = [ ];
+titleCell = {This.title,This.subtitle};
+ixEmpty = cellfun(@isempty,titleCell);
+titleCell(ixEmpty) = [];
 if ~isempty(titleCell)
-    ti = title(titleCell, 'interpreter', 'none');
-    if ~isempty(this.options.titleoptions)
-        set(ti, this.options.titleoptions{:});
+    ti = title(titleCell,'interpreter','none');
+    if ~isempty(This.options.titleoptions)
+        set(ti,This.options.titleoptions{:});
     end
 end
 
 % Add legend.
-lg = [ ];
-if isequal(this.options.legend, true) ...
-        || (isnumeric(this.options.legend) && ~isempty(this.options.legend))
-    if isnumeric(this.options.legend) && ~isempty(this.options.legend)
+lg = [];
+if isequal(This.options.legend,true) ...
+        || (isnumeric(This.options.legend) && ~isempty(This.options.legend))
+    if isnumeric(This.options.legend) && ~isempty(This.options.legend)
         % Select only the legend entries specified by the user.
-        legEnt = legEnt(this.options.legend);
+        legEnt = legEnt(This.options.legend);
     end
-    legEntLhs = [ legEnt{ixLegLhs} ];
-    legEngRhs = [ legEnt{~ixLegLhs} ]; %#ok<NASGU>
+    legEntLhs = [legEnt{ixLegLhs}];
+    legEngRhs = [legEnt{~ixLegLhs}]; %#ok<NASGU>
+    if false % ##### MOSW
+        % Do nothing
+    else
+        % Temporarily make invisible those excluded from legend
+        kids = findall(Ax(1)); %#ok<UNRCH>
+        toTrig = isappdata(kids,'notInLegend');
+        hvstat = get(kids(toTrig),'handleVisibility');
+        set(kids(toTrig),'handleVisibility','off');
+    end
     % TODO: Create legend for RHS data.
-    if ~isempty(legEnt) && ~all(cellfun(@isempty, legEnt))
-        if strcmp(this.options.legendlocation, 'bottom')
-            lg = grfun.bottomlegend(ax(1), legEntLhs{:});
+    if ~isempty(legEnt) && ~all(cellfun(@isempty,legEnt))
+        if strcmp(This.options.legendlocation,'bottom')
+            lg = grfun.bottomlegend(Ax(1),legEntLhs{:});
         else
-            if true % ##### MOSW
-                lg = legend(ax(1), legEntLhs{:}, ...
-                    'location', this.options.legendlocation);
-            else
-                lg = grfun.xlegend(Ax(1), legEntLhs{:}, ...
-                    'location', This.options.legendlocation); %#ok<UNRCH>
-            end
-            if ~isempty(this.options.legendoptions)
-                set(lg, this.options.legendoptions{:});
+            lg = legend(Ax(1),legEntLhs{:}, ...
+                'location',This.options.legendlocation);
+            if ~isempty(This.options.legendoptions)
+                set(lg,This.options.legendoptions{:});  
             end
         end
+    end
+    if false % ##### MOSW
+        % Do nothing
+    else
+        % Temporarily make all visible back
+        set(kids(toTrig),{'handleVisibility'},hvstat); %#ok<UNRCH>
     end
 end
 
 if isRhs
-    grfun.swaplhsrhs(ax(1), ax(2));
+    grfun.swaplhsrhs(Ax(1),Ax(2));
 end
 
 % Plot highlight and vline. These are excluded from legend.
 for i = find(annotateInx)
-    plot(this.children{i}, ax(1));
+    plot(This.children{i},Ax(1));
 end
 
 % Annotate axes.
-if ~isempty(this.options.xlabel)
-    xlabel(ax(1), this.options.xlabel);
+if ~isempty(This.options.xlabel)
+    xlabel(Ax(1),This.options.xlabel);
 end
-if ~isempty(this.options.ylabel)
-    ylabel(ax(1), this.options.ylabel);
+if ~isempty(This.options.ylabel)
+    ylabel(Ax(1),This.options.ylabel);
 end
-if ~isempty(this.options.zlabel)
-    zlabel(ax(1), this.options.zlabel);
+if ~isempty(This.options.zlabel)
+    zlabel(Ax(1),This.options.zlabel);
 end
 
-if ~isempty(this.options.style)
+if ~isempty(This.options.style)
     % Apply styles to the axes object and its children.
-    grfun.style(this.options.style, ax, 'warning', false);
+    qstyle(This.options.style,Ax,'warning',false);
     if ~isempty(lg)
         % Apply styles to the legend axes.
-        grfun.style(this.options.style, lg, 'warning', false);
+        qstyle(This.options.style,lg,'warning',false);
     end
 end
 
 % Run user-supplied axes options.
-if ~isempty(this.options.axesoptions)
-    set(ax(1), this.options.axesoptions{:});
+if ~isempty(This.options.axesoptions)
+    set(Ax(1),This.options.axesoptions{:});
     if isRhs
-        set(ax(end), this.options.axesoptions{:});
-        set(ax(end), this.options.rhsaxesoptions{:});
+        set(Ax(end),This.options.axesoptions{:});
+        set(Ax(end),This.options.rhsaxesoptions{:});
     end
 end
 
 % Run user-supplied style post-processor.
-if ~isempty(this.options.postprocess)
-    grfun.mystyleprocessor(ax, this.options.postprocess);
+if ~isempty(This.options.postprocess)
+    grfun.mystyleprocessor(Ax,This.options.postprocess);
 end
 
-return
+
+% Nested functions...
 
 
+%**************************************************************************
 
 
-    function openRhsAxes( )
-        ax = plotyy(ax, NaN, NaN, NaN, NaN);
-        delete(get(ax(1), 'children'));
-        delete(get(ax(2), 'children'));
-        set(ax, ...
-            'box', 'off', ...
-            'YColor', get(ax(1), 'XColor'), ...
-            'XLimMode', 'auto', 'XTickMode', 'auto', ...
-            'YLimMode', 'auto', 'YTickMode', 'auto');
-        ax(1).XRuler.Visible = 'on';
-        ax(2).XRuler.Visible = 'on';
-        set(ax(2), 'ColorOrder', get(ax(1), 'ColorOrder'));
-        if true % ##### MOSW
+    function doOpenRhsAxes()
+        Ax = plotyy(Ax,NaN,NaN,NaN,NaN);
+        delete(get(Ax(1),'children'));
+        delete(get(Ax(2),'children'));
+        set(Ax, ...
+            'box','off', ...
+            'YColor',get(Ax(1),'XColor'), ...
+            'XLimMode','auto','XTickMode','auto', ...
+            'YLimMode','auto','YTickMode','auto');
+        set(Ax(2),'ColorOrder',get(Ax(1),'ColorOrder'));
+        if false % ##### MOSW
             try
                 % HG2.
-                set(ax, 'ColorOrderIndex', 1);
+                set(Ax,'ColorOrderIndex',1);
+                Ax(1).XRuler.Visible = 'on';
+                Ax(2).XRuler.Visible = 'on';
             catch
                 % HG1.
-                setappdata(ax(1), 'PlotColorIndex', 1);
-                setappdata(ax(2), 'PlotColorIndex', 1);
+                setappdata(Ax(1),'PlotColorIndex',1);
+                setappdata(Ax(2),'PlotColorIndex',1);
             end
         else
             % Do nothing.
         end
-    end
+    end % doOpenRhsAxes()
 
 
+%**************************************************************************
 
 
-    function doPlot( )
+    function doPlot()
+        legEnt = cell(1,nChild);
+        ixLegLhs = true(1,nChild);
         for ii = 1 : nChild
             if lhsInx(ii)
                 % Plot on the LHS.
-                legEnt{ii} = plot(this.children{ii}, ax(1));
+                legEnt{ii} = plot(This.children{ii},Ax(1));
             elseif rhsInx(ii)
                 % Plot on the RHS.
-                legEnt{ii} = plot(this.children{ii}, ax(2));
+                legEnt{ii} = plot(This.children{ii},Ax(2));
                 ixLegLhs(ii) = false;
             end
             if isRhs
                 % In graphs with LHS and RHS axes, keep the color order index the same in
                 % Ax(1) and Ax(2) at all times.
-                if true % ##### MOSW
+                if false % ##### MOSW
                     try
                         % HG2.
-                        cix = get(ax, 'ColorOrderIndex');
+                        cix = get(Ax,'ColorOrderIndex');
                         cix = max([cix{:}]);
-                        set(ax, 'ColorOrderIndex', cix);
+                        set(Ax,'ColorOrderIndex',cix);
                     catch
                         % HG1.
-                        cix1 = getappdata(ax(1), 'PlotColorIndex');
-                        cix2 = getappdata(ax(2), 'PlotColorIndex');
-                        cix = max([cix1, cix2]);
-                        setappdata(ax(1), 'PlotColorIndex', cix);
-                        setappdata(ax(2), 'PlotColorIndex', cix);
+                        cix1 = getappdata(Ax(1),'PlotColorIndex');
+                        cix2 = getappdata(Ax(2),'PlotColorIndex');
+                        cix = max([cix1,cix2]);
+                        setappdata(Ax(1),'PlotColorIndex',cix);
+                        setappdata(Ax(2),'PlotColorIndex',cix);
                     end
                 else
                     % Do nothing.
                 end
             end
         end
-    end
+    end % doPlotLhs()
 
 
+%**************************************************************************
 
 
-    function isLhsOrRhsOrAnnotate( )
+    function doIsLhsOrRhsOrAnnotate()
         for ii = 1 : nChild
-            ch = this.children{ii};
-            if isfield(ch.options, 'yaxis')
-                if strcmpi(ch.options.yaxis, 'right')
+            ch = This.children{ii};
+            if isfield(ch.options,'yaxis')
+                if strcmpi(ch.options.yaxis,'right')
                     rhsInx(ii) = true;
                 else
                     lhsInx(ii) = true;
@@ -245,37 +259,41 @@ return
             end
         end
         
-    end
+    end % doIsLhsOrRhsOrAnnotate()
 
 
+%**************************************************************************
 
 
-    function chkPlotFunc( )
-        invalid = { };
+    function doChkPlotFunc()
+        invalid = {};
         for ii = find(lhsInx | rhsInx)
-            ch = this.children{ii};
+            ch = This.children{ii};
             if ~isanyfunc(ch.options.plotfunc, ...
-                    {'plot', 'bar', 'stem', 'area'})
+                    {'plot','bar','stem','area'})
                 invalid{end+1} = func2str(ch.options.plotfunc); %#ok<AGROW>
             end
         end
         if ~isempty(invalid)
             utils.error('graphobj:plot', ...
                 ['This plot function is not allowed in graphs ', ...
-                'with LHS and RHS axes: %s.'], ...
+                'with LHS and RHS axes: ''%s''.'], ...
                 invalid{:});
         end
-    end
+    end % doChkPlotFunc()
 
 
+%**************************************************************************
 
 
-    function getLegendLocation( )
-        if strcmpi(this.options.legendlocation, 'best')
-            this.options.legendlocation = 'South';
+    function doLegendLocation()
+        if strcmpi(This.options.legendlocation,'best')
+            This.options.legendlocation = 'South';
             utils.warning('graphobj:plot', ...
                 ['Legend location cannot be ''Best'' in LHS-RHS graphs. ', ...
                 '(This is a Matlab issue.) Setting the location to ''South''.']);
         end
-    end
+    end % doLegendLocation()
+
+
 end

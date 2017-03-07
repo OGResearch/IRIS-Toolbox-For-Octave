@@ -18,7 +18,6 @@
 % the files, and helps understand the model more quickly. See
 % [the setup instructions](setup/Contents) for more details.
 %
-%
 % Variables, parameters, substitutions and functions
 % ===================================================
 % 
@@ -28,10 +27,8 @@
 % * [`!measurement_shocks`](modellang/measurementshocks) - List of measurement shocks.
 % * [`!exogenous_variables`](modellang/exogenousvariables) - List of exogenous variables.
 % * [`!parameters`](modellang/parameters) - List of parameters.
-% * [`!dynamic_autogexog`](modellang/dynamicautoexog) - 
-% * [`!steady_autogexog`](modellang/steadyautoexog) - 
+% * [`!autoexogenise`](modellang/autoexogenise) - Definition of variable/shock pairs for use in autoexogenised simulation plans.
 % 
-%
 % Equations
 % ==========
 % 
@@ -39,16 +36,13 @@
 % * [`!measurement_equations`](modellang/measurementequations) - Block of measurement equations.
 % * [`!dtrends`](modellang/dtrends) - Block of deterministic trend equations.
 % * [`!links`](modellang/links) - Define dynamic links.
-% * [`!revisions`](modellang/revisions) - Block of steady-state revision equations.
-% * [`!reporting_equations`](modellang/reportingequations) - Block of reporting equations.
 % 
-%
-% Linearized and log-linearised variables
+% Linearised and log-linearised variables
 % ========================================
 % 
 % * [`!log_variables`](modellang/logvariables) - List of log-linearised variables.
 % * [`!all_but`](modellang/allbut) - Inverse list of log-linearised variables.
-%
+% * [`<...>`](modellang/regexpression) - Regular expression in log-variable list.
 %
 % Special operators
 % ==================
@@ -60,7 +54,6 @@
 % * [`=#`](modellang/exactnonlin) - Mark an equation for exact non-linear simulation.
 % * [`'...!!...'`](modellang/alias) - Beginning of aliasing inside descriptions and labels.
 %
-%
 % Pseudofunctions
 % ================
 %
@@ -71,25 +64,21 @@
 % * [`dot`](modellang/dot) - Gross rate of growth pseudofunction.
 % * [`difflog`](modellang/difflog) - First log-difference pseudofunction.
 % * [`movavg`](modellang/movavg) - Moving average pseudofunction.
-% * [`movgeom`](modellang/movgeom) - Moving geometric average pseudofunction.
 % * [`movprod`](modellang/movprod) - Moving product pseudofunction.
 % * [`movsum`](modellang/movsum) - Moving sum pseudofunction.
-%
 %
 % Preparser control commands
 % ===========================
 % 
 % * [`!substitutions`](modellang/substitutions) - Define text substitutions.
-% * [`<...>`](modellang/interp) - Interpolation.
+% * [`$[...]$`](modellang/pseudosubs) - Pseudosubstitutions.
 % * [`!import`](modellang/import) - Include the content of another model file.
-% * [`!export`](modellang/export) - Create exportable file to be saved in working directory.
-% * [`!function`](modellang/function) - Create exportable m-file function in working directory.
+% * [`!export`](modellang/export) - Create a carry-around file to be saved on the disk.
 % * [`!if...!elseif...!else...!end`](modellang/if) - Choose block of code based on logical condition.
 % * [`!switch...!case...!end`](modellang/switch) - Switch among several cases based on expression.
 % * [`!for...!do...!end`](modellang/for) - For loop for automated creation of model code.
 % * [`%`](modellang/linecomments) - Line comments.
 % * [`%{...%}`](modellang/blockcomments) - Block comments.
-%
 %
 % Getting on-line help on model file language
 % ============================================
@@ -101,7 +90,6 @@
 %     help modellang/keyword
 %     help modellang/command 
 %     help modellang/pseudofunction
-%
 %
 % Matlab functions and user functions in model files
 % ===================================================
@@ -192,5 +180,5 @@
 % effect on the respective measurement variable is linear.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

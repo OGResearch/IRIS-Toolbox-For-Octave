@@ -1,48 +1,29 @@
-function [nameBlk, eqtnBlk, blkType, blz] = blazer(this, varargin)
-% blazer  Reorder dynamic or steady equations and variables into sequential block structure.
+function [NameBlk,EqtnBlk] = blazer(This,varargin)
+% blazer  Reorder steady-state equations into block-recursive structure.
 %
 % Syntax
 % =======
 %
-%     [NameBlk, EqtnBlk, BlkType] = blazer(M, ...)
-%
+%     [NameBlk,EqtnBlk] = blazer(M,...)
 %
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Model object.
 %
-%
 % Output arguments
 % =================
 %
 % * `M` [ model ] - Model object with variables and steady-state equations
-% regrouped to create sequential block structure.
+% regrouped to create block-recursive structure.
 %
 % * `NameBlk` [ cell ] - Cell of cellstr with variable names in each block.
 %
 % * `EqtnBlk` [ cell ] - Cell of cellstr with equations in each block.
 %
-% * `BlkType [ solver.block.Type ] - Type of each equation block: `SOLVE` or
-% `ASSIGN`.
-%
-%
-% Options
-% ========
-%
-% * `'endogenize='` [ cellstr | char ] - List of parameters that will be
-% endogenized in steady equations.
-%
-% * `'exogenize='` [ cellstr | char ] - List of transition or measurement
-% variables that will be exogenized in steady equations.
-%
-% * `'kind='` [ `'dynamic'` | *`'steady'`* ] - The kind of equations on
-% which sequential block analysis will be performed.
-%
-%
 % Description
 % ============
-%
+% 
 % The reordering algorithm first identifies equations with a single
 % variable in each, and variables occurring in a single equation each, and
 % then uses a combination of column and row approximate minimum degree
@@ -53,54 +34,70 @@ function [nameBlk, eqtnBlk, blkType, blz] = blazer(this, varargin)
 % where N is the number of blocks, and each cell is a 1-by-Kn cell array of
 % strings, where Kn is the number of variables and equations in block N.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-opt = passvalopt('model.blazer', varargin{:});
+Human = isempty(varargin) || ~isequal(varargin{1},false);
 
 %--------------------------------------------------------------------------
 
-nameBlk = cell(1,0); %#ok<PREALL>
-eqtnBlk = cell(1,0); %#ok<PREALL>
+NameBlk = cell(1,0);
+EqtnBlk = cell(1,0);
 
-if this.IsLinear
-    throw( exception.Base('Blazer:CannotRunLinear', 'warning') );
-    return %#ok<UNRCH>
+if This.IsLinear
+    return
 end
 
-blz = prepareBlazer(this, opt.kind, opt);
-run(blz);
-
-if blz.IsSingular
-    throw( exception.Base('Steady:StructuralSingularity', 'error') );
+if any(This.nametype == 1)
+    type = [2,1];
+else
+    type = 2;
 end
 
-[eqtnBlk, nameBlk, blkType] = getHuman(this, blz);
+for i = type
+    occ = This.occurS(This.eqtntype == i,This.nametype == i);
+    occName = This.name(This.nametype == i);
+    
+    % Find equations that only have one variable in them; these can
+    % come first based on input parameters. Find names that occur only
+    % in one equation; these can come last based on all other
+    % variables.
+    [fName,fEqtn,lName,lEqtn,oOcc,oName,oEqtn] ...
+        = blazer.firstlast(occ,occName);
+    
+    % Reorder the rest of equations and names into recursive blocks.
+    [ordName,ordEqtn] = blazer.reorder(oOcc);
+    
+    oName = oName(ordName);
+    oEqtn = oEqtn(ordEqtn);
+    oOcc = oOcc(ordEqtn,ordName);
+    
+    [oName,oEqtn] = blazer.getblocks(oOcc,oName,oEqtn);
+    nameBlkAdd = [num2cell(fName),oName,num2cell(lName)];
+    eqtnBlkAdd = [num2cell(fEqtn),oEqtn,num2cell(lEqtn)];
+    
+    nameThisType = 1 : length(This.name);
+    nameThisType = nameThisType(This.nametype == i);
+    eqtnThisType = 1 : length(This.eqtn);
+    eqtnThisType = eqtnThisType(This.eqtntype == i);
+    
+    for j = 1 : length(nameBlkAdd)
+        nameBlkAdd{j} = nameThisType(nameBlkAdd{j});
+        eqtnBlkAdd{j} = eqtnThisType(eqtnBlkAdd{j});
+    end
+    
+    NameBlk = [NameBlk,nameBlkAdd]; %#ok<AGROW>
+    EqtnBlk = [EqtnBlk,eqtnBlkAdd]; %#ok<AGROW>
+end
 
-if ~isempty(opt.saveas)
-    saveAs(blz, this, opt.saveas);
+if Human
+    % Return human-readable variable names and equations.
+    NameBlk = blazer.human(This.name,NameBlk);
+    EqtnBlk = blazer.human(This.eqtn,EqtnBlk);
 end
 
 end
-
-
-
-
-function [blkEqnHuman, blkQtyHuman, blkType] = getHuman(this, blz)
-nBlk = numel(blz.Block);
-blkEqnHuman = cell(1, nBlk);
-blkQtyHuman = cell(1, nBlk);
-blkType = repmat(solver.block.Type.SOLVE, 1, nBlk);
-for i = 1 : nBlk
-    blk = blz.Block{i};
-    blkEqnHuman{i} = this.Equation.Input( blk.PosEqn );
-    blkQtyHuman{i} = this.Quantity.Name( blk.PosQty );
-    blkType(i) = blk.Type;
-end
-end
-

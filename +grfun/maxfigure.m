@@ -34,8 +34,8 @@ function Fig = maxfigure(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ screenSize = get(0,'screenSize');
 
 if ~isempty(varargin) && all(ishandle(varargin{1}))
     Fig = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
     set(Fig,'outerPosition',screenSize,varargin{:});
 else
     Fig = figure('outerPosition',screenSize,varargin{:});

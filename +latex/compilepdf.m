@@ -1,87 +1,97 @@
-function [pdf, count] = compilepdf(inpFile, varargin)
-% compilepdf  Publish latex file to PDF.
+function [Pdf,Count] = compilepdf(InpFile,varargin)
+% compilepdf  [Not a public function] Publish latex file to PDF.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-opt = passvalopt('latex.compilepdf', varargin{:});
+opt = passvalopt('latex.compilepdf',varargin{:});
 
 %--------------------------------------------------------------------------
 
-config = irisget( );
-if isempty(config.PdfLaTeXPath)
-    utils.error('latex:compilepdf',...
-        'PDF LaTeX engine path unknown. Cannot compile PDF files.');
+config = irisget();
+if isempty(config.pdflatexpath)
+    error('iris:latex',...
+        'PDFLATEX path unknown. Cannot compile PDF files.');
 end
 
-[inpPath, inpTitle] = fileparts(inpFile);
+[inpPath,inpTitle] = fileparts(InpFile);
 
 % TODO: We need to verify that all pdflatex distributions support the
 % option `-halt-on-error`.
 haltOnError = '-halt-on-error ';
 
-systemOpt = { };
+systemOpt = {};
 if opt.echo
     opt.display = false;
     systemOpt = {'-echo'};
 end
 
 command = [ ...
-    '"', config.PdfLaTeXPath, '" ', ...
+    '"',config.pdflatexpath,'" ', ...
     haltOnError, ...
     inpTitle, ...
     ];
 
 % Capture the current directory, and switch to the input file directory.
-thisDir = pwd( );
+thisDir = pwd();
 if ~isempty(inpPath)
-    cd(inpPath);
+	while ~isequal(pwd(),inpPath)
+		cd(inpPath);
+	end
 end
 
-count = 0;
+Count = 0;
 while true
-    count = count + 1;
-    [status, result] = system(command, systemOpt{:});
-    if count<opt.minrerun
+    Count = Count + 1;
+    [status,result] = system(command,systemOpt{:});
+    if Count < opt.minrerun
         continue
-    elseif count>opt.maxrerun
+    elseif Count > opt.maxrerun
         break
     end
-    needsRerun = rerunTest(result,inpTitle);
-    if status==0 && ~needsRerun
+    isRerun = xxRerunTest(result,inpTitle);
+    if status == 0 && ~isRerun
         break
     end
 end
 
 % Return back to the original directory.
-cd(thisDir);
+while ~isequal(pwd(),thisDir)
+    cd(thisDir);
+end
 
-if opt.display || status~=0
+if opt.display || status ~= 0
     disp(result);
 end
 
-pdf = fullfile(inpPath, [inpTitle, '.pdf']);
+Pdf = fullfile(inpPath,[inpTitle,'.pdf']);
 fprintf('\n');
+
 end
 
 
+% Subfunctions...
 
 
-function needsRerun = rerunTest(result, fileTitle)
+%**************************************************************************
+function IsRerun = xxRerunTest(Result,FTitle)
 % xxRerunTest  Search in the screen message and the log file for hints
 % indicating a need to rerun the compiler.
-FN_FIND = @(A,B) ~isempty(strfind(A,B));
+
+findFunc = @(A,B) ~isempty(strfind(A,B));
+
 % Search in output screen message for hints.
-needsRerun = FN_FIND(result, 'Rerun') ...
-        || FN_FIND(result, 'undefined references') ...
-        || ~isempty(regexp(result, 'No file \w+\.toc','once'));
+IsRerun = findFunc(Result,'Rerun') ...
+        || findFunc(Result,'undefined references') ...
+        || ~isempty(regexp(Result,'No file \w+\.toc','once'));
 
 % Search the log file for hints.
 try %#ok<TRYNC>
-    c = file2char([fileTitle, '.log']);
-    needsRerun = needsRerun || FN_FIND(c, 'Rerun');
+    c = file2char([FTitle,'.log']);
+    IsRerun = IsRerun || findFunc(c,'Rerun');
 end
-end
+
+end % xxRerunTest()

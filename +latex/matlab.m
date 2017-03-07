@@ -8,7 +8,7 @@ options = passvalopt(default,varargin{:});
 try
     D; %#ok<VUNUS>
 catch %#ok<CTCH>
-    D = [ ];
+    D = [];
 end
 
 %--------------------------------------------------------------------------
@@ -19,19 +19,19 @@ command = '\matlab';
 allpos = strfind(c,command);
 while ~isempty(allpos)
     pos = allpos(1);
-    allpos(1) = [ ];
+    allpos(1) = [];
     open1 = pos(1) + length(command);
-    close1 = textfun.matchbrk(c,open1);
+    close1 = strfun.matchbrk(c,open1);
     if isempty(close1) || c(close1+1) ~= '{'
-        dothrowerror( );
+        dothrowerror();
     end
     open2 = close1 + 1;
-    [close2,expression] = textfun.matchbrk(c,open2);
+    [close2,expression] = strfun.matchbrk(c,open2);
     if isempty(close2) || c(close2+1) ~= '{'
-        dothrowerror( );
+        dothrowerror();
     end
     open3 = close2 + 1;
-    [close3,format] = textfun.matchbrk(c,open3);
+    [close3,format] = strfun.matchbrk(c,open3);
     if isempty(D)
         valueString = '';
     else
@@ -55,13 +55,13 @@ char2file(c,FName);
 % Nested functions.
 
 %**************************************************************************
-    function dothrowerror( )
+    function dothrowerror()
         x = c(pos-20:pos+20);
-        x = textfun.converteols(x);
+        x = strfun.converteols(x);
         x = strrep(x,char(10),' ');
         utils.error('latex', ...
             'Syntax error in LaTeX \\matlab command: ''...%s...''.',x);
     end
-% dothrowerror( ).
+% dothrowerror().
 
 end

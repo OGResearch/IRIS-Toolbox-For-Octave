@@ -5,8 +5,8 @@ function C = restore(C,This,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('fragileobj.restore',varargin{:});
 
@@ -18,11 +18,11 @@ if isempty(C) || isempty(This)
 end
 
 ptn = regexppattern(This);
-if true % ##### MOSW
+if false % ##### MOSW
     rplFunc = @doReplace; %#ok<NASGU>
     C = regexprep(C,ptn,'${rplFunc($0)}');
 else
-    C = mosw.dregexprep(C,ptn,@doReplace,0); %#ok<UNRCH>
+    C = mosw.dregexprep(C,ptn,'doReplace',0); %#ok<UNRCH>
 end
 
 
@@ -32,7 +32,7 @@ end
         if opt.delimiter
             C = [This.Open{K},C,This.Close{K}];
         end
-    end % doReplace( )
+    end % doReplace()
 
 
 end

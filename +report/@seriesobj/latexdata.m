@@ -4,8 +4,8 @@ function C = latexdata(This,Row,Time,Data,Format,Mark,Text)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -28,8 +28,8 @@ for t = 1 : nPer
     if ixHighlight(t)
         hColor = 'highlightcolor';
     end    
-    a = struct( );
-    doAttributes( );
+    a = struct();
+    doAttributes();
     c1{t} = testnformat(This,a,NaN,'',hColor);
 end
 
@@ -51,7 +51,7 @@ end
 %**************************************************************************
 
     
-    function doAttributes( )
+    function doAttributes()
         % Prepare an attribute struct for cond formatting.
         a.value = Data(t);
         a.rowvalues = Data(:).';
@@ -67,7 +67,7 @@ end
         a.period = per(t);
         a.freq = freq(t);
         a.ishighlight = ixHighlight(t);
-    end % doAttributes( )
+    end % doAttributes()
 
 
 end

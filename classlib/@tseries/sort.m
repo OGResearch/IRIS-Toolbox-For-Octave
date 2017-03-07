@@ -30,8 +30,8 @@ function [x,index] = sort(x,crit)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
@@ -45,13 +45,13 @@ switch crit
    case 'sumabs'
       [ans,index] = sort(sum(abs(x.data),1),'descend');
    case 'max'
-      [ans,index] = sort(max(x.data,[ ],1),'descend');
+      [ans,index] = sort(max(x.data,[],1),'descend');
    case 'maxabs'
-      [ans,index] = sort(max(abs(x.data),[ ],1),'descend');
+      [ans,index] = sort(max(abs(x.data),[],1),'descend');
    case 'min'
-      [ans,index] = sort(min(x.data,[ ],1),'ascend');
+      [ans,index] = sort(min(x.data,[],1),'ascend');
    case 'minabs'
-      [ans,index] = sort(min(abs(x.data),[ ],1),'ascend');
+      [ans,index] = sort(min(abs(x.data),[],1),'ascend');
 end
 
 x.data = x.data(:,index);

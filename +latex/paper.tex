@@ -2,7 +2,7 @@
 \newcommand{\ps@normalheadings}
 {
     \renewcommand{\@oddhead}
-        {\footnotesize\filetitle\ {\ttfamily[\mfilename]}\hfill\thepage}
+        {\footnotesize\filetitle\ {\ttfamily\underline{\mfilename}}\hfill\thepage}
     \renewcommand{\@evenhead}{\@oddhead}
     \renewcommand{\@oddfoot}{}
     \renewcommand{\@evenfoot}{\@oddfoot}
@@ -10,7 +10,7 @@
 \newcommand{\ps@firstpageheadings}
 {
     \renewcommand{\@oddhead}
-        {\footnotesize\filetitle\ {\ttfamily[\mfilename]}\hfill\matlabversion\ $\lvert$ \irisversion}
+        {\underline{\matlabversion}\hfill\underline{\irisversion}}
     \renewcommand{\@evenhead}{\@oddhead}
     \renewcommand{\@oddfoot}{}
     \renewcommand{\@evenfoot}{\@oddfoot}
@@ -19,23 +19,24 @@
 
 \documentclass[10pt,$papersize$,fleqn]{article}
 
-\usepackage[$papersize$, portrait, scale=$textscale$, pdftex]{geometry}
-\usepackage{amsmath, color, sectsty, graphicx, listings}
+\usepackage[$papersize$,portrait,scale=$textscale$,pdftex]{geometry}
+\usepackage{amsmath,color,sectsty,graphicx,listings}
 \usepackage{myheadings}
-
-\usepackage{fourier}
-%\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+\usepackage{concmath}
 \usepackage{inconsolata}
+\usepackage[T1]{fontenc}
 
 $packages$
 
-\sectionfont{\centering\Large\mdseries\scshape\lowercase}
-\subsectionfont{\centering\Large\mdseries\scshape\lowercase}
+%\newcommand{\mylcmss}{\fontfamily{lcmss}\selectfont}
+\newcommand{\mylcmss}{}
+
+\sectionfont{\centering\Large\mdseries\mylcmss}
+\subsectionfont{\centering\large\mdseries\mylcmss}
 
 \renewcommand{\thesubsection}{\arabic{subsection}}
-\renewcommand{\abstractname}{{\mdseries Summary}}
-\renewcommand{\contentsname}{contents}
+\renewcommand{\abstractname}{{\mdseries\mylcmss Summary}}
+\renewcommand{\contentsname}{Contents}
 
 \definecolor{outputcodecolor}{rgb}{0,0,0.68}
 \definecolor{inputcodebgcolor}{rgb}{0.90,0.90,0.90}
@@ -78,28 +79,18 @@ $packages$
    linewidth=1000em,   
 }
 
-% \newcommand{\abovetitle}
-% {\normalsize $\int$ IRIS Macroeconomic Modeling Tutorials \\[18pt] }
-\newcommand{\abovetitle}{}
 \newcommand{\filetitle}{}
-\newcommand{\mfilename}{$filename$}
+\newcommand{\mfilename}{}
 \newcommand{\matlabversion}{$matlabversion$}
 \newcommand{\irisversion}{$irisversion$}
 \newcommand{\mfilenametitle}[1]{\\ {\normalsize{\ttfamily \underline{#1}}}}
 
-%%%%% Matlab figures %%%%%
-\newcommand{\matlabfigure}[1]{\centering
-$figureframe${\includegraphics[scale=$figurescale$,trim=$figuretrim$,clip=true]{#1}}
-\par}
+%%%% Cell environment %%%%%
+\newenvironment{cell}[1]{
+    \subsection$numbered${#1}}
+{}
 
-%%%%% Cell environment %%%%%
-\newenvironment{cell}[1]
-{
-    \subsection$numbered${#1}
-}
-{ }
-
-%%%%% Split cell environment %%%%%
+%%%% Split cell environment %%%%%
 \newenvironment{splitcell}{}{}
 
 %%%%% Intro text environment %%%%%
@@ -116,58 +107,47 @@ $figureframe${\includegraphics[scale=$figurescale$,trim=$figuretrim$,clip=true]{
 {}
 
 %%%%% Bookmarks %%%%%
-\newcommand{\bookmark}[1]
-{{\color{bookmarkcolor}\ttfamily\scriptsize\fbox{#1}}}
+\newcommand{\circled}[1]
+{{\Large\textcircled{\footnotesize\sffamily\raisebox{0.2pt}{#1}}}}
+
+%\newcommand{\bookmark}[1]{\textcolor{bookmarkcolor}{\circled{#1}}}
+\newcommand{\bookmark}[1]{\textcolor{bookmarkcolor}{\footnotesize\fbox{#1}}}
 
 %%%%% Table of contents %%%%%
 \newcommand{\mytableofcontents}
 {
-    {\setlength{\parskip}{0pt} \tableofcontents}
+    \tableofcontents
     %\bigskip\bigskip\par
     \pagebreak
 }
 
 %%%%% Title page %%%%%
-\newcommand{\mytitle}[1]
-{
-    \title{
-    \abovetitle
-    \fontsize{18}{16}
-    \fontshape{sc}
-    \selectfont
-    \lowercase{#1}
-    }
-    \author{$author$}
-    \date{\medskip \today}
-    \renewcommand{\codesize}{\codesizeintitle}
-    \begin{center}
-    \begin{minipage}{0.75\textwidth}
-    \maketitle
-    \end{minipage}
-    \end{center}
-    \renewcommand{\codesize}{\codesizeintext}
-    \thispagestyle{firstpageheadings}
-}
-
+\newcommand{\introduction}[2]
+{\title{\mylcmss#1#2}
+\author{$author$}
+\date{\medskip $date$}
+\renewcommand{\codesize}{\codesizeintitle}
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\maketitle
+\end{minipage}
+\end{center}
+\renewcommand{\codesize}{\codesizeintext}
+\thispagestyle{firstpageheadings}}
 \newcommand{\byauthor}{\textit{by}\ }
 \newcommand{\atevent}{\textit{at}\ }
 \renewcommand{\and}{\\[2pt] \itshape}
 
 \pagestyle{normalheadings}
 
-% \renewcommand{\today}{\number\day\space\ifcase\month\or
-%   January\or February\or March\or April\or May\or June\or
-%   July\or August\or September\or October\or November\or December\fi
-%   \space\number\year}
+\renewcommand{\today}{\number\day\space\ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space\number\year}
 
 \linespread{$linespread$}
 
 $preamble$
-
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.75\baselineskip}
-
-\usepackage[pdftex]{hyperref}
 
 \begin{document}
 

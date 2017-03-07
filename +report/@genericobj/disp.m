@@ -3,8 +3,8 @@ function disp(This,Level)
 %
 % Help provided in +report/disp.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Level; %#ok<VUNUS>
@@ -32,7 +32,7 @@ for i = 1 : length(This.children)
 end
 
 if Level == 0
-    textfun.loosespace( );
+    strfun.loosespace();
 end
 
 end

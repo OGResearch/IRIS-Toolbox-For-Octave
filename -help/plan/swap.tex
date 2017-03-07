@@ -1,0 +1,62 @@
+
+
+    \filetitle{swap}{Swap endogeneity and exogeneity of variables and shocks}{plan/swap}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+P = swap(P,ExogList,EndogList,Dates)
+P = swap(P,ExogList,EndogList,Dates,Sigma)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{P} {[} plan {]} - Simulation plan.
+\item
+  \texttt{ExogList} {[} cellstr \textbar{} char {]} - List of variables
+  that will be exogenized.
+\item
+  \texttt{EndogList} {[} cellstr \textbar{} char {]} - List of shocks
+  that will be endogenized.
+\item
+  \texttt{Dates} {[} numeric {]} - Dates at which the variables and
+  shocks will be exogenized/endogenized.
+\item
+  \texttt{Sigma} {[} numeric {]} - Anticipation mode (real or imaginary)
+  for the endogenized shocks, and their numerical weight (used in
+  underdetermined simulation plans); if omitted, \texttt{Sigma = 1}.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{P} {[} plan {]} - Simulation plan with new information on
+  exogenized variables and endogenized shocks included.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+The function \texttt{swap} is equivalent to the following separate calls
+to functions \texttt{exogenize} and \texttt{endogenize}:
+
+\begin{verbatim}
+p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates);
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+p = exogenize(p,ExogList,Dates);
+p = endogenize(p,EndogList,Dates,Sigma);
+\end{verbatim}
+
+if the input argument \texttt{Sigma} is provided.
+
+\paragraph{Example}\label{example}
+
+

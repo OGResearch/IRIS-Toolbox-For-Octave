@@ -22,16 +22,16 @@ function savestruct(FName,X)
 % `savestruct` and `loadstruct` functions are considered obsolete.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % ##### Jan 2014 OBSOLETE and scheduled for removal.
 utils.warning('obsolete', ...
-    ['The function savestruct( ) is obsolete, and', ...
+    ['The function savestruct() is obsolete, and', ...
     'will be removed from IRIS in a future release. ', ...
-    'Use save( ) and load( ), or saveasto( ) and loadasfrom( ) instead.']);
+    'Use save() and load(), or saveasto() and loadasfrom() instead.']);
 
 % Allow both savestruct(fname,d) and savestruct(d,fname).
 if (isobject(FName) || isstruct(FName) || iscell(FName)) && ischar(X)
@@ -41,7 +41,7 @@ end
 cl = class(X);
 switch cl
     case {'model','VAR','container','tseries'}
-        status = warning( );
+        status = warning();
         warning('off','MATLAB:structOnObject');
         X = saveobj(X);
         X = struct(X);

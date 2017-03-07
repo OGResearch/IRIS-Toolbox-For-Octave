@@ -6,8 +6,8 @@ function [out] = dOdA(This,in)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 switch This.OutputFn
     case 's4'
@@ -15,14 +15,11 @@ switch This.OutputFn
         out = This.OutputParams./(1+This.OutputParams^2*isq)^(1/2) - (This.OutputParams^3*isq)/(1+This.OutputParams^2*isq)^(3/2) ;
     
     case 'logistic'
-        eterm = min(exp(-This.OutputParams*in),1e+10) ;
+        eterm = exp(-This.OutputParams*in) ;
         out = ( This.OutputParams*eterm )./( 1+eterm ).^2 ;
         
     case 'tanh'
         out = This.OutputParams*sech( This.OutputParams*in ) ;
-        
-    case 'linear'
-        out = 1 ;
         
     otherwise
         utils.error('nnet','Symbolic differentiation not available for output function of type %s\n',This.OutputFn) ;

@@ -56,7 +56,7 @@ function varargout = dbsplit(D,varargin)
 % only, the other with `EU` data only. We also strip the time series names
 % of the country prefixes in the new databases.
 %
-%     [US,EU,DD[ ] = dbsplit(D,{'^US_(.*)','$1'},{'^EU_(.*)','$1'})
+%     [US,EU,DD[] = dbsplit(D,{'^US_(.*)','$1'},{'^EU_(.*)','$1'})
 % 
 %     US = 
 %         GDP: [40x1 tseries]
@@ -68,12 +68,12 @@ function varargout = dbsplit(D,varargin)
 %     struct with no fields.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 lastRule = min([length(varargin),find(cellfun(@ischar,varargin),1)-1]);
 rule = varargin(1:lastRule);
-varargin(1:lastRule) = [ ];
+varargin(1:lastRule) = [];
 opt = passvalopt('dbase.dbsplit',varargin{:});
 
 %--------------------------------------------------------------------------
@@ -87,7 +87,7 @@ for iOut = 1 : nOut
     match = regexp(dList,testPattern,'match','once');
     match = match(~cellfun(@isempty,match));
     newName = regexprep(match,testPattern,newName,'once');
-    x = struct( );
+    x = struct();
     for j = 1 : length(match)
         x.(newName{j}) = D.(match{j});
     end

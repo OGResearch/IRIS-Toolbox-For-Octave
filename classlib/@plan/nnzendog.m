@@ -1,18 +1,15 @@
-function [N,NReal,NImag] = nnzendog(This)
+function [n,nreal,nimag] = nnzendog(this)
 % nnzendog  Number of endogenised data points.
-%
 %
 % Syntax
 % =======
 %
-%     [N,NReal,NImag] = nnzendog(P)
-%
+%     [N,NREAL,NIMAG] = nnzendog(P)
 %
 % Input arguments
 % ================
 %
 % * `P` [ plan ] - Simulation plan.
-%
 %
 % Output arguments
 % =================
@@ -20,28 +17,26 @@ function [N,NReal,NImag] = nnzendog(This)
 % * `N` [ numeric ] - Total number of endogenised data points; each shock
 % at each time counts as one data point.
 %
-% * `NRea,` [ numeric ] - Number of endogenised data points with
+% * `NREAL` [ numeric ] - Number of endogenised data points with
 % anticipation mode 1.
 %
-% * `NImag` [ numeric ] - Number of endogenised data points with
+% * `NIMAG` [ numeric ] - Number of endogenised data points with
 % anticipation mode 1i.
-%
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-NReal = nnz(This.NAnchReal);
-NImag = nnz(This.NAnchImag); 
-N = NReal + NImag;
+nreal = nnz(this.NAnchReal);
+nimag = nnz(this.NAnchImag); 
+n = nreal + nimag;
 
 end

@@ -1,19 +1,20 @@
-function dec = day2dec(day)
-% day2dec  Convert Matlab serial date numbers to decimal representation.
+function Dec = day2dec(Day)
+% day2dec  [Not a public function] Convert Matlab serial date numbers to
+% decimal representation.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-day = floor(day);
-[year, ~, ~] = datevec(day);
-yearStart = datenum(year, 1, 1);
+Day = floor(Day);
+[year,~,~] = datevec(Day);
+yearStart = datenum(year,1,1);
 nDay = daysinyear(year);
-dayCount = day - yearStart;
-dec = year + dayCount ./ nDay;
+dayCount = Day - yearStart;
+Dec = year + dayCount ./ nDay;
 
 end

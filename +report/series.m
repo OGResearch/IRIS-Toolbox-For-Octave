@@ -195,12 +195,12 @@
 % Typeset negative values in italic, and values in periods before 2010Q1
 % blue:
 %
-%     cf = struct( );
+%     cf = struct();
 %     cf(1).test = 'value < 0';
 %     cf(1).format = '\mathit{?}';
 %     cf(2).test = 'date < qq(2010,1)';
 %     cf(2).format = '\color{blue}';
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

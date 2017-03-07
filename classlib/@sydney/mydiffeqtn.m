@@ -1,51 +1,68 @@
-function dEqtn = mydiffeqtn(eqtn, wrt)
-% mydiffeqtn  Differentiate one equation wrt to a list of names.
+function DEqtn = mydiffeqtn(Eqtn,Mode,NmOcc,TmOcc)
+% mydiffeqtn  [Not a public function] Differentiate one equation wrt to a list of names.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+if isempty(TmOcc)
+    TmOcc = zeros(size(NmOcc));
+end
 
 %--------------------------------------------------------------------------
 
-isSimplify = true;
-
 % Create string and remove anonymous function preamble.
-if isfunc(eqtn)
-    eqtn = func2str(eqtn);
+if isfunc(Eqtn)
+    Eqtn = func2str(Eqtn);
 end
-eqtn = regexprep(eqtn, '^@\(.*?\)', '', 'once');
+Eqtn = regexprep(Eqtn,'^@\(.*?\)','','once');
 
 % Replace x(:,n,t+k) with xN, xNpK, or xNmK.
-eqtn = sydney.myeqtn2symb(eqtn);
+Eqtn = sydney.myeqtn2symb(Eqtn);
 
-nWrt = length(wrt);
-nm = real(wrt);
-sh = imag(wrt);
-lsUnknown = cell(1, nWrt);
-for i = 1 : nWrt
-    if sh(i)==0
-        % Shift==0: replace x(1,23,t) with x23.
-        lsUnknown{i} = sprintf('x%g', nm(i));
-    elseif sh(i) > 0
-        % Shift>0: replace x(1,23,t+1) with x23p1.
-        lsUnknown{i} = sprintf('x%gp%g', nm(i), round(sh(i)));
+nocc = length(NmOcc);
+unknown = cell(1,nocc);
+for i = 1 : nocc
+    if TmOcc(i) == 0
+        % Time index == 0: replace x(1,23,t) with x23.
+        unknown{i} = sprintf('x%g',NmOcc(i));
+    elseif TmOcc(i) > 0
+        % Time index > 0: replace x(1,23,t+1) with x23p1.
+        unknown{i} = sprintf('x%gp%g',NmOcc(i),round(TmOcc(i)));
     else
-        % Shift<0: replace x(1,23,t-1) with x23m1.
-        lsUnknown{i} = sprintf('x%gm%g', nm(i), round(abs(sh(i))));
+        % Time index < 0: replace x(1,23,t-1) with x23m1.
+        unknown{i} = sprintf('x%gm%g',NmOcc(i),round(abs(TmOcc(i))));
     end
 end
 
-% temp = Ad.diff(eqtn, lsUnknown);
-
 % Create sydney object for the current equation.
-Z = sydney(eqtn, lsUnknown);
-Z = derv(Z, 'enbloc', lsUnknown, isSimplify);
-dEqtn = char(Z);
+Z = sydney(Eqtn,unknown);
 
-% Replace xN, xNpK, xNmK back with x(N,t+/-K,:).
-% Replace LN, LNpK, LNmK back with L(n,t+/-K,:).
-dEqtn = sydney.mysymb2eqtn(dEqtn, 'dynamic');
+switch Mode
+    case 'enbloc'
+        % Differentiate and reduce the result. The function returned by sydney.diff
+        % computes derivatives wrt all variables at once, and returns a vector of
+        % numbers.
+        Z = diff(Z,'enbloc',unknown);
+        DEqtn = char(Z);
+    case 'separate'
+        % Derivatives wrt individual names are computed and stored separately.
+        DEqtn = cell(1,nocc);
+        if nocc > 0
+            Z = diff(Z,'separate',unknown);
+            for i = 1 : nocc
+                DEqtn{i} = char(Z{i});
+            end
+        end
+    otherwise
+        utils.error('sydney:mydiffeqtn', ...
+            'Invalid output mode');
+end
+
+% Replace xN, xNpK, xNmK back with x(:,N,t+/-K).
+% Replace LN, LNpK, LNmK back with L(:,n,t+/-K).
+DEqtn = sydney.mysymb2eqtn(DEqtn);
 
 end

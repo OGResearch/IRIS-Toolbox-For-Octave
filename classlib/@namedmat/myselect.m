@@ -4,16 +4,16 @@ function [X,Pos] = myselect(X,RowNames,ColNames,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 RowSel = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 
 isColSelect = ~isempty(varargin);
 if isColSelect
     ColSel = varargin{1};
-    varargin(1) = [ ]; %#ok<NASGU>
+    varargin(1) = []; %#ok<NASGU>
 else
     ColSel = RowSel;
 end
@@ -58,9 +58,9 @@ end
 % Check for not-found positions.
 ixNanRow = isnan(rowPos);
 ixNanCol = isnan(colPos);
-doChkNotFound( );
-rowPos(ixNanRow) = [ ];
-colPos(ixNanCol) = [ ];
+doChkNotFound();
+rowPos(ixNanRow) = [];
+colPos(ixNanCol) = [];
 nRowSel = length(rowPos);
 nColSel = length(colPos);
 
@@ -80,8 +80,8 @@ Pos = {rowPos,colPos};
 %**************************************************************************
 
     
-    function doChkNotFound( )
-        msg = { };
+    function doChkNotFound()
+        msg = {};
         if isColSelect
             % Row and column selections entered separately.
             if ~any(ixNanRow) && ~any(ixNanCol)
@@ -109,7 +109,7 @@ Pos = {rowPos,colPos};
         utils.error('namedmat:myselect', ...
             'This is not a valid %s name: ''%s''.', ...
             msg{:});
-    end % doChkNotFound( )
+    end % doChkNotFound()
 
 
 end

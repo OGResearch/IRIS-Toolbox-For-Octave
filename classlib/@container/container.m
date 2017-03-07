@@ -1,106 +1,128 @@
 classdef container
     
-    methods        
-        function x = list(this) %#ok<MANU>
+    methods
+        
+        function This = container(varargin)
+            if nargin == 1
+                if isa(This,'container')
+                    This = varargin{1};
+                end
+            end
+        end
+        
+        function x = list(This) %#ok<MANU>
             x = container.request('list');
         end
         
-        function lock(this, varargin) %#ok<INUSL>
-            container.request('lock', varargin{:});
+        function lock(This,varargin) %#ok<INUSL>
+            container.request('lock',varargin{:});
         end
         
-        function unlock(this, varargin) %#ok<INUSL>
-            container.request('unlock', varargin{:});
+        function unlock(This,varargin) %#ok<INUSL>
+            container.request('unlock',varargin{:});
         end
         
-        function Flag = islocked(this, varargin) %#ok<INUSL>
-            Flag = container.request('islocked', varargin{:});
+        function Flag = islocked(This,varargin) %#ok<INUSL>
+            Flag = container.request('islocked',varargin{:});
         end
         
-        function List = locked(this) %#ok<MANU>
+        function List = locked(This) %#ok<MANU>
             List = container.request('locked');
         end
         
-        function List = unlocked(this) %#ok<MANU>
+        function List = unlocked(This) %#ok<MANU>
             List = container.request('unlocked');
         end
         
-        function this = remove(this,varargin)
-            container.request('remove', varargin{:});
+        function This = remove(This,varargin)
+            container.request('remove',varargin{:});
         end
         
-        function this = clear(this)
+        function This = clear(This)
             container.request('clear');
             munlock('container.request');
         end
         
-        function X = saveobj(this) %#ok<MANU>
+        function X = saveobj(This) %#ok<MANU>
             X = container.request('save');
         end
         
-        function varargout = get(this, varargin)
+        function varargout = get(This,varargin)
             if ~isempty(varargin)
-                [varargout{1}, flag] = container.request('get', varargin{1});
+                [varargout{1},flag] = container.request('get',varargin{1});
                 if ~flag
-                    container.error(2, varargin{1});
+                    container.error(2,varargin{1});
                 end
-                [varargout{2:length(varargin)}] = get(this, varargin{2:end});
+                [varargout{2:length(varargin)}] = get(This,varargin{2:end});
             end
         end
         
-        function this = put(this,varargin)
+        function This = put(This,varargin)
             if ~isempty(varargin)
-                pp = inputParser( );
-                pp.addRequired('c', @(x) isa(x,'container'));
-                pp.addRequired('name', @ischar);
-                pp.parse(this,varargin{1});
+                pp = inputParser();
+                pp.addRequired('c',@(x) isa(x,'container'));
+                pp.addRequired('name',@ischar);
+                pp.parse(This,varargin{1});
+
                 if ~isempty(varargin)
-                    flag = container.request('set', varargin{1}, varargin{2});
+                    flag = container.request('set',varargin{1},varargin{2});
                     if ~flag
-                        container.error(1, varargin{1});
+                        container.error(1,varargin{1});
                     end
-                    this = put(this, varargin{3:end});
+                    This = put(This,varargin{3:end});
                 end
             end
         end
         
-        function disp(this) %#ok<MANU>
+        function disp(This) %#ok<MANU>
             list = container.request('list');
-            status = get(0, 'formatSpacing');
+            status = get(0,'formatSpacing');
             fprintf('\tcontainer object: 1-by-1\n');
-            set(0, 'formatSpacing', 'compact');
+            set(0,'formatSpacing','compact');
             disp(list);
-            set(0, 'formatSpacing', status);
+            set(0,'formatSpacing',status);
         end
+        
+        function display(This)
+            if isequal(get(0,'FormatSpacing'),'compact')
+                disp([inputname(1),' =']);
+            else
+                disp(' ')
+                disp([inputname(1),' =']);
+                disp(' ');
+            end
+            disp(This);
+        end
+        
     end
     
     methods (Static)
         
-        function this = loadobj(this)
-            container.request('load', this);
-            this = container( );
+        function This = loadobj(This)
+            container.request('load',This);
+            This = container();
         end
         
     end
     
     methods (Static,Access=private)
         
-        varargout = request(varargin)
+        varargout = request(Action,varargin)
         
-        function error(code, list, varargin)
-            switch code
+        function error(Code,List,varargin)
+            switch Code
                 case 1
-                    msg = ['Cannot re-write container entry %s ', ...
-                        'this entry is locked.'];
+                    msg = ['Cannot re-write container entry ''%s''. ', ...
+                        'This entry is locked.'];
                 case 2
-                    msg = 'Reference to non-existent container entry: %s ';
+                    msg = 'Reference to non-existent container entry: ''%s''.';
             end
-            if nargin==1
-                list = { };
-            elseif ~iscell(list)
-                list = { list };
+            if nargin == 1
+                List = {};
+            elseif ~iscell(List)
+                List = {List};
             end
-            utils.error('container', msg, list{:});
+            utils.error('container',msg,List{:});
         end
     end
     

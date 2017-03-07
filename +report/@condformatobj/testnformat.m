@@ -4,8 +4,8 @@ function C = testnformat(This,A,ColW,Just,HColor)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ C1 = '?';
 sprintFormat = This.options.format;
 
 if isempty(This.format)
-    doPrintValue( );
+    doPrintValue();
     return
 end
 
-args = { };
-doInputArgs( );
+args = {};
+doInputArgs();
 nTest = length(This.format);
 passed = false(1,nTest);
 for i = 1 : nTest
@@ -33,7 +33,7 @@ for i = find(passed)
     % properties. Create a temp variable for the current format.
     thisFormat = This.format{i};
     % Find, read and remove sprintf formats, `\sprintf{XXX}`.
-    doSprintf( );
+    doSprintf();
     if isempty(thisFormat)
         continue
     end
@@ -49,7 +49,7 @@ for i = find(passed)
 end
 
 % Print the value in a box.
-doPrintValue( );
+doPrintValue();
 
 if ~isequal(C1,'?')
     C = strrep(C1,'?',C);
@@ -62,7 +62,7 @@ end
 %**************************************************************************
 
 
-        function doInputArgs( )
+        function doInputArgs()
             n = length(This.attribute);
             args = cell(1,n);
             for ii = 1 : n
@@ -72,13 +72,13 @@ end
                     args{ii} = NaN;
                 end
             end
-        end % doInputArgs( )
+        end % doInputArgs()
     
     
 %**************************************************************************
 
 
-    function doSprintf( )
+    function doSprintf()
         [tok,start,finish] = regexp(thisFormat, ...
             '\\sprintf\{(.*?)\}','tokens','start','end','once');
         if ~isempty(start)
@@ -86,17 +86,17 @@ end
             thisFormat(start:finish) = '';
             thisFormat = strtrim(thisFormat);
         end
-    end % doSprintf( )
+    end % doSprintf()
 
 
 %**************************************************************************
 
 
-    function doPrintValue( )
+    function doPrintValue()
         C = report.seriesobj.sprintf(A.value,sprintFormat,This.options);
         C = report.seriesobj.makebox(C, ...
             '',ColW,Just,HColor);
-    end % doPrintValue( )
+    end % doPrintValue()
 
 
 end

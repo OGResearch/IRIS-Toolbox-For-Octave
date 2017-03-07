@@ -18,14 +18,14 @@ function [saved,range] = dbase2tsd(d,fname,varargin)
 % * `fname` [ char ] - TSD filename.
 % <a href="options.html">Optional input arguments:</a>
 %     'nan' [ numeric <a href="default.html">1e15</a> ] Numerical value for missing observations.
-%     'inf' [ numeric | <a href="default.html">realmax( )</a> ] Numerical value for Infs.
+%     'inf' [ numeric | <a href="default.html">realmax()</a> ] Numerical value for Infs.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 default = {...
   'nan',1e15,@isnumericscalar, ...
-  'inf',realmax( ),@isnumericscalar, ...
+  'inf',realmax(),@isnumericscalar, ...
 };
 opt = passvalopt(default,varargin{:});
 
@@ -42,7 +42,7 @@ newline = sprintf('\r\n');
 
 file = '';
 list = fieldnames(d);
-saved = { };
+saved = {};
 range = [Inf,-Inf];
 for i = 1 : length(list)
   % not a time series

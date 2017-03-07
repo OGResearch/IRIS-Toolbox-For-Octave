@@ -1,4 +1,4 @@
-function [This,Y0,K0,Y1,G1] = covmat(C,Rep,varargin)
+function [This,Y0,K0,Y1,G1] = covmat(C,Repeat,varargin)
 % covmat  Covariance matrix prior dummy observations for BVARs.
 %
 % Syntax
@@ -28,14 +28,15 @@ function [This,Y0,K0,Y1,G1] = covmat(C,Rep,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Cov',@(x) isnumeric(x) && ismatrix(x));
 pp.addRequired('Rep',@(x) isintscalar(x) && x > 0);
-pp.parse(C,Rep);
+pp.parse(C,Repeat);
+
 
 %--------------------------------------------------------------------------
 
@@ -45,12 +46,19 @@ else
     C = chol(C).';
 end
 
-This = BVAR.bvarobj( );
+This = BVAR.bvarobj();
 This.name = 'covmat';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(~,~,~,~)   y0_oct(C,Repeat);
+    This.k0 = @(Ny,~,~,~)  k0_oct(Ny,Repeat);
+    This.y1 = @(Ny,P,~,~)  y1_oct(Ny,P,Repeat);
+    This.g1 = @(Ny,~,Ng,~) g1_oct(Ny,Ng,Repeat);
+end
 
 if ~isempty(varargin) && nargout > 1
     [Y0,K0,Y1,G1] = BVAR.mydummymat(This,varargin{:});
@@ -65,10 +73,10 @@ end
     
     function Y0 = y0(~,~,~,~)
         Y0 = C;
-        if Rep > 1
-            Y0 = repmat(Y0,1,Rep);
+        if Repeat > 1
+            Y0 = repmat(Y0,1,Repeat);
         end
-    end % y0( )
+    end % y0()
 
 
 %**************************************************************************
@@ -76,10 +84,10 @@ end
     
     function K0 = k0(Ny,~,~,~)
         K0 = zeros(1,Ny);
-        if Rep > 1
-            K0 = repmat(K0,1,Rep);
+        if Repeat > 1
+            K0 = repmat(K0,1,Repeat);
         end
-    end % k0( )
+    end % k0()
 
 
 %**************************************************************************
@@ -87,10 +95,10 @@ end
     
     function Y1 = y1(Ny,P,~,~)
         Y1 = zeros(Ny*P,Ny);
-        if Rep > 1
-            Y1 = repmat(Y1,1,Rep);
+        if Repeat > 1
+            Y1 = repmat(Y1,1,Repeat);
         end
-    end % y1( )
+    end % y1()
 
 
 %**************************************************************************
@@ -98,10 +106,54 @@ end
     
     function G1 = g1(Ny,~,Ng,~)
         G1 = zeros(Ng,Ny);
-        if Rep > 1
-            G1 = repmat(G1,1,Rep);
+        if Repeat > 1
+            G1 = repmat(G1,1,Repeat);
         end
-    end % g1( )
+    end % g1()
+
+
+%**************************************************************************
+
+    
+    function Y0 = y0_oct(C,Repeat)
+        Y0 = C;
+        if Repeat > 1
+            Y0 = repmat(Y0,1,Repeat);
+        end
+    end % y0_oct()
+
+
+%**************************************************************************
+
+    
+    function K0 = k0_oct(Ny,Repeat)
+        K0 = zeros(1,Ny);
+        if Repeat > 1
+            K0 = repmat(K0,1,Repeat);
+        end
+    end % k0_oct()
+
+
+%**************************************************************************
+
+    
+    function Y1 = y1_oct(Ny,P,Repeat)
+        Y1 = zeros(Ny*P,Ny);
+        if Repeat > 1
+            Y1 = repmat(Y1,1,Repeat);
+        end
+    end % y1_oct()
+
+
+%**************************************************************************
+
+    
+    function G1 = g1_oct(Ny,Ng,Repeat)
+        G1 = zeros(Ng,Ny);
+        if Repeat > 1
+            G1 = repmat(G1,1,Repeat);
+        end
+    end % g1_oct()
 
 
 end

@@ -1,4 +1,4 @@
-function dat = bb(varargin)
+function Dat = bb(varargin)
 % bb  IRIS serial date number for bimonthly date.
 %
 % Syntax
@@ -28,12 +28,11 @@ function dat = bb(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dat = datcode(6, varargin{:});
-dat = dates.Date(dat);
+Dat = datcode(6,varargin{:});
 
 end

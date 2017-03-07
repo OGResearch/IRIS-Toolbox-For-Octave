@@ -53,17 +53,17 @@ classdef WorkerObjWrapper < handle
         %    Example 3, build the value on the workers based on labindex:
         %
         %      % invokes "rand(labindex)" on each worker:
-        %      w = WorkerObjWrapper( @( ) rand(labindex), { } );
+        %      w = WorkerObjWrapper( @() rand(labindex), {} );
         %      spmd, size(w.Value,1) == labindex, end % true on each worker
         %
         %    Example 4, build the value on the workers, and use a cleanup function:
         %
         %      % build a function handle to open a numbered text file:
-        %      fcn = @( ) fopen( sprintf( 'worker_%d.txt', labindex ), 'wt' );
+        %      fcn = @() fopen( sprintf( 'worker_%d.txt', labindex ), 'wt' );
         %
         %      % opens the file handle on each worker, specifying that fclose
         %      % will be used later to "clean up" the file handle created.
-        %      w = WorkerObjWrapper( fcn, { }, @fclose );
+        %      w = WorkerObjWrapper( fcn, {}, @fclose );
         %
         %      % Run a parfor loop, logging to disk which worker operated on which
         %      % loop iterates
@@ -75,7 +75,7 @@ classdef WorkerObjWrapper < handle
         %      type worker_1.txt % see which iterates worker 1 got
         %
 
-            if ~isempty( getCurrentTask( ) )
+            if ~isempty( getCurrentTask() )
                 error( 'The WorkerObjWrapper should be constructed on the client' );
             end
             if nargin < 2
@@ -91,9 +91,9 @@ classdef WorkerObjWrapper < handle
                 ctor = @iReturnInput;
             end
             if nargin < 3
-                dtor = [ ];
+                dtor = [];
             end
-            tmpId = WorkerObjWrapper.getNextID( );
+            tmpId = WorkerObjWrapper.getNextID();
             WorkerObjWrapper.workerInit( tmpId, ctor, args, dtor );
             obj.ID = tmpId;
         end
@@ -105,7 +105,7 @@ classdef WorkerObjWrapper < handle
     methods
         function v = get.Value( obj )
         % V = GET.VALUE(OBJ) - retrieve the value, only on the workers
-            if ~isempty( getCurrentTask( ) )
+            if ~isempty( getCurrentTask() )
                 assert( WorkerObjWrapper.Map.isKey( obj.ID ) );
                 valdtor = WorkerObjWrapper.Map( obj.ID );
                 v = valdtor{1};
@@ -115,7 +115,7 @@ classdef WorkerObjWrapper < handle
         end
         function delete( obj )
         % DELETE(OBJ) - when fired on the client, cleans up the value on the workers
-            if isempty( getCurrentTask( ) ) && ~isempty( obj.ID )
+            if isempty( getCurrentTask() ) && ~isempty( obj.ID )
                 WorkerObjWrapper.workerDelete( obj.ID );
             else
                 % on the workers, do nothing - we hold on to the value until the client releases
@@ -127,7 +127,7 @@ classdef WorkerObjWrapper < handle
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Private implementation
     properties ( Access = private )
-        ID = [ ] % Unique key used to access the data, uint32
+        ID = [] % Unique key used to access the data, uint32
     end
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,7 +137,7 @@ classdef WorkerObjWrapper < handle
     end
 
     methods ( Access = private, Static )
-        function id = getNextID( )
+        function id = getNextID()
         % GETNEXTID - return the next uint32 ID key
             persistent NEXT_ID;
             if isempty( NEXT_ID )

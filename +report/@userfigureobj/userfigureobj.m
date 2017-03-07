@@ -2,7 +2,7 @@ classdef userfigureobj < report.basefigureobj
     
     
     properties
-        savefig = [ ];
+        savefig = [];
     end
     
     
@@ -16,7 +16,7 @@ classdef userfigureobj < report.basefigureobj
         function [This,varargin] = specargin(This,varargin)
             % Create a saved hardcopy of the figure, and store it in binary form.
             h = varargin{1};
-            varargin(1) = [ ];
+            varargin(1) = [];
             if ~isempty(h)
                 if length(h) ~= 1 || ~ishghandle(h) ...
                         || ~strcmp(get(h,'type'),'figure')
@@ -24,7 +24,7 @@ classdef userfigureobj < report.basefigureobj
                         ['The input argument H into a report figure must be ' ...
                         'a valid handle to a figure window.']);
                 end
-                figFile = [tempname(pwd( )),'.fig'];
+                figFile = [mosw.tempname(pwd()),'.fig'];
                 if true % ##### MOSW
                     % Matlab only
                     %-------------
@@ -50,7 +50,7 @@ classdef userfigureobj < report.basefigureobj
                 fid = fopen(figFile);
                 This.savefig = fread(fid);
                 fclose(fid);
-                utils.delete(figFile);
+                delete(figFile);
             end
         end
         

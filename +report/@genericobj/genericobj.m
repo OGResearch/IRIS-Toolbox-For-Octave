@@ -4,18 +4,18 @@ classdef genericobj < handle
     % Backed IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        parent = [ ];
-        children = { };
-        childof = { };
+        parent = [];
+        children = {};
+        childof = {};
         caption = '';
-        options = struct( );
-        default = { };
+        options = struct();
+        default = {};
         
-        hInfo = [ ]; % Store a handle object to carry global information.
+        hInfo = []; % Store a handle object to carry global information.
     end
     
     properties (Dependent)
@@ -30,7 +30,7 @@ classdef genericobj < handle
             This.default = [This.default,{ ...
                 'captiontypeface',{'\large\bfseries',''}, ...
                 @(x) ischar(x) || ...
-                (iscell(x) && length(x)==2 ...
+                (iscell(x) && length(x) == 2 ...
                 && (ischar(x{1}) || isequal(x{1},Inf)) ...
                 && (ischar(x{2}) || isequal(x{2},Inf))), ...
                 true, ...
@@ -42,15 +42,15 @@ classdef genericobj < handle
             if ~isempty(varargin)
                 This.caption = varargin{1};
             end
-        end % genericobj( )
+        end % genericobj()
         
         
         function [This,varargin] = specargin(This,varargin)
-        end % specargin( )
+        end % specargin()
         
         
         function This = setoptions(This,ParentOpt,varargin)
-            % setoptions( ) is called from within add( ).
+            % The function `setoptions()` is called from within `add()`.
             try
                 % Convert argins to struct.
                 userName = varargin(1:2:end);
@@ -60,7 +60,7 @@ classdef genericobj < handle
                 userName = strrep(userName,'=','');
                 % useropt = cell2struct(uservalues,usernames,2);
             catch Error
-                utils.error('report:genericobj:genericobj',...
+                utils.error('report',...
                     ['Invalid structure of optional input arguments.\n', ...
                     'MATLAB says: %s'],...
                     Error.message);
@@ -75,14 +75,13 @@ classdef genericobj < handle
             % Process the object-specific options.
             for i = 1 : 4 : length(Default)
                 match = regexp(Default{i},'\w+','match');
-                primaryName = match{1};
                 defValue = Default{i+1};
                 validFunc = Default{i+2};
                 isInheritable = Default{i+3};
+                primaryName = match{1};
                 % First, assign default under the primary name.
                 This.options.(primaryName) = defValue;
-                % Cycle over alternative option names.
-                for j = length(match) : -1 : 1
+                for j = 1 : length(match)
                     optName = match{j};
                     % Then, inherit the value from the parent object if it is inheritable and
                     % is available from parent options.
@@ -90,7 +89,7 @@ classdef genericobj < handle
                         This.options.(primaryName) = ParentOpt.(optName);
                     end
                     % Last, get it from current user options if supplied.
-                    invalid = { };
+                    invalid = {};
                     ix = strcmpi(optName,userName);
                     if any(ix)
                         pos = find(ix);
@@ -108,15 +107,15 @@ classdef genericobj < handle
                         end
                         % Report values that do not pass validation.
                         if ~isempty(invalid)
-                            utils.error('report:genericobj:genericobj',...
-                                ['Value assigned to option %s= ', ...
-                                'fails validation %s.'],...
+                            utils.error('report',...
+                                ['Value assigned to option ''%s='' ', ...
+                                'does not pass validation ''%s''.'],...
                                 invalid{:});
                         end
                     end
                 end
             end
-        end % setoptions( )
+        end % setoptions()
         
         
         varargout = copy(varargin)
@@ -181,7 +180,7 @@ classdef genericobj < handle
             if ~ischar(Title)
                 Title = '';
             end
-        end % get.title( )
+        end % get.title()
         
         
         function Sub = get.subtitle(This)
@@ -191,7 +190,7 @@ classdef genericobj < handle
                     && ischar(This.caption{2})
                 Sub = This.caption{2};
             end
-        end % get.subtitle( )
+        end % get.subtitle()
         
         
     end
@@ -208,7 +207,7 @@ classdef genericobj < handle
             if isinf(C)
                 C = '\large\bfseries';
             end
-        end % mytitletypeface( )
+        end % mytitletypeface()
         
         
         function C = mysubtitletypeface(This)
@@ -220,7 +219,7 @@ classdef genericobj < handle
             if isinf(C)
                 C = '';
             end
-        end % mysubtitletypeface( )
+        end % mysubtitletypeface()
         
         
         % When adding a new object, we find the right place by checking two things:
@@ -229,186 +228,184 @@ classdef genericobj < handle
         % align objects with no more room.
         function Flag = accepts(This) %#ok<MANU>
             Flag = true;
-        end % accepts( )
+        end % accepts()
                 
         
         % User-supplied typeface
         %------------------------
-        function c = begintypeface(this)
-            c = '';
-            if isfield(this.options,'typeface') ...
-                    && ~isempty(this.options.typeface)
+        
+        
+        function C = begintypeface(This)
+            C = '';
+            if isfield(This.options,'typeface') ...
+                    && ~isempty(This.options.typeface)
                 br = sprintf('\n');
-                c = [c, '{', br, this.options.typeface, br];
+                C = [C,'{',br,This.options.typeface,br];
             end
-        end
+        end % begintypeface()
         
         
-        
-        
-        function c = endtypeface(this)
-            c = '';
-            if isfield(this.options,'typeface') ...
-                    && ~isempty(this.options.typeface)
+        function C = endtypeface(This)
+            C = '';
+            if isfield(This.options,'typeface') ...
+                    && ~isempty(This.options.typeface)
                 br = sprintf('\n');
-                c = [c, '}', br];
+                C = [C,'}',br];
             end
-        end
-        
-        
+        end % endtypeface()
         
         
         % hInfo methods
         %---------------
-        function addtempfile(this, newTempFile)
-            if ischar(newTempFile)
-                newTempFile = {newTempFile};
+        
+        
+        function addtempfile(This,NewTempFile)
+            if ischar(NewTempFile)
+                NewTempFile = {NewTempFile};
             end
-            tempFile = this.hInfo.tempFile;
-            tempFile = [tempFile, newTempFile];
-            this.hInfo.tempFile = tempFile;
-        end 
+            tempFile = This.hInfo.tempFile;
+            tempFile = [tempFile,NewTempFile];
+            This.hInfo.tempFile = tempFile;
+        end % addtempfile()
         
         
-        
-        
-        function addfigurehandle(this, newFigureHandle)
-            figureHandle = this.hInfo.figureHandle;
-            figureHandle = [figureHandle, newFigureHandle];
-            this.hInfo.figureHandle = figureHandle;
-        end
+        function addfigurehandle(This,NewFigureHandle)
+            figureHandle = This.hInfo.figureHandle;
+            figureHandle = [figureHandle,NewFigureHandle];
+            This.hInfo.figureHandle = figureHandle;
+        end % addfigurehandle()
 
         
-        
-        
-        function c = footnotemark(this, text)
+        function C = footnotemark(This,Text)
             try
-                text; %#ok<VUNUS>
+                Text; %#ok<VUNUS>
             catch
                 try
-                    text = this.options.footnote;
+                    Text = This.options.footnote;
                 catch
-                    text = '';
+                    Text = '';
                 end
             end
-            if isempty(text)
-                c = '';
+            if isempty(Text)
+                C = '';
                 return
             end
             br = sprintf('\n');
-            number = sprintf('%g', footnotenumber(this));
-            text = interpret(this, text);
-            c = ['\footnotemark[', number, ']'];
-            this.hInfo.footnote{end+1} = [ ...
-                br, '\footnotetext[', number, ']{', text, '}', ...
-                ];
-        end
+            number = sprintf('%g',footnotenumber(This));
+            Text = interpret(This,Text);
+            C = ['\footnotemark[',number,']'];
+            This.hInfo.footnote{end+1} = [br, ...
+                '\footnotetext[',number,']{',Text,'}'];
+        end % footnotemark()
         
         
-        
-        
-        function c = footnotetext(this)
-            footnote = this.hInfo.footnote;
+        function C = footnotetext(This)
+            footnote = This.hInfo.footnote;
             if isempty(footnote)
-                c = '';
+                C = '';
                 return
             end
-            c = [ footnote{:} ];
-            footnote = { };
-            this.hInfo.footnote = footnote;
-        end 
+            C = [footnote{:}];
+            footnote = {};
+            This.hInfo.footnote = footnote;
+        end % footnotetext()
         
         
+        function N = footnotenumber(This)
+            N = This.hInfo.footnoteCount;
+            N = N + 1;
+            This.hInfo.footnoteCount = N;
+        end % footnotenumber()
         
         
-        function n = footnotenumber(this)
-            n = this.hInfo.footnoteCount;
-            n = n + 1;
-            this.hInfo.footnoteCount = n;
-        end
     end
     
     
-    methods (Static, Hidden)
-        function c = makebox(text, format, colW, pos, color)
-            c = ['{', text, '}'];
-            if ~isempty(format)
-                c = ['{', format, c, '}'];
+    methods (Static,Hidden)
+        
+        
+        function C = makebox(Text,Format,ColW,Pos,Color)
+            C = ['{',Text,'}'];
+            if ~isempty(Format)
+                C = ['{',Format,C,'}'];
             end
-            if ~isnan(colW)
-                c = ['\makebox[', sprintf('%g', colW),'em]', ...
-                    '[', pos, ']{', c, '}'];
+            if ~isnan(ColW)
+                C = ['\makebox[',sprintf('%g',ColW),'em]', ...
+                    '[',Pos,']{',C,'}'];
             end
-            if ~isempty(color)
-                c = ['\colorbox{', color, '}{', c, '}'];
+            if ~isempty(Color)
+                C = ['\colorbox{',Color,'}{',C,'}'];
             end
-        end
+        end % makebox()
         
         
-        
-        
-        function c = sprintf(value, format, opt)
-            if ~isempty(opt.purezero) && value==0
-                c = opt.purezero;
+        function C = sprintf(Value,Format,Opt)
+            if ~isempty(Opt.purezero) && Value == 0
+                C = Opt.purezero;
                 return
             end
-            if isnan(value)
-                c = opt.nan;
+            if isnan(Value)
+                C = Opt.nan;
                 return
             end
-            if isinf(value)
-                c = opt.inf;
+            if isinf(Value)
+                C = Opt.inf;
                 return
             end
-            d = sprintf(format,value);
-            if ~isempty(opt.printedzero) && isequal(sscanf(d, '%g'), 0)
-                d = opt.printedzero;
+            d = sprintf(Format,Value);
+            if ~isempty(Opt.printedzero) ...
+                    && isequal(sscanf(d,'%g'),0)
+                d = Opt.printedzero;
             end
-            c = ['\ensuremath{', d, '}'];
-        end
+            C = ['\ensuremath{',d,'}'];
+        end % sprintf()
         
         
-        
-        
-        function c = turnbox(c, angle)
+        function C = turnbox(C,Angle)
             try
-                if islogical(angle)
-                    angle = '90';
+                if islogical(Angle)
+                    Angle = '90';
                 else
-                    angle = sprintf('%g', angle);
+                    Angle = sprintf('%g',Angle);
                 end
             catch %#ok<CTCH>
-                angle = '90';
+                Angle = '90';
             end
-            c = ['\settowidth{\tableColNameHeight}{', c, ' }',...
+            C = ['\settowidth{\tableColNameHeight}{',C,' }',...
                 '\rule{0pt}{\tableColNameHeight}',...
-                '\turnbox{', angle, '}{', c, '}'];
-        end
+                '\turnbox{',Angle,'}{',C,'}'];
+        end % turnbox()
         
         
-        
-        
-        function isValid = validatecolstruct(colStruct)
-            isValid = true;
-            for i = 1 : length(colStruct)
-                c = colStruct(i);
+        function Valid = validatecolstruct(ColStruct)
+            try
+                isequaln(0,0);
+                isequalnFunc = @isequaln;
+            catch
+                isequalnFunc = @isequalwithequalnans;
+            end
+            Valid = true;
+            for i = 1 : length(ColStruct)
+                c = ColStruct(i);
                 if ~(ischar(c.name) ...
                         || ( ...
-                        iscell(c.name) && length(c.name)==2 ...
-                        && (ischar(c.name{1}) || isequaln(c.name{1},NaN)) ...
-                        && (ischar(c.name{2}) || isequaln(c.name{2},NaN)) ...
-                        ))
-                    isValid = false;
+                        iscell(c.name) && length(c.name) == 2 ...
+                        && (ischar(c.name{1}) || isequalnFunc(c.name{1},NaN)) ...
+                        && (ischar(c.name{2}) || isequalnFunc(c.name{2},NaN)) ...
+                        )) %#ok<FPARK>
+                    Valid = false;
                 end
                 if ~isempty(c.func) ...
                         && isa(c,'function_handle')
-                    isValid = false;
+                    Valid = false;
                 end
                 if ~isempty(c.date) ...
                         && ~isnumericscalar(c.date)
-                    isValid = false;
+                    Valid = false;
                 end
             end
-        end
+        end % validatecolstruct()
+        
     end
+    
 end

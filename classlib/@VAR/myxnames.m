@@ -4,13 +4,13 @@ function varargout = myxnames(This,XNames)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('XNames',@(x) isempty(XNames) ...
     || ischar(XNames) || iscellstr(XNames));
 pp.parse(XNames);

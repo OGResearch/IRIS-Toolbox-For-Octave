@@ -1,53 +1,51 @@
 % gettinghelp  Getting Online Help.
 %
-% Use either `idoc` or `help` to get help on IRIS functions:
+% Use either `help` or `idoc` to get help on IRIS functions:
 %
-% * `idoc` displays the help topic in an HTML browser window.
 % * `help` displays the help topic in the command window,
+% * `idoc` displays the help topic in an HTML browser window.
 % 
 % The following help topics are available:
 %
-%     idoc dates
-%     idoc dates/function_name
-%     idoc dbase
-%     idoc dbase/function_name
-%     idoc modellang
-%     idoc modellang/keyword
-%     idoc model
-%     idoc model/function_name
-%     idoc rpteq
-%     idoc rpteq/function_name
-%     idoc plan
-%     idoc plan/function_name
-%     idoc grouping
-%     idoc grouping/function_name
-%     idoc poster
-%     idoc poster/function_name
-%     idoc logdist
-%     idoc logdist/function_name
-%     idoc namedmat
-%     idoc namedmat/function_name
-%     idoc VAR
-%     idoc VAR/function_name
-%     idoc SVAR
-%     idoc SVAR/function_name
-%     idoc BVAR
-%     idoc BVAR/function_name
-%     idoc FAVAR
-%     idoc FAVAR/function_name
-%     idoc dates
-%     idoc dates/function_name
-%     idoc tseries
-%     idoc tseries/function_name
-%     idoc trec
-%     idoc trec/function_name
-%     idoc dbase
-%     idoc dbase/function_name
-%     idoc report
-%     idoc report/function_name
-%     idoc grfun
-%     idoc grfun/function_name
+%     help dates
+%     help dates/function_name
+%     help dbase
+%     help dbase/function_name
+%     help modellang
+%     help modellang/keyword
+%     help model
+%     help model/function_name
+%     help plan
+%     help plan/function_name
+%     help poster
+%     help poster/function_name
+%     help logdist
+%     help logdist/function-name
+%     help sstatelang
+%     help sstatelang/keyword
+%     help sstate
+%     help sstate/function_name
+%     help tseries
+%     help tseries/function_name
+%     help VAR
+%     help VAR/function_name
+%     help SVAR
+%     help SVAR/function_name
+%     help BVAR
+%     help BVAR/function_name
+%     help FAVAR
+%     help FAVAR/function_name
+%     help report
+%     help report/function_name
+%     help qreportlang
+%     help qreportlang/keyword
+%     help qreport
+%     help qreport/keyword
+%     help grfun
+%     help grfun/function_name
+%
+% You can use `idoc` instead of `help` in the above list.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

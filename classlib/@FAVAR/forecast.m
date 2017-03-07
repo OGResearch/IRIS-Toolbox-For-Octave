@@ -1,133 +1,132 @@
-function [d, cc, ff, u, e] = forecast(this, inp, range, j, varargin)
+function [D,CC,F,U,E] = forecast(This,Inp,Range,J,varargin)
 % forecast  Forecast FAVAR factors and observables.
 %
 % Syntax
 % =======
 %
-%     [d, cc, f, u, e] = forecast(a, inp, range, j, ...)
-%
+%     [D,CC,F,U,E] = forecast(A,D,RANGE,J,...)
 %
 % Input arguments
 % ================
 %
-% * `a` [ FAVAR ] - Estimated FAVAR object.
+% * `A` [ FAVAR ] - FAVAR object.
 %
-% * `inp` [ struct | cell | Series ] - Input data with initial condition for
-% the FAVAR factors.
+% * `D` [ struct | tseries ] - Input data with initial condition for the
+% FAVAR factors.
 %
-% * `range` [ numeric ] - Forecast range.
+% * `RANGE` [ numeric ] - Forecast range.
 %
-% * `j` [ struct | tseries] - Conditioning data with hard tunes on the
+% * `J` [ struct | tseries] - Conditioning data with hard tunes on the
 % FAVAR observables.
-%
 %
 % Output arguments
 % =================
 %
-% * `d` [ struct ] - Output database or tseries object with the FAVAR
+% * `D` [ struct ] - Output database or tseries object with the FAVAR
 % observables.
 %
-% * `cc` [ Series ] - Projection of common components in the
+% * `CC` [ struct | tseries ] - Projection of common components in the
 % observables.
 %
-% * `f` [ Series ] - Projection of common factors.
+% * `F` [ tseries ] - Projection of common factors.
 %
-% * `u` [ Series ] - Conditional idiosyncratic residuals.
+% * `U` [ tseries ] - Conditional idiosyncratic residuals.
 %
-% * `e` [ Series ] - Conditional structural residuals.
-%
+% * `E` [ tseries ] - Conditional structural residuals.
 %
 % Options
 % ========
 %
 % See help on [`FAVAR/filter`](FAVAR/filter) for options available.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TEMPLATE_SERIES = Series( );
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
-pp = inputParser( );
-pp.addRequired('a', @isFAVAR);
-pp.addRequired('inp', @(x) isa(x, 'tseries') || isstruct(x));
-pp.addRequired('range', @isnumeric);
-pp.addRequired('j', @(x) isempty(x) || isa(x, 'tseries') || isstruct(x));
-pp.parse(this, inp, range, j);
+pp = inputParser();
+pp.addRequired('A',@isFAVAR);
+pp.addRequired('D',@(x) istseries(x) || isstruct(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('J',@(x) isempty(x) || istseries(x) || isstruct(x));
+pp.parse(This,Inp,Range,J);
 
 % Parse options.
-opt = passvalopt('FAVAR.forecast', varargin{:});
+opt = passvalopt('FAVAR.forecast',varargin{:});
 
 %--------------------------------------------------------------------------
 
-ny = size(this.C, 1);
-nx = size(this.C, 2);
-pp = size(this.A, 2)/nx;
-range = range(1) : range(end);
+ny = size(This.C,1);
+nx = size(This.C,2);
+pp = size(This.A,2)/nx;
+Range = Range(1) : Range(end);
 
-if isstruct(inp) ...
-      && ~isfield(inp, 'init') ...
-      && isfield(inp, 'mean') ...
-      && istseries(inp.mean)
-   inp = inp.mean;
+if isstruct(Inp) ...
+      && ~isfield(Inp,'init') ...
+      && isfield(Inp,'mean') ...
+      && istseries(Inp.mean)
+   Inp = Inp.mean;
 end
 
-if istseries(inp)
+if istseries(Inp)
    % Only mean tseries supplied; no uncertainty in initial condition.
-   reqRange = range(1)-pp : range(1)-1;
-   req = datarequest('y*', this, inp, reqRange);
-   x0 = req.Y(:, end:-1:1, :, :);
+   reqRange = Range(1)-pp : Range(1)-1;
+   req = datarequest('y*',This,Inp,reqRange);
+   x0 = req.Y(:,end:-1:1,:,:);
    x0 = x0(:);
    P0 = 0;
 else
    % Complete description of initial conditions.
-   ix = abs(range(1)-1 - inp.init{3}) <= 0.01;
-   if isempty(ix) || ~any(ix)
+   inx = abs(Range(1)-1 - Inp.init{3}) <= 0.01;
+   if isempty(inx) || ~any(inx)
       % Initial condition not available.
       utils.error('FAVAR', ...
          'Initial condition for factors not available from input data.');
    end
-   x0 = inp.init{1}(:, ix, :, :);
-   P0 = inp.init{2}(:, :, ix, :, :);
+   x0 = Inp.init{1}(:,inx,:,:);
+   P0 = Inp.init{2}(:,:,inx,:,:);
 end
-nPer = length(range);
-nData = size(x0, 3);
+nPer = length(Range);
+nData = size(x0,3);
 
-if ~isempty(j)
-   if isstruct(j) && isfield(j, 'mean')
-      j = j.mean;
+if ~isempty(J)
+   if isstruct(J) && isfield(J,'mean')
+      J = J.mean;
    end
-   req = datarequest('y*', this, j, range);
-   range = req.Range;
+   req = datarequest('y*',This,J,Range,opt);
+   outpFmt = req.Format;
+   Range = req.Range;
    y = req.Y;
-   [this, y] = standardise(this, y);
+   [This,y] = standardise(This,y);
 else
-   y = nan(ny, nPer, nData);
+   y = nan(ny,nPer,nData);
    outpFmt = opt.output;
-   if strcmpi(outpFmt, 'auto')
+   if strcmpi(outpFmt,'auto')
+      if isempty(This.YNames)
+         outpFmt = 'tseries';
+      else
+         outpFmt = 'dbase';
+      end
    end   
 end
 
-Sgm = this.Sigma;
+Sgm = This.Sigma;
 % Reduce or zero off-diagonal elements in the cov matrix of idiosyncratic
 % residuals if requested.
 opt.cross = double(opt.cross);
-if opt.cross<1
-   ix = logical(eye(size(Sgm)));
-   Sgm(~ix) = opt.cross*Sgm(~ix);
+if opt.cross < 1
+   inx = logical(eye(size(Sgm)));
+   Sgm(~inx) = opt.cross*Sgm(~inx);
 end
 
-if isequal(opt.invfunc, 'auto')
-   if this.Cross==1 && opt.cross==1
+if isequal(opt.invfunc,'auto')
+   if This.Cross == 1 && opt.cross == 1
       invFunc = @pinv;
    else
       invFunc = @inv;
@@ -144,48 +143,60 @@ end
 % whenever all observables are available; this is only true if the
 % idiosyncratic covariance matrix is not scaled down.
 
-s = struct( );
+s = struct();
 s.invFunc = invFunc;
-s.allObs = this.Cross==1 && opt.cross==1;
+s.allObs = This.Cross == 1 && opt.cross == 1;
 s.tol = opt.tolerance;
 s.reuse = opt.persist;
 s.ahead = 1;
 
-[x, Px, e, u, y, Py, ixy] = timedom.varsmoother( ...
-   this.A, this.B, [ ], this.C, [ ], 1, Sgm, y, [ ], x0, P0, s);
+[x,Px,E,U,y,Py,yInx] = timedom.varsmoother( ...
+   This.A,This.B,[],This.C,[],1,Sgm,y,[],x0,P0,s);
 
 if opt.meanonly
-   Px = Px(:, :, [ ], [ ]);
-   Py = [ ];
+   Px = Px(:,:,[],[]);
+   Py = [];
 end
 
-[y, Py] = FAVAR.destandardise(this.Mean, this.Std, y, Py);
+[y,Py] = FAVAR.destandardise(This.Mean,This.Std,y,Py);
 
-yNames = get(this, 'YNames');
-d = myoutpdata(this, range, y, Py, yNames);
+yNames = get(This,'ynames');
+D = myoutpdata(This,outpFmt,Range,y,Py,yNames);
 
-if nargout>1
+if nargout > 1
    % Common components.
-   [cc, Pc] = FAVAR.cc(this.C, x(1:nx, :, :), Px(1:nx, 1:nx, :, :));
-   [cc, Pc] = FAVAR.destandardise(this.Mean, this.Std, cc, Pc);
-   cc = myoutpdata(this, range, cc, Pc, yNames);   
+   [CC,Pc] = FAVAR.cc(This.C,x(1:nx,:,:),Px(1:nx,1:nx,:,:));
+   [CC,Pc] = FAVAR.destandardise(This.Mean,This.Std,CC,Pc);
+   CC = myoutpdata(This,outpFmt,Range,CC,Pc,yNames);   
 end
 
-if nargout>2
-    ff = outputFactorData(this, x, Px, range, ixy, opt);
-end
-
-if nargout>3
-   u = FAVAR.destandardise(0, this.Std, u);
-   u = myoutpdata(this, range, u, NaN, yNames);
-end
-
-if nargout>5
-   e = replace(TEMPLATE_SERIES, permute(e, [2, 1, 3]), range(1));
+if nargout > 2
+   F = myoutpdata(This, ...
+       'tseries',Range,x(1:nx,:,:),Px(1:nx,1:nx,:,:));
    if ~opt.meanonly
-   e = struct( ...
-      'mean', e, ...
-      'std', replace(TEMPLATE_SERIES, zeros(0, size(e, 1), size(e, 3)), range(1)) ...
+      % Means and MSEs that can be used as initial condition.
+      lastobs = find(any(yInx ~= 0,1),1,'last');
+      if isempty(lastobs)
+         inx = 1 : nPer;
+      else
+         inx = lastobs : nPer;
+      end
+      F.init = {x(:,inx,:),Px(:,:,inx,:),Range(inx)};
+   end
+end
+
+if nargout > 3
+   U = FAVAR.destandardise(0,This.Std,U);
+   U = myoutpdata(This,outpFmt,Range,U,NaN,yNames);
+end
+
+if nargout > 5
+   template = tseries();
+   E = replace(template,permute(E,[2,1,3]),Range(1));
+   if ~opt.meanonly
+   E = struct( ...
+      'mean',E, ...
+      'std',replace(template,zeros(0,size(E,1),size(E,3)),Range(1)) ...
       );
    end
 end

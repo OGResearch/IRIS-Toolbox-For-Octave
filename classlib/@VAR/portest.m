@@ -39,10 +39,10 @@ function [Stat,Crit] = portest(This,Inp,H,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
 pp.addRequired('H',@isnumericscalar);
 pp.parse(Inp,H);
@@ -83,7 +83,7 @@ end
 % Test statistic.
 Stat = zeros(1,nAlt);
 for iAlt = 1 : nAlt
-    fitted = This.IxFitted(1,:,iAlt);
+    fitted = This.Fitted(1,:,iAlt);
     nObs = sum(fitted);
     ei = e(:,fitted,iAlt);
     for i = 1 : H

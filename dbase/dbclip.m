@@ -41,9 +41,9 @@ function D = dbclip(D,Range)
 % Example
 % ========
 %
-%     d = struct( );
-%     d.x = Series(qq(2005,1):qq(2010,4),@rand);
-%     d.y = Series(qq(2005,1):qq(2010,4),@rand)
+%     d = struct();
+%     d.x = tseries(qq(2005,1):qq(2010,4),@rand);
+%     d.y = tseries(qq(2005,1):qq(2010,4),@rand)
 %
 %     d =
 %        x: [24x1 tseries]
@@ -55,14 +55,15 @@ function D = dbclip(D,Range)
 %         x: [4x1 tseries]
 %         y: [4x1 tseries]
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('D',@isstruct);
 pp.addRequired('Range', ...
     @(x) isnumeric(x) || (iscell(x) && all(cellfun(@isnumeric,x))));
 pp.parse(D,Range);
+
 
 if isnumeric(Range)
     Range = {Range};
@@ -84,15 +85,15 @@ for i = 1 : nList
             freqMatched(i) = false;
             continue
         end
-        D.(name) = resize(D.(name), Range{pos});
-    elseif isstruct(D.(name))
+        D.(name) = resize(D.(name),Range{pos});
+    elseif isa(D.(name),'struct')
         % Clip a sub-database.
-        D.(name) = dbclip(D.(name), Range);
+        D.(name) = dbclip(D.(name),Range);
     end
 end
 
 if any(~freqMatched)
-    utils.warning('dbase:dbclip', ...
+    utils.warning('dbase', ...
         ['This tseries not resized because ', ...
         'no input range matches its date frequency: ''%s''.'], ...
         list{~freqMatched});

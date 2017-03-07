@@ -1,11 +1,11 @@
-function Month = per2month(Per,Freq,StandinMonth)
+function M = per2month(Per,Freq,StandinMonth)
 % per2month  [Not a public function] Return month to represent a given period.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -20,6 +20,6 @@ if ischar(StandinMonth)
     end
 end
 
-Month = (Per-1).*12./Freq + StandinMonth;
+M = (Per-1).*12./Freq + StandinMonth;
 
 end

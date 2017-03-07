@@ -1,39 +1,47 @@
-function flag = myisvalidinpdata(this, inp)
-% myisvalidinpdata  Validate input data for VAR objects.
+function Flag = myisvalidinpdata(This,Inp)
+% myisvalidinpdata  [Not a public function] Validate input data for VAR objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if isempty(inp)
-    flag = true;
+if isempty(Inp)
+    Flag = true;
     return
 end
 
-if ispanel(this)
-    % Panel VAR.
-    isStruct = isstruct(inp);
-    nGrp = length(this.GroupNames);
+ny = size(This.A,1);
+if ispanel(This)
+    % Panel VAR; only dbase inputs are accepted.
+    isStruct = isstruct(Inp);
+    nGrp = length(This.GroupNames);
     isGrpStruct = false(1,nGrp);
     if isStruct
         for iGrp = 1 : nGrp
-            name = this.GroupNames{iGrp};
-            isGrpStruct(iGrp) = isfield(inp,name) && isstruct(inp.(name));
+            name = This.GroupNames{iGrp};
+            isGrpStruct(iGrp) = isfield(Inp,name) && isstruct(Inp.(name));
         end
     end
     if any(~isGrpStruct)
         utils.warning('VAR:myisvalidinpdata', ...
             'This group is missing from input database: ''%s''.', ...
-            this.GroupNames{~isGrpStruct});
+            This.GroupNames{~isGrpStruct});
     end
-    flag = isStruct && all(isGrpStruct);
+    Flag = isStruct && all(isGrpStruct);
 else
-    % Non-panel VAR.
-    flag = isstruct(inp);
+    % Non-panel VAR; both dbase and tseries inputs are accepted for bkw
+    % compatibility.
+    if isstruct(Inp)
+        Flag = true;
+    elseif isa(Inp,'tseries')
+        Flag = (ny == 0 || size(Inp,2) == ny || size(Inp,2) == 2*ny);
+    else
+        Flag = false;
+    end
 end
 
 end

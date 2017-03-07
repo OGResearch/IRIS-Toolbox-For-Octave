@@ -16,15 +16,15 @@ function list = toaremos(d,bank,varargin)
 % * `d` [ struct ] - <a href="databases.html">Database</a> to be exported.
 % * `bank` [ char | cellstr ] - AREMOS databank name.
 % <a href="options.html">Optional input arguments:</a>
-%     'inf' [ numeric | <a href="default.html">realmax( )</a> ] Numerical value for Infs.
+%     'inf' [ numeric | <a href="default.html">realmax()</a> ] Numerical value for Infs.
 %     'nan' [ numeric | <a href="default.html">1e15</a> ] Numerical value for missing observations.
 %     'saveas' [ char | <a href="default.html">'fromaremos'</a> ] TSD and CMD file names (w/o extension).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 default = {...
-  'inf',realmax( ),@isnumericscalar, ...
+  'inf',realmax(),@isnumericscalar, ...
   'nan',1e15,@isnumericscalar, ...
   'saveas','toaremos',@ischar, ...
 };

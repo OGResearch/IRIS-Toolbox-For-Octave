@@ -1,79 +1,87 @@
-function varargout = datarequest(req, this, data, range, whichSet, expandMethod)
-% datarequest  Request model specific data from database.
+function varargout = datarequest(Req,This,Data,Range,IData,LoglikOpt)
+% datarequest  [Not a public function] Request data from database.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 %#ok<*VUNUS>
 
-TYPE = @int8;
+try
+    IData;
+catch 
+    IData = ':';
+end
 
-try, whichSet; catch, whichSet = ':'; end %#ok<NOCOM>
-try, expandMethod; catch, expandMethod = 'RepeatLast'; end %#ok<NOCOM>
+try
+    LoglikOpt;
+catch    
+    LoglikOpt = [];
+end
 
 %--------------------------------------------------------------------------
 
-[~, nxx, nb, nf] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-range = range(1) : range(end);
-nPer = length(range);
+nxx = size(This.solution{1},1);
+nb = size(This.solution{1},2);
+nf = nxx - nb;
+nAlt = size(This.Assign,3);
+Range = Range(1) : Range(end);
+nPer = length(Range);
 
-if isempty(data)
-    data = struct( );
+if isempty(Data)
+    Data = struct();
 end
 
-dMean = [ ];
-dMse = [ ];
+dMean = [];
+dMse = [];
 
-if isstruct(data) && isfield(data, 'mean') && isstruct(data.mean)
+if isstruct(Data) && isfield(Data,'mean')
     % Struct with `.mean` and possibly also `.mse`.
-        dMean = data.mean;
-        if isfield(data, 'mse') && isa(data.mse, 'tseries')
-            dMse = data.mse;
+    if isfield(Data,'mean') && isstruct(Data.mean)
+        dMean = Data.mean;
+        if isfield(Data,'mse') && isa(Data.mse,'tseries')
+            dMse = Data.mse;
         end
-elseif isstruct(data)
+    end
+elseif isstruct(Data)
     % Plain database.
-    dMean = data;
+    dMean = Data;
 else
-    throw( ...
-        exception.Base('Model:UnknownInputData', 'error') ...
-        );
+    utils.error('model','Unknown type of input data.');
 end
 
 % Warning structure for `db2array`.
-warn = struct( );
+warn = struct();
 warn.NotFound = false;
 warn.SizeMismatch = true;
 warn.FreqMismatch = true;
 warn.NonTseries = true;
 warn.NoRangeFound = true;
-
-% Requests with a star `*` throw a warning if one or more series is not
-% found in the input database.
+% Starred requests throw a warning if one or more series is not found in
+% the input database.
 try %#ok<TRYNC>
-    if isequal(req(end), '*')
+    if isequal(Req(end),'*')
         warn.NotFound = true;
-        req(end) = '';
+        Req(end) = '';
     end
 end
 
-switch lower(req)
+switch lower(Req)
     case 'init'
         % Initial condition for the mean and MSE of Alpha.
-        if nargout<4
-            [xbInitMean, ixNanInitMean] = assembleXbInit( );
-            xbInitMse = [ ];
-            alpInitMean = convertXbInit2AlpInit( );
+        if nargout < 4
+            [xbInitMean,ixNanInitMean] = doData2XbInit();
+            xbInitMse = [];
+            alpInitMean = doXbInit2AlpInit();
             varargout{1} = alpInitMean;
             varargout{2} = xbInitMean;
             varargout{3} = ixNanInitMean;
         else
-            [xbInitMean, ixNanInitMean, xbInitMse, ixNanInitMse] = assembleXbInit( );
-            [alpInitMean, alpInitMse] = convertXbInit2AlpInit( );
+            [xbInitMean,ixNanInitMean,xbInitMse,ixNanInitMse] = doData2XbInit();
+            [alpInitMean,alpInitMse] = doXbInit2AlpInit();
             varargout{1} = alpInitMean;
             varargout{2} = xbInitMean;
             varargout{3} = ixNanInitMean;
@@ -83,294 +91,278 @@ switch lower(req)
         end
     case 'xbinit'
         % Initial condition for the mean and MSE of X.
-        [varargout{1:nargout}] = assembleXbInit( );
-    case 'xinit'
-        varargout{1} = assembleXData(range(1)-1);
+        [varargout{1:nargout}] = doData2XbInit();
     case 'y'
-        % Measurement variables.
-        y = getYData( );
+        % Measurement variables; a star
+        y = doData2Y();
         varargout{1} = y;
-    case {'yg', 'tyg', 'fyg'}
+    case 'yg'
         % Measurement variables, and exogenous variables for deterministic trends.
-        % In request, `t` means time domain, `f` means frequency domain.
-        y = getYData( );
-        if strncmpi(req, 'f', 1)
-            y = permute(y, [2, 1, 3]);
+        y = doData2Y();
+        if ~isempty(LoglikOpt) && isstruct(LoglikOpt) ...
+                && isfield(LoglikOpt,'domain') ...
+                && strncmpi(LoglikOpt.domain,'f',1)
+            y = permute(y,[2,1,3]);
             y = fft(y);
-            y = ipermute(y, [2, 1, 3]);
+            y = ipermute(y,[2,1,3]);
         end
-        g = assembleGData( );
-        nYData = size(y, 3);
-        if size(g, 3) == 1 && size(g, 3) < nYData
-            g = g(:, :, ones(1, nYData));
+        g = doData2G();
+        nYData = size(y,3);
+        if size(g,3) == 1 && size(g,3) < nYData
+            g = g(:,:,ones(1,nYData));
         end
         varargout{1} = [y;g];
     case 'e'
-        varargout{1} = assembleEData( );
+        varargout{1} = doData2E();
     case 'x'
-        % Current dates of transition variables.
-        varargout{1} = assembleXData(range);
-    case 'yxe'
-        data = {getYData( ), assembleXData(range), assembleEData( )};
-        nData = max([size(data{1}, 3), size(data{2}, 3), size(data{3}, 3)]);
+        varargout{1} = doData2X();
+    case 'y,x,e'
+        Data = {doData2Y(),doData2X(),doData2E()};
+        nData = max([size(Data{1},3),size(Data{2},3),size(Data{3},3)]);
         % Make the size of all data arrays equal in 3rd dimension.
-        if size(data{1}, 3) < nData
-            data{1} = cat(3, data{1}, ...
-                data{1}(:, :, end*ones(1, nData-size(data{1}, 3))));
+        if size(Data{1},3) < nData
+            Data{1} = cat(3,Data{1}, ...
+                Data{1}(:,:,end*ones(1,nData-size(Data{1},3))));
         end
-        if size(data{2}, 3) < nData
-            data{2} = cat(3, data{2}, ...
-                data{2}(:, :, end*ones(1, nData-size(data{2}, 3))));
+        if size(Data{2},3) < nData
+            Data{2} = cat(3,Data{2}, ...
+                Data{2}(:,:,end*ones(1,nData-size(Data{2},3))));
         end
-        if size(data{3}, 3) < nData
-            data{3} = cat(3, data{3}, ...
-                data{3}(:, :, end*ones(1, nData-size(data{3}, 3))));
+        if size(Data{3},3) < nData
+            Data{3} = cat(3,Data{3}, ...
+                Data{3}(:,:,end*ones(1,nData-size(Data{3},3))));
         end
-        varargout = data;
+        varargout = Data;
     case 'g'
         % Exogenous variables for deterministic trends.
-        varargout{1} = assembleGData( );
+        varargout{1} = doData2G();
     case 'alpha'
-        varargout{1} = assembleAlphaData( );
+        varargout{1} = doData2Alpha();
 end
 
-if ~isequal(whichSet, ':') && ~isequal(whichSet, Inf)
+if ~isequal(IData,':') && ~isequal(IData,Inf)
     for i = 1 : length(varargout)
-        varargout{i} = varargout{i}(:, :, whichSet);
+        varargout{i} = varargout{i}(:,:,IData);
     end
 end
 
-return
+% Nested functions...
+
+
+%**************************************************************************
+
     
-    
-    
-    
-    function [xbInitMean, ixNanInitMean, xbInitMse, ixNanInitMse] ...
-            = assembleXbInit( )
-        xbInitMean = nan(nb, 1, nAlt);
-        xbInitMse = [ ];
+    function [XbInitMean,IxNanInitMean,XbInitMse,IxNanInitMse] ...
+            = doData2XbInit()
+        XbInitMean = nan(nb,1,nAlt);
+        XbInitMse = [];
         % Xf Mean.
         if ~isempty(dMean)
-            realId = real(this.Vector.Solution{2}(nf+1:end));
-            imagId = imag(this.Vector.Solution{2}(nf+1:end));
-            sw = struct( );
+            realId = real(This.solutionid{2}(nf+1:end));
+            imagId = imag(This.solutionid{2}(nf+1:end));
+            sw = struct();
             sw.LagOrLead = imagId;
-            sw.IxLog = this.Quantity.IxLog(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
-            sw.ExpandMethod = expandMethod;
-            xbInitMean = db2array(dMean, this.Quantity.Name(realId), range(1)-1, sw);
-            xbInitMean = permute(xbInitMean, [2, 1, 3]);
+            XbInitMean = db2array(dMean,This.name(realId),Range(1)-1,sw);
+            XbInitMean = permute(XbInitMean,[2,1,3]);
         end
         % Xf MSE.
         if nargout >= 3 && ~isempty(dMse)
-            xbInitMse = rangedata(dMse, range(1)-1);
-            xbInitMse = ipermute(xbInitMse, [3, 2, 1, 4]);
+            XbInitMse = rangedata(dMse,Range(1)-1);
+            XbInitMse = ipermute(XbInitMse,[3,2,1,4]);
         end
         % Detect NaN init conditions.
-        ixNanInitMean = false(nb, 1);
-        ixNanInitMse = false(nb, 1);
-        for ii = 1 : size(xbInitMean, 3)
-            ixRequired = this.Variant{min(ii, end)}.IxInit;
-            ixRequired = ixRequired(:);
-            ixNanInitMean = ixNanInitMean | ...
-                (isnan(xbInitMean(:, 1, ii)) & ixRequired);
-            if ~isempty(xbInitMse)
-                ixNanInitMse = ixNanInitMse | ...
-                    (any(isnan(xbInitMse(:, :, ii)), 2) & ixRequired);
+        IxNanInitMean = false(nb,1);
+        IxNanInitMse = false(nb,1);
+        for ii = 1 : size(XbInitMean,3)
+            required = This.icondix(1,:,min(ii,end));
+            required = required(:);
+            IxNanInitMean = IxNanInitMean | ...
+                (isnan(XbInitMean(:,1,ii)) & required);
+            if ~isempty(XbInitMse)
+                IxNanInitMse = IxNanInitMse | ...
+                    (any(isnan(XbInitMse(:,:,ii)),2) & required);
             end
         end
         % Report NaN init conditions in mean.
-        if any(ixNanInitMean)
-            id = this.Vector.Solution{2}(nf+1:end);
-            ixNanInitMean = printSolutionVector(this, id(ixNanInitMean)-1i);
+        if any(IxNanInitMean)
+            id = This.solutionid{2}(nf+1:end);
+            IxNanInitMean = myvector(This,id(IxNanInitMean)-1i);
         else
-            ixNanInitMean = { };
+            IxNanInitMean = {};
         end
         % Report NaN init conditions in MSE.
-        if any(ixNanInitMse)
-            id = this.Vector.Solution{2}(nf+1:end);
-            ixNanInitMse = printSolutionVector(this, id(ixNanInitMse)-1i);
+        if any(IxNanInitMse)
+            id = This.solutionid{2}(nf+1:end);
+            IxNanInitMse = myvector(This,id(IxNanInitMse)-1i);
         else
-            ixNanInitMse = { };
+            IxNanInitMse = {};
         end
-    end 
+    end % doData2XInit()
 
 
+%**************************************************************************
 
 
 % Get initial conditions for xb and alpha.
 % Those that are not required are set to `NaN` in `xInitMean, and
 % to 0 when computing `aInitMean`.
-    function [alpInitMean, alpInitMse] = convertXbInit2AlpInit( )
+    function [AlpInitMean,AlpInitMse] = doXbInit2AlpInit()
         % Transform Mean[Xb] to Mean[Alpha].
-        nData = size(xbInitMean, 3);
-        if nData<nAlt
-            xbInitMean(:, 1, end+1:nAlt) = ...
-                xbInitMean(:, 1, end*ones(1, nAlt-nData));
+        nData = size(xbInitMean,3);
+        if nData < nAlt
+            xbInitMean(:,1,end+1:nAlt) = ...
+                xbInitMean(:,1,end*ones(1,nAlt-nData));
             nData = nAlt;
         end
-        alpInitMean = xbInitMean;
+        AlpInitMean = xbInitMean;
         for iiData = 1 : nData
-            U = this.solution{7}(:, :, min(iiData, end));
+            U = This.solution{7}(:,:,min(iiData,end));
             if all(~isnan(U(:)))
-                ixRequired = this.Variant{min(iiData, end)}.IxInit;
-                inx = isnan(xbInitMean(:, 1, iiData)) & ~ixRequired(:);
-                alpInitMean(inx, 1, iiData) = 0;
-                alpInitMean(:, 1, iiData) = U \ alpInitMean(:, 1, iiData);
+                notRequired = ~This.icondix(1,:,min(iiData,end));
+                inx = isnan(xbInitMean(:,1,iiData)) & notRequired(:);
+                AlpInitMean(inx,1,iiData) = 0;
+                AlpInitMean(:,1,iiData) = U\AlpInitMean(:,1,iiData);
             else
-                alpInitMean(:, 1, iiData) = NaN;
+                AlpInitMean(:,1,iiData) = NaN;
             end
         end
         % Transform MSE[Xb] to MSE[Alpha].
         if nargout < 2 || isempty(xbInitMse)
-            alpInitMse = xbInitMse;
+            AlpInitMse = xbInitMse;
             return
         end
-        nData = size(xbInitMse, 4);
+        nData = size(xbInitMse,4);
         if nData < nAlt
-            xbInitMse(:, :, 1, end+1:nAlt) = ...
-                xbInitMse(:, :, 1, end*ones(1, nAlt-nData));
+            xbInitMse(:,:,1,end+1:nAlt) = ...
+                xbInitMse(:,:,1,end*ones(1,nAlt-nData));
             nData = nAlt;
         end
-        alpInitMse = xbInitMse;
+        AlpInitMse = xbInitMse;
         for iiData = 1 : nData
-            U = this.solution{7}(:, :, min(iiData, end));
+            U = This.solution{7}(:,:,min(iiData,end));
             if all(~isnan(U(:)))
-                alpInitMse(:, :, 1, iiData) = U \ alpInitMse(:, :, 1, iiData);
-                alpInitMse(:, :, 1, iiData) = alpInitMse(:, :, 1, iiData) / U.';
+                AlpInitMse(:,:,1,iiData) = U\AlpInitMse(:,:,1,iiData);
+                AlpInitMse(:,:,1,iiData) = AlpInitMse(:,:,1,iiData)/U.';
             else
-                alpInitMse(:, :, 1, iiData) = NaN;
+                AlpInitMse(:,:,1,iiData) = NaN;
             end
         end
-    end
+    end % doXInit2AInit()
 
 
-
-
-    function Y = getYData( )
-        if ~isempty(dMean)
-            ixy = this.Quantity.Type==TYPE(1);
-            sw = struct( );
-            sw.LagOrLead = [ ];
-            sw.IxLog = this.Quantity.IxLog(ixy);
-            sw.Warn = warn;
-            sw.ExpandMethod = expandMethod;
-            Y = db2array(dMean, this.Quantity.Name(ixy), range, sw);
-            Y = permute(Y, [2, 1, 3]);
-        end
-    end
-
-
+%**************************************************************************
 
     
-    function E = assembleEData( )
+    function Y = doData2Y()
         if ~isempty(dMean)
-            ixe = this.Quantity.Type==TYPE(31) ...
-                | this.Quantity.Type==TYPE(32);
-            sw = struct( );
-            sw.LagOrLead = [ ];
-            sw.IxLog = [ ];
+            inx = This.nametype == 1;
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.IxLog = This.IxLog(inx);
             sw.Warn = warn;
-            sw.ExpandMethod = expandMethod;
-            E = db2array(dMean, this.Quantity.Name(ixe), range, sw);
-            E = permute(E, [2, 1, 3]);
+            Y = db2array(dMean,This.name(inx),Range,sw);
+            Y = permute(Y,[2,1,3]);
+        end
+    end % doData2Y()
+
+
+%**************************************************************************
+
+    
+    function E = doData2E()
+        if ~isempty(dMean)
+            inx = This.nametype == 3;
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.IxLog = [];
+            sw.Warn = warn;
+            E = db2array(dMean,This.name(inx),Range,sw);
+            E = permute(E,[2,1,3]);
         end
         eReal = real(E);
         eImag = imag(E);
         eReal(isnan(eReal)) = 0;
         eImag(isnan(eImag)) = 0;
         E = eReal + 1i*eImag;
-    end
+    end % dodata2e()
 
 
-
-
-    function g = assembleGData( )
-        % Here we assume exogenous names are a continous block in Quantity.Name.
-        ixg = this.Quantity.Type==TYPE(5);
-        ng = sum(ixg);
-        posg = find(ixg);
-        ixq = strcmp(this.Quantity.Name, model.RESERVED_NAME_TTREND);
-        ixgxq = ixg & ~ixq; % Exogenous variables except ttrend
-        ngxq = sum(ixgxq);
-        posq = find(ixq) - min(posg) + 1;
-        posgxq = find(ixgxq) - min(posg) + 1;
-        ttrend = dat2ttrend(range, this);
-        if any(ixgxq)
-            if ~isempty(dMean)
-                lsgxq = this.Quantity.Name(ixgxq);
-                sw = struct( );
-                sw.LagOrLead = [ ];
-                sw.IxLog = [ ];
-                sw.Warn = warn;
-                sw.ExpandMethod = expandMethod;
-                gxq = db2array(dMean, lsgxq, range, sw);
-                gxq = permute(gxq, [2, 1, 3]);
-            else
-                gxq = nan(ngxq, nPer);
-            end
-            size3d = size(gxq, 3); 
-            g = nan(ng, nPer, size3d);
-            g(posgxq, :, :) = gxq;
-            g(posq, :, :) = repmat(ttrend, 1, 1, size3d);
+%**************************************************************************
+    
+    
+    function G = doData2G()
+        ng = sum(This.nametype == 5);
+        if ng > 0 && ~isempty(dMean)
+            name = This.name(This.nametype == 5);
+            sw = struct();
+            sw.LagOrLead = [];
+            sw.IxLog = [];
+            sw.Warn = warn;
+            G = db2array(dMean,name,Range,sw);
+            G = permute(G,[2,1,3]);
         else
-            g = ttrend;
+            G = nan(ng,nPer);
         end
-    end
+    end % doData2G()
 
 
+%**************************************************************************
 
 
-    function X = assembleXData(range)
-        % Get current dates of transition variables.
-        % Set lags and leads to NaN.
-        realId = real(this.Vector.Solution{2});
-        imagId = imag(this.Vector.Solution{2});
-        currentInx = imagId==0;
+% Get current dates of transition variables.
+% Set lags and leads to NaN.
+    function X = doData2X()
+        realId = real(This.solutionid{2});
+        imagId = imag(This.solutionid{2});
+        currentInx = imagId == 0;
         if ~isempty(dMean)
             realId = realId(currentInx);
             imagId = imagId(currentInx);
-            sw = struct( );
+            sw = struct();
             sw.LagOrLead = imagId;
-            sw.IxLog = this.Quantity.IxLog(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
-            sw.ExpandMethod = expandMethod;
-            x = db2array(dMean, this.Quantity.Name(realId), range, sw);
-            x = permute(x, [2, 1, 3]);
-            X = nan(nxx, size(x, 2), size(x, 3));
-            X(currentInx, :, :) = x;
+            x = db2array(dMean,This.name(realId),Range,sw);
+            x = permute(x,[2,1,3]);
+            %X = nan(length(inx),size(x,2),size(x,3));
+            X = nan(nxx,size(x,2),size(x,3));
+            X(currentInx,:,:) = x;
         end
-    end
+    end % doData2X()
 
 
+%**************************************************************************
 
     
-    function A = assembleAlphaData( )
+    function A = doData2Alpha()
         if ~isempty(dMean)
-            realId = real(this.Vector.Solution{2});
-            imagId = imag(this.Vector.Solution{2});
+            realId = real(This.solutionid{2});
+            imagId = imag(This.solutionid{2});
             realId = realId(nf+1:end);
             imagId = imagId(nf+1:end);
-            sw = struct( );
+            sw = struct();
             sw.LagOrLead = imagId;
-            sw.IxLog = this.Quantity.IxLog(realId);
+            sw.IxLog = This.IxLog(realId);
             sw.Warn = warn;
-            sw.ExpandMethod = expandMethod;
-            A = db2array(dMean, this.Quantity.Name(realId), range, sw);
-            A = permute(A, [2, 1, 3]);
+            A = db2array(dMean,This.name(realId),Range,sw);
+            A = permute(A,[2,1,3]);
         end
-        nData = size(A, 3);
+        nData = size(A,3);
         if nData < nAlt
-            A(:, :, end+1:nAlt) = A(:, :, end*ones(1, nAlt-nData));
+            A(:,:,end+1:nAlt) = A(:,:,end*ones(1,nAlt-nData));
             nData = nAlt;
         end
         for ii = 1 : nData
-            U = this.solution{7}(:, :, min(ii, end));
+            U = This.solution{7}(:,:,min(ii,end));
             if all(~isnan(U(:)))
-                A(:, :, ii) = U\A(:, :, ii);
+                A(:,:,ii) = U\A(:,:,ii);
             else
-                A(:, :, ii) = NaN;
+                A(:,:,ii) = NaN;
             end
         end
-    end
+    end % doData2Alpha()
+
+
 end

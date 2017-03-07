@@ -1,22 +1,22 @@
-function [Y2,B,Rho,U1,U2] = chowlin(Y1,X2,Range,varargin)
+function [y2,b,rho,u1,u2] = chowlin(y1,x2,range,varargin)
 % chowlin  Chow-Lin distribution of low-frequency observations over higher-frequency periods.
 %
 % Syntax
 % =======
 %
 %     [Y2,B,RHO,U1,U2] = chowlin(Y1,X2)
-%     [Y2,B,RHO,U1,U2] = chowlin(Y1,X2,Range,...)
+%     [Y2,B,RHO,U1,U2] = chowlin(Y1,X2,range,...)
 %
 % Input arguments
 % ================
 %
-% * `Y1` [ tseries ] - Low-frequency input time series that will be
+% * `Y1` [ tseries ] - Low-frequency input tseries object that will be
 % distributed over higher-frequency observations.
 %
-% * `X2` [ tseries ] - Time series with regressors used to distribute the
-% input data.
+% * `X2` [ tseries ] - Tseries object with regressors used to distribute
+% the input data.
 %
-% * `Range` [ numeric ] - Low-frequency date range on which the
+% * `range` [ numeric ] - Low-frequency date range on which the
 % distribution will be computed.
 %
 % Output arguments
@@ -68,183 +68,168 @@ function [Y2,B,Rho,U1,U2] = chowlin(Y1,X2,Range,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-try
-    Range; %#ok<VUNUS>
-catch
-    Range = Inf;
+if nargin < 3
+   range = Inf;
 end
 
-pp = inputParser( );
-pp.addRequired('Y1',@(x) isa(x,'tseries'));
-pp.addRequired('X2',@(x) isa(x,'tseries'));
-pp.addRequired('Range',@(x) isdatinp(x));
-pp.parse(Y1,X2,Range);
+options = passvalopt('tseries.chowlin',varargin{:});
 
-opt = passvalopt('tseries.chowlin',varargin{:});
+%**************************************************************************
 
-if ischar(Range)
-    Range = textinp2dat(Range);
-end
-
-%--------------------------------------------------------------------------
-
-f1 = get(Y1,'freq');
-if isnumericscalar(X2)
-    f2 = X2;
-    X2 = [ ];
+f1 = get(y1,'freq');
+if isnumericscalar(x2)
+   f2 = x2;
+   x2 = [];
 else
-    f2 = get(X2,'freq');
+   f2 = get(x2,'freq');
 end
 
 if f2 <= f1
-    utils.error('tseries:chowlin',[ ...
-        'Explanatory variables must have higher frequency ', ...
-        'than the explained variable.']);
+   error('iris:tseries',[ ...
+      'Explanatory variables must have higher frequency ', ...
+      'than the explained variable.']);
 end
 
 % Number of high-frequency periods within a low-frequency period. Must be
 % an integer.
 g = f2 / f1;
 if g ~= round(g)
-    utils.error('tseries:chowlin', ...
-        'High frequency must be a multiple of low frequency.');
+   error('iris:tseris', ...
+      'High frequency must be a multiple of low frequency.');
 end
 
 % Get low-frequency LHS observations.
-[y1Data,range1] = rangedata(Y1,Range);
-if opt.log
-    y1Data = log(y1Data);
+[y1data,range1] = rangedata(y1,range);
+if options.log
+   y1data = log(y1data);
 end
-nPer1 = length(range1);
+nper1 = length(range1);
 
 % Set up High-frequency range.
 start2 = convert(range1(1),f2,'standinMonth','first');
 end2 = convert(range1(end),f2,'standinMonth','last');
 range2 = start2 : end2;
-nPer2 = length(range2);
+nper2 = length(range2);
 
 % Aggregation matrix.
-c = ones(1,g) / g;
-C = kron(eye(nPer1),c);
+c = ones([1,g]) / g;
+C = kron(eye(nper1),c);
 
 % Convert high-frequency explanatory variables to low frequency by
 % averaging.
-if ~isempty(X2)
-    x2Data = rangedata(X2,range2);
-    if opt.log
-        x2Data = log(x2Data);
-    end
-    nx = size(x2Data,2);
-    x1data = nan(nPer1,nx);
-    for i = 1 : nx
-        tmp = reshape(x2Data(:,i),[g,nPer1]);
-        tmp = c*tmp;
-        x1data(:,i) = tmp(:);
-    end
+if ~isempty(x2)
+   x2data = rangedata(x2,range2);
+   if options.log
+      x2data = log(x2data);
+   end
+   nx = size(x2data,2);
+   x1data = nan([nper1,nx]);
+   for i = 1 : nx
+      tmp = reshape(x2data(:,i),[g,nper1]);
+      tmp = c*tmp;
+      x1data(:,i) = tmp(:);
+   end
 end
 
 % Set-up RHS matrix.
-M1 = [ ];
-M2 = [ ];
-if opt.constant
-    M1 = [M1,ones(nPer1,1)];
-    M2 = ones(nPer2,1);
+M1 = [];
+M2 = [];
+if options.constant
+   M1 = [M1,ones([nper1,1])];
+   M2 = ones([nper2,1]);
 end
-if opt.timetrend
-    t2 = (1 : nPer2)';
-    t1 = C*t2;
-    M1 = [M1,t1];
-    M2 = [M2,t2];
+if options.timetrend
+   t2 = (1 : nper2)';
+   t1 = C*t2;
+   M1 = [M1,t1];
+   M2 = [M2,t2];
 end
-if ~isempty(X2)
-    M1 = [M1,x1data];
-    M2 = [M2,x2Data];
+if ~isempty(x2)
+   M1 = [M1,x1data];
+   M2 = [M2,x2data];
 end
 
 if isempty(M1)
-    utils.error('tseries:chowlin',[ ...
-        'No left-hand-side regressor specified.']);
+   error('iris:tseries',[ ...
+      'No left-hand-side regressor specified.']);
 end
 
 % Run regression and compute autocorrelation of residuals.
-sample1 = all(~isnan(M1,y1Data),2);
-B = M1(sample1,:) \ y1Data(sample1);
-tmp = y1Data(sample1) - M1(sample1,:)*B;
+sample1 = all(~isnan([M1,y1data]),2);
+b = M1(sample1,:) \ y1data(sample1);
+tmp = y1data(sample1) - M1(sample1,:)*b;
 rho1 = tmp(1:end-1) \ tmp(2:end);
-u1Data = nan(size(y1Data));
-u1Data(sample1) = tmp;
+u1data = nan(size(y1data));
+u1data(sample1) = tmp;
 
 % Project high-frequency explanatory variables.
 sample2 = all(~isnan(M2),2);
-y2Data = M2*B;
+y2data = M2*b;
 
 % Correct for residuals.
-if any(strcmpi(opt.rho,{'auto','estimate','positive','negative'}))
-    % Determine high-frequency autocorrelation consistent with estimated
-    % low-frequency autocorrelation.
-    rho2 = xxAutoCorr(rho1,f1,f2,opt.ngrid);
-    % Set rho2 to zero if it's estimate is negative and the user restricted
-    % the estimated value to be positive or vice versa.
-    if (strcmpi(opt.rho,'positive') && rho2 < 0) ...
-            || (strcmpi(opt.rho,'negative') && rho2 > 0)
-        rho2 = 0;
-    end
+if any(strcmpi(options.rho,{'auto','estimate','positive','negative'}))
+   % Determine high-frequency autocorrelation consistent with estimated
+   % low-frequency autocorrelation.
+   rho2 = xxautocorr(rho1,f1,f2,options.ngrid);
+   % Set rho2 to zero if it's estimate is negative and the user restricted
+   % the estimated value to be positive or vice versa.
+   if (strcmpi(options.rho,'positive') && rho2 < 0) ...
+         || (strcmpi(options.rho,'negative') && rho2 > 0)
+      rho2 = 0;
+   end
 else
-    rho2 = opt.rho;
+   rho2 = options.rho;
 end
-tmp = u1Data;
+tmp = u1data;
 tmp(~sample1) = 0;
 if rho2 ~= 0
-    P2 = toeplitz(rho2.^(0 : nPer2-1));
-    u2Data = P2*C'*((C*P2*C')\tmp);
+   P2 = toeplitz(rho2.^(0 : nper2-1));
+   u2data = P2*C'*((C*P2*C')\tmp);
 else
-    u2Data = C'*((C*C')\tmp);
+   u2data = C'*((C*C')\tmp);
 end
-u2Data(~sample2) = NaN;
-y2Data = y2Data + u2Data;
+u2data(~sample2) = NaN;
+y2data = y2data + u2data;
 
 % Output data.
-if opt.log
-    u1Data = exp(u1Data);
-    y2Data = exp(y2Data);
-    u2Data = exp(u2Data);
+if options.log
+   u1data = exp(u1data);
+   y2data = exp(y2data);
+   u2data = exp(u2data);
 end
-U1 = replace(Y1,u1Data,range1(1));
-Y2 = replace(Y1,y2Data,range2(1));
-U2 = replace(Y1,u2Data,range2(1));
-Rho = [rho1,rho2];
+u1 = replace(y1,u1data,range1(1));
+y2 = replace(y1,y2data,range2(1));
+u2 = replace(y1,u2data,range2(1));
+rho = [rho1,rho2];
 
 end
 
-
-% Subfunctions...
-
+% Subfunctions.
 
 %**************************************************************************
-
-
-function Rho2 = xxAutoCorr(Rho1,F1,F2,NGrid)
-% xxAutoCorr  Use a simple grid search to find high-frequency
+function rho2 = xxautocorr(rho1,f1,f2,ngrid)
+% xxautocorr  Use a simple grid search to find high-frequency
 % autocorrelation coeeficient corresponding to the estimated low-frequency
 % one.
-g = F2 / F1;
-C = blkdiag(ones(1,g),ones(1,g))/g;
-rho2s = linspace(-1,1,NGrid+2);
+g = f2 / f1;
+C = blkdiag(ones([1,g]),ones([1,g]))/g;
+rho2s = linspace(-1,1,ngrid+2);
 rho2s = rho2s(2:end-1);
 rho1s = nan(size(rho2s));
 for i = 1 : numel(rho2s)
-    rho1s(i) = doTry(rho2s(i));
+   rho1s(i) = dotry(rho2s(i));
 end
-[~,ix] = min(abs(rho1s - Rho1));
-Rho2 = rho2s(ix);
+[~,index] = min(abs(rho1s - rho1));
+rho2 = rho2s(index);
 
-    function rho1 = doTry(rho2)
-        P2 = toeplitz(rho2.^(0:2*g-1));
-        P1 = C*P2*C';
-        rho1 = P1(2,1) / P1(1,1);
-    end
+   function rho1 = dotry(rho2)
+      P2 = toeplitz(rho2.^(0:2*g-1));
+      P1 = C*P2*C';
+      rho1 = P1(2,1) / P1(1,1);
+   end
 
-end % xxAutoCorr( )
+end
+% xxautocorr().

@@ -1,5 +1,5 @@
 classdef VAR < varobj
-    % VAR  Vector Autoregressions (VAR Objects).
+    % VAR  Vector Autoregressions: VAR Objects and Functions.
     %
     % VAR objects can be constructed as plain VARs or simple panel VARs (with
     % fixed effect), and estimated without or with prior dummy observations
@@ -13,7 +13,6 @@ classdef VAR < varobj
     % ============
     %
     % * [`VAR`](VAR/VAR) - Create new empty reduced-form VAR object.
-    %
     %
     % Getting information about VAR objects
     % ======================================
@@ -36,14 +35,12 @@ classdef VAR < varobj
     % * [`sspace`](VAR/sspace) - Quasi-triangular state-space representation of VAR.
     % * [`userdata`](VAR/userdata) - Get or set user data in an IRIS object.
     %
-    %
     % Referencing VAR objects
     % ========================
     %
     % * [`group`](VAR/group) - Retrieve VAR object from panel VAR for specified group of data.
     % * [`subsasgn`](VAR/subsasgn) - Subscripted assignment for VAR objects.
     % * [`subsref`](VAR/subsref) - Subscripted reference for VAR objects.
-    %
     %
     % Simulation, forecasting and filtering
     % ======================================
@@ -55,7 +52,6 @@ classdef VAR < varobj
     % * [`resample`](VAR/resample) - Resample from a VAR object.
     % * [`simulate`](VAR/simulate) - Simulate VAR model.
     %
-    %
     % Manipulating VARs
     % ==================
     %
@@ -65,8 +61,6 @@ classdef VAR < varobj
     % * [`demean`](VAR/demean) - Remove constant and the effect of exogenous inputs from VAR object.
     % * [`horzcat`](VAR/horzcat) - Combine two compatible VAR objects in one object with multiple parameterisations.
     % * [`integrate`](VAR/integrate) - Integrate VAR process and data associated with it.
-    % * [`xasymptote`](VAR/xasymptote) - Set or get asymptotic assumptions for exogenous inputs.
-    %
     %
     % Stochastic properties
     % ======================
@@ -75,7 +69,6 @@ classdef VAR < varobj
     % * [`fmse`](VAR/fmse) - Forecast mean square error matrices.
     % * [`vma`](VAR/vma) - Matrices describing the VMA representation of a VAR process.
     % * [`xsf`](VAR/xsf) - Power spectrum and spectral density functions for VAR variables.
-    %
     %
     % Estimation, identification, and statistical tests
     % ==================================================
@@ -86,7 +79,6 @@ classdef VAR < varobj
     % * [`portest`](VAR/portest) - Portmanteau test for autocorrelation in VAR residuals.
     % * [`schur`](VAR/schur) - Compute and store triangular representation of VAR.
     %
-    %
     % Getting on-line help on VAR functions
     % ======================================
     %
@@ -94,33 +86,30 @@ classdef VAR < varobj
     %     help VAR/function_name
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        K = [ ] % Constant vector.
-        G = [ ] % Coefficients at co-integrating vector in VEC form.
-        Sigma = [ ] % Cov of parameters.
-        T = [ ] % Shur decomposition of the transition matrix.
-        U = [ ] % Schur transformation of the variables.
-        Aic = [ ] % Akaike info criterion.
-        Sbc = [ ] % Schwartz bayesian criterion.
-        Rr = [ ] % Parameter restrictions.
-        NHyper = NaN % Number of estimated hyperparameters.
+        K = []; % Constant vector.
+        G = []; % Coefficients at co-integrating vector in VEC form.
+        Sigma = []; % Cov of parameters.
+        T = []; % Shur decomposition of the transition matrix.
+        U = []; % Schur transformation of the variables.
+        Aic = []; % Akaike info criterion.
+        Sbc = []; % Schwartz bayesian criterion.
+        Rr = []; % Parameter restrictions.
+        NHyper = NaN; % Number of estimated hyperparameters.
         
         % Exogenous inputs in VARXs.
-        XNames = cell(1,0) % Names of exogenous inputs.
-        X0 = [ ] % Asymptotic mean assumption for exogenous inputs.
-        J = [ ] % Coefficient matrix for exogenous inputs.
+        XNames = cell(1,0); % Names of exogenous inputs.
+        X0 = []; % Asymptotic mean assumption for exogenous inputs.
+        J = []; % Coefficient matrix for exogenous inputs.
         
         % Conditioning instruments.
-        INames = cell(1,0) % Names of conditioning instruments.
-        IEqtn = cell(1,0) % Expressions for conditioning instruments.
-        Zi = [ ] % Measurement matrix for conditioning instruments.
+        INames = cell(1,0); % Names of conditioning instruments.
+        IEqtn = cell(1,0); % Expressions for conditioning instruments.
+        Zi = []; % Measurement matrix for conditioning instruments.
     end
-    
-    
-    
     
     methods
         varargout = assign(varargin)
@@ -160,77 +149,64 @@ classdef VAR < varobj
         varargout = subsasgn(varargin)
     end
     
-    
-    
-    
     methods (Hidden)
         varargout = hdatainit(varargin)
         varargout = end(varargin)
         varargout = saveobj(varargin)
-        varargout = implementGet(varargin)
+        varargout = specget(varargin)
         varargout = SVAR(varargin)
         varargout = myresponse(varargin)
         varargout = mysystem(varargin)
+        varargout = myisvalidinpdata(varargin)
     end
     
-    
-    
-    
-    methods (Access=protected, Hidden)
-        varargout = assignEst(varargin)
-        varargout = getEstimationData(varargin)
+    methods (Access=protected,Hidden)
+        varargout = myassignest(varargin)
         varargout = mycompatible(varargin)
         varargout = myglsqweights(varargin)
-        varargout = myisvalidinpdata(varargin)
+        varargout = myinpdata(varargin)
         varargout = myny(varargin)
         varargout = myprealloc(varargin)
         varargout = myrngcmp(varargin);
-        varargout = subsalt(varargin)
+        varargout = mystackdata(varargin)
+        varargout = mysubsalt(varargin)
         varargout = myxnames(varargin)
         varargout = size(varargin)
         varargout = specdisp(varargin)
-        varargout = stackData(varargin)
     end
     
-    
-    
-    
-    methods (Static, Hidden)
+    methods (Static,Hidden)
         varargout = myglsq(varargin)
+        varargout = loadobj(varargin)
         varargout = restrict(varargin)
     end
     
-    
-    
-    
-    methods (Access=protected, Hidden)
-        % Methods sealed in extension classes svarobj.
+    methods (Access=protected,Hidden)
+        % Methods sealed in extension classes svarobj or varxobj.
         varargout = mybmatrix(varargin)
         varargout = mycovmatrix(varargin)
+        varargout = mystruct2obj(varargin)
     end
-
     
+    
+    % Constructor...
     
     
     methods
         function This = VAR(varargin)
             % VAR  Create new empty reduced-form VAR object.
             %
-            %
-            % Syntax for plain VAR and VAR with exogenous variables
-            % ======================================================
+            % Syntax for plain VAR and VARX
+            % ==============================
             %
             %     V = VAR(YNames)
             %     V = VAR(YNames,'exogenous=',XNames)
             %
-            %
-            % Syntax for panel VAR and VAR with exogenous variables
-            % ======================================================
-            %
+            % Syntax for panel VAR and VARX
+            % ==============================
             %
             %     V = VAR(YNames,'groups=',GroupNames)
             %     V = VAR(YNames,'exogenous=',XNames,'groups=',GroupNames)
-            %
             %
             % Output arguments
             % =================
@@ -244,34 +220,30 @@ classdef VAR < varobj
             % * `GroupNames` [ cellstr | char | function_handle ] - Names of groups for
             % panel VAR estimation.
             %
-            %
             % Options
             % ========
             %
-            % * `'exogenous='` [ cellstr | *empty* ] - Names of exogenous regressors;
-            % one of the names can be `!ttrend`, a linear time trend, which will be
-            % created automatically each time input data are required, and then
-            % included in the output database under the name `ttrend`.
+            % * `'exogenous='` [ cellstr | *empty* ] - Names of exogenous inputs; one
+            % of the names can be `!ttrend`, a linear time trend, which will be created
+            % automatically each time input data are required, and then included in the
+            % output database under the name `ttrend`.
             %
             % * `'groups='` [ cellstr | *empty* ] - Names of groups for panel VAR
             % estimation.
             %
-            %
             % Description
             % ============
             %
-            %
             % This function creates a new empty VAR object. It is usually followed by
-            % an [`estimate`](VAR/estimate) command to estimate the coefficient
-            % matrices in the VAR object using some data.
-            %
+            % an [`estimate`](VAR/estimate) command to estimate the VAR parameters on
+            % the data.
             %
             % Example
             % ========
             %
-            % To estimate a VAR, first create an empty VAR object specifying the
-            % variable names, and then run the [VAR/estimate](VAR/estimate) function on
-            % it, e.g.
+            % To estimate a VAR, you first need to create an empty VAR object
+            % specifying the variable names, and then run the
+            % [VAR/estimate](VAR/estimate) function on it, e.g.
             %
             %     v = VAR({'x','y','z'});
             %     [v,d] = estimate(v,d,range);
@@ -279,27 +251,25 @@ classdef VAR < varobj
             % where the input database `d` ought to contain time series `d.x`, `d.y`,
             % `d.z`.
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
-            
-            %--------------------------------------------------------------------------
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             This = This@varobj(varargin{:});
             
-            if nargin==0
+            if nargin == 0
                 return
-            elseif nargin==1 && isVAR(varargin{1})
+            elseif nargin == 1 && isVAR(varargin{1})
                 This = varargin{1};
                 return
-            elseif nargin==1 && isstruct(varargin{1})
-                This = struct2obj(This, varargin{1});
+            elseif nargin == 1 && isstruct(varargin{1})
+                This = mystruct2obj(This,varargin{1});
                 return
-            elseif nargin>=3
+            elseif nargin >= 3
                 % VAR(YNames,...)
-                varargin(1) = [ ];
-                [opt, ~] = passvalopt('VAR.VAR', varargin{:});
+                varargin(1) = [];
+                [opt,~] = passvalopt('VAR.VAR',varargin{:});
                 if ~isempty(opt.exogenous)
-                    This = myxnames(This, opt.exogenous);
+                    This = myxnames(This,opt.exogenous);
                 end
             end
         end

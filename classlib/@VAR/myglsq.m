@@ -4,8 +4,8 @@ function S = myglsq(S,Opt)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 y0 = S.y0;
 k0 = S.k0;
@@ -107,13 +107,13 @@ if ~isempty(Rr)
     R = Rr(:,1:end-1);
     r = Rr(:,end);
 else
-    R = [ ];
-    r = [ ];
+    R = [];
+    r = [];
 end
 
 % `Omg0` is covariance of residuals based on unrestricted non-bayesian VAR.
 % It is used to compute covariance of parameters.
-Omg0 = [ ];
+Omg0 = [];
 count = 0;
 if ~isempty(R) && Opt.eqtnbyeqtn
     % Estimate equation by equation with parameter restrictions. This procedure
@@ -125,7 +125,7 @@ if ~isempty(R) && Opt.eqtnbyeqtn
     pos = pos(:);
     Mw = Xw * Xw.';
     beta = nan(ny*(nk+nx+ny*p+ng),1);
-    realSmall = getrealsmall( );
+    realSmall = getrealsmall();
     for i = 1 : ny
         % Get restrictions for equation i.
         betaInx = pos == i;
@@ -184,25 +184,25 @@ e = y0 - beta*X;
 e = e(:,nb+1:end);
 
 % Covariance of parameter estimates, not available for VECM and diff VARs.
-Sgm = [ ];
+Sgm = [];
 if Opt.covparameters && ~Opt.diff
-    doSigma( );
+    doSigma();
 end
 
 % Coefficients of exogenous inputs including constant.
 K = beta(:,1:nk);
-beta(:,1:nk) = [ ];
+beta(:,1:nk) = [];
 
 J = beta(:,1:nx);
-beta(:,1:nx) = [ ];
+beta(:,1:nx) = [];
 
 % Transition matrices.
 A = beta(:,1:ny*p);
-beta(:,1:ny*p) = [ ];
+beta(:,1:ny*p) = [];
 
 % Coefficients of the co-integrating vector.
 G = beta(:,1:ng);
-beta(:,1:ng) = [ ]; %#ok<NASGU>
+beta(:,1:ng) = []; %#ok<NASGU>
 
 S.A = A;
 S.K = K;
@@ -221,7 +221,7 @@ S.count = count;
 %**************************************************************************
 
     
-    function doSigma( )
+    function doSigma()
         % Asymptotic covariance of parameters is based on the covariance matrix of
         % residuals from a non-restricted non-bayesian VAR. The risk exists that we
         % bump into singularity or near-singularity.
@@ -253,7 +253,7 @@ S.count = count;
                 Sgm = nan(size(Xw,1)*ny);
             end
         end
-    end % doSigma( )
+    end % doSigma()
 
 
 end

@@ -1,5 +1,5 @@
 function yearly(This)
-% yearly  Display tseries object one calendar year per row.
+% yearly  Display tseries object one full year per row.
 %
 % Syntax
 % =======
@@ -15,50 +15,29 @@ function yearly(This)
 % Description
 % ============
 %
-% The functon `yearly` currently works for tseries with monthly,
-% bi-monthly, quarterly, and half-yearly frequency only.
-%
 % Example
 % ========
 %
-% Create a quarterly tseries, and use `yearly` to display it one calendar
-% year per row.
-%
-%     >> x = tseries(qq(2000,3):qq(2002,2),@rand)
-%     x =
-%         tseries object: 8-by-1
-%         2000Q3:  0.95537
-%         2000Q4:  0.68029
-%         2001Q1:  0.86056
-%         2001Q2:  0.93909
-%         2001Q3:  0.68019
-%         2001Q4:  0.91742
-%         2002Q1:  0.25669
-%         2002Q2:  0.88562
-%         ''
-%         user data: empty
-%     >> yearly(x)
-%         tseries object: 8-by-1
-%         2000Q1-2000Q4:        NaN           NaN     0.9553698     0.6802907
-%         2001Q1-2001Q4:  0.8605621     0.9390935      0.680194     0.9174237
-%         2002Q1-2002Q4:  0.2566917     0.8856181           NaN           NaN
-%         ''
-%         user data: empty
-%
-    
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 freq = datfreq(This.start);
 
 switch freq
-    case {0,1,365}
+    case 0
+        daily(This);
+    case 1
         disp(This);
+    case 52
+        disp(This);
+        utils.warning('tseries:yearly', ...
+            'The function yearly() is not implemented for weekly series yet.');
     otherwise
         % Call `disp` with yearly disp2d implementation.
-        disp(This,'',@xxDisp2d);
+        disp(This,'',@xxDisp2dYearly);
 end
 
 end
@@ -68,84 +47,51 @@ end
 
 
 %**************************************************************************
-
-
-function X = xxDisp2d(Start,Data,Tab,Sep,Num2StrFunc)
-% `Data` is always a vector or a 2D matrix; no higher dimensions.
+function X = xxDisp2dYearly(Start,Data,Tab,Sep,Num2StrFunc)
+% `Data` is always 2D at most.
 [nPer,nx] = size(Data);
-freq = datfreq(Start);
-range = Start+(0:nPer-1);
-[year,per] = dat2ypf(range);
-firstYear = year(1);
-lastYear = year(end);
-piy = persinyear(firstYear : lastYear,freq);
-nYear = lastYear - firstYear + 1;
+[~,p,freq] = dat2ypf(Start);
 
-if per(1) > 1
-    nPre = per(1) - 1;
+% If the input tseries does not start in the first period of the year, padd
+% `Data` with NaN's at the beginning.
+if p > 1
+    nPre = p - 1;
     Data = [nan(nPre,nx);Data];
-    Start = Start - nPre;
+    nPer = size(Data,1);
 end
 
-if per(end) < piy(end)
-    nPost = piy(end) - per(end);
+% If the input tseries does not end in the last period of the year, padd
+% `Data` with NaN's at the end.
+nYear = nPer / freq;
+if nYear < ceil(nYear)
+    nPost = freq*ceil(nYear) - nPer;
     Data = [Data;nan(nPost,nx)];
+    nYear = ceil(nYear);
 end
 
-nPer = size(Data,1);
-range = Start+(0:nPer-1);
-maxPiy = max(piy);
+% Reshape `Data` to get one year per row.
+Data = reshape(Data,freq,nYear,nx);
+Data = permute(Data,[3,1,2]);
 
-dataTable = [ ];
-dates = [ ];
-ixPadded = false(1,0);
+dataTable = [];
+dates = {};
 for i = 1 : nYear
-    n = piy(i);
-    iData = Data(1:n,:);
-    iRange = range(1:n);
-    Data(1:n,:) = [ ];
-    range(1:n) = [ ];
-    isPadded = n < maxPiy;
-    if isPadded
-        iData = [iData;nan(maxPiy-n,nx)]; %#ok<AGROW>
-    end
-    ixPadded = [ixPadded,repmat(isPadded,1,nx)]; %#ok<AGROW>
-    
-    iFirstDate = iRange(1);
-    iLastDate = iRange(end);
-    dates = [dates; ...
-        iFirstDate,iLastDate, ...
+    lineStart = Start + (i-1)*freq;
+    lineEnd = lineStart + freq-1;
+    dates{end+1} = [ ...
+        strjust(dat2char(lineStart)),'-', ...
+        strjust(dat2char(lineEnd)), ...
+        Sep, ...
         ]; %#ok<AGROW>
-    dataTable = [dataTable;iData.']; %#ok<AGROW>
+    if nx > 1
+        dates{end+(1:nx-1)} = ''; %#ok<AGROW>
+    end
+    dataTable = [dataTable;Data(:,:,i)]; %#ok<AGROW>
 end
 
-dates = dat2str(dates);
-dates = strcat(char(dates(:,1)),'-',char(dates(:,2)),Sep);
-if nx > 1
-    swap = dates;
-    dates = repmat(' ',nx*nYear,size(dates,2));
-    dates(1:nx:end,:) = swap;
-end
-dates = [ repmat(' ',1,size(dates,2)) ; dates ];
+dates = char(dates);
+dataChar = Num2StrFunc(dataTable);
+repeat = ones(size(dates,1),1);
+X = [Tab(repeat,:),dates,dataChar];
 
-% Add header line with periods over columns.
-dataChar = Num2StrFunc([1:maxPiy;dataTable]);
-
-% Add the frequency letter to period numbers in the header line.
-c = dataChar(1,:);
-f = irisget('freqLetters');
-f = f(freq == [1,2,4,6,12,52]);
-c = regexprep(c,' (\d+)',[f,'$1']);
-dataChar(1,:) = c;
-
-% Replace `NaN` in periods that don't exist in the respective year with
-% `*`.
-for i = find(ixPadded)
-    c = dataChar(1+i,:);
-    c = regexprep(c,'NaN$','  *');
-    dataChar(1+i,:) = c;
-end
-
-Tab = repmat(Tab,size(dates,1),1);
-X = [Tab,dates,Tab,dataChar];
-end % xxDisp2d( )
+end % xxDisp2dYearly()

@@ -29,19 +29,20 @@ function [X,NewRange] = resize(X,Range)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('x',@(x) isa(x,'tseries'));
 pp.addRequired('range',@isnumeric);
 pp.parse(X,Range);
 
+
 %--------------------------------------------------------------------------
 
 if isempty(Range) || isnan(X.start)
-    NewRange = [ ];
+    NewRange = [];
     X = empty(X);
     return
 elseif all(isinf(Range))
@@ -52,7 +53,7 @@ end
 % Frequency of input tseries must be the same as frequency of new date
 % range.
 if ~all(freqcmp(Range([1,end]),X.start))
-    utils.error('tseries:resize', ...
+    utils.error('tseries', ...
         ['Frequency of the tseries object and ', ...
         'the date frequency of the new range must be the same.']);
 end
@@ -82,8 +83,8 @@ tmpSize = size(X.data);
 nPer = tmpSize(1);
 inx = round(NewRange - X.start + 1);
 deleteRows = inx < 1 | inx > nPer;
-NewRange(deleteRows) = [ ];
-inx(deleteRows) = [ ];
+NewRange(deleteRows) = [];
+inx(deleteRows) = [];
 
 if ~isempty(inx)
     X.data = X.data(:,:);

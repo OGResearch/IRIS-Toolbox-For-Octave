@@ -1,56 +1,56 @@
-function [ix, lsInvalid] = myselect(this, type, select)
+function [Inx,Invalid] = myselect(This,Type,Select)
 % myselect  [Not a public function] Convert user name selection to a logical index.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-switch lower(type)
+switch lower(Type)
     case 'y'
-        list = myynames(this);
+        list = myynames(This);
     case 'e'
-        list = myenames(this);
+        list = myenames(This);
 end
 
-N = length(this.YNames);
-select = select(:).';
-lsInvalid = { };
+N = length(This.YNames);
+Select = Select(:).';
+Invalid = {};
 
-if isequal(select,Inf)
-    ix = true(1,N);
-elseif isnumeric(select)
-    ix = false(1,N);
-    ix(select) = true;
-elseif iscellstr(select) || ischar(select)
-    if ischar(select)
-        select = regexp(select,'\w+','match');
+if isequal(Select,Inf)
+    Inx = true(1,N);
+elseif isnumeric(Select)
+    Inx = false(1,N);
+    Inx(Select) = true;
+elseif iscellstr(Select) || ischar(Select)
+    if ischar(Select)
+        Select = regexp(Select,'\w+','match');
     end
-    ix = false(1,N);
-    nSelect = length(select);
+    Inx = false(1,N);
+    nSelect = length(Select);
     for i = 1 : nSelect
-        cmp = strcmp(list,select{i});
+        cmp = strcmp(list,Select{i});
         if any(cmp)
-            ix = ix | cmp;
+            Inx = Inx | cmp;
         else
-            lsInvalid{end+1} = select{i}; %#ok<AGROW>
+            Invalid{end+1} = Select{i}; %#ok<AGROW>
         end
     end
-elseif islogical(select)
-    ix = select;
+elseif islogical(Select)
+    Inx = Select;
 else
-    ix = false(1,N);
+    Inx = false(1,N);
 end
 
-ix = ix(:).';
+Inx = Inx(:).';
 
-if length(ix) > N
-    ix = ix(1:N);
-elseif length(ix) < N
-    ix(end+1:N) = false;
+if length(Inx) > N
+    Inx = Inx(1:N);
+elseif length(Inx) < N
+    Inx(end+1:N) = false;
 end
 
 end

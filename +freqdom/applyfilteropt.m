@@ -4,8 +4,8 @@ function [IsFilter,Filter,Freq,ApplyTo] = applyfilteropt(Opt,Freq,SspaceVec)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ if ischar(ApplyTo)
 end
 
 % Linear filter applied to some variables.
-if isequal(ApplyTo,@all)
+if isequal(ApplyTo,':') || isequal(ApplyTo,Inf)
     ApplyTo = true(1,Nx);
 elseif iscellstr(ApplyTo) || ischar(ApplyTo)
     ApplyTo = ApplyTo(:).';
-    [pos,notFound] = textfun.findnames(SspaceVec,ApplyTo);
+    [pos,notFound] = strfun.findnames(SspaceVec,ApplyTo);
     if ~isempty(notFound)
-        utils.error('freqdom:applyfilteropt', ...
-            'This name does not exist in the state-space vectors: %s.', ...
+        utils.error('model', ...
+            'This name does not exist in the state-space vectors: ''%s''.', ...
             notFound{:});
     end
     ApplyTo = false(1,Nx);
@@ -52,25 +52,22 @@ if ~isempty(Filter) && any(ApplyTo)
     Filter = xxFdFilter(Filter,Freq);
 else
     IsFilter = false;
-    Filter = [ ];
-    Freq = [ ];
+    Filter = [];
+    Freq = [];
 end
 
 end
 
-
-% Subfunctions...
-
+% Subfunctions.
 
 %**************************************************************************
-
-
 function Filter = xxFdFilter(FString,Freq)
+
 nFreq = length(Freq);
 frq = Freq; %#ok<NASGU>
 
-% Vectorize *, /, \, ^ operators.
-FString = textfun.vectorize(FString);
+% Vectorise *, /, \, ^ operators.
+FString = strfun.vectorise(FString);
 
 % Evaluate frequency response function of filter.
 l = exp(-1i*Freq); %#ok<NASGU>
@@ -82,4 +79,5 @@ end
 
 % Make sure the result is numeric.
 Filter = +Filter;
-end % xxFdFilter( )
+
+end % xxFdFilter().

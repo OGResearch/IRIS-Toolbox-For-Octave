@@ -1,6 +1,5 @@
-classdef SVAR < VAR
-    % SVAR  Structural Vector Autoregressions (SVAR Objects).
-    %
+classdef SVAR < VAR & svarobj
+    % SVAR  Structural Vector Autoregressions: SVAR Objects and Functions.
     %
     % SVAR methods:
     %
@@ -12,24 +11,20 @@ classdef SVAR < VAR
     % SVAR objects can call any of the [VAR](VAR/Contents) functions. In
     % addition, the following functions are available for SVAR objects.
     %
-    %
     % Getting information about SVAR objects
     % =======================================
     %
     % * [`get`](SVAR/get) - Query SVAR object properties.
-    %
     %
     % Simulation
     % ===========
     %
     % * [`srf`](SVAR/srf) - Shock (impulse) response function.
     %
-    %
     % Stochastic properties
     % ======================
     %
     % * [`fevd`](SVAR/fevd) - Forecast error variance decomposition for SVAR variables.
-    %
     %
     % Manipulating SVAR objects
     % ==========================
@@ -38,13 +33,11 @@ classdef SVAR < VAR
     %
     % See help on [VAR](VAR/Contents) objects for other functions available.
     %
-    %
     % Getting on-line help on SVAR functions
     % =======================================
     %
     %     help SVAR
     %     help SVAR/function_name
-    %
     %
     % Getting on-line help on SVAR functions that are inherited from VARs
     % ====================================================================
@@ -53,18 +46,11 @@ classdef SVAR < VAR
     %     help VAR/function_name
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        B = [ ]; % Coefficient matrix in front of structural residuals.
-        Std = [ ]; % Std dev of structural residuals.
-        Method = { }; % Identification method.
-        Rank = Inf;        
     end
-    
-    
-    
     
     methods
         function This = SVAR(varargin)
@@ -163,10 +149,10 @@ classdef SVAR < VAR
             % ========
             %
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
-            This = This@VAR( );
+            This = This@VAR();
             if nargin == 0
                 return
             elseif nargin == 1 && isa(varargin{1},'SVAR')
@@ -180,36 +166,22 @@ classdef SVAR < VAR
         end
     end
     
-    
-    
-    
     methods
-        varargout = fevd(varargin)        
-        varargout = irf(varargin)              
         varargout = get(varargin)
-        varargout = sort(varargin)        
-        varargout = srf(varargin)        
         varargout = sspace(varargin)
     end
     
-    
-    
-    
     methods (Hidden)
-        varargout = myidentify(varargin)        
-        varargout = myred2struct(varargin)        
-        varargout = implementGet(varargin)
+        varargout = specget(varargin)
     end
-    
-    
-    
     
     methods (Access=protected,Hidden)
-        varargout = mybmatrix(varargin)
         varargout = mycompatible(varargin)
+        varargout = mystruct2obj(varargin)
+        varargout = mysubsalt(varargin)
         varargout = mycovmatrix(varargin)
-        varargout = myparsetest(varargin)
-        varargout = subsalt(varargin)
         specdisp(varaargin)
     end
+    
+    
 end

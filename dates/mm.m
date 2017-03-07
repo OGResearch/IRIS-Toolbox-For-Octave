@@ -1,4 +1,4 @@
-function dat = mm(varargin)
+function Dat = mm(varargin)
 % mm  IRIS serial date number for monthly date.
 %
 % Syntax
@@ -27,12 +27,11 @@ function dat = mm(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dat = datcode(12, varargin{:});
-dat = dates.Date(dat);
+Dat = datcode(12,varargin{:});
 
 end

@@ -6,6 +6,7 @@ function N = weeksinyear(Year)
 %
 %     N = weeksinyear(Year)
 %
+%
 % Input arguments
 % ================
 %
@@ -32,8 +33,8 @@ function N = weeksinyear(Year)
 %         52    52    52    52    53    52    52    52    52    53    52
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

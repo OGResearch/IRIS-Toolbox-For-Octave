@@ -39,8 +39,8 @@ function [Cof,Cop] = cutoff(F,Freq,Cog)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
@@ -105,4 +105,4 @@ d = abs(F1(pos) - F2(pos));
 w1 = abs(F1(pos) - Cog) / d;
 w2 = abs(F2(pos) - Cog) / d;
 C = (1-w1)*Freq(pos) + (1-w2)*Freq(pos+1);
-end % xxCutOff( )
+end % xxCutOff()

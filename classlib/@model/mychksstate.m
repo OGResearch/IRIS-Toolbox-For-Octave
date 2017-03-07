@@ -1,98 +1,108 @@
-function [flag, dcy, maxAbsDcy, lsEqtn] = mychksstate(this, vecAlt, opt)
-% mychksstate  Discrepancy in steady state of model equtions.
+function [Flag,Discr,MaxAbsDiscr,List] = mychksstate(This,Opt)
+% mychksstate  [Not a public function] Discrepancy in steady state of model equtions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% The input struct Opt is expected to include field .Kind, a switch between
-% evaluating full dynamic versus steady-state equations.
-
-TYPE = @int8;
-STEADY_TOLERANCE = this.Tolerance.Steady;
+% The input struct Opt is expected to include
+%
+% * `.eqtn` -- switch between evaluating full dynamic versus
+% steady-state equations;
+% * `.tolerance` -- tolerance level.
 
 try
-    opt; %#ok<VUNUS>
+    Opt; %#ok<VUNUS>
 catch
-    opt = passvalopt('model.mychksstate');
+    Opt = passvalopt('model.mychksstate');
+end
+
+% Bkw compatibility.
+if islogical(Opt.eqtn)
+    % ##### June 2014 OBSOLETE and scheduled for removal.
+    utils.warning('obsolete', ...
+        ['Option ''sstateEqtn='' is obsolete, and will be removed ', ...
+        'from IRIS in a future release. ', ...
+        'Use the option ''eqtn='' instead with values ', ...
+        '''full'' or ''sstate''.']);
+    if Opt.eqtn
+        Opt.eqtn = 'sstate';
+    else
+        Opt.eqtn = 'full';
+    end
 end
 
 %--------------------------------------------------------------------------
 
-ixt = this.Equation.Type==TYPE(1);
-ixm = this.Equation.Type==TYPE(2);
-nQty = length(this.Quantity);
-ntm = sum(ixt | ixm);
-nAlt = length(this);
-if isequal(vecAlt, Inf)
-    vecAlt = 1 : nAlt;
+nEqtnXY = sum(This.eqtntype <= 2);
+nAlt = size(This.Assign,3);
+
+Flag = false(1,nAlt);
+List = cell(1,nAlt);
+
+if strcmpi(Opt.eqtn,'full')
+    doFullEqtn();
+else
+    doSstateEqtn();
 end
 
-if strcmpi(opt.Kind, 'dynamic') || strcmpi(opt.Kind, 'full')
-    sh = this.Incidence.Dynamic.Shift;
-    kind = 'Dynamic';
-    [dcy, dcyAssign] = evalEquations( );
-else 
-    sh = this.Incidence.Steady.Shift;
-    kind = 'Steady';
-    [dcy, dcyAssign] = evalEquations( );
-end
-maxAbsDcy = max(abs(dcy), [ ], 2);
-absDcyAssign = abs(dcyAssign); % 
-
-flag = true(1, nAlt);
-lsEqtn = cell(1, nAlt);
-for iAlt = vecAlt
-    ixTol = maxAbsDcy(:, iAlt)<=STEADY_TOLERANCE ...
-        | absDcyAssign(:, iAlt)<=STEADY_TOLERANCE;
-    flag(iAlt) = all(ixTol);
-    if ~flag(iAlt) && nargout>=4
-        lsEqtn{iAlt} = this.Equation.Input(~ixTol);
+MaxAbsDiscr = max(abs(Discr),[],2);
+for iAlt = 1 : nAlt
+    inx = abs(MaxAbsDiscr(:,iAlt)) <= Opt.tolerance;
+    Flag(iAlt) = all(inx == true);
+    if ~Flag(iAlt) && nargout >= 4
+        List{iAlt} = This.eqtn(~inx);
     else
-        lsEqtn{iAlt} = { };
+        List{iAlt} = {};
     end
 end
 
-flag = flag(vecAlt);
-lsEqtn = lsEqtn(vecAlt);
-dcy = dcy(:, :, vecAlt);
-maxAbsDcy = maxAbsDcy(:,:,vecAlt);
 
-return
+%**************************************************************************
     
     
-    
-    
-    function [dcy, dcyAssign] = evalEquations( )
+    function doFullEqtn()
         % Check the full equations in two consecutive periods. This way we
         % can detect errors in both levels and growth rates.
-        nsh = length(sh);
-        dcy = nan(ntm, 2, nAlt);
-        dcyAssign = inf(ntm, 1, nAlt);
+        Discr = nan(nEqtnXY,2,nAlt);
+        nameYXEPos = find(This.nametype < 4);
         isDelog = true;
-        nVecAlt = numel(vecAlt);
+        iiAlt = Inf;
         for t = 1 : 2
-            vecT = t + sh;
-            YXEPGT = [
-                createTrendArray(this, vecAlt, isDelog, 1:nQty, vecT)
-                repmat(vecT, 1, 1, nVecAlt)
-                ];
-            dcy(:, t, vecAlt) = lhsmrhs(this, YXEPGT, Inf, vecAlt, 'Kind=', kind);
+            tVec = t + This.Shift;
+            X = mytrendarray(This,iiAlt,isDelog,nameYXEPos,tVec);
+            L = X;
+            Discr(:,t,:) = lhsmrhs(This,X,L);
         end
-        
-        % Substitute level+1i*growth for variables in YXE array to check direct
-        % assignments in steady equations X=a+1i*b.
-        if strcmpi(kind, 'Steady')
-            temp = model.Variant.getQuantity(this.Variant, 1:nQty, vecAlt);
-            YXEPGT = [
-                permute(temp, [2, 1, 3])
-                zeros(1, 1, nVecAlt)
-                ];
-            YXEPGT = repmat(YXEPGT, 1, nsh);
-            dcyAssign(:, :, vecAlt) = ...
-                lhsmrhs(this, YXEPGT, Inf, vecAlt, 'Kind=', kind);
+    end % doFullEqtn()
+
+
+%**************************************************************************
+
+    
+    function doSstateEqtn()
+        Discr = nan(nEqtnXY,2,nAlt);
+        isGrowth = true;
+        eqtnS = myfinaleqtns(This,isGrowth);
+        eqtnS = eqtnS(This.eqtntype <= 2);
+        % Create anonymous funtions for sstate equations.
+        for ii = 1 : length(eqtnS)
+            eqtnS{ii} = mosw.str2func(['@(x,dx) ',eqtnS{ii}]);
         end
-    end
+        for iiAlt = 1 : nAlt
+            x = real(This.Assign(1,:,iiAlt));
+            dx = imag(This.Assign(1,:,iiAlt));
+            dx(This.IxLog & dx == 0) = 1;
+            % Evaluate discrepancies btw LHS and RHS of steady-state equations.
+            Discr(:,1,iiAlt) = (cellfun(@(fcn) fcn(x,dx),eqtnS)).';
+            xk = x;
+            xk(~This.IxLog) = x(~This.IxLog) + dx(~This.IxLog);
+            xk(This.IxLog) = x(This.IxLog) .* dx(This.IxLog);
+            Discr(:,2,iiAlt) = (cellfun(@(fcn) fcn(xk,dx),eqtnS)).';
+        end
+    end % doSstateEqtn()
+
+
 end

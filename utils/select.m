@@ -1,4 +1,4 @@
-function [X,Pos,Select,NotFound] = select(X,Descript,Select)
+function [X,Inx,Select,NotFound] = select(X,Descript,Select)
 % select  Return ACF, XSF, FFRF, IFRF submatrices for a selection of variables.
 %
 % Syntax for arrays returned from model functions
@@ -37,11 +37,11 @@ function [X,Pos,Select,NotFound] = select(X,Descript,Select)
 %     [C,R] = acf(m);
 %     C0 = select(C,{'X','Y','Z','Z{-1}'});
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse required input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('X',@isnumeric);
 pp.addRequired('descript',@(x) iscellstr(x) ...
     || (iscell(x) && numel(x) == 2 && iscellstr(x{1}) && iscellstr(x{2})));
@@ -74,13 +74,13 @@ Select{1} = removelogfunc(Select{1});
 Select{2} = removelogfunc(Select{2});
 
 if isnumeric(X)
-    Pos = cell(1,2);
+    Inx = cell(1,2);
     NotFound = cell(1,2);
     for i = 1 : 2
         for j = 1 : length(Select{i})
             k = strcmp(Descript{i},Select{i}{j});
             if any(k)
-                Pos{i}(end+1) = find(k,1);
+                Inx{i}(end+1) = find(k,1);
             else
                 NotFound{i}{end+1} = Select{i}{j}; %#ok<*AGROW>
             end
@@ -91,29 +91,29 @@ if isnumeric(X)
     else
         NotFound = union(NotFound{1:2});
     end
-    if isempty(Pos{1})
-        Pos{1} = 1 : size(X,1);
+    if isempty(Inx{1})
+        Inx{1} = 1 : size(X,1);
     end
-    if isempty(Pos{2})
-        Pos{2} = 1 : size(X,2);
+    if isempty(Inx{2})
+        Inx{2} = 1 : size(X,2);
     end
     subsref = cell(1,ndims(X));
-    subsref(1:2) = Pos;
+    subsref(1:2) = Inx;
     subsref(3:end) = {':'};
     X = X(subsref{:});
 elseif isstruct(X)
-    [Pos,NotFound] = textfun.findnames(descriptor,Select);
-    Pos(isnan(Pos)) = [ ];
+    [Inx,NotFound] = strfun.findnames(descriptor,Select);
+    Inx(isnan(Inx)) = [];
     list = fieldnames(X);
     for i = 1 : length(list)
         if istseries(X.(list{i}))
-            X.(list{i}) = X.(list{i}){:,Pos};
+            X.(list{i}) = X.(list{i}){:,Inx};
         end
     end
 end
 
 if ~isempty(NotFound)
-    utils.error('utils:select', ...
+    utils.error('select', ...
         'Name ''%s'' not found in the description of rows or columns.', ...
         NotFound{:});
 end

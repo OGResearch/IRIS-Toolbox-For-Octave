@@ -24,14 +24,14 @@ function xaxistight(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1}(:).';
-    varargin(1) = [ ]; %#ok<NASGU>
+    varargin(1) = []; %#ok<NASGU>
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
 %--------------------------------------------------------------------------
@@ -42,11 +42,8 @@ for iAx = Ax
         '-and','-not','tag','vline', ...
         '-and','-not','tag','hline', ...
         '-and','-not','tag','zeroline');
-    if true % ##### MOSW
-        lim = objbounds(ch);
-    else
-        lim = mosw.objbounds(ch);
-    end
+    % @@@@@ MOSW
+    lim = mosw.objbounds(ch);
     if isempty(lim)
         xLim = get(iAx,'xLim');
     else

@@ -1,52 +1,42 @@
 classdef texobj < report.userinputobj
+    
     properties
     end
     
-    
-    
-    
     methods
-        function this = texobj(varargin)
-            this = this@report.userinputobj(varargin{:});
-            this.default = [this.default, { ...
-                'separator', '\medskip\par', @ischar, true, ...
+        
+        function This = texobj(varargin)
+            This = This@report.userinputobj(varargin{:});
+            This.default = [This.default,{ ...
+                'separator','\medskip\par',@ischar,true, ...
                 }];
         end
         
-        
-        
-        
-        function [this, varargin] = specargin(this, varargin)
+        function [This,varargin] = specargin(This,varargin)
             % If the number of input arguments behind `Cap` is odd and the first input
             % argument after `Cap` is char, we grab it as input code/text; otherwise we
             % grab the comment block from caller.
-            if mod(length(varargin), 2)==1 && ischar(varargin{1})
-                this.userinput = varargin{1};
-                varargin(1) = [ ];
+            if mod(length(varargin),2) == 1 && ischar(varargin{1})
+                This.userinput = varargin{1};
+                varargin(1) = [];
             else
                 caller = dbstack('-completenames');
-                if length(caller)>=4
-                    caller = caller(4);
-                    this.userinput = report.texobj.grabCommentBlk(caller);
+                caller = caller(4);
+                if length(caller) >= 4
+                    This.userinput = preparser.grabcommentblk(caller);
                 else
                     utils.warning('report:texobj', ...
                         'No block comment to grab for text or LaTeX input.');
                 end
             end
         end
+        
     end
     
-    
-    
-    
-    methods (Access=protected, Hidden)
+    methods (Access=protected,Hidden)
+        
         varargout = speclatexcode(varargin)
+        
     end
     
-    
-    
-    
-    methods (Static)%, Access=protected, Hidden)
-        varargout = grabCommentBlk(varargin)
-    end
 end

@@ -4,8 +4,8 @@ function varargout = datarequest(Req,This,Data,Range)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Loop over requests
 ReqSplit = regexp(Req,',','split') ;
@@ -17,7 +17,7 @@ end
 
     function Y = xxLeadLagDataExtract(Data,Names,Range)
         nVar = numel(Names) ;
-        Y = [ ] ;
+        Y = [] ;
         % Check for leads and lags
         [LLop,Var] = regexp(Names,'\{[-\+]?\d*}','match','split') ;
         for iVar = 1:nVar

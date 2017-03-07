@@ -1,11 +1,4 @@
 function [C,Flag] = file2char(FName,Type)
-% file2char  [Not a public function] Read text file.
-%
-% Backend IRIS function.
-% No help provided.
-
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
 
 try
     Type; %#ok<VUNUS>
@@ -18,15 +11,15 @@ end
 Flag = true;
 C = '';
 
-if iscellstr(FName) && length(FName)==1
+if iscellstr(FName) && length(FName) == 1
     C = FName{1};
     return
 end
 
 % Open, read, and close file.
 fid = fopen(FName,'r');
-if fid==-1
-    if ~utils.exist(FName,'file')
+if fid == -1
+    if ~exist(FName,'file')
         utils.error('utils:file2char', ...
             'Cannot find file ''%s''.',FName);
     else
@@ -34,17 +27,14 @@ if fid==-1
             'Cannot open file ''%s'' for reading.',FName);
     end
 end
-file = fread(fid,'char').';
-if ~ischar(file)
-    file = char(file);
-end
-if fclose(fid)==-1
+file = char(fread(fid,'uchar').');
+if fclose(fid) == -1
     utils.warning('utils:file2char', ...
         'Cannot close file ''%s'' after reading.',FName);
 end
 
 % Convert any EOLs to \n.
-file = textfun.converteols(file);
+file = strfun.converteols(file);
 
 if isequal(Type,'char')
     C = file;

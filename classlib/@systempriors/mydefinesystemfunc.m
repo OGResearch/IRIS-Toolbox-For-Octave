@@ -1,71 +1,55 @@
-function This = mydefinesystemfunc(This,M)
-% mydefinesystemfunc  Define all valid system prior functions.
-%
-% Backend IRIS function.
-% No help provided.
+function This = mydefinesystemfunc(This)
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-%--------------------------------------------------------------------------
-
-yVec = implementGet(M, 'yVector');
-xVec = implementGet(M, 'xVector');
-eVec = implementGet(M, 'eVector');
-yVec = yVec(:).';
-xVec = xVec(:).';
-eVec = eVec(:).';
-
-s = struct( );
+s = struct();
 
 % Shock response function.
-s.srf.rowName = [yVec,xVec];
-s.srf.colName = eVec;
+s.srf.rowName = [This.yVec,This.xVec];
+s.srf.colName = [This.eVec];
 s.srf.defaultPageStr = '1';
 s.srf.validatePage = @(x) isnumeric(x) && all(x >= 1) && all(isround(x));
 s.srf.page = zeros(1,0);
 s.srf.activeInput = false(1,length(s.srf.colName));
 
 % Filter frequency response function.
-s.ffrf.rowName = xVec;
-s.ffrf.colName = yVec;
+s.ffrf.rowName = [This.xVec];
+s.ffrf.colName = [This.yVec];
 s.ffrf.defaultPageStr = 'NaN';
 s.ffrf.validatePage = @isnumeric;
 s.ffrf.page = zeros(1,0);
 s.ffrf.activeInput = false(1,length(s.ffrf.colName));
 
 % Covariance.
-s.cov.rowName = [yVec,xVec];
-s.cov.colName = [yVec,xVec];
+s.cov.rowName = [This.yVec,This.xVec];
+s.cov.colName = [This.yVec,This.xVec];
 s.cov.defaultPageStr = '0';
 s.cov.validatePage = @(x) isnumeric(x) && all(x >= 0) && all(isround(x));
 s.cov.page = zeros(1,0);
 s.cov.activeInput = false(1,length(s.cov.colName));
 
 % Correlation.
-s.corr.rowName = [yVec,xVec];
-s.corr.colName = [yVec,xVec];
+s.corr.rowName = [This.yVec,This.xVec];
+s.corr.colName = [This.yVec,This.xVec];
 s.corr.defaultPageStr = '0';
 s.corr.validatePage = @(x) isnumeric(x) && all(x >= 0) && all(isround(x));
 s.corr.page = zeros(1,0);
 s.corr.activeInput = false(1,length(s.corr.colName));
 
 % Power spectrum.
-s.pws.rowName = [yVec,xVec];
-s.pws.colName = [yVec,xVec];
+s.pws.rowName = [This.yVec,This.xVec];
+s.pws.colName = [This.yVec,This.xVec];
 s.pws.defaultPageStr = 'NaN';
 s.pws.validatePage = @isnumeric;
 s.pws.page = zeros(1,0);
 s.pws.activeInput = false(1,length(s.pws.colName));
 
 % Spectral density.
-s.spd.rowName = [yVec,xVec];
-s.spd.colName = [yVec,xVec];
+s.spd.rowName = [This.yVec,This.xVec];
+s.spd.colName = [This.yVec,This.xVec];
 s.spd.defaultPageStr = 'NaN';
 s.spd.validatePage = @isnumeric;
 s.spd.page = zeros(1,0);
 s.spd.activeInput = false(1,length(s.spd.colName));
 
-This.SystemFn = s;
+This.systemFunc = s;
 
 end

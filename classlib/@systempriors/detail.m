@@ -19,29 +19,29 @@ function detail(This)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-nPrior = length(This.Eval);
+nPrior = length(This.eval);
 nDigit = 1 + floor(log10(nPrior));
-textfun.loosespace( );
+strfun.loosespace();
 for i = 1 : nPrior
-    if ~isempty(This.PriorFn{i})
-        priorFuncName = This.PriorFn{i}([ ],'name');
-        priorMean = This.PriorFn{i}([ ],'mean');
-        priorStd = This.PriorFn{i}([ ],'std');
+    if ~isempty(This.priorFunc{i})
+        priorFuncName = This.priorFunc{i}([],'name');
+        priorMean = This.priorFunc{i}([],'mean');
+        priorStd = This.priorFunc{i}([],'std');
         priorDescript = sprintf('Distribution: %s mean=%g std=%g', ...
             priorFuncName,priorMean,priorStd);
     else
         priorDescript = '[]';
     end
-    fprintf('\t#%*g  %s\n',nDigit,i,This.UserString{i});
+    fprintf('\t#%*g  %s\n',nDigit,i,This.userString{i});
     fprintf('\t\t%s\n',priorDescript);
     fprintf('\t\tBounds: lower=%g upper=%g\n', ...
-        This.LowerBnd(i),This.UpperBnd(i));
-    textfun.loosespace( );
+        This.lowerBound(i),This.upperBound(i));
+    strfun.loosespace();
 end
 
 end

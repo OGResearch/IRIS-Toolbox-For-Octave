@@ -4,14 +4,14 @@ function Msg = sprintf(Msg,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 Msg = sprintf(Msg,varargin{:});
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Do noting.
 else
     % Remove HTML tags from `Message`.

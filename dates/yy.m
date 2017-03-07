@@ -1,38 +1,34 @@
-function dat = yy(varargin)
+function Dat = yy(varargin)
 % yy  IRIS serial date number for yearly date.
 %
 % Syntax
 % =======
 %
-%     dat = yy(year)
-%
+%     Dat = yy(Y)
 %
 % Input arguments
 % ================
 %
-% * `year` [ numeric ] - Calendar year.
-%
+% * `Y` [ numeric ] - Year.
 %
 % Output arguments
 % =================
 %
-% * `dat` [ dates.date ] - IRIS serial date numbers.
-%
+% * `Dat` [ numeric ] - IRIS serial date numbers representing the yearly
+% date.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dat = datcode(1, varargin{:});
-dat = dates.Date(dat);
+Dat = datcode(1,varargin{:});
 
 end

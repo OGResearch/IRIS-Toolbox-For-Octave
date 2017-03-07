@@ -29,14 +29,14 @@ function This = new(varargin)
 % in any of his parent (or ascendant) objects.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 This = report.reportobj(varargin{:});
 [This,varargin] = specargin(This,varargin{2:end});
-This = setoptions(This,struct( ),varargin{:});
+This = setoptions(This,struct(),varargin{:});
 
 end
 

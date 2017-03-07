@@ -4,8 +4,8 @@ function I = myfourierdata(DATA,OPT)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
@@ -19,7 +19,7 @@ for idata = 1 : ndata
     fdata = fft(DATA(:,:,idata).');
     
     % Sample SGF.
-    Ii = [ ];
+    Ii = [];
     for j = 1 : N
         Ii = [Ii,fdata(j,:)'*fdata(j,:)]; %#ok<AGROW>
     end

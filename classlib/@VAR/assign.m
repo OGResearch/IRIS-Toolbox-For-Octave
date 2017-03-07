@@ -1,13 +1,11 @@
-function This = assign(This,A,K,J,Omg,Fitted)
+function This = assign(This,A,K,Omg,Fitted)
 % assign  Manually assign system matrices to VAR object.
-%
 %
 % Syntax
 % =======
 % 
 %     V = assign(V,A,K,J,Omg)
 %     V = assign(V,A,K,J,Omg,Dates)
-%
 %
 % Input arguments
 % ================
@@ -29,12 +27,10 @@ function This = assign(This,A,K,J,Omg,Fitted)
 % * `Dates` [ numeric ] - Vector of dates of (hypothetical) fitted
 % observations; may be omitted.
 %
-%
 % Output arguments
 % =================
 %
 % * `V` [ VAR ] - VAR object with system matrices assigned.
-%
 %
 % Description
 % ============
@@ -47,13 +43,12 @@ function This = assign(This,A,K,J,Omg,Fitted)
 % where `A1` is the coefficient matrix on the first lag, and `Ap` is the
 % coefficient matrix on the last, p-th, lag.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     if isnumeric(Fitted)
@@ -62,7 +57,7 @@ try
     x = [Fitted{:}];
     xRange = min(x) : max(x);
 catch
-    Fitted = { };
+    Fitted = {};
     xRange = zeros(1,0);
 end
 

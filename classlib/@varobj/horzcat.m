@@ -24,10 +24,10 @@ function This = horzcat(This,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('V1',@isVAR);
 pp.addRequired('V2',@(x) all(cellfun(@isVAR,x)));
 pp.parse(This,varargin);
@@ -40,7 +40,7 @@ end
 
 for i = 1 : numel(varargin)
     inx = size(This.A,3) + (1 : size(varargin{1}.A,3));
-    This = subsalt(This,inx,varargin{i},':');
+    This = mysubsalt(This,inx,varargin{i},':');
 end
 
 end

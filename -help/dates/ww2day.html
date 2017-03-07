@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="dates/ww2day">ww2day</h2>
+<div class="headline">Convert weekly IRIS serial date number to Matlab serial date number</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>Day = ww2day(Dat)
+Day = ww2day(Dat,WDay)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>Dat</code> [ numeric ] - IRIS serial number for weekly date.</p></li>
+<li><p><code>WDay</code> [ <code>'Mon'</code> | <code>'Tue'</code> | <code>'Wed'</code> | <code>'Thu'</code> | <code>'Fri'</code> | <code>'Sat'</code> | <code>'Sun'</code> ] - The day of the week that will represent the input week, <code>Dat</code>; if omitted, the week will be represented by its Thursday.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><code>Day</code> [ numeric ] - Matlab serial date number representing Thursday in that week.</li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+<p>The first week of the year 2009 starts on Monday, 29 December 2008 (it is the first week of 2009 by ISO 8601 definition, because Thursday of that week falls in 2009).</p>
+<p>The following command returns the Thursday of that week (note that <code>datestr</code> is a standard Matlab function, not an IRIS function),</p>
+<pre><code>firstWeek09 = ww(2009,1);
+datestr( ww2day(firstWeek09) )
+ans =
+01-Jan-2009</code></pre>
+<p>while this command returns the Monday of the same week,</p>
+<pre><code>datestr( ww2day(firstWeek09,&#39;Monday&#39;) )
+ans =
+29-Dec-2008</code></pre>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

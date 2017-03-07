@@ -4,15 +4,15 @@ function [Ln,Cp] = myinfline(Ax,Dir,Loc,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 Ln = zeros(1,0);
 Cp = zeros(1,0);
 
 % Look for non-legend axes objects one level deep; this allows figure
 % handles to be entered instead of axes objects.
-Ax = findobj(Ax,'type','axes','-depth',1,'-not','tag','legend');
+Ax = findobj(Ax,'-depth',1,'type','axes','-not','tag','legend');
 
 if isempty(Ax) || isempty(Dir) || isempty(Loc)
     return
@@ -28,7 +28,7 @@ if nAx > 1
     return
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('H',@(x) all(ishghandle(x(:))) ...
     && all(strcmp(get(x,'type'),'axes')));
 pp.addRequired('Dir',@(x) ischar(x) && any(strncmpi(x,{'h','v'},1)));
@@ -48,9 +48,9 @@ isVertical = strncmpi(Dir,'v',1);
 % Vertical lines: If this is a time series graph, convert the vline
 % position to a date grid point.
 if isVertical
-    if isequal(getappdata(Ax, 'IRIS_SERIES'), true)
+    if isequal(getappdata(Ax,'tseries'),true)
         Loc = dat2dec(Loc,'centre');
-        freq = getappdata(Ax, 'IRIS_FREQ');
+        freq = getappdata(Ax,'freq');
         if ~isempty(freq) && isnumericscalar(freq) ...
                 && any(freq == [0,1,2,4,6,12,52])
             dx = 0.5 / max(1,freq);
@@ -64,35 +64,36 @@ if isVertical
     end
 end
 
+
 nextPlot = get(Ax,'nextPlot');
 set(Ax,'nextPlot','add');
 
-if true % ##### MOSW
-    % Matlab only
-    %-------------
+if false % ##### MOSW
     infLim = 1e10;
-    bounds = objbounds(Ax);
-    zCoor = 0;
 else
-    % Octave only
-    %-------------
     infLim = 1e5; %#ok<UNRCH>
-    bounds = mosw.objbounds(Ax);
-    zCoor = -1;
 end
+
+if false % ##### MOSW
+    bounds = objbounds(Ax);
+else
+    bounds = [0,0,0,0]; %#ok<UNRCH>
+end
+zPos = -1;
 
 nLoc = numel(Loc);
 for i = 1 : nLoc
+
     if isVertical
-        xData = Loc([i,i]);
-        yData = infLim*[-1,1] + bounds([3,4]);
+        xCoor = Loc([i,i]);
+        yCoor = infLim*[-1,1] + bounds([3,4]);
     else
-        xData = infLim*[-1,1] + bounds([1,2]);
-        yData = Loc([i,i]);
+        xCoor = infLim*[-1,1] + bounds([1,2]);
+        yCoor = Loc([i,i]);
     end
-    zData = zCoor*ones(size(xData));
-    h = line(xData,yData,zData,'color',[0,0,0], ...
-        'yLimInclude','off','xLimInclude','off','parent',Ax);
+    zCoor = zPos*ones(size(xCoor));
+    h = line(xCoor,yCoor,zCoor,'color',[0,0,0], ...
+        'yLimInclude','off','xLimInclude','off');
     
     Ln = [Ln,h]; %#ok<AGROW>
     
@@ -102,33 +103,14 @@ for i = 1 : nLoc
             opt.caption,opt.vposition,opt.hposition);
         Cp = [Cp,c]; %#ok<AGROW>
     end
-    
-    
-    if true % ##### MOSW
-        % Matlab only
-        %-------------
-        % Do nothing.
-    else
-        % Octave only
-        %-------------
-        % Order lines first among children so that they are effectively excluded
-        % from legend. Plotting them between highligh areas and other objects is
-        % guaranteed by their z-coordinates.
-        ch = get(Ax,'children'); %#ok<UNRCH>
-        if length(ch) > 1
-            ch(ch == h) = [ ];
-            ch = [h;ch];
-            set(Ax,'children',ch);
-        end
-    end
 end
 
 % Reset `'nextPlot='` to its original value.
 set(Ax,'nextPlot',nextPlot);
 
-% Make sure zLim includes zCoor.
+% Make sure zLim includes zPos.
 zLim = get(Ax,'zLim');
-zLim(1) = min(zLim(1),zCoor);
+zLim(1) = min(zLim(1),zPos);
 zLim(2) = max(zLim(2),0);
 set(Ax,'zLim',zLim);
 
@@ -144,29 +126,17 @@ end
 if isVertical
     set(Ln,'tag','vline');
     set(Cp,'tag','vline-caption');
-    bkgLabel = 'VLine';
 else
     set(Ln,'tag','hline');
-    bkgLabel = 'HLine';
 end
 
-for i = 1 : numel(Ln)
-    setappdata(Ln(i), 'IRIS_BACKGROUND', bkgLabel);
-end
-
-if true % ##### MOSW
-    % Matlab only
-    %-------------
-    grfun.mymovetobkg(Ax);
+if false % ##### MOSW
+    if opt.excludefromlegend
+        % Exclude the line object from legend.
+        grfun.excludefromlegend(Ln);
+    end
 else
-    % Octave only
-    %-------------
     % Do nothing.
-end
-
-if opt.excludefromlegend
-    % Exclude the line object from legend.
-    grfun.excludefromlegend(Ln);
 end
 
 end

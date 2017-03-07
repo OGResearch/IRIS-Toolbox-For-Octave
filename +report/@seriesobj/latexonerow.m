@@ -4,8 +4,8 @@ function C = latexonerow(This,Row,Time,Data,Mark,Text)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ br = sprintf('\n');
 nPer = length(Data);
 markString = interpret(This,Mark);
 C = [ ...
-    doLatexCaption( ), ...
+    doLatexCaption(), ...
     footnotemark(This), ...
-    ' & ',doLatexUnits( ), ...
+    ' & ',doLatexUnits(), ...
     ' & ',markString, ...
     latexdata(This,Row,Time,Data,'',Mark,Text), ...
     ' \\', ...
@@ -28,7 +28,7 @@ C = [ ...
 %**************************************************************************
 
 
-    function C = doLatexCaption( )
+    function C = doLatexCaption()
         C = '';
         if Row > 1
             return
@@ -42,20 +42,20 @@ C = [ ...
         C = ['\multicolumn{3}{l}{',tit,'}', ...
             repmat(' &',1,nPer),' \\',br];
         C = [C,subtit];
-    end % doLatexCaption( )
+    end % doLatexCaption()
 
 
 %**************************************************************************
 
 
-    function C = doLatexUnits( )
+    function C = doLatexUnits()
         C = '';
         if Row > 1
             return
         end
         C = interpret(This,This.options.units);
         C = ['~',C];
-    end % doLatexUnits( )
+    end % doLatexUnits()
 
 
 end

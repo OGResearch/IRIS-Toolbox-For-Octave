@@ -4,8 +4,8 @@ function varargout = myynames(This,YNames)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
@@ -17,8 +17,8 @@ catch
     return
 end
 
-pp = inputParser( );
-pp.addRequired('V',@(x) isa(x,'varobj'));
+pp = inputParser();
+pp.addRequired('V',@(x) isVAR(x) || isFAVAR(x));
 pp.addRequired('YNames',@(x) isempty(YNames) ...
     || ischar(YNames) || iscellstr(YNames) || isfunc(YNames));
 pp.parse(This,YNames);

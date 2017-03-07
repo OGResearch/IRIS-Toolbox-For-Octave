@@ -4,8 +4,8 @@ function This = assign(This,A,Omg,XRange,Fitted)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ if ~isempty(XRange) && ~isempty(Fitted)
     end
     for iAlt = 1 : nAlt
         pos = round(Fitted{iAlt} - XRange(1) + 1);
-        This.IxFitted(1,pos,iAlt) = true;
+        This.Fitted(1,pos,iAlt) = true;
     end
 end
 

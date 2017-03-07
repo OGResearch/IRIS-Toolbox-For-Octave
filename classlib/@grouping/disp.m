@@ -1,41 +1,40 @@
-function disp(this)
-% disp  Display method for grouping objects.
+function disp(This)
+% disp  [Not a public function] Display method for grouping objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-ccn = getClickableClassName(this);
-
-if isempty(this)
-    if isempty(this.Type)
-        fprintf('\tempty %s object\n', ccn);
+if isempty(This)
+    if isempty(This.type)
+        fprintf('\tempty grouping object\n');
     else
-        fprintf('\tempty %s %s object\n', this.Type, ccn);
+        fprintf('\tempty %s grouping object\n',This.type);
     end
 else
-    isOther = any(this.OtherContents) ;
-    nGroup = length(this.GroupNames) + double(isOther) ;
-    fprintf('\t%s %s object: [%g] group(s)\n', this.Type, ccn, nGroup) ;
+    isOther = any(This.otherContents) ;
+    nGroup = length(This.groupNames) + double(isOther) ;
+    fprintf('\t%s grouping object: [%g] group(s)\n',This.type,nGroup) ;
 end
 
-if ~isempty(this.Type)
-    names = 'empty';
-    if ~isempty(this.List)
-        names = textfun.displist(this.List);
-    end
-    fprintf('\t%s names: %s\n', this.Type, names);
+if ~isempty(This.type)
     
-    if ~isempty(this.GroupNames)
-        names = this.GroupNames;
-        if any(this.OtherContents)
-            names = [names,this.OTHER_NAME];
+    names = 'empty';
+    if ~isempty(This.list)
+        names = strfun.displist(This.list);
+    end
+    fprintf('\t%s names: %s\n',This.type,names);
+    
+    if ~isempty(This.groupNames)
+        names = This.groupNames;
+        if any(This.otherContents)
+            names = [names,This.otherName];
         end
-        names = textfun.displist(names);
+        names = strfun.displist(names);
     else
         names = 'empty';
     end
@@ -43,8 +42,8 @@ if ~isempty(this.Type)
     fprintf('\n');
 end
 
-disp@shared.UserDataContainer(this, 1);
-textfun.loosespace( );
+disp@userdataobj(This);
+disp(' ');
 
 end
 

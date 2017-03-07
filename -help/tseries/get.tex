@@ -1,0 +1,61 @@
+
+
+    \filetitle{get}{Query tseries object property}{tseries/get}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+Ans = get(X,Query)
+[Ans,Ans,...] = get(X,Query,Query,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{X} {[} model {]} - Tseries object.
+\item
+  \texttt{Query} {[} char {]} - Query to the tseries object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{Ans} {[} \ldots{} {]} - Answer to the query.
+\end{itemize}
+
+\paragraph{Valid queries to tseries
+objects}\label{valid-queries-to-tseries-objects}
+
+\begin{itemize}
+\item
+  \texttt{'end='} Returns {[} numeric {]} the date of the last
+  observation.
+\item
+  \texttt{'freq='} Returns {[} numeric {]} the frequency (periodicity)
+  of the time series.
+\item
+  \texttt{'nanEnd='} Returns {[} numeric {]} the last date at which
+  observations are available in all columns; for scalar tseries, this
+  query always returns the same as \texttt{'end'}.
+\item
+  \texttt{'nanRange='} Returns {[} numeric {]} the date range from
+  \texttt{'nanstart'} to \texttt{'nanend'}; for scalar time series, this
+  query always returns the same as \texttt{'range'}.
+\item
+  \texttt{'nanStart='} Returns {[} numeric {]} the first date at which
+  observations are available in all columns; for scalar tseries, this
+  query always returns the same as \texttt{'start'}.
+\item
+  \texttt{'range='} Returns {[} numeric {]} the date range from the
+  first observation to the last observation.
+\item
+  \texttt{'start='} Returns {[} numeric {]} the date of the first
+  observation.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+

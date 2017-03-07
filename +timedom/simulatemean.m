@@ -4,8 +4,8 @@ function [Y,W,E] = simulatemean(T,R,K,Z,H,D,~,A0,E,Nper,Ant,Dev,Q,q)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % TODO: Simplify treatment of ea and eu.
 
@@ -15,13 +15,13 @@ function [Y,W,E] = simulatemean(T,R,K,Z,H,D,~,A0,E,Nper,Ant,Dev,Q,q)
 try
     Q; 
 catch
-    Q = [ ];
+    Q = [];
 end
 
 try
     q;
 catch
-    q = [ ];
+    q = [];
 end
 
 isnonlin = ~isempty(Q) && ~isempty(q);

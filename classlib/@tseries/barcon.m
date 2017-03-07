@@ -14,10 +14,10 @@ function varargout = barcon(varargin)
 % * `Ax` [ handle | numeric ] - Handle to axes in which the graph will be
 % plotted; if not specified, the current axes will used.
 %
-% * `Range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
-% * `X` [ tseries ] - Input tseries object whose columns will be plotted as
+% * `X` [ tseries ] - Input tseries object whose columns will be ploted as
 % a contribution bar graph.
 %
 % Output arguments
@@ -33,10 +33,7 @@ function varargout = barcon(varargin)
 % * `'barWidth='` [ numeric | *`0.8`* ] - Width of bars as a percentage of
 % the space each period occupies on the x-axis.
 %
-% * `'dateFormat='` [ char | cellstr | *`'YYYYFP'`* ] - Date format string,
-% or array of format strings (possibly different for each date).
-%
-% * `'colorMap='` [ numeric | *`get(gcf( ),'colorMap')`* ] - Color map used
+% * `'colorMap='` [ numeric | *`get(gcf(),'colorMap')`* ] - Color map used
 % to fill the contribution bars.
 %
 % * `'evenlySpread='` [ *`true`* | `false` ] - Colors picked for the
@@ -56,17 +53,13 @@ function varargout = barcon(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% AREA, BAND, BAR, BARCON, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
-
-[Ax,Rng,X,PlotSpec,varargin] = irisinp.parser.parse('tseries.plot',varargin{:});
-[opt,varargin] = passvalopt('tseries.plot',varargin{:});
+% AREA, BAR, BARCON, PLOT, PLOTYY, STEM
 
 %--------------------------------------------------------------------------
 
-[~,varargout{1:nargout}] = ...
-    tseries.myplot(@barcon,Ax,Rng,[ ],X,PlotSpec,opt,varargin{:});
+[varargout{1:nargout}] = tseries.myplot('barcon',varargin{:});
 
 end

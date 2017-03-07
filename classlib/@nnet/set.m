@@ -25,16 +25,12 @@ function This = set(This,varargin)
 %
 % Valid requests to neural network model objects
 % ===============================================
-% 
-% * `'activation='`, `'activationlb='`, `'activationub='`, `'output='`,
-% `'outputlb='`, `'outputub='`, `'hyper='`, `'hyperlb='`, `'hyperub='`
-% [ function_handle | numeric ] - Set parameter values or bounds for
-% parameters. 
+%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('This',@(x) isa(x,'nnet'));
 pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
@@ -146,7 +142,7 @@ end
                 Found = false;
                 
         end
-    end % doSet( ).
+    end % doSet().
 
     function xxLayerNodeLoop(str,Value)
         for iLayer = 1:This.nLayer+1

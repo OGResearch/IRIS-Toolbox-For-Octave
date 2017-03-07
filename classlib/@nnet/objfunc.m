@@ -1,11 +1,11 @@
-function [Obj,Pred,This] = objfunc(X,This,InData,OutData,Range,options)
+function [Obj,Pred] = objfunc(X,This,InData,OutData,Range,options)
 % OBJFUNC  [Not a public function] Objective function value.
 %
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
     
 %**************************************************************************
 
@@ -17,6 +17,6 @@ end
 
 Pred = eval(This,InData,Range) ; %#ok<*GTARG>
 
-Obj = options.Norm(OutData-Pred) ;
+Obj = options.Norm(OutData-Pred)/length(OutData) ;
 
 end

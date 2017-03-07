@@ -34,5 +34,5 @@
 %     x = rho*x{-1} + (1-rho)*&x + epsilon_x !! x = 1;
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

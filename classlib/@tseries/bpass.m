@@ -58,8 +58,8 @@ function [X,T] = bpass(X,Band,Range,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Range = Inf;
@@ -71,7 +71,7 @@ if length(Band) ~= 2 && length(Range) == 2
 end
 
 % Parse input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Band',@(x) isnumeric(x) && length(x) == 2);
 pp.addRequired('Range',@isnumeric);
 pp.parse(Band,Range);
@@ -79,6 +79,11 @@ pp.parse(Band,Range);
 % Parse options.
 [opt,varargin] = passvalopt('tseries.bpass',varargin{:});
 trendOpt = passvalopt('tseries.trend',varargin{:});
+
+% Obsolete options 'ttrend' has been replaced with 'addtrend'.
+if ~isempty(opt.ttrend)
+    opt.addtrend = opt.ttrend;
+end
 
 %--------------------------------------------------------------------------
 
@@ -99,12 +104,12 @@ start = Range(1);
 % Output data.
 X.data = reshape(xData,tmpSize);
 X.start = Range(1);
-X = trim(X);
+X = mytrim(X);
 
 % Time trend data.
 if nargout > 1
     T = replace(X,reshape(tData,tmpSize));
-    T = trim(T);
+    T = mytrim(T);
 end
 
 end

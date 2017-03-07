@@ -1,40 +1,35 @@
-function dat = datbom(dat)
+function D = datbom(D)
 % datbom  Beginning of month for the specified daily date.
 %
 % Syntax
 % =======
 %
-%     bom = datbom(dat)
-%
+%     Bom = datebom(D)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - Daily serial date number.
-%
+% * `D` [ numeric ] - Daily serial date number.
 %
 % Output arguments
 % =================
 %
-% * `bom` [ numeric ] - Daily serial date number for the first day of the
-% same month as `dat`.
-%
+% * `Bom` [ numeric ] - Daily serial date number for the first day of the
+% same month as `D`.
 %
 % Description
-%============
-%
+% ============
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[y, m] = datevec( double(dat) );
-dat = datenum([y, m, 1]);
-dat = dates.Date(dat);
+[y,m] = datevec(D);
+D = datenum([y,m,1]);
 
 end

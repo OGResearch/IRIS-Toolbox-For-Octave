@@ -1,66 +1,60 @@
-function [obj, lik, pp, sp] = objfunc(x, this, data, pri, estOpt, likOpt)
-% objfunc  Evaluate minus log posterior.
+function [Obj,Lik,PP,SP] = objfunc(X,This,Data,Pri,EstOpt,LikOpt)
+% objfunc  [Not a public function] Evaluate minus log posterior.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
     
 %--------------------------------------------------------------------------
 
-obj = 0; % Minus log posterior.
-lik = 0; % Minus log data likelihood.
-pp = 0; % Minus log parameter prior.
-sp = 0; % Minus log system prior.
+Obj = 0; % Minus log posterior.
+Lik = 0; % Minus log data likelihood.
+PP = 0; % Minus log parameter prior.
+SP = 0; % Minus log system prior.
 
-isLik = estOpt.evallik;
-isPPrior = estOpt.evalpprior && any(pri.IxPrior);
-isSPrior = estOpt.evalsprior && ~isempty(pri.SystemPrior);
+isLik = EstOpt.evallik;
+isPPrior = EstOpt.evalpprior && any(Pri.priorindex);
+isSPrior = EstOpt.evalsprior && ~isempty(Pri.sprior);
 
 % Evaluate parameter priors.
 if isPPrior
-    pp = shared.Estimation.evalPrior(x, pri);
-    obj = obj + pp;
+    PP = estimateobj.myevalpprior(X,Pri);
+    Obj = Obj + PP;
 end
 
 % Update model with new parameter values; do this before evaluating the
 % system priors.
 if isLik || isSPrior
-    isThrowErr = strcmpi(estOpt.nosolution, 'error');
-    [this,UpdateOk] = update(this, x, pri, 1, estOpt, isThrowErr);
+    throwErr = strcmpi(EstOpt.nosolution,'error');
+    [This,UpdateOk] = myupdatemodel(This,X,Pri,EstOpt,throwErr);
     if ~UpdateOk
-        obj = Inf;
+        Obj = Inf;
     end
 end
 
 % Evaluate system priors.
-if isfinite(obj) && isSPrior
+if isfinite(Obj) && isSPrior
     % The function `evalsystempriors` returns minus log density.
-    sp = evalsystempriors(this, pri.SystemPrior);
-    obj = obj + sp;
+    SP = evalsystempriors(This,Pri.sprior);
+    Obj = Obj + SP;
 end
 
 % Evaluate data likelihood.
-if isfinite(obj) && isLik
+if isfinite(Obj) && isLik
     % Evaluate minus log likelihood; no data output is required.
-    lik = likOpt.minusLogLikFunc(this, data, [ ], likOpt);
+    Lik = LikOpt.minusLogLikFunc(This,Data,[],LikOpt);
     % Sum up minus log priors and minus log likelihood.
-    obj = obj + lik;
+    Obj = Obj + Lik;
 end
 
-isValid = isnumeric(obj) && length(obj)==1 ...
-    && isfinite(obj) && imag(obj)==0;
-if ~isValid
-    if isnumeric(estOpt.nosolution)
-        penalty = estOpt.nosolution;
-    else
-        penalty = irisconst.OBJ_FUNC_PENALTY;
-    end
-    obj = penalty;
+if ~isfinite(Obj) || imag(Obj) ~= 0 || length(Obj) ~= 1
+    % Although the imag part is zero and causes no problems in
+    % Optimization Toolbox or user-supplied optimisation procedure, this
+    % will be still caught as a complex number in the posterior simulator
+    % indicating that the draw is to be discarded.
+    Obj = complex(1e10,0);
 end
-
-% Make sure Obj is a double, otherwise Optim Tbx will complain.
-obj = double(obj);
 
 end

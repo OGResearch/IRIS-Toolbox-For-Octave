@@ -1,0 +1,71 @@
+
+
+    \filetitle{regress}{Centred population regression for selected model variables}{model/regress}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[B,CovRes,R2] = regress(M,Lhs,Rhs,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model on whose covariance matrices the
+  popolation regression will be based.
+\item
+  \texttt{Lhs} {[} char \textbar{} cellstr {]} - Lhs variables in the
+  regression; each of the variables must be part of the state-space
+  vector.
+\item
+  \texttt{Rhs} {[} char \textbar{} cellstr {]} - Rhs variables in the
+  regression; each of the variables must be part of the state-space
+  vector, or must refer to a larger lag of a transition variable present
+  in the state-space vector.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{B} {[} namedmat \textbar{} numeric {]} - Population regression
+  coefficients.
+\item
+  \texttt{CovRes} {[} namedmat \textbar{} numeric {]} - Covariance
+  matrix of residuals from the population regression.
+\item
+  \texttt{R2} {[} numeric {]} - Coefficient of determination
+  (R-squared).
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrices \texttt{B} and \texttt{CovRes}
+  as either \href{namedmat/Contents}{\texttt{namedmat}} object
+  (i.e.~matrices with named rows and columns) or plain numeric arrays.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+Population regressions calculated by this function are always centred.
+This means the regressions are always calculated as if estimated on
+observations with their uncondional means (the steady-state levels)
+removed from them.
+
+The Lhs and Rhs variables that are log-variables must include
+\texttt{log( )} explicitly in their names. For instance, if \texttt{X}
+is declared to be a log variable, then you must refer to \texttt{log(X)}
+or \texttt{log(X\{-1\})}.
+
+\paragraph{Example}\label{example}
+
+\begin{verbatim}
+[B,C] = regress('log(R)',{'log(R{-1})','log(dP)'});
+\end{verbatim}
+
+

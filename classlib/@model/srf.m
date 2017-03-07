@@ -1,5 +1,5 @@
-function [s, range, select] = srf(this, time, varargin)
-% srf  Shock response functions, first-order solution only.
+function [S,Range,Select] = srf(This,Time,varargin)
+% srf  Shock response functions.
 %
 % Syntax
 % =======
@@ -12,8 +12,8 @@ function [s, range, select] = srf(this, time, varargin)
 %
 % * `M` [ model ] - Model object whose shock responses will be simulated.
 %
-% * `Range` [ numeric | char ] - Simulation date range with the first date
-% being the shock date.
+% * `Range` [ numeric ] - Simulation date range with the first date being
+% the shock date.
 %
 % * `NPer` [ numeric ] - Number of simulation periods.
 %
@@ -25,15 +25,15 @@ function [s, range, select] = srf(this, time, varargin)
 % Options
 % ========
 %
-% * `'delog='` [ *`true`* | `false` ] - Delogarithmise shock responses for
-% log variables afterwards.
+% * `'delog='` [ *`true`* | `false` ] - Delogarithmise the responses for
+% log-variables.
 %
-% * `'select='` [ cellstr | *`@all`* ] - Run the shock response function
-% for a selection of shocks only; `@all` means all shocks are simulated.
+% * `'select='` [ cellstr | *`Inf`* ] - Run the shock response function for
+% a selection of shocks only; `Inf` means all shocks are simulated.
 %
-% * `'size='` [ *`@auto`* | numeric ] - Size of the shocks that will be
-% simulated; `@auto` means that each shock will be set to its std dev
-% currently assigned in the model object `M`.
+% * `'size='` [ *'std'* | numeric ] - Size of the shocks that will be
+% simulated; 'std' means that each shock will be set to its std dev
+% currently assigned in the model object `m`.
 %
 % Description
 % ============
@@ -42,74 +42,76 @@ function [s, range, select] = srf(this, time, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-opt = passvalopt('model.srf', varargin{:});
+opt = passvalopt('model.srf',varargin{:});
 
 if ischar(opt.select)
-    opt.select = regexp(opt.select, '\w+', 'match');
+    opt.select = regexp(opt.select,'\w+','match');
 end
 
 %--------------------------------------------------------------------------
 
-ixe = this.Quantity.Type==int8(31) | this.Quantity.Type==int8(32); 
-ne = sum(ixe);
-nAlt = length(this.Variant);
-lse = this.Quantity.Name(ixe);
+ne = sum(This.nametype == 3);
+nAlt = size(This.Assign,3);
+eList = This.name(This.nametype == 3);
 
 % Select shocks.
-if isequal(opt.select, @all)
+if isequal(opt.select,Inf)
     pos = 1 : ne;
 else
     nSel = length(opt.select);
-    pos = nan(1, nSel);
+    pos = nan(1,nSel);
     for i = 1 : length(opt.select)
-        x = find( strcmp(opt.select{i}, lse) );
-        if length(x)==1
+        x = find(strcmp(opt.select{i},eList));
+        if length(x) == 1
             pos(i) = x;
         end
     end
-    chkShockSelection( );
+    doChkShockSelection();
 end
-select = lse(pos);
-nSel = length(select);
+Select = eList(pos);
+nSel = length(Select);
 
-% Set size of shocks.
-if strcmpi(opt.size, 'std') ...
-        || isequal(opt.size, @auto) ...
-        || isequal(opt.size, @std)
-    shkSize = model.Variant.getStdCorr(this.Variant, pos, ':');
+% Set the size of the shocks.
+if ischar(opt.size)
+    shkSize = This.stdcorr(1,pos,:);
 else
-    shkSize = opt.size*ones(1, nSel, nAlt);
+    shkSize = opt.size*ones(1,nSel,nAlt);
 end
 
-func = @(T, R, K, Z, H, D, U, Omg, iAlt, nPer) ...
-    timedom.srf(T, R(:, pos), [ ], Z, H(:, pos), [ ], U, [ ], ...
-    nPer, shkSize(1, :, iAlt));
+func = @(T,R,K,Z,H,D,U,Omg,iAlt,nPer) ...
+    timedom.srf(T,R(:,pos),[],Z,H(:,pos),[],U,[], ...
+    nPer,shkSize(1,:,iAlt));
 
-[s, range, select] = myrf(this, time, func, select, opt);
-for i = 1 : length(select)
-    s.(select{i}).data(1,i,:) = shkSize(1,i,:);
-    s.(select{i}) = trim(s.(select{i}));
+[S,Range,Select] = myrf(This,Time,func,Select,opt);
+
+for i = 1 : length(Select)
+    S.(Select{i}).data(1,i,:) = shkSize(1,i,:);
+    S.(Select{i}) = mytrim(S.(Select{i}));
 end
 
-return
 
+% Nested functions...
+
+
+%**************************************************************************
 
     
-
-    function chkShockSelection( )
+    function doChkShockSelection()
         if any(isnan(pos))
             utils.error('model:srf', ...
-                'This is not a valid shock name: %s ', ...
+                'This is not a valid shock name: ''%s''.', ...
                 opt.select{isnan(pos)});
         end
-        nonUnique = parser.getMultiple(pos);
+        nonUnique = strfun.nonunique(pos);
         if ~isempty(nonUnique)
             utils.error('model:srf', ...
-                'This shock name is requested more than once: %s ', ...
+                'This shock name is requested more than once: ''%s''.', ...
                 opt.select{nonUnique});
         end
-    end
+    end % doChkShockSelection()
+
+
 end

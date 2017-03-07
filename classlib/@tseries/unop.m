@@ -1,51 +1,53 @@
-function [this, varargout] = unop(func, this, dim, varargin)
-% unop  Unary operators and functions on tseries objects.
+function [X,varargout] = unop(Func,X,Dim,varargin)
+% unop  [Not a public function] Unary operators and functions on tseries objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if dim==0
+if Dim == 0
     % Returns tseries of the same size.
-    sz = size(this.data);
-    if ischar(func)
-        [this.data, varargout{1:nargout-1}] = ...
-            feval(func, this.data(:,:), varargin{:});
+    tmpSize = size(X.data);
+    if ischar(Func)
+        [X.data,varargout{1:nargout-1}] = ...
+            feval(Func,X.data(:,:),varargin{:});
     else
-        [this.data,varargout{1:nargout-1}] = func(this.data(:,:), varargin{:});
+        [X.data,varargout{1:nargout-1}] = Func(X.data(:,:),varargin{:});
     end
-    if length(sz)>2
-        this.data = reshape(this.data, [size(this.data,1),sz(2:end)]);
+    if length(tmpSize) > 2
+        X.data = reshape(X.data,[size(X.data,1),tmpSize(2:end)]);
     end
-    if ~isempty(this.data) && any(any( isnan(this.data([1, end], :)) ))
-        this = trim(this);
+    if ~isempty(X.data) && any(any(isnan(X.data([1,end],:))))
+        X = mytrim(X);
     end
-elseif dim==1
+elseif Dim == 1
     % Returns numeric array as a result of applying FUNC in 1st dimension
     % (time).
-    if ischar(func)
-        [this, varargout{1:nargout-1}] = feval(func, this.data, varargin{:});
+    if ischar(Func)
+        [X,varargout{1:nargout-1}] = feval(Func,X.data,varargin{:});
     else
-        [this, varargout{1:nargout-1}] = func(this.data, varargin{:});
+        [X,varargout{1:nargout-1}] = Func(X.data,varargin{:});
     end
 else
     % Returns a tseries shrunk in DIM as a result of applying FUNC in that
     % dimension
-    if ischar(func)
-        [this.data, varargout{1:nargout-1}] = feval(func, this.data,varargin{:});
+    if ischar(Func)
+        [X.data,varargout{1:nargout-1}] = feval(Func,X.data,varargin{:});
     else
-        [this.data, varargout{1:nargout-1}] = func(this.data, varargin{:});
+        [X.data,varargout{1:nargout-1}] = Func(X.data,varargin{:});
     end
-    dim = size(this.data);
-    this.Comment = cell(1, dim(2:end));
-    this.Comment(:) = {''};
-    if ~isempty(this.data) && any(any( isnan(this.data([1, end], :)) ))
-        this = trim(this);
+    Dim = size(X.data);
+    X.Comment = cell([1,Dim(2:end)]);
+    X.Comment(:) = {''};
+    if ~isempty(X.data) && any(any(isnan(X.data([1,end],:))))
+        X = mytrim(X);
     end
 end
+
+
 
 end

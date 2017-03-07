@@ -33,13 +33,13 @@ function Flag = iseye(X,Tol)
 %          1
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 if nargin < 2
-  Tol = getrealsmall( );
+  Tol = getrealsmall();
 end
 
 Flag = isnumeric(X) && ndims(X) == 2 ...

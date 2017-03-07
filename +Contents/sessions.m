@@ -1,11 +1,11 @@
 % sessions  IRIS Sessions.
 %
-% * [Installing IRIS](setup/Contents)
+% * [setup](setup/Contents) - Installing IRIS.
 %
-% * [Starting, quitting, and configuring IRIS](config/Contents)
+% * [config](config/Contents) - Starting, quitting, and configuring IRIS.
 %
-% * [Getting Online Help](gettinghelp/Contents)
+% * [gettinghelp](gettinghelp/Contents) - Getting Online Help.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

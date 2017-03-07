@@ -1,4 +1,4 @@
-function [A, B, C, D, F, G, H, J, list, nf, deriv] = system(this, varargin)
+function [A,B,C,D,F,G,H,J,List,Nf,Derv] = system(This,varargin)
 % system  System matrices for unsolved model.
 %
 % Syntax
@@ -6,12 +6,10 @@ function [A, B, C, D, F, G, H, J, list, nf, deriv] = system(this, varargin)
 %
 %     [A,B,C,D,F,G,H,J,List,Nf] = system(M)
 %
-%
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Model object whose system matrices will be returned.
-%
 %
 % Output arguments
 % =================
@@ -27,18 +25,20 @@ function [A, B, C, D, F, G, H, J, list, nf, deriv] = system(this, varargin)
 % transition variables (multiplied by the first `Nf` columns of matrices
 % `A` and `B`).
 %
-%
 % Options
 % ========
 %
-% * `'Select='` [ *`true`* | `false` ] - Automatically detect which
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Compute the model using
+% a linear approach, i.e. differentiating around zero and not the currently
+% assigned steady state.
+%
+% * `'select='` [ *`true`* | `false` ] - Automatically detect which
 % equations need to be re-differentiated based on parameter changes from
 % the last time the system matrices were calculated.
 %
-% * `'Sparse='` [ `true` | *`false`* ] - Return matrices `A`, `B`, `D`,
+% * `'sparse='` [ `true` | *`false`* ] - Return matrices `A`, `B`, `D`,
 % `F`, `G`, and `J` as sparse matrices; can be set to `true` only in models
 % with one parameterization.
-%
 %
 % Description
 % ============
@@ -55,21 +55,24 @@ function [A, B, C, D, F, G, H, J, list, nf, deriv] = system(this, varargin)
 % vector of measurement variables, and `e` is a vector of transition and
 % measurement shocks.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-opt = passvalopt('model.system', varargin{:});
+opt = passvalopt('model.system',varargin{:});
+
+if isequal(opt.linear,@auto)
+    opt.linear = This.IsLinear;
+end
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
+nAlt = size(This.Assign,3);
 
-if opt.sparse && nAlt>1
+if opt.sparse && nAlt > 1
     utils.warning('model:system', ...
         ['Cannot return system matrices as sparse matrices in models ', ...
         'with multiple parameterizations. Returning full matrices instead.']);
@@ -77,39 +80,39 @@ if opt.sparse && nAlt>1
 end
 
 % System matrices.
-if opt.sparse && nAlt==1
-    [syst, ~, deriv] = systemFirstOrder(this, 1, opt);
-    F = syst.A{1}; %#ok<*AGROW>
-    G = syst.B{1};
-    H = syst.K{1};
-    J = syst.E{1};
-    A = syst.A{2};
-    B = syst.B{2};
-    C = syst.K{2};
-    D = syst.E{2};
+if opt.sparse && nAlt == 1
+    [Syst,~,Derv] = mysystem(This,1,opt);
+    F = Syst.A{1}; %#ok<*AGROW>
+    G = Syst.B{1};
+    H = Syst.K{1};
+    J = Syst.E{1};
+    A = Syst.A{2};
+    B = Syst.B{2};
+    C = Syst.K{2};
+    D = Syst.E{2};
 else
     for iAlt = 1 : nAlt
-        [syst, ~, deriv] = systemFirstOrder(this, iAlt, opt);
-        F(:, :, iAlt) = full(syst.A{1}); %#ok<*AGROW>
-        G(:, :, iAlt) = full(syst.B{1});
-        H(:, 1, iAlt) = full(syst.K{1});
-        J(:, :, iAlt) = full(syst.E{1});
-        A(:, :, iAlt) = full(syst.A{2});
-        B(:, :, iAlt) = full(syst.B{2});
-        C(:, 1, iAlt) = full(syst.K{2});
-        D(:, :, iAlt) = full(syst.E{2});
+        [Syst,~,Derv] = mysystem(This,iAlt,opt);
+        F(:,:,iAlt) = full(Syst.A{1}); %#ok<*AGROW>
+        G(:,:,iAlt) = full(Syst.B{1});
+        H(:,1,iAlt) = full(Syst.K{1});
+        J(:,:,iAlt) = full(Syst.E{1});
+        A(:,:,iAlt) = full(Syst.A{2});
+        B(:,:,iAlt) = full(Syst.B{2});
+        C(:,1,iAlt) = full(Syst.K{2});
+        D(:,:,iAlt) = full(Syst.E{2});
     end
 end
 
 % Lists of measurement variables, backward-looking transition variables, and
 % forward-looking transition variables.
-list = { ...
-    printSolutionVector(this, 'y'), ...
-    printSolutionVector(this, this.Vector.System{2} + 1i), ...
-    printSolutionVector(this, 'e'), ...
+List = { ...
+    myvector(This,'y'), ...
+    myvector(This,This.systemid{2} + 1i), ...
+    myvector(This,'e'), ...
     };
 
 % Number of forward-looking variables.
-nf = sum( imag(this.Vector.System{2})>=0 );
+Nf = sum(imag(This.systemid{2}) >= 0);
 
 end

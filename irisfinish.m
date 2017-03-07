@@ -19,8 +19,8 @@ function irisfinish(varargin)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ shutup = any(strcmpi(varargin,'-shutup'));
 
 % Clear container.
 try %#ok<TRYNC>
-   clear(container( ));
+   clear(container());
 end
 
 % Clear optional input argument struct.

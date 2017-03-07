@@ -5,7 +5,7 @@ function varargout = irisget(varargin)
 % =======
 %
 %     Value = irisget(Option)
-%     S = irisget( )
+%     S = irisget()
 %
 % Input arguments
 % ================
@@ -50,17 +50,17 @@ function varargout = irisget(varargin)
 %     ans =
 %     YFP
 % 
-%     g = irisget( );
+%     g = irisget();
 %     g.dateformat
 %     ans =
 %     YFP
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[varargout{1:max(nargout, 1)}] = irisconfigmaster('get', varargin{:});
+[varargout{1:max(nargout,1)}] = irisconfigmaster('get',varargin{:});
 
 end

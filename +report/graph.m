@@ -50,7 +50,7 @@
 %
 % * `'style='` [ struct | *empty* ] - (Inheritable) Apply this style
 % structure to the graph and its children; see help on
-% [`grfun.style`](grfun/style).
+% [`qstyle`](qreport/qstyle).
 %
 % * `'tight='` [ `@auto` | `true` | `false` ] - (Inheritable) Set the
 % y-axis limits to the minimum and maximum of displayed data; if `@auto`,
@@ -112,11 +112,11 @@
 % associated with the respective axes object) to move the legend around.
 %
 %     % Create random data series.
-%     A = Series(1:10,@rand);
-%     B = Series(1:10,@rand);
+%     A = tseries(1:10,@rand);
+%     B = tseries(1:10,@rand);
 % 
 %     % Open a new report.
-%     x = report.new( );
+%     x = report.new();
 % 
 %     % Open a new figure in the report with a 1-by-2 layout.
 %     x.figure('My Figure','subplot=',[1,2]);
@@ -133,5 +133,5 @@
 %     open test.pdf;
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

@@ -1,14 +1,10 @@
 function out = isnan(This) 
 
-% isnan  [Not a public function] Test whether some parameters in a neural
-% network model object are NaN (e.g., to determine if these connections
-% should be removed). 
+% isnan  []
 %
-% Backend IRIS function.
-% No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 params = [...
     get(This,'activation'); ...

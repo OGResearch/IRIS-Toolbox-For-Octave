@@ -35,7 +35,7 @@ function [sample,lp_Sample,len] ...
 % References
 % ===========
 %
-% * Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
+% # Brockwell, A.E., and Kadane, J.B., 2004. "Identification of
 % Regeneration Times in MCMC Simulation, with Application to Adaptive
 % Schemes," mimeo, Carnegie Mellon University.
 %
@@ -43,11 +43,11 @@ function [sample,lp_Sample,len] ...
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
 
 % Validate required inputs.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
 pp.addRequired('NDraw',@isnumericscalar);
 pp.parse(This,NDraw);
@@ -78,7 +78,7 @@ initMean = mean(initSample,2) ;
 
 % Construct reentry distribution
 reentryDist = logdist.normal(initMean,initStd) ;
-reentrySample = reentryDist([ ],'draw',opt.initialChainSize) ;
+reentrySample = reentryDist([],'draw',opt.initialChainSize) ;
 
 % Target distribution
 targetDist = @(x) mylogpost(This,x) ;
@@ -134,7 +134,7 @@ while t < NRegen
         end
     end
     if isAlphaState( V )
-        W = reentryDist([ ],'draw') ;
+        W = reentryDist([],'draw') ;
         lp_W = targetDist( W ) ;
         lq_W = reentryDist( W ) + ln_K ;
         if log(rand) < min([0, lp_W - lq_W]) ;

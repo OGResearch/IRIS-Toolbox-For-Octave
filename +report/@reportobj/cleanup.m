@@ -1,11 +1,11 @@
 function cleanup(This)
-% cleanup  Clean up temporary files and folders.
+% cleanup  [Not a public function] Clean up temporary files and folders.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -20,16 +20,16 @@ isDeleted = false(1,nTempFile);
 for i = 1 : nTempFile
     file = tempFile{i};
     if ~isempty(dir(file))
-        utils.delete(file);
+        delete(file);
         isDeleted(i) = isempty(dir(file));
     end
 end
-tempFile(isDeleted) = [ ];
+tempFile(isDeleted) = [];
 
 % Delete temporary dir if empty.
 if ~isempty(tempDir)
     status = rmdir(tempDir);
-    if status==1
+    if status == 1
         tempDir = '';
     end
 end

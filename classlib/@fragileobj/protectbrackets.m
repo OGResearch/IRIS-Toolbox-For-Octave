@@ -5,8 +5,8 @@ function [C,This] = protectbrackets(C,This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ while true
         break
     end
     % Find the matching closing bracket.
-    close = textfun.matchbrk(C,open);
+    close = strfun.matchbrk(C,open);
     % Store the content.
     This.Store{end+1} = C(open+1:close-1);
     This.Open{end+1} = C(open);

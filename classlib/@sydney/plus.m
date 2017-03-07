@@ -1,93 +1,93 @@
-function this = plus(a, b)
-% plus  Overloaded plus for sydney class.
+function This = plus(A,B)
+% plus  [Not a public function] Overloaded plus for sydney class.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent SYDNEY;
 
 if isnumeric(SYDNEY)
-    SYDNEY = sydney( );
+    SYDNEY = sydney();
 end
 
 %--------------------------------------------------------------------------
 
-this = SYDNEY;
-this.Func = 'plus';
+This = SYDNEY;
+This.func = 'plus';
 
-isZeroA = isequal(a, 0) || (~isnumeric(a) && isequal(a.args, 0));
-isZeroB = isequal(b, 0) || (~isnumeric(b) && isequal(b.args, 0));
+isZeroA = isequal(A,0) || (~isnumeric(A) && isequal(A.args,0));
+isZeroB = isequal(B,0) || (~isnumeric(B) && isequal(B.args,0));
 if isZeroA || isZeroB
     if isZeroA && isZeroB
-        this = SYDNEY;
-        this.args = 0;
-        this.lookahead = false;
+        This = SYDNEY;
+        This.args = 0;
+        This.lookahead = false;
         return
     elseif isZeroA
-        if isnumeric(b)
-            this = SYDNEY;
-            this.args = b;
-            this.lookahead = false;
+        if isnumeric(B)
+            This = SYDNEY;
+            This.args = B;
+            This.lookahead = false;
             return
         else
-            this = b;
+            This = B;
             return
         end
     else
-        if isnumeric(a)
-            this = SYDNEY;
-            this.args = a;
-            this.lookahead = false;
+        if isnumeric(A)
+            This = SYDNEY;
+            This.args = A;
+            This.lookahead = false;
             return
         else
-            this = a;
+            This = A;
             return
         end
     end
 end
 
-isNumericB = isnumeric(b);
-isPlusB = ~isNumericB && strcmp(b.Func, 'plus');
+isNumericB = isnumeric(B);
+isPlusB = ~isNumericB && strcmp(B.func,'plus');
 
-if isnumeric(a)
-    x = a;
-    a = SYDNEY;
-    a.args = x;
-    this.args = {a}; 
-    this.lookahead = false;
-elseif strcmp(a.Func, 'plus')
+if isnumeric(A)
+    x = A;
+    A = SYDNEY;
+    A.args = x;
+    This.args = {A}; 
+    This.lookahead = false;
+elseif strcmp(A.func,'plus')
     if ~isNumericB && ~isPlusB
-        this.args = [a.args, {b}];
-        this.lookahead = [a.lookahead, any(b.lookahead)];
+        This.args = [A.args,{B}];
+        This.lookahead = [A.lookahead,any(B.lookahead)];
         return
     end  
-    this.args = a.args;
-    this.lookahead = a.lookahead;
+    This.args = A.args;
+    This.lookahead = A.lookahead;
 else
     if ~isNumericB && ~isPlusB
-        this.args = {a, b};
-        this.lookahead = [any(a.lookahead), any(b.lookahead)];
+        This.args = {A,B};
+        This.lookahead = [any(A.lookahead),any(B.lookahead)];
         return
     end
-    this.args = {a};
-    this.lookahead = any(a.lookahead);
+    This.args = {A};
+    This.lookahead = any(A.lookahead);
 end
 
 if isNumericB
-    x = b;
-    b = SYDNEY;
-    b.args = x;
-    this.args = [this.args, {b}]; 
-    this.lookahead = [this.lookahead, false];
+    x = B;
+    B = SYDNEY;
+    B.args = x;
+    This.args = [This.args,{B}]; 
+    This.lookahead = [This.lookahead,false];
 elseif isPlusB
-    this.args = [this.args, b.args];
-    this.lookahead = [this.lookahead, b.lookahead];
+    This.args = [This.args,B.args];
+    This.lookahead = [This.lookahead,B.lookahead];
 else
-    this.args = [this.args, {b}];
-    this.lookahead = [this.lookahead, any(b.lookahead)];
+    This.args = [This.args,{B}];
+    This.lookahead = [This.lookahead,any(B.lookahead)];
 end
 
 end

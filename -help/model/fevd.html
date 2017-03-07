@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type='text/css'>
+body {
+   background-color: white;
+   margin: 1em 2em 1em 2em;
+   font-family: Sans-Serif;
+   color: #002;
+   line-height: 140%;
+   font-size: 12px;
+}
+
+h1 {
+    font-size: 140%;
+}
+
+h2 {
+    font-size: 130%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 100%;
+    font-style: italic;
+    font-weight: normal;
+}
+
+pre {
+   background-color: #eee;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+
+@media print {
+   pre {word-wrap:break-word; width:100%;}
+} 
+
+ul li,
+ol li {
+   padding-left: 0.3em;
+   /*text-indent: -2em;*/
+   margin-bottom: 0.5em;
+}
+
+em {
+   font-style: normal;
+   font-weight: bold;
+   text-decoration: underline;
+   color: #c40;
+}
+
+code {
+   font-family: Monospace;
+   font-size: 100%;
+   color: #c40;
+}
+
+a, a * {
+   text-decoration: underline;
+   color: blue;
+   /* border: 0.5px solid #aaa;
+   white-space: nowrap;
+   padding-right: 0.1em;
+   padding-left: 0.1em;
+   padding-bottom: -5px; */
+}
+
+a code {
+   color: blue;
+}
+
+img {
+   position: relative;
+   bottom: -4px;
+}
+
+div.headline {
+   font-weight: bold;
+   font-size: 110%;
+}
+
+div.copyright {
+   margin-top: 1em;
+   border-top: 1px solid black;
+   padding-top: 0.5em;
+}
+
+div.iris_headline {
+   border-bottom: 1px solid black;
+   padding-bottom: 0.3em;
+}
+
+.LaTeX {
+   font-family: Monospace;
+   font-size: 100%;
+   border: 1px solid #060;
+   color: #060;
+}
+
+code.LaTeX {
+   background-color: white;
+   padding: 0.5em 0.5em 0.5em 2em;
+}
+</style>
+</head>
+
+<body>
+<div class="iris_headline">IRIS Toolbox Reference Manual</div>
+
+
+
+
+<h2 id="model/fevd">fevd</h2>
+<div class="headline">Forecast error variance decomposition for model variables</div>
+
+<h4 id="syntax">Syntax</h4>
+<pre><code>[X,Y,List,A,B] = fevd(M,Range,...)
+[X,Y,List,A,B] = fevd(M,NPer,...)</code></pre>
+<h4 id="input-arguments">Input arguments</h4>
+<ul>
+<li><p><code>M</code> [ model ] - Model object for which the decomposition will be computed.</p></li>
+<li><p><code>Range</code> [ numeric ] - Decomposition date range with the first date beign the first forecast period.</p></li>
+<li><p><code>NPer</code> [ numeric ] - Number of periods for which the decomposition will be computed.</p></li>
+</ul>
+<h4 id="output-arguments">Output arguments</h4>
+<ul>
+<li><p><code>X</code> [ namedmat | numeric ] - Array with the absolute contributions of individual shocks to total variance of each variables.</p></li>
+<li><p><code>Y</code> [ namedmat | numeric ] - Array with the relative contributions of individual shocks to total variance of each variables.</p></li>
+<li><p><code>List</code> [ cellstr ] - List of variables in rows of the <code>X</code> an <code>Y</code> arrays, and shocks in columns of the <code>X</code> and <code>Y</code> arrays.</p></li>
+<li><p><code>A</code> [ struct ] - Database with the absolute contributions converted to time series.</p></li>
+<li><p><code>B</code> [ struct ] - Database with the relative contributions converted to time series.</p></li>
+</ul>
+<h4 id="options">Options</h4>
+<ul>
+<li><p><code>'matrixFmt='</code> [ <em><code>'namedmat'</code></em> | <code>'plain'</code> ] - Return matrices <code>X</code> and <code>Y</code> as be either <a href="../namedmat/Contents.html"><code>namedmat</code></a> objects (i.e. matrices with named rows and columns) or plain numeric arrays.</p></li>
+<li><p><code>'select='</code> [ <code>@all</code> | char | cellstr ] - Return FEVD for selected variables and/or shocks only; <code>@all</code> means all variables and shocks; this option does not apply to the output databases, <code>A</code> and <code>B</code>.</p></li>
+</ul>
+<h4 id="description">Description</h4>
+<h4 id="example">Example</h4>
+
+</body>
+<div class="copyright">IRIS Toolbox. Copyright &copy; 2007-2014 Jaromir Benes.</div>
+</html>

@@ -1,4 +1,4 @@
-function x = eig(this, vecAlt)
+function E = eig(This,Alt)
 % eig  Eigenvalues of the transition matrix.
 %
 % Syntax
@@ -6,12 +6,10 @@ function x = eig(this, vecAlt)
 %
 %     e = eig(m)
 %
-%
 % Input arguments
 % ================
 %
 % * `m` [ model ] - Model object whose eigenvalues will be returned.
-%
 %
 % Output arguments
 % =================
@@ -19,30 +17,28 @@ function x = eig(this, vecAlt)
 % * `e` [ numeric ] - Array of all eigenvalues associated with the model,
 % i.e. all stable, unit, and unstable roots are included.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    vecAlt; %#ok<VUNUS>
+    Alt; %#ok<VUNUS>
 catch
-    vecAlt = ':';
+    Alt = Inf;
 end
 
-if isequal(vecAlt, Inf)
-    vecAlt = ':';
+if isequal(Alt,Inf)
+    Alt = ':';
 end
 
 %--------------------------------------------------------------------------
 
-x = model.Variant.get(this.Variant, 'Eigen', vecAlt);
+E = This.eigval(1,:,Alt);
 
 end

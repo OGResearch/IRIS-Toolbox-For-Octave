@@ -4,8 +4,8 @@ function This = myprealloc(This,Ny,P,NXPer,NAlt)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -14,6 +14,6 @@ nGrp = max(1,length(This.GroupNames));
 This.A = nan(Ny,Ny*P,NAlt);
 This.Omega = nan(Ny,Ny,NAlt);
 This.EigVal = nan(1,Ny*P,NAlt);
-This.IxFitted = false(nGrp,NXPer,NAlt);
+This.Fitted = false(nGrp,NXPer,NAlt);
 
 end

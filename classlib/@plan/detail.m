@@ -1,23 +1,23 @@
-function detail(this, inp)
+function detail(This,Data)
 % detail  Display details of a simulation plan.
 %
 % Syntax
 % =======
 %
 %     detail(P)
-%     detail(P, Inp)
+%     detail(P,Data)
 %
 % Input arguments
 % ================
 %
 % * `P` [ plan ] - Simulation plan.
 %
-% * `Inp` [ struct ] - Input database.
+% * `Data` [ struct ] - Input database.
 %
 % Description
 % ============
 %
-% If you supply also the second input argument, the input database `Inp`,
+% If you supply also the second input argument, the input database `D`,
 % both the dates and the respective values will be reported for exogenised
 % and conditioning data points, and the values will be checked for the
 % presence of NaNs (with a warning should there be found any).
@@ -26,33 +26,47 @@ function detail(this, inp)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 %#ok<*VUNUS>
 
-try, inp; catch, inp = [ ]; end %#ok<NOCOM>
+try
+    Data;
+catch 
+    Data = [];
+end
 
-if isfield(inp,'mean') && isstruct(inp.mean)
-    inp = inp.mean;
+if isfield(Data,'mean') && isstruct(Data.mean)
+    Data = Data.mean;
 end
     
 %--------------------------------------------------------------------------
 
-nx = nnzexog(this);
-[ans,nnreal,nnimag] = nnzendog(this); %#ok<NOANS,ASGLU>
-nc = nnzcond(this);
+nx = nnzexog(This);
+[ans,nnreal,nnimag] = nnzendog(This); %#ok<NOANS,ASGLU>
+nq = nnznonlin(This);
+nc = nnzcond(This);
 
-textfun.loosespace( );
-range = this.Start:this.End;
+disp(' ');
+range = This.Start:This.End;
+dates = dat2str(range);
 
-[xDetail,xNan] = getDetail(this.XAnch,this.XList,range,[ ],inp);
+printDates = @(index) sprintf(' %s',dates{index});
+
+[xDetail,xNan] = xxDetail(This.XAnch,This.XList,range,[],Data);
 nRealDetail = ...
-    getDetail(this.NAnchReal,this.NList,range,this.NWghtReal,[ ]);
+    xxDetail(This.NAnchReal,This.NList,range,This.NWghtReal,[]);
 nImagDetail = ...
-    getDetail(this.NAnchImag,this.NList,range,this.NWghtImag,[ ]);
-[cDetail,cNan] = getDetail(this.CAnch,this.CList,range,[ ],inp);
+    xxDetail(This.NAnchImag,This.NList,range,This.NWghtImag,[]);
+[cDetail,cNan] = xxDetail(This.CAnch,This.CList,range,[],Data);
+
+qList = {};
+for i = find(any(This.QAnch,2)).'
+    temp = printDates(This.QAnch(i,:));
+    qList = [qList,{strfun.ellipsis(This.QList{i},20),temp}];
+end
 
 checkList = [ ...
     xDetail(1:2:end), ...
@@ -61,48 +75,55 @@ checkList = [ ...
     cDetail(1:2:end)];
 maxLen = max(cellfun(@length,checkList));
 format = ['\t\t%-',sprintf('%g',maxLen+1),'s%s\n'];
-empty = @( ) fprintf('\t-\n');
+empty = @() fprintf('\t-\n');
 
-fprintf('\tExogenized: [%g]\n',nx);
+fprintf('\tExogenised %g\n',nx);
 if ~isempty(xDetail)
     fprintf(format,xDetail{:});
 else
-    empty( );
+    empty();
 end
 
-fprintf('\tEndogenized real: [%g]\n',nnreal);
+fprintf('\tEndogenised real %g\n',nnreal);
 if ~isempty(nRealDetail)
     fprintf(format,nRealDetail{:});
 else
-    empty( );
+    empty();
 end
 
-fprintf('\tEndogenized imag: [%g]\n',nnimag);
+fprintf('\tEndogenised imag %g\n',nnimag);
 if ~isempty(nImagDetail)
     fprintf(format,nImagDetail{:});
 else
-    empty( );
+    empty();
 end
 
-fprintf('\tConditioned upon: [%g]\n',nc);
+fprintf('\tConditioned upon %g\n',nc);
 if ~isempty(cDetail)
     fprintf(format,cDetail{:});
 else
-    empty( );
+    empty();
 end
 
-textfun.loosespace( );
+fprintf('\tNon-linearised %g\n',nq);
+if ~isempty(qList)
+    fprintf(format,qList{:});
+else
+    empty();
+end
 
-if xNan>0
+disp(' ');
+
+if xNan > 0
     utils.warning('plan', ...
-        ['A total of [%g] exogenized data points refer(s) to NaN(s) ', ...
+        ['A total of %g exogenised data points refer(s) to NaN(s) ', ...
         'in the input database.'], ...
         xNan);
 end
 
-if cNan>0
+if cNan > 0
     utils.warning('plan', ...
-        ['A total of [%g] conditioning data points refer(s) to NaN(s) ', ...
+        ['A total of %g conditioning data points refer(s) to NaN(s) ', ...
         'in the input database.'], ...
         cNan);
 end
@@ -110,42 +131,48 @@ end
 end
 
 
+% Subfunctions...
 
 
-function [det, nNan] = getDetail(anch, list, range, W, D)
+%**************************************************************************
+
+
+function [Det,NNan] = xxDetail(Anch,List,Range,W,D)
+
 isData = ~isempty(D) && isstruct(D);
 isWeight = ~isempty(W) && isnumeric(W);
 
-dates = dat2str(range);
-det = { };
-nNan = 0;
-for irow = find(any(anch,2)).'
-    index = anch(irow,:);
-    name = list{irow};
+dates = dat2str(Range);
+Det = {};
+NNan = 0;
+for irow = find(any(Anch,2)).'
+    index = Anch(irow,:);
+    name = List{irow};
     if isData
         if isfield(D,name) && isa(D.(name),'tseries')
             [~,ndata] = size(D.(name).data);
-            values = nan(ndata, size(anch,2));
+            values = nan(ndata,size(Anch,2));
             for idata = 1 : ndata
-                values(idata, index) = D.(name)(range(index), idata).';
-                nNan = nNan + sum(isnan(values(idata, index)));
+                values(idata,index) = D.(name)(Range(index),idata).';
+                NNan = NNan + sum(isnan(values(idata,index)));
             end
         else
             ndata = 1;
-            values = nan(ndata, size(anch, 2));
+            values = nan(ndata,size(Anch,2));
         end            
         row = '';
         for icol = find(index)
-            row = [row, ' *', dates{icol}, '[=',num2str(values(:, icol).', ' %g'), ']'];
+            row = [row,' *',dates{icol},'[=',num2str(values(:,icol).',' %g'),']'];
         end
     elseif isWeight
         row = '';
         for icol = find(index)
-            row = [row, ' *', dates{icol}, '[@', num2str(W(irow,icol).', ' %g'), ']'];
+            row = [row,' *',dates{icol},'[@',num2str(W(irow,icol).',' %g'),']'];
         end
     else        
-        row = sprintf(' *%s', dates{index});
+        row = sprintf(' *%s',dates{index});
     end
-    det = [det, list(irow), {row}]; %#ok<*AGROW>
+    Det = [Det,List(irow),{row}]; %#ok<*AGROW>
 end
-end
+
+end % xxDetail()

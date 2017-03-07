@@ -1,33 +1,29 @@
-function dat = wwtoday( )
+function Dat = wwtoday()
 % wwtoday  IRIS serial date number for current week.
 %
 % Syntax
 % =======
 %
-%     dat = wwtoday( )
-%
+%     Dat = wwtoday()
 %
 % Output arguments
 % =================
 %
-% * `dat` [ numeric ]  - IRIS serial date number for current week.
-%
+% * `Dat` [ numeric ]  - IRIS serial date number for current week.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-today = floor(now( ));
-dat = day2ww(today);
-dat = dates.Date(dat);
+today = floor(now());
+Dat = day2ww(today);
 
 end

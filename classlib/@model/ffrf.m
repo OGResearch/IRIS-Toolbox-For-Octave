@@ -1,11 +1,10 @@
-function [F, list] = ffrf(this, freq, varargin)
+function [F,List] = ffrf(This,Freq,varargin)
 % ffrf  Filter frequency response function of transition variables to measurement variables.
 %
 % Syntax
 % =======
 %
-%     [F, List] = ffrf(M, Freq, ...)
-%
+%     [F,List] = ffrf(M,Freq,...)
 %
 % Input arguments
 % ================
@@ -16,7 +15,6 @@ function [F, list] = ffrf(this, freq, varargin)
 % * `Freq` [ numeric ] - Vector of frequencies for which the response
 % function will be computed.
 %
-%
 % Output arguments
 % =================
 %
@@ -26,13 +24,11 @@ function [F, list] = ffrf(this, freq, varargin)
 % * `List` [ cell ] - List of transition variables in rows of the `F`
 % matrix, and list of measurement variables in columns of the `F` matrix.
 %
-%
 % Options
 % ========
 %
-% * `'include='` [ char | cellstr | *`@all`* ] - Include the effect of the
-% listed measurement variables only; `@all` means all measurement
-% variables.
+% * `'include='` [ char | cellstr | *`Inf`* ] - Include the effect of the
+% listed measurement variables only; `Inf` means all measurement variables.
 %
 % * `'exclude='` [ char | cellstr | *empty* ] - Remove the effect of the
 % listed measurement variables.
@@ -50,124 +46,120 @@ function [F, list] = ffrf(this, freq, varargin)
 % * `'tolerance='` [ numeric | *`1e-7`* ] - Convergence tolerance when
 % computing the steady-state Kalman filter.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
-pp.addRequired('Freq', @isnumeric);
-pp.parse(freq);
+pp = inputParser();
+pp.addRequired('Freq',@isnumeric);
+pp.parse(Freq);
 
 % Parse options.
-opt = passvalopt('model.ffrf', varargin{:});
+opt = passvalopt('model.ffrf',varargin{:});
 
-[ny, nxx] = sizeOfSolution(this.Vector);
-ixy = this.Quantity.Type==TYPE(1);
-
-if isequal(opt.include, @all) && ~isempty(opt.exclude)
-    opt.include = this.Quantity.Name(ixy);
+if isequal(opt.include,Inf) && ~isempty(opt.exclude)
+    opt.include = This.name(This.nametype == 1);
 elseif ischar(opt.include)
-    opt.include = regexp(opt.include, '\w+', 'match');
+    opt.include = regexp(opt.include,'\w+','match');
 end
 
 if ischar(opt.exclude)
-    opt.exclude = regexp(opt.exclude, '\w+', 'match');
+    opt.exclude = regexp(opt.exclude,'\w+','match');
 end
 
-if ~isempty(opt.exclude) && ~isequal(opt.include, @all)
-    utils.error('model:ffrf', ...
+if ~isempty(opt.exclude) && ~isequal(opt.include,Inf)
+    utils.error('model', ...
         'Options ''include='' and ''exclude='' cannot be combined.');
 end
 
-isSelect = ~isequal(opt.select, @all);
-isNamedMat = strcmpi(opt.MatrixFmt, 'namedmat');
+isSelect = ~isequal(opt.select,@all);
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 % TODO: Implement the `'exclude='` option through the `'select='` option.
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
+ny = length(This.solutionid{1});
+nx = length(This.solutionid{2});
+nAlt = size(This.Assign,3);
 
 % Index of the measurement variables included.
-if isequal(opt.include, @all)
-    ixInclude = true(1, ny);
+if isequal(opt.include,Inf)
+    incl = true(1,ny);
 else
-    [~, ixInclude] = userSelection2Index( ...
-        this.Quantity, ...
-        setdiff(opt.include, opt.exclude), ...
-        TYPE(1) ...
-        );
+    incl = setdiff(opt.include,opt.exclude);
+    incl = myselect(This,'y',incl);
 end
 
-freq = freq(:)';
-nFreq = length(freq);
-F = nan(nxx, ny, nFreq, nAlt);
+Freq = Freq(:)';
+nFreq = length(Freq);
+F = nan(nx,ny,nFreq,nAlt);
 
-if ny>0 && any(ixInclude)
-    getFfrf( );
+if ny > 0 && any(incl)
+    doFfrf();
 else
-    utils.warning('model:ffrf', ...
+    utils.warning('model', ...
         'No measurement variables included in calculation of FFRF.');
 end
 
-if nargout<=1 && ~isSelect && ~isNamedMat
+if nargout <= 1 && ~isSelect && ~isNamedMat
     return
 end
 
 % List of variables in rows and columns of `F`.
-rowNames = printSolutionVector(this, 'x');
-colNames = printSolutionVector(this, 'y');
+rowNames = myvector(This,'x');
+colNames = myvector(This,'y');
 
 % Select requested variables if requested.
 if isSelect
-    [F, pos] = namedmat.myselect(F, rowNames, colNames, opt.select);
+    [F,pos] = namedmat.select(F,rowNames,colNames,opt.select);
     rowNames = rowNames(pos{1});
     colNames = colNames(pos{2});
 end
-list = {rowNames, colNames};
+List = {rowNames,colNames};
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
-        F = namedmat(F, rowNames, colNames);
+        F = namedmat(F,rowNames,colNames);
     end
 else
     % Do nothing.
 end
 
-return
 
+% Nested function...
+
+
+%**************************************************************************
     
     
-    
-    function getFfrf( )
-        [flag, ixNanAlt] = isnan(this, 'solution');
-        for iAlt = find(~ixNanAlt)
-            nUnit = sum(this.Variant{iAlt}.Stability==TYPE(1));
-            [T, R, ~, Z, H, ~, U, Omg] = mysspace(this, iAlt, false);
+    function doFfrf()
+        [flag,nanAlt] = isnan(This,'solution');
+        for iAlt = find(~nanAlt)
+            nUnit = mynunit(This,iAlt);
+            [T,R,~,Z,H,~,U,Omega] = mysspace(This,iAlt,false);
             % Compute FFRF.
-            F(:, :, :, iAlt) = freqdom.ffrf3( ...
-                T, R, [ ], Z, H, [ ], U, Omg, nUnit, ...
-                freq, ixInclude, opt.tolerance, opt.maxiter);
+            F(:,:,:,iAlt) = ...
+                freqdom.ffrf3(T,R,[],Z,H,[],U,Omega,nUnit, ...
+                Freq,incl,opt.tolerance,opt.maxiter);
+                %freqdom.ffrf2(T,R,[],Z,H,[],U,Omega, ...
+                %Freq,opt.tolerance,opt.maxiter);
         end
         % Solution not available.
         if flag
             utils.warning('model:ffrf', ...
                 'Solution not available %s.', ...
-                exception.Base.alt2str(ixNanAlt) );
+                preparser.alt2str(nanAlt));
         end
-    end
+    end % doFfrf()
 
 
 end

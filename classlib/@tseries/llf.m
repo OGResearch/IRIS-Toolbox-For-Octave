@@ -1,33 +1,27 @@
-function varargout = llf(varargin)
+function varargout = llf(X,varargin)
 % llf  Local level filter (aka random walk plus white noise) with tunes.
-%
 %
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [T,C,CutOff,Lambda] = llf(X,~Range,...)
-%
+%     [T,C,CutOff,Lambda] = llf(X)
+%     [T,C,CutOff,Lambda] = llf(X,Range,...)
 %
 % Syntax with output arguments swapped
 % =====================================
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [C,T,CutOff,Lambda] = llf2(X,~Range,...)
-%
+%     [C,T,CutOff,Lambda] = llf2(X)
+%     [C,T,CutOff,Lambda] = llf2(X,Range,...)
 %
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Input tseries object that will be filtered.
 %
-% * `~Range` [ numeric | char | *`@all`* ] - Date range on which the input
-% data will be filtered; `Range` can be `@all`, `Inf`, `[startdata,Inf]`,
-% or `[-Inf,enddate]`; if omitted, `@all` (i.e. the entire available range
-% of the input series) is used.
-%
+% * `Range` [ numeric ] - Date range on which the input data will be
+% filtered; `Range` can be `Inf`, `[startdata,Inf]`, or `[-Inf,enddate]`;
+% if not specifired, `Inf` (i.e. the entire available range of the input
+% series) is used.
 %
 % Output arguments
 % =================
@@ -43,7 +37,6 @@ function varargout = llf(varargin)
 % * `Lambda` [ numeric ] - Smoothing parameter actually used; this output
 % argument is useful when the option `'cutoff='` is used instead of
 % `'lambda='`.
-%
 %
 % Options
 % ========
@@ -80,7 +73,6 @@ function varargout = llf(varargin)
 %
 % * `'log='` [ `true` | *`false`* ] - Logarithmise the data before
 % filtering, de-logarithmise afterwards.
-%
 %
 % Description
 % ============
@@ -188,26 +180,35 @@ function varargout = llf(varargin)
 % frequency: for these types of time series, you must always use the option
 % `'lambda=''.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % BWF, HPF, LLF
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-[X,Range,varargin] = irisinp.parser.parse('tseries.filter',varargin{:});
-opt = passvalopt('tseries.filter',varargin{:});
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
+    Range = Inf;
+end
+
+if isempty(Range)
+    varargout{1} = empty(X);
+    varargout{2} = empty(X);
+    varargout{3} = NaN;
+    varargout{4} = NaN;
+    return
+end
 
 %--------------------------------------------------------------------------
 
-order = 1;
-[varargout{1:nargout}] = myfilter(order,X,Range,opt);
-
+[varargout{1:nargout}] = myfilter(X,Range,1,varargin{:});
 
 end

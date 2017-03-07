@@ -1,37 +1,31 @@
-function varargout = bwf(varargin)
+function varargout = bwf(X,Order,varargin)
 % bwf  Butterworth filter with tunes.
-%
 %
 % Syntax
 % =======
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [T,C,CutOff,Lambda] = bwf(X,Order,~Range,...)
-%
+%     [T,C,CutOff,Lambda] = bwf(X,Order)
+%     [T,C,CutOff,Lambda] = bwf(X,Order,Range,...)
 %
 % Syntax with output arguments swapped
 % =====================================
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [T,C,CutOff,Lambda] = bwf2(X,Order,~Range,...)
-%
+%     [T,C,CutOff,Lambda] = bwf2(X,Order)
+%     [T,C,CutOff,Lambda] = bwf2(X,Order,Range,...)
 %
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Input tseries object that will be filtered.
 %
-% * `Order` [ numeric ] - Order of the Butterworth filter; `Order=2`
-% reproduces the Hodrick-Prescott filter [`hpf`](tseries/hpf), and
-% `Order=1` reproduces the local linear filter [`llf`](tseries/llf).
+% * `Order` [ numeric ] - Order of the Butterworth filter; note that
+% `Order=2` reproduces the Hodrick-Prescott filter (`hpf`) and `Order=1`
+% reproduces the local linear filter (`llf`).
 %
-% * `~Range` [ numeric | char | *`@all`* ] - Date range on which the input
-% data will be filtered; `Range` can be `@all`, `Inf`, `[startdata,Inf]`,
-% or `[-Inf,enddate]`; if omitted, `@all` (i.e. the entire available range
-% of the input series) is used.
-%
+% * `Range` [ numeric ] - Date Range on which the input data will be
+% filtered; `Range` can be `Inf`, `[startdata,Inf]`, or `[-Inf,enddate]`;
+% if not specifired, `Inf` (i.e. the entire available Range of the input
+% series) is used.
 %
 % Output arguments
 % =================
@@ -47,7 +41,6 @@ function varargout = bwf(varargin)
 % * `Lambda` [ numeric ] - Smoothing parameter actually used; this output
 % argument is useful when the option `'CutOff='` is used instead of
 % `'Lambda='`.
-%
 %
 % Options
 % ========
@@ -77,7 +70,6 @@ function varargout = bwf(varargin)
 % * `'log='` [ `true` | *`false`* ] - Logarithmise the data before
 % filtering, de-logarithmise afterwards.
 %
-%
 % Description
 % ============
 %
@@ -92,24 +84,35 @@ function varargout = bwf(varargin)
 % bi-monthly=6, monthly=12), and $n$ is the order of the filter, determined
 % by the input parameter `Order`.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % BWF, HPF, LLF
 
 %#ok<*VUNUS>
 %#ok<*CTCH>
 
-[X,Order,Range,varargin] = irisinp.parser.parse('tseries.bwf',varargin{:});
-opt = passvalopt('tseries.filter',varargin{:});
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
+    Range = Inf;
+end
+
+if isempty(Range)
+    varargout{1} = empty(X);
+    varargout{2} = empty(X);
+    varargout{3} = NaN;
+    varargout{4} = NaN;
+    return
+end
 
 %--------------------------------------------------------------------------
 
-[varargout{1:nargout}] = myfilter(Order,X,Range,opt);
+[varargout{1:nargout}] = myfilter(X,Range,Order,varargin{:});
 
 end

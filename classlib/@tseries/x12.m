@@ -1,13 +1,11 @@
-function varargout = x12(varargin)
+function varargout = x12(x,varargin)
 % x12  Access to X13-ARIMA-SEATS seasonal adjustment program.
-%
 %
 % Syntax with a single type of output requested
 % ==============================================
 %
 %     [Y,OutpFile,ErrFile,Model,X] = x12(X,...)
 %     [Y,OutpFile,ErrFile,Model,X] = x12(X,Range,...)
-%
 %
 % Syntax with mutliple types of output requested
 % ===============================================
@@ -17,17 +15,14 @@ function varargout = x12(varargin)
 % See the option `'output='` for the types of output data available from
 % X12.
 %
-%
 % Input arguments
 % ================
 %
 % * `X` [ tseries ] - Input data that will seasonally adjusted or filtered
-% by the Census X12 Arima; `X` must be a quarterly or monthly time series.
+% by the Census X12 Arima.
 %
-% * `Range` [ numeric | char | `@all` ] - Date range on which the X12 will
-% be run; `@all` means the entire on which the input time series is
-% defined; `Range` may be omitted.
-%
+% * `Range` [ numeric ] - Date range on which the X12 will be run; if not
+% specified or Inf the entire available range will be used.
 %
 % Output arguments
 % =================
@@ -49,14 +44,13 @@ function varargout = x12(varargin)
 % * `X` [ tseries ] - Original input data with forecasts and/or backcasts
 % appended if the options `'forecast='` and/or `'backcast='` are used.
 %
-%
 % Options
 % ========
 %
 % * `'backcast='` [ numeric | *`0`* ] - Run a backcast based on the fitted
 % ARIMA model for this number of periods back to improve on the seasonal
-% adjustment; see help on the `x11` specs in the X13-ARIMA-SEATS manual.
-% The backcast is included in the output argument `X`.
+% adjustment; see help on the `x11` specs in the X13-ARIMA-SEATS manual. The
+% backcast is included in the output argument `X`.
 %
 % * `'cleanup='` [ *`true`* | `false` ] - Delete temporary X12 files
 % when done; the temporary files are named `iris_x12a.*`.
@@ -130,7 +124,6 @@ function varargout = x12(varargin)
 % * `'tolerance='` [ numeric | *`1e-5`* ] - Convergence tolerance for the
 % X13 estimation procedure. See help on the `estimation` specs in the
 % X13-ARIMA-SEATS manual.
-%
 %
 % Description
 % ============
@@ -219,99 +212,117 @@ function varargout = x12(varargin)
 % * `.ma` - a numeric array with the point estimates of the MA coefficients
 % (non-seasonal and seasonal).
 %
+% Example
+% ========
+%
+% If you wish to run `x12` on the entire range on which the input time
+% series is defined, and do not use any options, you can omit the second
+% input argument (the date range). These following three calls to `x12` do
+% exactly the same:
+%
+%     xsa = x12(x);
+%     xsa = x12(x,Inf);
+%     xsa = x12(x,get(x,'range'));
 %
 % Example
 % ========
 %
-% Run X12 on the entire range of a time series:
+% If you wish to specify some of the options, you have to enter a date
+% range or use `Inf`:
 %
-%     xsa = x12(x);
-%     xsa = x12(x,Inf);
-%     xsa = x12(x,@all);
-%     xsa = x12(x,get(x,'range'));
+%     xsa = x12(x,Inf,'mode=','add');
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 
-[This,Range,varargin] = irisinp.parser.parse('tseries.filter',varargin{:});
+if ~isempty(varargin) && ~ischar(varargin{1})
+    Range = varargin{1};
+    varargin(1) = [];
+else
+    Range = Inf;
+end
+
 opt = passvalopt('tseries.x12',varargin{:});
 
 if strcmp(opt.mode,'sign')
     opt.mode = 'auto';
 end
 
-%--------------------------------------------------------------------------
-
-outpRequest( );
-nOutp = length(opt.output);
-co = comment(This);
-inpSize = size(This.data);
-This.data = This.data(:,:);
-[data,Range] = rangedata(This,Range);
-
-% Extended range with backcasts and forecasts.
-if ~isempty(Range)
-    startDate = Range(1);
-    xStartDate = startDate - opt.backcast;
-    xRange = xStartDate : Range(end)+opt.forecast;
-else
-    startDate = NaN;
-    xStartDate = NaN;
-    xRange = Range;
+if nargin > 1 && ~isnumeric(Range)
+    error('Incorrect type of input argument(s).');
 end
 
+if nargin < 2
+    Range = Inf;
+end
+Range = specrange(x,Range);
+
+doOutput();
+
+%--------------------------------------------------------------------------
+
+nOutp = length(opt.output);
+co = comment(x);
+tmpsize = size(x.data);
+x.data = x.data(:,:);
+[data,Range] = rangedata(x,Range);
+
+% Extended range with backcasts and forecasts.
+xRange = Range(1)-opt.backcast : Range(end)+opt.forecast;
+
 % Fill in zeros for NaNs in dummy variables on the extended range.
-dummy = [ ];
+dummy = [];
 if ~isempty(opt.dummy) && isa(opt.dummy,'tseries')
     dummy = rangedata(opt.dummy,xRange);
     dummy = dummy(:,:);
-    chkDummy( );
+    doChkDummy();
 end
 
 if opt.log
     data = log(data);
 end
 
-% Run backend X13
-%-----------------
-[y,Outp,Logbk,Err,Mdl] = thirdparty.x13.x13(data,startDate,dummy,opt);
+[data,varargout{1:nOutp},varargout{nOutp+(1:3)}] = ...
+    thirdparty.x12.x12(data,Range(1),dummy,opt);
 
-% Convert output data to tseries objects.
 for i = 1 : nOutp
     if opt.log
-        Outp{i} = exp(Outp{i});
+        varargout{i} = exp(varargout{i});
     end
-    Outp{i} = reshape(Outp{i},[size(Outp{i},1),inpSize(2:end)]);
-    Outp{i} = replace(This,Outp{i},startDate,co);
+    varargout{i} = ...
+        reshape(varargout{i},[size(varargout{i},1),tmpsize(2:end)]);
+    varargout{i} = replace(x,varargout{i},Range(1),co);
 end
 
 % Reshape the model spec struct to match the dimensions and size of input
 % and output tseries.
-if length(inpSize) > 2
-    Mdl = reshape(Mdl,[1,inpSize(2:end)]);
+if length(tmpsize) > 2
+    varargout{nOutp+3} = ...
+        reshape(varargout{nOutp+3},[1,tmpsize(2:end)]);
 end
 
 % Return original series with forecasts and backcasts.
-nXPer = size(y,1);
-This.start = xStartDate;
-This.data = y;
-if length(inpSize) > 2
-    This.data = reshape(This.data,[nXPer,inpSize(2:end)]);
+if nargout >= nOutp+3
+    x.start = x.start - opt.backcast;
+    x.data = data;
+    if length(tmpsize) > 2
+        x.data = reshape(x.data,[size(x.data,1),tmpsize(2:end)]);
+    end
+    x = mytrim(x);
+    varargout{nOutp+4} = x;
 end
-This = trim(This);
-
-% Combine all output arguments.
-varargout = { Outp{:}, Logbk, Err, Mdl, This }; %#ok<CCAT>
-
-return
 
 
+% Nested functions...
 
 
-    function outpRequest( )
-        subs = struct( );
+%**************************************************************************
+
+
+    function doOutput()
+        subs = struct();
         subs.d10 = 'sf|seasonals|seasonal|seasfactors|seasfact';
         subs.d11 = 'sa|seasadj';
         subs.d12 = 'tc|trend|trendcycle';
@@ -330,12 +341,13 @@ return
         if ischar(opt.output)
             opt.output = regexp(opt.output,'\w+','match');
         end
-    end 
+    end % doOutput()
 
 
+%**************************************************************************
 
 
-    function chkDummy( )
+    function doChkDummy()
         dummyIn = dummy(opt.backcast+1:end-opt.forecast,:);
         dummyFcast = dummy(end-opt.forecast+1:end,:);
         dummyBcast = dummy(1:opt.backcast,:);
@@ -356,5 +368,7 @@ return
                 'on the backcast range. The NaNs will be replaced with zeros.']);
         end
         dummy(isnan(dummy)) = 0;
-    end
+    end % doChkDummy()
+
+
 end

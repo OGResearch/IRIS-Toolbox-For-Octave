@@ -34,18 +34,18 @@ function d = dbmerge(varargin)
 %        c: 20
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-if nargin==0
+if nargin == 0
     % No input arguments.
-    d = struct( );
+    d = struct();
     return
 end
 
-if nargin==1
+if nargin == 1
     % One input argument.
     d = varargin{1};
     return
@@ -54,28 +54,24 @@ end
 names = fieldnames(varargin{1}).';
 values = struct2cell(varargin{1}).';
 
-if nargin==3 && iscellstr(varargin{2})
+if nargin == 3 && iscellstr(varargin{2})
     % dbmerge(d,names,values)
-    names = [names, varargin{2}(:).'];
-    values = [values, varargin{3}(:).'];
-elseif nargin>2 && iscellstr(varargin(2:2:end-1))
+    names = [names,varargin{2}(:).'];
+    values = [values,varargin{3}(:).'];
+elseif nargin > 2 && iscellstr(varargin(2:2:end-1))
     % dbmerge(d,name,value,name,value,...)
-    names = [names, varargin(2:2:end-1)];
-    values = [values, varargin(3:2:end)];
+    names = [names,varargin(2:2:end-1)];
+    values = [values,varargin(3:2:end)];
 else
     % dbmerge(d1,d2,...)
     for i = 2 : nargin
-        names = [names, fieldnames(varargin{i}).']; %#ok<AGROW>
-        values = [values, struct2cell(varargin{i}).']; %#ok<AGROW>
+        names = [names,fieldnames(varargin{i}).']; %#ok<AGROW>
+        values = [values,struct2cell(varargin{i}).']; %#ok<AGROW>
     end
 end
 
 % Catch indices of last occurences.
-[namesUnique, posUnique] = unique(names, 'last');
-if length(names)==length(namesUnique)
-    d = cell2struct(values, names, 2);
-else
-    d = cell2struct(values(posUnique), namesUnique, 2);
-end
+[names,index] = unique(names,'last');
+d = cell2struct(values(index),names,2);
 
 end

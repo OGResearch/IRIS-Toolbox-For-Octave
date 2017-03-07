@@ -1,131 +1,123 @@
-function [flag, list] = isnan(this, varargin)
+function [Flag,List] = isnan(This,varargin)
 % isnan  Check for NaNs in model object.
 %
 % Syntax
 % =======
 %
-%     [flag, list] = isnan(M, 'parameters')
-%     [flag, list] = isnan(M, 'sstate')
-%     [flag, list] = isnan(M, 'derivatives')
-%     [flag, list] = isnan(M, 'solution')
-%
+%     [Flag,List] = isnan(M,'parameters')
+%     [Flag,List] = isnan(M,'sstate')
+%     [Flag,List] = isnan(M,'derivatives')
+%     [Flag,List] = isnan(M,'solution')
 %
 % Input arguments
 % ================
 %
 % * `M` [ model ] - Model object.
 %
-%
 % Output arguments
 % =================
 %
-% * `flag` [ `true` | `false` ] - True if at least one `NaN` value exists
+% * `Flag` [ `true` | `false` ] - True if at least one `NaN` value exists
 % in the queried category.
 %
-% * `list` [ cellstr ] - List of parameters (if called with `'parameters'`)
+% * `List` [ cellstr ] - List of parameters (if called with `'parameters'`)
 % or variables (if called with `'sstate'`) that are assigned NaN in at
 % least one parameterisation, or equations (if called with `'derivatives'`)
 % that produce an NaN derivative in at least one parameterisation.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-TYPE = @int8;
-
-if ~isempty(varargin) && (ischar(varargin{1}) &&  ~strcmp(varargin{1}, ':'))
+if ~isempty(varargin) && (ischar(varargin{1}) &&  ~strcmp(varargin{1},':'))
     request = lower(strtrim(varargin{1}));
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
     request = 'all';
 end
 
 if ~isempty(varargin) && (isnumeric(varargin{1}) || islogical(varargin{1}))
-    vecAlt = varargin{1};
-    if isinf(vecAlt)
-        vecAlt = ':';
+    alt = varargin{1};
+    if isinf(alt)
+        alt = ':';
     end
 else
-    vecAlt = ':';
+    alt = ':';
 end
 
 %--------------------------------------------------------------------------
 
-
 switch request
     case 'all'
-        x = model.Variant.getQuantity(this.Variant, ':', vecAlt);
-        ixNan = any(isnan(x), 3);
-        if nargout>1
-            list = this.Quantity.Name(ixNan);
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
+        if nargout > 1
+            List = This.name(inx);
         end
-        flag = any(ixNan);
-    case {'p', 'parameter', 'parameters'}
-        x = model.Variant.getQuantity(this.Variant, ':', vecAlt);
-        ixNan = any(isnan(x), 3);
-        ixNan = ixNan & this.Quantity.Type==TYPE(4);
-        if nargout>1
-            list = this.Quantity.Name(ixNan);
+        Flag = any(inx);
+    case {'p','parameter','parameters'}
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
+        inx = inx & This.nametype == 4;
+        if nargout > 1
+            List = This.name(inx);
         end
-        flag = any(ixNan);
+        Flag = any(inx);
     case {'sstate'}
         % Check for NaNs in transition and measurement variables.
-        x = model.Variant.getQuantity(this.Variant, ':', vecAlt);
-        ixNan = any(isnan(x), 3);
-        ixNan = ixNan & ...
-            (this.Quantity.Type==TYPE(1) ...
-            | this.Quantity.Type==TYPE(2));
-        if nargout>1
-            list = this.Quantity.Name(ixNan);
+        asgn = This.Assign(1,:,alt);
+        inx = any(isnan(asgn),3);
+        inx = inx & (This.nametype == 1 | This.nametype == 2);
+        if nargout > 1
+            List = This.name(inx);
         end
-        flag = any(ixNan);
+        Flag = any(inx);
     case {'solution'}
-        T = this.solution{1}(:, :, vecAlt);
-        R = this.solution{2}(:, :, vecAlt);
+        T = This.solution{1}(:,:,alt);
+        R = This.solution{2}(:,:,alt);
         % Transition matrix can be empty in 2nd dimension (no lagged
         % variables).
-        if size(T, 1)>0 && size(T, 2)==0
-            ixNan = false(1, size(T, 3));
+        if size(T,1) > 0 && size(T,2) == 0
+            inx = false(1,size(T,3));
         else
-            ixNan = any(any(isnan(T), 1), 2) | any(any(isnan(R), 1), 2);
-            ixNan = ixNan(:).';
+            inx = any(any(isnan(T),1),2) | any(any(isnan(R),1),2);
+            inx = inx(:).';
         end
-        flag = any(ixNan);
-        if nargout>1
-            list = ixNan;
+        Flag = any(inx);
+        if nargout > 1
+            List = inx;
         end
     case {'expansion'}
-        expand = this.Expand{1}(:, :, vecAlt);
-        ixNan = isempty(expand) | any(any(isnan(expand), 1), 2);
-        ixNan = ixNan(:)';
-        if nargout>1
-            list = ixNan;
+        expand = This.Expand{1}(:,:,alt);
+        inx = isempty(expand) | any(any(isnan(expand),1),2);
+        inx = inx(:)';
+        if nargout > 1
+            List = inx;
         end
-        flag = any(ixNan);
-    case {'deriv', 'derivative', 'derivatives'}
-        nAlt = length(this);
-        nEqtn = length(this.Equation);
-        eqSelect = true(1, nEqtn);
-        list = false(1, nEqtn);
-        flag = false;
-        opt = struct( );
+        Flag = any(inx);
+    case {'deriv','derivative','derivatives'}
+        nAlt = size(This.Assign,3);
+        nEqtn = length(This.eqtn);
+        eqSelect = true(1,nEqtn);
+        List = false(1,nEqtn);
+        Flag = false;
+        opt = struct();
+        opt.linear = This.IsLinear;
         opt.select = true;
         for iAlt = 1 : nAlt
-            [~, ~, ixNanDeriv] = diffFirstOrder(this, eqSelect, iAlt, opt);
-            flag = flag || any(ixNanDeriv);
-            list(ixNanDeriv) = true;
+            [~,~,nanDeriv] = myderiv(This,eqSelect,iAlt,opt);
+            Flag = Flag || any(nanDeriv);
+            List(nanDeriv) = true;
         end
-        list = this.Equation.Input(list);
+        List = This.eqtn(List);
     otherwise
-        utils.error('Invalid request: %s ', varargin{1});
+        utils.error('Invalid request: ''%s''.',varargin{1});
 end
 
 end

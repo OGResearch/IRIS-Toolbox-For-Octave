@@ -1,59 +1,59 @@
-function [YA, XA, Ea, Eu, YC, XC, wReal, wImag] = myanchors(this, p, rng, isAnt)
+function [YA,XA,EaReal,EaImag,YC,XC,QA,WReal,WImag] = myanchors(This,P,Range)
 % myanchors  [Not a public function] Get simulation plan anchors for model variables.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Check date frequencies.
-if datfreq(p.Start)~=datfreq(rng(1)) || datfreq(p.End)~=datfreq(rng(end))
-    utils.error('model:myanchors', ...
+if datfreq(P.Start) ~= datfreq(Range(1)) ...
+        || datfreq(P.End) ~= datfreq(Range(end))
+    utils.error('model', ...
         'Simulation range and plan range must be the same frequency.');
 end
 
 % Adjust plan range to simulation range if not equal.
-if ~datcmp(p.Start, rng(1)) || ~datcmp(p.End, rng(end))
-    p = p(rng);
+if ~datcmp(P.Start,Range(1)) ...
+        || ~datcmp(P.End,Range(end))
+    P = P(Range);
 end
 
 %--------------------------------------------------------------------------
 
-ixx = this.Quantity.Type==TYPE(2);
-[ny, nxx] = sizeOfSolution(this.Vector);
-nPer = length(rng);
+ny = sum(This.nametype == 1);
+nx = length(This.solutionid{2});
+nPer = length(Range);
+nEqtn = length(This.eqtn);
 
-% Anchors for exogenized measurement variables, and conditioning measurement
+% Anchors for exogenised measurement variables, and conditioning measurement
 % variables.
-YA = p.XAnch(1:ny, :);
-YC = p.CAnch(1:ny, :);
+YA = P.XAnch(1:ny,:);
+YC = P.CAnch(1:ny,:);
 
-% Anchors for exogenized transition variables, and conditioning transition
+% Anchors for exogenised transition variables, and conditioning transition
 % variables.
-realId = real(this.Vector.Solution{2});
-imagId = imag(this.Vector.Solution{2});
-XA = false(nxx, nPer);
-XC = false(nxx, nPer);
-for j = find(ixx)
-    ixId = realId==j & imagId==0;
-    XA(ixId, :) = p.XAnch(j, :);
-    XC(ixId, :) = p.CAnch(j, :);
+realId = real(This.solutionid{2});
+imagId = imag(This.solutionid{2});
+XA = false(nx,nPer);
+XC = false(nx,nPer);
+for j = find(This.nametype == 2)
+    inx = realId == j & imagId == 0;
+    XA(inx,:) = P.XAnch(j,:);
+    XC(inx,:) = P.CAnch(j,:);
 end
 
-% Anchors for endogenized shocks.
-if isAnt
-    Ea = p.NAnchReal;
-    Eu = p.NAnchImag;
-    wReal = p.NWghtReal;
-    wImag = p.NWghtImag;
-else
-    Ea = p.NAnchImag;
-    Eu = p.NAnchReal;
-    wReal = p.NWghtImag;
-    wImag = p.NWghtReal;
-end
+% Anchors for endogenised shocks.
+EaReal = P.NAnchReal;
+EaImag = P.NAnchImag;
+
+% Anchors for non-linear equations.
+QA = false(nEqtn,nPer);
+QA(This.IxNonlin,:) = P.QAnch;
+QA = any(QA,1);
+
+WReal = P.NWghtReal;
+WImag = P.NWghtImag;
 
 end

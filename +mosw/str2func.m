@@ -4,12 +4,12 @@ function varargout = str2func(varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     varargout{1} = str2func(varargin{1});
 else
     % Make sure the function string starts with an `@`.
@@ -19,7 +19,7 @@ else
     % Replace `++` and `--` with `+`.
     varargin{1} = mosw.ppmm(varargin{1});
     % Create the function handle.
-    varargout{1} = eval(varargin{1});
+    varargout{1} = evalin('caller',varargin{1});
 end
 
 end

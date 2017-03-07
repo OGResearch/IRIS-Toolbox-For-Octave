@@ -1,4 +1,4 @@
-function [X, YXVec, dbStd] = fmse(this, time, varargin)
+function [X,YXVec,D] = fmse(This,Time,varargin)
 % fmse  Forecast mean square error matrices.
 %
 % Syntax
@@ -15,7 +15,7 @@ function [X, YXVec, dbStd] = fmse(this, time, varargin)
 %
 % * `NPer` [ numeric ] - Number of periods.
 %
-% * `Range` [ numeric | char ] - Date range.
+% * `Range` [ numeric ] - Date range.
 %
 % Output arguments
 % =================
@@ -45,72 +45,60 @@ function [X, YXVec, dbStd] = fmse(this, time, varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-TYPE = @int8;
-
-pp = inputParser( );
-pp.addRequired('M', @(x) isa(x, 'model'));
-pp.addRequired('Time', @(x) isdatinp(x));
-pp.parse(this, time);
-
-opt = passvalopt('model.fmse', varargin{:});
+opt = passvalopt('model.fmse',varargin{:});
 
 % tell whether time is nper or range
-if ischar(time)
-    time = textinp2dat(time);
-elseif length(time)==1 && round(time)==time && time>0
-    time = 1 : time;
+if length(Time) == 1 && round(Time) == Time && Time > 0
+    range = 1 : Time;
+else
+    range = Time(1) : Time(end);
 end
-Range = time(1) : time(end);
-nPer = length(Range);
+nPer = length(range);
 
 isSelect = ~isequal(opt.select,@all);
-isNamedMat = strcmpi(opt.MatrixFmt,'namedmat');
+isNamedMat = strcmpi(opt.MatrixFmt,{'namedmat'});
 
 %--------------------------------------------------------------------------
 
-ixp = this.Quantity.Type==TYPE(4);
-[ny, nxx] = sizeOfSolution(this.Vector);
-nAlt = length(this);
-X = zeros(ny+nxx, ny+nxx, nPer, nAlt);
+ny = length(This.solutionid{1});
+nx = length(This.solutionid{2});
+nAlt = size(This.Assign,3);
+X = zeros(ny+nx,ny+nx,nPer,nAlt);
 
-ixSolved = true(1,nAlt);
+isSol = true(1,nAlt);
 for iAlt = 1 : nAlt
-    [T,R,K,Z,H,dbStd,U,Omg] = mysspace(this,iAlt,false);
+    [T,R,K,Z,H,D,U,Omg] = mysspace(This,iAlt,false);
     
     % Continue immediately if solution is not available.
-    ixSolved(iAlt) = all(~isnan(T(:)));
-    if ~ixSolved(iAlt)
+    isSol(iAlt) = all(~isnan(T(:)));
+    if ~isSol(iAlt)
         continue
     end
     
-    X(:,:,:,iAlt) = timedom.fmse(T,R,K,Z,H,dbStd,U,Omg,nPer);
+    X(:,:,:,iAlt) = timedom.fmse(T,R,K,Z,H,D,U,Omg,nPer);
 end
 
 % Report NaN solutions.
-if ~all(ixSolved)
+if ~all(isSol)
     utils.warning('model:fmse', ...
         'Solution(s) not available %s.', ...
-        exception.Base.alt2str(~ixSolved) );
+        preparser.alt2str(~isSol));
 end
 
 % Database of std deviations.
 if nargout > 2
     % Select only contemporaneous variables.
-    id = [this.Vector.Solution{1:2}];
-    dbStd = struct( );
-    for i = find(imag(id)==0)
-        name = this.Quantity.Name{id(i)};
-        dbStd.(name) = Series( ...
-            Range, ...
-            sqrt( permute(X(i, i, :, :), [3, 4, 1, 2]) ) ...
-            );
+    id = [This.solutionid{1:2}];
+    D = struct();
+    for i = find(imag(id) == 0)
+        name = This.name{id(i)};
+        D.(name) = tseries(range,sqrt(permute(X(i,i,:,:),[3,4,1,2])));
     end
-    for j = find(ixp)
-        x = model.Variant.getQuantity(this.Variant, j, ':');
-        dbStd.(this.Quantity.Name{j}) = permute(x, [1, 3, 2]);
+    for j = find(This.nametype == 4)
+        D.(This.name{j}) = permute(This.Assign(1,j,:),[1,3,2]);
     end
 end
 
@@ -118,16 +106,16 @@ if nargout <= 1 && ~isSelect && ~isNamedMat
     return
 end
 
-YXVec = printSolutionVector(this,'yx');
+YXVec = myvector(This,'yx');
 
 % Select variables if requested.
 if isSelect
-    [X, pos] = namedmat.myselect(X,YXVec,YXVec,opt.select);
+    [X,pos] = select(X,YXVec,YXVec,opt.select);
     pos = pos{1};
     YXVec = YXVec(pos);
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Convert output matrix to namedmat object if requested.
     if isNamedMat
         X = namedmat(X,YXVec,YXVec);

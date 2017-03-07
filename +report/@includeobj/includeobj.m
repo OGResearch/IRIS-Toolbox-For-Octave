@@ -20,7 +20,7 @@ classdef includeobj < report.userinputobj
                 % Keep the file name only, and read the content of the file at the time the
                 % LaTeX code is being produced.
                 This.filename = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
             end
         end
         

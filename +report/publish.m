@@ -67,10 +67,10 @@
 % * `'preamble='` [ char | *empty* ] - \LaTeX\ commands that will be placed
 % in the \LaTeX\ file preamble.
 % 
-% * `'timeStamp='` [ char | *`'datestr(now( ))'`* ] - String printed in the
+% * `'timeStamp='` [ char | *`'datestr(now())'`* ] - String printed in the
 % top-left corner of each page.
 %
-% * `'tempDir='` [ char | function_handle | *`tempname(pwd( ))`* ] -
+% * `'tempDir='` [ char | function_handle | *`tempname(pwd())`* ] -
 % Directory for storing temporary files; the directory is deleted at the
 % end of the execution if it's empty.
 %
@@ -132,5 +132,5 @@
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

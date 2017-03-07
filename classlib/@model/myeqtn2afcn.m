@@ -1,80 +1,101 @@
- function this = myeqtn2afcn(this)
-% myeqtn2afcn  Convert equation strings to anonymous functions.
+function This = myeqtn2afcn(This)
+% myeqtn2afcn  [Not a public function] Convert equation strings to anonymous functions.
 %
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-ixm = this.Equation.Type==TYPE(1);
-ixt = this.Equation.Type==TYPE(2);
-ixd = this.Equation.Type==TYPE(3);
-ixl = this.Equation.Type==TYPE(4);
-ixu = this.Equation.Type==TYPE(5);
-ixmt = ixm | ixt;
-ixdl = ixd | ixl;
+removeFunc = @(x) regexprep(x,'@\(.*?\)','','once');
 
 % Extract the converted equations into local variables to speed up the
 % executiona considerably. This is a Matlab issue.
 
-% Dtrends, Links, Revisions
-%---------------------------
-eqtn = this.Equation.Dynamic;
-for i = find(ixdl)
-    eqtn{i} = vectorize(eqtn{i});
-end
-eqtn(ixd) = convert(eqtn(ixd), this.PREAMBLE_DTREND, str2func([this.PREAMBLE_DTREND, '0']));
-eqtn(ixl) = convert(eqtn(ixl), this.PREAMBLE_LINK, [ ]);
-eqtn(ixu) = convert(eqtn(ixu), this.PREAMBLE_REVISION, [ ]);
-this.Equation.Dynamic = eqtn;
+% Full dynamic equations
+%------------------------
 
-% Gradients 
-%-----------
-% Derivatives of dynamic transition and measurement equations wrt variables
-% and shocks, derivatives of dtrend equations wrt parameters.
-gd = this.Gradient.Dynamic(1, :);
-gs = this.Gradient.Steady(1, :);
-gd(ixmt) = convert(gd(ixmt), this.PREAMBLE_DYNAMIC, [ ]);
-gs(ixmt) = convert(gs(ixmt), this.PREAMBLE_STEADY, [ ]);
-for i = find(ixd)
-    gd{i} = convert(gd{i}, this.PREAMBLE_DTREND, [ ]);
-end
-this.Gradient.Dynamic(1, :) = gd;
-this.Gradient.Steady(1, :) = gs;
+eqtnF = This.eqtnF;
 
-end
-
-
-
-
-
-function eqtn = convert(eqtn, header, ifEmpty)
-FN_REMOVE_HEADER = @(x) regexprep(x, '^@\(.*?\)\s*', '', 'once');
-if true % ##### MOSW
-    FN_STR2FUNC = @str2func;
-else
-    FN_STR2FUNC = @mosw.str2func; %#ok<UNRCH>
-end
-
-for i = 1 : length(eqtn)
-    if isnumeric(eqtn{i})
+% Full measurement and transition equations.
+for i = find(This.eqtntype <= 2)
+    % Full model equations.
+    if ~ischar(eqtnF{i})
         continue
     end
-    if isa(eqtn{i}, 'function_handle')
-        eqtn{i} = func2str(eqtn{i});
-    end
-    if ischar(eqtn{i})
-        eqtn{i} = FN_REMOVE_HEADER(eqtn{i});
-    end
-    if isempty(eqtn{i})
-        eqtn{i} = ifEmpty;
+    if isempty(eqtnF{i})
+        eqtnF{i} = @(x,t,L) 0;
     else
-        eqtn{i} = FN_STR2FUNC([header, ' ', eqtn{i}]);
+        eqtnF{i} = removeFunc(eqtnF{i});
+        eqtnF{i} = mosw.str2func(['@(x,t,L) ',eqtnF{i}]);
     end
 end
+
+% Dtrend equations.
+for i = find(This.eqtntype == 3)
+    % Full model equations.
+    if ~ischar(eqtnF{i})
+        continue
+    end
+    if isempty(eqtnF{i})
+        eqtnF{i} = @(x,t,ttrend,g) 0;
+    else
+        eqtnF{i} = removeFunc(eqtnF{i});
+        eqtnF{i} = mosw.str2func(['@(x,t,ttrend,g) ',eqtnF{i}]);
+    end
+end
+
+% Dynamic link equations.
+for i = find(This.eqtntype == 4)
+    if ~ischar(eqtnF{i})
+        continue
+    end
+    if isempty(eqtnF{i})
+        eqtnF{i} = [];
+    else
+        eqtnF{i} = removeFunc(eqtnF{i});
+        eqtnF{i} = mosw.str2func(['@(x,t) ',eqtnF{i}]);
+    end
+end
+
+This.eqtnF = eqtnF;
+
+% Derivatives and constant terms
+%--------------------------------
+
+dEqtnF = This.DEqtnF;
+cEqtnF = This.CEqtnF;
+
+% Non-empty derivatives.
+isDEqtnF = ~cellfun(@isempty,This.DEqtnF);
+
+% Derivatives of transition and measurement equations wrt variables and
+% shocks.
+inx = This.eqtntype <= 2 & isDEqtnF;
+for i = find(inx)
+    dEqtnF{i} = removeFunc(dEqtnF{i});
+    dEqtnF{i} = mosw.str2func(['@(x,t,L) ',dEqtnF{i}]);
+    if ischar(cEqtnF{i})
+        cEqtnF{i} = removeFunc(cEqtnF{i});
+        cEqtnF{i} = mosw.str2func(['@(x,t,L) ',cEqtnF{i}]);
+    end
+end
+
+% Derivatives of dtrend equations wrt parameters.
+inx = This.eqtntype == 3 & isDEqtnF;
+for i = find(inx)
+    if isempty(dEqtnF{i})
+        continue
+    end
+    for j = 1 : length(dEqtnF{i})
+        dEqtnF{i}{j} = removeFunc(dEqtnF{i}{j});
+        dEqtnF{i}{j} = mosw.str2func(['@(x,t,ttrend,g) ',dEqtnF{i}{j}]);
+    end
+end
+
+This.DEqtnF = dEqtnF;
+This.CEqtnF = cEqtnF;
+
 end

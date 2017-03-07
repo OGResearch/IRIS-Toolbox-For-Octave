@@ -1,35 +1,30 @@
 function G = xsf2gain(S,varargin)
 % xsf2gain  Compute gain of power spectrum matrices.
 %
-%
 % Syntax
 % =======
 %
 %     G = xsf2gain(S)
-%
 %
 % Input arguments
 % ================
 %
 % * `S` [ numeric ] Power spectrum matrices.
 %
-%
 % Output arguments
 % =================
 %
 % * `G` [ numeric ] - Gain of the power spectrum.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -37,8 +32,9 @@ s = size(S);
 n = prod(s(3:end));
 G = zeros(size(S));
 
-% TODO: parfor
-for i = 1 : n
+% The command `parfor` performs the assignment `G(:,:,i) = ...` much faster
+% than `for` with large matrices.
+parfor i = 1 : n
     Si = S(:,:,i);
     a = abs(Si);
     d = diag(Si);

@@ -1,198 +1,192 @@
-function fn = t(mean_, std_, df)
+function F = t(Mean,Std,Df)
 % t  Create function proportional to log of Student T distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.t(mean, stdev, df)
-%
+%     F = logdist.t(Mean,Std,Df)
 %
 % Input arguments
 % ================
 %
-% * `mean` [ numeric ] - Mean of the normal distribution.
+% * `Mean` [ numeric ] - Mean of the normal distribution.
 %
-% * `stdev` [ numeric ] - Stdev of the normal distribution.
+% * `Std` [ numeric ] - Std dev of the normal distribution.
 %
-% * `df` [ integer ] - Number of degrees of freedom. If finite, the
+% * `Df` [ integer ] - Number of degrees of freedom. If finite, the
 % distribution is Student T; if omitted or `Inf` (default) the distribution
 % is Normal.
 %
 % Multivariate cases are supported. Evaluating multiple vectors as an array
 % of column vectors is supported.
 %
-%
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of Normal or Student density.
-%
 %
 % Description
 % ============
 %
 % See [help on the logdisk package](logdist/Contents) for details on using
-% the function handle `gn`.
-%
+% the function handle `F`.
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team and Boyan Bejanov.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team and Boyan Bejanov.
 
 if nargin<3
-    df = Inf;
+    Df = Inf ;
 end
 
-%--------------------------------------------------------------------------
+mode = Mean(:) ;
+a = Mean(:) ;
 
-mode = mean_(:);
-a = mean_(:);
-
-if numel(mean_)>1
+if numel(Mean) > 1
     % Distribution is multivariate
-    std_ = logdist.chkStd( std_ );
-    b = std_;
-    if isinf(gammaln(df))
-        fn = logdist.normal(mean_, std_);
+    Std = logdist.mychkstd( Std ) ;
+    b = Std ;
+    
+    if isinf(gammaln(Df))
+        F = logdist.normal(Mean,Std) ;
     else
-        fn = @(x, varargin) fnMultT(x, a, b, mean_, std_, df, mode, varargin{:});
+        F = @(x,varargin) xxMultT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
     end
 else
     % Distribution is scalar
-    b = std_;
-    if isinf(gammaln(df))
-        fn = logdist.normal(mean_, std_);
+    b = Std ;
+    if isinf(gammaln(Df))
+        F = logdist.normal(Mean,Std) ;
     else
-        fn = @(x, varargin) fnT(x, a, b, mean_, std_, df, mode, varargin{:});
+        F = @(x,varargin) xxT(x,a,b,Mean,Std,Df,mode,varargin{:}) ;
     end
 end
 end
 
+%**************************************************************************
+function Y = xxMultT(X,A,B,Mu,Std,Df,Mode,varargin)
 
-
-
-function y = fnMultT(x, a, b, mean_, std_, df, mode_, varargin)
-k = numel(mean_);
+K = numel(Mu) ;
 if isempty(varargin)
-    y = logMultT( );
+    Y = xxLogMultT() ;
     return
 end
-chi2fh = logdist.chisquare(df);
+chi2fh = logdist.chisquare(Df) ;
+
 switch lower(varargin{1})
-    case {'rand', 'draw'}
+    case 'draw'
         if numel(varargin)<2
-            dim = size(mean_);
+            dim = size(Mu) ;
         else
             if numel(varargin{2})==1
-                dim = [k, varargin{2}];
+                dim = [K,varargin{2}] ;
             else
-                dim = varargin{2};
+                dim = varargin{2} ;
             end
         end
-        C = sqrt( df ./ chi2fh([ ], 'draw', dim) );
-        R = bsxfun(@times, std_*randn(dim), C);
-        y = bsxfun(@plus, mean_, R);    case {'proper', 'pdf'}
-        y = exp(logMultT( ));
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;    case {'proper','pdf'}
+        Y = exp(xxLogMultT()) ;
     case 'info'
         % add this later...
-        y = NaN(size(std_));
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y = NaN(size(Std)) ;
+    case {'a','location'}
+        Y = A ;
+    case {'b','scale'}
+        Y = B ;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
     case 'mode'
-        y = mode_;
+        Y = Mode ;
     case 'name'
-        y = 'normal';
+        Y = 'normal';
 end
 
-return
-
-
-
-
-    function y = logMultT( )
-        tpY = false;
-        if size(x, 1)~=numel(mean_)
-            x=x';
-            tpY = true;
+    function Y = xxLogMultT()
+        tpY = false ;
+        if size(X,1)~=numel(Mu)
+            X=X';
+            tpY = true ;
         end
-        sX = bsxfun(@minus, x, mean_)' / std_;
-        logSqrtDetSig = sum(log(diag(std_)));
-        y = ( gammaln(0.5*(df+k)) - gammaln(0.5*df) ...
-            - logSqrtDetSig - 0.5*k*log(df*pi) ) ...
-            - 0.5*(df+k)*log1p( ...
-            sum(sX.^2, 2)'/df...
-            );
+        sX = bsxfun(@minus, X, Mu)' / Std ;
+        logSqrtDetSig = sum(log(diag(Std))) ;
+        Y = ( gammaln(0.5*(Df+K)) - gammaln(0.5*Df) ...
+            - logSqrtDetSig - 0.5*K*log(Df*pi) ) ...
+            - 0.5*(Df+K)*log1p( ...
+            sum(sX.^2,2)'/Df...
+            ) ;
         if tpY
-            y = y';
+            Y = Y' ;
         end
     end
-end
 
+end % xxMultT()
 
+%**************************************************************************
+function Y = xxT(X,A,B,Mu,Std,Df,Mode,varargin)
 
-
-function y = fnT(x, a, b, mean_, std_, df, mode_, varargin)
 if isempty(varargin)
-    sX = bsxfun(@minus, x, mean_).' / std_;
-    y = -0.5*(df+1)*log1p( sX.^2/df );
+    Y = xxLogT() ;
     return
 end
-chi2fh = logdist.chisquare(df);
+chi2fh = logdist.chisquare(Df) ;
+
 switch lower(varargin{1})
-    case {'rand', 'draw'}
+    case 'draw'
         if numel(varargin)<2
-            dim = size(mean_);
+            dim = size(Mu) ;
         else
-            dim = varargin{2:end};
+            dim = varargin{2:end} ;
         end
-        C = sqrt( df ./ chi2fh([ ], 'draw', dim) );
-        R = bsxfun(@times, std_*randn(dim), C);
-        y = bsxfun(@plus, mean_, R);
-    case {'icdf', 'quantile'}
-        y = NaN(size(x));
-        y( x<eps ) = -Inf;
-        y( 1-x<eps ) = Inf;
-        ind = ( x>=eps ) & ( (1-x)>=eps );
-        pos = ind & ( x>0.5 );
-        x( ind ) = min( x(ind), 1-x(ind) );
+        C = sqrt( Df ./ chi2fh([], 'draw', dim) ) ;
+        R = bsxfun(@times, Std*randn(dim), C) ;
+        Y = bsxfun(@plus, Mu, R) ;
+    case {'icdf','quantile'}
+        Y = NaN(size(X)) ;
+        Y( X<eps ) = -Inf ;
+        Y( 1-X<eps ) = Inf ;
+        ind = ( X>=eps ) & ( (1-X)>=eps ) ;
+        pos = ind & ( X>0.5 ) ;
+        X( ind ) = min( X(ind), 1-X(ind) ) ;
         % this part for accuracy
-        low = ind & ( x<=0.25 );
-        high = ind & ( x>0.25 );
-        qs = betaincinv( 2*x(low), 0.5*df, 0.5 );
-        y( low ) = -sqrt( df*(1./qs-1) );
-        qs = betaincinv( 2*x(high), 0.5, 0.5*df, 'upper' );
-        y( high ) = -sqrt( df./(1./qs-1) );
-        y( pos ) = -y( pos );
-        y = mean_ + y*std_;
-    case {'proper', 'pdf'}
-        sX = bsxfun(@minus, x, mean_).' / std_;
-        y = ( gammaln(0.5*(df+1)) - gammaln(0.5*df) - log(sqrt(df*pi)*std_) ) ...
-            - 0.5*(df+1)*log1p( sX.^2/df );
-        y = exp(y);
+        low = ind & ( X<=0.25 ) ;
+        high = ind & ( X>0.25 ) ;
+        qs = betaincinv( 2*X(low), 0.5*Df, 0.5 ) ;
+        Y( low ) = -sqrt( Df*(1./qs-1) ) ;
+        qs = betaincinv( 2*X(high), 0.5, 0.5*Df, 'upper' ) ;
+        Y( high ) = -sqrt( Df./(1./qs-1) ) ;
+        Y( pos ) = -Y( pos ) ;
+        Y = Mu + Y*Std ;
+    case {'proper','pdf'}
+        Y = exp(xxLogT()) ;
     case 'info'
         % add this later...
-        y = NaN(size(x));
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y = NaN(size(Std)) ;
+    case {'a','location'}
+        Y = A ;
+    case {'b','scale'}
+        Y = B ;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
     case 'mode'
-        y = mode_;
+        Y = Mode ;
     case 'name'
-        y = 'normal';
+        Y = 'normal';
 end
-end
+
+    function Y = xxLogT()
+        sX = bsxfun(@minus, X, Mu)' / Std ;
+        Y = ( gammaln(0.5*(Df+1)) - gammaln(0.5*Df) - log(sqrt(Df*pi)*Std) ) ...
+            - 0.5*(Df+1)*log1p( sX.^2/Df ) ;
+    end
+
+end % xxT()

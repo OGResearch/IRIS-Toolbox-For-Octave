@@ -2,12 +2,12 @@ function barboxes(varargin)
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     ax = varargin{1}(:).';
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    ax = gca( );
+    ax = gca();
 end
 
-h = { };
+h = {};
 for i = ax
     axes(i);
 
@@ -24,7 +24,7 @@ for i = ax
         'xTickMode','manual','xGrid','off','tickLength',[0,tickLength(2)]);
     yLim = get(i,'yLim');
 
-    h{end+1} = [ ];
+    h{end+1} = [];
     for j = xTick
         h{end}(end+1) = line([j-step,j-step],yLim);
     end

@@ -1,4 +1,4 @@
-function [Rmse,Pe,dRmse,dPe] = rmse(Obs,Pred,Range,varargin)
+function [Rmse,Pe] = rmse(Obs,Pred,Range,varargin)
 % rmse  Compute RMSE for given observations and predictions.
 %
 % Syntax
@@ -36,8 +36,8 @@ function [Rmse,Pe,dRmse,dPe] = rmse(Obs,Pred,Range,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Range; %#ok<VUNUS>
@@ -45,32 +45,21 @@ catch %#ok<CTCH>
     Range = Inf;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Obs', ...
     @(x) isa(x,'tseries') && ndims(x) == 2 && size(x,2) == 1); %#ok<ISMAT>
 pp.addRequired('Pred',@(x) isa(x,'tseries'));
 pp.addRequired('Range',@isnumeric);
 pp.parse(Obs,Pred,Range);
 
+
 %--------------------------------------------------------------------------
 
-Obs0 = resize(Obs,Range) ;
-Pred0 = resize(Pred,Range) ;
-Pe = Obs0 - Pred0 ;
+Obs = resize(Obs,Range);
+Pred = resize(Pred,Range);
+Pe = Obs - Pred;
 
 Mse = tseries.mynanmean(Pe.data.^2,1);
 Rmse = sqrt(Mse);
 
-if nargout>2
-    % Input data is in log levels; compute growth rate forecast errors
-    dPred = Pred - redate(Obs,qqtoday,qqtoday-1) ;
-    dPe = diff(Obs) - dPred ;
-    dPe = resize(dPe,Range) ;
-    dRmse = sqrt(tseries.mynanmean(dPe.data.^2,1)) ;
 end
-
-end
-
-
-
-

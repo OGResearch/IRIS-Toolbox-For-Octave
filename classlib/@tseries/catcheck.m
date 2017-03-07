@@ -1,48 +1,52 @@
-function [outp, ixTseries, ixNumeric] = catcheck(varargin)
-% catcheck  Check input arguments before concatenating Series objects.
+function [Outp,IxTseries] = catcheck(varargin)
+% catcheck  [Not a public function] Check input arguments for tseries object concatenation.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-% Series vs non-Series inputs.
-ixTseries = false(1, nargin);
-ixNumeric = false(1, nargin);
-for i = 1 : nargin
-    ixTseries(i) = isa(varargin{i}, 'tseries');
-    ixNumeric(i) = isnumeric(varargin{i});
+% Non-tseries inputs.
+try
+   IxTseries = cellfun(@istseries,varargin);
+   ixNumeric = cellfun(@isnumeric,varargin);
+catch
+   IxTseries = cellfun('isclass',varargin,'tseries');
+   ixNumeric = cellfun('isclass',varargin,'double') ...
+      | cellfun('isclass',varargin,'single') ...
+      | cellfun('isclass',varargin,'logical');
 end
-ixRemove = ~ixTseries & ~ixNumeric;
+remove = ~IxTseries & ~ixNumeric;
 
-% Remove non-Series or non-numeric inputs and display warning.
-if any(ixRemove)
-    throw( ...
-        exception.Base('Series:InputsRemovedFromCat', 'warning') ...
-        );
-    varargin(ixRemove) = [ ]; %#ok<UNRCH>
-    ixTseries(ixRemove) = [ ];
-    ixNumeric(ixRemove) = [ ];
+% Remove non-tseries or non-numeric inputs and display warning.
+if any(remove)
+   utils.warning('tseries:catcheck', ...
+      'Non-tseries and non-numeric inputs removed from concatenation.');
+   varargin(remove) = [];
+   IxTseries(remove) = [];
+   ixNumeric(remove) = [];
 end
 
 % Check frequencies.
 freq = zeros(size(varargin));
-freq(~ixTseries) = Inf;
-start = nan(size(ixTseries));
-for i = find(ixTseries)
-    start(i) = varargin{i}.start;
+freq(~IxTseries) = Inf;
+for i = find(IxTseries)
+   freq(i) = datfreq(varargin{i}.start);
 end
-freq(ixTseries) = datfreq(start(ixTseries));
 ixNan = isnan(freq);
-if sum(~ixNan & ixTseries)>1 ...
-        && any( diff(freq(~ixNan & ixTseries))~=0 )
-    throw( ...
-        exception.Base('Series:CannotCatMixedFrequencies', 'error') ...
-        );
+%freq(isnan(freq)) = [];
+if sum(~ixNan & IxTseries) > 1 ...
+      && any(diff(freq(~ixNan & IxTseries)) ~= 0)
+   utils.error('tseries:catcheck', ...
+       'Cannot concatenate tseries objects with different frequencies.');
+elseif all(ixNan | ~IxTseries)
+   freq(:) = 0;
+else
+   freq(ixNan & IxTseries) = freq(find(~ixNan & IxTseries,1));
 end
-outp = varargin;
+Outp = varargin;
 
 end

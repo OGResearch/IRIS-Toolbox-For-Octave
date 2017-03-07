@@ -1,20 +1,21 @@
-function d = array2db(X, date, lsName, ixLog, d)
+function D = array2db(X,RANGE,LIST,ISLOG,D)
 % array2db  Convert numeric array to database.
 %
 % Syntax
 % =======
 %
-%     D = array2db(X,Range,List)
+%     D = array2db(X,RANGE,LIST)
 %
 % Input arguments
 % ================
 %
-% * `X` [ numeric ] - Numeric array with individual time series in columns.
+% * `X` [ numeric ] - Numeric array with individual time series organised
+% row-wise.
 %
-% * `Dates` [ numeric ] - Vector of dates for individual rows of `X`.
+% * `RANGE` [ numeric ] - Date range for the columns in `X`.
 %
-% * `List` [ cellstr | char ] - List of names for time series in individual
-% columns of `X`.
+% * `LIST` [ cellstr | char ] - List of names for the time series in
+% individual rows of `X`.
 %
 % Output arguments
 % =================
@@ -28,101 +29,50 @@ function d = array2db(X, date, lsName, ixLog, d)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 %#ok<*VUNUS>
 
-TEMPLATE_SERIES = Series( );
-
-try, ixLog; catch, ixLog = [ ]; end %#ok<NOCOM>
-try, d; catch, d = struct( ); end %#ok<NOCOM>
-
-if ischar(lsName)
-    lsName = regexp(lsName, '\w+', 'match');
+try
+    ISLOG; 
+catch 
+    ISLOG = false(1,size(X,1));
 end
 
-pp = inputParser( );
-pp.addRequired('X', @isnumeric);
-pp.addRequired('Dates', @isnumeric);
-pp.addRequired('IxLog', @(x) isempty(x) || islogical(x) || isstruct(x));
-pp.addRequired('D', @isstruct);
-pp.parse(X, date, ixLog, d);
+try
+    D;
+catch
+    D = struct();
+end
+
+if ischar(LIST)
+    LIST = regexp(LIST,'\w+','match');
+end
+
+if ~isnumeric(X) || ~isnumeric(RANGE) ...
+        || (~islogical(ISLOG) && ~isstruct(ISLOG)) || ~isstruct(D)
+    error('Incorrect type of input argument(s).');
+end
 
 % TODO: Allow for unsorted dates.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-nx = size(X, 2);
-date = date(:).';
-nDate = length(date);
-minDate = min(date);
-maxDate = max(date);
-range = minDate : maxDate;
-nPer = length(range);
-nList = length(lsName);
-posDates = round(date - minDate + 1);
-isRange = isequal(posDates, 1:nPer);
+RANGE = RANGE(1) : RANGE(end);
+nx = size(X,1);
+nalt = size(X,3);
+nper = length(RANGE);
 
-if nx~=nList
-    utils.error('dbase:array2db', ...
-        ['Number of columns in input array must match ', ...
-        'number of variable names.']);
-end
-
-if size(X,1)~=nDate
-    utils.error('dbase:array2db', ...
-        ['Number of rows in input array must match ', ...
-        'number of periods.']);
-end
-
-sizeX = size(X);
-ndimsX = length(sizeX);
-
-ref = repmat({':'}, 1, ndimsX);
-
+template = tseries(RANGE,zeros(nper,nalt));
 for i = 1 : nx
-    name = lsName{i};
-    ref{2} = i;
-    iX = squeeze(X(ref{:}));
-    if ~isempty(ixLog) && getIsLog( )
-        iX = exp(iX);
+    Xi = permute(X(i,:,:),[2,3,1]);
+    if (islogical(ISLOG) && ISLOG(i)) ...
+            || (isstruct(ISLOG) && ISLOG.(LIST{i}))
+        Xi = exp(Xi);
     end
-    if isRange
-        % Continuous range.
-        d.(name) = replace(TEMPLATE_SERIES,iX,minDate);
-    else
-        % Vector of dates.
-        if i==1
-            iData = nan(size(iX));
-            iData(end+1:nPer, :) = NaN;
-        end
-        iData(posDates, :) = iX;
-        d.(name) = replace(TEMPLATE_SERIES, iData, minDate);
-    end
+    D.(LIST{i}) = replace(template,Xi);
 end
 
-return
-
-
-
-
-    function isLog = getIsLog( )
-        isLog = false;
-        if islogicalscalar(ixLog)
-            isLog = ixLog;
-            return
-        end        
-        if islogical(ixLog)
-            isLog = ixLog( min(i,end) );
-            return
-        end
-        if isstruct(ixLog) ...
-                && isfield(ixLog, name) ...
-                && islogicalscalar(ixLog.(name))
-            isLog = ixLog.(name);
-            return
-        end
-    end
 end

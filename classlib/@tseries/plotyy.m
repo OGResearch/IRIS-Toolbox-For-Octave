@@ -1,144 +1,125 @@
-function [ax, hLhs, hRhs, rangeLhs, dataLhs, timeLhs, rangeRhs, dataRhs, timeRhs] ...
+function [Ax,hLhs,hRhs,RangeLhs,dataLhs,timeLhs,RangeRhs,dataRhs,timeRhs] ...
     = plotyy(varargin)
 % plotyy  Line plot function with LHS and RHS axes for time series.
 %
 % Syntax
 % =======
 %
-%     [ax, lhs, rhs, range] = plotyy(x, y, ...)
-%     [ax, lhs, rhs, range] = plotyy(range, x, y, ...)
-%     [ax, lhs, rhs, range] = plotyy(rangeLhs, x, rangeRhs, y, ...)
-%
+%     [Ax,Lhs,Rhs,Range] = plotyy(X,Y,...)
+%     [Ax,Lhs,Rhs,Range] = plotyy(Range,X,Y,...)
 %
 % Input arguments
 % ================
 %
-% * `range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
-% * `rangeLhs` [ numeric | char ] - LHS plot date range.
-%
-% * `rangeRhs` [ numeric | char ] - RHS plot date range.
-%
-% * `x` [ Series ] - Input tseries object whose columns will be plotted
+% * `X` [ tseries ] - Input tseries object whose columns will be plotted
 % and labelled on the LHS.
 %
-% * `y` [ Series ] - Input tseries object whose columns will be plotted
+% * `Y` [ tseries ] - Input tseries object whose columns will be plotted
 % and labelled on the RHS.
-%
 %
 % Output arguments
 % =================
 %
-% * `ax` [ Axes ] - Handles to the LHS and RHS axes.
+% * `Ax` [ handle | numeric ] - Handles to the LHS and RHS axes.
 %
-% * `lhs` [ Axes ] - Handles to series plotted on the LHS axis.
+% * `Lhs` [ handle | numeric ] - Handles to series plotted on the LHS axis.
 %
-% * `rhs` [ Line ] - Handles to series plotted on the RHS axis.
+% * `Rhs` [ handle | numeric ] - Handles to series plotted on the RHS axis.
 %
-% * `range` [ numeric ] - Actually plotted date range.
-%
+% * `Range` [ handle | numeric ] - Actually plotted date range.
 %
 % Options
 % ========
 %
-% * `'Coincide='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
+% * `'coincide='` [ `true` | *`false`* ] - Make the LHS and RHS y-axis
 % grids coincide.
 %
-% * `'LhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
+% * `'lhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the LHS data.
 %
-% * `'LhsTight='` [ `true` | *`false`* ] - Make the LHS y-axis tight.
+% * `'lhsTight='` [ `true` | *`false`* ] - Make the LHS y-axis tight.
 %
-% * `'RhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
+% * `'rhsPlotFunc='` [ `@area` | `@bar` | *`@plot`* | `@stem` ] - Function
 % that will be used to plot the RHS data.
 %
-% * `'RhsTight='` [ `true` | *`false`* ] - Make the RHS y-axis tight.
+% * `'rhsTight='` [ `true` | *`false`* ] - Make the RHS y-axis tight.
 %
 % See help on [`tseries/plot`](tseries/plot) and the built-in function
 % `plotyy` for all options available.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% AREA, BAND, BAR, BARCON, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
+% AREA, BAR, PLOT, CONBAR, PLOTCMP, PLOTYY, STEM
 
-% range for LHS time series.
-if isdatinp(varargin{1})
-    rangeLhs = varargin{1};
-    varargin(1) = [ ];
+% Range for LHS time series.
+if isnumeric(varargin{1})
+    RangeLhs = varargin{1};
+    varargin(1) = [];
 else
-    rangeLhs = Inf;
+    RangeLhs = Inf;
 end
 
 % LHS time series.
 XLhs = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 
-% range for RHS time series.
-if isdatinp(varargin{1})
-    rangeRhs = varargin{1};
-    varargin(1) = [ ];
+% Range for RHS time series.
+if isnumeric(varargin{1})
+    RangeRhs = varargin{1};
+    varargin(1) = [];
 else
-    rangeRhs = rangeLhs;
+    RangeRhs = RangeLhs;
 end
 
 % RHS time series.
 XRhs = varargin{1};
-varargin(1) = [ ];
+varargin(1) = [];
 
-[opt, varargin] = passvalopt('tseries.plotyy', varargin{:});
-
-if ischar(rangeLhs)
-    rangeLhs = textinp2dat(rangeLhs);
-end
-if ischar(rangeRhs)
-    rangeRhs = textinp2dat(rangeRhs);
-end
+[opt,varargin] = passvalopt('tseries.plotyy',varargin{:});
 
 %--------------------------------------------------------------------------
 
 % Check consistency of ranges and time series.
 % LHS.
-if ~all(isinf(rangeLhs)) && ~isempty(rangeLhs) && ~isempty(XLhs) ...
-        && isa(XLhs, 'tseries')
-    if datfreq(rangeLhs(1)) ~= get(XLhs, 'freq')
-        utils.error('tseries:plotyy', ...
-            ['LHS range and LHS time series must have ', ...
-            'the same date frequency.']);
+if ~all(isinf(RangeLhs)) && ~isempty(RangeLhs) && ~isempty(XLhs) ...
+        && isa(XLhs,'tseries')
+    if datfreq(RangeLhs(1)) ~= get(XLhs,'freq')
+        utils.error('iris:tseries', ...
+            'LHS range and LHS time series must have the same periodicity.');
     end
 end
 % RHS.
-if ~all(isinf(rangeRhs)) && ~isempty(rangeRhs) && ~isempty(XRhs) ...
-        && isa(XRhs, 'tseries')
-    if datfreq(rangeRhs(1)) ~= get(XRhs, 'freq')
-        utils.error('tseries:plotyy', ...
-            ['RHS range and RHS time series must have ', ...
-            'the same date frequency.']);
+if ~all(isinf(RangeRhs)) && ~isempty(RangeRhs) && ~isempty(XRhs) ...
+        && isa(XRhs,'tseries')
+    if datfreq(RangeRhs(1)) ~= get(XRhs,'freq')
+        utils.error('tseries', ...
+            'RHS range and RHS time series must have the same periodicity.');
     end
 end
 
 % Mimic plotting the RHS graph without creating an axes object.
-[~, ~, rangeRhs, dataRhs, timeRhs, userRangeRhs, freqRhs] = ...
-    tseries.myplot([ ], [ ], rangeRhs, [ ], XRhs, '', opt); %#ok<ASGLU>
+[~,RangeRhs,dataRhs,timeRhs,userRangeRhs,freqRhs] = ...
+    tseries.myplot([],RangeRhs,XRhs); %#ok<ASGLU>
 
 % Mimic plotting the LHS graph without creating an axes object.
-comprise = timeRhs([1, end]);
-[~, ~, rangeLhs, dataLhs, timeLhs, userRangeLhs, freqLhs] = ...
-    tseries.myplot([ ], [ ], rangeLhs, comprise, XLhs, '', opt);
+comprise = timeRhs([1,end]);
+[~,RangeLhs,dataLhs,timeLhs,userRangeLhs,freqLhs] = ...
+    tseries.myplot([],{RangeLhs,comprise},XLhs);
 
 % Plot now.
-dataLhsPlot = grfun.myreplacenancols(dataLhs, Inf);
-dataRhsPlot = grfun.myreplacenancols(dataRhs, Inf);
+dataLhsPlot = grfun.myreplacenancols(dataLhs,Inf);
+dataRhsPlot = grfun.myreplacenancols(dataRhs,Inf);
 lhsPlotFuncStr = opt.lhsplotfunc;
 rhsPlotFuncStr = opt.rhsplotfunc;
 if isfunc(lhsPlotFuncStr)
@@ -147,70 +128,70 @@ end
 if isfunc(rhsPlotFuncStr)
     rhsPlotFuncStr = func2str(rhsPlotFuncStr);
 end
-[ax, hLhs, hRhs] = plotyy(timeLhs, dataLhsPlot, timeRhs, dataRhsPlot, ...
-    lhsPlotFuncStr, rhsPlotFuncStr);
+[Ax,hLhs,hRhs] = plotyy(timeLhs,dataLhsPlot,timeRhs,dataRhsPlot, ...
+    lhsPlotFuncStr,rhsPlotFuncStr);
 
 % Apply line properties passed in by the user as optional arguments. Do
 % it separately for `hl` and `hr` because they each can be different types.
 if ~isempty(varargin)
     try %#ok<*TRYNC>
-        set(hLhs, varargin{:});
+        set(hLhs,varargin{:});
     end
     try
-        set(hRhs, varargin{:});
+        set(hRhs,varargin{:});
     end
 end
 
-setappdata(ax(1), 'IRIS_SERIES', true);
-setappdata(ax(1), 'IRIS_FREQ', freqLhs);
-setappdata(ax(1), 'IRIS_RANGE', rangeLhs);
-setappdata(ax(1), 'IRIS_DATE_POSITION', opt.DatePosition);
+setappdata(Ax(1),'tseries',true);
+setappdata(Ax(1),'freq',freqLhs);
+setappdata(Ax(1),'range',RangeLhs);
+setappdata(Ax(1),'datePosition',opt.dateposition);
 
-setappdata(ax(2), 'IRIS_SERIES', true);
-setappdata(ax(2), 'IRIS_FREQ', freqRhs);
-setappdata(ax(2), 'IRIS_RANGE', rangeRhs);
-setappdata(ax(2), 'IRIS_DATE_POSITION', opt.DatePosition);
+setappdata(Ax(2),'tseries',true);
+setappdata(Ax(2),'freq',freqRhs);
+setappdata(Ax(2),'range',RangeRhs);
+setappdata(Ax(2),'datePosition',opt.dateposition);
 
-if strcmp(lhsPlotFuncStr, 'bar') || strcmp(rhsPlotFuncStr, 'bar')
-    setappdata(ax(1), 'IRIS_XLIM_ADJUST', true);
-    setappdata(ax(2), 'IRIS_XLIM_ADJUST', true);
+if strcmp(lhsPlotFuncStr,'bar') || strcmp(rhsPlotFuncStr,'bar')
+    setappdata(Ax(1),'xLimAdjust',true);
+    setappdata(Ax(2),'xLimAdjust',true);
 end
 
 % Prevent LHS y-axis tick marks on the RHS, and vice versa by turning the
 % box off for both axis. To draw a complete box, add a top edge line by
 % displaying the x-axis at the top in the first axes object (the x-axis is
 % empty, has no ticks or labels).
-set(ax, 'Box', 'Off');
-set( ax(2), 'Color', 'None', ...
-    'XTickLabel', '', ...
-    'XTick', [ ], ...
-    'XAxisLocation', 'top' );
+set(Ax,'box','off');
+set(Ax(2),'color','none', ...
+    'xTickLabel','', ...
+    'xTick',[], ...
+    'xAxisLocation','top');
 try
-    ax(2).XRuler.Visible = 'on';
+    Ax(2).XRuler.Visible = 'on';
 end
 
-mydatxtick(ax(1), rangeLhs, timeLhs, freqLhs, userRangeLhs, opt);
+mydatxtick(Ax(1),RangeLhs,timeLhs,freqLhs,userRangeLhs,opt);
 
 % For bkw compatibility only, not documented. Use of `highlight` outside
 % `plotyy` is now safe.
 if ~isempty(opt.highlight)
-    highlight(ax(1), opt.highlight);
+    highlight(Ax(1),opt.highlight);
 end
 
 if opt.lhstight || opt.tight
-    grfun.yaxistight(ax(1));
+    grfun.yaxistight(Ax(1));
 end
 
 if opt.rhstight || opt.tight
-    grfun.yaxistight(ax(2));
+    grfun.yaxistight(Ax(2));
 end
 
 % Make sure the RHS axes object is on the background. We need this for e.g.
 % `plotcmp` graphs.
-grfun.swaplhsrhs(ax(1), ax(2));
+grfun.swaplhsrhs(Ax(1),Ax(2));
 
 if ~opt.coincide
-    set(ax, 'YTickMode', 'Auto');
+    set(Ax,'yTickMode','auto');
 end
 
 % Datatip cursor
@@ -218,18 +199,18 @@ end
 % Store the dates within each plotted object for later retrieval by
 % datatip cursor.
 for ih = hLhs(:).'
-    setappdata(ih, 'IRIS_DATELINE', rangeLhs);
-end 
+    setappdata(ih,'dateLine',RangeLhs);
+end
 for ih = hRhs(:).'
-    setappdata(ih, 'IRIS_DATELINE', rangeRhs);
+    setappdata(ih,'dateLine',RangeRhs);
 end
 
-if true % ##### MOSW
+if false % ##### MOSW
     % Use IRIS datatip cursor function in this figure; in
     % `utils.datacursor', we also handle cases where the current figure
     % includes both tseries and non-tseries graphs.
-    obj = datacursormode(gcf( ));
-    set(obj, 'UpdateFcn', @utils.datacursor);
+    obj = datacursormode(gcf());
+    set(obj,'updateFcn',@utils.datacursor);
 else
     % Do nothing.
 end

@@ -5,7 +5,7 @@ classdef emptyobj < report.genericobj
       function This = emptyobj(varargin)
          This = This@report.genericobj(varargin{:});
          This.childof = {'report','align','figure'};
-         This.default = [This.default,{ }];
+         This.default = [This.default,{}];
       end
       
       function [This,varargin] = specargin(This,varargin)
@@ -22,7 +22,7 @@ classdef emptyobj < report.genericobj
       end
       
       function Ax = subplot(This,varargin) %#ok<INUSD>
-         Ax = [ ];
+         Ax = [];
       end
       
    end

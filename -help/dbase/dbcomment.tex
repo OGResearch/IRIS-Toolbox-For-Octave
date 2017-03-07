@@ -1,0 +1,34 @@
+
+
+    \filetitle{dbcomment}{Create model-based comments for database tseries entries}{dbase/dbcomment}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+ D = dbcomment(D,M)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{D} {[} struct {]} - Database.
+\item
+  \texttt{M} {[} model {]} - Model object.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \texttt{D} {[} struct {]} - Database where every tseries entry is (if
+  possible) assigned a comment based on the description of a model
+  variable or parameter found in the model object, \texttt{M}.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

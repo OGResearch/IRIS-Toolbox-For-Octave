@@ -1,7 +1,7 @@
 function [inout_s] = dbgen(in_list,in_names,in_expr,inout_s)
 
 if isempty(inout_s)
-  inout_s = struct( );
+  inout_s = struct();
 end
 
 if ~isa(in_list,'cell') && all(isinf(in_list))

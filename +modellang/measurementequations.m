@@ -22,7 +22,7 @@
 % ============
 %
 % The `!measurement_equations` keyword starts a new block of measurement
-% equations; the equations can stretch over multiple lines and must be
+% equations; the eqautions can stretch over multiple lines and must be
 % separated by semi-colons. You can have as many equation blocks as you
 % wish in any order in your model file: They all get combined together when
 % you read the model file in.
@@ -38,5 +38,5 @@
 %         'Inflation observations' Infl = 40*(P/P{-1} - 1);
 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

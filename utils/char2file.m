@@ -23,7 +23,7 @@ function char2file(C,FName,Type)
 % ========
 %
 % -The IRIS Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 3
     Type = 'char';
@@ -33,7 +33,7 @@ end
 
 fid = fopen(FName,'w+');
 if fid == -1
-    utils.error('utils:char2file', ...
+    utils.error('utils.char2file', ...
         'Cannot open file ''%s'' for writing.',FName);
 end
 
@@ -47,7 +47,7 @@ end
 count = fwrite(fid,C,Type);
 if count ~= length(C)
     fclose(fid);
-    utils.error('utils:char2file', ...
+    utils.error('utils.char2file', ...
         'Cannot write character string to file ''%s''.',FName);
 end
 

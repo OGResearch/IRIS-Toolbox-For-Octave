@@ -1,11 +1,11 @@
 function Freq = rngfreq(Range)
-% rngfreq  [Not a public function] Date frequency of a date range.
+% rngfreq  Date frequency of a date range.
 %
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if iscell(Range)
     Freq = nan(size(Range));

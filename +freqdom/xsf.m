@@ -4,26 +4,26 @@ function S = xsf(T,R,~,Z,H,~,U,Omg,nUnit,Freq,Filter,ApplyTo)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Filter; %#ok<*VUNUS>
 catch %#ok<*CTCH>
-    Filter = [ ];
+    Filter = [];
 end
 
 try
     ApplyTo;
 catch
-    ApplyTo = [ ];
+    ApplyTo = [];
 end
 
 %--------------------------------------------------------------------------
 
 isFilter = ~isempty(Filter) && ~isempty(ApplyTo) && any(ApplyTo);
 
-realSmall = getrealsmall( );
+realSmall = getrealsmall();
 ny = size(Z,1);
 [nx,nb] = size(T);
 nf = nx - nb;
@@ -49,7 +49,7 @@ nFreq = length(Freq);
 S = zeros(ny+nf+nb,ny+nf+nb,nFreq);
 s = zeros(ny+nf+nb,ny+nf+nb);
 
-status = warning( );
+status = warning();
 warning('off'); %#ok<WNOFF>
 for i = 1 : nFreq
     lmb = Freq(i);
@@ -59,7 +59,7 @@ for i = 1 : nFreq
     ee = exp(-1i*lmb);
     % F = eye(nf+nb) -  [zeros(nf+nb,nf),T]*exp(-1i*lambda);
     % xxx = F \ Sigmax / ctranspose(F);
-    s(ny+1:end,ny+1:end) = doInv( );
+    s(ny+1:end,ny+1:end) = doInv();
     if ny > 0
         s(1:ny,1:ny) = Z*s(ny+nf+1:end,ny+nf+1:end)*transpose(Z) + SgmYY;
         s(1:ny,ny+1:end) = Z*s(ny+nf+1:end,ny+1:end);
@@ -104,7 +104,7 @@ if ~isFilter
 end
 
 %**************************************************************************
-    function [Sxx,Saa] = doInv( )
+    function [Sxx,Saa] = doInv()
         A = Tf*ee;
         % B = inv(eye(nb) - Ta*ee) = inv([A11,A12;0,A22]) where
         %
@@ -134,6 +134,6 @@ end
         X = A*B*transpose(SgmFA);
         Sff = SgmFF + X + ctranspose(X) + Tf*Saa*transpose(Tf);
         Sxx = [Sff,Sfa;ctranspose(Sfa),Saa];
-    end % doInv( ).
+    end % doInv().
 
 end

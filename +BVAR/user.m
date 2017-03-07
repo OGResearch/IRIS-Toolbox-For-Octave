@@ -33,10 +33,10 @@ function This = user(UserY0,UserK0,UserY1,UserG1)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Y0',@(x) isnumeric(x) && ismatrix(x));
 pp.addRequired('K1',@(x) isnumeric(x) && ismatrix(x) ...
     && size(x,2) == size(UserY0,2));
@@ -46,14 +46,22 @@ pp.addRequired('G1',@(x) isnumeric(x) && ismatrix(x) ...
     && size(x,2) == size(UserY0,2));
 pp.parse(UserY0,UserK0,UserY1,UserG1);
 
+
 %--------------------------------------------------------------------------
 
-This = BVAR.bvarobj( );
+This = BVAR.bvarobj();
 This.name = 'user';
-This.y0 = @y0;
-This.k0 = @k0;
-This.y1 = @y1;
-This.g1 = @g1;
+if false % ##### MOSW
+    This.y0 = @y0;
+    This.k0 = @k0;
+    This.y1 = @y1;
+    This.g1 = @g1;
+else
+    This.y0 = @(~,~,~,~)UserY0;
+    This.k0 = @(~,~,~,~)UserK0;
+    This.y1 = @(~,~,~,~)UserY1;
+    This.g1 = @(~,~,~,~)UserG1;
+end
 
 
 % Nested functions...
@@ -64,7 +72,7 @@ This.g1 = @g1;
     
     function Y0 = y0(~,~,~,~)
         Y0 = UserY0;
-    end % y0( )
+    end % y0()
 
 
 %**************************************************************************
@@ -72,7 +80,7 @@ This.g1 = @g1;
     
     function K0 = k0(~,~,~,~)
         K0 = UserK0;
-    end % k0( )
+    end % k0()
 
 
 %**************************************************************************
@@ -80,7 +88,7 @@ This.g1 = @g1;
     
     function Y1 = y1(~,~,~,~)
         Y1 = UserY1;
-    end % y1( )
+    end % y1()
 
 
 %**************************************************************************
@@ -88,7 +96,7 @@ This.g1 = @g1;
     
     function G1 = g1(~,~,~,~)
         G1 = UserG1;
-    end % g1( )
+    end % g1()
 
 
 end

@@ -1,138 +1,169 @@
-function inclGraph = mycompilepdf(this, opt)
-% mycompilepdf  Publish figure to PDF.
+function InclGraph = mycompilepdf(This,Opt)
+% mycompilepdf  [Not a public function] Publish figure to PDF.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-set(this.handle, 'PaperType', this.options.papertype);
+set(This.handle,'paperType',This.options.papertype);
 
 % Set orientation, rotation, and raise box.
-if (isequal(opt.orientation, 'landscape') && ~this.options.sideways) ...
-        || (isequal(opt.orientation, 'portrait') && this.options.sideways)
-    orient(this.handle, 'landscape');
-    angle = 0;
+if (isequal(Opt.orientation,'landscape') && ~This.options.sideways) ...
+        || (isequal(Opt.orientation,'portrait') && This.options.sideways)
+    orient(This.handle,'landscape');
+    angle = 0; %ishg2(0,-90);
     raise = 10;
 else
-    orient(this.handle, 'tall');
+    orient(This.handle,'tall');
     angle = 0;
     raise = 0;
 end
 
 % Fill in the entire page.
-paperSize = get(this.handle, 'PaperSize');
-set(this.handle, 'PaperPosition', [0, 0, paperSize]);
+paperSize = get(This.handle,'PaperSize');
+set(This.handle,'PaperPosition',[0,0,paperSize]);
 
-% Print figure to PDF.
+% Print figure to EPSC and PDF.
 pdfName = '';
 pdfTitle = '';
-printFigure( );
+doPrintFigure();
 
-if strcmpi(this.options.figurescale, 'auto')
-    switch class(this.parent)
+if strcmpi(This.options.figurescale,'auto')
+    switch class(This.parent)
         case 'report.reportobj'
-            if isanystri(this.options.papertype, {'usletter', 'uslegal'})
-                this.options.figurescale = 0.8;
+            if isanystri(This.options.papertype,{'usletter','uslegal'})
+                This.options.figurescale = 0.8;
             else
-                this.options.figurescale = 0.85;
+                This.options.figurescale = 0.85;
             end
         case 'report.alignobj'
-            this.options.figurescale = 0.3;
+            This.options.figurescale = 0.3;
         otherwise
-            this.options.figurescale = 1;
+            This.options.figurescale = 1;
     end
 end
 
-trim = this.options.figuretrim;
+trim = This.options.figuretrim;
 if length(trim) == 1
-    trim = trim*[1, 1, 1, 1];
+    trim = trim*[1,1,1,1];
 end
 
-this.hInfo.package.graphicx = true;
-inclGraph = [ ...
-    '\raisebox{', sprintf('%gpt', raise), '}{', ...
+This.hInfo.package.graphicx = true;
+InclGraph = [ ...
+    '\raisebox{',sprintf('%gpt',raise),'}{', ...
     '\includegraphics', ...
-    sprintf('[scale=%g, angle=%g, trim=%gpt %gpt %gpt %gpt, clip=true]{%s}', ...
-    this.options.figurescale, angle, trim, pdfTitle), ...
+    sprintf('[scale=%g,angle=%g,trim=%gpt %gpt %gpt %gpt,clip=true]{%s}', ...
+    This.options.figurescale,angle,trim,pdfTitle), ...
     '}'];
 
-return
+
+% Nested functions...
 
 
+%**************************************************************************
 
 
-    function printFigure( )
-        tempDir = this.hInfo.tempDir;
-        h = this.handle;
+    function doPrintFigure()
+        tempDir = This.hInfo.tempDir;
+        h = This.handle;
         % Create graphics file path and title.
-        if isempty(this.options.saveas)
-            pdfName = tempname(tempDir);
-            [~, pdfTitle] = fileparts(pdfName);
+        if isempty(This.options.saveas)
+            pdfName = mosw.tempname(tempDir);
+            [~,pdfTitle] = fileparts(pdfName);
         else
-            [saveAsPath, saveAsTitle] = fileparts(this.options.saveas);
-            pdfName = fullfile(tempDir, saveAsTitle);
+            [saveAsPath,saveAsTitle] = fileparts(This.options.saveas);
+            pdfName = fullfile(tempDir,saveAsTitle);
             pdfTitle = saveAsTitle;
         end
         
         % Apply user aspect ratio to all axes objects except legends.
-        setAspectRatio( );
+        doAspectRatio();
         
         % Print the figure window to PDF.
         try
-            if true % ##### MOSW
-                % Matlab only
-                %-------------
-                p = get(h, 'PaperSize');
-                set(h, 'PaperPosition', [0, 0, p]);
-                print(h, '-dpdf', '-painters', pdfName);
+            if false % ##### MOSW
+                print(h,'-dpdf','-painters',pdfName);
             else
-                % Octave only
-                %-------------
-                print(h, '-dpdf', pdfName); %#ok<UNRCH>
+              while ~exist([pdfName,'.pdf'],'file')
+                print(h,'-dpdf',pdfName);
+              end
             end
-            addtempfile(this, [pdfName, '.pdf']);
+            addtempfile(This,[pdfName,'.pdf']);
         catch Err
             utils.error('report:mycompilepdf', ...
-                ['Cannot print figure #%g to PDF: %s.\n', ...
+                ['Cannot print figure #%g to PDF: ''%s''.\n', ...
                 '\tUncle says: %s'], ...
-                double(h), pdfName, Err.message);
+                double(h),pdfName,Err.message);
         end
+            
+        % Try to print figure window to EPSC.
+%         try
+%             doAspectRatio();
+%             grfun.printpdf(This.handle,graphicsName);
+%             addtempfile(This,[graphicsName,'.eps']);
+%         catch Error
+%             utils.error('report', ...
+%                 ['Cannot print figure #%g to EPS file: ''%s''.\n', ...
+%                 '\tUncle says: %s'], ...
+%                 double(This.handle),graphicsName,Error.message);
+%         end
+%         % Try to convert EPS to PDF.
+%         try
+%             if isequal(Opt.epstopdf,Inf)
+%                 latex.epstopdf([graphicsName,'.eps']);
+%             else
+%                 latex.epstopdf([graphicsName,'.eps'],Opt.epstopdf);
+%             end
+%             addtempfile(This,[graphicsName,'.pdf']);
+%         catch Error
+%             utils.error('report', ...
+%                 ['Cannot convert graphics EPS to PDF: ''%s''.\n', ...
+%                 '\tUncle says: %s'], ...
+%                 [graphicsName,'.eps'],Error.message);
+%         end
 
         % Save under the temporary name (which will be referred to in
         % the tex file) in the current or user-supplied directory.
-        if ~isempty(this.options.saveas)
+        if ~isempty(This.options.saveas)
             % Use try-end because the temporary directory can be the same
             % as the current working directory, in which case `copyfile`
             % throws an error (Cannot copy or move a file or directory onto
             % itself).
+%             try %#ok<TRYNC>
+%                 copyfile([graphicsName,'.eps'], ...
+%                     fullfile(saveAsPath,[graphicsTitle,'.eps']));
+%             end
             try %#ok<TRYNC>
-                copyfile([pdfName, '.pdf'], ...
-                    fullfile(saveAsPath, [pdfTitle, '.pdf']));
+                copyfile([pdfName,'.pdf'], ...
+                    fullfile(saveAsPath,[pdfTitle,'.pdf']));
             end
         end
-    end 
+    end % doPrintFigure()
 
 
+%**************************************************************************
 
 
-    function setAspectRatio( )
-        if isequal(this.options.aspectratio, @auto)
+    function doAspectRatio()
+        if isequal(This.options.aspectratio,@auto)
             return
         end
-        ch = get(this.handle, 'children');
+        ch = get(This.handle,'children');
         for i = ch(:).'
-            if isequal(get(i, 'tag'), 'legend') ...
-                    || ~isequal(get(i, 'type'), 'axes')
+            if isequal(get(i,'tag'),'legend') ...
+                    || ~isequal(get(i,'type'),'axes')
                 continue
             end
             try %#ok<TRYNC>
-                set(i, 'PlotBoxAspectRatio', ...
-                    [this.options.aspectratio(:).', 1]);
+                set(i,'PlotBoxAspectRatio', ...
+                    [This.options.aspectratio(:).',1]);
             end
         end
-    end 
+    end % doAspectRatio()
+
+
 end

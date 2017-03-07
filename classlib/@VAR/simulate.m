@@ -1,11 +1,10 @@
-function outp = simulate(this, inp, range, varargin)
+function Outp = simulate(This,Inp,Range,varargin)
 % simulate  Simulate VAR model.
 %
 % Syntax
 % =======
 %
 %     Outp = simulate(V,Inp,Range,...)
-%
 %
 % Input arguments
 % ================
@@ -35,7 +34,6 @@ function outp = simulate(this, inp, range, varargin)
 % * `'output='` [ *`'auto'`* | `'dbase'` | `'tseries'` ] - Format of output
 % data.
 %
-%
 % Description
 % ============
 %
@@ -60,56 +58,61 @@ function outp = simulate(this, inp, range, varargin)
 % Contribution simulations can be only run on VAR objects with one
 % parameterization.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
+
+% Parse input arguments.
+pp = inputParser();
+pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
+pp.parse(Inp,Range);
 
 % Panel VAR.
-if ispanel(this)
-    outp = mygroupmethod(@simulate, this, inp, range, varargin{:});
+if ispanel(This)
+    Outp = mygroupmethod(@simulate,This,Inp,Range,varargin{:});
     return
 end
 
-% Parse input arguments.
-pp = inputParser( );
-pp.addRequired('V',@(x) isa(x, 'VAR'));
-pp.addRequired('Inp',@isstruct);
-pp.addRequired('Range',@(x) isnumeric(x) && ~any(isinf(x(:))));
-pp.parse(this, inp, range);
-
 % Parse options.
-opt = passvalopt('VAR.simulate', varargin{:});
+opt = passvalopt('VAR.simulate',varargin{1:end});
 
 %--------------------------------------------------------------------------
 
-ny = size(this.A,1);
-pp = size(this.A,2) / max(ny,1);
-nAlt = size(this.A,3);
-kx = length(this.XNames);
+ny = size(This.A,1);
+pp = size(This.A,2) / max(ny,1);
+nAlt = size(This.A,3);
+nx = length(This.XNames);
+isX = nx > 0;
 
-if isempty(range)
+if isempty(Range)
     return
 end
 
-isBackcast = range(1)>range(end);
+isBackcast = Range(1) > Range(end);
 if isBackcast
-    this = backward(this);
-    range = range(end) : range(1)+pp;
+    This = backward(This);
+    Range = Range(end) : Range(1)+pp;
 else
-    range = range(1)-pp : range(end);
+    Range = Range(1)-pp : Range(end);
 end
 
 % Include pre-sample.
-req = datarequest('y* x* e', this, inp, range);
+req = datarequest('y*,x*,e',This,Inp,Range,opt);
 xRange = req.Range;
 y = req.Y;
 x = req.X;
 e = req.E;
 e(isnan(e)) = 0;
+
+if ~isequal(req.Format,'dbase')
+    utils.error('VAR:simulate', ...
+        ['Only database (struct) is now a valid input data format in ', ...
+        'VAR/simulate(...).']);
+end
 
 if isBackcast
     y = flip(y,2);
@@ -119,16 +122,15 @@ end
 
 e(:,1:pp,:) = NaN;
 nXPer = length(xRange);
-nDataY = size(y, 3);
-nDataX = size(x, 3);
-nDataE = size(e, 3);
-nLoop = max([nAlt, nDataY, nDataX, nDataE]);
+nDataY = size(y,3);
+nDataX = size(x,3);
+nDataE = size(e,3);
+nLoop = max([nAlt,nDataY,nDataX,nDataE]);
 
 if opt.contributions
-    if nLoop>1
+    if nLoop > 1
         % Cannot run contributions for multiple data sets or params.
-        utils.error('model:simulate', ...
-            '#Cannot_simulate_contributions');
+        utils.error('model','#Cannot_simulate_contributions');
     else
         % Simulation of contributions.
         nLoop = ny + 2;
@@ -136,96 +138,97 @@ if opt.contributions
 end
 
 % Expand Y, E, X data in 3rd dimension to match nLoop.
-if nDataY<nLoop
-    y = cat(3, y, repmat(y, 1, 1, nLoop-nDataY));
+if nDataY < nLoop
+    y = cat(3,y,y(:,:,end*ones(1,nLoop-nDataY)));
 end
-if nDataE<nLoop
-    e = cat(3, e, repmat(e, 1, 1, nLoop-nDataE));
+if nDataE < nLoop
+    e = cat(3,e,e(:,:,end*ones(1,nLoop-nDataE)));
 end
-if kx>0 && nDataX<nLoop
-    x = cat(3, x, repmat(x, 1, 1, nLoop-nDataX));
-elseif kx==0
-    x = zeros(0, nXPer, nLoop);
+if isX && nDataX < nLoop
+    x = cat(3,x,x(:,:,end*ones(1,nLoop-nDataX)));
+elseif ~isX
+    x = zeros(nx,nXPer,nLoop);
 end
 
 if opt.contributions
-    y(:, :, [1:end-2,end]) = 0;
-    x(:, :, 1:end-1) = 0;
+    y(:,:,[1:end-2,end]) = 0;
+    x(:,:,1:end-1) = 0;
 end
 
 if ~opt.contributions
-    outp = hdataobj(this, xRange, nLoop);
+    Outp = hdataobj(This,xRange,nLoop);
 else
-    outp = hdataobj(this, xRange, nLoop, 'Contributions=', @shock);
+    Outp = hdataobj(This,xRange,nLoop,'Contributions=',@shock);
 end
 
 % Main loop
 %-----------
 
 for iLoop = 1 : nLoop
-    if iLoop<=nAlt
-        [A, B, K, J] = mysystem(this, iLoop);
+    if iLoop <= nAlt
+        [iA,iB,iK,iJ] = mysystem(This,iLoop);
     end
 
     isConst = ~opt.deviation;
     if opt.contributions
-        if iLoop<=ny
+        if iLoop <= ny
             % Contributions of shocks.
-            inx = true(1, ny);
+            inx = true(1,ny);
             inx(iLoop) = false;
-            e(inx, :, iLoop) = 0;
+            e(inx,:,iLoop) = 0;
             isConst = false;
-        elseif iLoop==ny+1
+        elseif iLoop == ny+1
             % Contributions of init and const.
-            e(:, :, iLoop) = 0;
+            e(:,:,iLoop) = 0;
             isConst = true;
-        elseif iLoop==ny+2
+        elseif iLoop == ny+2
             % Contributions of exogenous inputs.
-            e(:, :, iLoop) = 0;
+            e(:,:,iLoop) = 0;
             isConst = false;
         end
     end
     
     iE = e(:,:,iLoop);
-    if isempty(B)
+    if isempty(iB)
         iBe = iE;
     else
-        iBe = B*iE;
+        iBe = iB*iE;
     end
     
-    iY = y(:, :, iLoop);
-    iX = [ ];
-    if kx>0
-        iX = x(:, :, iLoop);
+    iY = y(:,:,iLoop);
+    iX = [];
+    if isX
+        iX = x(:,:,iLoop);
     end
 
     % Collect deterministic terms (constant, exogenous inputs).
-    iKJ = zeros(ny, nXPer);
+    iKJ = zeros(ny,nXPer);
     if isConst
-        iKJ = iKJ + K(:, ones(1,nXPer));
+        iKJ = iKJ + iK(:,ones(1,nXPer));
     end
-    if kx>0
-        iKJ = iKJ + J*iX;
+    if isX
+        iKJ = iKJ + iJ*iX;
     end
     
     for t = pp + 1 : nXPer
-        iXLags = iY(:, t-(1:pp));
-        iY(:,t) = A*iXLags(:) + iKJ(:,t) + iBe(:,t);
+        iXLags = iY(:,t-(1:pp));
+        iY(:,t) = iA*iXLags(:) + iKJ(:,t) + iBe(:,t);
     end
     
     if isBackcast
-        iY = flip(iY, 2);
-        iE = flip(iE, 2);
-        if kx>0
-            iX = flip(iX, 2);
+        iY = flip(iY,2);
+        iE = flip(iE,2);
+        if isX
+            iX = flip(iX,2);
         end
     end
 
     % Assign current results.
-    hdataassign(outp, iLoop, {iY, iX, iE, [ ]} );
+    hdataassign(Outp,iLoop, { iY,iX,iE,[] } );
+    
 end
 
 % Create output database.
-outp = hdata2tseries(outp);
+Outp = hdata2tseries(Outp);
 
 end

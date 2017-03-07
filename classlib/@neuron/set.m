@@ -4,10 +4,10 @@ function This = set(This,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('This',@(x) isa(x,'neuron'));
 pp.addRequired('name',@iscellstr);
 pp.addRequired('value',@(x) length(x) == length(varargin(1:2:end-1)));
@@ -49,7 +49,7 @@ end
         query = nnet.myalias(UsrQuery);
         
         if isfunc(Value) || isnumericscalar(Value)
-            Value = @(x) Value( ) ;
+            Value = @(x) Value() ;
             switch query
                 case 'activation'
                     This.ActivationParams ...
@@ -132,6 +132,6 @@ end
             end
         end
         
-    end % doSet( ).
+    end % doSet().
 
 end

@@ -4,8 +4,8 @@ function [y,Py] = destandardise(ymean,ystd,y,Py)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %**************************************************************************
 
@@ -25,7 +25,7 @@ if nargin > 3 && nargout > 1 && ~isempty(Py)
       Py(:,:,t) = Py(:,:,t) .* ystd';
    end
 else
-   Py = [ ];
+   Py = [];
 end
 
 end

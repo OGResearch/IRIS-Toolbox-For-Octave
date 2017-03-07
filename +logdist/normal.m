@@ -1,20 +1,19 @@
-function fn = normal(mean_, std_, w_)
-% normal  Create function proportional to log of Normal distribution.
+function F = normal(Mean,Std,W)
+% normal  Create function proportional to log of Normal or Student distribution.
 %
 % Syntax
 % =======
 %
-%     fn = logdist.normal(mean, stdev, w)
-%
+%     F = logdist.normal(Mean,Std,Df)
 %
 % Input arguments
 % ================
 %
-% * `mean_` [ numeric ] - Mean of the normal distribution.
+% * `Mean` [ numeric ] - Mean of the normal distribution.
 %
-% * `stdev` [ numeric ] - Std dev of the normal distribution.
+% * `Std` [ numeric ] - Std dev of the normal distribution.
 %
-% * `w` [ numeric ] - Optional input containing mixture weights.
+% * `W` [ numeric ] - Optional input containing mixture weights.
 %
 % Multivariate cases are supported. Evaluating multiple vectors as an array
 % of column vectors is supported.
@@ -23,13 +22,11 @@ function fn = normal(mean_, std_, w_)
 % will be a mixture of normals. In this case the third argument is the
 % vector of mixture weights.
 %
-%
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of Normal density.
-%
 %
 % Description
 % ============
@@ -37,203 +34,190 @@ function fn = normal(mean_, std_, w_)
 % See [help on the logdisk package](logdist/Contents) for details on using
 % the function handle `F`.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team and Boyan Bejanov.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team and Boyan Bejanov.
 
 %--------------------------------------------------------------------------
 
-if iscell( mean_ )
+if iscell( Mean )
     % Distribution is a normal mixture
-    Weight = w_ / sum(w_) ;
-    K = numel( mean_{1} ) ;
-    Nmix = numel( mean_ ) ;
+    Weight = W / sum(W) ;
+    K = numel( Mean{1} ) ;
+    Nmix = numel( Mean ) ;
     if K > 1
         for d = 1:Nmix
-            assert( all( size(std_{d}) == numel(mean_{d}) ), ...
+            assert( all( size(Std{d}) == numel(Mean{d}) ), ...
                 'Mean and covariance matrix dimensions must be consistent.' ) ;
-            assert( all( size(mean_{d}) == size(mean_{1}) ), ...
+            assert( all( size(Mean{d}) == size(Mean{1}) ), ...
                 'Mixture dimensions must be consistent.' ) ;
-            std_{d} = logdist.chkStd( std_{d} ) ;
+            Std{d} = logdist.mychkstd( Std{d} ) ;
         end
     end
-    a = zeros(K, 1) ;
+    a = zeros(K,1) ;
     for d = 1:Nmix
-        a = a + Weight(d)*mean_{d} ;
+        a = a + Weight(d)*Mean{d} ;
     end
-    fn = @(x, varargin) fnMultNormalMixture(x, a, mean_, std_, Weight, varargin{:}) ;
+    F = @(x,varargin) xxMultNormalMixture(x,a,Mean,Std,Weight,varargin{:}) ;
 else
     % Distribution is normal
-    mode_ = mean_(:) ;
-    a = mean_(:) ;
+    mode = Mean(:) ;
+    a = Mean(:) ;
     
-    if numel(mean_) > 1
+    if numel(Mean) > 1
         % Distribution is multivariate
-        std_ = logdist.chkStd( std_ ) ;
-        b = std_ ;
+        Std = logdist.mychkstd( Std ) ;
+        b = Std ;
         
-        fn = @(x, varargin) fnMultNormal(x, a, b, mean_, std_, mode_, varargin{:}) ;
+        F = @(x,varargin) xxMultNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
     else
         % Distribution is scalar
-        b = std_ ;
-        fn = @(x, varargin) fnNormal(x, a, b, mean_, std_, mode_, varargin{:}) ;
+        b = Std ;
+        F = @(x,varargin) xxNormal(x,a,b,Mean,Std,mode,varargin{:}) ;
     end
 end
 
 end
 
+% Subfunctions.
 
-
-
-function y = fnMultNormalMixture(x, a, mean_, std_, weight, varargin)
-Nmix = numel(mean_) ;
-K = numel(mean_{1}) ;
+%**************************************************************************
+function Y = xxMultNormalMixture(X,A,Mu,Std,Weight,varargin)
+Nmix = numel(Mu) ;
+K = numel(Mu{1}) ;
 
 if isempty(varargin)
-    y = log(mixturePdf( )) ;
+    Y = log(doMixturePdf()) ;
     return
 end
 
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y = mixturePdf( ) ;
-    case {'rand', 'draw'}
+    case {'proper','pdf'}
+        Y = doMixturePdf() ;
+    case 'draw'
         if numel(varargin)<2
             NDraw = 1 ;
         else
             NDraw = varargin{2} ;
         end
-        y = NaN(K, NDraw) ;
-        bin = multinomialRand( NDraw, weight ) ;
+        Y = NaN(K,NDraw) ;
+        bin = doMultinomialRand( NDraw, Weight ) ;
         for c = 1:Nmix
             ind = ( bin == c ) ;
             NC = sum( ind ) ;
             if NC>0
-                y(:, ind) = bsxfun( @plus, mean_{c}, std_{c}*randn(K, NC) ) ;
+                Y(:,ind) = bsxfun( @plus, Mu{c}, Std{c}*randn(K,NC) ) ;
             end
         end
     case 'name'
-        y = 'normal' ;
+        Y = 'normal' ;
     case 'mean'
-        y = mean_ ;
-    case {'sigma', 'sgm', 'std'}
-        y = std_ ;
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = B;
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
 end
 
-return
-
-
-
-
-    function bin = multinomialRand(NDraw, Prob)
+    function bin = doMultinomialRand(NDraw, Prob)
         CS = cumsum(Prob(:).');
-        bin = 1+sum( bsxfun(@gt, rand(NDraw, 1), CS), 2);
-    end
+        bin = 1+sum( bsxfun(@gt, rand(NDraw,1), CS), 2);
+    end % doMultinomialRand().
 
-
-
-
-    function Y = mixturePdf( )
-        [N1, N2] = size(x) ;
-        Y = zeros(1, N2) ;
+    function Y = doMixturePdf()
+        [N1,N2] = size(X) ;
+        Y = zeros(1,N2) ;
         assert( N1 == K, 'Input must be a column vector.' ) ;
         for m = 1:Nmix
             Y = bsxfun(@plus, Y, ...
-                weight(m)*exp(logMultNormalPdf(x, mean_{m}, std_{m}))...
+                Weight(m)*exp(xxLogMultNormalPdf(X,Mu{m},Std{m}))...
                 ) ;
         end
-    end 
+    end % doMixturePdf().
 end
 
-
-
-
-function y = logMultNormalPdf(X, Mu, Std)
+%**************************************************************************
+function Y = xxLogMultNormalPdf(X,Mu,Std)
 K = numel(Mu) ;
 sX = bsxfun(@minus, X, Mu)' / Std ;
 logSqrtDetSig = sum(log(diag(Std))) ;
-y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2, 2)' ;
-end
+Y = -0.5*K*log(2*pi) - logSqrtDetSig - 0.5*sum(sX.^2,2)' ;
+end % xxLogMultNormalPdf().
 
+%**************************************************************************
+function Y = xxNormal(X,A,B,Mu,Std,Mode,varargin)
 
-
-
-function y = fnNormal(x, a, b, mean_, std_, mode_, varargin)
 if isempty(varargin)
-    y = -0.5 * ((x - mean_)./std_).^2;
+    Y = -0.5 * ((X - Mu)./Std).^2;
     return
 end
+
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y = 1/(std_*sqrt(2*pi)) .* exp(-(x-mean_).^2/(2*std_^2));
+    case {'proper','pdf'}
+        Y = 1/(Std*sqrt(2*pi)) .* exp(-(X-Mu).^2/(2*Std^2));
     case 'info'
-        y = 1/(std_^2)*ones(size(x));
-    case {'a', 'location'}
-        y = a;
-    case {'b', 'scale'}
-        y = b;
+        Y = 1/(Std^2)*ones(size(X));
+    case {'a','location'}
+        Y = A;
+    case {'b','scale'}
+        Y = B;
     case 'mean'
-        y = mean_;
-    case {'sigma', 'sgm', 'std'}
-        y = std_;
+        Y = Mu;
+    case {'sigma','sgm','std'}
+        Y = Std;
     case 'mode'
-        y = mode_;
+        Y = Mode;
     case 'name'
-        y = 'normal';
-    case {'rand', 'draw'}
-        y = mean_ + std_*randn(varargin{2:end});
-    case 'lower'
-        y = -Inf;
-    case 'upper'
-        y = Inf;
-end
+        Y = 'normal';
+    case 'draw'
+        Y = Mu + Std*randn(varargin{2:end});
 end
 
+end % xxNormal().
 
+%**************************************************************************
+function Y = xxMultNormal(X,A,B,Mu,Std,Mode,varargin)
 
-
-function y = fnMultNormal(x, a, b, mean_, std_, mode_, varargin)
-K = numel(mean_) ;
+K = numel(Mu) ;
 if isempty(varargin)
-    y = logMultNormalPdf(x, mean_, std_) ;
+    Y = xxLogMultNormalPdf(X,Mu,Std) ;
     return
 end
+
 switch lower(varargin{1})
-    case {'proper', 'pdf'}
-        y = exp(logMultNormalPdf(x, mean_, std_)) ;
+    case {'proper','pdf'}
+        Y = exp(xxLogMultNormalPdf(X,Mu,Std)) ;
     case 'info'
-        y = eye(size(std_)) / ( std_.'*std_ ) ;
-    case {'a', 'location'}
-        y = a ;
-    case {'b', 'scale'}
-        y = b ;
+        Y = eye(size(Std)) / ( Std'*Std ) ;
+    case {'a','location'}
+        Y = A ;
+    case {'b','scale'}
+        Y = B ;
     case 'mean'
-        y = mean_ ;
-    case {'sigma', 'sgm', 'std'}
-        y = std_ ;
+        Y = Mu ;
+    case {'sigma','sgm','std'}
+        Y = Std ;
     case 'mode'
-        y = mode_ ;
+        Y = Mode ;
     case 'name'
-        y = 'normal';
-    case {'rand', 'draw'}
+        Y = 'normal';
+    case 'draw'
         if numel(varargin)<2
-            dim = size(mean_) ;
+            dim = size(Mu) ;
         else
             if numel(varargin{2})==1
-                dim = [K, varargin{2}] ;
+                dim = [K,varargin{2}] ;
             else
                 dim = varargin{2} ;
             end
         end
-        y = bsxfun(@plus, mean_, std_*randn(dim)) ;
+        Y = bsxfun(@plus,Mu,Std*randn(dim)) ;
 end
-end
+
+end % xxMultNormal().
 

@@ -1,10 +1,13 @@
 % reporting  Reporting and Publishing.
 %
-% * [PDF Reports (report Package and Objects)](report/Contents)
+% * [report](report/Contents) - Report Functions.
 %
-% * [Quick Database Plots](dbplot/Contents)
+% * [qreportlang](qreportlang/Contents) - Quick-Report File Language.
 %
-% * [Graphics Functions (grfun Package)](grfun/Contents)
+% * [qreport](qreport/Contents) - Quick-Report Functions.
+%
+% * [grfun](grfun/Contents) - Graphics Functions.
+%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

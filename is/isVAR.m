@@ -23,12 +23,12 @@ function Flag = isVAR(X)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if true % ##### MOSW
+if false % ##### MOSW
     Flag = isa(X,'VAR');
 else
     Flag = isa(X,'VAR') || isa(X,'SVAR'); %#ok<UNRCH>

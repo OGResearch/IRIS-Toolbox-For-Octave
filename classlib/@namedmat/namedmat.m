@@ -1,5 +1,5 @@
-classdef namedmat < double % >>>>> MOSW classdef namedmat
-    % namedmat  Matrices with Named Rows and Columns (namedmat Objects).
+classdef namedmat % >>>>> MOSW classdef namedmat < double
+    % namedmat  Matrices with Named Rows and Columns.
     %
     % Matrices with named rows and columns are returned as output arguments
     % from several IRIS functions, such as [model/acf](model/acf),
@@ -36,13 +36,13 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
     % objects.
     %
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     
     properties (SetAccess = protected)
-        RowNames = { };
-        ColNames = { };
+        RowNames = {};
+        ColNames = {};
     end
     
     
@@ -97,18 +97,18 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
             % ========
             %
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             %--------------------------------------------------------------
             
             if nargin == 0
-                X = [ ];
+                X = [];
             end
             This = This@double(X);
             if ~isempty(varargin)
                 This.RowNames = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
                 if ~isempty(This.RowNames) ...
                         && length(This.RowNames) ~= size(X,1)
                     utils.error('namedmat:namedmat', ...
@@ -116,7 +116,7 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
                 end
                 if ~isempty(varargin)
                     This.ColNames = varargin{1};
-                    varargin(1) = [ ]; %#ok<NASGU>
+                    varargin(1) = []; %#ok<NASGU>
                     if ~isempty(This.ColNames) ...
                             && length(This.ColNames) ~= size(X,2)
                         utils.error('namedmat:namedmat', ...
@@ -140,7 +140,7 @@ classdef namedmat < double % >>>>> MOSW classdef namedmat
                 addspace = true;
             end
             if addspace
-                textfun.loosespace( );
+                strfun.loosespace();
             end
         end
 

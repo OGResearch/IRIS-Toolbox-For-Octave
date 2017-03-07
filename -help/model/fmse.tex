@@ -1,0 +1,57 @@
+
+
+    \filetitle{fmse}{Forecast mean square error matrices}{model/fmse}
+
+	\paragraph{Syntax}\label{syntax}
+
+\begin{verbatim}
+[F,List,D] = fmse(M,NPer,...)
+[F,List,D] = fmse(M,Range,...)
+\end{verbatim}
+
+\paragraph{Input arguments}\label{input-arguments}
+
+\begin{itemize}
+\item
+  \texttt{M} {[} model {]} - Model object for which the forecast MSE
+  matrices will be computed.
+\item
+  \texttt{NPer} {[} numeric {]} - Number of periods.
+\item
+  \texttt{Range} {[} numeric {]} - Date range.
+\end{itemize}
+
+\paragraph{Output arguments}\label{output-arguments}
+
+\begin{itemize}
+\item
+  \texttt{F} {[} namedmat \textbar{} numeric {]} - Forecast MSE
+  matrices.
+\item
+  \texttt{List} {[} cellstr {]} - List of variables in rows and columns
+  of \texttt{M}.
+\item
+  \texttt{D} {[} dbase {]} - Database with the std deviations of
+  individual variables, i.e.~the square roots of the diagonal elements
+  of \texttt{F}.
+\end{itemize}
+
+\paragraph{Options}\label{options}
+
+\begin{itemize}
+\item
+  \texttt{'matrixFmt='} {[} \emph{\texttt{'namedmat'}} \textbar{}
+  \texttt{'plain'} {]} - Return matrix \texttt{F} as either a
+  \href{namedmat/Contents}{\texttt{namedmat}} object (i.e.~matrix with
+  named rows and columns) or a plain numeric array.
+\item
+  \texttt{'select='} {[} \emph{\texttt{@all}} \textbar{} char \textbar{}
+  cellstr {]} - Return FMSE for selected variables only; \texttt{@all}
+  means all variables.
+\end{itemize}
+
+\paragraph{Description}\label{description}
+
+\paragraph{Example}\label{example}
+
+

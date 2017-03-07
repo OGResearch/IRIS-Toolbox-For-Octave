@@ -1,13 +1,15 @@
 function This = minus(This,List)
 % See help on dbase/dbminus.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+if false % ##### MOSW
+pp = inputParser();
 pp.addRequired('D',@isstruct);
 pp.addRequired('List',@(x) iscellstr(x) || ischar(x));
 pp.parse(This,List);
+end
 
 %--------------------------------------------------------------------------
 

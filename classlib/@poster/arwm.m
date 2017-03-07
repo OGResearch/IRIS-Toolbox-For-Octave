@@ -130,11 +130,11 @@ function [Theta,LogPost,ArVec,This,SgmVec,FinalCov] = arwm(This,NDraw,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Bojan Bejanov & Troy Matheson.
 
 % Validate required inputs.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Pos',@(x) isa(x,'poster'));
 pp.addRequired('NDraw',@isnumericscalar);
 pp.parse(This,NDraw);
@@ -144,12 +144,12 @@ opt = passvalopt('poster.arwm',varargin{:});
 
 %--------------------------------------------------------------------------
 
-Theta = [ ];
-LogPost = [ ];
-ArVec = [ ];
-SgmVec = [ ];
-FinalCov = [ ]; %#ok<NASGU>
-realSmall = getrealsmall( );
+Theta = [];
+LogPost = [];
+ArVec = [];
+SgmVec = [];
+FinalCov = []; %#ok<NASGU>
+realSmall = getrealsmall();
 
 % Number of estimated parameters.
 nPar = length(This.ParamList);
@@ -158,7 +158,7 @@ nPar = length(This.ParamList);
 nAlloc = min(NDraw,opt.saveevery);
 isSave = opt.saveevery <= NDraw;
 if isSave
-    doPrepSave( );
+    doPrepSave();
 end
 
 if opt.burnin < 1
@@ -182,21 +182,21 @@ k1 = opt.adaptscale;
 k2 = opt.adaptproposalcov;
 targetAr = opt.targetar;
 
-doChkParallel( );
+doChkParallel();
 
 isAdaptiveScale = isfinite(gamma) && k1 > 0;
 isAdaptiveShape = isfinite(gamma) && k2 > 0;
 isAdaptive = isAdaptiveScale || isAdaptiveShape;
 
 % Initialize proposal distribution.
-theta = [ ];
-logPost = [ ];
-sgm = [ ];
-P = [ ];
+theta = [];
+logPost = [];
+sgm = [];
+P = [];
 j0 = 0;
 nAcc0 = 0;
 burnin0 = 0;
-doInit( );
+doInit();
 
 % Pre-allocate output data.
 Theta = zeros(nPar,nAlloc);
@@ -209,7 +209,7 @@ else
 end
 
 if opt.progress
-    progress = ProgressBar('IRIS poster.arwm progress');
+    progress = progressbar('IRIS poster.arwm progress');
 elseif opt.esttime
     eta = esttime('IRIS poster.arwm is running');
 end
@@ -220,6 +220,7 @@ end
 if opt.nstep>1
     % Minimize communication overhead:
     ThisPf = WorkerObjWrapper( This ) ;
+    sPf = WorkerObjWrapper( s ) ;
 end
 
 j = 1;
@@ -243,12 +244,12 @@ while j <= nDrawTotal
         % Propose a new theta, and evaluate log posterior.
         u = randn(nPar,1);
         newTheta = theta + sgm*P*u;
-        [newLogPost,~,~,~,isWithinBounds] = mylogpost(This,newTheta); %#ok<ASGLU>
+        newLogPost = mylogpost(This,newTheta);
         
         % Generate random acceptance.
-        randAcc = rand( );
+        randAcc = rand();
         
-        doAcceptStore( );
+        doAcceptStore();
         j = j + 1;
         
     else
@@ -260,7 +261,7 @@ while j <= nDrawTotal
                 
         % Propose new thetas, evaluate log posteriors for all of them in parallel,
         % and pre-generate random acceptance.
-        [thetaPf,logPostPf,randAccPf,uPf] = doPrefetch( );
+        [thetaPf,logPostPf,randAccPf,uPf] = doPrefetch();
         
         % Find path through lattice prefetch; `pos0` is a zero-based position
         % beween `0` and `2^nsteps`.
@@ -271,11 +272,10 @@ while j <= nDrawTotal
             newPos0 = bitset(pos0,iStep);
             newTheta = thetaPf(:,1+newPos0);
             newLogPost = logPostPf(1+newPos0);
-            isWithinBounds = true; %#ok<NASGU>
             randAcc = randAccPf(iStep);
             u = uPf(:,iStep);
             
-            isAccepted = doAcceptStore( );
+            isAccepted = doAcceptStore();
             
             if isAccepted
                 pos0 = newPos0;
@@ -304,7 +304,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
 %**************************************************************************
 
 
-    function doInit( )
+    function doInit()
         % Initial vector.
         theta = This.InitParam(:);
         
@@ -340,13 +340,13 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
         nAcc0 = This.InitCount(2); % Cumulative count of previous acceptance in incremental runs.
         burnin0 = This.InitCount(3); % Cumulative count of previous burn-ins.
         
-    end % doInit( )
+    end % doInit()
 
 
 %**************************************************************************
     
     
-    function IsAccepted = doAcceptStore( )
+    function IsAccepted = doAcceptStore()
         % doAcceptStore  Accept or reject the current proposal, and store this
         % step.
         
@@ -367,7 +367,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
         
         % Adapt the scale and/or proposal covariance.
         if isAdaptive
-            doAdapt( );
+            doAdapt();
         end
         
         % Add the j-th theta to the chain unless it's still burn-in.
@@ -386,7 +386,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
             end
             % Save and reset.
             if count == opt.saveevery || (isSave && j == nDrawTotal)
-                doSave( );
+                doSave();
                 count = 0;
             end
         end
@@ -399,7 +399,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
         end
         
         
-        function doSave( )
+        function doSave()
             h5write(opt.saveas, ...
                 '/theta',Theta,[1,SaveCount+1],size(Theta));
             h5write(opt.saveas, ...
@@ -407,10 +407,10 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
             SaveCount = SaveCount + size(Theta,2);
             n = nDrawTotal - j;
             if n == 0
-                Theta = [ ];
-                LogPost = [ ];
-                ArVec = [ ];
-                SgmVec = [ ];
+                Theta = [];
+                LogPost = [];
+                ArVec = [];
+                SgmVec = [];
             elseif n < nAlloc
                 Theta = Theta(:,1:n);
                 LogPost = LogPost(1:n);
@@ -419,10 +419,10 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
                     SgmVec = SgmVec(:,1:n);
                 end
             end
-        end % doSave( ).
+        end % doSave().
         
         
-        function doAdapt( )
+        function doAdapt()
             nu = (j+j0)^(-gamma);
             phi = nu*(alpha - targetAr);
             if isAdaptiveScale
@@ -433,18 +433,19 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
                 phi2 = k2*phi;
                 unorm2 = u.'*u;
                 z = sqrt(phi2/unorm2)*u;
+                P0 = P;
                 P = cholupdate(P.',P*z).';
             end
-        end % doAdapt( )
+        end % doAdapt()
         
         
-    end % doAcceptStore( )
+    end % doAcceptStore()
 
 
 %**************************************************************************
 
     
-    function doPrepSave( )
+    function doPrepSave()
         if isempty(opt.saveas)
             utils.error('poster', ...
                 'The option ''saveas='' must be a valid file name.');
@@ -456,13 +457,13 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
             'paramList',sprintf('%s ',This.ParamList{:}));
         h5writeatt(opt.saveas,'/','nDraw',NDraw);
         h5writeatt(opt.saveas,'/','saveEvery',opt.saveevery');
-    end % doPrepSave( )
+    end % doPrepSave()
 
 
 %**************************************************************************
 
     
-    function [ThetaPf,LogPostPf,RandAccPf,uPf] = doPrefetch( )
+    function [ThetaPf,LogPostPf,RandAccPf,uPf] = doPrefetch()
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %  The wisdom behing the indexing in the prefetching array
         %
@@ -495,7 +496,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
         %  NOTE: this binary indexing gives values from 0 to 2^n-1.  Since in
         %  MATLAB indices are unit-based, we add one to get a valid MATLAB index.
         %
-        %  Copyright (c) 2012-2017 Boyan Bejanov and the IRIS Solutions Team
+        %  Copyright (c) 2012-2014 Boyan Bejanov and the IRIS Solutions Team
         %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
@@ -512,7 +513,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
         for iiStep = 1 : nStep
             uPf(:,iiStep) = randn(nPar,1);
             X(:,iiStep) = sgm*P*uPf(:,iiStep);
-            RandAccPf(iiStep) = rand( );
+            RandAccPf(iiStep) = rand();
         end
         
         % Pre-allocate path-dependent end-points, nPath = 2^nStep.
@@ -546,13 +547,13 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
             end
         end
         
-    end % doPrefetch( )
+    end % doPrefetch()
 
 
 %**************************************************************************
 
     
-    function doChkParallel( )
+    function doChkParallel()
         if opt.firstPrefetch < nDrawTotal && opt.nstep > 1
             isPCT = license('test','distrib_computing_toolbox');
             if isPCT
@@ -572,7 +573,7 @@ This.InitCount = This.InitCount + [nDrawTotal,nAcc,burnin];
                     'Prefetching without parallelism is pointless.');
             end
         end
-    end % doChkParallel( )
+    end % doChkParallel()
 
 
 end

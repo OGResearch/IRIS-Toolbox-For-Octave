@@ -1,86 +1,97 @@
-function c = sprintf(this, varargin)
-% sprintf  Print model object to text.
+function C = sprintf(This,varargin)
+% sprintf  [Not a public function] Print model object to text.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-c = '';
+C = '';
 
-% Quantities.
-ixy = this.Quantity.Type==int8(1);
-ixx = this.Quantity.Type==int8(2);
-ixey = this.Quantity.Type==int8(31);
-ixex = this.Quantity.Type==int8(32);
-ixp = this.Quantity.Type==int8(4);
+pos = find(This.nametype == 1);
+C = [C,xxPrintNames(This,'!measurement_variables',pos)];
 
-c = [c, printNames(this, '!measurement_variables', find(ixy))];
-c = [c, printNames(this, '!transition_variables', find(ixx))];
-c = [c, printNames(this, '!measurement_shocks', find(ixey), false)];
-c = [c, printNames(this, '!transition_shocks', find(ixex), false)];
-c = [c, printNames(this, '!parameters', find(ixp))];
-c = [c, printNames(this, '!log_variables', find(this.Quantity.IxLog), false)];
+pos = find(This.nametype == 2);
+C = [C,xxPrintNames(This,'!transition_variables',pos)];
 
-% Equations.
-ixm = this.Equation.Type==1;
-ixt = this.Equation.Type==2;
+pos = find(This.nametype == 3);
+[mshocks,tshocks] = myshocktype(This);
+C = [C,xxPrintNames(This,'!measurement_shocks',pos(mshocks),false)];
+C = [C,xxPrintNames(This,'!transition_shocks',pos(tshocks),false)];
 
-c = [c, printEqtns(this, '!measurement_equations', find(ixm))];
-c = [c, printEqtns(this, '!transition_equations', find(ixt))];
+pos = find(This.nametype == 4);
+C = [C,xxPrintNames(This,'!parameters',pos)];
+
+pos = find(This.IxLog);
+C = [C,xxPrintNames(This,'!log_variables',pos,false)];
+
+pos = find(This.eqtntype == 1);
+C = [C,xxPrintEqtns(This,'!measurement_equations',pos)];
+
+pos = find(This.eqtntype == 2);
+C = [C,xxPrintEqtns(This,'!transition_equations',pos)];
 
 end
 
 
+% Subfunctions...
 
 
-function c = printNames(this, heading, pos, isValue)
+%**************************************************************************
+
+
+function C = xxPrintNames(This,Heading,Pos,IsValue)
 try
-    isValue; %#ok<VUNUS>
-catch
-    isValue = true;
+    IsValue; %#ok<VUNUS>
+catch %#ok<CTCH>
+    IsValue = true;
 end
-if isempty(pos)
-    c = '';
+
+if isempty(Pos)
+    C = '';
     return
 end
-BR = sprintf('\n');
-TAB = sprintf('\t');
-c = [BR, heading, BR];
-for i = pos
-    c = [c, TAB, this.Quantity.Name{i}]; %#ok<AGROW>
-    if isValue && ~isnan(this.Variant{1}.Quantity(i))
-        assignReal = real(this.Variant{1}.Quantity(i));
-        assignImag = imag(this.Variant{1}.Quantity(i));
-        c = [c, sprintf('=%.16f', assignReal)]; %#ok<AGROW>
-        if assignImag~=0
-            c = [c, sprintf('%+.16fi', assignImag)]; %#ok<AGROW>
+
+br = sprintf('\n');
+tab = sprintf('\t');
+
+C = [br,Heading,br];
+
+for i = Pos
+    C = [C,tab,This.name{i}]; %#ok<AGROW>
+    if IsValue && ~isnan(This.Assign(i))
+        assignreal = real(This.Assign(i));
+        assignimag = imag(This.Assign(i));
+        C = [C,sprintf('=%.16f',assignreal)]; %#ok<AGROW>
+        if assignimag ~= 0
+            C = [C,sprintf('%+.16fi',assignimag)]; %#ok<AGROW>
         end
     end
-    c = [c, BR]; %#ok<AGROW>
+    C = [C,br]; %#ok<AGROW>
 end
-end
+end % xxPrintNames()
 
 
+%**************************************************************************
 
 
-function c = printEqtns(this, heading, pos)
-if isempty(pos)
-    c = '';
+function C = xxPrintEqtns(This,Heading,Pos)
+if isempty(Pos)
+    C = '';
     return
 end
 br = sprintf('\n');
 tab = sprintf('\t');
-c = [br, heading, br];
-for i = pos
-    eqtn = this.Equation.Input{i};
-    eqtn = strrep(eqtn, '=', ' = ');
-    eqtn = strrep(eqtn, '= #', ' =# ');
-    eqtn = strrep(eqtn, '!!', [' ...', br, tab, tab, '!! ']);
-    c = [c, tab, eqtn]; %#ok<AGROW>
-    c = [c, br, br]; %#ok<AGROW>
+C = [br,Heading,br];
+for i = Pos
+    eqtn = This.eqtn{i};
+    eqtn = strrep(eqtn,'=',' = ');
+    eqtn = strrep(eqtn,'= #',' =# ');
+    eqtn = strrep(eqtn,'!!',[' ...',br,tab,tab,'!! ']);
+    C = [C,tab,eqtn]; %#ok<AGROW>
+    C = [C,br,br]; %#ok<AGROW>
 end
-end
+end % xxPrintEqtns()

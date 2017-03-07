@@ -1,4 +1,4 @@
-% BVAR  Bayesian VAR Priors (BVAR Package).
+% BVAR  Bayesian VAR Priors: BVAR Package.
 %
 % The BVAR package is used to create basic types of prior dummy
 % observations when estimating Bayesian VAR models. The dummy observations
@@ -32,5 +32,5 @@
 %     help BVAR/function_name
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

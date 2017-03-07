@@ -4,8 +4,8 @@ function [X,varargout] = binop(Fn,A,B,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -41,14 +41,14 @@ if isa(A,'tseries') && isa(B,'tseries')
     try
         X.data = reshape(xData,[size(xData,1),xSize(2:end)]);
     catch %#ok<CTCH>
-        utils.error('tseries:binop', ...
+        error('iris:tseries', ...
             ['The size of the resulting tseries object must match ', ...
             'the size of one of the input tseries objects.']);
     end
     X.start = range(1);
     X.Comment = cell([1,xSize(2:end)]);
     X.Comment(:) = {''};
-    X = trim(X);
+    X = mytrim(X);
 else
     bSize = size(B);
     aSize = size(A);
@@ -90,7 +90,7 @@ else
             X.Comment = cell([1,tmpSize(2:end)]);
             X.Comment(:) = {''};
         end
-        X = trim(X);
+        X = mytrim(X);
     else
         % Size of the numeric result has changed in 1st dimension from the
         % size of the input tseries object. Return a numeric array.

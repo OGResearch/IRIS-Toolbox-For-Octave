@@ -1,12 +1,11 @@
 function X = normalise(X,NormDate,varargin)
 % normalise  Normalise (or rebase) data to particular date.
 %
-%
 % Syntax
 % =======
 %
+%     X = normalise(X)
 %     X = normalise(X,NormDate,...)
-%
 %
 % Input arguments
 % ================
@@ -18,12 +17,10 @@ function X = normalise(X,NormDate,varargin)
 % specified, `'nanStart'` (the first date for which all columns have an
 % observation) will be used.
 %
-%
 % Output arguments
 % =================
 %
 % * `X` [ tseries ] - Normalised time series.
-%
 %
 % Options
 % ========
@@ -31,26 +28,19 @@ function X = normalise(X,NormDate,varargin)
 % * `'mode='` [ `'add'` | *`'mult'`* ]  - Additive or multiplicative
 % normalisation.
 %
-%
 % Description
 % ============
 %
-%
 % Example
 % ========
-%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('tseries.normalise',varargin{:});
 
-if ischar(NormDate)
-    if isdatinp(NormDate)
-        NormDate = textinp2dat(NormDate);
-    else
-        NormDate = get(X,NormDate);
-    end
+if nargin == 1
+    NormDate = 'nanStart';
 end
 
 %--------------------------------------------------------------------------
@@ -59,6 +49,10 @@ if strncmpi(opt.mode,'add',3)
     func = @minus;
 else
     func = @rdivide;
+end
+
+if ischar(NormDate)
+    NormDate = get(X,NormDate);
 end
 
 xSize = size(X.data);
@@ -73,6 +67,6 @@ if length(xSize) > 2
     X.data = reshape(X.data,xSize);
 end
 
-X = trim(X);
+X = mytrim(X);
 
 end

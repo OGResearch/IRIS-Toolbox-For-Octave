@@ -31,7 +31,7 @@
 % ============
 %
 % The `!transition_equations` keyword starts a new block of transition
-% equations (i.e. endogenous equations); the equations can stretch over
+% equations (i.e. endogenous equations); the eqautions can stretch over
 % multiple lines and must be separated by semi-colons. You can have as many
 % equation blocks as you wish in any order in your model file: They all
 % get combined together when you read the model file in.
@@ -46,5 +46,5 @@
 %     !transition_equations
 %         'Euler equation' C{1}/C = R*beta;
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

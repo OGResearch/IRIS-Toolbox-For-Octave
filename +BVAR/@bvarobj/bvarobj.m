@@ -4,8 +4,8 @@ classdef bvarobj
     % Backend IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         name = '';
@@ -36,7 +36,7 @@ classdef bvarobj
                 This.y1(varargin{:}); ...
                 This.g1(varargin{:}); ...
                 ];
-        end % dummyobs( ).
+        end % dummyobs().
         
         
         

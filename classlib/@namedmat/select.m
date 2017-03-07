@@ -33,8 +33,8 @@ function [This,Pos] = select(This,RowSelect,ColSelect)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     ColSelect; %#ok<VUNUS>
@@ -48,7 +48,7 @@ catch %#ok<CTCH>
     end
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('RowSelect',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('ColSelect',@(x) ischar(x) || iscellstr(x));
 pp.parse(RowSelect,ColSelect);

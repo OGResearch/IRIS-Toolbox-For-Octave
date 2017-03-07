@@ -40,11 +40,12 @@ function varargout = get(This,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[varargout{1:nargout}] = get@shared.GetterSetter(This,varargin{:});
+varargout = cell(1,max(1,nargout));
+[varargout{1:max(1,nargout)}] = get@getsetobj(This,varargin{:});
 
 end

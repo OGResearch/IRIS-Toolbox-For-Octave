@@ -1,13 +1,11 @@
-function varargout = get(this, varargin)
+function varargout = get(This,varargin)
 % get  Query model object properties.
-%
 %
 % Syntax
 % =======
 %
 %     Ans = get(M,Query)
 %     [Ans,Ans,...] = get(M,Query,Query,...)
-%
 %
 % Input arguments
 % ================
@@ -16,12 +14,10 @@ function varargout = get(this, varargin)
 %
 % * `Query` [ char ] - Query to the model object.
 %
-%
 % Output arguments
 % =================
 %
 % * `Ans` [ ... ] - Answer to the query.
-%
 %
 % Valid queries to model objects
 % ===============================
@@ -30,91 +26,89 @@ function varargout = get(this, varargin)
 % letter `'y'` is used in various contexts to denote measurement variables
 % or equations, `'x'` transition variables or equations, `'e'` shocks,
 % `'p'` parameters, `'g'` exogenous variables, `'d'` deterministic trend
-% equations, and `'l'` dynamic links. The property names are case
-% insensitive.
+% equations, `'l'` dynamic links, and `'r'` reporting equations. The
+% property names are case insensitive.
 %
 % Steady state
 % -------------
 %
-% * `'Sstate'` - Returns [ struct ] a database with the steady states for all
+% * `'sstate'` - Returns [ struct ] a database with the steady states for all
 % model variables. The steady states are described by complex numbers in
 % which the real part is the level and the imaginary part is the growth
 % rate.
 %
-% * `'SstateLevel'` - Returns [ struct ] a database with the steady-state
+% * `'sstateLevel'` - Returns [ struct ] a database with the steady-state
 % levels for all model variables.
 %
-% * `'SstateGrowth'` - Returns [ struct ] a database with steady-state growth
+% * `'sstateGrowth'` - Returns [ struct ] a database with steady-state growth
 % (first difference for linearised variables, gross rate of growth for
 % log-linearised variables) for all model variables.
 %
-% * `'Dtrends'` - Returns [ struct ] a database with the effect of the
+% * `'dtrends'` - Returns [ struct ] a database with the effect of the
 % deterministic trends on the measurement variables. The effect is
 % described by complex numbers the same way as the steady state.
 %
-% * `'DtrendsLevel'` - Returns [ struct ] a database with the effect of the
+% * `'dtrendsLevel'` - Returns [ struct ] a database with the effect of the
 % deterministic trends on the steady-state levels of the measurement
 % variables.
 %
-% * `'DtrendsGrowth'` - Returns [ struct ] a database with the effect of
+% * `'dtrendsGrowth'` - Returns [ struct ] a database with the effect of
 % deterministic trends on steady-state growth of the measurement variables.
 %
-% * `'Sstate+dtrends'` - Returns [ struct ] the same as 'sstate' except
+% * `'sstate+dtrends'` - Returns [ struct ] the same as 'sstate' except
 % that the measurement variables are corrected for the effect of the
 % deterministic trends.
 %
-% * `'SstateLevel+dtrendsLevel'` - Returns [ struct ] the same as
+% * `'sstateLevel+dtrendsLevel'` - Returns [ struct ] the same as
 % 'sstateLevel' except that the measurement variables are corrected for the
 % effect of the deterministic trends.
 %
-% * `'SstateGrowth+dtrendsGrowth'` - Returns [ struct ] the same as
+% * `'sstateGrowth+dtrendsGrowth'` - Returns [ struct ] the same as
 % `'sstateGrowth'` except that the measurement variables are corrected for
 % the effect of the deterministic trends.
 %
 % Variables, shocks, and parameters
 % ----------------------------------
 %
-% * `'YList'`, `'XList'`, `'EList'`, `'PList'`, `'GList'` - Return [
-% cellstr ] the lists of, respectively, measurement variables (`Y`),
-% transition variables (`X`), shocks (`E`), parameters (`P`), and exogenous
-% variables (`G`), each in order of appearance of the names in declaration
+% * `'yList'`, `'xList'`, `'eList'`, `'pList'`, `'gList'` - Return [
+% cellstr ] the lists of, respectively, measurement variables (`y`),
+% transition variables (`x`), shocks (`e`), parameters (`p`), and exogenous
+% variables (`g`), each in order of appearance of the names in declaration
 % sections of the original model file. Note that the list of parameters,
-% `'PList'`, does not include the names of std deviations or
+% `'pList'`, does not include the names of std deviations or
 % cross-correlations.
 %
-% * `'eYList'` - Returns [ cellstr ] the list of measurement shocks in order
+% * `'eyList'` - Returns [ cellstr ] the list of measurement shocks in order
 % of their appearance in the model code declarations; only those shocks
 % that actually occur in at least one measurement equation are returned.
 %
-% * `'eXList'` - Returns [ cellstr ] the list of transition shocks in order
+% * `'exList'` - Returns [ cellstr ] the list of transition shocks in order
 % of their appearance in the model code declarations; only those shocks
 % that actually occur in at least one transition equation are returned.
 %
-% * `'stDList'` - Returns [ cellstr ] the list of the names of the standard
+% * `'stdList'` - Returns [ cellstr ] the list of the names of the standard
 % deviations for the shocks in order of the appearance of the corresponding
 % shocks in the model code.
 %
-% * `'corRList'` - Returns [ cellstr ] the list of the names of
+% * `'corrList'` - Returns [ cellstr ] the list of the names of
 % cross-correlation coefficients for the shocks in order of the appearance
 % of the corresponding shocks in the model code.
 %
-% * `'stdCorRList'` - Returns [ cellstr ] the list of the names of std
+% * `'stdCorrList'` - Returns [ cellstr ] the list of the names of std
 % deviations and cross-correlation coefficients for the shocks in order of
 % the appearance of the corresponding shocks in the model code.
 %
 % Equations
 % ----------
 %
-% * `'YEqtn'`, `'XEqtn'`, `'DEqtn'`, `'LEqtn'` - Return [ cellstr ] the
-% lists of, respectively, to measurement equations (`Y`), transition
-% equations (`X`), deterministic trends (`D`), and dynamic links (`L`),
-% each in order of appearance in the original model file.
+% * `'yEqtn'`, `'xEqtn'`, `'dEqtn'`, `'lEqtn'`, `'rEqtn'` - Return [
+% cellstr ] the lists of, respectively, to measurement equations (`y`),
+% transition equations (`x`), deterministic trends (`d`), dynamic links
+% (`l`), and reporting equations (`r`), each in order of appearance in the
+% original model file.
 %
 % * `'links'` - Returns [ struct ] a database with the dynamic links with
 % fields names after the LHS name.
-%
-% * `'rpteq'` - Returns [ rpteq ] a reporting equations (rpteq) object (if
-% `!reporting_equations` were included in the model file).
 %
 % First-order Taylor expansion of equations
 % ------------------------------------------
@@ -134,51 +128,51 @@ function varargout = get(this, varargin)
 % * `'descript'` - Returns [ struct ] a database with user descriptions of
 % model variables, shocks, and parameters.
 %
-% * `'YDescript'`, `'XDescript'`, `'EDescript'`, `'PDescript'`,
-% `'GDescript'` - Return [ cellstr ] user descriptions of, respectively,
-% measurement variables (`Y`), transition variables (`X`), shocks (`E`),
-% parameters (`P`), and exogenous variables (`G`).
+% * `'yDescript'`, `'xDescript'`, `'eDescript'`, `'pDescript'`,
+% `'gDescript'` - Return [ cellstr ] user descriptions of, respectively,
+% measurement variables (`y`), transition variables (`x`), shocks (`e`),
+% parameters (`p`), and exogenous variables (`g`).
 %
-% * `'Alias'` - Returns [ struct ] a database with all aliases of model
+% * `'alias'` - Returns [ struct ] a database with all aliases of model
 % variables, shocks, and parameters.
 %
 % * `'yAlias'`, `'xAlias'`, `'eAlias'`, `'pAlias'`, `'gAlias'` - Return [
-% cellstr ] the aliases of, respectively, measurement variables (`Y`),
-% transition variables (`X`), shocks (`E`), parameters (`P`), and exogenous
-% variables (`G`).
+% cellstr ] the aliases of, respectively, measurement variables (`y`),
+% transition variables (`x`), shocks (`e`), parameters (`p`), and exogenous
+% variables (`g`).
 %
 % Equation labels and aliases
 % ----------------------------
 %
-% * `'Labels'` - Returns [ cellstr ] the list of all user labels added to
+% * `'labels'` - Returns [ cellstr ] the list of all user labels added to
 % equations.
 %
-% * `'YLabels'`, `'XLabels'`, `'DLabels'`, `'LLabels'`, `'RLabels'` -
+% * `'yLabels'`, `'xLabels'`, `'dLabels'`, `'lLabels'`, `'rLabels'` -
 % Return [ cellstr ] user labels added, respectively, to measurement
-% equations (`Y`), transition equations (`X`), deterministic trends (`D`),
-% dynamic links (`L`), and reporting equations ('R').
+% equations (`y`), transition equations (`x`), deterministic trends (`d`),
+% dynamic links (`l`), and reporting equations (`r`).
 %
-% * `'EqtnAlias'` - Returns [ cellstr ] the list of all aliases added to
+% * `'eqtnAlias'` - Returns [ cellstr ] the list of all aliases added to
 % equations.
 %
-% * `'YEqtnAlias'`, `'XEqtnAlias'`, `'DEqtnAlias'`, `'LEqtnAlias'`,
-% `'REqtnAlias'` - Return [ cellstr ] the aliases of, respectively,
-% measurement equations (`Y`), transition equations (`X`), deterministic
-% trends (`D`), and dynamic links (`L`).
+% * `'yEqtnAlias'`, `'xEqtnAlias'`, `'dEqtnAlias'`, `'lEqtnAlias'`,
+% `'rEqtnAlias'` - Return [ cellstr ] the aliases of, respectively,
+% measurement equations (`y`), transition equations (`x`), deterministic
+% trends (`d`), dynamic links (`l`), and reporting equations (`r`).
 %
 % Parameter values
 % -----------------
 %
-% * `'Corr'` - Returns [ struct ] a database with current cross-correlation
+% * `'corr'` - Returns [ struct ] a database with current cross-correlation
 % coefficients of shocks.
 %
-% * `'NonzeroCorr'` - Returns [ struct ] a database with current nonzero
+% * `'nonzeroCorr'` - Returns [ struct ] a database with current nonzero
 % cross-correlation coefficients of shocks.
 %
-% * `'Parameters'` - Returns [ struct ] a database with current parameter
+% * `'parameters'` - Returns [ struct ] a database with current parameter
 % values, including the std devs and non-zero corr coefficients.
 %
-% * `'Std'` - Returns [ struct ] a database with current std deviations of
+% * `'std'` - Returns [ struct ] a database with current std deviations of
 % shocks.
 %
 % Eigenvalues
@@ -199,61 +193,66 @@ function varargout = get(this, varargin)
 % Model structure, solution, build
 % ---------------------------------
 %
-% * `'Build'` - Returns [ numeric ] IRIS version number under which the
+% * `'build'` - Returns [ numeric ] IRIS version number under which the
 % model object has been built.
 %
-% * `'Log'` - Returns [ struct ] a database with `true` for each
+% * `'eqtnBlk'` - Returns [ cell ] of cell str with the recursive block
+% structure of steady-state equations (if the block-recursive analysis has
+% already been performed).
+%
+% * `'log'` - Returns [ struct ] a database with `true` for each
 % log-linearised variables, and `false` for each linearised variable.
 %
-% * `'LogList'` - Returns [ cellstr ] the list of log variables.
+% * `'maxLag'` - Returns [ numeric ] the maximum lag in the model.
 %
-% * `'MaxLag'` - Returns [ numeric ] the maximum lag in the model.
+% * `'maxLead'` - Returns [ numeric ] the maximum lead in the model.
 %
-% * `'MaxLead'` - Returns [ numeric ] the maximum lead in the model.
+% * `'nameBlk'` - Returns [ cell ] of cell str with the recursive block
+% structure of variable names (if the block-recursive analysis has already
+% been performed).
 %
-% * `'Stationary'` - Returns [ struct ] a database with `true` for each
+% * `'stationary'` - Returns [ struct ] a database with `true` for each
 % stationary variables, and `false` for each unit-root (non-stationary)
 % variables (under current solution).
 %
-% * `'NonStationary'` - Returns [ struct ] a database with `true` for each
+% * `'nonStationary'` - Returns [ struct ] a database with `true` for each
 % unit-root (non-stationary) varible, and `false` for each stationary
 % variable (under current solution).
 %
-% * `'StationaryList'` - Returns [ cellstr ] the list of stationary
+% * `'stationaryList'` - Returns [ cellstr ] the list of stationary
 % variables (under current solution).
 %
-% * `'NonStationaryList'` - Returns [ cellstr ] cell with the list of
+% * `'nonStationaryList'` - Returns [ cellstr ] cell with the list of
 % unit-root (non-stationary) variables (under current solution).
 %
-% * `'InitCond'` - Returns [ cellstr ] the list of the lagged transition
+% * `'initCond'` - Returns [ cellstr ] the list of the lagged transition
 % variables that need to be supplied as initial conditions in simulations
 % and forecasts. The list of the initial conditions is solution-specific as
 % the state-spece coefficients at some of the lags may evaluate to zero
 % depending on the current parameters.
 %
-% * `'YVector'` - Returns [ cellstr ] the list of measurement variables in
+% * `'yVector'` - Returns [ cellstr ] the list of measurement variables in
 % order of their appearance in the rows and columns of state-space matrices
-% (effectively identical to `'YList'`) from the
+% (effectively identical to `'yList'`) from the
 % [`model/sspace`](model/sspace) function.
 %
-% * `'XVector'` - Returns [ cellstr ] the list of transition variables, and
+% * `'xVector'` - Returns [ cellstr ] the list of transition variables, and
 % their auxiliary lags and leads, in order of their appearance in the rows
 % and columns of state-space matrices from the [`model/sspace`](model/sspace) function.
 %
-% * `'Xfvector'` - Returns [ cellstr ] the list of forward-looking (i.e.
+% * `'xfVector'` - Returns [ cellstr ] the list of forward-looking (i.e.
 % non-predetermined) transition variables, and their auxiliary lags and
 % leads, in order of their appearance in the rows and columns of
 % state-space matrices from the [`model/sspace`](model/sspace) function.
 %
-% * `'XbVector'` - Returns [ cellstr ] the list of backward-looking (i.e.
+% * `'xbVector'` - Returns [ cellstr ] the list of backward-looking (i.e.
 % predetermined) transition variables, and their auxiliary lags and leads,
 % in order of their appearance in the rows and columns of state-space
 % matrices from the [`model/sspace`](model/sspace) function.
 %
-% * `'EVector'` - Returns [ cellstr ] the list of the shocks in order of
+% * `'eVector'` - Returns [ cellstr ] the list of the shocks in order of
 % their appearance in the rows and columns of state-space matrices
-% (effectively identical to `'EList'`) from the [`model/sspace`](model/sspace) function.
-%
+% (effectively identical to `'eList'`) from the [`model/sspace`](model/sspace) function.
 %
 % Description
 % ============
@@ -278,7 +277,6 @@ function varargout = get(this, varargin)
 % models, the lags and leads can be removed and each simply replaced with
 % the current date of the respective variable.
 %
-%
 % Example
 % ========
 %
@@ -299,9 +297,15 @@ function varargout = get(this, varargin)
 %     w{k}
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-[varargout{1:nargout}] = get@shared.GetterSetter(this, varargin{:});
+P = inputParser();
+P.addRequired('Query',@iscellstr);
+P.parse(varargin);
+
+%--------------------------------------------------------------------------
+
+[varargout{1:nargout}] = get@getsetobj(This,varargin{:});
 
 end

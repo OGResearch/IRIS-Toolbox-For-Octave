@@ -1,7 +1,7 @@
 classdef arrayobj < report.tabularobj
     
     properties
-        data = { };
+        data = {};
     end
     
     methods
@@ -19,8 +19,8 @@ classdef arrayobj < report.tabularobj
                 'separator','\medskip\par',@ischar,true, ...
                 'typeface','',@ischar,false, ...
                 }];
-            This.vline = [ ];
-            This.highlight = [ ];
+            This.vline = [];
+            This.highlight = [];
             This.nlead = 0;
         end
         
@@ -28,7 +28,7 @@ classdef arrayobj < report.tabularobj
             if ~isempty(varargin)
                 if iscell(varargin{1})
                     This.data = varargin{1};
-                    varargin(1) = [ ];
+                    varargin(1) = [];
                 else
                     utils.error('report', ...
                         'Input data for array objects must be cell arrays.');

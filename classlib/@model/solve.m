@@ -1,52 +1,54 @@
-function [this, nPath, eig_] = solve(this, varargin)
+function [This,NPath,EigVal] = solve(This,varargin)
 % solve  Calculate first-order accurate solution of the model.
-%
 %
 % Syntax
 % =======
 %
 %     M = solve(M,...)
 %
-%
 % Input arguments
 % ================
 %
-% * `M` [ model ] - Paramterised model object. Nonlinear models must also
+% * `M` [ model ] - Paramterised model object. Non-linear models must also
 % have a steady state values assigned.
-%
 %
 % Output arguments
 % =================
 %
 % * `M` [ model ] - Model with newly computed solution.
 %
-%
 % Options
 % ========
 %
-% * `'Expand='` [ numeric | *`0`* | `NaN` ] - Number of periods ahead up to
+% * `'expand='` [ numeric | *`0`* | `NaN` ] - Number of periods ahead up to
 % which the model solution will be expanded; if `NaN` the matrices needed
 % to support solution expansion are not calculated and stored at all and
 % the model cannot be used later in simulations or forecasts with
 % anticipated shocks or plans.
 %
-% * `'Eqtn='` [ *`all`* | `'measurement'` | `'transition'` ] - Update
+% * `'eqtn='` [ *`'all'`* | `'measurement'` | `'transition'` ] - Update
 % existing solution in the measurement block, or the transition block, or
 % both.
 %
-% * `'Error='` [ `true` | *`false`* ] - Throw an error if no unique stable
+% * `'error='` [ `true` | *`false`* ] - Throw an error if no unique stable
 % solution exists; if `false`, a warning message only will be displayed.
 %
-% * `'Progress='` [ `true` | *`false`* ] - Display progress bar in the
+% * `'linear='` [ *`@auto`* | `true` | `false` ] - Solve the model using a
+% linear approach, i.e. differentiating around zero and not the currently
+% assigned steady state.
+%
+% * `'progress='` [ `true` | *`false`* ] - Display progress bar in the
 % command window.
 %
-% * `'Select='` [ *`true`* | `false` ] - Automatically detect which
+% * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links before
+% computing the solution.
+%
+% * `'select='` [ *`true`* | `false` ] - Automatically detect which
 % equations need to be re-differentiated based on parameter changes from
 % the last time the system matrices were calculated.
 %
-% * `'Warning='` [ *`true`* | `false` ] - Display warnings produced by this
+% * `'warning='` [ *`true`* | `false` ] - Display warnings produced by this
 % function.
-%
 %
 % Description
 % ============
@@ -70,59 +72,58 @@ function [this, nPath, eig_] = solve(this, varargin)
 % number of attempts is limited to `N-1` at most where `N` is the total
 % number of equations.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox. 2008/10/20.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox. 2008/10/20.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-TYPE = @int8;
-
-opt = passvalopt('model.solve', varargin{:});
-opt = prepareSolve(this, 'verbose', opt);
+opt = passvalopt('model.solve',varargin{1:end});
+opt = mysolveopt(This,'verbose',opt);
 
 %--------------------------------------------------------------------------
 
 % Refresh dynamic links.
-if any( this.Equation.Type==TYPE(4) )
-    this = refresh(this);
+if opt.refresh && ~isempty(This.Refresh)
+    This = refresh(This);
 end
 
 if opt.warning
-    % Warning if some parameters are NaN, or some log-lin variables have
-    % non-positive steady state.
-    chkList = { 'parameters.dynamic', 'log' };
-    if ~this.IsLinear
-        chkList = [ chkList, {'sstate'} ];
-    end
-    chkQty(this, Inf, chkList{:});
+    % Warning if some log-lin variables have non-positive steady state.
+    mychk(This,Inf,'parameters','log');
 end
 
 % Calculate solutions for all parameterisations, and store expansion
 % matrices.
-[this, nPath, nanDeriv, sing2, bk] = solveFirstOrder(this, Inf, opt);
+[This,NPath,nanDeriv,sing2] = mysolve(This,Inf,opt);
 
-if (opt.warning || opt.error) && any(nPath~=1)
-    throwErrWarn( );
+if (opt.warning || opt.error) && any(NPath ~= 1)
+    doErrWarn();
 end
 
-if nargout>2
-    eig_ = model.Variant.get(this.Variant, 'Eigen', ':');
+if nargout > 2
+    EigVal = This.eigval;
 end
 
-return
+
+% Nested functions...
 
 
+%**************************************************************************
 
-    function throwErrWarn( )
+    
+    function doErrWarn()
         if opt.error
+            % @@@@@ MOSW
             msgFunc = @(varargin) utils.error(varargin{:});
         else
+            % @@@@@ MOSW
             msgFunc = @(varargin) utils.warning(varargin{:});
         end
-        [body, args] = solveFail(this, nPath, nanDeriv, sing2, bk);
-        msgFunc('model:solve', body, args{:});
-    end
+        [body,args] = mysolvefail(This,NPath,nanDeriv,sing2);
+        msgFunc('model:solve',body,args{:});
+    end % doErrWarn()
+
+
 end

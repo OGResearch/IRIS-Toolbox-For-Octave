@@ -4,8 +4,8 @@ function epstopdf(List,CmdArgs,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     CmdArgs; %#ok<VUNUS>
@@ -14,7 +14,7 @@ catch %#ok<CTCH>
 end
 
 % Parse inputarguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('List',@(x) ischar(x) || iscellstr(x));
 pp.addRequired('CmdArgs',@(x) ischar(x) || isempty(x));
 pp.parse(List,CmdArgs);
@@ -29,10 +29,10 @@ if ischar(List)
     List = strtrim(List);
 end
 
-thisDir = pwd( );
+thisDir = pwd();
 epstopdf = irisget('epstopdfpath');
 if isempty(epstopdf)
-    utils.error('latex:epstopdf',...
+    error('iris:latex',...
         'EPSTOPDF path unknown. Cannot convert EPS to PDF files.');
 end
 
@@ -40,7 +40,7 @@ end
 % Otherwise, it's up to the user to export the path at the beginning of the
 % Matlab executable.
 changePath = false;
-if isunix( )
+if isunix()
     try %#ok<TRYNC>
         path0 = getenv('PATH');
         [~,x0] = system('which gs');
@@ -60,7 +60,7 @@ for i = 1 : length(List)
         cd(fPath);
     end
     tmp = dir([fTitle,fExt]);
-    tmp([tmp.isdir]) = [ ];
+    tmp([tmp.isdir]) = [];
     for j = 1 : length(tmp)
         jFile = tmp(j).name;
         if opt.display
@@ -69,7 +69,9 @@ for i = 1 : length(List)
         command = ['"',epstopdf,'" ',jFile,' ',CmdArgs];
         system(command);
     end
-    cd(thisDir);
+    while ~isequal(pwd(),thisDir)
+        cd(thisDir);
+    end
 end
 
 % Clean up.

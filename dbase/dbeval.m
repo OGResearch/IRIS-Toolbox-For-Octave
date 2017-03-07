@@ -1,18 +1,17 @@
-function varargout = dbeval(d, varargin)
+function varargout = dbeval(D,varargin)
 % dbeval  Evaluate expression in specified database.
 %
 % Syntax
 % =======
 %
-%     [Value1, Value2, ...] = dbeval(D, Exn1, Exn2, ...)
-%     [Value1, Value2, ...] = dbeval(M, Exn1, Exn2, ...)
+%     [Value1,Value2,...] = dbeval(D,Expr1,Expr2,...)
+%     [Value1,Value2,...] = dbeval(M,Expr1,Expr2,...)
 %
 %
 % Syntax with steady-state references
 % ====================================
 %
-%     [Value1, Value2, ...] = dbeval(D, Steady, Exn1, Exn2, ...)
-%
+%     [Value1,Value2,...] = dbeval(D,SS,Expr1,Expr2,...)
 %
 % Input arguments
 % ================
@@ -23,32 +22,26 @@ function varargout = dbeval(d, varargin)
 % * `M` [ model ] - Model object whose steady-state database will be used
 % to evaluate the expression.
 %
-% * `Exn1`, `Exn2`, ... [ char ] - Expreessions that will be evaluated
-% within the context of the input database.
-%
-% * `Steady` [ struct | model ] - Database or model object from which
-% values will be taken to replace steady-state references in expressions.
-%
+% * `Expr1`, `Expr2`, ... [ char ] - Expressions that will be evaluated
+% using the fields of the input database.
 %
 % Output arguments
 % =================
 %
 % * `Value1`, `Value2`, ... [ ... ] - Resulting values.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 % Create a database with two fields and one subdatabase with one field,
 %
-%     d = struct( );
+%     d = struct();
 %     d.a = 1;
 %     d.b = 2;
-%     d.dd = struct( );
+%     d.dd = struct();
 %     d.dd.c = 3;
 %     display(d)
 %     d =
@@ -58,135 +51,106 @@ function varargout = dbeval(d, varargin)
 %
 % Use the `dbeval` function to evaluate an expression within the database
 %
-%     dbeval(d, 'a+b+dd.c')
+%     dbeval(d,'a+b+dd.c')
 %     ans =
 %           7
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if ~isempty(varargin) && (isstruct(varargin{1}) || isa(varargin{1}, 'model'))
-    ss = varargin{1};
-    varargin(1) = [ ];
+if false % ##### MOSW
+    className = 'modelobj';
 else
-    ss = struct([ ]);
+    className = 'model'; %#ok<UNRCH>
+end
+
+if ~isempty(varargin) ...
+        && (isstruct(varargin{1}) || isa(varargin{1},className))
+    SS = varargin{1};
+    varargin(1) = [];
+else
+    SS = struct([]);
 end
 
 % Parse required input arguments.
-pp = inputParser( );
-pp.addRequired('D', @(x) isstruct(x) || isa(x, 'model'));
-pp.addRequired('Steady', @(x) isstruct(x) || isa(x, 'model'));
-pp.addRequired('Exn', @(x) isempty(x) || iscellstr(x{1}) || iscellstr(x));
-pp.parse(d, ss, varargin);
+pp = inputParser();
+pp.addRequired('D',@(x) isstruct(x) || ismodel(x));
+pp.addRequired('SS',@(x) isstruct(x) || ismodel(x));
+pp.addRequired('Expr',@(x) isempty(x) || iscellstr(x{1}) || iscellstr(x));
+pp.parse(D,SS,varargin);
 
 if isempty(varargin)
-    varargout = { };
+    varargout = {};
     return
 elseif iscellstr(varargin{1})
-    exn = varargin{1};
-    isMultiple = false;
+    expr = varargin{1};
+    multiple = false;
 else
-    exn = varargin;
-    isMultiple = true;
+    expr = varargin;
+    multiple = true;
 end
 
-if isa(d, 'model')
-    d = get(d, 'steadyLevel');
+if isa(D,'model')
+    D = get(D,'sstateLevel');
 end
 
-if isa(ss, 'model')
-    ss = get(ss, 'steadyLevel');
+if isa(SS,'model')
+    SS = get(SS,'sstateLevel');
 end
 
 %--------------------------------------------------------------------------
 
-nExn = numel(exn);
-exn = strtrim(exn);
-list1 = fieldnames(d).';
-list2 = fieldnames(ss).';
-prefix1 = [char(1), '.'];
-prefix2 = [char(2), '.'];
+expr = strtrim(expr);
+list1 = fieldnames(D).';
+list2 = fieldnames(SS).';
+prefix1 = [char(1),'.'];
+prefix2 = [char(2),'.'];
 for i = 1 : length(list2)
-    exn = regexprep(...
-        exn, ...
-        ['&\<' , list2{i}, '\>'], ...
-        [prefix2, list2{i}] ...
-        );
+    expr = regexprep(expr,['&\<',list2{i},'\>'],[prefix2,list2{i}]);
 end
 for i = 1 : length(list1)
-    exn = regexprep( ...
-        exn, ...
-        ['(?<!\.)\<' , list1{i}, '\>'], ...
-        [prefix1, list1{i}] ...
-        );
+    expr = regexprep(expr,['(?<!\.)\<',list1{i},'\>'],[prefix1,list1{i}]);
 end
-exn = strrep(exn, prefix1, 'd.');
-exn = strrep(exn, prefix2, 'ss.');
+
+expr = strrep(expr,prefix1,'D.');
+expr = strrep(expr,prefix2,'SS.');
 
 % Replace all possible assignments and equal signs used in IRIS codes.
 % Non-linear simulation earmarks.
-replaceEqualSigns( );
+expr = strrep(expr,'==','=');
+expr = strrep(expr,'=#','=');
+% Dtrend equations.
+expr = strrep(expr,'+=','=');
+expr = strrep(expr,'*=','=');
+% Identities.
+expr = strrep(expr,':=','=');
 
-% Convert x=y and x+=y into x-(y) so that we can evaluate LHS minus RHS,
-% and add semicolons.
-handleLhsRhs( );
+% Convert x=y and x+=y into x-(y) so that we can evaluate LHS minus RHS.
+% Note that using strrep is faster than regexprep.
+index = strfind(expr,'=');
+for i = 1 : length(index)
+    if length(index{i}) == 1
+        % Remove trailing colons.
+        if expr{i}(end) == ';'
+            expr{i}(end) = '';
+        end
+        expr{i} = [expr{i}(1:index{i}-1),'-(',expr{i}(index{i}+1:end),')'];
+    end
+end
 
-varargout = cell(size(exn));
-for i = 1 : nExn
+varargout = cell(size(expr));
+for i = 1 : length(expr)
     try
-        varargout{i} = eval(exn{i});
+        varargout{i} = eval(expr{i});
     catch %#ok<CTCH>
         varargout{i} = NaN;
     end
 end
 
-if ~isMultiple
+if ~multiple
     varargout{1} = varargout;
-    varargout(2:end) = [ ];
+    varargout(2:end) = [];
 end
 
-return
-
-
-
-
-    function replaceEqualSigns( )
-        % NB: strrep is much faster than regexprep.
-        exn = strrep(exn, '==' , '=');
-        exn = strrep(exn, '=#' , '=');
-        % Dtrend equations.
-        exn = strrep(exn, '+=' , '=');
-        exn = strrep(exn, '*=' , '=');
-        % Identities.
-        exn = strrep(exn, ':=' , '=');
-        % Cut off steady part after the first occurrence of !!.
-        pos = strfind(exn, '!!');
-        ixEmpty = ~cellfun(@isempty, pos);
-        if any(ixEmpty)
-            exn(~ixEmpty) = regexprep(exn(~ixEmpty), '!![^;]*', '');
-        end
-    end
-
-
-
-
-    function handleLhsRhs( )
-        % NB: strrep is much faster than regexprep.        
-        for ii = 1 : nExn
-            c = exn{ii};
-            posEqualSign = strfind(c, '=');
-            if length(posEqualSign)==1
-                % Remove trailing semicolons before combining LHS and RHS.
-                while ~isempty(c) && c(end)==';'
-                    c(end) = '';
-                end
-                c = [c(1:posEqualSign-1), '-(' , c(posEqualSign+1:end), ');'];
-            elseif isempty(c) || c(end)~=';'
-                % Add semicolon if needed.
-                c = [c, ';']; %#ok<AGROW>
-            end
-            exn{ii} = c;
-        end
-    end
 end

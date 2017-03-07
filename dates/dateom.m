@@ -1,39 +1,35 @@
-function eom = dateom(dat)
+function D = dateom(D)
 % dateom  End of month for the specified daily date.
 %
 % Syntax
 % =======
 %
-%     eom = dateom(dat)
-%
+%     Eom = dateom(D)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - Daily serial date number.
-%
+% * `D` [ numeric ] - Daily serial date number.
 %
 % Output arguments
 % =================
 %
-% * `eom` [ numeric ] - Daily serial date number for the last day of the
-% same month as `dat`.
-%
+% * `Eom` [ numeric ] - Daily serial date number for the last day of the
+% same month as `D`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[y, m] = datevec( double(dat) );
-eom = datenum([y, m, eomday(y, m)]);
+[y,m] = datevec(D);
+D = datenum([y,m,eomday(y,m)]);
 
 end

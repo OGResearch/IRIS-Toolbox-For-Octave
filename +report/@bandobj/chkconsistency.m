@@ -4,27 +4,27 @@ function chkconsistency(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % TODO: Finish this function.
 
 %--------------------------------------------------------------------------
 
 if This.options.relative
-    doRelative( );
+    doRelative();
 else
-    doAbsolute( );
+    doAbsolute();
 end
 
 % Nested functions.
 
 %**************************************************************************
-    function doRelative( )
-    end % dorelative( ).
+    function doRelative()
+    end % dorelative().
 
 %**************************************************************************
-    function doAbsolute( )
-    end % doabsolute( ).
+    function doAbsolute()
+    end % doabsolute().
 
 end

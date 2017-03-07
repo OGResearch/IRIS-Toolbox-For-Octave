@@ -31,8 +31,8 @@ function This = integrate(This,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 ny = size(This.A,1);
 nAlt = size(This.A,3);
@@ -41,10 +41,12 @@ opt = passvalopt('VAR.integrate',varargin{:});
 
 % Make options.applyto logical index.
 if isnumeric(opt.applyto)
-    ApplyTo = false(1,ny);
-    ApplyTo(opt.applyto) = true;
-elseif isequal(opt.applyto,@all)
-    ApplyTo = true(1,ny);
+    if isequal(opt.applyto,Inf)
+        ApplyTo = true(1,ny);
+    else
+        ApplyTo = false(1,ny);
+        ApplyTo(opt.applyto) = true;
+    end
 elseif islogical(opt.applyto)
     ApplyTo = opt.applyto(:).';
     ApplyTo = ApplyTo(1:ny);

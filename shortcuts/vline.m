@@ -3,8 +3,8 @@ function varargout = vline(varargin)
 %
 % See help on [`grfun.vline`](grfun/vline).
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 [varargout{1:nargout}] = grfun.vline(varargin{:});
 

@@ -42,8 +42,8 @@ function varargout = ferf(This,Time,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 opt = passvalopt('VAR.response',varargin{:});
 
@@ -56,6 +56,6 @@ if ~isempty(invalid)
         invalid{:});
 end
 
-[varargout{1:nargout}] = myresponse(This,Time,[ ],select,opt);
+[varargout{1:nargout}] = myresponse(This,Time,[],select,opt);
 
 end

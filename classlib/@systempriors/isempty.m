@@ -24,15 +24,15 @@ function Flag = isempty(This,varargin)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 if isempty(varargin)
-    Flag = isempty(This.Eval);
+    Flag = isempty(This.eval);
 else
-    Flag = isempty(This.SystemFn.(lower(varargin{1})).page);
+    Flag = isempty(This.systemFunc.(lower(varargin{1})).page);
 end
 
 end

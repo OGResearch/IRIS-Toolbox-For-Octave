@@ -1,79 +1,109 @@
-function leg = plot(this, hAx)
-% plot  Plot fanchart object.
+function Leg = plot(This,Ax)
+% plot  [Not a public function] Plot fanchart object.
 %
 % Backend IRIS class.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team & Sergey Plotnikov.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Sergey Plotnikov.
 
 %--------------------------------------------------------------------------
 
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
 % Create the line plot first using the parent's method.
-[leg, h, time, cData, grid] = plot@report.seriesobj(this, hAx);
+[LegLin,h,time,cData,grid] = plot@report.seriesobj(This,Ax);
 grid = grid(:);
-stdata = this.std(time);
-probdata = this.prob;
-nint = size(probdata, 1);
-nextplot = get(hAx, 'nextPlot');
-set(hAx, 'nextPlot', 'add');
-pt = nan(1, nint);
-stdata = stdata.*this.options.factor;
-asym = this.options.asym;
+stdata = This.std(time);
+[probdata,ixSort] = sort(This.prob);
+nint = size(probdata,1);
+nextplot = get(Ax,'nextPlot');
+set(Ax,'nextPlot','add');
+pt = nan(1,nint);
+stdata = stdata.*This.options.factor;
+asym = This.options.asym;
 if istseries(asym)
     asym = asym(time);
     asym(isnan(asym)) = 1;
 end
 lstData = stdata.*(2./(1 + asym));
 hstData = stdata.*(2.*asym./(1+asym));
-leg = [cell(1, nint) leg];
+
+
+lgd = This.options.fanlegend;
+if iscell(lgd)
+    if numel(lgd) < length(probdata)
+        for i = numel(lgd)+1:length(probdata)
+            lgd{i} = sprintf('%g%%',100*This.prop(i));
+        end
+    end
+    lgd = lgd(ixSort);
+end
+Leg = cell(1,nint);
+legEntToDel = [];
+
+% Specify z-axis positions of fanchart bands
+zPosRange = linspace(-1,-2,nint+2);
+zPosRange = zPosRange(2:end-1);
 
 for i = 1 : nint
     whi = probdata(i);
-    % ldata = -norminv(0.5*probdata(i)+0.5)*lstdata;
     lData = sqrt(2)*erfcinv(probdata(i)+1)*lstData;
-    % hdata = norminv(0.5*probdata(i)+0.5)*hstdata;
     hData = -sqrt(2)*erfcinv(probdata(i)+1)*hstData;
     vData = [lData;flipud(hData)];
     vData = vData + [cData;flipud(cData)];
-    pt(i) = patch([grid;flipud(grid)], vData, 'white');
-    ch = get(hAx, 'children');
-    ch(ch == pt(i)) = [ ];
-    ch(end+1) = pt(i); %#ok<AGROW>
-    set(hAx, 'children', ch);
-    lineCol = get(h, 'color');
-    faceCol = whi*[1, 1, 1] + (1-whi)*lineCol;
-    if this.options.exclude(min([i, end]))
+    zPos = zPosRange(i)*ones(size(vData));
+    pt(i) = patch([grid;flipud(grid)],vData,zPos,'white');
+    lineCol = get(h,'color');
+    faceCol = whi*[1,1,1] + (1-whi)*lineCol;
+    if This.options.exclude(min([i,end]))
         faceCol = 'none';
     end
-    set(pt(i), 'faceColor', faceCol, ...
-        'edgeColor', 'none', ...
-        'lineStyle', '-', ...
-        'tag', 'fanchart', ...
+    set(pt(i),'faceColor',faceCol, ...
+        'edgeColor','none', ...
+        'lineStyle','-', ...
+        'tag','fanchart', ...
         'userData', whi);
-    lgd = this.options.fanlegend;
-    if isequal(lgd, Inf)
-        if this.options.exclude(min([i, end]))
+    if isequal(lgd,Inf)
+        if This.options.exclude(min([i,end]))
             grfun.excludefromlegend(pt(i));
-            leg(nint+1-i) = [ ];
+            legEntToDel = [legEntToDel,i];
         else
-            leg{nint+1-i} = sprintf('%g%%', 100*whi);
-        end;
+            Leg{i} = sprintf('%g%%',100*whi);
+        end
     elseif iscell(lgd)
-        if ~all(isnan(lgd{i})) && ~this.options.exclude(min([i, end]))
-            leg{nint+1-i} = lgd{i};
-        else
+        if ischar(lgd{i}) && ~This.options.exclude(min([i,end]))
+            Leg{i} = lgd{i};
+        elseif isnan(lgd{i}) || This.options.exclude(min([i,end]))
             grfun.excludefromlegend(pt(i));
-            leg(nint+1-i) = [ ];
+            legEntToDel = [legEntToDel,i];
         end
     end
 end
 
-if isequaln(this.options.fanlegend, NaN)
+% Remove legend entries of bands which have been excluded from legend
+Leg(legEntToDel) = [];
+
+% Make sure zLim includes zPosRange
+zLim = get(Ax,'zLim');
+zLim(1) = min([zLim(1),zPosRange]);
+zLim(2) = max(zLim(2),0);
+set(Ax,'zLim',zLim);
+
+% Remove all fanchart entries
+if isequalnFunc(This.options.fanlegend,NaN)
     grfun.excludefromlegend(pt(:));
-    leg(1:nint) = [ ];
+    Leg(1:nint) = [];
 end
 
-set(hAx, 'nextPlot', nextplot);
+% Combine line and fanchart legend entried
+Leg = [LegLin, Leg];
+
+set(Ax,'nextPlot',nextplot);
 
 end

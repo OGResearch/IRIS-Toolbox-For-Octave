@@ -24,32 +24,37 @@ function yaxistight(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && all(ishghandle(varargin{1}))
     Ax = varargin{1}(:).';
-    varargin(1) = [ ]; %#ok<NASGU>
+    varargin(1) = []; %#ok<NASGU>
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
 %--------------------------------------------------------------------------
 
 for iAx = Ax
-    if true % ##### MOSW
-        lim = objbounds(iAx);
+    
+    if false % ishg2()
+%         try %#ok<TRYNC>
+%             set(iAx,'yLimSpec','tight');
+%         end
     else
-        lim = mosw.objbounds(iAx); %#ok<UNRCH>
+        % @@@@@ MOSW
+        lim = mosw.objbounds(iAx);
+        if isempty(lim)
+            yLim = get(iAx,'yLim');
+        else
+            yLim = lim(3:4);
+        end
+        if any(~isinf(yLim)) && yLim(1) < yLim(2)
+            set(iAx,'yLim',yLim,'yLimMode','manual');
+        end
     end
-    if isempty(lim)
-        yLim = get(iAx,'yLim');
-    else
-        yLim = lim(3:4);
-    end
-    if any(~isinf(yLim)) && yLim(1) < yLim(2)
-        set(iAx,'yLim',yLim,'yLimMode','manual');
-    end
+    
 end
 
 end

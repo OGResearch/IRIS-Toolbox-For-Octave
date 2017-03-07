@@ -1,112 +1,104 @@
-function this = addgroup(this, groupName, lsContents)
+function This = addgroup(This,GroupName,GroupContentsList)
 % addgroup  Add measurement variable group or shock group to grouping object.
 %
 % Syntax
 % =======
 %
-%     g = addgroup(g, groupName, groupContents)
-%
+%     G = addgroup(G,GroupName,GroupContents)
 %
 % Input arguments
 % ================
 %
 % * `G` [ grouping ] - Grouping object.
 %
-% * `groupName` [ char ] - New group name.
+% * `GroupName` [ char ] - Group name.
 %
-% * `groupContents` [ char | cell | `@all` ] - Names of shocks or
+% * `GroupContents` [ char | cell | `Inf` ] - Names of shocks or
 % measurement variables to be included in the new group; `GroupContents`
-% can also be regular expressions; `@all` means the group will contain all
-% shocks or measurement variables not included in any existing group.
-%
+% can also be regular expressions; `Inf` the group will contain all shocks
+% or measurement variables not included in any existing group.
 %
 % Output arguments
 % =================
 %
 % * `G` [ grouping ] - Grouping object with the new group.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('g', @(x) isa(x, 'grouping'));
-pp.addRequired('groupName', @(x) ~isempty(x) && ischar(x));
-pp.addRequired('groupContents', @(x) ~isempty(x) ...
-    && (iscell(x) || ischar(x)) || isequal(x, Inf) );
-pp.parse(this, groupName, lsContents);
+pp = inputParser() ;
+pp.addRequired('G',@(x) isa(x,'grouping')) ;
+pp.addRequired('GroupName',@(x) ~isempty(x) && ischar(x)) ;
+pp.addRequired('GroupContents',@(x) ~isempty(x) ...
+    && (iscell(x) || ischar(x)) || isequal(x,Inf) ) ;
+pp.parse(This,GroupName,GroupContentsList) ;
 
-if ischar(lsContents)
-    lsContents = regexp(lsContents, '[^ ,;]+', 'match');
+
+if ischar(GroupContentsList)
+    GroupContentsList = regexp(GroupContentsList,'[^ ,;]+','match') ;
 end
 
 %--------------------------------------------------------------------------
 
-nList = length(this.List);
-ixValid = true(size(lsContents));
-if isequal(lsContents, Inf) || isequal(lsContents, @all)
-    groupContents = this.OtherContents;
+nList = length(This.list) ;
+valid = true(size(GroupContentsList)) ;
+if isequal(GroupContentsList,Inf)
+    groupContents = This.otherContents ;
     if isempty(groupContents)
-        groupContents = true(nList, 1);
+        groupContents = true(nList,1) ;
     end
 else
-    groupContents = false(1, nList);
-    for i = 1 : length(lsContents)
-        ind = textfun.matchindex(this.List, lsContents{i});
-        ixValid(i) = any(ind);
-        groupContents = groupContents | ind;
+    groupContents = false(1,nList) ;
+    for i = 1 : length(GroupContentsList)
+        ind = strfun.matchindex(This.list,GroupContentsList{i}) ;
+        valid(i) = any(ind);
+        groupContents = groupContents | ind ;
     end
     groupContents = groupContents.';
 end
 
-chkName( );
+doChkName() ;
 
-ind = strcmpi(this.GroupNames, groupName);
+ind = strcmpi(This.groupNames,GroupName) ;
 if any(ind)
     % Group already exists, modify
-    this.GroupNames{ind} = groupName;
-    this.GroupContents{ind} = groupContents;
+    This.groupNames{ind} = GroupName ;
+    This.groupContents{ind} = groupContents ;
 else
     % Add new group
-    this.GroupNames = [this.GroupNames, groupName];
-    this.GroupContents = [this.GroupContents, {groupContents}];
+    This.groupNames = [This.groupNames, GroupName] ;
+    This.groupContents = [This.groupContents, {groupContents}] ;
 end
 
-chkUnique( );
-
-return
+doChkUnique() ;
 
 
-
-
-    function chkUnique( )
-        multiple = sum(double([this.GroupContents{:}]), 2) > 1;
+    function doChkUnique()
+        multiple = sum(double([This.groupContents{:}]),2) > 1 ;
         if any(multiple)
-            throw( ...
-                exception.Base('Grouping:MultipleOccurrence', 'error'), ...
-                this.Type, this.List{multiple} ...
-                );
+            utils.error('grouping', ...
+                ['This ',This.type,' name is assigned to ', ...
+                'multiple groups: ''%s''.'], ...
+                This.list{multiple}) ;
         end
     end
 
 
-
-
-    function chkName( )
-        if any(~ixValid)
-            throw( ...
-                exception.Base('Grouping:InvalidName', 'error'), ...
-                this.Type, lsContents{~ixValid} ...
-                );
-
+    function doChkName()
+        if any(~valid)
+            utils.error('grouping', ...
+                ['This is not a valid %s name ', ...
+                'in the grouping object: ''%s''.'], ...
+                This.type,GroupContentsList{~valid}) ;
         end
     end
+
+
 end

@@ -18,7 +18,7 @@ else
     type = 'array';
 end
 
-[nrow,ncol] = getsize( );
+[nrow,ncol] = getsize();
 br = sprintf('\n');
 c = '';
 for row = 1 : nrow
@@ -47,7 +47,7 @@ end
 
 char2file(c,FNAME);
 
-    function [nrow,ncol] = getsize( )
+    function [nrow,ncol] = getsize()
         switch type
             case 'cellofcell'
                 nrow = length(C);

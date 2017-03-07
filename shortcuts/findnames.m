@@ -1,14 +1,12 @@
 function varargout = findnames(varargin)
-% findnames  Shortcut for textfun.findnames.
+% findnames  Shortcut for strfun.findnames.
 %
-% See help on [`textfun.findnames`](textfun/findnames).
+% See help on [`strfun.findnames`](strfun/findnames).
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
-
-[varargout{1:nargout}] = textfun.findnames(varargin{:});
+[varargout{1:nargout}] = strfun.findnames(varargin{:});
 
 end

@@ -1,54 +1,52 @@
-function [ppath, everything] = irisgenpath(root)
-% irisgenpath  Generate IRIS folder names that need to be added on Matlab search path.
+function [Path,All] = irisgenpath(Root)
+% irisgenpath  [Not a public function] Generate IRIS folder names that need to be added on Matlab search path.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    root; %#ok<VUNUS>
+    Root; %#ok<VUNUS>
 catch
-    root = irisroot( );
+    Root = irisroot();
 end
 
 %--------------------------------------------------------------------------
 
 % All first-level folders in IRIS root.
-list = dir(root);
+list = dir(Root);
 list = list([list.isdir]);
 
-ppath = struct( );
-ppath.Begin = { }; % addpath -begin.
-ppath.End = { }; % addpath -end.
-ppath.OctBegin = { }; % addpath -begin in Octave.
-ppath.OctEnd = { }; % addpath -end in Octave.
+Path = struct();
+Path.Begin = {}; % addpath -begin.
+Path.End = {}; % addpath -end.
+Path.OctBegin = {}; % addpath -begin in Octave.
+Path.OctEnd = {}; % addpath -end in Octave.
 
 for i = 1 : length(list)
     name = list(i).name;
-    % Exclude folders starting with special characters + @ - $.
-    if strncmp(name, '.', 1) ...
-            || strncmp(name, '+', 1) ...
-            || strncmp(name, '@', 1) ...
-            || strncmp(name, '-', 1) ...
-            || strncmp(name, '#', 1)
+    if strncmp(name,'.',1) ...
+            || strncmp(name,'+',1) ...
+            || strncmp(name,'@',1) ...
+            || strncmp(name,'-',1)
         continue
     end
-    if strcmp(name, 'octave')
-        ppath.OctBegin{end+1} = fullfile(root, name);
+    if strcmp(name,'octave')
+        Path.OctBegin{end+1} = fullfile(Root,name);
         continue
     end
-    if strcmp(name, '_octave')
-        ppath.OctEnd{end+1} = fullfile(root, name);
+    if strcmp(name,'_octave')
+        Path.OctEnd{end+1} = fullfile(Root,name);
         continue
     end
-    if strncmp(name, '_', 1)
-        ppath.End{end+1} = fullfile(root, name);
+    if strncmp(name,'_',1)
+        Path.End{end+1} = fullfile(Root,name);
     end
-    ppath.Begin{end+1} = fullfile(root, name);
+    Path.Begin{end+1} = fullfile(Root,name);
 end
 
-everything = [ppath.OctBegin, ppath.Begin, ppath.End, ppath.OctEnd];
+All = [Path.OctBegin,Path.Begin,Path.End,Path.OctEnd];
 
 end

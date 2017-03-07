@@ -1,4 +1,4 @@
-function fn_ = gamma(mean_, std_)
+function F = gamma(Mean,Std)
 % gamma  Create function proportional to log of gamma distribution.
 %
 % Syntax
@@ -6,45 +6,41 @@ function fn_ = gamma(mean_, std_)
 %
 %     F = logdist.gamma(Mean,Std)
 %
-%
 % Input arguments
 % ================
 %
-% * `mean_` [ numeric ] - Mean of the gamma distribution.
+% * `Mean` [ numeric ] - Mean of the gamma distribution.
 %
-% * `std_` [ numeric ] - Std dev of the gamma distribution.
-%
+% * `Std` [ numeric ] - Std dev of the gamma distribution.
 %
 % Output arguments
 % =================
 %
-% * `fn` [ function_handle ] - Function handle returning a value
+% * `F` [ function_handle ] - Function handle returning a value
 % proportional to the log of the gamma density.
-%
 %
 % Description
 % ============
 %
 % See [help on the logdisk package](logdist/Contents) for details on
-% using the function handle `fn`.
-%
+% using the function handle `F`.
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-b = std_^2/mean_;
-a = mean_/b;
-if a>=1
-    mode_ = (a - 1)*b;
+b = Std^2/Mean;
+a = Mean/b;
+if a >= 1
+    mode = (a - 1)*b;
 else
-    mode_ = NaN;
+    mode = NaN;
 end
-fn_ = @(x, varargin) logdist.fnGamma(x, a, b, mean_, std_, mode_, varargin{:});
+F = @(x,varargin) logdist.mygamma(x,a,b,Mean,Std,mode,varargin{:});
 
 end

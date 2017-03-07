@@ -29,10 +29,10 @@ function D = maxabs(X,Y)
 % Example
 % ========
 %
-%     d1 = struct( );
+%     d1 = struct();
 %     d1.a = [1,2,3];
 %     d1.b = [10,20,30];
-%     d2 = struct( );
+%     d2 = struct();
 %     d2.a = [1.01,2.05,3.66];
 %     d2.b = [10.15,20.22,30.98];
 %
@@ -51,8 +51,8 @@ function D = maxabs(X,Y)
 %         b: 0.9800
 % 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

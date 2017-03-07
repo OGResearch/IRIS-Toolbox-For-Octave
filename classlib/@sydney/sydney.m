@@ -1,33 +1,36 @@
 classdef sydney
-    % sydney  Automatic first-order differentiator.
+    % SYDNEY  [Not a public class] Automatic first-order differentiator.
     %
     % Backend IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        Func = '';
-        args = cell(1, 0);
-        lookahead = [ ];
-        numd = [ ];
+        func = '';
+        args = cell(1,0);
+        lookahead = [];
+        numd = [];
     end
-    
-    
     
     
     % The following functions can be called directly on sydney objects; all
     % other functions need are replaced with the string
-    % `'sydney.parse(func,...)'` in `callfunc( )`.
+    % `'sydney.parse(func,...)'` in `callfunc()`.
     properties (Constant)
-        LS_FUNCTION = { ...
+        FuncList = { ...
             'atan', ...
             'cos', ...
+            'eq', ...
             'exp', ...
+            'ge', ...
+            'gt', ...
             'ldivide', ...
+            'le', ...
             'log', ...
             'log10', ...
+            'lt', ...
             'minus', ...
             'mldivide', ...
             'mpower', ...
@@ -51,14 +54,14 @@ classdef sydney
     
     
     methods
-        function this = sydney(varargin)
+        function This = sydney(varargin)
             if isempty(varargin)
                 return
                 
-            elseif length(varargin)==1 && isa(varargin{1}, 'sydney')
+            elseif length(varargin) == 1 && isa(varargin{1},'sydney')
                 
                 % Sydney object.
-                this = varargin{1};
+                This = varargin{1};
                 return
                 
             else
@@ -73,52 +76,49 @@ classdef sydney
                 if isnumeric(expn)
                     
                     % Plain number.
-                    this.Func = '';
-                    this.args = expn;
-                    this.lookahead = false;
+                    This.func = '';
+                    This.args = expn;
+                    This.lookahead = false;
                     
                 elseif ischar(expn)
                     
                     if isvarname(expn)
                         
                        % Single variable name.
-                        this.Func = '';
-                        this.args = expn;
-                        this.lookahead = any(strcmp(expn,wrt));
+                        This.func = '';
+                        This.args = expn;
+                        This.lookahead = any(strcmp(expn,wrt));
                         
                     else
                         
                         % General expression.
-                        template = sydney( );
+                        template = sydney();
                         expr = strtrim(expn);
                         if isempty(expr)
-                            this.Func = '';
-                            this.args = 0;
+                            This.func = '';
+                            This.args = 0;
                             return
                         end
                         
                         % Remove anonymous function header @(...) if present.
-                        if strncmp(expr,'@(',2)
-                            expr = regexprep(expr, '@\(.*?\)', '');
+                        if strncmp(expr,'@(',2);
+                            expr = regexprep(expr,'@\(.*?\)','');
                         end
                         
                         % Find all variables names.
                         varList = regexp(expr, ...
-                            '(?<!@)(\<[a-zA-Z]\w*\>)(?!\()', 'tokens');
+                            '(?<!@)(\<[a-zA-Z]\w*\>)(?!\()','tokens');
                         
                         % Validate function names in the equation. Function
                         % not handled by the sydney class will be evaluated
-                        % by a call to sydney.parse( ).
-                        expr = sydney.callfunc(expr);
+                        % by a call to sydney.parse().
+                        expr = callfunc(This,expr);
                         if ~isempty(varList)
                             varList = unique([varList{:}]);
                         end
                         
-                        
-                        
                         % Create a sydney object for each variables name.
                         nVar = length(varList);
-
                         z = cell(1,nVar);
                         %z(:) = {template};
                         for i = 1 : nVar
@@ -127,29 +127,24 @@ classdef sydney
                             z{i}.args = name;
                             z{i}.lookahead = any(strcmp(name,wrt));
                         end
-                                                
+                        
                         % Create an anonymous function for the expression.
                         % The function's preamble includes all variable
                         % names found in the equation.
-                        preamble = sprintf('%s,', varList{:});
-                        preamble = preamble(1:end-1);
-                        preamble = [ '@(', preamble, ')' ];
-                        if true % #####
-                            tempFunc = str2func([preamble, expr]);
-                        else
-                            tempFunc = mosw.str2func([preamble, expr]); %#ok<UNRCH>
-                        end
+                        preamble = sprintf('%s,',varList{:});
+                        preamble = ['@(',preamble(1:end-1),')'];
+                        tempFunc = mosw.str2func([preamble,expr]);
                         
                         % Evaluate the equation's function handle on the
                         % sydney objects.
                         x = tempFunc(z{:});
                                                 
                         if isa(x,'sydney')
-                            this = x;
+                            This = x;
                         elseif isnumeric(x)
-                            this.Func = '';
-                            this.args = x;
-                            this.lookahead = false;
+                            This.func = '';
+                            This.args = x;
+                            This.lookahead = false;
                         else
                             utils.error('sydney', ...
                                 'Cannot create a sydney object.');
@@ -167,7 +162,7 @@ classdef sydney
         varargout = rdivide(varargin)
         varargout = power(varargin)
         
-        varargout = derv(varargin)
+        varargout = diff(varargin)
         varargout = myatomchar(varargin)
         varargout = mydiff(varargin)
         varargout = myeval(varargin)
@@ -178,132 +173,123 @@ classdef sydney
             This = A;
         end
 
-        function This = minus(A, B)
+        function This = minus(A,B)
             % Replace x - y with x + (-y) to include minus as a special case in plus
             % with multiple arguments.
-            This = plus(A, uminus(B));
+            This = plus(A,uminus(B));
         end
         
-        function This = mtimes(A, B)
-            This = times(A, B);
+        function This = mtimes(A,B)
+            This = times(A,B);
         end
         
-        function This = mrdivide(A, B)
-            This = rdivide(A, B);
+        function This = mrdivide(A,B)
+            This = rdivide(A,B);
         end
-        function This = ldivide(A, B)
+        function This = ldivide(A,B)
             This = rdivide(B,A);
         end
-        function This = mldivide(A, B)
+        function This = mldivide(A,B)
             This = rdivide(B,A);
         end
-        function This = mpower(A, B)
+        function This = mpower(A,B)
             % Reduce 10^(log10(x)) to x.
-            if ( (isnumeric(A) && isequal(A, 10)) ...
-                    || (isa(A, 'sydney') && isnumber(A, 10)) ) ...
-                    && strcmp(B.Func,'log10')
+            if ( (isnumeric(A) && isequal(A,10)) ...
+                    || (isa(A,'sydney') && isnumber(A,10)) ) ...
+                    && strcmp(B.func,'log10')
                 This = B.args{1};
                 return
             end
-            This = power(A, B);
+            This = power(A,B);
         end
         function This = normpdf(varargin)
-            This = sydney.parse('normpdf', varargin{:});
+            This = sydney.parse('normpdf',varargin{:});
         end
         function This = normcdf(varargin)
-            This = sydney.parse('normcdf', varargin{:});
+            This = sydney.parse('normcdf',varargin{:});
         end
         function This = exp(X)
             % Reduce exp(log(x)) to x.
-            if strcmp(X.Func,'log')
+            if strcmp(X.func,'log')
                 This = X.args{1};
                 return
             end
-            This = sydney.parse('exp', X);
+            This = sydney.parse('exp',X);
         end
         function This = log(X)
             % Reduce log(exp(x)) to x.
-            if strcmp(X.Func,'exp')
+            if strcmp(X.func,'exp')
                 This = X.args{1};
                 return
             end
-            This = sydney.parse('log', X);
+            This = sydney.parse('log',X);
         end
         function This = log10(X)
             % Reduce log10(10^x) to x.
-            if strcmp(X.Func,'power') && isnumber(X.args{1},10)
+            if strcmp(X.func,'power') && isnumber(X.args{1},10)
                 This = X.args{2};
                 return
             end
-            This = sydney.parse('log10', X);
+            This = sydney.parse('log10',X);
         end
         function This = sqrt(varargin)
-            This = sydney.parse('sqrt', varargin{:});
+            This = sydney.parse('sqrt',varargin{:});
         end
         function This = atan(varargin)
-            This = sydney.parse('atan', varargin{:});
+            This = sydney.parse('atan',varargin{:});
         end
         function This = sin(varargin)
-            This = sydney.parse('sin', varargin{:});
+            This = sydney.parse('sin',varargin{:});
         end
         function This = tan(varargin)
-            This = sydney.parse('tan', varargin{:});
+            This = sydney.parse('tan',varargin{:});
         end
         function This = cos(varargin)
-            This = sydney.parse('cos', varargin{:});
+            This = sydney.parse('cos',varargin{:});
         end
         
         
         function This = gt(varargin)
-            This = sydney.parse('gt', varargin{:});
+            This = sydney.parse('gt',varargin{:});
         end
         function This = ge(varargin)
-            This = sydney.parse('ge', varargin{:});
+            This = sydney.parse('ge',varargin{:});
         end
         function This = lt(varargin)
-            This = sydney.parse('lt', varargin{:});
+            This = sydney.parse('lt',varargin{:});
         end
         function This = le(varargin)
-            This = sydney.parse('le', varargin{:});
+            This = sydney.parse('le',varargin{:});
         end
         function This = eq(varargin)
-            This = sydney.parse('eq', varargin{:});
+            This = sydney.parse('eq',varargin{:});
         end
-        function Flag = isnumber(Z, X)
-            Flag = isempty(Z.Func) && isnumericscalar(Z.args);
+        function Flag = isnumber(Z,X)
+            Flag = isempty(Z.func) && isnumericscalar(Z.args);
             try %#ok<TRYNC>
-                Flag = Flag && isequal(Z.args, X);
+                Flag = Flag && isequal(Z.args,X);
             end
         end
-    end
-    
-
-    
-    methods (Static)
-        function expr = callfunc(expr)
+        
+        
+        function Expr = callfunc(This,Expr)
             % Find all function names. Function names may also include dots to allow
             % for methods and packages. Functions with no input arguments are not
             % parsed and remain unchanged.
-            lsFunc = regexp( ...
-                expr, ...
-                '(\<[a-zA-Z][\w\.]*\>)\((?!\))', ...
-                'tokens' ...
-                );
-            if isempty(lsFunc)
+            funcList = regexp(Expr, ...
+                '(\<[a-zA-Z][\w\.]*\>)\((?!\))','tokens');
+            if isempty(funcList)
                 return
             end
-            lsFunc = [ lsFunc{:} ];
-            lsFunc = unique(lsFunc);
-            % Find calls to functions that are not handled directly within the sydney
+            funcList = [funcList{:}];
+            funcList = unique(funcList);
+            % Find function names that are not handled directly within the sydney
             % class.
-            lsFunc = setdiff(lsFunc, sydney.LS_FUNCTION);
-            for i = 1 : length(lsFunc)
-                name = lsFunc{i};
-                expr = regexprep( ...
-                    expr, ...
-                    ['\<',name,'\>\('], ...
-                    ['sydney.parse(''',name,''','] ...
-                    );
+            funcList = setdiff(funcList,This.FuncList);
+            for i = 1 : length(funcList)
+                funcName = funcList{i};
+                Expr = regexprep(Expr,['\<',funcName,'\>\('], ...
+                    ['sydney.parse(''',funcName,''',']);
             end
         end
     end
@@ -317,6 +303,7 @@ classdef sydney
         varargout = myeqtn2symb(varargin)
         varargout = parse(varargin)
 
+        
         % For bkw compatibility.
         function varargout = diffxf(varargin)
             [varargout{1:nargout}] = sydney.d(varargin{:});

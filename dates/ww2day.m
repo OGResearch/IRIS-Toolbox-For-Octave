@@ -1,4 +1,4 @@
-function day = ww2day(dat, wday)
+function Day = ww2day(Dat,WDay)
 % ww2day  Convert weekly IRIS serial date number to Matlab serial date number.
 %
 % Syntax
@@ -47,13 +47,13 @@ function day = ww2day(dat, wday)
 %     29-Dec-2008
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    wday; %#ok<VUNUS>
+    WDay; %#ok<VUNUS>
 catch
-    wday = irisget('wwday');
+    WDay = 'Thu';
 end
 
 days = {'Mon','Tue','Wed','Thu','Fri','Sat','Sun'};
@@ -64,14 +64,13 @@ days = {'Mon','Tue','Wed','Thu','Fri','Sat','Sun'};
 % this week (0W1) is 0.
 start = 3;
 
-p = find(strncmpi(wday, days, 3), 1) - 1;
+p = find(strncmpi(WDay,days,3),1) - 1;
 if isempty(p)
-    utils.error('dates:ww2day', ...
-        'This is not a valid day of week: ''%s''.',wday);
+    p = 0;
 end
 
-% Matlab serial number for the requested day in the `Dat` week, depending
-% on the position `p`.
-day = start + floor(dat)*7 + p;
+% Matlab serial number for Monday, Thursday, or Sunday in the `Dat` week,
+% depending on the position `Pos`.
+Day = start + floor(Dat)*7 + p;
 
 end

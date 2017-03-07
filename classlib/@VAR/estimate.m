@@ -1,12 +1,10 @@
-function [this, outp, fitted, Rr, count] = estimate(this, inp, range, varargin)
+function [This,Outp,DatFitted,Rr,Count] = estimate(This,Inp,varargin)
 % estimate  Estimate a reduced-form VAR or BVAR.
-%
 %
 % Syntax
 % =======
 %
 %     [V,VData,Fitted] = estimate(V,Inp,Range,...)
-%
 %
 % Input arguments
 % ================
@@ -18,7 +16,6 @@ function [this, outp, fitted, Rr, count] = estimate(this, inp, range, varargin)
 % * `Range` [ numeric ] - Estimation range, including `P` pre-sample
 % periods, where `P` is the order of the VAR.
 %
-%
 % Output arguments
 % =================
 %
@@ -27,9 +24,8 @@ function [this, outp, fitted, Rr, count] = estimate(this, inp, range, varargin)
 % * `VData` [ struct ] - Output database with the endogenous
 % variables and the estimated residuals.
 %
-% * `Fitted` [ numeric ] - Dates for which fitted values have been
+% * `Fitted` [ numeric ] - Periods in which fitted values have been
 % calculated.
-%
 %
 % Options
 % ========
@@ -96,27 +92,18 @@ function [this, outp, fitted, Rr, count] = estimate(this, inp, range, varargin)
 % * `'warning='` [ *`true`* | `false` ] - Display warnings produced by this
 % function.
 %
-%
 % Options for panel VAR
 % ======================
 %
-% * `'fixedEff='` [ *`true`* | `false` | cellstr ] - Allow for fixed
-% effect.
-%
-% * `'groupSpec='` [ `true` | *`false`* | cellstr ] - Allow for
-% group-specific coefficients at exogenous regressors. Values `true` or
-% `false` apply to all exogenous regressors en bloc. To allow for
-% group-specific coefficients at selected regressors only, assign a list of
-% names of exogenous regressors.
+% * `'fixedEff='` [ `true` | *`false`* ] - Include constant dummies for
+% fixed effect in panel estimation; applies only if `'constant=' true`.
 %
 % * `'groupWeights='` [ numeric | *empty* ] - A 1-by-NGrp vector of weights
 % applied to groups in panel estimation, where NGrp is the number of
 % groups; the weights will be rescaled so as to sum up to `1`.
 %
-%
 % Description
 % ============
-%
 %
 % Estimating a panel VAR
 % -----------------------
@@ -134,58 +121,61 @@ function [this, outp, fitted, Rr, count] = estimate(this, inp, range, varargin)
 %     d.Group2_Name.Var2_Name
 %     ...
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('V', @(x) isa(x, 'VAR'));
-pp.addRequired('Inp',@(x) myisvalidinpdata(this, x));
-pp.addRequired('Range', @isnumeric);
-pp.parse(this, inp, range);
+pp = inputParser();
+pp.addRequired('Inp',@(x) myisvalidinpdata(This,x));
+pp.parse(Inp);
 
-if isempty(this.YNames)
-    throw( exception.Base('VAR:CANNOT_ESTIMATE_EMPTY_VAR', 'error') );
-end
+% Get input data; the user range is supposed to **include** the pre-sample
+% initial condition.
+[y,x,xRange,yNames,inpFmt,varargin] = myinpdata(This,Inp,varargin{:});
 
 % Pass and validate options.
 opt = passvalopt('VAR.estimate',varargin{:});
 
-%--------------------------------------------------------------------------
+if strcmpi(opt.output,'auto')
+    outpFmt = inpFmt;
+else
+    outpFmt = opt.output;
+end
 
-p = opt.order;
-nGrp = max(1, length(this.GroupNames));
-kx = length(this.XNames);
-ixGroupSpec = resolveGroupSpec( );
-
-% Get input data for estimation; the user range is supposed to **include**
-% the pre-sample initial condition.
-[inpy, inpx, xRange] = getEstimationData(this, inp, range, p);
-
-% Create components of the LHS and RHS data. Panel VARs create data by
-% concatenting individual groups next to each other separated by a total of
-% p extra NaNs.
 if ~isempty(opt.cointeg)
     opt.diff = true;
 end
-[y0, k0, x0, y1, g1, ci] = stackData(this, inpy, inpx, ixGroupSpec, opt);
 
-this.Range = xRange;
+% Create components of the LHS and RHS data. Panel VARs create data by
+% concatenting individual groups next to each other separated by a total of
+% p NaNs.
+[y0,k0,x0,y1,g1,ci] = mystackdata(This,y,x,opt);
+
+%--------------------------------------------------------------------------
+
+This.Range = xRange;
 nXPer = length(xRange);
 
-ng = size(g1, 1);
-nk = size(k0, 1);
-ny = size(y0, 1);
-nx = size(x0, 1); % Total number of rows in x0 depends on kx and ixFixedEff.
-nData = size(y0, 3);
+ng = size(g1,1);
+nk = size(k0,1);
+ny = size(y0,1);
+nx = size(x0,1);
+nObs = size(y0,2);
+p = opt.order;
+nData = size(y0,3);
+nGrp = max(1,length(This.GroupNames));
+
+if ny == 0
+    utils.error('VAR:estimate', ...
+        'Cannot estimate VAR object with no variables.');
+end
 
 if ~isempty(opt.mean)
-    if length(opt.mean)==1
-        opt.mean = opt.mean(ones(ny, 1));
+    if length(opt.mean) == 1
+        opt.mean = opt.mean(ones(ny,1));
     else
         opt.mean = opt.mean(:);
     end
@@ -199,24 +189,24 @@ end
 % They are organised as follows:
 % * Rr = [R,r],
 % * beta = R*gamma + r.
-this.Rr = VAR.restrict(ny, nk, nx, ng, opt);
+This.Rr = VAR.restrict(ny,nk,nx,ng,opt);
 
 % Get the number of hyperparameters.
-if isempty(this.Rr)
+if isempty(This.Rr)
     % Unrestricted VAR.
     if ~opt.diff
         % Level VAR.
-        this.NHyper = ny*(nk+nx+p*ny+ng);
+        This.NHyper = ny*(nk+nx+p*ny+ng);
     else
         % Difference VAR or VEC.
-        this.NHyper = ny*(nk+nx+(p-1)*ny+ng);
+        This.NHyper = ny*(nk+nx+(p-1)*ny+ng);
     end
 else
     % Parameter restrictions in the hyperparameter form:
     % beta = R*gamma + r;
     % The number of hyperparams is given by the number of columns of R.
     % The Rr matrix is [R,r], so we need to subtract 1.
-    this.NHyper = size(this.Rr,2) - 1;
+    This.NHyper = size(This.Rr,2) - 1;
 end
 
 nLoop = nData;
@@ -224,154 +214,151 @@ nLoop = nData;
 % Estimate reduced-form VAR parameters. The size of coefficient matrices
 % will always be determined by p whether this is a~level VAR or
 % a~difference VAR.
-e0 = nan(ny, size(y0, 2), nLoop);
-fitted = cell(1, nLoop);
-count = zeros(1, nLoop);
+resid = nan(ny,nObs,nLoop);
+DatFitted = cell(1,nLoop);
+Count = zeros(1,nLoop);
 
 % Pre-allocate VAR matrices.
-this = myprealloc(this, ny, p, nXPer, nLoop, ng);
+This = myprealloc(This,ny,p,nXPer,nLoop,ng);
 
 % Create command-window progress bar.
 if opt.progress
-    progress = ProgressBar('IRIS VAR.estimate progress');
+    progress = progressbar('IRIS VAR.estimate progress');
 end
 
 % Main loop
 %-----------
-s = struct( );
-s.Rr = this.Rr;
+s = struct();
+s.Rr = This.Rr;
 s.ci = ci;
 s.order = p;
 % Weighted GLSQ; the function is different for VARs and panel VARs, becuase
 % Panel VARs possibly combine weights on time periods and weights on groups.
-s.w = myglsqweights(this, opt);
+s.w = myglsqweights(This,opt);
 
 for iLoop = 1 : nLoop
-    s.y0 = y0(:, :, min(iLoop, end));
-    s.y1 = y1(:, :, min(iLoop, end));
-    s.k0 = k0(:, :, min(iLoop, end));
-    s.x0 = x0(:, :, min(iLoop, end));
-    s.g1 = g1(:, :, min(iLoop, end));
+    s.y0 = y0(:,:,min(iLoop,end));
+    s.y1 = y1(:,:,min(iLoop,end));
+    s.k0 = k0(:,:,min(iLoop,end));
+    s.x0 = x0(:,:,min(iLoop,end));
+    s.g1 = g1(:,:,min(iLoop,end));
     
     % Run generalised least squares.
     s = VAR.myglsq(s,opt);
 
     % Assign estimated coefficient matrices to the VAR object.
-    [this, fitted{iLoop}] = assignEst(this, s, ixGroupSpec, iLoop, opt);
+    [This,DatFitted{iLoop}] = myassignest(This,s,iLoop,opt);
     
-    e0(:, :, iLoop) = s.resid;
-    count(iLoop) = s.count;
+    resid(:,:,iLoop) = s.resid;
+    Count(iLoop) = s.count;
 
     if opt.progress
-        update(progress, iLoop/nLoop);
+        update(progress,iLoop/nLoop);
     end 
 end
 
 % Calculate triangular representation.
 if opt.schur
-    this = schur(this);
+    This = schur(This);
 end
 
 % Populate information criteria AIC and SBC.
-this = infocrit(this);
+This = infocrit(This);
 
-% Expand output data to match the size of residuals if necessary.
-n = size(y0, 3);
-if n<nLoop
-    y0(:, :, end+1:nLoop) = repmat(y0, 1, 1, nLoop-n);
-    if nx>0
-        x0(:, :, end+1:nLoop) = repmat(x0, 1, 1, nLoop-n);
+% Expand the output data to match the size of residuals if necessary.
+n = size(y0,3);
+if n < nLoop
+    y0(:,:,end+1:nLoop) = y0(:,:,end*ones(1,n-nLoop));
+    if nx > 0
+        x0(:,:,end+1:nLoop) = x0(:,:,end*ones(1,n-nLoop));
     end
 end
 
 % Report observations that could not be fitted.
-chkObsNotFitted( );
+doChkObsNotFitted();
+
+% Set names of variables and residuals.
+doNames();
 
 if nargout > 1
-    organizeOutpData( );
+    doOutpData();
 end
 
 if nargout > 2
-    Rr = this.Rr;
+    Rr = This.Rr;
 end
 
 if ~isequal(opt.comment,Inf)
-    this = comment(this, opt.comment);
+    This = comment(This,opt.comment);
 end
 
-return
+
+% Nested functions...
 
 
+%**************************************************************************
 
 
-    function chkObsNotFitted( )
-        allFitted = all(all(this.IxFitted, 1),3);
+    function doChkObsNotFitted()
+        allFitted = all(all(This.Fitted,1),3);
         if opt.warning && any(~allFitted(p+1:end))
-            missing = this.Range(p+1:end);
+            missing = This.Range(p+1:end);
             missing = missing(~allFitted(p+1:end));
             [~,consec] = datconsecutive(missing);
-            utils.warning('VAR:estimate', ...
-                ['These periods not fitted ', ...
+            utils.warning('VAR', ...
+                ['The following period(s) not fitted ', ...
                 'because of missing observations: %s.'], ...
                 consec{:});
         end
-    end 
+    end % doChkObsNotFitted()
 
 
+%**************************************************************************
 
 
-    function organizeOutpData( )
-        lsyxe = [this.YNames, this.XNames, this.ENames];
-        if ispanel(this)
-            % Panel VAR
-            %-----------
-            % `nx` is #row in the array `x`. In panel VARs with fixed effect, each
-            % group has its own block of exogenous variables, so that the total row
-            % count is #exogenous variables times #groups. The true number of exogenous
-            % variables is therefore `nx/nGrp`.
-            nGrp = length(this.GroupNames);
-            outp = struct( );
+    function doNames()
+        if isempty(yNames)
+            if length(opt.ynames) == ny
+                % ##### Nov 2013 OBSOLETE and scheduled for removal.
+                utils.warning('obsolete', ...
+                    ['This syntax for specifying variable names is obsolete ', ...
+                    'and will be removed from a future version of IRIS. ', ...
+                    'Specify variable names at the time of creating ', ...
+                    '%s objects instead.'], ...
+                    class(This));
+                yNames = opt.ynames;
+            else
+                yNames = This.YNames;
+            end
+        end
+        eNames = This.ENames;
+        This = myynames(This,yNames);
+        This = myenames(This,eNames);
+    end % doNames()
+
+
+%**************************************************************************
+
+
+    function doOutpData()
+        yxeNames = [This.YNames,This.XNames,This.ENames];
+        yxe = [y0;x0;resid];
+        if ispanel(This)
+            % Panel VAR.
+            nGrp = length(This.GroupNames);
+            Outp = struct();
             for iiGrp = 1 : nGrp
-                yxe = [y0(:, 1:nXPer, :); inpx{iiGrp}; e0(:, 1:nXPer, :)];
-                name = this.GroupNames{iiGrp};
-                outp.(name) = myoutpdata(this, this.Range, yxe, [ ], lsyxe);
-                y0(:, 1:nXPer+p,:) = [ ];
-                e0(:, 1:nXPer+p,:) = [ ];
+                name = This.GroupNames{iiGrp};
+                Outp.(name) = myoutpdata(This,'dbase',This.Range, ...
+                    yxe(:,1:nXPer,:),[],yxeNames);
+                yxe(:,1:nXPer+p,:) = [];
             end
         else
-            % Non-panel VAR
-            %---------------
-            % Get columns 1:nXPer from y0 and e0 because they still include the NaNs at
-            % the end used as group separators.
-            yxe = [y0(:, 1:nXPer, :); inpx{1}(:, 1:nXPer, :); e0(:, 1:nXPer, :)];
-            outp = inp * this.XNames;
-            outp = myoutpdata(this, this.Range, yxe, [ ], lsyxe);
+            % Non-panel VAR.
+            Outp = myoutpdata(This,outpFmt,This.Range, ...
+                yxe(:,1:nXPer,:),[],yxeNames);
         end
-        y0 = [ ];
-        x0 = [ ];
-        e0 = [ ];
-    end 
+    end % doOutpData()
 
 
-
-
-    function ixGroupSpec = resolveGroupSpec( )
-        ixGroupSpec = false(1, 1+kx);
-        if ~ispanel(this) || nGrp==1 || ...
-                ( isequal(opt.fixedeff, false) && isequal(opt.groupspec, false) )
-            return
-        end
-        ixGroupSpec(1) = opt.fixedeff;
-        if islogicalscalar(opt.groupspec)
-            ixGroupSpec(2:end) = opt.groupspec;
-            return
-        end
-        if ischar(opt.groupspec)
-            opt.groupspec = regexp(opt.groupspec, '\w+', 'match');
-        end
-        for ii = 1 : kx
-            name = this.XNames{ii};
-            ixGroupSpec(1+ii) = any(strcmpi(opt.groupspec, name));
-        end
-    end
 end

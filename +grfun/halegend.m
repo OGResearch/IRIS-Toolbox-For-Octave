@@ -1,6 +1,6 @@
 function [lg,lgtt] = halegend(varargin)
     
-    lg = [ ];
+    lg = [];
     
     if isempty(varargin)
         return
@@ -8,9 +8,9 @@ function [lg,lgtt] = halegend(varargin)
     
     if all(ishghandle(varargin{1}))
         ax = varargin{1};
-        varargin(1) = [ ];
+        varargin(1) = [];
     else
-        ax = gca( );
+        ax = gca();
     end
     
     tt = get(ax,'title');

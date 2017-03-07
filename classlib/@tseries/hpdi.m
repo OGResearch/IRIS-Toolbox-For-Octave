@@ -27,8 +27,8 @@ function This = hpdi(This,Prob,Dim)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Dim; %#ok<VUNUS>
@@ -49,7 +49,7 @@ if Dim == 1
 else
     This.data = [low,high];
     This.Comment = {'HPDI low','HPDI high'};
-    This = trim(This);
+    This = mytrim(This);
 end
 
 end

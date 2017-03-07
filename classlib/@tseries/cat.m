@@ -1,112 +1,127 @@
-function outp = cat(n, varargin)
-% cat  Concatenation of Series objects in n-th dimension.
+function X = cat(N,varargin)
+% cat  [Not a publich function] Tseries object concatenation along n-th dimension.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if length(varargin)==1
-    % Matlab calls horzcat(x) first for [x; y].
-    outp = varargin{1};
+if length(varargin) == 1
+    % Matlab calls horzcat(x) first for [x;y].
+    X = varargin{1};
     return
 end
 
 % Check classes and frequencies.
-[inputs, ixSeries, ixNumeric] = catcheck(varargin{:});
+[inputs,isTseries] = catcheck(varargin{:});
 
-% Output will be the same class as first time series.
-outp = empty( inputs{find(ixSeries, 1)} );
-
-% Remove inputs with zero size in 2nd and higher dimensions.
+% Remove inputs with zero size in all higher dimensions.
 % Remove empty numeric arrays.
-ixRemove = false(size(inputs));
+remove = false(size(inputs));
 for i = 1 : length(inputs)
-    if ixSeries(i) 
-        size_ = size(inputs{i});
-        ixRemove(i) = all(size_(2:end)==0);
-    elseif ixNumeric(i)
-        ixRemove(i) = isempty(inputs{i});
+    iDataSize = size(inputs{i});
+    if all(iDataSize(2:end) == 0), remove(i) = true;
+    elseif isnumeric(inputs{i}) && isempty(inputs{i}), remove(i) = true;
     end
 end
-inputs(ixRemove) = [ ];
-ixSeries(ixRemove) = [ ];
-ixNumeric(ixRemove) = [ ]; %#ok<NASGU>
+inputs(remove) = [];
+isTseries(remove) = [];
 
 if isempty(inputs)
+    X = tseries([],[]);
     return
 end
+
 nInp = length(inputs);
-
-% Find min start-date and max end-date.
-vecStart = nan(1, nInp);
-vecEnd = nan(1, nInp);
-for i = find(ixSeries)
-    vecStart(i) = startDate(inputs{i});
-    vecEnd(i) = endDate(inputs{i});
+% Find earliest startdate and latest enddate.
+start = nan(1,nInp);
+finish = nan(1,nInp);
+for i = find(isTseries)
+    start(i) = inputs{i}.start;
+    finish(i) = start(i) + size(inputs{i}.data,1) - 1;
 end
-minStart = min( vecStart(~isnan(vecStart)) );
-maxEnd = max( vecEnd(~isnan(vecEnd)) );
-nPer = rnglen( [minStart, maxEnd] );
 
+% Find startdates and enddates.
+minStart = min(start(~isnan(start)));
+maxFinish = max(finish(~isnan(finish)));
+start(~isTseries) = -Inf;
+finish(~isTseries) = Inf;
+
+% Expand data with pre- or post-sample NaNs.
 if ~isempty(minStart)
-    outp.start = minStart;
+    for i = find(start > minStart | finish < maxFinish)
+        dim = size(inputs{i}.data);
+        if isnan(inputs{i}.start)
+            % Empty tseries object.
+            inputs{i}.data = nan([round(maxFinish-minStart+1),dim(2:end)]);
+        else
+            % Non-empty tseries object.
+            nPre = round(start(i)-minStart);
+            nPost = round(maxFinish-finish(i));
+            inputs{i}.data = [ ...
+                nan([nPre,dim(2:end)]); ...
+                inputs{i}.data; ...
+                nan([nPost,dim(2:end)]); ...
+                ];
+        end
+    end
+    for i = find(isnan(start))
+        dim = size(inputs{i}.data);
+        inputs{i}.data = nan([maxFinish-minStart+1,dim(2:end)]);
+    end
+    nPer = round(maxFinish - minStart + 1);
 else
-    outp.start = NaN;
+    nPer = 0;
 end
 
-% Add inputs one by one to output series.
-isEmpty = true;
+% Struct for resulting tseries.
+X = tseries();
+if ~isempty(minStart)
+    X.start = minStart;
+else
+    X.start = NaN;
+end
+
+% Concatenate individual inputs.
+empty = true;
 for i = 1 : nInp
-    if ixSeries(i)
-        addSeries(inputs{i});
+    if isTseries(i)
+        if empty
+            X.data = inputs{i}.data;
+            X.Comment = inputs{i}.Comment;
+            empty = false;
+        else
+            X.data = cat(N,X.data,inputs{i}.data);
+            X.Comment = cat(N,X.Comment,inputs{i}.Comment);
+        end
     else
-        addNumeric(inputs{i});
+        iData = inputs{i};
+        iDataSize = size(iData);
+        iData = iData(:,:);
+        if iDataSize(1) > 1 && iDataSize(1) < nPer
+            iData(end+1:nPer,:) = NaN;
+        elseif iDataSize(1) > 1 && iDataSize(1) > nPer
+            iData = iData(:,:);
+            iData(nPer+1:end,:) = [];
+        elseif iDataSize(1) == 1 && nPer > 1
+            iData = iData(:,:);
+            iData = iData(ones(1,nPer),:);
+        end
+        iData = reshape(iData,[nPer,iDataSize(2:end)]);
+        comment = cell([1,iDataSize(2:end)]);
+        comment(:) = {''};
+        if empty
+            X.data = iData;
+            X.Comment = comment;
+            empty = false;
+        else
+            X.data = cat(N,X.data,iData);
+            X.Comment = cat(N,X.Comment,comment);
+        end
     end
 end
 
-return
-
-
-
-
-    function addSeries(x)
-        data_ = rangedata(x, [minStart, maxEnd]);
-        if isEmpty
-            outp.data = data_;
-            outp.Comment = x.Comment;
-            isEmpty = false;
-        else
-            outp.data = cat(n, outp.data, data_);
-            outp.Comment = cat(n, outp.Comment, x.Comment);
-        end
-    end
-
-
-
-
-    function addNumeric(x)
-        size_ = size(x);
-        x = x(:, :);
-        if size_(1)>1 && size_(1)<nPer
-            x(end+1:nPer, :) = NaN;
-        elseif size_(1)>1 && size_(1)>nPer
-            x(nPer+1:end,:) = [ ];
-        elseif size_(1)==1 && nPer>1
-            x = repmat(x, nPer, 1);
-        end
-        x = reshape(x, [nPer, size_(2:end)]);
-        comment = repmat({''}, [1, size_(2:end)]);                                                                               
-        if isEmpty
-            outp.data = x;
-            outp.Comment = comment;
-            isEmpty = false;
-        else
-            outp.data = cat(n, outp.data, x);
-            outp.Comment = cat(n, outp.Comment, comment);
-        end        
-    end
 end

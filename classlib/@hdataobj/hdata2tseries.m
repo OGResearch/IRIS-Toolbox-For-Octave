@@ -1,79 +1,87 @@
-function outp = hdata2tseries(this, varargin)
-% hdata2tseries  Convert hdataobj data to a tseries database.
+function D = hdata2tseries(This)
+% hdata2tseries  [Not a public function] Convert hdataobj data to a tseries database.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TEMPLATE_SERIES = Series( );
-
-opt = passvalopt('HData.hdata2tseries', varargin{:});
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-outp = struct( );
+template = tseries();
+realexp = @(x) real(exp(x));
 
-ixLog = this.IxLog;
-if ~opt.Delog
-    ixLog(:) = false;
-end
+D = struct();
 
-for i = 1 : numel(this.Id)
-    if isempty(this.Id{i})
+for i = 1 : length(This.Id)
+
+    if isempty(This.Id{i})
         continue
     end
     
-    realId = real(this.Id{i});
-    imagId = imag(this.Id{i});
+    realId = real(This.Id{i});
+    imagId = imag(This.Id{i});
     maxLag = -min(imagId);
 
-    if this.IncludeLag && maxLag>0
-        xRange = this.Range(1)-maxLag : this.Range(end);
-    else
-        xRange = this.Range(1) : this.Range(end);
-    end
+    xRange = This.Range(1)-maxLag : This.Range(end);
     xStart = xRange(1);
     nXPer = length(xRange);
-    TEMPLATE_SERIES.start = xStart;
     
-    for j = sort(realId(imagId==0))
-        name = this.Name{j};
+    for j = find(imagId == 0)
         
-        if ~isfield(this.Data,name)
+        pos = realId(j);
+        jName = This.Name{pos};
+        if ~isfield(This.Data,jName)
             continue
         end
-        sn = size(this.Data.(name));
-        if sn(1)~=nXPer
-            throw( exception.Base('General:INTERNAL', 'error') );
+        sn = size(This.Data.(jName));
+        if sn(1) ~= nXPer
+            doThrowInternal();
         end
-        if ixLog(j)
-            this.Data.(name) = real(exp(this.Data.(name)));
+        if This.IxLog(pos)
+            This.Data.(jName) = realexp(This.Data.(jName));
         end
         
         % Create a new database entry.
-        outp.(name) = TEMPLATE_SERIES;
-        outp.(name).data = this.Data.(name);
-        outp.(name) = trim(outp.(name));
-        s = size(outp.(name).data);
-        if isempty(this.Contributions)            
-            c = repmat(this.Label(j), [1, s(2:end)]);
+        D.(jName) = template;
+        D.(jName) = mystamp(D.(jName));
+        D.(jName).start = xStart;
+        D.(jName).data = This.Data.(jName);
+        s = size(D.(jName).data);
+        D.(jName) = comment(D.(jName),repmat({''},[1,s(2:end)]));
+        D.(jName) = mytrim(D.(jName));
+        if isempty(This.Contributions)
+            c = This.Label{pos};
         else
-            c = utils.concomment(name, this.Contributions, ixLog(j));    
+            c = utils.concomment(jName, ...
+                This.Contributions,This.IxLog(pos));
         end
-        outp.(name).Comment = c;
+        D.(jName) = comment(D.(jName),c);
         
         % Free memory.
-        this.Data.(name) = [ ];
+        This.Data.(jName) = [];
+    end
+    
+end
+
+if This.IncludeParam
+    list = fieldnames(This.ParamDb);
+    for i = 1 : length(list)
+    	D.(list{i}) = This.ParamDb.(list{i});
     end
 end
 
-if this.IncludeParam
-    list = fieldnames(this.ParamDb);
-    for i = 1 : numel(list)
-    	outp.(list{i}) = this.ParamDb.(list{i});
-    end
-end
+
+% Nested functions...
+
+
+%**************************************************************************
+
+
+    function doThrowInternal()
+        utils.error('hdataobj:hdata2tseries','#Internal');
+    end % doThrowInternal()
+
 
 end

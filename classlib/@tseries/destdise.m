@@ -27,10 +27,10 @@ function This = destdise(This,XMean,XStd)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('XMean',@isnumeric);
 pp.addRequired('XStd',@isnumeric);
 pp.parse(XMean,XStd);

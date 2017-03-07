@@ -1,44 +1,47 @@
-classdef neuron < shared.GetterSetter
+classdef neuron < handle
     % neuron  [Not a public class definition]
     %
     % Backend IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
         ActivationFn@char = '' ;
-        ActivationParams = [ ] ;
-        ActivationIndex = [ ] ;
-        ActivationLB = [ ] ;
-        ActivationUB = [ ] ;
-        ActivationLBDefault = [ ] ;
-        ActivationUBDefault = [ ] ;
-        ActivationIndexLocal = [ ] ;
-        ActivationRemovedLocal = [ ] ;
-        nActivationParams = [ ] ;
+        ActivationParams = [] ;
+        ActivationIndex = [] ;
+        ActivationLB = [] ;
+        ActivationUB = [] ;
+        ActivationLBDefault = [] ;
+        ActivationUBDefault = [] ;
+        ActivationIndexLocal = [] ;
+        ActivationRemovedLocal = [] ;
+        nActivationParams = [] ;
         
         OutputFn@char = '' ;
-        OutputParams = [ ] ;
-        OutputIndex = [ ] ;
-        OutputLB = [ ] ;
-        OutputUB = [ ] ;
-        OutputLBDefault = [ ] ;
-        OutputUBDefault = [ ] ;
+        OutputParams = [] ;
+        OutputIndex = [] ;
+        OutputLB = [] ;
+        OutputUB = [] ;
+        OutputLBDefault = [] ;
+        OutputUBDefault = [] ;
         
-        HyperParams = [ ] ;
-        HyperIndex = [ ] ;
-        HyperLB = [ ] ;
-        HyperUB = [ ] ;
-        HyperLBDefault = [ ] ;
-        HyperUBDefault = [ ] ;
+        HyperParams = [] ;
+        HyperIndex = [] ;
+        HyperLB = [] ;
+        HyperUB = [] ;
+        HyperLBDefault = [] ;
+        HyperUBDefault = [] ;
+        
+        ForwardConnection = {} ;
+        BackwardConnection = {} ;
         
         Position@double = [NaN,NaN] ;
         nAlt = NaN ;
         Bias = false ;
     end
-        
+    
     methods
         
         function This = neuron(ActivationFn,OutputFn,nInputs,Position,ActivationIndex,OutputIndex,HyperIndex)
@@ -47,8 +50,8 @@ classdef neuron < shared.GetterSetter
             % Backend IRIS function.
             % No help provided.
             
-            % -IRIS Macroeconomic Modeling Toolbox.
-            % -Copyright (c) 2007-2017 IRIS Solutions Team.
+            % -IRIS Toolbox.
+            % -Copyright (c) 2007-2014 IRIS Solutions Team.
             
             % Activation
             This.ActivationFn = ActivationFn ;
@@ -59,7 +62,7 @@ classdef neuron < shared.GetterSetter
             This.ActivationLB = repmat(This.ActivationLBDefault,numel(This.ActivationParams),1) ;
             This.ActivationUB = repmat(This.ActivationUBDefault,numel(This.ActivationParams),1) ;
             This.ActivationIndexLocal = 1:numel(This.ActivationParams) ;
-            This.ActivationRemovedLocal = [ ] ;
+            This.ActivationRemovedLocal = [] ;
             This.nActivationParams = numel(This.ActivationParams) ;
             
             % Output
@@ -99,19 +102,15 @@ classdef neuron < shared.GetterSetter
     end
     
     methods( Hidden )
-        function flag = chkConsistency(this)
-            flag = chkConsistency@shared.GetterSetter(this) && ...
-                chkConsistency@shared.UserDataContainer(this);
-        end
-
-        
-        
-        
         varargout = eval(varargin) ;
+        varargout = saliency(varargin) ;
         varargout = copy(varargin) ;
         
-        varargout = dAdI(varargin) ;
-        varargout = dOdA(varargin) ;
+        out = dAdI(Obj,Data) ;
+        out = dAdP(Obj,Data) ;
+        out = dOdA(Obj,Data) ;
+        out = dOdI(obj,Data) ;
+        out = dOdP(obj,Data) ;
     end
 end
 

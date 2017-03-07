@@ -4,24 +4,24 @@ function This = uminus(A)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 persistent SYDNEY;
 
 if isnumeric(SYDNEY)
-    SYDNEY = sydney( );
+    SYDNEY = sydney();
 end
 
 %--------------------------------------------------------------------------
 
-if strcmp(A.Func,'uminus')
+if strcmp(A.func,'uminus')
     This = A.args{1};
     return
 end
 
 This = SYDNEY;
-This.Func = 'uminus';
+This.func = 'uminus';
 This.args = {A};
 This.lookahead = any(A.lookahead);
 

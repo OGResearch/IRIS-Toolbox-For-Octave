@@ -1,4 +1,4 @@
-function n = xpath(x, query, type)
+function n = xpath(x,query,type)
 
 persistent FACTORY XPATH;
 if isempty(FACTORY) || isempty(XPATH)
@@ -19,6 +19,6 @@ switch lower(type)
 end
 
 expression = XPATH.compile(query);
-n = expression.evaluate(x, type);
+n = expression.evaluate(x,type);
 
 end

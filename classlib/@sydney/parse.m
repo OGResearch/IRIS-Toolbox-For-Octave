@@ -1,33 +1,33 @@
 function This = parse(Func,varargin)
-% parse  Convert Matlab function to sydney object.
+% parse  [Not a public function] Convert Matlab function to sydney object.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-persistent SYDNEY
+persistent SYDNEY;
 
-if ~isa(SYDNEY, 'sydney')
-    SYDNEY = sydney( );
+if isnumeric(SYDNEY)
+    SYDNEY = sydney();
 end
 
 %--------------------------------------------------------------------------
 
 This = SYDNEY;
-This.Func = Func;
+This.func = Func;
 
-if strcmp(Func,'sydney.d')
-    This.numd.Func = func2str(varargin{1});
+if strcmp(Func,'sydney.d');
+    This.numd.func = func2str(varargin{1});
     This.numd.wrt = varargin{2};
-    varargin(1:2) = [ ];
+    varargin(1:2) = [];
 end
 
-n = numel(varargin);
-This.lookahead = false(1, n);
+nArg = length(varargin);
+This.lookahead = false(1,nArg);
 a = varargin;
-for iArg = 1 : n
+for iArg = 1 : nArg
     if isnumeric(a{iArg})
         % This argument is a plain number.
         x = varargin{iArg};

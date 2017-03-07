@@ -1,72 +1,69 @@
-function detail(this)
-% detail  Display details of grouping object.
+function detail(This)
+% detail  Details of a grouping object.
 %
 % Syntax
 % =======
 %
-%     detail(g)
-%
+%     detail(G)
 %
 % Input arguments
 % ================
 %
-% * `g` [ grouping ] - Grouping object.
-%
+% * `G` [ grouping ] - Grouping object.
 %
 % Description
 % ============
 %
-%
 % Example
 % ========
-%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-textfun.loosespace( );
+strfun.loosespace();
 
-if isempty(this)
+if isempty(This)
     return
 end
 
-isOther = any(this.OtherContents) ;
-GroupNames = this.GroupNames ;
-groupContents = this.GroupContents ;
+isOther = any(This.otherContents) ;
+groupNames = This.groupNames ;
+groupContents = This.groupContents ;
 if isOther
-    GroupNames = [GroupNames, {this.OTHER_NAME}] ;
-    groupContents = [groupContents, {this.OtherContents}] ;
+    groupNames = [groupNames,{This.otherName}] ;
+    groupContents = [groupContents,{This.otherContents}] ;
 end
-nGroup = length(GroupNames) ;
+nGroup = length(groupNames) ;
 
 for iGroup = 1:nGroup
-    fprintf('\t+Group ''%s'':\n', GroupNames{iGroup}) ;
-    list = this.List(groupContents{iGroup}) ;
-    label = this.Label(groupContents{iGroup}) ;
+    fprintf('\t+Group ''%s'':\n',groupNames{iGroup}) ;
+    list = This.list(groupContents{iGroup}) ;
+    descript = This.descript(groupContents{iGroup}) ;
     for iCont = 1:numel(list)
         iName = list{iCont} ;
-        iLabel = label{iCont} ;
-        dispName( ) ;
+        iDescript = descript{iCont} ;
+        doDispName() ;
     end
 end
 
-textfun.loosespace( );
-
-return
+strfun.loosespace();
 
 
+% Nested functions...
 
 
-    function dispName( )
+    function doDispName()
         fprintf('\t\t') ;
-        fprintf('+%s', iName);
-        if ~isempty(iLabel)
-            fprintf(' ''%s''', iLabel) ;
+        fprintf('+%s',iName);
+        if ~isempty(iDescript)
+            fprintf(' ''%s''',iDescript) ;
         end
         fprintf('\n');
     end
+
+
 end
 
 

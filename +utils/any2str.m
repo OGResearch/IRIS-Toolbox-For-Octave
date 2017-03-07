@@ -4,8 +4,8 @@ function C = any2str(X,Prec)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Prec; %#ok<VUNUS>
@@ -21,8 +21,6 @@ elseif iscell(X)
     C = xxCell(X,Prec);
 elseif isstruct(X)
     C = xxStruct(X,Prec);
-elseif isfunc(X)
-    C = char(X) ;
 else
     utils.error('utils', ...
         'ANY2STR cannot currently handle this type of data: %s.', ...
@@ -31,15 +29,13 @@ end
 
 end
 
-
-% Subfuntions...
-
+% Subfuntions.
 
 %**************************************************************************
-
-
 function C = xxNumeric(X,Prec)
+
 nd = ndims(X);
+
 if nd == 2
     C = mat2str(X,Prec);
 else
@@ -52,19 +48,21 @@ else
     end
     C = [C,')'];
 end
-end % xxNumeric( )
 
+end
+% xxnumeric().
 
 %**************************************************************************
-
-
 function C = xxCell(X,Prec)
+
 if isempty(X)
   s = size(X);
   C = ['cell(',sprintf('%g',s(1)),sprintf(',%g',s(2:end)),')'];
   return
 end
+
 nd = ndims(X);
+
 if nd == 2
     C = xxCell2D(X,Prec);
 else
@@ -77,14 +75,14 @@ else
     end
     C = [C,')'];
 end
-end % xxCell( )
 
+end % xxCell()
 
 %**************************************************************************
-
-
 function C = xxCell2D(X,Prec)
+
 [nRow,nCol] = size(X);
+
 C = '{';
 for i = 1 : nRow
     for j = 1 : nCol
@@ -98,13 +96,12 @@ for i = 1 : nRow
     end
 end
 C = [C,'}'];
-end % xxCell2D( )
 
+end % xxCell2D()
 
 %**************************************************************************
-
-
 function C = xxStruct(X,Prec)
+
 len = length(X);
 if len ~= 1
     utils.error('utils', ...
@@ -124,4 +121,5 @@ for i = 1 : length(list)
     C = [C,'''',list{i},''',',c1];
 end
 C = [C,')'];
-end % xxStruct( )
+
+end % xxStruct()

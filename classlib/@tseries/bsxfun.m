@@ -1,12 +1,10 @@
 function X = bsxfun(Func,X,Y)
-% bsxfun  Implement bsxfun for tseries class.
-%
+% bsxfunc  Standard BSXFUN implemented for tseries objects.
 %
 % Syntax
 % =======
 %
 %     Z = bsxfun(Func,X,Y)
-%
 %
 % Input arguments
 % ================
@@ -14,10 +12,9 @@ function X = bsxfun(Func,X,Y)
 % * `Func` [ function_handle ] - Function that will be applied to the input
 % series, `FUN(X,Y)`.
 %
-% * `X` [ Series | numeric ] - Input time series or numeric array.
+% * `X` [ tseries | numeric ] - Input time series or numeric array.
 %
-% * `Y` [ Series | numeric ] - Input time series or numeric array.
-%
+% * `Y` [ tseries | numeric ] - Input time series or numeric array.
 %
 % Output arguments
 % =================
@@ -25,28 +22,26 @@ function X = bsxfun(Func,X,Y)
 % * `Z` [ tseries ] - Result of `Func(X,Y)` with `X` and/or `Y` expanded
 % properly in singleton dimensions.
 %
-%
 % Description
 % ============
 %
 % See help on built-in `bsxfun` for more help.
 %
-%
 % Example
 % ========
 %
-% Create a multivariate time series and subtract mean from its
+% We create a multivariate time series and subtract mean from its
 % individual columns.
 %
-%     x = Series(1:10,rand(10,4));
+%     x = tseries(1:10,rand(10,4));
 %     xx = bsxfun(@minus,x,mean(x));
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Validate input arguments.
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('Func',@isfunc);
 pp.addRequired('X',@(x) isa(x,'tseries') || isnumeric(x));
 pp.addRequired('Y',@(x) isa(x,'tseries') || isnumeric(x));
@@ -60,34 +55,34 @@ if isa(X,'tseries') && isa(Y,'tseries')
     data1 = rangedata(X,range);
     data2 = rangedata(Y,range);
     nPer = length(range);
-    newCmt = [ ];
-    newStart = range(1);
+    co = [];
+    start = range(1);
 elseif isa(X,'tseries')
     data1 = X.data;
     data2 = Y;
     nPer = size(X.data,1);
-    newCmt = X.Comment;
-    newStart = X.start;
+    co = X.Comment;
+    start = X.start;
 else
     data1 = X;
     data2 = Y.data;
     nPer = size(Y.data,1);
-    newCmt = Y.Comment;
-    newStart = Y.start;
+    co = Y.Comment;
+    start = Y.start;
 end
 
-newData = bsxfun(Func,data1,data2);
+data = bsxfun(Func,data1,data2);
 
-if size(newData,1)~=nPer
-    utils.error('tseries:bsxfun', ...
-        ['Result of bsxfun(...) must preserve ', ...
-        'the size of input tseries in 1st dimension.']);
+if size(data,1) ~= nPer
+    utils.error('tseries', ...
+        ['Result of BSXFUN must preserve ', ...
+        'the size of the input tseries in 1st dimension.']);
 end
 
 if isa(X,'tseries')
-    X = replace(X,newData,newStart,newCmt);
+    X = replace(X,data,start,co);
 else
-    X = replace(Y,newData,newStart,newCmt);
+    X = replace(Y,data,start,co);
 end
 
 end

@@ -4,8 +4,8 @@ function [R,Y,Jk] = myexpand(R,Y,k,Xa,Xf,Ru,J,Jk,Yu)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -46,27 +46,14 @@ if any(any(isnan(Xa)))
 end
 
 % Compute expansion.
-% for i = k0+1 : k
-%     Ra = -Xa*Jk*Ru; % Jk stores J^(k-1).
-%     Ya = -Xa*Jk*Yu;
-%     Jk = Jk*J;
-%     Rf = Xf*Jk*Ru;
-%     Yf = Xf*Jk*Yu;
-%     R(:,i*ne+(1:ne)) = [Rf;Ra];
-%     Y(:,i*nn+(1:nn)) = [Yf;Ya];
-% end
-
-X = [ Xf*Jk*J ; -Xa*Jk ];
 for i = k0+1 : k
-    R(:,i*ne+(1:ne)) = X*Ru;
-    Y(:,i*nn+(1:nn)) = X*Yu;
-    Ru = J*Ru;
-    Yu = J*Yu;
+    Ra = -Xa*Jk*Ru; % Jk stores J^(k-1).
+    Ya = -Xa*Jk*Yu;
+    Jk = Jk*J;
+    Rf = Xf*Jk*Ru;
+    Yf = Xf*Jk*Yu;
+    R(:,i*ne+(1:ne)) = [Rf;Ra];
+    Y(:,i*nn+(1:nn)) = [Yf;Ya];
 end
-
-if nargout > 2
-    Jk = Jk*J^(k-k0);
-end
-
 
 end

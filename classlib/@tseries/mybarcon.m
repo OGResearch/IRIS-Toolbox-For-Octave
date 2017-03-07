@@ -1,22 +1,22 @@
 function [H,Colors] = mybarcon(Ax,X,Y,varargin)
-% mybarcon  [Not a public function] Contribution bar graph.
+% mybarcon  [Not a public function] Contribution bar graph .
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(X) || isempty(Y)
-    H = [ ];
-    Colors = [ ];
+    H = [];
+    Colors = [];
     return
 end
 
 opt = passvalopt('tseries.barcon',varargin{:});
 
 if isempty(opt.colormap)
-    opt.colormap = get(gcf( ),'colorMap');
+    opt.colormap = get(gcf(),'colorMap');
 end
 
 %--------------------------------------------------------------------------
@@ -97,12 +97,23 @@ for t = 1 : nPer
 end
 
 % Plot bars for one series and all periods at once.
-H = [ ];
+H = [];
 for j = 1 : nData
-    if j == 2
-        set(Ax,'nextPlot','add');
+    if false % ##### MOSW
+        if j == 2
+            set(Ax,'nextPlot','add');
+        end 
+        H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
+    else
+        Hk = zeros(size(xx,2),1);
+        for k = 1 : size(xx,2)
+            if k == 2
+                set(Ax,'nextPlot','add');
+            end
+            Hk(k) = fill(xx(:,k),yy(:,k,j),Colors(j,:));
+        end
+        H = [H,Hk];
     end
-    H = [H,fill(xx,yy(:,:,j),Colors(j,:))]; %#ok<AGROW>
 end
 
 % Make all bar clusters invisible except the first period with all non-zero

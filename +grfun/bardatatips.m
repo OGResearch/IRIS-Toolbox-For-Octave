@@ -1,7 +1,7 @@
 function TT = bardatatips(H,varargin)
 
 if length(H) > 1
-    TT = [ ];
+    TT = [];
     for h = H(:).'
         tt = grfun.bardatatips(h,varargin{:});
         TT = [TT,tt]; %#ok<AGROW>

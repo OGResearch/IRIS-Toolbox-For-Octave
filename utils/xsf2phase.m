@@ -37,14 +37,14 @@ function [Rad,Per] = xsf2phase(S,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if ~isempty(varargin) && isnumeric(varargin{1})
     freq = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    freq = [ ];
+    freq = [];
 end
 
 opt = passvalopt('freqdom.xsf2phase',varargin{:});
@@ -54,7 +54,7 @@ opt = passvalopt('freqdom.xsf2phase',varargin{:});
 Rad = atan2(imag(S),real(S));
 
 if opt.unwrap
-    Rad = unwrap(Rad,[ ],3);
+    Rad = unwrap(Rad,[],3);
 end
 
 if nargout == 1
@@ -69,7 +69,7 @@ end
 
 nfreq = length(freq);
 Per = Rad;
-realsmall = getrealsmall( );
+realsmall = getrealsmall();
 for i = 1 : nfreq
     if abs(freq(i)) <= realsmall
         Per(:,:,i,:) = NaN;

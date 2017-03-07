@@ -1,30 +1,21 @@
 function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 % loglik  Evaluate minus the log-likelihood function in time or frequency domain.
 %
-%
 % Full syntax
 % ============
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     [Obj,V,F,PE,Delta,PDelta] = loglik(M,Inp,Range,~J,...)
-%
+%     [Obj,V,F,PE,Delta,PDelta] = loglik(M,D,Range,...)
 %
 % Syntax for fast one-off likelihood evaluation
 % ==============================================
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
-%     Obj = loglik(M,Inp,Range,~J,...)
-%
+%     Obj = loglik(M,D,Range,...)
 %
 % Syntax for repeated fast likelihood evaluations
 % ================================================
 %
-% Input arguments marked with a `~` sign may be omitted.
-%
 %     % Step #1: Initialise.
-%     loglik(M,Inp,Range,~J,...,'persist=',true);
+%     loglik(M,D,Range,...,'persist=',true);
 %
 %     % Step #2: Assign/change parameters.
 %     M... = ...; % Change parameters.
@@ -39,22 +30,16 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 %     % Repeat steps #2, #3, #4 for different values of parameters.
 %     % ...
 %
-%
 % Input arguments
 % ================
 %
-% * `M` [ model ] - Solved model object.
+% * `M` [ model ] - Model object on which the likelihood of the input data
+% will be evaluated.
 %
-% * `Inp` [ struct | cell ] - Input database from which observations for
+% * `D` [ struct | cell ] - Input database or datapack from which the
 % measurement variables will be taken.
 %
-% * `Range` [ numeric | char ] - Date range on which the Kalman filter will
-% be run.
-%
-% * `~J` [ struct | *empty* ] - Database with user-supplied time-varying
-% paths for std deviation, corr coefficients, or medians for shocks; `~J`
-% is equivalent to using the option `'vary='`, and may be omitted.
-%
+% * `Range` [ numeric ] - Date range.
 %
 % Output arguments
 % =================
@@ -70,14 +55,13 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 %
 % * `PE` [ struct ] - Database with prediction errors for measurement
 % variables; exp of prediction errors for measurement variables declared as
-% log variables.
+% log-variables.
 %
 % * `Delta` [ struct ] - Databse with point estimates of the deterministic
 % trend parameters specified in the `'outoflik='` option.
 %
 % * `PDelta` [ numeric ] - MSE matrix of the estimates of the `'outoflik='`
 % parameters.
-%
 %
 % Options
 % ========
@@ -91,7 +75,6 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 % (data and options) for subsequent fast calls.
 %
 % See help on [`model/filter`](model/filter) for other options available.
-%
 %
 % Description
 % ============
@@ -130,13 +113,12 @@ function [Obj,V,F,Pe,Delta,PDelta] = loglik(This,Data,Range,varargin)
 % transitory dynamics and steady state, you must run first
 % [`sstate`](model/sstate) and then [`solve`](model/solve).
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % These variables are cleared at the end of the file unless the user
 % specifies `'persist=' true`.
@@ -146,36 +128,25 @@ persistent DATA RANGE OPT LIKOPT;
 % passed in will be used if `'persistent='` was set to `true`.
 if nargin == 1
     if isempty(DATA)
-        utils.error('model:loglik', ...
-            ['You must first initialise model/loglik( ) before ', ...
+        utils.error('model', ...
+            ['You must first initialise model/loglik() before ', ...
             'running it in fast mode with one input argument.']);
     end
 else
-    tune = [ ];
+    tune = [];
     if ~isempty(varargin) ...
             && (isstruct(varargin{1}) || isempty(varargin{1}))
         tune = varargin{1};
-        varargin(1) = [ ];
-    end
-    pp = inputParser( );
-    pp.addRequired('M', @(x) isa(x, 'model'));
-    pp.addRequired('Inp', @isstruct);
-    pp.addRequired('Range', @(x) isdatinp(x));
-    pp.parse(This, Data, Range);
-    
-    if ischar(Range)
-        Range = textinp2dat(Range);
+        varargin(1) = [];
     end
     RANGE = Range;
-    
     % Process `loglik` options.
     [OPT,varargin] = passvalopt('model.loglik',varargin{:});
-    % Process `kalmanFilter` and `myfdlik` options and initialise output data
+    % Process `mykalman` and `myfdlik` options and initialise output data
     % handles.
-    LIKOPT = prepareLoglik(This,RANGE,OPT.domain,tune,varargin{:});
+    LIKOPT = mypreploglik(This,RANGE,OPT.domain,tune,varargin{:});
     % Get array of measurement and exogenous variables.
-    req = [LIKOPT.domain(1),'yg*'];
-    DATA = datarequest(req,This,Data,RANGE,':');
+    DATA = datarequest('yg*',This,Data,RANGE,':',LIKOPT);
 end
 
 %--------------------------------------------------------------------------
@@ -183,20 +154,19 @@ end
 % Evaluate likelihood
 %---------------------
 if nargout == 1
-    Obj = LIKOPT.minusLogLikFunc(This,DATA,[ ],LIKOPT);
+    Obj = LIKOPT.minusLogLikFunc(This,DATA,[],LIKOPT);
 else
-    [Obj,regOutp] = LIKOPT.minusLogLikFunc(This,DATA,[ ],LIKOPT);
+    [Obj,regOutp] = LIKOPT.minusLogLikFunc(This,DATA,[],LIKOPT);
     % Populate regular (non-hdata) output arguments.
     xRange = RANGE(1)-1 : RANGE(end);
-    [F,Pe,V,Delta,PDelta] = ...
-        kalmanFilterRegOutp(This,regOutp,xRange,LIKOPT,OPT);
+    [F,Pe,V,Delta,PDelta] = mykalmanregoutp(This,regOutp,xRange,LIKOPT);
 end
 
 if ~OPT.persist
-    DATA = [ ];
-    RANGE = [ ];
-    OPT = [ ];
-    LIKOPT = [ ];
+    DATA = [];
+    RANGE = [];
+    OPT = [];
+    LIKOPT = [];
 end
 
 end

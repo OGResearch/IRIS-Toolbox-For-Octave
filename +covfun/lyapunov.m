@@ -4,8 +4,8 @@ function C = lyapunov(T,SGM,BETA,FIRSTROW)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*TRYNC>
 %#ok<*CTCH>
@@ -54,7 +54,7 @@ while i >= FIRSTROW
         % Transpose the equation first
         %     c' = Tt'*c'*T' + X'
         % so that the below kronecker product becomes faster to evaluate,
-        % then vectorize
+        % then vectorise
         %     vec(c') = kron(T,Tt')*vec(c') + vec(X').
         Xt = X.';
         U = Tt(1:i,1:i).';

@@ -1,30 +1,28 @@
-function dat = ww(year, varargin)
+function Dat = ww(Year,varargin)
 % ww  IRIS serial date number for weekly date.
 %
 % Syntax
 % =======
 %
-%     dat = ww(year, week)
-%     dat = ww(year, month, day)
-%
+%     Dat = ww(Year,Week)
+%     Dat = ww(Year,Month,Day)
 %
 % Input arguments
 % ================
 %
-% * `year` [ numeric ] - Calendar year or vector of years.
+% * `Year` [ numeric ] - Years.
 %
-% * `week` [ numeric ] - Calendar week of the year or vector of weeks.
+% * `Week` [ numeric ] - Week of the year.
 %
-% * `month` [ numeric ] - Calendar month or vector of months.
+% * `Month` [ numeric ] - Calendar month.
 %
-% * `day` [ numeric ] - Calendar day of the month or vector of days.
-%
+% * `Day` [ numeric ] - Calendar day of the month `Month`.
 %
 % Output arguments
 % =================
 %
-% * `dat` [ dates.Date ] - IRIS serial date numbers.
-%
+% * `Dat` [ numeric ] - IRIS serial date number representing the weekly
+% date.
 %
 % Description
 % ============
@@ -36,26 +34,30 @@ function dat = ww(year, varargin)
 % * the month or year to which the week belongs is determined by its
 % Thurdsay.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if nargin==3
-    % * ww(year, month, day)
-    x = datenum(year, varargin{:});
-    dat = day2ww(x);
+if isempty(varargin)
+    % Monday in the first week of the year.
+    x = fwymonday(Year);
+elseif length(varargin) == 1
+    % Year, week.
+    per = varargin{1};
+    if isequal(per,'end')
+        per = weeksinyear(Year);
+    end
+    x = fwymonday(Year);
+    x = x + 7*(per-1);
 else
-    % * ww(year, week)
-    % * ww(year)
-    dat = datcode(52, year, varargin{:});
+    % Year, month, day.
+    x = datenum(Year,varargin{1},varargin{2});
 end
-
-dat = dates.Date(dat);
+Dat = day2ww(x);
 
 end

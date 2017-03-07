@@ -1,18 +1,15 @@
-function N = nnzcond(This)
+function n = nnzcond(this)
 % nnzcond  Number of conditioning data points.
-%
 %
 % Syntax
 % =======
 %
 %     N = nnzcond(P)
 %
-%
 % Input arguments
 % ================
 %
 % * `P` [ plan ] - Simulation plan.
-%
 %
 % Output arguments
 % =================
@@ -20,20 +17,17 @@ function N = nnzcond(This)
 % * `N` [ numeric ] - Number of conditioning data points; each variable at
 % each date counts as one data point.
 %
-%
 % Description
 % ============
 %
-%
 % Example
 % ========
-%
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-N = nnz(This.CAnch);
+n = nnz(this.CAnch);
 
 end

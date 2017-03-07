@@ -1,55 +1,68 @@
-function [legEnt, isExcluded] = mylegend(this, nData)
-% mylegend  Create legend entries for report/series.
+function [LegEnt,Exclude] = mylegend(This,NData)
+% mylegend  [Not a public function] Create legend entries for report/series.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-isExcluded = false;
+try
+    isequaln(0,0);
+    isequalnFunc = @isequaln;
+catch
+    isequalnFunc = @isequalwithequalnans;
+end
+
+Exclude = false;
 
 % The default legend entries (created when `'legend=' @auto`) consist of
 % the series caption and a mark, unless the legend entries are supplied
 % through the `'legend='` option.
-if isequal(this.options.legendentry, @auto)
+if isequal(This.options.legendentry,@auto) ...
+        || isequal(This.options.legendentry,Inf)
+    
+    % ##### May 2014 OBSOLETE and scheduled for removal.
+    if isequal(This.options.legendentry,Inf)
+        utils.warning('obsolete', ...
+            ['Using Inf to create automatic legend entries is obsolete, ',...
+            'and this syntax will be removed from IRIS in a future release. ', ...
+            'Use @auto instead.']);
+    end
+    
     % Produce default legend entries.
-    legEnt = cell(1, nData);
-    for i = 1 : nData
-        name = this.caption;
-        if i <= numel(this.options.marks)
-            mark = this.options.marks{i};
+    LegEnt = cell(1,NData);
+    for i = 1 : NData
+        name = This.caption;
+        if i <= numel(This.options.marks)
+            mark = This.options.marks{i};
         else
             mark = '';
         end
         if ~isempty(name) && ~isempty(mark)
-            legEnt{i} = [name, ': ', mark];
+            LegEnt{i} = [name,': ',mark];
         elseif isempty(mark)
-            legEnt{i} = name;
+            LegEnt{i} = name;
         elseif isempty(name)
-            legEnt{i} = mark;
+            LegEnt{i} = mark;
         end
     end
-elseif isequaln(this.options.legendentry, NaN)
+elseif isequalnFunc(This.options.legendentry,NaN)
     % Exclude the series from legend.
-    legEnt = { };
-    isExcluded = true;
-elseif ischar(this.options.legendentry) || iscellstr(this.options.legendentry)
-    % Use user-suppied legend entries.
-    legEnt = cell(1, nData);
-    if ischar(this.options.legendentry)
-        this.options.legendentry = {this.options.legendentry};
-    end
-    this.options.legendentry = this.options.legendentry(:).';
-    n = min(length(this.options.legendentry), nData);
-    legEnt(1:n) = this.options.legendentry(1:n);
-    legEnt(n+1:end) = {''};
+    LegEnt = {};
+    Exclude = true;
 else
-    throw( ...
-        exception.Base('Report:InvalidLegendEntries', 'error') ...
-        );
+    % Use user-suppied legend entries.
+    LegEnt = cell(1,NData);
+    if ischar(This.options.legendentry)
+        This.options.legendentry = {This.options.legendentry};
+    end
+    This.options.legendentry = This.options.legendentry(:).';
+    n = min(length(This.options.legendentry),NData);
+    LegEnt(1:n) = This.options.legendentry(1:n);
+    LegEnt(n+1:end) = {''};
 end
 
 end

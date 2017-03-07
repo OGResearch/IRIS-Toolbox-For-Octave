@@ -1,14 +1,15 @@
-function w = weekdayiso(d)
-% weekdayiso  ISO 8601 day of the week number (Monday=1, etc.)
+function W = weekdayiso(D)
+% weekdayiso  [Not a public function] ISO 8601 day of the week number
+% (Monday=1, etc.)
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-w = mod(fix(d)-3, 7) + 1;
+W = mod(fix(D)-3,7) + 1;
 
 end

@@ -4,8 +4,8 @@ function [B,U] = orthonorm(Omg,N,Std,E)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     N; %#ok<VUNUS>
@@ -22,7 +22,7 @@ end
 try
     E; %#ok<VUNUS>
 catch
-    E = [ ];
+    E = [];
 end
 
 %--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ for iLoop = 1 : nAlt
     Q(1:N,:,iLoop) = diag(1./s(:,iLoop))*V(:,:,iLoop)';
 end
 
-U = [ ];
+U = [];
 if nargout > 1 && ~isempty(E)
     nPer = size(E,2);
     nData = size(E,3);

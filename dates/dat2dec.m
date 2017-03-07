@@ -1,5 +1,5 @@
-function dec = dat2dec(dat, pos)
-% dat2dec  Convert dates to decimal grid.
+function Dec = dat2dec(Dat,Pos)
+% dat2dec  Convert dates to their decimal representations.
 %
 % Syntax
 % =======
@@ -18,8 +18,8 @@ function dec = dat2dec(dat, pos)
 % Output arguments
 % =================
 %
-% * `Dec` [ numeric ] - Decimal grid representing the input dates,
-% computed as `Year + (Per-1)/Freq`.
+% * `Dec` [ numeric ] - Decimal number representing the input dates,
+% computed as `year + (per-1)/freq`.
 %
 % Description
 % ============
@@ -28,58 +28,63 @@ function dec = dat2dec(dat, pos)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-if nargin<2
-    pos = 's';
+try
+    Pos; %#ok<VUNUS>
+catch
+    Pos = 's';
 end
-pos = lower(pos(1));
+Pos = lower(Pos(1));
 
 %--------------------------------------------------------------------------
 
-dec = nan(size(dat));
-if isempty(dat)
-    return
+Dec = nan(size(Dat));
+[year,per,freq] = dat2ypf(Dat);
+
+ixZero = freq == 0;
+ixWeekly = freq == 52;
+ixRegular = ~ixZero & ~ixWeekly;
+
+% Regular frequencies
+%---------------------
+if any(ixRegular(:))
+    switch Pos
+        case {'s','b'}
+            adjust = -1;
+        case {'c','m'}
+            adjust = -1/2;
+        case {'e'}
+            adjust = 0;
+        otherwise
+            adjust = -1;
+    end
+    Dec(ixRegular) = year(ixRegular) ...
+        + (per(ixRegular) + adjust) ./ freq(ixRegular);
 end
 
-[year, per, freq] = dat2ypf(dat);
+% Weekly frequency
+%------------------
+if any(ixWeekly(:))
+    switch Pos
+        case {'s','b'}
+            standinDay = 'Monday';
+        case {'c','m'}
+            standinDay = 'Thursday';
+        case {'e'}
+            standinDay = 'Sunday';
+        otherwise
+            standinDay = 'Monday';
+    end
+    x = ww2day(Dat(ixWeekly),standinDay);
+    Dec = day2dec(x);
+end
 
-dates.Date.chkMixedFrequency(freq);
-freq = freq(1);
-
-switch freq
-    case {0, 365}
-        dec = per;
-    case {1, 2, 4, 6, 12}
-        switch pos
-            case {'s','b'}
-                adjust = -1;
-            case {'c','m'}
-                adjust = -1/2;
-            case {'e'}
-                adjust = 0;
-            otherwise
-                adjust = -1;
-        end
-        dec = year + (per + adjust) ./ freq;
-    case 52
-        switch pos
-            case {'s', 'b'}
-                standinDay = 'Monday';
-            case {'c', 'm'}
-                standinDay = 'Thursday';
-            case {'e'}
-                standinDay = 'Sunday';
-            otherwise
-                standinDay = 'Monday';
-        end
-        x = ww2day(dat, standinDay);
-        dec = day2dec(x);
-    otherwise
-        throw( ...
-            exception.Base('Dates:UnrecognizedFrequency', 'error') ...
-            );        
+% Indeterminate frequency
+%-------------------------
+if any(ixZero(:))
+   Dec(ixZero) = per(ixZero);
 end
 
 end

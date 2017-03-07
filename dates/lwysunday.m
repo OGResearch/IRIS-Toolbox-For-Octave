@@ -1,12 +1,12 @@
 function L = lwysunday(Year)
-% lwysunday  [Not a public function] Matlab serial date number for Sunday
+% fwysunday  [Not a public function] Matlab serial date number for Sunday
 % in the last week of the year.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 

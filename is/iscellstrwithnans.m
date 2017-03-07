@@ -1,4 +1,4 @@
-function flag = iscellstrwithnans(x)
+function Flag = iscellstrwithnans(X)
 % iscellstrwithnans  True if variable is cell array of strings or NaNs.
 %
 % Syntax 
@@ -6,33 +6,32 @@ function flag = iscellstrwithnans(x)
 %
 %     Flag = iscellstrwithnans(X)
 %
-%
 % Input arguments
 % ================
 %
 % * `X` [ numeric ] - Variable that will be tested.
 %
-%
 % Output arguments
-% =================
 %
 % * `Flag` [ `true` | `false` ] - True if the input variable `X` is a cell
 % array of strings or `NaN`s.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-flag = all( cellfun(@(x) ischar(x) || isequaln(x, NaN), x(:)) );
+try
+    Flag = all(cellfun(@(x) ischar(x) || isequaln(x,NaN),X(:)));
+catch
+    Flag = all(cellfun(@(x) ischar(x) || isequalwithequalnans(x,NaN),X(:))); %#ok<DISEQN>
+end
 
 end

@@ -162,7 +162,7 @@
 %
 % Compare the headers of these two tables:
 %
-%     x = report.new( );
+%     x = report.new();
 %
 %     x.table('First table', ...
 %         'range',qq(2010,1):qq(2012,4), ...
@@ -177,5 +177,5 @@
 %     x.publish('myreport.pdf');
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

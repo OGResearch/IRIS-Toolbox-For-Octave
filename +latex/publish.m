@@ -1,13 +1,12 @@
-function publish(inpFile, varargin)
+function publish(InpFile,OutpFile,varargin)
 % publish  Publish m-file or model file to PDF.
-%
 %
 % Syntax
 % =======
 %
 %     latex.publish(InpFile)
-%     latex.publish(InpFile,...)
-%
+%     latex.publish(InpFile,[],...)
+%     latex.publish(InpFile,OutpFile,...)
 %
 % Input arguments
 % ================
@@ -15,12 +14,14 @@ function publish(inpFile, varargin)
 % * `InpFile` [ char | cellstr ] - Input file name; can be either an
 % m-file, a model file, or a cellstr combining a number of them.
 %
+% * `OutpFile` [ char ] - Output file name; if omitted or empty, the
+% output file name will be derived from the input file by adding a pdf
+% extension.
 %
 % Options
 % ========
 %
-% General options
-% ----------------
+% --General options
 %
 % * `'cleanup='` [ *`true`* | `false` ] - Delete all temporary files
 % (LaTeX and eps) at the end.
@@ -36,8 +37,7 @@ function publish(inpFile, varargin)
 % * `'useNewFigure='` [ `true` | *`false`* ] - Open a new figure window for each
 % graph plotted.
 %
-% Content-related options
-% ------------------------
+% --Content-related options
 %
 % * `'author='` [ char | *empty* ] - Author that will be included on the
 % title page.
@@ -48,14 +48,8 @@ function publish(inpFile, varargin)
 % * `'event='` [ char | *empty* ] - Event (conference, workshop) that will
 % be included on the title page.
 %
-% * `'figureFrame='` [ `true` | *`false`* ] - Draw frames around figures.
-%
-% * `'figureScale='` [ numeric | *`1`* ] - Factor by which the graphics
+% * `'figureScale='` [ numeric | *1* ] - Factor by which the graphics
 % will be scaled.
-%
-% * `'figureTrim='` [ numeric | *`[50,200,50,150]`* ] - Trim excessive
-% white margines around figures by the specified amount of points left,
-% bottom, right, top.
 %
 % * `'irisVersion='` [ *`true`* | `false` ] - Display the current IRIS version
 % in the header on the title page.
@@ -67,8 +61,8 @@ function publish(inpFile, varargin)
 %
 % * `'numbered='` - [ *`true`* | `false` ] - Number sections.
 %
-% * `'package='` - [ cellstr | char | *`'inconsolata'`* ] - List of
-% packages that will be loaded in the preamble.
+% * `'package='` - [ cellstr | char | *'inconsolata'* ] - List of packages
+% that will be loaded in the preamble.
 %
 % * `'paperSize='` -  [ 'a4paper' | *'letterpaper'* ] - Paper size.
 %
@@ -83,253 +77,266 @@ function publish(inpFile, varargin)
 %
 % * `'toc='` - [ *`true`* | `false` ] - Include the table of contents.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
-pp.addRequired('InpFile', @ischar);
-pp.parse(inpFile);
-
-% Bkw compatibility.
-if ~isempty(varargin) && isempty(varargin{1})
-    varargin(1) = [ ];
+try
+    OutpFile; %#ok<VUNUS>
+catch
+    OutpFile = [];
 end
 
-opt = passvalopt('latex.publish', varargin{:});
+opt = passvalopt('latex.publish',varargin{:});
 
 if opt.toc && ~opt.numbered
     utils.error('latex', ...
         'Options ''numbered'' and ''toc'' are used inconsistently.');
 end
 
-[inpPath, inpTitle, inpExt] = fileparts(inpFile);
-texFile = [inpTitle, '.tex'];
-outpFile = fullfile(inpPath, [inpTitle, '.pdf']);
-if isempty(inpExt)
-    inpExt = '.m';
+if ischar(InpFile)
+    InpFile = regexp(InpFile,'[^,;]+','match');
 end
-canEvalCode = strcmp(inpExt, '.m');
-rptFileName = [inpTitle, inpExt];
+nInput = length(InpFile);
+
+texFile = cell(1,nInput);
+inputExt = cell(size(InpFile));
+inputTitle = cell(size(InpFile));
+for i = 1 : nInput
+    [inputPath,inputTitle{i},inputExt{i}] = fileparts(InpFile{i});
+    texFile{i} = [inputTitle{i},'.tex'];
+    if i == 1 && isempty(OutpFile)
+        OutpFile = fullfile(inputPath,[inputTitle{i},'.pdf']);
+    end
+    if isempty(inputExt{i})
+        inputExt{i} = '.m';
+    end
+end
+
+% Old option name.
+if ~isempty(opt.deletetempfiles)
+    opt.cleanup = opt.deletetempfiles;
+end
 
 %--------------------------------------------------------------------------
 
 br = sprintf('\n');
 
-if strcmpi(opt.template, 'paper')
-    template = file2char(fullfile(irisroot( ), '+latex', 'paper.tex'));
-    if ~isnumericscalar(opt.linespread)
-        opt.linespread = 1.1;
-    end
-else
-    template = file2char(opt.template);
-    if ~isnumericscalar(opt.linespread)
-        opt.linespread = 1;
-    end
+switch lower(opt.template)
+    case 'paper'
+        template = file2char(fullfile(irisroot(),'+latex','paper.tex'));
+        if ~isnumericscalar(opt.linespread)
+            opt.linespread = 1.1;
+        end
+    case 'present'
+        template = file2char(fullfile(irisroot(),'+latex','present.tex'));
+        if ~isnumericscalar(opt.linespread)
+            opt.linespread = 1;
+        end
+        opt.toc = false;
+    otherwise
+        template = file2char(opt.template);
+        if ~isnumericscalar(opt.linespread)
+            opt.linespread = 1;
+        end
 end
-template = textfun.converteols(template);
+template = strfun.converteols(template);
 
-thisDir = pwd( );
-wDir = tempname(thisDir);
+thisDir = pwd();
+wDir = mosw.tempname(thisDir);
 mkdir(wDir);
 
 % Run input files with compact spacing.
-spacing = get(0, 'formatSpacing');
-set(0, 'formatSpacing', 'compact');
+spacing = get(0,'formatSpacing');
+set(0,'formatSpacing','compact');
 
 % Create mfile2xml (publish) options. The output directory is assumed to
 % always coincide with the input file directory.
-m2xmlOpt = struct( ...
+mfile2xmloptions = struct( ...
     'format','xml', ...
     'outputDir',wDir, ...
-    'imageFormat','pdf', ...
-    'figureSnapMethod','print', ...
-    'createThumbnail',false, ...
+    ... 'imageDir',wdir, ...
+    'imageFormat','epsc2', ...
     'evalCode',opt.evalcode, ...
     'useNewFigure',opt.usenewfigure);
 
 % Try to copy all tex files to the working directory in case there are
 % \input or \include commands.
 try %#ok<TRYNC>
-    copyfile('*.tex', wDir);
+    copyfile('*.tex',wDir);
 end
 
-needsTempFile = ~isequal(inpExt, '.m');
-if needsTempFile
-    tempFileName = [tempname(pwd( )), '.m'];
-    copyfile([inpTitle,inpExt], tempFileName);
-    [~, inpTitle, inpExt] = fileparts(tempFileName);
+% Loop over all input files and produce XMLDOMs.
+xmlDoc = cell(1,nInput);
+for i = 1 : nInput
+    copy = xxPrepareToPublish([inputTitle{i},inputExt{i}]);
+    % Only m-files can be published with `'evalCode='` true.
+    if isequal(inputExt{i},'.m')
+        mfile2xmloptions.evalCode = opt.evalcode;
+    else
+        mfile2xmloptions.evalCode = false;
+    end
+    % Switch off warnings produced by the built-in publish when conversion
+    % of latex equations to images fails.
+    ss = warning();
+    warning('off');%#ok<WNOFF>
+    % Publish an xml file and read the file in again as xml object.
+    xmlFile = publish([inputTitle{i},inputExt{i}],mfile2xmloptions);
+    warning(ss);
+    xmlDoc{i} = xmlread(xmlFile);
+    char2file(copy,[inputTitle{i},inputExt{i}]);
 end
-
-% Produce XMLDOM
-%----------------
-copy = prepareToPublish([inpTitle, inpExt]);
-
-% Only m-files can be published with `'evalCode='` true.
-m2xmlOpt.evalCode = canEvalCode && opt.evalcode;
-
-% Switch off warnings produced by the built-in publish when conversion
-% of latex equations to images fails.
-ss = warning( );
-warning('off');%#ok<WNOFF>
-% Publish the m-file into an xml file and read the file in again as xml
-% object.
-xmlFile = publish([inpTitle, inpExt], m2xmlOpt);
-warning(ss);
-xmlDoc = xmlread(xmlFile);
-char2file(copy, [inpTitle, inpExt]);
 
 % Reset spacing.
-set(0, 'formatSpacing', spacing);
+set(0,'formatSpacing',spacing);
 
 % Switch to the working directory so that `xml2tex` can find the graphics
 % files.
 cd(wDir);
 try
+    tex = cell(1,nInput);
     body = '';
-    [tex, author, event] = latex.xml.xml2tex(xmlDoc, opt);
-    if isempty(opt.author) && ischar(author)
-        opt.author = author;
+    for i = 1 : nInput
+        if nInput == 1
+            type = 'single';
+        elseif i == 1
+            type = 'master';
+        else
+            type = 'multiple';
+        end
+        [tex{i},author,event] = latex.xml.xml2tex(xmlDoc{i},type,opt);
+        if isempty(opt.author) && i == 1 && ischar(author)
+            opt.author = author;
+        end
+        if isempty(opt.author) && i == 1 && ischar(event)
+            opt.event = event;
+        end
+        tex{i} = xxDocSubs(tex{i},opt);
+        char2file(tex{i},texFile{i});
+        body = [body,'\input{',texFile{i},'}',br]; %#ok<AGROW>
     end
-    if isempty(opt.author) && ischar(event)
-        opt.event = event;
-    end
-    tex = expandDocSubs(tex, rptFileName, opt);
-    char2file(tex,texFile);
-    body = [body, '\input{', texFile, '}', br];
     
-    template = strrep(template, '$body$', body);
-    template = expandDocSubs(template, rptFileName, opt);
+    template = strrep(template,'$body$',body);
+    template = xxDocSubs(template,opt);
     
-    char2file(template, 'main.tex');
+    char2file(template,'main.tex');
     latex.compilepdf('main.tex');
-    copyfile('main.pdf', outpFile);
-    movefile(outpFile, thisDir);
-catch Err
+    copyfile('main.pdf',OutpFile);
+    movefile(OutpFile,thisDir);
+catch Error
     utils.warning('latex:publish', ...
         ['Error producing PDF.\n', ...
         '\tUncle says: %s'], ...
-        Err.message);
+        Error.message);
 end
 
-cd(thisDir);
+while ~isequal(pwd(),thisDir)
+    cd(thisDir);
+end
 if opt.cleanup
-    rmdir(wDir, 's');
+    rmdir(wDir,'s');
 end
 
 if opt.closeall
     close('all');
 end
 
-if needsTempFile
-    delete(tempFileName);
-end
-
 end
 
 
+% Subfunctions...
 
 
-function c = expandDocSubs(c, rptFileName, opt)
-BR = sprintf('\n');
-c = strrep(c,'$papersize$', opt.papersize);
+%**************************************************************************
+
+
+function C = xxDocSubs(C,Opt)
+br = sprintf('\n');
+C = strrep(C,'$papersize$',Opt.papersize);
 
 % Author.
-opt.author = strtrim(opt.author);
-if ischar(opt.author) && ~isempty(opt.author)
-    c = strrep(c, '$author$', ['\byauthor ', opt.author]);
-elseif ischar(opt.event) && ~isempty(opt.event)
-    c = strrep(c, '$author$', ['\atevent ', opt.event]);
+Opt.author = strtrim(Opt.author);
+if ischar(Opt.author) && ~isempty(Opt.author)
+    C = strrep(C,'$author$',['\byauthor ',Opt.author]);
+elseif ischar(Opt.event) && ~isempty(Opt.event)
+    C = strrep(C,'$author$',['\atevent ',Opt.event]);
 else
-    c = strrep(c,'$author$','');
+    C = strrep(C,'$author$','');
 end
 
-c = strrep(c, '$date$', opt.date);
-c = strrep(c, '$textscale$', sprintf('%g', opt.textscale));
-
-% Figures.
-c = strrep(c,'$figurescale$', sprintf('%g', opt.figurescale));
-c = strrep(c,'$figuretrim$', sprintf('%gpt ', opt.figuretrim));
-if opt.figureframe
-    c = strrep(c,'$figureframe$','\fbox');
-else
-    c = strrep(c,'$figureframe$','');
-end
-
-% Matlab and IRIS versions.
-if opt.matlabversion
-    v = version( );
+C = strrep(C,'$date$',Opt.date);
+C = strrep(C,'$textscale$',sprintf('%g',Opt.textscale));
+C = strrep(C,'$figurescale$',sprintf('%g',Opt.figurescale));
+if Opt.matlabversion
+    v = version();
     v = strrep(v,' ','');
     v = regexprep(v,'(.*)\s*\((.*?)\)','$2');
-    c = strrep(c,'$matlabversion$', ...
+    C = strrep(C,'$matlabversion$', ...
         ['Matlab: ',v]);
 else
-    c = strrep(c,'$matlabversion$','');
+    C = strrep(C,'$matlabversion$','');
 end
-if opt.irisversion
-    c = strrep(c,'$irisversion$', ...
-        ['IRIS: ',irisversion( )]);
+
+if Opt.irisversion
+    C = strrep(C,'$irisversion$', ...
+        ['IRIS: ',irisversion()]);
 else
-    c = strrep(c,'$irisversion$','');
+    C = strrep(C,'$irisversion$','');
 end
 
 % Packages.
-if ~isempty(opt.package)
+if ~isempty(Opt.package)
     c1 = '';
-    if ischar(opt.package)
-        opt.package = {opt.package};
+    if ischar(Opt.package)
+        Opt.package = {Opt.package};
     end
-    npkg = length(opt.package);
+    npkg = length(Opt.package);
     for i = 1 : npkg
-        pkg = opt.package{i};
+        pkg = Opt.package{i};
         if isempty(strfind(pkg,'{'))
             c1 = [c1,'\usepackage{',pkg,'}']; %#ok<AGROW>
         else
             c1 = [c1,'\usepackage',pkg]; %#ok<AGROW>
         end
-        c1 = [c1,BR]; %#ok<AGROW>
+        c1 = [c1,br]; %#ok<AGROW>
     end
-    c = strrep(c,'$packages$',c1);
+    C = strrep(C,'$packages$',c1);
 else
-    c = strrep(c,'$packages$','');
+    C = strrep(C,'$packages$','');
 end
 
-c = strrep(c,'$preamble$',opt.preamble);
-if opt.numbered
-    c = strrep(c,'$numbered$','');
+C = strrep(C,'$preamble$',Opt.preamble);
+if Opt.numbered
+    C = strrep(C,'$numbered$','');
 else
-    c = strrep(c,'$numbered$','*');
+    C = strrep(C,'$numbered$','*');
 end
-linespread = sprintf('%g',opt.linespread);
-c = strrep(c, '$linespread$', linespread);
-
-rptFileName = latex.replaceSpecChar(rptFileName);
-c = strrep(c, '$filename$', rptFileName);
-end 
+linespread = sprintf('%g',Opt.linespread);
+C = strrep(C,'$linespread$',linespread);
+end % xxDocSubs()
 
 
+%**************************************************************************
 
 
-function copy = prepareToPublish(file)
+function Copy = xxPrepareToPublish(File)
 % xxpreparetopublish  Remove formats not recognised by built-in publish.
-c = file2char(file);
-copy = c;
-% Replace %... and %%% with %% ...
-c = regexprep(c, '^%[ \t]*\.\.\.\s*$', '%% ...','lineanchors');
-c = regexprep(c, '^%%%[ \t]*(?=\n)$', '%% ...','lineanchors');
+c = file2char(File);
+Copy = c;
+% Replace %... and %%% with %%% ...
+c = regexprep(c,'^%[ \t]*\.\.\.\s*$','%% ...','lineanchors');
+c = regexprep(c,'^%%%[ \t]*(?=\n)$','%% ...','lineanchors');
 % Remove underlines % ==== with 4+ equal signs.
-c = regexprep(c, '^% ?====+','%','lineanchors');
+c = regexprep(c,'^% ?====+','%','lineanchors');
 % Remove underlines % ---- with 4+ equal signs.
-c = regexprep(c, '^% ?----+','%','lineanchors');
+c = regexprep(c,'^% ?----+','%','lineanchors');
 % Replace ` with |.
-c = strrep(c, '`', '|');
-char2file(c, file);
-end
+c = strrep(c,'`','|');
+char2file(c,File);
+end % xxPrepareToPublish()

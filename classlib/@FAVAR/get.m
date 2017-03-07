@@ -76,11 +76,11 @@ function varargout = get(this,varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[varargout{1:nargout}] = get@shared.GetterSetter(this,varargin{:});
+[varargout{1:nargout}] = get@getsetobj(this,varargin{:});
 
 end

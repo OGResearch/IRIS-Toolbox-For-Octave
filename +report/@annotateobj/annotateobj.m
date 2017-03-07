@@ -4,11 +4,11 @@ classdef annotateobj < report.genericobj
     % Backend IRIS class.
     % No help provided.
     
-    % -IRIS Macroeconomic Modeling Toolbox.
-    % -Copyright (c) 2007-2017 IRIS Solutions Team.
+    % -IRIS Toolbox.
+    % -Copyright (c) 2007-2014 IRIS Solutions Team.
     
     properties
-        location = [ ];
+        location = [];
         background = NaN;
     end
     
@@ -30,7 +30,7 @@ classdef annotateobj < report.genericobj
         function [This,varargin] = specargin(This,varargin)
             if ~isempty(varargin)
                 This.location = varargin{1};
-                varargin(1) = [ ];
+                varargin(1) = [];
             end
         end
         

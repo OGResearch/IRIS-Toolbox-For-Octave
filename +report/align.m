@@ -26,9 +26,8 @@
 % * `'hspace='` [ numeric | *`2`* ] - Horizontal space (in em units) inserted
 % between two neighbouring objects.
 %
-% * `'separator='` [ char | *`'\medskip\par'`* ] - (Inheritable from parent
-% objects) \LaTeX\ commands that will be inserted after the aligned
-% objects.
+% * `'separator='` [ char | *`'\medskip\par`* ] - (Inheritable from parent
+% objects) \LaTeX\ commands that will be inserted after the aligned objects.
 %
 % * `'shareCaption='` [ *`'auto'`* | true | false ] - (Inheritable from
 % parent objects) Place a shared caption (title and subtitle) over each row
@@ -65,6 +64,6 @@
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 

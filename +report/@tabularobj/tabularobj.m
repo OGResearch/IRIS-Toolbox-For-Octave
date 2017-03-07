@@ -4,8 +4,8 @@ classdef tabularobj < report.genericobj
         ncol = NaN;
         nlead = NaN;
         nrow = NaN;
-        vline = [ ];
-        highlight = [ ];
+        vline = [];
+        highlight = [];
     end
     
     events
@@ -103,7 +103,7 @@ classdef tabularobj < report.genericobj
         
         function C = beginwrapper(This,Space)
             br = sprintf('\n');
-            C = ['\begin{tabular}[t]{@{\hspace*{-3pt}}c@{ }}',br];
+            C = ['\begin{tabular}[t]{@{\hspace*{-3pt}}c@{}}',br];
             C = [C,printcaption(This,1,'c',Space),br];
         end
         
@@ -150,7 +150,7 @@ classdef tabularobj < report.genericobj
             c1(This.highlight) = upper(c1(This.highlight));
             
             c2 = char(' '*ones(1,This.ncol));
-            This.vline(This.vline < 1 | This.vline > This.ncol) = [ ];
+            This.vline(This.vline < 1 | This.vline > This.ncol) = [];
             c2(This.vline) = '|';
 
             c3 = [c1;c2];

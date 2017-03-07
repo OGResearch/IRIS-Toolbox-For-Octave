@@ -1,39 +1,35 @@
-function boy = datboy(dat)
+function D = datboy(D)
 % datboy  Beginning of year for the specified daily date.
 %
 % Syntax
 % =======
 %
-%     boy = dateboy(dat)
-%
+%     Boy = dateboy(D)
 %
 % Input arguments
 % ================
 %
-% * `dat` [ numeric ] - Daily serial date number.
-%
+% * `D` [ numeric ] - Daily serial date number.
 %
 % Output arguments
 % =================
 %
-% * `boy` [ numeric ] - Daily serial date number for the first day of the
-% same year as `dat`.
-%
+% * `Boy` [ numeric ] - Daily serial date number for the first day of the
+% same year as `D`.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-[y, ~] = datevec(double(dat));
-boy = datenum([y, 1, 1]);
+[y,m] = datevec(D); %#ok<NASGU>
+D = datenum([y,1,1]);
 
 end

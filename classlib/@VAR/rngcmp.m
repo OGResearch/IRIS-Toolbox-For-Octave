@@ -24,10 +24,10 @@ function Flag = rngcmp(V1,V2)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('V1',@isVAR);
 pp.addRequired('V2',@isVAR);
 pp.parse(V1,V2);
@@ -40,8 +40,8 @@ nAlt = max(nAlt1,nAlt2);
 
 Flag = false(1,nAlt);
 for iAlt = 1 : nAlt
-    fitted1 = V1.IxFitted(:,:,min(iAlt,end));
-    fitted2 = V2.IxFitted(:,:,min(iAlt,end));
+    fitted1 = V1.Fitted(:,:,min(iAlt,end));
+    fitted2 = V2.Fitted(:,:,min(iAlt,end));
     range1 = V1.Range(fitted1);
     range2 = V2.Range(fitted2);
     Flag(iAlt) = length(range1) == length(range2) ...

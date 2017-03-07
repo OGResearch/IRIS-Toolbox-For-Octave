@@ -1,133 +1,113 @@
-function [s, ff, aa] = shockplot(this, shockName, range, lsPlot, varargin)
+function [S,FF,AA] = shockplot(This,ShockName,SimRange,PlotList,varargin)
 % shockplot  Short-cut for running and plotting plain shock simulation.
 %
 % Syntax
 % =======
 %
-%     [s, ff, aa] = shockplot(m, shockName, range, plotLis,...)
-%
+%     [S,FF,AA] = shockplot(M,ShockName,SimRange,PlotList,...)
 %
 % Input arguments
 % ================
 %
-% * `m` [ model ] - Model object that will be simulated.
+% * `M` [ model ] - Model object that will be simulated.
 %
-% * `shockName` [ char ] - Name of the shock that will be simulated.
+% * `ShockName` [ char ] - Name of the shock that will be simulated.
 %
-% * `range` [ numeric | char ] - Date range on which the shock will be
+% * `SimRange` [ numeric ] - Date range on which the shock will be
 % simulated.
 %
-% * `plotList` [ cellstr ] - List of variables that will be reported; you
+% * `PlotList` [ cellstr ] - List of variables that will be reported; you
 % can use the syntax of [`dbase/dbplot`](dbase/dbplot).
-%
 %
 % Output arguments
 % =================
 %
-% * `s` [ struct ] - Database with simulation results.
+% * `S` [ struct ] - Database with simulation results.
 %
-% * `ff` [ numeric ] - Handles of figure windows created.
+% * `FF` [ numeric ] - Handles of figure windows created.
 %
-% * `aa` [ numeric ] - Handles of axes objects created.
-%
+% * `AA` [ numeric ] - Handles of axes objects created.
 %
 % Options affecting the simulation
 % =================================
 %
-% * `'Deviation='` [ *`true`* | `false` ] - See the option `'deviation='`
+% * `'deviation='` [ *`true`* | `false` ] - See the option `'deviation='`
 % in [`model/simulate`](model/simulate).
 %
-% * `'Dtrends='` [ *`@auto`* | `true` | `false` ] - See the option
+% * `'dtrends='` [ *`@auto`* | `true` | `false` ] - See the option
 % `'dtrends='` option in [`model/simulate`](model/simulate).
 %
-% * `'ShockSize='` [ *`'std'`* | numeric ] - Size of the shock that will
+% * `'shockSize='` [ *`'std'`* | numeric ] - Size of the shock that will
 % be simulated; `'std'` means that one std dev of the shock will be
 % simulated.
-%
 %
 % Options affecting the graphs
 % =============================
 %
 % See help on [`dbase/dbplot`](dbase/dbplot) for other options available.
 %
-%
 % Description
 % ============
 %
-% The simulated shock always occurs at time `t=1`. Starting the simulation
+% The simulated shock always occurs at time `t=1`. sStarting the simulation
 % range, `SimRange`, before `t=1` allows you to simulate anticipated
 % shocks.
 %
 % The graphs automatically include one pre-sample period, i.e. one period
 % prior to the start of the simulation.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    if ischar(lsPlot)
-        lsPlot = {lsPlot};
+    if ischar(PlotList)
+        PlotList = {PlotList};
     end
 catch %#ok<CTCH>
-    lsPlot = { };
+    PlotList = {};
 end
 
-pp = inputParser( );
-pp.addRequired('m', @(x) isa(x, 'model'));
-pp.addRequired('shockName', @ischar);
-pp.addRequired('range', @(x) isdatinp(x));
-pp.addRequired('plotList', @(x) ischar(x) || iscellstr(lsPlot));
-pp.parse(this, shockName, range, lsPlot);
+pp = inputParser();
+pp.addRequired('M',@(x) isa(x,'model'));
+pp.addRequired('SHOCKNAME',@ischar);
+pp.addRequired('RANGE',@isnumeric);
+pp.addRequired('LIST',@(x) ischar(x) || iscellstr(PlotList));
+pp.parse(This,ShockName,SimRange,PlotList);
 
-[opt, varargin] = passvalopt('model.shockplot', varargin{:});
-
-if ischar(range)
-    range = textinp2dat(range);
-end
+[opt,varargin] = passvalopt('model.shockplot',varargin{:});
 
 %--------------------------------------------------------------------------
 
-ixe = this.Quantity.Type==int8(31) | this.Quantity.Type==int8(32);
-lse = this.Quantity.Name(ixe);
-range = range(1) : range(end);
-ixRequest = strcmp(lse, shockName);
-if ~any(ixRequest)
-    throw( ...
-        exception.Base('Model:InvalidShockName', 'error'), ...
-        shockName ...
-        ); %#ok<GTARG>
+elist = This.name(This.nametype == 3);
+eindex = strcmp(elist,ShockName);
+if ~any(eindex)
+    utils.error('model', ...
+        'This is not a valid name of a shock: ''%s''.', ...
+        ShockName);
 end
 
-if strcmpi(opt.shocksize, 'Std') ...
-        || isequal(opt.shocksize, @auto) ...
-        || isequal(opt.shocksize, @std)
-    shkSize = model.Variant.getStdCorr(this.Variant, ixRequest, ':');
-    shkSize = permute(shkSize, [1, 3, 2]);
-else
-    shkSize = opt.shocksize;
+if strcmpi(opt.shocksize,'std')    
+    opt.shocksize = permute(This.stdcorr(1,eindex,:),[1,3,2]);
 end
 
 if opt.deviation
-    d = zerodb(this, range);
+    d = zerodb(This,SimRange);
 else
-    d = sstatedb(this, range);
+    d = sstatedb(This,SimRange);
 end
 
-d.(shockName)(1, :) = shkSize;
-s = simulate(this,d,range, ...
-    'Deviation=', opt.deviation, ...
-    'DTrends=', opt.dtrends, ...
-    'AppendPresample=', true, ...
+d.(ShockName)(1,:) = opt.shocksize;
+S = simulate(This,d,SimRange, ...
+    'deviation=',opt.deviation,'dtrends=',opt.dtrends,'dboverlay=',true, ...
     opt.simulate{:});
 
-if ~isempty(lsPlot)
-    plotRange = range(1)-1 : range(end);
-    [ff, aa] = dbplot(s, plotRange, lsPlot, varargin{:}, opt.dbplot{:});
+if ~isempty(PlotList)
+    [FF,AA] = dbplot(S,SimRange(1)-1:SimRange(end),PlotList, ...
+        varargin{:},opt.dbplot{:});
 end
 
 end

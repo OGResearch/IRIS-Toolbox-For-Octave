@@ -31,17 +31,17 @@ function D = addparam(This,D)
 % Example
 % ========
 %
-%     D = struct( );
+%     D = struct();
 %     D = addparam(V,D);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     D; %#ok<VUNUS>
 catch %#ok<CTCH>
-    D = struct( );
+    D = struct();
 end
 
 %--------------------------------------------------------------------------

@@ -3,7 +3,7 @@ function xtickfrq2per(H,Fmt)
 try
     H; %#ok<VUNUS>
 catch
-    H = gca( );
+    H = gca();
 end
 
 try

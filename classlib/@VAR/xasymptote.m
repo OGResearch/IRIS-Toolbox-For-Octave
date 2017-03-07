@@ -45,11 +45,11 @@ function varargout = xasymptote(This,X0)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    X0; %#ok<VUNUS>
+    X0;
 catch
     varargout{1} = This.X0;
     return

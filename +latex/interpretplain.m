@@ -5,8 +5,8 @@ function C = interpretplain(C)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if iscellstr(C)
     for i = 1 : numel(C)
@@ -34,7 +34,7 @@ C = strrep(C,'&','\&');
 C = strrep(C,'<','\ensuremath{<}');
 C = strrep(C,'>','\ensuremath{>}');
 C = strrep(C,'~','\ensuremath{\sim}');
-C = regexprep(C,'(?<!\.)\.\.\.(?!\.)','\\ldots{ }');
+C = regexprep(C,'(?<!\.)\.\.\.(?!\.)','\\ldots{}');
 
 % Put the protected content back.
 C = restore(C,f,'delimiter=',false);

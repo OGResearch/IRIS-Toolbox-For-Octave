@@ -4,8 +4,8 @@ function [X,T] = mybpass(X,Start,Band,Opt,TrendOpt)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ else
     T = zeros(size(X));
     tt = zeros(size(X));
     ts = zeros(size(X));
-    s = [ ];
+    s = [];
 end
 
 % Include time line in the output trend.
@@ -49,7 +49,7 @@ addseason = Opt.detrend ...
     && Opt.addtrend && ~isempty(s) ...
     && s >= lowPer && s <= highPer;
 
-A = [ ];
+A = [];
 nobs0 = 0;
 for i = 1 : size(X,2)
     sample = getsample(X(:,i));
@@ -75,10 +75,10 @@ for i = 1 : size(X,2)
     
     if strcmpi(Opt.method,'cf')
         % Christiano-Fitzgerald.
-        cf( );
+        cf();
     else
         % H-windowed frequency-selective filter.
-        hwfsf( );
+        hwfsf();
     end
     
     nobs0 = nobs;
@@ -103,7 +103,7 @@ end
 % Nested functions.
 
 %***********************************************************************
-    function cf( )
+    function cf()
         % Christiano-Fitzgerald filter.
         if any(nobs ~= nobs0)
             % Re-calculate C-F projection matrix only if needed.
@@ -112,10 +112,10 @@ end
         end
         X(sample,i) = A*xi;
         X(~sample,i) = NaN;
-    end % cf( ).
+    end % cf().
 
 %***********************************************************************
-    function hwfsf( )
+    function hwfsf()
         if nobs ~= nobs0
             freq = (2*pi*(0:nobs-1)/nobs).';
             H = (freq >= lowFreq & freq <= highFreq);
@@ -128,6 +128,6 @@ end
         end
         X(sample,i) = ifft(A.*fft(xi));
         X(~sample,i) = NaN;
-    end % hwfsf( ).
+    end % hwfsf().
 
 end

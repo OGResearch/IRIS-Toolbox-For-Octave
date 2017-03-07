@@ -14,14 +14,14 @@
 % removed from the path.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
 % Clear container.
 try %#ok<TRYNC>
-    clear(container( ));
+   clear(container());
 end
 
 % Clear persistent variables in |model/mysstatenonlin|.
@@ -40,9 +40,9 @@ removed = irispathmanager('cleanup');
 
 % Display report on paths removed.
 if ~isempty(removed)
-    fprintf('\n\tThe following IRIS roots have been removed from the Matlab search path:\n');
-    for i = 1 : numel(removed)
-        fprintf('\t* %s\n',removed{i});
-    end
-    fprintf('\n');
+   fprintf('\n\tThe following IRIS roots have been removed from the Matlab search path:\n');
+   for i = 1 : numel(removed)
+      fprintf('\t* %s\n',removed{i});
+   end
+   fprintf('\n');
 end

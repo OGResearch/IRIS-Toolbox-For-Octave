@@ -1,23 +1,21 @@
-function c = latexcode(this,varargin)
-% latexcode  Generate LaTeX code to represent a report object.
+function C = latexcode(This,varargin)
+% latexcode  [Not a public function] Generate LaTeX code to represent a report object.
 %
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-c = speclatexcode(this, varargin{:});
+C = speclatexcode(This,varargin{:});
 
-if ~isempty(this.options.saveas)
-    saveAs = this.options.saveas;
-    [~, ~, ext] = fileparts(this.options.saveas);
-    if isempty(ext)
-        saveAs = [saveAs, '.tex'];
-    end
-    char2file(c, saveAs);
+if ~isempty(This.options.saveas)
+    % Save in the current working directory, not the
+    % temporary directory.
+    [~,fileTitle] = fileparts(This.options.saveas);
+    char2file(C,[fileTitle,'.tex']);
 end
 
 end

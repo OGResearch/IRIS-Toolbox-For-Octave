@@ -19,8 +19,8 @@ function varargout = subsref(This,S)
 % Example
 % ========
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ if any(strcmp(S(1).type,{'()','{}'})) ...
     else
         inx = S(1).subs{1};
     end
-    This = subsalt(This,inx);
+    This = mysubsalt(This,inx);
     if length(S) == 1
         varargout{1} = This;
     else

@@ -33,8 +33,8 @@ function x = wmean(this,dates,beta)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if nargin < 2
     dates = Inf;
@@ -47,7 +47,7 @@ end
 %**************************************************************************
 
 % Get time series data.
-s = struct( );
+s = struct();
 s.type = '()';
 s.subs{1} = dates;
 data = subsref(this,s);

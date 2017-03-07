@@ -4,8 +4,8 @@ function This = myplot(This)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if This.options.visible
     visibleFlag = 'on';
@@ -20,13 +20,13 @@ This = myplot@report.basefigureobj(This);
 % Re-create the figure whose handle was captured at the
 % time the figure constructor was called.
 if ~isempty(This.savefig)
-    figFile = [tempname(pwd( )),'.fig'];
+    figFile = [mosw.tempname(pwd()),'.fig'];
     fid = fopen(figFile,'w+');
     fwrite(fid,This.savefig);
     fclose(fid);
     h = hgload(figFile);
     set(h,'visible',visibleFlag);
-    utils.delete(figFile);
+    delete(figFile);
     This.handle = h;
     if true % ##### MOSW
         % Matlab only
@@ -35,15 +35,15 @@ if ~isempty(This.savefig)
     else
         % Octave only
         %-------------
-        a = findobj(h, 'type', 'axes'); %#ok<UNRCH>
+        a = findobj(h,'type','axes'); %#ok<UNRCH>
         if ~isempty(a)
-            xLimMode = getappdata(h, 'IRIS_XLIM_MODE');
-            yLimMode = getappdata(h, 'IRIS_YLIM_MODE');
-            zLimMode = getappdata(h, 'IRIS_ZLIM_MODE');
+            xLimMode = getappdata(h,'xLimMode');
+            yLimMode = getappdata(h,'yLimMode');
+            zLimMode = getappdata(h,'zLimMode');
             set(a, ...
-                'xLimMode', xLimMode, ...
-                'yLimMode', yLimMode, ...
-                'zLimMode', zLimMode);
+                'xLimMode',xLimMode, ...
+                'yLimMode',yLimMode, ...
+                'zLimMode',zLimMode);
         end
     end
 end

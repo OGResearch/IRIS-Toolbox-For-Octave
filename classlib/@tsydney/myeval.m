@@ -1,26 +1,22 @@
-function Y = myeval(This,Time,LhsTs,LhsInpName,LhsStamp)
+function Y = myeval(This,Time,TRec,Lhs,LhsInpName,LhsStamp)
 % myeval  [Not a public function] Return tseries value when evaluating time-recursive expressions.
 %
 % Backed IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-% A tsydney object can be either a plain tseries or a tseries function
-% whose evaluation involves observations (lags, leads) other than the
-% current observation (such as `diff`, `pct`, etc).
-func = This.Func;
-funcArgs = { };
-if ~isempty(func)
-    funcArgs = This.args(2:end);
-    This = This.args{1};
+if length(TRec.Dates) ~= length(This.TRec.Dates) ...
+        || any(~datcmp(TRec.Dates,This.TRec.Dates))
+    utils.error('tsydney:myeval', ...
+        'Inconsistent date vectors in time-recursive expression.');
 end
 
 % Get the RHS tseries object.
-rhsTs = This.args;
+Rhs = This.args;
 
 % Check if `This` is the same tseries object as `Lhs`. Test two conditions:
 % * the time stamp;
@@ -45,20 +41,12 @@ rhsTs = This.args;
 %     d.y = d.x{:};
 %     d.y = 1*d.x;
 %
-rhsStamp = rhsTs.Stamp;
-rhsInpName = This.InpName;
-if isequal(rhsStamp,LhsStamp) && isequal(rhsInpName,LhsInpName)
-    rhsTs = LhsTs;
+
+if isequal(Rhs.Stamp,LhsStamp) && isequal(This.InpName,LhsInpName)
+    Rhs = Lhs;
 end
 
 sh = This.TRec.Shift;
-if ~isempty(func)
-    rhsTs = feval(func,rhsTs,funcArgs{:});
-end
-
-Y = rangedata(rhsTs,Time+sh);
-if ~isempty(This.Ref)
-    Y = Y(:,This.Ref{:});
-end
+Y = subsref(Rhs,Time+sh,This.Ref{:});
 
 end

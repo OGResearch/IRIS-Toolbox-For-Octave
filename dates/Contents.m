@@ -16,7 +16,6 @@
 % * [`yy`](dates/yy) - IRIS serial date number for yearly date.
 % * [`yytoday`](dates/yytoday) - IRIS serial date number for current year.
 %
-%
 % Computing special dates (daily dates only)
 % ===========================================
 %
@@ -27,14 +26,12 @@
 % * [`dateoq`](dates/dateoq) - End of quarter for the specified daily date.
 % * [`dateoy`](dates/dateoy) - End of year for the specified daily date.
 %
-%
 % Creating date ranges
 % =====================
 %
 % * [`datrange`](dates/datrange) - Numerically safe way to create a date range.
 % * [`dat2ttrend`](dates/dat2ttrend) - Construct linear time trend from date range.
 % * [`datxtick`](dates/datxtick) - Change ticks, labels and/or date frequency on x-axis in existing tseries graphs.
-%
 %
 % Converting dates
 % =================
@@ -43,13 +40,11 @@
 % * [`dat2char`](dates/dat2char) - Convert dates to character array.
 % * [`dat2charlist`](dates/dat2charlist) - Convert dates to a comma-separated list.
 % * [`dat2clp`](dates/dat2clp) - Convert dates to text and paste to system clipboard.
-% * [`dat2dec`](dates/dat2dec) - Convert dates to decimal grid.
+% * [`dat2dec`](dates/dat2dec) - Convert dates to their decimal representations.
 % * [`dat2str`](dates/dat2str) - Convert IRIS dates to cell array of strings.
 % * [`dat2ypf`](dates/dat2ypf) - Convert IRIS serial date number to year, period and frequency.
 % * [`dec2dat`](dates/dec2dat) - Convert decimal representation of date to IRIS serial date number.
 % * [`str2dat`](dates/str2dat) - Convert strings to IRIS serial date numbers.
-% * [`textinp2dat`](dates/textinp2dat) - Convert text input to IRIS serial date numbers.
-%
 %
 % Date comparison
 % ================
@@ -57,7 +52,6 @@
 % * [`datcmp`](dates/datcmp) - Compare two IRIS serial date numbers.
 % * [`datdiff`](dates/datdiff) - Number of periods between two dates with check for date frequency.
 % * [`rngcmp`](dates/rngcmp) - Compare two IRIS date ranges.
-%
 %
 % Daily and weekly dates
 % =======================
@@ -68,7 +62,6 @@
 % * [`ww2day`](dates/ww2day) - Convert weekly IRIS serial date number to Matlab serial date number.
 % * [`weeksinyear`](dates/weeksinyear) - Number of weeks in year.
 %
-%
 % Getting on-line help on date functions
 % =======================================
 %
@@ -76,5 +69,5 @@
 %     help dates/function_name
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

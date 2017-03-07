@@ -1,4 +1,4 @@
-function flag = islog(this, lsName)
+function Flag = islog(This,Name)
 % islog  True for log-linearised variables.
 %
 % Syntax
@@ -25,36 +25,36 @@ function flag = islog(this, lsName)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse input arguments.
-pp = inputParser( );
-pp.addRequired('Name', @(x) ischar(x) || iscellstr(x));
-pp.parse(lsName);
+pp = inputParser();
+pp.addRequired('name',@(x) ischar(x) || iscellstr(x));
+pp.parse(Name);
 
-if ischar(lsName)
-    lsName = regexp(lsName, '\w+', 'match');
+if ischar(Name)
+    Name = regexp(Name,'\w+','match');
 end
 
 %--------------------------------------------------------------------------
 
-flag = false(size(lsName));
-ixValid = true(size(lsName));
-for i = 1 : length(lsName)
-    ix = strcmp(this.Quantity.Name, lsName{i});
+Flag = false(size(Name));
+valid = true(size(Name));
+for i = 1 : length(Name)
+    ix = strcmp(This.name,Name{i});
     if any(ix)
-        flag(i) = this.Quantity.IxLog(ix);
+        Flag(i) = This.IxLog(ix);
     else
-        ixValid(i) = false;
+        valid(i) = false;
     end
 end
 
-if any(~ixValid)
+if any(~valid)
     utils.error('model:islog', ...
         ['This name does not exist ', ...
         'in the model object: ''%s''.'], ...
-        lsName{~ixValid});
+        Name{~valid});
 end
 
 end

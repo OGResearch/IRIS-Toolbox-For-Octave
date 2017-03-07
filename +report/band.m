@@ -1,11 +1,9 @@
 % band  Add new data with lower and upper bounds to graph or table.
 %
-%
 % Syntax
 % =======
 %
-%     P.band(Caption,X,Low,High,...)
-%
+%     P.series(Caption,X,Low,High,...)
 %
 % Input arguments
 % ================
@@ -24,24 +22,14 @@
 % * `High` [ tseries ] - Input data with upper bounds; can be specified
 % either relative to the centre or absolute, see the option `'relative='`.
 %
-%
-% Generic options
-% ================
-%
-% See help on [generic options](report/Contents) in report objects.
-%
-%
 % Options for table and graph bands
 % ==================================
 %
-% * `'excludeFromLegend='` [ *`true`* | `false` ] - Exclude bands around
-% central lines from legend.
+% * `'low='` [ char | *'Low'* ] - (Inheritable from parent objects) Mark
+% used to denote the lower bound.
 %
 % * `'high='` [ char | *'High'* ] - (Inheritable from parent objects) Mark
 % used to denote the upper bound.
-%
-% * `'low='` [ char | *'Low'* ] - (Inheritable from parent objects) Mark
-% used to denote the lower bound.
 %
 % * `'relative='` [ *`true`* | `false` ] - (Inheritable from parent objects) If
 % true, the data for the lower and upper bounds are relative to the centre,
@@ -50,13 +38,11 @@
 % bounds are absolute data (in this case `LOW` must be lower than `X`, and
 % `HIGH` must be higher than `X`).
 %
-%
 % Options for table bands
 % ========================
 %
 % * `'bandTypeface='` [ char | *`'\footnotesize'`* ] - (Inheritable from parent
 % objects) LaTeX format string used to typeset the lower and upper bounds.%
-%
 %
 % Options for graph bands
 % ========================
@@ -68,20 +54,23 @@
 % true the lower and upper bounds will be, respectively, subtracted from
 % and added to to the middle line.
 %
-% * `'white='` [ numeric | *`0.85`* ] - (Inheritable from parent objects)
-% Proportion of white colour mixed with the center line color and used to
-% fill the band area.
+% * `'white='` [ numeric | *`0.8`* ] - (Inheritable from parent objects)
+% Proportion of white colour mixed with the line colour and used to fill
+% the area that depicts the band.
 %
 % See help on [`report/series`](report/series) for other options available.
 %
+% Generic options
+% ================
+%
+% See help on [generic options](report/Contents) in report objects.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

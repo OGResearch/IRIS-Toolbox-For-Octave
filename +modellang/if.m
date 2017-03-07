@@ -76,7 +76,7 @@
 % to pass the database in. Note that you do not need to declare
 % `exogenous` as a parameter in the model file.
 % 
-%     P = struct( );
+%     P = struct();
 %     P.exogenous = true;
 %     ...
 %     m = model('my.model','assign=',P);
@@ -86,7 +86,7 @@
 % equation, `x = y`, you need to re-read the model file with
 % `exogenous` set to false:
 % 
-%     P = struct( );
+%     P = struct();
 %     P.exogenous = false;
 %     ...
 %     m = model('my.model','assign=',P);
@@ -97,5 +97,5 @@
 %     m = model('my.model','exogenous=',true);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

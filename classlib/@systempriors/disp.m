@@ -1,23 +1,22 @@
-function disp(this)
-% disp  Display method for systempriors objects.
+function disp(This)
+% disp  [Not a public function] Display method for systempriors objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-ccn = getClickableClassName(this);
-
-if isempty(this)
-    fprintf('\tempty %s object\n', ccn);
+if isempty(This)
+    fprintf('\tempty systempriors object\n');
 else
-    fprintf('\t%s object: [%g] prior(s)\n', ccn, length(this));
+    fprintf('\tsystempriors object\n');
+    fprintf('\t#priors imposed: %g\n',length(This));
 end
 
-disp@shared.UserDataContainer(this, 1);
-textfun.loosespace( );
+disp@userdataobj(This);
+disp(' ');
 
 end

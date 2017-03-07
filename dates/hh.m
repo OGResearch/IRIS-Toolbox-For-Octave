@@ -1,4 +1,4 @@
-function dat = hh(varargin)
+function Dat = hh(varargin)
 % hh  IRIS serial date number for half-yearly date.
 %
 % Syntax
@@ -12,8 +12,8 @@ function dat = hh(varargin)
 %
 % * `Y` [ numeric ] - Year.
 %
-% * `H` [ numeric ] - Half-year; if missing, first half-year (January-June)
-% is assumed.
+% * `H` [ numeric ] - Half-year; if missing, first half-year (January to
+% June) is assumed.
 %
 % Output arguments
 % =================
@@ -28,12 +28,11 @@ function dat = hh(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-dat = datcode(2, varargin{:});
-dat = dates.Date(dat);
+Dat = datcode(2,varargin{:});
 
 end

@@ -4,8 +4,8 @@ function [Q,PQ] = cc(C,X,PX)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team & Troy Matheson.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Troy Matheson.
 
 %--------------------------------------------------------------------------
 

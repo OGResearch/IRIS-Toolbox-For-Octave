@@ -1,13 +1,11 @@
-function [Obj, L, PP, SP] = eval(This, varargin)
+function [Obj,L,PP,SP] = eval(This,varargin)
 % eval  Evaluate posterior density at specified points.
-%
 %
 % Syntax
 % =======
 %
 %     [X,L,PP,SrfP,FrfP] = eval(Pos)
 %     [X,L,PP,SrfP,FrfP] = eval(Pos,P)
-%
 %
 % Input arguments
 % ================
@@ -18,7 +16,6 @@ function [Obj, L, PP, SP] = eval(This, varargin)
 % * `P` [ struct ] - Struct with parameter values at which the posterior
 % density will be evaluated; if `P` is not specified, the posterior density
 % is evaluated at the point of the estimated mode.
-%
 %
 % Output arguments
 % =================
@@ -36,7 +33,6 @@ function [Obj, L, PP, SP] = eval(This, varargin)
 % * `FrfP` [ numeric ] - Contribution of frequency response function priors
 % to log posterior.
 %
-%
 % Description
 % ============
 %
@@ -45,17 +41,16 @@ function [Obj, L, PP, SP] = eval(This, varargin)
 %
 %     X = L + PP + SrfP + FrfP.
 %
-%
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 if isempty(varargin)
     p = This.InitParam;
-elseif length(varargin)==1
+elseif length(varargin) == 1
     p = varargin{1};
 else
     p = varargin;
@@ -63,7 +58,7 @@ end
 
 %--------------------------------------------------------------------------
 
-if nargin==1 && nargout<=1
+if nargin == 1 && nargout <= 1
     % Return log posterior at optimum.
     Obj = This.InitLogPost;
     return
@@ -82,7 +77,7 @@ if isstruct(p)
 end
 
 if ~iscell(p)
-    p = { p };
+    p = {p};
 end
 np = numel(p);
 
@@ -95,10 +90,9 @@ PP = nan(size(p));
 % Minus log system priors.
 SP = nan(size(p));
 
-% TODO: parfor
-for i = 1 : np
+parfor i = 1 : np
     theta = p{i}(:);
-    [Obj(i), L(i), PP(i), SP(i)] = mylogpost(This, theta);
+    [Obj(i),L(i),PP(i),SP(i)] = mylogpost(This,theta);
 end
 
 end

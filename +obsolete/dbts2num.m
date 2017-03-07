@@ -6,7 +6,7 @@ elseif isa(in_list,'char')
   in_list = {in_list};
 end
 
-x = [ ];
+x = [];
 for k = 1 : length(in_list)
   x = [x,getfield(in_db,in_list{k})];
 end

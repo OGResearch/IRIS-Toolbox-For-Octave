@@ -4,8 +4,8 @@ function [Y0,K0,Y1,G1] = mydummymat(This,varargin)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 Ng = 0;
 if length(varargin) == 1
@@ -17,7 +17,7 @@ if length(varargin) == 1
 else
     Ny = varargin{1};
     P = varargin{2};
-    varargin(1:2) = [ ];
+    varargin(1:2) = [];
     if length(varargin) > 2
         Ng = varargin{3};
     end

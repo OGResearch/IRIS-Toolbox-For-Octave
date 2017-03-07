@@ -4,8 +4,8 @@ function Y = myprctile(X,P,Dim)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
     Dim; %#ok<VUNUS>
@@ -13,7 +13,7 @@ catch
     Dim = 1;
 end
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('X',@isnumeric);
 pp.addRequired('P',@(x) isnumeric(x) && all(P >= 0) && all(P <= 100));
 pp.addRequired('Dim',@(x) isintscalar(x) && x > 0);
@@ -40,7 +40,7 @@ end
 X = X(:,:);
 Y = nan(np,size(X,2));
 
-doPrctileCols( );
+doPrctileCols();
 
 if nd > 2
     Y = reshape(Y,[size(Y,1),s(2:end)]);
@@ -55,12 +55,12 @@ end
 
 
 %**************************************************************************
-    function doPrctileCols( )
+    function doPrctileCols()
         % doPrctileCols  Percentiles on columns of non-empty X.
         
         % Remove all rows that only contain NaNs.
         ixAllNaNRow = all(isnan(X),2);
-        X(ixAllNaNRow,:) = [ ];
+        X(ixAllNaNRow,:) = [];
                 
         if isempty(X)
             return
@@ -85,14 +85,14 @@ end
         % Then, cycle over columns with NaNs individually.
         for iCol = find(ixNanCol)
             iX = X(:,iCol);
-            iX(isnan(iX)) = [ ];
+            iX(isnan(iX)) = [];
             if isempty(iX)
                 continue
             end
             n = length(iX);
             Y(:,iCol) = prctileFunc(iX,n,P);
         end
-    end % doPrctileCols( )
+    end % doPrctileCols()
 
 
 end

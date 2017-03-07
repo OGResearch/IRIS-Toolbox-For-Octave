@@ -4,8 +4,8 @@ function [Rr,Qq] = restrict(Ny,Nk,Nx,Ng,Opt)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %#ok<*CTCH>
 
@@ -16,8 +16,8 @@ if isempty(Opt.constraints) ...
         && isempty(Opt.c) ...
         && isempty(Opt.j) ...
         && isempty(Opt.g)
-    Rr = [ ];
-    Qq = [ ];
+    Rr = [];
+    Qq = [];
 end
 
 if isnumeric(Opt.constraints)
@@ -45,19 +45,34 @@ isPlain = ~isempty(Opt.a) ...
 % General constraints.
 rest = lower(strtrim(Opt.constraints));
 if ~isempty(rest)
-    rest = textfun.converteols(rest);
-    rest = strrep(rest, char(10),' ');
+    rest = strfun.converteols(rest);
+    rest = strrep(rest,char(10),' ');
     rest = lower(rest);
     % Convert char to cellstr: for bkw compatibility, char strings can use
     % semicolons to separate individual restrictions.
     if ischar(rest)
-        rest = { rest };
+        % Replace semicolons outside brackets with &s.
+        rest0 = rest;
+        rest = strfun.strrepoutside(rest,';','&','[]','()');
+        if ~isequal(rest,rest0)
+            % ##### Feb 2014 OBSOLETE and scheduled for removal.
+            utils.warning('VAR:restrict', ...
+                ['Entering mutliple parameter constraints in one string ', ...
+                'separated with semicolon is obsolete, and will be remove ', ...
+                'from a future version of Matlab. ', ...
+                'Use cell array of strings instead.']);
+            % Read individual &-separated restrictions.
+            rest = regexp(rest,'(.*?)(?:&|$)','tokens');
+            rest = strtrim([rest{:}]);
+        else
+            rest = {rest};
+        end
     end
     % Convert restrictions to implicit forms: `A=B` to `A-B`.
-    rest = regexprep(rest, '=(.*)', '-\($1\)');
-    % Vectorize and vertically concatenate all general restrictions.
-    rest = strcat('xxVec(', rest, ');');
-    rest = ['[', rest{:}, ']'];
+    rest = regexprep(rest,'=(.*)','-($1)');
+    % Vectorise and vertically concatenate all general restrictions.
+    rest = strcat('xxVec(',rest,');');
+    rest = ['[',rest{:},']'];
 end
 
 % A, C, G restrictions.
@@ -103,11 +118,11 @@ function [Q,q] = xxGeneral(RestFn,Ny,Nk,Nx,Ng,NLag)
 % Q*beta = q
 aux = reshape(transpose(1:Ny*(Nk+Nx+Ny*NLag+Ng)),[Ny,Nk+Nx+Ny*NLag+Ng]);
 cPos = aux(:,1:Nk);
-aux(:,1:Nk) = [ ];
+aux(:,1:Nk) = [];
 dPos = aux(:,1:Nx);
-aux(:,1:Nx) = [ ];
+aux(:,1:Nx) = [];
 aPos = reshape(aux(:,1:Ny*NLag),[Ny,Ny,NLag]);
-aux(:,1:Ny*NLag) = [ ];
+aux(:,1:Ny*NLag) = [];
 gPos = aux;
 c = zeros(size(cPos)); % Constant.
 j = zeros(size(dPos)); % Exogenous inputs.
@@ -144,7 +159,7 @@ for i = 1 : numel(g)
     Q(:,gPos(i)) = RestFn(c,j,a,g) - q;
     g(i) = 0;
 end
-end % xxGeneralRest( )
+end % xxGeneralRest()
 
 
 %**************************************************************************
@@ -163,7 +178,7 @@ q = q(:);
 inx = ~isnan(q);
 Q = Q(inx,:);
 q = q(inx);
-end % xxPlainRest1( )
+end % xxPlainRest1()
 
 
 %**************************************************************************
@@ -178,9 +193,9 @@ R = eye(nbeta);
 r = [C,J,A(:,:),G];
 r = r(:);
 inx = ~isnan(r);
-R(:,inx) = [ ];
+R(:,inx) = [];
 r(~inx) = 0;
-end % xxPlainRest2( )
+end % xxPlainRest2()
 
 
 %**************************************************************************
@@ -229,7 +244,7 @@ if ~isempty(Opt.g)
             sprintf('%g-by-%g-by-%g',Ny,Ng));
     end
 end
-end % xxAssignPlainRest( )
+end % xxAssignPlainRest()
 
 
 %**************************************************************************
@@ -237,7 +252,7 @@ end % xxAssignPlainRest( )
 
 function X = xxVec(X) %#ok<DEFNU>
 X = X(:);
-end % xxVec( )
+end % xxVec()
 
 
 %**************************************************************************
@@ -250,7 +265,7 @@ q = QQ(:,end);
 R = null(Q);
 r = -pinv(Q)*q;
 RR = sparse([R,r]);
-end % xxQq2Rr( )
+end % xxQq2Rr()
 
 
 %**************************************************************************
@@ -263,4 +278,4 @@ r = RR(:,end);
 Q = null(R.').';
 q = -Q*r;
 QQ = sparse([Q,q]);
-end % xxRr2Qq( )
+end % xxRr2Qq()

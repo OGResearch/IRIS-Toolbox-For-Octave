@@ -1,68 +1,62 @@
-function this = splitgroup(this, varargin)
+function This = splitgroup(This,varargin)
 % splitgroup  Split group into its components in grouping object.
 %
 % Syntax
 % =======
 %
-%     g = splitgroup(g, groupName1, groupName2, ...)
-%
+%     G = splitgroup(G,GroupName1,GroupName2,...)
 %
 % Input arguments
 % ================
 %
-% * `g` [ grouping ] - Grouping object.
+% * `G` [ grouping ] - Grouping object.
 %
-% * `groupName1`, `groupName2`, ... [ char ] - Group names.
-%
+% * `GroupName1`,`GroupName2`,... [ char ] - Group names.
 %
 % Output arguments
 % =================
 %
 % * `G` [ grouping ] - Grouping object.
 %
-%
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-groupName = varargin;
+GroupName = varargin;
 
-pp = inputParser( );
-pp.addRequired('g', @(x) isa(x, 'grouping'));
-pp.addRequired('groupName', @iscellstr);
-pp.parse(this, groupName);
+pp = inputParser();
+pp.addRequired('G',@(x) isa(x,'grouping'));
+pp.addRequired('GroupName',@iscellstr);
+pp.parse(This,GroupName);
+
 
 %--------------------------------------------------------------------------
 
-for iGroup = 1 : numel(groupName)
-    ix = strcmpi(this.GroupNames, groupName{iGroup}) ;
-    if any(ix)
+for iGroup = 1:numel(GroupName)
+    ind = strcmpi(This.groupNames,GroupName{iGroup}) ;
+    if any(ind)
         % Group exists, split
-        split = this.GroupContents{ix} ;
-        this = rmgroup(this, groupName{iGroup}) ;
-    elseif strcmpi(this.OTHER_NAME, groupName{iGroup})
+        split = This.groupContents{ind} ;
+        This = rmgroup(This,GroupName{iGroup}) ;
+    elseif strcmpi(This.otherName,GroupName{iGroup})
         % Split apart 'Other' group
-        split = this.OtherContents ;
+        split = This.otherContents ;
     else
-        % Group does not exist, cannot split
-        throw( ...
-            exception.Base('Grouping:NotExistCannotSplit', 'error'), ...
-            groupName{iGroup} ...
-            );
+        % Group does not exist, cannot remove
+        utils.error('grouping', ...
+            'Group does not exist and cannot be split: %s', ...
+            GroupName{iGroup}) ;
     end
     
     for iSplit = find(split(:).')
-        this = addgroup(this, this.Label{iSplit}, this.List{iSplit}) ;
+        This = addgroup(This,This.descript{iSplit},This.list{iSplit}) ;
     end
 end
 
 end
-
-

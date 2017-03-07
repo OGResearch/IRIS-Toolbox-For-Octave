@@ -119,7 +119,7 @@
 % rule, and three columns in each of them. The middle columns will have
 % Greek letters printed in \LaTeX\ math mode.
 %
-%     x = report.new( );
+%     x = report.new();
 % 
 %     A = { ...
 %         'First row','{$\alpha$}',10000; ...
@@ -139,7 +139,7 @@
 % Use the option `'inputFormat='` to change the way the input strings are
 % interpreted. Compare the two tables in the resulting PDF.
 %
-%     x = report.new( );
+%     x = report.new();
 % 
 %     A = { ...
 %         1,2,3; ...
@@ -159,5 +159,5 @@
 %
 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

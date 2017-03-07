@@ -1,117 +1,99 @@
-function list = dbnames(varargin)
+function Name = dbnames(D,varargin)
 % dbnames  List of database entries filtered by name and/or class.
-%
 %
 % Syntax
 % =======
 %
-%     list = dbnames(d, ...)
-%
+%     List = dbnames(D,...)
 %
 % Input arguments
 % ================
 %
-% * `d` [ struct ] - Input database.
-%
+% * `D` [ struct ] - Input database.
 %
 % Output arguments
 % =================
 %
-% * `list` [ cellstr ] - List of input database entries that pass the name
+% * `List` [ cellstr ] - List of input database entries that pass the name
 % or class test.
-%
 %
 % Options
 % ========
 %
-% * `'NameFilter='` [ cellstr | char | rexp | *`@all`* ] - List of names or
-% regular expression against which the database entry names will be
-% matched; `@all` means all names will be matched.
+% * `'nameFilter='` [ char | *`Inf`* ] - Regular expression against which
+% the database entry names will be matched; `Inf` means all names will be
+% matched.
 %
-% * `'ClassFilter='` [ cellstr | char | rexp | *`@all`* ] - List of names
-% or regular expression against which the database entry class names will
-% be matched; `@all` means all classes will be matched.
-%
+% * `'classFilter='` [ char | *`Inf`* ] - Regular expression against which
+% the database entry class names will be matched; `Inf` means all classes
+% will be matched.
 %
 % Description
 % ============
-%
 %
 % Example
 % ========
 %
 % Notice the differences in the following calls to `dbnames`:
 %
-%     dbnames(d, 'NameFilter=', 'L_')
+%     dbnames(d,'nameFilter=','L_')
 %
-% matches all names that contain `'L_'` (at the beginning, in the middle, 
+% matches all names that contain `'L_'` (at the beginning, in the middle,
 % or at the end of the string), such as `'L_A'`, `'DL_A'`, `'XL_'`, or just
 % `'L_'`.
 %
-%     dbnames(d, 'NameFilter=', '^L_')
+%     dbnames(d,'nameFilter=','^L_')
 %
-% matches all names that start with `'L_'`, such as `'L_A'` or `'L_'`, but
-% not `'DL_A'`. Finally, 
+% matches all names that start with `'L_'`, suc as `'L_A'` or `'L_'`.
 %
-%     dbnames(d, 'NameFilter=', '^L_.')
+%     dbnames(d,'nameFilter=','^L_.')
 %
 % matches all names that start with `'L_'` and have at least one more
-% character after that, such as `'L_A'` but not `'L_'` or `'L_RX'`.
+% character after that, such as `'L_A'` (but not `'L_'`).
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-[D, varargin] = irisinp.parser.parse('dbase.dbnames', varargin{:});
-opt = passvalopt('dbase.dbnames', varargin{:});
+opt = passvalopt('dbase.dbnames',varargin{:});
 
 %--------------------------------------------------------------------------
 
 % Empty name filter and empty class filter returns empty list.
 if isempty(opt.namefilter) && isempty(opt.classfilter)
-    list = cell(1, 0);
-    return
+   Name = {};
+   return
 end
 
-if ( isequal(opt.namefilter, @all) || isequal(opt.namefilter, Inf) ) ...
-        && ( isequal(opt.classfilter, @all) || isequal(opt.classfilter, Inf) )
-    list = fieldnames(D);
-    return
+% Get the database's field names. Infs in both filters return all names.
+Name = fieldnames(D).';
+if isequal(opt.namefilter,Inf) && isequal(opt.classfilter,Inf)
+   return
+end
+n = length(Name);
+
+% Filter the names.
+if isequal(opt.namefilter,Inf)
+   nameTest = true([1,n]);
+elseif isempty(opt.namefilter)
+   nameTest = false([1,n]);
+else
+   x = regexp(Name,opt.namefilter,'once');
+   nameTest = ~cellfun(@isempty,x);
+end
+   
+% Filter the classes.
+if isequal(opt.classfilter,Inf)
+   classTest = true([1,n]);
+elseif isempty(opt.classfilter)
+   classTest = false([1,n]);
+else
+   c = cellfun(@class,struct2cell(D),'uniformOutput',false).';
+   x = regexp(c,opt.classfilter,'once');
+   classTest = ~cellfun(@isempty,x);
 end
 
-% Get the database entry names and classes. Make sure order of names
-% corresponds to order of classes (not guaranteed by Matlab in general).
-c = structfun(@class, D, 'UniformOutput', false);
-list = fieldnames(c).';
-c = struct2cell(c).';
-c = strrep(c, 'Series', 'tseries');
+% Return the names tha pass both tests.
+Name = Name(nameTest & classTest);
 
-ixClassTest = validate(c, opt.classfilter);
-ixNameTest = validate(list, opt.namefilter);
-
-% Return the names that pass both tests.
-list = list(ixNameTest & ixClassTest);
-
-end
-
-
-
-
-function ixTest = validate(list, filter)
-ixTest = true(size(list));
-if isequal(filter, @all)
-    ixTest(:) = true;
-    return
-elseif isempty(filter)
-    ixTest(:) = false;
-    return
-elseif ischar(filter) || isrexp(filter)
-    x = regexp(list, filter, 'once');
-    ixTest = ~cellfun(@isempty, x);
-    return
-elseif iscellstr(filter)
-    for i = 1 : numel(list)
-        ixTest(i) = any(strcmp(list{i}, filter));
-    end
-end
 end

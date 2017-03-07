@@ -1,11 +1,10 @@
-function d = addparam(this, d)
+function D = addparam(This,D)
 % addparam  Add model parameters to a database (struct).
 %
 % Syntax
 % =======
 %
 %     D = addparam(M,D)
-%
 %
 % Input arguments
 % ================
@@ -15,12 +14,10 @@ function d = addparam(this, d)
 %
 % * `D` [ struct ] - Database to which the model parameters will be added.
 %
-%
 % Output arguments
 % =================
 %
 % * `D [ struct ] - Database with the model parameters added.
-%
 %
 % Description
 % ============
@@ -28,32 +25,27 @@ function d = addparam(this, d)
 % If there are database entries in `D` whose names conincide with the model
 % parameters, they will be overwritten.
 %
-%
 % Example
 % ========
 %
-%     d = struct( );
-%     d = addparam(m, d);
+%     D = struct();
+%     D = addparam(M,D);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-TYPE = @int8;
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 try
-    d; %#ok<VUNUS>
-catch
-    d = struct( );
+    D; %#ok<VUNUS>
+catch %#ok<CTCH>
+    D = struct();
 end
 
 %--------------------------------------------------------------------------
 
-ixp = this.Quantity.Type==TYPE(4);
-for i = find(ixp)
-    name = this.Quantity.Name{i};
-    value = model.Variant.getQuantity(this.Variant, i, ':');
-    d.(name) = permute(value, [1, 3, 2]);
+for iPar = find(This.nametype == 4)
+    name = This.name{iPar};
+    D.(name) = permute(This.Assign(1,iPar,:),[1,3,2]);
 end
 
 end

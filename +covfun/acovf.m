@@ -4,15 +4,19 @@ function [C,Diffuse] = acovf(T,R,~,Z,H,~,U,Omg,Eig,Order)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-realSmall = getrealsmall( );
+realSmall = getrealsmall();
 
 if isempty(Eig)
-    Eig = ordeig(T);
+    if false % ##### MOSW
+        Eig = ordeig(T);
+    else
+        Eig = mosw.octfun.ordeig(T);
+    end
 end
 
 nY = size(Z,1);

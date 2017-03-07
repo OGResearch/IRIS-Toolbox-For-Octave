@@ -1,44 +1,39 @@
-function dcy = lhsmrhs(this, varargin)
+function Q = lhsmrhs(This,varargin)
 % lhsmrhs  Evaluate the discrepancy between the LHS and RHS for each model equation and given data.
 %
 % Syntax for casual evaluation
 % =============================
 %
-%     Q = lhsmrhs(M, D, Range)
-%
+%     Q = lhsmrhs(M,D,Range)
 %
 % Syntax for fast evaluation
 % ===========================
 %
-%     Q = lhsmrhs(M, YXET)
-%
+%     Q = lhsmrhs(M,YXE)
 %
 % Input arguments
 % ================
 %
-% * `M` [ model ] - Model object whose equations and currently assigned
+% `M` [ model ] - Model object whose equations and currently assigned
 % parameters will be evaluated.
 %
-% * `YXET` [ numeric ] - Numeric array created from an input database by
-% calling the function [`data4lhsmrhs`](model/data4lhsmrhs). `YXET` contains
-% data for measurement variables, transition variables, and shocks
-% organised in rows, plus an extra last row with time shifts for
-% steady-state references.
+% `YXE` [ numeric ] - Numeric array created from an input database by
+% calling the function [`data4lhsmrhs`](model/data4lhsmrhs); `YXE` contains
+% the observations on the measurement variables, transition variables, and
+% shocks organised row-wise.
 %
-% * `D` [ struct ] - Input database with data for measurement variables,
-% transition variables, and shocks on which the discrepancies will be
-% evaluated.
+% * `D` [ struct ] - Input database with observations on measurement
+% variables, transition variables, and shocks on which the discrepancies
+% will be evaluated.
 %
 % * `Range` [ numeric ] - Date range on which the discrepancies will be
 % evaluated.
-%
 %
 % Output arguments
 % =================
 %
 % `Q` [ numeric ] - Numeric array with discrepancies between the LHS and
 % RHS for each model equation.
-%
 %
 % Description
 % ============
@@ -49,98 +44,92 @@ function dcy = lhsmrhs(this, varargin)
 % work for models with [references to steady state
 % values](modellang/sstateref).
 %
-% The first syntax, with the array `YXET` pre-built in a prior call to
-% [`data4lhsmrhs`](model/data4lhsmrhs) is computationally more efficient if
-% you need to evaluate the LHS-RHS discrepancies repeatedly for different
-% parameterisations.
+% The first syntax, with the array `YXE` pre-built in a call to
+% [`data4lhsmrhs`](model/data4lhsmrhs) is computationally much more
+% efficient if you need to evaluate the LHS-RHS discrepancies repeatedly
+% for different parameterisations.
 %
-% The output argument `D` is an nEqtn-by-nPer-by-nAlt array, where nEqtn is
-% the number of measurement and transition equations, nPer is the length of
-% the range on which `lhsmrhs` is evaluated, and nAlt is the greater of
-% the number of alternative parameterisations in `M`, and the number of
-% alternative datasets in the input data, `D` or `YXET`.
-%
+% The output argument `D` is an `nEqtn` by `nPer` by `nAlt` array, where
+% `nEqnt` is the number of measurement and transition equations, `nPer` is
+% the number of periods used to create `X` in a prior call to
+% [`data4lhsmrhs`](model/data4lhsmrhs), and `nAlt` is the greater of the
+% number of alternative parameterisations in `M`, and the number of
+% alternative datasets in the input data.
 %
 % Example
 % ========
 %
-%     YXET = data4lhsmrhs(M,d,range);
-%     Q = lhsmrhs(M,YXET);
+%     YXE = data4lhsmrhs(M,d,range);
+%     Q = lhsmrhs(M,YXE);
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-TYPE = @int8;
+if isnumeric(varargin{1})
+    % Fast syntax.
+    YXE = varargin{1};
+    varargin(1) = [];
+    L = [];
+    if ~isempty(varargin)
+        % The vector of steady-state references `L` is passed in only when called
+        % from `chksstate()`.
+        L = varargin{1};
+        varargin(1) = []; %#ok<NASGU>
+    end
+elseif isstruct(varargin{1})
+    % Casual syntax.
+    D = varargin{1};
+    varargin(1) = [];
+    Range = varargin{1};
+    varargin{1} = []; %#ok<NASGU>
+    YXE = data4lhsmrhs(This,D,Range);
+    L = [];
+end
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
-ixy = this.Quantity.Type==TYPE(1);
-ixx = this.Quantity.Type==TYPE(2);
-ixm = this.Equation.Type==TYPE(1);
-ixt = this.Equation.Type==TYPE(2);
-ixmt = ixm | ixt;
+% TODO: Deterministic trends.
 
-vecAlt = Inf;
-if isnumeric(varargin{1})
-    % Fast syntax with numeric array.
-    YXEPG = varargin{1};
-    varargin(1) = [ ];
-    howToCreateL = [ ];
-    if ~isempty(varargin)
-        howToCreateL = varargin{1};
-        varargin(1) = [ ];
-    end
-    if ~isempty(varargin)
-        vecAlt = varargin{1};
-        varargin(1) = [ ];
-    end
-elseif isstruct(varargin{1})
-    % Casual syntax with input database.
-    inp = varargin{1};
-    varargin(1) = [ ];
-    range = varargin{1};
-    varargin(1) = [ ];
-    if isempty(range)
-        dcy = zeros(sum(ixmt), 0, nAlt);
-        return
-    end
-    howToCreateL = [ ];
-    YXEPG = data4lhsmrhs(this, inp, range);
+nXPer = size(YXE,2);
+minT = This.Shift(1);
+maxT = This.Shift(end);
+t = 1-minT : nXPer-maxT;
+
+% Add parameters to the bottom of the `X` array.
+nData = size(YXE,3);
+nAlt = size(This.Assign,3);
+P = This.Assign(1,This.nametype == 4,:);
+P = permute(P,[2,1,3]);
+P = P(:,ones(1,nXPer),:);
+if nData > nAlt && nAlt == 1
+    P = P(:,:,ones(1,nData));
+elseif nAlt > nData && nData == 1
+    YXE = YXE(:,:,ones(1,nAlt));
+elseif nAlt ~= nData
+    utils.error('model', ...
+        ['The number of parameterisations (%g) is not consistent ', ...
+        'with the number of data sets (%g).'], ...
+        nAlt,nData);
+end
+YXE = [YXE;P];
+
+% Permute `YXE` and `L` from nName-nPer-nAlt to nAlt-nName-nPer.
+YXE = permute(YXE,[3,1,2]);
+L = permute(L,[3,1,2]);
+
+% `Q` is created as nAlt-nEqtn-nPer.
+eqtnYX = This.eqtnF(This.eqtntype <= 2);
+Q = [];
+for iAlt = 1 : nAlt
+    % `q` is returned as 1-nEqtn-nPer.
+    q = cellfun(@(f) f(YXE(iAlt,:,:),t,L(iAlt,:,:)), ...
+        eqtnYX,'uniformOutput',false);
+    q = [q{:}];
+    Q = [Q;q]; %#ok<AGROW>
 end
 
-opt = passvalopt('model.lhsmrhs', varargin{:});
-
-if isequal(vecAlt, Inf) || isequal(vecAlt, @all)
-    nAlt = length(this);
-    vecAlt = 1 : nAlt;
-end
-nVecAlt = length(vecAlt);
-
-[YXEPG, L] = lp4yxe(this, YXEPG, vecAlt, howToCreateL);
-
-nXPer = size(YXEPG, 2);
-if strcmpi(opt.kind, 'Dynamic')
-    eqtn = this.Equation.Dynamic;
-    minSh = this.Incidence.Dynamic.Shift(1);
-    maxSh = this.Incidence.Dynamic.Shift(end);
-else
-    eqtn = this.Equation.Steady;
-    ixCopy = ixmt & cellfun(@isempty, eqtn);
-    eqtn(ixCopy) = this.Equation.Dynamic(ixCopy);
-    minSh = this.Incidence.Steady.Shift(1);
-    maxSh = this.Incidence.Steady.Shift(end);
-end
-
-temp = [ eqtn{ixmt} ];
-temp = vectorize(temp);
-fn = str2func([this.PREAMBLE_DYNAMIC, '[', temp, ']']);
-t = 1-minSh : nXPer-maxSh;
-dcy = [ ];
-for iAlt = 1 : nVecAlt
-    q = fn(YXEPG(:, :, iAlt), t, L(:, :, iAlt));
-    dcy = cat(3, dcy, q);
-end
+% Permute `Q` back to nEqtn-nPer-nAlt.
+Q = ipermute(Q,[3,1,2]);
 
 end

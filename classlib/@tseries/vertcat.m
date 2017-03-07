@@ -38,10 +38,10 @@ function x = vertcat(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
 if length(varargin) == 1
     x = varargin{1};
@@ -51,64 +51,61 @@ end
 % Check classes and frequencies.
 [inputs,ixtseries] = catcheck(varargin{:});
 if any(~ixtseries)
-    error('tseries:vertcat', ...
+    error('iris:tseries', ...
         ['Cannot vertically overly tseries objects ', ...
         'with non-tseries objects.']);
 end
 
-nInp = length(inputs);
+ninput = length(inputs);
 x = inputs{1};
 xsize = size(x.data);
 x.data = x.data(:,:);
 
-for i = 2 : nInp
+for i = 2 : ninput
     y = inputs{i};
-    ySize = size(y.data);
+    ysize = size(y.data);
     y.data = y.data(:,:);
     xsize2 = size(x.data,2);
     ysize2 = size(y.data,2);
     if xsize2 ~= ysize2
         if xsize2 == 1
             x.data = x.data(:,ones(1,ysize2));
-            xsize = ySize;
+            xsize = ysize;
         elseif ysize2 == 1
             y.data = y.data(:,ones(1,xsize2));
             y.Comment = y.Comment(1,ones(1,xsize2));
         else
-            utils.error('tseries:vertcat', ...
+            utils.error('tseries', ...
                 ['Vertically overlayed tseries objects', ...
                 'must be consistent in 2nd and higher dimensions.']);
         end
     end
-
-    xStart = x.start;
-    yStart = y.start;
-
+    
     % Determine the longest stretch range necessary.
-    startDate = min([xStart,yStart]);
-    endDate = max([xStart+size(x.data,1)-1,yStart+size(y.data,1)-1]);    
-    range = startDate : endDate;
+    startdate = min([x.start,y.start]);
+    enddate = max([x.start+size(x.data,1)-1,y.start+size(y.data,1)-1]);    
+    range = startdate : enddate;
     
     % Get continuous data from both series on the largest stretch range.
-    xData = rangedata(x,range);
-    yData = rangedata(y,range);
+    xdata = rangedata(x,range);
+    ydata = rangedata(y,range);
     
     % Identify and overlay NaNs separately in the real and imaginary parts of
     % the data.
-    xDataReal = real(xData);
-    yDataReal = real(yData);
-    xDataImag = imag(xData);
-    yDataImag = imag(yData);
-    ixReal = ~isnan(yDataReal);
-    ixImag = ~isnan(yDataImag);
-    xDataReal(ixReal) = yDataReal(ixReal);
-    xDataImag(ixImag) = yDataImag(ixImag);
+    xdatareal = real(xdata);
+    ydatareal = real(ydata);
+    xdataimag = imag(xdata);
+    ydataimag = imag(ydata);
+    indexreal = ~isnan(ydatareal);
+    indeximag = ~isnan(ydataimag);
+    xdatareal(indexreal) = ydatareal(indexreal);
+    xdataimag(indeximag) = ydataimag(indeximag);
 
     % Combine the real and imaginary parts of the data again.
-    x.data = xDataReal + 1i*xDataImag;
+    x.data = xdatareal + 1i*xdataimag;
     
     % Reset the start date.
-    x.start = startDate;
+    x.start = startdate;
 end
 
 if length(xsize) > 2
@@ -117,7 +114,7 @@ end
 x.Comment = y.Comment;
 
 if ~isempty(x.data) && any(any(isnan(x.data([1,end],:))))
-    x = trim(x);
+    x = mytrim(x);
 end
 
 end

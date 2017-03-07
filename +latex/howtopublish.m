@@ -4,4 +4,4 @@
 % files:
 
 %{
-    latex.publish('read_me_first.m',[ ],'evalCode=',false);
+    latex.publish('read_me_first.m',[],'evalCode=',false);

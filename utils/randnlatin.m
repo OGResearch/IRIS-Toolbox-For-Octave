@@ -24,9 +24,9 @@ x = x(:);
 [~,rowIdx] = sort(x);
 r(rowIdx) = 1 : length(x);
 r = r(:);
-end % xxRank( ).
+end % xxRank().
 
 %**************************************************************************
 function x = xxNormInv(p)
 x = -sqrt(2).*erfcinv(2*p);
-end % xxNormInv( ).
+end % xxNormInv().

@@ -35,10 +35,10 @@ function This = group(This,Grp)
 %     vi_us = group(v,'US');
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-pp = inputParser( );
+pp = inputParser();
 pp.addRequired('V',@(x) isVAR(x) && ispanel(x));
 pp.addRequired('Group',@(x) ischar(x) || isnumericscalar(x) || islogical(x));
 pp.parse(This,Grp);
@@ -64,8 +64,8 @@ if islogical(Grp)
 end
 
 try
-    This.GroupNames = { };
-    This.IxFitted = This.IxFitted(Grp,:,:);
+    This.GroupNames = {};
+    This.Fitted = This.Fitted(Grp,:,:);
     This.K = This.K(:,Grp,:);
     This.X0 = This.X0(:,Grp,:);
     if islogical(Grp)

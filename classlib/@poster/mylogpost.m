@@ -1,4 +1,4 @@
-function [Obj,L,PP,SP,IsWithinBounds] = mylogpost(This,P)
+function [Obj,L,PP,SP,IsDiscarded] = mylogpost(This,P)
 % mylogpost  Evalute posterior density for given parameters.
 % This is a subfunction, and not a nested function, so that we can later
 % implement a parfor loop (parfor does not work with nested functions).
@@ -6,8 +6,8 @@ function [Obj,L,PP,SP,IsWithinBounds] = mylogpost(This,P)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team & Troy Matheson.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team & Troy Matheson.
 
 %--------------------------------------------------------------------------
 
@@ -16,24 +16,29 @@ L = 0;
 PP = 0;
 SP = 0;
 
+% `IsDiscarded` will return `true` if the current parameter vector violates
+% the lower/upper bounds, or if it returns an ill-defined likelihood value.
+IsDiscarded = false;
+
 % Check lower/upper bounds first.
-lowerInx = isfinite(This.Lower);
-upperInx = isfinite(This.Upper);
-IsWithinBounds = true;
+lowerInx = isfinite(This.LowerBounds);
+upperInx = isfinite(This.UpperBounds);
 if any(lowerInx) || any(upperInx)
-    % `P` is a column vector; `This.Lower` and `This.Upper` are row
+    % `P` is a column vector; `This.LowerBounds` and `This.UpperBounds` are row
     % vectors and need to be tranposed.
-    IsWithinBounds = all(P(lowerInx) >= This.Lower(lowerInx).') ...
-        && all(P(upperInx) <= This.Upper(upperInx).');
+    IsDiscarded = any(P(lowerInx) < This.LowerBounds(lowerInx).') ...
+        || any(P(upperInx) > This.UpperBounds(upperInx).');
 end
 
-isValid = IsWithinBounds;
-
-if IsWithinBounds
+if ~IsDiscarded
     if isa(This.MinusLogPostFunc,'function_handle')
         % Evaluate log posterior.
         [Obj,L,PP,SP] = ...
             This.MinusLogPostFunc(P,This.MinusLogPostFuncArgs{:});
+        % Discard draws that amount to an ill-defined value of the objective
+        % function. Run the test *before* letting `Obj = -Obj` because the
+        % assignment does not preserve complex numbers with zero imaginary part.
+        IsDiscarded = ~isreal(Obj) || ~isfinite(Obj);
         Obj = -Obj;
         L = -L;
         PP = -PP;
@@ -55,12 +60,11 @@ if IsWithinBounds
             L = -L;
             Obj = Obj + L;
         end
+        IsDiscarded = ~isreal(Obj) || ~isfinite(Obj);
     end
-    isValid = isnumeric(Obj) && length(Obj) == 1 ...
-        && isfinite(Obj) && imag(Obj) == 0;
 end
 
-if ~isValid
+if IsDiscarded
     Obj = -Inf;
 end
 

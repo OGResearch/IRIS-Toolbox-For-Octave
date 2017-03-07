@@ -1,25 +1,18 @@
-function [X,OutOfRng] = mydateindex(This,Dates)
-% mydateindex [Not a public function] Check user dates against plan range.
+function [x,outofrange] = mydateindex(this,dates)
+% MYDATEINDEX [Not a public function] Check user dates against plan range.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-nPer = round(This.End - This.Start + 1);
-
-if isequal(Dates,@all)
-    X = 1 : nPer;
-    OutOfRng = false(1,0);
-    return
-end
-
-X = round(Dates - This.Start + 1);
-ixOutOfRng = X < 1 | X > nPer;
-OutOfRng = Dates(ixOutOfRng);
-X(ixOutOfRng) = NaN;
+nper = round(this.End - this.Start + 1);
+x = round(dates - this.Start + 1);
+outofrangeindex = x < 1 | x > nper;
+outofrange = dates(outofrangeindex);
+x(outofrangeindex) = NaN;
 
 end

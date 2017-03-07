@@ -1,11 +1,11 @@
-function df = d(func, k, varargin)
-% d  Compute numerical derivatives of non-analytical or user-defined functions.
+function DF = d(Func,K,varargin)
+% d  [Not a public function] Compute numerical derivatives of non-analytical or user-defined functions.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -24,68 +24,73 @@ function df = d(func, k, varargin)
 % argument.
 
 try
-    test = feval(func, varargin{:}, 'diff');
-    isUserDiff = isequal(test, true);
+    test = feval(Func,varargin{:},'diff');
+    isUserDiff = isequal(test,true);
 catch %#ok<CTCH>
     isUserDiff = false;
 end
 
 % Capture the user-supplied derivative
 %--------------------------------------
-nd = length(varargin{k(end)});
+nd = length(varargin{K(end)});
 if isUserDiff
-    status = warning( );
+    status = warning();
     warning('off'); %#ok<WNOFF>
     try
         % User-supplied derivatives.
-        df = feval(func, varargin{:}, 'diff', k);
-        if ~isnumeric(df) || length(df)~=nd
-            df = NaN;
+        DF = feval(Func,varargin{:},'diff',K);
+        if ~isnumeric(DF) || length(DF) ~= nd
+            DF = NaN;
         end
     catch %#ok<CTCH>
-        df = NaN;
+        DF = NaN;
     end
     warning(status);
-    if isfinite(df)
+    if isfinite(DF)
         return
     end
 end
 
 % Compute the derivative numerically
 %------------------------------------
-if length(k)==1
+if length(K) == 1
     % First derivative.
-    df = differentiate(func, k, varargin{:});
+    DF = xxDiffNum(Func,K,varargin{:});
     return
-elseif length(k)==2
+elseif length(K) == 2
     % Second derivative; these are needed in optimal policy models with
     % user-supplied functions.
-    y0 = varargin{k(2)};
-    hy = abs(eps( )^(1/3.5))*max([y0, 1]);
+    y0 = varargin{K(2)};
+    hy = abs(eps()^(1/3.5))*max([y0,1]);
     yp = y0 + hy;
     ym = y0 - hy;
-    varargin{k(2)} = yp;
-    fp = differentiate(func, k(1), varargin{:});
-    varargin{k(2)} = ym;
-    fm = differentiate(func, k(1), varargin{:});
-    df = (fp - fm) / (yp - ym);
+    varargin{K(2)} = yp;
+    fp = xxDiffNum(Func,K(1),varargin{:});
+    varargin{K(2)} = ym;
+    fm = xxDiffNum(Func,K(1),varargin{:});
+    DF = (fp - fm) / (yp - ym);
 end
 
 end
 
 
+% Subfunctions.
 
 
+%**************************************************************************
 
-function df = differentiate(func, k, varargin)
-epsilon = eps( )^(1/3.5);
-x0 = varargin{k};
-hx = abs( epsilon*max(x0, 1) );
+
+function DF = xxDiffNum(Func,K,varargin)
+
+epsilon = eps()^(1/3.5);
+x0 = varargin{K};
+hx = abs(epsilon*max(x0,1));
 xp = x0 + hx;
 xm = x0 - hx;
-varargin{k} = xp;
-fp = feval(func, varargin{:});
-varargin{k} = xm;
-fm = feval(func, varargin{:});
-df = (fp - fm) ./ (xp - xm);
-end
+varargin{K} = xp;
+fp = feval(Func,varargin{:});
+varargin{K} = xm;
+fm = feval(Func,varargin{:});
+DF = (fp - fm) ./ (xp - xm);
+
+end % xxDiffNum()

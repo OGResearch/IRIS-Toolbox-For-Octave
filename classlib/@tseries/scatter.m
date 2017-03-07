@@ -5,27 +5,20 @@ function varargout = scatter(varargin)
 % =======
 %
 %     [H,Range] = scatter([X,Y],...)
-%     [H,Range] = scatter([X,Y,Z],...)
-%     [H,Range] = scatter([X,Y,Z,C],...)
 %     [H,Range] = scatter(Range,[X,Y],...)
-%     [H,Range] = scatter(Range,[X,Y,Z],...)
-%     [H,Range] = scatter(Range,[X,Y,Z,C],...)
 %     [H,Range] = scatter(Ax,Range,[X,Y],...)
-%     [H,Range] = scatter(Ax,Range,[X,Y,Z],...)
-%     [H,Range] = scatter(Ax,Range,[X,Y,Z,C],...)
 %
 % Input arguments
 % ================
 %
-% * `Ax` [ numeric ] - Handle to axes in which the graph will be plotted; if
+% * `ax` [ numeric ] - Handle to axes in which the graph will be plotted; if
 % not specified, the current axes will used.
 %
-% * `Range` [ numeric | char ] - Date range; if not specified the entire
-% range of the input tseries object will be plotted.
+% * `Range` [ numeric ] - Date range; if not specified the entire range of
+% the input tseries object will be plotted.
 %
-% * `[X, Y, Z, C]` [ tseries ] - Requires the axes X and Y, and optionally
-% accepts Z to control the size of the elements, and optionally accepts C 
-% to control the colour. 
+% * `X`, `Y` [ tseries ] - Two scalar tseries objects plotted on the x-axis
+% and the y-axis, respectively.
 %
 % Output arguments
 % =================
@@ -47,19 +40,15 @@ function varargout = scatter(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% AREA, BAND, BAR, BARCON, BUBBLE, PLOT, PLOTCMP, PLOTYY, SCATTER, STEM
+% AREA, BAR, PLOT, CONBAR, PLOTCMP, PLOTYY, STEM, SCATTER
 
 % TODO: Add help on date format related options.
 
-[Ax,Rng,X,PlotSpec,varargin] = irisinp.parser.parse('tseries.plot',varargin{:});
-[opt,varargin] = passvalopt('tseries.plot',varargin{:});
-
 %--------------------------------------------------------------------------
 
-[~,varargout{1:nargout}] = ...
-    tseries.myplot(@scatter,Ax,Rng,[ ],X,PlotSpec,opt,varargin{:});
+[varargout{1:nargout}] = tseries.myplot(@scatter,varargin{:});
 
 end

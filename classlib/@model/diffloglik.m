@@ -1,5 +1,5 @@
-function [minusLogLik, grad, hess, v] ...
-    = diffloglik(this, data, range, lsPar, varargin)
+function [MinusLogLik,Grad,Hess,V] ...
+    = diffloglik(This,Data,Range,PList,varargin)
 % diffloglik  Approximate gradient and hessian of log-likelihood function.
 %
 % Syntax
@@ -16,8 +16,8 @@ function [minusLogLik, grad, hess, v] ...
 % * `Inp` [ cell | struct ] - Input data from which measurement variables
 % will be taken.
 %
-% * `Range` [ numeric | char ] - Date range on which the likelihood
-% function will be evaluated.
+% * `Range` [ numeric ] - Date range on which the likelihood function
+% will be evaluated.
 %
 % * `PList` [ cellstr ] - List of model parameters with respect to which
 % the likelihood function will be differentiated.
@@ -41,6 +41,9 @@ function [minusLogLik, grad, hess, v] ...
 % * `'chkSstate='` [ `true` | *`false`* | cell ] - Check steady state in
 % each iteration; works only in non-linear models.
 %
+% * `'refresh='` [ *`true`* | `false` ] - Refresh dynamic links for each change
+% in a parameter.
+%
 % * `'solve='` [ *`true`* | `false` | cellstr ] - Re-compute solution for
 % each parameter change; you can specify a cell array with options for the
 % `solve` function.
@@ -58,68 +61,61 @@ function [minusLogLik, grad, hess, v] ...
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-TYPE = @int8;
+pp = inputParser();
+pp.addRequired('Inp',@(x) isstruct(x) || iscell(x));
+pp.addRequired('Range',@isnumeric);
+pp.addRequired('PList',@(x) ischar(x) || iscellstr(x));
+pp.parse(Data,Range,PList);
 
-pp = inputParser( );
-pp.addRequired('Inp', @(x) isstruct(x) || iscell(x));
-pp.addRequired('Range', @(x) isdatinp(x));
-pp.addRequired('PList', @(x) ischar(x) || iscellstr(x));
-pp.parse(data, range, lsPar);
-
-[opt, varargin] = passvalopt('model.diffloglik', varargin{:});
+[opt,varargin] = passvalopt('model.diffloglik',varargin{:});
 
 % Process Kalman filter options; `loglikopt` also expands solution forward
 % if needed for tunes on the mean of shocks.
-if ischar(range)
-    range = textinp2dat(range);
-end
-lik = prepareLoglik(this, range, 't', [ ], varargin{:});
+lik = mypreploglik(This,Range,'t',[],varargin{:});
 
 % Get measurement and exogenous variables including pre-sample.
-data = datarequest('yg*', this, data, range);
+Data = datarequest('yg*',This,Data,Range);
 
 % Create an `stdcorr` vector from user-supplied database.
-lik.stdcorr = varyStdCorr(this, range, [ ], lik, 'clip');
+lik.stdcorr = mytune2stdcorr(This,Range,[],lik,'clip');
 
 % Requested output data.
 lik.retpevec = true;
 lik.retf = true;
 
-if ischar(lsPar)
-    lsPar = regexp(lsPar, '\w+', 'match');
+if ischar(PList)
+    PList = regexp(PList,'\w+','match');
 end
 
 %--------------------------------------------------------------------------
 
-nAlt = length(this);
+nalt = size(This.Assign,3);
 
 % Multiple parameterizations are not allowed.
-if nAlt>1
-    utils.error('model:diffloglik', ...
-        'Cannot run diffloglik( ) on multiple parametrisations.');
+if nalt > 1
+    utils.error('model', ...
+        'Cannot run DIFFLOGLIK on multiple parametrisations.');
 end
 
 % Find parameter names and create parameter index.
-ell = lookup(this.Quantity, lsPar, TYPE(4));
-posQty = ell.PosName;
-posStdCorr = ell.PosStdCorr;
-ixValid = ~isnan(posQty) | ~isnan(posStdCorr);
+[assignPos,stdcorrPos] = mynameposition(This,PList,4);
+ixValid = ~isnan(assignPos) | ~isnan(stdcorrPos);
 if any(~ixValid)
     utils.error('model:diffloglik', ...
         'This is not a valid parameter name: ''%s''.', ...
-        lsPar{~ixValid});
+        PList{~ixValid});
 end
 
-pri = model.IterateOver( );
-pri.PosQty = posQty;
-pri.PosStdCorr = posStdCorr;
-pri.Quantity = this.Variant{1}.Quantity;
-pri.StdCorr = this.Variant{1}.StdCorr;
+pri = struct();
+pri.assignpos = assignPos;
+pri.stdcorrpos = stdcorrPos;
+pri.Assign = This.Assign;
+pri.stdcorr = This.stdcorr;
 
 % Call low-level diffloglik.
-[minusLogLik, grad, hess, v] = mydiffloglik(this, data, pri, lik, opt);
+[MinusLogLik,Grad,Hess,V] = mydiffloglik(This,Data,pri,lik,opt);
 
 end

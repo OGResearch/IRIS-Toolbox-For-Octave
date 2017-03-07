@@ -1,2 +1,2 @@
-function shock( )
+function shock()
 end

@@ -51,5 +51,5 @@
 %         pi = alpha*pi{-1} + (1-alpha)*pi{1} + gamma*y + u;
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

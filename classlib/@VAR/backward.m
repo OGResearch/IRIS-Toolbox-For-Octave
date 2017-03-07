@@ -23,8 +23,8 @@ function This = backward(This)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -32,12 +32,12 @@ ny = size(This.A,1);
 p = size(This.A,2) / max(ny,1);
 nAlt = size(This.A,3);
 
-ixStat = isstationary(This);
+isStat = isstationary(This);
 for iAlt = 1 : nAlt
-    if ixStat(iAlt)
+    if isStat(iAlt)
         [T,R,~,~,~,~,U,Omg] = sspace(This,iAlt);
         % 0th and 1st order autocovariance matrices of stacked y vector.
-        C = covfun.acovf(T,R,[ ],[ ],[ ],[ ],U,Omg,This.EigVal(1,:,iAlt),1);
+        C = covfun.acovf(T,R,[],[],[],[],U,Omg,This.EigVal(1,:,iAlt),1);
         AOld = This.A(:,:,iAlt);
         ANew = transpose(C(:,:,2)) / C(:,:,1);
         Q = ANew*C(:,:,2);
@@ -60,11 +60,11 @@ for iAlt = 1 : nAlt
     end
 end
 
-if any(~ixStat)
+if any(~isStat)
     utils.warning('VAR', ...
         ['Cannot compute backward VAR ', ...
         'for non-stationary parameterisations %s.'], ...
-        exception.Base.alt2str(~ixStat) );
+        preparser.alt2str(~isStat));
 end
 
 This = schur(This);

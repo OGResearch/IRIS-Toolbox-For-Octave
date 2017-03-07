@@ -9,7 +9,7 @@ function This = subsasgn(This,S,X)
 % Syntax to delete specified parameterisations
 % =============================================
 %
-%     V(Inx) = [ ]
+%     V(Inx) = []
 %
 % Input arguments
 % ================
@@ -42,8 +42,8 @@ function This = subsasgn(This,S,X)
 % The parameterisation is simply copied ten times within the VAR object.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ if length(S) == 1 ...
             lhs = S.subs{1};
         end
         if isempty(X)
-            This = subsalt(This,lhs,[ ]);
+            This = mysubsalt(This,lhs,[]);
         else
             nx = length(X);
             if nx == 1
@@ -72,10 +72,10 @@ if length(S) == 1 ...
             else
                 rhs = 1 : nx;
             end
-            This = subsalt(This,lhs,X,rhs);
+            This = mysubsalt(This,lhs,X,rhs);
         end
     else
-        utils.error('VAR:subsasgn',['#Invalid_assign:',class(This)]);
+        utils.error(class(This),'Invalid assignment to a VAR object.');
     end
 else
     % Dot reference.

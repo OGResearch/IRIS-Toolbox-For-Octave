@@ -1,15 +1,15 @@
-function [T, R, K, Z, H, D, U, Omg, list] = sspace(this, varargin)
+function [T,R,K,Z,H,D,U,Omg,List] = sspace(m,varargin)
 % sspace  State-space matrices describing the model solution.
 %
 % Syntax
 % =======
 %
-%     [T,R,K,Z,H,D,U,Omg] = sspace(M,...)
+%     [T,R,K,Z,H,D,U,Omg] = sspace(m,...)
 %
 % Input arguments
 % ================
 %
-% * `M` [ model ] - Solved model object.
+% * `m` [ model ] - Solved model object.
 %
 % Output arguments
 % =================
@@ -37,9 +37,9 @@ function [T, R, K, Z, H, D, U, Omg, list] = sspace(this, varargin)
 %
 % * `'triangular='` [ *`true`* | `false` ] - If true, the state-space form
 % returned has the transition matrix `T` quasi triangular and the vector of
-% predetermined variables transformed accordingly; this is the default form
-% used in IRIS calculations. If false, the state-space system is based on
-% the original vector of transition variables.
+% predetermined variables transformed accordingly; this is the form used
+% in IRIS calculations. If false, the state-space system refers to the
+% original vector of transition variables.
 %
 % Description
 % ============
@@ -59,8 +59,8 @@ function [T, R, K, Z, H, D, U, Omg, list] = sspace(this, varargin)
 % of non-predetermined (forward-looking) variables and their auxiliary
 % leads, `alpha` is a transformation of `xb`, `e` is an ne-by-1 vector of
 % shocks, and `y` is an ny-by-1 vector of measurement variables.
-% Furthermore, we denote the total number of transition variables, and
-% their auxiliary lags and leads, nx = nb + nf.
+% Furthermore, we denote the total number of transition variables,
+% and their auxiliary lags and leads, nx = nb + nf.
 %
 % The transition matrix, `T`, is, in general, rectangular nx-by-nb.
 % Furthremore, the transformed state vector alpha is chosen so that the
@@ -71,50 +71,54 @@ function [T, R, K, Z, H, D, U, Omg, list] = sspace(this, varargin)
 % the vectors `xb` and `xf`. The first nf names are the vector `xf`, the
 % remaining nb names are the vector `xb`.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-opt = passvalopt('model.sspace', varargin{:});
+opt = passvalopt('model.sspace',varargin{:});
 
 %--------------------------------------------------------------------------
 
-[T, R, K, Z, H, D, U, Omg, Zb] = mysspace(this, ':', true);
-[~, nxx, ~, nf, ne] = sizeOfSolution(this.Vector);
-nAlt = length(this);
+[T,R,K,Z,H,D,U,Omg,Zb] = mysspace(m,':',true);
+nx = size(T,1);
+nb = size(T,2);
+nf = nx - nb;
+ne = sum(m.nametype == 3);
+nAlt = size(m.Assign,3);
 
 if ~opt.triangular
     % T <- U*T/U;
     % R <- U*R;
     % K <- U*K;
-    % Z <- Zb;
+    % Z <- Z/U;
     % U <- eye
     for iAlt = 1 : nAlt
         T(:,:,iAlt) = T(:,:,iAlt) / U(:,:,iAlt);
         T(nf+1:end,:,iAlt) = U(:,:,iAlt)*T(nf+1:end,:,iAlt);
         R(nf+1:end,:,iAlt) = U(:,:,iAlt)*R(nf+1:end,:,iAlt);
         K(nf+1:end,:,iAlt) = U(:,:,iAlt)*K(nf+1:end,:,iAlt);
+        % Z(:,:,iAlt) = Z(:,:,iAlt) / U(:,:,iAlt);
         Z(:,:,iAlt) = Zb(:,:,iAlt);
         U(:,:,iAlt) = eye(size(U));
     end
 end
 
-ixKeep = true(1, ne);
+ixKeep = true(1,ne);
 if opt.removeinactive
-    ixKeep = ~diag( all(Omg==0,3) );
-    R = reshape(R, [nxx, ne, size(R,2)/ne]);
-    R = R(:, ixKeep, :);
-    R = R(:, :);
-    H = H(:, ixKeep);
-    Omg = Omg(ixKeep, ixKeep);
+    ixKeep = ~diag(all(Omg == 0,3));
+    R = reshape(R,[nx,ne,size(R,2)/ne]);
+    R = R(:,ixKeep,:);
+    R = R(:,:);
+    H = H(:,ixKeep);
+    Omg = Omg(ixKeep,ixKeep);
 end
 
-if nargout>8
-    list = { ...
-        printSolutionVector(this, 'y'), ...
-        printSolutionVector(this, 'x'), ...
-        printSolutionVector(this, 'e'), ...
+if nargout > 8
+    List = { ...
+        myvector(This,'y'), ...
+        myvector(This,'x'), ...
+        myvector(This,'e'), ...
         };
-    list{3} = list{3}(ixKeep);
+    List{3} = List{3}(ixKeep);
 end
 
 end

@@ -1,4 +1,4 @@
-% grfun  Graphics Functions (grfun Package).
+% grfun  Graphics Functions.
 %
 % Graphics functions
 % ===================
@@ -14,16 +14,16 @@
 % * [`plotpp`](grfun/plotpp) - Plot prior and/or posterior distributions and/or posterior mode.
 % * [`plotmat`](grfun/plotmat) - Visualise 2D matrix.
 % * [`plotneigh`](grfun/plotneigh) - Plot local behaviour of objective function after estimation.
-% * [`style`](grfun/style) - Apply styles to graphics object and its descandants.
+% * [`printpdf`](grfun/printpdf) - Print figure window to PDF via EPS.
 % * [`vline`](grfun/vline) - Add vertical line with text caption at the specified position.
 % * [`zeroline`](grfun/zeroline) - Add zero line if Y-axis limits include zero.
 %
-% Getting on-line help on graphics functions
-% ===========================================
+% Getting on-line help on qreport functions
+% ==========================================
 %
 %     help grfun
 %     help grfun/function_name
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

@@ -1,15 +1,15 @@
-function n = end(this, ~, ~)
-% end  Reference to last parameter variant.
+function n = end(m,k,n)
+% END  [Not a public function] Reference to the last parameterisation.
 %
 % Backend IRIS function.
 % No help provided.
 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-%--------------------------------------------------------------------------
+%**************************************************************************
 
-n = length(this.Variant);
+n = size(m.Assign,3);
 
 end

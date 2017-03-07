@@ -1,6 +1,6 @@
 function This = prune(This,Data,varargin)
 
-% prune  Eliminate weak connections between neurons.
+% prune  Eliminates weak connections between neurons.
 %
 % Syntax
 % =======
@@ -37,18 +37,19 @@ function This = prune(This,Data,varargin)
 % * `'Recursive='` [ numeric ] - Recursively prune and re-train network N
 % times. 
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 % Parse options
-pp = inputParser( ) ;
+pp = inputParser() ;
 pp.addRequired('This',@(x) isa(x,'nnet')) ;
 pp.addRequired('Data',@(x) isa(x,'struct')) ;
 pp.parse(This,Data) ;
 
+
 if ~isempty(varargin) && isnumeric(varargin{1})
     Range = varargin{1} ;
-    varargin(1) = [ ] ;
+    varargin(1) = [] ;
 else
     Range = Inf ;
 end
@@ -59,7 +60,7 @@ if options.Parallel
     options.Progress = false ;
 end
 if options.Progress
-    progress = ProgressBar('IRIS nnet.prune progress');
+    progress = progressbar('IRIS nnet.prune progress');
 end
 
 % Get data
@@ -154,7 +155,5 @@ end
     end
 
 end
-
-
 
 

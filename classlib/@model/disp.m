@@ -1,57 +1,52 @@
-function disp(this)
-% disp  Display method for model objects.
+function disp(This)
+% disp  [Not a public function] Display method for model objects.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
-
-STR_VARIANT = 'parameter variant';
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-isEmpty = isempty(this.Variant);
-
-if this.IsLinear
-    attribute = 'linear';
+if isempty(This.Assign)
+    fprintf('\tempty model object\n');
+    doPrintNEqtn();
 else
-    attribute = 'nonlinear';
-end
-
-ccn = getClickableClassName(this);
-
-if isEmpty
-    fprintf('\tempty %s %s object\n', attribute, ccn);    
-else
-    nAlt = length(this);
-    fprintf('\t%s %s object: [%g %s(s)]\n', ...
-        attribute, ccn, nAlt, STR_VARIANT);
-    
-end
-
-implementDisp(this.Equation);
-
-if isEmpty
-    % Print nothing.
-else
-    printSolution( );
-end
-
-disp@shared.GetterSetter(this, 1);
-disp@shared.UserDataContainer(this, 1);
-disp@shared.Exported(this, 1);
-textfun.loosespace( );
-
-return
-
-
-    
-
-    function printSolution( )
-        [~, ix] = isnan(this, 'solution');
-        nSolution = sum(~ix);
-        fprintf('\tsolution(s) available: [%g %s(s)]\n', ...
-            nSolution, STR_VARIANT);
+    nAlt = size(This.Assign,3);
+    fprintf('\t');
+    if This.IsLinear
+        fprintf('linear ');
+    else
+        fprintf('nonlinear ');
     end
+    fprintf('model object: [%g] parameterisation(s)\n',nAlt);
+    doPrintNEqtn();
+    doPrintSolution();
+end
+
+disp@userdataobj(This);
+disp(' ');
+
+
+% Nested functions...
+
+
+%**************************************************************************
+    function doPrintNEqtn()
+        nm = sum(This.eqtntype == 1);
+        nt = sum(This.eqtntype == 2);
+        fprintf('\tnumber of equations: [%g %g]\n',nm,nt);
+    end % doPrintNEqtn()
+
+
+%**************************************************************************
+    function doPrintSolution()
+        [~,inx] = isnan(This,'solution');
+        nSolution = sum(~inx);
+        fprintf('\tsolution(s) available: [%g] parameterisation(s)\n', ...
+            nSolution);
+    end % doPrintSolution()
+
+
 end

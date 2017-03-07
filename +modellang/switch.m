@@ -67,7 +67,7 @@
 % to pass the database in. Note that you do not need to declare
 % `policy_regime` as a parameter in the model file.
 % 
-%     P = struct( );
+%     P = struct();
 %     P.policy_regime = 'Managed_exchange_rate';
 %     ...
 %     m = model('my.model','assign',P);
@@ -79,5 +79,5 @@
 % field of the input database.
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.

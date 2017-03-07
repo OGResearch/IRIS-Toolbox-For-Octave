@@ -1,74 +1,80 @@
-function hdataassign(this, pos, data)
-% hdataassign  Assign currently processed data to hdataobj.
+function hdataassign(This,Pos,Data)
+% hdataassign  [Not a public function] Assign currently processed data to hdataobj.
 %
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
-% hdataassign( hData, cols, {y, x, e, ...} )
+% hdataassign(HData, Col , {Y,X,E,...} )
+% hdataassign(HData, {Col,...} , {Y,X,E,...} )
+
+if ~iscell(Pos)
+    Pos = {Pos};
+end
 
 %--------------------------------------------------------------------------
 
-nPack = length(this.Id);
-nData = length(data);
+nPack = length(This.Id);
+nData = length(Data);
 
-for i = 1 : min(nPack, nData)
+for i = 1 : min(nPack,nData)
     
-    if isempty(data{i})
+    if isempty(Data{i})
         continue
     end
     
-    X = data{i};
-    nPer = size(X, 2);
-    if this.IsVar2Std
-        var2std( );
+    X = Data{i};
+    nPer = size(X,2);
+    
+    if This.IsVar2Std
+        X = xxVar2Std(X);
     end
     
-    % Permute X from nName-nPer-nCol to nPer-nCol-nName.
-    X = permute(X, [2, 3, 1]);
-    
-    realId = real(this.Id{i});
-    imagId = imag(this.Id{i});
+    realId = real(This.Id{i});
+    imagId = imag(This.Id{i});
     maxLag = -min(imagId);
-    t = maxLag + (1 : nPer);
-    
-    if this.IncludeLag && maxLag>0
-        % Each variable has been allocated an (nPer+maxLag)-by-nCol array. Get
-        % pre-sample data from auxiliary lags.
+    % Each variable has been allocated an (nPer+maxLag)-by-nCol array. Get
+    % pre-sample data from auxiliary lags.
+    if This.IncludeLag && maxLag > 0
         for j = find(imagId < 0)
             jLag = -imagId(j);
-            this.Data.( this.Name{realId(j)} ) ...
-                (maxLag+1-jLag, pos) = X(1, :, j);
-        end
-        % Assign current dates.
-        for j = find(imagId==0)
-            this.Data.( this.Name{realId(j)} )(t, pos) = X(:, :, j);
-        end
-    else
-        % Assign current dates only.
-        for j = find(imagId==0)
-            this.Data.( this.Name{realId(j)} )(:, pos) = X(:, :, j);
+            jName = This.Name{realId(j)};
+            This.Data.(jName)(maxLag+1-jLag,Pos{:}) = ...
+                permute(X(j,1,:),[2,3,1]);
         end
     end
-end
-
-return
-
-
-
-
-    function var2std( )
-        % Convert vectors of vars to vectors of stdevs.
-        if isempty(X)
-            return
-        end
-        tol = 1e-15;
-        ixNeg = X < tol;
-        if any(ixNeg(:))
-            X(ixNeg) = 0;
-        end
-        X = sqrt(X);
+    % Current-dated assignments.
+    t = maxLag + (1 : nPer);
+    for j = find(imagId == 0)
+        jName = This.Name{realId(j)};
+        jData = This.Data.(jName);
+        jx = X(j,:,:);
+        jData(t,Pos{:}) = permute(jx,[2,3,1]);
+        This.Data.(jName) = jData;
     end
+    
 end
+
+end
+
+
+% Subfunctions...
+
+
+%**************************************************************************
+
+
+function D = xxVar2Std(D)
+% xxVar2Std  Convert vectors of vars to vectors of stdevs.
+if isempty(D)
+    return
+end
+tol = 1e-15;
+inx = D < tol;
+if any(inx(:))
+    D(inx) = 0;
+end
+D = sqrt(D);
+end % xxVar2Std()

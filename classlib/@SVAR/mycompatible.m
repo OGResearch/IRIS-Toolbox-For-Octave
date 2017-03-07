@@ -4,15 +4,11 @@ function Flag = mycompatible(V1,V2)
 % Backend IRIS function.
 % No help provided.
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-try
-    Flag = isequal(class(V1),class(V2)) ...
-        && mycompatible@VAR(V1,V2);
-catch
-    Flag = false;
-    
+Flag = mycompatible@svarobj(V1,V2) && mycompatible@VAR(V1,V2);
+
 end

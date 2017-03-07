@@ -4,14 +4,14 @@ function [Ln,Cp] = vline(varargin)
 % Syntax
 % =======
 %
-%     [Ln,Cp] = grfun.vline(Pos,...)
-%     [Ln,Cp] = grfun.vline(Ax,Pos,...)
+%     [Ln,Cp] = grfun.vline(Xpos,...)
+%     [Ln,Cp] = grfun.vline(Ax,XPos,...)
 %
 % Input arguments
 % ================
 %
-% * `Pos` [ numeric ] - Horizontal position or vector of positions at which
-% the vertical line(s) will be drawn.
+% * `'XPos`' [ numeric ] - Horizontal position or vector of positions at
+% which the vertical line or lines will be drawn.
 %
 % * `Ax` [ numeric ] - Handle to an axes object (graph) or to a figure
 % window in which the the line will be added; if not specified the line
@@ -51,17 +51,16 @@ function [Ln,Cp] = vline(varargin)
 % ========
 %
 
-% -IRIS Macroeconomic Modeling Toolbox.
-% -Copyright (c) 2007-2017 IRIS Solutions Team.
+% -IRIS Toolbox.
+% -Copyright (c) 2007-2014 IRIS Solutions Team.
 
 %--------------------------------------------------------------------------
 
-if length(varargin) >= 2 ...
-        && ~ischar(varargin{2}) && all(ishghandle(varargin{1}))
+if length(varargin) >= 2 && ~ischar(varargin{2}) && all(ishghandle(varargin{1}))
     Ax = varargin{1};
-    varargin(1) = [ ];
+    varargin(1) = [];
 else
-    Ax = gca( );
+    Ax = gca();
 end
 
 [Ln,Cp] = grfun.myinfline(Ax,'v',varargin{:});

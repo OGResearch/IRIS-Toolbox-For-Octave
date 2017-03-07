@@ -5,7 +5,7 @@ classdef pagebreakobj < report.genericobj
         function This = pagebreakobj(varargin)
             This = This@report.genericobj(varargin{:});
             This.childof = {'report'};
-            This.default = [This.default,{ }];
+            This.default = [This.default,{}];
         end
         
         function [This,varargin] = specargin(This,varargin)
