@@ -1,6 +1,6 @@
 *.mex
--test_i4o_issues/testClassdef/clAobj.mat
+_test_i4o_issues/testClassdef/clAobj.mat
 *.o
--test_i4o_issues/testCsvData/testSaveLoad1.csv
--test_i4o_issues/testCsvData/testSaveLoad1.csv
--test_i4o_issues/testReport/report1.pdf
+_test_i4o_issues/testCsvData/testSaveLoad1.csv
+_test_i4o_issues/testCsvData/testSaveLoad1.csv
+_test_i4o_issues/testReport/report1.pdf
