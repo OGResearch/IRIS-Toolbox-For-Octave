@@ -1,5 +1,4 @@
 # IRIS Macroeconomic Modeling Toolbox compatible with GNU Octave
-===========
 
 ## IRIS for Octave
 
