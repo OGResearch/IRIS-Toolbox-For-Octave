@@ -35,15 +35,27 @@ else
         numHC = varargin{hcx+1};
         varargin(hcx:hcx+1) = [];
     end
-    cox = bix + find(strcmpi(varargin(bix:2:end),'collectoutput'))*2 - 2;
-    data = textscan(fid,varargin{:});
-    if numHC > 0
-        if varargin{cox+1}
-            data = {data{1}(1+numHL:end,1+numHC:end)};
-        else
-            data = data(1+numHL:end,1+numHC:end);
-        end
+    % remove header lines if `fid` is text
+    if numHL > 0 && ischar(fid)
+        nlIx = strfind(fid,sprintf('\n'));
+        fid = fid(nlIx(numHL)+1:end);
     end
+    % remove header columns if `fid` is text
+    if numHC > 0 && ischar(fid)
+        fid = [fid,sprintf('\n')];
+        fid = regexprep(fid,[repmat('[^,]*,',1,numHC),'(.*?)\n'],'$1\n');
+        fid = fid(1:end-1);
+    end
+    % make sure end of line is not empty
+    emptyVal = 0;
+    evx = bix + find(strcmpi(varargin(bix:2:end),'emptyvalue'))*2 - 2;
+    if ~isempty(evx)
+        emptyVal = varargin{evx+1};
+    end
+    emptyVal = num2str(emptyVal);
+    fid = regexprep(regexprep(fid,',\n',[',',emptyVal,'\n']),',$',[',',emptyVal]);
+    % run Octave's textscan()
+    data = textscan(fid,varargin{:});
 end
 
 end

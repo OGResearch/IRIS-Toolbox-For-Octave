@@ -9,8 +9,14 @@ function display(this)
 
 %**************************************************************************
 
-if isequal(get(0,'FormatSpacing'),'compact')
-    disp([inputname(1),' =']);
+if false % ##### MOSW
+    if isequal(get(0,'FormatSpacing'),'compact')
+        disp([inputname(1),' =']);
+    else
+        disp(' ')
+        disp([inputname(1),' =']);
+        disp(' ');
+    end
 else
     disp(' ')
     disp([inputname(1),' =']);

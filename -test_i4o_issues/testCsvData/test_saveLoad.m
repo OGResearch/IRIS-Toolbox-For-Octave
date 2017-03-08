@@ -10,10 +10,10 @@ actDbase.x = round(100*actDbase.x,2);
 
 dbsave(actDbase,'testSaveLoad1.csv');
 expDbase = dbload('testSaveLoad1.csv');
-myassert(actDbase.x(:), expDbase.x(:)) ;
+myassert(actDbase.x(:), expDbase.x(:), 1e-13) ;
 
 dbsave(actDbase,'testSaveLoad2.csv',Inf, ...
     'dateFormat=','$YYYY-MM-DD');
 expDbase = dbload('testSaveLoad2.csv', ...
     'dateFormat=','$YYYY-MM-DD','freq=',52);
-myassert(actDbase.x(:), expDbase.x(:)) ;
+myassert(actDbase.x(:), expDbase.x(:), 1e-13) ;

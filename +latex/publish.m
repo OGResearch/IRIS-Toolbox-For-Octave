@@ -153,9 +153,10 @@ wDir = mosw.tempname(thisDir);
 mkdir(wDir);
 
 % Run input files with compact spacing.
-spacing = get(0,'formatSpacing');
-set(0,'formatSpacing','compact');
-
+if false % ##### MOSW
+    spacing = get(0,'formatSpacing');
+    set(0,'formatSpacing','compact');
+end
 % Create mfile2xml (publish) options. The output directory is assumed to
 % always coincide with the input file directory.
 mfile2xmloptions = struct( ...
@@ -194,7 +195,9 @@ for i = 1 : nInput
 end
 
 % Reset spacing.
-set(0,'formatSpacing',spacing);
+if false % ##### MOSW
+    set(0,'formatSpacing',spacing);
+end
 
 % Switch to the working directory so that `xml2tex` can find the graphics
 % files.

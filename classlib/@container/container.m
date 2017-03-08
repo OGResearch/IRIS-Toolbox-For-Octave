@@ -76,11 +76,18 @@ classdef container
         
         function disp(This) %#ok<MANU>
             list = container.request('list');
-            status = get(0,'formatSpacing');
+            if false % ##### MOSW
+                status = get(0,'formatSpacing');
+            end
             fprintf('\tcontainer object: 1-by-1\n');
-            set(0,'formatSpacing','compact');
+            if false % ##### MOSW
+                set(0,'formatSpacing','compact');
+            end
+            
             disp(list);
-            set(0,'formatSpacing',status);
+            if false % ##### MOSW
+                set(0,'formatSpacing',status);
+            end
         end
         
         function display(This)

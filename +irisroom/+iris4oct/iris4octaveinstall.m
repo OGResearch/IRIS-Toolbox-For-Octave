@@ -103,6 +103,7 @@ end
 fid = fopen(rcfname,'w+');
 fprintf(fid,'%s\n','page_screen_output (false);');
 fprintf(fid,'%s\n','graphics_toolkit qt');
+fprintf(fid,'%s\n','warning(''off'',''Octave:shadowed-function'')');
 fclose(fid);
 % apply the settings right away
 page_screen_output (false);
@@ -141,10 +142,10 @@ fprintf('\nIris for Octave was successfully installed!\n\n');
     pkgInfo.version = irisVer;
     pkgInfo.date = datestr(now(),'yyyy-mm-dd');
     pkgInfo.author = 'IRIS Solutions Team';
-    pkgInfo.maintainer = ['IRIS discussion forum community ', ...
-      '<https://iristoolbox.codeplex.com/discussions>'];
+    pkgInfo.maintainer = ['IRIS issue tracker ', ...
+      '<https://github.com/IRIS-Solutions-Team/IRIS-Toolbox/issues>'];
     pkgInfo.title = 'IRIS Toolbox';
-    pkgInfo.description = 'Toolbox for macroeconomic modelling and forecasting';
+    pkgInfo.description = 'Toolbox for macroeconomic modeling and forecasting';
     pkgInfo.depends = {};
       pkgInfo.depends{1} = struct();
         pkgInfo.depends{1}.package = 'octave';
@@ -156,7 +157,7 @@ fprintf('\nIris for Octave was successfully installed!\n\n');
         pkgInfo.depends{2}.version = '1.3.4';
     pkgInfo.autoload = 1;
     pkgInfo.license = 'BSD New';
-    pkgInfo.url = 'http://iris-toolbox.com';
+    pkgInfo.url = 'https://github.com/IRIS-Solutions-Team/IRIS-Toolbox';
     pkgInfo.dir = path2iris;
     pkgInfo.archprefix = path2iris;
     pkgInfo.loaded = 1;

@@ -1,0 +1,3 @@
+*.mex
+-test_i4o_issues/testClassdef/clAobj.mat
+*.o

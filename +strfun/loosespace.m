@@ -15,8 +15,12 @@ function loosespace()
 
 %--------------------------------------------------------------------------
 
-if ~strcmp(get(0,'FormatSpacing'),'compact')
-   fprintf('\n');
+if false % ##### MOSW
+    if ~strcmp(get(0,'FormatSpacing'),'compact')
+       fprintf('\n');
+    end
+else
+    fprintf('\n');
 end
-
+    
 end
