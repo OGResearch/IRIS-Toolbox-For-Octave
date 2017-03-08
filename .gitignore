@@ -3,3 +3,4 @@
 *.o
 -test_i4o_issues/testCsvData/testSaveLoad1.csv
 -test_i4o_issues/testCsvData/testSaveLoad1.csv
+-test_i4o_issues/testReport/report1.pdf
