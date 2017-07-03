@@ -41,7 +41,7 @@ pp.addRequired('E',@isstruct) ;
 pp.parse(E) ;
 
 % Check consistency by looping over parameters
-pnames = fields(E) ;
+pnames = fieldnames(E) ;
 np = numel(pnames) ;
 
 validPrior = true(1,np) ;
