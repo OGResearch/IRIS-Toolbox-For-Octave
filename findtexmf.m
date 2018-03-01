@@ -15,6 +15,9 @@ Folder = '';
 % Try FINDTEXMF only on non-Unix platforms.
 if ~isunix()
     [flag,outp] = system(['findtexmf --file-type=exe ',File]);
+    if flag~=0
+        [flag,outp] = system(['findtexmf ',File,'.exe']);
+    end
 else
     % Try /usr/texbin first.
     list = dir(fullfile('/usr/texbin',File));
