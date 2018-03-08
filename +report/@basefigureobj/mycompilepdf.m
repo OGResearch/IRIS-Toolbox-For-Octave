@@ -90,6 +90,9 @@ InclGraph = [ ...
             else
               while ~exist([pdfName,'.pdf'],'file')
                 print(h,'-dpdf',pdfName);
+                if exist(pdfName,'file')
+                  rename(pdfName,[pdfName,'.pdf']);
+                end
               end
             end
             addtempfile(This,[pdfName,'.pdf']);
