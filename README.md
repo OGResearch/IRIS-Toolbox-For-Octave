@@ -4,13 +4,17 @@ IRIS is a free, open-source toolbox for macroeconomic modeling and forecasting i
 
 *This version of IRIS is a fork of the [official IRIS Toolbox](https://github.com/IRIS-Solutions-Team/IRIS-Toolbox) as of July 19th, 2014. All the modifications made in the official IRIS Toolbox after that date are disregarded. There is a long-term plan to converge though...*
 
+**Iris4Octave is tested with the GNU Octave version 4.2.1 (the previous major release). There is a [plan](https://github.com/OGResearch/iris4octave/issues/3) to check and fix the compatibility of iris4Octave with the GNU Octave version 4.4.0 released recently. Shall you face any issues, please report them on [our issue tracker](https://github.com/OGResearch/iris4octave/issues) or directly to iris4octave@ogresearch.com.**
+
 ## Installing GNU Octave
-Download and install the latest official version of GNU Octave from [the official web-site](http://octave.org).
+Download and install the official GNU Octave version 4.2.1 from the official repository ([Windows 32-bit](https://ftp.gnu.org/gnu/octave/windows/octave-4.2.1-w32-installer.exe)/[Windows 64-bit](https://ftp.gnu.org/gnu/octave/windows/octave-4.2.1-w64-installer.exe)).
 
 If you are on Windows, it's a good idea to allow creating a desktop shortcut during installation as a simple run of octave.exe does not work in most cases.
 
 ## Other requirements
-It's strongly recommended to install [MikTeX](http://miktex.org) or another TeX distributive available for your OS. This free typesetting system used to produce PDF reports in IRIS.
+It's strongly recommended to install [MikTeX](http://miktex.org) or another TeX distributive available for your OS. This free typesetting system is used to produce PDF reports in IRIS. 
+
+*Iris4Octave is assumed to be working with all the recent versions of MikTeX, but given the capacities we cannot ensure it's working with all the MikTeX packages in all the versions of MikTeX. Shall you face any compatibility issue with a particular version of MikTeX do not hesitate to report it on [our issue tracker](https://github.com/OGResearch/iris4octave/issues) or directly to iris4octave@ogresearch.com.*
 
 ## Installing IRIS for Octave
 **TO BE DONE JUST ONCE**
