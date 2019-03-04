@@ -4,7 +4,7 @@ IRIS is a free, open-source toolbox for macroeconomic modeling and forecasting i
 
 *This version of IRIS is a fork of the [official IRIS Toolbox](https://github.com/IRIS-Solutions-Team/IRIS-Toolbox) as of July 19th, 2014. All the modifications made in the official IRIS Toolbox after that date are disregarded. There is a long-term plan to converge though...*
 
-**Iris4Octave is tested with the GNU Octave version 4.2.1 (the previous major release). There is a [plan](https://github.com/OGResearch/iris4octave/issues/3) to check and fix the compatibility of iris4Octave with the GNU Octave version 4.4.0 released recently. Shall you face any issues, please report them on [our issue tracker](https://github.com/OGResearch/iris4octave/issues) or directly to iris4octave@ogresearch.com.**
+**Iris4Octave is tested with the GNU Octave version 4.2.1. There is a [plan](https://github.com/OGResearch/iris4octave/issues/3) to check and fix the compatibility of iris4Octave with the more recent versions of GNU Octave. Shall you face any issues, please report them on [our issue tracker](https://github.com/OGResearch/iris4octave/issues) or directly to iris4octave@ogresearch.com.**
 
 ## Installing GNU Octave
 Download and install the official GNU Octave version 4.2.1 from the official repository ([Windows 32-bit](https://ftp.gnu.org/gnu/octave/windows/octave-4.2.1-w32-installer.exe)/[Windows 64-bit](https://ftp.gnu.org/gnu/octave/windows/octave-4.2.1-w64-installer.exe)).
